@@ -21,6 +21,9 @@ class Event(Mapping):
     def __str__(self):
         return str(self._dict)
 
+    def __delitem__(self, key):
+        del self._dict[key]
+
 
 class EventLog(Sequence):
 
