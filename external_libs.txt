@@ -1,2 +1,3 @@
 use this file to create pip dependencies later!
 dateutils
+pandas

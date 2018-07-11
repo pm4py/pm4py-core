@@ -9,6 +9,9 @@ class Event(Mapping):
     def __getitem__(self, key):
         return self._dict[key]
 
+    def __setitem__(self, key, value):
+        self._dict[key] = value
+
     def __iter__(self):
         return iter(self._dict)
 
