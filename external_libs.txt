@@ -1,3 +1,7 @@
 use this file to create pip dependencies later!
 dateutils
 pandas
+ciso8601
+lxml
+
+also needed: Microsoft Visual C++ 14.0 build tools!!
