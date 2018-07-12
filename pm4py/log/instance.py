@@ -27,8 +27,11 @@ class Event(Mapping):
 
 class EventLog(Sequence):
 
-    def __init__(self, attributes, *args):
-        self._attributes = attributes
+    def __init__(self, *args, **kwargs):
+        self._attributes = kwargs['attributes'] if 'attributes' in kwargs else {}
+        self._extensions = kwargs['extensions'] if 'extensions' in kwargs else {}
+        self._omni = kwargs['omni_present'] if 'omni_present' in kwargs else kwargs['globals'] if 'globals' in kwargs else {}
+        self._classifiers = kwargs['classifiers'] if 'classifiers' in kwargs else {}
         self._list = list(*args)
 
     def __getitem__(self, key):
@@ -58,19 +61,28 @@ class EventLog(Sequence):
     def append(self, x):
         self._list.append(x)
 
-    def _set_attributes(self, attributes):
-        self._attributes = attributes
-
     def _get_attributes(self):
         return self._attributes
 
-    attributes = property(_get_attributes, _set_attributes)
+    def _get_extensions(self):
+        return self._extensions
+
+    def _get_omni(self):
+        return self._omni
+
+    def _get_classifiers(self):
+        return self._classifiers
+
+    attributes = property(_get_attributes)
+    extensions = property(_get_extensions)
+    omni_present = property(_get_omni)
+    classifiers = property(_get_classifiers)
 
 
 class Trace(Sequence):
 
-    def __init__(self, attributes, *args):
-        self._set_attributes(attributes)
+    def __init__(self, *args, **kwargs):
+        self._set_attributes(kwargs['attributes'] if 'attributes' in kwargs else {})
         self._list = list(*args)
 
     def __getitem__(self, key):
@@ -106,10 +118,10 @@ class Trace(Sequence):
     def _get_attributes(self):
         return self._attributes
 
-    attributes = property(_get_attributes, _set_attributes)
+    attributes = property(_get_attributes)
     
 
 class TraceLog(EventLog):
-    def __init__(self, attributes, *args):
-        super(TraceLog, self).__init__(attributes, *args)
+    def __init__(self, *args, **kwargs):
+        super(TraceLog, self).__init__(*args, **kwargs)
 
