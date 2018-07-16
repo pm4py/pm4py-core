@@ -3,6 +3,9 @@ import functools
 from pm4py.log import instance as log_instance
 from pm4py.log.importer import xes as xes_importer
 from pm4py.log import transform as log_transform
+from pm4py.algo.dfg import instance as dfg_instance
+from pm4py.algo.causal import instance as causal_instance
+from pm4py.algo.alpha import data_structures as alpha_ds
 import time
 
 event = log_instance.Event({'concept:name': 'a'})
@@ -57,3 +60,16 @@ print(log[0])
 start = time.time()
 log = log_transform.transform_event_log_to_trace_log(log)
 print('time to transform the log: %s' % (time.time() - start))
+
+start = time.time()
+dfg = dfg_instance.compute_dfg(log)
+print('time to compute dfg: %s' % (time.time()-start))
+print(dfg)
+
+start = time.time()
+cag = causal_instance.compute_causal_relations(dfg, causal_instance.CAUSAL_ALPHA)
+print('time to compute causal graph: %s' % (time.time() - start))
+print(cag)
+
+abstr = alpha_ds.ClassicAlphaAbstraction(log)
+print(abstr)
