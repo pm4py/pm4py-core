@@ -10,4 +10,4 @@ def import_from_path(path, sep=','):
                 df[col] = pd.to_datetime(df[col])
             except ValueError:
                     pass
-    return log_instance.EventLog({'origin': 'csv'}, df.to_dict('records'))
+    return log_instance.EventLog(df.to_dict('records'), attributes={'origin': 'csv'})
