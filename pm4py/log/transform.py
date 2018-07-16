@@ -22,13 +22,13 @@ def transform_event_log_to_trace_log(log, case_glue='case:concept:name', include
     return log_instance.TraceLog(traces.values(), attributes=log.attributes, classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions)
 
 
-def transform_trace_log_to_event_log(trace_log, include_case_attributes=True, case_attribute_prefix='case:'):
-    event_log = []
-    for trace in trace_log:
+def transform_trace_log_to_event_log(log, include_case_attributes=True, case_attribute_prefix='case:'):
+    events = []
+    for trace in log:
         for event in trace:
             if include_case_attributes:
                 for key, value in trace.attributes.items():
                     event[case_attribute_prefix + key] = value
-            event_log.append(event)
-    return log_instance.EventLog(trace_log.attributes,event_log)
+            events.append(event)
+    return log_instance.EventLog(events, attributes=log.attributes, classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions)
 
