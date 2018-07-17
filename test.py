@@ -6,6 +6,7 @@ from pm4py.log import transform as log_transform
 from pm4py.algo.dfg import instance as dfg_instance
 from pm4py.algo.causal import instance as causal_instance
 from pm4py.algo.alpha import data_structures as alpha_ds
+from pm4py.algo.alpha import classic as alpha_classic
 import time
 
 event = log_instance.Event({'concept:name': 'a'})
@@ -29,7 +30,7 @@ def compare_time_of_first_event(t1, t2):
 
 # xes
 start = time.time()
-log = xes_importer.import_from_path_xes('C:/Users/bas/Documents/tue/svn/private/logs/BPI_Challenge_2012.xes')
+log = xes_importer.import_from_path_xes('C:/Users/bas/Documents/tue/svn/private/logs/road_fines.xes')
 print('time to import the log: %s' % (time.time() - start))
 print('number of traces: %s' % len(log))
 
@@ -40,36 +41,38 @@ print('filter log on traces that have length >%s' % filter_len)
 start = time.time()
 log = log_instance.TraceLog(filter(lambda t: len(t) > int(filter_len), log), attributes=log.attributes, classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions)
 print('time to filter the log: %s' % (time.time() - start))
-print('traces remaining: %s' % len(log) )
+print('traces remaining: %s' % len(log))
 
 
-start = time.time()
-log = log_instance.TraceLog(sorted(log, key=functools.cmp_to_key(compare_time_of_first_event)), attributes=log.attributes, classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions)
-print('time to sort the log: %s' % (time.time() - start))
+#start = time.time()
+#log = log_instance.TraceLog(sorted(log, key=functools.cmp_to_key(compare_time_of_first_event)), attributes=log.attributes, classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions)
+#print('time to sort the log: %s' % (time.time() - start))
 
-start = time.time()
-log = log_transform.transform_trace_log_to_event_log(log)
-print('time to transform the log: %s' % (time.time() - start))
-print('new first event %s' % log[0])
-start = time.time()
-log = log_instance.EventLog(sorted(log, key=lambda e: e['time:timestamp'], reverse=True), attributes=log.attributes, classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions)
-print('time to sort the log on time stamp: %s' % (time.time() - start))
-print(log[0])
+#start = time.time()
+#log = log_transform.transform_trace_log_to_event_log(log)
+#print('time to transform the log: %s' % (time.time() - start))
+#print('new first event %s' % log[0])
+#start = time.time()
+#log = log_instance.EventLog(sorted(log, key=lambda e: e['time:timestamp'], reverse=True), attributes=log.attributes, classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions)
+#print('time to sort the log on time stamp: %s' % (time.time() - start))
+#print(log[0])
 
 
-start = time.time()
-log = log_transform.transform_event_log_to_trace_log(log)
-print('time to transform the log: %s' % (time.time() - start))
+#start = time.time()
+#log = log_transform.transform_event_log_to_trace_log(log)
+#print('time to transform the log: %s' % (time.time() - start))
 
 start = time.time()
 dfg = dfg_instance.compute_dfg(log)
 print('time to compute dfg: %s' % (time.time()-start))
-print(dfg)
 
 start = time.time()
 cag = causal_instance.compute_causal_relations(dfg, causal_instance.CAUSAL_ALPHA)
 print('time to compute causal graph: %s' % (time.time() - start))
-print(cag)
 
-abstr = alpha_ds.ClassicAlphaAbstraction(log)
-print(abstr)
+
+start = time.time()
+alpha = list(alpha_classic.apply(log))
+print('time to compute alpha: %s' % (time.time() - start))
+print(alpha)
+print(len(alpha))
