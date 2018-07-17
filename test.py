@@ -8,6 +8,7 @@ from pm4py.algo.causal import instance as causal_instance
 from pm4py.algo.alpha import data_structures as alpha_ds
 from pm4py.algo.alpha import classic as alpha_classic
 import time
+from pm4py.models.petri import visualize as pn_viz
 
 event = log_instance.Event({'concept:name': 'a'})
 event['test'] = 'test'
@@ -30,7 +31,7 @@ def compare_time_of_first_event(t1, t2):
 
 # xes
 start = time.time()
-log = xes_importer.import_from_path_xes('C:/Users/bas/Documents/tue/svn/private/logs/road_fines.xes')
+log = xes_importer.import_from_path_xes('C:/Users/bas/Documents/tue/svn/private/logs/a12_logs/a12f0n00.xes')
 print('time to import the log: %s' % (time.time() - start))
 print('number of traces: %s' % len(log))
 
@@ -72,7 +73,9 @@ print('time to compute causal graph: %s' % (time.time() - start))
 
 
 start = time.time()
-alpha = list(alpha_classic.apply(log))
+net = alpha_classic.apply(log)
 print('time to compute alpha: %s' % (time.time() - start))
-print(alpha)
-print(len(alpha))
+
+gviz = pn_viz.graphviz_visualization(net)
+gviz.view()
+
