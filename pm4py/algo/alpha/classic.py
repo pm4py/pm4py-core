@@ -23,7 +23,6 @@ def apply(trace_log, activity_key='concept:name'):
                         new_alpha_pair = (t1[0] | t2[0], t1[1] | t2[1])
                         if new_alpha_pair not in pairs:
                             pairs.append((t1[0] | t2[0], t1[1] | t2[1]))
-                            break
     internal_places = filter(lambda p: __pair_maximizer(pairs, p), pairs)
     net = pn_instance.PetriNet('alpha_classic_net_' + str(time.time()))
     label_transition_dict = {}
