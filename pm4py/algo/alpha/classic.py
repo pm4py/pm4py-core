@@ -7,6 +7,27 @@ from pm4py.algo.alpha import data_structures as ds
 
 
 def apply(trace_log, activity_key='concept:name'):
+    """
+    This method calls the \"classic\" alpha miner.
+
+    Parameters
+    ----------
+    trace_log : :class:`pm4py.log.instance.TraceLog`
+        Event log to use in the alpha miner, note that it should be a TraceLog!
+    activity_key : `str`, optional
+        Key to use within events to identify the underlying activity.
+        By deafult, the value 'concept:name' is used.
+
+    Returns
+    -------
+    net : :class:`pm4py.models.petri.instance.PetriNet`
+        A Petri net describing the event log that is provided as an input
+
+    References
+    ----------
+    ..[1] Wil M. P. van der Aalst et al., "Workflow Mining: Discovering Process Models from Event Logs", IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. `DOI <https://doi.org/10.1109/TKDE.2004.47>`_.
+
+    """
     labels = tl_util.fetch_labels(trace_log, activity_key)
     alpha_abstraction = ds.ClassicAlphaAbstraction(trace_log, activity_key)
     pairs = list(map(lambda p: ({p[0]}, {p[1]}), filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p), alpha_abstraction.causal_relation)))
