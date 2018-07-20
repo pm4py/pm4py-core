@@ -8,7 +8,7 @@ from pm4py.algo.alpha import data_structures as ds
 
 def apply(trace_log, activity_key='concept:name'):
     """
-    This method calls the \"classic\" alpha miner.
+    This method calls the \"classic\" alpha miner [1]_.
 
     Parameters
     ----------
@@ -25,7 +25,8 @@ def apply(trace_log, activity_key='concept:name'):
 
     References
     ----------
-    ..[1] Wil M. P. van der Aalst et al., "Workflow Mining: Discovering Process Models from Event Logs", IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. `DOI <https://doi.org/10.1109/TKDE.2004.47>`_.
+    .. [1] Wil M. P. van der Aalst et al., "Workflow Mining: Discovering Process Models from Event Logs",
+      IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. `DOI <https://doi.org/10.1109/TKDE.2004.47>`_.
 
     """
     labels = tl_util.fetch_labels(trace_log, activity_key)

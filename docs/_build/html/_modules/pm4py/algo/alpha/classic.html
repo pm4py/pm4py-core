@@ -149,7 +149,7 @@
 
 <div class="viewcode-block" id="apply"><a class="viewcode-back" href="../../../../_source/pm4py.algo.alpha.html#pm4py.algo.alpha.classic.apply">[docs]</a><span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="n">trace_log</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="s1">&#39;concept:name&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This method calls the \&quot;classic\&quot; alpha miner.</span>
+<span class="sd">    This method calls the \&quot;classic\&quot; alpha miner [1]_.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -166,7 +166,8 @@
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    ..[1] Wil M. P. van der Aalst et al., &quot;Workflow Mining: Discovering Process Models from Event Logs&quot;, IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. `DOI &lt;https://doi.org/10.1109/TKDE.2004.47&gt;`_.</span>
+<span class="sd">    .. [1] Wil M. P. van der Aalst et al., &quot;Workflow Mining: Discovering Process Models from Event Logs&quot;,</span>
+<span class="sd">      IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. `DOI &lt;https://doi.org/10.1109/TKDE.2004.47&gt;`_.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">tl_util</span><span class="o">.</span><span class="n">fetch_labels</span><span class="p">(</span><span class="n">trace_log</span><span class="p">,</span> <span class="n">activity_key</span><span class="p">)</span>
