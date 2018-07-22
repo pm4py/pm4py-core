@@ -3,16 +3,40 @@ import random
 
 class Node(object):
 	def __init__(self, label):
+		"""
+		Constructor
+		
+		Parameters
+		----------
+		label
+			Node label
+		"""
 		self.label = label
 		self.countConnections = 0
 		self.inputNodes = []
 		self.outputNodes = []
 	
 	def addInputNode(self, node):
+		"""
+		Adds a node that is left-wise connected to this node
+		
+		Parameters
+		----------
+		node
+			Connected node
+		"""
 		self.inputNodes.append(node)
 		self.countConnections = self.countConnections + 1
 	
 	def addOutputNode(self, node):
+		"""
+		Adds a node that is right-wise connected to this node
+		
+		Parameters
+		----------
+		node
+			Connected node
+		"""
 		self.outputNodes.append(node)
 		self.countConnections = self.countConnections + 1
 	
@@ -20,7 +44,25 @@ class Node(object):
 		return self.label
 	
 class DfgGraph(object):
-	def __init__(self, nodesLabels, pairs, labelsCorresp = None, invLabelsCorresp = None, origPairs = None):
+	def __init__(self, nodesLabels, pairs, labelsCorresp = None, invLabelsCorresp = None, origPairs = None, origLabels = None):
+		"""
+		Construct a Directly-follows graph starting from the provision of labels and pairs
+		
+		Parameters
+		----------
+		nodesLabels
+			Labels
+		pairs
+			Pairs (relationships between activities)
+		labelsCorresp
+			(if the graph gets clustered) Clusters of sequential activities. For each cluster, we memorize the list of activities belonging to the cluster
+		invLabelsCorresp
+			(if the graph gets clustered) Clusters of sequential activities. For each activity, we correspond the cluster it belongs to
+		origPairs
+			(if the graph gets clustered) Relationships pairs in the original non-clustered graph
+		origLabels
+			(if the graph gets clustered) Labels in the original non-clustered graph
+		"""
 		self.labelsCorresp = {}
 		self.nodesLabels = nodesLabels
 		self.pairs = pairs
@@ -42,11 +84,19 @@ class DfgGraph(object):
 			self.invLabelsCorresp = invLabelsCorresp
 		if origPairs is not None:
 			self.origPairs = origPairs
+		if origLabels is not None:
+			self.origLabels = origLabels
 	
 	def formGroupedGraph(self):
-		return DfgGraph(list(self.labelsCorresp.keys()), self.newPairs, labelsCorresp = self.labelsCorresp, invLabelsCorresp = self.invLabelsCorresp, origPairs = self.pairs)
+		"""
+		forms the clustered graph
+		"""
+		return DfgGraph(list(self.labelsCorresp.keys()), self.newPairs, labelsCorresp = self.labelsCorresp, invLabelsCorresp = self.invLabelsCorresp, origPairs = self.pairs, origLabels=self.nodesLabels)
 	
 	def mapPairs(self):
+		"""
+		map original pairs between labels into clustered pairs
+		"""
 		newPairs = []
 		for pair in self.pairs:
 			newPair = [self.invLabelsCorresp[pair[0]], self.invLabelsCorresp[pair[1]]]
@@ -56,6 +106,9 @@ class DfgGraph(object):
 		return newPairs
 	
 	def getPairs(self):
+		"""
+		gets pairs currently present in the graph
+		"""
 		pairs = []
 		for node in self.nodes.values():
 			for otherNode in node.outputNodes:
@@ -65,12 +118,17 @@ class DfgGraph(object):
 		return pairs
 	
 	def getOrigPairs(self):
+		"""
+		get original pairs (when graph gets clustered)
+		"""
 		return self.origPairs
 	
 	def detectSequences(self):
+		"""
+		detect clusters of sequential activities
+		"""
 		simpleCouples = self.detectSimpleCouples()
 		groupedActivities = deepcopy(simpleCouples)
-		
 		while True:
 			oldGroupedActivities = deepcopy(groupedActivities)
 			i = 0
@@ -105,6 +163,9 @@ class DfgGraph(object):
 		return [labelsCorresp,invLabelsCorresp]
 	
 	def detectSimpleCouples(self):
+		"""
+		support function in detecting clusters of sequential activities
+		"""
 		simpleCouples = []
 		for node in self.nodes.values():
 			if len(node.outputNodes) == 1:
@@ -113,11 +174,10 @@ class DfgGraph(object):
 					simpleCouples.append([str(node), str(otherNode)])
 		return simpleCouples
 	
-	def projectPairs(self, labels, pairs):
-		newPairs = [x for x in pairs if x[0] in labels and x[1] in labels]
-		return newPairs
-	
 	def getNodesWithNoInput(self):
+		"""
+		gets nodes having no edges as input
+		"""
 		nodesWithNoInput = []
 		for nodeLabel in self.nodes:
 			node = self.nodes[nodeLabel]
@@ -126,6 +186,9 @@ class DfgGraph(object):
 		return nodesWithNoInput
 	
 	def getNodesWithNoOutput(self):
+		"""
+		gets nodes having no edges as output
+		"""
 		nodesWithNoOutput = []
 		for nodeLabel in self.nodes:
 			node = self.nodes[nodeLabel]
@@ -134,6 +197,9 @@ class DfgGraph(object):
 		return nodesWithNoOutput
 	
 	def activitiesAreAllConcurrent(self):
+		"""
+		check if activities in the graph are all concurrent
+		"""
 		for nodeLabel in self.nodes:
 			node = self.nodes[nodeLabel]
 			if len(node.outputNodes) > 0 or len(node.inputNodes) > 0:
@@ -141,6 +207,10 @@ class DfgGraph(object):
 		return True
 	
 	def negate(self):
+		"""
+		negate the graph
+		(to detect parallelism between activities)
+		"""
 		for nodeLabel in self.nodes:
 			node = self.nodes[nodeLabel]
 			inputNodes = deepcopy(node.inputNodes)
@@ -149,41 +219,131 @@ class DfgGraph(object):
 				if otherNode in outputNodes:
 					del node.inputNodes[node.inputNodes.index(otherNode)]
 					del node.outputNodes[node.outputNodes.index(otherNode)]
+			outputNodeLabels = [str(x) for x in node.outputNodes]
+			pairs = deepcopy(self.origPairs)
+			for pair in pairs:
+				if pair[0] == nodeLabel and pair[1] not in outputNodeLabels:
+					del self.pairs[self.pairs.index(pair)]
+	
+	def projectPairs(self, labels, pairs):
+		"""
+		keep only pairs that have both elements inside labels list
+		
+		Parameters
+		----------
+		labels
+			Labels for which we want to do the projection
+		pairs
+			Pairs to project
+		"""
+		newPairs = [x for x in pairs if x[0] in labels and x[1] in labels]
+		return newPairs
+	
+	def formConnectedComponent(self,connectedLabels,elToExam,alreadyExamined,currentConnComp,recDepth):
+		"""
+		recursive function to get a single connected component
+		
+		Parameters
+		----------
+		connectedLabels
+			For each label, maps the elements that are connected in input or in output
+		elToExam
+			Label to examine (we want to find the connected component containing it)
+		alreadyExamined
+			Already examined labels in this step
+		currentConnComp
+			Connected component (starts empty, and labels are added to it)
+		recDepth
+			Current recursion depth
+		"""
+		
+		if not elToExam in currentConnComp:
+			currentConnComp.append(elToExam)
+		if not elToExam in alreadyExamined:
+			alreadyExamined.append(elToExam)
+		for otherEl in connectedLabels[elToExam]:
+			if not otherEl in currentConnComp:
+				currentConnComp.append(otherEl)
+			if not otherEl in alreadyExamined:
+				[alreadyExamined,currentConnComp] = self.formConnectedComponent(connectedLabels,otherEl,alreadyExamined,currentConnComp,recDepth+1)
+		return [alreadyExamined,currentConnComp]
+	
+	def findConnectedComponents(self):
+		"""
+		Find all connected components in the graph
+		"""
+		
+		# For each label, maps the elements that are connected in input or in output
+		connectedLabels = {}
+		for l in self.origLabels:
+			connectedLabels[l] = set()
+		for p in self.origPairs:
+			connectedLabels[p[0]].add(p[1])
+			connectedLabels[p[1]].add(p[0])
+		
+		# find the single connected components by iterating on the labels
+		connectedComponents = []
+		allAlreadyExamined = set()
+		for el in connectedLabels.keys():
+			if not el in allAlreadyExamined:
+				[alreadyExamined,currentConnComp] = self.formConnectedComponent(connectedLabels,el,[],[],0)
+				connectedComponents.append(currentConnComp)
+				for x in alreadyExamined:
+					allAlreadyExamined.add(x)
+		return connectedComponents
 
 	def findMaximumCut(self):
+		"""
+		finds the maximum cut of the graph
+		"""
 		return self.findMaximumCutGreedy()
 	
+	def getSetStrings(self, set):
+		setString = [str(x) for x in set]
+		return setString
+	
 	def findMaximumCutGreedy(self):
+		"""
+		Greedy strategy to form a maximum cut:
+		- activities without any input are added to set1
+		- activities without any output are added to set2
+		- if an activity cannot be added nor to set1 or to set2, then a cut is not found
+		- other activities are added to the most convenient set
+		"""
 		set1 = self.getNodesWithNoInput()
 		set2 = self.getNodesWithNoOutput()
+		set2 = [x for x in set2 if not x in set1]
+		set1Strings = self.getSetStrings(set1)
+		set2Strings = self.getSetStrings(set1)
 		nodes = sorted(list(self.nodes.values()), key=lambda x: x.countConnections, reverse=True)
-		addTo = set1
 		for node in nodes:
 			if not node in set1 and not node in set2:
-				# try add the node to set 1
-				addOk = True
-				for otherNode in set2:
-					if otherNode in node.inputNodes:
-						addOk = False
-						break
-				if not addOk:
-					addOk = True
-					addTo = set2
-					# try add the node to set 2
-					for otherNode in set1:
-						if otherNode in node.outputNodes:
-							addOk = False
-							break
-					if not addOk:
-						# no cut found by greedy strategy: return False
-						return [False,[],[]]
-				addTo.append(node)
-		
-		set1 = [str(x) for x in set1]
-		set2 = [str(x) for x in set2]
-		set1 = [y for x in set1 for y in self.labelsCorresp[x]]
-		set2 = [y for x in set2 for y in self.labelsCorresp[x]]
-		
-		if len(set1)>0 and len(set2)>0:
-			return [True,set1,set2]
-		return [False,set1,set2]
+				inputConnectionsInSet1 = [x for x in self.pairs if x[0] in set1Strings]
+				inputConnectionsInSet2 = [x for x in self.pairs if x[0] in set2Strings]
+				outputConnectionsInSet1 = [x for x in self.pairs if x[1] in set1Strings]
+				outputConnectionsInSet2 = [x for x in self.pairs if x[1] in set2Strings]
+				
+				if outputConnectionsInSet1 and inputConnectionsInSet2:
+					# impossible situation, not cut found
+					return [False,[],[]]
+				elif outputConnectionsInSet1:
+					# must belong to set 1
+					set1.append(node)
+				elif inputConnectionsInSet2:
+					# must belong to set 2
+					set2.append(node)
+				else:
+					# add it to the most convenient place
+					if len(inputConnectionsInSet1) >= len(outputConnectionsInSet2):
+						# add to set 1
+						set1.append(node)
+					else:
+						# add to set 2
+						set2.append(node)
+			set1Strings = self.getSetStrings(set1)
+			set2Strings = self.getSetStrings(set2)
+		retSet1 = [y for x in set1Strings for y in self.labelsCorresp[x]]
+		retSet2 = [y for x in set2Strings for y in self.labelsCorresp[x]]
+		if len(retSet1) > 0 and len(retSet2) > 0:
+			return [True,retSet1,retSet2]
+		return [False,retSet1,retSet2]
