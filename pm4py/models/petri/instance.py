@@ -59,11 +59,20 @@ class PetriNet(object):
         target = property(__get_target)
         weight = property(__get_weight, __set_weight)
 
-    def __init__(self, name="", places=set(), transitions=set(), arcs=set()):
+    def __init__(self, name="", places=None, transitions=None, arcs=None):
         self.__name = name
-        self.__places = places
-        self.__transitions = transitions
-        self.__arcs = arcs
+        if places is None:
+            self.__places = set()
+        else:
+            self.__places = places
+        if transitions is None:
+            self.__transitions = set()
+        else:
+            self.__transitions = transitions
+        if arcs is None:
+            self.__arcs = set()
+        else:
+            self.__arcs = arcs
 
     def __get_name(self):
         return self.__name
