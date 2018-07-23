@@ -9,6 +9,7 @@ import pm4py.log.transform as log_transform
 from pm4py.algo.alpha import classic as alpha_classic
 from pm4py.models.petri import visualize as pn_viz
 from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
+import logging
 
 class AlphaMinerTest(unittest.TestCase):
 	def obtainPetriNetThroughAlphaMiner(self, logName):
