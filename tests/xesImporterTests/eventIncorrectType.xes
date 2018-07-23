@@ -1,0 +1,34 @@
+<log xes.version="1849.2016" xes.features="">
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext" />
+	<extension name="Organizational" prefix="org" uri="http://www.xes-standard.org/org.xesext" />
+	<global scope="event">
+		<string key="concept:name" value="name" />
+		<string key="org:resource" value="name" />
+	</global>
+	<global scope="trace">
+		<string key="instance" value="name" />
+		<string key="role" value="name" />
+	</global>
+	<classifier name="name" keys="concept:name org:resource" />
+	<string key="concept:name" value="name" />
+	<trace>
+		<string key="instance" value="name" />
+		<string key="role" value="name" />
+		<event>
+			<string key="concept:name" value="name" />
+			<string key="org:resource" value="name" />
+		</event>
+		<event>
+			<string key="concept:name" value="name" />
+			<int key="org:resource" value="0" />
+		</event>
+	</trace>
+	<event>
+		<string key="concept:name" value="name" />
+		<string key="org:resource" value="name" />
+	</event>
+	<event>
+		<string key="concept:name" value="name" />
+		<string key="org:resource" value="name" />
+	</event>
+</log>
