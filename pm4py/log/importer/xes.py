@@ -72,6 +72,17 @@ def import_from_path_xes(path):
                 tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), int(elem.get(xes_util.KEY_VALUE)),
                                          tree)
 
+            elif elem.tag.endswith(xes_util.TAG_BOOLEAN):
+                tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), bool(elem.get(xes_util.KEY_VALUE)),
+                                         tree)
+
+            elif elem.tag.endswith(xes_util.TAG_ID):
+                tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), elem.get(xes_util.KEY_VALUE), tree)
+
+            elif elem.tag.endswith(xes_util.TAG_LIST):
+                # lists have no value, hence we put None as a value
+                tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), None, tree)
+
         elif tree_event == EVENT_END:
             if elem.tag.endswith(xes_util.TAG_LOG):
                 pass
