@@ -1,9 +1,17 @@
+from collections import Counter
+
+
+class Marking(Counter):
+    pass
+
 
 class PetriNet(object):
     class Place(object):
 
-        def __init__(self, name):
+        def __init__(self, name, in_arcs=None, out_arcs=None):
             self.__name = name
+            self.__in_arcs = set() if in_arcs is None else in_arcs
+            self.__out_arcs = set() if out_arcs is None else out_arcs
 
         def __set_name(self, name):
             self.__name = name
@@ -11,13 +19,23 @@ class PetriNet(object):
         def __get_name(self):
             return self.__name
 
+        def __get_out_arcs(self):
+            return self.__out_arcs
+
+        def __get_in_arcs(self):
+            return self.__in_arcs
+
         name = property(__get_name, __set_name)
+        in_arcs = property(__get_in_arcs)
+        out_arcs = property(__get_out_arcs)
 
     class Transition(object):
 
-        def __init__(self, name, label=None):
+        def __init__(self, name, label=None, in_arcs=None, out_arcs=None):
             self.__name = name
-            self.__label = label
+            self.__label = None if label is None else label
+            self.__in_arcs = set() if in_arcs is None else in_arcs
+            self.__out_arcs = set() if out_arcs is None else out_arcs
 
         def __set_name(self, name):
             self.__name = name
@@ -31,17 +49,25 @@ class PetriNet(object):
         def __get_label(self):
             return self.__label
 
+        def __get_out_arcs(self):
+            return self.__out_arcs
+
+        def __get_in_arcs(self):
+            return self.__in_arcs
+
         name = property(__get_name, __set_name)
         label = property(__get_label, __set_label)
+        in_arcs = property(__get_in_arcs)
+        out_arcs = property(__get_out_arcs)
 
     class Arc(object):
 
         def __init__(self, source, target, weight=1):
             if type(source) is type(target):
-                raise Exception('Petri nets are bipartite!')
+                raise Exception('Petri nets are bipartite graphs!')
             self.__source = source
             self.__target = target
-            self.__wight = weight
+            self.__weight = weight
 
         def __get_source(self):
             return self.__source
@@ -61,18 +87,9 @@ class PetriNet(object):
 
     def __init__(self, name="", places=None, transitions=None, arcs=None):
         self.__name = name
-        if places is None:
-            self.__places = set()
-        else:
-            self.__places = places
-        if transitions is None:
-            self.__transitions = set()
-        else:
-            self.__transitions = transitions
-        if arcs is None:
-            self.__arcs = set()
-        else:
-            self.__arcs = arcs
+        self.__places = set() if places is None else places
+        self.__transitions = set() if transitions is None else transitions
+        self.__arcs = set() if arcs is None else arcs
 
     def __get_name(self):
         return self.__name
