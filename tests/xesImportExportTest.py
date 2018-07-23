@@ -9,6 +9,7 @@ from pm4py.log.importer import csv as csv_importer
 from pm4py.log.exporter import csv as csv_exporter
 import pm4py.log.transform as log_transform
 from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
+import logging
 
 class XesImportExportTest(unittest.TestCase):
 	def test_importExportXEStoXES(self):
@@ -31,12 +32,15 @@ class XesImportExportTest(unittest.TestCase):
 		logs = os.listdir(PROBLEMATIC_XES_DIR)
 		for log in logs:
 			logFullPath = os.path.join(PROBLEMATIC_XES_DIR, log)
-			outputLogPath = os.path.join(OUTPUT_DATA_DIR, log)
-			traceLog = xes_importer.import_from_path_xes(logFullPath)
-			xes_exporter.export_log(traceLog, outputLogPath)
-			traceLogImportedAfterExport = xes_importer.import_from_path_xes(outputLogPath)
-			self.assertEqual(len(traceLog),len(traceLogImportedAfterExport))
-			os.remove(outputLogPath)
+			try:
+				outputLogPath = os.path.join(OUTPUT_DATA_DIR, log)
+				traceLog = xes_importer.import_from_path_xes(logFullPath)
+				xes_exporter.export_log(traceLog, outputLogPath)
+				traceLogImportedAfterExport = xes_importer.import_from_path_xes(outputLogPath)
+				self.assertEqual(len(traceLog),len(traceLogImportedAfterExport))
+				os.remove(outputLogPath)
+			except SyntaxError as e:
+				logging.info("SyntaxError on log "+str(log)+": "+str(e))
 
 if __name__ == "__main__":
 	unittest.main()

@@ -2,6 +2,7 @@ from lxml import etree
 import pm4py.log.instance as log_instance
 import pm4py.log.util.xes as xes_util
 import ciso8601
+import logging
 
 # ITERPARSE EVENTS
 EVENT_END = 'end'
@@ -43,45 +44,64 @@ def import_from_path_xes(path):
             elif elem.tag.endswith(xes_util.TAG_EXTENSION):
                 if log is None:
                     raise SyntaxError('extension found outside of <log> tag')
-                log.extensions[elem.get(xes_util.KEY_NAME)] = {xes_util.KEY_PREFIX: elem.get(xes_util.KEY_PREFIX),
+                if elem.get(xes_util.KEY_NAME) is not None and elem.get(xes_util.KEY_PREFIX) is not None and elem.get(xes_util.KEY_URI) is not None:
+                    log.extensions[elem.get(xes_util.KEY_NAME)] = {xes_util.KEY_PREFIX: elem.get(xes_util.KEY_PREFIX),
                                                                xes_util.KEY_URI: elem.get(xes_util.KEY_URI)}
 
             elif elem.tag.endswith(xes_util.TAG_GLOBAL):
                 if log is None:
                     raise SyntaxError('global found outside of <log> tag')
-                log.omni_present[elem.get(xes_util.KEY_SCOPE)] = {}
-                tree[elem] = log.omni_present[elem.get(xes_util.KEY_SCOPE)]
+                if elem.get(xes_util.KEY_SCOPE) is not None:
+                    log.omni_present[elem.get(xes_util.KEY_SCOPE)] = {}
+                    tree[elem] = log.omni_present[elem.get(xes_util.KEY_SCOPE)]
 
             elif elem.tag.endswith(xes_util.TAG_CLASSIFIER):
                 if log is None:
                     raise SyntaxError('classifier found outside of <log> tag')
-                log.classifiers[elem.get(xes_util.KEY_NAME)] = elem.get(xes_util.KEY_KEYS).split()
+                if elem.get(xes_util.KEY_KEYS) is not None:
+                    log.classifiers[elem.get(xes_util.KEY_NAME)] = elem.get(xes_util.KEY_KEYS).split()
 
             elif elem.tag.endswith(xes_util.TAG_DATE):
-                dt = ciso8601.parse_datetime(elem.get(xes_util.KEY_VALUE))
-                tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), dt, tree)
+                try:
+                    dt = ciso8601.parse_datetime(elem.get(xes_util.KEY_VALUE))
+                    tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), dt, tree)
+                except:
+                    logging.info("failed to parse date: "+str(elem.get(xes_util.KEY_VALUE)))
 
             elif elem.tag.endswith(xes_util.TAG_STRING):
-                tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), elem.get(xes_util.KEY_VALUE), tree)
-
+                if not parent is None:
+                    tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), elem.get(xes_util.KEY_VALUE), tree)
             elif elem.tag.endswith(xes_util.TAG_FLOAT):
-                tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), float(elem.get(xes_util.KEY_VALUE)),
-                                         tree)
-
+                if not parent is None:
+                    try:
+                        val = float(elem.get(xes_util.KEY_VALUE))
+                        tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), val, tree)
+                    except:
+                        logging.info("failed to parse float: "+str(elem.get(xes_util.KEY_VALUE)))
             elif elem.tag.endswith(xes_util.TAG_INT):
-                tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), int(elem.get(xes_util.KEY_VALUE)),
-                                         tree)
-
+                if not parent is None:
+                   try:
+                       val = int(elem.get(xes_util.KEY_VALUE))
+                       tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), val,tree)
+                   except:
+                       logging.info("failed to parse int: "+str(elem.get(xes_util.KEY_VALUE)))
+			
             elif elem.tag.endswith(xes_util.TAG_BOOLEAN):
-                tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), bool(elem.get(xes_util.KEY_VALUE)),
-                                         tree)
+                if not parent is None:
+                   try:
+                       val = bool(elem.get(xes_util.KEY_VALUE))
+                       tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), val, tree)
+                   except:
+                       logging.info("failed to parse boolean: "+str(elem.get(xes_util.KEY_VALUE)))
 
             elif elem.tag.endswith(xes_util.TAG_ID):
-                tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), elem.get(xes_util.KEY_VALUE), tree)
+                if not parent is None:
+                   tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), elem.get(xes_util.KEY_VALUE), tree)
 
             elif elem.tag.endswith(xes_util.TAG_LIST):
-                # lists have no value, hence we put None as a value
-                tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), None, tree)
+                if not parent is None:
+                   # lists have no value, hence we put None as a value
+                   tree = __parse_attribute(elem, parent, elem.get(xes_util.KEY_KEY), None, tree)
 
         elif tree_event == EVENT_END:
             if elem.tag.endswith(xes_util.TAG_LOG):
@@ -92,8 +112,9 @@ def import_from_path_xes(path):
                 trace = None
 
             elif elem.tag.endswith(xes_util.TAG_EVENT):
-                trace.append(event)
-                event = None
+                if trace is not None:
+                    trace.append(event)
+                    event = None
 
             if elem in tree:
                 del tree[elem]

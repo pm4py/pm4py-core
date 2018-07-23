@@ -34,14 +34,16 @@ class ClassicAlphaAbstraction:
         e = set()
         for t in trace_log:
             if len(t) > 0:
-                e.add(t[len(t)-1][self.activity_key])
+                if self.activity_key in t[len(t)-1]:
+                    e.add(t[len(t)-1][self.activity_key])
         return e
 
     def __derive_start_activities(self, trace_log):
         s = set()
         for t in trace_log:
             if len(t) > 0:
-                s.add(t[0][self.activity_key])
+                if self.activity_key in t[0]:
+                    s.add(t[0][self.activity_key])
         return s
 
     start_activities = property(__get_start_activities)

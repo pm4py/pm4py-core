@@ -46,14 +46,17 @@ class InductiveMinerDFTest(unittest.TestCase):
 	def test_applyImdfToProblematicLogs(self):
 		logs = os.listdir(PROBLEMATIC_XES_DIR)
 		for log in logs:
-			logFullPath = os.path.join(PROBLEMATIC_XES_DIR, log)
-			# calculate and compare Petri nets obtained on the same log to verify that instances
-			# are working correctly
-			net1 = self.obtainPetriNetThroughImdf(logFullPath)
-			net2 = self.obtainPetriNetThroughImdf(logFullPath)
-			self.assertEqual(len(net1.places),len(net2.places))
-			self.assertEqual(len(net1.transitions),len(net2.transitions))
-			self.assertEqual(len(net1.arcs),len(net2.arcs))
+			try:
+				logFullPath = os.path.join(PROBLEMATIC_XES_DIR, log)
+				# calculate and compare Petri nets obtained on the same log to verify that instances
+				# are working correctly
+				net1 = self.obtainPetriNetThroughImdf(logFullPath)
+				net2 = self.obtainPetriNetThroughImdf(logFullPath)
+				self.assertEqual(len(net1.places),len(net2.places))
+				self.assertEqual(len(net1.transitions),len(net2.transitions))
+				self.assertEqual(len(net1.arcs),len(net2.arcs))
+			except SyntaxError as e:
+				logging.info("SyntaxError on log "+str(log)+": "+str(e))
 
 if __name__ == "__main__":
 	unittest.main()
