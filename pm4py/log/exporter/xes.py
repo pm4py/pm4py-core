@@ -62,9 +62,10 @@ def export_attributes(log, root):
 		attrType = type(log.attributes[attr]).__name__
 		attrTypeXES = get_XES_attr_type(attrType)
 		attrValue = get_XES_attr_value(log.attributes[attr], attrTypeXES)
-		logAttribute = etree.SubElement(root, attrTypeXES)
-		logAttribute.set(xes_util.KEY_KEY,attr)
-		logAttribute.set(xes_util.KEY_VALUE,attrValue)
+		if not attrTypeXES is None and not attr is None and not attrValue is None:
+			logAttribute = etree.SubElement(root, attrTypeXES)
+			logAttribute.set(xes_util.KEY_KEY,attr)
+			logAttribute.set(xes_util.KEY_VALUE,attrValue)
 
 def export_extensions(log, root):
 	"""
@@ -81,9 +82,10 @@ def export_extensions(log, root):
 	for ext in log.extensions.keys():
 		extValue = log.extensions[ext]
 		logExtension = etree.SubElement(root, xes_util.TAG_EXTENSION)
-		logExtension.set(xes_util.KEY_NAME, ext)
-		logExtension.set(xes_util.KEY_PREFIX, extValue[xes_util.KEY_PREFIX])
-		logExtension.set(xes_util.KEY_URI, extValue[xes_util.KEY_URI])
+		if not ext is None and not extValue[xes_util.KEY_PREFIX] is None and not extValue[xes_util.KEY_URI] is None:
+			logExtension.set(xes_util.KEY_NAME, ext)
+			logExtension.set(xes_util.KEY_PREFIX, extValue[xes_util.KEY_PREFIX])
+			logExtension.set(xes_util.KEY_URI, extValue[xes_util.KEY_URI])
 
 def export_globals(log, root):
 	"""
@@ -104,9 +106,10 @@ def export_globals(log, root):
 			globType = type(globEls[globEl]).__name__
 			globTypeXES = get_XES_attr_type(globType)
 			globValue = get_XES_attr_value(globEls[globEl], globTypeXES)
-			xesGlobalAttr = etree.SubElement(xesGlobal, globTypeXES)
-			xesGlobalAttr.set(xes_util.KEY_KEY,globEl)
-			xesGlobalAttr.set(xes_util.KEY_VALUE,globValue)
+			if not globTypeXES is None and not globEl is None and not globValue is None:
+				xesGlobalAttr = etree.SubElement(xesGlobal, globTypeXES)
+				xesGlobalAttr.set(xes_util.KEY_KEY,globEl)
+				xesGlobalAttr.set(xes_util.KEY_VALUE,globValue)
 
 def export_classifiers(log, root):
 	"""
