@@ -1,9 +1,10 @@
 from itertools import zip_longest
 from pm4py.log.util import trace_log as tl_util
-from pm4py.models.petri import instance as pn_instance
+from pm4py.models import petri
 import time
 
 from pm4py.algo.alpha import data_structures as ds
+from pm4py.models.petri.instance import Marking
 
 
 def apply(trace_log, activity_key='concept:name'):
@@ -46,41 +47,39 @@ def apply(trace_log, activity_key='concept:name'):
                         if new_alpha_pair not in pairs:
                             pairs.append((t1[0] | t2[0], t1[1] | t2[1]))
     internal_places = filter(lambda p: __pair_maximizer(pairs, p), pairs)
-    net = pn_instance.PetriNet('alpha_classic_net_' + str(time.time()))
+    net = petri.instance.PetriNet('alpha_classic_net_' + str(time.time()))
     label_transition_dict = {}
 
     for i in range(0, len(labels)):
-        label_transition_dict[labels[i]] = pn_instance.PetriNet.Transition('t_'+str(i), labels[i])
+        label_transition_dict[labels[i]] = petri.instance.PetriNet.Transition('t_'+str(i), labels[i])
         net.transitions.add(label_transition_dict[labels[i]])
 
-    net = __add_source(net, alpha_abstraction.start_activities, label_transition_dict)
+    src = __add_source(net, alpha_abstraction.start_activities, label_transition_dict)
     net = __add_sink(net, alpha_abstraction.end_activities, label_transition_dict)
 
     for pair in internal_places:
-        place = pn_instance.PetriNet.Place(str(pair))
+        place = petri.instance.PetriNet.Place(str(pair))
         net.places.add(place)
         for in_arc in pair[0]:
-            net.arcs.add(pn_instance.PetriNet.Arc(label_transition_dict[in_arc], place))
-
+            petri.utils.add_arc_from_to(label_transition_dict[in_arc], place, net)
         for out_arc in pair[1]:
-            net.arcs.add(pn_instance.PetriNet.Arc(place, label_transition_dict[out_arc]))
-
-    return net
+            petri.utils.add_arc_from_to(place, label_transition_dict[out_arc], net)
+    return net, Marking({src: 1})
 
 
 def __add_source(net, start_activities, label_transition_dict):
-    start = pn_instance.PetriNet.Place('start')
-    net.places.add(start)
+    source = petri.instance.PetriNet.Place('start')
+    net.places.add(source)
     for s in start_activities:
-        net.arcs.add(pn_instance.PetriNet.Arc(start, label_transition_dict[s]))
-    return net
+        petri.utils.add_arc_from_to(source, label_transition_dict[s], net)
+    return source
 
 
 def __add_sink(net, end_activities, label_transition_dict):
-    end = pn_instance.PetriNet.Place('end')
+    end = petri.instance.PetriNet.Place('end')
     net.places.add(end)
     for e in end_activities:
-        net.arcs.add(pn_instance.PetriNet.Arc(label_transition_dict[e], end))
+        petri.utils.add_arc_from_to(label_transition_dict[e], end, net)
     return net
 
 
