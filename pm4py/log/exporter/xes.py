@@ -8,7 +8,8 @@ TYPE_CORRESPONDENCE = {
 	"str":xes_util.TAG_STRING,
 	"int":xes_util.TAG_INT,
 	"float":xes_util.TAG_FLOAT,
-	"datetime":xes_util.TAG_DATE
+	"datetime":xes_util.TAG_DATE,
+	"bool":xes_util.TAG_BOOLEAN
 }
 # if a type is not found in the previous list, then default to string
 DEFAULT_TYPE = xes_util.TAG_STRING
