@@ -72,7 +72,7 @@ class InductMinDirFollows(object):
 		net = self.recFindCut(net, labels, pairs, 0, self.lastEndSubtreePlaceAdded)
 		return net, Marking({start: 1})
 	
-	def addSubtreeToModel(self, net, labels, type, dfgGraph, refToLastPlace, addSkipTransition=True):
+	def addSubtreeToModel(self, net, labels, type, dfgGraph, refToLastPlace, activInSelfLoop, addSkipTransition=True):
 		"""
 		Adds a part of the tree to the Petri net
 		
@@ -103,7 +103,8 @@ class InductMinDirFollows(object):
 				petri.utils.add_arc_from_to(refToLastPlace[0], hiddenTransSkipTree, net)
 				petri.utils.add_arc_from_to(hiddenTransSkipTree, subtreeEnd, net)
 
-			if type == "flower":
+			if type == "flower" or activInSelfLoop:
+			#if type == "flower":
 				# if we are adding a flower, we must add also the coming back arc
 				self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
 				hiddenTransLoop = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
@@ -162,12 +163,6 @@ class InductMinDirFollows(object):
 								#net.arcs.add(petri.net.PetriNet.Arc(refToLastPlace[0], transitions[0]))
 								petri.utils.add_arc_from_to(refToLastPlace[0], transitions[0], net)
 								self.addedArcsObjLabels.append(arcLabel)
-						"""if type == "flower":
-							# if we are adding a flower, we must add also the coming back arc
-							arcLabel = str(transitions[0]) + str(refToLastPlace[0])
-							if not arcLabel in self.addedArcsObjLabels:
-								net.arcs.add(petri.net.PetriNet.Arc(transitions[0], refToLastPlace[0]))
-								self.addedArcsObjLabels.append(arcLabel)"""
 				if i > 0:
 					# we add sequential elements inside the cluster
 					if not transitions[-2].label == transitions[-1].label:
@@ -245,6 +240,14 @@ class InductMinDirFollows(object):
 		petri.utils.add_arc_from_to(hiddenTransition, connectionPlace, net)
 
 		return [net, connectionPlace, hiddenTransition]
+	
+	def getActivitiesInSelfLoop(self, origPairs):
+		activInSelfLoop = []
+		for p in origPairs:
+			if p[0] == p[1]:
+				activInSelfLoop.append(p[0])
+		
+		return activInSelfLoop
 		
 	def recFindCut(self, net, nodesLabels, pairs, recDepth, refToLastPlace):
 		"""
@@ -268,9 +271,11 @@ class InductMinDirFollows(object):
 		dfgGraph = dfgGraph.formGroupedGraph()		
 		pairs = dfgGraph.getPairs()
 		origPairs = dfgGraph.getOrigPairs()
+		activInSelfLoop = self.getActivitiesInSelfLoop(origPairs)
+		
 		if len(pairs) == 0:
 			# we have all unconnected activities / clusters of sequential activities: add them to the model!
-			net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "concurrent", dfgGraph, refToLastPlace)
+			net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "concurrent", dfgGraph, refToLastPlace, activInSelfLoop)
 		else:
 			connectedComponents = dfgGraph.findConnectedComponents()
 			# if we have more than one connected component, we do recursion to add them to the model
@@ -298,8 +303,8 @@ class InductMinDirFollows(object):
 					negatedPairs = dfgGraph.getPairs()
 					if len(negatedPairs) == 0:
 						# in this case, we have a parallel subtree
-						net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "parallel", dfgGraph, refToLastPlace)
+						net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "parallel", dfgGraph, refToLastPlace, activInSelfLoop)
 					else:
 						# otherwise, we have a flower subtree
-						net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "flower", dfgGraph, refToLastPlace)
+						net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "flower", dfgGraph, refToLastPlace, activInSelfLoop)
 		return net
