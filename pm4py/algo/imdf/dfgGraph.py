@@ -292,17 +292,17 @@ class DfgGraph(object):
 					allAlreadyExamined.add(x)
 		return connectedComponents
 
-	def findMaximumCut(self):
+	def findMaximumCut(self, addedGraphs):
 		"""
 		finds the maximum cut of the graph
 		"""
-		return self.findMaximumCutGreedy()
+		return self.findMaximumCutGreedy(addedGraphs)
 	
 	def getSetStrings(self, set):
 		setString = [str(x) for x in set]
 		return setString
 	
-	def findMaximumCutGreedy(self):
+	def findMaximumCutGreedy(self, addedGraphs):
 		"""
 		Greedy strategy to form a maximum cut:
 		- activities without any input are added to set1
@@ -315,31 +315,40 @@ class DfgGraph(object):
 		set2 = [x for x in set2 if not x in set1]
 		set1Strings = self.getSetStrings(set1)
 		set2Strings = self.getSetStrings(set1)
+		#print("set1Strings = "+str(set1Strings))
+		#print("set2Strings = "+str(set2Strings))
+		#print("origPairs = "+str(self.origPairs))
+		#print("origLabels = "+str(self.origLabels))
+		#print("labelsCorresp = "+str(self.labelsCorresp))
+		#print("invLabelsCorresp = "+str(self.invLabelsCorresp))
+		#print("pairs = "+str(self.pairs))
 		nodes = sorted(list(self.nodes.values()), key=lambda x: x.countConnections, reverse=True)
 		for node in nodes:
 			if not node in set1 and not node in set2:
 				inputConnectionsInSet1 = [x for x in self.pairs if x[0] in set1Strings]
 				inputConnectionsInSet2 = [x for x in self.pairs if x[0] in set2Strings]
 				outputConnectionsInSet1 = [x for x in self.pairs if x[1] in set1Strings]
-				outputConnectionsInSet2 = [x for x in self.pairs if x[1] in set2Strings]
-				
+				outputConnectionsInSet2 = [x for x in self.pairs if x[1] in set2Strings]	
 				if outputConnectionsInSet1 and inputConnectionsInSet2:
 					# impossible situation, not cut found
 					return [False,[],[]]
-				elif outputConnectionsInSet1:
-					# must belong to set 1
-					set1.append(node)
-				elif inputConnectionsInSet2:
-					# must belong to set 2
-					set2.append(node)
-				else:
-					# add it to the most convenient place
-					if len(inputConnectionsInSet1) >= len(outputConnectionsInSet2):
-						# add to set 1
+				if addedGraphs:
+					if outputConnectionsInSet1:
+						# must belong to set 1
 						set1.append(node)
-					else:
-						# add to set 2
+					elif inputConnectionsInSet2:
+						# must belong to set 2
 						set2.append(node)
+					else:
+						# add it to the most convenient place
+						if len(inputConnectionsInSet1) >= len(outputConnectionsInSet2):
+							# add to set 1
+							set1.append(node)
+						else:
+							# add to set 2
+							set2.append(node)
+				else:
+					set2.append(node)
 			set1Strings = self.getSetStrings(set1)
 			set2Strings = self.getSetStrings(set2)
 		retSet1 = [y for x in set1Strings for y in self.labelsCorresp[x]]

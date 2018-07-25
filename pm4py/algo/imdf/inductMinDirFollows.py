@@ -1,7 +1,8 @@
 from pm4py.log.util import trace_log as tl_util
-from pm4py.algo.alpha import data_structures as ds
+from pm4py.algo.dfg import instance as dfg_inst
 from pm4py.algo.imdf.dfgGraph import DfgGraph as DfgGraph
-from pm4py.models.petri import net as pn_instance
+from pm4py.models import petri
+from pm4py.models.petri.net import Marking
 
 import time
 from copy import deepcopy
@@ -18,6 +19,21 @@ class InductMinDirFollows(object):
 		self.lastEndSubtreePlaceAdded = []
 		self.transitionsMap = {}
 		self.addedArcsObjLabels = []
+	
+	def cleanDfg(self, dfg):
+		dfgMap = {}
+		for el in dfg:
+			dfgMap[str(el[0])] = el[1]
+		"""i = 0
+		while i < len(dfg):
+			el = dfg[i][0]
+			elStr = str(el)
+			elStrOcc = dfgMap[elStr]
+			elInvStr = str((el[1], el[0]))
+			if elInvStr in dfgMap:
+				elInvStrOcc = dfgMap[elInvStr]
+			i = i + 1"""
+		return dfg
 	
 	def apply(self, trace_log, activity_key='concept:name'):
 		"""
@@ -41,18 +57,22 @@ class InductMinDirFollows(object):
 		Leemans, S. J., Fahland, D., & van der Aalst, W. M. (2015, June). Scalable process discovery with guarantees. In International Conference on Enterprise, Business-Process and Information Systems Modeling (pp. 85-101). Springer, Cham.
 		"""
 		labels = tl_util.fetch_labels(trace_log, activity_key)
-		alpha_abstraction = ds.ClassicAlphaAbstraction(trace_log, activity_key)
-		pairs = list(alpha_abstraction.causal_relation)
+		#alpha_abstraction = ds.ClassicAlphaAbstraction(trace_log, activity_key)
+		#pairs = list(alpha_abstraction.causal_relation)
+		dfg = [(k,v) for k, v in dfg_inst.compute_dfg(trace_log, activity_key).items() if v > 0]
+		dfg = sorted(dfg, key=lambda x: x[1], reverse=True)
+		dfg = self.cleanDfg(dfg)
+		pairs = [k[0] for k in dfg]
 		labels = [str(x) for x in labels]
 		pairs = [(str(x[0]),str(x[1])) for x in pairs]
-		net = pn_instance.PetriNet('imdf_net_' + str(time.time()))
-		start = pn_instance.PetriNet.Place('start')
+		net = petri.net.PetriNet('imdf_net_' + str(time.time()))
+		start = petri.net.PetriNet.Place('start')
 		net.places.add(start)
 		self.lastEndSubtreePlaceAdded = [start]
 		net = self.recFindCut(net, labels, pairs, 0, self.lastEndSubtreePlaceAdded)
-		return net
+		return net, Marking({start: 1})
 	
-	def addSubtreeToModel(self, net, labels, type, dfgGraph, refToLastPlace):
+	def addSubtreeToModel(self, net, labels, type, dfgGraph, refToLastPlace, addSkipTransition=True):
 		"""
 		Adds a part of the tree to the Petri net
 		
@@ -70,8 +90,29 @@ class InductMinDirFollows(object):
 			Place that we should attach on
 		"""
 		self.noOfPlacesAdded = self.noOfPlacesAdded + 1
-		subtreeEnd = pn_instance.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
+		subtreeEnd = petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
 		net.places.add(subtreeEnd)
+		if self.addedGraphs:
+			if addSkipTransition:
+				# add the hidden transitions that permits to skip the tree
+				self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+				hiddenTransSkipTree = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded))
+				net.transitions.add(hiddenTransSkipTree)
+				#net.arcs.add(petri.net.PetriNet.Arc(refToLastPlace[0], hiddenTransSkipTree))
+				#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransSkipTree, subtreeEnd))
+				petri.utils.add_arc_from_to(refToLastPlace[0], hiddenTransSkipTree, net)
+				petri.utils.add_arc_from_to(hiddenTransSkipTree, subtreeEnd, net)
+
+			if type == "flower":
+				# if we are adding a flower, we must add also the coming back arc
+				self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+				hiddenTransLoop = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded))
+				net.transitions.add(hiddenTransLoop)
+				#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransLoop, refToLastPlace[0]))
+				#net.arcs.add(petri.net.PetriNet.Arc(subtreeEnd, hiddenTransLoop))
+				petri.utils.add_arc_from_to(hiddenTransLoop, refToLastPlace[0], net)
+				petri.utils.add_arc_from_to(subtreeEnd, hiddenTransLoop, net)
+
 		# each label is a cluster of sequentially followed activities
 		for l in labels:			
 			transitions = []
@@ -86,26 +127,31 @@ class InductMinDirFollows(object):
 				transLab = li
 				# add the transitions to the model if needed
 				if not transLab in self.transitionsMap:
-					transObj = pn_instance.PetriNet.Transition('t_'+str(self.noOfTransitionsAdded), li)
+					transObj = petri.net.PetriNet.Transition('t_'+str(self.noOfTransitionsAdded), li)
 					transitions.append(transObj)
 					self.transitionsMap[transLab] = transObj
 					net.transitions.add(transitions[-1])
+				else:
+					transitions.append(self.transitionsMap[transLab])
 				# input element of the sequence cluster
 				if i == 0:
 					if type == "parallel":
 						# if we must add a parallel subtree, then hidden transitions are added to the model
 						self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-						hiddenTransitionsInput.append(pn_instance.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded)))
+						hiddenTransitionsInput.append(petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded)))
 						net.transitions.add(hiddenTransitionsInput[-1])
 						self.noOfPlacesAdded = self.noOfPlacesAdded + 1
-						hiddenTransitionsInputPlaces.append(pn_instance.PetriNet.Place('p_'+str(self.noOfPlacesAdded)))
+						hiddenTransitionsInputPlaces.append(petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded)))
 						net.places.add(hiddenTransitionsInputPlaces[-1])
-						net.arcs.add(pn_instance.PetriNet.Arc(refToLastPlace[0], hiddenTransitionsInput[-1]))
-						net.arcs.add(pn_instance.PetriNet.Arc(hiddenTransitionsInput[-1], hiddenTransitionsInputPlaces[-1]))
+						#net.arcs.add(petri.net.PetriNet.Arc(refToLastPlace[0], hiddenTransitionsInput[-1]))
+						#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransitionsInput[-1], hiddenTransitionsInputPlaces[-1]))
+						petri.utils.add_arc_from_to(refToLastPlace[0], hiddenTransitionsInput[-1], net)
+						petri.utils.add_arc_from_to(hiddenTransitionsInput[-1], hiddenTransitionsInputPlaces[-1], net)
 					if type == "parallel":
 						arcLabel = str(hiddenTransitionsInputPlaces[0]) + str(transitions[0])
 						if not arcLabel in self.addedArcsObjLabels:
-							net.arcs.add(pn_instance.PetriNet.Arc(hiddenTransitionsInputPlaces[0], transitions[0]))
+							#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransitionsInputPlaces[0], transitions[0]))
+							petri.utils.add_arc_from_to(hiddenTransitionsInputPlaces[0], transitions[0], net)
 							self.addedArcsObjLabels.append(arcLabel)
 					else:
 						if type == "concurrent" or type == "flower":
@@ -113,40 +159,46 @@ class InductMinDirFollows(object):
 							# we need to add an arc between the previous place and the transition
 							arcLabel = str(refToLastPlace[0]) + str(transitions[0])
 							if not arcLabel in self.addedArcsObjLabels:
-								net.arcs.add(pn_instance.PetriNet.Arc(refToLastPlace[0], transitions[0]))
+								#net.arcs.add(petri.net.PetriNet.Arc(refToLastPlace[0], transitions[0]))
+								petri.utils.add_arc_from_to(refToLastPlace[0], transitions[0], net)
 								self.addedArcsObjLabels.append(arcLabel)
-						if type == "flower":
+						"""if type == "flower":
 							# if we are adding a flower, we must add also the coming back arc
 							arcLabel = str(transitions[0]) + str(refToLastPlace[0])
 							if not arcLabel in self.addedArcsObjLabels:
-								net.arcs.add(pn_instance.PetriNet.Arc(transitions[0], refToLastPlace[0]))
-								self.addedArcsObjLabels.append(arcLabel)
+								net.arcs.add(petri.net.PetriNet.Arc(transitions[0], refToLastPlace[0]))
+								self.addedArcsObjLabels.append(arcLabel)"""
 				if i > 0:
 					# we add sequential elements inside the cluster
 					if not transitions[-2].label == transitions[-1].label:
 						arcLabel = str(transitions[-2]) + str(transitions[-1])
 						if not arcLabel in self.addedArcsObjLabels:
 							self.noOfPlacesAdded = self.noOfPlacesAdded + 1
-							auxiliaryPlace = pn_instance.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
+							auxiliaryPlace = petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
 							net.places.add(auxiliaryPlace)
-							net.arcs.add(pn_instance.PetriNet.Arc(transitions[-2], auxiliaryPlace))
-							net.arcs.add(pn_instance.PetriNet.Arc(auxiliaryPlace, transitions[-1]))
+							#net.arcs.add(petri.net.PetriNet.Arc(transitions[-2], auxiliaryPlace))
+							#net.arcs.add(petri.net.PetriNet.Arc(auxiliaryPlace, transitions[-1]))
+							petri.utils.add_arc_from_to(transitions[-2], auxiliaryPlace, net)
+							petri.utils.add_arc_from_to(auxiliaryPlace, transitions[-1], net)
 							self.addedArcsObjLabels.append(arcLabel)
 				if i == len(l)-1:
 					if type == "parallel":
 						# if we must add a parallel subtree, then hidden transitions are added to the model
 						self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-						hiddenTransitionsOutput.append(pn_instance.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded)))
+						hiddenTransitionsOutput.append(petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded)))
 						net.transitions.add(hiddenTransitionsOutput[-1])
 						self.noOfPlacesAdded = self.noOfPlacesAdded + 1
-						hiddenTransitionsOutputPlaces.append(pn_instance.PetriNet.Place('p_'+str(self.noOfPlacesAdded)))
+						hiddenTransitionsOutputPlaces.append(petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded)))
 						net.places.add(hiddenTransitionsOutputPlaces[-1])
-						net.arcs.add(pn_instance.PetriNet.Arc(hiddenTransitionsOutputPlaces[-1], hiddenTransitionsOutput[-1]))
-						net.arcs.add(pn_instance.PetriNet.Arc(hiddenTransitionsOutput[-1], subtreeEnd))
+						#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransitionsOutputPlaces[-1], hiddenTransitionsOutput[-1]))
+						#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransitionsOutput[-1], subtreeEnd))
+						petri.utils.add_arc_from_to(hiddenTransitionsOutputPlaces[-1], hiddenTransitionsOutput[-1], net)
+						petri.utils.add_arc_from_to(hiddenTransitionsOutput[-1], subtreeEnd, net)
 					if type == "parallel":
 						arcLabel = str(transitions[-1]) + str(hiddenTransitionsOutputPlaces[-1])
 						if not arcLabel in self.addedArcsObjLabels:
-							net.arcs.add(pn_instance.PetriNet.Arc(transitions[-1], hiddenTransitionsOutputPlaces[-1]))
+							#net.arcs.add(petri.net.PetriNet.Arc(transitions[-1], hiddenTransitionsOutputPlaces[-1]))
+							petri.utils.add_arc_from_to(transitions[-1], hiddenTransitionsOutputPlaces[-1], net)
 							self.addedArcsObjLabels.append(arcLabel)
 					else:
 						if type == "concurrent" or type == "flower":
@@ -154,7 +206,8 @@ class InductMinDirFollows(object):
 							# we need to add an arc between the transition and the end-subtree place
 							arcLabel = str(transitions[-1]) + str(subtreeEnd)
 							if not arcLabel in self.addedArcsObjLabels:
-								net.arcs.add(pn_instance.PetriNet.Arc(transitions[-1], subtreeEnd))
+								#net.arcs.add(petri.net.PetriNet.Arc(transitions[-1], subtreeEnd))
+								petri.utils.add_arc_from_to(transitions[-1], subtreeEnd, net)
 								self.addedArcsObjLabels.append(arcLabel)
 				i = i + 1
 		refToLastPlace[0] = subtreeEnd
@@ -179,16 +232,19 @@ class InductMinDirFollows(object):
 		
 		if inputConnectionPlace is None:
 			self.noOfPlacesAdded = self.noOfPlacesAdded + 1
-			connectionPlace = pn_instance.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
+			connectionPlace = petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
 			net.places.add(connectionPlace)
 		else:
 			connectionPlace = inputConnectionPlace
 		self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-		hiddenTransition = pn_instance.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded))
+		hiddenTransition = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded))
 		net.transitions.add(hiddenTransition)
-		net.arcs.add(pn_instance.PetriNet.Arc(newRefToLastPlace[0], hiddenTransition))
-		net.arcs.add(pn_instance.PetriNet.Arc(hiddenTransition, connectionPlace))
-		return [net, connectionPlace]
+		#net.arcs.add(petri.net.PetriNet.Arc(newRefToLastPlace[0], hiddenTransition))
+		#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransition, connectionPlace))
+		petri.utils.add_arc_from_to(newRefToLastPlace[0], hiddenTransition, net)
+		petri.utils.add_arc_from_to(hiddenTransition, connectionPlace, net)
+
+		return [net, connectionPlace, hiddenTransition]
 		
 	def recFindCut(self, net, nodesLabels, pairs, recDepth, refToLastPlace):
 		"""
@@ -208,7 +264,8 @@ class InductMinDirFollows(object):
 			Place that we should attach the subtree
 		"""
 		
-		dfgGraph = DfgGraph(nodesLabels, pairs).formGroupedGraph()
+		dfgGraph = DfgGraph(nodesLabels, pairs)
+		dfgGraph = dfgGraph.formGroupedGraph()		
 		pairs = dfgGraph.getPairs()
 		origPairs = dfgGraph.getOrigPairs()
 		if len(pairs) == 0:
@@ -219,16 +276,16 @@ class InductMinDirFollows(object):
 			# if we have more than one connected component, we do recursion to add them to the model
 			if len(connectedComponents)>1:
 				connectionPlace = None
+				newRefToLastPlace = [deepcopy(refToLastPlace)[0]]
 				for cc in connectedComponents:
 					# we add the connected component and memorize the connection place
-					newRefToLastPlace = [deepcopy(refToLastPlace)[0]]
 					ccPairs = dfgGraph.projectPairs(cc,origPairs)
 					net = self.recFindCut(net, cc, ccPairs, recDepth + 1, newRefToLastPlace)
-					[net, connectionPlace] = self.addConnectionPlace(net, newRefToLastPlace, inputConnectionPlace=connectionPlace)
+					[net, connectionPlace, connectionTransition] = self.addConnectionPlace(net, newRefToLastPlace, inputConnectionPlace=connectionPlace)
 				refToLastPlace[0] = connectionPlace
 			else:
 				# we have only one connected component: find the maximum cut in the graph
-				maximumCut = dfgGraph.findMaximumCut()
+				maximumCut = dfgGraph.findMaximumCut(self.addedGraphs)
 				# if we have a plausible maximum cut, then recur and add the partition to the Petri net
 				if maximumCut[0] and maximumCut[1] and maximumCut[2]:
 					pairs1 = dfgGraph.projectPairs(maximumCut[1],origPairs)

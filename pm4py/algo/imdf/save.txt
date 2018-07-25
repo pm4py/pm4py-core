@@ -1,0 +1,11 @@
+			"""connectedComponents = dfgGraph.findConnectedComponents()
+			# if we have more than one connected component, we do recursion to add them to the model
+			if len(connectedComponents)>1:
+				connectionPlace = None
+				newRefToLastPlace = [deepcopy(refToLastPlace)[0]]
+				for cc in connectedComponents:
+					# we add the connected component and memorize the connection place
+					ccPairs = dfgGraph.projectPairs(cc,origPairs)
+					net = self.recFindCut(net, cc, ccPairs, recDepth + 1, newRefToLastPlace)
+					[net, connectionPlace] = self.addConnectionPlace(net, newRefToLastPlace, inputConnectionPlace=connectionPlace)
+				refToLastPlace[0] = connectionPlace"""
