@@ -1,1 +1,1 @@
-from pm4py.models.petri import instance, semantics, synchronous_product, utils, visualize
+from pm4py.models.petri import net, semantics, synchronous_product, utils, visualize, incidence_matrix

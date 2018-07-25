@@ -4,6 +4,32 @@ from collections import Counter
 class Marking(Counter):
     pass
 
+    def __hash__(self):
+        r = 0
+        for p in self.items():
+            r += 31 * hash(p[0]) * p[1]
+        return r
+
+    def __eq__(self, other):
+        if not isinstance(other, Marking):
+            return False
+        for p in self.items():
+            if p[1] != 0:
+                if p[0] not in other:
+                    return False
+                if other[p[0]] != p[1]:
+                    return False
+            elif p[0] in other and other[p[0]] != 0:
+                return False
+        for p in other.items():
+            if p[1] != 0:
+                if p[0] not in self.keys():
+                    return False
+                if self.get(p[0]) != p[1]:
+                    return False
+            elif p[0] in self.keys() and self.get(p[0]) != 0:
+                return False
+        return True
 
 class PetriNet(object):
     class Place(object):
@@ -85,8 +111,8 @@ class PetriNet(object):
         target = property(__get_target)
         weight = property(__get_weight, __set_weight)
 
-    def __init__(self, name="", places=None, transitions=None, arcs=None):
-        self.__name = name
+    def __init__(self, name=None, places=None, transitions=None, arcs=None):
+        self.__name = "" if name is None else name
         self.__places = set() if places is None else places
         self.__transitions = set() if transitions is None else transitions
         self.__arcs = set() if arcs is None else arcs

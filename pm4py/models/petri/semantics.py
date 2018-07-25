@@ -1,4 +1,4 @@
-from pm4py.models.petri.instance import Marking
+from pm4py.models.petri.net import Marking
 
 
 def is_enabled(t, pn, m):
@@ -49,6 +49,8 @@ def execute(t, pn, m):
 
     for a in t.out_arcs:
         m_out[a.target] += a.weight
+
+    return m_out
 
 
 def enabled_transitions(pn, m):

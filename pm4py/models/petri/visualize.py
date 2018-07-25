@@ -11,7 +11,7 @@ def graphviz_visualization(net):
     #places
     viz.attr('node', shape='circle', fixedsize='true', width='0.75')
     for p in net.places:
-        viz.node(p.name)
+        viz.node(str(p.name))
 
     #arcs
     for a in net.arcs:
