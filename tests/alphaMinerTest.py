@@ -24,8 +24,8 @@ class AlphaMinerTest(unittest.TestCase):
 	def test_applyAlphaMinerToXES(self):
 		# calculate and compare Petri nets obtained on the same log to verify that instances
 		# are working correctly
-		net1 = self.obtainPetriNetThroughAlphaMiner(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
-		net2 = self.obtainPetriNetThroughAlphaMiner(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+		net1, marking1 = self.obtainPetriNetThroughAlphaMiner(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+		net2, marking2 = self.obtainPetriNetThroughAlphaMiner(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
 		self.assertEqual(len(net1.places),len(net2.places))
 		self.assertEqual(len(net1.transitions),len(net2.transitions))
 		self.assertEqual(len(net1.arcs),len(net2.arcs))
@@ -33,14 +33,14 @@ class AlphaMinerTest(unittest.TestCase):
 	def test_applyAlphaMinerToCSV(self):
 		# calculate and compare Petri nets obtained on the same log to verify that instances
 		# are working correctly
-		net1 = self.obtainPetriNetThroughAlphaMiner(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
-		net2 = self.obtainPetriNetThroughAlphaMiner(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
+		net1, marking1 = self.obtainPetriNetThroughAlphaMiner(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
+		net2, marking2 = self.obtainPetriNetThroughAlphaMiner(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
 		self.assertEqual(len(net1.places),len(net2.places))
 		self.assertEqual(len(net1.transitions),len(net2.transitions))
 		self.assertEqual(len(net1.arcs),len(net2.arcs))
 	
 	def test_alphaMinerVisualizationFromXES(self):
-		net = self.obtainPetriNetThroughAlphaMiner(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+		net, marking = self.obtainPetriNetThroughAlphaMiner(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
 		gviz = pn_viz.graphviz_visualization(net)
 	
 	def test_applyAlphaMinerToProblematicLogs(self):
@@ -50,8 +50,8 @@ class AlphaMinerTest(unittest.TestCase):
 				logFullPath = os.path.join(PROBLEMATIC_XES_DIR, log)
 				# calculate and compare Petri nets obtained on the same log to verify that instances
 				# are working correctly
-				net1 = self.obtainPetriNetThroughAlphaMiner(logFullPath)
-				net2 = self.obtainPetriNetThroughAlphaMiner(logFullPath)
+				net1, marking1 = self.obtainPetriNetThroughAlphaMiner(logFullPath)
+				net2, marking2 = self.obtainPetriNetThroughAlphaMiner(logFullPath)
 				self.assertEqual(len(net1.places),len(net2.places))
 				self.assertEqual(len(net1.transitions),len(net2.transitions))
 				self.assertEqual(len(net1.arcs),len(net2.arcs))
