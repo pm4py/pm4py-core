@@ -1,7 +1,7 @@
 from pm4py.log.util import trace_log as tl_util
 from pm4py.algo.alpha import data_structures as ds
 from pm4py.algo.imdf.dfgGraph import DfgGraph as DfgGraph
-from pm4py.models.petri import instance as pn_instance
+from pm4py.models.petri import net as pn_instance
 
 import time
 from copy import deepcopy

@@ -3,5 +3,6 @@ dateutils
 pandas
 ciso8601
 lxml
+scipy
 
 also needed: Microsoft Visual C++ 14.0 build tools!!
