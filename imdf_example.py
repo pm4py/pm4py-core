@@ -3,6 +3,7 @@ from pm4py.log.importer import xes as xes_importer
 from pm4py.models.petri import visualize as pn_viz
 from pm4py.algo.alignments import state_equation_classic
 from pm4py.models import petri
+import traceback
 
 log = xes_importer.import_from_path_xes('C:\\teleclaims.xes')
 imdf = InductMinDirFollows()
@@ -15,12 +16,27 @@ for p in net.places:
         final_marking[p] = 1
 for place in final_marking:
 	print("final marking "+place.name)
-#print(final_marking)
 gviz = pn_viz.graphviz_visualization(net)
 gviz.view()
-log = [log[1]]
 print([x["concept:name"] for x in log[0]])
-cfResult = state_equation_classic.apply_log(log, net, marking, final_marking)
-for trAlign in cfResult:
-	for couple in trAlign:
-		print(couple.label)
+fitTraces = []
+i = 0
+while i < len(log):
+	try:
+		print(i)
+		cfResult = state_equation_classic.apply_log([log[i]], net, marking, final_marking)
+		isFit = True
+		for couple in cfResult[0]:
+			print(couple.label)
+			if not (couple.label[0] == couple.label[1] or couple.label[0] == ">>" and couple.label[1] == None):
+				isFit = False
+				#break
+		print("isFit = "+str(isFit))
+		if isFit:
+			fitTraces.append(log[i])
+	except:
+		print("EXCEPTION ",i)
+		traceback.print_exc()
+	i = i + 1
+print(fitTraces)
+print(len(fitTraces))

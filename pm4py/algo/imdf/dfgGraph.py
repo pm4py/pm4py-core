@@ -44,7 +44,7 @@ class Node(object):
 		return self.label
 	
 class DfgGraph(object):
-	def __init__(self, nodesLabels, pairs, labelsCorresp = None, invLabelsCorresp = None, origPairs = None, origLabels = None):
+	def __init__(self, nodesLabels, pairs, labelsCorresp = None, invLabelsCorresp = None, origPairs = None, origLabels = None, enableSequenceDetection = False):
 		"""
 		Construct a Directly-follows graph starting from the provision of labels and pairs
 		
@@ -78,7 +78,7 @@ class DfgGraph(object):
 		if labelsCorresp is not None:
 			self.labelsCorresp = labelsCorresp
 		else:
-			[self.labelsCorresp, self.invLabelsCorresp] = self.detectSequences()
+			[self.labelsCorresp, self.invLabelsCorresp] = self.detectSequences(enableSequenceDetection)
 			self.newPairs = self.mapPairs()
 		if invLabelsCorresp is not None:
 			self.invLabelsCorresp = invLabelsCorresp
@@ -123,11 +123,11 @@ class DfgGraph(object):
 		"""
 		return self.origPairs
 	
-	def detectSequences(self):
+	def detectSequences(self, enableSequenceDetection):
 		"""
 		detect clusters of sequential activities
 		"""
-		simpleCouples = self.detectSimpleCouples()
+		simpleCouples = self.detectSimpleCouples(enableSequenceDetection)
 		groupedActivities = deepcopy(simpleCouples)
 		while True:
 			oldGroupedActivities = deepcopy(groupedActivities)
@@ -162,16 +162,17 @@ class DfgGraph(object):
 				invLabelsCorresp[ac] = "group"+str(groupIndex)
 		return [labelsCorresp,invLabelsCorresp]
 	
-	def detectSimpleCouples(self):
+	def detectSimpleCouples(self, enableSequenceDetection):
 		"""
 		support function in detecting clusters of sequential activities
 		"""
 		simpleCouples = []
-		for node in self.nodes.values():
-			if len(node.outputNodes) == 1:
-				otherNode = node.outputNodes[0]
-				if len(otherNode.inputNodes) == 1:
-					simpleCouples.append([str(node), str(otherNode)])
+		if enableSequenceDetection:
+			for node in self.nodes.values():
+				if len(node.outputNodes) == 1:
+					otherNode = node.outputNodes[0]
+					if len(otherNode.inputNodes) == 1:
+						simpleCouples.append([str(node), str(otherNode)])
 		return simpleCouples
 	
 	def getNodesWithNoInput(self):
