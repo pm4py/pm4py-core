@@ -21,7 +21,7 @@ class Marking(Counter):
         for p in other.items():
             if p[0] not in self.keys():
                 return False
-            if self.get([p[0]]) != p[1]:
+            if self.get(p[0]) != p[1]:
                 return False
         return True
 
