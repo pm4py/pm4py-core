@@ -25,8 +25,8 @@ class InductiveMinerDFTest(unittest.TestCase):
 	def test_applyImdfToXES(self):
 		# calculate and compare Petri nets obtained on the same log to verify that instances
 		# are working correctly
-		net1 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
-		net2 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+		net1, marking1 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+		net2, marking2 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
 		self.assertEqual(len(net1.places),len(net2.places))
 		self.assertEqual(len(net1.transitions),len(net2.transitions))
 		self.assertEqual(len(net1.arcs),len(net2.arcs))
@@ -34,14 +34,14 @@ class InductiveMinerDFTest(unittest.TestCase):
 	def test_applyImdfToCSV(self):
 		# calculate and compare Petri nets obtained on the same log to verify that instances
 		# are working correctly
-		net1 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
-		net2 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
+		net1, marking1 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
+		net2, marking2 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
 		self.assertEqual(len(net1.places),len(net2.places))
 		self.assertEqual(len(net1.transitions),len(net2.transitions))
 		self.assertEqual(len(net1.arcs),len(net2.arcs))
 	
 	def test_imdfVisualizationFromXES(self):
-		net = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+		net, marking = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
 		gviz = pn_viz.graphviz_visualization(net)
 
 	def test_applyImdfToProblematicLogs(self):
@@ -51,8 +51,8 @@ class InductiveMinerDFTest(unittest.TestCase):
 				logFullPath = os.path.join(PROBLEMATIC_XES_DIR, log)
 				# calculate and compare Petri nets obtained on the same log to verify that instances
 				# are working correctly
-				net1 = self.obtainPetriNetThroughImdf(logFullPath)
-				net2 = self.obtainPetriNetThroughImdf(logFullPath)
+				net1, marking1 = self.obtainPetriNetThroughImdf(logFullPath)
+				net2, marking2 = self.obtainPetriNetThroughImdf(logFullPath)
 				self.assertEqual(len(net1.places),len(net2.places))
 				self.assertEqual(len(net1.transitions),len(net2.transitions))
 				self.assertEqual(len(net1.arcs),len(net2.arcs))
