@@ -96,7 +96,7 @@ class InductMinDirFollows(object):
 			if addSkipTransition:
 				# add the hidden transitions that permits to skip the tree
 				self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-				hiddenTransSkipTree = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded))
+				hiddenTransSkipTree = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
 				net.transitions.add(hiddenTransSkipTree)
 				#net.arcs.add(petri.net.PetriNet.Arc(refToLastPlace[0], hiddenTransSkipTree))
 				#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransSkipTree, subtreeEnd))
@@ -106,7 +106,7 @@ class InductMinDirFollows(object):
 			if type == "flower":
 				# if we are adding a flower, we must add also the coming back arc
 				self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-				hiddenTransLoop = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded))
+				hiddenTransLoop = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
 				net.transitions.add(hiddenTransLoop)
 				#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransLoop, refToLastPlace[0]))
 				#net.arcs.add(petri.net.PetriNet.Arc(subtreeEnd, hiddenTransLoop))
@@ -138,7 +138,7 @@ class InductMinDirFollows(object):
 					if type == "parallel":
 						# if we must add a parallel subtree, then hidden transitions are added to the model
 						self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-						hiddenTransitionsInput.append(petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded)))
+						hiddenTransitionsInput.append(petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None))
 						net.transitions.add(hiddenTransitionsInput[-1])
 						self.noOfPlacesAdded = self.noOfPlacesAdded + 1
 						hiddenTransitionsInputPlaces.append(petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded)))
@@ -185,7 +185,7 @@ class InductMinDirFollows(object):
 					if type == "parallel":
 						# if we must add a parallel subtree, then hidden transitions are added to the model
 						self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-						hiddenTransitionsOutput.append(petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded)))
+						hiddenTransitionsOutput.append(petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None))
 						net.transitions.add(hiddenTransitionsOutput[-1])
 						self.noOfPlacesAdded = self.noOfPlacesAdded + 1
 						hiddenTransitionsOutputPlaces.append(petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded)))
@@ -237,7 +237,7 @@ class InductMinDirFollows(object):
 		else:
 			connectionPlace = inputConnectionPlace
 		self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-		hiddenTransition = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), 'tau_'+str(self.noOfHiddenTransAdded))
+		hiddenTransition = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
 		net.transitions.add(hiddenTransition)
 		#net.arcs.add(petri.net.PetriNet.Arc(newRefToLastPlace[0], hiddenTransition))
 		#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransition, connectionPlace))
