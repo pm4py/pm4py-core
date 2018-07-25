@@ -14,22 +14,17 @@ class Marking(Counter):
         if not isinstance(other, Marking):
             return False
         for p in self.items():
-            if p[1] != 0:
-                if p[0] not in other:
-                    return False
-                if other[p[0]] != p[1]:
-                    return False
-            elif p[0] in other and other[p[0]] != 0:
+            if p[0] not in other:
+                return False
+            if other[p[0]] != p[1]:
                 return False
         for p in other.items():
-            if p[1] != 0:
-                if p[0] not in self.keys():
-                    return False
-                if self.get(p[0]) != p[1]:
-                    return False
-            elif p[0] in self.keys() and self.get(p[0]) != 0:
+            if p[0] not in self.keys():
+                return False
+            if self.get([p[0]]) != p[1]:
                 return False
         return True
+
 
 class PetriNet(object):
     class Place(object):

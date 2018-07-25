@@ -46,6 +46,8 @@ def execute(t, pn, m):
     m_out = Marking(m)
     for a in t.in_arcs:
         m_out[a.source] -= a.weight
+        if m_out[a.source] == 0:
+            del m_out[a.source]
 
     for a in t.out_arcs:
         m_out[a.target] += a.weight
