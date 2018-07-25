@@ -19,6 +19,7 @@ class InductMinDirFollows(object):
 		self.lastEndSubtreePlaceAdded = []
 		self.transitionsMap = {}
 		self.addedArcsObjLabels = []
+		self.lastPlaceAdded = None
 	
 	def cleanDfg(self, dfg):
 		dfgMap = {}
@@ -66,10 +67,45 @@ class InductMinDirFollows(object):
 		labels = [str(x) for x in labels]
 		pairs = [(str(x[0]),str(x[1])) for x in pairs]
 		net = petri.net.PetriNet('imdf_net_' + str(time.time()))
-		start = petri.net.PetriNet.Place('start')
+		start = petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
 		net.places.add(start)
 		self.lastEndSubtreePlaceAdded = [start]
 		net = self.recFindCut(net, labels, pairs, 0, self.lastEndSubtreePlaceAdded)
+		# check the final marking
+		final_marking = petri.net.Marking()
+		for p in net.places:
+			if not p.out_arcs:
+				final_marking[p] = 1
+		if len(final_marking) == 0:
+			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+			hiddenTransEnd = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
+			end = petri.net.PetriNet.Place('end')
+			net.places.add(end)
+			net.transitions.add(hiddenTransEnd)
+			petri.utils.add_arc_from_to(self.lastPlaceAdded, hiddenTransEnd, net)
+			petri.utils.add_arc_from_to(hiddenTransEnd, end, net)
+		else:
+			self.lastPlaceAdded.name = "end"
+		
+		# check the initial marking
+		initial_marking = petri.net.Marking()
+		for p in net.places:
+			if not p.in_arcs:
+				initial_marking[p] = 1
+		if len(initial_marking) == 0:
+			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+			hiddenTransStart = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
+			newStart = petri.net.PetriNet.Place('start')
+			net.places.add(newStart)
+			net.transitions.add(hiddenTransStart)
+			petri.utils.add_arc_from_to(newStart,hiddenTransStart,net)
+			petri.utils.add_arc_from_to(hiddenTransStart,start,net)
+			start = newStart
+		else:
+			for p in initial_marking:
+				p.name = "start"
+				break
+		
 		return net, Marking({start: 1})
 	
 	def addSubtreeToModel(self, net, labels, type, dfgGraph, refToLastPlace, activInSelfLoop, addSkipTransition=True):
@@ -91,6 +127,7 @@ class InductMinDirFollows(object):
 		"""
 		self.noOfPlacesAdded = self.noOfPlacesAdded + 1
 		subtreeEnd = petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
+		self.lastPlaceAdded = subtreeEnd
 		net.places.add(subtreeEnd)
 		if self.addedGraphs:
 			if addSkipTransition:
@@ -142,7 +179,9 @@ class InductMinDirFollows(object):
 						hiddenTransitionsInput.append(petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None))
 						net.transitions.add(hiddenTransitionsInput[-1])
 						self.noOfPlacesAdded = self.noOfPlacesAdded + 1
-						hiddenTransitionsInputPlaces.append(petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded)))
+						thisPlace = petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
+						hiddenTransitionsInputPlaces.append(thisPlace)
+						self.lastPlaceAdded = thisPlace
 						net.places.add(hiddenTransitionsInputPlaces[-1])
 						#net.arcs.add(petri.net.PetriNet.Arc(refToLastPlace[0], hiddenTransitionsInput[-1]))
 						#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransitionsInput[-1], hiddenTransitionsInputPlaces[-1]))
@@ -183,7 +222,9 @@ class InductMinDirFollows(object):
 						hiddenTransitionsOutput.append(petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None))
 						net.transitions.add(hiddenTransitionsOutput[-1])
 						self.noOfPlacesAdded = self.noOfPlacesAdded + 1
-						hiddenTransitionsOutputPlaces.append(petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded)))
+						thisPlace = petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
+						hiddenTransitionsOutputPlaces.append(thisPlace)
+						self.lastPlaceAdded = thisPlace
 						net.places.add(hiddenTransitionsOutputPlaces[-1])
 						#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransitionsOutputPlaces[-1], hiddenTransitionsOutput[-1]))
 						#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransitionsOutput[-1], subtreeEnd))
@@ -228,6 +269,7 @@ class InductMinDirFollows(object):
 		if inputConnectionPlace is None:
 			self.noOfPlacesAdded = self.noOfPlacesAdded + 1
 			connectionPlace = petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
+			self.lastPlaceAdded = connectionPlace
 			net.places.add(connectionPlace)
 		else:
 			connectionPlace = inputConnectionPlace
