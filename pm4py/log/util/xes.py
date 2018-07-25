@@ -22,3 +22,5 @@ KEY_PREFIX = 'prefix'
 KEY_SCOPE = 'scope'
 KEY_URI = 'uri'
 KEY_VALUE = 'value'
+
+DEFAULT_NAME_KEY = 'concept:name'
