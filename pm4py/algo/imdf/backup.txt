@@ -1,0 +1,50 @@
+		if len(pairs) == 0:
+			# we have all unconnected activities / clusters of sequential activities: add them to the model!
+			net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "concurrent", dfgGraph, refToLastPlace, activInSelfLoop)
+		else:
+			# if we have more than one connected component, we do recursion to add them to the model
+			if len(connectedComponents)>1:
+				connectionPlace = None
+				newRefToLastPlace = [deepcopy(refToLastPlace)[0]]
+				for cc in connectedComponents:
+					# we add the connected component and memorize the connection place
+					ccPairs = dfgGraph.projectPairs(cc,origPairs)
+					net = self.recFindCut(net, cc, ccPairs, recDepth + 1, newRefToLastPlace)
+					[net, connectionPlace, connectionTransition] = self.addConnectionPlace(net, newRefToLastPlace, inputConnectionPlace=connectionPlace)
+				refToLastPlace[0] = connectionPlace
+			else:
+				# we have only one connected component: find the maximum cut in the graph
+				maximumCut = dfgGraph.findMaximumCut(self.addedGraphs)
+				# if we have a plausible maximum cut, then recur and add the partition to the Petri net
+				if maximumCut[0] and maximumCut[1] and maximumCut[2]:
+					pairs1 = dfgGraph.projectPairs(maximumCut[1],origPairs)
+					pairs2 = dfgGraph.projectPairs(maximumCut[2],origPairs)
+					net = self.recFindCut(net, maximumCut[1], pairs1, recDepth + 1, refToLastPlace)					
+					net = self.recFindCut(net, maximumCut[2], pairs2, recDepth + 1, refToLastPlace)
+				else:
+
+					#print(origPairs, negatedPairs)
+					#print("len(negatedPairs) = "+str(len(negatedPairs)))
+					if len(negatedPairs) == 0:
+						# in this case, we have a parallel subtree
+						net = self.addSubtreeToModel(net, list(negatedGraph.labelsCorresp.values()), "parallel", negatedGraph, refToLastPlace, activInSelfLoop)
+					else:
+						
+						if len(negatedConnectedComponents) > 1:
+							print("xx")
+							connectionPlace = None
+							newRefToLastPlace = [deepcopy(refToLastPlace)[0]]
+							for cc in negatedConnectedComponents:
+								if connectionPlace is not None:
+									print("connectionPlace",connectionPlace.name)
+								else:
+									print("connectionPlace",connectionPlace)
+								# we add the connected component and memorize the connection place
+								ccPairs = negatedGraph.projectPairs(cc,origPairs)
+								net = self.recFindCut(net, cc, ccPairs, recDepth + 1, newRefToLastPlace)
+								[net, connectionPlace, connectionTransition] = self.addConnectionPlace(net, newRefToLastPlace, inputConnectionPlace=connectionPlace)
+							refToLastPlace[0] = connectionPlace
+						else:
+							# otherwise, we have a flower subtree
+							print("FLOWER")
+							net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "flower", dfgGraph, refToLastPlace, activInSelfLoop)
