@@ -34,7 +34,7 @@ def __search(sync_net, ini, fin, cost_function):
     while not len(open_set) == 0:
         curr = heapq.heappop(open_set)
         current_marking = curr.m
-        del marking_map[current_marking]
+        del marking_map[__get_eq_marking_from_set(current_marking, marking_map)]
         closed.add(current_marking)
         if current_marking == fin:
             parent = curr.p
@@ -46,15 +46,17 @@ def __search(sync_net, ini, fin, cost_function):
 
         for t in petri.semantics.enabled_transitions(sync_net, current_marking):
             new_marking = petri.semantics.execute(t, sync_net, current_marking)
-            if new_marking in closed:
+            if __get_eq_marking_from_set(new_marking, closed) is not None:
                 continue
             g = curr.g + cost_function[t]
 
-            if new_marking in marking_map:
-                if g >= marking_map[new_marking].g:
+            shadow = __get_eq_marking_from_set(new_marking, marking_map)
+            if shadow is not None:
+                if g >= marking_map[shadow].g:
                     continue
-                h = marking_map[new_marking].h
-                open_set.remove(marking_map[new_marking])
+                h = marking_map[shadow].h
+                open_set.remove(marking_map[shadow])
+                del marking_map[shadow]
             else:
                 m_vec = incidence_matrix.encode_marking(new_marking)
                 h_obj = sp.linprog(c=cost_vec, A_eq=incidence_matrix.A, b_eq=np.subtract(fin_vec, m_vec))
@@ -63,6 +65,13 @@ def __search(sync_net, ini, fin, cost_function):
             tp = SearchTuple(g+h, g, h, new_marking, curr, t)
             heapq.heappush(open_set, tp)
             marking_map[new_marking] = tp
+
+
+def __get_eq_marking_from_set(marking, marking_map):
+    for m in marking_map:
+        if m == marking:
+            return m
+    return None
 
 
 def __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function):
