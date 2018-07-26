@@ -43,7 +43,9 @@ def execute(t, pn, m):
     if not is_enabled(t, pn, m):
         return None
 
-    m_out = Marking(m)
+    m_out = Marking()
+    for p in m:
+        m_out[p] = m[p]
     for a in t.in_arcs:
         m_out[a.source] -= a.weight
         if m_out[a.source] == 0:
