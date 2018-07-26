@@ -1,12 +1,9 @@
-from builtins import sorted
 import functools
 from pm4py.log import instance as log_instance
 from pm4py.log.importer import xes as xes_importer
-from pm4py.log import transform as log_transform
 from pm4py.algo.dfg import instance as dfg_instance
 from pm4py.algo.causal import instance as causal_instance
-from pm4py.algo.alpha import data_structures as alpha_ds
-from pm4py.algo.alpha import classic as alpha_classic
+from pm4py.algo.alpha.versions import classic as alpha_classic
 import time
 from pm4py.models.petri import visualize as pn_viz
 

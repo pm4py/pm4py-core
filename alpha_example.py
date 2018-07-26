@@ -1,7 +1,7 @@
-from pm4py.algo.alpha import classic as alpha_classic
+from pm4py.algo.alpha.versions import classic as alpha_classic
 from pm4py.log.importer import xes as xes_importer
 from pm4py.models import petri
-from pm4py.algo.alignments import state_equation_classic
+from pm4py.algo.alignments.versions import state_equation_classic
 
 log = xes_importer.import_from_path_xes('C:/Users/bas/Documents/tue/svn/private/logs/a12_logs/a12f0n00.xes')
 net, marking = alpha_classic.apply(log)
