@@ -1,4 +1,5 @@
 from pm4py.models.petri.net import Marking
+import copy
 
 
 def is_enabled(t, pn, m):
@@ -43,9 +44,7 @@ def execute(t, pn, m):
     if not is_enabled(t, pn, m):
         return None
 
-    m_out = Marking()
-    for p in m:
-        m_out[p] = m[p]
+    m_out = copy.copy(m)
     for a in t.in_arcs:
         m_out[a.source] -= a.weight
         if m_out[a.source] == 0:
@@ -72,6 +71,6 @@ def enabled_transitions(pn, m):
     '''
     enabled = set()
     for t in pn.transitions:
-        if is_enabled(t,pn,m):
+        if is_enabled(t, pn, m):
             enabled.add(t)
     return enabled
