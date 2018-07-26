@@ -2,7 +2,6 @@ from pm4py.models import petri
 from pm4py.algo import alignments
 import numpy as np
 import scipy.optimize as sp
-import time
 import heapq
 from dataclasses import dataclass, field
 from typing import Any
@@ -25,16 +24,14 @@ def apply_trace(trace, petri_net, initial_marking, final_marking):
 
 def __search(sync_net, ini, fin, cost_function):
     incidence_matrix = petri.incidence_matrix.construct(sync_net)
-    ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix,ini,fin,cost_function)
+    ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
     closed = set()
     ini_state = SearchTuple(0, 0, 0, ini, None, None)
-    marking_map = {ini: ini_state}
     open_set = [ini_state]
     while not len(open_set) == 0:
         curr = heapq.heappop(open_set)
         current_marking = curr.m
-        del marking_map[__get_eq_marking_from_set(current_marking, marking_map)]
         closed.add(current_marking)
         if current_marking == fin:
             parent = curr.p
@@ -50,21 +47,27 @@ def __search(sync_net, ini, fin, cost_function):
                 continue
             g = curr.g + cost_function[t]
 
-            shadow = __get_eq_marking_from_set(new_marking, marking_map)
+            shadow = __get_tuple_from_queue(new_marking, open_set)
             if shadow is not None:
-                if g >= marking_map[shadow].g:
+                if g >= shadow.g:
                     continue
-                h = marking_map[shadow].h
-                open_set.remove(marking_map[shadow])
-                del marking_map[shadow]
+                h = shadow.h
+                open_set.remove(shadow)
             else:
                 m_vec = incidence_matrix.encode_marking(new_marking)
                 h_obj = sp.linprog(c=cost_vec, A_eq=incidence_matrix.A, b_eq=np.subtract(fin_vec, m_vec))
+                # TODO: check if solution exists
                 h = h_obj['fun']
 
             tp = SearchTuple(g+h, g, h, new_marking, curr, t)
             heapq.heappush(open_set, tp)
-            marking_map[new_marking] = tp
+
+
+def __get_tuple_from_queue(marking, queue):
+    for t in queue:
+        if t.m == marking:
+            return t
+    return None
 
 
 def __get_eq_marking_from_set(marking, marking_map):
