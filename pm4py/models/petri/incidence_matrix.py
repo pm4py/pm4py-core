@@ -28,9 +28,9 @@ class IncidenceMatrix(object):
         A = [[0 for i in range(len(t_index))] for j in range(len(p_index))]
         for p in net.places:
             for a in p.in_arcs:
-                A[p_index[p]][t_index[a.source]] = 1
+                A[p_index[p]][t_index[a.source]] += 1
             for a in p.out_arcs:
-                A[p_index[p]][t_index[a.target]] = -1
+                A[p_index[p]][t_index[a.target]] -= 1
         return A, p_index, t_index
 
     A = property(__get_A)
