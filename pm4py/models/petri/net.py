@@ -14,9 +14,9 @@ class Marking(Counter):
         if not isinstance(other, Marking):
             return False
         for p in self.items():
-            if p[0] not in other:
+            if p[0] not in other.keys():
                 return False
-            if other[p[0]] != p[1]:
+            if other.get(p[0]) != p[1]:
                 return False
         for p in other.items():
             if p[0] not in self.keys():
