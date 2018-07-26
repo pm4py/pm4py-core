@@ -51,13 +51,13 @@ def __search(sync_net, ini, fin, cost_function):
             if shadow is not None:
                 if g >= shadow.g:
                     continue
-                # h = shadow.h
+                h = shadow.h
                 open_set.remove(shadow)
-            # else:
-            m_vec = incidence_matrix.encode_marking(new_marking)
-            h_obj = sp.linprog(c=cost_vec, A_eq=incidence_matrix.A, b_eq=[i - j for i, j in zip(fin_vec, m_vec)], method='interior-point')
-            # TODO: check if solution exists
-            h = h_obj['fun']
+            else:
+                m_vec = incidence_matrix.encode_marking(new_marking)
+                h_obj = sp.linprog(c=cost_vec, A_eq=incidence_matrix.A, b_eq=[i - j for i, j in zip(fin_vec, m_vec)], method='interior-point')
+                # TODO: check if solution exists
+                h = h_obj['fun']
 
             tp = SearchTuple(g+h, g, h, new_marking, curr, t)
             heapq.heappush(open_set, tp)
