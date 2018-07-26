@@ -221,10 +221,13 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False)
     transMap = {}
     for t in net.transitions:
         transMap[t.label] = t
+    traceCount = 0
     for trace in log:
         tFit, tValue, actTrans, pFitness = apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_placeFitness, placeFitnessPerTrace)
         traceIsFit.append(tFit)
         traceFitnessValue.append(tValue)
         activatedTransitions.append(actTrans)
+        traceCount = traceCount + 1
+        #print("traceCount = "+str(traceCount)+" out of "+str(len(log)))
 
     return [traceIsFit, traceFitnessValue, activatedTransitions, placeFitnessPerTrace]
