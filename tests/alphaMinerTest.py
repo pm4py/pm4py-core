@@ -6,9 +6,9 @@ sys.path.insert(0,parentdir)
 from pm4py.log.importer import csv as csv_importer
 from pm4py.log.importer import xes as xes_importer
 import pm4py.log.transform as log_transform
-from pm4py.algo.alpha import classic as alpha_classic
+from pm4py.algo.alpha.versions import classic as alpha_classic
 from pm4py.models.petri import visualize as pn_viz
-from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
+from constants import INPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 import logging
 
 class AlphaMinerTest(unittest.TestCase):
