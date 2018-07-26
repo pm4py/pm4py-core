@@ -1,0 +1,32 @@
+		# if we have more than one connected component, we do recursion to add them to the model
+		if len(connectedComponents)>1:
+			print("Case 1",recDepth,nodesLabels)
+			connectionPlace = None
+			newRefToLastPlace = [deepcopy(refToLastPlace)[0]]
+			for cc in connectedComponents:
+				# we add the connected component and memorize the connection place
+				ccPairs = dfgGraph.projectPairs(cc,origPairs)
+				net = self.recFindCut(net, cc, ccPairs, recDepth + 1, newRefToLastPlace)
+				[net, connectionPlace, connectionTransition] = self.addConnectionPlace(net, newRefToLastPlace, inputConnectionPlace=connectionPlace)
+			refToLastPlace[0] = connectionPlace
+		elif len(negatedConnectedComponents)>1:
+			print("Case 2",recDepth,nodesLabels)
+			#print(negatedConnectedComponents)
+			connectionPlace = None
+			newRefToLastPlace = [deepcopy(refToLastPlace)[0]]
+			for cc in negatedConnectedComponents:
+				# we add the connected component and memorize the connection place
+				ccPairs = negatedGraph.projectPairs(cc,origPairs)
+				print("AAAAAAAAAAAAAAAA",cc,len(origPairs),len(ccPairs))
+				net = self.recFindCut(net, cc, ccPairs, recDepth + 1, newRefToLastPlace)
+				[net, connectionPlace, connectionTransition] = self.addConnectionPlace(net, newRefToLastPlace, inputConnectionPlace=connectionPlace)
+			refToLastPlace[0] = connectionPlace
+		elif maximumCut is not None:
+			print("Case 3",recDepth,nodesLabels)
+			pairs1 = dfgGraph.projectPairs(maximumCut[1],origPairs)
+			pairs2 = dfgGraph.projectPairs(maximumCut[2],origPairs)
+			net = self.recFindCut(net, maximumCut[1], pairs1, recDepth + 1, refToLastPlace)					
+			net = self.recFindCut(net, maximumCut[2], pairs2, recDepth + 1, refToLastPlace)
+		else:
+			print("FLOWER",recDepth,nodesLabels)
+			net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "flower", dfgGraph, refToLastPlace, activInSelfLoop)
