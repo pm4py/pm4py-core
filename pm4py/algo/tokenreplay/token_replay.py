@@ -4,7 +4,7 @@ from copy import deepcopy,copy
 MAX_REC_DEPTH = 10
 MAX_HID_VISITED = 10
 
-def add_missingTokens(t, net, marking):
+def add_missingTokens(t, net, marking, trace, traceIndex):
     """
     Adds missing tokens needed to activate a transition
 
@@ -16,11 +16,17 @@ def add_missingTokens(t, net, marking):
         Petri net
     marking
         Current marking
+    trace
+        Examined trace
+    traceIndex
+        Trace index
     """
     missing = 0
     tokensAdded = {}
     for a in t.in_arcs:
         if marking[a.source] < a.weight:
+            #print("MARKING", [x.name for x in marking],"MISSING",a.source.name,"TRACE",[x["concept:name"] for x in trace]
+            #      ,"INDEX",traceIndex,trace[traceIndex]["concept:name"])
             missing = missing + (a.weight - marking[a.source])
             marking[a.source] = marking[a.source] + a.weight
             tokensAdded[a.source] = a.weight - marking[a.source]
@@ -265,7 +271,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                         z = z + 1
 
             if not semantics.is_enabled(t, net, marking):
-                [m, tokensAdded] = add_missingTokens(t, net, marking)
+                [m, tokensAdded] = add_missingTokens(t, net, marking, trace, i)
                 missing = missing + m
                 if enable_placeFitness:
                     for place in tokensAdded.keys():
