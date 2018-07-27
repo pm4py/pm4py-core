@@ -293,9 +293,9 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
             marking[p] = max(0, marking[p] - finalMarking[p])
             if enable_placeFitness:
                 if marking[p] > 0:
-                    if not trace in place_fitness[place]["underfedTraces"]:
-                        if place in place_fitness:
-                            place_fitness[place]["overfedTraces"].add(trace)
+                    if p in place_fitness:
+                        if not trace in place_fitness[p]["underfedTraces"]:
+                            place_fitness[p]["overfedTraces"].add(trace)
             remaining = remaining + marking[p]
     if consider_remaining_in_fitness:
         is_fit = (missing == 0) and (remaining == 0)
