@@ -264,6 +264,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                             t3 = hiddenTransitionsToEnable[z%len(hiddenTransitionsToEnable)][jIndexes[z%len(hiddenTransitionsToEnable)]]
                             if t3 in enabledTransitions:
                                 marking = semantics.execute(t3, net, marking)
+                                activatedTransitions.append(t3)
                                 somethingChanged = True
                             else:
                                 break
