@@ -3,6 +3,7 @@ from pm4py.algo.dfg import instance as dfg_inst
 from pm4py.algo.imdf.dfgGraph import DfgGraph as DfgGraph
 from pm4py.models import petri
 from pm4py.models.petri.net import Marking
+from pm4py.algo.tokenreplay.token_replay import NoConceptNameException
 from collections import Counter
 
 import time
@@ -86,6 +87,8 @@ class InductMinDirFollows(object):
 		labels = tl_util.fetch_labels(trace_log, activity_key)
 		for trace in trace_log:
 			for event in trace:
+				if not "concept:name" in event:
+					raise NoConceptNameException("at least an event is without concept:name")
 				activity = event["concept:name"]
 				self.activitiesCountInLog[activity] += 1
 		#alpha_abstraction = ds.ClassicAlphaAbstraction(trace_log, activity_key)

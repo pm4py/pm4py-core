@@ -5,6 +5,10 @@ import time
 MAX_REC_DEPTH = 10
 MAX_HID_VISITED = 10
 
+class NoConceptNameException(Exception):
+    def __init__(self, message):
+        self.message = message
+
 def add_missingTokens(t, net, marking, trace, traceIndex):
     """
     Adds missing tokens needed to activate a transition
@@ -307,7 +311,10 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
     #print("produced=", produced)
     #print("remaining=", remaining)
 
-    trace_fitness = (1.0 - float(missing)/float(consumed)) * (1.0 - float(remaining)/float(produced))
+    if consumed > 0 and produced > 0:
+        trace_fitness = (1.0 - float(missing)/float(consumed)) * (1.0 - float(remaining)/float(produced))
+    else:
+        trace_fitness = 1.0
 
     return [is_fit, trace_fitness, activatedTransitions]
 
@@ -352,7 +359,10 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
 
     traceCount = 0
     for trace in log:
-        traceVariant = ",".join([x["concept:name"] for x in trace])
+        try:
+            traceVariant = ",".join([x["concept:name"] for x in trace])
+        except:
+            raise NoConceptNameException("at least an event is without concept:name")
         if not traceVariant in tFitVariant.keys():
             firstOccVariantTrace[traceVariant] = trace
             firstOccVariantIndex[traceVariant] = traceCount
