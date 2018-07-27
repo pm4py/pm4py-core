@@ -1,13 +1,13 @@
-from pm4py.algo.imdf.inductMinDirFollows import InductMinDirFollows as InductMinDirFollows
+from pm4py.algo.imdf import inductMinDirFollows
 from pm4py.log.importer import xes as xes_importer
 from pm4py.models.petri import visualize as pn_viz
 from pm4py.algo.alignments import state_equation_classic
 from pm4py.models import petri
 import traceback
 
+#log = xes_importer.import_from_path_xes('a32f0n00.xes')
 log = xes_importer.import_from_path_xes('C:\\teleclaims.xes')
-imdf = InductMinDirFollows()
-net, marking = imdf.apply(log)
+net, marking = inductMinDirFollows.apply(log)
 for place in marking:
 	print("initial marking "+place.name)
 final_marking = petri.net.Marking()
@@ -23,7 +23,7 @@ fitTraces = []
 i = 0
 while i < len(log):
 	try:
-		print(i)
+		print(i,[x["concept:name"] for x in log[i]])
 		cfResult = state_equation_classic.apply_log([log[i]], net, marking, final_marking)
 		isFit = True
 		for couple in cfResult[0]:

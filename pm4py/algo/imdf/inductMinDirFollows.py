@@ -8,6 +8,10 @@ from collections import Counter
 import time
 from copy import deepcopy, copy
 
+def apply(trace_log, activity_key='concept:name'):
+	indMinDirFollows = InductMinDirFollows()
+	return indMinDirFollows.apply(trace_log, activity_key=activity_key)
+
 class InductMinDirFollows(object):
 	def __init__(self):
 		"""
