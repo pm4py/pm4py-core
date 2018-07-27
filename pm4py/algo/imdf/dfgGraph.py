@@ -1,4 +1,4 @@
-from copy import deepcopy
+from copy import copy,deepcopy
 import random
 
 class Node(object):
@@ -214,17 +214,29 @@ class DfgGraph(object):
 		"""
 		for nodeLabel in self.nodes:
 			node = self.nodes[nodeLabel]
-			inputNodes = deepcopy(node.inputNodes)
-			outputNodes = deepcopy(node.outputNodes)
+			inputNodes = copy(node.inputNodes)
+			outputNodes = copy(node.outputNodes)
+			#print(node,inputNodes,outputNodes)
 			for otherNode in inputNodes:
 				if otherNode in outputNodes:
 					del node.inputNodes[node.inputNodes.index(otherNode)]
 					del node.outputNodes[node.outputNodes.index(otherNode)]
 			outputNodeLabels = [str(x) for x in node.outputNodes]
-			pairs = deepcopy(self.origPairs)
+			outputNodeLabels = set(outputNodeLabels)
+			pairs = copy(self.pairs)
 			for pair in pairs:
-				if pair[0] == nodeLabel and pair[1] not in outputNodeLabels:
-					del self.pairs[self.pairs.index(pair)]
+				if pair[0] == nodeLabel:
+					if pair[1] not in outputNodeLabels:
+						del self.pairs[self.pairs.index(pair)]
+			pairsLabels = [str(x) for x in self.pairs]
+			origPairs = copy(self.origPairs)
+			for pair in origPairs:
+				act0 = self.invLabelsCorresp[pair[0]]
+				act1 = self.invLabelsCorresp[pair[1]]
+				label = "['"+act0+"', '"+act1+"']"
+				if not label in pairsLabels:
+					del self.origPairs[self.origPairs.index(pair)]
+			#print(pairsLabels)
 	
 	def projectPairs(self, labels, pairs):
 		"""
@@ -333,7 +345,7 @@ class DfgGraph(object):
 				if outputConnectionsInSet1 and inputConnectionsInSet2:
 					# impossible situation, not cut found
 					return [False,[],[]]
-				if addedGraphs:
+				if addedGraphs or len(set1) == 0:
 					if outputConnectionsInSet1:
 						# must belong to set 1
 						set1.append(node)
