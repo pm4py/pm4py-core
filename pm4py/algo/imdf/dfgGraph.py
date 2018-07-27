@@ -222,6 +222,7 @@ class DfgGraph(object):
 					del node.inputNodes[node.inputNodes.index(otherNode)]
 					del node.outputNodes[node.outputNodes.index(otherNode)]
 			outputNodeLabels = [str(x) for x in node.outputNodes]
+			outputNodeLabels = set(outputNodeLabels)
 			pairs = copy(self.pairs)
 			for pair in pairs:
 				if pair[0] == nodeLabel:
