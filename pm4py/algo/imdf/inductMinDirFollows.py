@@ -118,8 +118,10 @@ class InductMinDirFollows(object):
 			net.transitions.add(hiddenTransEnd)
 			petri.utils.add_arc_from_to(self.lastPlaceAdded, hiddenTransEnd, net)
 			petri.utils.add_arc_from_to(hiddenTransEnd, end, net)
-		else:
-			self.lastPlaceAdded.name = "end"
+		elif len(final_marking) == 1:
+			for p in final_marking:
+				p.name = "end"
+			#self.lastPlaceAdded.name = "end"
 		
 		# check the initial marking
 		initial_marking = petri.net.Marking()
@@ -181,19 +183,15 @@ class InductMinDirFollows(object):
 				self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
 				hiddenTransSkipTree = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
 				net.transitions.add(hiddenTransSkipTree)
-				#net.arcs.add(petri.net.PetriNet.Arc(refToLastPlace[0], hiddenTransSkipTree))
-				#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransSkipTree, subtreeEnd))
 				petri.utils.add_arc_from_to(refToLastPlace[0], hiddenTransSkipTree, net)
 				petri.utils.add_arc_from_to(hiddenTransSkipTree, subtreeEnd, net)
 
-			if type == "flower" or activInSelfLoop or mustAddBackwardHiddenTrans:
+			if type == "flower" or type == "parallel" or activInSelfLoop or mustAddBackwardHiddenTrans:
 			#if type == "flower":
 				# if we are adding a flower, we must add also the coming back arc
 				self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
 				hiddenTransLoop = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
 				net.transitions.add(hiddenTransLoop)
-				#net.arcs.add(petri.net.PetriNet.Arc(hiddenTransLoop, refToLastPlace[0]))
-				#net.arcs.add(petri.net.PetriNet.Arc(subtreeEnd, hiddenTransLoop))
 				petri.utils.add_arc_from_to(hiddenTransLoop, refToLastPlace[0], net)
 				petri.utils.add_arc_from_to(subtreeEnd, hiddenTransLoop, net)
 
@@ -271,7 +269,6 @@ class InductMinDirFollows(object):
 							# we need to add an arc between the transition and the end-subtree place
 							arcLabel = str(transitions[-1]) + str(subtreeEnd)
 							if not arcLabel in self.addedArcsObjLabels:
-								#net.arcs.add(petri.net.PetriNet.Arc(transitions[-1], subtreeEnd))
 								petri.utils.add_arc_from_to(transitions[-1], subtreeEnd, net)
 								self.addedArcsObjLabels.append(arcLabel)
 				i = i + 1
