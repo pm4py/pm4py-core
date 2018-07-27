@@ -1,5 +1,6 @@
 from pm4py.models.petri import semantics
 from copy import deepcopy,copy
+import time
 
 MAX_REC_DEPTH = 10
 MAX_HID_VISITED = 10
@@ -308,7 +309,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
 
     trace_fitness = (1.0 - float(missing)/float(consumed)) * (1.0 - float(remaining)/float(produced))
 
-    return [is_fit, trace_fitness, activatedTransitions, place_fitness]
+    return [is_fit, trace_fitness, activatedTransitions]
 
 def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=False):
     """
@@ -327,6 +328,7 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
     enable_placeFitness
         Enable fitness calculation at place level
     """
+    aa = time.time()
     traceIsFit = []
     traceFitnessValue = []
     activatedTransitions = []
@@ -337,17 +339,47 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
     transMap = {}
     for t in net.transitions:
         transMap[t.label] = t
+    bb = time.time()
     placesShortestPathByHidden = get_placesShortestPathByHidden(net)
+    cc = time.time()
+    print("time interlapsed: ",(cc-bb))
+
+    firstOccVariantTrace = {}
+    firstOccVariantIndex = {}
+    tFitVariant = {}
+    tValueVariant = {}
+    actTransVariant = {}
 
     traceCount = 0
     for trace in log:
-        tFit, tValue, actTrans, pFitness = apply_trace(trace, net, initialMarking, finalMarking, transMap,
-                                                       enable_placeFitness, placeFitnessPerTrace,
-                                                       placesShortestPathByHidden, consider_remaining_in_fitness)
-        traceIsFit.append(tFit)
-        traceFitnessValue.append(tValue)
-        activatedTransitions.append(actTrans)
+        traceVariant = ",".join([x["concept:name"] for x in trace])
+        if not traceVariant in tFitVariant.keys():
+            firstOccVariantTrace[traceVariant] = trace
+            firstOccVariantIndex[traceVariant] = traceCount
+            tFit, tValue, actTrans = apply_trace(trace, net, initialMarking, finalMarking, transMap,
+                                                           enable_placeFitness, placeFitnessPerTrace,
+                                                           placesShortestPathByHidden, consider_remaining_in_fitness)
+            tFitVariant[traceVariant] = tFit
+            tValueVariant[traceVariant] = tValue
+            actTransVariant[traceVariant] = actTrans
+            traceIsFit.append(tFit)
+            traceFitnessValue.append(tValue)
+            activatedTransitions.append(actTrans)
+        else:
+            traceIsFit.append(tFitVariant[traceVariant])
+            traceFitnessValue.append(tValueVariant[traceVariant])
+            activatedTransitions.append(actTransVariant[traceVariant])
+            for place in placeFitnessPerTrace.keys():
+                #print(placeFitnessPerTrace[place])
+                if firstOccVariantTrace[traceVariant] in placeFitnessPerTrace[place]["underfedTraces"]:
+                    placeFitnessPerTrace[place]["underfedTraces"].add(trace)
+                if firstOccVariantTrace[traceVariant] in placeFitnessPerTrace[place]["overfedTraces"]:
+                    placeFitnessPerTrace[place]["overfedTraces"].add(trace)
+                #placeFitnessPerTrace[place].append(placeFitnessPerTrace[place][firstOccVariantIndex[traceVariant]])
         traceCount = traceCount + 1
-        #print("traceCount = "+str(traceCount)+" out of "+str(len(log)))
+        print("traceCount = "+str(traceCount)+" out of "+str(len(log)))
+
+    dd = time.time()
+    print("overall time interlapsed: ", (dd - aa))
 
     return [traceIsFit, traceFitnessValue, activatedTransitions, placeFitnessPerTrace]
