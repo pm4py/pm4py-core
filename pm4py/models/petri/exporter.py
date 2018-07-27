@@ -3,6 +3,18 @@ import uuid
 import pm4py
 
 def export_petri_to_pnml(petriNet, marking, outputFilePath):
+    """
+    Export a Petri net to a PNML file
+
+    Parameters
+    ----------
+    petriNet
+        Petri net
+    marking
+        Marking
+    outputFilePath
+        Path to output file
+    """
     root = etree.Element("pnml")
     net = etree.SubElement(root, "net")
     net.set("id","net1")
@@ -46,9 +58,5 @@ def export_petri_to_pnml(petriNet, marking, outputFilePath):
         else:
             arcEl.set("source", str(transitionsMap[arc.source]))
             arcEl.set("target", str(placesMap[arc.target]))
-
-
-
-
     tree = etree.ElementTree(root)
     tree.write(outputFilePath, pretty_print=True, xml_declaration=True, encoding="utf-8")
