@@ -315,6 +315,26 @@ class DfgGraph(object):
 		setString = [str(x) for x in set]
 		return setString
 	
+	def getNodesThatCanBeMoved(self, set1, set2, set1Strings, set2Strings, setToConsider):
+		nodesThatCanBeMoved = []
+		if setToConsider == "set1":
+			for node in set1:
+				canBeMoved = True
+				for outputNode in node.outputNodes:
+					if str(outputNode) in set1Strings:
+						canBeMoved = False
+				if canBeMoved:
+					nodesThatCanBeMoved.append(node)
+		if setToConsider == "set2":
+			for node in set2:
+				canBeMoved = True
+				for outputNode in node.outputNodes:
+					if str(outputNode) in set2Strings:
+						canBeMoved = False
+				if canBeMoved:
+					nodesThatCanBeMoved.append(node)
+		return nodesThatCanBeMoved
+
 	def findMaximumCutGreedy(self, addedGraphs):
 		"""
 		Greedy strategy to form a maximum cut:
@@ -327,14 +347,15 @@ class DfgGraph(object):
 		set2 = self.getNodesWithNoOutput()
 		set2 = [x for x in set2 if not x in set1]
 		set1Strings = self.getSetStrings(set1)
-		set2Strings = self.getSetStrings(set1)
-		#print("set1Strings = "+str(set1Strings))
-		#print("set2Strings = "+str(set2Strings))
-		#print("origPairs = "+str(self.origPairs))
-		#print("origLabels = "+str(self.origLabels))
-		#print("labelsCorresp = "+str(self.labelsCorresp))
-		#print("invLabelsCorresp = "+str(self.invLabelsCorresp))
-		#print("pairs = "+str(self.pairs))
+		set2Strings = self.getSetStrings(set2)
+		#set1NodesThatCanBeMoved = self.getNodesThatCanBeMoved(set1, set2, set1Strings, set2Strings, "set1")
+		#set2NodesThatCanBeMoved = self.getNodesThatCanBeMoved(set1, set2, set1Strings, set2Strings, "set2")
+		"""print("set1Strings=",set1Strings)
+		print("set2Strings=",set2Strings)
+		print("set1NodesThatCanBeMoved=",set1NodesThatCanBeMoved)
+		print("set2NodesThatCanBeMoved=",set2NodesThatCanBeMoved)
+		input()"""
+		
 		nodes = sorted(list(self.nodes.values()), key=lambda x: x.countConnections, reverse=True)
 		for node in nodes:
 			if not node in set1 and not node in set2:
@@ -343,7 +364,7 @@ class DfgGraph(object):
 				outputConnectionsInSet1 = [x for x in self.pairs if x[1] in set1Strings]
 				outputConnectionsInSet2 = [x for x in self.pairs if x[1] in set2Strings]	
 				if outputConnectionsInSet1 and inputConnectionsInSet2:
-					# impossible situation, not cut found
+					# impossible situation, not cut found				
 					return [False,[],[]]
 				if addedGraphs or len(set1) == 0:
 					if outputConnectionsInSet1:
@@ -354,18 +375,49 @@ class DfgGraph(object):
 						set2.append(node)
 					else:
 						# add it to the most convenient place
-						if len(inputConnectionsInSet1) >= len(outputConnectionsInSet2):
+						"""if len(set1) == 0:
 							# add to set 1
 							set1.append(node)
-						else:
+						elif len(set2) == 0:
+							# add to set 2
+							set2.append(node)"""
+						if len(inputConnectionsInSet1) >= len(outputConnectionsInSet2):
 							# add to set 2
 							set2.append(node)
+						else:
+							# add to set 1
+							set1.append(node)
 				else:
 					set2.append(node)
 			set1Strings = self.getSetStrings(set1)
 			set2Strings = self.getSetStrings(set2)
+			#set1NodesThatCanBeMoved = self.getNodesThatCanBeMoved(set1, set2, set1Strings, set2Strings, "set1")
+			#set2NodesThatCanBeMoved = self.getNodesThatCanBeMoved(set1, set2, set1Strings, set2Strings, "set2")
+		set2 = [x for x in set2 if not x in set1]
 		retSet1 = [y for x in set1Strings for y in self.labelsCorresp[x]]
 		retSet2 = [y for x in set2Strings for y in self.labelsCorresp[x]]
 		if len(retSet1) > 0 and len(retSet2) > 0:
+			return [True,retSet1,retSet2]
+		
+		set1NodesThatCanBeMoved = self.getNodesThatCanBeMoved(set1, set2, set1Strings, set2Strings, "set1")
+		set2NodesThatCanBeMoved = self.getNodesThatCanBeMoved(set1, set2, set1Strings, set2Strings, "set2")
+		
+		if len(set2) == 0 and len(set1NodesThatCanBeMoved) > 0:
+			#print("moving to 2")
+			set2.append(set1NodesThatCanBeMoved[0])
+			del set1[set1.index(set1NodesThatCanBeMoved[0])]
+			set1Strings = self.getSetStrings(set1)
+			set2Strings = self.getSetStrings(set2)
+			retSet1 = [y for x in set1Strings for y in self.labelsCorresp[x]]
+			retSet2 = [y for x in set2Strings for y in self.labelsCorresp[x]]
+			return [True,retSet1,retSet2]
+		if len(set1) == 0 and len(set2NodesThatCanBeMoved) > 0:
+			#print("moving to 1")
+			set1.append(set2NodesThatCanBeMoved[0])
+			del set2[set2.index(set2NodesThatCanBeMoved[0])]
+			set1Strings = self.getSetStrings(set1)
+			set2Strings = self.getSetStrings(set2)
+			retSet1 = [y for x in set1Strings for y in self.labelsCorresp[x]]
+			retSet2 = [y for x in set2Strings for y in self.labelsCorresp[x]]
 			return [True,retSet1,retSet2]
 		return [False,retSet1,retSet2]
