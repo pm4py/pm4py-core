@@ -29,21 +29,6 @@ class InductMinDirFollows(object):
 		self.addedArcsObjLabels = []
 		self.lastPlaceAdded = None
 	
-	def cleanDfg(self, dfg):
-		dfgMap = {}
-		for el in dfg:
-			dfgMap[str(el[0])] = el[1]
-		"""i = 0
-		while i < len(dfg):
-			el = dfg[i][0]
-			elStr = str(el)
-			elStrOcc = dfgMap[elStr]
-			elInvStr = str((el[1], el[0]))
-			if elInvStr in dfgMap:
-				elInvStrOcc = dfgMap[elInvStr]
-			i = i + 1"""
-		return dfg
-	
 	def avgSubtree(self, labels, typ):
 		avg = 0
 		for el in labels:
@@ -95,7 +80,6 @@ class InductMinDirFollows(object):
 		#pairs = list(alpha_abstraction.causal_relation)
 		dfg = [(k,v) for k, v in dfg_inst.compute_dfg(trace_log, activity_key).items() if v > 0]
 		dfg = sorted(dfg, key=lambda x: x[1], reverse=True)
-		dfg = self.cleanDfg(dfg)
 		pairs = [k[0] for k in dfg]
 		labels = [str(x) for x in labels]
 		pairs = [(str(x[0]),str(x[1])) for x in pairs]
@@ -183,24 +167,24 @@ class InductMinDirFollows(object):
 			hiddenTransitionToOutput = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
 			net.transitions.add(hiddenTransitionToOutput)
 			petri.utils.add_arc_from_to(hiddenTransitionToOutput, subtreeEnd, net)
-		if self.addedGraphs:
+		#if self.addedGraphs:
 			#if type == "flower" or abs(averagedSubtree - self.addedGraphsActivitiesAvg[0]) > 0.5 or abs(averagedSubtree - self.addedGraphsActivitiesAvg[-1]) > 0.5:
-			if abs(averagedSubtree - self.addedGraphsActivitiesAvg[0]) > 0.5 or mustAddSkipHiddenTrans:
-				# add the hidden transitions that permits to skip the tree
-				self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-				hiddenTransSkipTree = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
-				net.transitions.add(hiddenTransSkipTree)
-				petri.utils.add_arc_from_to(refToLastPlace[0], hiddenTransSkipTree, net)
-				petri.utils.add_arc_from_to(hiddenTransSkipTree, subtreeEnd, net)
+		if mustAddSkipHiddenTrans or (len(self.addedGraphsActivitiesAvg) > 0 and abs(averagedSubtree - self.addedGraphsActivitiesAvg[0]) > 0.5):
+			# add the hidden transitions that permits to skip the tree
+			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+			hiddenTransSkipTree = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
+			net.transitions.add(hiddenTransSkipTree)
+			petri.utils.add_arc_from_to(refToLastPlace[0], hiddenTransSkipTree, net)
+			petri.utils.add_arc_from_to(hiddenTransSkipTree, subtreeEnd, net)
 
-			if type == "flower" or type == "parallel" or activInSelfLoop or mustAddBackwardHiddenTrans:
-			#if type == "flower":
-				# if we are adding a flower, we must add also the coming back arc
-				self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-				hiddenTransLoop = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
-				net.transitions.add(hiddenTransLoop)
-				petri.utils.add_arc_from_to(hiddenTransLoop, refToLastPlace[0], net)
-				petri.utils.add_arc_from_to(subtreeEnd, hiddenTransLoop, net)
+		if type == "flower" or type == "parallel" or activInSelfLoop or mustAddBackwardHiddenTrans:
+		#if type == "flower":
+			# if we are adding a flower, we must add also the coming back arc
+			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+			hiddenTransLoop = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
+			net.transitions.add(hiddenTransLoop)
+			petri.utils.add_arc_from_to(hiddenTransLoop, refToLastPlace[0], net)
+			petri.utils.add_arc_from_to(subtreeEnd, hiddenTransLoop, net)
 
 		# each label is a cluster of sequentially followed activities
 		for l in labels:			
@@ -321,8 +305,18 @@ class InductMinDirFollows(object):
 		"""
 		Create a merge of parallel connected subgraphs
 		through the use of hidden transitions
-		"""
 		
+		Parameters
+		----------
+		net
+			Petri net
+		newRefToLastPlace
+			Referrence to the last added place previously
+		inputConnectionPlace
+			(if already added) connection place at the end of subtree
+		inputHiddenTransition
+			(if already added) connection transition at the end of subtree
+		"""
 		if inputConnectionPlace is None:
 			self.noOfPlacesAdded = self.noOfPlacesAdded + 1
 			connectionPlace = petri.net.PetriNet.Place('p_'+str(self.noOfPlacesAdded))
@@ -342,6 +336,14 @@ class InductMinDirFollows(object):
 		return [net, connectionPlace, hiddenTransition]
 	
 	def getActivitiesInSelfLoop(self, origPairs):
+		"""
+		Get activities that are in self loop
+		
+		Parameters
+		----------
+		origPairs
+			Original pairs
+		"""
 		activInSelfLoop = []
 		for p in origPairs:
 			if p[0] == p[1]:
@@ -350,6 +352,14 @@ class InductMinDirFollows(object):
 		return activInSelfLoop
 	
 	def checkAverage(self, negatedConnectedComponents):
+		"""
+		Check average activity occurrence in a subtree
+		
+		Parameters
+		----------
+		negatedConnectedComponents
+			Negated connected components
+		"""
 		if type(negatedConnectedComponents) is list and type(negatedConnectedComponents[0]) is list:
 			actiCount = []
 			for x in negatedConnectedComponents:
@@ -378,7 +388,6 @@ class InductMinDirFollows(object):
 		refToLastPlace
 			Place that we should attach the subtree
 		"""
-		
 		dfgGraph = DfgGraph(nodesLabels, pairs)
 		dfgGraph = dfgGraph.formGroupedGraph()		
 		pairs = dfgGraph.getPairs()
@@ -392,12 +401,15 @@ class InductMinDirFollows(object):
 		negatedOrigPairs = negatedGraph.origPairs
 		negatedConnectedComponents = negatedGraph.findConnectedComponents()
 		maximumCut = None
+		maximumCutNegatedGraph = None
 		if True:
-			# we have only one connected component: find the maximum cut in the graph
 			maximumCut = dfgGraph.findMaximumCut(self.addedGraphs)
 			# check if the cut is plausible
 			if not(maximumCut[0] and maximumCut[1] and maximumCut[2]):
 				maximumCut = None
+			"""maximumCutNegatedGraph = negatedGraph.findMaximumCut(self.addedGraphs)
+			if not(maximumCutNegatedGraph[0] and maximumCutNegatedGraph[1] and maximumCutNegatedGraph[2]):
+				maximumCutNegatedGraph = None"""
 		if len(pairs) == 0:
 			# we have all unconnected activities / clusters of sequential activities: add them to the model!
 			net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "concurrent", dfgGraph, refToLastPlace, activInSelfLoop, mustAddSkipHiddenTrans=mustAddSkipHiddenTrans, mustAddBackwardHiddenTrans=mustAddSkipHiddenTrans)
@@ -444,6 +456,6 @@ class InductMinDirFollows(object):
 				[net, connectionPlace, connectionTransition] = self.addConnectionPlaceParallel(net, newRefToLastPlace, inputConnectionPlace=connectionPlace, inputHiddenTransition=connectionTransition)
 			refToLastPlace[0] = connectionPlace
 		else:
-			#print("FLOWER",recDepth,nodesLabels)
+			# if everything fails, then flower!
 			net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "flower", dfgGraph, refToLastPlace, activInSelfLoop, mustAddSkipHiddenTrans=mustAddSkipHiddenTrans, mustAddBackwardHiddenTrans=mustAddSkipHiddenTrans)
 		return net

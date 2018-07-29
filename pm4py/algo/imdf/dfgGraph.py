@@ -1,6 +1,88 @@
 from copy import copy,deepcopy
 import random
 
+HIGH_QUALITY_CUT_CONSTANT = 0.65
+
+class CutResultObj(object):
+	""" Object useful for the second
+	maximal cut detection algorithm """
+	
+	def __init__(self):
+		"""
+		Constructor
+		
+		"""
+		self.optimalChoice = deepcopy({})
+		self.optimalChoice["set1"] = deepcopy(set())
+		self.optimalChoice["set2"] = deepcopy(set())
+		self.highQualityCutFound = []
+		self.highQualityCutFound.append(False)
+	
+	def calculateCutCost(self, choice, pairs):
+		"""
+		Calculates the cost of a cut
+		
+		"""
+		cost = 0
+		for p in pairs:
+			if p[0] in choice["set1"] and p[1] in choice["set2"]:
+				cost = cost + 1
+		return cost
+	
+	def findMaximumCutAlgo2Rec(self, currentChoice, activities, pairs, nodesInputActivities, nodesOutputActivities, recDepth):
+		"""
+		Recursion algorithm to find an optimal maximal cut
+
+		Parameters
+		----------
+		currentChoice
+			Current choice of cut (may be partial)
+		activities
+			Activities that we must find the cut on
+		pairs
+			Pairs of relations between activities
+		nodesInputActivities
+			Input activities for nodes according to pairs
+		nodesOutputActivities
+			Output activities for nodes according to pairs
+		recDepth
+			Reached recursion level
+		"""
+		if self.highQualityCutFound[0]:
+			return True
+		if recDepth == len(activities):	
+			#print(currentChoice["set1"],currentChoice["set2"])
+			if len(currentChoice["set1"]) > 0 and len(currentChoice["set2"]) > 0:
+				if len(currentChoice["set1"]) > HIGH_QUALITY_CUT_CONSTANT*len(currentChoice["set2"]) and len(currentChoice["set2"]) > HIGH_QUALITY_CUT_CONSTANT*len(currentChoice["set1"]):
+					self.highQualityCutFound[0] = True
+				thisCutCost = self.calculateCutCost(currentChoice, pairs)
+				optCutCost = self.calculateCutCost(self.optimalChoice, pairs)
+				if thisCutCost > optCutCost:
+					#print(str(optCutCost))
+					#print("thisCutCost = ",thisCutCost," optCutCost=",optCutCost,self.optimalChoice,len(currentChoice["set1"]),len(currentChoice["set2"]))
+					self.optimalChoice["set1"] = deepcopy(currentChoice["set1"])
+					self.optimalChoice["set2"] = deepcopy(currentChoice["set2"])
+		else:
+			thisActivity = activities[recDepth]
+			inteWithSet1 = set.intersection(nodesOutputActivities[thisActivity], currentChoice["set1"])
+			inteWithSet2 = set.intersection(nodesInputActivities[thisActivity], currentChoice["set2"])
+			
+			#print(len(inteWithSet1))
+			#print(len(inteWithSet2))
+			addActToSet1Result = False
+			addActToSet2Result = False
+			if len(inteWithSet2) == 0:
+				newCurrentChoice = deepcopy(currentChoice)
+				newCurrentChoice["set1"].add(thisActivity)
+				addActToSet1Result = self.findMaximumCutAlgo2Rec(newCurrentChoice, activities, pairs, nodesInputActivities, nodesOutputActivities, recDepth + 1)
+			if len(inteWithSet1) == 0 and not self.highQualityCutFound[0]:
+				newCurrentChoice = deepcopy(currentChoice)
+				newCurrentChoice["set2"].add(thisActivity)
+				addActToSet2Result = self.findMaximumCutAlgo2Rec(newCurrentChoice, activities, pairs, nodesInputActivities, nodesOutputActivities, recDepth + 1)
+			if not (addActToSet1Result or addActToSet2Result):
+				return False
+		return True
+
 class Node(object):
 	def __init__(self, label):
 		"""
@@ -334,7 +416,48 @@ class DfgGraph(object):
 				if canBeMoved:
 					nodesThatCanBeMoved.append(node)
 		return nodesThatCanBeMoved
-
+	
+	def findMaximumCutAlgo2(self, addedGraphs):
+		"""
+		Slower algorithm for maximum cut detection
+		(examines all possibilities)
+		
+		Parameters
+		----------
+		addedGraphs
+			Part of the tree already added to the model
+		"""
+		
+		pairs = self.pairs
+		activities = [str(x) for x in sorted(list(self.nodes.values()), key=lambda x: x.countConnections, reverse=True)]		
+		nodesOutputActivities = {}
+		nodesInputActivities = {}
+		for nodeLabel in self.nodes:
+			node = self.nodes[nodeLabel]
+			nodesInputActivities[nodeLabel] = set()
+			nodesOutputActivities[nodeLabel] = set()
+			for otherNodeLabel in node.outputNodes:
+				nodesOutputActivities[nodeLabel].add(str(otherNodeLabel))
+			for otherNodeLabel in node.inputNodes:
+				nodesInputActivities[nodeLabel].add(str(otherNodeLabel))
+		currentChoice = {}
+		currentChoice["set1"] = set()
+		currentChoice["set2"] = set()
+		
+		cutResult = CutResultObj()
+		cutResult.findMaximumCutAlgo2Rec(currentChoice, activities, pairs, nodesInputActivities, nodesOutputActivities, 0)
+				
+		if len(cutResult.optimalChoice["set1"]) > 0 and len(cutResult.optimalChoice["set2"]) > 0:
+			#print("\nset1",cutResult.optimalChoice["set1"],"set2",cutResult.optimalChoice["set2"])
+			
+			set1Strings = cutResult.optimalChoice["set1"]
+			set2Strings = cutResult.optimalChoice["set2"]
+			retSet1 = [y for x in set1Strings for y in self.labelsCorresp[x]]
+			retSet2 = [y for x in set2Strings for y in self.labelsCorresp[x]]
+			return [True,retSet1,retSet2]
+		
+		return [False,[],[]]
+	
 	def findMaximumCutGreedy(self, addedGraphs):
 		"""
 		Greedy strategy to form a maximum cut:
