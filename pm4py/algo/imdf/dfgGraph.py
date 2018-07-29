@@ -394,10 +394,29 @@ class DfgGraph(object):
 		return self.findMaximumCutGreedy(addedGraphs)
 	
 	def getSetStrings(self, set):
+		"""
+		Maps a set of nodes into activities names
+		"""
 		setString = [str(x) for x in set]
 		return setString
 	
 	def getNodesThatCanBeMoved(self, set1, set2, set1Strings, set2Strings, setToConsider):
+		"""
+		Gets nodes that can be moved from a set to the other (for greedy maximum cut algorithm)
+		
+		Parameters
+		----------
+		set1
+			First set of maximum cut
+		set2
+			Second set of maximum cut
+		set1Strings
+			Strings related to activities in the first set
+		set2Strings
+			Strings related to activities in the second set
+		setToConsider
+			specify set1 or set2 as the set where to search a move
+		"""
 		nodesThatCanBeMoved = []
 		if setToConsider == "set1":
 			for node in set1:
@@ -544,3 +563,70 @@ class DfgGraph(object):
 			retSet2 = [y for x in set2Strings for y in self.labelsCorresp[x]]
 			return [True,retSet1,retSet2]
 		return [False,retSet1,retSet2]
+		
+	def getSelfLoopStartingFromActivityIfExisting(self, activity, activitiesInputs, activitiesOutputs, allActivities):
+		"""
+		Try to identify a self loop starting from an activity in the "start set"
+		
+		Parameters
+		----------
+		activity
+			Activity to consider
+		activitiesInputs
+			From the graph, map from activity to the set of input activities
+		activitiesOutputs
+			From the graph, map from activity to the set of output activities
+		allActivities
+			All activities in the graph
+		"""
+		startActivities = set()
+		endActivities = set()	
+		startActivities.add(activity)
+		for act0 in startActivities:
+			if act0 in activitiesInputs:
+				for act1 in activitiesInputs[act0]:
+					if not act0 == act1 and not act1 in endActivities and not act1 in startActivities:
+						endActivities.add(act1)
+		for act0 in endActivities:
+			if act0 in activitiesOutputs:
+				for act1 in activitiesOutputs[act0]:
+					if not act0 == act1 and not act1 in startActivities and not act1 in endActivities:
+						startActivities.add(act1)
+		for act0 in startActivities:
+			if act0 in activitiesInputs:
+				for act1 in activitiesInputs[act0]:
+					if not (act1 in startActivities or act1 in endActivities):
+						return [False, set(), set()]
+		for activity in allActivities:
+			if not activity in startActivities and not activity in endActivities:
+				startActivities.add(activity)
+		intersection = set.intersection(startActivities, endActivities)
+		return [True, list(startActivities), list(endActivities)]
+	
+	def findLoopCut(self):
+		"""
+		Find a loop cut
+		"""
+		
+		activitiesInputs = {}
+		activitiesOutputs = {}
+		allActivities = [str(x) for x in self.origLabels]
+	
+		for p in self.origPairs:
+			if not p[1] in activitiesInputs:
+				activitiesInputs[p[1]] = []
+			if not p[0] in activitiesOutputs:
+				activitiesOutputs[p[0]] = []
+			activitiesInputs[p[1]].append(p[0])
+			activitiesOutputs[p[0]].append(p[1])
+		bestResult = None
+		bestResultScore = -1
+		for activity in self.origLabels:
+			#result = self.discoverIfActivityIsStartEndInALoop(activity, activity, activitiesInputs, activitiesOutputs, deepcopy(set()), 0)
+			result = self.getSelfLoopStartingFromActivityIfExisting(activity, activitiesInputs, activitiesOutputs, allActivities)
+			if result[0]:
+				score = min(len(result[1]),len(result[2]))
+				if score > bestResultScore:
+					bestResult = result
+					bestResultScore = score
+		return bestResult
