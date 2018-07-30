@@ -5,6 +5,7 @@ import scipy.optimize as sp
 import heapq
 from dataclasses import dataclass, field
 from typing import Any
+from cvxopt import matrix, solvers
 
 
 def apply_log(log, petri_net, initial_marking, final_marking):
@@ -25,6 +26,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking):
 def __search(sync_net, ini, fin, cost_function):
     incidence_matrix = petri.incidence_matrix.construct(sync_net)
     ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
+
 
     closed = set()
     ini_state = SearchTuple(0, 0, 0, ini, None, None)
@@ -55,9 +57,14 @@ def __search(sync_net, ini, fin, cost_function):
                 open_set.remove(shadow)
             else:
                 m_vec = incidence_matrix.encode_marking(new_marking)
-                h_obj = sp.linprog(c=cost_vec, A_eq=incidence_matrix.A, b_eq=[i - j for i, j in zip(fin_vec, m_vec)], method='interior-point')
                 # TODO: check if solution exists
-                h = h_obj['fun']
+                # h_obj = sp.linprog(c=cost_vec, A_eq=incidence_matrix.A, b_eq=[i - j for i, j in zip(fin_vec, m_vec)], method='interior-point')
+                # h = h_obj['fun']
+                G = matrix(-np.eye(len(sync_net.transitions)))
+                h_cvx = matrix(np.zeros(len(sync_net.transitions)))
+                A = matrix(incidence_matrix.A, tc='d')
+                h_obj = solvers.lp(matrix(cost_vec, tc='d'), G, h_cvx, A.trans(), matrix([i - j for i, j in zip(fin_vec, m_vec)], tc='d'), solver='glpk', options={'glpk':{'msg_lev':'GLP_MSG_OFF'}})
+                h = h_obj['primal objective']
 
             tp = SearchTuple(g+h, g, h, new_marking, curr, t)
             heapq.heappush(open_set, tp)
