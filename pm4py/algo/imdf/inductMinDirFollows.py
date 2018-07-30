@@ -20,6 +20,8 @@ class InductMinDirFollows(object):
 		"""
 		self.addedGraphs = []
 		self.activitiesCountInLog = Counter()
+		self.maxNoOfActivitiesPerTrace = {}
+		self.minNoOfActivitiesPerTrace = {}
 		self.addedGraphsActivitiesAvg = []
 		self.noOfPlacesAdded = 0
 		self.noOfTransitionsAdded = 0
@@ -71,11 +73,25 @@ class InductMinDirFollows(object):
 		"""
 		labels = tl_util.fetch_labels(trace_log, activity_key)
 		for trace in trace_log:
+			traceCounter = Counter()
 			for event in trace:
-				if not "concept:name" in event:
+				if not activity_key in event:
 					raise NoConceptNameException("at least an event is without concept:name")
-				activity = event["concept:name"]
+				activity = event[activity_key]
 				self.activitiesCountInLog[activity] += 1
+				traceCounter[activity] += 1
+			for activity in traceCounter:
+				if not activity in self.maxNoOfActivitiesPerTrace or self.maxNoOfActivitiesPerTrace[activity] < traceCounter[activity]:
+					self.maxNoOfActivitiesPerTrace[activity] = traceCounter[activity]
+				if not activity in self.minNoOfActivitiesPerTrace or self.minNoOfActivitiesPerTrace[activity] > traceCounter[activity]:
+					self.minNoOfActivitiesPerTrace[activity] = traceCounter[activity]
+			for activity in self.minNoOfActivitiesPerTrace:
+				if not activity in traceCounter:
+					self.minNoOfActivitiesPerTrace[activity] = 0
+		
+		#print("self.maxNoOfActivitiesPerTrace = ",self.maxNoOfActivitiesPerTrace)
+		#print("self.minNoOfActivitiesPerTrace = ",self.minNoOfActivitiesPerTrace)
+
 		#alpha_abstraction = ds.ClassicAlphaAbstraction(trace_log, activity_key)
 		#pairs = list(alpha_abstraction.causal_relation)
 		dfg = [(k,v) for k, v in dfg_inst.compute_dfg(trace_log, activity_key).items() if v > 0]
@@ -135,6 +151,15 @@ class InductMinDirFollows(object):
 		
 		return net, Marking({start: 1})
 	
+	def verifySubtreeLoopCondition(self, labels):
+		ret = False
+		for el in labels:
+			for subel in el:
+				if self.maxNoOfActivitiesPerTrace[subel] > 1:
+					ret = True
+					break
+		return ret
+	
 	def addSubtreeToModel(self, net, labels, type, dfgGraph, refToLastPlace, activInSelfLoop, mustAddSkipHiddenTrans=False, mustAddBackwardHiddenTrans=False):
 		"""
 		Adds a part of the tree to the Petri net
@@ -182,7 +207,11 @@ class InductMinDirFollows(object):
 			petri.utils.add_arc_from_to(skipPlaceOutput, hiddenTransitionToOutput, net)"""
 
 		type = deepcopy(originalType)
-		if (mustAddSkipHiddenTrans or (len(self.addedGraphsActivitiesAvg) > 0 and abs(averagedSubtree - self.addedGraphsActivitiesAvg[0]) > 0.5)):
+		subtreeLoopCondition = self.verifySubtreeLoopCondition(labels)
+		condition1 = mustAddSkipHiddenTrans
+		condition2 = (len(self.addedGraphsActivitiesAvg) > 0 and abs(averagedSubtree - self.addedGraphsActivitiesAvg[0]) > 0.5)
+		
+		if (condition1 or condition2):
 			# add the hidden transitions that permits to skip the tree
 			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
 			hiddenTransSkipTree = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
@@ -191,7 +220,9 @@ class InductMinDirFollows(object):
 			petri.utils.add_arc_from_to(hiddenTransSkipTree, subtreeEnd, net)
 
 		type = deepcopy(originalType)
-		if type == "flower" or type == "parallel" or activInSelfLoop or mustAddBackwardHiddenTrans:
+		condition3 = (type == "flower")
+		condition4 = (type == "parallel" or len(activInSelfLoop)>0 or mustAddBackwardHiddenTrans)
+		if (condition3 or condition4) and subtreeLoopCondition:
 		#if type == "flower":
 			# if we are adding a flower, we must add also the coming back arc
 			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
