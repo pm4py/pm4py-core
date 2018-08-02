@@ -25,6 +25,8 @@ class Marking(Counter):
                 return False
         return True
 
+    def __repr__(self):
+        return str([str(p.name) + ":" + str(self.get(p)) for p in self.keys()])
 
 class PetriNet(object):
     class Place(object):
@@ -45,6 +47,9 @@ class PetriNet(object):
 
         def __get_in_arcs(self):
             return self.__in_arcs
+
+        def __repr__(self):
+            return str(self.name)
 
         name = property(__get_name, __set_name)
         in_arcs = property(__get_in_arcs)
@@ -75,6 +80,12 @@ class PetriNet(object):
 
         def __get_in_arcs(self):
             return self.__in_arcs
+
+        def __repr__(self):
+            if self.label is None:
+                return str(self.name)
+            else:
+                return str(self.label)
 
         name = property(__get_name, __set_name)
         label = property(__get_label, __set_label)
