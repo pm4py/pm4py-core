@@ -1,10 +1,13 @@
 from lxml import etree
 import uuid
 import time
+import inspect
 from pm4py.models import petri
 from pm4py.models.petri.net import Marking
 from copy import copy, deepcopy
 import logging
+from pm4py.models.petri import visualize as pn_viz
+
 
 def import_petri_from_pnml(inputFilePath):
     """
@@ -30,19 +33,20 @@ def import_petri_from_pnml(inputFilePath):
     initialMarkingCount = 0
 
     for tree_event, elem in context:
+
         if tree_event == "start":
-            if elem.tag == "place":
+            if "place" in elem.tag:
                 isInitialMarking = False
                 readingWhat = "place"
                 readingId = elem.get("id")
-            elif elem.tag == "transition":
+            elif "transition" in elem.tag:
                 readingWhat = "transition"
                 readingId = elem.get("id")
                 transition = petri.net.PetriNet.Transition(readingId, None)
                 transDict[readingId] = transition
-            elif elem.tag == "initialMarking":
+            elif "initialMarking" in elem.tag:
                 readingWhat = "initialMarking"
-            elif elem.tag == "text":
+            elif "text" in elem.tag:
                 elementText = elem.text
                 if readingWhat == "place":
                     place = petri.net.PetriNet.Place(elementText)
@@ -60,19 +64,19 @@ def import_petri_from_pnml(inputFilePath):
                         initialMarkingCount = 0
                     if initialMarkingCount > 0:
                         markingDict[placesDict[readingId]] = initialMarkingCount
-            elif elem.tag == "toolspecific":
+            elif "toolspecific" in elem.tag:
                 if readingWhat == "transition":
                     activity = elem.get("activity")
                     if "$invisible$" in activity:
                         transInvis = True
                         transDict[readingId].label = None
         if tree_event == "end":
-            if elem.tag == "place":
+            if "place" in elem.tag:
                 readingWhat = 0
                 readingWhat = ""
-            elif elem.tag == "initialMarking":
+            elif "initialMarking" in elem.tag:
                 readingWhat = "place"
-            elif elem.tag == "transition":
+            elif "transition" in elem.tag:
                 readingWhat = 0
                 readingWhat = ""
                 transInvis = False
@@ -85,17 +89,17 @@ def import_petri_from_pnml(inputFilePath):
     context = etree.iterparse(inputFilePath, events=['start', 'end'])
     for tree_event, elem in context:
         if tree_event == "start":
-            if elem.tag == "arc":
+            if "arc" in elem.tag:
                 readingWhat = "arc"
                 readingId = elem.get("id")
                 readingSource = elem.get("source")
                 readingTarget = elem.get("target")
-                if readingSource in placesDict.keys():
+                if readingSource in placesDict.keys() and readingTarget in transDict.keys():
                     petri.utils.add_arc_from_to(placesDict[readingSource], transDict[readingTarget], net)
-                elif readingTarget in placesDict.keys():
+                elif readingTarget in placesDict.keys() and readingTarget in placesDict.keys():
                     petri.utils.add_arc_from_to(transDict[readingSource], placesDict[readingTarget], net)
         if tree_event == "end":
-            if elem.tag == "arc":
+            if "arc" in elem.tag:
                 readingWhat = 0
                 readingId = 0
                 readingSource = 0
