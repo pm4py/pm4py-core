@@ -530,7 +530,7 @@ class InductMinDirFollows(object):
                                   mustAddBackwardHiddenTrans=mustAddSkipHiddenTrans)
         elif len(connectedComponents) > 1:
             connectionPlace = None
-            newRefToLastPlace = [deepcopy(refToLastPlace)[0]]
+            newRefToLastPlace = [copy(refToLastPlace)[0]]
             for cc in connectedComponents:
                 # we add the connected component and memorize the connection place
                 ccPairs = dfgGraph.projectPairs(cc, origPairs)
