@@ -2,7 +2,7 @@ from copy import copy, deepcopy
 import random
 
 HIGH_QUALITY_CUT_CONSTANT = 0.65
-LOOP_CONSTANT = 0.2
+LOOP_CONSTANT = 0.64
 
 class CutResultObj(object):
     """ Object useful for the second
