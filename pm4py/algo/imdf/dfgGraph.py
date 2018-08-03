@@ -2,7 +2,7 @@ from copy import copy, deepcopy
 import random
 
 HIGH_QUALITY_CUT_CONSTANT = 0.65
-LOOP_CONSTANT = 0.64
+LOOP_CONSTANT = 0.2
 
 class CutResultObj(object):
     """ Object useful for the second
@@ -661,27 +661,33 @@ class DfgGraph(object):
                 activitiesOverPositiveThreshold.append(act)
             if activitiesArcsDirection[act] < -LOOP_CONSTANT:
                 activitiesUnderNegativeThreshold.append(act)
-
         #print("activitiesArcsDirection=",activitiesArcsDirection)
         #print("activitiesUnderNegativeThreshold=", activitiesUnderNegativeThreshold)
         #print("activitiesOverPositiveThreshold=", activitiesOverPositiveThreshold)
-
         if len(activitiesOverPositiveThreshold) > 0:
             startActivities = copy(activitiesOverPositiveThreshold)
             endActivities = []
+
+            for act in activitiesArcsDirection:
+                if activitiesArcsDirection[act] < 0:
+                    if not act in startActivities and not act in endActivities:
+                        endActivities.append(act)
             for act in startActivities:
                 for otherAct in activitiesInputs[act]:
-                    if not otherAct in startActivities:
-                        endActivities.append(otherAct)
+                    if not otherAct in startActivities and not otherAct in endActivities:
+                        if activitiesArcsDirection[otherAct] < 0:
+                            endActivities.append(otherAct)
             for act in allActivities:
                 if not (act in startActivities or act in endActivities):
                     startActivities.append(act)
-            return [True, startActivities, endActivities]
+            if startActivities and endActivities:
+                return [True, startActivities, endActivities]
         elif len(activitiesUnderNegativeThreshold) > 0:
             startActivities = []
             endActivities = copy(activitiesUnderNegativeThreshold)
             for act in allActivities:
                 if not (act in startActivities or act in endActivities):
                     startActivities.append(act)
-            return [True, startActivities, endActivities]
+            if startActivities and endActivities:
+                return [True, startActivities, endActivities]
         return [False, [], []]

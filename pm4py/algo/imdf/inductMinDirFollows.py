@@ -276,16 +276,17 @@ class InductMinDirFollows(object):
         type = deepcopy(originalType)
         condition3 = (type == "flower")
         condition4 = (type == "parallel" or len(activInSelfLoop) > 0 or mustAddBackwardHiddenTrans)
-        if (condition3 or condition4) and subtreeLoopCondition:
-            # if type == "flower":
-            # if we are adding a flower, we must add also the coming back arc
-            self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-            hiddenTransLoop = petri.net.PetriNet.Transition('loop_' + str(self.noOfHiddenTransAdded),
-                                                            self.hiddenTransitionVisibleLabel(
-                                                                'loop_' + str(self.noOfHiddenTransAdded)))
-            net.transitions.add(hiddenTransLoop)
-            petri.utils.add_arc_from_to(hiddenTransLoop, refToLastPlace[0], net)
-            petri.utils.add_arc_from_to(subtreeEnd, hiddenTransLoop, net)
+        if (condition3 or condition4):
+            if subtreeLoopCondition:
+                # if type == "flower":
+                # if we are adding a flower, we must add also the coming back arc
+                self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+                hiddenTransLoop = petri.net.PetriNet.Transition('loop_' + str(self.noOfHiddenTransAdded),
+                                                                self.hiddenTransitionVisibleLabel(
+                                                                    'loop_' + str(self.noOfHiddenTransAdded)))
+                net.transitions.add(hiddenTransLoop)
+                petri.utils.add_arc_from_to(hiddenTransLoop, refToLastPlace[0], net)
+                petri.utils.add_arc_from_to(subtreeEnd, hiddenTransLoop, net)
 
         # each label is a cluster of sequentially followed activities
         for l in labels:
