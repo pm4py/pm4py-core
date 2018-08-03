@@ -68,6 +68,7 @@ def __search(sync_net, ini, fin, cost_function):
 
             tp = SearchTuple(g+h, g, h, new_marking, curr, t)
             heapq.heappush(open_set, tp)
+            heapq.heapify(open_set)
 
 
 def __get_tuple_from_queue(marking, queue):
@@ -101,6 +102,22 @@ class SearchTuple:
     m: petri.net.Marking = field(compare=False)
     p: Any = field(compare=False)
     t: petri.net.PetriNet.Transition = field(compare=False)
+
+    def __get_firing_sequence(self):
+        ret = []
+        if self.p is not None:
+            ret = ret + self.p.__get_firing_sequence()
+        if self.t is not None:
+            ret.append(self.t)
+        return ret
+
+    def __repr__(self):
+        stringBuild = []
+        stringBuild.append("\nmarking=" + str(self.m))
+        stringBuild.append(" totalCost=" + str(self.f))
+        stringBuild.append(" heuristic=" + str(self.h))
+        stringBuild.append(" allActivatedTransitions=" + str(self.__get_firing_sequence()) + "\n\n")
+        return " ".join(stringBuild)
 
 
 
