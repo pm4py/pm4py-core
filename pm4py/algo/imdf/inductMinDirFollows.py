@@ -159,6 +159,9 @@ class InductMinDirFollows(object):
 					ret = True
 					break
 		return ret
+
+	def hiddenTransitionVisibleLabel(self, name):
+		return None
 	
 	def addSubtreeToModel(self, net, labels, type, dfgGraph, refToLastPlace, activInSelfLoop, mustAddSkipHiddenTrans=False, mustAddBackwardHiddenTrans=False):
 		"""
@@ -185,11 +188,11 @@ class InductMinDirFollows(object):
 		originalType = deepcopy(type)
 		if type == "parallel":
 			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-			hiddenTransitionFromInput = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
+			hiddenTransitionFromInput = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), self.hiddenTransitionVisibleLabel('tau_'+str(self.noOfHiddenTransAdded)))
 			net.transitions.add(hiddenTransitionFromInput)
 			petri.utils.add_arc_from_to(refToLastPlace[0], hiddenTransitionFromInput, net)
 			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-			hiddenTransitionToOutput = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
+			hiddenTransitionToOutput = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), self.hiddenTransitionVisibleLabel('tau_'+str(self.noOfHiddenTransAdded)))
 			net.transitions.add(hiddenTransitionToOutput)
 			petri.utils.add_arc_from_to(hiddenTransitionToOutput, subtreeEnd, net)
 
@@ -201,7 +204,12 @@ class InductMinDirFollows(object):
 		if (condition1 or condition2):
 			# add the hidden transitions that permits to skip the tree
 			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-			hiddenTransSkipTree = petri.net.PetriNet.Transition('skip_'+str(self.noOfHiddenTransAdded), None)
+			if mustAddSkipHiddenTrans:
+				hiddenTransSkipTree = petri.net.PetriNet.Transition('fskip_'+str(self.noOfHiddenTransAdded), self.hiddenTransitionVisibleLabel('fskip_'+str(self.noOfHiddenTransAdded)))
+			else:
+				hiddenTransSkipTree = petri.net.PetriNet.Transition('skip_' + str(self.noOfHiddenTransAdded),
+																	self.hiddenTransitionVisibleLabel(
+																		'skip_' + str(self.noOfHiddenTransAdded)))
 			net.transitions.add(hiddenTransSkipTree)
 			petri.utils.add_arc_from_to(refToLastPlace[0], hiddenTransSkipTree, net)
 			petri.utils.add_arc_from_to(hiddenTransSkipTree, subtreeEnd, net)
@@ -213,7 +221,7 @@ class InductMinDirFollows(object):
 		#if type == "flower":
 			# if we are adding a flower, we must add also the coming back arc
 			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-			hiddenTransLoop = petri.net.PetriNet.Transition('loop_'+str(self.noOfHiddenTransAdded), None)
+			hiddenTransLoop = petri.net.PetriNet.Transition('loop_'+str(self.noOfHiddenTransAdded), self.hiddenTransitionVisibleLabel('loop_'+str(self.noOfHiddenTransAdded)))
 			net.transitions.add(hiddenTransLoop)
 			petri.utils.add_arc_from_to(hiddenTransLoop, refToLastPlace[0], net)
 			petri.utils.add_arc_from_to(subtreeEnd, hiddenTransLoop, net)
@@ -326,7 +334,7 @@ class InductMinDirFollows(object):
 		else:
 			connectionPlace = inputConnectionPlace
 		self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-		hiddenTransition = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
+		hiddenTransition = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), self.hiddenTransitionVisibleLabel('tau_'+str(self.noOfHiddenTransAdded)))
 		net.transitions.add(hiddenTransition)
 		petri.utils.add_arc_from_to(newRefToLastPlace[0], hiddenTransition, net)
 		petri.utils.add_arc_from_to(hiddenTransition, connectionPlace, net)
@@ -359,7 +367,7 @@ class InductMinDirFollows(object):
 		
 		if inputHiddenTransition is None:
 			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-			hiddenTransition = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
+			hiddenTransition = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), self.hiddenTransitionVisibleLabel('tau_'+str(self.noOfHiddenTransAdded)))
 			net.transitions.add(hiddenTransition)
 			petri.utils.add_arc_from_to(hiddenTransition, connectionPlace, net)
 		else:
@@ -462,7 +470,7 @@ class InductMinDirFollows(object):
 			connectionTransition = None
 			
 			self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-			inputHiddenTransition = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), None)
+			inputHiddenTransition = petri.net.PetriNet.Transition('tau_'+str(self.noOfHiddenTransAdded), self.hiddenTransitionVisibleLabel('tau_'+str(self.noOfHiddenTransAdded)))
 			net.transitions.add(inputHiddenTransition)
 			petri.utils.add_arc_from_to(refToLastPlace[0], inputHiddenTransition, net)
 			
@@ -487,12 +495,12 @@ class InductMinDirFollows(object):
 				intermediateRefToLastPlace = copy(refToLastPlace)
 				net = self.recFindCut(net, loopCut[2], pairs2, recDepth + 1, refToLastPlace, mustAddSkipHiddenTrans=False, mustAddBackwardHiddenTrans=False)
 				self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-				loopTransition = petri.net.PetriNet.Transition('loop_'+str(self.noOfHiddenTransAdded), None)
+				loopTransition = petri.net.PetriNet.Transition('loop_'+str(self.noOfHiddenTransAdded), self.hiddenTransitionVisibleLabel('loop_'+str(self.noOfHiddenTransAdded)))
 				net.transitions.add(loopTransition)
 				petri.utils.add_arc_from_to(refToLastPlace[0], loopTransition, net)
 				petri.utils.add_arc_from_to(loopTransition, originRefToLastPlace[0], net)
 				self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-				skipTransition = petri.net.PetriNet.Transition('skip_'+str(self.noOfHiddenTransAdded), None)
+				skipTransition = petri.net.PetriNet.Transition('skip_'+str(self.noOfHiddenTransAdded), self.hiddenTransitionVisibleLabel('skip_'+str(self.noOfHiddenTransAdded)))
 				net.transitions.add(skipTransition)
 				petri.utils.add_arc_from_to(originRefToLastPlace[0], skipTransition, net)
 				petri.utils.add_arc_from_to(skipTransition, intermediateRefToLastPlace[0], net)
