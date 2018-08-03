@@ -25,8 +25,8 @@ def playoutPetriNet(net, initialMarking, noTraces=100, maxTraceLength=100):
         marking = copy(initialMarking)
         while semantics.enabled_transitions(net, marking):
             allEnabledTrans = semantics.enabled_transitions(net, marking)
-            shuffle(allEnabledTrans)
             allEnabledTrans = list(allEnabledTrans)
+            shuffle(allEnabledTrans)
             trans = allEnabledTrans[0]
             if trans.label is not None:
                 event = log_instance.Event()
