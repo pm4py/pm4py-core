@@ -96,7 +96,7 @@ def import_petri_from_pnml(inputFilePath):
                 readingTarget = elem.get("target")
                 if readingSource in placesDict.keys() and readingTarget in transDict.keys():
                     petri.utils.add_arc_from_to(placesDict[readingSource], transDict[readingTarget], net)
-                elif readingTarget in placesDict.keys() and readingTarget in placesDict.keys():
+                elif readingTarget in placesDict.keys() and readingSource in transDict.keys():
                     petri.utils.add_arc_from_to(transDict[readingSource], placesDict[readingTarget], net)
         if tree_event == "end":
             if "arc" in elem.tag:
