@@ -3,8 +3,10 @@ from pm4py.log.importer import xes as xes_importer
 from pm4py.models import petri
 from pm4py.algo.alignments.versions import state_equation_classic
 
-log = xes_importer.import_from_path_xes('C:/Users/bas/Documents/tue/svn/private/logs/a12_logs/a12f0n00.xes')
+log = xes_importer.import_from_path_xes('C:/Users/bas/Documents/tue/svn/private/logs/BPI_Challenge_2012.xes')
 net, marking = alpha_classic.apply(log)
+#viz = petri.visualize.graphviz_visualization(net)
+#viz.view()
 
 log = xes_importer.import_from_path_xes('C:/Users/bas/Documents/tue/svn/private/logs/a12_logs/a12f0n05.xes')
 
@@ -13,6 +15,7 @@ final_marking = petri.net.Marking()
 for p in net.places:
     if not p.out_arcs:
         final_marking[p] = 1
+
 
 state_equation_classic.apply_log(log, net, marking, final_marking)
 
