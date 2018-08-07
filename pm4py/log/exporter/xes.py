@@ -9,7 +9,8 @@ TYPE_CORRESPONDENCE = {
 	"int":xes_util.TAG_INT,
 	"float":xes_util.TAG_FLOAT,
 	"datetime":xes_util.TAG_DATE,
-	"bool":xes_util.TAG_BOOLEAN
+	"bool":xes_util.TAG_BOOLEAN,
+	"dict":xes_util.TAG_LIST
 }
 # if a type is not found in the previous list, then default to string
 DEFAULT_TYPE = xes_util.TAG_STRING
@@ -63,10 +64,21 @@ def export_attributes(log, root):
 		attrType = type(log.attributes[attr]).__name__
 		attrTypeXES = get_XES_attr_type(attrType)
 		attrValue = get_XES_attr_value(log.attributes[attr], attrTypeXES)
+		
 		if not attrTypeXES is None and not attr is None and not attrValue is None:
 			logAttribute = etree.SubElement(root, attrTypeXES)
 			logAttribute.set(xes_util.KEY_KEY,attr)
-			logAttribute.set(xes_util.KEY_VALUE,attrValue)
+			if attrTypeXES == xes_util.TAG_LIST:
+				logAttributeValues = etree.SubElement(logAttribute, "values")
+				for key in log.attributes[attr]['children']:
+					subattrType = type(log.attributes[attr]['children'][key]).__name__
+					subattrTypeXES = get_XES_attr_type(subattrType)
+					subattrValue = get_XES_attr_value(log.attributes[attr]['children'][key], subattrTypeXES)
+					subtraceAttribute = etree.SubElement(logAttributeValues, subattrTypeXES)
+					subtraceAttribute.set(xes_util.KEY_KEY,key)
+					subtraceAttribute.set(xes_util.KEY_VALUE,subattrValue)
+			else:
+				logAttribute.set(xes_util.KEY_VALUE,attrValue)
 
 def export_extensions(log, root):
 	"""
@@ -148,11 +160,21 @@ def export_traces_events(tr, trace):
 		for attr in ev:
 			attrType = type(ev[attr]).__name__
 			attrTypeXES = get_XES_attr_type(attrType)
-			attrValue = get_XES_attr_value(ev[attr], attrTypeXES)
-			
 			eventAttribute = etree.SubElement(event, attrTypeXES)
 			eventAttribute.set(xes_util.KEY_KEY,attr)
-			eventAttribute.set(xes_util.KEY_VALUE,attrValue)
+			if attrTypeXES == xes_util.TAG_LIST:
+				eventAttributeValues = etree.SubElement(eventAttribute, "values")
+				for key in ev[attr]['children']:
+					#print(key,ev[attr]['children'][key])
+					subattrType = type(ev[attr]['children'][key]).__name__
+					subattrTypeXES = get_XES_attr_type(subattrType)
+					subattrValue = get_XES_attr_value(ev[attr]['children'][key], subattrTypeXES)
+					subeventAttribute = etree.SubElement(eventAttributeValues, subattrTypeXES)
+					subeventAttribute.set(xes_util.KEY_KEY,key)
+					subeventAttribute.set(xes_util.KEY_VALUE,subattrValue)
+			else:
+				attrValue = get_XES_attr_value(ev[attr], attrTypeXES)
+				eventAttribute.set(xes_util.KEY_VALUE,attrValue)
 
 def export_traces(log, root):
 	"""
@@ -168,14 +190,24 @@ def export_traces(log, root):
 	"""
 	for tr in log:
 		trace = etree.SubElement(root, xes_util.TAG_TRACE)
-				
+
 		for attr in tr.attributes.keys():
 			attrType = type(tr.attributes[attr]).__name__
 			attrTypeXES = get_XES_attr_type(attrType)
-			attrValue = get_XES_attr_value(tr.attributes[attr], attrTypeXES)
 			traceAttribute = etree.SubElement(trace, attrTypeXES)
 			traceAttribute.set(xes_util.KEY_KEY,attr)
-			traceAttribute.set(xes_util.KEY_VALUE,attrValue)
+			if attrTypeXES == xes_util.TAG_LIST:
+				traceAttributeValues = etree.SubElement(traceAttribute, "values")
+				for key in tr.attributes[attr]['children']:
+					subattrType = type(tr.attributes[attr]['children'][key]).__name__
+					subattrTypeXES = get_XES_attr_type(subattrType)
+					subattrValue = get_XES_attr_value(tr.attributes[attr]['children'][key], subattrTypeXES)
+					subtraceAttribute = etree.SubElement(traceAttributeValues, subattrTypeXES)
+					subtraceAttribute.set(xes_util.KEY_KEY,key)
+					subtraceAttribute.set(xes_util.KEY_VALUE,subattrValue)
+			else:
+				attrValue = get_XES_attr_value(tr.attributes[attr], attrTypeXES)
+				traceAttribute.set(xes_util.KEY_VALUE,attrValue)
 		
 		export_traces_events(tr, trace)
 

@@ -26,7 +26,7 @@ def construct(pn1, im1, fm1, pn2, im2, fm2, skip):
 
     for t1 in pn1.transitions:
         for t2 in pn2.transitions:
-            if t1.label is t2.label:
+            if t1.label == t2.label:
                 sync = petri.net.PetriNet.Transition((t1.name, t2.name), (t1.label, t2.label))
                 sync_net.transitions.add(sync)
                 for a in t1.in_arcs:
