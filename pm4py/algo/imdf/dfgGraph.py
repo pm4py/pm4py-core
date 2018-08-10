@@ -2,7 +2,8 @@ from copy import copy, deepcopy
 import random
 
 HIGH_QUALITY_CUT_CONSTANT = 0.65
-LOOP_CONSTANT = 0.2
+LOOP_CONSTANT_START = 0.2
+LOOP_CONSTANT_END = 0.03
 
 class CutResultObj(object):
     """ Object useful for the second
@@ -411,7 +412,7 @@ class DfgGraph(object):
         """
         finds the maximum cut of the graph
         """
-        return self.findMaximumCutGreedy(addedGraphs, activitiesArcsDirection=activitiesArcsDirection)
+        return self.findMaximumCutAlgo2(addedGraphs, activitiesArcsDirection=activitiesArcsDirection)
 
     def getSetStrings(self, set):
         """
@@ -598,39 +599,31 @@ class DfgGraph(object):
                 activitiesOutputs[p[0]] = []
             activitiesInputs[p[1]].append(p[0])
             activitiesOutputs[p[0]].append(p[1])
-        activitiesUnderNegativeThreshold = []
-        activitiesOverPositiveThreshold = []
+        sortedActivitiesArcsDirection = []
         for act in activitiesArcsDirection:
-            if activitiesArcsDirection[act] > LOOP_CONSTANT:
-                activitiesOverPositiveThreshold.append(act)
-            if activitiesArcsDirection[act] < -LOOP_CONSTANT:
-                activitiesUnderNegativeThreshold.append(act)
-        if len(activitiesOverPositiveThreshold) > 0:
-            startActivities = copy(activitiesOverPositiveThreshold)
-            endActivities = []
+            sortedActivitiesArcsDirection.append([act, activitiesArcsDirection[act]])
 
-            for act in activitiesArcsDirection:
-                if act in activitiesArcsDirection:
-                    if activitiesArcsDirection[act] < 0:
-                        if not act in startActivities and not act in endActivities:
-                            endActivities.append(act)
-            for act in startActivities:
-                if act in activitiesInputs:
-                    for otherAct in activitiesInputs[act]:
-                        if not otherAct in startActivities and not otherAct in endActivities:
-                            if activitiesArcsDirection[otherAct] < 0:
-                                endActivities.append(otherAct)
-            for act in allActivities:
-                if not (act in startActivities or act in endActivities):
-                    startActivities.append(act)
-            if startActivities and endActivities:
-                return [True, startActivities, endActivities]
-        elif len(activitiesUnderNegativeThreshold) > 0:
-            startActivities = []
-            endActivities = copy(activitiesUnderNegativeThreshold)
-            for act in allActivities:
-                if not (act in startActivities or act in endActivities):
-                    startActivities.append(act)
-            if startActivities and endActivities:
-                return [True, startActivities, endActivities]
+        sortedActivitiesArcsDirection = sorted(sortedActivitiesArcsDirection, key=lambda x: x[1], reverse=True)
+        #print(sortedActivitiesArcsDirection)
+
+        if sortedActivitiesArcsDirection:
+            consideredStartActivity = sortedActivitiesArcsDirection[0][0]
+            if activitiesArcsDirection[consideredStartActivity] > LOOP_CONSTANT_START:
+                if consideredStartActivity in activitiesInputs:
+                    activityInputs = activitiesInputs[consideredStartActivity]
+                    startActivities = []
+                    endActivities = []
+
+                    for activity in activityInputs:
+                        if activity in activitiesArcsDirection and not activity == consideredStartActivity:
+                            if activitiesArcsDirection[activity] < LOOP_CONSTANT_END:
+                                endActivities.append(activity)
+
+                    for activity in allActivities:
+                        if not activity in startActivities and not activity in endActivities:
+                            startActivities.append(activity)
+
+                    if startActivities and endActivities:
+                        return [True, startActivities, endActivities]
+
         return [False, [], []]
