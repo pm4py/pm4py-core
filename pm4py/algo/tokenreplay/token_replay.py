@@ -2,8 +2,8 @@ from pm4py.models.petri import semantics
 from copy import deepcopy,copy
 import time
 
-MAX_REC_DEPTH = 30
-MAX_HID_VISITED = 10
+MAX_REC_DEPTH = 50
+MAX_IT_FINAL = 10
 
 class NoConceptNameException(Exception):
     def __init__(self, message):
@@ -291,20 +291,28 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
         marking = semantics.execute(t, net, marking)
         i = i + 1
     enabledTransitions = semantics.enabled_transitions(net, marking)
-    if not dict(marking) == dict(finalMarking):
-        markingCopy = copy(marking)
-        for p in markingCopy:
-            for p2 in finalMarking:
-                if p in placesShortestPathByHidden and p2 in placesShortestPathByHidden[p]:
-                    reqTransitions = placesShortestPathByHidden[p][p2]
-                    for t in reqTransitions:
-                        if t in enabledTransitions:
-                            activatedTransitions.append(t)
-                            marking = semantics.execute(t, net, marking)
-                            break
 
+    i = 0
+    while i < MAX_IT_FINAL:
+        if not dict(marking) == dict(finalMarking):
+            markingCopy = copy(marking)
+            for p in markingCopy:
+                for p2 in finalMarking:
+                    if p in placesShortestPathByHidden and p2 in placesShortestPathByHidden[p]:
+                        reqTransitions = placesShortestPathByHidden[p][p2]
+                        for t in reqTransitions:
+                            if not semantics.is_enabled(t, net, marking):
+                                [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking,
+                                                                                         placesShortestPathByHidden,
+                                                                                         activatedTransitions, 0)
+                                if semantics.is_enabled(t, net, marking):
+                                    marking = semantics.execute(t, net, marking)
+
+                                activatedTransitions.append(t)
+        else:
+            break
+        i = i + 1
     remaining = 0
-
     for p in marking:
         if p in finalMarking:
             marking[p] = max(0, marking[p] - finalMarking[p])
@@ -313,7 +321,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                     if p in place_fitness:
                         if not trace in place_fitness[p]["underfedTraces"]:
                             place_fitness[p]["overfedTraces"].add(trace)
-            remaining = remaining + marking[p]
+        remaining = remaining + marking[p]
     if consider_remaining_in_fitness:
         is_fit = (missing == 0) and (remaining == 0)
     else:
@@ -326,7 +334,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
 
     return [is_fit, trace_fitness, activatedTransitions]
 
-def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=False):
+def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=True):
     """
     Apply token-based replay to a log
 
