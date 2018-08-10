@@ -8,6 +8,7 @@ from collections import Counter
 
 import time
 from copy import deepcopy, copy
+import math
 
 
 def apply(trace_log, activity_key='concept:name'):
@@ -25,9 +26,13 @@ class InductMinDirFollows(object):
         self.maxNoOfActivitiesPerTrace = {}
         self.minNoOfActivitiesPerTrace = {}
         self.addedGraphsActivitiesAvg = []
+        self.addedGraphsActivitiesSum = []
         self.noOfPlacesAdded = 0
         self.noOfTransitionsAdded = 0
         self.noOfHiddenTransAdded = 0
+        self.noOfHiddenTransAddedSkip = 0
+        self.noOfHiddenTransAddedLoop = 0
+        self.noOfHiddenTransAddedTau = 0
         self.lastEndSubtreePlaceAdded = []
         self.transitionsMap = {}
         self.addedArcsObjLabels = []
@@ -73,12 +78,6 @@ class InductMinDirFollows(object):
             for activity in self.minNoOfActivitiesPerTrace:
                 if not activity in traceCounter:
                     self.minNoOfActivitiesPerTrace[activity] = 0
-
-        # print("self.maxNoOfActivitiesPerTrace = ",self.maxNoOfActivitiesPerTrace)
-        # print("self.minNoOfActivitiesPerTrace = ",self.minNoOfActivitiesPerTrace)
-
-        # alpha_abstraction = ds.ClassicAlphaAbstraction(trace_log, activity_key)
-        # pairs = list(alpha_abstraction.causal_relation)
         self.dfg = [(k, v) for k, v in dfg_inst.compute_dfg(trace_log, activity_key).items() if v > 0]
         self.dfg = sorted(self.dfg, key=lambda x: x[1], reverse=True)
         pairs = [k[0] for k in self.dfg]
@@ -89,14 +88,6 @@ class InductMinDirFollows(object):
         net.places.add(start)
         self.lastEndSubtreePlaceAdded = [start]
         net = self.recFindCut(net, labels, pairs, 0, self.lastEndSubtreePlaceAdded)
-
-        # remove isolated places
-        """netPlaces = copy(net.places)
-        for place in netPlaces:
-            if len(place.in_arcs) == 0 and len(place.out_arcs) == 0:
-                net.places.remove(place)
-                print("removed "+place.name)"""
-
         # check the final marking
         final_marking = petri.net.Marking()
         for p in net.places:
@@ -104,6 +95,7 @@ class InductMinDirFollows(object):
                 final_marking[p] = 1
         if len(final_marking) == 0:
             self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+            self.noOfHiddenTransAddedTau = self.noOfHiddenTransAddedTau + 1
             hiddenTransEnd = petri.net.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded), None)
             end = petri.net.PetriNet.Place('end')
             net.places.add(end)
@@ -114,7 +106,6 @@ class InductMinDirFollows(object):
             for p in final_marking:
                 p.name = "end"
         # self.lastPlaceAdded.name = "end"
-
         # check the initial marking
         initial_marking = petri.net.Marking()
         for p in net.places:
@@ -122,6 +113,7 @@ class InductMinDirFollows(object):
                 initial_marking[p] = 1
         if len(initial_marking) == 0:
             self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+            self.noOfHiddenTransAddedTau = self.noOfHiddenTransAddedTau + 1
             hiddenTransStart = petri.net.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded), None)
             newStart = petri.net.PetriNet.Place('start')
             net.places.add(newStart)
@@ -189,24 +181,47 @@ class InductMinDirFollows(object):
         avg = 0
         for el in labels:
             if type(el) is list:
-                if typ == "parallel":
-                    if avg == 0:
-                        avg = self.avgSubtree(el, "rec")
-                    else:
-                        avg = max(avg, self.avgSubtree(el, "rec"))
-                else:
-                    avg = avg + self.avgSubtree(el, "rec")
-                    avg = float(avg) / float(len(labels))
+                avg = avg + self.avgSubtree(el, "rec")
+                avg = float(avg) / float(len(labels))
             else:
                 avg = avg + self.activitiesCountInLog[el]
 
         return avg
+
+    def sumSubtree(self, labels, typ):
+        """
+        Do the sum of activities occurrences in a subtree
+
+        Parameters
+        ----------
+        labels
+            Activities belonging to the subtree
+        typ
+            Type of subtree that is being added
+        """
+        sum = 0
+        for el in labels:
+            if type(el) is list:
+                sum = sum + self.sumSubtree(el, "rec")
+            else:
+                sum = sum + self.activitiesCountInLog[el]
+
+        return sum
 
     def verifySubtreeLoopCondition(self, labels):
         ret = False
         for el in labels:
             for subel in el:
                 if self.maxNoOfActivitiesPerTrace[subel] > 1:
+                    ret = True
+                    break
+        return ret
+
+    def verifyNecessityOfSkipTransitionForConcurrentPairs(self, labels):
+        ret = False
+        for el in labels:
+            for subel in el:
+                if self.minNoOfActivitiesPerTrace[subel] < 1:
                     ret = True
                     break
         return ret
@@ -233,35 +248,23 @@ class InductMinDirFollows(object):
             Place that we should attach on
         """
         averagedSubtree = self.avgSubtree(labels, type)
+        summedSubtree = self.sumSubtree(labels, type)
         self.noOfPlacesAdded = self.noOfPlacesAdded + 1
         subtreeEnd = petri.net.PetriNet.Place('p_' + str(self.noOfPlacesAdded))
         self.lastPlaceAdded = subtreeEnd
         net.places.add(subtreeEnd)
         originalType = deepcopy(type)
-        if type == "parallel":
-            self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-            hiddenTransitionFromInput = petri.net.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded),
-                                                                      self.hiddenTransitionVisibleLabel(
-                                                                          'tau_' + str(self.noOfHiddenTransAdded)))
-            net.transitions.add(hiddenTransitionFromInput)
-            petri.utils.add_arc_from_to(refToLastPlace[0], hiddenTransitionFromInput, net)
-            self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-            hiddenTransitionToOutput = petri.net.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded),
-                                                                     self.hiddenTransitionVisibleLabel(
-                                                                         'tau_' + str(self.noOfHiddenTransAdded)))
-            net.transitions.add(hiddenTransitionToOutput)
-            petri.utils.add_arc_from_to(hiddenTransitionToOutput, subtreeEnd, net)
 
         type = deepcopy(originalType)
         subtreeLoopCondition = self.verifySubtreeLoopCondition(labels)
-        condition1 = mustAddSkipHiddenTrans
-        condition2 = (len(self.addedGraphsActivitiesAvg) > 0 and abs(
-            averagedSubtree - self.addedGraphsActivitiesAvg[0]) > 0.5)
+        condition1 = mustAddSkipHiddenTrans and (len(self.addedGraphsActivitiesSum) > 0 and abs(summedSubtree - self.addedGraphsActivitiesSum[0]) > 0.5)
+        condition2 = (len(self.addedGraphsActivitiesAvg) > 0 and abs(averagedSubtree - self.addedGraphsActivitiesAvg[0]) > 0.5) and not type == "concurrent"
 
         if (condition1 or condition2):
             # add the hidden transitions that permits to skip the tree
             self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-            if mustAddSkipHiddenTrans:
+            self.noOfHiddenTransAddedSkip = self.noOfHiddenTransAddedSkip + 1
+            if condition1:
                 hiddenTransSkipTree = petri.net.PetriNet.Transition('fskip_' + str(self.noOfHiddenTransAdded),
                                                                     self.hiddenTransitionVisibleLabel(
                                                                         'fskip_' + str(self.noOfHiddenTransAdded)))
@@ -275,12 +278,11 @@ class InductMinDirFollows(object):
 
         type = deepcopy(originalType)
         condition3 = (type == "flower")
-        condition4 = (type == "parallel" or len(activInSelfLoop) > 0 or mustAddBackwardHiddenTrans)
-        if (condition3 or condition4):
-            if subtreeLoopCondition:
-                # if type == "flower":
-                # if we are adding a flower, we must add also the coming back arc
+        condition4 = (len(activInSelfLoop) > 0 or mustAddBackwardHiddenTrans)
+        if (condition3 or condition4) and subtreeLoopCondition:
+                # here we must add also the coming back arc
                 self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+                self.noOfHiddenTransAddedLoop = self.noOfHiddenTransAddedLoop + 1
                 hiddenTransLoop = petri.net.PetriNet.Transition('loop_' + str(self.noOfHiddenTransAdded),
                                                                 self.hiddenTransitionVisibleLabel(
                                                                     'loop_' + str(self.noOfHiddenTransAdded)))
@@ -291,10 +293,6 @@ class InductMinDirFollows(object):
         # each label is a cluster of sequentially followed activities
         for l in labels:
             transitions = []
-            # hiddenTransitionsInput = []
-            # hiddenTransitionsOutput = []
-            hiddenTransitionsInputPlaces = []
-            hiddenTransitionsOutputPlaces = []
             i = 0
             while i < len(l):
                 li = l[i]
@@ -310,27 +308,13 @@ class InductMinDirFollows(object):
                     transitions.append(self.transitionsMap[transLab])
                 # input element of the sequence cluster
                 if i == 0:
-                    if type == "parallel":
-                        # if we must add a parallel subtree, then hidden transitions are added to the model
-                        self.noOfPlacesAdded = self.noOfPlacesAdded + 1
-                        thisPlace = petri.net.PetriNet.Place('p_' + str(self.noOfPlacesAdded))
-                        hiddenTransitionsInputPlaces.append(thisPlace)
-                        self.lastPlaceAdded = thisPlace
-                        net.places.add(hiddenTransitionsInputPlaces[-1])
-                        petri.utils.add_arc_from_to(hiddenTransitionFromInput, hiddenTransitionsInputPlaces[-1], net)
-                    if type == "parallel":
-                        arcLabel = str(hiddenTransitionsInputPlaces[0]) + str(transitions[0])
+                    if type == "concurrent" or type == "flower":
+                        # if we are adding a concurrent or flower subtree, then we have no worries:
+                        # we need to add an arc between the previous place and the transition
+                        arcLabel = str(refToLastPlace[0]) + str(transitions[0])
                         if not arcLabel in self.addedArcsObjLabels:
-                            petri.utils.add_arc_from_to(hiddenTransitionsInputPlaces[0], transitions[0], net)
+                            petri.utils.add_arc_from_to(refToLastPlace[0], transitions[0], net)
                             self.addedArcsObjLabels.append(arcLabel)
-                    else:
-                        if type == "concurrent" or type == "flower":
-                            # if we are adding a concurrent or flower subtree, then we have no worries:
-                            # we need to add an arc between the previous place and the transition
-                            arcLabel = str(refToLastPlace[0]) + str(transitions[0])
-                            if not arcLabel in self.addedArcsObjLabels:
-                                petri.utils.add_arc_from_to(refToLastPlace[0], transitions[0], net)
-                                self.addedArcsObjLabels.append(arcLabel)
                 if i > 0:
                     # we add sequential elements inside the cluster
                     if not transitions[-2].label == transitions[-1].label:
@@ -343,32 +327,18 @@ class InductMinDirFollows(object):
                             petri.utils.add_arc_from_to(auxiliaryPlace, transitions[-1], net)
                             self.addedArcsObjLabels.append(arcLabel)
                 if i == len(l) - 1:
-                    if type == "parallel":
-                        # if we must add a parallel subtree, then hidden transitions are added to the model
-                        self.noOfPlacesAdded = self.noOfPlacesAdded + 1
-                        thisPlace = petri.net.PetriNet.Place('p_' + str(self.noOfPlacesAdded))
-                        hiddenTransitionsOutputPlaces.append(thisPlace)
-                        self.lastPlaceAdded = thisPlace
-                        net.places.add(hiddenTransitionsOutputPlaces[-1])
-                        petri.utils.add_arc_from_to(hiddenTransitionsOutputPlaces[-1], hiddenTransitionToOutput, net)
-                    if type == "parallel":
-                        arcLabel = str(transitions[-1]) + str(hiddenTransitionsOutputPlaces[-1])
+                    if type == "concurrent" or type == "flower":
+                        # if we are adding a concurrent or flower subtree, then we have no worries:
+                        # we need to add an arc between the transition and the end-subtree place
+                        arcLabel = str(transitions[-1]) + str(subtreeEnd)
                         if not arcLabel in self.addedArcsObjLabels:
-                            petri.utils.add_arc_from_to(transitions[-1], hiddenTransitionsOutputPlaces[-1], net)
+                            petri.utils.add_arc_from_to(transitions[-1], subtreeEnd, net)
                             self.addedArcsObjLabels.append(arcLabel)
-                    else:
-                        if type == "concurrent" or type == "flower":
-                            # if we are adding a concurrent or flower subtree, then we have no worries:
-                            # we need to add an arc between the transition and the end-subtree place
-                            arcLabel = str(transitions[-1]) + str(subtreeEnd)
-                            if not arcLabel in self.addedArcsObjLabels:
-                                petri.utils.add_arc_from_to(transitions[-1], subtreeEnd, net)
-                                self.addedArcsObjLabels.append(arcLabel)
                 i = i + 1
         refToLastPlace[0] = subtreeEnd
-        # print("averaged=",averaged,type)
         self.addedGraphs.append(labels)
         self.addedGraphsActivitiesAvg.append(averagedSubtree)
+        self.addedGraphsActivitiesSum.append(summedSubtree)
 
         return net
 
@@ -396,6 +366,7 @@ class InductMinDirFollows(object):
         else:
             connectionPlace = inputConnectionPlace
         self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+        self.noOfHiddenTransAddedTau = self.noOfHiddenTransAddedTau + 1
         hiddenTransition = petri.net.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded),
                                                          self.hiddenTransitionVisibleLabel(
                                                              'tau_' + str(self.noOfHiddenTransAdded)))
@@ -431,6 +402,7 @@ class InductMinDirFollows(object):
 
         if inputHiddenTransition is None:
             self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+            self.noOfHiddenTransAddedTau = self.noOfHiddenTransAddedTau + 1
             hiddenTransition = petri.net.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded),
                                                              self.hiddenTransitionVisibleLabel(
                                                                  'tau_' + str(self.noOfHiddenTransAdded)))
@@ -477,6 +449,122 @@ class InductMinDirFollows(object):
                 return False
         return True
 
+    def checkParallelCutCouple(self, firstNegatedComponent, secondNegatedComponent, origPairs):
+        """
+        Check parallel cut couple
+
+        Parameters
+        ----------
+        firstNegatedComponent
+            First negated component
+        secondNegatedComponent
+            Second negated component
+        originalPairs
+            Original pairs of activities
+        """
+        z = 0
+        while z < len(firstNegatedComponent):
+            k = 0
+            while k < len(secondNegatedComponent):
+                pair1ToCheck = (firstNegatedComponent[z], secondNegatedComponent[k])
+                pair1CheckResult = pair1ToCheck in origPairs
+                pair2ToCheck = (secondNegatedComponent[k], firstNegatedComponent[z])
+                pair2CheckResult = pair2ToCheck in origPairs
+                pairCheckResult = (pair1CheckResult and pair2CheckResult)
+                if not pairCheckResult:
+                    return False
+                else:
+                    pass
+                k = k + 1
+            z = z + 1
+        return True
+
+    def checkParallelCut(self, negatedConnectedComponents, origPairs):
+        """
+        Check parallel cut
+
+        Parameters
+        ----------
+        negatedConnectedComponents
+            Negated connected components
+        origPairs
+            Original pairs of activities
+        """
+        origNegatedConnectedComponents = copy(negatedConnectedComponents)
+
+        i = 0
+        while i < len(negatedConnectedComponents):
+            mustContinue = False
+            j = i + 1
+            while j < len(negatedConnectedComponents):
+                result = self.checkParallelCutCouple(negatedConnectedComponents[i], negatedConnectedComponents[j], origPairs)
+                #print("result = ",result)
+                if not result:
+                    #print("merging i=",i,"j=",j)
+                    negatedConnectedComponents[i] = negatedConnectedComponents[i] + copy(negatedConnectedComponents[j])
+                    del negatedConnectedComponents[j]
+                    mustContinue = True
+                    continue
+                j = j + 1
+            if mustContinue:
+                continue
+            i = i + 1
+
+        return negatedConnectedComponents
+
+    def calculateEntropy(self, sets):
+        """
+        Calculate entropy over a list of lists of activities
+
+        Parameters
+        ----------
+        sets
+            List of lists of activities
+        """
+        entropy = 0.0
+        sum = 0.0
+        for set in sets:
+            sum = sum + len(set)
+        for set in sets:
+            p = len(set) / sum
+            entropy = entropy - p * math.log(p)/math.log(2)
+        return entropy
+
+    def giveScoreToConcurrentCut(self, connectedComponents):
+        """
+        Give score to a concurrent cut
+
+        Parameters
+        ----------
+        connectedComponents
+            Connected components
+        """
+        return 0.8 * self.calculateEntropy(connectedComponents)
+
+    def giveScoreToParallelCut(self, connectedComponents):
+        """
+        Give score to a parallel cut
+
+        Parameters
+        ----------
+        connectedComponents
+            Connected components
+        """
+        return 0.8 * self.calculateEntropy(connectedComponents)
+
+    def giveScoreToLoopCut(self, loopCut):
+        """
+        Give score to a parallel cut
+
+        Parameters
+        ----------
+        loopCut
+            Loop cut
+        """
+        sets = copy(loopCut)
+        del sets[0]
+        return 0.25 * self.calculateEntropy(sets)
+
     def recFindCut(self, net, nodesLabels, pairs, recDepth, refToLastPlace, mustAddSkipHiddenTrans=False,
                    mustAddBackwardHiddenTrans=False):
         """
@@ -500,6 +588,7 @@ class InductMinDirFollows(object):
         pairs = dfgGraph.getPairs()
         origPairs = dfgGraph.getOrigPairs()
         origLabels = dfgGraph.getOrigLabels()
+        activitiesArcsDirection = self.calculateActivitiesArcsDirection(origLabels)
         activInSelfLoop = self.getActivitiesInSelfLoop(origPairs)
         connectedComponents = dfgGraph.findConnectedComponents()
         # negate the graph to observe parallel behavior
@@ -508,92 +597,136 @@ class InductMinDirFollows(object):
         negatedPairs = negatedGraph.getPairs()
         negatedOrigPairs = negatedGraph.origPairs
         negatedConnectedComponents = negatedGraph.findConnectedComponents()
+        parallelCutMayBePresent = len(negatedConnectedComponents) > 1 and len(connectedComponents) == 1
+        if parallelCutMayBePresent:
+            negatedConnectedComponents = self.checkParallelCut(negatedConnectedComponents, origPairs)
+            parallelCutMayBePresent = len(negatedConnectedComponents) > 1 and len(connectedComponents) == 1
         maximumCut = None
-        maximumCutNegatedGraph = None
+        loopCut = None
         if True:
-            maximumCut = dfgGraph.findMaximumCut(self.addedGraphs)
+            maximumCut = dfgGraph.findMaximumCut(self.addedGraphs, activitiesArcsDirection=activitiesArcsDirection)
             # check if the cut is plausible
             if not (maximumCut[0] and maximumCut[1] and maximumCut[2]):
                 maximumCut = None
+        if maximumCut is None:
+            loopCut = dfgGraph.findLoopCut(activitiesArcsDirection)
+            # check if the cut is plausible
+            if not (loopCut[0] and loopCut[1] and loopCut[2]):
+                loopCut = None
+
         if len(pairs) == 0:
+            summedSubtree = self.sumSubtree(list(dfgGraph.labelsCorresp.values()), type)
+            conditionSkipPairs1 = self.verifyNecessityOfSkipTransitionForConcurrentPairs(list(dfgGraph.labelsCorresp.values()))
+            conditionSkipPairs2 = (len(self.addedGraphsActivitiesSum) > 0 and abs(summedSubtree - self.addedGraphsActivitiesSum[0]) > 0.5)
+            oldRefToLastPlace = [copy(refToLastPlace)[0]]
+            oldNumberOfHiddenTransitionsSkip = copy(self.noOfHiddenTransAddedSkip)
             # we have all unconnected activities / clusters of sequential activities: add them to the model!
             net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "concurrent", dfgGraph,
                                          refToLastPlace, activInSelfLoop, mustAddSkipHiddenTrans=mustAddSkipHiddenTrans,
-                                         mustAddBackwardHiddenTrans=mustAddSkipHiddenTrans)
-        elif maximumCut is not None:
-            pairs1 = dfgGraph.projectPairs(maximumCut[1], origPairs)
-            pairs2 = dfgGraph.projectPairs(maximumCut[2], origPairs)
-            net = self.recFindCut(net, maximumCut[1], pairs1, recDepth + 1, refToLastPlace,
-                                  mustAddSkipHiddenTrans=mustAddSkipHiddenTrans,
-                                  mustAddBackwardHiddenTrans=mustAddSkipHiddenTrans)
-            net = self.recFindCut(net, maximumCut[2], pairs2, recDepth + 1, refToLastPlace,
-                                  mustAddSkipHiddenTrans=mustAddSkipHiddenTrans,
-                                  mustAddBackwardHiddenTrans=mustAddSkipHiddenTrans)
-        elif len(connectedComponents) > 1:
-            connectionPlace = None
-            newRefToLastPlace = [copy(refToLastPlace)[0]]
-            for cc in connectedComponents:
-                # we add the connected component and memorize the connection place
-                ccPairs = dfgGraph.projectPairs(cc, origPairs)
-                net = self.recFindCut(net, cc, ccPairs, recDepth + 1, newRefToLastPlace,
-                                      mustAddSkipHiddenTrans=mustAddSkipHiddenTrans,
-                                      mustAddBackwardHiddenTrans=mustAddSkipHiddenTrans)
-                [net, connectionPlace, connectionTransition] = self.addConnectionPlace(net, newRefToLastPlace,
-                                                                                       inputConnectionPlace=connectionPlace)
-            refToLastPlace[0] = connectionPlace
-        elif len(negatedConnectedComponents) > 1:
-            # print("Case 2",recDepth,nodesLabels)
-            connectionPlace = None
-            connectionTransition = None
-
-            self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-            inputHiddenTransition = petri.net.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded),
-                                                                  self.hiddenTransitionVisibleLabel(
-                                                                      'tau_' + str(self.noOfHiddenTransAdded)))
-            net.transitions.add(inputHiddenTransition)
-            petri.utils.add_arc_from_to(refToLastPlace[0], inputHiddenTransition, net)
-
-            for cc in negatedConnectedComponents:
-                self.noOfPlacesAdded = self.noOfPlacesAdded + 1
-                inputPlace = petri.net.PetriNet.Place('p_' + str(self.noOfPlacesAdded))
-                net.places.add(inputPlace)
-                newRefToLastPlace = [inputPlace]
-                petri.utils.add_arc_from_to(inputHiddenTransition, inputPlace, net)
-                # we add the connected component and memorize the connection place
-                ccPairs = negatedGraph.projectPairs(cc, origPairs)
-                net = self.recFindCut(net, cc, ccPairs, recDepth + 1, newRefToLastPlace, mustAddSkipHiddenTrans=True,
-                                      mustAddBackwardHiddenTrans=True)
-                [net, connectionPlace, connectionTransition] = self.addConnectionPlaceParallel(net, newRefToLastPlace,
-                                                                                               inputConnectionPlace=connectionPlace,
-                                                                                               inputHiddenTransition=connectionTransition)
-            refToLastPlace[0] = connectionPlace
+                                         mustAddBackwardHiddenTrans=mustAddBackwardHiddenTrans)
+            newNumberOfHiddenTransitionsSkip = copy(self.noOfHiddenTransAddedSkip)
+            if conditionSkipPairs1:
+                if conditionSkipPairs2:
+                    print(list(dfgGraph.labelsCorresp.values()), abs(summedSubtree - self.addedGraphsActivitiesSum[0]), abs(summedSubtree - self.addedGraphsActivitiesSum[-1]))
+                    if oldNumberOfHiddenTransitionsSkip == newNumberOfHiddenTransitionsSkip:
+                        self.noOfHiddenTransAddedSkip = self.noOfHiddenTransAddedSkip + 1
+                        self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+                        hiddenTransition = petri.net.PetriNet.Transition('cskip_' + str(self.noOfHiddenTransAdded),
+                                                                          self.hiddenTransitionVisibleLabel(
+                                                                              'cskip_' + str(self.noOfHiddenTransAdded)))
+                        net.transitions.add(hiddenTransition)
+                        petri.utils.add_arc_from_to(oldRefToLastPlace[0], hiddenTransition, net)
+                        petri.utils.add_arc_from_to(hiddenTransition, refToLastPlace[0], net)
         else:
-            activitiesArcsDirection = self.calculateActivitiesArcsDirection(origLabels)
-            loopCut = dfgGraph.findLoopCut(activitiesArcsDirection)
-            if loopCut[0] and loopCut[1] and loopCut[2]:
-                pairs1 = dfgGraph.projectPairs(loopCut[1], origPairs)
-                pairs2 = dfgGraph.projectPairs(loopCut[2], origPairs)
-                originRefToLastPlace = copy(refToLastPlace)
-                net = self.recFindCut(net, loopCut[1], pairs1, recDepth + 1, refToLastPlace,
-                                      mustAddSkipHiddenTrans=False, mustAddBackwardHiddenTrans=False)
-                intermediateRefToLastPlace = copy(refToLastPlace)
-                net = self.recFindCut(net, loopCut[2], pairs2, recDepth + 1, refToLastPlace,
-                                      mustAddSkipHiddenTrans=False, mustAddBackwardHiddenTrans=False)
-                self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-                loopTransition = petri.net.PetriNet.Transition('loop_' + str(self.noOfHiddenTransAdded),
-                                                               self.hiddenTransitionVisibleLabel(
-                                                                   'loop_' + str(self.noOfHiddenTransAdded)))
-                net.transitions.add(loopTransition)
-                petri.utils.add_arc_from_to(refToLastPlace[0], loopTransition, net)
-                petri.utils.add_arc_from_to(loopTransition, originRefToLastPlace[0], net)
-                self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-                skipTransition = petri.net.PetriNet.Transition('skip_' + str(self.noOfHiddenTransAdded),
-                                                               self.hiddenTransitionVisibleLabel(
-                                                                   'skip_' + str(self.noOfHiddenTransAdded)))
-                net.transitions.add(skipTransition)
-                petri.utils.add_arc_from_to(originRefToLastPlace[0], skipTransition, net)
-                petri.utils.add_arc_from_to(skipTransition, intermediateRefToLastPlace[0], net)
+            possibleOptionsWithScore = []
 
+            if maximumCut is not None:
+                possibleOptionsWithScore.append(["maximumCut", 1.0, maximumCut])
+            if len(connectedComponents) > 1:
+                possibleOptionsWithScore.append(["concurrentCut", self.giveScoreToConcurrentCut(connectedComponents), connectedComponents])
+            if parallelCutMayBePresent:
+                possibleOptionsWithScore.append(["parallelCut", self.giveScoreToParallelCut(negatedConnectedComponents), negatedConnectedComponents])
+            if loopCut is not None:
+                possibleOptionsWithScore.append(["loopCut", self.giveScoreToLoopCut(loopCut), loopCut])
+
+            if possibleOptionsWithScore:
+                possibleOptionsWithScore = sorted(possibleOptionsWithScore, key=lambda x: x[1], reverse=True)
+                #print("\nrecDepth=", recDepth, "possibleOptionsWithScore=", possibleOptionsWithScore)
+
+                bestOptionLabel = possibleOptionsWithScore[0][0]
+
+                if bestOptionLabel == "maximumCut":
+                    pairs1 = dfgGraph.projectPairs(maximumCut[1], origPairs)
+                    pairs2 = dfgGraph.projectPairs(maximumCut[2], origPairs)
+                    net = self.recFindCut(net, maximumCut[1], pairs1, recDepth + 1, refToLastPlace,
+                                          mustAddSkipHiddenTrans=mustAddSkipHiddenTrans,
+                                          mustAddBackwardHiddenTrans=mustAddBackwardHiddenTrans)
+                    net = self.recFindCut(net, maximumCut[2], pairs2, recDepth + 1, refToLastPlace,
+                                          mustAddSkipHiddenTrans=mustAddSkipHiddenTrans,
+                                          mustAddBackwardHiddenTrans=mustAddBackwardHiddenTrans)
+                elif bestOptionLabel == "concurrentCut":
+                    connectionPlace = None
+                    newRefToLastPlace = [copy(refToLastPlace)[0]]
+                    for cc in connectedComponents:
+                        # we add the connected component and memorize the connection place
+                        ccPairs = dfgGraph.projectPairs(cc, origPairs)
+                        net = self.recFindCut(net, cc, ccPairs, recDepth + 1, newRefToLastPlace,
+                                              mustAddSkipHiddenTrans=mustAddSkipHiddenTrans,
+                                              mustAddBackwardHiddenTrans=mustAddBackwardHiddenTrans)
+                        [net, connectionPlace, connectionTransition] = self.addConnectionPlace(net, newRefToLastPlace,
+                                                                                               inputConnectionPlace=connectionPlace)
+                    refToLastPlace[0] = connectionPlace
+                elif bestOptionLabel == "parallelCut":
+                    connectionPlace = None
+                    connectionTransition = None
+
+                    self.noOfHiddenTransAddedTau = self.noOfHiddenTransAddedTau + 1
+                    self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+                    inputHiddenTransition = petri.net.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded),
+                                                                          self.hiddenTransitionVisibleLabel(
+                                                                              'tau_' + str(self.noOfHiddenTransAdded)))
+                    net.transitions.add(inputHiddenTransition)
+                    petri.utils.add_arc_from_to(refToLastPlace[0], inputHiddenTransition, net)
+
+                    for cc in negatedConnectedComponents:
+                        self.noOfPlacesAdded = self.noOfPlacesAdded + 1
+                        inputPlace = petri.net.PetriNet.Place('p_' + str(self.noOfPlacesAdded))
+                        net.places.add(inputPlace)
+                        newRefToLastPlace = [inputPlace]
+                        petri.utils.add_arc_from_to(inputHiddenTransition, inputPlace, net)
+                        # we add the connected component and memorize the connection place
+                        ccPairs = negatedGraph.projectPairs(cc, origPairs)
+                        net = self.recFindCut(net, cc, ccPairs, recDepth + 1, newRefToLastPlace, mustAddSkipHiddenTrans=True,
+                                              mustAddBackwardHiddenTrans=True)
+                        [net, connectionPlace, connectionTransition] = self.addConnectionPlaceParallel(net, newRefToLastPlace,
+                                                                                                       inputConnectionPlace=connectionPlace,
+                                                                                                       inputHiddenTransition=connectionTransition)
+                    refToLastPlace[0] = connectionPlace
+                elif bestOptionLabel == "loopCut":
+                    pairs1 = dfgGraph.projectPairs(loopCut[1], origPairs)
+                    pairs2 = dfgGraph.projectPairs(loopCut[2], origPairs)
+                    originRefToLastPlace = copy(refToLastPlace)
+                    net = self.recFindCut(net, loopCut[1], pairs1, recDepth + 1, refToLastPlace,
+                                          mustAddSkipHiddenTrans=False, mustAddBackwardHiddenTrans=False)
+                    intermediateRefToLastPlace = copy(refToLastPlace)
+                    net = self.recFindCut(net, loopCut[2], pairs2, recDepth + 1, refToLastPlace,
+                                          mustAddSkipHiddenTrans=False, mustAddBackwardHiddenTrans=False)
+                    self.noOfHiddenTransAddedLoop = self.noOfHiddenTransAddedLoop + 1
+                    self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+                    loopTransition = petri.net.PetriNet.Transition('loop_' + str(self.noOfHiddenTransAdded),
+                                                                   self.hiddenTransitionVisibleLabel(
+                                                                       'loop_' + str(self.noOfHiddenTransAdded)))
+                    net.transitions.add(loopTransition)
+                    petri.utils.add_arc_from_to(refToLastPlace[0], loopTransition, net)
+                    petri.utils.add_arc_from_to(loopTransition, originRefToLastPlace[0], net)
+                    self.noOfHiddenTransAddedSkip = self.noOfHiddenTransAddedSkip + 1
+                    self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+                    skipTransition = petri.net.PetriNet.Transition('skip_' + str(self.noOfHiddenTransAdded),
+                                                                   self.hiddenTransitionVisibleLabel(
+                                                                       'skip_' + str(self.noOfHiddenTransAdded)))
+                    net.transitions.add(skipTransition)
+                    petri.utils.add_arc_from_to(originRefToLastPlace[0], skipTransition, net)
+                    petri.utils.add_arc_from_to(skipTransition, intermediateRefToLastPlace[0], net)
             else:
                 # if everything fails, then flower!
                 net = self.addSubtreeToModel(net, list(dfgGraph.labelsCorresp.values()), "flower", dfgGraph,

@@ -6,7 +6,10 @@ def graphviz_visualization(net):
     #transitions
     viz.attr('node', shape='box')
     for t in net.transitions:
-        viz.node(str(t.name), str(t.label))
+        if t.label is not None:
+            viz.node(str(t.name), str(t.label))
+        else:
+            viz.node(str(t.name), str(t.name))
 
     #places
     viz.attr('node', shape='circle', fixedsize='true', width='0.75')
@@ -21,5 +24,4 @@ def graphviz_visualization(net):
     viz.attr(fontsize='11')
 
     return viz
-
 
