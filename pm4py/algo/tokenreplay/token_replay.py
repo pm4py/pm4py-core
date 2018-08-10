@@ -307,7 +307,9 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                                                                                          activatedTransitions, 0)
                                 if semantics.is_enabled(t, net, marking):
                                     marking = semantics.execute(t, net, marking)
-
+                                    activatedTransitions.append(t)
+                            else:
+                                marking = semantics.execute(t, net, marking)
                                 activatedTransitions.append(t)
         else:
             break
