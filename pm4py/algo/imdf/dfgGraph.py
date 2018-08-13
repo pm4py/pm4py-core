@@ -2,7 +2,8 @@ from copy import copy, deepcopy
 import random
 
 HIGH_QUALITY_CUT_CONSTANT = 0.65
-LOOP_CONSTANT = 0.2
+LOOP_CONSTANT_START = 0.2
+LOOP_CONSTANT_END = 0.03
 
 class CutResultObj(object):
     """ Object useful for the second
@@ -407,11 +408,11 @@ class DfgGraph(object):
                     allAlreadyExamined.add(x)
         return connectedComponents
 
-    def findMaximumCut(self, addedGraphs):
+    def findMaximumCut(self, addedGraphs, activitiesArcsDirection=None):
         """
         finds the maximum cut of the graph
         """
-        return self.findMaximumCutGreedy(addedGraphs)
+        return self.findMaximumCutAlgo2(addedGraphs, activitiesArcsDirection=activitiesArcsDirection)
 
     def getSetStrings(self, set):
         """
@@ -456,7 +457,7 @@ class DfgGraph(object):
                     nodesThatCanBeMoved.append(node)
         return nodesThatCanBeMoved
 
-    def findMaximumCutAlgo2(self, addedGraphs):
+    def findMaximumCutAlgo2(self, addedGraphs, activitiesArcsDirection=None):
         """
         Slower algorithm for maximum cut detection
         (examines all possibilities)
@@ -498,7 +499,7 @@ class DfgGraph(object):
 
         return [False, [], []]
 
-    def findMaximumCutGreedy(self, addedGraphs):
+    def findMaximumCutGreedy(self, addedGraphs, activitiesArcsDirection=None):
         """
         Greedy strategy to form a maximum cut:
         - activities without any input are added to set1
@@ -511,15 +512,17 @@ class DfgGraph(object):
         set2 = [x for x in set2 if not x in set1]
         set1Strings = self.getSetStrings(set1)
         set2Strings = self.getSetStrings(set2)
-        # set1NodesThatCanBeMoved = self.getNodesThatCanBeMoved(set1, set2, set1Strings, set2Strings, "set1")
-        # set2NodesThatCanBeMoved = self.getNodesThatCanBeMoved(set1, set2, set1Strings, set2Strings, "set2")
-        """print("set1Strings=",set1Strings)
-        print("set2Strings=",set2Strings)
-        print("set1NodesThatCanBeMoved=",set1NodesThatCanBeMoved)
-        print("set2NodesThatCanBeMoved=",set2NodesThatCanBeMoved)
-        input()"""
+
+        if activitiesArcsDirection is not None:
+            for label in self.nodes:
+                x = self.nodes[label]
+                firstElOfClust = self.labelsCorresp[label][0]
+                if firstElOfClust in activitiesArcsDirection:
+                    oldCountConnection = copy(x.countConnections)
+                    x.countConnections = 100000000 + abs(activitiesArcsDirection[firstElOfClust])
 
         nodes = sorted(list(self.nodes.values()), key=lambda x: x.countConnections, reverse=True)
+
         for node in nodes:
             if not node in set1 and not node in set2:
                 inputConnectionsInSet1 = [x for x in self.pairs if x[0] in set1Strings]
@@ -538,13 +541,7 @@ class DfgGraph(object):
                         set2.append(node)
                     else:
                         # add it to the most convenient place
-                        """if len(set1) == 0:
-                            # add to set 1
-                            set1.append(node)
-                        elif len(set2) == 0:
-                            # add to set 2
-                            set2.append(node)"""
-                        if len(inputConnectionsInSet1) >= len(outputConnectionsInSet2):
+                        if len(inputConnectionsInSet1) > len(outputConnectionsInSet2):
                             # add to set 2
                             set2.append(node)
                         else:
@@ -554,8 +551,6 @@ class DfgGraph(object):
                     set2.append(node)
             set1Strings = self.getSetStrings(set1)
             set2Strings = self.getSetStrings(set2)
-        # set1NodesThatCanBeMoved = self.getNodesThatCanBeMoved(set1, set2, set1Strings, set2Strings, "set1")
-        # set2NodesThatCanBeMoved = self.getNodesThatCanBeMoved(set1, set2, set1Strings, set2Strings, "set2")
         set2 = [x for x in set2 if not x in set1]
         retSet1 = [y for x in set1Strings for y in self.labelsCorresp[x]]
         retSet2 = [y for x in set2Strings for y in self.labelsCorresp[x]]
@@ -585,56 +580,6 @@ class DfgGraph(object):
             return [True, retSet1, retSet2]
         return [False, retSet1, retSet2]
 
-    """def getSelfLoopStartingFromActivityIfExisting(self, activity, activitiesInputs, activitiesOutputs, allActivities):
-        startActivities = set()
-        endActivities = set()
-        startActivities.add(activity)
-        for act0 in startActivities:
-            if act0 in activitiesInputs:
-                for act1 in activitiesInputs[act0]:
-                    if not act0 == act1 and not act1 in endActivities and not act1 in startActivities:
-                        endActivities.add(act1)
-        for act0 in endActivities:
-            if act0 in activitiesOutputs:
-                for act1 in activitiesOutputs[act0]:
-                    if not act0 == act1 and not act1 in startActivities and not act1 in endActivities:
-                        startActivities.add(act1)
-        for act0 in startActivities:
-            if act0 in activitiesInputs:
-                for act1 in activitiesInputs[act0]:
-                    if not (act1 in startActivities or act1 in endActivities):
-                        return [False, set(), set()]
-        for activity in allActivities:
-            if not activity in startActivities and not activity in endActivities:
-                startActivities.add(activity)
-        intersection = set.intersection(startActivities, endActivities)
-        return [True, list(startActivities), list(endActivities)]
-
-    def findLoopCut(self):
-        activitiesInputs = {}
-        activitiesOutputs = {}
-        allActivities = [str(x) for x in self.origLabels]
-
-        for p in self.origPairs:
-            if not p[1] in activitiesInputs:
-                activitiesInputs[p[1]] = []
-            if not p[0] in activitiesOutputs:
-                activitiesOutputs[p[0]] = []
-            activitiesInputs[p[1]].append(p[0])
-            activitiesOutputs[p[0]].append(p[1])
-        bestResult = None
-        bestResultScore = -1
-        for activity in self.origLabels:
-            # result = self.discoverIfActivityIsStartEndInALoop(activity, activity, activitiesInputs, activitiesOutputs, deepcopy(set()), 0)
-            result = self.getSelfLoopStartingFromActivityIfExisting(activity, activitiesInputs, activitiesOutputs,
-                                                                    allActivities)
-            if result[0]:
-                score = min(len(result[1]), len(result[2]))
-                if score > bestResultScore:
-                    bestResult = result
-                    bestResultScore = score
-        return bestResult"""
-
     def findLoopCut(self, activitiesArcsDirection):
         """
         Finds a loop cut (alternative algorithm)
@@ -654,40 +599,31 @@ class DfgGraph(object):
                 activitiesOutputs[p[0]] = []
             activitiesInputs[p[1]].append(p[0])
             activitiesOutputs[p[0]].append(p[1])
-        activitiesUnderNegativeThreshold = []
-        activitiesOverPositiveThreshold = []
+        sortedActivitiesArcsDirection = []
         for act in activitiesArcsDirection:
-            if activitiesArcsDirection[act] > LOOP_CONSTANT:
-                activitiesOverPositiveThreshold.append(act)
-            if activitiesArcsDirection[act] < -LOOP_CONSTANT:
-                activitiesUnderNegativeThreshold.append(act)
-        #print("activitiesArcsDirection=",activitiesArcsDirection)
-        #print("activitiesUnderNegativeThreshold=", activitiesUnderNegativeThreshold)
-        #print("activitiesOverPositiveThreshold=", activitiesOverPositiveThreshold)
-        if len(activitiesOverPositiveThreshold) > 0:
-            startActivities = copy(activitiesOverPositiveThreshold)
-            endActivities = []
+            sortedActivitiesArcsDirection.append([act, activitiesArcsDirection[act]])
 
-            for act in activitiesArcsDirection:
-                if activitiesArcsDirection[act] < 0:
-                    if not act in startActivities and not act in endActivities:
-                        endActivities.append(act)
-            for act in startActivities:
-                for otherAct in activitiesInputs[act]:
-                    if not otherAct in startActivities and not otherAct in endActivities:
-                        if activitiesArcsDirection[otherAct] < 0:
-                            endActivities.append(otherAct)
-            for act in allActivities:
-                if not (act in startActivities or act in endActivities):
-                    startActivities.append(act)
-            if startActivities and endActivities:
-                return [True, startActivities, endActivities]
-        elif len(activitiesUnderNegativeThreshold) > 0:
-            startActivities = []
-            endActivities = copy(activitiesUnderNegativeThreshold)
-            for act in allActivities:
-                if not (act in startActivities or act in endActivities):
-                    startActivities.append(act)
-            if startActivities and endActivities:
-                return [True, startActivities, endActivities]
+        sortedActivitiesArcsDirection = sorted(sortedActivitiesArcsDirection, key=lambda x: x[1], reverse=True)
+        #print(sortedActivitiesArcsDirection)
+
+        if sortedActivitiesArcsDirection:
+            consideredStartActivity = sortedActivitiesArcsDirection[0][0]
+            if activitiesArcsDirection[consideredStartActivity] > LOOP_CONSTANT_START:
+                if consideredStartActivity in activitiesInputs:
+                    activityInputs = activitiesInputs[consideredStartActivity]
+                    startActivities = []
+                    endActivities = []
+
+                    for activity in activityInputs:
+                        if activity in activitiesArcsDirection and not activity == consideredStartActivity:
+                            if activitiesArcsDirection[activity] < LOOP_CONSTANT_END:
+                                endActivities.append(activity)
+
+                    for activity in allActivities:
+                        if not activity in startActivities and not activity in endActivities:
+                            startActivities.append(activity)
+
+                    if startActivities and endActivities:
+                        return [True, startActivities, endActivities]
+
         return [False, [], []]

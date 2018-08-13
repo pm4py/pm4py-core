@@ -2,8 +2,8 @@ from pm4py.models.petri import semantics
 from copy import deepcopy,copy
 import time
 
-MAX_REC_DEPTH = 10
-MAX_HID_VISITED = 10
+MAX_REC_DEPTH = 50
+MAX_IT_FINAL = 10
 
 class NoConceptNameException(Exception):
     def __init__(self, message):
@@ -179,6 +179,65 @@ def get_placesShortestPathByHidden(net):
         placesShortestPath = get_placesShortestPath(net,p,p,placesShortestPath,[],0)
     return placesShortestPath
 
+def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth):
+    if recDepth >= MAX_REC_DEPTH:
+        return [net, marking, activatedTransitions]
+
+    #print("recDepth",recDepth,"transition to enable: ",t.name,t.label,"marking",marking,"in arcs",[x.source.name for x in t.in_arcs])
+
+    placesWithMissing = get_placesWithMissingTokens(t, net, marking)
+    hiddenTransitionsToEnable = []
+    for p1 in marking:
+        for p2 in placesWithMissing:
+            if p2 in placesShortestPathByHidden[p1]:
+                hiddenTransitionsToEnable.append(placesShortestPathByHidden[p1][p2])
+    if hiddenTransitionsToEnable:
+        somethingChanged = True
+        jIndexes = [0 for x in hiddenTransitionsToEnable]
+        z = 0
+        while somethingChanged:
+            somethingChanged = False
+            while jIndexes[z % len(hiddenTransitionsToEnable)] < len(
+                    hiddenTransitionsToEnable[z % len(hiddenTransitionsToEnable)]):
+                enabledTransitions = semantics.enabled_transitions(net, marking)
+                t3 = hiddenTransitionsToEnable[z % len(hiddenTransitionsToEnable)][
+                    jIndexes[z % len(hiddenTransitionsToEnable)]]
+                if t3 in enabledTransitions and semantics.is_enabled(t3, net, marking):
+                    marking = semantics.execute(t3, net, marking)
+                    activatedTransitions.append(t3)
+                    enabledTransitions = semantics.enabled_transitions(net, marking)
+                    somethingChanged = True
+
+                jIndexes[z % len(hiddenTransitionsToEnable)] = jIndexes[z % len(hiddenTransitionsToEnable)] + 1
+            if semantics.is_enabled(t, net, marking):
+                break
+            z = z + 1
+
+        if not semantics.is_enabled(t, net, marking):
+            hiddenTransitionsToEnable = []
+            for p1 in marking:
+                for p2 in placesWithMissing:
+                    if p2 in placesShortestPathByHidden[p1]:
+                        hiddenTransitionsToEnable.append(placesShortestPathByHidden[p1][p2])
+            z = 0
+            while z < len(hiddenTransitionsToEnable):
+                k = 0
+                while k < len(hiddenTransitionsToEnable[z]):
+                    t4 = hiddenTransitionsToEnable[z][k]
+                    if not semantics.is_enabled(t4, net, marking):
+                        [net, marking, activatedTransitions] = apply_hiddenTrans(t4, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth+1)
+                    if semantics.is_enabled(t4, net, marking):
+                        marking = semantics.execute(t4, net, marking)
+                        activatedTransitions.append(t4)
+                    k = k + 1
+                z = z + 1
+
+        if not semantics.is_enabled(t, net, marking):
+            [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking, placesShortestPathByHidden,
+                                                                     activatedTransitions, recDepth + 1)
+
+    return [net, marking, activatedTransitions]
+
 def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_placeFitness, place_fitness, placesShortestPathByHidden, consider_remaining_in_fitness):
     """
     Apply the token replaying algorithm to a trace
@@ -211,86 +270,49 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
     while i < len(trace):
         t = transMap[trace[i]["concept:name"]]
         if not semantics.is_enabled(t, net, marking):
-            enabledTransitions = semantics.enabled_transitions(net, marking)
-            hiddenTransitions = [x for x in enabledTransitions if x.label is None]
+            [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, 0)
 
-            if len(hiddenTransitions) >= 1:
-                j = 0
-                while j < MAX_HID_VISITED:
-                    enabledSomeHiddenTransition = False
-                    enabledTransitions = semantics.enabled_transitions(net, marking)
-                    hiddenTransitions = [x for x in enabledTransitions if x.label is None]
-                    executedHiddenTransitions = 0
-                    reachTransFromHiddenTrans = 0
-                    hiddenTransDist = 0
-                    executedHiddenTransitions = []
-                    reachTransFromHiddenTrans = []
-                    hiddenTransDist = {}
-
-                    if len(hiddenTransitions) == 1:
-                        marking = semantics.execute(hiddenTransitions[0], net, marking)
-                        executedHiddenTransitions.append(hiddenTransitions[0])
-                        activatedTransitions.append(hiddenTransitions[0])
-                        activatedHiddenTransitions.append(hiddenTransitions[0])
-                        break
-                    else:
-                        for t2 in hiddenTransitions:
-                            reachTransDict = get_hiddenTrans_ReachTrans(t2, net, 0)
-                            reachTrans = list(reachTransDict.keys())
-                            reachTransFromHiddenTrans.append(reachTrans)
-                            if t.label in reachTrans:
-                                hiddenTransDist[t2] = reachTransDict[t.label]
-                        if len(hiddenTransDist.keys()) > 0:
-                            minTransDist = min(hiddenTransDist.items(), key=lambda x: x[1])
-                            marking = semantics.execute(minTransDist[0], net, marking)
-                            executedHiddenTransitions.append(minTransDist[0])
-                            activatedTransitions.append(minTransDist[0])
-                            activatedHiddenTransitions.append(minTransDist[0])
-                    if not executedHiddenTransitions or semantics.is_enabled(t, net, marking):
-                        break
-                    j = j + 1
-
-            if not semantics.is_enabled(t, net, marking):
-                placesWithMissing = get_placesWithMissingTokens(t, net, marking)
-                hiddenTransitionsToEnable = []
-                for p1 in marking:
-                    for p2 in placesWithMissing:
-                        if p2 in placesShortestPathByHidden[p1]:
-                            hiddenTransitionsToEnable.append(placesShortestPathByHidden[p1][p2])
-
-                if hiddenTransitionsToEnable:
-                    somethingChanged = True
-                    jIndexes = [0 for x in hiddenTransitionsToEnable]
-                    z = 0
-                    while somethingChanged:
-                        somethingChanged = False
-                        while jIndexes[z%len(hiddenTransitionsToEnable)] < len(hiddenTransitionsToEnable[z%len(hiddenTransitionsToEnable)]):
-                            enabledTransitions = semantics.enabled_transitions(net, marking)
-                            t3 = hiddenTransitionsToEnable[z%len(hiddenTransitionsToEnable)][jIndexes[z%len(hiddenTransitionsToEnable)]]
-                            if t3 in enabledTransitions:
-                                marking = semantics.execute(t3, net, marking)
-                                activatedTransitions.append(t3)
-                                somethingChanged = True
-                            else:
-                                break
-                            jIndexes[z % len(hiddenTransitionsToEnable)] = jIndexes[z%len(hiddenTransitionsToEnable)] + 1
-                        z = z + 1
-
-            if not semantics.is_enabled(t, net, marking):
-                [m, tokensAdded] = add_missingTokens(t, net, marking, trace, i)
-                missing = missing + m
-                if enable_placeFitness:
-                    for place in tokensAdded.keys():
-                        if place in place_fitness:
-                            place_fitness[place]["underfedTraces"].add(trace)
-            else:
-                m = 0
+        if not semantics.is_enabled(t, net, marking):
+            #print("UNFIT ",t.label,marking,[x.source.name for x in t.in_arcs])
+            #input()
+            [m, tokensAdded] = add_missingTokens(t, net, marking, trace, i)
+            missing = missing + m
+            if enable_placeFitness:
+                for place in tokensAdded.keys():
+                    if place in place_fitness:
+                        place_fitness[place]["underfedTraces"].add(trace)
+        else:
+            m = 0
         c = get_consumedTokens(t, net)
         p = get_producedTokens(t, net)
         consumed = consumed + c
         produced = produced + p
         activatedTransitions.append(t)
         marking = semantics.execute(t, net, marking)
+        i = i + 1
+    enabledTransitions = semantics.enabled_transitions(net, marking)
+
+    i = 0
+    while i < MAX_IT_FINAL:
+        if not dict(marking) == dict(finalMarking):
+            markingCopy = copy(marking)
+            for p in markingCopy:
+                for p2 in finalMarking:
+                    if p in placesShortestPathByHidden and p2 in placesShortestPathByHidden[p]:
+                        reqTransitions = placesShortestPathByHidden[p][p2]
+                        for t in reqTransitions:
+                            if not semantics.is_enabled(t, net, marking):
+                                [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking,
+                                                                                         placesShortestPathByHidden,
+                                                                                         activatedTransitions, 0)
+                                if semantics.is_enabled(t, net, marking):
+                                    marking = semantics.execute(t, net, marking)
+                                    activatedTransitions.append(t)
+                            else:
+                                marking = semantics.execute(t, net, marking)
+                                activatedTransitions.append(t)
+        else:
+            break
         i = i + 1
     remaining = 0
     for p in marking:
@@ -301,15 +323,11 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                     if p in place_fitness:
                         if not trace in place_fitness[p]["underfedTraces"]:
                             place_fitness[p]["overfedTraces"].add(trace)
-            remaining = remaining + marking[p]
+        remaining = remaining + marking[p]
     if consider_remaining_in_fitness:
         is_fit = (missing == 0) and (remaining == 0)
     else:
         is_fit = (missing == 0)
-    #print("missing=", missing)
-    #print("consumed=", consumed)
-    #print("produced=", produced)
-    #print("remaining=", remaining)
 
     if consumed > 0 and produced > 0:
         trace_fitness = (1.0 - float(missing)/float(consumed)) * (1.0 - float(remaining)/float(produced))
@@ -318,7 +336,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
 
     return [is_fit, trace_fitness, activatedTransitions]
 
-def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=False):
+def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=True):
     """
     Apply token-based replay to a log
 

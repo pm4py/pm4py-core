@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from typing import Any
 from cvxopt import matrix, solvers
 import datetime
-from multiprocessing import Pool, Manager
+from multiprocessing import Pool
 import multiprocessing as mp
 
 
