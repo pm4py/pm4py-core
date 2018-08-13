@@ -30,7 +30,7 @@ def apply(trace_log, activity_key='concept:name'):
       IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. `DOI <https://doi.org/10.1109/TKDE.2004.47>`_.
 
     """
-    labels = tl_util.fetch_labels(trace_log, activity_key)
+    labels = tl_util.get_event_labels(trace_log, activity_key)
     alpha_abstraction = ds.ClassicAlphaAbstraction(trace_log, activity_key)
     pairs = list(map(lambda p: ({p[0]}, {p[1]}), filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p), alpha_abstraction.causal_relation)))
 

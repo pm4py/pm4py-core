@@ -1,27 +1,76 @@
 from pm4py.models import petri
-from pm4py.algo import alignments
+from pm4py.algo import alignments as alignments_lib
+from pm4py import log as log_lib
 import numpy as np
 import heapq
 from dataclasses import dataclass, field
 from typing import Any
 from cvxopt import matrix, solvers
 import datetime
+from multiprocessing import Pool, Manager
+import multiprocessing as mp
 
 
-def apply_log(log, petri_net, initial_marking, final_marking):
-    alignments = []
-    for t in log:
-        alignments.append(apply_trace(t, petri_net, initial_marking, final_marking))
-    return alignments
+def apply_sync_prod(sync_prod, ini, fin, cost, skip):
+    '''
+    Performs the basic alignment search on top of the synchronous product net, given a cost function and skyp-symbol
+
+    Parameters
+    ----------
+    :param sync_prod: synchronous product net
+    :param ini: initial marking in the synchronous product net
+    :param fin: final marking in the synchronous product net
+    :param cost: cost function mapping transitions to the synchronous product net
+    :param skip: symbol to use for skips in the alignment
+
+    Returns
+    -------
+    :return: dict with keys: alignment, cost, visited_states, queued_states and traversed_arcs
+    '''
+    return __search(sync_prod, ini, fin, cost, skip)
 
 
 def apply_trace(trace, petri_net, initial_marking, final_marking):
-    print(trace.attributes['concept:name'])
+    '''
+    Performs the basic alignment search, given a trace and a net
+
+    Parameters
+    ----------
+    :param trace:
+    :param petri_net:
+    :param initial_marking:
+    :param final_marking:
+
+    Returns
+    -------
+    :return:dict with keys: alignment, cost, visited_states, queued_states and traversed_arcs
+    '''
     trace_net, trace_im, trace_fm = petri.utils.construct_trace_net(trace)
-    sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im, trace_fm, petri_net, initial_marking, final_marking, alignments.utils.SKIP)
-    cost_function = alignments.utils.construct_standard_cost_function(sync_prod, alignments.utils.SKIP)
-    alignment = __search(sync_prod, sync_initial_marking, sync_final_marking, cost_function, alignments.utils.SKIP)
-    return alignment
+    sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
+                                                                                              trace_fm, petri_net,
+                                                                                              initial_marking,
+                                                                                              final_marking,
+                                                                                              alignments_lib.utils.SKIP)
+    cost_function = alignments_lib.utils.construct_standard_cost_function(sync_prod, alignments_lib.utils.SKIP)
+    return apply_sync_prod(sync_prod, sync_initial_marking, sync_final_marking, cost_function, alignments_lib.utils.SKIP)
+
+
+
+def __apply_trace_best_worst_known(trace, petri_net, initial_marking, final_marking, best_worst):
+    trace_net, trace_im, trace_fm = petri.utils.construct_trace_net(trace)
+    sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im, trace_fm, petri_net, initial_marking, final_marking, alignments_lib.utils.SKIP)
+    cost_function = alignments_lib.utils.construct_standard_cost_function(sync_prod, alignments_lib.utils.SKIP)
+    alignment = __search(sync_prod, sync_initial_marking, sync_final_marking, cost_function, alignments_lib.utils.SKIP)
+    fixed_costs = alignment['cost'] //  alignments_lib.utils.STD_MODEL_LOG_MOVE_COST
+    fitness = 1 - (fixed_costs / best_worst )
+    return {'trace': trace, 'alignment': alignment['alignment'], 'costs': fixed_costs, 'fitness':fitness, 'visited_states': alignment['visited_states'], 'queued_states': alignment['queued_states'], 'traversed_arcs': alignment['traversed_arcs'] }
+
+
+def apply_log(log, petri_net, initial_marking, final_marking):
+    best_worst = apply_trace(log_lib.instance.Trace(), petri_net, initial_marking, final_marking)
+    best_worst_costs = best_worst['cost'] // alignments_lib.utils.STD_MODEL_LOG_MOVE_COST
+    with Pool(max(1, mp.cpu_count() - 1)) as pool: 
+        return pool.starmap(__apply_trace_best_worst_known, map(lambda tr: (tr, petri_net, initial_marking, final_marking, best_worst_costs), log))
 
 
 def __search(sync_net, ini, fin, cost_function, skip):
@@ -37,23 +86,18 @@ def __search(sync_net, ini, fin, cost_function, skip):
     visited = 0
     queued = 0
     traversed = 0
-    search_started = datetime.datetime.now()
     while not len(open_set) == 0:
         curr = heapq.heappop(open_set)
         visited += 1
         current_marking = curr.m
         closed.add(current_marking)
         if current_marking == fin:
-            print('cost', curr.f)
-            print(visited, queued, traversed)
-            print('total_search', (datetime.datetime.now() - search_started).seconds)
-
             parent = curr.p
-            alignment = [curr.t]
+            alignment = [curr.t.label]
             while parent.p is not None:
-                alignment = [parent.t] + alignment
+                alignment = [parent.t.label] + alignment
                 parent = parent.p
-            return alignment
+            return {'alignment': alignment, 'cost': curr.g, 'visited_states': visited, 'queued_states': queued, 'traversed_arcs': traversed}
 
         prev_t = curr.t
         for t in petri.semantics.enabled_transitions(sync_net, current_marking):
@@ -172,10 +216,3 @@ class SearchTuple:
         stringBuild.append(" heuristic=" + str(self.h))
         stringBuild.append(" allActivatedTransitions=" + str(self.__get_firing_sequence()) + "\n\n")
         return " ".join(stringBuild)
-
-
-# alternative way to calculate heuristics using scipy (note that simplex contains a bug in scipy):
-# h_obj = sp.linprog(c=cost_vec, A_eq=incidence_matrix.A, b_eq=[i - j for i, j in zip(fin_vec, m_vec)], method='interior-point')
-# h = h_obj['fun']
-
-
