@@ -54,7 +54,7 @@ class InductMinDirFollows(object):
         ----------
         Leemans, S. J., Fahland, D., & van der Aalst, W. M. (2015, June). Scalable process discovery with guarantees. In International Conference on Enterprise, Business-Process and Information Systems Modeling (pp. 85-101). Springer, Cham.
         """
-        labels = tl_util.fetch_labels(trace_log, activity_key)
+        labels = tl_util.get_event_labels(trace_log, activity_key)
         for trace in trace_log:
             traceCounter = Counter()
             for event in trace:

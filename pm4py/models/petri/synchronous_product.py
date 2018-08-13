@@ -1,6 +1,4 @@
 from pm4py.models import petri
-from pm4py.log.util import xes as xes_util
-import time
 
 
 def construct(pn1, im1, fm1, pn2, im2, fm2, skip):
