@@ -19,14 +19,14 @@ class AlignmentTest(unittest.TestCase):
         for p in net.places:
             if not p.out_arcs:
                 final_marking[p] = 1
-        """cfResult = align.versions.state_equation_classic.apply_log(traceLog, net, marking, final_marking)
-        for res in cfResult:
+        for trace in traceLog:
+            cfResult = align.versions.state_equation_classic.apply_trace(trace, net, marking, final_marking)['alignment']
             isFit = True
-            for couple in cfResult[0]:
-                if not (couple.label[0] == couple.label[1] or couple.label[0] == ">>" and couple.label[1] == None):
+            for couple in cfResult:
+                if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] == None):
                     isFit = False
             if not isFit:
-                raise Exception("should be fit")"""
+                raise Exception("should be fit")
 
     def test_alignment_pnml(self):
         traceLog = xes_importer.import_from_path_xes(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
@@ -35,14 +35,14 @@ class AlignmentTest(unittest.TestCase):
         for p in net.places:
             if not p.out_arcs:
                 final_marking[p] = 1
-        """cfResult = align.versions.state_equation_classic.apply_log(traceLog, net, marking, final_marking)
-        for res in cfResult:
+        for trace in traceLog:
+            cfResult = align.versions.state_equation_classic.apply_trace(trace, net, marking, final_marking)['alignment']
             isFit = True
-            for couple in cfResult[0]:
-                if not (couple.label[0] == couple.label[1] or couple.label[0] == ">>" and couple.label[1] == None):
+            for couple in cfResult:
+                if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] == None):
                     isFit = False
             if not isFit:
-                raise Exception("should be fit")"""
+                raise Exception("should be fit")
 
 if __name__ == "__main__":
     unittest.main()

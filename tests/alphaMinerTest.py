@@ -6,7 +6,7 @@ sys.path.insert(0,parentdir)
 from pm4py.log.importer import csv as csv_importer
 from pm4py.log.importer import xes as xes_importer
 import pm4py.log.transform as log_transform
-from pm4py.algo.alpha import classic as alpha_classic
+from pm4py.algo.alpha.versions import classic as alpha_classic
 from pm4py.models.petri import visualize as pn_viz
 from pm4py.algo.tokenreplay import token_replay
 from pm4py.algo.tokenreplay.token_replay import NoConceptNameException
