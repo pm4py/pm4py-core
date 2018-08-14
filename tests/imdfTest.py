@@ -23,7 +23,7 @@ class InductiveMinerDFTest(unittest.TestCase):
 			eventLog = csv_importer.import_from_path(logName)
 			traceLog = log_transform.transform_event_log_to_trace_log(eventLog)
 		imdf = InductMinDirFollows()
-		net, marking = imdf.apply(traceLog)
+		net, marking = imdf.apply(traceLog, cleanNetByTokenReplay=False)
 		return traceLog, net, marking
 	
 	def test_applyImdfToXES(self):
