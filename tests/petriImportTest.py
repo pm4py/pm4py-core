@@ -40,14 +40,14 @@ class PetriImportTest(unittest.TestCase):
         for p in importedPetri1.places:
             if not p.out_arcs:
                 final_marking[p] = 1
-        """cfResult = state_equation_classic.apply_log(traceLog, importedPetri1, marking1, final_marking)
-        for res in cfResult:
+        for trace in traceLog:
+            cfResult = align.versions.state_equation_classic.apply_trace(trace, importedPetri1, marking1, final_marking)['alignment']
             isFit = True
-            for couple in cfResult[0]:
-                if not (couple.label[0] == couple.label[1] or couple.label[0] == ">>" and couple.label[1] == None):
+            for couple in cfResult:
+                if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] == None):
                     isFit = False
             if not isFit:
-                raise Exception("should be fit")"""
+                raise Exception("should be fit")
 
 if __name__ == "__main__":
 	unittest.main()
