@@ -1,7 +1,6 @@
 from pm4py.algo.imdf import inductMinDirFollows
 from pm4py.log.importer import xes as xes_importer
 from pm4py.models.petri import visualize as pn_viz
-from pm4py.algo.alignments import state_equation_classic
 from pm4py.models import petri
 from pm4py.algo.tokenreplay import token_replay
 import time
