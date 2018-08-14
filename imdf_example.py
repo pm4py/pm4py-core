@@ -5,10 +5,14 @@ import pm4py.algo.alignments as align
 from pm4py.algo.tokenreplay import token_replay
 from pm4py.models import petri
 import traceback
+from pm4py.models.petri import exporter as petri_exporter
+from pm4py.models.petri import importer as petri_importer
 
 #log = xes_importer.import_from_path_xes('a32f0n00.xes')
-log = xes_importer.import_from_path_xes('C:\\a32f0n00.xes')
+log = xes_importer.import_from_path_xes('C:\\receipt.xes')
 net, marking = inductMinDirFollows.apply(log)
+petri_exporter.export_petri_to_pnml(net, marking, "receipt.pnml")
+#net, marking = petri_importer.import_petri_from_pnml("receipt.pnml")
 for place in marking:
 	print("initial marking "+place.name)
 final_marking = petri.net.Marking()
@@ -41,6 +45,16 @@ while i < len(log):
 
 			if isFit:
 				fitTraces.append(log[i])
+
+			"""if (not isFit) and traceIsFit[i]:
+				print("\n", i, [x["concept:name"] for x in log[i]])
+				print(len(cfResult), len(activatedTransitions[i]))
+				print(cfResult)
+				print(activatedTransitions[i])
+				input()"""
+
+			"""if isFit and traceIsFit[i]:
+				print(len(cfResult), len(activatedTransitions[i]))"""
 
 			"""if isFit and traceIsFit[i]:
 				if len(cfResult) > len(activatedTransitions[i]):

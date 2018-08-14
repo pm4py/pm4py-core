@@ -748,17 +748,17 @@ class InductMinDirFollows(object):
                     net = self.recFindCut(net, loopCut[2], pairs2, recDepth + 1, refToLastPlace, mustAddSkipHiddenTrans=False, mustAddBackwardHiddenTrans=False, callerSpecification="loopCut")
                     self.noOfHiddenTransAddedLoop = self.noOfHiddenTransAddedLoop + 1
                     self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-                    loopTransition = petri.net.PetriNet.Transition('loop_' + str(self.noOfHiddenTransAdded),
+                    loopTransition = petri.net.PetriNet.Transition('lcloop_' + str(self.noOfHiddenTransAdded),
                                                                    self.hiddenTransitionVisibleLabel(
-                                                                       'loop_' + str(self.noOfHiddenTransAdded)))
+                                                                       'lcloop_' + str(self.noOfHiddenTransAdded)))
                     net.transitions.add(loopTransition)
                     petri.utils.add_arc_from_to(refToLastPlace[0], loopTransition, net)
                     petri.utils.add_arc_from_to(loopTransition, originRefToLastPlace[0], net)
                     self.noOfHiddenTransAddedSkip = self.noOfHiddenTransAddedSkip + 1
                     self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-                    skipTransition = petri.net.PetriNet.Transition('skip_' + str(self.noOfHiddenTransAdded),
+                    skipTransition = petri.net.PetriNet.Transition('lcskip_' + str(self.noOfHiddenTransAdded),
                                                                    self.hiddenTransitionVisibleLabel(
-                                                                       'skip_' + str(self.noOfHiddenTransAdded)))
+                                                                       'lcskip_' + str(self.noOfHiddenTransAdded)))
                     net.transitions.add(skipTransition)
                     petri.utils.add_arc_from_to(originRefToLastPlace[0], skipTransition, net)
                     petri.utils.add_arc_from_to(skipTransition, intermediateRefToLastPlace[0], net)

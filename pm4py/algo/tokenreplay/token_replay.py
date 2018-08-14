@@ -158,7 +158,7 @@ def get_placesShortestPath(net, placeToPopulate, currentPlace, placesShortestPat
     for t in currentPlace.out_arcs:
         if t.target.label is None:
             for p2 in t.target.out_arcs:
-                if not p2.target in placesShortestPath[placeToPopulate]:
+                if not p2.target in placesShortestPath[placeToPopulate] or len(actualList)+1 < len(placesShortestPath[placeToPopulate][p2.target]):
                     newActualList = copy(actualList)
                     newActualList.append(t.target)
                     placesShortestPath[placeToPopulate][p2.target] = copy(newActualList)
