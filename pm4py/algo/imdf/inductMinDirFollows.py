@@ -157,7 +157,7 @@ class InductMinDirFollows(object):
                 final_marking[p] = 1
 
         if cleanNetByTokenReplay:
-            [traceIsFit, traceFitnessValue, activatedTransitions, placeFitnessPerTrace] = token_replay.apply_log(trace_log, net, initial_marking, final_marking)
+            [traceIsFit, traceFitnessValue, activatedTransitions, placeFitnessPerTrace] = token_replay.apply_log(trace_log, net, initial_marking, final_marking, activity_key=activity_key)
             actiTrans = set()
             for trace in activatedTransitions:
                 for trans in trace:
