@@ -177,11 +177,13 @@ def get_placesShortestPathByHidden(net):
         placesShortestPath = get_placesShortestPath(net,p,p,placesShortestPath,[],0)
     return placesShortestPath
 
-def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth):
-    if recDepth >= MAX_REC_DEPTH:
+def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth, visitedTransitions):
+    if recDepth >= MAX_REC_DEPTH or t in visitedTransitions:
         return [net, marking, activatedTransitions]
 
-    #print("recDepth",recDepth,"transition to enable: ",t.name,t.label,"marking",marking,"in arcs",[x.source.name for x in t.in_arcs])
+    visitedTransitions.add(t)
+
+    markingAtStart = copy(marking)
 
     placesWithMissing = get_placesWithMissingTokens(t, net, marking)
     hiddenTransitionsToEnable = []
@@ -200,11 +202,12 @@ def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTran
                 enabledTransitions = semantics.enabled_transitions(net, marking)
                 t3 = hiddenTransitionsToEnable[z % len(hiddenTransitionsToEnable)][
                     jIndexes[z % len(hiddenTransitionsToEnable)]]
-                if t3 in enabledTransitions and semantics.is_enabled(t3, net, marking):
-                    marking = semantics.execute(t3, net, marking)
-                    activatedTransitions.append(t3)
-                    enabledTransitions = semantics.enabled_transitions(net, marking)
-                    somethingChanged = True
+                if not t3 == t:
+                    if t3 in enabledTransitions and semantics.is_enabled(t3, net, marking):
+                        marking = semantics.execute(t3, net, marking)
+                        activatedTransitions.append(t3)
+                        enabledTransitions = semantics.enabled_transitions(net, marking)
+                        somethingChanged = True
 
                 jIndexes[z % len(hiddenTransitionsToEnable)] = jIndexes[z % len(hiddenTransitionsToEnable)] + 1
             if semantics.is_enabled(t, net, marking):
@@ -222,17 +225,19 @@ def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTran
                 k = 0
                 while k < len(hiddenTransitionsToEnable[z]):
                     t4 = hiddenTransitionsToEnable[z][k]
-                    if not semantics.is_enabled(t4, net, marking):
-                        [net, marking, activatedTransitions] = apply_hiddenTrans(t4, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth+1)
-                    if semantics.is_enabled(t4, net, marking):
-                        marking = semantics.execute(t4, net, marking)
-                        activatedTransitions.append(t4)
+                    if not t4 == t:
+                        if not semantics.is_enabled(t4, net, marking):
+                            [net, marking, activatedTransitions] = apply_hiddenTrans(t4, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth+1, visitedTransitions)
+                        if semantics.is_enabled(t4, net, marking):
+                            marking = semantics.execute(t4, net, marking)
+                            activatedTransitions.append(t4)
                     k = k + 1
                 z = z + 1
 
         if not semantics.is_enabled(t, net, marking):
-            [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking, placesShortestPathByHidden,
-                                                                     activatedTransitions, recDepth + 1)
+            if not(markingAtStart == marking):
+                [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking, placesShortestPathByHidden,
+                                                                         activatedTransitions, recDepth + 1, visitedTransitions)
 
     return [net, marking, activatedTransitions]
 
@@ -269,7 +274,8 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
         if trace[i][activity_key] in transMap:
             t = transMap[trace[i][activity_key]]
             if not semantics.is_enabled(t, net, marking):
-                [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, 0)
+                visitedTransitions = set()
+                [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, 0, visitedTransitions)
 
             if not semantics.is_enabled(t, net, marking):
                 #print("UNFIT ",t.label,marking,[x.source.name for x in t.in_arcs])
@@ -301,9 +307,10 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                         reqTransitions = placesShortestPathByHidden[p][p2]
                         for t in reqTransitions:
                             if not semantics.is_enabled(t, net, marking):
+                                visitedTransitions = set()
                                 [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking,
                                                                                          placesShortestPathByHidden,
-                                                                                         activatedTransitions, 0)
+                                                                                         activatedTransitions, 0, visitedTransitions)
                                 if semantics.is_enabled(t, net, marking):
                                     marking = semantics.execute(t, net, marking)
                                     activatedTransitions.append(t)
@@ -404,7 +411,7 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
                     placeFitnessPerTrace[place]["overfedTraces"].add(trace)
                 #placeFitnessPerTrace[place].append(placeFitnessPerTrace[place][firstOccVariantIndex[traceVariant]])
         traceCount = traceCount + 1
-        #print("traceCount = "+str(traceCount)+" out of "+str(len(log)))
+        print("traceCount = "+str(traceCount)+" out of "+str(len(log)))
 
     dd = time.time()
     #print("overall time interlapsed: ", (dd - aa))
