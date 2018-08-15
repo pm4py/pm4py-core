@@ -63,7 +63,7 @@ def __apply_trace_best_worst_known(trace, petri_net, initial_marking, final_mark
     alignment = __search(sync_prod, sync_initial_marking, sync_final_marking, cost_function, alignments_lib.utils.SKIP)
     fixed_costs = alignment['cost'] //  alignments_lib.utils.STD_MODEL_LOG_MOVE_COST
     fitness = 1 - (fixed_costs / best_worst )
-    return {'trace': trace, 'alignment': alignment['alignment'], 'costs': fixed_costs, 'fitness':fitness, 'visited_states': alignment['visited_states'], 'queued_states': alignment['queued_states'], 'traversed_arcs': alignment['traversed_arcs'] }
+    return {'trace': trace, 'alignment': alignment['alignment'], 'cost': fixed_costs, 'fitness':fitness, 'visited_states': alignment['visited_states'], 'queued_states': alignment['queued_states'], 'traversed_arcs': alignment['traversed_arcs'] }
 
 
 def apply_log(log, petri_net, initial_marking, final_marking):
@@ -119,7 +119,7 @@ def __search(sync_net, ini, fin, cost_function, skip):
                 open_set.remove(shadow)
             else:
                 queued += 1
-                h, x = __compute_exact_heuristic(sync_net, incidence_matrix, ini, cost_vec, fin_vec, curr.x, t, curr.h)
+                h, x = __compute_exact_heuristic(sync_net, incidence_matrix, new_marking, cost_vec, fin_vec, curr.x, t, curr.h)
 
             tp = SearchTuple(g+h, g, h, new_marking, curr, t, x)
             shadow_map[new_marking] = tp
