@@ -30,8 +30,6 @@ def add_missingTokens(t, net, marking, trace, traceIndex):
     tokensAdded = {}
     for a in t.in_arcs:
         if marking[a.source] < a.weight:
-            #print("MARKING", [x.name for x in marking],"MISSING",a.source.name,"TRACE",[x["concept:name"] for x in trace]
-            #      ,"INDEX",traceIndex,trace[traceIndex]["concept:name"])
             missing = missing + (a.weight - marking[a.source])
             marking[a.source] = marking[a.source] + a.weight
             tokensAdded[a.source] = a.weight - marking[a.source]
@@ -238,7 +236,7 @@ def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTran
 
     return [net, marking, activatedTransitions]
 
-def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_placeFitness, place_fitness, placesShortestPathByHidden, consider_remaining_in_fitness):
+def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_placeFitness, place_fitness, placesShortestPathByHidden, consider_remaining_in_fitness, activity_key="concept:name"):
     """
     Apply the token replaying algorithm to a trace
 
@@ -268,27 +266,28 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
     remaining = 0
     i = 0
     while i < len(trace):
-        t = transMap[trace[i]["concept:name"]]
-        if not semantics.is_enabled(t, net, marking):
-            [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, 0)
+        if trace[i][activity_key] in transMap:
+            t = transMap[trace[i][activity_key]]
+            if not semantics.is_enabled(t, net, marking):
+                [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, 0)
 
-        if not semantics.is_enabled(t, net, marking):
-            #print("UNFIT ",t.label,marking,[x.source.name for x in t.in_arcs])
-            #input()
-            [m, tokensAdded] = add_missingTokens(t, net, marking, trace, i)
-            missing = missing + m
-            if enable_placeFitness:
-                for place in tokensAdded.keys():
-                    if place in place_fitness:
-                        place_fitness[place]["underfedTraces"].add(trace)
-        else:
-            m = 0
-        c = get_consumedTokens(t, net)
-        p = get_producedTokens(t, net)
-        consumed = consumed + c
-        produced = produced + p
-        activatedTransitions.append(t)
-        marking = semantics.execute(t, net, marking)
+            if not semantics.is_enabled(t, net, marking):
+                #print("UNFIT ",t.label,marking,[x.source.name for x in t.in_arcs])
+                #input()
+                [m, tokensAdded] = add_missingTokens(t, net, marking, trace, i)
+                missing = missing + m
+                if enable_placeFitness:
+                    for place in tokensAdded.keys():
+                        if place in place_fitness:
+                            place_fitness[place]["underfedTraces"].add(trace)
+            else:
+                m = 0
+            c = get_consumedTokens(t, net)
+            p = get_producedTokens(t, net)
+            consumed = consumed + c
+            produced = produced + p
+            activatedTransitions.append(t)
+            marking = semantics.execute(t, net, marking)
         i = i + 1
     enabledTransitions = semantics.enabled_transitions(net, marking)
 
@@ -336,7 +335,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
 
     return [is_fit, trace_fitness, activatedTransitions]
 
-def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=True):
+def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=True, activity_key="concept:name"):
     """
     Apply token-based replay to a log
 
@@ -378,15 +377,15 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
     traceCount = 0
     for trace in log:
         try:
-            traceVariant = ",".join([x["concept:name"] for x in trace])
+            traceVariant = ",".join([x[activity_key] for x in trace])
         except:
-            raise NoConceptNameException("at least an event is without concept:name")
+            raise NoConceptNameException("at least an event is without "+activity_key)
         if not traceVariant in tFitVariant.keys():
             firstOccVariantTrace[traceVariant] = trace
             firstOccVariantIndex[traceVariant] = traceCount
             tFit, tValue, actTrans = apply_trace(trace, net, initialMarking, finalMarking, transMap,
                                                            enable_placeFitness, placeFitnessPerTrace,
-                                                           placesShortestPathByHidden, consider_remaining_in_fitness)
+                                                           placesShortestPathByHidden, consider_remaining_in_fitness, activity_key=activity_key)
             tFitVariant[traceVariant] = tFit
             tValueVariant[traceVariant] = tValue
             actTransVariant[traceVariant] = actTrans
@@ -405,7 +404,7 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
                     placeFitnessPerTrace[place]["overfedTraces"].add(trace)
                 #placeFitnessPerTrace[place].append(placeFitnessPerTrace[place][firstOccVariantIndex[traceVariant]])
         traceCount = traceCount + 1
-        #print("traceCount = "+str(traceCount)+" out of "+str(len(log)))
+        print("traceCount = "+str(traceCount)+" out of "+str(len(log)))
 
     dd = time.time()
     #print("overall time interlapsed: ", (dd - aa))
