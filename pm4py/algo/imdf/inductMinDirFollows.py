@@ -22,6 +22,7 @@ class InductMinDirFollows(object):
         """
         Constructor
         """
+        self.trace_log = None
         self.addedGraphs = []
         self.startActivitiesInLog = Counter()
         self.activitiesCountInLog = Counter()
@@ -64,6 +65,7 @@ class InductMinDirFollows(object):
         Leemans, S. J., Fahland, D., & van der Aalst, W. M. (2015, June). Scalable process discovery with guarantees. In International Conference on Enterprise, Business-Process and Information Systems Modeling (pp. 85-101). Springer, Cham.
         """
 
+        self.trace_log = trace_log
         labels = tl_util.get_event_labels(trace_log, activity_key)
         for trace in trace_log:
             if len(trace) > 0:
@@ -266,14 +268,14 @@ class InductMinDirFollows(object):
                     break
         return ret
 
-    def verifyNecessityOfSkipTransitionForConcurrentPairs(self, labels):
+    """def verifyNecessityOfSkipTransitionForConcurrentPairs(self, labels):
         ret = False
         for el in labels:
             for subel in el:
                 if self.minNoOfActivitiesPerTrace[subel] < 1:
                     ret = True
                     break
-        return ret
+        return ret"""
 
     def hiddenTransitionVisibleLabel(self, name):
         return None
@@ -306,8 +308,8 @@ class InductMinDirFollows(object):
 
         type = deepcopy(originalType)
         subtreeLoopCondition = self.verifySubtreeLoopCondition(labels)
-        condition1 = mustAddSkipHiddenTrans and (len(self.addedGraphsActivitiesSum) > 0 and abs(summedSubtree - self.addedGraphsActivitiesSum[0]) > 0.5)
-        condition2 = (len(self.addedGraphsActivitiesAvg) > 0 and abs(averagedSubtree - self.addedGraphsActivitiesAvg[0]) > 0.5) and not type == "concurrent"
+        condition1 = mustAddSkipHiddenTrans and (len(self.addedGraphsActivitiesSum) > 0 and abs(summedSubtree - max(self.addedGraphsActivitiesSum)) > 0.5)
+        condition2 = (len(self.addedGraphsActivitiesAvg) > 0 and (abs(averagedSubtree - max(self.addedGraphsActivitiesAvg)) > 0.5)) and not type == "concurrent"
 
         if (condition1 or condition2):
             # add the hidden transitions that permits to skip the tree
@@ -329,15 +331,15 @@ class InductMinDirFollows(object):
         condition3 = (type == "flower")
         condition4 = (len(activInSelfLoop) > 0 or mustAddBackwardHiddenTrans)
         if (condition3 or condition4) and subtreeLoopCondition:
-                # here we must add also the coming back arc
-                self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-                self.noOfHiddenTransAddedLoop = self.noOfHiddenTransAddedLoop + 1
-                hiddenTransLoop = petri.net.PetriNet.Transition('loop_' + str(self.noOfHiddenTransAdded),
-                                                                self.hiddenTransitionVisibleLabel(
-                                                                    'loop_' + str(self.noOfHiddenTransAdded)))
-                net.transitions.add(hiddenTransLoop)
-                petri.utils.add_arc_from_to(hiddenTransLoop, refToLastPlace[0], net)
-                petri.utils.add_arc_from_to(subtreeEnd, hiddenTransLoop, net)
+            # here we must add also the coming back arc
+            self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+            self.noOfHiddenTransAddedLoop = self.noOfHiddenTransAddedLoop + 1
+            hiddenTransLoop = petri.net.PetriNet.Transition('loop_' + str(self.noOfHiddenTransAdded),
+                                                            self.hiddenTransitionVisibleLabel(
+                                                                'loop_' + str(self.noOfHiddenTransAdded)))
+            net.transitions.add(hiddenTransLoop)
+            petri.utils.add_arc_from_to(hiddenTransLoop, refToLastPlace[0], net)
+            petri.utils.add_arc_from_to(subtreeEnd, hiddenTransLoop, net)
 
         # each label is a cluster of sequentially followed activities
         for l in labels:
@@ -665,8 +667,17 @@ class InductMinDirFollows(object):
 
         if len(pairs) == 0:
             summedSubtree = self.sumSubtree(list(dfgGraph.labelsCorresp.values()), type)
-            conditionSkipPairs1 = self.verifyNecessityOfSkipTransitionForConcurrentPairs(list(dfgGraph.labelsCorresp.values()))
-            conditionSkipPairs2 = (len(self.addedGraphsActivitiesSum) > 0 and abs(summedSubtree - self.addedGraphsActivitiesSum[0]) > 0.5)
+            conditionSkipPairs = len(self.addedGraphsActivitiesSum) > 0 and\
+                                  (abs(summedSubtree - max(self.addedGraphsActivitiesSum)) > 0.5)
+
+
+            """if len(self.addedGraphsActivitiesSum) > 0:
+                print("\n", list(dfgGraph.labelsCorresp.values()), conditionSkipPairs, mustAddSkipHiddenTrans)
+                print(self.addedGraphs)
+                print(self.addedGraphsActivitiesSum)
+                print(summedSubtree)"""
+
+
             oldRefToLastPlace = [copy(refToLastPlace)[0]]
             oldNumberOfHiddenTransitionsSkip = copy(self.noOfHiddenTransAddedSkip)
             oldSummedSubtree = 0
@@ -677,19 +688,17 @@ class InductMinDirFollows(object):
                                          refToLastPlace, activInSelfLoop, mustAddSkipHiddenTrans=mustAddSkipHiddenTrans,
                                          mustAddBackwardHiddenTrans=mustAddBackwardHiddenTrans)
             newNumberOfHiddenTransitionsSkip = copy(self.noOfHiddenTransAddedSkip)
-            if conditionSkipPairs1:
-                if conditionSkipPairs2:
-                    if oldNumberOfHiddenTransitionsSkip == newNumberOfHiddenTransitionsSkip:
-                        #print("callerSpecification=", callerSpecification, list(dfgGraph.labelsCorresp.values()), summedSubtree, oldSummedSubtree, self.addedGraphsActivitiesSum[0])
-                        #if not(callerSpecification == "maximumCut") or not(summedSubtree == oldSummedSubtree):
-                        self.noOfHiddenTransAddedSkip = self.noOfHiddenTransAddedSkip + 1
-                        self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-                        hiddenTransition = petri.net.PetriNet.Transition('cskip_' + str(self.noOfHiddenTransAdded),
-                                                                          self.hiddenTransitionVisibleLabel(
-                                                                              'cskip_' + str(self.noOfHiddenTransAdded)))
-                        net.transitions.add(hiddenTransition)
-                        petri.utils.add_arc_from_to(oldRefToLastPlace[0], hiddenTransition, net)
-                        petri.utils.add_arc_from_to(hiddenTransition, refToLastPlace[0], net)
+
+            if conditionSkipPairs or mustAddSkipHiddenTrans:
+                if oldNumberOfHiddenTransitionsSkip == newNumberOfHiddenTransitionsSkip:
+                    self.noOfHiddenTransAddedSkip = self.noOfHiddenTransAddedSkip + 1
+                    self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+                    hiddenTransition = petri.net.PetriNet.Transition('cskip_' + str(self.noOfHiddenTransAdded),
+                                                                      self.hiddenTransitionVisibleLabel(
+                                                                          'cskip_' + str(self.noOfHiddenTransAdded)))
+                    net.transitions.add(hiddenTransition)
+                    petri.utils.add_arc_from_to(oldRefToLastPlace[0], hiddenTransition, net)
+                    petri.utils.add_arc_from_to(hiddenTransition, refToLastPlace[0], net)
         else:
             possibleOptionsWithScore = []
 
@@ -705,10 +714,6 @@ class InductMinDirFollows(object):
             if possibleOptionsWithScore:
                 possibleOptionsWithScore = sorted(possibleOptionsWithScore, key=lambda x: x[1], reverse=True)
                 bestOptionLabel = possibleOptionsWithScore[0][0]
-
-                """if recDepth > 4:
-                    print("\nrecDepth=", recDepth, "possibleOptionsWithScore=", possibleOptionsWithScore)
-                    print(bestOptionLabel)"""
 
                 if bestOptionLabel == "maximumCut":
                     pairs1 = dfgGraph.projectPairs(maximumCut[1], origPairs)
@@ -764,9 +769,9 @@ class InductMinDirFollows(object):
                     pairs2 = dfgGraph.projectPairs(loopCut[2], origPairs)
                     originRefToLastPlace = copy(refToLastPlace)
                     net = self.recFindCut(net, loopCut[1], pairs1, recDepth + 1, refToLastPlace,
-                                          mustAddSkipHiddenTrans=False, mustAddBackwardHiddenTrans=False, callerSpecification="loopCut")
+                                          mustAddSkipHiddenTrans=True, mustAddBackwardHiddenTrans=True, callerSpecification="loopCut")
                     intermediateRefToLastPlace = copy(refToLastPlace)
-                    net = self.recFindCut(net, loopCut[2], pairs2, recDepth + 1, refToLastPlace, mustAddSkipHiddenTrans=False, mustAddBackwardHiddenTrans=False, callerSpecification="loopCut")
+                    net = self.recFindCut(net, loopCut[2], pairs2, recDepth + 1, refToLastPlace, mustAddSkipHiddenTrans=True, mustAddBackwardHiddenTrans=True, callerSpecification="loopCut")
                     self.noOfHiddenTransAddedLoop = self.noOfHiddenTransAddedLoop + 1
                     self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
                     loopTransition = petri.net.PetriNet.Transition('lcloop_' + str(self.noOfHiddenTransAdded),
