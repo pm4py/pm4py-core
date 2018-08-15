@@ -23,6 +23,7 @@ class InductMinDirFollows(object):
         Constructor
         """
         self.addedGraphs = []
+        self.startActivitiesInLog = Counter()
         self.activitiesCountInLog = Counter()
         self.maxNoOfActivitiesPerTrace = {}
         self.minNoOfActivitiesPerTrace = {}
@@ -62,25 +63,31 @@ class InductMinDirFollows(object):
         ----------
         Leemans, S. J., Fahland, D., & van der Aalst, W. M. (2015, June). Scalable process discovery with guarantees. In International Conference on Enterprise, Business-Process and Information Systems Modeling (pp. 85-101). Springer, Cham.
         """
+
         labels = tl_util.get_event_labels(trace_log, activity_key)
         for trace in trace_log:
-            traceCounter = Counter()
-            for event in trace:
-                if not activity_key in event:
-                    raise NoConceptNameException("at least an event is without concept:name")
-                activity = event[activity_key]
-                self.activitiesCountInLog[activity] += 1
-                traceCounter[activity] += 1
-            for activity in traceCounter:
-                if not activity in self.maxNoOfActivitiesPerTrace or self.maxNoOfActivitiesPerTrace[activity] < \
-                        traceCounter[activity]:
-                    self.maxNoOfActivitiesPerTrace[activity] = traceCounter[activity]
-                if not activity in self.minNoOfActivitiesPerTrace or self.minNoOfActivitiesPerTrace[activity] > \
-                        traceCounter[activity]:
-                    self.minNoOfActivitiesPerTrace[activity] = traceCounter[activity]
-            for activity in self.minNoOfActivitiesPerTrace:
-                if not activity in traceCounter:
-                    self.minNoOfActivitiesPerTrace[activity] = 0
+            if len(trace) > 0:
+                traceCounter = Counter()
+                if not activity_key in trace[0]:
+                    raise NoConceptNameException("at least an event is without "+activity_key)
+                self.startActivitiesInLog[trace[0][activity_key]] += 1
+                for event in trace:
+                    if not activity_key in event:
+                        raise NoConceptNameException("at least an event is without "+activity_key)
+                    activity = event[activity_key]
+                    self.activitiesCountInLog[activity] += 1
+                    traceCounter[activity] += 1
+                for activity in traceCounter:
+                    if not activity in self.maxNoOfActivitiesPerTrace or self.maxNoOfActivitiesPerTrace[activity] < \
+                            traceCounter[activity]:
+                        self.maxNoOfActivitiesPerTrace[activity] = traceCounter[activity]
+                    if not activity in self.minNoOfActivitiesPerTrace or self.minNoOfActivitiesPerTrace[activity] > \
+                            traceCounter[activity]:
+                        self.minNoOfActivitiesPerTrace[activity] = traceCounter[activity]
+                for activity in self.minNoOfActivitiesPerTrace:
+                    if not activity in traceCounter:
+                        self.minNoOfActivitiesPerTrace[activity] = 0
+
         self.dfg = [(k, v) for k, v in dfg_inst.compute_dfg(trace_log, activity_key).items() if v > 0]
         self.dfg = sorted(self.dfg, key=lambda x: x[1], reverse=True)
         pairs = [k[0] for k in self.dfg]
@@ -90,6 +97,20 @@ class InductMinDirFollows(object):
         start = petri.net.PetriNet.Place('p_' + str(self.noOfPlacesAdded))
         net.places.add(start)
         self.lastEndSubtreePlaceAdded = [start]
+        if len(self.startActivitiesInLog.keys()) > 1:
+            self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+            self.noOfHiddenTransAddedSkip = self.noOfHiddenTransAddedSkip + 1
+            hiddenTransSkipStartMult = petri.net.PetriNet.Transition('iskip_' + str(self.noOfHiddenTransAdded), None)
+            net.transitions.add(hiddenTransSkipStartMult)
+            self.noOfPlacesAdded = self.noOfPlacesAdded + 1
+            newPlace = petri.net.PetriNet.Place('p_' + str(self.noOfPlacesAdded))
+            net.places.add(newPlace)
+            petri.utils.add_arc_from_to(start, hiddenTransSkipStartMult, net)
+            petri.utils.add_arc_from_to(hiddenTransSkipStartMult, newPlace, net)
+            self.lastEndSubtreePlaceAdded = [newPlace]
+            self.addedGraphs.append([])
+            self.addedGraphsActivitiesAvg.append(len(trace_log))
+            self.addedGraphsActivitiesSum.append(len(trace_log))
         net = self.recFindCut(net, labels, pairs, 0, self.lastEndSubtreePlaceAdded)
         # check the final marking
         final_marking = petri.net.Marking()
