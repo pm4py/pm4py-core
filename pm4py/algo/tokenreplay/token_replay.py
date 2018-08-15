@@ -411,7 +411,7 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
                     placeFitnessPerTrace[place]["overfedTraces"].add(trace)
                 #placeFitnessPerTrace[place].append(placeFitnessPerTrace[place][firstOccVariantIndex[traceVariant]])
         traceCount = traceCount + 1
-        print("traceCount = "+str(traceCount)+" out of "+str(len(log)))
+        #print("traceCount = "+str(traceCount)+" out of "+str(len(log)))
 
     dd = time.time()
     #print("overall time interlapsed: ", (dd - aa))
