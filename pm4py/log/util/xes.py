@@ -12,6 +12,7 @@ TAG_LIST = 'list'
 TAG_LOG = 'log'
 TAG_STRING = 'string'
 TAG_TRACE = 'trace'
+TAG_VALUES = 'values'
 
 # XES/INTERNAL KEYS
 KEY_CHILDREN = 'children'
