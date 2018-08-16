@@ -60,25 +60,7 @@ def export_attributes(log, root):
 		Output XML root element
 
 	"""
-	for attr in log.attributes.keys():
-		attrType = type(log.attributes[attr]).__name__
-		attrTypeXES = get_XES_attr_type(attrType)
-		attrValue = get_XES_attr_value(log.attributes[attr], attrTypeXES)
-		
-		if not attrTypeXES is None and not attr is None and not attrValue is None:
-			logAttribute = etree.SubElement(root, attrTypeXES)
-			logAttribute.set(xes_util.KEY_KEY,attr)
-			if attrTypeXES == xes_util.TAG_LIST:
-				logAttributeValues = etree.SubElement(logAttribute, "values")
-				for key in log.attributes[attr]['children']:
-					subattrType = type(log.attributes[attr]['children'][key]).__name__
-					subattrTypeXES = get_XES_attr_type(subattrType)
-					subattrValue = get_XES_attr_value(log.attributes[attr]['children'][key], subattrTypeXES)
-					subtraceAttribute = etree.SubElement(logAttributeValues, subattrTypeXES)
-					subtraceAttribute.set(xes_util.KEY_KEY,key)
-					subtraceAttribute.set(xes_util.KEY_VALUE,subattrValue)
-			else:
-				logAttribute.set(xes_util.KEY_VALUE,attrValue)
+	export_attributes_element(log, root)
 
 def export_extensions(log, root):
 	"""
@@ -115,14 +97,7 @@ def export_globals(log, root):
 	for glob in log.omni_present.keys():
 		globEls = log.omni_present[glob]
 		xesGlobal = etree.SubElement(root, xes_util.TAG_GLOBAL)
-		for globEl in globEls.keys():
-			globType = type(globEls[globEl]).__name__
-			globTypeXES = get_XES_attr_type(globType)
-			globValue = get_XES_attr_value(globEls[globEl], globTypeXES)
-			if not globTypeXES is None and not globEl is None and not globValue is None:
-				xesGlobalAttr = etree.SubElement(xesGlobal, globTypeXES)
-				xesGlobalAttr.set(xes_util.KEY_KEY,globEl)
-				xesGlobalAttr.set(xes_util.KEY_VALUE,globValue)
+		export_attributes_element(globEls, xesGlobal)
 
 def export_classifiers(log, root):
 	"""
@@ -142,6 +117,48 @@ def export_classifiers(log, root):
 		classifier.set(xes_util.KEY_NAME, clas)
 		classifier.set(xes_util.KEY_KEYS, " ".join(clasValue))
 
+def export_attributes_element(logElement, xmlElement):
+	"""
+	Export attributes related to a single element
+
+	Parameters
+	----------
+	logElement
+		Element in trace log (event, trace ...)
+	xmlElement
+		XML element
+	"""
+	if hasattr(logElement, "attributes"):
+		logElement = logElement.attributes
+
+	for attr in logElement:
+		if attr is not None:
+			attrType = type(logElement[attr]).__name__
+			attrTypeXES = get_XES_attr_type(attrType)
+			if attrType is not None and attrTypeXES is not None:
+				if attrTypeXES == xes_util.TAG_LIST:
+					if logElement[attr]['value'] is None:
+						thisAttribute = etree.SubElement(xmlElement, attrTypeXES)
+						thisAttribute.set(xes_util.KEY_KEY, attr)
+						thisAttributeValues = etree.SubElement(thisAttribute, "values")
+						export_attributes_element(logElement[attr]['children'], thisAttributeValues)
+					else:
+						attrType = type(logElement[attr]['value']).__name__
+						attrTypeXES = get_XES_attr_type(attrType)
+						if attrType is not None and attrTypeXES is not None:
+							attrValue = logElement[attr]['value']
+							if attrValue is not None:
+								thisAttribute = etree.SubElement(xmlElement, attrTypeXES)
+								thisAttribute.set(xes_util.KEY_KEY, attr)
+								thisAttribute.set(xes_util.KEY_VALUE, str(logElement[attr]['value']))
+								export_attributes_element(logElement[attr]['children'], thisAttribute)
+				else:
+					attrValue = get_XES_attr_value(logElement[attr], attrTypeXES)
+					if attrValue is not None:
+						thisAttribute = etree.SubElement(xmlElement, attrTypeXES)
+						thisAttribute.set(xes_util.KEY_KEY, attr)
+						thisAttribute.set(xes_util.KEY_VALUE, str(attrValue))
+
 def export_traces_events(tr, trace):
 	"""
 	Export XES events given a PM4PY trace
@@ -154,27 +171,10 @@ def export_traces_events(tr, trace):
 		Output XES trace
 
 	"""
+
 	for ev in tr:
 		event = etree.SubElement(trace, xes_util.TAG_EVENT)
-		
-		for attr in ev:
-			attrType = type(ev[attr]).__name__
-			attrTypeXES = get_XES_attr_type(attrType)
-			eventAttribute = etree.SubElement(event, attrTypeXES)
-			eventAttribute.set(xes_util.KEY_KEY,attr)
-			if attrTypeXES == xes_util.TAG_LIST:
-				eventAttributeValues = etree.SubElement(eventAttribute, "values")
-				for key in ev[attr]['children']:
-					#print(key,ev[attr]['children'][key])
-					subattrType = type(ev[attr]['children'][key]).__name__
-					subattrTypeXES = get_XES_attr_type(subattrType)
-					subattrValue = get_XES_attr_value(ev[attr]['children'][key], subattrTypeXES)
-					subeventAttribute = etree.SubElement(eventAttributeValues, subattrTypeXES)
-					subeventAttribute.set(xes_util.KEY_KEY,key)
-					subeventAttribute.set(xes_util.KEY_VALUE,subattrValue)
-			else:
-				attrValue = get_XES_attr_value(ev[attr], attrTypeXES)
-				eventAttribute.set(xes_util.KEY_VALUE,attrValue)
+		export_attributes_element(ev, event)
 
 def export_traces(log, root):
 	"""
@@ -190,25 +190,7 @@ def export_traces(log, root):
 	"""
 	for tr in log:
 		trace = etree.SubElement(root, xes_util.TAG_TRACE)
-
-		for attr in tr.attributes.keys():
-			attrType = type(tr.attributes[attr]).__name__
-			attrTypeXES = get_XES_attr_type(attrType)
-			traceAttribute = etree.SubElement(trace, attrTypeXES)
-			traceAttribute.set(xes_util.KEY_KEY,attr)
-			if attrTypeXES == xes_util.TAG_LIST:
-				traceAttributeValues = etree.SubElement(traceAttribute, "values")
-				for key in tr.attributes[attr]['children']:
-					subattrType = type(tr.attributes[attr]['children'][key]).__name__
-					subattrTypeXES = get_XES_attr_type(subattrType)
-					subattrValue = get_XES_attr_value(tr.attributes[attr]['children'][key], subattrTypeXES)
-					subtraceAttribute = etree.SubElement(traceAttributeValues, subattrTypeXES)
-					subtraceAttribute.set(xes_util.KEY_KEY,key)
-					subtraceAttribute.set(xes_util.KEY_VALUE,subattrValue)
-			else:
-				attrValue = get_XES_attr_value(tr.attributes[attr], attrTypeXES)
-				traceAttribute.set(xes_util.KEY_VALUE,attrValue)
-		
+		export_attributes_element(tr, trace)
 		export_traces_events(tr, trace)
 
 def export_log(log, outputFilePath):
