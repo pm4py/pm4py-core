@@ -30,7 +30,7 @@ class PetriImportTest(unittest.TestCase):
         for p in importedPetri1.places:
             if not p.out_arcs:
                 final_marking[p] = 1
-        [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness] = token_replay.apply_log(traceLog, importedPetri1,
+        [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(traceLog, importedPetri1,
                                                                                                      marking1, final_marking, enable_placeFitness=True)
 
     def test_importingPetriLogAlignment(self):

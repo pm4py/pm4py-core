@@ -5,7 +5,7 @@ from pm4py.models import petri
 from pm4py.algo.tokenreplay import token_replay
 import time
 
-log = xes_importer.import_from_path_xes('C:\\teleclaims.xes')
+log = xes_importer.import_from_path_xes('C:\\receipt.xes')
 #log = xes_importer.import_from_path_xes('a32f0n00.xes')
 net, marking = inductMinDirFollows.apply(log)
 for place in marking:
@@ -21,7 +21,7 @@ gviz.view()
 log = log[0:min(100,len(log))]
 time0 = time.time()
 print("started token replay")
-[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness] = token_replay.apply_log(log, net, marking, final_marking, enable_placeFitness=True)
+[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log, net, marking, final_marking, enable_placeFitness=True)
 for place in placeFitness:
 	if len(placeFitness[place]['underfedTraces']) > 0:
 		print(place.name)

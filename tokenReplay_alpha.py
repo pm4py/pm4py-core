@@ -21,7 +21,7 @@ gviz.view()
 log = log[0:min(100,len(log))]
 time0 = time.time()
 print("started token replay")
-[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness] = token_replay.apply_log(log, net, marking, final_marking, enable_placeFitness=True)
+[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log, net, marking, final_marking, enable_placeFitness=True, consider_remaining_in_fitness=False)
 for place in placeFitness:
 	if len(placeFitness[place]['underfedTraces']) > 0:
 		print(place.name)
