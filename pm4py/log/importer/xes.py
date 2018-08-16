@@ -132,5 +132,9 @@ def __parse_attribute(elem, store, key, value, tree):
         store[key] = value
     else:
         store[key] = {log_lib.util.xes.KEY_VALUE: value, log_lib.util.xes.KEY_CHILDREN: {}}
-        tree[elem] = store[elem.get(log_lib.util.xes.KEY_KEY)][log_lib.util.xes.KEY_CHILDREN]
+        if elem.getchildren()[0].tag.endswith(log_lib.util.xes.TAG_VALUES):
+            tree[elem] = store[key][log_lib.util.xes.KEY_CHILDREN]
+            tree[elem.getchildren()[0]] = tree[elem]
+        else:
+            tree[elem] = store[key][log_lib.util.xes.KEY_CHILDREN]
     return tree
