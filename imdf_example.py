@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
 	if True:
 		fitTraces = []
-		[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness] = token_replay.apply_log(log, net, marking,
+		[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log, net, marking,
 																									 final_marking,
 																									 enable_placeFitness=True)
 		i = 0
