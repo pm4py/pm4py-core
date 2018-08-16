@@ -78,56 +78,80 @@ def __search(sync_net, ini, fin, cost_function, skip):
     ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
     closed = set()
-    h, x = __compute_exact_heuristic(sync_net, incidence_matrix, ini, cost_vec, fin_vec, [0], None, 0)
-    shadow_map = dict()
-    ini_state = SearchTuple(0+h, 0, h, ini, None, None, x)
+    h, x = __compute_exact_heuristic(sync_net, incidence_matrix, ini, cost_vec, fin_vec)
+    ini_state = SearchTuple(0+h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
-    shadow_map[ini] = ini_state
     visited = 0
     queued = 0
     traversed = 0
     while not len(open_set) == 0:
         curr = heapq.heappop(open_set)
+        if not curr.trust:
+            h, x = __compute_exact_heuristic(sync_net, incidence_matrix, curr.m, cost_vec, fin_vec)
+            tp = SearchTuple(curr.g + h, curr.g, h, curr.m, curr.p, curr.t, x, __trust_solution(x))
+            heapq.heappush(open_set, tp)
+            heapq.heapify(open_set)
+            continue
+
         visited += 1
         current_marking = curr.m
         closed.add(current_marking)
         if current_marking == fin:
-            parent = curr.p
-            alignment = [curr.t.label]
-            while parent.p is not None:
-                alignment = [parent.t.label] + alignment
-                parent = parent.p
-            return {'alignment': alignment, 'cost': curr.g, 'visited_states': visited, 'queued_states': queued, 'traversed_arcs': traversed}
-
-        prev_t = curr.t
+            return __reconstruct_alignment(curr, visited, queued, traversed)
         for t in petri.semantics.enabled_transitions(sync_net, current_marking):
-            if prev_t is not None and prev_t.label[0] != skip and prev_t.label[1] == skip and t.label[0] == skip and (t.label[1] != skip or t.label[1] is None):
+            if curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip):
                 continue
             traversed += 1
             new_marking = petri.semantics.execute(t, sync_net, current_marking)
-            #if __get_eq_marking_from_set(new_marking, closed) is not None:
             if new_marking in closed:
                 continue
             g = curr.g + cost_function[t]
 
-            # shadow = __get_tuple_from_queue(new_marking, open_set)
-            shadow = shadow_map[new_marking] if new_marking in shadow_map else None
-            if shadow is not None:
-                if g >= shadow.g:
+            alt = next((enum[1] for enum in enumerate(open_set) if enum[1].m == new_marking), None)
+            if alt is not None:
+                if g >= alt.g:
                     continue
-                h = shadow.h
-                open_set.remove(shadow)
-            else:
-                queued += 1
-                h, x = __compute_exact_heuristic(sync_net, incidence_matrix, new_marking, cost_vec, fin_vec, curr.x, t, curr.h)
-
-            tp = SearchTuple(g+h, g, h, new_marking, curr, t, x)
-            shadow_map[new_marking] = tp
+                open_set.remove(alt)
+                heapq.heapify(open_set)
+            queued += 1
+            h, x = __derive_heuristic(incidence_matrix, cost_vec, curr.x, t, curr.h)
+            tp = SearchTuple(g+h, g, h, new_marking, curr, t, x, __trust_solution(x))
             heapq.heappush(open_set, tp)
             heapq.heapify(open_set)
 
 
-def __compute_exact_heuristic(sync_net, incidence_matrix, new_marking, cost_vec, fin_vec, x, t, h):
+def __reconstruct_alignment(state, visited, queued, traversed):
+    parent = state.p
+    alignment = [state.t.label]
+    while parent.p is not None:
+        alignment = [parent.t.label] + alignment
+        parent = parent.p
+    return {'alignment': alignment, 'cost': state.g, 'visited_states': visited, 'queued_states': queued,
+            'traversed_arcs': traversed}
+
+
+def __derive_heuristic(incidence_matrix, cost_vec, x, t, h):
+    x_prime = x.copy()
+    x_prime[incidence_matrix.transitions[t]] -= 1
+    return max(0, h - cost_vec[incidence_matrix.transitions[t]]), x_prime
+
+
+def __is_model_move(t, skip):
+    return t.label[0] == skip and t.label[1] != skip
+
+
+def __is_log_move(t, skip):
+    return t.label[0] != skip and t.label[1] == skip
+
+
+def __trust_solution(x):
+    for v in x:
+        if v < -0.001:
+            return False
+    return True
+
+
+def __compute_exact_heuristic(sync_net, incidence_matrix, marking, cost_vec, fin_vec):
     '''
     Computes an exact heuristic using an LP based on the marking equation.
 
@@ -135,7 +159,7 @@ def __compute_exact_heuristic(sync_net, incidence_matrix, new_marking, cost_vec,
     ----------
     :param sync_net: synchronous product net
     :param incidence_matrix: incidence matrix
-    :param new_marking: marking to start from
+    :param marking: marking to start from
     :param cost_vec: cost vector
     :param fin_vec: marking to reach
 
@@ -143,13 +167,7 @@ def __compute_exact_heuristic(sync_net, incidence_matrix, new_marking, cost_vec,
     -------
     :return: h: heuristic value, x: solution vector
     '''
-    if t is not None:
-        x_prime = x.copy()
-        x_prime[incidence_matrix.transitions[t]] -= 1
-        if x_prime[incidence_matrix.transitions[t]] >= 0:
-            return h - cost_vec[incidence_matrix.transitions[t]], x_prime
-
-    m_vec = incidence_matrix.encode_marking(new_marking)
+    m_vec = incidence_matrix.encode_marking(marking)
     G = matrix(-np.eye(len(sync_net.transitions)))
     h_cvx = matrix(np.zeros(len(sync_net.transitions)))
     A = matrix(incidence_matrix.A, tc='d')
@@ -167,16 +185,6 @@ def __get_tuple_from_queue(marking, queue):
     return None
 
 
-def __get_eq_marking_from_set(marking, marking_map):
-    start = datetime.datetime.now()
-    for m in marking_map:
-        if m == marking:
-            if (datetime.datetime.now() - start).microseconds > 0:
-                print('search', (datetime.datetime.now() - start).microseconds)
-            return m
-    return None
-
-
 def __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function):
     ini_vec = incidence_matrix.encode_marking(ini)
     fini_vec = incidence_matrix.encode_marking(fin)
@@ -189,17 +197,27 @@ def __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function):
 @dataclass
 class SearchTuple:
     f: float
-    g: float = field(compare=False)
-    h: float = field(compare=False)
-    m: petri.net.Marking = field(compare=False)
-    p: Any = field(compare=False)
-    t: petri.net.PetriNet.Transition = field(compare=False)
-    x: Any = field(compare=False)
+    g: float
+    h: float
+    m: petri.net.Marking
+    p: Any
+    t: petri.net.PetriNet.Transition
+    x: Any
+    trust: bool
 
     def __lt__(self, other):
-        if self.f == other.f:
-            return self.h < other.h
-        return self.f < other.f
+        if self.f < other.f:
+            return True
+        elif other.f < self.f:
+            return False
+        else:
+            if self.trust == other.trust:
+                if self.h < other.h:
+                    return True
+                else:
+                    return False
+            else:
+                return self.trust
 
     def __get_firing_sequence(self):
         ret = []
@@ -211,8 +229,9 @@ class SearchTuple:
 
     def __repr__(self):
         stringBuild = []
-        stringBuild.append("\nmarking=" + str(self.m))
-        stringBuild.append(" totalCost=" + str(self.f))
-        stringBuild.append(" heuristic=" + str(self.h))
-        stringBuild.append(" allActivatedTransitions=" + str(self.__get_firing_sequence()) + "\n\n")
+        stringBuild.append("\nm=" + str(self.m))
+        stringBuild.append(" f=" + str(self.f))
+        stringBuild.append(' g=' + str(self.g))
+        stringBuild.append(" h=" + str(self.h))
+        stringBuild.append(" path=" + str(self.__get_firing_sequence()) + "\n\n")
         return " ".join(stringBuild)
