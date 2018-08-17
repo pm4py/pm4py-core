@@ -412,7 +412,7 @@ class DfgGraph(object):
         """
         finds the maximum cut of the graph
         """
-        return self.findMaximumCutAlgo2(addedGraphs, activitiesArcsDirection=activitiesArcsDirection)
+        return self.findMaximumCutGreedy(addedGraphs, activitiesArcsDirection=activitiesArcsDirection)
 
     def getSetStrings(self, set):
         """
