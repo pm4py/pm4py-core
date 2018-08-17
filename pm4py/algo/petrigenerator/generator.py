@@ -3,8 +3,29 @@ import random
 import string
 from copy import copy, deepcopy
 
+# Generate a Petri net with an initial marking that is a workflow net
 class SubtreeGenerator(object):
     def __init__(self, minNoOfActivitiesPerSubtree, maxNoOfActivitiesPerSubtree, maxNoOfSubtrees, probSpawnSubtree, probAutoSkip, probAutoLoop, possible_behaviors):
+        """
+        Constructor
+
+        Parameters
+        ----------
+        minNoOfActivitiesPerSubtree
+            Minimum number of activities per distinct subtree
+        maxNoOfActivitiesPerSubtree
+            Maximum number of activities per distinct subtree
+        maxNoOfSubtrees
+            Maximum number of subtrees that should be added to the Petri net
+        probSpawnSubtree
+            Probability of spawn of a new subtree
+        probAutoSkip
+            Probability of adding a hidden transition that skips the current subtree
+        probAutoLoop
+            Probability of adding a hidden transition that loops on the current subtree
+        possible_behaviors
+            Possible behaviors admitted (sequential, concurrent, parallel, flower)
+        """
         self.minNoOfActivitiesPerSubtree = minNoOfActivitiesPerSubtree
         self.maxNoOfActivitiesPerSubtree = maxNoOfActivitiesPerSubtree
         self.maxNoOfSubtrees = maxNoOfSubtrees
@@ -37,9 +58,20 @@ class SubtreeGenerator(object):
         self.lastAddedPlace.name = "end"
 
     def generate_string(self, N):
+        """
+        Generate random string
+
+        Parameters
+        ----------
+        N
+            Number of letters of the string
+        """
         return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(N))
 
     def generate_activity(self):
+        """
+        Generate an activity name
+        """
         while True:
             activity_name = self.generate_string(4)
             if not activity_name in self.addedActivities:
@@ -47,9 +79,26 @@ class SubtreeGenerator(object):
                 return activity_name
 
     def simulate_net(self):
+        """
+        Starts the net simulation
+        """
         self.add_subtree(self.startPlace, 0)
 
     def add_subtree(self, subtreeSourceNode, recDepth, subtreeTargetNode=None, chosenBehavior=None):
+        """
+        Recursive function that adds subtrees to the Petri net
+
+        Parameters
+        ----------
+        subtreeSourceNode
+            Source node of the current subtree
+        recDepth
+            Reached recursion depth
+        subtreeTargetNode
+            (If specified) Target node of the subtree (it should attach to)
+        chosenBehavior
+            (If specified) Chosen behavior for the current subtree
+        """
         self.noOfSubtrees = self.noOfSubtrees + 1
         thisPossibleBehaviors = deepcopy(self.possible_behaviors)
         if recDepth == 0:
@@ -204,6 +253,26 @@ class SubtreeGenerator(object):
                     petri.utils.add_arc_from_to(self.lastAddedPlace, autoLoop, self.net)
 
 def generate_petri(minNoOfActivitiesPerSubtree=2, maxNoOfActivitiesPerSubtree=6, maxNoOfSubtrees=5, probSpawnSubtree=0.6, probAutoSkip=0.35, probAutoLoop=0.0, possible_behaviors=["sequential","concurrent","flower","parallel"]):
+    """
+    Generate workflow net
+
+    Parameters
+    ----------
+    minNoOfActivitiesPerSubtree
+        Minimum number of activities per distinct subtree
+    maxNoOfActivitiesPerSubtree
+        Maximum number of activities per distinct subtree
+    maxNoOfSubtrees
+        Maximum number of subtrees that should be added to the Petri net
+    probSpawnSubtree
+        Probability of spawn of a new subtree
+    probAutoSkip
+        Probability of adding a hidden transition that skips the current subtree
+    probAutoLoop
+        Probability of adding a hidden transition that loops on the current subtree
+    possible_behaviors
+        Possible behaviors admitted (sequential, concurrent, parallel, flower)
+    """
     STG = SubtreeGenerator(minNoOfActivitiesPerSubtree, maxNoOfActivitiesPerSubtree, maxNoOfSubtrees, probSpawnSubtree, probAutoSkip, probAutoLoop, possible_behaviors)
     #STG.simulate_net()
     marking = petri.net.Marking({STG.startPlace: 1})
