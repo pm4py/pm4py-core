@@ -35,9 +35,12 @@ class SubtreeGenerator(object):
         self.add_subtree(self.startPlace, 0)
 
     def add_subtree(self, subtreeSourceNode, recDepth, subtreeTargetNode=None, chosenBehavior=None):
+        #if subtreeTargetNode is not None:
+        #    print("recDepth=",recDepth,"subtreeTargetNode=",subtreeTargetNode)
         self.noOfSubtrees = self.noOfSubtrees + 1
         if chosenBehavior is None:
             chosenBehavior = random.choice(self.possible_behaviors)
+        #print(recDepth, chosenBehavior)
         if chosenBehavior == "sequential" or chosenBehavior == "flower":
             numOfActivitiesThisSubtree = 0
             while numOfActivitiesThisSubtree < self.minNoOfActivitiesPerSubtree:
@@ -67,7 +70,6 @@ class SubtreeGenerator(object):
             for i in range(numOfActivitiesThisSubtree):
                 petri.utils.add_arc_from_to(nextSourceNode, addedTransitions[i], self.net)
                 if i == numOfActivitiesThisSubtree-1 and subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
-                    print(type(subtreeTargetNode))
                     nextSourceNode = subtreeTargetNode
                 else:
                     self.noOfPlaces = self.noOfPlaces + 1
@@ -76,21 +78,37 @@ class SubtreeGenerator(object):
                     self.net.places.add(nextSourceNode)
                 petri.utils.add_arc_from_to(addedTransitions[i], nextSourceNode, self.net)
             r = random.random()
+            #print(self.noOfSubtrees, self.maxNoOfSubtrees)
             if r < self.probSpawnSubtree and self.noOfSubtrees < self.maxNoOfSubtrees:
                 self.add_subtree(self.lastAddedPlace, recDepth + 1, subtreeTargetNode=subtreeTargetNode)
             if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Transition:
+                #print(recDepth,"sequential subtreeTargetNode transition",subtreeTargetNode.name)
                 petri.utils.add_arc_from_to(self.lastAddedPlace, subtreeTargetNode, self.net)
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
+                self.lastAddedPlace = subtreeTargetNode
         elif chosenBehavior == "concurrent":
             self.noOfPlaces = self.noOfPlaces + 1
             connectionNode = petri.net.PetriNet.Place('p'+str(self.noOfPlaces))
             self.net.places.add(connectionNode)
             for i in range(numOfChildSubtrees):
                 self.add_subtree(subtreeSourceNode, recDepth+1, subtreeTargetNode=connectionNode, chosenBehavior=subtreesTypes[i])
-
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Transition:
+                #print(recDepth,"concurrent subtreeTargetNode transition",subtreeTargetNode.name)
+                petri.utils.add_arc_from_to(connectionNode, subtreeTargetNode, self.net)
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
+                #print(recDepth,"concurrent subtreeTargetNode place",subtreeTargetNode.name)
+                self.noOfHiddenTrans = self.noOfHiddenTrans + 1
+                hiddenTrans = petri.net.PetriNet.Transition('tauConcurrent'+str(recDepth)+'_' + str(self.noOfHiddenTrans), None)
+                self.net.transitions.add(hiddenTrans)
+                petri.utils.add_arc_from_to(connectionNode, hiddenTrans, self.net)
+                petri.utils.add_arc_from_to(hiddenTrans, subtreeTargetNode, self.net)
             self.lastAddedPlace = connectionNode
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
+                self.lastAddedPlace = subtreeTargetNode
 
-def generate_petri(minNoOfActivitiesPerSubtree=2, maxNoOfActivitiesPerSubtree=4, maxNoOfSubtrees=10, probSpawnSubtree=0.4, possible_behaviors=["sequential", "concurrent"]):
+def generate_petri(minNoOfActivitiesPerSubtree=2, maxNoOfActivitiesPerSubtree=4, maxNoOfSubtrees=7, probSpawnSubtree=0.6, possible_behaviors=["concurrent"]):
     STG = SubtreeGenerator(minNoOfActivitiesPerSubtree, maxNoOfActivitiesPerSubtree, maxNoOfSubtrees, probSpawnSubtree, possible_behaviors)
     #STG.simulate_net()
     marking = petri.net.Marking({STG.startPlace: 1})
-    return STG.net, marking
+    final_marking = petri.net.Marking({STG.lastAddedPlace: 1})
+    return STG.net, marking, final_marking
