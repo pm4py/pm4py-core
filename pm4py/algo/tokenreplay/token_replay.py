@@ -241,6 +241,38 @@ def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTran
 
     return [net, marking, activatedTransitions]
 
+def get_visible_transitions_eventually_enabled_by_marking(net, marking):
+    """
+    Get visible transitions eventually enabled by marking (passing possibly through hidden transitions)
+
+    Parameters
+    ----------
+    net
+        Petri net
+    marking
+        Current marking
+    """
+    allEnabledTransitions = list(semantics.enabled_transitions(net, marking))
+    visibleTransitions = set()
+    visitedTransitions = set()
+
+    i = 0
+    while i < len(allEnabledTransitions):
+        t = allEnabledTransitions[i]
+        if not t in visitedTransitions:
+            if t.label is not None:
+                visibleTransitions.add(t)
+            else:
+                markingCopy = copy(marking)
+                if semantics.is_enabled(t, net, markingCopy):
+                    newMarking = semantics.execute(t, net, markingCopy)
+                    newEnabledTransitions = list(semantics.enabled_transitions(net, newMarking))
+                    allEnabledTransitions = allEnabledTransitions + newEnabledTransitions
+            visitedTransitions.add(t)
+        i = i + 1
+
+    return visibleTransitions
+
 def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_placeFitness, place_fitness, placesShortestPathByHidden, consider_remaining_in_fitness, activity_key="concept:name", tryToReachFinalMarkingThroughHidden=True, stopImmediatelyWhenUnfit=False, useHiddenTransitionsToEnableCorrespondingTransitions=True):
     """
     Apply the token replaying algorithm to a trace
@@ -345,9 +377,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
     else:
         trace_fitness = 1.0
 
-
-
-    return [is_fit, trace_fitness, activatedTransitions, markingBeforeCleaning, semantics.enabled_transitions(net, markingBeforeCleaning)]
+    return [is_fit, trace_fitness, activatedTransitions, markingBeforeCleaning, get_visible_transitions_eventually_enabled_by_marking(net, markingBeforeCleaning)]
 
 def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=True, activity_key="concept:name", tryToReachFinalMarkingThroughHidden=True, stopImmediatelyWhenUnfit=False, useHiddenTransitionsToEnableCorrespondingTransitions=True, placesShortestPathByHidden=None):
     """
