@@ -91,7 +91,7 @@ def get_etc_precision(log, net, marking, final_marking, activity_key="concept:na
     prefixes, prefixCount = get_log_prefixes(log, activity_key=activity_key)
     prefixesKeys = list(prefixes.keys())
     fake_log = form_fake_log(prefixesKeys, prefixes, activity_key=activity_key)
-    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings,enabledTransitionsInMarkings] = token_replay.apply_log(fake_log, net, marking, final_marking, consider_remaining_in_fitness=False, tryToReachFinalMarkingThroughHidden=False, stopImmediatelyWhenUnfit=True, useHiddenTransitionsToEnableCorrespondingTransitions=True)
+    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings,enabledTransitionsInMarkings] = token_replay.apply_log(fake_log, net, marking, final_marking, consider_remaining_in_fitness=False, tryToReachFinalMarkingThroughHidden=False, stopImmediatelyWhenUnfit=True, useHiddenTransitionsToEnableCorrespondingTransitions=True, activity_key=activity_key)
 
     i = 0
     while i < len(traceIsFit):
