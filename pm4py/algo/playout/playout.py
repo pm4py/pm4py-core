@@ -35,5 +35,6 @@ def playoutPetriNet(net, initialMarking, noTraces=100, maxTraceLength=100):
             marking = semantics.execute(trans, net, marking)
             if len(trace) > maxTraceLength:
                 break
-        log.append(trace)
+        if len(trace) > 0:
+            log.append(trace)
     return log
