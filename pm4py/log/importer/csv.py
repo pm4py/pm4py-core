@@ -1,4 +1,4 @@
-import pm4py.log.instance as log_instance
+from pm4py import log
 import pandas as pd
 
 
@@ -10,4 +10,4 @@ def import_from_path(path, sep=','):
                 df[col] = pd.to_datetime(df[col])
             except ValueError:
                     pass
-    return log_instance.EventLog(df.to_dict('records'), attributes={'origin': 'csv'})
+    return log.instance.EventLog(df.to_dict('records'), attributes={'origin': 'csv'})

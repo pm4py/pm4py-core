@@ -1,7 +1,6 @@
-from pm4py.algo.alpha import classic as alpha_classic
+from pm4py.algo.alpha.versions import classic as alpha_classic
 from pm4py.log.importer import xes as xes_importer
 from pm4py.models.petri import visualize as pn_viz
-from pm4py.algo.alignments import state_equation_classic
 from pm4py.models import petri
 from pm4py.algo.tokenreplay import token_replay
 import time
@@ -22,7 +21,7 @@ gviz.view()
 log = log[0:min(100,len(log))]
 time0 = time.time()
 print("started token replay")
-[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness] = token_replay.apply_log(log, net, marking, final_marking, enable_placeFitness=True)
+[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log, net, marking, final_marking, enable_placeFitness=True, consider_remaining_in_fitness=False)
 for place in placeFitness:
 	if len(placeFitness[place]['underfedTraces']) > 0:
 		print(place.name)

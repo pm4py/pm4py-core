@@ -1,1 +1,1 @@
-from pm4py.algo.alignments import state_equation_classic, utils
+from pm4py.algo.alignments import utils, versions
