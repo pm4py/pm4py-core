@@ -17,7 +17,7 @@ def add_arc_from_to(fr, to, net, weight=1):
 
 
 def construct_trace_net(trace, trace_name_key=xes_util.DEFAULT_NAME_KEY, activity_key=xes_util.DEFAULT_NAME_KEY):
-    net = petri.net.PetriNet('trace net of %s' % trace.attributes[trace_name_key])
+    net = petri.net.PetriNet('trace net of %s' % trace.attributes[trace_name_key] if trace_name_key in trace.attributes else ' ')
     place_map = {0: petri.net.PetriNet.Place('p_0')}
     net.places.add(place_map[0])
     for i in range(0, len(trace)):

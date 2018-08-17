@@ -6,7 +6,7 @@ sys.path.insert(0,parentdir)
 from pm4py.log.importer import csv as csv_importer
 from pm4py.log.importer import xes as xes_importer
 import pm4py.log.transform as log_transform
-from pm4py.algo.alpha import classic as alpha_classic
+from pm4py.algo.alpha.versions import classic as alpha_classic
 from pm4py.models.petri import visualize as pn_viz
 from pm4py.algo.tokenreplay import token_replay
 from pm4py.algo.tokenreplay.token_replay import NoConceptNameException
@@ -39,7 +39,7 @@ class AlphaMinerTest(unittest.TestCase):
 		for p in net1.places:
 			if not p.out_arcs:
 				final_marking[p] = 1
-		[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness] = token_replay.apply_log(log1, net1, marking1, final_marking, enable_placeFitness=True)
+		[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log1, net1, marking1, final_marking, enable_placeFitness=True)
 		
 	def test_applyAlphaMinerToCSV(self):
 		# calculate and compare Petri nets obtained on the same log to verify that instances
@@ -55,7 +55,7 @@ class AlphaMinerTest(unittest.TestCase):
 		for p in net1.places:
 			if not p.out_arcs:
 				final_marking[p] = 1
-		[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness] = token_replay.apply_log(log1, net1, marking1, final_marking, enable_placeFitness=True)
+		[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log1, net1, marking1, final_marking, enable_placeFitness=True)
 	
 	def test_alphaMinerVisualizationFromXES(self):
 		log, net, marking = self.obtainPetriNetThroughAlphaMiner(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
@@ -66,7 +66,7 @@ class AlphaMinerTest(unittest.TestCase):
 		for p in net.places:
 			if not p.out_arcs:
 				final_marking[p] = 1
-		[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness] = token_replay.apply_log(log, net, marking, final_marking, enable_placeFitness=True)
+		[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log, net, marking, final_marking, enable_placeFitness=True)
 	
 	def test_applyAlphaMinerToProblematicLogs(self):
 		logs = os.listdir(PROBLEMATIC_XES_DIR)
@@ -84,7 +84,7 @@ class AlphaMinerTest(unittest.TestCase):
 				for p in net1.places:
 					if not p.out_arcs:
 						final_marking[p] = 1
-				[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness] = token_replay.apply_log(log1, net1, marking1, final_marking, enable_placeFitness=True)
+				[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log1, net1, marking1, final_marking, enable_placeFitness=True)
 			except SyntaxError as e:
 				logging.info("SyntaxError on log "+str(log)+": "+str(e))
 			except NoConceptNameException as e:

@@ -24,15 +24,15 @@ project = 'pm4py'
 copyright = '2018, PADS RWTH / AOPI Fraunhofer FIT'
 author = 'PADS RWTH / AOPI Fraunhofer FIT'
 
-# The short X.Y version
+# The short X.Y versions
 version = ''
-# The full version, including alpha/beta/rc tags
+# The full versions, including alpha/beta/rc tags
 release = ''
 
 
 # -- General configuration ---------------------------------------------------
 
-# If your documentation needs a minimal Sphinx version, state it here.
+# If your documentation needs a minimal Sphinx versions, state it here.
 #
 # needs_sphinx = '1.0'
 
