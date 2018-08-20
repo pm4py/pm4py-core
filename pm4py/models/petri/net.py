@@ -28,6 +28,7 @@ class Marking(Counter):
     def __repr__(self):
         return str([str(p.name) + ":" + str(self.get(p)) for p in self.keys()])
 
+
 class PetriNet(object):
     class Place(object):
 
