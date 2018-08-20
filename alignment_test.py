@@ -15,7 +15,8 @@ if __name__=='__main__':
         if len(p.out_arcs) == 0:
             fmarking[p] = 1
 
-    alignments = align.versions.state_equation_a_star.apply_log(log, net, marking, fmarking)
+    # alignments = align.versions.state_equation_a_star.apply_log(log, net, marking, fmarking)
+    alignments = align.factory.apply(log, net, marking, fmarking)
     for a in alignments:
         if a['fitness'] < 1.0:
             print(a)
