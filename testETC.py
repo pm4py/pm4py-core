@@ -5,7 +5,7 @@ from pm4py.models.petri.export import pnml as petri_exporter
 from pm4py.models import petri
 
 log = xes_importer.import_from_path_xes('C:\\running-example.xes')
-net, marking = dfg_only.apply(log)
+net, marking = dfg_only.apply(log, None)
 petri_exporter.export_petri_to_pnml(net, marking, "running-example.pnml")
 final_marking = petri.net.Marking()
 
