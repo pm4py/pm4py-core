@@ -1,10 +1,7 @@
 from pm4py.algo.petrigenerator import generator as petri_generator
-from pm4py.models.petri import visualize as pn_viz
-from pm4py.models.petri import exporter as petri_exporter
+from pm4py.models.petri.export import pnml as petri_exporter
 from pm4py.algo.playout import playout
 from pm4py.algo.tokenreplay import token_replay
-from pm4py.algo.imdf import inductMinDirFollows
-from pm4py.models import petri
 
 net, marking, final_marking = petri_generator.generate_petri()
 petri_exporter.export_petri_to_pnml(net, marking, "generatedNet.pnml")

@@ -1,8 +1,8 @@
 import functools
 from pm4py.log import instance as log_instance
 from pm4py.log.importer import xes as xes_importer
-from pm4py.algo.dfg import instance as dfg_instance
-from pm4py.algo.causal import instance as causal_instance
+from pm4py.algo.dfg.verions import native as dfg_instance
+from pm4py.algo.causal import factory as causal_instance
 from pm4py.algo.alpha.versions import classic as alpha_classic
 import time
 from pm4py.models.petri import visualize as pn_viz
@@ -29,7 +29,7 @@ def compare_time_of_first_event(t1, t2):
 # xes
 start = time.time()
 log = xes_importer.import_from_path_xes('C:/Users/bas/Documents/tue/svn/private/logs/a12_logs/a12f0n00.xes')
-print('time to import the log: %s' % (time.time() - start))
+print('time to importing the log: %s' % (time.time() - start))
 print('number of traces: %s' % len(log))
 
 print('avg. trace length: %s' % ((functools.reduce((lambda x, y: x + y), list(map(lambda t: len(t), log)))) / len(log)))

@@ -11,7 +11,7 @@ from pm4py.models.petri import visualize as pn_viz
 from pm4py.algo.tokenreplay import token_replay
 from pm4py.algo.tokenreplay.token_replay import NoConceptNameException
 from pm4py.models import petri
-from pm4py.models.petri import exporter as petri_exporter
+from pm4py.models.petri.export import pnml as petri_exporter
 from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 import logging
 
