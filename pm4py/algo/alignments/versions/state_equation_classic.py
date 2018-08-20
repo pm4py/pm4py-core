@@ -55,7 +55,6 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, activity_key="
     return apply_sync_prod(sync_prod, sync_initial_marking, sync_final_marking, cost_function, alignments_lib.utils.SKIP)
 
 
-
 def __apply_trace_best_worst_known(trace, petri_net, initial_marking, final_marking, best_worst, activity_key="concept:name"):
     trace_net, trace_im, trace_fm = petri.utils.construct_trace_net(trace, activity_key=activity_key)
     sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im, trace_fm, petri_net, initial_marking, final_marking, alignments_lib.utils.SKIP)
