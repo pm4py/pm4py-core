@@ -3,10 +3,10 @@ import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
-from pm4py.log.importer import xes as xes_importer
+from pm4py.log.importing import xes as xes_importer
 import pm4py.algo.alignments as align
 from pm4py.models import petri
-from pm4py.algo.alpha.versions import classic as alpha_classic
+from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.algo.inductive.versions import dfg_only
 from constants import INPUT_DATA_DIR
 
@@ -14,7 +14,7 @@ from constants import INPUT_DATA_DIR
 class AlignmentTest(unittest.TestCase):
     def test_alignment_alpha(self):
         traceLog = xes_importer.import_from_path_xes(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
-        net, marking = alpha_classic.apply(traceLog)
+        net, marking = alpha_factory.apply(traceLog)
         final_marking = petri.net.Marking()
         for p in net.places:
             if not p.out_arcs:
