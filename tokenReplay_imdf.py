@@ -1,4 +1,5 @@
-from pm4py.algo.inductive.versions import dfg_only
+#from pm4py.algo.inductive.versions import dfg_only
+from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.log.importing import xes as xes_importer
 from pm4py.models.petri import visualize as pn_viz
 from pm4py.models import petri
@@ -7,7 +8,7 @@ import time
 
 log = xes_importer.import_from_path_xes('C:\\receipt.xes')
 #log = xes_importer.import_from_path_xes('a32f0n00.xes')
-net, marking = dfg_only.apply(log)
+net, marking = inductive_factory.apply(log)
 for place in marking:
 	print("initial marking "+place.name)
 final_marking = petri.net.Marking()

@@ -1,4 +1,5 @@
-from pm4py.algo.inductive.versions import dfg_only
+#from pm4py.algo.inductive.versions import dfg_only
+from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.log.importing import xes as xes_importer
 from pm4py.models.petri import visualize as pn_viz
 import pm4py.algo.alignments as align
@@ -15,7 +16,7 @@ if __name__ == "__main__":
 		for event in trace:
 			event["newClassifier"] = event["concept:name"] + "+complete"""
 
-	net, marking = dfg_only.apply(log)
+	net, marking = inductive_factory.apply(log)
 	petri_exporter.export_petri_to_pnml(net, marking, "receipt.pnml")
 	#net, marking = petri_importer.import_petri_from_pnml("receipt.pnml")
 	for place in marking:

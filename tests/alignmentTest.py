@@ -30,7 +30,7 @@ class AlignmentTest(unittest.TestCase):
 
     def test_alignment_pnml(self):
         traceLog = xes_importer.import_from_path_xes(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        net, marking = dfg_only.apply(traceLog)
+        net, marking = dfg_only.apply(traceLog, None)
         final_marking = petri.net.Marking()
         for p in net.places:
             if not p.out_arcs:
