@@ -12,9 +12,9 @@ from copy import deepcopy, copy
 import math
 
 
-def apply(trace_log, activity_key='concept:name', cleanNetByTokenReplay=True):
+def apply(trace_log, parameters, activity_key='concept:name'):
     indMinDirFollows = InductMinDirFollows()
-    return indMinDirFollows.apply(trace_log, activity_key=activity_key, cleanNetByTokenReplay=cleanNetByTokenReplay)
+    return indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
 
 
 class InductMinDirFollows(object):
@@ -41,7 +41,7 @@ class InductMinDirFollows(object):
         self.addedArcsObjLabels = []
         self.lastPlaceAdded = None
 
-    def apply(self, trace_log, activity_key='concept:name', cleanNetByTokenReplay=True):
+    def apply(self, trace_log, parameters, activity_key='concept:name'):
         """
         Apply the Inductive Miner directly follows algorithm.
 
@@ -158,7 +158,7 @@ class InductMinDirFollows(object):
             if not p.out_arcs:
                 final_marking[p] = 1
 
-        if cleanNetByTokenReplay:
+        if parameters is not None and "cleanNetByTokenReplay" in parameters and parameters["cleanNetByTokenReplay"]:
             [traceIsFit, traceFitnessValue, activatedTransitions, placeFitnessPerTrace, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(trace_log, net, initial_marking, final_marking, activity_key=activity_key)
             actiTrans = set()
             for trace in activatedTransitions:
