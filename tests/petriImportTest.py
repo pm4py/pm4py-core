@@ -3,9 +3,8 @@ import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
-from pm4py.models.petri import importer as petri_importer
-from pm4py.models.petri import exporter as petri_exporter
-from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
+from pm4py.models.petri.export import pnml as petri_importer, pnml as petri_exporter
+from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 from pm4py.algo.tokenreplay import token_replay
 from pm4py.models import petri
 from pm4py.log.importer import xes as xes_importer

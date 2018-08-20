@@ -7,9 +7,9 @@ from pm4py.log.importer import xes as xes_importer
 import pm4py.algo.alignments as align
 from pm4py.models import petri
 from pm4py.algo.alpha.versions import classic as alpha_classic
-from pm4py.algo.imdf import inductMinDirFollows
-from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
-import logging
+from pm4py.algo.inductive.versions import dfg_only
+from constants import INPUT_DATA_DIR
+
 
 class AlignmentTest(unittest.TestCase):
     def test_alignment_alpha(self):
@@ -30,7 +30,7 @@ class AlignmentTest(unittest.TestCase):
 
     def test_alignment_pnml(self):
         traceLog = xes_importer.import_from_path_xes(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        net, marking = inductMinDirFollows.apply(traceLog)
+        net, marking = dfg_only.apply(traceLog)
         final_marking = petri.net.Marking()
         for p in net.places:
             if not p.out_arcs:

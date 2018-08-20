@@ -1,12 +1,11 @@
-from pm4py.algo.imdf import inductMinDirFollows
+from pm4py.algo.inductive.versions import dfg_only
 from pm4py.log.importer import xes as xes_importer
 from pm4py.models.petri import visualize as pn_viz
 import pm4py.algo.alignments as align
 from pm4py.algo.tokenreplay import token_replay
 from pm4py.models import petri
 import traceback
-from pm4py.models.petri import exporter as petri_exporter
-from pm4py.models.petri import importer as petri_importer
+from pm4py.models.petri.export import pnml as petri_exporter
 
 if __name__ == "__main__":
 	#log = xes_importer.import_from_path_xes('a32f0n00.xes')
@@ -16,7 +15,7 @@ if __name__ == "__main__":
 		for event in trace:
 			event["newClassifier"] = event["concept:name"] + "+complete"""
 
-	net, marking = inductMinDirFollows.apply(log)
+	net, marking = dfg_only.apply(log)
 	petri_exporter.export_petri_to_pnml(net, marking, "receipt.pnml")
 	#net, marking = petri_importer.import_petri_from_pnml("receipt.pnml")
 	for place in marking:

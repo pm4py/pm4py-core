@@ -1,6 +1,6 @@
 from pm4py.log.util import trace_log as tl_util
-from pm4py.algo.dfg import instance as dfg_inst
-from pm4py.algo.imdf.dfgGraph import DfgGraph as DfgGraph
+from pm4py.algo.dfg.verions import native as dfg_inst
+from pm4py.algo.inductive.data_structures.dfg_graph import DfgGraph as DfgGraph
 from pm4py.models import petri
 from pm4py.models.petri.net import Marking
 from pm4py.algo.tokenreplay.token_replay import NoConceptNameException

@@ -3,10 +3,9 @@ from pm4py.algo import alignments as alignments_lib
 from pm4py import log as log_lib
 import numpy as np
 import heapq
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 from cvxopt import matrix, solvers
-import datetime
 from multiprocessing import Pool
 import multiprocessing as mp
 

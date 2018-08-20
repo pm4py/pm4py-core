@@ -1,13 +1,14 @@
 from itertools import zip_longest
+from pm4py.log import util as log_util
 from pm4py.log.util import trace_log as tl_util
 from pm4py.models import petri
 import time
 
-from pm4py.algo.alpha.data_structures import classic
+from pm4py.algo.alpha.data_structures import alpha_classic_abstraction
 from pm4py.models.petri.net import Marking
 
 
-def apply(trace_log, activity_key='concept:name'):
+def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
     """
     This method calls the \"classic\" alpha miner [1]_.
 
@@ -31,7 +32,7 @@ def apply(trace_log, activity_key='concept:name'):
 
     """
     labels = tl_util.get_event_labels(trace_log, activity_key)
-    alpha_abstraction = classic.ClassicAlphaAbstraction(trace_log, activity_key)
+    alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(trace_log, activity_key)
     pairs = list(map(lambda p: ({p[0]}, {p[1]}), filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p), alpha_abstraction.causal_relation)))
 
     for i in range(0, len(pairs)):

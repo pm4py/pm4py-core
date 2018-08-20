@@ -6,12 +6,12 @@ sys.path.insert(0,parentdir)
 from pm4py.log.importer import csv as csv_importer
 from pm4py.log.importer import xes as xes_importer
 import pm4py.log.transform as log_transform
-from pm4py.algo.imdf.inductMinDirFollows import InductMinDirFollows as InductMinDirFollows
+from pm4py.algo.inductive.versions.dfg_only import InductMinDirFollows as InductMinDirFollows
 from pm4py.models.petri import visualize as pn_viz
 from pm4py.algo.tokenreplay import token_replay
 from pm4py.algo.tokenreplay.token_replay import NoConceptNameException
 from pm4py.models import petri
-from pm4py.models.petri import exporter as petri_exporter
+from pm4py.models.petri.export import pnml as petri_exporter
 from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 import logging
 

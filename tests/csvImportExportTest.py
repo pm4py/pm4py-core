@@ -4,9 +4,9 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from pm4py.log.importer import xes as xes_importer
-from pm4py.log.exporter import xes as xes_exporter
+from pm4py.log.export import xes as xes_exporter
 from pm4py.log.importer import csv as csv_importer
-from pm4py.log.exporter import csv as csv_exporter
+from pm4py.log.export import csv as csv_exporter
 import pm4py.log.transform as log_transform
 from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 
