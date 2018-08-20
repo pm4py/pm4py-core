@@ -1,5 +1,5 @@
 from pm4py.algo.etconformance import etconformance
-from pm4py.log.importer import xes as xes_importer
+from pm4py.log.importing import xes as xes_importer
 from pm4py.algo.inductive.versions import dfg_only
 from pm4py.models.petri.export import pnml as petri_exporter
 from pm4py.models import petri

@@ -1,5 +1,5 @@
 from pm4py.algo.inductive.versions import dfg_only
-from pm4py.log.importer import xes as xes_importer
+from pm4py.log.importing import xes as xes_importer
 from pm4py.models.petri import visualize as pn_viz
 import pm4py.algo.alignments as align
 from pm4py.algo.tokenreplay import token_replay
