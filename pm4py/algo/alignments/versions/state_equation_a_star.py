@@ -64,7 +64,7 @@ def __apply_trace_best_worst_known(trace, petri_net, initial_marking, final_mark
     return {'trace': trace, 'alignment': alignment['alignment'], 'cost': fixed_costs, 'fitness':fitness, 'visited_states': alignment['visited_states'], 'queued_states': alignment['queued_states'], 'traversed_arcs': alignment['traversed_arcs'] }
 
 
-def apply_log(log, petri_net, initial_marking, final_marking, activity_key="concept:name"):
+def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, activity_key="concept:name"):
     best_worst = apply_trace(log_lib.instance.Trace(), petri_net, initial_marking, final_marking)
     best_worst_costs = best_worst['cost'] // alignments_lib.utils.STD_MODEL_LOG_MOVE_COST
     with Pool(max(1, mp.cpu_count() - 1)) as pool: 

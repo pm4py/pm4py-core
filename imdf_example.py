@@ -42,7 +42,7 @@ if __name__ == "__main__":
 		while i < len(log):
 			try:
 				print("\n",i,[x["concept:name"] for x in log[i]])
-				cfResult = align.versions.state_equation_classic.apply_trace(log[i], net, marking, final_marking)['alignment']
+				cfResult = align.versions.state_equation_a_star.apply_trace(log[i], net, marking, final_marking)['alignment']
 				if cfResult is None:
 					print("alignment is none!")
 				else:

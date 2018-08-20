@@ -24,6 +24,10 @@ def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
     -------
     net : :class:`pm4py.models.petri.net.PetriNet`
         A Petri net describing the event log that is provided as an input
+    initial marking:
+        marking object representing the initial marking
+    final marking
+        marking object representing the final marking, not guaranteed that it is actually reachable!
 
     References
     ----------
@@ -56,7 +60,7 @@ def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
         net.transitions.add(label_transition_dict[labels[i]])
 
     src = __add_source(net, alpha_abstraction.start_activities, label_transition_dict)
-    net = __add_sink(net, alpha_abstraction.end_activities, label_transition_dict)
+    sink = __add_sink(net, alpha_abstraction.end_activities, label_transition_dict)
 
     for pair in internal_places:
         place = petri.net.PetriNet.Place(str(pair))
@@ -65,7 +69,7 @@ def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
             petri.utils.add_arc_from_to(label_transition_dict[in_arc], place, net)
         for out_arc in pair[1]:
             petri.utils.add_arc_from_to(place, label_transition_dict[out_arc], net)
-    return net, Marking({src: 1})
+    return net, Marking({src: 1}), Marking({sink: 1})
 
 
 def __add_source(net, start_activities, label_transition_dict):
@@ -81,7 +85,7 @@ def __add_sink(net, end_activities, label_transition_dict):
     net.places.add(end)
     for e in end_activities:
         petri.utils.add_arc_from_to(label_transition_dict[e], end, net)
-    return net
+    return end
 
 
 def __initial_filter(parallel_relation, pair):
