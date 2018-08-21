@@ -61,7 +61,7 @@ print('traces remaining: %s' % len(log))
 #print('time to transform the log: %s' % (time.time() - start))
 
 start = time.time()
-dfg = dfg_instance.compute_dfg(log)
+dfg = dfg_instance.apply(log)
 print('time to compute dfg: %s' % (time.time()-start))
 
 start = time.time()

@@ -90,7 +90,7 @@ class InductMinDirFollows(object):
                     if not activity in traceCounter:
                         self.minNoOfActivitiesPerTrace[activity] = 0
 
-        self.dfg = [(k, v) for k, v in dfg_inst.compute_dfg(trace_log, activity_key).items() if v > 0]
+        self.dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, activity_key).items() if v > 0]
         self.dfg = sorted(self.dfg, key=lambda x: x[1], reverse=True)
         pairs = [k[0] for k in self.dfg]
         labels = [str(x) for x in labels]
