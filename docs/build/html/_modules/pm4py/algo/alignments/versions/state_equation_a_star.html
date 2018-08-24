@@ -139,7 +139,21 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pm4py.algo.alignments.versions.state_equation_a_star</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pm4py.models</span> <span class="k">import</span> <span class="n">petri</span>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This module contains code that allows us to compute alignments on the basis of a regular A* search on the state-space</span>
+<span class="sd">of the synchronous product net of a trace and a Petri net.</span>
+<span class="sd">The main algorithm follows [1]_.</span>
+<span class="sd">When running the log-based variant, the code is running in parallel on a trace based level.</span>
+<span class="sd">Furthermore, by default, the code applies heuristic estimation, and prefers those states that have the smallest h-value</span>
+<span class="sd">in case the f-value of two states is equal.</span>
+
+<span class="sd">References</span>
+<span class="sd">----------</span>
+<span class="sd">.. [1] Sebastiaan J. van Zelst et al., &quot;Tuning Alignment Computation: An Experimental Evaluation&quot;,</span>
+<span class="sd">      ATAED@Petri Nets/ACSD 2017: 6-20. `http://ceur-ws.org/Vol-1847/paper01.pdf`_.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">pm4py.models</span> <span class="k">import</span> <span class="n">petri</span>
 <span class="kn">from</span> <span class="nn">pm4py.algo</span> <span class="k">import</span> <span class="n">alignments</span> <span class="k">as</span> <span class="n">alignments_lib</span>
 <span class="kn">from</span> <span class="nn">pm4py</span> <span class="k">import</span> <span class="n">log</span> <span class="k">as</span> <span class="n">log_lib</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -151,39 +165,40 @@
 <span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
 
 
-<div class="viewcode-block" id="apply_sync_prod"><a class="viewcode-back" href="../../../../../pm4py.algo.alignments.versions.html#pm4py.algo.alignments.versions.state_equation_a_star.apply_sync_prod">[docs]</a><span class="k">def</span> <span class="nf">apply_sync_prod</span><span class="p">(</span><span class="n">sync_prod</span><span class="p">,</span> <span class="n">ini</span><span class="p">,</span> <span class="n">fin</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">skip</span><span class="p">):</span>
+<div class="viewcode-block" id="apply_sync_prod"><a class="viewcode-back" href="../../../../../pm4py.algo.alignments.versions.html#pm4py.algo.alignments.versions.state_equation_a_star.apply_sync_prod">[docs]</a><span class="k">def</span> <span class="nf">apply_sync_prod</span><span class="p">(</span><span class="n">sync_prod</span><span class="p">,</span> <span class="n">initial_marking</span><span class="p">,</span> <span class="n">final_marking</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">skip</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Performs the basic alignment search on top of the synchronous product net, given a cost function and skyp-symbol</span>
+<span class="sd">    Performs the basic alignment search on top of the synchronous product net, given a cost function and skip-symbol</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    :param sync_prod: synchronous product net</span>
-<span class="sd">    :param ini: initial marking in the synchronous product net</span>
-<span class="sd">    :param fin: final marking in the synchronous product net</span>
-<span class="sd">    :param cost: cost function mapping transitions to the synchronous product net</span>
-<span class="sd">    :param skip: symbol to use for skips in the alignment</span>
+<span class="sd">    sync_prod: :class:`pm4py.models.petri.net.PetriNet` synchronous product net</span>
+<span class="sd">    initial_marking: :class:`pm4py.models.petri.net.Marking` initial marking in the synchronous product net</span>
+<span class="sd">    final_marking: :class:`pm4py.models.petri.net.Marking` final marking in the synchronous product net</span>
+<span class="sd">    cost: :class:`dict` cost function mapping transitions to the synchronous product net</span>
+<span class="sd">    skip: :class:`Any` symbol to use for skips in the alignment</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    :return: dict with keys: alignment, cost, visited_states, queued_states and traversed_arcs</span>
+<span class="sd">    dictionary : :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">__search</span><span class="p">(</span><span class="n">sync_prod</span><span class="p">,</span> <span class="n">ini</span><span class="p">,</span> <span class="n">fin</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">skip</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">__search</span><span class="p">(</span><span class="n">sync_prod</span><span class="p">,</span> <span class="n">initial_marking</span><span class="p">,</span> <span class="n">final_marking</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">skip</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="apply_trace"><a class="viewcode-back" href="../../../../../pm4py.algo.alignments.versions.html#pm4py.algo.alignments.versions.state_equation_a_star.apply_trace">[docs]</a><span class="k">def</span> <span class="nf">apply_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">petri_net</span><span class="p">,</span> <span class="n">initial_marking</span><span class="p">,</span> <span class="n">final_marking</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="s2">&quot;concept:name&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="apply_trace"><a class="viewcode-back" href="../../../../../pm4py.algo.alignments.versions.html#pm4py.algo.alignments.versions.state_equation_a_star.apply_trace">[docs]</a><span class="k">def</span> <span class="nf">apply_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">petri_net</span><span class="p">,</span> <span class="n">initial_marking</span><span class="p">,</span> <span class="n">final_marking</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="n">log_lib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">xes</span><span class="o">.</span><span class="n">DEFAULT_NAME_KEY</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Performs the basic alignment search, given a trace and a net</span>
+<span class="sd">    Performs the basic alignment search, given a trace and a net (note: internally calls :func:`~pm4py.alog.alignments.versions.state_equation_a_star.apply_sync_prod`)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    :param trace:</span>
-<span class="sd">    :param petri_net:</span>
-<span class="sd">    :param initial_marking:</span>
-<span class="sd">    :param final_marking:</span>
+<span class="sd">    trace: :class:`list` input trace, assumed to be a list of events (i.e. the code will use the activity key to get the activities)</span>
+<span class="sd">    petri_net: :class:`pm4py.models.petri.net.PetriNet` the Petri net to use in the alignment</span>
+<span class="sd">    initial_marking: :class:`pm4py.models.petri.net.Marking` initial marking in the Petri net</span>
+<span class="sd">    final_marking: :class:`pm4py.models.petri.net.Marking` final marking in the Petri net</span>
+<span class="sd">    activity_key: :class:`str` (optional) key to use to identify the activity described by the events</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    :return:dict with keys: alignment, cost, visited_states, queued_states and traversed_arcs</span>
+<span class="sd">    dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">trace_net</span><span class="p">,</span> <span class="n">trace_im</span><span class="p">,</span> <span class="n">trace_fm</span> <span class="o">=</span> <span class="n">petri</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">construct_trace_net</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="n">activity_key</span><span class="p">)</span>
     <span class="n">sync_prod</span><span class="p">,</span> <span class="n">sync_initial_marking</span><span class="p">,</span> <span class="n">sync_final_marking</span> <span class="o">=</span> <span class="n">petri</span><span class="o">.</span><span class="n">synchronous_product</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">trace_net</span><span class="p">,</span> <span class="n">trace_im</span><span class="p">,</span>

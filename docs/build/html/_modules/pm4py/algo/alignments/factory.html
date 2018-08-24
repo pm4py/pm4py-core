@@ -142,6 +142,11 @@
 <span></span><span class="kn">from</span> <span class="nn">pm4py.algo.alignments</span> <span class="k">import</span> <span class="n">versions</span>
 <span class="kn">from</span> <span class="nn">pm4py.log.util</span> <span class="k">import</span> <span class="n">xes</span>
 
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This python file contains a factory method to compute alignments on the basis of an event log.</span>
+<span class="sd">The current implemented version is the state-equation-based A* version, i.e. `pm4py.algo.alignments.versions.state_equation_a_star`</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
 <span class="n">STATE_EQUATION_A_STAR</span> <span class="o">=</span> <span class="s1">&#39;state_equation_a_star&#39;</span>
 
 <span class="n">VERSIONS</span> <span class="o">=</span> <span class="p">{</span><span class="n">STATE_EQUATION_A_STAR</span><span class="p">:</span> <span class="n">versions</span><span class="o">.</span><span class="n">state_equation_a_star</span><span class="o">.</span><span class="n">apply_log</span><span class="p">}</span>
