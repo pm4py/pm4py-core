@@ -1,0 +1,828 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.algo.inductive.data_structures.dfg_graph &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pm4py.algo.inductive.data_structures.dfg_graph</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pm4py.algo.inductive.data_structures.dfg_graph</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">copy</span><span class="p">,</span> <span class="n">deepcopy</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">HIGH_QUALITY_CUT_CONSTANT</span> <span class="o">=</span> <span class="mf">0.65</span>
+<span class="n">LOOP_CONSTANT_START</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">LOOP_CONSTANT_END</span> <span class="o">=</span> <span class="mf">0.03</span>
+
+<div class="viewcode-block" id="CutResultObj"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.CutResultObj">[docs]</a><span class="k">class</span> <span class="nc">CutResultObj</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Object useful for the second</span>
+<span class="sd">    maximal cut detection algorithm &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimalChoice</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">({})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimalChoice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="nb">set</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimalChoice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="nb">set</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highQualityCutFound</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highQualityCutFound</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CutResultObj.calculateCutCost"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.CutResultObj.calculateCutCost">[docs]</a>    <span class="k">def</span> <span class="nf">calculateCutCost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choice</span><span class="p">,</span> <span class="n">pairs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the cost of a cut</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">choice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">choice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">]:</span>
+                <span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">cost</span></div>
+
+<div class="viewcode-block" id="CutResultObj.findMaximumCutAlgo2Rec"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.CutResultObj.findMaximumCutAlgo2Rec">[docs]</a>    <span class="k">def</span> <span class="nf">findMaximumCutAlgo2Rec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">currentChoice</span><span class="p">,</span> <span class="n">activities</span><span class="p">,</span> <span class="n">pairs</span><span class="p">,</span> <span class="n">nodesInputActivities</span><span class="p">,</span> <span class="n">nodesOutputActivities</span><span class="p">,</span>
+                               <span class="n">recDepth</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recursion algorithm to find an optimal maximal cut</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        currentChoice</span>
+<span class="sd">            Current choice of cut (may be partial)</span>
+<span class="sd">        activities</span>
+<span class="sd">            Activities that we must find the cut on</span>
+<span class="sd">        pairs</span>
+<span class="sd">            Pairs of relations between activities</span>
+<span class="sd">        nodesInputActivities</span>
+<span class="sd">            Input activities for nodes according to pairs</span>
+<span class="sd">        nodesOutputActivities</span>
+<span class="sd">            Output activities for nodes according to pairs</span>
+<span class="sd">        recDepth</span>
+<span class="sd">            Reached recursion level</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">highQualityCutFound</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">recDepth</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">activities</span><span class="p">):</span>
+            <span class="c1"># print(currentChoice[&quot;set1&quot;],currentChoice[&quot;set2&quot;])</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">HIGH_QUALITY_CUT_CONSTANT</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span>
+                        <span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">HIGH_QUALITY_CUT_CONSTANT</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">]):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">highQualityCutFound</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">thisCutCost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateCutCost</span><span class="p">(</span><span class="n">currentChoice</span><span class="p">,</span> <span class="n">pairs</span><span class="p">)</span>
+                <span class="n">optCutCost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateCutCost</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimalChoice</span><span class="p">,</span> <span class="n">pairs</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">thisCutCost</span> <span class="o">&gt;</span> <span class="n">optCutCost</span><span class="p">:</span>
+                    <span class="c1"># print(str(optCutCost))</span>
+                    <span class="c1"># print(&quot;thisCutCost = &quot;,thisCutCost,&quot; optCutCost=&quot;,optCutCost,self.optimalChoice,len(currentChoice[&quot;set1&quot;]),len(currentChoice[&quot;set2&quot;]))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">optimalChoice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">optimalChoice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">thisActivity</span> <span class="o">=</span> <span class="n">activities</span><span class="p">[</span><span class="n">recDepth</span><span class="p">]</span>
+            <span class="n">inteWithSet1</span> <span class="o">=</span> <span class="nb">set</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">nodesOutputActivities</span><span class="p">[</span><span class="n">thisActivity</span><span class="p">],</span> <span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">])</span>
+            <span class="n">inteWithSet2</span> <span class="o">=</span> <span class="nb">set</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">nodesInputActivities</span><span class="p">[</span><span class="n">thisActivity</span><span class="p">],</span> <span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">])</span>
+
+            <span class="c1"># print(len(inteWithSet1))</span>
+            <span class="c1"># print(len(inteWithSet2))</span>
+            <span class="n">addActToSet1Result</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">addActToSet2Result</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inteWithSet2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">newCurrentChoice</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">currentChoice</span><span class="p">)</span>
+                <span class="n">newCurrentChoice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">thisActivity</span><span class="p">)</span>
+                <span class="n">addActToSet1Result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findMaximumCutAlgo2Rec</span><span class="p">(</span><span class="n">newCurrentChoice</span><span class="p">,</span> <span class="n">activities</span><span class="p">,</span> <span class="n">pairs</span><span class="p">,</span>
+                                                                 <span class="n">nodesInputActivities</span><span class="p">,</span> <span class="n">nodesOutputActivities</span><span class="p">,</span>
+                                                                 <span class="n">recDepth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inteWithSet1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">highQualityCutFound</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">newCurrentChoice</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">currentChoice</span><span class="p">)</span>
+                <span class="n">newCurrentChoice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">thisActivity</span><span class="p">)</span>
+                <span class="n">addActToSet2Result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findMaximumCutAlgo2Rec</span><span class="p">(</span><span class="n">newCurrentChoice</span><span class="p">,</span> <span class="n">activities</span><span class="p">,</span> <span class="n">pairs</span><span class="p">,</span>
+                                                                 <span class="n">nodesInputActivities</span><span class="p">,</span> <span class="n">nodesOutputActivities</span><span class="p">,</span>
+                                                                 <span class="n">recDepth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">addActToSet1Result</span> <span class="ow">or</span> <span class="n">addActToSet2Result</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="Node"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.Node">[docs]</a><span class="k">class</span> <span class="nc">Node</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        label</span>
+<span class="sd">            Node label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">countConnections</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputNodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputNodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Node.addInputNode"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.Node.addInputNode">[docs]</a>    <span class="k">def</span> <span class="nf">addInputNode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a node that is left-wise connected to this node</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        node</span>
+<span class="sd">            Connected node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputNodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">countConnections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">countConnections</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Node.addOutputNode"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.Node.addOutputNode">[docs]</a>    <span class="k">def</span> <span class="nf">addOutputNode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a node that is right-wise connected to this node</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        node</span>
+<span class="sd">            Connected node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputNodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">countConnections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">countConnections</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span></div>
+
+
+<div class="viewcode-block" id="DfgGraph"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph">[docs]</a><span class="k">class</span> <span class="nc">DfgGraph</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodesLabels</span><span class="p">,</span> <span class="n">pairs</span><span class="p">,</span> <span class="n">labelsCorresp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">invLabelsCorresp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origPairs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origLabels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">enableSequenceDetection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct a Directly-follows graph starting from the provision of labels and pairs</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        nodesLabels</span>
+<span class="sd">            Labels</span>
+<span class="sd">        pairs</span>
+<span class="sd">            Pairs (relationships between activities)</span>
+<span class="sd">        labelsCorresp</span>
+<span class="sd">            (if the graph gets clustered) Clusters of sequential activities. For each cluster, we memorize the list of activities belonging to the cluster</span>
+<span class="sd">        invLabelsCorresp</span>
+<span class="sd">            (if the graph gets clustered) Clusters of sequential activities. For each activity, we correspond the cluster it belongs to</span>
+<span class="sd">        origPairs</span>
+<span class="sd">            (if the graph gets clustered) Relationships pairs in the original non-clustered graph</span>
+<span class="sd">        origLabels</span>
+<span class="sd">            (if the graph gets clustered) Labels in the original non-clustered graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodesLabels</span> <span class="o">=</span> <span class="n">nodesLabels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pairs</span> <span class="o">=</span> <span class="n">pairs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">nodesLabels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+            <span class="n">node1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="n">node2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="n">node1</span><span class="o">.</span><span class="n">addOutputNode</span><span class="p">(</span><span class="n">node2</span><span class="p">)</span>
+            <span class="n">node2</span><span class="o">.</span><span class="n">addInputNode</span><span class="p">(</span><span class="n">node1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">labelsCorresp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span> <span class="o">=</span> <span class="n">labelsCorresp</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">invLabelsCorresp</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectSequences</span><span class="p">(</span><span class="n">enableSequenceDetection</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">newPairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapPairs</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">invLabelsCorresp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invLabelsCorresp</span> <span class="o">=</span> <span class="n">invLabelsCorresp</span>
+        <span class="k">if</span> <span class="n">origPairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">origPairs</span> <span class="o">=</span> <span class="n">origPairs</span>
+        <span class="k">if</span> <span class="n">origLabels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">origLabels</span> <span class="o">=</span> <span class="n">origLabels</span>
+
+<div class="viewcode-block" id="DfgGraph.formGroupedGraph"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.formGroupedGraph">[docs]</a>    <span class="k">def</span> <span class="nf">formGroupedGraph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        forms the clustered graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">DfgGraph</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">newPairs</span><span class="p">,</span> <span class="n">labelsCorresp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="p">,</span>
+                        <span class="n">invLabelsCorresp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">invLabelsCorresp</span><span class="p">,</span> <span class="n">origPairs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pairs</span><span class="p">,</span> <span class="n">origLabels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nodesLabels</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DfgGraph.mapPairs"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.mapPairs">[docs]</a>    <span class="k">def</span> <span class="nf">mapPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        map original pairs between labels into clustered pairs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">newPairs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairs</span><span class="p">:</span>
+            <span class="n">newPair</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">invLabelsCorresp</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">invLabelsCorresp</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">newPair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">newPair</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">newPair</span> <span class="ow">in</span> <span class="n">newPairs</span><span class="p">:</span>
+                    <span class="n">newPairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newPair</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newPairs</span></div>
+
+<div class="viewcode-block" id="DfgGraph.getPairs"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getPairs">[docs]</a>    <span class="k">def</span> <span class="nf">getPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gets pairs currently present in the graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">otherNode</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="p">:</span>
+                <span class="n">newPair</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">otherNode</span><span class="p">)]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">newPair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+                    <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newPair</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pairs</span></div>
+
+<div class="viewcode-block" id="DfgGraph.getOrigPairs"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getOrigPairs">[docs]</a>    <span class="k">def</span> <span class="nf">getOrigPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get original pairs (when graph gets clustered)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">origPairs</span></div>
+
+<div class="viewcode-block" id="DfgGraph.getOrigLabels"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getOrigLabels">[docs]</a>    <span class="k">def</span> <span class="nf">getOrigLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get original labels (when graph gets clustered)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">origLabels</span></div>
+
+<div class="viewcode-block" id="DfgGraph.detectSequences"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.detectSequences">[docs]</a>    <span class="k">def</span> <span class="nf">detectSequences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enableSequenceDetection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        detect clusters of sequential activities</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">simpleCouples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectSimpleCouples</span><span class="p">(</span><span class="n">enableSequenceDetection</span><span class="p">)</span>
+        <span class="n">groupedActivities</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">simpleCouples</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">oldGroupedActivities</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">groupedActivities</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">mustBreak</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">groupedActivities</span><span class="p">):</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">groupedActivities</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">groupedActivities</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">groupedActivities</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                            <span class="n">groupedActivities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">groupedActivities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">groupedActivities</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                            <span class="k">del</span> <span class="n">groupedActivities</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                            <span class="n">mustBreak</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="k">break</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">mustBreak</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">groupedActivities</span> <span class="o">==</span> <span class="n">oldGroupedActivities</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="n">groupedActivitiesFlattened</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">groupedActivities</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodesLabels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">groupedActivitiesFlattened</span><span class="p">:</span>
+                <span class="n">groupedActivities</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">label</span><span class="p">])</span>
+        <span class="n">groupIndex</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">labelsCorresp</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">invLabelsCorresp</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">ga</span> <span class="ow">in</span> <span class="n">groupedActivities</span><span class="p">:</span>
+            <span class="n">groupIndex</span> <span class="o">=</span> <span class="n">groupIndex</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">labelsCorresp</span><span class="p">[</span><span class="s2">&quot;group&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">groupIndex</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ga</span>
+            <span class="k">for</span> <span class="n">ac</span> <span class="ow">in</span> <span class="n">ga</span><span class="p">:</span>
+                <span class="n">invLabelsCorresp</span><span class="p">[</span><span class="n">ac</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;group&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">groupIndex</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">labelsCorresp</span><span class="p">,</span> <span class="n">invLabelsCorresp</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DfgGraph.detectSimpleCouples"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.detectSimpleCouples">[docs]</a>    <span class="k">def</span> <span class="nf">detectSimpleCouples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enableSequenceDetection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        support function in detecting clusters of sequential activities</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">simpleCouples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">enableSequenceDetection</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">otherNode</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">otherNode</span><span class="o">.</span><span class="n">inputNodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">simpleCouples</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">otherNode</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">simpleCouples</span></div>
+
+<div class="viewcode-block" id="DfgGraph.getNodesWithNoInput"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getNodesWithNoInput">[docs]</a>    <span class="k">def</span> <span class="nf">getNodesWithNoInput</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gets nodes having no edges as input</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nodesWithNoInput</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">nodeLabel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">nodeLabel</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">inputNodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">nodesWithNoInput</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nodesWithNoInput</span></div>
+
+<div class="viewcode-block" id="DfgGraph.getNodesWithNoOutput"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getNodesWithNoOutput">[docs]</a>    <span class="k">def</span> <span class="nf">getNodesWithNoOutput</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gets nodes having no edges as output</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nodesWithNoOutput</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">nodeLabel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">nodeLabel</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">nodesWithNoOutput</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nodesWithNoOutput</span></div>
+
+<div class="viewcode-block" id="DfgGraph.activitiesAreAllConcurrent"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.activitiesAreAllConcurrent">[docs]</a>    <span class="k">def</span> <span class="nf">activitiesAreAllConcurrent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        check if activities in the graph are all concurrent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">nodeLabel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">nodeLabel</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">inputNodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="DfgGraph.negate"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.negate">[docs]</a>    <span class="k">def</span> <span class="nf">negate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        negate the graph</span>
+<span class="sd">        (to detect parallelism between activities)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">nodeLabel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">nodeLabel</span><span class="p">]</span>
+            <span class="n">inputNodes</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">inputNodes</span><span class="p">)</span>
+            <span class="n">outputNodes</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="p">)</span>
+            <span class="c1"># print(node,inputNodes,outputNodes)</span>
+            <span class="k">for</span> <span class="n">otherNode</span> <span class="ow">in</span> <span class="n">inputNodes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">otherNode</span> <span class="ow">in</span> <span class="n">outputNodes</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">node</span><span class="o">.</span><span class="n">inputNodes</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">inputNodes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">otherNode</span><span class="p">)]</span>
+                    <span class="k">del</span> <span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">otherNode</span><span class="p">)]</span>
+            <span class="n">outputNodeLabels</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="p">]</span>
+            <span class="n">outputNodeLabels</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">outputNodeLabels</span><span class="p">)</span>
+            <span class="n">pairs</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pairs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">nodeLabel</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">outputNodeLabels</span><span class="p">:</span>
+                        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pairs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">pair</span><span class="p">)]</span>
+            <span class="n">pairsLabels</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairs</span><span class="p">]</span>
+            <span class="n">origPairs</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origPairs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">origPairs</span><span class="p">:</span>
+                <span class="n">act0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invLabelsCorresp</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="n">act1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invLabelsCorresp</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;[&#39;&quot;</span> <span class="o">+</span> <span class="n">act0</span> <span class="o">+</span> <span class="s2">&quot;&#39;, &#39;&quot;</span> <span class="o">+</span> <span class="n">act1</span> <span class="o">+</span> <span class="s2">&quot;&#39;]&quot;</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">pairsLabels</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">origPairs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">origPairs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">pair</span><span class="p">)]</span></div>
+
+    <span class="c1"># print(pairsLabels)</span>
+
+<div class="viewcode-block" id="DfgGraph.projectPairs"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.projectPairs">[docs]</a>    <span class="k">def</span> <span class="nf">projectPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">pairs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        keep only pairs that have both elements inside labels list</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        labels</span>
+<span class="sd">            Labels for which we want to do the projection</span>
+<span class="sd">        pairs</span>
+<span class="sd">            Pairs to project</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">newPairs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pairs</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">labels</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">newPairs</span></div>
+
+<div class="viewcode-block" id="DfgGraph.formConnectedComponent"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.formConnectedComponent">[docs]</a>    <span class="k">def</span> <span class="nf">formConnectedComponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connectedLabels</span><span class="p">,</span> <span class="n">elToExam</span><span class="p">,</span> <span class="n">alreadyExamined</span><span class="p">,</span> <span class="n">currentConnComp</span><span class="p">,</span> <span class="n">recDepth</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        recursive function to get a single connected component</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        connectedLabels</span>
+<span class="sd">            For each label, maps the elements that are connected in input or in output</span>
+<span class="sd">        elToExam</span>
+<span class="sd">            Label to examine (we want to find the connected component containing it)</span>
+<span class="sd">        alreadyExamined</span>
+<span class="sd">            Already examined labels in this step</span>
+<span class="sd">        currentConnComp</span>
+<span class="sd">            Connected component (starts empty, and labels are added to it)</span>
+<span class="sd">        recDepth</span>
+<span class="sd">            Current recursion depth</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">elToExam</span> <span class="ow">in</span> <span class="n">currentConnComp</span><span class="p">:</span>
+            <span class="n">currentConnComp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elToExam</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">elToExam</span> <span class="ow">in</span> <span class="n">alreadyExamined</span><span class="p">:</span>
+            <span class="n">alreadyExamined</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elToExam</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">otherEl</span> <span class="ow">in</span> <span class="n">connectedLabels</span><span class="p">[</span><span class="n">elToExam</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">otherEl</span> <span class="ow">in</span> <span class="n">currentConnComp</span><span class="p">:</span>
+                <span class="n">currentConnComp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">otherEl</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">otherEl</span> <span class="ow">in</span> <span class="n">alreadyExamined</span><span class="p">:</span>
+                <span class="p">[</span><span class="n">alreadyExamined</span><span class="p">,</span> <span class="n">currentConnComp</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formConnectedComponent</span><span class="p">(</span><span class="n">connectedLabels</span><span class="p">,</span> <span class="n">otherEl</span><span class="p">,</span>
+                                                                                 <span class="n">alreadyExamined</span><span class="p">,</span> <span class="n">currentConnComp</span><span class="p">,</span>
+                                                                                 <span class="n">recDepth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">alreadyExamined</span><span class="p">,</span> <span class="n">currentConnComp</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DfgGraph.findConnectedComponents"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findConnectedComponents">[docs]</a>    <span class="k">def</span> <span class="nf">findConnectedComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find all connected components in the graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># For each label, maps the elements that are connected in input or in output</span>
+        <span class="n">connectedLabels</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">origLabels</span><span class="p">:</span>
+            <span class="n">connectedLabels</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">origPairs</span><span class="p">:</span>
+            <span class="n">connectedLabels</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">connectedLabels</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># find the single connected components by iterating on the labels</span>
+        <span class="n">connectedComponents</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">allAlreadyExamined</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">connectedLabels</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">allAlreadyExamined</span><span class="p">:</span>
+                <span class="p">[</span><span class="n">alreadyExamined</span><span class="p">,</span> <span class="n">currentConnComp</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formConnectedComponent</span><span class="p">(</span><span class="n">connectedLabels</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[],</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">connectedComponents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentConnComp</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">alreadyExamined</span><span class="p">:</span>
+                    <span class="n">allAlreadyExamined</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">connectedComponents</span></div>
+
+<div class="viewcode-block" id="DfgGraph.findMaximumCut"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findMaximumCut">[docs]</a>    <span class="k">def</span> <span class="nf">findMaximumCut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addedGraphs</span><span class="p">,</span> <span class="n">activitiesArcsDirection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        finds the maximum cut of the graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">findMaximumCutGreedy</span><span class="p">(</span><span class="n">addedGraphs</span><span class="p">,</span> <span class="n">activitiesArcsDirection</span><span class="o">=</span><span class="n">activitiesArcsDirection</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DfgGraph.getSetStrings"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getSetStrings">[docs]</a>    <span class="k">def</span> <span class="nf">getSetStrings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maps a set of nodes into activities names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">setString</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">setString</span></div>
+
+<div class="viewcode-block" id="DfgGraph.getNodesThatCanBeMoved"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getNodesThatCanBeMoved">[docs]</a>    <span class="k">def</span> <span class="nf">getNodesThatCanBeMoved</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">set1</span><span class="p">,</span> <span class="n">set2</span><span class="p">,</span> <span class="n">set1Strings</span><span class="p">,</span> <span class="n">set2Strings</span><span class="p">,</span> <span class="n">setToConsider</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets nodes that can be moved from a set to the other (for greedy maximum cut algorithm)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        set1</span>
+<span class="sd">            First set of maximum cut</span>
+<span class="sd">        set2</span>
+<span class="sd">            Second set of maximum cut</span>
+<span class="sd">        set1Strings</span>
+<span class="sd">            Strings related to activities in the first set</span>
+<span class="sd">        set2Strings</span>
+<span class="sd">            Strings related to activities in the second set</span>
+<span class="sd">        setToConsider</span>
+<span class="sd">            specify set1 or set2 as the set where to search a move</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nodesThatCanBeMoved</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">setToConsider</span> <span class="o">==</span> <span class="s2">&quot;set1&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">set1</span><span class="p">:</span>
+                <span class="n">canBeMoved</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">outputNode</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">outputNode</span><span class="p">)</span> <span class="ow">in</span> <span class="n">set1Strings</span><span class="p">:</span>
+                        <span class="n">canBeMoved</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">canBeMoved</span><span class="p">:</span>
+                    <span class="n">nodesThatCanBeMoved</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">setToConsider</span> <span class="o">==</span> <span class="s2">&quot;set2&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">set2</span><span class="p">:</span>
+                <span class="n">canBeMoved</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">outputNode</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">outputNode</span><span class="p">)</span> <span class="ow">in</span> <span class="n">set2Strings</span><span class="p">:</span>
+                        <span class="n">canBeMoved</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">canBeMoved</span><span class="p">:</span>
+                    <span class="n">nodesThatCanBeMoved</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nodesThatCanBeMoved</span></div>
+
+<div class="viewcode-block" id="DfgGraph.findMaximumCutAlgo2"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findMaximumCutAlgo2">[docs]</a>    <span class="k">def</span> <span class="nf">findMaximumCutAlgo2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addedGraphs</span><span class="p">,</span> <span class="n">activitiesArcsDirection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Slower algorithm for maximum cut detection</span>
+<span class="sd">        (examines all possibilities)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        addedGraphs</span>
+<span class="sd">            Part of the tree already added to the model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairs</span>
+        <span class="n">activities</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">countConnections</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+        <span class="n">nodesOutputActivities</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">nodesInputActivities</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">nodeLabel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">nodeLabel</span><span class="p">]</span>
+            <span class="n">nodesInputActivities</span><span class="p">[</span><span class="n">nodeLabel</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="n">nodesOutputActivities</span><span class="p">[</span><span class="n">nodeLabel</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">otherNodeLabel</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">outputNodes</span><span class="p">:</span>
+                <span class="n">nodesOutputActivities</span><span class="p">[</span><span class="n">nodeLabel</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">otherNodeLabel</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">otherNodeLabel</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">inputNodes</span><span class="p">:</span>
+                <span class="n">nodesInputActivities</span><span class="p">[</span><span class="n">nodeLabel</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">otherNodeLabel</span><span class="p">))</span>
+        <span class="n">currentChoice</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">currentChoice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="n">cutResult</span> <span class="o">=</span> <span class="n">CutResultObj</span><span class="p">()</span>
+        <span class="n">cutResult</span><span class="o">.</span><span class="n">findMaximumCutAlgo2Rec</span><span class="p">(</span><span class="n">currentChoice</span><span class="p">,</span> <span class="n">activities</span><span class="p">,</span> <span class="n">pairs</span><span class="p">,</span> <span class="n">nodesInputActivities</span><span class="p">,</span> <span class="n">nodesOutputActivities</span><span class="p">,</span>
+                                         <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cutResult</span><span class="o">.</span><span class="n">optimalChoice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">cutResult</span><span class="o">.</span><span class="n">optimalChoice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># print(&quot;\nset1&quot;,cutResult.optimalChoice[&quot;set1&quot;],&quot;set2&quot;,cutResult.optimalChoice[&quot;set2&quot;])</span>
+
+            <span class="n">set1Strings</span> <span class="o">=</span> <span class="n">cutResult</span><span class="o">.</span><span class="n">optimalChoice</span><span class="p">[</span><span class="s2">&quot;set1&quot;</span><span class="p">]</span>
+            <span class="n">set2Strings</span> <span class="o">=</span> <span class="n">cutResult</span><span class="o">.</span><span class="n">optimalChoice</span><span class="p">[</span><span class="s2">&quot;set2&quot;</span><span class="p">]</span>
+            <span class="n">retSet1</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set1Strings</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>
+            <span class="n">retSet2</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set2Strings</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="n">retSet1</span><span class="p">,</span> <span class="n">retSet2</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[]]</span></div>
+
+<div class="viewcode-block" id="DfgGraph.findMaximumCutGreedy"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findMaximumCutGreedy">[docs]</a>    <span class="k">def</span> <span class="nf">findMaximumCutGreedy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addedGraphs</span><span class="p">,</span> <span class="n">activitiesArcsDirection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Greedy strategy to form a maximum cut:</span>
+<span class="sd">        - activities without any input are added to set1</span>
+<span class="sd">        - activities without any output are added to set2</span>
+<span class="sd">        - if an activity cannot be added nor to set1 or to set2, then a cut is not found</span>
+<span class="sd">        - other activities are added to the most convenient set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">set1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getNodesWithNoInput</span><span class="p">()</span>
+        <span class="n">set2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getNodesWithNoOutput</span><span class="p">()</span>
+        <span class="n">set2</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set2</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set1</span><span class="p">]</span>
+        <span class="n">set1Strings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSetStrings</span><span class="p">(</span><span class="n">set1</span><span class="p">)</span>
+        <span class="n">set2Strings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSetStrings</span><span class="p">(</span><span class="n">set2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">activitiesArcsDirection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+                <span class="n">firstElOfClust</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">firstElOfClust</span> <span class="ow">in</span> <span class="n">activitiesArcsDirection</span><span class="p">:</span>
+                    <span class="n">oldCountConnection</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">countConnections</span><span class="p">)</span>
+                    <span class="n">x</span><span class="o">.</span><span class="n">countConnections</span> <span class="o">=</span> <span class="mi">100000000</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">activitiesArcsDirection</span><span class="p">[</span><span class="n">firstElOfClust</span><span class="p">])</span>
+
+        <span class="n">nodes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">countConnections</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">set1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">set2</span><span class="p">:</span>
+                <span class="n">inputConnectionsInSet1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairs</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">set1Strings</span><span class="p">]</span>
+                <span class="n">inputConnectionsInSet2</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairs</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">set2Strings</span><span class="p">]</span>
+                <span class="n">outputConnectionsInSet1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairs</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">set1Strings</span><span class="p">]</span>
+                <span class="n">outputConnectionsInSet2</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairs</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">set2Strings</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">outputConnectionsInSet1</span> <span class="ow">and</span> <span class="n">inputConnectionsInSet2</span><span class="p">:</span>
+                    <span class="c1"># impossible situation, not cut found</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[]]</span>
+                <span class="k">if</span> <span class="n">addedGraphs</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">set1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">outputConnectionsInSet1</span><span class="p">:</span>
+                        <span class="c1"># must belong to set 1</span>
+                        <span class="n">set1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">inputConnectionsInSet2</span><span class="p">:</span>
+                        <span class="c1"># must belong to set 2</span>
+                        <span class="n">set2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># add it to the most convenient place</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputConnectionsInSet1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputConnectionsInSet2</span><span class="p">):</span>
+                            <span class="c1"># add to set 2</span>
+                            <span class="n">set2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="c1"># add to set 1</span>
+                            <span class="n">set1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">set2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">set1Strings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSetStrings</span><span class="p">(</span><span class="n">set1</span><span class="p">)</span>
+            <span class="n">set2Strings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSetStrings</span><span class="p">(</span><span class="n">set2</span><span class="p">)</span>
+        <span class="n">set2</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set2</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set1</span><span class="p">]</span>
+        <span class="n">retSet1</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set1Strings</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>
+        <span class="n">retSet2</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set2Strings</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">retSet1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">retSet2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="n">retSet1</span><span class="p">,</span> <span class="n">retSet2</span><span class="p">]</span>
+
+        <span class="n">set1NodesThatCanBeMoved</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getNodesThatCanBeMoved</span><span class="p">(</span><span class="n">set1</span><span class="p">,</span> <span class="n">set2</span><span class="p">,</span> <span class="n">set1Strings</span><span class="p">,</span> <span class="n">set2Strings</span><span class="p">,</span> <span class="s2">&quot;set1&quot;</span><span class="p">)</span>
+        <span class="n">set2NodesThatCanBeMoved</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getNodesThatCanBeMoved</span><span class="p">(</span><span class="n">set1</span><span class="p">,</span> <span class="n">set2</span><span class="p">,</span> <span class="n">set1Strings</span><span class="p">,</span> <span class="n">set2Strings</span><span class="p">,</span> <span class="s2">&quot;set2&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">set2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">set1NodesThatCanBeMoved</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># print(&quot;moving to 2&quot;)</span>
+            <span class="n">set2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">set1NodesThatCanBeMoved</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">del</span> <span class="n">set1</span><span class="p">[</span><span class="n">set1</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">set1NodesThatCanBeMoved</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+            <span class="n">set1Strings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSetStrings</span><span class="p">(</span><span class="n">set1</span><span class="p">)</span>
+            <span class="n">set2Strings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSetStrings</span><span class="p">(</span><span class="n">set2</span><span class="p">)</span>
+            <span class="n">retSet1</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set1Strings</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>
+            <span class="n">retSet2</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set2Strings</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="n">retSet1</span><span class="p">,</span> <span class="n">retSet2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">set1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">set2NodesThatCanBeMoved</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># print(&quot;moving to 1&quot;)</span>
+            <span class="n">set1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">set2NodesThatCanBeMoved</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">del</span> <span class="n">set2</span><span class="p">[</span><span class="n">set2</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">set2NodesThatCanBeMoved</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+            <span class="n">set1Strings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSetStrings</span><span class="p">(</span><span class="n">set1</span><span class="p">)</span>
+            <span class="n">set2Strings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSetStrings</span><span class="p">(</span><span class="n">set2</span><span class="p">)</span>
+            <span class="n">retSet1</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set1Strings</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>
+            <span class="n">retSet2</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set2Strings</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelsCorresp</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="n">retSet1</span><span class="p">,</span> <span class="n">retSet2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="n">retSet1</span><span class="p">,</span> <span class="n">retSet2</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DfgGraph.findLoopCut"><a class="viewcode-back" href="../../../../../pm4py.algo.inductive.data_structures.html#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findLoopCut">[docs]</a>    <span class="k">def</span> <span class="nf">findLoopCut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">activitiesArcsDirection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds a loop cut (alternative algorithm)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        activitiesArcsDirection</span>
+<span class="sd">            Activities arcs direction</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">activitiesInputs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">activitiesOutputs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">allActivities</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">origLabels</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">origPairs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">activitiesInputs</span><span class="p">:</span>
+                <span class="n">activitiesInputs</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">activitiesOutputs</span><span class="p">:</span>
+                <span class="n">activitiesOutputs</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">activitiesInputs</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">activitiesOutputs</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sortedActivitiesArcsDirection</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">act</span> <span class="ow">in</span> <span class="n">activitiesArcsDirection</span><span class="p">:</span>
+            <span class="n">sortedActivitiesArcsDirection</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">act</span><span class="p">,</span> <span class="n">activitiesArcsDirection</span><span class="p">[</span><span class="n">act</span><span class="p">]])</span>
+
+        <span class="n">sortedActivitiesArcsDirection</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sortedActivitiesArcsDirection</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1">#print(sortedActivitiesArcsDirection)</span>
+
+        <span class="k">if</span> <span class="n">sortedActivitiesArcsDirection</span><span class="p">:</span>
+            <span class="n">consideredStartActivity</span> <span class="o">=</span> <span class="n">sortedActivitiesArcsDirection</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">activitiesArcsDirection</span><span class="p">[</span><span class="n">consideredStartActivity</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">LOOP_CONSTANT_START</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">consideredStartActivity</span> <span class="ow">in</span> <span class="n">activitiesInputs</span><span class="p">:</span>
+                    <span class="n">activityInputs</span> <span class="o">=</span> <span class="n">activitiesInputs</span><span class="p">[</span><span class="n">consideredStartActivity</span><span class="p">]</span>
+                    <span class="n">startActivities</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">endActivities</span> <span class="o">=</span> <span class="p">[]</span>
+
+                    <span class="k">for</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">activityInputs</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">activitiesArcsDirection</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">activity</span> <span class="o">==</span> <span class="n">consideredStartActivity</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">activitiesArcsDirection</span><span class="p">[</span><span class="n">activity</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">LOOP_CONSTANT_END</span><span class="p">:</span>
+                                <span class="n">endActivities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">activity</span><span class="p">)</span>
+
+                    <span class="k">for</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">allActivities</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">startActivities</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">endActivities</span><span class="p">:</span>
+                            <span class="n">startActivities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">activity</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">startActivities</span> <span class="ow">and</span> <span class="n">endActivities</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="n">startActivities</span><span class="p">,</span> <span class="n">endActivities</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[]]</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, PADS @ RWTH / PADS @ Fraunhofer FIT.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

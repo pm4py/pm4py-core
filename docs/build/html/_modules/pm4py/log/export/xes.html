@@ -1,0 +1,426 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.log.export.xes &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pm4py.log.export.xes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pm4py.log.export.xes</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">etree</span>
+<span class="kn">import</span> <span class="nn">pm4py.log.instance</span> <span class="k">as</span> <span class="nn">log_instance</span>
+<span class="kn">import</span> <span class="nn">pm4py.log.transform</span> <span class="k">as</span> <span class="nn">log_transform</span>
+<span class="kn">import</span> <span class="nn">pm4py.log.util.xes</span> <span class="k">as</span> <span class="nn">xes_util</span>
+
+<span class="c1"># defines correspondence between Python types and XES types</span>
+<span class="n">TYPE_CORRESPONDENCE</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="s2">&quot;str&quot;</span><span class="p">:</span><span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_STRING</span><span class="p">,</span>
+	<span class="s2">&quot;int&quot;</span><span class="p">:</span><span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_INT</span><span class="p">,</span>
+	<span class="s2">&quot;float&quot;</span><span class="p">:</span><span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_FLOAT</span><span class="p">,</span>
+	<span class="s2">&quot;datetime&quot;</span><span class="p">:</span><span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_DATE</span><span class="p">,</span>
+	<span class="s2">&quot;bool&quot;</span><span class="p">:</span><span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_BOOLEAN</span><span class="p">,</span>
+	<span class="s2">&quot;dict&quot;</span><span class="p">:</span><span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_LIST</span>
+<span class="p">}</span>
+<span class="c1"># if a type is not found in the previous list, then default to string</span>
+<span class="n">DEFAULT_TYPE</span> <span class="o">=</span> <span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_STRING</span>
+
+
+<div class="viewcode-block" id="get_XES_attr_type"><a class="viewcode-back" href="../../../../pm4py.log.export.html#pm4py.log.export.xes.get_XES_attr_type">[docs]</a><span class="k">def</span> <span class="nf">get_XES_attr_type</span><span class="p">(</span><span class="n">attrType</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Transform a Python attribute type (e.g. str, datetime) into a XES attribute type (e.g. string, date)</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	attrType</span>
+<span class="sd">		Python attribute type</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">attrType</span> <span class="ow">in</span> <span class="n">TYPE_CORRESPONDENCE</span><span class="p">:</span>
+		<span class="n">attrTypeXES</span> <span class="o">=</span> <span class="n">TYPE_CORRESPONDENCE</span><span class="p">[</span><span class="n">attrType</span><span class="p">]</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">attrTypeXES</span> <span class="o">=</span> <span class="n">DEFAULT_TYPE</span>
+	<span class="k">return</span> <span class="n">attrTypeXES</span></div>
+
+<div class="viewcode-block" id="get_XES_attr_value"><a class="viewcode-back" href="../../../../pm4py.log.export.html#pm4py.log.export.xes.get_XES_attr_value">[docs]</a><span class="k">def</span> <span class="nf">get_XES_attr_value</span><span class="p">(</span><span class="n">attrValue</span><span class="p">,</span> <span class="n">attrTypeXES</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Transform an attribute value from Python format to XES format (the type is provided as argument)</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	attrValue</span>
+<span class="sd">		XES attribute value</span>
+<span class="sd">	attrTypeXES</span>
+<span class="sd">		XES attribute type</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">attrTypeXES</span> <span class="o">==</span> <span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_DATE</span><span class="p">:</span>
+		<span class="n">defaultDateRepr</span> <span class="o">=</span> <span class="n">attrValue</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S.</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">attrValue</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%z&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">attrValue</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%z&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+		<span class="k">return</span> <span class="n">defaultDateRepr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+	<span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">attrValue</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="export_attributes"><a class="viewcode-back" href="../../../../pm4py.log.export.html#pm4py.log.export.xes.export_attributes">[docs]</a><span class="k">def</span> <span class="nf">export_attributes</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Export XES attributes (at the log level) from a PM4PY trace log</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	log</span>
+<span class="sd">		PM4PY trace log</span>
+<span class="sd">	root</span>
+<span class="sd">		Output XML root element</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">export_attributes_element</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="export_extensions"><a class="viewcode-back" href="../../../../pm4py.log.export.html#pm4py.log.export.xes.export_extensions">[docs]</a><span class="k">def</span> <span class="nf">export_extensions</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Export XES extensions from a PM4PY trace log</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	log</span>
+<span class="sd">		PM4PY trace log</span>
+<span class="sd">	root</span>
+<span class="sd">		Output XML root element</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">log</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+		<span class="n">extValue</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">extensions</span><span class="p">[</span><span class="n">ext</span><span class="p">]</span>
+		<span class="n">logExtension</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_EXTENSION</span><span class="p">)</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">ext</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">extValue</span><span class="p">[</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_PREFIX</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">extValue</span><span class="p">[</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_URI</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">logExtension</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_NAME</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+			<span class="n">logExtension</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_PREFIX</span><span class="p">,</span> <span class="n">extValue</span><span class="p">[</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_PREFIX</span><span class="p">])</span>
+			<span class="n">logExtension</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_URI</span><span class="p">,</span> <span class="n">extValue</span><span class="p">[</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_URI</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="export_globals"><a class="viewcode-back" href="../../../../pm4py.log.export.html#pm4py.log.export.xes.export_globals">[docs]</a><span class="k">def</span> <span class="nf">export_globals</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Export XES globals from a PM4PY trace log</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	log</span>
+<span class="sd">		PM4PY trace log</span>
+<span class="sd">	root</span>
+<span class="sd">		Output XML root element</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">glob</span> <span class="ow">in</span> <span class="n">log</span><span class="o">.</span><span class="n">omni_present</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+		<span class="n">globEls</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">omni_present</span><span class="p">[</span><span class="n">glob</span><span class="p">]</span>
+		<span class="n">xesGlobal</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_GLOBAL</span><span class="p">)</span>
+		<span class="n">export_attributes_element</span><span class="p">(</span><span class="n">globEls</span><span class="p">,</span> <span class="n">xesGlobal</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="export_classifiers"><a class="viewcode-back" href="../../../../pm4py.log.export.html#pm4py.log.export.xes.export_classifiers">[docs]</a><span class="k">def</span> <span class="nf">export_classifiers</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Export XES classifiers from a PM4PY trace log</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	log</span>
+<span class="sd">		PM4PY trace log</span>
+<span class="sd">	root</span>
+<span class="sd">		Output XML root element</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">clas</span> <span class="ow">in</span> <span class="n">log</span><span class="o">.</span><span class="n">classifiers</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+		<span class="n">clasValue</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">classifiers</span><span class="p">[</span><span class="n">clas</span><span class="p">]</span>
+		<span class="n">classifier</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_CLASSIFIER</span><span class="p">)</span>
+		<span class="n">classifier</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_NAME</span><span class="p">,</span> <span class="n">clas</span><span class="p">)</span>
+		<span class="n">classifier</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_KEYS</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">clasValue</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="export_attributes_element"><a class="viewcode-back" href="../../../../pm4py.log.export.html#pm4py.log.export.xes.export_attributes_element">[docs]</a><span class="k">def</span> <span class="nf">export_attributes_element</span><span class="p">(</span><span class="n">logElement</span><span class="p">,</span> <span class="n">xmlElement</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Export attributes related to a single element</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	logElement</span>
+<span class="sd">		Element in trace log (event, trace ...)</span>
+<span class="sd">	xmlElement</span>
+<span class="sd">		XML element</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">logElement</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">):</span>
+		<span class="n">logElement</span> <span class="o">=</span> <span class="n">logElement</span><span class="o">.</span><span class="n">attributes</span>
+
+	<span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">logElement</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">attr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">attrType</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">logElement</span><span class="p">[</span><span class="n">attr</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span>
+			<span class="n">attrTypeXES</span> <span class="o">=</span> <span class="n">get_XES_attr_type</span><span class="p">(</span><span class="n">attrType</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">attrType</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">attrTypeXES</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">attrTypeXES</span> <span class="o">==</span> <span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_LIST</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">logElement</span><span class="p">[</span><span class="n">attr</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+						<span class="n">thisAttribute</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">xmlElement</span><span class="p">,</span> <span class="n">attrTypeXES</span><span class="p">)</span>
+						<span class="n">thisAttribute</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_KEY</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+						<span class="n">thisAttributeValues</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">thisAttribute</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">)</span>
+						<span class="n">export_attributes_element</span><span class="p">(</span><span class="n">logElement</span><span class="p">[</span><span class="n">attr</span><span class="p">][</span><span class="s1">&#39;children&#39;</span><span class="p">],</span> <span class="n">thisAttributeValues</span><span class="p">)</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">attrType</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">logElement</span><span class="p">[</span><span class="n">attr</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span>
+						<span class="n">attrTypeXES</span> <span class="o">=</span> <span class="n">get_XES_attr_type</span><span class="p">(</span><span class="n">attrType</span><span class="p">)</span>
+						<span class="k">if</span> <span class="n">attrType</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">attrTypeXES</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+							<span class="n">attrValue</span> <span class="o">=</span> <span class="n">logElement</span><span class="p">[</span><span class="n">attr</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+							<span class="k">if</span> <span class="n">attrValue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+								<span class="n">thisAttribute</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">xmlElement</span><span class="p">,</span> <span class="n">attrTypeXES</span><span class="p">)</span>
+								<span class="n">thisAttribute</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_KEY</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+								<span class="n">thisAttribute</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_VALUE</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">logElement</span><span class="p">[</span><span class="n">attr</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]))</span>
+								<span class="n">export_attributes_element</span><span class="p">(</span><span class="n">logElement</span><span class="p">[</span><span class="n">attr</span><span class="p">][</span><span class="s1">&#39;children&#39;</span><span class="p">],</span> <span class="n">thisAttribute</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">attrValue</span> <span class="o">=</span> <span class="n">get_XES_attr_value</span><span class="p">(</span><span class="n">logElement</span><span class="p">[</span><span class="n">attr</span><span class="p">],</span> <span class="n">attrTypeXES</span><span class="p">)</span>
+					<span class="k">if</span> <span class="n">attrValue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+						<span class="n">thisAttribute</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">xmlElement</span><span class="p">,</span> <span class="n">attrTypeXES</span><span class="p">)</span>
+						<span class="n">thisAttribute</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_KEY</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+						<span class="n">thisAttribute</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xes_util</span><span class="o">.</span><span class="n">KEY_VALUE</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">attrValue</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="export_traces_events"><a class="viewcode-back" href="../../../../pm4py.log.export.html#pm4py.log.export.xes.export_traces_events">[docs]</a><span class="k">def</span> <span class="nf">export_traces_events</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">trace</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Export XES events given a PM4PY trace</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	tr</span>
+<span class="sd">		PM4PY trace</span>
+<span class="sd">	trace</span>
+<span class="sd">		Output XES trace</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">for</span> <span class="n">ev</span> <span class="ow">in</span> <span class="n">tr</span><span class="p">:</span>
+		<span class="n">event</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_EVENT</span><span class="p">)</span>
+		<span class="n">export_attributes_element</span><span class="p">(</span><span class="n">ev</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="export_traces"><a class="viewcode-back" href="../../../../pm4py.log.export.html#pm4py.log.export.xes.export_traces">[docs]</a><span class="k">def</span> <span class="nf">export_traces</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Export XES traces from a PM4PY trace log</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	log</span>
+<span class="sd">		PM4PY trace log</span>
+<span class="sd">	root</span>
+<span class="sd">		Output XML root element</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">log</span><span class="p">:</span>
+		<span class="n">trace</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_TRACE</span><span class="p">)</span>
+		<span class="n">export_attributes_element</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">trace</span><span class="p">)</span>
+		<span class="n">export_traces_events</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">trace</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="export_log"><a class="viewcode-back" href="../../../../pm4py.log.export.html#pm4py.log.export.xes.export_log">[docs]</a><span class="k">def</span> <span class="nf">export_log</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">outputFilePath</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Export XES log from a PM4PY trace log</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	log</span>
+<span class="sd">		PM4PY trace log</span>
+<span class="sd">	outputFilePath</span>
+<span class="sd">		Output file path</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="c1"># If the log is in log_instance.EventLog, then transform it into log_instance.TraceLog format</span>
+	<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">log</span><span class="p">)</span> <span class="ow">is</span> <span class="n">log_instance</span><span class="o">.</span><span class="n">EventLog</span><span class="p">:</span>
+		<span class="n">log</span> <span class="o">=</span> <span class="n">log_transform</span><span class="o">.</span><span class="n">transform_event_log_to_trace_log</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
+	<span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">xes_util</span><span class="o">.</span><span class="n">TAG_LOG</span><span class="p">)</span>
+	
+	<span class="c1"># add attributes at the log level</span>
+	<span class="n">export_attributes</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+	<span class="c1"># add extensions at the log level</span>
+	<span class="n">export_extensions</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+	<span class="c1"># add globals at the log level</span>
+	<span class="n">export_globals</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+	<span class="c1"># add classifiers at the log level</span>
+	<span class="n">export_classifiers</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+	<span class="c1"># add traces at the log level</span>
+	<span class="n">export_traces</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+	
+	<span class="c1"># Effectively do the export of the event log</span>
+	<span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+	<span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">outputFilePath</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xml_declaration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, PADS @ RWTH / PADS @ Fraunhofer FIT.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

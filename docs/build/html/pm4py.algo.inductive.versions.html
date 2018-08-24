@@ -1,0 +1,526 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.algo.inductive.versions package &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pm4py.algo.inductive.versions package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.inductive.versions.dfg_only">pm4py.algo.inductive.versions.dfg_only module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.inductive.versions">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pm4py.algo.inductive.versions package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pm4py.algo.inductive.versions.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pm4py-algo-inductive-versions-package">
+<h1>pm4py.algo.inductive.versions package<a class="headerlink" href="#pm4py-algo-inductive-versions-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.algo.inductive.versions.dfg_only">
+<span id="pm4py-algo-inductive-versions-dfg-only-module"></span><h2>pm4py.algo.inductive.versions.dfg_only module<a class="headerlink" href="#module-pm4py.algo.inductive.versions.dfg_only" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows">
+<em class="property">class </em><code class="descclassname">pm4py.algo.inductive.versions.dfg_only.</code><code class="descname">InductMinDirFollows</code><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.addConnectionPlace">
+<code class="descname">addConnectionPlace</code><span class="sig-paren">(</span><em>net</em>, <em>newRefToLastPlace</em>, <em>inputConnectionPlace=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.addConnectionPlace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.addConnectionPlace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a connection place that merges concurrent connected subgraphs
+through the use of hidden transitions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>net</strong> – Petri net</li>
+<li><strong>newRefToLastPlace</strong> – Last place of the connected subgraph subtree</li>
+<li><strong>inputConnectionPlace</strong> – Connection place if already added to the model
+(serves for the connection of all the connected subgraphs)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.addConnectionPlaceParallel">
+<code class="descname">addConnectionPlaceParallel</code><span class="sig-paren">(</span><em>net</em>, <em>newRefToLastPlace</em>, <em>inputConnectionPlace=None</em>, <em>inputHiddenTransition=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.addConnectionPlaceParallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.addConnectionPlaceParallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a merge of parallel connected subgraphs
+through the use of hidden transitions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>net</strong> – Petri net</li>
+<li><strong>newRefToLastPlace</strong> – Referrence to the last added place previously</li>
+<li><strong>inputConnectionPlace</strong> – (if already added) connection place at the end of subtree</li>
+<li><strong>inputHiddenTransition</strong> – (if already added) connection transition at the end of subtree</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.addSubtreeToModel">
+<code class="descname">addSubtreeToModel</code><span class="sig-paren">(</span><em>net</em>, <em>labels</em>, <em>type</em>, <em>dfgGraph</em>, <em>refToLastPlace</em>, <em>activInSelfLoop</em>, <em>mustAddSkipHiddenTrans=False</em>, <em>mustAddBackwardHiddenTrans=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.addSubtreeToModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.addSubtreeToModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a part of the tree to the Petri net</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>net</strong> – Petri net that we are building</li>
+<li><strong>labels</strong> – Labels of the subtree we are adding</li>
+<li><strong>type</strong> – Type of the subtree we are adding (parallel, concurrent, flower)</li>
+<li><strong>dfgGraph</strong> – Directly follows graph object</li>
+<li><strong>refToLastPlace</strong> – Place that we should attach on</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>trace_log</em>, <em>parameters</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the Inductive Miner directly follows algorithm.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>trace_log</strong> (<a class="reference internal" href="pm4py.log.html#pm4py.log.instance.TraceLog" title="pm4py.log.instance.TraceLog"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.instance.TraceLog</span></code></a>) – Event log to use in the alpha miner, note that it should be a TraceLog!</li>
+<li><strong>activity_key</strong> (<cite>str</cite>, optional) – Key to use within events to identify the underlying activity.
+By deafult, the value ‘concept:name’ is used.</li>
+<li><strong>cleanNetByTokenReplay</strong> – Clean resulting Petri net transitions by using Token Replay</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>net</strong> – A Petri net describing the event log that is provided as an input</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.petri.instance.PetriNet</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<p>Leemans, S. J., Fahland, D., &amp; van der Aalst, W. M. (2015, June). Scalable process discovery with guarantees. In International Conference on Enterprise, Business-Process and Information Systems Modeling (pp. 85-101). Springer, Cham.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.avgSubtree">
+<code class="descname">avgSubtree</code><span class="sig-paren">(</span><em>labels</em>, <em>typ</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.avgSubtree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.avgSubtree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do the average of activities occurrences in a subtree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>labels</strong> – Activities belonging to the subtree</li>
+<li><strong>typ</strong> – Type of subtree that is being added</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.calculateActivitiesArcsDirection">
+<code class="descname">calculateActivitiesArcsDirection</code><span class="sig-paren">(</span><em>labels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.calculateActivitiesArcsDirection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.calculateActivitiesArcsDirection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate activities arcs directions
+Values near to 1 indicates that the activities has an high number of outgoing edges
+Values near to -1 indicates that the activities has an high number of ingoing edges</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>labels</strong> – Activities belonging to the subtree</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.calculateEntropy">
+<code class="descname">calculateEntropy</code><span class="sig-paren">(</span><em>sets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.calculateEntropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.calculateEntropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate entropy over a list of lists of activities</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sets</strong> – List of lists of activities</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.checkAverage">
+<code class="descname">checkAverage</code><span class="sig-paren">(</span><em>negatedConnectedComponents</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.checkAverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.checkAverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check average activity occurrence in a subtree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>negatedConnectedComponents</strong> – Negated connected components</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.checkParallelCut">
+<code class="descname">checkParallelCut</code><span class="sig-paren">(</span><em>negatedConnectedComponents</em>, <em>origPairs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.checkParallelCut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.checkParallelCut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check parallel cut</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>negatedConnectedComponents</strong> – Negated connected components</li>
+<li><strong>origPairs</strong> – Original pairs of activities</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.checkParallelCutCouple">
+<code class="descname">checkParallelCutCouple</code><span class="sig-paren">(</span><em>firstNegatedComponent</em>, <em>secondNegatedComponent</em>, <em>origPairs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.checkParallelCutCouple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.checkParallelCutCouple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check parallel cut couple</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>firstNegatedComponent</strong> – First negated component</li>
+<li><strong>secondNegatedComponent</strong> – Second negated component</li>
+<li><strong>originalPairs</strong> – Original pairs of activities</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.getActivitiesInSelfLoop">
+<code class="descname">getActivitiesInSelfLoop</code><span class="sig-paren">(</span><em>origPairs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.getActivitiesInSelfLoop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.getActivitiesInSelfLoop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get activities that are in self loop</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>origPairs</strong> – Original pairs</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.giveScoreToConcurrentCut">
+<code class="descname">giveScoreToConcurrentCut</code><span class="sig-paren">(</span><em>connectedComponents</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.giveScoreToConcurrentCut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.giveScoreToConcurrentCut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give score to a concurrent cut</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connectedComponents</strong> – Connected components</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.giveScoreToLoopCut">
+<code class="descname">giveScoreToLoopCut</code><span class="sig-paren">(</span><em>loopCut</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.giveScoreToLoopCut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.giveScoreToLoopCut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give score to a parallel cut</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>loopCut</strong> – Loop cut</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.giveScoreToParallelCut">
+<code class="descname">giveScoreToParallelCut</code><span class="sig-paren">(</span><em>connectedComponents</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.giveScoreToParallelCut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.giveScoreToParallelCut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give score to a parallel cut</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connectedComponents</strong> – Connected components</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.hiddenTransitionVisibleLabel">
+<code class="descname">hiddenTransitionVisibleLabel</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.hiddenTransitionVisibleLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.hiddenTransitionVisibleLabel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.recFindCut">
+<code class="descname">recFindCut</code><span class="sig-paren">(</span><em>net</em>, <em>nodesLabels</em>, <em>pairs</em>, <em>recDepth</em>, <em>refToLastPlace</em>, <em>mustAddSkipHiddenTrans=False</em>, <em>mustAddBackwardHiddenTrans=False</em>, <em>callerSpecification=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.recFindCut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.recFindCut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the algorithm recursively discovering connected components and maximal cuts</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>net</strong> – Petri net</li>
+<li><strong>nodesLabels</strong> – Labels belonging to the subtree we are recurring on</li>
+<li><strong>pairs</strong> – Pairs belonging to the subtree we are recurring on</li>
+<li><strong>recDepth</strong> – Depth of the recursion we have reached</li>
+<li><strong>refToLastPlace</strong> – Place that we should attach the subtree</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.sumSubtree">
+<code class="descname">sumSubtree</code><span class="sig-paren">(</span><em>labels</em>, <em>typ</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.sumSubtree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.sumSubtree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do the sum of activities occurrences in a subtree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>labels</strong> – Activities belonging to the subtree</li>
+<li><strong>typ</strong> – Type of subtree that is being added</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.verifySubtreeLoopCondition">
+<code class="descname">verifySubtreeLoopCondition</code><span class="sig-paren">(</span><em>labels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#InductMinDirFollows.verifySubtreeLoopCondition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.InductMinDirFollows.verifySubtreeLoopCondition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.inductive.versions.dfg_only.apply">
+<code class="descclassname">pm4py.algo.inductive.versions.dfg_only.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>trace_log</em>, <em>parameters</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/versions/dfg_only.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.versions.dfg_only.apply" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.algo.inductive.versions">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.algo.inductive.versions" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, PADS @ RWTH / PADS @ Fraunhofer FIT.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

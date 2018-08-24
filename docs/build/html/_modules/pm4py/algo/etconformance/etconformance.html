@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.algo.etconformance.etconformance &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pm4py.algo.etconformance.etconformance</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pm4py.algo.etconformance.etconformance</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">pm4py.log.instance</span> <span class="k">import</span> <span class="n">TraceLog</span><span class="p">,</span> <span class="n">Event</span><span class="p">,</span> <span class="n">Trace</span>
+<span class="kn">from</span> <span class="nn">pm4py.algo.tokenreplay</span> <span class="k">import</span> <span class="n">token_replay</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implementation of the approach described in paper</span>
+
+<span class="sd">Muñoz-Gama, Jorge, and Josep Carmona. &quot;A fresh look at precision in process conformance.&quot; International Conference on Business Process Management. Springer, Berlin, Heidelberg, 2010.</span>
+
+<span class="sd">for measuring precision.</span>
+
+<span class="sd">For each prefix in the log, the reflected tasks are calculated (outgoing activities from the prefix)</span>
+<span class="sd">Then, a token replay is done on the prefix in order to get activated transitions</span>
+<span class="sd">Escaping edges is the set difference between activated transitions and reflected tasks</span>
+
+<span class="sd">Then, precision is calculated by the formula used in the paper</span>
+
+<span class="sd">At the moment, the precision value is different from the one provided by the ProM plug-in,</span>
+<span class="sd">although the implementation seems to follow the paper concept</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="get_log_prefixes"><a class="viewcode-back" href="../../../../pm4py.algo.etconformance.html#pm4py.algo.etconformance.etconformance.get_log_prefixes">[docs]</a><span class="k">def</span> <span class="nf">get_log_prefixes</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="s2">&quot;concept:name&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get trace log prefixes</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    log</span>
+<span class="sd">        Trace log</span>
+<span class="sd">    activity_key</span>
+<span class="sd">        Activity key (must be provided if different from concept:name)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prefixes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">prefixCount</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">log</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">redTrace</span> <span class="o">=</span> <span class="n">trace</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">activity_key</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">redTrace</span><span class="p">])</span>
+            <span class="n">nextActivity</span> <span class="o">=</span> <span class="n">trace</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">activity_key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">prefixes</span><span class="p">:</span>
+                <span class="n">prefixes</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="n">prefixes</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nextActivity</span><span class="p">)</span>
+            <span class="n">prefixCount</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">prefixes</span><span class="p">,</span> <span class="n">prefixCount</span></div>
+
+<div class="viewcode-block" id="form_fake_log"><a class="viewcode-back" href="../../../../pm4py.algo.etconformance.html#pm4py.algo.etconformance.etconformance.form_fake_log">[docs]</a><span class="k">def</span> <span class="nf">form_fake_log</span><span class="p">(</span><span class="n">prefixesKeys</span><span class="p">,</span> <span class="n">prefixes</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="s2">&quot;concept:name&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form fake log for replay (putting each prefix as separate trace to align)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    prefixesKeys</span>
+<span class="sd">        Keys of the prefixes (to form a log with a given order)</span>
+<span class="sd">    prefixes</span>
+<span class="sd">        All prefixes found in the log</span>
+<span class="sd">    activity_key</span>
+<span class="sd">        Activity key (must be provided if different from concept:name)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fake_log</span> <span class="o">=</span> <span class="n">TraceLog</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">prefixesKeys</span><span class="p">:</span>
+        <span class="n">trace</span> <span class="o">=</span> <span class="n">Trace</span><span class="p">()</span>
+        <span class="n">prefixActivities</span> <span class="o">=</span> <span class="n">prefix</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">prefixActivities</span><span class="p">:</span>
+            <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">()</span>
+            <span class="n">event</span><span class="p">[</span><span class="n">activity_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">activity</span>
+            <span class="n">trace</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="n">fake_log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fake_log</span></div>
+
+<div class="viewcode-block" id="get_etc_precision"><a class="viewcode-back" href="../../../../pm4py.algo.etconformance.html#pm4py.algo.etconformance.etconformance.get_etc_precision">[docs]</a><span class="k">def</span> <span class="nf">get_etc_precision</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">marking</span><span class="p">,</span> <span class="n">final_marking</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="s2">&quot;concept:name&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get ET Conformance precision</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    log</span>
+<span class="sd">        Trace log</span>
+<span class="sd">    net</span>
+<span class="sd">        Petri net</span>
+<span class="sd">    marking</span>
+<span class="sd">        Initial marking</span>
+<span class="sd">    final_marking</span>
+<span class="sd">        Final marking</span>
+<span class="sd">    activity_key</span>
+<span class="sd">        Activity key</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sumEE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">sumAT</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">prefixes</span><span class="p">,</span> <span class="n">prefixCount</span> <span class="o">=</span> <span class="n">get_log_prefixes</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="n">activity_key</span><span class="p">)</span>
+    <span class="n">prefixesKeys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">prefixes</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">fake_log</span> <span class="o">=</span> <span class="n">form_fake_log</span><span class="p">(</span><span class="n">prefixesKeys</span><span class="p">,</span> <span class="n">prefixes</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="n">activity_key</span><span class="p">)</span>
+    <span class="p">[</span><span class="n">traceIsFit</span><span class="p">,</span> <span class="n">traceFitnessValue</span><span class="p">,</span> <span class="n">activatedTransitions</span><span class="p">,</span> <span class="n">placeFitness</span><span class="p">,</span> <span class="n">reachedMarkings</span><span class="p">,</span><span class="n">enabledTransitionsInMarkings</span><span class="p">]</span> <span class="o">=</span> <span class="n">token_replay</span><span class="o">.</span><span class="n">apply_log</span><span class="p">(</span><span class="n">fake_log</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">marking</span><span class="p">,</span> <span class="n">final_marking</span><span class="p">,</span> <span class="n">consider_remaining_in_fitness</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tryToReachFinalMarkingThroughHidden</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stopImmediatelyWhenUnfit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">useHiddenTransitionsToEnableCorrespondingTransitions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="n">activity_key</span><span class="p">)</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">traceIsFit</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">traceIsFit</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">logTransitions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">prefixes</span><span class="p">[</span><span class="n">prefixesKeys</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+            <span class="n">activatedTransitionsLabels</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">label</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">enabledTransitionsInMarkings</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
+            <span class="n">sumAT</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">activatedTransitionsLabels</span><span class="p">)</span> <span class="o">*</span> <span class="n">prefixCount</span><span class="p">[</span><span class="n">prefixesKeys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="n">escapingEdges</span> <span class="o">=</span> <span class="n">activatedTransitionsLabels</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">logTransitions</span><span class="p">)</span>
+            <span class="n">sumEE</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">escapingEdges</span><span class="p">)</span> <span class="o">*</span> <span class="n">prefixCount</span><span class="p">[</span><span class="n">prefixesKeys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">sumAT</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">precision</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">sumEE</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">sumAT</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">precision</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, PADS @ RWTH / PADS @ Fraunhofer FIT.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
