@@ -8,7 +8,7 @@ from pm4py.algo.alpha.data_structures import alpha_classic_abstraction
 from pm4py.models.petri.net import Marking
 
 
-def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
+def apply(trace_log, activity_key=log_util.xes.DEFAULT_NAME_KEY):
     """
     This method calls the \"classic\" alpha miner [1]_.
 

@@ -3,22 +3,22 @@ import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
-from pm4py.log.importing import csv as csv_importer
-from pm4py.log.importing import xes as xes_importer
+from pm4py.log.importer import csv as csv_importer
+from pm4py.log.importer import xes as xes_importer
 import pm4py.log.transform as log_transform
 from pm4py.algo.inductive.versions.dfg_only import InductMinDirFollows as InductMinDirFollows
 from pm4py.models.petri import visualize as pn_viz
 from pm4py.algo.tokenreplay import token_replay
 from pm4py.algo.tokenreplay.token_replay import NoConceptNameException
 from pm4py.models import petri
-from pm4py.models.petri.export import pnml as petri_exporter
+from pm4py.models.petri.exporter import pnml as petri_exporter
 from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 import logging
 
 class InductiveMinerDFTest(unittest.TestCase):
 	def obtainPetriNetThroughImdf(self, logName):
 		if ".xes" in logName:
-			traceLog = xes_importer.import_from_path_xes(logName)
+			traceLog = xes_importer.import_from_file_xes(logName)
 		else:
 			eventLog = csv_importer.import_from_path(logName)
 			traceLog = log_transform.transform_event_log_to_trace_log(eventLog)

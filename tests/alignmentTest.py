@@ -3,7 +3,7 @@ import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
-from pm4py.log.importing import xes as xes_importer
+from pm4py.log.importer import xes as xes_importer
 import pm4py.algo.alignments as align
 from pm4py.models import petri
 from pm4py.algo.alpha import factory as alpha_factory
@@ -13,7 +13,7 @@ from constants import INPUT_DATA_DIR
 
 class AlignmentTest(unittest.TestCase):
     def test_alignment_alpha(self):
-        traceLog = xes_importer.import_from_path_xes(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+        traceLog = xes_importer.import_from_file_xes(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, marking = alpha_factory.apply(traceLog)
         final_marking = petri.net.Marking()
         for p in net.places:
@@ -29,7 +29,7 @@ class AlignmentTest(unittest.TestCase):
                 raise Exception("should be fit")
 
     def test_alignment_pnml(self):
-        traceLog = xes_importer.import_from_path_xes(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        traceLog = xes_importer.import_from_file_xes(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, marking = dfg_only.apply(traceLog, None)
         final_marking = petri.net.Marking()
         for p in net.places:
