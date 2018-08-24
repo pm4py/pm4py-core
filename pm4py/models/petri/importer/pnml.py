@@ -3,7 +3,7 @@ import uuid
 import time
 import inspect
 from pm4py.models import petri
-from pm4py.models.petri.net import Marking
+from pm4py.models.petri.petrinet import Marking
 from copy import copy, deepcopy
 import logging
 from pm4py.models.petri import visualize as pn_viz
@@ -19,7 +19,7 @@ def import_petri_from_pnml(inputFilePath):
         Input file path
     """
     context = etree.iterparse(inputFilePath, events=['start', 'end'])
-    net = petri.net.PetriNet('imported_' + str(time.time()))
+    net = petri.petrinet.PetriNet('imported_' + str(time.time()))
     markingDict = {}
     placesDict = {}
     transDict = {}
@@ -42,14 +42,14 @@ def import_petri_from_pnml(inputFilePath):
             elif "transition" in elem.tag:
                 readingWhat = "transition"
                 readingId = elem.get("id")
-                transition = petri.net.PetriNet.Transition(readingId, None)
+                transition = petri.petrinet.PetriNet.Transition(readingId, None)
                 transDict[readingId] = transition
             elif "initialMarking" in elem.tag:
                 readingWhat = "initialMarking"
             elif "text" in elem.tag:
                 elementText = elem.text
                 if readingWhat == "place":
-                    place = petri.net.PetriNet.Place(elementText)
+                    place = petri.petrinet.PetriNet.Place(elementText)
                     placesDict[readingId] = place
                 elif readingWhat == "transition":
                     if not transInvis:

@@ -36,7 +36,7 @@ class InductiveMinerDFTest(unittest.TestCase):
 		self.assertEqual(len(net1.places),len(net2.places))
 		self.assertEqual(len(net1.transitions),len(net2.transitions))
 		self.assertEqual(len(net1.arcs),len(net2.arcs))
-		final_marking = petri.net.Marking()
+		final_marking = petri.petrinet.Marking()
 		for p in net1.places:
 			if not p.out_arcs:
 				final_marking[p] = 1
@@ -52,7 +52,7 @@ class InductiveMinerDFTest(unittest.TestCase):
 		self.assertEqual(len(net1.places),len(net2.places))
 		self.assertEqual(len(net1.transitions),len(net2.transitions))
 		self.assertEqual(len(net1.arcs),len(net2.arcs))
-		final_marking = petri.net.Marking()
+		final_marking = petri.petrinet.Marking()
 		for p in net1.places:
 			if not p.out_arcs:
 				final_marking[p] = 1
@@ -63,7 +63,7 @@ class InductiveMinerDFTest(unittest.TestCase):
 		petri_exporter.export_petri_to_pnml(net, marking, os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		os.remove(os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		gviz = pn_viz.graphviz_visualization(net)
-		final_marking = petri.net.Marking()
+		final_marking = petri.petrinet.Marking()
 		for p in net.places:
 			if not p.out_arcs:
 				final_marking[p] = 1
@@ -81,7 +81,7 @@ class InductiveMinerDFTest(unittest.TestCase):
 				self.assertEqual(len(net1.places),len(net2.places))
 				self.assertEqual(len(net1.transitions),len(net2.transitions))
 				self.assertEqual(len(net1.arcs),len(net2.arcs))
-				final_marking = petri.net.Marking()
+				final_marking = petri.petrinet.Marking()
 				for p in net1.places:
 					if not p.out_arcs:
 						final_marking[p] = 1

@@ -10,7 +10,7 @@ log = xes_importer.import_from_file_xes('C:\\receipt.xes')
 net, marking = alpha_factory.apply(log)
 for place in marking:
 	print("initial marking "+place.name)
-final_marking = petri.net.Marking()
+final_marking = petri.petrinet.Marking()
 for p in net.places:
     if not p.out_arcs:
         final_marking[p] = 1

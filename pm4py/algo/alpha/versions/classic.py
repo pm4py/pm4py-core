@@ -5,7 +5,7 @@ from pm4py.models import petri
 import time
 
 from pm4py.algo.alpha.data_structures import alpha_classic_abstraction
-from pm4py.models.petri.net import Marking
+from pm4py.models.petri.petrinet import Marking
 
 
 def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
@@ -22,7 +22,7 @@ def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
 
     Returns
     -------
-    net : :class:`pm4py.models.petri.net.PetriNet`
+    net : :class:`pm4py.models.petri.petrinet.PetriNet`
         A Petri net describing the event log that is provided as an input
     initial marking : :class:`pm4py.models.net.Marking`
         marking object representing the initial marking
@@ -52,18 +52,18 @@ def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
                         if new_alpha_pair not in pairs:
                             pairs.append((t1[0] | t2[0], t1[1] | t2[1]))
     internal_places = filter(lambda p: __pair_maximizer(pairs, p), pairs)
-    net = petri.net.PetriNet('alpha_classic_net_' + str(time.time()))
+    net = petri.petrinet.PetriNet('alpha_classic_net_' + str(time.time()))
     label_transition_dict = {}
 
     for i in range(0, len(labels)):
-        label_transition_dict[labels[i]] = petri.net.PetriNet.Transition('t_' + str(i), labels[i])
+        label_transition_dict[labels[i]] = petri.petrinet.PetriNet.Transition('t_' + str(i), labels[i])
         net.transitions.add(label_transition_dict[labels[i]])
 
     src = __add_source(net, alpha_abstraction.start_activities, label_transition_dict)
     sink = __add_sink(net, alpha_abstraction.end_activities, label_transition_dict)
 
     for pair in internal_places:
-        place = petri.net.PetriNet.Place(str(pair))
+        place = petri.petrinet.PetriNet.Place(str(pair))
         net.places.add(place)
         for in_arc in pair[0]:
             petri.utils.add_arc_from_to(label_transition_dict[in_arc], place, net)
@@ -73,7 +73,7 @@ def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
 
 
 def __add_source(net, start_activities, label_transition_dict):
-    source = petri.net.PetriNet.Place('start')
+    source = petri.petrinet.PetriNet.Place('start')
     net.places.add(source)
     for s in start_activities:
         petri.utils.add_arc_from_to(source, label_transition_dict[s], net)
@@ -81,7 +81,7 @@ def __add_source(net, start_activities, label_transition_dict):
 
 
 def __add_sink(net, end_activities, label_transition_dict):
-    end = petri.net.PetriNet.Place('end')
+    end = petri.petrinet.PetriNet.Place('end')
     net.places.add(end)
     for e in end_activities:
         petri.utils.add_arc_from_to(label_transition_dict[e], end, net)
