@@ -4,6 +4,7 @@ import time
 
 MAX_REC_DEPTH = 50
 MAX_IT_FINAL = 10
+MAX_REC_DEPTH_HIDTRANSENABL = 5
 
 class NoConceptNameException(Exception):
     def __init__(self, message):
@@ -178,7 +179,7 @@ def get_placesShortestPathByHidden(net):
     return placesShortestPath
 
 def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth, visitedTransitions):
-    if recDepth >= MAX_REC_DEPTH or t in visitedTransitions:
+    if recDepth >= MAX_REC_DEPTH_HIDTRANSENABL or t in visitedTransitions:
         return [net, marking, activatedTransitions]
 
     visitedTransitions.add(t)
