@@ -2,6 +2,25 @@ from pm4py.log import instance as log_instance
 
 
 def transform_event_log_to_trace_log(log, case_glue='case:concept:name', includes_case_attributes=True, case_attribute_prefix='case:'):
+    """
+    Converts the event log to a trace log
+
+    Parameters
+    ----------
+    log: :class:`pm4py.log.instance.EventLog`
+        An event Log
+    case_glue:
+        Case identifier. Default is 'case:concept:name'
+    includes_case_attributes:
+        Default is True
+    case_attribute_prefix:
+        Default is 'case:'
+
+    Returns
+        -------
+    log : :class:`pm4py.log.instance.TraceLog`
+        A trace log
+    """
     traces = {}
     for event in log:
         glue = event[case_glue]
@@ -23,6 +42,23 @@ def transform_event_log_to_trace_log(log, case_glue='case:concept:name', include
 
 
 def transform_trace_log_to_event_log(log, include_case_attributes=True, case_attribute_prefix='case:'):
+    """
+    Converts the trace log to an event log
+
+    Parameters
+    ----------
+    log: :class:`pm4py.log.instance.TraceLog`
+        A trace Log
+    includes_case_attributes:
+        Default is True
+    case_attribute_prefix:
+        Default is 'case:'
+
+    Returns
+        -------
+    log : :class:`pm4py.log.instance.EventLog`
+        An Event log
+    """
     events = []
     for trace in log:
         for event in trace:

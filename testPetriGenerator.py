@@ -1,5 +1,5 @@
 from pm4py.algo.petrigenerator import generator as petri_generator
-from pm4py.models.petri.export import pnml as petri_exporter
+from pm4py.models.petri.exporter import pnml as petri_exporter
 from pm4py.algo.playout import playout
 from pm4py.algo.tokenreplay import token_replay
 

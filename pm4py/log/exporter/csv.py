@@ -5,13 +5,13 @@ import pandas as pd
 
 def export_log(log, outputFilePath):
 	"""
-	Export a CSV log
+	Exports the given log to csv format
 
 	Parameters
 	----------
-	log
-		Event log
-	outputFilePath
+	log: :class:`pm4py.log.instance.EventLog`
+		Event log. Also, can take a trace log and convert it to event log
+	outputFilePath:
 		Output file path
 	"""
 	if type(log) is log_instance.TraceLog:

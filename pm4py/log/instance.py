@@ -2,6 +2,8 @@ from collections.abc import Mapping, Sequence
 
 
 class Event(Mapping):
+    """ Object useful for the second
+    maximal cut detection algorithm """
 
     def __init__(self, *args, **kw):
         self._dict = dict(*args, **kw)

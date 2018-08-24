@@ -22,7 +22,7 @@ def get_XES_attr_type(attrType):
 
 	Parameters
 	----------
-	attrType
+	attrType:
 		Python attribute type
 	"""
 	if attrType in TYPE_CORRESPONDENCE:
@@ -37,9 +37,9 @@ def get_XES_attr_value(attrValue, attrTypeXES):
 
 	Parameters
 	----------
-	attrValue
+	attrValue:
 		XES attribute value
-	attrTypeXES
+	attrTypeXES:
 		XES attribute type
 
 	"""
@@ -54,9 +54,9 @@ def export_attributes(log, root):
 
 	Parameters
 	----------
-	log
+	log: :class:`pm4py.log.instance.TraceLog`
 		PM4PY trace log
-	root
+	root:
 		Output XML root element
 
 	"""
@@ -68,9 +68,9 @@ def export_extensions(log, root):
 
 	Parameters
 	----------
-	log
+	log: :class:`pm4py.log.instance.TraceLog`
 		PM4PY trace log
-	root
+	root:
 		Output XML root element
 
 	"""
@@ -88,9 +88,9 @@ def export_globals(log, root):
 
 	Parameters
 	----------
-	log
+	log: :class:`pm4py.log.instance.TraceLog`
 		PM4PY trace log
-	root
+	root:
 		Output XML root element
 
 	"""
@@ -105,9 +105,9 @@ def export_classifiers(log, root):
 
 	Parameters
 	----------
-	log
+	log: :class:`pm4py.log.instance.TraceLog`
 		PM4PY trace log
-	root
+	root:
 		Output XML root element
 
 	"""
@@ -123,9 +123,9 @@ def export_attributes_element(logElement, xmlElement):
 
 	Parameters
 	----------
-	logElement
+	logElement:
 		Element in trace log (event, trace ...)
-	xmlElement
+	xmlElement:
 		XML element
 	"""
 	if hasattr(logElement, "attributes"):
@@ -165,9 +165,9 @@ def export_traces_events(tr, trace):
 
 	Parameters
 	----------
-	tr
+	tr: :class:`pm4py.log.instance.Trace`
 		PM4PY trace
-	trace
+	trace:
 		Output XES trace
 
 	"""
@@ -182,9 +182,9 @@ def export_traces(log, root):
 
 	Parameters
 	----------
-	log
+	log: :class:`pm4py.log.instance.TraceLog`
 		PM4PY trace log
-	root
+	root:
 		Output XML root element
 
 	"""
@@ -199,9 +199,9 @@ def export_log(log, outputFilePath):
 
 	Parameters
 	----------
-	log
+	log: :class:`pm4py.log.instance.TraceLog`
 		PM4PY trace log
-	outputFilePath
+	outputFilePath:
 		Output file path
 
 	"""
@@ -222,6 +222,6 @@ def export_log(log, outputFilePath):
 	# add traces at the log level
 	export_traces(log, root)
 	
-	# Effectively do the export of the event log
+	# Effectively do the exporter of the event log
 	tree = etree.ElementTree(root)
 	tree.write(outputFilePath, pretty_print=True, xml_declaration=True, encoding="utf-8")
