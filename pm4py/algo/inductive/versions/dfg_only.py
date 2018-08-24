@@ -10,7 +10,8 @@ from collections import Counter
 import time
 from copy import deepcopy, copy
 import math
-
+import sys
+sys.setrecursionlimit(100000)
 
 def apply(trace_log, parameters, activity_key='concept:name'):
     indMinDirFollows = InductMinDirFollows()
