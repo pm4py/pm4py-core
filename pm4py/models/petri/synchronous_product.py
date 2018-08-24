@@ -18,14 +18,14 @@ def construct(pn1, im1, fm1, pn2, im2, fm2, skip):
     -------
     :return: Synchronous product net and associated marking labels are of the form (a,>>)
     '''
-    sync_net = petri.net.PetriNet('synchronous_product_net of %s and %s' % (pn1.name, pn2.name))
+    sync_net = petri.petrinet.PetriNet('synchronous_product_net of %s and %s' % (pn1.name, pn2.name))
     t1_map, p1_map = __copy_into(pn1, sync_net, True, skip)
     t2_map, p2_map = __copy_into(pn2, sync_net, False, skip)
 
     for t1 in pn1.transitions:
         for t2 in pn2.transitions:
             if t1.label == t2.label:
-                sync = petri.net.PetriNet.Transition((t1.name, t2.name), (t1.label, t2.label))
+                sync = petri.petrinet.PetriNet.Transition((t1.name, t2.name), (t1.label, t2.label))
                 sync_net.transitions.add(sync)
                 for a in t1.in_arcs:
                     petri.utils.add_arc_from_to(p1_map[a.source], sync, sync_net)
@@ -36,8 +36,8 @@ def construct(pn1, im1, fm1, pn2, im2, fm2, skip):
                 for a in t2.out_arcs:
                     petri.utils.add_arc_from_to(sync, p2_map[a.target], sync_net)
 
-    sync_im = petri.net.Marking()
-    sync_fm = petri.net.Marking()
+    sync_im = petri.petrinet.Marking()
+    sync_fm = petri.petrinet.Marking()
     for p in im1:
         sync_im[p1_map[p]] = im1[p]
     for p in im2:
@@ -56,12 +56,12 @@ def __copy_into(source_net, target_net, upper, skip):
     for t in source_net.transitions:
         name = (t.name, skip) if upper else (skip, t.name)
         label = (t.label, skip) if upper else (skip, t.label)
-        t_map[t] = petri.net.PetriNet.Transition(name, label)
+        t_map[t] = petri.petrinet.PetriNet.Transition(name, label)
         target_net.transitions.add(t_map[t])
 
     for p in source_net.places:
         name = (p.name, skip) if upper else (skip, p.name)
-        p_map[p] = petri.net.PetriNet.Place(name)
+        p_map[p] = petri.petrinet.PetriNet.Place(name)
         target_net.places.add(p_map[p])
 
     for t in source_net.transitions:

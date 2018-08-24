@@ -21,7 +21,7 @@ if __name__ == "__main__":
 	#net, marking = petri_importer.import_petri_from_pnml("receipt.pnml")
 	for place in marking:
 		print("initial marking "+place.name)
-	final_marking = petri.net.Marking()
+	final_marking = petri.petrinet.Marking()
 	for p in net.places:
 		if not p.out_arcs:
 			final_marking[p] = 1

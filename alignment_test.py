@@ -10,7 +10,7 @@ if __name__=='__main__':
     # net, imarking = inductive.apply(log)
     # viz = petri.visualize.graphviz_visualization(net)
     # viz.view()
-    fmarking = petri.net.Marking()
+    fmarking = petri.petrinet.Marking()
     for p in net.places:
         if len(p.out_arcs) == 0:
             fmarking[p] = 1

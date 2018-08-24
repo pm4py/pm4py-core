@@ -197,9 +197,9 @@ class SearchTuple:
     f: float
     g: float
     h: float
-    m: petri.net.Marking
+    m: petri.petrinet.Marking
     p: Any
-    t: petri.net.PetriNet.Transition
+    t: petri.petrinet.PetriNet.Transition
     x: Any
     trust: bool
 

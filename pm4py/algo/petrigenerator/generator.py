@@ -38,17 +38,17 @@ class SubtreeGenerator(object):
         self.noOfHiddenTrans = 0
         self.noOfSubtrees = 0
         self.addedActivities = set()
-        self.net = petri.net.PetriNet()
-        self.startPlace = petri.net.PetriNet.Place('start')
+        self.net = petri.petrinet.PetriNet()
+        self.startPlace = petri.petrinet.PetriNet.Place('start')
         self.net.places.add(self.startPlace)
         self.simulate_net()
 
         if len(self.lastAddedPlace.out_arcs) > 0:
             self.noOfPlaces = self.noOfPlaces + 1
-            newEndPlace = petri.net.PetriNet.Place('p' + str(self.noOfPlaces))
+            newEndPlace = petri.petrinet.PetriNet.Place('p' + str(self.noOfPlaces))
             self.net.places.add(newEndPlace)
             self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-            endTrans = petri.net.PetriNet.Transition('skipFinal_' + str(self.noOfHiddenTrans), None)
+            endTrans = petri.petrinet.PetriNet.Transition('skipFinal_' + str(self.noOfHiddenTrans), None)
             self.net.transitions.add(endTrans)
             self.noOfHiddenTrans = self.noOfHiddenTrans + 1
             petri.utils.add_arc_from_to(self.lastAddedPlace, endTrans, self.net)
@@ -118,7 +118,7 @@ class SubtreeGenerator(object):
             while i < numOfActivitiesThisSubtree:
                 activityName = self.generate_activity()
                 activitiesNames.append(activityName)
-                trans = petri.net.PetriNet.Transition(activityName, activityName)
+                trans = petri.petrinet.PetriNet.Transition(activityName, activityName)
                 self.net.transitions.add(trans)
                 addedTransitions.append(trans)
                 i = i + 1
@@ -136,110 +136,110 @@ class SubtreeGenerator(object):
             nextSourceNode = subtreeSourceNode
             for i in range(numOfActivitiesThisSubtree):
                 petri.utils.add_arc_from_to(nextSourceNode, addedTransitions[i], self.net)
-                if i == numOfActivitiesThisSubtree-1 and subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
+                if i == numOfActivitiesThisSubtree-1 and subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Place:
                     nextSourceNode = subtreeTargetNode
                 else:
                     self.noOfPlaces = self.noOfPlaces + 1
-                    nextSourceNode = petri.net.PetriNet.Place('p'+str(self.noOfPlaces))
+                    nextSourceNode = petri.petrinet.PetriNet.Place('p' + str(self.noOfPlaces))
                     self.lastAddedPlace = nextSourceNode
                     self.net.places.add(nextSourceNode)
                 petri.utils.add_arc_from_to(addedTransitions[i], nextSourceNode, self.net)
             r = random.random()
             if r < self.probSpawnSubtree and self.noOfSubtrees < self.maxNoOfSubtrees:
                 self.add_subtree(self.lastAddedPlace, recDepth + 1, subtreeTargetNode=subtreeTargetNode)
-            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Transition:
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Transition:
                 petri.utils.add_arc_from_to(self.lastAddedPlace, subtreeTargetNode, self.net)
-            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Place:
                 self.lastAddedPlace = subtreeTargetNode
         elif chosenBehavior == "flower":
             self.noOfPlaces = self.noOfPlaces + 1
-            intermediatePlace = petri.net.PetriNet.Place('p' + str(self.noOfPlaces))
+            intermediatePlace = petri.petrinet.PetriNet.Place('p' + str(self.noOfPlaces))
             self.net.places.add(intermediatePlace)
-            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Place:
                 targetPlace = subtreeTargetNode
             else:
                 self.noOfPlaces = self.noOfPlaces + 1
-                targetPlace = petri.net.PetriNet.Place('p' + str(self.noOfPlaces))
+                targetPlace = petri.petrinet.PetriNet.Place('p' + str(self.noOfPlaces))
                 self.net.places.add(targetPlace)
             for i in range(numOfActivitiesThisSubtree):
                 petri.utils.add_arc_from_to(subtreeSourceNode, addedTransitions[i], self.net)
                 petri.utils.add_arc_from_to(addedTransitions[i], intermediatePlace, self.net)
             self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-            skipTrans = petri.net.PetriNet.Transition('skipFlower' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
+            skipTrans = petri.petrinet.PetriNet.Transition('skipFlower' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
             self.net.transitions.add(skipTrans)
             petri.utils.add_arc_from_to(subtreeSourceNode, skipTrans, self.net)
             petri.utils.add_arc_from_to(skipTrans, intermediatePlace, self.net)
             if not(subtreeSourceNode.name == "start"):
                 self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-                loopTrans = petri.net.PetriNet.Transition('loopFlower' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
+                loopTrans = petri.petrinet.PetriNet.Transition('loopFlower' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
                 self.net.transitions.add(loopTrans)
                 petri.utils.add_arc_from_to(loopTrans, subtreeSourceNode, self.net)
                 petri.utils.add_arc_from_to(intermediatePlace, loopTrans, self.net)
             self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-            tauTrans = petri.net.PetriNet.Transition('tauFlower' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
+            tauTrans = petri.petrinet.PetriNet.Transition('tauFlower' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
             self.net.transitions.add(tauTrans)
             petri.utils.add_arc_from_to(intermediatePlace, tauTrans, self.net)
             petri.utils.add_arc_from_to(tauTrans, targetPlace, self.net)
             r = random.random()
             if r < self.probSpawnSubtree and self.noOfSubtrees < self.maxNoOfSubtrees:
                 self.add_subtree(intermediatePlace, recDepth + 1, subtreeTargetNode=targetPlace)
-            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Transition:
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Transition:
                 petri.utils.add_arc_from_to(targetPlace, subtreeTargetNode, self.net)
             self.lastAddedPlace = targetPlace
-            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Place:
                 self.lastAddedPlace = subtreeTargetNode
         elif chosenBehavior == "concurrent":
             self.noOfPlaces = self.noOfPlaces + 1
-            connectionNode = petri.net.PetriNet.Place('p'+str(self.noOfPlaces))
+            connectionNode = petri.petrinet.PetriNet.Place('p' + str(self.noOfPlaces))
             self.net.places.add(connectionNode)
             for i in range(numOfChildSubtrees):
                 self.add_subtree(subtreeSourceNode, recDepth+1, subtreeTargetNode=connectionNode, chosenBehavior=subtreesTypes[i])
-            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Transition:
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Transition:
                 petri.utils.add_arc_from_to(connectionNode, subtreeTargetNode, self.net)
-            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Place:
                 self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-                hiddenTrans = petri.net.PetriNet.Transition('tauConcurrent'+str(recDepth)+'_' + str(self.noOfHiddenTrans), None)
+                hiddenTrans = petri.petrinet.PetriNet.Transition('tauConcurrent' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
                 self.net.transitions.add(hiddenTrans)
                 petri.utils.add_arc_from_to(connectionNode, hiddenTrans, self.net)
                 petri.utils.add_arc_from_to(hiddenTrans, subtreeTargetNode, self.net)
             self.lastAddedPlace = connectionNode
-            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Place:
                 self.lastAddedPlace = subtreeTargetNode
         elif chosenBehavior == "parallel":
             self.noOfPlaces = self.noOfPlaces + 1
-            connectionNode = petri.net.PetriNet.Place('p' + str(self.noOfPlaces))
+            connectionNode = petri.petrinet.PetriNet.Place('p' + str(self.noOfPlaces))
             self.net.places.add(connectionNode)
             self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-            tauParallelJoin = petri.net.PetriNet.Transition('tauParallelJoin'+str(recDepth)+'_' + str(self.noOfHiddenTrans), None)
+            tauParallelJoin = petri.petrinet.PetriNet.Transition('tauParallelJoin' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
             self.net.transitions.add(tauParallelJoin)
             petri.utils.add_arc_from_to(tauParallelJoin, connectionNode, self.net)
             self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-            tauParallelSplit = petri.net.PetriNet.Transition(
+            tauParallelSplit = petri.petrinet.PetriNet.Transition(
                 'tauParallelSplit' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
             self.net.transitions.add(tauParallelSplit)
             petri.utils.add_arc_from_to(subtreeSourceNode, tauParallelSplit, self.net)
             for i in range(numOfChildSubtrees):
                 self.noOfPlaces = self.noOfPlaces + 1
-                thisIndexSourceNode = petri.net.PetriNet.Place('p' + str(self.noOfPlaces))
+                thisIndexSourceNode = petri.petrinet.PetriNet.Place('p' + str(self.noOfPlaces))
                 self.net.places.add(thisIndexSourceNode)
                 petri.utils.add_arc_from_to(tauParallelSplit, thisIndexSourceNode, self.net)
                 self.add_subtree(thisIndexSourceNode, recDepth + 1, subtreeTargetNode=tauParallelJoin, chosenBehavior=subtreesTypes[i])
-            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Transition:
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Transition:
                 petri.utils.add_arc_from_to(connectionNode, subtreeTargetNode, self.net)
-            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Place:
                 self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-                hiddenTrans = petri.net.PetriNet.Transition('tauParFinal'+str(recDepth)+'_' + str(self.noOfHiddenTrans), None)
+                hiddenTrans = petri.petrinet.PetriNet.Transition('tauParFinal' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
                 self.net.transitions.add(hiddenTrans)
                 petri.utils.add_arc_from_to(connectionNode, hiddenTrans, self.net)
                 petri.utils.add_arc_from_to(hiddenTrans, subtreeTargetNode, self.net)
             self.lastAddedPlace = connectionNode
-            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.net.PetriNet.Place:
+            if subtreeTargetNode is not None and type(subtreeTargetNode) is petri.petrinet.PetriNet.Place:
                 self.lastAddedPlace = subtreeTargetNode
         if not chosenBehavior == "flower":
             r = random.random()
             if r < self.probAutoSkip:
                 self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-                autoSkip = petri.net.PetriNet.Transition('autoSkip' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
+                autoSkip = petri.petrinet.PetriNet.Transition('autoSkip' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
                 self.net.transitions.add(autoSkip)
                 petri.utils.add_arc_from_to(subtreeSourceNode, autoSkip, self.net)
                 petri.utils.add_arc_from_to(autoSkip, self.lastAddedPlace, self.net)
@@ -247,7 +247,7 @@ class SubtreeGenerator(object):
                 r = random.random()
                 if r < self.probAutoLoop:
                     self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-                    autoLoop = petri.net.PetriNet.Transition('autoLoop' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
+                    autoLoop = petri.petrinet.PetriNet.Transition('autoLoop' + str(recDepth) + '_' + str(self.noOfHiddenTrans), None)
                     self.net.transitions.add(autoLoop)
                     petri.utils.add_arc_from_to(autoLoop, subtreeSourceNode, self.net)
                     petri.utils.add_arc_from_to(self.lastAddedPlace, autoLoop, self.net)
@@ -275,6 +275,6 @@ def generate_petri(minNoOfActivitiesPerSubtree=2, maxNoOfActivitiesPerSubtree=6,
     """
     STG = SubtreeGenerator(minNoOfActivitiesPerSubtree, maxNoOfActivitiesPerSubtree, maxNoOfSubtrees, probSpawnSubtree, probAutoSkip, probAutoLoop, possible_behaviors)
     #STG.simulate_net()
-    marking = petri.net.Marking({STG.startPlace: 1})
-    final_marking = petri.net.Marking({STG.lastAddedPlace: 1})
+    marking = petri.petrinet.Marking({STG.startPlace: 1})
+    final_marking = petri.petrinet.Marking({STG.lastAddedPlace: 1})
     return STG.net, marking, final_marking

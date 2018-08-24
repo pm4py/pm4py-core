@@ -2,18 +2,18 @@ from lxml import etree
 import uuid
 import pm4py
 
-def export_petri_to_pnml(petriNet, marking, outputFilePath):
+def export_petri_to_pnml(petrinet, marking, output_filename):
     """
-    Export a Petri net to a PNML file
+    Export a Petrinet to a PNML file
 
     Parameters
     ----------
-    petriNet
+    petrinet: :class:`pm4py.models.petri.petrinet.PetriNet`
         Petri net
-    marking
+    marking: :class:`pm4py.models.petri.petrinet.Marking`
         Marking
-    outputFilePath
-        Path to output file
+    output_filename:
+        Absolute output file name for saving the pnml file
     """
     root = etree.Element("pnml")
     net = etree.SubElement(root, "net")
@@ -22,7 +22,7 @@ def export_petri_to_pnml(petriNet, marking, outputFilePath):
     page = etree.SubElement(net, "page")
     page.set("id","n0")
     placesMap = {}
-    for place in petriNet.places:
+    for place in petrinet.places:
         placesMap[place] = str(hash(place))
         pl = etree.SubElement(page, "place")
         pl.set("id", str(hash(place)))
@@ -34,7 +34,7 @@ def export_petri_to_pnml(petriNet, marking, outputFilePath):
             plInitialMarkingText = etree.SubElement(plInitialMarking,"text")
             plInitialMarkingText.text = str(marking[place])
     transitionsMap = {}
-    for transition in petriNet.transitions:
+    for transition in petrinet.transitions:
         transitionsMap[transition] = str(hash(transition))
         trans = etree.SubElement(page, "transition")
         trans.set("id", str(hash(transition)))
@@ -49,14 +49,14 @@ def export_petri_to_pnml(petriNet, marking, outputFilePath):
             toolSpecific.set("version", "6.4")
             toolSpecific.set("activity", "$invisible$")
             toolSpecific.set("localNodeID", str(uuid.uuid4()))
-    for arc in petriNet.arcs:
+    for arc in petrinet.arcs:
         arcEl = etree.SubElement(page, "arc")
         arcEl.set("id", str(hash(arc)))
-        if type(arc.source) is pm4py.models.petri.net.PetriNet.Place:
+        if type(arc.source) is pm4py.models.petri.petrinet.PetriNet.Place:
             arcEl.set("source", str(placesMap[arc.source]))
             arcEl.set("target", str(transitionsMap[arc.target]))
         else:
             arcEl.set("source", str(transitionsMap[arc.source]))
             arcEl.set("target", str(placesMap[arc.target]))
     tree = etree.ElementTree(root)
-    tree.write(outputFilePath, pretty_print=True, xml_declaration=True, encoding="utf-8")
+    tree.write(output_filename, pretty_print=True, xml_declaration=True, encoding="utf-8")
