@@ -1,3 +1,17 @@
+'''
+This module contains code that allows us to compute alignments on the basis of a regular A* search on the state-space
+of the synchronous product net of a trace and a Petri net.
+The main algorithm follows [1]_.
+When running the log-based variant, the code is running in parallel on a trace based level.
+Furthermore, by default, the code applies heuristic estimation, and prefers those states that have the smallest h-value
+in case the f-value of two states is equal.
+
+References
+----------
+.. [1] Sebastiaan J. van Zelst et al., "Tuning Alignment Computation: An Experimental Evaluation",
+      ATAED@Petri Nets/ACSD 2017: 6-20. `http://ceur-ws.org/Vol-1847/paper01.pdf`_.
+
+'''
 from pm4py.models import petri
 from pm4py.algo import alignments as alignments_lib
 from pm4py import log as log_lib
@@ -10,39 +24,40 @@ from multiprocessing import Pool
 import multiprocessing as mp
 
 
-def apply_sync_prod(sync_prod, ini, fin, cost, skip):
+def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, skip):
     '''
-    Performs the basic alignment search on top of the synchronous product net, given a cost function and skyp-symbol
+    Performs the basic alignment search on top of the synchronous product net, given a cost function and skip-symbol
 
     Parameters
     ----------
-    :param sync_prod: synchronous product net
-    :param ini: initial marking in the synchronous product net
-    :param fin: final marking in the synchronous product net
-    :param cost: cost function mapping transitions to the synchronous product net
-    :param skip: symbol to use for skips in the alignment
+    sync_prod: :class:`pm4py.models.petri.net.PetriNet` synchronous product net
+    initial_marking: :class:`pm4py.models.petri.net.Marking` initial marking in the synchronous product net
+    final_marking: :class:`pm4py.models.petri.net.Marking` final marking in the synchronous product net
+    cost_function: :class:`dict` cost function mapping transitions to the synchronous product net
+    skip: :class:`Any` symbol to use for skips in the alignment
 
     Returns
     -------
-    :return: dict with keys: alignment, cost, visited_states, queued_states and traversed_arcs
+    dictionary : :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
     '''
-    return __search(sync_prod, ini, fin, cost, skip)
+    return __search(sync_prod, initial_marking, final_marking, cost_function, skip)
 
 
-def apply_trace(trace, petri_net, initial_marking, final_marking, activity_key="concept:name"):
+def apply_trace(trace, petri_net, initial_marking, final_marking, activity_key=log_lib.util.xes.DEFAULT_NAME_KEY):
     '''
-    Performs the basic alignment search, given a trace and a net
+    Performs the basic alignment search, given a trace and a net.
 
     Parameters
     ----------
-    :param trace:
-    :param petri_net:
-    :param initial_marking:
-    :param final_marking:
+    trace: :class:`list` input trace, assumed to be a list of events (i.e. the code will use the activity key to get the activities)
+    petri_net: :class:`pm4py.models.petri.net.PetriNet` the Petri net to use in the alignment
+    initial_marking: :class:`pm4py.models.petri.net.Marking` initial marking in the Petri net
+    final_marking: :class:`pm4py.models.petri.net.Marking` final marking in the Petri net
+    activity_key: :class:`str` (optional) key to use to identify the activity described by the events
 
     Returns
     -------
-    :return:dict with keys: alignment, cost, visited_states, queued_states and traversed_arcs
+    dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
     '''
     trace_net, trace_im, trace_fm = petri.utils.construct_trace_net(trace, activity_key=activity_key)
     sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
@@ -54,7 +69,24 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, activity_key="
     return apply_sync_prod(sync_prod, sync_initial_marking, sync_final_marking, cost_function, alignments_lib.utils.SKIP)
 
 
-def __apply_trace_best_worst_known(trace, petri_net, initial_marking, final_marking, best_worst, activity_key="concept:name"):
+def apply_trace_best_worst_known(trace, petri_net, initial_marking, final_marking, best_worst, activity_key=log_lib.util.xes.DEFAULT_NAME_KEY):
+    '''
+    Performs the basic alignment search, given a trace, a net and the costs of the \"best of the worst\".
+    The costs of the best of the worst allows us to deduce the fitness of the trace.
+    We compute the fitness by means of 1 - alignment costs / best of worst costs (i.e. costs of 0 => fitness 1)
+
+    Parameters
+    ----------
+    trace: :class:`list` input trace, assumed to be a list of events (i.e. the code will use the activity key to get the activities)
+    petri_net: :class:`pm4py.models.petri.net.PetriNet` the Petri net to use in the alignment
+    initial_marking: :class:`pm4py.models.petri.net.Marking` initial marking in the Petri net
+    final_marking: :class:`pm4py.models.petri.net.Marking` final marking in the Petri net
+    activity_key: :class:`str` (optional) key to use to identify the activity described by the events
+
+    Returns
+    -------
+    dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
+    '''
     trace_net, trace_im, trace_fm = petri.utils.construct_trace_net(trace, activity_key=activity_key)
     sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im, trace_fm, petri_net, initial_marking, final_marking, alignments_lib.utils.SKIP)
     cost_function = alignments_lib.utils.construct_standard_cost_function(sync_prod, alignments_lib.utils.SKIP)
@@ -64,11 +96,11 @@ def __apply_trace_best_worst_known(trace, petri_net, initial_marking, final_mark
     return {'trace': trace, 'alignment': alignment['alignment'], 'cost': fixed_costs, 'fitness':fitness, 'visited_states': alignment['visited_states'], 'queued_states': alignment['queued_states'], 'traversed_arcs': alignment['traversed_arcs'] }
 
 
-def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, activity_key="concept:name"):
+def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, activity_key=log_lib.util.xes.DEFAULT_NAME_KEY):
     best_worst = apply_trace(log_lib.instance.Trace(), petri_net, initial_marking, final_marking)
     best_worst_costs = best_worst['cost'] // alignments_lib.utils.STD_MODEL_LOG_MOVE_COST
     with Pool(max(1, mp.cpu_count() - 1)) as pool: 
-        return pool.starmap(__apply_trace_best_worst_known, map(lambda tr: (tr, petri_net, initial_marking, final_marking, best_worst_costs, activity_key), log))
+        return pool.starmap(apply_trace_best_worst_known, map(lambda tr: (tr, petri_net, initial_marking, final_marking, best_worst_costs, activity_key), log))
 
 
 def __search(sync_net, ini, fin, cost_function, skip):
