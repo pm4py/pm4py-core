@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.algo.petrigenerator package &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pm4py.algo.petrigenerator package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.petrigenerator.generator">pm4py.algo.petrigenerator.generator module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.petrigenerator">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pm4py.algo.petrigenerator package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pm4py.algo.petrigenerator.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pm4py-algo-petrigenerator-package">
+<h1>pm4py.algo.petrigenerator package<a class="headerlink" href="#pm4py-algo-petrigenerator-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.algo.petrigenerator.generator">
+<span id="pm4py-algo-petrigenerator-generator-module"></span><h2>pm4py.algo.petrigenerator.generator module<a class="headerlink" href="#module-pm4py.algo.petrigenerator.generator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.petrigenerator.generator.SubtreeGenerator">
+<em class="property">class </em><code class="descclassname">pm4py.algo.petrigenerator.generator.</code><code class="descname">SubtreeGenerator</code><span class="sig-paren">(</span><em>minNoOfActivitiesPerSubtree</em>, <em>maxNoOfActivitiesPerSubtree</em>, <em>maxNoOfSubtrees</em>, <em>probSpawnSubtree</em>, <em>probAutoSkip</em>, <em>probAutoLoop</em>, <em>possible_behaviors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/petrigenerator/generator.html#SubtreeGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.petrigenerator.generator.SubtreeGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pm4py.algo.petrigenerator.generator.SubtreeGenerator.add_subtree">
+<code class="descname">add_subtree</code><span class="sig-paren">(</span><em>subtreeSourceNode</em>, <em>recDepth</em>, <em>subtreeTargetNode=None</em>, <em>chosenBehavior=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/petrigenerator/generator.html#SubtreeGenerator.add_subtree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.petrigenerator.generator.SubtreeGenerator.add_subtree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursive function that adds subtrees to the Petri net</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>subtreeSourceNode</strong> – Source node of the current subtree</li>
+<li><strong>recDepth</strong> – Reached recursion depth</li>
+<li><strong>subtreeTargetNode</strong> – (If specified) Target node of the subtree (it should attach to)</li>
+<li><strong>chosenBehavior</strong> – (If specified) Chosen behavior for the current subtree</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.petrigenerator.generator.SubtreeGenerator.generate_activity">
+<code class="descname">generate_activity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/petrigenerator/generator.html#SubtreeGenerator.generate_activity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.petrigenerator.generator.SubtreeGenerator.generate_activity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate an activity name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.petrigenerator.generator.SubtreeGenerator.generate_string">
+<code class="descname">generate_string</code><span class="sig-paren">(</span><em>N</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/petrigenerator/generator.html#SubtreeGenerator.generate_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.petrigenerator.generator.SubtreeGenerator.generate_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate random string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>N</strong> – Number of letters of the string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.petrigenerator.generator.SubtreeGenerator.simulate_net">
+<code class="descname">simulate_net</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/petrigenerator/generator.html#SubtreeGenerator.simulate_net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.petrigenerator.generator.SubtreeGenerator.simulate_net" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the net simulation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.petrigenerator.generator.generate_petri">
+<code class="descclassname">pm4py.algo.petrigenerator.generator.</code><code class="descname">generate_petri</code><span class="sig-paren">(</span><em>minNoOfActivitiesPerSubtree=2, maxNoOfActivitiesPerSubtree=6, maxNoOfSubtrees=5, probSpawnSubtree=0.6, probAutoSkip=0.35, probAutoLoop=0.0, possible_behaviors=['sequential', 'concurrent', 'flower', 'parallel']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/petrigenerator/generator.html#generate_petri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.petrigenerator.generator.generate_petri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate workflow net</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>minNoOfActivitiesPerSubtree</strong> – Minimum number of activities per distinct subtree</li>
+<li><strong>maxNoOfActivitiesPerSubtree</strong> – Maximum number of activities per distinct subtree</li>
+<li><strong>maxNoOfSubtrees</strong> – Maximum number of subtrees that should be added to the Petri net</li>
+<li><strong>probSpawnSubtree</strong> – Probability of spawn of a new subtree</li>
+<li><strong>probAutoSkip</strong> – Probability of adding a hidden transition that skips the current subtree</li>
+<li><strong>probAutoLoop</strong> – Probability of adding a hidden transition that loops on the current subtree</li>
+<li><strong>possible_behaviors</strong> – Possible behaviors admitted (sequential, concurrent, parallel, flower)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.algo.petrigenerator">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.algo.petrigenerator" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, PADS @ RWTH / PADS @ Fraunhofer FIT.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

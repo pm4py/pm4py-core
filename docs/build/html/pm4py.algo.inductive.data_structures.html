@@ -1,0 +1,480 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.algo.inductive.data_structures package &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pm4py.algo.inductive.data_structures package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.inductive.data_structures.dfg_graph">pm4py.algo.inductive.data_structures.dfg_graph module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.inductive.data_structures">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pm4py.algo.inductive.data_structures package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pm4py.algo.inductive.data_structures.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pm4py-algo-inductive-data-structures-package">
+<h1>pm4py.algo.inductive.data_structures package<a class="headerlink" href="#pm4py-algo-inductive-data-structures-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.algo.inductive.data_structures.dfg_graph">
+<span id="pm4py-algo-inductive-data-structures-dfg-graph-module"></span><h2>pm4py.algo.inductive.data_structures.dfg_graph module<a class="headerlink" href="#module-pm4py.algo.inductive.data_structures.dfg_graph" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.CutResultObj">
+<em class="property">class </em><code class="descclassname">pm4py.algo.inductive.data_structures.dfg_graph.</code><code class="descname">CutResultObj</code><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#CutResultObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.CutResultObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Object useful for the second
+maximal cut detection algorithm</p>
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.CutResultObj.calculateCutCost">
+<code class="descname">calculateCutCost</code><span class="sig-paren">(</span><em>choice</em>, <em>pairs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#CutResultObj.calculateCutCost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.CutResultObj.calculateCutCost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the cost of a cut</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.CutResultObj.findMaximumCutAlgo2Rec">
+<code class="descname">findMaximumCutAlgo2Rec</code><span class="sig-paren">(</span><em>currentChoice</em>, <em>activities</em>, <em>pairs</em>, <em>nodesInputActivities</em>, <em>nodesOutputActivities</em>, <em>recDepth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#CutResultObj.findMaximumCutAlgo2Rec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.CutResultObj.findMaximumCutAlgo2Rec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursion algorithm to find an optimal maximal cut</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>currentChoice</strong> – Current choice of cut (may be partial)</li>
+<li><strong>activities</strong> – Activities that we must find the cut on</li>
+<li><strong>pairs</strong> – Pairs of relations between activities</li>
+<li><strong>nodesInputActivities</strong> – Input activities for nodes according to pairs</li>
+<li><strong>nodesOutputActivities</strong> – Output activities for nodes according to pairs</li>
+<li><strong>recDepth</strong> – Reached recursion level</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph">
+<em class="property">class </em><code class="descclassname">pm4py.algo.inductive.data_structures.dfg_graph.</code><code class="descname">DfgGraph</code><span class="sig-paren">(</span><em>nodesLabels</em>, <em>pairs</em>, <em>labelsCorresp=None</em>, <em>invLabelsCorresp=None</em>, <em>origPairs=None</em>, <em>origLabels=None</em>, <em>enableSequenceDetection=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.activitiesAreAllConcurrent">
+<code class="descname">activitiesAreAllConcurrent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.activitiesAreAllConcurrent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.activitiesAreAllConcurrent" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if activities in the graph are all concurrent</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.detectSequences">
+<code class="descname">detectSequences</code><span class="sig-paren">(</span><em>enableSequenceDetection</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.detectSequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.detectSequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>detect clusters of sequential activities</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.detectSimpleCouples">
+<code class="descname">detectSimpleCouples</code><span class="sig-paren">(</span><em>enableSequenceDetection</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.detectSimpleCouples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.detectSimpleCouples" title="Permalink to this definition">¶</a></dt>
+<dd><p>support function in detecting clusters of sequential activities</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findConnectedComponents">
+<code class="descname">findConnectedComponents</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.findConnectedComponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findConnectedComponents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all connected components in the graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findLoopCut">
+<code class="descname">findLoopCut</code><span class="sig-paren">(</span><em>activitiesArcsDirection</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.findLoopCut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findLoopCut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds a loop cut (alternative algorithm)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>activitiesArcsDirection</strong> – Activities arcs direction</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findMaximumCut">
+<code class="descname">findMaximumCut</code><span class="sig-paren">(</span><em>addedGraphs</em>, <em>activitiesArcsDirection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.findMaximumCut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findMaximumCut" title="Permalink to this definition">¶</a></dt>
+<dd><p>finds the maximum cut of the graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findMaximumCutAlgo2">
+<code class="descname">findMaximumCutAlgo2</code><span class="sig-paren">(</span><em>addedGraphs</em>, <em>activitiesArcsDirection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.findMaximumCutAlgo2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findMaximumCutAlgo2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Slower algorithm for maximum cut detection
+(examines all possibilities)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>addedGraphs</strong> – Part of the tree already added to the model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findMaximumCutGreedy">
+<code class="descname">findMaximumCutGreedy</code><span class="sig-paren">(</span><em>addedGraphs</em>, <em>activitiesArcsDirection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.findMaximumCutGreedy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.findMaximumCutGreedy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Greedy strategy to form a maximum cut:
+- activities without any input are added to set1
+- activities without any output are added to set2
+- if an activity cannot be added nor to set1 or to set2, then a cut is not found
+- other activities are added to the most convenient set</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.formConnectedComponent">
+<code class="descname">formConnectedComponent</code><span class="sig-paren">(</span><em>connectedLabels</em>, <em>elToExam</em>, <em>alreadyExamined</em>, <em>currentConnComp</em>, <em>recDepth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.formConnectedComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.formConnectedComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>recursive function to get a single connected component</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>connectedLabels</strong> – For each label, maps the elements that are connected in input or in output</li>
+<li><strong>elToExam</strong> – Label to examine (we want to find the connected component containing it)</li>
+<li><strong>alreadyExamined</strong> – Already examined labels in this step</li>
+<li><strong>currentConnComp</strong> – Connected component (starts empty, and labels are added to it)</li>
+<li><strong>recDepth</strong> – Current recursion depth</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.formGroupedGraph">
+<code class="descname">formGroupedGraph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.formGroupedGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.formGroupedGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>forms the clustered graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getNodesThatCanBeMoved">
+<code class="descname">getNodesThatCanBeMoved</code><span class="sig-paren">(</span><em>set1</em>, <em>set2</em>, <em>set1Strings</em>, <em>set2Strings</em>, <em>setToConsider</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.getNodesThatCanBeMoved"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getNodesThatCanBeMoved" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets nodes that can be moved from a set to the other (for greedy maximum cut algorithm)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>set1</strong> – First set of maximum cut</li>
+<li><strong>set2</strong> – Second set of maximum cut</li>
+<li><strong>set1Strings</strong> – Strings related to activities in the first set</li>
+<li><strong>set2Strings</strong> – Strings related to activities in the second set</li>
+<li><strong>setToConsider</strong> – specify set1 or set2 as the set where to search a move</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getNodesWithNoInput">
+<code class="descname">getNodesWithNoInput</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.getNodesWithNoInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getNodesWithNoInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets nodes having no edges as input</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getNodesWithNoOutput">
+<code class="descname">getNodesWithNoOutput</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.getNodesWithNoOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getNodesWithNoOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets nodes having no edges as output</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getOrigLabels">
+<code class="descname">getOrigLabels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.getOrigLabels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getOrigLabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>get original labels (when graph gets clustered)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getOrigPairs">
+<code class="descname">getOrigPairs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.getOrigPairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getOrigPairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>get original pairs (when graph gets clustered)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getPairs">
+<code class="descname">getPairs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.getPairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getPairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets pairs currently present in the graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getSetStrings">
+<code class="descname">getSetStrings</code><span class="sig-paren">(</span><em>set</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.getSetStrings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.getSetStrings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps a set of nodes into activities names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.mapPairs">
+<code class="descname">mapPairs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.mapPairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.mapPairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>map original pairs between labels into clustered pairs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.negate">
+<code class="descname">negate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.negate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.negate" title="Permalink to this definition">¶</a></dt>
+<dd><p>negate the graph
+(to detect parallelism between activities)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.projectPairs">
+<code class="descname">projectPairs</code><span class="sig-paren">(</span><em>labels</em>, <em>pairs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#DfgGraph.projectPairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.DfgGraph.projectPairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>keep only pairs that have both elements inside labels list</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>labels</strong> – Labels for which we want to do the projection</li>
+<li><strong>pairs</strong> – Pairs to project</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.Node">
+<em class="property">class </em><code class="descclassname">pm4py.algo.inductive.data_structures.dfg_graph.</code><code class="descname">Node</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#Node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.Node.addInputNode">
+<code class="descname">addInputNode</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#Node.addInputNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.Node.addInputNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a node that is left-wise connected to this node</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> – Connected node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.inductive.data_structures.dfg_graph.Node.addOutputNode">
+<code class="descname">addOutputNode</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/inductive/data_structures/dfg_graph.html#Node.addOutputNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.inductive.data_structures.dfg_graph.Node.addOutputNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a node that is right-wise connected to this node</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> – Connected node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.algo.inductive.data_structures">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.algo.inductive.data_structures" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, PADS @ RWTH / PADS @ Fraunhofer FIT.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
