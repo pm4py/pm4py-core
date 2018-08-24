@@ -14,7 +14,7 @@ from constants import INPUT_DATA_DIR
 class AlignmentTest(unittest.TestCase):
     def test_alignment_alpha(self):
         traceLog = xes_importer.import_from_file_xes(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        net, marking = alpha_factory.apply(traceLog)
+        net, marking, fmarking = alpha_factory.apply(traceLog)
         final_marking = petri.net.Marking()
         for p in net.places:
             if not p.out_arcs:
