@@ -14,6 +14,9 @@ import sys
 sys.setrecursionlimit(100000)
 
 def apply(trace_log, parameters, activity_key='concept:name'):
+    if parameters is None:
+        parameters = {"cleanNetByTokenReplay":True}
+
     indMinDirFollows = InductMinDirFollows()
     return indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
 
