@@ -9,7 +9,21 @@ If the previous command is not working, but Python 3 is correctly installed, the
 
 pip install -r requirements.txt
 
--------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+Linux (Docker):
+
+There is a provided Dockerfile.
+
+To build the image give the command
+
+docker build -t docker-pm4py .
+
+To run the bash on the docker container give the command
+
+docker run -it docker-pm4py bash
+
+----------------------------------------------------------------------------
 
 On Windows:
 
