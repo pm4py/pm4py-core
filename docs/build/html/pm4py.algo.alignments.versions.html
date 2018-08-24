@@ -155,6 +155,20 @@
 </div>
 <div class="section" id="module-pm4py.algo.alignments.versions.state_equation_a_star">
 <span id="pm4py-algo-alignments-versions-state-equation-a-star-module"></span><h2>pm4py.algo.alignments.versions.state_equation_a_star module<a class="headerlink" href="#module-pm4py.algo.alignments.versions.state_equation_a_star" title="Permalink to this headline">¶</a></h2>
+<p>This module contains code that allows us to compute alignments on the basis of a regular A* search on the state-space
+of the synchronous product net of a trace and a Petri net.
+The main algorithm follows <a class="footnote-reference" href="#id2" id="id1">[1]</a>.
+When running the log-based variant, the code is running in parallel on a trace based level.
+Furthermore, by default, the code applies heuristic estimation, and prefers those states that have the smallest h-value
+in case the f-value of two states is equal.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Sebastiaan J. van Zelst et al., “Tuning Alignment Computation: An Experimental Evaluation”,
+<a class="reference external" href="mailto:ATAED&#37;&#52;&#48;Petri">ATAED<span>&#64;</span>Petri</a> Nets/ACSD 2017: 6-20. <a href="#id3"><span class="problematic" id="id4">`http://ceur-ws.org/Vol-1847/paper01.pdf`_</span></a>.</td></tr>
+</tbody>
+</table>
 <dl class="class">
 <dt id="pm4py.algo.alignments.versions.state_equation_a_star.SearchTuple">
 <em class="property">class </em><code class="descclassname">pm4py.algo.alignments.versions.state_equation_a_star.</code><code class="descname">SearchTuple</code><span class="sig-paren">(</span><em>f: float</em>, <em>g: float</em>, <em>h: float</em>, <em>m: pm4py.models.petri.net.Marking</em>, <em>p: Any</em>, <em>t: pm4py.models.petri.net.PetriNet.Transition</em>, <em>x: Any</em>, <em>trust: bool</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/alignments/versions/state_equation_a_star.html#SearchTuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.alignments.versions.state_equation_a_star.SearchTuple" title="Permalink to this definition">¶</a></dt>
@@ -168,25 +182,25 @@
 
 <dl class="function">
 <dt id="pm4py.algo.alignments.versions.state_equation_a_star.apply_sync_prod">
-<code class="descclassname">pm4py.algo.alignments.versions.state_equation_a_star.</code><code class="descname">apply_sync_prod</code><span class="sig-paren">(</span><em>sync_prod</em>, <em>ini</em>, <em>fin</em>, <em>cost</em>, <em>skip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/alignments/versions/state_equation_a_star.html#apply_sync_prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.alignments.versions.state_equation_a_star.apply_sync_prod" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs the basic alignment search on top of the synchronous product net, given a cost function and skyp-symbol</p>
+<code class="descclassname">pm4py.algo.alignments.versions.state_equation_a_star.</code><code class="descname">apply_sync_prod</code><span class="sig-paren">(</span><em>sync_prod</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>cost</em>, <em>skip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/alignments/versions/state_equation_a_star.html#apply_sync_prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.alignments.versions.state_equation_a_star.apply_sync_prod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the basic alignment search on top of the synchronous product net, given a cost function and skip-symbol</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>param sync_prod: synchronous product net</em></li>
-<li><em>param ini: initial marking in the synchronous product net</em></li>
-<li><em>param fin: final marking in the synchronous product net</em></li>
-<li><em>param cost: cost function mapping transitions to the synchronous product net</em></li>
-<li><em>param skip: symbol to use for skips in the alignment</em></li>
+<li><strong>sync_prod</strong> (<a class="reference internal" href="pm4py.models.petri.html#pm4py.models.petri.net.PetriNet" title="pm4py.models.petri.net.PetriNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.petri.net.PetriNet</span></code></a> synchronous product net)</li>
+<li><strong>initial_marking</strong> (<a class="reference internal" href="pm4py.models.petri.html#pm4py.models.petri.net.Marking" title="pm4py.models.petri.net.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.petri.net.Marking</span></code></a> initial marking in the synchronous product net)</li>
+<li><strong>final_marking</strong> (<a class="reference internal" href="pm4py.models.petri.html#pm4py.models.petri.net.Marking" title="pm4py.models.petri.net.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.petri.net.Marking</span></code></a> final marking in the synchronous product net)</li>
+<li><strong>cost</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> cost function mapping transitions to the synchronous product net)</li>
+<li><strong>skip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Any</span></code> symbol to use for skips in the alignment)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dictionary</strong></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">return: dict with keys: alignment, cost, visited_states, queued_states and traversed_arcs</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong> and <strong>traversed_arcs</strong></p>
 </td>
 </tr>
 </tbody>
@@ -196,23 +210,24 @@
 <dl class="function">
 <dt id="pm4py.algo.alignments.versions.state_equation_a_star.apply_trace">
 <code class="descclassname">pm4py.algo.alignments.versions.state_equation_a_star.</code><code class="descname">apply_trace</code><span class="sig-paren">(</span><em>trace</em>, <em>petri_net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/alignments/versions/state_equation_a_star.html#apply_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.alignments.versions.state_equation_a_star.apply_trace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs the basic alignment search, given a trace and a net</p>
+<dd><p>Performs the basic alignment search, given a trace and a net (note: internally calls <code class="xref py py-func docutils literal notranslate"><span class="pre">apply_sync_prod()</span></code>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>param trace:</em></li>
-<li><em>param petri_net:</em></li>
-<li><em>param initial_marking:</em></li>
-<li><em>param final_marking:</em></li>
+<li><strong>trace</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> input trace, assumed to be a list of events (i.e. the code will use the activity key to get the activities))</li>
+<li><strong>petri_net</strong> (<a class="reference internal" href="pm4py.models.petri.html#pm4py.models.petri.net.PetriNet" title="pm4py.models.petri.net.PetriNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.petri.net.PetriNet</span></code></a> the Petri net to use in the alignment)</li>
+<li><strong>initial_marking</strong> (<a class="reference internal" href="pm4py.models.petri.html#pm4py.models.petri.net.Marking" title="pm4py.models.petri.net.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.petri.net.Marking</span></code></a> initial marking in the Petri net)</li>
+<li><strong>final_marking</strong> (<a class="reference internal" href="pm4py.models.petri.html#pm4py.models.petri.net.Marking" title="pm4py.models.petri.net.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.petri.net.Marking</span></code></a> final marking in the Petri net)</li>
+<li><strong>activity_key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> (optional) key to use to identify the activity described by the events)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dictionary</strong></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">return:dict with keys: alignment, cost, visited_states, queued_states and traversed_arcs</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><cite>dict</cite> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong> and <strong>traversed_arcs</strong></p>
 </td>
 </tr>
 </tbody>
