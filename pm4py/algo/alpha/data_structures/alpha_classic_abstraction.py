@@ -3,6 +3,10 @@ from pm4py.algo import causal
 
 
 class ClassicAlphaAbstraction:
+    '''
+    Class representing the basic abstraction of the alpha miner.
+    The class covers start- and end activities, the directly follows relation, the parallel relation and the causal relation.
+    '''
 
     def __init__(self, trace_log, activity_key="concept:name"):
         self.__activity_key = activity_key

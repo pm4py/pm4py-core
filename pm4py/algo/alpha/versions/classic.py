@@ -16,7 +16,7 @@ def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
     ----------
     trace_log : :class:`pm4py.log.instance.TraceLog`
         Event log to use in the alpha miner, note that it should be a TraceLog!
-    activity_key : `str`, optional
+    activity_key : :class:`str`, optional
         Key to use within events to identify the underlying activity.
         By deafult, the value 'concept:name' is used.
 
@@ -24,9 +24,9 @@ def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
     -------
     net : :class:`pm4py.models.petri.net.PetriNet`
         A Petri net describing the event log that is provided as an input
-    initial marking:
+    initial marking : :class:`pm4py.models.net.Marking`
         marking object representing the initial marking
-    final marking
+    final marking : :class:`pm4py.models.net.Marking`
         marking object representing the final marking, not guaranteed that it is actually reachable!
 
     References
