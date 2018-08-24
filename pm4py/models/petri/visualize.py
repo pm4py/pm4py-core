@@ -1,6 +1,19 @@
 from graphviz import Digraph
 
 def graphviz_visualization(net):
+    """
+    Provides visualization for the petrinet
+
+    Parameters
+    ----------
+    net: :class:`pm4py.models.petri.petrinet.PetriNet`
+    Petri net
+
+    Returns
+    -------
+    viz :
+    Returns a graph object
+    """
     viz = Digraph(net.name, filename=net.name+'.gv', engine='dot')
 
     #transitions
