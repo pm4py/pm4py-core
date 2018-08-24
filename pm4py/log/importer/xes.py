@@ -8,8 +8,21 @@ EVENT_END = 'end'
 EVENT_START = 'start'
 
 
-def import_from_path_xes(path):
-    context = etree.iterparse(path, events=['start', 'end'])
+def import_from_file_xes(filename):
+    """
+    Imports an XES file into a log object
+
+    Parameters
+    ----------
+    filename:
+        Absolute filename
+
+    Returns
+    -------
+    log : :class:`pm4py.log.instance.TraceLog`
+        A trace log
+    """
+    context = etree.iterparse(filename, events=['start', 'end'])
 
     log = None
     trace = None
