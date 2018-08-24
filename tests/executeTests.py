@@ -4,7 +4,7 @@ from csvImportExportTest import CsvImportExportTest
 from alphaMinerTest import AlphaMinerTest
 from imdfTest import InductiveMinerDFTest
 from alignmentTest import AlignmentTest
-from petriImportTest import PetriImportTest
+from petriImportExportTest import PetriImportExportTest
 
 if __name__ == "__main__":
 	unittest.main()

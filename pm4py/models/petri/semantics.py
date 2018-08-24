@@ -1,4 +1,4 @@
-from pm4py.models.petri.net import Marking
+from pm4py.models.petri.petrinet import Marking
 import copy
 
 
