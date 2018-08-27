@@ -113,10 +113,11 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, activity_key=
             j = 1
             while j < len(trace)-1:
                 path = trace[j][activity_key] + "," + trace[j + 1][activity_key]
-                if path in fvp or paths[path] >= threshold:
-                    new_trace.append(trace[j])
-                    new_trace.append(trace[j+1])
-                    j = j + 1
+                if path in paths:
+                    if path in fvp or paths[path] >= threshold:
+                        new_trace.append(trace[j])
+                        new_trace.append(trace[j+1])
+                        j = j + 1
                 j = j + 1
         if len(trace) > 1 and not j == len(trace):
             new_trace.append(trace[-1])
@@ -124,7 +125,7 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, activity_key=
             filtered_log.append(new_trace)
     return filtered_log
 
-def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.5, activity_key="concept:name"):
+def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_key="concept:name"):
     """
     Apply an activities filter detecting automatically a percentage
 

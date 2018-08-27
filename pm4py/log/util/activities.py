@@ -50,7 +50,7 @@ def get_sorted_activities_list(activities):
     return listact
 
 
-def get_activities_threshold(activities, alist, decreasingFactor):
+def get_activities_threshold(activities, alist, decreasingFactor, maxActivityCount = 25):
     """
     Get end activities cutting threshold
 
@@ -73,6 +73,8 @@ def get_activities_threshold(activities, alist, decreasingFactor):
         value = alist[i][1]
         if value > threshold * decreasingFactor:
             threshold = value
+        if i >= maxActivityCount:
+            break
         i = i + 1
     return threshold
 
@@ -107,14 +109,15 @@ def filter_log_by_activities(trace_log, activities, variants, vc, threshold, act
         j = 0
         while j < len(trace):
             activity = trace[j][activity_key]
-            if activity in fva or activities[activity] >= threshold:
-                new_trace.append(trace[j])
+            if activity in activities:
+                if activity in fva or activities[activity] >= threshold:
+                    new_trace.append(trace[j])
             j = j + 1
         if len(new_trace) > 0:
             filtered_log.append(new_trace)
     return filtered_log
 
-def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.5, activity_key="concept:name"):
+def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_key="concept:name"):
     """
     Apply an activities filter detecting automatically a percentage
 
