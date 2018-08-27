@@ -2,11 +2,33 @@ from lxml import etree
 from pm4py import log as log_lib
 import ciso8601
 import logging
+import tempfile, os
 
 # ITERPARSE EVENTS
 EVENT_END = 'end'
 EVENT_START = 'start'
 
+def import_from_xes_string(xes_string):
+    """
+    Imports XES log from XES string
+
+    Parameters
+    ----------
+    xes_string
+        XES string
+
+    Returns
+    -----------
+    log
+        Trace log
+    """
+    fp = tempfile.NamedTemporaryFile(suffix='.xes')
+    fp.close()
+    with open(fp.name, 'w') as f:
+        f.write(xes_string)
+    log = import_from_file_xes(fp.name)
+    os.remove(fp.name)
+    return log
 
 def import_from_file_xes(filename):
     """
