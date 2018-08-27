@@ -193,6 +193,59 @@ def export_traces(log, root):
 		export_attributes_element(tr, trace)
 		export_traces_events(tr, trace)
 
+def export_log_tree(log):
+	"""
+	Get XES log XML tree from a PM4Py trace log
+
+	Parameters
+	-----------
+	log
+		PM4Py trace log
+
+	Returns
+	-----------
+	tree
+		XML tree
+	"""
+	# If the log is in log_instance.EventLog, then transform it into log_instance.TraceLog format
+	if type(log) is log_instance.EventLog:
+		log = log_transform.transform_event_log_to_trace_log(log)
+	root = etree.Element(xes_util.TAG_LOG)
+
+	# add attributes at the log level
+	export_attributes(log, root)
+	# add extensions at the log level
+	export_extensions(log, root)
+	# add globals at the log level
+	export_globals(log, root)
+	# add classifiers at the log level
+	export_classifiers(log, root)
+	# add traces at the log level
+	export_traces(log, root)
+
+	tree = etree.ElementTree(root)
+
+	return tree
+
+def export_log_as_string(log):
+	"""
+	Export a trace log into a string
+
+	Parameters
+	-----------
+	log: :class:`pm4py.log.instance.TraceLog`
+		PM4PY trace log
+
+	Returns
+	-----------
+	logString
+		Log as a string
+	"""
+	# Gets the XML tree to export
+	tree = export_log_tree(log)
+
+	return etree.tostring(tree, xml_declaration=True, encoding="utf-8")
+
 def export_log(log, outputFilePath):
 	"""
 	Export XES log from a PM4PY trace log
@@ -206,22 +259,7 @@ def export_log(log, outputFilePath):
 
 	"""
 	
-	# If the log is in log_instance.EventLog, then transform it into log_instance.TraceLog format
-	if type(log) is log_instance.EventLog:
-		log = log_transform.transform_event_log_to_trace_log(log)
-	root = etree.Element(xes_util.TAG_LOG)
-	
-	# add attributes at the log level
-	export_attributes(log, root)
-	# add extensions at the log level
-	export_extensions(log, root)
-	# add globals at the log level
-	export_globals(log, root)
-	# add classifiers at the log level
-	export_classifiers(log, root)
-	# add traces at the log level
-	export_traces(log, root)
-	
-	# Effectively do the exporter of the event log
-	tree = etree.ElementTree(root)
+	# Gets the XML tree to export
+	tree = export_log_tree(log)
+	# Effectively do the export of the event log
 	tree.write(outputFilePath, pretty_print=True, xml_declaration=True, encoding="utf-8")
