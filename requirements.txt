@@ -4,3 +4,5 @@ ciso8601
 pandas
 dataclasses
 cvxopt
+flask
+flask-cors

@@ -9,5 +9,7 @@ RUN pip install ciso8601
 RUN pip install pandas
 RUN pip install dataclasses
 RUN pip install cvxopt
+RUN pip install flask
+RUN pip install flask-cors
 
-COPY . /data
+COPY . /app

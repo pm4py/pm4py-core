@@ -23,6 +23,8 @@ To run the bash on the docker container give the command
 
 docker run -it docker-pm4py bash
 
+The PM4Py environment is located inside /app
+
 ----------------------------------------------------------------------------
 
 On Windows:
