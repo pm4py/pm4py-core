@@ -1,6 +1,5 @@
 from pm4py.log.util import variants as variants_module
-from pm4py.log.util import start_activities
-from pm4py.log.util import end_activities
+from pm4py.log.util import start_activities, end_activities, activities
 
 def apply_auto_filter(trace_log, decreasingFactor=0.5, activity_key="concept:name"):
     """
@@ -26,8 +25,10 @@ def apply_auto_filter(trace_log, decreasingFactor=0.5, activity_key="concept:nam
     # - start activities filter (keep only variants that starts with a plausible start activity)
     # - end activities filter (keep only variants that starts with a plausible end activity)
     variants = variants_module.get_variants_from_log(trace_log, activity_key=activity_key)
-    filtered_log1 = variants_module.apply_auto_filter(trace_log, variants=variants, decreasingFactor=decreasingFactor, activity_key=activity_key)
-    filtered_log2 = start_activities.apply_auto_filter(filtered_log1, variants=variants, decreasingFactor=decreasingFactor, activity_key=activity_key)
-    filtered_log3 = end_activities.apply_auto_filter(filtered_log2, variants=variants, decreasingFactor=decreasingFactor, activity_key=activity_key)
+    filtered_log1 = activities.apply_auto_filter(trace_log, variants=variants, decreasingFactor=decreasingFactor, activity_key=activity_key)
+    variants = variants_module.get_variants_from_log(filtered_log1, activity_key=activity_key)
+    filtered_log2 = variants_module.apply_auto_filter(filtered_log1, variants=variants, decreasingFactor=decreasingFactor, activity_key=activity_key)
+    filtered_log3 = start_activities.apply_auto_filter(filtered_log2, variants=variants, decreasingFactor=decreasingFactor, activity_key=activity_key)
+    filtered_log4 = end_activities.apply_auto_filter(filtered_log3, variants=variants, decreasingFactor=decreasingFactor, activity_key=activity_key)
     
-    return filtered_log3
+    return filtered_log4
