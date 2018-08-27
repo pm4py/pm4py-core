@@ -1,4 +1,5 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.6
+FROM python:3.6
+#FROM tiangolo/uwsgi-nginx-flask:python3.6
 
 RUN apt-get update
 RUN apt-get -y install nano vim
@@ -14,4 +15,4 @@ RUN pip install flask-cors
 
 COPY . /app
 
-ENTRYPOINT ["uwsgi", "--http", "0.0.0.0:80", "--module", "main:app", "--processes", "8", "--threads", "8"]
+#ENTRYPOINT ["uwsgi", "--http", "0.0.0.0:80", "--module", "main:app", "--processes", "8", "--threads", "8"]
