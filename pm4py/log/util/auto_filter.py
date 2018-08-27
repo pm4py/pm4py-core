@@ -2,7 +2,7 @@ from pm4py.log.util import variants as variants_module
 from pm4py.log.util import start_activities, end_activities, activities, paths
 import gc
 
-def apply_auto_filter(trace_log, decreasingFactor=0.5, activity_key="concept:name"):
+def apply_auto_filter(trace_log, decreasingFactor=0.6, activity_key="concept:name"):
     """
     Apply some filters in battery to the log in order to get a simplified log
     

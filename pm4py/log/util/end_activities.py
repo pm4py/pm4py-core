@@ -100,12 +100,13 @@ def filter_log_by_end_activities(end_activities, variants, vc, threshold, activi
     fvea = variants[vc[0][0]][0][-1][activity_key]    
     for variant in variants:
         vea = variants[variant][0][-1][activity_key]
-        if vea == fvea or end_activities[vea] >= threshold:
-            for trace in variants[variant]:
-                filtered_log.append(trace)
+        if vea in end_activities:
+            if vea == fvea or end_activities[vea] >= threshold:
+                for trace in variants[variant]:
+                    filtered_log.append(trace)
     return filtered_log
 
-def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.5, activity_key="concept:name"):
+def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_key="concept:name"):
     """
     Apply an end activities filter detecting automatically a percentage
     

@@ -119,7 +119,7 @@ def find_auto_threshold(trace_log, variants, decreasingFactor):
     
     return percentage_already_added
 
-def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.5, activity_key="concept:name"):
+def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_key="concept:name"):
     """
     Apply a variants filter detecting automatically a percentage
     
