@@ -116,7 +116,7 @@ def filter_log_by_activities(trace_log, activities, variants, vc, threshold, act
 
 def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.5, activity_key="concept:name"):
     """
-    Apply an end activities filter detecting automatically a percentage
+    Apply an activities filter detecting automatically a percentage
 
     Parameters
     ----------
