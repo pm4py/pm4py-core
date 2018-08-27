@@ -127,11 +127,11 @@ class InductMinDirFollows(object):
             self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
             self.noOfHiddenTransAddedTau = self.noOfHiddenTransAddedTau + 1
             hiddenTransEnd = petri.petrinet.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded), None)
-            end = petri.petrinet.PetriNet.Place('end')
-            net.places.add(end)
+            sink = petri.petrinet.PetriNet.Place('end')
+            net.places.add(sink)
             net.transitions.add(hiddenTransEnd)
             petri.utils.add_arc_from_to(self.lastPlaceAdded, hiddenTransEnd, net)
-            petri.utils.add_arc_from_to(hiddenTransEnd, end, net)
+            petri.utils.add_arc_from_to(hiddenTransEnd, sink, net)
         elif len(final_marking) == 1:
             for p in final_marking:
                 p.name = "end"
@@ -156,11 +156,11 @@ class InductMinDirFollows(object):
                 p.name = "start"
                 break
 
-        initial_marking = Marking({start: 1})
-        final_marking = petri.petrinet.Marking()
         for p in net.places:
             if not p.out_arcs:
-                final_marking[p] = 1
+                sink = p
+        initial_marking = Marking({start: 1})
+        final_marking = Marking({sink: 1})
 
         if parameters is not None and "cleanNetByTokenReplay" in parameters and parameters["cleanNetByTokenReplay"]:
             [traceIsFit, traceFitnessValue, activatedTransitions, placeFitnessPerTrace, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(trace_log, net, initial_marking, final_marking, activity_key=activity_key)
@@ -173,15 +173,101 @@ class InductMinDirFollows(object):
                 if not transition in actiTrans:
                     inArcs = copy(transition.in_arcs)
                     for arc in inArcs:
+                        place = arc.source
+                        place.out_arcs.remove(arc)
                         transition.in_arcs.remove(arc)
                         net.arcs.remove(arc)
                     outArcs = copy(transition.out_arcs)
                     for arc in outArcs:
+                        place = arc.target
+                        place.in_arcs.remove(arc)
                         transition.out_arcs.remove(arc)
                         net.arcs.remove(arc)
                     net.transitions.remove(transition)
 
+        net, start = self.removeRendundantHiddenTransitionAtStart(net, start)
+        net, sink = self.removeRendundantHiddenTransitionsAtEnd(net, sink)
+
+        initial_marking = Marking({start: 1})
+        final_marking = Marking({sink: 1})
+
         return net, initial_marking
+
+    def removeRendundantHiddenTransitionAtStart(self, net, start):
+        """
+        Remove rendundant hidden transitions at start
+        (sometimes they appear after cleaning)
+
+        Parameters
+        ----------
+        net
+            Petri net
+        start
+            Start node of the Petri net
+
+        Returns
+        ----------
+        net
+            Petri net
+        start
+            Start node of the Petri net
+        """
+        to_remove = False
+        for out_arc1 in start.out_arcs:
+            out_trans = out_arc1.target
+            if len(out_trans.out_arcs) == 1:
+                for out_arc2 in out_trans.out_arcs:
+                    new_start = out_arc2.target
+                    out_arc2_to_remove = out_arc2
+                to_remove = True
+                out_arc1_to_remove = out_arc1
+        if to_remove:
+            new_start.in_arcs.remove(out_arc2_to_remove)
+            net.arcs.remove(out_arc1_to_remove)
+            net.arcs.remove(out_arc2_to_remove)
+            net.places.remove(start)
+            net.transitions.remove(out_trans)
+            new_start.name = "start"
+            start = new_start
+        return net, start
+
+    def removeRendundantHiddenTransitionsAtEnd(self, net, end):
+        """
+        Remove rendundant hidden transitions at end
+        (sometimes they appear after cleaning)
+
+        Parameters
+        ----------
+        net
+            Petri net
+        end
+            Sink node of the Petri net
+
+        Returns
+        ----------
+        net
+            Petri net
+        end
+            Sink node of the Petri net
+        """
+        to_remove = False
+        for in_arc1 in end.in_arcs:
+            in_trans = in_arc1.source
+            if len(in_trans.in_arcs) == 1:
+                for in_arc2 in in_trans.in_arcs:
+                    new_end = in_arc2.source
+                    in_arc2_to_remove = in_arc2
+                to_remove = True
+                in_arc1_to_remove = in_arc1
+        if to_remove:
+            new_end.out_arcs.remove(in_arc2_to_remove)
+            net.arcs.remove(in_arc1_to_remove)
+            net.arcs.remove(in_arc2_to_remove)
+            net.places.remove(end)
+            net.transitions.remove(in_trans)
+            new_end.name = "end"
+            end = new_end
+        return net, end
 
     def calculateActivitiesArcsDirection(self, labels):
         """
