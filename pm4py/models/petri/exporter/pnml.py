@@ -2,9 +2,9 @@ from lxml import etree
 import uuid
 import pm4py
 
-def export_petri_to_pnml(petrinet, marking, output_filename):
+def export_petri_tree(petrinet, marking):
     """
-    Export a Petrinet to a PNML file
+    Export a Petrinet to a XML tree
 
     Parameters
     ----------
@@ -12,8 +12,11 @@ def export_petri_to_pnml(petrinet, marking, output_filename):
         Petri net
     marking: :class:`pm4py.models.petri.petrinet.Marking`
         Marking
-    output_filename:
-        Absolute output file name for saving the pnml file
+
+    Returns
+    ----------
+    tree
+        XML tree
     """
     root = etree.Element("pnml")
     net = etree.SubElement(root, "net")
@@ -59,4 +62,44 @@ def export_petri_to_pnml(petrinet, marking, output_filename):
             arcEl.set("source", str(transitionsMap[arc.source]))
             arcEl.set("target", str(placesMap[arc.target]))
     tree = etree.ElementTree(root)
+
+    return tree
+
+def export_petri_as_string(petrinet, marking):
+    """
+    Parameters
+    ----------
+    petrinet: :class:`pm4py.models.petri.petrinet.PetriNet`
+        Petri net
+    marking: :class:`pm4py.models.petri.petrinet.Marking`
+        Marking
+
+    Returns
+    ----------
+    string
+        Petri net as string
+    """
+
+    # gets the XML tree
+    tree = export_petri_tree(petrinet, marking)
+
+    return etree.tostring(tree, xml_declaration=True, encoding="utf-8")
+
+def export_petri_to_pnml(petrinet, marking, output_filename):
+    """
+    Export a Petrinet to a PNML file
+
+    Parameters
+    ----------
+    petrinet: :class:`pm4py.models.petri.petrinet.PetriNet`
+        Petri net
+    marking: :class:`pm4py.models.petri.petrinet.Marking`
+        Marking
+    output_filename:
+        Absolute output file name for saving the pnml file
+    """
+
+    # gets the XML tree
+    tree = export_petri_tree(petrinet, marking)
+    # write the tree to a file
     tree.write(output_filename, pretty_print=True, xml_declaration=True, encoding="utf-8")
