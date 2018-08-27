@@ -16,15 +16,15 @@ if __name__ == "__main__":
 		for event in trace:
 			event["newClassifier"] = event["concept:name"] + "+complete"""
 
-	net, marking = inductive_factory.apply(log)
+	net, marking, final_marking = inductive_factory.apply(log)
 	petri_exporter.export_petri_to_pnml(net, marking, "receipt.pnml")
 	#net, marking = petri_importer.import_petri_from_pnml("receipt.pnml")
 	for place in marking:
 		print("initial marking "+place.name)
-	final_marking = petri.petrinet.Marking()
+	"""final_marking = petri.petrinet.Marking()
 	for p in net.places:
 		if not p.out_arcs:
-			final_marking[p] = 1
+			final_marking[p] = 1"""
 	for place in final_marking:
 		print("final marking "+place.name)
 	gviz = pn_viz.graphviz_visualization(net)

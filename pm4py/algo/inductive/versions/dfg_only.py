@@ -191,7 +191,7 @@ class InductMinDirFollows(object):
         initial_marking = Marking({start: 1})
         final_marking = Marking({sink: 1})
 
-        return net, initial_marking
+        return net, initial_marking, final_marking
 
     def removeRendundantHiddenTransitionAtStart(self, net, start):
         """

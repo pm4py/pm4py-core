@@ -23,14 +23,14 @@ class InductiveMinerDFTest(unittest.TestCase):
 			eventLog = csv_importer.import_from_path(logName)
 			traceLog = log_transform.transform_event_log_to_trace_log(eventLog)
 		imdf = InductMinDirFollows()
-		net, marking = imdf.apply(traceLog, None)
-		return traceLog, net, marking
+		net, marking, final_marking = imdf.apply(traceLog, None)
+		return traceLog, net, marking, final_marking
 	
 	def test_applyImdfToXES(self):
 		# calculate and compare Petri nets obtained on the same log to verify that instances
 		# are working correctly
-		log1, net1, marking1 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
-		log2, net2, marking2 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+		log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+		log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
 		petri_exporter.export_petri_to_pnml(net1, marking1, os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		os.remove(os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		self.assertEqual(len(net1.places),len(net2.places))
@@ -45,8 +45,8 @@ class InductiveMinerDFTest(unittest.TestCase):
 	def test_applyImdfToCSV(self):
 		# calculate and compare Petri nets obtained on the same log to verify that instances
 		# are working correctly
-		log1, net1, marking1 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
-		log2, net2, marking2 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
+		log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
+		log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
 		petri_exporter.export_petri_to_pnml(net1, marking1, os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		os.remove(os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		self.assertEqual(len(net1.places),len(net2.places))
@@ -59,7 +59,7 @@ class InductiveMinerDFTest(unittest.TestCase):
 		[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log1, net1, marking1, final_marking, enable_placeFitness=True)
 	
 	def test_imdfVisualizationFromXES(self):
-		log, net, marking = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+		log, net, marking, fmarking = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
 		petri_exporter.export_petri_to_pnml(net, marking, os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		os.remove(os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		gviz = pn_viz.graphviz_visualization(net)
@@ -76,8 +76,8 @@ class InductiveMinerDFTest(unittest.TestCase):
 				logFullPath = os.path.join(PROBLEMATIC_XES_DIR, log)
 				# calculate and compare Petri nets obtained on the same log to verify that instances
 				# are working correctly
-				log1, net1, marking1 = self.obtainPetriNetThroughImdf(logFullPath)
-				log2, net2, marking2 = self.obtainPetriNetThroughImdf(logFullPath)
+				log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughImdf(logFullPath)
+				log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughImdf(logFullPath)
 				self.assertEqual(len(net1.places),len(net2.places))
 				self.assertEqual(len(net1.transitions),len(net2.transitions))
 				self.assertEqual(len(net1.arcs),len(net2.arcs))
