@@ -29,6 +29,7 @@ class InductMinDirFollows(object):
         self.trace_log = None
         self.addedGraphs = []
         self.startActivitiesInLog = Counter()
+        self.endActivitiesInLog = Counter()
         self.activitiesCountInLog = Counter()
         self.maxNoOfActivitiesPerTrace = {}
         self.minNoOfActivitiesPerTrace = {}
@@ -77,6 +78,7 @@ class InductMinDirFollows(object):
                 if not activity_key in trace[0]:
                     raise NoConceptNameException("at least an event is without "+activity_key)
                 self.startActivitiesInLog[trace[0][activity_key]] += 1
+                self.endActivitiesInLog[trace[-1][activity_key]] += 1
                 for event in trace:
                     if not activity_key in event:
                         raise NoConceptNameException("at least an event is without "+activity_key)
@@ -124,14 +126,19 @@ class InductMinDirFollows(object):
             if not p.out_arcs:
                 final_marking[p] = 1
         if len(final_marking) == 0:
-            self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-            self.noOfHiddenTransAddedTau = self.noOfHiddenTransAddedTau + 1
-            hiddenTransEnd = petri.petrinet.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded), None)
+            allPossibleEndPlaces = set()
+            for activity in self.endActivitiesInLog:
+                placesAfterActivity = self.getPlacesAfterActivity(net, activity)
+                allPossibleEndPlaces = allPossibleEndPlaces.union(placesAfterActivity)
             sink = petri.petrinet.PetriNet.Place('end')
             net.places.add(sink)
-            net.transitions.add(hiddenTransEnd)
-            petri.utils.add_arc_from_to(self.lastPlaceAdded, hiddenTransEnd, net)
-            petri.utils.add_arc_from_to(hiddenTransEnd, sink, net)
+            for place in allPossibleEndPlaces:
+                self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+                self.noOfHiddenTransAddedTau = self.noOfHiddenTransAddedTau + 1
+                hiddenTransEnd = petri.petrinet.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded), None)
+                net.transitions.add(hiddenTransEnd)
+                petri.utils.add_arc_from_to(place, hiddenTransEnd, net)
+                petri.utils.add_arc_from_to(hiddenTransEnd, sink, net)
         elif len(final_marking) == 1:
             for p in final_marking:
                 p.name = "end"
@@ -155,13 +162,11 @@ class InductMinDirFollows(object):
             for p in initial_marking:
                 p.name = "start"
                 break
-
         for p in net.places:
             if not p.out_arcs:
                 sink = p
         initial_marking = Marking({start: 1})
         final_marking = Marking({sink: 1})
-
         if parameters is not None and "cleanNetByTokenReplay" in parameters and parameters["cleanNetByTokenReplay"]:
             [traceIsFit, traceFitnessValue, activatedTransitions, placeFitnessPerTrace, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(trace_log, net, initial_marking, final_marking, activity_key=activity_key)
             actiTrans = set()
@@ -193,6 +198,29 @@ class InductMinDirFollows(object):
 
         return net, initial_marking, final_marking
 
+    def getPlacesAfterActivity(self, net, activity):
+        """
+        Get places after a specified activity
+
+        Parameters
+        -----------
+        net
+            Petri net
+        activity
+            Activity to search
+
+        Returns
+        -----------
+        places
+            Places after activity
+        """
+        places = set()
+        for trans in net.transitions:
+            if trans.label == activity:
+                for out_arc in trans.out_arcs:
+                    places.add(out_arc.target)
+        return places
+
     def removeRendundantHiddenTransitionAtStart(self, net, start):
         """
         Remove rendundant hidden transitions at start
@@ -213,14 +241,16 @@ class InductMinDirFollows(object):
             Start node of the Petri net
         """
         to_remove = False
-        for out_arc1 in start.out_arcs:
-            out_trans = out_arc1.target
-            if len(out_trans.out_arcs) == 1:
-                for out_arc2 in out_trans.out_arcs:
-                    new_start = out_arc2.target
-                    out_arc2_to_remove = out_arc2
-                to_remove = True
-                out_arc1_to_remove = out_arc1
+        if len(start.out_arcs) == 1:
+            for out_arc1 in start.out_arcs:
+                out_trans = out_arc1.target
+                if len(out_trans.out_arcs) == 1:
+                    for out_arc2 in out_trans.out_arcs:
+                        new_start = out_arc2.target
+                        out_arc2_to_remove = out_arc2
+                        if len(new_start.in_arcs) == 1:
+                            to_remove = True
+                    out_arc1_to_remove = out_arc1
         if to_remove:
             new_start.in_arcs.remove(out_arc2_to_remove)
             net.arcs.remove(out_arc1_to_remove)
@@ -251,14 +281,16 @@ class InductMinDirFollows(object):
             Sink node of the Petri net
         """
         to_remove = False
-        for in_arc1 in end.in_arcs:
-            in_trans = in_arc1.source
-            if len(in_trans.in_arcs) == 1:
-                for in_arc2 in in_trans.in_arcs:
-                    new_end = in_arc2.source
-                    in_arc2_to_remove = in_arc2
-                to_remove = True
-                in_arc1_to_remove = in_arc1
+        if len(end.in_arcs) == 1:
+            for in_arc1 in end.in_arcs:
+                in_trans = in_arc1.source
+                if len(in_trans.in_arcs) == 1:
+                    for in_arc2 in in_trans.in_arcs:
+                        new_end = in_arc2.source
+                        in_arc2_to_remove = in_arc2
+                        if len(new_end.out_arcs) == 1:
+                            to_remove = True
+                    in_arc1_to_remove = in_arc1
         if to_remove:
             new_end.out_arcs.remove(in_arc2_to_remove)
             net.arcs.remove(in_arc1_to_remove)
