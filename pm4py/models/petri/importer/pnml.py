@@ -7,7 +7,24 @@ from pm4py.models.petri.petrinet import Marking
 from copy import copy, deepcopy
 import logging
 from pm4py.models.petri import visualize as pn_viz
+import tempfile, os
 
+def import_petri_from_string(petri_string):
+    """
+    Import a Petri net from a string
+
+    Parameters
+    ----------
+    petri_string
+        Petri net expressed as PNML string
+    """
+    fp = tempfile.NamedTemporaryFile(suffix='.pnml')
+    fp.close()
+    with open(fp.name, 'w') as f:
+        f.write(petri_string)
+    net = import_petri_from_pnml(fp.name)
+    os.remove(fp.name)
+    return net
 
 def import_petri_from_pnml(inputFilePath):
     """
