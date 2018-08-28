@@ -27,7 +27,7 @@ if __name__ == "__main__":
 			final_marking[p] = 1"""
 	for place in final_marking:
 		print("final marking "+place.name)
-	gviz = pn_viz.graphviz_visualization(net)
+	gviz = pn_viz.graphviz_visualization(net, initial_marking=marking, final_marking=final_marking)
 	gviz.view()
 
 	#results = align.versions.state_equation_classic.apply_log(log, net, marking, final_marking)
