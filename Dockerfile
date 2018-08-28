@@ -4,6 +4,7 @@ FROM python:3.6
 RUN apt-get update
 RUN apt-get -y install nano vim
 RUN apt-get -y install git
+RUN apt-get -y install python-pydot python-pydot-ng graphviz
 RUN pip install lxml
 RUN pip install graphviz
 RUN pip install ciso8601
