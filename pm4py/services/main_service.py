@@ -10,6 +10,7 @@ from threading import Semaphore, Thread
 from copy import copy
 import os
 import time
+import logging, traceback
 
 class shared:
     # contains shared variables
@@ -20,8 +21,6 @@ class shared:
     trace_logs = {}
     # semaphore
     sem = Semaphore(1)
-    # logs reloading thread
-    logs_reloading_thread = None
 
 app = Flask(__name__)
 CORS(app)
@@ -37,18 +36,25 @@ def set_config(conf):
         Configuration read from INI file
     """
     shared.config = conf
+    # set the logger
+    FORMAT = '%(asctime)-15s %(name)-12s %(levelname)-8s %(message)s'
+    # gets the log filename from config
+    filename = shared.config["logging"]["loggingFile"]
+    if shared.config["logging"]["level"] == "ERROR":
+        level = logging.ERROR
+    elif shared.config["logging"]["level"] == "WARNING":
+        level = logging.WARNING
+    elif shared.config["logging"]["level"] == "DEBUG":
+        level = logging.DEBUG
+    elif shared.config["logging"]["level"] == "ERROR":
+        level = logging.ERROR
+    logging.basicConfig(filename=filename, level=level, format=FORMAT)
 
-class LogsReloadingThread(Thread):
-    def run(self):
-        if shared.config["logFolder"]["loadLogsAutomatically"]:
-            while True:
-                self.load_logs()
-                time.sleep(int(shared.config["logFolder"]["logsReloadingSpeed"]))
-
-    def load_logs(self):
-        """
-        If enabled, load logs in the folder
-        """
+def load_logs():
+    """
+    If enabled, load logs in the folder
+    """
+    if shared.config["logFolder"]["loadLogsAutomatically"]:
         shared.sem.acquire()
         # loading logs
         logsFolderPath = shared.config["logFolder"]["logFolderPath"]
@@ -60,25 +66,19 @@ class LogsReloadingThread(Thread):
                     logName = file.split(".")[0]
                     logExtension = file.split(".")[-1]
                     if not logName in shared.trace_logs:
-                        if logExtension == "xes" and False:
+                        if logExtension == "xes":
                             # load XES files
                             shared.trace_logs[logName] = xes_importer.import_from_file_xes(fullPath)
                         elif logExtension == "csv":
                             # load CSV files
                             event_log = csv_importer.import_from_path(fullPath)
                             shared.trace_logs[logName] = transform.transform_event_log_to_trace_log(event_log)
-            except:
+            except Exception as e:
                 # manage exception
-                pass
+                logging.error("exception loading log: "+str(file)+": "+str(e))
+                logging.error("traceback: "+traceback.format_exc())
         shared.sem.release()
         # loaded logs
-
-def load_logs():
-    """
-    Load logs
-    """
-    shared.logs_reloading_thread = LogsReloadingThread()
-    shared.logs_reloading_thread.start()
 
 @app.route("/getProcessSchema",methods=["GET"])
 def get_process_schema():
@@ -92,6 +92,7 @@ def get_process_schema():
     :return:
     """
 
+    logging.warning("ciao")
     # read the requested process name
     process = request.args.get('process', type=str)
     # read the decreasing factor
@@ -125,8 +126,9 @@ def get_process_schema():
         else:
             # release the semaphore
             shared.sem.release()
-    except:
+    except Exception as e:
         # manage exception
-        pass
+        logging.error("exception calculating process schema: "+str(e))
+        logging.error("traceback: " + traceback.format_exc())
 
     return ""
