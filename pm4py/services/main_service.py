@@ -11,6 +11,7 @@ from copy import copy
 import os
 import time
 import logging, traceback
+from pm4py.algo.tokenreplay import token_replay, performance_map
 
 class shared:
     # contains shared variables
@@ -95,12 +96,20 @@ def get_process_schema():
     logging.warning("ciao")
     # read the requested process name
     process = request.args.get('process', type=str)
+    # read the activity key
+    activity_key = request.args.get('activityKey', default="concept:name", type=str)
+    # read the timestamp key
+    timestamp_key = request.args.get('activityKey', default="time:timestamp", type=str)
     # read the decreasing factor
     decreasingFactor = request.args.get('decreasingFactor', default=0.6, type=float)
     # read the image format
     imageFormat = request.args.get('format', default='svg', type=str)
     # specification of process discovery algorithm
     discoveryAlgorithm = request.args.get('discoveryAlgorithm', default='inductive', type=str)
+    # replay enabled
+    replayEnabled = request.args.get('replayEnabled', default=True, type=bool)
+    # replay measure
+    replayMeasure = request.args.get('replayMeasure', default="frequency", type=str)
 
     # acquire the semaphore as we want to access the logs
     # without desturbing
@@ -110,18 +119,28 @@ def get_process_schema():
         # if the specified process is in memory, then proceed
         if process in shared.trace_logs:
             # retrieve the log
-            log = shared.trace_logs[process]
+            original_log = shared.trace_logs[process]
             # release the semaphore
             shared.sem.release()
             # apply automatically a filter
-            log = auto_filter.apply_auto_filter(log, decreasingFactor=decreasingFactor)
+            log = auto_filter.apply_auto_filter(copy(original_log), decreasingFactor=decreasingFactor, activity_key=activity_key)
             # apply a process discovery algorithm
             if discoveryAlgorithm == "inductive":
-                net, initial_marking, final_marking = inductive_factory.apply(log)
+                net, initial_marking, final_marking = inductive_factory.apply(log, activity_key=activity_key)
             elif discoveryAlgorithm == "alpha":
-                net, initial_marking, final_marking = alpha_factory.apply(log)
-            # return the diagram in base64
-            diagram = return_diagram_as_base64(net, format=imageFormat)
+                net, initial_marking, final_marking = alpha_factory.apply(log, activity_key=activity_key)
+            if replayEnabled:
+                # do the replay
+                [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
+                    token_replay.apply_log(log, net, initial_marking, final_marking, activity_key=activity_key)
+                element_statistics = performance_map.single_element_statistics(log, net, initial_marking, activatedTransitions,
+                                                                               activity_key=activity_key, timestamp_key=timestamp_key)
+                aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=replayMeasure)
+                # return the diagram in base64
+                diagram = return_diagram_as_base64(net, format=imageFormat, initial_marking=initial_marking, final_marking=final_marking, decorations=aggregated_statistics)
+            else:
+                # return the diagram in base64
+                diagram = return_diagram_as_base64(net, format=imageFormat, initial_marking=initial_marking, final_marking=final_marking)
             return diagram
         else:
             # release the semaphore
