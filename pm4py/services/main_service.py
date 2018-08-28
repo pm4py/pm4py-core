@@ -12,6 +12,7 @@ import os
 import time
 import logging, traceback
 from pm4py.algo.tokenreplay import token_replay, performance_map
+from pm4py.log.util import insert_classifier
 
 class shared:
     # contains shared variables
@@ -97,7 +98,7 @@ def get_process_schema():
     # read the requested process name
     process = request.args.get('process', type=str)
     # read the activity key
-    activity_key = request.args.get('activityKey', default="concept:name", type=str)
+    activity_key = request.args.get('activityKey', default=None, type=str)
     # read the timestamp key
     timestamp_key = request.args.get('activityKey', default="time:timestamp", type=str)
     # read the decreasing factor
@@ -120,6 +121,11 @@ def get_process_schema():
         if process in shared.trace_logs:
             # retrieve the log
             original_log = shared.trace_logs[process]
+            original_log, classifier_key = insert_classifier.search_and_insert_event_classifier_attribute(original_log)
+            if activity_key is None:
+                activity_key = classifier_key
+            if activity_key is None:
+                activity_key = "concept:name"
             # release the semaphore
             shared.sem.release()
             # apply automatically a filter
