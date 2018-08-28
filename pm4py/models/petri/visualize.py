@@ -69,7 +69,7 @@ def graphviz_visualization(net, format="pdf", initial_marking=None, final_markin
 
     return viz
 
-def return_diagram_as_base64(net, format="svg", initial_marking=None, final_marking=None, decorations="None"):
+def return_diagram_as_base64(net, format="svg", initial_marking=None, final_marking=None, decorations=None):
     """
     Return process model in Base64 format
 
