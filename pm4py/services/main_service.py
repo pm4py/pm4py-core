@@ -132,8 +132,8 @@ def get_process_schema():
             if replayEnabled:
                 # do the replay
                 [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-                    token_replay.apply_log(log, net, initial_marking, final_marking, activity_key=activity_key)
-                element_statistics = performance_map.single_element_statistics(log, net, initial_marking, activatedTransitions,
+                    token_replay.apply_log(original_log, net, initial_marking, final_marking, activity_key=activity_key)
+                element_statistics = performance_map.single_element_statistics(original_log, net, initial_marking, activatedTransitions,
                                                                                activity_key=activity_key, timestamp_key=timestamp_key)
                 aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=replayMeasure)
                 # return the diagram in base64
