@@ -5,9 +5,9 @@ from pm4py.models import petri
 from pm4py.algo.tokenreplay import token_replay
 import time
 
-log = xes_importer.import_from_file_xes('C:\\receipt.xes')
+log = xes_importer.import_from_file_xes('C:\\running-example.xes')
 #log = xes_importer.import_from_path_xes('a32f0n00.xes')
-net, marking = alpha_factory.apply(log)
+net, marking, final_marking = alpha_factory.apply(log)
 for place in marking:
 	print("initial marking "+place.name)
 final_marking = petri.petrinet.Marking()
@@ -16,7 +16,7 @@ for p in net.places:
         final_marking[p] = 1
 for place in final_marking:
 	print("final marking "+place.name)
-gviz = pn_viz.graphviz_visualization(net)
+gviz = pn_viz.graphviz_visualization(net, initial_marking=marking, final_marking=final_marking)
 gviz.view()
 log = log[0:min(100,len(log))]
 time0 = time.time()

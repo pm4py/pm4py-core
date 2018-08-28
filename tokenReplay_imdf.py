@@ -17,7 +17,7 @@ for p in net.places:
         final_marking[p] = 1"""
 for place in final_marking:
 	print("final marking "+place.name)
-gviz = pn_viz.graphviz_visualization(net)
+gviz = pn_viz.graphviz_visualization(net, initial_marking=marking, final_marking=final_marking)
 gviz.view()
 log = log[0:min(100,len(log))]
 time0 = time.time()
