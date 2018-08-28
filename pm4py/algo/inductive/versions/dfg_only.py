@@ -126,19 +126,27 @@ class InductMinDirFollows(object):
             if not p.out_arcs:
                 final_marking[p] = 1
         if len(final_marking) == 0:
-            allPossibleEndPlaces = set()
-            for activity in self.endActivitiesInLog:
-                placesAfterActivity = self.getPlacesAfterActivity(net, activity)
-                allPossibleEndPlaces = allPossibleEndPlaces.union(placesAfterActivity)
+            #allPossibleEndPlaces = set()
+            #for activity in self.endActivitiesInLog:
+            #    placesAfterActivity = self.getPlacesAfterActivity(net, activity)
+            #    allPossibleEndPlaces = allPossibleEndPlaces.union(placesAfterActivity)
+            #sink = petri.petrinet.PetriNet.Place('end')
+            #net.places.add(sink)
+            #for place in allPossibleEndPlaces:
+            #    self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+            #    self.noOfHiddenTransAddedTau = self.noOfHiddenTransAddedTau + 1
+            #    hiddenTransEnd = petri.petrinet.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded), None)
+            #    net.transitions.add(hiddenTransEnd)
+            #    petri.utils.add_arc_from_to(place, hiddenTransEnd, net)
+            #    petri.utils.add_arc_from_to(hiddenTransEnd, sink, net)
+            self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
+            self.noOfHiddenTransAddedTau = self.noOfHiddenTransAddedTau + 1
+            hiddenTransEnd = petri.petrinet.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded), None)
+            net.transitions.add(hiddenTransEnd)
             sink = petri.petrinet.PetriNet.Place('end')
             net.places.add(sink)
-            for place in allPossibleEndPlaces:
-                self.noOfHiddenTransAdded = self.noOfHiddenTransAdded + 1
-                self.noOfHiddenTransAddedTau = self.noOfHiddenTransAddedTau + 1
-                hiddenTransEnd = petri.petrinet.PetriNet.Transition('tau_' + str(self.noOfHiddenTransAdded), None)
-                net.transitions.add(hiddenTransEnd)
-                petri.utils.add_arc_from_to(place, hiddenTransEnd, net)
-                petri.utils.add_arc_from_to(hiddenTransEnd, sink, net)
+            petri.utils.add_arc_from_to(self.lastPlaceAdded, hiddenTransEnd, net)
+            petri.utils.add_arc_from_to(hiddenTransEnd, sink, net)
         elif len(final_marking) == 1:
             for p in final_marking:
                 p.name = "end"
