@@ -8,6 +8,7 @@ MAX_REC_DEPTH = 50
 MAX_IT_FINAL = 10
 MAX_REC_DEPTH_HIDTRANSENABL = 5
 MAX_POSTFIX_SUFFIX_LENGTH = 20
+MAX_NO_THREADS = 1000
 
 class NoConceptNameException(Exception):
     def __init__(self, message):
@@ -487,20 +488,41 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
         if len(log[0]) > 0:
             if activity_key in log[0][0]:
                 variants = variants_module.get_variants_from_log(log, activity_key=activity_key)
+                vc = variants_module.get_variants_sorted_by_count(variants)
                 threads = {}
-                for variant in variants:
+                threadsResults = {}
+
+                i = 0
+                while i < len(vc):
+                    variant = vc[i][0]
+                    threadsKeys = list(threads.keys())
+                    if len(threadsKeys) > MAX_NO_THREADS:
+                        while len(threadsKeys) > 0:
+                            t = threads[threadsKeys[0]]
+                            t.join()
+                            threadsResults[threadsKeys[0]] = {"tfit":t.tFit,"tValue":t.tValue,"actTrans":t.actTrans,"reachedMarking":t.reachedMarking,"enabledTransitionsInMarking":t.enabledTransitionsInMarking}
+                            del threads[threadsKeys[0]]
+                            del threadsKeys[0]
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initialMarking, finalMarking, transMap, enable_placeFitness, placeFitnessPerTrace, placesShortestPathByHidden, consider_remaining_in_fitness, activity_key=activity_key, tryToReachFinalMarkingThroughHidden=tryToReachFinalMarkingThroughHidden, stopImmediatelyWhenUnfit=stopImmediatelyWhenUnfit, useHiddenTransitionsToEnableCorrespondingTransitions=useHiddenTransitionsToEnableCorrespondingTransitions, postFixCaching=postFixCaching)
                     threads[variant].start()
-                for variant in threads:
-                    threads[variant].join()
+                    i = i + 1
+                threadsKeys = list(threads.keys())
+                while len(threadsKeys) > 0:
+                    t = threads[threadsKeys[0]]
+                    t.join()
+                    threadsResults[threadsKeys[0]] = {"tFit": t.tFit, "tValue": t.tValue, "actTrans": t.actTrans,
+                                               "reachedMarking": t.reachedMarking,
+                                               "enabledTransitionsInMarking": t.enabledTransitionsInMarking}
+                    del threads[threadsKeys[0]]
+                    del threadsKeys[0]
                 for trace in log:
                     traceVariant =  ",".join([x[activity_key] for x in trace])
-                    t = threads[traceVariant]
-                    traceIsFit.append(t.tFit)
-                    traceFitnessValue.append(t.tValue)
-                    activatedTransitions.append(t.actTrans)
-                    reachedMarkings.append(t.reachedMarking)
-                    enabledTransitionsInMarkings.append(t.enabledTransitionsInMarking)
+                    t = threadsResults[traceVariant]
+                    traceIsFit.append(t["tFit"])
+                    traceFitnessValue.append(t["tValue"])
+                    activatedTransitions.append(t["actTrans"])
+                    reachedMarkings.append(t["reachedMarking"])
+                    enabledTransitionsInMarkings.append(t["enabledTransitionsInMarking"])
             else:
                 raise NoConceptNameException("at least an event is without " + activity_key)
     return [traceIsFit, traceFitnessValue, activatedTransitions, placeFitnessPerTrace, reachedMarkings,
