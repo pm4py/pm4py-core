@@ -207,10 +207,12 @@ def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTran
                     jIndexes[z % len(hiddenTransitionsToEnable)]]
                 if not t3 == t:
                     if t3 in enabledTransitions and semantics.is_enabled(t3, net, marking):
-                        marking = semantics.execute(t3, net, marking)
-                        activatedTransitions.append(t3)
-                        enabledTransitions = semantics.enabled_transitions(net, marking)
-                        somethingChanged = True
+                        if not t3 in visitedTransitions:
+                            marking = semantics.execute(t3, net, marking)
+                            activatedTransitions.append(t3)
+                            visitedTransitions.add(t3)
+                            enabledTransitions = semantics.enabled_transitions(net, marking)
+                            somethingChanged = True
                 jIndexes[z % len(hiddenTransitionsToEnable)] = jIndexes[z % len(hiddenTransitionsToEnable)] + 1
                 if semantics.is_enabled(t, net, marking):
                     break
@@ -230,11 +232,13 @@ def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTran
                 while k < len(hiddenTransitionsToEnable[z]):
                     t4 = hiddenTransitionsToEnable[z][k]
                     if not t4 == t:
-                        if not semantics.is_enabled(t4, net, marking):
-                            [net, marking, activatedTransitions] = apply_hiddenTrans(t4, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth+1, visitedTransitions)
-                        if semantics.is_enabled(t4, net, marking):
-                            marking = semantics.execute(t4, net, marking)
-                            activatedTransitions.append(t4)
+                        if not t4 in visitedTransitions:
+                            if not semantics.is_enabled(t4, net, marking):
+                                [net, marking, activatedTransitions] = apply_hiddenTrans(t4, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth+1, visitedTransitions)
+                            if semantics.is_enabled(t4, net, marking):
+                                marking = semantics.execute(t4, net, marking)
+                                activatedTransitions.append(t4)
+                                visitedTransitions.add(t4)
                     k = k + 1
                 z = z + 1
 
@@ -310,6 +314,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
         if trace[i][activity_key] in transMap:
             t = transMap[trace[i][activity_key]]
             if useHiddenTransitionsToEnableCorrespondingTransitions and not semantics.is_enabled(t, net, marking):
+                visitedTransitions = 0
                 visitedTransitions = set()
                 [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, 0, visitedTransitions)
 
@@ -334,9 +339,14 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                 marking = semantics.execute(t, net, marking)
         i = i + 1
 
+    oldActivatedTransitions = copy(activatedTransitions)
+    oldMarking = copy(marking)
+
     if tryToReachFinalMarkingThroughHidden:
         i = 0
         while i < MAX_IT_FINAL:
+            visitedTransitions = 0
+            visitedTransitions = set()
             if not dict(marking) == dict(finalMarking):
                 markingCopy = copy(marking)
                 for p in markingCopy:
@@ -345,7 +355,6 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                             reqTransitions = placesShortestPathByHidden[p][p2]
                             for t in reqTransitions:
                                 if useHiddenTransitionsToEnableCorrespondingTransitions and not semantics.is_enabled(t, net, marking):
-                                    visitedTransitions = set()
                                     [net, marking, activatedTransitions] = apply_hiddenTrans(t, net, marking,
                                                                                              placesShortestPathByHidden,
                                                                                              activatedTransitions, 0, visitedTransitions)
@@ -416,7 +425,7 @@ class ApplyTraceTokenReplay(Thread):
                                                                                           useHiddenTransitionsToEnableCorrespondingTransitions=self.useHiddenTransitionsToEnableCorrespondingTransitions)
         #print("thread finished")
 
-def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=True, activity_key="concept:name", tryToReachFinalMarkingThroughHidden=True, stopImmediatelyWhenUnfit=False, useHiddenTransitionsToEnableCorrespondingTransitions=True, placesShortestPathByHidden=None):
+def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=False, activity_key="concept:name", tryToReachFinalMarkingThroughHidden=True, stopImmediatelyWhenUnfit=False, useHiddenTransitionsToEnableCorrespondingTransitions=True, placesShortestPathByHidden=None):
     """
     Apply token-based replay to a log
 
