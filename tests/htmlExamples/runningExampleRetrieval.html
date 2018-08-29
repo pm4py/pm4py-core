@@ -40,6 +40,37 @@
 			background: #4CAF50; /* Green background */
 			cursor: pointer; /* Cursor on hover */
 		}
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading .modal {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
 	</style>
 </head>
 <body>
@@ -49,15 +80,70 @@
 	</div>
 	<img id="svg1"></img>
 	<script type="text/javascript">
+		$body = $("body");
+		
+		//Get Nav Url
+		function getNavUrl() {
+			//Get Url
+			return window.location.search.replace("?", "");
+		};
+		function getParameters(url) {
+			//Params obj
+			var params = {};
+			//To lowercase
+			url = url.toLowerCase();
+			//To array
+			url = url.split('&');
+
+			//Iterate over url parameters array
+			var length = url.length;
+			for(var i=0; i<length; i++) {
+				//Create prop
+				var prop = url[i].slice(0, url[i].search('='));
+				//Create Val
+				var value = url[i].slice(url[i].search('=')).replace('=', '');
+				//Params New Attr
+				params[prop] = value;
+			}
+			return params;
+		};
+		
+		function addDefaultParametersValues(parameters) {
+			if (!("process" in parameters)) {
+				parameters["process"] = "running-example";
+			}
+			if (!("discoveryalgorithm" in parameters)) {
+				parameters["discoveryalgorithm"] = "inductive";
+			}
+			if (!("replaymeasure" in parameters)) {
+				parameters["replaymeasure"] = "frequency";
+			}
+			return parameters;
+		}
+		
 		function updateProcessSchema(decFactor) {
+			$body.addClass("loading");
+			parameters = addDefaultParametersValues(getParameters(getNavUrl()));
 			if (decFactor == null) {
 				decFactor = 0.6;
 			}
-			console.log(decFactor);
+			var thisHostname = location.host.split(":")[0];
+			var targetHostname = thisHostname;
+			
+			if (thisHostname == "localhost" || thisHostname == "127.0.0.1") {
+				// manage Flask standalone executions
+				var targetPort = "5000";
+			}
+			else {
+				// manage UWSGI executions
+				var targetPort = "80";
+			}
+			
 			$.ajax({
-			  url: "http://localhost:5000/getProcessSchema?process=running-example&decreasingFactor="+decFactor,
+			  url: "http://"+targetHostname+":"+targetPort+"/getProcessSchema?process="+parameters["process"]+"&discoveryalgorithm="+parameters["discoveryalgorithm"]+"&replaymeasure="+parameters["replaymeasure"]+"&decreasingfactor="+decFactor,
 			  success: function( result ) {
 				document.getElementById("svg1").src = "data:image/svg+xml;base64,"+result;
+				$body.removeClass("loading");
 			  }
 			});
 		}
@@ -71,5 +157,6 @@
 		
 		updateProcessSchema();
 	</script>
+<div class="modal"><!-- Place at bottom of page --></div>
 </body>
 </html>

@@ -89,8 +89,14 @@ def get_process_schema():
 
     Argument parameters:
         process -> (MANDATORY) Name of the process to consider
-        decreasingFactor -> Filtering factor that is passed to the algorithms
+        decreasingfactor -> Filtering factor that is passed to the algorithms
         format -> Format of the diagram that is returned
+        activitykey -> Activity key (if not specified, then concept:name)
+        timestampkey -> Timestamp key (if not specified, then time:timestamp)
+        decreasingfactor -> Decreasing factor for the filtering algorithm
+        discoveryalgorithm -> Applied discovery algorithm (Alpha, Inductive)
+        replayenabled -> Is replay enabled?
+        replaymeasure -> Measure to show in the replay (frequency/performance)
     :return:
     """
 
@@ -98,19 +104,19 @@ def get_process_schema():
     # read the requested process name
     process = request.args.get('process', type=str)
     # read the activity key
-    activity_key = request.args.get('activityKey', default=None, type=str)
+    activity_key = request.args.get('activitykey', default=None, type=str)
     # read the timestamp key
-    timestamp_key = request.args.get('activityKey', default="time:timestamp", type=str)
+    timestamp_key = request.args.get('timestampkey', default="time:timestamp", type=str)
     # read the decreasing factor
-    decreasingFactor = request.args.get('decreasingFactor', default=0.6, type=float)
+    decreasingFactor = request.args.get('decreasingfactor', default=0.6, type=float)
     # read the image format
     imageFormat = request.args.get('format', default='svg', type=str)
     # specification of process discovery algorithm
-    discoveryAlgorithm = request.args.get('discoveryAlgorithm', default='inductive', type=str)
+    discoveryAlgorithm = request.args.get('discoveryalgorithm', default='inductive', type=str)
     # replay enabled
-    replayEnabled = request.args.get('replayEnabled', default=True, type=bool)
+    replayEnabled = request.args.get('replayenabled', default=True, type=bool)
     # replay measure
-    replayMeasure = request.args.get('replayMeasure', default="frequency", type=str)
+    replayMeasure = request.args.get('replaymeasure', default="frequency", type=str)
 
     # acquire the semaphore as we want to access the logs
     # without desturbing
