@@ -491,7 +491,6 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
                 for variant in variants:
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initialMarking, finalMarking, transMap, enable_placeFitness, placeFitnessPerTrace, placesShortestPathByHidden, consider_remaining_in_fitness, activity_key=activity_key, tryToReachFinalMarkingThroughHidden=tryToReachFinalMarkingThroughHidden, stopImmediatelyWhenUnfit=stopImmediatelyWhenUnfit, useHiddenTransitionsToEnableCorrespondingTransitions=useHiddenTransitionsToEnableCorrespondingTransitions, postFixCaching=postFixCaching)
                     threads[variant].start()
-                    threads[variant].join()
                 for variant in threads:
                     threads[variant].join()
                 for trace in log:
