@@ -3,9 +3,120 @@ from pm4py.models.petri import semantics
 from pm4py.models.petri.petrinet import PetriNet
 from statistics import mean, median
 from math import log, e
+from threading import Lock, Thread
+from time import sleep
 
 MAX_EDGE_PENWIDTH_GRAPHVIZ = 2.6
 MIN_EDGE_PENWIDTH_GRAPHVIZ = 1.0
+MAX_NO_THREADS = 1000
+
+class TraceStatistics(Thread):
+    def __init__(self, elStatistics, traceIndex, trace, net, initial_marking, activatedTransitions, activity_key, timestamp_key):
+        """
+        Constructor
+        """
+        self.elStatistics = elStatistics
+        self.traceIndex = traceIndex
+        self.trace = trace
+        self.net = net
+        self.initial_marking = initial_marking
+        self.activatedTransitions = activatedTransitions
+        self.activity_key = activity_key
+        self.timestamp_key = timestamp_key
+        Thread.__init__(self)
+
+    def run(self):
+        """
+        Add statistics on elements based on current trace
+        """
+        tracePlaceStats = 0
+        tracePlaceStats = {}
+        if self.timestamp_key in self.trace[0]:
+            currentTimestamp = self.trace[0][self.timestamp_key]
+        else:
+            currentTimestamp = 0
+        j = 0
+        marking = copy(self.initial_marking)
+        for place in marking:
+            if not place in self.elStatistics.statistics:
+                self.elStatistics.lock.acquire()
+                if not place in self.elStatistics.statistics:
+                    self.elStatistics.statistics[place] = {"count": 0, "lock":Lock()}
+                self.elStatistics.lock.release()
+            self.elStatistics.statistics[place]["lock"].acquire()
+            self.elStatistics.statistics[place]["count"] = self.elStatistics.statistics[place]["count"] + marking[place]
+            self.elStatistics.statistics[place]["lock"].release()
+            if not (currentTimestamp == 0):
+                tracePlaceStats[place] = [currentTimestamp] * marking[place]
+        actTrans = self.activatedTransitions[self.traceIndex]
+        z = 0
+        while z < len(actTrans):
+            trans = actTrans[z]
+            if not trans in self.elStatistics.statistics:
+                self.elStatistics.lock.acquire()
+                if not trans in self.elStatistics.statistics:
+                    self.elStatistics.statistics[trans] = {"count": 0, "lock":Lock()}
+                self.elStatistics.lock.release()
+            self.elStatistics.statistics[trans]["lock"].acquire()
+            self.elStatistics.statistics[trans]["count"] = self.elStatistics.statistics[trans]["count"] + 1
+            self.elStatistics.statistics[trans]["lock"].release()
+
+            new_marking = semantics.execute(trans, self.net, marking)
+            if not new_marking:
+                break
+            marking_diff = set(new_marking).difference(set(marking))
+            for place in marking_diff:
+                if not place in self.elStatistics.statistics:
+                    self.elStatistics.lock.acquire()
+                    if not place in self.elStatistics.statistics:
+                        self.elStatistics.statistics[place] = {"count": 0, "lock":Lock()}
+                    self.elStatistics.lock.release()
+                self.elStatistics.statistics[place]["lock"].acquire()
+                self.elStatistics.statistics[place]["count"] = self.elStatistics.statistics[place]["count"] + max(new_marking[place] - marking[place], 1)
+                self.elStatistics.statistics[place]["lock"].release()
+            marking = new_marking
+            if j < len(self.trace):
+                if self.timestamp_key in self.trace[j]:
+                    currentTimestamp = self.trace[j][self.timestamp_key]
+                if trans.label == self.trace[j][self.activity_key]:
+                    j = j + 1
+            for arc in trans.in_arcs:
+                sourcePlace = arc.source
+                if not arc in self.elStatistics.statistics:
+                    self.elStatistics.lock.acquire()
+                    if not arc in self.elStatistics.statistics:
+                        self.elStatistics.statistics[arc] = {"performance": [], "count": 0, "lock":Lock()}
+                    self.elStatistics.lock.release()
+                self.elStatistics.statistics[arc]["lock"].acquire()
+                self.elStatistics.statistics[arc]["count"] = self.elStatistics.statistics[arc]["count"] + 1
+                self.elStatistics.statistics[arc]["lock"].release()
+                if sourcePlace in tracePlaceStats and tracePlaceStats[sourcePlace]:
+                    self.elStatistics.statistics[arc]["performance"].append(
+                        (currentTimestamp - tracePlaceStats[sourcePlace][0]).total_seconds())
+                    del tracePlaceStats[sourcePlace][0]
+            for arc in trans.out_arcs:
+                targetPlace = arc.target
+                if not arc in self.elStatistics.statistics:
+                    self.elStatistics.lock.acquire()
+                    if not arc in self.elStatistics.statistics:
+                        self.elStatistics.statistics[arc] = {"performance": [], "count": 0, "lock":Lock()}
+                    self.elStatistics.lock.release()
+                self.elStatistics.statistics[arc]["lock"].acquire()
+                self.elStatistics.statistics[arc]["count"] = self.elStatistics.statistics[arc]["count"] + 1
+                self.elStatistics.statistics[arc]["lock"].release()
+                if not currentTimestamp == 0:
+                    if not targetPlace in tracePlaceStats:
+                        tracePlaceStats[targetPlace] = []
+                    tracePlaceStats[targetPlace].append(currentTimestamp)
+            z = z + 1
+
+class ElementStatistics(object):
+    """
+    Collects all element statistics from different threads
+    """
+    def __init__(self):
+        self.lock = Lock()
+        self.statistics = {}
 
 def single_element_statistics(log, net, initial_marking, activatedTransitions, activity_key="concept:name", timestamp_key="time:timestamp"):
     """
@@ -31,70 +142,26 @@ def single_element_statistics(log, net, initial_marking, activatedTransitions, a
     statistics
         Petri net element statistics (frequency, unaggregated performance)
     """
-    statistics = {}
-    mapping = {}
-    for trans in net.transitions:
-        if trans.label is not None:
-            mapping[trans.label] = trans
-    i = 0
-    while i < len(log):
-        if len(log[i]) > 0:
-            tracePlaceStats = 0
-            tracePlaceStats = {}
-            if timestamp_key in log[i][0]:
-                currentTimestamp = log[i][0][timestamp_key]
-            else:
-                currentTimestamp = 0
-            j = 0
-            marking = copy(initial_marking)
-            for place in marking:
-                if not place in statistics:
-                    statistics[place] = {"count":0}
-                statistics[place]["count"] = statistics[place]["count"] + marking[place]
-                if not(currentTimestamp == 0):
-                    tracePlaceStats[place] = [currentTimestamp] * marking[place]
-            actTrans = activatedTransitions[i]
-            z = 0
-            while z < len(actTrans):
-                trans = actTrans[z]
-                if not trans in statistics:
-                    statistics[trans] = {"count":0}
-                statistics[trans]["count"] = statistics[trans]["count"] + 1
 
-                new_marking = semantics.execute(trans, net, marking)
-                if not new_marking:
-                    break
-                marking_diff = set(new_marking).difference(set(marking))
-                for place in marking_diff:
-                    if not place in statistics:
-                        statistics[place] = {"count": 0}
-                    statistics[place]["count"] = statistics[place]["count"] + max(new_marking[place] - marking[place], 1)
-                marking = new_marking
-                if j < len(log[i]):
-                    if timestamp_key in log[i][j]:
-                        currentTimestamp = log[i][j][timestamp_key]
-                    if trans.label == log[i][j][activity_key]:
-                        j = j + 1
-                for arc in trans.in_arcs:
-                    sourcePlace = arc.source
-                    if not arc in statistics:
-                        statistics[arc] = {"performance": [], "count": 0}
-                    statistics[arc]["count"] = statistics[arc]["count"] + 1
-                    if sourcePlace in tracePlaceStats and tracePlaceStats[sourcePlace]:
-                        statistics[arc]["performance"].append((currentTimestamp - tracePlaceStats[sourcePlace][0]).total_seconds())
-                        del tracePlaceStats[sourcePlace][0]
-                for arc in trans.out_arcs:
-                    targetPlace = arc.target
-                    if not arc in statistics:
-                        statistics[arc] = {"performance": [], "count": 0}
-                    statistics[arc]["count"] = statistics[arc]["count"] + 1
-                    if not currentTimestamp == 0:
-                        if not targetPlace in tracePlaceStats:
-                            tracePlaceStats[targetPlace] = []
-                        tracePlaceStats[targetPlace].append(currentTimestamp)
-                z = z + 1
-        i = i + 1
-    return statistics
+    statistics = {}
+
+    elStatistics = ElementStatistics()
+
+    threads = []
+
+    traceIndex = 0
+    for trace in log:
+        if len(threads) >= MAX_NO_THREADS:
+            while len(threads) > 0:
+                threads[0].join()
+                del threads[0]
+        threads.append(TraceStatistics(elStatistics, traceIndex, trace, net, initial_marking, activatedTransitions, activity_key, timestamp_key))
+        threads[-1].start()
+        traceIndex = traceIndex + 1
+    for thread in threads:
+        thread.join()
+
+    return elStatistics.statistics
 
 def human_readable_stat(c):
     """
