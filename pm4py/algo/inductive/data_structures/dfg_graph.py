@@ -4,6 +4,7 @@ import random
 HIGH_QUALITY_CUT_CONSTANT = 0.65
 LOOP_CONSTANT_START = 0.2
 LOOP_CONSTANT_END = 0.03
+MAX_ACTIVITIES_NONGREEDY_CUT = 11
 
 class CutResultObj(object):
     """ Object useful for the second
@@ -412,6 +413,8 @@ class DfgGraph(object):
         """
         finds the maximum cut of the graph
         """
+        if len(self.origLabels) <= MAX_ACTIVITIES_NONGREEDY_CUT:
+            return self.findMaximumCutAlgo2(addedGraphs, activitiesArcsDirection=activitiesArcsDirection)
         return self.findMaximumCutGreedy(addedGraphs, activitiesArcsDirection=activitiesArcsDirection)
 
     def getSetStrings(self, set):
