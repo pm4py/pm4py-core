@@ -4,7 +4,7 @@ import base64
 from pm4py.models.petri.petrinet import Marking
 from random import random
 
-def graphviz_visualization(net, format="pdf", initial_marking=None, final_marking=None, decorations=None):
+def graphviz_visualization(net, format="pdf", initial_marking=None, final_marking=None, decorations=None, debug=False):
     """
     Provides visualization for the petrinet
 
@@ -18,6 +18,8 @@ def graphviz_visualization(net, format="pdf", initial_marking=None, final_markin
         Final marking of the Petri net
     decorations
         Decorations of the Petri net (says how element must be presented)
+    debug
+        Enables debug mode
 
     Returns
     -------
@@ -43,7 +45,10 @@ def graphviz_visualization(net, format="pdf", initial_marking=None, final_markin
             else:
                 viz.node(str(t.name), str(t.label))
         else:
-            viz.node(str(t.name), "", style='filled', fillcolor="black")
+            if debug:
+                viz.node(str(t.name), str(t.name))
+            else:
+                viz.node(str(t.name), "", style='filled', fillcolor="black")
 
     #places
     viz.attr('node', shape='circle', fixedsize='true', width='0.75')
@@ -53,7 +58,10 @@ def graphviz_visualization(net, format="pdf", initial_marking=None, final_markin
         elif p in final_marking:
             viz.node(str(p.name), "", style='filled', fillcolor="orange")
         else:
-            viz.node(str(p.name), "")
+            if debug:
+                viz.node(str(p.name), str(p.name))
+            else:
+                viz.node(str(p.name), "")
 
 
     #arcs
@@ -69,7 +77,7 @@ def graphviz_visualization(net, format="pdf", initial_marking=None, final_markin
 
     return viz
 
-def return_diagram_as_base64(net, format="svg", initial_marking=None, final_marking=None, decorations=None):
+def return_diagram_as_base64(net, format="svg", initial_marking=None, final_marking=None, decorations=None, debug=False):
     """
     Return process model in Base64 format
 
@@ -89,7 +97,7 @@ def return_diagram_as_base64(net, format="svg", initial_marking=None, final_mark
     string
         Base 64 string representing the model in the provided format
     """
-    graphviz = graphviz_visualization(net, format=format, initial_marking=initial_marking, final_marking=final_marking, decorations=decorations)
+    graphviz = graphviz_visualization(net, format=format, initial_marking=initial_marking, final_marking=final_marking, decorations=decorations, debug=debug)
     render = graphviz.render(view=False)
     with open(render, "rb") as f:
         return base64.b64encode(f.read())
