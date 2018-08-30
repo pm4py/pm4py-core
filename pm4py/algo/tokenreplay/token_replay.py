@@ -449,17 +449,18 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                 startMarkingObject = allVisitedMarkings[startMarkingIndex]
                 startMarkingHash = hash(startMarkingObject)
                 endMarkingObject = allVisitedMarkings[endMarkingIndex]
-                tt = transMap[activity]
-                inArcsPlaces = [x.source.name for x in tt.in_arcs]
-                outArcsPlaces = [x.target.name for x in tt.out_arcs]
-                thisActivatedTrans = activatedTransitions[startMarkingIndex:endMarkingIndex]
-                thisActivatedTransString = [x.name for x in thisActivatedTrans]
-                thisVisitedMarkings = allVisitedMarkings[startMarkingIndex+1:endMarkingIndex+1]
+                if activity in transMap:
+                    tt = transMap[activity]
+                    inArcsPlaces = [x.source.name for x in tt.in_arcs]
+                    outArcsPlaces = [x.target.name for x in tt.out_arcs]
+                    thisActivatedTrans = activatedTransitions[startMarkingIndex:endMarkingIndex]
+                    thisActivatedTransString = [x.name for x in thisActivatedTrans]
+                    thisVisitedMarkings = allVisitedMarkings[startMarkingIndex+1:endMarkingIndex+1]
 
-                if not startMarkingHash in markingToActivityCaching.cache:
-                    markingToActivityCaching.cache[startMarkingHash] = {}
-                if not activity in markingToActivityCaching.cache[startMarkingHash]:
-                    markingToActivityCaching.cache[startMarkingHash][activity] = {"startMarking":startMarkingObject, "endMarking":endMarkingObject,"thisActTrans":thisActivatedTrans,"thisVisMarkings":thisVisitedMarkings, "previousActivity":previousActivity}
+                    if not startMarkingHash in markingToActivityCaching.cache:
+                        markingToActivityCaching.cache[startMarkingHash] = {}
+                    if not activity in markingToActivityCaching.cache[startMarkingHash]:
+                        markingToActivityCaching.cache[startMarkingHash][activity] = {"startMarking":startMarkingObject, "endMarking":endMarkingObject,"thisActTrans":thisActivatedTrans,"thisVisMarkings":thisVisitedMarkings, "previousActivity":previousActivity}
 
     return [is_fit, trace_fitness, activatedTransitions, markingBeforeCleaning, get_visible_transitions_eventually_enabled_by_marking(net, markingBeforeCleaning)]
 

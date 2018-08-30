@@ -55,6 +55,30 @@ def execute(t, pn, m):
 
     return m_out
 
+def weak_execute(t, pn, m):
+    """
+    Execute a transition even if it is not fully enabled
+
+    Parameters
+    ----------
+    :param t: transition to execute
+    :param pn: Petri net
+    :param m: marking to use
+
+    Returns
+    -------
+    :return: newly reached marking if :param t: is enabled, None otherwise
+    """
+
+    m_out = copy.copy(m)
+    for a in t.in_arcs:
+        m_out[a.source] -= a.weight
+        if m_out[a.source] <= 0:
+            del m_out[a.source]
+    for a in t.out_arcs:
+        m_out[a.target] += a.weight
+    return m_out
+
 
 def enabled_transitions(pn, m):
     '''

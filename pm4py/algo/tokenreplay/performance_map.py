@@ -61,7 +61,7 @@ class TraceStatistics(Thread):
             self.elStatistics.statistics[trans]["count"] = self.elStatistics.statistics[trans]["count"] + 1
             self.elStatistics.statistics[trans]["lock"].release()
 
-            new_marking = semantics.execute(trans, self.net, marking)
+            new_marking = semantics.weak_execute(trans, self.net, marking)
             if not new_marking:
                 break
             marking_diff = set(new_marking).difference(set(marking))
