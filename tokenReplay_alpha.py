@@ -2,7 +2,7 @@ from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.log.importer import xes as xes_importer
 from pm4py.models.petri import visualize as pn_viz
 from pm4py.models import petri
-from pm4py.algo.tokenreplay import token_replay
+from pm4py.algo.tokenreplay.versions import token_replay
 import time
 
 log = xes_importer.import_from_file_xes('C:\\running-example.xes')

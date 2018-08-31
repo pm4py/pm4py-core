@@ -3,22 +3,15 @@ from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.log.importer import xes as xes_importer
 from pm4py.models.petri import visualize as pn_viz
 import pm4py.algo.alignments as align
-from pm4py.algo.tokenreplay import token_replay
-from pm4py.models import petri
+from pm4py.algo.tokenreplay.versions import token_replay
 import traceback
 from pm4py.models.petri.exporter import pnml as petri_exporter
 
 if __name__ == "__main__":
-	#log = xes_importer.import_from_path_xes('a32f0n00.xes')
-	log = xes_importer.import_from_file_xes('C:\\receipt.xes')
-
-	"""for trace in log:
-		for event in trace:
-			event["newClassifier"] = event["concept:name"] + "+complete"""
+	log = xes_importer.import_from_file_xes('tests\\inputData\\receipt.xes')
 
 	net, marking, final_marking = inductive_factory.apply(log)
 	petri_exporter.export_petri_to_pnml(net, marking, "receipt.pnml")
-	#net, marking = petri_importer.import_petri_from_pnml("receipt.pnml")
 	for place in marking:
 		print("initial marking "+place.name)
 	"""final_marking = petri.petrinet.Marking()
@@ -29,15 +22,12 @@ if __name__ == "__main__":
 		print("final marking "+place.name)
 	gviz = pn_viz.graphviz_visualization(net, initial_marking=marking, final_marking=final_marking)
 	gviz.view()
-
-	#results = align.versions.state_equation_classic.apply_log(log, net, marking, final_marking)
-	#print(results)
-
+	
 	if True:
 		fitTraces = []
 		[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log, net, marking,
-																									 final_marking,
-																									 enable_placeFitness=True)
+																																					final_marking,
+																																					enable_placeFitness=True)
 		i = 0
 		while i < len(log):
 			try:

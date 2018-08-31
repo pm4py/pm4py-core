@@ -6,12 +6,13 @@ from pm4py.models.petri.visualize import return_diagram_as_base64
 from pm4py.log.util import auto_filter
 from pm4py.log import transform
 from flask_cors import CORS
-from threading import Semaphore, Thread
+from threading import Semaphore
 from copy import copy
 import os
-import time, base64
+import base64
 import logging, traceback
-from pm4py.algo.tokenreplay import token_replay, performance_map
+from pm4py.algo.tokenreplay.versions import token_replay
+from pm4py.algo.tokenreplay.data_structures import performance_map
 from pm4py.log.util import insert_classifier
 
 class shared:

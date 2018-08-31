@@ -1,6 +1,6 @@
 from collections import Counter
 from pm4py.log.instance import TraceLog, Event, Trace
-from pm4py.algo.tokenreplay import token_replay
+from pm4py.algo.tokenreplay.versions import token_replay
 
 """
 Implementation of the approach described in paper

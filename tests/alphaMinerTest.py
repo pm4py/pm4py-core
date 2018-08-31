@@ -8,8 +8,8 @@ from pm4py.log.importer import xes as xes_importer
 import pm4py.log.transform as log_transform
 from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.models.petri import visualize as pn_viz
-from pm4py.algo.tokenreplay import token_replay
-from pm4py.algo.tokenreplay.token_replay import NoConceptNameException
+from pm4py.algo.tokenreplay.versions import token_replay
+from pm4py.algo.tokenreplay.versions.token_replay import NoConceptNameException
 from pm4py.models import petri
 from pm4py.models.petri.exporter import pnml as petri_exporter
 from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR

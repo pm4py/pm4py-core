@@ -703,3 +703,31 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
                 raise NoConceptNameException("at least an event is without " + activity_key)
     return [traceIsFit, traceFitnessValue, activatedTransitions, placeFitnessPerTrace, reachedMarkings,
             enabledTransitionsInMarkings]
+
+def apply(log, net, initialMarking, finalMarking, parameters=None, activity_key="concept:name"):
+    if parameters is None:
+        parameters = {}
+
+    enable_placeFitness=False
+    consider_remaining_in_fitness=False
+    tryToReachFinalMarkingThroughHidden=True
+    stopImmediatelyWhenUnfit=False
+    useHiddenTransitionsToEnableCorrespondingTransitions=True
+    placesShortestPathByHidden=None
+
+    if "enable_placeFitness" in parameters:
+        enable_placeFitness = parameters["enable_placeFitness"]
+    if "consider_remaining_in_fitness" in parameters:
+        consider_remaining_in_fitness = parameters["consider_remaining_in_fitness"]
+    if "tryToReachFinalMarkingThroughHidden" in parameters:
+        tryToReachFinalMarkingThroughHidden = parameters["tryToReachFinalMarkingThroughHidden"]
+    if "stopImmediatelyWhenUnfit" in parameters:
+        stopImmediatelyWhenUnfit = parameters["stopImmediatelyWhenUnfit"]
+    if "useHiddenTransitionsToEnableCorrespondingTransitions" in parameters:
+        useHiddenTransitionsToEnableCorrespondingTransitions = parameters["useHiddenTransitionsToEnableCorrespondingTransitions"]
+    if "placesShortestPathByHidden" in parameters:
+        placesShortestPathByHidden = parameters["placesShortestPathByHidden"]
+
+    return apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=enable_placeFitness, consider_remaining_in_fitness=consider_remaining_in_fitness,
+                     tryToReachFinalMarkingThroughHidden=tryToReachFinalMarkingThroughHidden, stopImmediatelyWhenUnfit=stopImmediatelyWhenUnfit,
+                     useHiddenTransitionsToEnableCorrespondingTransitions=useHiddenTransitionsToEnableCorrespondingTransitions, placesShortestPathByHidden=placesShortestPathByHidden)
