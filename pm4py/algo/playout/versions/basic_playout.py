@@ -3,7 +3,7 @@ from pm4py.models.petri import semantics
 from copy import copy
 from random import shuffle
 
-def playoutPetriNet(net, initialMarking, noTraces=100, maxTraceLength=100):
+def apply_playout(net, initialMarking, noTraces=100, maxTraceLength=100):
     """
     Do the playout of a Petrinet generating a log
 
@@ -38,3 +38,29 @@ def playoutPetriNet(net, initialMarking, noTraces=100, maxTraceLength=100):
         if len(trace) > 0:
             log.append(trace)
     return log
+
+def apply(net, initialMarking, parameters=None):
+    """
+    Do the playout of a Petrinet generating a log
+
+    Parameters
+    -----------
+    net
+        Petri net to play-out
+    parameters
+        Parameters of the algorithm
+
+    Parameters:
+        noTraces -> Number of traces of the log to generate
+        maxTraceLength -> Maximum trace length
+    """
+    if parameters is None:
+        parameters = {}
+    noTraces = 100
+    maxTraceLength = 100
+    if "noTraces" in parameters:
+        noTraces = parameters["noTraces"]
+    if "maxTraceLength" in parameters:
+        maxTraceLength = parameters["maxTraceLength"]
+
+    return apply_playout(net, initialMarking, maxTraceLength=maxTraceLength, noTraces=noTraces)

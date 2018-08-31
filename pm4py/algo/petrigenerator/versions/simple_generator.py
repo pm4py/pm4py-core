@@ -278,3 +278,44 @@ def generate_petri(minNoOfActivitiesPerSubtree=2, maxNoOfActivitiesPerSubtree=6,
     marking = petri.petrinet.Marking({STG.startPlace: 1})
     final_marking = petri.petrinet.Marking({STG.lastAddedPlace: 1})
     return STG.net, marking, final_marking
+
+def apply(parameters=None):
+    """
+    Generate a Petri net
+
+    Parameters
+    ----------
+    parameters
+        Parameters for the algorithm:
+        minNoOfActivitiesPerSubtree -> Minimum number of activities per distinct subtree
+        maxNoOfActivitiesPerSubtree -> Maximum number of activities per distinct subtree
+        maxNoOfSubtrees -> Maximum number of subtrees that should be added to the Petri net
+        probSpawnSubtree -> Probability of spawn of a new subtree
+        probAutoSkip -> Probability of adding a hidden transition that skips the current subtree
+        probAutoLoop -> Probability of adding a hidden transition that loops on the current subtree
+        possible_behaviors -> Possible behaviors admitted (sequential, concurrent, parallel, flower)
+    """
+    if parameters is None:
+        parameters = {}
+    #minNoOfActivitiesPerSubtree=2,
+    # maxNoOfActivitiesPerSubtree=6, maxNoOfSubtrees=5, probSpawnSubtree=0.6, probAutoSkip=0.35, probAutoLoop=0.0, possible_behaviors=["sequential","concurrent","flower","parallel"]
+    minNoOfActivitiesPerSubtree=2
+    maxNoOfActivitiesPerSubtree=6
+    maxNoOfSubtrees=5
+    prowSpawnSubtree=0.6
+    probAutoSkip=0.35
+    probAutoLoop=0.0
+    possible_behaviors = ["sequential","concurrent","flower","parallel"]
+    if "minNoOfActivitiesPerSubtree" in parameters:
+        minNoOfActivitiesPerSubtree = parameters["minNoOfActivitiesPerSubtree"]
+    if "maxNoOfSubtrees" in parameters:
+        maxNoOfSubtrees = parameters["maxNoOfSubtrees"]
+    if "probSpawnSubtree" in parameters:
+        probSpawnSubtree = parameters["probSpawnSubtree"]
+    if "probAutoSkip" in parameters:
+        probAutoSkip = parameters["probAutoSkip"]
+    if "probAutoLoop" in parameters:
+        probAutoLoop = parameters["probAutoLoop"]
+    if "possible_behaviors" in parameters:
+        possible_behaviors = parameters["possible_behaviors"]
+    return generate_petri(minNoOfActivitiesPerSubtree=minNoOfActivitiesPerSubtree, maxNoOfSubtrees=maxNoOfSubtrees, probSpawnSubtree=probSpawnSubtree, probAutoSkip=probAutoSkip, probAutoLoop=probAutoLoop, possible_behaviors=possible_behaviors)
