@@ -1,0 +1,11 @@
+This document describes how to generate API documentation using sphinx.
+
+First, install sphinx (we assume you are able to do this via the official sphinx website).
+
+To generate the docs perform the following steps.
+	1. First create all the actuall .rst files that define all the documentation.
+	In cmd/terminal browse to the docs folder (this folder ;-)) and run:
+		> sphinx-apidoc -o source ../
+	
+	2. Generate corresponding html files:
+		make html
