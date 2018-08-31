@@ -168,6 +168,34 @@ def get_placesShortestPath(net, placeToPopulate, currentPlace, placesShortestPat
                     placesShortestPath = get_placesShortestPath(net, placeToPopulate, p2.target, placesShortestPath, newActualList, recDepth+1)
     return placesShortestPath
 
+def get_hiddenTransitionsToEnable(net, marking, placesWithMissing, placesShortestPathByHidden):
+    hiddenTransitionsToEnable = []
+    placesHiddenTransitions = []
+    markingPlaces = [x for x in marking]
+    markingPlaces = sorted(markingPlaces, key=lambda x: x.name)
+    placesWithMissingKeys = [x for x in placesWithMissing]
+    placesWithMissingKeys = sorted(placesWithMissingKeys, key=lambda x: x.name)
+    for p2 in placesWithMissingKeys:
+        placesHiddenTransitions.append([])
+        for p1 in markingPlaces:
+            if p2 in placesShortestPathByHidden[p1]:
+                placesHiddenTransitions[-1].append(placesShortestPathByHidden[p1][p2])
+        if len(placesHiddenTransitions[-1]) == 0:
+            del placesHiddenTransitions[-1]
+        else:
+            placesHiddenTransitions[-1] = sorted(placesHiddenTransitions, key=lambda x: len(x[0]))
+    placesHiddenTransitions = sorted(placesHiddenTransitions, key=lambda x: len(x[0]))
+    if len(placesHiddenTransitions) > 0:
+        zIndex = [0] * len(placesHiddenTransitions)
+        j = 0
+        somethingChanged = True
+        while somethingChanged:
+            somethingChanged = False
+            if zIndex[j%len(placesHiddenTransitions)] < len(placesHiddenTransitions[j%len(placesHiddenTransitions)]):
+                hiddenTransitionsToEnable.append(placesHiddenTransitions[j%len(placesHiddenTransitions)][zIndex[j%len(placesHiddenTransitions)]][0])
+                zIndex[j % len(placesHiddenTransitions)] = zIndex[j%len(placesHiddenTransitions)] + 1
+    return hiddenTransitionsToEnable
+
 def get_placesShortestPathByHidden(net):
     """
     Get shortest path between places lead by hidden transitions
@@ -182,13 +210,9 @@ def get_placesShortestPathByHidden(net):
         placesShortestPath = get_placesShortestPath(net,p,p,placesShortestPath,[],0)
     return placesShortestPath
 
-def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth, visitedTransitions, allVisitedMarkings):
-    if recDepth >= MAX_REC_DEPTH_HIDTRANSENABL or t in visitedTransitions:
-        return [net, marking, activatedTransitions, allVisitedMarkings]
-    visitedTransitions.add(t)
-    markingAtStart = copy(marking)
-    placesWithMissing = get_placesWithMissingTokens(t, net, marking)
+def getHiddenTransitionsToEnable(net, marking, placesWithMissing, placesShortestPathByHidden):
     hiddenTransitionsToEnable = []
+
     markingPlaces = [x for x in marking]
     markingPlaces = sorted(markingPlaces, key=lambda x: x.name)
     placesWithMissingKeys = [x for x in placesWithMissing]
@@ -197,43 +221,48 @@ def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTran
         for p2 in placesWithMissingKeys:
             if p2 in placesShortestPathByHidden[p1]:
                 hiddenTransitionsToEnable.append(placesShortestPathByHidden[p1][p2])
-    if hiddenTransitionsToEnable:
-        somethingChanged = True
-        jIndexes = [0 for x in hiddenTransitionsToEnable]
-        z = 0
-        while somethingChanged:
-            somethingChanged = False
-            while jIndexes[z % len(hiddenTransitionsToEnable)] < len(
-                    hiddenTransitionsToEnable[z % len(hiddenTransitionsToEnable)]):
-                enabledTransitions = semantics.enabled_transitions(net, marking)
-                t3 = hiddenTransitionsToEnable[z % len(hiddenTransitionsToEnable)][
-                    jIndexes[z % len(hiddenTransitionsToEnable)]]
-                if not t3 == t:
-                    if t3 in enabledTransitions and semantics.is_enabled(t3, net, marking):
-                        if not t3 in visitedTransitions:
-                            marking = semantics.execute(t3, net, marking)
-                            activatedTransitions.append(t3)
-                            visitedTransitions.add(t3)
-                            allVisitedMarkings.append(marking)
-                            enabledTransitions = semantics.enabled_transitions(net, marking)
-                            somethingChanged = True
-                jIndexes[z % len(hiddenTransitionsToEnable)] = jIndexes[z % len(hiddenTransitionsToEnable)] + 1
-                if semantics.is_enabled(t, net, marking):
-                    break
+    hiddenTransitionsToEnable = sorted(hiddenTransitionsToEnable, key=lambda x: len(x))
+    return hiddenTransitionsToEnable
+
+def enableHiddenTransitions(net, marking, activatedTransitions, visitedTransitions, allVisitedMarkings, hiddenTransitionsToEnable, t):
+    somethingChanged = True
+    jIndexes = [0 for x in hiddenTransitionsToEnable]
+    z = 0
+    while somethingChanged:
+        somethingChanged = False
+        while jIndexes[z % len(hiddenTransitionsToEnable)] < len(
+                hiddenTransitionsToEnable[z % len(hiddenTransitionsToEnable)]):
+            t3 = hiddenTransitionsToEnable[z % len(hiddenTransitionsToEnable)][
+                jIndexes[z % len(hiddenTransitionsToEnable)]]
+            if not t3 == t:
+                if semantics.is_enabled(t3, net, marking):
+                    if not t3 in visitedTransitions:
+                        marking = semantics.execute(t3, net, marking)
+                        activatedTransitions.append(t3)
+                        visitedTransitions.add(t3)
+                        allVisitedMarkings.append(marking)
+                        enabledTransitions = semantics.enabled_transitions(net, marking)
+                        somethingChanged = True
+            jIndexes[z % len(hiddenTransitionsToEnable)] = jIndexes[z % len(hiddenTransitionsToEnable)] + 1
             if semantics.is_enabled(t, net, marking):
                 break
-            z = z + 1
+        if semantics.is_enabled(t, net, marking):
+            break
+        z = z + 1
+    return [marking, activatedTransitions, visitedTransitions, allVisitedMarkings]
 
+def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth, visitedTransitions, allVisitedMarkings):
+    if recDepth >= MAX_REC_DEPTH_HIDTRANSENABL or t in visitedTransitions:
+        return [net, marking, activatedTransitions, allVisitedMarkings]
+    visitedTransitions.add(t)
+    markingAtStart = copy(marking)
+    placesWithMissing = get_placesWithMissingTokens(t, net, marking)
+    hiddenTransitionsToEnable = getHiddenTransitionsToEnable(net, marking, placesWithMissing, placesShortestPathByHidden)
+
+    if hiddenTransitionsToEnable:
+        [marking, activatedTransitions, visitedTransitions, allVisitedMarkings] = enableHiddenTransitions(net, marking, activatedTransitions, visitedTransitions, allVisitedMarkings, hiddenTransitionsToEnable, t)
         if not semantics.is_enabled(t, net, marking):
-            hiddenTransitionsToEnable = []
-            markingPlaces = [x for x in marking]
-            markingPlaces = sorted(markingPlaces, key=lambda x: x.name)
-            placesWithMissingKeys = [x for x in placesWithMissing]
-            placesWithMissingKeys = sorted(placesWithMissingKeys, key=lambda x: x.name)
-            for p1 in markingPlaces:
-                for p2 in placesWithMissingKeys:
-                    if p2 in placesShortestPathByHidden[p1]:
-                        hiddenTransitionsToEnable.append(placesShortestPathByHidden[p1][p2])
+            hiddenTransitionsToEnable = getHiddenTransitionsToEnable(net, marking, placesWithMissing, placesShortestPathByHidden)
             z = 0
             while z < len(hiddenTransitionsToEnable):
                 k = 0
@@ -250,7 +279,6 @@ def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTran
                                 allVisitedMarkings.append(marking)
                     k = k + 1
                 z = z + 1
-
         if not semantics.is_enabled(t, net, marking):
             if not(markingAtStart == marking):
                 [net, marking, activatedTransitions, allVisitedMarkings] = apply_hiddenTrans(t, net, marking, placesShortestPathByHidden,
