@@ -3,8 +3,8 @@ from pm4py.algo.dfg.verions import native as dfg_inst
 from pm4py.algo.inductive.data_structures.dfg_graph import DfgGraph as DfgGraph
 from pm4py.models import petri
 from pm4py.models.petri.petrinet import Marking
-from pm4py.algo.tokenreplay.token_replay import NoConceptNameException
-from pm4py.algo.tokenreplay import token_replay
+from pm4py.algo.tokenreplay.versions.token_replay import NoConceptNameException
+from pm4py.algo.tokenreplay.versions import token_replay
 from collections import Counter
 
 import time

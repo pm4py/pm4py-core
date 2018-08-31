@@ -1,7 +1,7 @@
 from pm4py.algo.petrigenerator import generator as petri_generator
 from pm4py.models.petri.exporter import pnml as petri_exporter
 from pm4py.algo.playout import playout
-from pm4py.algo.tokenreplay import token_replay
+from pm4py.algo.tokenreplay.versions import token_replay
 
 net, marking, final_marking = petri_generator.generate_petri()
 petri_exporter.export_petri_to_pnml(net, marking, "generatedNet.pnml")

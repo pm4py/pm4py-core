@@ -6,7 +6,7 @@ sys.path.insert(0,parentdir)
 from pm4py.models.petri.exporter import pnml as petri_exporter
 from pm4py.models.petri.importer import pnml as petri_importer
 from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
-from pm4py.algo.tokenreplay import token_replay
+from pm4py.algo.tokenreplay.versions import token_replay
 from pm4py.models import petri
 from pm4py.log.importer import xes as xes_importer
 import pm4py.algo.alignments as align
@@ -31,7 +31,7 @@ class PetriImportExportTest(unittest.TestCase):
             if not p.out_arcs:
                 final_marking[p] = 1
         [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(traceLog, importedPetri1,
-                                                                                                     marking1, final_marking, enable_placeFitness=True)
+                                                                                                                                                    marking1, final_marking, enable_placeFitness=True)
 
     def test_importingPetriLogAlignment(self):
         importedPetri1, marking1 = petri_importer.import_petri_from_pnml(os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
