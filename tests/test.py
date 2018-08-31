@@ -4,7 +4,7 @@ import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
-from pm4py.log import instance as log_instance
+from pm4py.log import log as log_instance
 from pm4py.log.importer import xes as xes_importer
 from pm4py.algo.dfg.verions import native as dfg_instance
 from pm4py.algo.causal import factory as causal_instance

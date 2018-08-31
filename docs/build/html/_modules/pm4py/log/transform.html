@@ -143,6 +143,25 @@
 
 
 <div class="viewcode-block" id="transform_event_log_to_trace_log"><a class="viewcode-back" href="../../../pm4py.log.html#pm4py.log.transform.transform_event_log_to_trace_log">[docs]</a><span class="k">def</span> <span class="nf">transform_event_log_to_trace_log</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">case_glue</span><span class="o">=</span><span class="s1">&#39;case:concept:name&#39;</span><span class="p">,</span> <span class="n">includes_case_attributes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">case_attribute_prefix</span><span class="o">=</span><span class="s1">&#39;case:&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts the event log to a trace log</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    log: :class:`pm4py.log.instance.EventLog`</span>
+<span class="sd">        An event Log</span>
+<span class="sd">    case_glue:</span>
+<span class="sd">        Case identifier. Default is &#39;case:concept:name&#39;</span>
+<span class="sd">    includes_case_attributes:</span>
+<span class="sd">        Default is True</span>
+<span class="sd">    case_attribute_prefix:</span>
+<span class="sd">        Default is &#39;case:&#39;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">    log : :class:`pm4py.log.instance.TraceLog`</span>
+<span class="sd">        A trace log</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">traces</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">log</span><span class="p">:</span>
         <span class="n">glue</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="n">case_glue</span><span class="p">]</span>
@@ -164,6 +183,23 @@
 
 
 <div class="viewcode-block" id="transform_trace_log_to_event_log"><a class="viewcode-back" href="../../../pm4py.log.html#pm4py.log.transform.transform_trace_log_to_event_log">[docs]</a><span class="k">def</span> <span class="nf">transform_trace_log_to_event_log</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">include_case_attributes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">case_attribute_prefix</span><span class="o">=</span><span class="s1">&#39;case:&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts the trace log to an event log</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    log: :class:`pm4py.log.instance.TraceLog`</span>
+<span class="sd">        A trace Log</span>
+<span class="sd">    includes_case_attributes:</span>
+<span class="sd">        Default is True</span>
+<span class="sd">    case_attribute_prefix:</span>
+<span class="sd">        Default is &#39;case:&#39;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">    log : :class:`pm4py.log.instance.EventLog`</span>
+<span class="sd">        An Event log</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">log</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">trace</span><span class="p">:</span>

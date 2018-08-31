@@ -146,10 +146,15 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Adds an arc from a specific element to another element in some net. Assumes from and to are in the net!</span>
 
-<span class="sd">    :param fr: transition/place from</span>
-<span class="sd">    :param to:  transition/place to</span>
-<span class="sd">    :param net: net to use</span>
-<span class="sd">    :return: pass</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fr: transition/place from</span>
+<span class="sd">    to:  transition/place to</span>
+<span class="sd">    net: net to use</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">petri</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">PetriNet</span><span class="o">.</span><span class="n">Arc</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
     <span class="n">net</span><span class="o">.</span><span class="n">arcs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -158,6 +163,20 @@
 
 
 <div class="viewcode-block" id="construct_trace_net"><a class="viewcode-back" href="../../../../pm4py.models.petri.html#pm4py.models.petri.utils.construct_trace_net">[docs]</a><span class="k">def</span> <span class="nf">construct_trace_net</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">trace_name_key</span><span class="o">=</span><span class="n">xes_util</span><span class="o">.</span><span class="n">DEFAULT_NAME_KEY</span><span class="p">,</span> <span class="n">activity_key</span><span class="o">=</span><span class="n">xes_util</span><span class="o">.</span><span class="n">DEFAULT_NAME_KEY</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Creates a trace net, i.e. a trace in Petri net form.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    trace: :class:`list` input trace, assumed to be a list of events</span>
+<span class="sd">    trace_name_key: :class:`str` key of the attribute that defines the name of the trace.</span>
+<span class="sd">    activity_key: :class:`str` key of the attribute of the events that defines the activity name</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple: :class:`tuple` of the net, initial marking and the final marking</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">net</span> <span class="o">=</span> <span class="n">petri</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">PetriNet</span><span class="p">(</span><span class="s1">&#39;trace net of </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">trace</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">trace_name_key</span><span class="p">]</span> <span class="k">if</span> <span class="n">trace_name_key</span> <span class="ow">in</span> <span class="n">trace</span><span class="o">.</span><span class="n">attributes</span> <span class="k">else</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
     <span class="n">place_map</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">petri</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">PetriNet</span><span class="o">.</span><span class="n">Place</span><span class="p">(</span><span class="s1">&#39;p_0&#39;</span><span class="p">)}</span>
     <span class="n">net</span><span class="o">.</span><span class="n">places</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">place_map</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>

@@ -142,6 +142,19 @@
 <span></span><span class="kn">from</span> <span class="nn">graphviz</span> <span class="k">import</span> <span class="n">Digraph</span>
 
 <div class="viewcode-block" id="graphviz_visualization"><a class="viewcode-back" href="../../../../pm4py.models.petri.html#pm4py.models.petri.visualize.graphviz_visualization">[docs]</a><span class="k">def</span> <span class="nf">graphviz_visualization</span><span class="p">(</span><span class="n">net</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides visualization for the petrinet</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    net: :class:`pm4py.models.petri.petrinet.PetriNet`</span>
+<span class="sd">    Petri net</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    viz :</span>
+<span class="sd">    Returns a graph object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">viz</span> <span class="o">=</span> <span class="n">Digraph</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">net</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;.gv&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;dot&#39;</span><span class="p">)</span>
 
     <span class="c1">#transitions</span>
