@@ -168,34 +168,6 @@ def get_placesShortestPath(net, placeToPopulate, currentPlace, placesShortestPat
                     placesShortestPath = get_placesShortestPath(net, placeToPopulate, p2.target, placesShortestPath, newActualList, recDepth+1)
     return placesShortestPath
 
-def get_hiddenTransitionsToEnable(net, marking, placesWithMissing, placesShortestPathByHidden):
-    hiddenTransitionsToEnable = []
-    placesHiddenTransitions = []
-    markingPlaces = [x for x in marking]
-    markingPlaces = sorted(markingPlaces, key=lambda x: x.name)
-    placesWithMissingKeys = [x for x in placesWithMissing]
-    placesWithMissingKeys = sorted(placesWithMissingKeys, key=lambda x: x.name)
-    for p2 in placesWithMissingKeys:
-        placesHiddenTransitions.append([])
-        for p1 in markingPlaces:
-            if p2 in placesShortestPathByHidden[p1]:
-                placesHiddenTransitions[-1].append(placesShortestPathByHidden[p1][p2])
-        if len(placesHiddenTransitions[-1]) == 0:
-            del placesHiddenTransitions[-1]
-        else:
-            placesHiddenTransitions[-1] = sorted(placesHiddenTransitions, key=lambda x: len(x[0]))
-    placesHiddenTransitions = sorted(placesHiddenTransitions, key=lambda x: len(x[0]))
-    if len(placesHiddenTransitions) > 0:
-        zIndex = [0] * len(placesHiddenTransitions)
-        j = 0
-        somethingChanged = True
-        while somethingChanged:
-            somethingChanged = False
-            if zIndex[j%len(placesHiddenTransitions)] < len(placesHiddenTransitions[j%len(placesHiddenTransitions)]):
-                hiddenTransitionsToEnable.append(placesHiddenTransitions[j%len(placesHiddenTransitions)][zIndex[j%len(placesHiddenTransitions)]][0])
-                zIndex[j % len(placesHiddenTransitions)] = zIndex[j%len(placesHiddenTransitions)] + 1
-    return hiddenTransitionsToEnable
-
 def get_placesShortestPathByHidden(net):
     """
     Get shortest path between places lead by hidden transitions
@@ -210,7 +182,44 @@ def get_placesShortestPathByHidden(net):
         placesShortestPath = get_placesShortestPath(net,p,p,placesShortestPath,[],0)
     return placesShortestPath
 
-def getHiddenTransitionsToEnable(net, marking, placesWithMissing, placesShortestPathByHidden):
+def giveScoreToHiddenTransitions(hiddenTransitionsToEnable):
+    """
+    Gives score to hidden transitions
+
+    Parameters
+    -----------
+    hiddenTransitionsToEnable
+        Hidden transitions to enable
+    :param hiddenTransitionsToEnable:
+    :return:
+    """
+    scoredTransitions = []
+    for group in hiddenTransitionsToEnable:
+        score = 0.0
+        for trans in group:
+            if "tau" in trans.name:
+                score = score + 1.001
+            elif "skip" in trans.name:
+                score = score + 1.002
+            else:
+                score = score + 1.003
+        scoredTransitions.append([group, score])
+    scoredTransitions = sorted(scoredTransitions, key=lambda x: x[1])
+    return scoredTransitions
+
+def getHiddenTransitionsToEnable(marking, placesWithMissing, placesShortestPathByHidden):
+    """
+    Calculate an ordered list of transitions to visit in order to enable a given transition
+
+    Parameters
+    ----------
+    marking
+        Current marking
+    placesWithMissing
+        List of places with missing tokens
+    placesShortestPathByHidden
+        Minimal connection between places by hidden transitions
+    """
     hiddenTransitionsToEnable = []
 
     markingPlaces = [x for x in marking]
@@ -222,9 +231,61 @@ def getHiddenTransitionsToEnable(net, marking, placesWithMissing, placesShortest
             if p2 in placesShortestPathByHidden[p1]:
                 hiddenTransitionsToEnable.append(placesShortestPathByHidden[p1][p2])
     hiddenTransitionsToEnable = sorted(hiddenTransitionsToEnable, key=lambda x: len(x))
+    scoredTransitions = giveScoreToHiddenTransitions(hiddenTransitionsToEnable)
+    hiddenTransitionsToEnable = [x[0] for x in scoredTransitions]
+
+    return hiddenTransitionsToEnable
+
+def getReqTransitionsForFinalMarking(marking, finalMarking, placesShortestPathByHidden):
+    """
+    Gets required transitions for final marking
+
+    Parameters
+    ----------
+    marking
+        Current marking
+    placesWithMissing
+        List of places with missing tokens
+    placesShortestPathByHidden
+        Minimal connection between places by hidden transitions
+    """
+    hiddenTransitionsToEnable = []
+
+    markingPlaces = [x for x in marking]
+    markingPlaces = sorted(markingPlaces, key=lambda x: x.name)
+    finalMarkingPlaces = [x for x in finalMarking]
+    finalMarkingPlaces = sorted(finalMarkingPlaces, key=lambda x: x.name)
+    for p1 in markingPlaces:
+        for p2 in finalMarkingPlaces:
+            if p2 in placesShortestPathByHidden[p1]:
+                hiddenTransitionsToEnable.append(placesShortestPathByHidden[p1][p2])
+    hiddenTransitionsToEnable = sorted(hiddenTransitionsToEnable, key=lambda x: len(x))
+    scoredTransitions = giveScoreToHiddenTransitions(hiddenTransitionsToEnable)
+    hiddenTransitionsToEnable = [x[0] for x in scoredTransitions]
+
     return hiddenTransitionsToEnable
 
 def enableHiddenTransitions(net, marking, activatedTransitions, visitedTransitions, allVisitedMarkings, hiddenTransitionsToEnable, t):
+    """
+    Actually enable hidden transitions on the Petri net
+
+    Parameters
+    -----------
+    net
+        Petri net
+    marking
+        Current marking
+    activatedTransitions
+        All activated transitions during the replay
+    visitedTransitions
+        All visited transitions by the recursion
+    allVisitedMarkings
+        All visited markings
+    hiddenTransitionsToEnable
+        List of hidden transition to enable
+    t
+        Transition against we should check the enabledness
+    """
     somethingChanged = True
     jIndexes = [0 for x in hiddenTransitionsToEnable]
     z = 0
@@ -252,17 +313,39 @@ def enableHiddenTransitions(net, marking, activatedTransitions, visitedTransitio
     return [marking, activatedTransitions, visitedTransitions, allVisitedMarkings]
 
 def apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, recDepth, visitedTransitions, allVisitedMarkings):
+    """
+    Apply hidden transitions in order to enable a given transition
+
+    Parameters
+    ----------
+    t
+        Transition to eventually enable
+    net
+        Petri net
+    marking
+        Marking
+    placesShortestPathByHidden
+        Shortest paths between places connected by hidden transitions
+    activatedTransitions
+        All activated transitions
+    recDepth
+        Current recursion depth
+    visitedTransitions
+        All visited transitions by hiddenTrans method
+    allVisitedMarkings
+        All visited markings
+    """
     if recDepth >= MAX_REC_DEPTH_HIDTRANSENABL or t in visitedTransitions:
         return [net, marking, activatedTransitions, allVisitedMarkings]
     visitedTransitions.add(t)
     markingAtStart = copy(marking)
     placesWithMissing = get_placesWithMissingTokens(t, net, marking)
-    hiddenTransitionsToEnable = getHiddenTransitionsToEnable(net, marking, placesWithMissing, placesShortestPathByHidden)
+    hiddenTransitionsToEnable = getHiddenTransitionsToEnable(marking, placesWithMissing, placesShortestPathByHidden)
 
     if hiddenTransitionsToEnable:
         [marking, activatedTransitions, visitedTransitions, allVisitedMarkings] = enableHiddenTransitions(net, marking, activatedTransitions, visitedTransitions, allVisitedMarkings, hiddenTransitionsToEnable, t)
         if not semantics.is_enabled(t, net, marking):
-            hiddenTransitionsToEnable = getHiddenTransitionsToEnable(net, marking, placesWithMissing, placesShortestPathByHidden)
+            hiddenTransitionsToEnable = getHiddenTransitionsToEnable(marking, placesWithMissing, placesShortestPathByHidden)
             z = 0
             while z < len(hiddenTransitionsToEnable):
                 k = 0
@@ -318,6 +401,24 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
 
     return visibleTransitions
 
+def break_condition_final_marking(marking, finalMarking):
+    """
+    Verify break condition for final marking
+
+    Parameters
+    -----------
+    marking
+        Current marking
+    finalMarking
+        Target final marking
+    """
+    finalMarkingDict = dict(finalMarking)
+    markingDict = dict(marking)
+    finalMarkingDictKeys = set(finalMarkingDict.keys())
+    markingDictKeys = set(markingDict.keys())
+
+    return finalMarkingDictKeys.issubset(markingDictKeys)
+
 def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_placeFitness, place_fitness, placesShortestPathByHidden, consider_remaining_in_fitness, activity_key="concept:name", tryToReachFinalMarkingThroughHidden=True, stopImmediatelyWhenUnfit=False, useHiddenTransitionsToEnableCorrespondingTransitions=True, postFixCaching=None, markingToActivityCaching=None):
     """
     Apply the token replaying algorithm to a trace
@@ -337,9 +438,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
     enable_placeFitness
         Enable fitness calculation at place level
     """
-    is_fit = False
     trace_activities = [event[activity_key] for event in trace]
-    trace_fitness = 0.0
     activatedTransitions = []
     allVisitedMarkings = []
     activatingTransitionIndex = {}
@@ -350,7 +449,6 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
     missing = 0
     consumed = 0
     produced = 0
-    remaining = 0
     i = 0
     while i < len(trace):
         if True and (str(trace_activities) in postFixCaching.cache and hash(marking) in postFixCaching.cache[str(trace_activities)]):
@@ -414,27 +512,17 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
     if tryToReachFinalMarkingThroughHidden and not usedPostfixCache:
         i = 0
         while i < MAX_IT_FINAL:
-            visitedTransitions = 0
-            visitedTransitions = set()
-            if not dict(finalMarking) == dict(marking):
-                markingCopy = copy(marking)
-                for p in markingCopy:
-                    for p2 in finalMarking:
-                        if p in placesShortestPathByHidden and p2 in placesShortestPathByHidden[p]:
-                            reqTransitions = placesShortestPathByHidden[p][p2]
-                            for t in reqTransitions:
-                                if useHiddenTransitionsToEnableCorrespondingTransitions and not semantics.is_enabled(t, net, marking):
-                                    [net, marking, activatedTransitions, allVisitedMarkings] = apply_hiddenTrans(t, net, marking,
-                                                                                             placesShortestPathByHidden,
-                                                                                             activatedTransitions, 0, visitedTransitions, allVisitedMarkings)
-                                    if semantics.is_enabled(t, net, marking):
-                                        marking = semantics.execute(t, net, marking)
-                                        activatedTransitions.append(t)
-                                        allVisitedMarkings.append(marking)
-                                elif semantics.is_enabled(t, net, marking):
-                                    marking = semantics.execute(t, net, marking)
-                                    activatedTransitions.append(t)
-                                    allVisitedMarkings.append(marking)
+            if not break_condition_final_marking(marking, finalMarking):
+                hiddenTransitionsToEnable = getReqTransitionsForFinalMarking(marking, finalMarking, placesShortestPathByHidden)
+
+                for group in hiddenTransitionsToEnable:
+                    for t in group:
+                        if semantics.is_enabled(t, net, marking):
+                            marking = semantics.execute(t, net, marking)
+                            activatedTransitions.append(t)
+                            allVisitedMarkings.append(marking)
+                    if break_condition_final_marking(marking, finalMarking):
+                        break
             else:
                 break
             i = i + 1
@@ -478,11 +566,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                 startMarkingHash = hash(startMarkingObject)
                 endMarkingObject = allVisitedMarkings[endMarkingIndex]
                 if activity in transMap:
-                    tt = transMap[activity]
-                    inArcsPlaces = [x.source.name for x in tt.in_arcs]
-                    outArcsPlaces = [x.target.name for x in tt.out_arcs]
                     thisActivatedTrans = activatedTransitions[startMarkingIndex:endMarkingIndex]
-                    thisActivatedTransString = [x.name for x in thisActivatedTrans]
                     thisVisitedMarkings = allVisitedMarkings[startMarkingIndex+1:endMarkingIndex+1]
 
                     if not startMarkingHash in markingToActivityCaching.cache:
@@ -527,11 +611,17 @@ class ApplyTraceTokenReplay(Thread):
                                                                                           useHiddenTransitionsToEnableCorrespondingTransitions=self.useHiddenTransitionsToEnableCorrespondingTransitions, postFixCaching=self.postFixCaching, markingToActivityCaching=self.markingToActivityCaching)
 
 class PostFixCaching:
+    """
+    Post fix caching object
+    """
     def __init__(self):
         self.cache = 0
         self.cache = {}
 
 class MarkingToActivityCaching:
+    """
+    Marking to activity caching
+    """
     def __init__(self):
         self.cache = 0
         self.cache = {}
@@ -590,7 +680,7 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
                             del threadsKeys[0]
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initialMarking, finalMarking, transMap, enable_placeFitness, placeFitnessPerTrace, placesShortestPathByHidden, consider_remaining_in_fitness, activity_key=activity_key, tryToReachFinalMarkingThroughHidden=tryToReachFinalMarkingThroughHidden, stopImmediatelyWhenUnfit=stopImmediatelyWhenUnfit, useHiddenTransitionsToEnableCorrespondingTransitions=useHiddenTransitionsToEnableCorrespondingTransitions, postFixCaching=postFixCaching, markingToActivityCaching=markingToActivityCaching)
                     threads[variant].start()
-                    threads[variant].join()
+                    #threads[variant].join()
                     i = i + 1
                 threadsKeys = list(threads.keys())
                 while len(threadsKeys) > 0:
