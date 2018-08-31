@@ -68,7 +68,7 @@ def form_fake_log(prefixesKeys, prefixes, activity_key="concept:name"):
         fake_log.append(trace)
     return fake_log
 
-def get_etc_precision(log, net, marking, final_marking, activity_key="concept:name"):
+def apply(log, net, marking, final_marking, activity_key="concept:name"):
     """
     Get ET Conformance precision
 
