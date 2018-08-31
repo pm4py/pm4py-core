@@ -9,7 +9,7 @@ from flask_cors import CORS
 from threading import Semaphore, Thread
 from copy import copy
 import os
-import time
+import time, base64
 import logging, traceback
 from pm4py.algo.tokenreplay import token_replay, performance_map
 from pm4py.log.util import insert_classifier
@@ -82,6 +82,28 @@ def load_logs():
         shared.sem.release()
         # loaded logs
 
+@app.route("/uploadEventLog",methods=["POST"])
+def upload_event_log():
+    """
+    Uploads an event log to the system
+
+    The upload consists in a JSON that contains the id and the content
+    """
+    if shared.config["logFolder"]["logUploadPermitted"]:
+        shared.sem.acquire()
+        try:
+            content = request.get_json()
+            logId = content['id']
+            logContent = base64.b64decode(content['content']).decode("utf-8")
+            log = xes_importer.import_from_xes_string(logContent)
+            shared.trace_logs[logId] = log
+            shared.sem.release()
+            return "{\"success\":True}"
+        except Exception as e:
+            shared.sem.release()
+            return "{\"success\":False}"
+    return "{\"success\":False}"
+
 @app.route("/getProcessSchema",methods=["GET"])
 def get_process_schema():
     """
@@ -100,7 +122,6 @@ def get_process_schema():
     :return:
     """
 
-    logging.warning("ciao")
     # read the requested process name
     process = request.args.get('process', type=str)
     # read the activity key
