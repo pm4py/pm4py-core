@@ -22,7 +22,7 @@ if __name__ == "__main__":
 		print("final marking "+place.name)
 	gviz = pn_viz.graphviz_visualization(net, initial_marking=marking, final_marking=final_marking)
 	gviz.view()
-	
+
 	if True:
 		fitTraces = []
 		[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log, net, marking,

@@ -1,11 +1,11 @@
-from pm4py.algo.petrigenerator import generator as petri_generator
+from pm4py.algo.petrigenerator.versions import simple_generator as petri_generator
 from pm4py.models.petri.exporter import pnml as petri_exporter
-from pm4py.algo.playout import playout
+from pm4py.algo.playout import factory as playout_factory
 from pm4py.algo.tokenreplay.versions import token_replay
 
 net, marking, final_marking = petri_generator.generate_petri()
 petri_exporter.export_petri_to_pnml(net, marking, "generatedNet.pnml")
-log = playout.playoutPetriNet(net, marking)
+log = playout_factory.apply(net, marking)
 print([x["concept:name"] for x in log[0]])
 [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(log, net, marking, final_marking, enable_placeFitness=True, consider_remaining_in_fitness=True)
 fitTraces1 = [x for x in traceIsFit if x]
