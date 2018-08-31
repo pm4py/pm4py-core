@@ -1,5 +1,5 @@
 from lxml import etree
-import pm4py.log.instance as log_instance
+import pm4py.log.log as log_instance
 import pm4py.log.transform as log_transform
 import pm4py.log.util.xes as xes_util
 
@@ -54,7 +54,7 @@ def export_attributes(log, root):
 
 	Parameters
 	----------
-	log: :class:`pm4py.log.instance.TraceLog`
+	log: :class:`pm4py.log.log.TraceLog`
 		PM4PY trace log
 	root:
 		Output XML root element
@@ -68,7 +68,7 @@ def export_extensions(log, root):
 
 	Parameters
 	----------
-	log: :class:`pm4py.log.instance.TraceLog`
+	log: :class:`pm4py.log.log.TraceLog`
 		PM4PY trace log
 	root:
 		Output XML root element
@@ -88,7 +88,7 @@ def export_globals(log, root):
 
 	Parameters
 	----------
-	log: :class:`pm4py.log.instance.TraceLog`
+	log: :class:`pm4py.log.log.TraceLog`
 		PM4PY trace log
 	root:
 		Output XML root element
@@ -105,7 +105,7 @@ def export_classifiers(log, root):
 
 	Parameters
 	----------
-	log: :class:`pm4py.log.instance.TraceLog`
+	log: :class:`pm4py.log.log.TraceLog`
 		PM4PY trace log
 	root:
 		Output XML root element
@@ -165,7 +165,7 @@ def export_traces_events(tr, trace):
 
 	Parameters
 	----------
-	tr: :class:`pm4py.log.instance.Trace`
+	tr: :class:`pm4py.log.log.Trace`
 		PM4PY trace
 	trace:
 		Output XES trace
@@ -182,7 +182,7 @@ def export_traces(log, root):
 
 	Parameters
 	----------
-	log: :class:`pm4py.log.instance.TraceLog`
+	log: :class:`pm4py.log.log.TraceLog`
 		PM4PY trace log
 	root:
 		Output XML root element
@@ -233,7 +233,7 @@ def export_log_as_string(log):
 
 	Parameters
 	-----------
-	log: :class:`pm4py.log.instance.TraceLog`
+	log: :class:`pm4py.log.log.TraceLog`
 		PM4PY trace log
 
 	Returns
@@ -252,7 +252,7 @@ def export_log(log, outputFilePath):
 
 	Parameters
 	----------
-	log: :class:`pm4py.log.instance.TraceLog`
+	log: :class:`pm4py.log.log.TraceLog`
 		PM4PY trace log
 	outputFilePath:
 		Output file path

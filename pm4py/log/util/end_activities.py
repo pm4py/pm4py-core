@@ -1,4 +1,4 @@
-from pm4py.log.instance import TraceLog
+from pm4py.log.log import TraceLog
 from pm4py.log.util import variants as variants_module
 
 def get_end_activities_from_log(trace_log, activity_key="concept:name"):

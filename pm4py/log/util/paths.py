@@ -1,4 +1,4 @@
-from pm4py.log.instance import TraceLog, Trace
+from pm4py.log.log import TraceLog, Trace
 from pm4py.log.util import variants as variants_module
 
 def get_paths_from_log(trace_log, activity_key="concept:name"):
