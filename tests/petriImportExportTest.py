@@ -41,7 +41,7 @@ class PetriImportExportTest(unittest.TestCase):
             if not p.out_arcs:
                 final_marking[p] = 1
         for trace in traceLog:
-            cfResult = align.versions.state_equation_a_star.apply_trace(trace, importedPetri1, marking1, final_marking)['alignment']
+            cfResult = align.versions.state_equation_a_star.apply(trace, importedPetri1, marking1, final_marking)['alignment']
             isFit = True
             for couple in cfResult:
                 if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] == None):
