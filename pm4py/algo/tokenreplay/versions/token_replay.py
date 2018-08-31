@@ -705,6 +705,26 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
             enabledTransitionsInMarkings]
 
 def apply(log, net, initialMarking, finalMarking, parameters=None, activity_key="concept:name"):
+    """
+    Method to apply token-based replay
+
+    Parameters
+    -----------
+    log
+        Log
+    net
+        Petri net
+    initialMarking
+        Initial marking
+    finalMarking
+        Final marking
+    parameters
+        Parameters of the algorithm
+    activity_key
+        Activity key (must be specified by the algorithm)
+    variant
+        Variant of the algorithm to use
+    """
     if parameters is None:
         parameters = {}
 
