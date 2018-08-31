@@ -41,7 +41,7 @@ def import_from_file_xes(filename):
 
     Returns
     -------
-    log : :class:`pm4py.log.instance.TraceLog`
+    log : :class:`pm4py.log.log.TraceLog`
         A trace log
     """
     context = etree.iterparse(filename, events=['start', 'end'])
@@ -60,19 +60,19 @@ def import_from_file_xes(filename):
             if elem.tag.endswith(log_lib.util.xes.TAG_LOG):
                 if log is not None:
                     raise SyntaxError('file contains > 1 <log> tags')
-                log = log_lib.instance.TraceLog()
+                log = log_lib.log.TraceLog()
                 tree[elem] = log.attributes
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_TRACE):
                 if trace is not None:
                     raise SyntaxError('file contains <trace> in another <trace> tag')
-                trace = log_lib.instance.Trace()
+                trace = log_lib.log.Trace()
                 tree[elem] = trace.attributes
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_EVENT):
                 if event is not None:
                     raise SyntaxError('file contains <event> in another <event> tag')
-                event = log_lib.instance.Event()
+                event = log_lib.log.Event()
                 tree[elem] = event
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_EXTENSION):

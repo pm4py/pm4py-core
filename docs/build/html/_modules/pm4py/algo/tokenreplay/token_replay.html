@@ -145,6 +145,7 @@
 
 <span class="n">MAX_REC_DEPTH</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">MAX_IT_FINAL</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">MAX_REC_DEPTH_HIDTRANSENABL</span> <span class="o">=</span> <span class="mi">5</span>
 
 <div class="viewcode-block" id="NoConceptNameException"><a class="viewcode-back" href="../../../../pm4py.algo.tokenreplay.html#pm4py.algo.tokenreplay.token_replay.NoConceptNameException">[docs]</a><span class="k">class</span> <span class="nc">NoConceptNameException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
@@ -319,7 +320,7 @@
     <span class="k">return</span> <span class="n">placesShortestPath</span></div>
 
 <div class="viewcode-block" id="apply_hiddenTrans"><a class="viewcode-back" href="../../../../pm4py.algo.tokenreplay.html#pm4py.algo.tokenreplay.token_replay.apply_hiddenTrans">[docs]</a><span class="k">def</span> <span class="nf">apply_hiddenTrans</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">marking</span><span class="p">,</span> <span class="n">placesShortestPathByHidden</span><span class="p">,</span> <span class="n">activatedTransitions</span><span class="p">,</span> <span class="n">recDepth</span><span class="p">,</span> <span class="n">visitedTransitions</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">recDepth</span> <span class="o">&gt;=</span> <span class="n">MAX_REC_DEPTH</span> <span class="ow">or</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">visitedTransitions</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">recDepth</span> <span class="o">&gt;=</span> <span class="n">MAX_REC_DEPTH_HIDTRANSENABL</span> <span class="ow">or</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">visitedTransitions</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">net</span><span class="p">,</span> <span class="n">marking</span><span class="p">,</span> <span class="n">activatedTransitions</span><span class="p">]</span>
 
     <span class="n">visitedTransitions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>

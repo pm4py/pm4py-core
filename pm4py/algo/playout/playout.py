@@ -1,4 +1,4 @@
-import pm4py.log.instance as log_instance
+import pm4py.log.log as log_instance
 from pm4py.models.petri import semantics
 from copy import copy
 from random import shuffle

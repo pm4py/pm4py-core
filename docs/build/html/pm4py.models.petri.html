@@ -82,7 +82,7 @@
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.models.petri.incidence_matrix">pm4py.models.petri.incidence_matrix module</a></li>
-<li><a class="reference internal" href="#module-pm4py.models.petri.net">pm4py.models.petri.net module</a></li>
+<li><a class="reference internal" href="#pm4py-models-petri-net-module">pm4py.models.petri.net module</a></li>
 <li><a class="reference internal" href="#module-pm4py.models.petri.semantics">pm4py.models.petri.semantics module</a></li>
 <li><a class="reference internal" href="#module-pm4py.models.petri.synchronous_product">pm4py.models.petri.synchronous_product module</a></li>
 <li><a class="reference internal" href="#module-pm4py.models.petri.utils">pm4py.models.petri.utils module</a></li>
@@ -162,13 +162,13 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pm4py.models.petri.export.html">pm4py.models.petri.export package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.models.petri.export.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pm4py.models.petri.export.html#module-pm4py.models.petri.export.pnml">pm4py.models.petri.export.pnml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.models.petri.export.html#pm4py-models-petri-export-pnml-module">pm4py.models.petri.export.pnml module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.models.petri.export.html#module-pm4py.models.petri.export">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pm4py.models.petri.importing.html">pm4py.models.petri.importing package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.models.petri.importing.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pm4py.models.petri.importing.html#module-pm4py.models.petri.importing.pnml">pm4py.models.petri.importing.pnml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.models.petri.importing.html#pm4py-models-petri-importing-pnml-module">pm4py.models.petri.importing.pnml module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.models.petri.importing.html#module-pm4py.models.petri.importing">Module contents</a></li>
 </ul>
 </li>
@@ -212,108 +212,8 @@
 <dd></dd></dl>
 
 </div>
-<div class="section" id="module-pm4py.models.petri.net">
-<span id="pm4py-models-petri-net-module"></span><h2>pm4py.models.petri.net module<a class="headerlink" href="#module-pm4py.models.petri.net" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="pm4py.models.petri.net.Marking">
-<em class="property">class </em><code class="descclassname">pm4py.models.petri.net.</code><code class="descname">Marking</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/models/petri/net.html#Marking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.models.petri.net.Marking" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.Counter</span></code></p>
-</dd></dl>
-
-<dl class="class">
-<dt id="pm4py.models.petri.net.PetriNet">
-<em class="property">class </em><code class="descclassname">pm4py.models.petri.net.</code><code class="descname">PetriNet</code><span class="sig-paren">(</span><em>name=None</em>, <em>places=None</em>, <em>transitions=None</em>, <em>arcs=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/models/petri/net.html#PetriNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.models.petri.net.PetriNet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="class">
-<dt id="pm4py.models.petri.net.PetriNet.Arc">
-<em class="property">class </em><code class="descname">Arc</code><span class="sig-paren">(</span><em>source</em>, <em>target</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/models/petri/net.html#PetriNet.Arc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Arc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.Arc.source">
-<code class="descname">source</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Arc.source" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.Arc.target">
-<code class="descname">target</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Arc.target" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.Arc.weight">
-<code class="descname">weight</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Arc.weight" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pm4py.models.petri.net.PetriNet.Place">
-<em class="property">class </em><code class="descname">Place</code><span class="sig-paren">(</span><em>name</em>, <em>in_arcs=None</em>, <em>out_arcs=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/models/petri/net.html#PetriNet.Place"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Place" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.Place.in_arcs">
-<code class="descname">in_arcs</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Place.in_arcs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.Place.name">
-<code class="descname">name</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Place.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.Place.out_arcs">
-<code class="descname">out_arcs</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Place.out_arcs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pm4py.models.petri.net.PetriNet.Transition">
-<em class="property">class </em><code class="descname">Transition</code><span class="sig-paren">(</span><em>name</em>, <em>label=None</em>, <em>in_arcs=None</em>, <em>out_arcs=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/models/petri/net.html#PetriNet.Transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Transition" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.Transition.in_arcs">
-<code class="descname">in_arcs</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Transition.in_arcs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.Transition.label">
-<code class="descname">label</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Transition.label" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.Transition.name">
-<code class="descname">name</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Transition.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.Transition.out_arcs">
-<code class="descname">out_arcs</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.Transition.out_arcs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.arcs">
-<code class="descname">arcs</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.arcs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.name">
-<code class="descname">name</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.places">
-<code class="descname">places</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.places" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pm4py.models.petri.net.PetriNet.transitions">
-<code class="descname">transitions</code><a class="headerlink" href="#pm4py.models.petri.net.PetriNet.transitions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="pm4py-models-petri-net-module">
+<h2>pm4py.models.petri.net module<a class="headerlink" href="#pm4py-models-petri-net-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-pm4py.models.petri.semantics">
 <span id="pm4py-models-petri-semantics-module"></span><h2>pm4py.models.petri.semantics module<a class="headerlink" href="#module-pm4py.models.petri.semantics" title="Permalink to this headline">¶</a></h2>
@@ -435,13 +335,16 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>fr</strong> – transition/place from</li>
-<li><strong>to</strong> – transition/place to</li>
-<li><strong>net</strong> – net to use</li>
+<li><strong>fr</strong> (<em>transition/place from</em>)</li>
+<li><strong>to</strong> (<em>transition/place to</em>)</li>
+<li><strong>net</strong> (<em>net to use</em>)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pass</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>
@@ -451,7 +354,27 @@
 <dl class="function">
 <dt id="pm4py.models.petri.utils.construct_trace_net">
 <code class="descclassname">pm4py.models.petri.utils.</code><code class="descname">construct_trace_net</code><span class="sig-paren">(</span><em>trace</em>, <em>trace_name_key='concept:name'</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/models/petri/utils.html#construct_trace_net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.models.petri.utils.construct_trace_net" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Creates a trace net, i.e. a trace in Petri net form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>trace</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> input trace, assumed to be a list of events)</li>
+<li><strong>trace_name_key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> key of the attribute that defines the name of the trace.)</li>
+<li><strong>activity_key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> key of the attribute of the events that defines the activity name)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>tuple</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> of the net, initial marking and the final marking</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 <div class="section" id="module-pm4py.models.petri.visualize">
@@ -459,7 +382,27 @@
 <dl class="function">
 <dt id="pm4py.models.petri.visualize.graphviz_visualization">
 <code class="descclassname">pm4py.models.petri.visualize.</code><code class="descname">graphviz_visualization</code><span class="sig-paren">(</span><em>net</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/models/petri/visualize.html#graphviz_visualization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.models.petri.visualize.graphviz_visualization" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Provides visualization for the petrinet</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.petri.petrinet.PetriNet</span></code>)</li>
+<li><strong>Petri net</strong></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>viz</em></li>
+<li><em>Returns a graph object</em></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 <div class="section" id="module-pm4py.models.petri">
