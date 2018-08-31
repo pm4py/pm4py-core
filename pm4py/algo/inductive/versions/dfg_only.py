@@ -52,7 +52,7 @@ class InductMinDirFollows(object):
 
         Parameters
         ----------
-        trace_log : :class:`pm4py.log.instance.TraceLog`
+        trace_log : :class:`pm4py.log.log.TraceLog`
             Event log to use in the alpha miner, note that it should be a TraceLog!
         activity_key : `str`, optional
             Key to use within events to identify the underlying activity.

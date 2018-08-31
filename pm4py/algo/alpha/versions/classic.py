@@ -14,7 +14,7 @@ def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
 
     Parameters
     ----------
-    trace_log : :class:`pm4py.log.instance.TraceLog`
+    trace_log : :class:`pm4py.log.log.TraceLog`
         Event log to use in the alpha miner, note that it should be a TraceLog!
     activity_key : :class:`str`, optional
         Key to use within events to identify the underlying activity.
