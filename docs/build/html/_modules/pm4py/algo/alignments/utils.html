@@ -147,6 +147,17 @@
 
 
 <div class="viewcode-block" id="construct_standard_cost_function"><a class="viewcode-back" href="../../../../pm4py.algo.alignments.html#pm4py.algo.alignments.utils.construct_standard_cost_function">[docs]</a><span class="k">def</span> <span class="nf">construct_standard_cost_function</span><span class="p">(</span><span class="n">synchronous_product_net</span><span class="p">,</span> <span class="n">skip</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns the standard cost function, which is:</span>
+<span class="sd">    * event moves: cost 1000</span>
+<span class="sd">    * model moves: cost 1000</span>
+<span class="sd">    * tau moves: cost 1</span>
+<span class="sd">    * sync moves: cost 0</span>
+
+<span class="sd">    :param synchronous_product_net:</span>
+<span class="sd">    :param skip:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">costs</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">synchronous_product_net</span><span class="o">.</span><span class="n">transitions</span><span class="p">:</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">skip</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">skip</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">label</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">label</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
