@@ -1,5 +1,5 @@
 from copy import copy, deepcopy
-from pm4py.log.instance import TraceLog
+from pm4py.log.log import TraceLog
 
 def get_variants_from_log(trace_log, activity_key="concept:name"):
     """

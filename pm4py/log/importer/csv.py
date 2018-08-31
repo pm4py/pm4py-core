@@ -91,7 +91,7 @@ def convert_dataframe_to_event_log(df):
 
      Returns
     -------
-    log : :class:`pm4py.log.instance.EventLog`
+    log : :class:`pm4py.log.log.EventLog`
         An event log
     """
     return log.instance.EventLog(df.to_dict('records'), attributes={'origin': 'csv'})
@@ -109,7 +109,7 @@ def import_from_path(path, sep=',', quotechar=None, nrows=None):
 
      Returns
     -------
-    log : :class:`pm4py.log.instance.EventLog`
+    log : :class:`pm4py.log.log.EventLog`
         An event log
     """
     df = import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows)

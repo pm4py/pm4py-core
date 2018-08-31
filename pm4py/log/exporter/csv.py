@@ -1,5 +1,5 @@
 from lxml import etree
-import pm4py.log.instance as log_instance
+import pm4py.log.log as log_instance
 import pm4py.log.transform as log_transform
 import pandas as pd
 
@@ -9,7 +9,7 @@ def get_dataframe_from_log(log):
 
 	Parameters
 	-----------
-	log: :class:`pm4py.log.instance.EventLog`
+	log: :class:`pm4py.log.log.EventLog`
 		Event log. Also, can take a trace log and convert it to event log
 
 	Returns
@@ -30,7 +30,7 @@ def export_log_as_string(log):
 
 	Parameters
 	-----------
-	log: :class:`pm4py.log.instance.EventLog`
+	log: :class:`pm4py.log.log.EventLog`
 		Event log. Also, can take a trace log and convert it to event log
 
 	Returns
@@ -48,7 +48,7 @@ def export_log(log, outputFilePath):
 
 	Parameters
 	----------
-	log: :class:`pm4py.log.instance.EventLog`
+	log: :class:`pm4py.log.log.EventLog`
 		Event log. Also, can take a trace log and convert it to event log
 	outputFilePath:
 		Output file path
