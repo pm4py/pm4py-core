@@ -5,7 +5,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from pm4py.models.petri.exporter import pnml as petri_exporter
 from pm4py.models.petri.importer import pnml as petri_importer
-from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
+from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 from pm4py.algo.tokenreplay.versions import token_replay
 from pm4py.models import petri
 from pm4py.log.importer import xes as xes_importer

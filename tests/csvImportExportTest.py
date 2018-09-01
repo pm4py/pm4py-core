@@ -8,7 +8,7 @@ from pm4py.log.exporter import xes as xes_exporter
 from pm4py.log.importer import csv as csv_importer
 from pm4py.log.exporter import csv as csv_exporter
 import pm4py.log.transform as log_transform
-from constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
+from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 
 class CsvImportExportTest(unittest.TestCase):
 	def test_importExportCSVtoXES(self):
