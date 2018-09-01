@@ -1,4 +1,4 @@
-from pm4py.algo.dfg import verions as dfg_versions
+from pm4py.algo.dfg import versions as dfg_versions
 from pm4py.log import util
 
 DFG_NATIVE = 'native'
