@@ -8,7 +8,7 @@ import pm4py.algo.alignments as align
 from pm4py.models import petri
 from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.algo.inductive.versions import dfg_only
-from constants import INPUT_DATA_DIR
+from tests.constants import INPUT_DATA_DIR
 
 
 class AlignmentTest(unittest.TestCase):
