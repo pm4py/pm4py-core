@@ -1,3 +1,7 @@
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir)
 #from pm4py.algo.inductive.versions import dfg_only
 from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.log.importer import xes as xes_importer
@@ -8,10 +12,10 @@ import traceback
 from pm4py.models.petri.exporter import pnml as petri_exporter
 
 if __name__ == "__main__":
-	log = xes_importer.import_from_file_xes('tests\\inputData\\running-example.xes')
+	log = xes_importer.import_from_file_xes('..\\tests\\inputData\\running-example.xes')
 
 	net, marking, final_marking = inductive_factory.apply(log)
-	petri_exporter.export_petri_to_pnml(net, marking, "running-example.pnml")
+	#petri_exporter.export_petri_to_pnml(net, marking, "running-example.pnml")
 	for place in marking:
 		print("initial marking "+place.name)
 	"""final_marking = petri.petrinet.Marking()
