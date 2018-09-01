@@ -87,6 +87,33 @@ def get_activities_color(activities_count):
 
     return activities_color
 
+def human_readable_stat(c):
+    """
+    Transform a timedelta expressed in seconds into a human readable string
+
+    Parameters
+    ----------
+    c
+        Timedelta expressed in seconds
+
+    Returns
+    ----------
+    string
+        Human readable string
+    """
+    c = int(c)
+    days = c // 86400
+    hours = c // 3600 % 24
+    minutes = c // 60 % 60
+    seconds = c % 60
+    if days > 0:
+        return str(days)+"D"
+    if hours > 0:
+        return str(hours)+"h"
+    if minutes > 0:
+        return str(minutes)+"m"
+    return str(seconds)+"s"
+
 def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequency", maxNoOfEdgesInDiagram=75):
     """
     Do GraphViz visualization of a DFG graph
@@ -154,8 +181,8 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
         if measure == "frequency":
             label = str(dfg[edge])
         else:
-            label = str(dfg[edge])
-        viz.edge(edge[0], edge[1], label=str(dfg[edge]), penwidth=str(penwidth[edge]))
+            label = human_readable_stat(dfg[edge])
+        viz.edge(edge[0], edge[1], label=label, penwidth=str(penwidth[edge]))
 
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
