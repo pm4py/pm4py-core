@@ -87,7 +87,7 @@ def get_activities_color(activities_count):
 
     return activities_color
 
-def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequency"):
+def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequency", maxNoOfEdgesInDiagram=75):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -100,7 +100,9 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
     format
         GraphViz should be represented in this format
     measure
-        Describes hich measure is assigned to edges in direcly follows graph (frequency/performance)
+        Describes which measure is assigned to edges in direcly follows graph (frequency/performance)
+    maxNoOfEdgesInDiagram
+        Maximum number of edges in the diagram allowed for visualization
 
     Returns
     -----------
@@ -109,6 +111,20 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
     """
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph("", filename=filename.name, engine='dot')
+
+    # first, remove edges in diagram that exceeds the maximum number of edges in the diagram
+    dfgKeyValueList = []
+    for edge in dfg:
+        dfgKeyValueList.append([edge, dfg[edge]])
+    dfgKeyValueList = sorted(dfgKeyValueList, key=lambda x: x[1], reverse=True)
+    dfgKeyValueList = dfgKeyValueList[0:min(len(dfgKeyValueList),maxNoOfEdgesInDiagram)]
+    dfgAllowedKeys = [x[0] for x in dfgKeyValueList]
+    dfgKeys = list(dfg.keys())
+    for edge in dfgKeys:
+        if not edge in dfgAllowedKeys:
+            del dfg[edge]
+
+    # calculate edges penwidth
     penwidth = assign_penwidth_edges(dfg)
     activities_in_dfg = set()
     activities_count_int = copy(activities_count)
@@ -122,8 +138,10 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
         if not act in activities_in_dfg:
             del activities_count_int[act]
 
+    # assign activities color
     activities_color = get_activities_color(activities_count_int)
 
+    # represent nodes
     viz.attr('node', shape='box')
     for act in activities_in_dfg:
         if measure == "frequency":
@@ -131,6 +149,7 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
         else:
             viz.node(act, act)
 
+    # represent edges
     for edge in dfg:
         if measure == "frequency":
             label = str(dfg[edge])
@@ -145,7 +164,7 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
 
     return viz
 
-def return_diagram_as_base64(activities_count, dfg, format="svg", measure="frequency"):
+def return_diagram_as_base64(activities_count, dfg, format="svg", measure="frequency", maxNoOfEdgesInDiagram=75):
     """
     Return process model in Base64 format
 
@@ -159,6 +178,8 @@ def return_diagram_as_base64(activities_count, dfg, format="svg", measure="frequ
         GraphViz should be represented in this format
     measure
         Describes hich measure is assigned to edges in direcly follows graph (frequency/performance)
+    maxNoOfEdgesInDiagram
+        Maximum number of edges in the diagram allowed for visualization
 
     Returns
     -----------
