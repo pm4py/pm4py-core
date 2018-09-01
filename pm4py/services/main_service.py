@@ -3,7 +3,7 @@ from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.log.importer import xes as xes_importer, csv as csv_importer
 from pm4py.models.petri.visualize import return_diagram_as_base64
-from pm4py.log.util import auto_filter
+from pm4py.log.util import auto_filter, activities as activities_module
 from pm4py.log import transform
 from flask_cors import CORS
 from threading import Semaphore
@@ -14,6 +14,7 @@ import logging, traceback
 from pm4py.algo.tokenreplay.versions import token_replay
 from pm4py.algo.tokenreplay.data_structures import performance_map
 from pm4py.log.util import insert_classifier
+from pm4py.algo.dfg import factory as dfg_factory, visualize as dfg_visualize, replacement as dfg_replacement
 
 class shared:
     # contains shared variables
@@ -159,22 +160,38 @@ def get_process_schema():
             # apply automatically a filter
             log = auto_filter.apply_auto_filter(copy(original_log), decreasingFactor=decreasingFactor, activity_key=activity_key)
             # apply a process discovery algorithm
-            if discoveryAlgorithm == "inductive":
-                net, initial_marking, final_marking = inductive_factory.apply(log, activity_key=activity_key)
-            elif discoveryAlgorithm == "alpha":
-                net, initial_marking, final_marking = alpha_factory.apply(log, activity_key=activity_key)
-            if replayEnabled:
-                # do the replay
-                [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-                    token_replay.apply_log(original_log, net, initial_marking, final_marking, activity_key=activity_key)
-                element_statistics = performance_map.single_element_statistics(original_log, net, initial_marking, activatedTransitions,
-                                                                               activity_key=activity_key, timestamp_key=timestamp_key)
-                aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=replayMeasure)
-                # return the diagram in base64
-                diagram = return_diagram_as_base64(net, format=imageFormat, initial_marking=initial_marking, final_marking=final_marking, decorations=aggregated_statistics)
+            if discoveryAlgorithm == "dfg":
+                # gets the number of occurrences of the single activities in the filtered log
+                filtered_log_activities_count = activities_module.get_activities_from_log(log)
+                # gets an intermediate log that is the original log restricted to the list
+                # of activities that appears in the filtered log
+                intermediate_log = activities_module.filter_log_by_specified_activities(original_log, filtered_log_activities_count)
+                # gets the number of occurrences of the single activities in the intermediate log
+                activities_count = activities_module.get_activities_from_log(intermediate_log)
+                # calculate DFG of the filtered log and of the intermediate log
+                dfg_filtered_log = dfg_factory.apply(log, variant=replayMeasure)
+                dfg_intermediate_log = dfg_factory.apply(intermediate_log, variant=replayMeasure)
+                # replace edges values in the filtered DFG from the one found in the intermediate log
+                dfg_filtered_log = dfg_replacement.replace_values(dfg_filtered_log, dfg_intermediate_log)
+                # retrieve the diagram in base64
+                diagram = dfg_visualize.return_diagram_as_base64(activities_count, dfg_filtered_log, format=imageFormat, measure=replayMeasure)
             else:
-                # return the diagram in base64
-                diagram = return_diagram_as_base64(net, format=imageFormat, initial_marking=initial_marking, final_marking=final_marking)
+                if discoveryAlgorithm == "inductive":
+                    net, initial_marking, final_marking = inductive_factory.apply(log, activity_key=activity_key)
+                elif discoveryAlgorithm == "alpha":
+                    net, initial_marking, final_marking = alpha_factory.apply(log, activity_key=activity_key)
+                if replayEnabled:
+                    # do the replay
+                    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
+                        token_replay.apply_log(original_log, net, initial_marking, final_marking, activity_key=activity_key)
+                    element_statistics = performance_map.single_element_statistics(original_log, net, initial_marking, activatedTransitions,
+                                                                                   activity_key=activity_key, timestamp_key=timestamp_key)
+                    aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=replayMeasure)
+                    # return the diagram in base64
+                    diagram = return_diagram_as_base64(net, format=imageFormat, initial_marking=initial_marking, final_marking=final_marking, decorations=aggregated_statistics)
+                else:
+                    # return the diagram in base64
+                    diagram = return_diagram_as_base64(net, format=imageFormat, initial_marking=initial_marking, final_marking=final_marking)
             return diagram
         else:
             # release the semaphore

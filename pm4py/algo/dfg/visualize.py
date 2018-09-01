@@ -213,7 +213,7 @@ def return_diagram_as_base64(activities_count, dfg, format="svg", measure="frequ
     string
     """
 
-    graphviz = graphviz_visualization(activities_count, dfg, format=format, measure="frequency")
+    graphviz = graphviz_visualization(activities_count, dfg, format=format, measure=measure)
     render = graphviz.render(view=False)
     with open(render, "rb") as f:
         return base64.b64encode(f.read())
