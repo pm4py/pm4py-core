@@ -2,7 +2,7 @@ from collections import Counter
 from pm4py.log import util
 
 
-def apply(trace_log, parameters=None, activity_key=util.xes.DEFAULT_NAME_KEY):
+def apply(trace_log, parameters=None, activity_key=util.xes.DEFAULT_NAME_KEY, timestamp_key="time:timestamp"):
     '''
     Counts the number of directly follows occurrences, i.e. of the form <...a,b...>, in an event log.
 
