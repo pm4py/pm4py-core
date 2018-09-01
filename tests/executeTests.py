@@ -10,6 +10,8 @@ from tests.imdfTest import InductiveMinerDFTest
 from tests.alignmentTest import AlignmentTest
 from tests.petriImportExportTest import PetriImportExportTest
 from tests.documentationTests.testDocAlpha1 import AlphaMinerDocumentationTest
+from tests.documentationTests.testDocInductive1 import InductiveMinerDocumentationTest
+from tests.documentationTests.testDocDfGraph1 import DfGraphDocumentationTest
 
 if __name__ == "__main__":
 	unittest.main()
