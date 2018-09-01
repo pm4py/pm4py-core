@@ -1,3 +1,7 @@
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir)
 import pm4py.algo.alignments as align
 import pm4py.evaluation as eval
 import pm4py.models.petri as petri

@@ -1,3 +1,7 @@
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir)
 #from pm4py.algo.inductive.versions import dfg_only
 from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.log.importer import xes as xes_importer
@@ -6,7 +10,7 @@ from pm4py.algo.tokenreplay.versions import token_replay
 from pm4py.algo.tokenreplay import factory as token_factory
 import time
 
-log = xes_importer.import_from_file_xes('tests\\inputData\\receipt.xes')
+log = xes_importer.import_from_file_xes('..\\tests\\inputData\\running-example.xes')
 print("loaded log")
 net, marking, final_marking = inductive_factory.apply(log)
 for place in marking:
