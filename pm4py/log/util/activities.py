@@ -117,6 +117,37 @@ def filter_log_by_activities(trace_log, activities, variants, vc, threshold, act
             filtered_log.append(new_trace)
     return filtered_log
 
+def filter_log_by_specified_activities(trace_log, activities_list, activity_key="concept:name"):
+    """
+    Filter log by keeping only activities that belongs to the activity list
+
+    Parameters
+    -----------
+    trace_log
+        Trace log
+    activities_list
+        Allowed activities
+    activity_key
+        Activiy key (must be specified if different from concept:name)
+
+    Returns
+    -----------
+    filtered_log
+        Filtered log
+    """
+    filtered_log = TraceLog()
+    for trace in trace_log:
+        new_trace = Trace()
+        j = 0
+        while j < len(trace):
+            activity = trace[j][activity_key]
+            if activity in activities_list:
+                new_trace.append(trace[j])
+            j = j + 1
+        if len(new_trace) > 0:
+            filtered_log.append(new_trace)
+    return filtered_log
+
 def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_key="concept:name"):
     """
     Apply an activities filter detecting automatically a percentage
