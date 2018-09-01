@@ -9,6 +9,7 @@ from tests.alphaMinerTest import AlphaMinerTest
 from tests.imdfTest import InductiveMinerDFTest
 from tests.alignmentTest import AlignmentTest
 from tests.petriImportExportTest import PetriImportExportTest
+from tests.documentationTests.testDocAlpha1 import AlphaMinerDocumentationTest
 
 if __name__ == "__main__":
 	unittest.main()
