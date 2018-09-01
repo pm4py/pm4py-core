@@ -1,4 +1,4 @@
-from pm4py.algo.dfg.verions import native as dfg_inst
+from pm4py.algo.dfg.versions import native as dfg_inst
 from pm4py.algo import causal
 
 
