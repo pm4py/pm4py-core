@@ -12,7 +12,7 @@ class ClassicAlphaAbstraction:
         self.__activity_key = activity_key
         self.__start_activities = self.__derive_start_activities(trace_log)
         self.__end_activities = self.__derive_end_activities(trace_log)
-        self.__dfg = {k: v for k, v in dfg_inst.apply(trace_log, activity_key).items() if v > 0}
+        self.__dfg = {k: v for k, v in dfg_inst.apply(trace_log, activity_key=activity_key).items() if v > 0}
         self.__causal_relations = {k: v for k, v in causal.factory.apply(self.dfg, variant=causal.factory.CAUSAL_ALPHA).items() if v > 0}.keys()
         self.__parallel = {(f, t) for (f, t) in self.dfg if (t, f) in self.dfg}
 
