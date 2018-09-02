@@ -12,6 +12,8 @@ from tests.petriImportExportTest import PetriImportExportTest
 from tests.documentationTests.testDocAlpha1 import AlphaMinerDocumentationTest
 from tests.documentationTests.testDocInductive1 import InductiveMinerDocumentationTest
 from tests.documentationTests.testDocDfGraph1 import DfGraphDocumentationTest
+from tests.documentationTests.testDocXes1 import XES1DocumentationTest
+from tests.documentationTests.testDocCsv1 import CSV1DocumentationTest
 
 if __name__ == "__main__":
 	unittest.main()
