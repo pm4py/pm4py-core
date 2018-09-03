@@ -26,8 +26,9 @@ class Counts(object):
         self.noOfHiddenTransitions = self.noOfHiddenTransitions + 1
 
 class Subtree(object):
-    def __init__(self, dfg, activities, counts, recDepth):
+    def __init__(self, dfg, initialDfg, activities, counts, recDepth):
         self.dfg = copy(dfg)
+        self.initialDfg = copy(initialDfg)
         self.counts = counts
         self.recDepth = recDepth
         if activities is None:
@@ -36,6 +37,8 @@ class Subtree(object):
             self.activities = copy(activities)
         self.outgoing = self.get_outgoing_edges(self.dfg)
         self.ingoing = self.get_ingoing_edges(self.dfg)
+        self.initialOutgoing = self.get_outgoing_edges(self.initialDfg)
+        self.initialIngoing = self.get_ingoing_edges(self.initialDfg)
         self.activitiesDirection = self.get_activities_direction()
         self.activitiesDirlist = self.get_activities_dirlist()
         self.negatedDfg = self.negate()
@@ -151,6 +154,28 @@ class Subtree(object):
         return [False, [], []]
 
     def detect_loop_cut(self, dfg):
+        LOOP_CONST_1 = 0.2
+        LOOP_CONST_2 = -0.15
+
+        if len(self.activitiesDirlist) > 1:
+            set1 = set()
+            set2 = set()
+
+            if self.activitiesDirlist[0][1] > LOOP_CONST_1:
+                if self.activitiesDirlist[0][0] in self.ingoing:
+                    activInput = list(self.ingoing[self.activitiesDirlist[0][0]])
+                    for act in activInput:
+                        if not act == self.activitiesDirlist[0][0] and self.activitiesDirection[act] < LOOP_CONST_2:
+                            set2.add(act)
+
+            if len(set2) > 0:
+                for act in self.activities:
+                    if not act in set2:
+                        set1.add(act)
+
+                if len(set1) > 0:
+                    return [True, set1, set2]
+
         return [False, [], []]
 
     def detect_cut(self):
@@ -159,12 +184,19 @@ class Subtree(object):
             if seqCut[0]:
                 dfg1 = self.filter_dfg_on_act(self.dfg, seqCut[1])
                 dfg2 = self.filter_dfg_on_act(self.dfg, seqCut[2])
-
                 self.detectedCut = "sequential"
-                self.children.append(Subtree(dfg1, seqCut[1], self.counts, self.recDepth+1))
-                self.children.append(Subtree(dfg2, seqCut[2], self.counts, self.recDepth+1))
+                self.children.append(Subtree(dfg1, self.initialDfg, seqCut[1], self.counts, self.recDepth+1))
+                self.children.append(Subtree(dfg2, self.initialDfg, seqCut[2], self.counts, self.recDepth+1))
             else:
-                self.detectedCut = "flower"
+                loopCut = self.detect_loop_cut(self.dfg)
+                if loopCut[0]:
+                    dfg1 = self.filter_dfg_on_act(self.dfg, loopCut[1])
+                    dfg2 = self.filter_dfg_on_act(self.dfg, loopCut[2])
+                    self.detectedCut = "loopCut"
+                    self.children.append(Subtree(dfg1, self.initialDfg, loopCut[1], self.counts, self.recDepth+1))
+                    self.children.append(Subtree(dfg2, self.initialDfg, loopCut[2], self.counts, self.recDepth + 1))
+                else:
+                    self.detectedCut = "flower"
         else:
             self.detectedCut = "base_concurrent"
 
@@ -187,7 +219,7 @@ class Subtree(object):
         return petri.petrinet.PetriNet.Transition(label, label)
 
     def form_petrinet(self, net, initial_marking, final_marking, must_add_initial_place=False, must_add_final_place=False, initial_connect_to=None, final_connect_to=None):
-        print(self.recDepth, self.activities, self.detectedCut, initial_connect_to, final_connect_to)
+        #print(self.recDepth, self.activities, self.detectedCut, initial_connect_to, final_connect_to)
         lastAddedPlace = None
         if self.recDepth == 0:
             source = self.get_new_place()
@@ -239,7 +271,7 @@ class Subtree(object):
                 petri.utils.add_arc_from_to(lastAddedPlace, loopTrans, net)
                 petri.utils.add_arc_from_to(loopTrans, initial_connect_to, net)
         # iterate over childs
-        if self.detectedCut == "sequential":
+        if self.detectedCut == "sequential" or self.detectedCut == "loopCut":
             net, initial_marking, final_marking, lastAddedPlace = self.children[0].form_petrinet(net, initial_marking,
                                                                                       final_marking,
                                                                                       initial_connect_to=initial_connect_to)
@@ -272,7 +304,7 @@ class InductMinDirFollows(object):
 
     def apply_dfg(self, dfg, parameters):
         c = Counts()
-        s = Subtree(dfg, None, c, 0)
+        s = Subtree(dfg, dfg, None, c, 0)
         net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
         initial_marking = Marking()
         final_marking = Marking()
