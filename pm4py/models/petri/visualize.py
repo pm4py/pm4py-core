@@ -1,5 +1,5 @@
 from graphviz import Digraph
-import tempfile, os
+import tempfile, os, shutil
 import base64
 from pm4py.models.petri.petrinet import Marking
 from random import random
@@ -101,3 +101,17 @@ def return_diagram_as_base64(net, format="svg", initial_marking=None, final_mark
     render = graphviz.render(view=False)
     with open(render, "rb") as f:
         return base64.b64encode(f.read())
+
+def save(gviz, outputFilePath):
+    """
+    Save the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    outputFilePath
+        Path where the GraphViz output should be saved
+    """
+    render = gviz.render()
+    shutil.copyfile(render, outputFilePath)
