@@ -19,6 +19,7 @@ from tests.dataframePrefiltering import DataframePrefilteringTest
 from tests.filteringTest import LogFilteringTest
 from tests.etcTests import ETCTest
 from tests.petriLogGeneratorTests import PetriLogGeneratorTests
+from tests.transitionSystemTests import TransitionSystemTest
 
 if __name__ == "__main__":
 	unittest.main()
