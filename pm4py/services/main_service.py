@@ -73,10 +73,14 @@ def load_logs():
                         if logExtension == "xes":
                             # load XES files
                             shared.trace_logs[logName] = xes_importer.import_from_file_xes(fullPath)
+                            shared.trace_logs[logName].sort()
+                            shared.trace_logs[logName].insert_trace_index_as_event_attribute()
                         elif logExtension == "csv":
                             # load CSV files
                             event_log = csv_importer.import_from_path(fullPath)
                             shared.trace_logs[logName] = transform.transform_event_log_to_trace_log(event_log)
+                            shared.trace_logs[logName].sort()
+                            shared.trace_logs[logName].insert_trace_index_as_event_attribute()
             except Exception as e:
                 # manage exception
                 logging.error("exception loading log: "+str(file)+": "+str(e))
