@@ -8,7 +8,7 @@ import tempfile, os
 EVENT_END = 'end'
 EVENT_START = 'start'
 
-def import_from_xes_string(xes_string):
+def import_from_xes_string(xes_string, timestamp_sort=False, timestamp_key="time:timestamp", reverse_sort=False, insert_trace_indexes=False):
     """
     Imports XES log from XES string
 
@@ -16,6 +16,14 @@ def import_from_xes_string(xes_string):
     ----------
     xes_string
         XES string
+    timestamp_sort
+        Specify if we should sort log by timestamp
+    timestamp_key
+        If sort is enabled, then sort the log by using this key
+    reverse_sort
+        Specify in which direction the log should be sorted
+    index_trace_indexes
+        Specify if trace indexes should be added as event attribute for each event
 
     Returns
     -----------
@@ -26,11 +34,11 @@ def import_from_xes_string(xes_string):
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(xes_string)
-    log = import_from_file_xes(fp.name)
+    log = import_from_file_xes(fp.name, timestamp_sort=timestamp_sort, timestamp_key=timestamp_key, reverse_sort=reverse_sort, insert_trace_indexes=insert_trace_indexes)
     os.remove(fp.name)
     return log
 
-def import_from_file_xes(filename):
+def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:timestamp", reverse_sort=False, insert_trace_indexes=False):
     """
     Imports an XES file into a log object
 
@@ -38,6 +46,14 @@ def import_from_file_xes(filename):
     ----------
     filename:
         Absolute filename
+    timestamp_sort
+        Specify if we should sort log by timestamp
+    timestamp_key
+        If sort is enabled, then sort the log by using this key
+    reverse_sort
+        Specify in which direction the log should be sorted
+    index_trace_indexes
+        Specify if trace indexes should be added as event attribute for each event
 
     Returns
     -------
@@ -159,6 +175,12 @@ def import_from_file_xes(filename):
                 except TypeError:
                     pass
     del context
+
+    if timestamp_sort:
+        log.sort(timestamp_key=timestamp_key, reverse_sort=reverse_sort)
+    if insert_trace_indexes:
+        log.insert_trace_index_as_event_attribute()
+
     return log
 
 
