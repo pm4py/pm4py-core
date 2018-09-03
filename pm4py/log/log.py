@@ -108,6 +108,8 @@ class EventLog(Sequence):
         setEvents = set()
         while len(setEvents) < min(no_events, len(self._list)):
             setEvents.add(random.randrange(0, len(self._list)))
+        setEvents = list(setEvents)
+        setEvents.sort()
         for event in setEvents:
             newLog.append(copy(self._list[event]))
         return newLog
@@ -122,10 +124,11 @@ class EventLog(Sequence):
             Attribute name given to the event index
         """
 
-        i = 0
-        while i < len(self._list):
-            self._list[i][event_index_attr_name] = i+1
-            i = i + 1
+        if not type(self) is TraceLog:
+            i = 0
+            while i < len(self._list):
+                self._list[i][event_index_attr_name] = i+1
+                i = i + 1
 
     attributes = property(_get_attributes)
     extensions = property(_get_extensions)
@@ -226,6 +229,8 @@ class TraceLog(EventLog):
         setTraces = set()
         while len(setTraces) < min(no_traces, len(self._list)):
             setTraces.add(random.randrange(0, len(self._list)))
+        setTraces = list(setTraces)
+        setTraces.sort()
         for trace in setTraces:
             newLog.append(copy(self._list[trace]))
         return newLog
