@@ -76,6 +76,19 @@ class EventLog(Sequence):
     def _get_classifiers(self):
         return self._classifiers
 
+    def sort(self, timestamp_key="time:timestamp", reverse_sort=False):
+        """
+        Sort an event log based on timestamp key
+
+        Parameters
+        -----------
+        timestamp_key
+            Timestamp key
+        reverse_sort
+            If true, reverses the direction in which the sort is done (ascending)
+        """
+        self._list.sort(key=lambda x: x[timestamp_key], reverse=reverse_sort)
+
     attributes = property(_get_attributes)
     extensions = property(_get_extensions)
     omni_present = property(_get_omni)
@@ -121,6 +134,19 @@ class Trace(Sequence):
     def _get_attributes(self):
         return self._attributes
 
+    def sort(self, timestamp_key="time:timestamp", reverse_sort=False):
+        """
+        Sort a trace based on timestamp key
+
+        Parameters
+        -----------
+        timestamp_key
+            Timestamp key
+        reverse_sort
+            If true, reverses the direction in which the sort is done (ascending)
+        """
+        self._list.sort(key=lambda x: x[timestamp_key], reverse=reverse_sort)
+
     attributes = property(_get_attributes)
 
 
@@ -128,3 +154,18 @@ class TraceLog(EventLog):
     def __init__(self, *args, **kwargs):
         super(TraceLog, self).__init__(*args, **kwargs)
 
+    def sort(self, timestamp_key="time:timestamp", reverse_sort=False):
+        """
+        Sort a trace log based on timestamp key
+
+        Parameters
+        -----------
+        timestamp_key
+            Timestamp key
+        reverse_sort
+            If true, reverses the direction in which the sort is done (ascending)
+        """
+        self._list = [x for x in self._list if len(x) > 0]
+        for trace in self._list:
+            trace.sort(timestamp_key=timestamp_key, reverse_sort=reverse_sort)
+        self._list.sort(key=lambda x: x[0][timestamp_key], reverse=reverse_sort)
