@@ -1,5 +1,6 @@
 from collections.abc import Mapping, Sequence
-
+import random
+from copy import copy
 
 class Event(Mapping):
     """ Object useful for the second
@@ -89,6 +90,29 @@ class EventLog(Sequence):
         """
         self._list.sort(key=lambda x: x[timestamp_key], reverse=reverse_sort)
 
+    def sample(self, no_events=100):
+        """
+        Randomly sample a fixed number of events from the original log
+
+        Parameters
+        -----------
+        no_events
+            Number of events that the sample should have
+
+        Returns
+        -----------
+        newLog
+            Filtered log
+        """
+        newLog = EventLog(attributes=self.attributes, extensions=self.extensions, globals=self._omni, classifiers=self.classifiers)
+        setEvents = set()
+        while len(setEvents) < min(no_events, len(self._list)):
+            setEvents.add(random.randrange(0, len(self._list)))
+        for event in setEvents:
+            newLog.append(copy(self._list[event]))
+        return newLog
+
+
     attributes = property(_get_attributes)
     extensions = property(_get_extensions)
     omni_present = property(_get_omni)
@@ -169,3 +193,25 @@ class TraceLog(EventLog):
         for trace in self._list:
             trace.sort(timestamp_key=timestamp_key, reverse_sort=reverse_sort)
         self._list.sort(key=lambda x: x[0][timestamp_key], reverse=reverse_sort)
+
+    def sample(self, no_traces=100):
+        """
+        Randomly sample a fixed number of traces from the original log
+
+        Parameters
+        -----------
+        no_traces
+            Number of traces that the sample should have
+
+        Returns
+        -----------
+        newLog
+            Filtered log
+        """
+        newLog = TraceLog(attributes=self.attributes, extensions=self.extensions, globals=self._omni, classifiers=self.classifiers)
+        setTraces = set()
+        while len(setTraces) < min(no_traces, len(self._list)):
+            setTraces.add(random.randrange(0, len(self._list)))
+        for trace in setTraces:
+            newLog.append(copy(self._list[trace]))
+        return newLog
