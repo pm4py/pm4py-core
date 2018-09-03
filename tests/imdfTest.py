@@ -31,6 +31,8 @@ class InductiveMinerDFTest(unittest.TestCase):
 		# are working correctly
 		log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
 		log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+		log1.sort()
+		log2.sort()
 		petri_exporter.export_petri_to_pnml(net1, marking1, os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		os.remove(os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		self.assertEqual(len(net1.places),len(net2.places))
@@ -47,6 +49,8 @@ class InductiveMinerDFTest(unittest.TestCase):
 		# are working correctly
 		log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
 		log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
+		log1.sort()
+		log2.sort()
 		petri_exporter.export_petri_to_pnml(net1, marking1, os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		os.remove(os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		self.assertEqual(len(net1.places),len(net2.places))
@@ -60,6 +64,7 @@ class InductiveMinerDFTest(unittest.TestCase):
 	
 	def test_imdfVisualizationFromXES(self):
 		log, net, marking, fmarking = self.obtainPetriNetThroughImdf(os.path.join(INPUT_DATA_DIR,"running-example.xes"))
+		log.sort()
 		petri_exporter.export_petri_to_pnml(net, marking, os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		os.remove(os.path.join(OUTPUT_DATA_DIR,"running-example.pnml"))
 		gviz = pn_viz.graphviz_visualization(net)

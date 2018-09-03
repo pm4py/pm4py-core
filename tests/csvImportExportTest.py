@@ -13,7 +13,9 @@ from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 class CsvImportExportTest(unittest.TestCase):
 	def test_importExportCSVtoXES(self):
 		eventLog = csv_importer.import_from_path(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
+		eventLog.sort()
 		traceLog = log_transform.transform_event_log_to_trace_log(eventLog)
+		traceLog.sort()
 		xes_exporter.export_log(traceLog, os.path.join(OUTPUT_DATA_DIR,"running-example-exported.xes"))
 		traceLogImportedAfterExport = xes_importer.import_from_file_xes(os.path.join(OUTPUT_DATA_DIR, "running-example-exported.xes"))
 		self.assertEqual(len(traceLog),len(traceLogImportedAfterExport))
@@ -21,7 +23,9 @@ class CsvImportExportTest(unittest.TestCase):
 	
 	def test_importExportCSVtoCSV(self):
 		eventLog = csv_importer.import_from_path(os.path.join(INPUT_DATA_DIR,"running-example.csv"))
+		eventLog.sort()
 		traceLog = log_transform.transform_event_log_to_trace_log(eventLog)
+		traceLog.sort()
 		eventLogTransformed = log_transform.transform_trace_log_to_event_log(traceLog)
 		csv_exporter.export_log(eventLogTransformed, os.path.join(OUTPUT_DATA_DIR,"running-example-exported.csv"))
 		eventLogImportedAfterExport = csv_importer.import_from_path(os.path.join(OUTPUT_DATA_DIR,"running-example-exported.csv"))
