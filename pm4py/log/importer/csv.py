@@ -2,7 +2,7 @@ from pm4py import log
 import pandas as pd
 import tempfile, os
 
-def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None):
+def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None, sort=False, sort_field=None):
     """
     Import dataframe from CSV string
 
@@ -20,11 +20,11 @@ def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(csv_string)
-    df = import_dataframe_from_path(fp.name, sep=sep, quotechar=quotechar, nrows=nrows)
+    df = import_dataframe_from_path(fp.name, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort, sort_field=sort_field)
     os.remove(fp.name)
     return df
 
-def import_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None):
+def import_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None, sort=False, sort_field=None):
     """
     Import CSV log from CSV string
 
@@ -42,7 +42,7 @@ def import_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None):
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(csv_string)
-    log = import_from_path(fp.name, sep=sep, quotechar=quotechar, nrows=nrows)
+    log = import_from_path(fp.name, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort, sort_field=sort_field)
     os.remove(fp.name)
     return log
 
@@ -96,7 +96,7 @@ def convert_timestamp_columns_in_df(df):
                     pass
     return df
 
-def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None):
+def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort_field=None):
     """
     Imports a dataframe from the given path
 
@@ -113,7 +113,10 @@ def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None):
         Pandas dataframe
     """
     df = import_dataframe_from_path_wo_timeconversion(path, sep=sep, quotechar=quotechar, nrows=nrows)
-    return convert_timestamp_columns_in_df(df)
+    df = convert_timestamp_columns_in_df(df)
+    if sort and sort_field:
+        df = df.sort_values(sort_field)
+    return df
 
 def convert_dataframe_to_event_log(df):
     """
@@ -131,7 +134,7 @@ def convert_dataframe_to_event_log(df):
     """
     return log.log.EventLog(df.to_dict('records'), attributes={'origin': 'csv'})
 
-def import_from_path(path, sep=',', quotechar=None, nrows=None):
+def import_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort_field=None):
     """
     Imports a CSV file from the given path
 
@@ -147,5 +150,5 @@ def import_from_path(path, sep=',', quotechar=None, nrows=None):
     log : :class:`pm4py.log.log.EventLog`
         An event log
     """
-    df = import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows)
+    df = import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort, sort_field=sort_field)
     return convert_dataframe_to_event_log(df)
