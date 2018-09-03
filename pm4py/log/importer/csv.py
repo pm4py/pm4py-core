@@ -46,9 +46,9 @@ def import_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None):
     os.remove(fp.name)
     return log
 
-def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None):
+def import_dataframe_from_path_wo_timeconversion(path, sep=',', quotechar=None, nrows=None):
     """
-    Imports a dataframe from the given path
+    Imports a dataframe from the given path (without doing the timestamp columns conversion)
 
     Parameters
     ----------
@@ -72,6 +72,22 @@ def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None):
             df = pd.read_csv(path, sep=sep, nrows=nrows)
         else:
             df = pd.read_csv(path, sep=sep)
+    return df
+
+def convert_timestamp_columns_in_df(df):
+    """
+    Convert all dataframe columns in a dataframe
+
+    Parameters
+    -----------
+    df
+        Dataframe
+
+    Returns
+    ------------
+    df
+        Dataframe with timestamp columns converted
+    """
     for col in df.columns:
         if df[col].dtype == 'object':
             try:
@@ -79,6 +95,25 @@ def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None):
             except ValueError:
                     pass
     return df
+
+def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None):
+    """
+    Imports a dataframe from the given path
+
+    Parameters
+    ----------
+    path:
+        Input CSV file path
+    sep:
+        column separator
+
+     Returns
+    -------
+    pd
+        Pandas dataframe
+    """
+    df = import_dataframe_from_path_wo_timeconversion(path, sep=sep, quotechar=quotechar, nrows=nrows)
+    return convert_timestamp_columns_in_df(df)
 
 def convert_dataframe_to_event_log(df):
     """
