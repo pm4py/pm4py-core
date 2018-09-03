@@ -112,6 +112,20 @@ class EventLog(Sequence):
             newLog.append(copy(self._list[event]))
         return newLog
 
+    def insert_event_index_as_event_attribute(self, event_index_attr_name="@@eventindex"):
+        """
+        Insert the current event index as event attribute
+
+        Parameters
+        -----------
+        event_index_attr_name
+            Attribute name given to the event index
+        """
+
+        i = 0
+        while i < len(self._list):
+            self._list[i][event_index_attr_name] = i+1
+            i = i + 1
 
     attributes = property(_get_attributes)
     extensions = property(_get_extensions)
@@ -215,3 +229,21 @@ class TraceLog(EventLog):
         for trace in setTraces:
             newLog.append(copy(self._list[trace]))
         return newLog
+
+    def insert_trace_index_as_event_attribute(self, trace_index_attr_name="@@traceindex"):
+        """
+        Inserts the current trace index as event attribute
+        (overrides previous values if needed)
+
+        Parameters
+        -----------
+        trace_index_attr_name
+            Attribute name given to the trace index
+        """
+        i = 0
+        while i < len(self._list):
+            j = 0
+            while j < len(self._list[i]):
+                self._list[i][j][trace_index_attr_name] = i+1
+                j = j + 1
+            i = i + 1
