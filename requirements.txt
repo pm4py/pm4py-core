@@ -1,8 +1,9 @@
-lxml
-graphviz
 ciso8601
-pandas
-dataclasses
 cvxopt
+dataclasses
 flask
 flask-cors
+lxml
+graphviz
+pandas
+python-graphviz
