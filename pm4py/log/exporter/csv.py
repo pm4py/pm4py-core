@@ -1,6 +1,6 @@
 from lxml import etree
-import pm4py.log.log as log_instance
-import pm4py.log.transform as log_transform
+from pm4py.log import log as log_instance
+from pm4py.log import transform as log_transform
 import pandas as pd
 
 def get_dataframe_from_log(log):

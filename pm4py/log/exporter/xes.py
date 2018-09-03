@@ -1,7 +1,7 @@
 from lxml import etree
-import pm4py.log.log as log_instance
-import pm4py.log.transform as log_transform
-import pm4py.log.util.xes as xes_util
+from pm4py.log import log as log_instance
+from pm4py.log import transform as log_transform
+from pm4py.log.util import xes as xes_util
 
 # defines correspondence between Python types and XES types
 TYPE_CORRESPONDENCE = {
