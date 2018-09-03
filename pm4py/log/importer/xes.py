@@ -8,7 +8,7 @@ import tempfile, os
 EVENT_END = 'end'
 EVENT_START = 'start'
 
-def import_from_xes_string(xes_string, timestamp_sort=False, timestamp_key="time:timestamp", reverse_sort=False, insert_trace_indexes=False):
+def import_from_xes_string(xes_string, timestamp_sort=False, timestamp_key="time:timestamp", reverse_sort=False, insert_trace_indexes=False, max_no_traces_to_import=100000000):
     """
     Imports XES log from XES string
 
@@ -24,6 +24,8 @@ def import_from_xes_string(xes_string, timestamp_sort=False, timestamp_key="time
         Specify in which direction the log should be sorted
     index_trace_indexes
         Specify if trace indexes should be added as event attribute for each event
+    max_no_traces_to_import
+        Specify the maximum number of traces to import from the log (read in order in the XML file)
 
     Returns
     -----------
@@ -34,11 +36,12 @@ def import_from_xes_string(xes_string, timestamp_sort=False, timestamp_key="time
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(xes_string)
-    log = import_from_file_xes(fp.name, timestamp_sort=timestamp_sort, timestamp_key=timestamp_key, reverse_sort=reverse_sort, insert_trace_indexes=insert_trace_indexes)
+    log = import_from_file_xes(fp.name, timestamp_sort=timestamp_sort, timestamp_key=timestamp_key, reverse_sort=reverse_sort,
+                               insert_trace_indexes=insert_trace_indexes, max_no_traces_to_import=max_no_traces_to_import)
     os.remove(fp.name)
     return log
 
-def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:timestamp", reverse_sort=False, insert_trace_indexes=False):
+def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:timestamp", reverse_sort=False, insert_trace_indexes=False, max_no_traces_to_import=100000000):
     """
     Imports an XES file into a log object
 
@@ -54,6 +57,8 @@ def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:tim
         Specify in which direction the log should be sorted
     index_trace_indexes
         Specify if trace indexes should be added as event attribute for each event
+    max_no_traces_to_import
+        Specify the maximum number of traces to import from the log (read in order in the XML file)
 
     Returns
     -------
@@ -69,7 +74,6 @@ def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:tim
     tree = {}
 
     for tree_event, elem in context:
-
         if tree_event == EVENT_START:  # starting to read
             parent = tree[elem.getparent()] if elem.getparent() in tree else None
 
@@ -80,6 +84,8 @@ def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:tim
                 tree[elem] = log.attributes
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_TRACE):
+                if len(log) >= max_no_traces_to_import:
+                    break
                 if trace is not None:
                     raise SyntaxError('file contains <trace> in another <trace> tag')
                 trace = log_lib.log.Trace()
