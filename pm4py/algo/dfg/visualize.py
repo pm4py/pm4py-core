@@ -2,6 +2,7 @@ from graphviz import Digraph
 import tempfile, os
 import base64
 from copy import deepcopy, copy
+import os, shutil
 
 MAX_EDGE_PENWIDTH_GRAPHVIZ = 2.6
 MIN_EDGE_PENWIDTH_GRAPHVIZ = 1.0
@@ -217,3 +218,17 @@ def return_diagram_as_base64(activities_count, dfg, format="svg", measure="frequ
     render = graphviz.render(view=False)
     with open(render, "rb") as f:
         return base64.b64encode(f.read())
+
+def save(gviz, outputFilePath):
+    """
+    Save the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    outputFilePath
+        Path where the GraphViz output should be saved
+    """
+    render = gviz.render()
+    shutil.copyfile(render, outputFilePath)
