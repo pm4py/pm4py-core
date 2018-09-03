@@ -1,8 +1,9 @@
 from pm4py import log
 import pandas as pd
 import tempfile, os
+from pm4py.log.importer.utils import df_filtering
 
-def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None, sort=False, sort_field=None):
+def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None, sort=False, sort_field="time:timestamp"):
     """
     Import dataframe from CSV string
 
@@ -10,6 +11,16 @@ def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=
     -----------
     csv_string
         CSV string
+    sep
+        CSV columns delimiter
+    quotechar
+        (if specified) Character that starts/end big strings in CSV
+    nrows
+        (if specified) Maximum number of rows to read from the CSV
+    sort
+        Boolean value that tells if the CSV should be ordered
+    sort_field
+        If sort option is enabled, then the CSV is automatically sorted by the specified column
 
     Returns
     -----------
@@ -24,7 +35,7 @@ def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=
     os.remove(fp.name)
     return df
 
-def import_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None, sort=False, sort_field=None):
+def import_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None, sort=False, sort_field="time:timestamp"):
     """
     Import CSV log from CSV string
 
@@ -32,6 +43,14 @@ def import_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None, sort
     -----------
     csv_string
         CSV string
+    quotechar
+        (if specified) Character that starts/end big strings in CSV
+    nrows
+        (if specified) Maximum number of rows to read from the CSV
+    sort
+        Boolean value that tells if the CSV should be ordered
+    sort_field
+        If sort option is enabled, then the CSV is automatically sorted by the specified column
 
     Returns
     -----------
@@ -56,6 +75,10 @@ def import_dataframe_from_path_wo_timeconversion(path, sep=',', quotechar=None, 
         Input CSV file path
     sep:
         column separator
+    quotechar
+        (if specified) Character that starts/end big strings in CSV
+    nrows
+        (if specified) Maximum number of rows to read from the CSV
 
      Returns
     -------
@@ -72,6 +95,7 @@ def import_dataframe_from_path_wo_timeconversion(path, sep=',', quotechar=None, 
             df = pd.read_csv(path, sep=sep, nrows=nrows)
         else:
             df = pd.read_csv(path, sep=sep)
+
     return df
 
 def convert_timestamp_columns_in_df(df):
@@ -96,7 +120,7 @@ def convert_timestamp_columns_in_df(df):
                     pass
     return df
 
-def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort_field=None):
+def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort_field="time:timestamp"):
     """
     Imports a dataframe from the given path
 
@@ -106,6 +130,14 @@ def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None, sort=F
         Input CSV file path
     sep:
         column separator
+    quotechar
+        (if specified) Character that starts/end big strings in CSV
+    nrows
+        (if specified) Maximum number of rows to read from the CSV
+    sort
+        Boolean value that tells if the CSV should be ordered
+    sort_field
+        If sort option is enabled, then the CSV is automatically sorted by the specified column
 
      Returns
     -------
@@ -134,7 +166,7 @@ def convert_dataframe_to_event_log(df):
     """
     return log.log.EventLog(df.to_dict('records'), attributes={'origin': 'csv'})
 
-def import_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort_field=None):
+def import_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort_field="time:timestamp"):
     """
     Imports a CSV file from the given path
 
@@ -144,6 +176,14 @@ def import_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort
         Input CSV file path
     sep:
         column separator
+    quotechar
+        (if specified) Character that starts/end big strings in CSV
+    nrows
+        (if specified) Maximum number of rows to read from the CSV
+    sort
+        Boolean value that tells if the CSV should be ordered
+    sort_field
+        If sort option is enabled, then the CSV is automatically sorted by the specified column
 
      Returns
     -------
