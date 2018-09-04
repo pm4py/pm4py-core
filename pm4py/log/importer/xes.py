@@ -194,7 +194,10 @@ def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:tim
                 except TypeError:
                     pass
 
-            if elem.tag.endswith(log_lib.util.xes.TAG_LOG):
+            if elem.tag.endswith(log_lib.util.xes.TAG_EVENT):
+                if trace is not None:
+                    trace.append(event)
+                    event = None
                 continue
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_TRACE):
@@ -202,10 +205,7 @@ def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:tim
                 trace = None
                 continue
 
-            elif elem.tag.endswith(log_lib.util.xes.TAG_EVENT):
-                if trace is not None:
-                    trace.append(event)
-                    event = None
+            elif elem.tag.endswith(log_lib.util.xes.TAG_LOG):
                 continue
 
     del context
