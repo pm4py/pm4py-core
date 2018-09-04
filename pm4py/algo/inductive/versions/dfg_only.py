@@ -8,6 +8,7 @@ from copy import deepcopy, copy
 import math
 import sys
 from pm4py.models.petri.petrinet import PetriNet
+from collections import Counter
 
 sys.setrecursionlimit(100000)
 
@@ -582,13 +583,12 @@ class Subtree(object):
         lastAddedPlace
             lastAddedPlace
         """
-        #print(self.recDepth, self.activities, self.detectedCut, initial_connect_to, final_connect_to)
+        print(self.recDepth, self.activities, self.detectedCut, initial_connect_to, final_connect_to)
         lastAddedPlace = None
         initialPlace = None
         finalPlace = None
         if self.recDepth == 0:
             source = self.get_new_place()
-            source.name = "source"
             initial_connect_to = source
             initialPlace = source
             net.places.add(source)
@@ -616,21 +616,23 @@ class Subtree(object):
                 net.places.add(newPlace)
                 petri.utils.add_arc_from_to(initial_connect_to, initialTrans, net)
                 petri.utils.add_arc_from_to(initialTrans, newPlace, net)
-            if self.detectedCut == "base_concurrent" or self.detectedCut == "flower":
-                if final_connect_to is None or type(final_connect_to) is PetriNet.Transition:
-                    if finalPlace is not None:
-                        lastAddedPlace = finalPlace
-                    else:
-                        lastAddedPlace = self.get_new_place()
-                        net.places.add(lastAddedPlace)
-                else:
-                    lastAddedPlace = final_connect_to
 
-                for act in self.activities:
-                    trans = self.get_transition(act)
-                    net.transitions.add(trans)
-                    petri.utils.add_arc_from_to(initialPlace, trans, net)
-                    petri.utils.add_arc_from_to(trans, lastAddedPlace, net)
+        if self.detectedCut == "base_concurrent" or self.detectedCut == "flower":
+            if final_connect_to is None or type(final_connect_to) is PetriNet.Transition:
+                if finalPlace is not None:
+                    lastAddedPlace = finalPlace
+                else:
+                    lastAddedPlace = self.get_new_place()
+                    net.places.add(lastAddedPlace)
+            else:
+                lastAddedPlace = final_connect_to
+
+            for act in self.activities:
+                trans = self.get_transition(act)
+                net.transitions.add(trans)
+                petri.utils.add_arc_from_to(initialPlace, trans, net)
+                petri.utils.add_arc_from_to(trans, lastAddedPlace, net)
+
         # iterate over childs
         if self.detectedCut == "sequential" or self.detectedCut == "loopCut":
 
@@ -726,6 +728,16 @@ class Subtree(object):
                 petri.utils.add_arc_from_to(newHidden, newSink, net)
                 sink = newSink
 
+            if len(source.in_arcs) > 0:
+                newSource = self.get_new_place()
+                net.places.add(newSource)
+                newHidden = self.get_new_hidden_trans(type="tau")
+                net.transitions.add(newHidden)
+                petri.utils.add_arc_from_to(newSource, newHidden, net)
+                petri.utils.add_arc_from_to(newHidden, source, net)
+                source = newSource
+
+            source.name = "source"
             sink.name = "sink"
             initial_marking[source] = 1
             final_marking[sink] = 1
@@ -760,7 +772,7 @@ class InductMinDirFollows(object):
         dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, activity_key=activity_key).items() if v > 0]
         return self.apply_dfg(dfg, parameters)
 
-    def apply_dfg(self, dfg, parameters):
+    def apply_dfg(self, dfg, parameters, activity_key="concept:name"):
         """
         Apply the IMDF algorithm to a DFG graph
 
@@ -780,6 +792,16 @@ class InductMinDirFollows(object):
         final_marking
             Final marking
         """
+
+        if type(dfg) is Counter:
+            newdfg = []
+            for key in dfg:
+                value = dfg[key]
+                newdfg.append((key, value))
+            dfg = newdfg
+
+        print(dfg)
+
         c = Counts()
         s = Subtree(dfg, dfg, None, c, 0)
         net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
