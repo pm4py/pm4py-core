@@ -24,7 +24,7 @@ def get_activities_count(df, activity_key="concept:name"):
 def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name", timestamp_key="time:timestamp"):
 
     # to get rows belonging to same case ID together, we need to sort on case ID
-    df = df.sort_values(case_id_glue)
+    df = df.sort_values([case_id_glue, timestamp_key])
     # to test approaches reduce dataframe to case, activity and complete timestamp columns
     dfReduced = df[[case_id_glue, activity_key, timestamp_key]]
     # shift the dataframe by 1, in order to couple successive rows
@@ -36,6 +36,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     # as successive rows in the sorted dataframe may belong to different case IDs we have to restrict ourselves to successive
     # rows belonging to same case ID
     dfSuccessiveRows = dfSuccessiveRows[dfSuccessiveRows[case_id_glue] == dfSuccessiveRows[case_id_glue+'_2']]
+
     # calculate the difference between the timestamps of two successive events
     dfSuccessiveRows['timeDiff'] = (dfSuccessiveRows[timestamp_key+'_2'] - dfSuccessiveRows[timestamp_key]).apply(
         lambda x: x.total_seconds())
