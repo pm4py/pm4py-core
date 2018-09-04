@@ -7,6 +7,9 @@ from pm4py.log.importer.utils import df_filtering, df_statistics
 from pm4py.log import transform
 import time
 from pm4py.algo.dfg import visualize as dfg_visualize
+from pm4py.algo.inductive import factory as inductive_factory
+from pm4py.models.petri import visualize as pn_viz
+
 
 time1 = time.time()
 inputLog = "..\\tests\\inputData\\running-example.csv"
@@ -37,6 +40,12 @@ dfg_graph = df_statistics.get_dfg_graph(dataframe)
 #activities_count = df_statistics.get_activities_count(dataframe, activity_key="event")
 #dfg_graph = df_statistics.get_dfg_graph(dataframe, activity_key="event", case_id_glue="case", timestamp_key="completeTime")
 time8 = time.time()
-print("time8 - time1: "+str(time8-time1))
+print("time8 - time7: "+str(time8-time7))
 gviz = dfg_visualize.graphviz_visualization(activities_count, dfg_graph)
 gviz.view()
+net, initial_marking, final_marking = inductive_factory.apply_dfg(dfg_graph)
+gviz = pn_viz.graphviz_visualization(net, initial_marking=initial_marking, final_marking=final_marking, debug=True)
+gviz.view()
+time9 = time.time()
+print("time9 - time8: "+str(time9-time8))
+print("time9 - time1: "+str(time9-time1))
