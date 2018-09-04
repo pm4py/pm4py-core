@@ -8,7 +8,9 @@ import tempfile, os
 EVENT_END = 'end'
 EVENT_START = 'start'
 
-def import_from_xes_string(xes_string, timestamp_sort=False, timestamp_key="time:timestamp", reverse_sort=False, insert_trace_indexes=False, max_no_traces_to_import=100000000):
+
+def import_from_xes_string(xes_string, timestamp_sort=False, timestamp_key="time:timestamp", reverse_sort=False,
+                           insert_trace_indexes=False, max_no_traces_to_import=100000000):
     """
     Imports XES log from XES string
 
@@ -36,12 +38,16 @@ def import_from_xes_string(xes_string, timestamp_sort=False, timestamp_key="time
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(xes_string)
-    log = import_from_file_xes(fp.name, timestamp_sort=timestamp_sort, timestamp_key=timestamp_key, reverse_sort=reverse_sort,
-                               insert_trace_indexes=insert_trace_indexes, max_no_traces_to_import=max_no_traces_to_import)
+    log = import_from_file_xes(fp.name, timestamp_sort=timestamp_sort, timestamp_key=timestamp_key,
+                               reverse_sort=reverse_sort,
+                               insert_trace_indexes=insert_trace_indexes,
+                               max_no_traces_to_import=max_no_traces_to_import)
     os.remove(fp.name)
     return log
 
-def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:timestamp", reverse_sort=False, insert_trace_indexes=False, max_no_traces_to_import=100000000):
+
+def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:timestamp", reverse_sort=False,
+                         insert_trace_indexes=False, max_no_traces_to_import=100000000):
     """
     Imports an XES file into a log object
 
@@ -77,11 +83,26 @@ def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:tim
         if tree_event == EVENT_START:  # starting to read
             parent = tree[elem.getparent()] if elem.getparent() in tree else None
 
-            if elem.tag.endswith(log_lib.util.xes.TAG_LOG):
-                if log is not None:
-                    raise SyntaxError('file contains > 1 <log> tags')
-                log = log_lib.log.TraceLog()
-                tree[elem] = log.attributes
+            if elem.tag.endswith(log_lib.util.xes.TAG_STRING):
+                if not parent is None:
+                    tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY),
+                                             elem.get(log_lib.util.xes.KEY_VALUE), tree)
+                continue
+
+            elif elem.tag.endswith(log_lib.util.xes.TAG_DATE):
+                try:
+                    dt = ciso8601.parse_datetime(elem.get(log_lib.util.xes.KEY_VALUE))
+                    tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), dt, tree)
+                except:
+                    logging.info("failed to parse date: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
+                continue
+
+            elif elem.tag.endswith(log_lib.util.xes.TAG_EVENT):
+                if event is not None:
+                    raise SyntaxError('file contains <event> in another <event> tag')
+                event = log_lib.log.Event()
+                tree[elem] = event
+                continue
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_TRACE):
                 if len(log) >= max_no_traces_to_import:
@@ -90,19 +111,56 @@ def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:tim
                     raise SyntaxError('file contains <trace> in another <trace> tag')
                 trace = log_lib.log.Trace()
                 tree[elem] = trace.attributes
+                continue
 
-            elif elem.tag.endswith(log_lib.util.xes.TAG_EVENT):
-                if event is not None:
-                    raise SyntaxError('file contains <event> in another <event> tag')
-                event = log_lib.log.Event()
-                tree[elem] = event
+            elif elem.tag.endswith(log_lib.util.xes.TAG_FLOAT):
+                if not parent is None:
+                    try:
+                        val = float(elem.get(log_lib.util.xes.KEY_VALUE))
+                        tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
+                    except:
+                        logging.info("failed to parse float: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
+                continue
+
+            elif elem.tag.endswith(log_lib.util.xes.TAG_INT):
+                if not parent is None:
+                    try:
+                        val = int(elem.get(log_lib.util.xes.KEY_VALUE))
+                        tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
+                    except:
+                        logging.info("failed to parse int: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
+                continue
+
+            elif elem.tag.endswith(log_lib.util.xes.TAG_BOOLEAN):
+                if not parent is None:
+                    try:
+                        val = bool(elem.get(log_lib.util.xes.KEY_VALUE))
+                        tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
+                    except:
+                        logging.info("failed to parse boolean: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
+                continue
+
+            elif elem.tag.endswith(log_lib.util.xes.TAG_LIST):
+                if not parent is None:
+                    # lists have no value, hence we put None as a value
+                    tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), None, tree)
+                continue
+
+            elif elem.tag.endswith(log_lib.util.xes.TAG_ID):
+                if not parent is None:
+                    tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY),
+                                             elem.get(log_lib.util.xes.KEY_VALUE), tree)
+                continue
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_EXTENSION):
                 if log is None:
                     raise SyntaxError('extension found outside of <log> tag')
-                if elem.get(log_lib.util.xes.KEY_NAME) is not None and elem.get(log_lib.util.xes.KEY_PREFIX) is not None and elem.get(log_lib.util.xes.KEY_URI) is not None:
-                    log.extensions[elem.get(log_lib.util.xes.KEY_NAME)] = {log_lib.util.xes.KEY_PREFIX: elem.get(log_lib.util.xes.KEY_PREFIX),
-                                                               log_lib.util.xes.KEY_URI: elem.get(log_lib.util.xes.KEY_URI)}
+                if elem.get(log_lib.util.xes.KEY_NAME) is not None and elem.get(
+                        log_lib.util.xes.KEY_PREFIX) is not None and elem.get(log_lib.util.xes.KEY_URI) is not None:
+                    log.extensions[elem.get(log_lib.util.xes.KEY_NAME)] = {
+                        log_lib.util.xes.KEY_PREFIX: elem.get(log_lib.util.xes.KEY_PREFIX),
+                        log_lib.util.xes.KEY_URI: elem.get(log_lib.util.xes.KEY_URI)}
+                continue
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_GLOBAL):
                 if log is None:
@@ -110,68 +168,23 @@ def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:tim
                 if elem.get(log_lib.util.xes.KEY_SCOPE) is not None:
                     log.omni_present[elem.get(log_lib.util.xes.KEY_SCOPE)] = {}
                     tree[elem] = log.omni_present[elem.get(log_lib.util.xes.KEY_SCOPE)]
+                continue
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_CLASSIFIER):
                 if log is None:
                     raise SyntaxError('classifier found outside of <log> tag')
                 if elem.get(log_lib.util.xes.KEY_KEYS) is not None:
                     log.classifiers[elem.get(log_lib.util.xes.KEY_NAME)] = elem.get(log_lib.util.xes.KEY_KEYS).split()
+                continue
 
-            elif elem.tag.endswith(log_lib.util.xes.TAG_DATE):
-                try:
-                    dt = ciso8601.parse_datetime(elem.get(log_lib.util.xes.KEY_VALUE))
-                    tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), dt, tree)
-                except:
-                    logging.info("failed to parse date: "+str(elem.get(log_lib.util.xes.KEY_VALUE)))
-
-            elif elem.tag.endswith(log_lib.util.xes.TAG_STRING):
-                if not parent is None:
-                    tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), elem.get(log_lib.util.xes.KEY_VALUE), tree)
-            elif elem.tag.endswith(log_lib.util.xes.TAG_FLOAT):
-                if not parent is None:
-                    try:
-                        val = float(elem.get(log_lib.util.xes.KEY_VALUE))
-                        tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
-                    except:
-                        logging.info("failed to parse float: "+str(elem.get(log_lib.util.xes.KEY_VALUE)))
-            elif elem.tag.endswith(log_lib.util.xes.TAG_INT):
-                if not parent is None:
-                   try:
-                       val = int(elem.get(log_lib.util.xes.KEY_VALUE))
-                       tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val,tree)
-                   except:
-                       logging.info("failed to parse int: "+str(elem.get(log_lib.util.xes.KEY_VALUE)))
-			
-            elif elem.tag.endswith(log_lib.util.xes.TAG_BOOLEAN):
-                if not parent is None:
-                   try:
-                       val = bool(elem.get(log_lib.util.xes.KEY_VALUE))
-                       tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
-                   except:
-                       logging.info("failed to parse boolean: "+str(elem.get(log_lib.util.xes.KEY_VALUE)))
-
-            elif elem.tag.endswith(log_lib.util.xes.TAG_ID):
-                if not parent is None:
-                   tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), elem.get(log_lib.util.xes.KEY_VALUE), tree)
-
-            elif elem.tag.endswith(log_lib.util.xes.TAG_LIST):
-                if not parent is None:
-                   # lists have no value, hence we put None as a value
-                   tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), None, tree)
+            elif elem.tag.endswith(log_lib.util.xes.TAG_LOG):
+                if log is not None:
+                    raise SyntaxError('file contains > 1 <log> tags')
+                log = log_lib.log.TraceLog()
+                tree[elem] = log.attributes
+                continue
 
         elif tree_event == EVENT_END:
-            if elem.tag.endswith(log_lib.util.xes.TAG_LOG):
-                pass
-
-            elif elem.tag.endswith(log_lib.util.xes.TAG_TRACE):
-                log.append(trace)
-                trace = None
-
-            elif elem.tag.endswith(log_lib.util.xes.TAG_EVENT):
-                if trace is not None:
-                    trace.append(event)
-                    event = None
-
             if elem in tree:
                 del tree[elem]
             elem.clear()
@@ -180,6 +193,21 @@ def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:tim
                     del elem.getparent()[0]
                 except TypeError:
                     pass
+
+            if elem.tag.endswith(log_lib.util.xes.TAG_LOG):
+                continue
+
+            elif elem.tag.endswith(log_lib.util.xes.TAG_TRACE):
+                log.append(trace)
+                trace = None
+                continue
+
+            elif elem.tag.endswith(log_lib.util.xes.TAG_EVENT):
+                if trace is not None:
+                    trace.append(event)
+                    event = None
+                continue
+
     del context
 
     if timestamp_sort:
