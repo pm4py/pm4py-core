@@ -476,25 +476,29 @@ class Subtree(object):
 
         if self.detectedCut == "flower" or self.detectedCut == "sequential" or self.detectedCut == "loopCut" or self.detectedCut == "base_concurrent" or self.detectedCut == "parallel" or self.detectedCut == "concurrent":
             if self.detectedCut == "flower" or must_add_skip:
-                skipTrans = self.get_new_hidden_trans(type="skip")
-                net.transitions.add(skipTrans)
-                petri.utils.add_arc_from_to(initialPlace, skipTrans, net)
-                petri.utils.add_arc_from_to(skipTrans, lastAddedPlace, net)
+                if not (initialPlace.name in self.counts.dictSkips and lastAddedPlace.name in self.counts.dictSkips[initialPlace.name]):
+                    skipTrans = self.get_new_hidden_trans(type="skip")
+                    net.transitions.add(skipTrans)
+                    petri.utils.add_arc_from_to(initialPlace, skipTrans, net)
+                    petri.utils.add_arc_from_to(skipTrans, lastAddedPlace, net)
 
-                if not initialPlace.name in self.counts.dictSkips:
-                    self.counts.dictSkips[initialPlace.name] = []
+                    if not initialPlace.name in self.counts.dictSkips:
+                        self.counts.dictSkips[initialPlace.name] = []
 
-                self.counts.dictSkips[initialPlace.name].append(skipTrans.name)
-
-                #print(self.counts.dictSkips)
-
+                    self.counts.dictSkips[initialPlace.name].append(lastAddedPlace.name)
 
 
             if self.detectedCut == "flower" or must_add_loop:
-                loopTrans = self.get_new_hidden_trans(type="loop")
-                net.transitions.add(loopTrans)
-                petri.utils.add_arc_from_to(lastAddedPlace, loopTrans, net)
-                petri.utils.add_arc_from_to(loopTrans, initialPlace, net)
+                if not (initialPlace.name in self.counts.dictLoops and lastAddedPlace.name in self.counts.dictLoops[initialPlace.name]):
+                    loopTrans = self.get_new_hidden_trans(type="loop")
+                    net.transitions.add(loopTrans)
+                    petri.utils.add_arc_from_to(lastAddedPlace, loopTrans, net)
+                    petri.utils.add_arc_from_to(loopTrans, initialPlace, net)
+
+                    if not initialPlace.name in self.counts.dictLoops:
+                        self.counts.dictLoops[initialPlace.name] = []
+
+                    self.counts.dictLoops[initialPlace.name].append(lastAddedPlace.name)
 
         if self.recDepth == 0:
             if len(sink.out_arcs) == 0 and len(sink.in_arcs) == 0:
