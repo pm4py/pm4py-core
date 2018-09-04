@@ -20,6 +20,8 @@ class Counts(object):
     def __init__(self):
         self.noOfPlaces = 0
         self.noOfHiddenTransitions = 0
+        self.dictSkips = {}
+        self.dictLoops = {}
 
     def inc_places(self):
         self.noOfPlaces = self.noOfPlaces + 1
@@ -124,6 +126,7 @@ class Subtree(object):
             for act2 in self.ingoing[act[0]]:
                 if act2 in set2:
                     hasIngoingConnInSet2 = True
+
         if hasOutgoingConnInSet1 and hasIngoingConnInSet2:
             return [False, set1, set2]
 
@@ -132,20 +135,21 @@ class Subtree(object):
         elif hasIngoingConnInSet2:
             set2.add(act[0])
         else:
-            if act[1]> 0:
-                set1.add(act[0])
-            else:
-                set2.add(act[0])
+            set2.add(act[0])
 
         return [True, set1, set2]
 
     def detect_sequential_cut(self, dfg):
         set1 = set()
         set2 = set()
+
         if len(self.activitiesDirlist) > 0:
             set1.add(self.activitiesDirlist[0][0])
         if len(self.activitiesDirlist) > -1:
-            set2.add(self.activitiesDirlist[-1][0])
+            if not (self.activitiesDirlist[0][0] in self.ingoing and self.activitiesDirlist[-1][0] in self.ingoing[self.activitiesDirlist[0][0]]):
+                set2.add(self.activitiesDirlist[-1][0])
+            else:
+                return [False, [], []]
         i = 1
         while i < len(self.activitiesDirlist)-1:
             act = self.activitiesDirlist[i]
@@ -153,13 +157,13 @@ class Subtree(object):
             if ret is False:
                 return [False, [], []]
             i = i + 1
+
         if len(set1) > 0 and len(set2) > 0:
             if not set1 == set2:
                 return [True, list(set1), list(set2)]
         return [False, [], []]
 
-    def get_connected_components(self, ingoing, outgoing):
-        #print(self.recDepth, self.activities)
+    def get_connected_components(self, ingoing, outgoing, activities):
         connectedComponents = []
 
         for act in ingoing:
@@ -208,6 +212,10 @@ class Subtree(object):
                     connectedComponents.append(conn1)
                 i = i + 1
 
+        if len(connectedComponents) == 0:
+            for activity in activities:
+                connectedComponents.append([activity])
+
         return connectedComponents
 
     def checkParCut(self, conn_components):
@@ -226,16 +234,17 @@ class Subtree(object):
             i = i + 1
         return True
 
-    def detect_concurrent_cut(self, dfg):
-        conn_components = self.get_connected_components(self.ingoing, self.outgoing)
+    def detect_concurrent_cut(self):
+        if len(self.dfg) > 0:
+            conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
 
-        if len(conn_components) > 1:
-            return [False, conn_components]
+            if len(conn_components) > 1:
+                return [True, conn_components]
 
         return [False, []]
 
-    def detect_parallel_cut(self, dfg):
-        conn_components = self.get_connected_components(self.negatedIngoing, self.negatedOutgoing)
+    def detect_parallel_cut(self):
+        conn_components = self.get_connected_components(self.negatedIngoing, self.negatedOutgoing, self.activities)
 
         if len(conn_components) > 1:
             if self.checkParCut(conn_components):
@@ -245,7 +254,8 @@ class Subtree(object):
 
     def detect_loop_cut(self, dfg):
         LOOP_CONST_1 = 0.2
-        LOOP_CONST_2 = -0.15
+        LOOP_CONST_2 = 0.02
+        LOOP_CONST_3 = -0.2
 
         if len(self.activitiesDirlist) > 1:
             set1 = set()
@@ -260,9 +270,11 @@ class Subtree(object):
 
             if len(set2) > 0:
                 for act in self.activities:
-                    if not act in set2:
-                        set1.add(act)
-
+                    if not act in set2 or act in set1:
+                        if self.activitiesDirection[act] < LOOP_CONST_3:
+                            set2.add(act)
+                        else:
+                            set1.add(act)
                 if len(set1) > 0:
                     if not set1 == set2:
                         return [True, set1, set2]
@@ -271,21 +283,23 @@ class Subtree(object):
 
     def detect_cut(self):
         if self.dfg:
-            parCut = self.detect_parallel_cut(self.dfg)
+            parCut = self.detect_parallel_cut()
+            concCut = self.detect_concurrent_cut()
+            seqCut = self.detect_sequential_cut(self.dfg)
+            loopCut = self.detect_loop_cut(self.dfg)
+
             if parCut[0]:
                 for comp in parCut[1]:
                     newDfg = self.filter_dfg_on_act(self.dfg, comp)
                     self.detectedCut = "parallel"
-                    self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1))
+                    self.children.append(Subtree(newDfg, newDfg, comp, self.counts, self.recDepth + 1))
             else:
-                concCut = self.detect_concurrent_cut(self.dfg)
                 if concCut[0]:
                     for comp in concCut[1]:
                         newDfg = self.filter_dfg_on_act(self.dfg, comp)
                         self.detectedCut = "concurrent"
-                        self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1))
+                        self.children.append(Subtree(newDfg, newDfg, comp, self.counts, self.recDepth + 1))
                 else:
-                    seqCut = self.detect_sequential_cut(self.dfg)
                     if seqCut[0]:
                         dfg1 = self.filter_dfg_on_act(self.dfg, seqCut[1])
                         dfg2 = self.filter_dfg_on_act(self.dfg, seqCut[2])
@@ -293,7 +307,6 @@ class Subtree(object):
                         self.children.append(Subtree(dfg1, self.initialDfg, seqCut[1], self.counts, self.recDepth+1))
                         self.children.append(Subtree(dfg2, self.initialDfg, seqCut[2], self.counts, self.recDepth+1))
                     else:
-                        loopCut = self.detect_loop_cut(self.dfg)
                         if loopCut[0]:
                             dfg1 = self.filter_dfg_on_act(self.dfg, loopCut[1])
                             dfg2 = self.filter_dfg_on_act(self.dfg, loopCut[2])
@@ -442,16 +455,40 @@ class Subtree(object):
                 net, initial_marking, final_marking, lastAddedPlace = child.form_petrinet(net, initial_marking,
                                                                                           final_marking,
                                                                                         must_add_initial_place=True, must_add_final_place=True,
-                                                                                          initial_connect_to=parallelSplit, final_connect_to=parallelJoin, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[0].dfg), must_add_loop=mAddLoop)
+                                                                                          initial_connect_to=parallelSplit, final_connect_to=parallelJoin, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg), must_add_loop=mAddLoop)
 
             lastAddedPlace = finalPlace
 
-        if self.detectedCut == "flower" or self.detectedCut == "sequential" or self.detectedCut == "loopCut" or self.detectedCut == "base_concurrent":
+        elif self.detectedCut == "concurrent":
+            mAddSkip = False
+            mAddLoop = False
+
+            if finalPlace is None:
+                finalPlace = self.get_new_place()
+                net.places.add(finalPlace)
+
+            for child in self.children:
+                net, initial_marking, final_marking, lastAddedPlace = child.form_petrinet(net, initial_marking,
+                                                                                          final_marking,
+                                                                                          initial_connect_to=initialPlace, final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg), must_add_loop=mAddLoop)
+
+            lastAddedPlace = finalPlace
+
+        if self.detectedCut == "flower" or self.detectedCut == "sequential" or self.detectedCut == "loopCut" or self.detectedCut == "base_concurrent" or self.detectedCut == "parallel" or self.detectedCut == "concurrent":
             if self.detectedCut == "flower" or must_add_skip:
                 skipTrans = self.get_new_hidden_trans(type="skip")
                 net.transitions.add(skipTrans)
                 petri.utils.add_arc_from_to(initialPlace, skipTrans, net)
                 petri.utils.add_arc_from_to(skipTrans, lastAddedPlace, net)
+
+                if not initialPlace.name in self.counts.dictSkips:
+                    self.counts.dictSkips[initialPlace.name] = []
+
+                self.counts.dictSkips[initialPlace.name].append(skipTrans.name)
+
+                #print(self.counts.dictSkips)
+
+
 
             if self.detectedCut == "flower" or must_add_loop:
                 loopTrans = self.get_new_hidden_trans(type="loop")
