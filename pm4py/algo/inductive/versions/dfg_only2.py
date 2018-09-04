@@ -218,7 +218,17 @@ class Subtree(object):
     def get_transition(self, label):
         return petri.petrinet.PetriNet.Transition(label, label)
 
-    def form_petrinet(self, net, initial_marking, final_marking, must_add_initial_place=False, must_add_final_place=False, initial_connect_to=None, final_connect_to=None):
+    def getMaxValue(self, dictionary):
+        max_value = -1
+        for act in dictionary:
+            sum = 0
+            for act2 in dictionary[act]:
+                sum += dictionary[act][act2]
+            if sum > max_value:
+                max_value = sum
+        return max_value
+
+    def form_petrinet(self, net, initial_marking, final_marking, must_add_initial_place=False, must_add_final_place=False, initial_connect_to=None, final_connect_to=None, must_add_skip=False, must_add_loop=False):
         #print(self.recDepth, self.activities, self.detectedCut, initial_connect_to, final_connect_to)
         lastAddedPlace = None
         if self.recDepth == 0:
@@ -244,12 +254,12 @@ class Subtree(object):
             else:
                 finalPlace = final_connect_to
             if self.counts.noOfPlaces == 2 and len(self.activities) > 1:
-                skipTrans = self.get_new_hidden_trans()
-                net.transitions.add(skipTrans)
+                initialTrans = self.get_new_hidden_trans(type="tau")
+                net.transitions.add(initialTrans)
                 newPlace = self.get_new_place()
                 net.places.add(newPlace)
-                petri.utils.add_arc_from_to(initial_connect_to, skipTrans, net)
-                petri.utils.add_arc_from_to(skipTrans, newPlace, net)
+                petri.utils.add_arc_from_to(initial_connect_to, initialTrans, net)
+                petri.utils.add_arc_from_to(initialTrans, newPlace, net)
             if self.detectedCut == "base_concurrent" or self.detectedCut == "flower":
                 if final_connect_to is None:
                     lastAddedPlace = self.get_new_place()
@@ -261,29 +271,47 @@ class Subtree(object):
                     net.transitions.add(trans)
                     petri.utils.add_arc_from_to(initial_connect_to, trans, net)
                     petri.utils.add_arc_from_to(trans, lastAddedPlace, net)
-            if self.detectedCut == "flower":
-                skipTrans = self.get_new_hidden_trans()
+        # iterate over childs
+        if self.detectedCut == "sequential" or self.detectedCut == "loopCut":
+            conditionSkip = self.getMaxValue(self.ingoing) < self.getMaxValue(self.initialOutgoing)
+
+            mAddSkip = False
+            mAddLoop = False
+            if self.detectedCut == "loopCut":
+                mAddSkip = True
+                mAddLoop = True
+
+            if conditionSkip:
+                mAddSkip = True
+
+            net, initial_marking, final_marking, lastAddedPlace = self.children[0].form_petrinet(net, initial_marking,
+                                                                                      final_marking,
+                                                                                      initial_connect_to=initial_connect_to, must_add_skip=mAddSkip, must_add_loop=mAddLoop)
+            net, initial_marking, final_marking, lastAddedPlace = self.children[1].form_petrinet(net, initial_marking,
+                                                                                      final_marking,
+                                                                                        initial_connect_to=lastAddedPlace,
+                                                                                      final_connect_to=final_connect_to, must_add_skip=mAddSkip, must_add_loop=mAddLoop)
+
+        if self.detectedCut == "base_concurrent" or self.detectedCut == "flower":
+
+            if self.detectedCut == "flower" or must_add_skip:
+                skipTrans = self.get_new_hidden_trans(type="skip")
                 net.transitions.add(skipTrans)
                 petri.utils.add_arc_from_to(initial_connect_to, skipTrans, net)
                 petri.utils.add_arc_from_to(skipTrans, lastAddedPlace, net)
-                loopTrans = self.get_new_hidden_trans()
+
+            if self.detectedCut == "flower" or must_add_loop:
+                loopTrans = self.get_new_hidden_trans(type="loop")
                 net.transitions.add(loopTrans)
                 petri.utils.add_arc_from_to(lastAddedPlace, loopTrans, net)
                 petri.utils.add_arc_from_to(loopTrans, initial_connect_to, net)
-        # iterate over childs
-        if self.detectedCut == "sequential" or self.detectedCut == "loopCut":
-            net, initial_marking, final_marking, lastAddedPlace = self.children[0].form_petrinet(net, initial_marking,
-                                                                                      final_marking,
-                                                                                      initial_connect_to=initial_connect_to)
-            net, initial_marking, final_marking, lastAddedPlace = self.children[1].form_petrinet(net, initial_marking,
-                                                                                      final_marking,
-                                                                                        initial_connect_to=copy(lastAddedPlace),
-                                                                                      final_connect_to=final_connect_to)
+
         if self.recDepth == 0:
+
             if len(sink.out_arcs) > 0:
                 newSink = self.get_new_place()
                 net.places.add(newSink)
-                newHidden = self.get_new_hidden_trans()
+                newHidden = self.get_new_hidden_trans(type="tau")
                 net.transitions.add(newHidden)
                 petri.utils.add_arc_from_to(sink, newHidden, net)
                 petri.utils.add_arc_from_to(newHidden, newSink, net)
