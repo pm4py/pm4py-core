@@ -13,24 +13,96 @@ from pm4py.models.petri.petrinet import PetriNet
 sys.setrecursionlimit(100000)
 
 def apply(trace_log, parameters, activity_key='concept:name'):
+    """
+    Apply the IMDF algorithm to a log
+
+    Parameters
+    -----------
+    trace_log
+        Trace log
+    parameters
+        Parameters of the algorithm
+    activity_key
+        Attribute corresponding to the activity
+
+    Returns
+    -----------
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    """
     indMinDirFollows = InductMinDirFollows()
     return indMinDirFollows.apply_log(trace_log, parameters, activity_key=activity_key)
 
+def apply_dfg(trace_log, parameters, activity_key='concept:name'):
+    """
+    Apply the IMDF algorithm to a DFG graph
+
+    Parameters
+    -----------
+    dfg
+        Directly-Follows graph
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    -----------
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    """
+    indMinDirFollows = InductMinDirFollows()
+    return indMinDirFollows.apply_dfg(trace_log, parameters, activity_key=activity_key)
+
 class Counts(object):
+    """
+    Shared variables among executions
+    """
     def __init__(self):
+        """
+        Constructor
+        """
         self.noOfPlaces = 0
         self.noOfHiddenTransitions = 0
         self.dictSkips = {}
         self.dictLoops = {}
 
     def inc_places(self):
+        """
+        Increase the number of places
+        """
         self.noOfPlaces = self.noOfPlaces + 1
 
     def inc_noOfHidden(self):
+        """
+        Increase the number of hidden transitions
+        """
         self.noOfHiddenTransitions = self.noOfHiddenTransitions + 1
 
 class Subtree(object):
     def __init__(self, dfg, initialDfg, activities, counts, recDepth):
+        """
+        Constructor
+
+        Parameters
+        -----------
+        dfg
+            Directly follows graph of this subtree
+        initialDfg
+            Referral directly follows graph that should be taken in account adding hidden/loop transitions
+        activities
+            Activities of this subtree
+        counts
+            Shared variable
+        recDepth
+            Current recursion depth
+        """
         self.dfg = copy(dfg)
         self.initialDfg = copy(initialDfg)
         self.counts = counts
@@ -57,6 +129,10 @@ class Subtree(object):
         self.detect_cut()
 
     def negate(self):
+        """
+        Negate relationship in the DFG graph
+        :return:
+        """
         negatedDfg = []
         for el in self.dfg:
             if not(el[0][1] in self.outgoing and el[0][0] in self.outgoing[el[0][1]]):
@@ -64,6 +140,9 @@ class Subtree(object):
         return negatedDfg
 
     def get_activities_from_dfg(self, dfg):
+        """
+        Get the list of activities directly from DFG graph
+        """
         set_activities = set()
         for el in dfg:
             set_activities.add(el[0][0])
@@ -73,6 +152,9 @@ class Subtree(object):
         return list_activities
 
     def get_outgoing_edges(self, dfg):
+        """
+        Gets outgoing edges of the prvoided DFG graph
+        """
         outgoing = {}
         for el in dfg:
             if not el[0][0] in outgoing:
@@ -81,6 +163,9 @@ class Subtree(object):
         return outgoing
 
     def get_ingoing_edges(self, dfg):
+        """
+        Get ingoing edges of the provided DFG graph
+        """
         ingoing = {}
         for el in dfg:
             if not el[0][1] in ingoing:
@@ -89,6 +174,9 @@ class Subtree(object):
         return ingoing
 
     def get_activities_self_loop(self):
+        """
+        Get activities that are in self-loop in this subtree
+        """
         self_loop_act = []
         for act in self.outgoing:
             if act in list(self.outgoing[act].keys()):
@@ -96,6 +184,9 @@ class Subtree(object):
         return self_loop_act
 
     def get_activities_direction(self):
+        """
+        Calculate activities direction (Heuristics Miner)
+        """
         direction = {}
         for act in self.activities:
             outgoing = 0
@@ -109,6 +200,9 @@ class Subtree(object):
         return direction
 
     def get_activities_dirlist(self):
+        """
+        Activities direction list
+        """
         dirlist = []
         for act in self.activitiesDirection:
             dirlist.append([act, self.activitiesDirection[act]])
@@ -116,6 +210,18 @@ class Subtree(object):
         return dirlist
 
     def determine_best_set_sequential(self, act, set1, set2):
+        """
+        Determine best set to assign the current activity
+
+        Parameters
+        -----------
+        act
+            Activity
+        set1
+            First set of activities
+        set2
+            Second set of activities
+        """
         hasOutgoingConnInSet1 = False
         if act[0] in self.outgoing:
             for act2 in self.outgoing[act[0]]:
@@ -140,6 +246,9 @@ class Subtree(object):
         return [True, set1, set2]
 
     def detect_sequential_cut(self, dfg):
+        """
+        Detect sequential cut in DFG graph
+        """
         set1 = set()
         set2 = set()
 
@@ -164,6 +273,18 @@ class Subtree(object):
         return [False, [], []]
 
     def get_connected_components(self, ingoing, outgoing, activities):
+        """
+        Get connected components in the DFG graph
+
+        Parameters
+        -----------
+        ingoing
+            Ingoing activities
+        outgoing
+            Outgoing activities
+        activities
+            Activities to consider
+        """
         connectedComponents = []
 
         for act in ingoing:
@@ -219,6 +340,14 @@ class Subtree(object):
         return connectedComponents
 
     def checkParCut(self, conn_components):
+        """
+        Checks if in a parallel cut all relations are present
+
+        Parameters
+        -----------
+        conn_components
+            Connected components
+        """
         i = 0
         while i < len(conn_components):
             conn1 = conn_components[i]
@@ -235,6 +364,9 @@ class Subtree(object):
         return True
 
     def detect_concurrent_cut(self):
+        """
+        Detects concurrent cut
+        """
         if len(self.dfg) > 0:
             conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
 
@@ -244,6 +376,9 @@ class Subtree(object):
         return [False, []]
 
     def detect_parallel_cut(self):
+        """
+        Detects parallel cut
+        """
         conn_components = self.get_connected_components(self.negatedIngoing, self.negatedOutgoing, self.activities)
 
         if len(conn_components) > 1:
@@ -253,6 +388,9 @@ class Subtree(object):
         return [False, []]
 
     def detect_loop_cut(self, dfg):
+        """
+        Detect loop cut
+        """
         LOOP_CONST_1 = 0.2
         LOOP_CONST_2 = 0.02
         LOOP_CONST_3 = -0.2
@@ -282,6 +420,9 @@ class Subtree(object):
         return [False, [], []]
 
     def detect_cut(self):
+        """
+        Detect generally a cut in the graph (applying all the algorithms)
+        """
         if self.dfg:
             parCut = self.detect_parallel_cut()
             concCut = self.detect_concurrent_cut()
@@ -319,6 +460,17 @@ class Subtree(object):
             self.detectedCut = "base_concurrent"
 
     def filter_dfg_on_act(self, dfg, listact):
+        """
+        Filter a DFG graph on a list of activities
+        (to produce a projected DFG graph)
+
+        Parameters
+        -----------
+        dfg
+            Current DFG graph
+        listact
+            List of activities to filter on
+        """
         newDfg = []
         for el in dfg:
             if el[0][0] in listact and el[0][1] in listact:
@@ -326,17 +478,29 @@ class Subtree(object):
         return newDfg
 
     def get_new_place(self):
+        """
+        Create a new place in the Petri net
+        """
         self.counts.inc_places()
         return petri.petrinet.PetriNet.Place('p_' + str(self.counts.noOfPlaces))
 
     def get_new_hidden_trans(self, type="tau"):
+        """
+        Create a new hidden transition in the Petri net
+        """
         self.counts.inc_noOfHidden()
         return petri.petrinet.PetriNet.Transition(type+'_' + str(self.counts.noOfHiddenTransitions), None)
 
     def get_transition(self, label):
+        """
+        Create a transitions with the specified label in the Petri net
+        """
         return petri.petrinet.PetriNet.Transition(label, label)
 
     def getMaxValue(self, dfg):
+        """
+        Get maximum ingoing/outgoing sum of values related to activities in DFG graph
+        """
         ingoing = self.get_ingoing_edges(dfg)
         outgoing = self.get_outgoing_edges(dfg)
         max_value = -1
@@ -358,6 +522,20 @@ class Subtree(object):
         return max_value
 
     def verify_skip_transition_necessity(self, mAddSkip, initialDfg, dfg, childrenDfg):
+        """
+        Utility functions that decides if the skip transition is necessary
+
+        Parameters
+        ----------
+        mAddSkip
+            Boolean value, provided by the parent caller, that tells if the skip is absolutely necessary
+        initialDfg
+            Initial DFG
+        dfg
+            Directly follows graph
+        childrenDfg
+            Children DFG
+        """
         if mAddSkip:
             return True
         maxValueInitial = self.getMaxValue(initialDfg)
@@ -370,6 +548,41 @@ class Subtree(object):
         return False
 
     def form_petrinet(self, net, initial_marking, final_marking, must_add_initial_place=False, must_add_final_place=False, initial_connect_to=None, final_connect_to=None, must_add_skip=False, must_add_loop=False):
+        """
+        Form a Petri net from the current tree structure
+
+        Parameters
+        -----------
+        net
+            Petri net object
+        initial_marking
+            Initial marking object
+        final_marking
+            Final marking object
+        must_add_initial_place
+            When recursive calls are done, tells to add a new place (from which the subtree starts)
+        must_add_final_place
+            When recursive calls are done, tells to add a new place (into which the subtree goes)
+        initial_connect_to
+            Initial element (place/transition) to which we should connect the subtree
+        final_connect_to
+            Final element (place/transition) to which we should connect the subtree
+        must_add_skip
+            Must add skip transition
+        must_add_loop
+            Must add loop transition
+
+        Returns
+        ----------
+        net
+            Petri net object
+        initial_marking
+            Initial marking object
+        final_marking
+            Final marking object
+        lastAddedPlace
+            lastAddedPlace
+        """
         #print(self.recDepth, self.activities, self.detectedCut, initial_connect_to, final_connect_to)
         lastAddedPlace = None
         initialPlace = None
@@ -522,12 +735,52 @@ class Subtree(object):
 
 class InductMinDirFollows(object):
     def apply_log(self, trace_log, parameters, activity_key="concept:name"):
+        """
+        Apply the IMDF algorithm to a log
+
+        Parameters
+        -----------
+        trace_log
+            Trace log
+        parameters
+            Parameters of the algorithm
+        activity_key
+            Attribute corresponding to the activity
+
+        Returns
+        -----------
+        net
+            Petri net
+        initial_marking
+            Initial marking
+        final_marking
+            Final marking
+        """
         self.trace_log = trace_log
         labels = tl_util.get_event_labels(trace_log, activity_key)
         dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, activity_key=activity_key).items() if v > 0]
         return self.apply_dfg(dfg, parameters)
 
     def apply_dfg(self, dfg, parameters):
+        """
+        Apply the IMDF algorithm to a DFG graph
+
+        Parameters
+        -----------
+        dfg
+            Directly-Follows graph
+        parameters
+            Parameters of the algorithm
+
+        Returns
+        -----------
+        net
+            Petri net
+        initial_marking
+            Initial marking
+        final_marking
+            Final marking
+        """
         c = Counts()
         s = Subtree(dfg, dfg, None, c, 0)
         net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
