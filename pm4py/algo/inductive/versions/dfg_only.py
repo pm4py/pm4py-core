@@ -583,7 +583,7 @@ class Subtree(object):
         lastAddedPlace
             lastAddedPlace
         """
-        print(self.recDepth, self.activities, self.detectedCut, initial_connect_to, final_connect_to)
+        #print(self.recDepth, self.activities, self.detectedCut, initial_connect_to, final_connect_to)
         lastAddedPlace = None
         initialPlace = None
         finalPlace = None
@@ -799,8 +799,6 @@ class InductMinDirFollows(object):
                 value = dfg[key]
                 newdfg.append((key, value))
             dfg = newdfg
-
-        print(dfg)
 
         c = Counts()
         s = Subtree(dfg, dfg, None, c, 0)
