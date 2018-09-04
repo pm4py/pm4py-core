@@ -228,7 +228,7 @@ def getHiddenTransitionsToEnable(marking, placesWithMissing, placesShortestPathB
     placesWithMissingKeys = sorted(placesWithMissingKeys, key=lambda x: x.name)
     for p1 in markingPlaces:
         for p2 in placesWithMissingKeys:
-            if p2 in placesShortestPathByHidden[p1]:
+            if p1 in placesShortestPathByHidden and p2 in placesShortestPathByHidden[p1]:
                 hiddenTransitionsToEnable.append(placesShortestPathByHidden[p1][p2])
     hiddenTransitionsToEnable = sorted(hiddenTransitionsToEnable, key=lambda x: len(x))
     scoredTransitions = giveScoreToHiddenTransitions(hiddenTransitionsToEnable)
@@ -257,7 +257,7 @@ def getReqTransitionsForFinalMarking(marking, finalMarking, placesShortestPathBy
     finalMarkingPlaces = sorted(finalMarkingPlaces, key=lambda x: x.name)
     for p1 in markingPlaces:
         for p2 in finalMarkingPlaces:
-            if p2 in placesShortestPathByHidden[p1]:
+            if p1 in placesShortestPathByHidden and p2 in placesShortestPathByHidden[p1]:
                 hiddenTransitionsToEnable.append(placesShortestPathByHidden[p1][p2])
     hiddenTransitionsToEnable = sorted(hiddenTransitionsToEnable, key=lambda x: len(x))
     scoredTransitions = giveScoreToHiddenTransitions(hiddenTransitionsToEnable)
