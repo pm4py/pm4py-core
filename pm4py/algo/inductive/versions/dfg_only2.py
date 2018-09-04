@@ -8,6 +8,7 @@ import time
 from copy import deepcopy, copy
 import math
 import sys
+from pm4py.models.petri.petrinet import PetriNet
 
 sys.setrecursionlimit(100000)
 
@@ -238,7 +239,7 @@ class Subtree(object):
 
         if len(conn_components) > 1:
             if self.checkParCut(conn_components):
-                return [False, conn_components]
+                return [True, conn_components]
 
         return [False, []]
 
@@ -358,23 +359,26 @@ class Subtree(object):
     def form_petrinet(self, net, initial_marking, final_marking, must_add_initial_place=False, must_add_final_place=False, initial_connect_to=None, final_connect_to=None, must_add_skip=False, must_add_loop=False):
         #print(self.recDepth, self.activities, self.detectedCut, initial_connect_to, final_connect_to)
         lastAddedPlace = None
+        initialPlace = None
+        finalPlace = None
         if self.recDepth == 0:
             source = self.get_new_place()
             source.name = "source"
             initial_connect_to = source
+            initialPlace = source
             net.places.add(source)
             sink = self.get_new_place()
             final_connect_to = sink
             net.places.add(sink)
             lastAddedPlace = sink
         elif self.recDepth > 0:
-            if must_add_initial_place:
+            if must_add_initial_place or type(initial_connect_to) is PetriNet.Transition:
                 initialPlace = self.get_new_place()
                 net.places.add(initialPlace)
                 petri.utils.add_arc_from_to(initial_connect_to, initialPlace, net)
             else:
                 initialPlace = initial_connect_to
-            if must_add_final_place:
+            if must_add_final_place or type(final_connect_to) is PetriNet.Transition:
                 finalPlace = self.get_new_place()
                 net.places.add(finalPlace)
                 petri.utils.add_arc_from_to(finalPlace, final_connect_to, net)
@@ -388,15 +392,19 @@ class Subtree(object):
                 petri.utils.add_arc_from_to(initial_connect_to, initialTrans, net)
                 petri.utils.add_arc_from_to(initialTrans, newPlace, net)
             if self.detectedCut == "base_concurrent" or self.detectedCut == "flower":
-                if final_connect_to is None:
-                    lastAddedPlace = self.get_new_place()
-                    net.places.add(lastAddedPlace)
+                if final_connect_to is None or type(final_connect_to) is PetriNet.Transition:
+                    if finalPlace is not None:
+                        lastAddedPlace = finalPlace
+                    else:
+                        lastAddedPlace = self.get_new_place()
+                        net.places.add(lastAddedPlace)
                 else:
                     lastAddedPlace = final_connect_to
+
                 for act in self.activities:
                     trans = self.get_transition(act)
                     net.transitions.add(trans)
-                    petri.utils.add_arc_from_to(initial_connect_to, trans, net)
+                    petri.utils.add_arc_from_to(initialPlace, trans, net)
                     petri.utils.add_arc_from_to(trans, lastAddedPlace, net)
         # iterate over childs
         if self.detectedCut == "sequential" or self.detectedCut == "loopCut":
@@ -409,27 +417,52 @@ class Subtree(object):
 
             net, initial_marking, final_marking, lastAddedPlace = self.children[0].form_petrinet(net, initial_marking,
                                                                                       final_marking,
-                                                                                      initial_connect_to=initial_connect_to, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[0].dfg), must_add_loop=mAddLoop)
+                                                                                      initial_connect_to=initialPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[0].dfg), must_add_loop=mAddLoop)
             net, initial_marking, final_marking, lastAddedPlace = self.children[1].form_petrinet(net, initial_marking,
                                                                                       final_marking,
                                                                                         initial_connect_to=lastAddedPlace,
-                                                                                      final_connect_to=final_connect_to, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[1].dfg), must_add_loop=mAddLoop)
+                                                                                      final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[1].dfg), must_add_loop=mAddLoop)
+        elif self.detectedCut == "parallel":
+            mAddSkip = False
+            mAddLoop = False
 
+            if finalPlace is None:
+                finalPlace = self.get_new_place()
+                net.places.add(finalPlace)
+
+            parallelSplit = self.get_new_hidden_trans("tauSplit")
+            net.transitions.add(parallelSplit)
+            petri.utils.add_arc_from_to(initialPlace, parallelSplit, net)
+
+            parallelJoin = self.get_new_hidden_trans("tauJoin")
+            net.transitions.add(parallelJoin)
+            petri.utils.add_arc_from_to(parallelJoin, finalPlace, net)
+
+            for child in self.children:
+                net, initial_marking, final_marking, lastAddedPlace = child.form_petrinet(net, initial_marking,
+                                                                                          final_marking,
+                                                                                        must_add_initial_place=True, must_add_final_place=True,
+                                                                                          initial_connect_to=parallelSplit, final_connect_to=parallelJoin, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[0].dfg), must_add_loop=mAddLoop)
+
+            lastAddedPlace = finalPlace
 
         if self.detectedCut == "flower" or self.detectedCut == "sequential" or self.detectedCut == "loopCut" or self.detectedCut == "base_concurrent":
             if self.detectedCut == "flower" or must_add_skip:
                 skipTrans = self.get_new_hidden_trans(type="skip")
                 net.transitions.add(skipTrans)
-                petri.utils.add_arc_from_to(initial_connect_to, skipTrans, net)
+                petri.utils.add_arc_from_to(initialPlace, skipTrans, net)
                 petri.utils.add_arc_from_to(skipTrans, lastAddedPlace, net)
 
             if self.detectedCut == "flower" or must_add_loop:
                 loopTrans = self.get_new_hidden_trans(type="loop")
                 net.transitions.add(loopTrans)
                 petri.utils.add_arc_from_to(lastAddedPlace, loopTrans, net)
-                petri.utils.add_arc_from_to(loopTrans, initial_connect_to, net)
+                petri.utils.add_arc_from_to(loopTrans, initialPlace, net)
 
         if self.recDepth == 0:
+            if len(sink.out_arcs) == 0 and len(sink.in_arcs) == 0:
+                net.places.remove(sink)
+                sink = lastAddedPlace
 
             if len(sink.out_arcs) > 0:
                 newSink = self.get_new_place()
