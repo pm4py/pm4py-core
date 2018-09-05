@@ -2,11 +2,9 @@ import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
-from pm4py.algo.etconformance.versions import token_based
-from pm4py.algo.etconformance import factory as etc_factory
+from pm4py.evaluation.precision import factory as etc_factory
 from pm4py.log.importer import xes as xes_importer
 from pm4py.algo.inductive.versions import dfg_only
-from pm4py.models.petri.exporter import pnml as petri_exporter
 from pm4py.models import petri
 
 log = xes_importer.import_from_file_xes('..\\tests\\inputData\\running-example.xes')
