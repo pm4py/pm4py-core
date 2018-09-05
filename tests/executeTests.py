@@ -20,6 +20,7 @@ from tests.filteringTest import LogFilteringTest
 from tests.etcTests import ETCTest
 from tests.petriLogGeneratorTests import PetriLogGeneratorTests
 from tests.transitionSystemTests import TransitionSystemTest
+from tests.evaluationTests import ProcessModelEvaluationTests
 
 if __name__ == "__main__":
 	unittest.main()
