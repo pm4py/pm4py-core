@@ -66,12 +66,15 @@ def import_petri_from_pnml(inputFilePath):
             elif "text" in elem.tag:
                 elementText = elem.text
                 if readingWhat == "place":
-                    place = petri.petrinet.PetriNet.Place(elementText)
+                    if elementText is not None and len(elementText) > 1:
+                        place = petri.petrinet.PetriNet.Place(elementText)
+                    else:
+                        place = petri.petrinet.PetriNet.Place(readingId)
                     placesDict[readingId] = place
                 elif readingWhat == "transition":
                     if not transInvis:
                         transDict[readingId].label = elementText
-                    transDict[readingId].name = elementText
+                        transDict[readingId].name = elementText
                 elif readingWhat == "initialMarking":
                     isInitialMarking = True
                     try:
