@@ -14,7 +14,9 @@ import logging, traceback
 from pm4py.algo.tokenreplay.versions import token_replay
 from pm4py.algo.tokenreplay.data_structures import performance_map
 from pm4py.log.util import insert_classifier
-from pm4py.algo.dfg import factory as dfg_factory, visualize as dfg_visualize, replacement as dfg_replacement
+from pm4py.algo.dfg import factory as dfg_factory, replacement as dfg_replacement
+from pm4py.visualization.dfg.versions import simple_visualize as dfg_visualize
+
 
 class shared:
     # contains shared variables

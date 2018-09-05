@@ -3,6 +3,7 @@ import tempfile, os
 import base64
 from copy import deepcopy, copy
 import os, shutil
+from pm4py.log.util import activities
 
 MAX_EDGE_PENWIDTH_GRAPHVIZ = 2.6
 MIN_EDGE_PENWIDTH_GRAPHVIZ = 1.0
@@ -115,6 +116,56 @@ def human_readable_stat(c):
         return str(minutes)+"m"
     return str(seconds)+"s"
 
+def apply_frequency(dfg, log=None, activities_count=None, parameters=None):
+    """
+    Apply method (to be called from the factory method; calls the graphviz_visualization method)
+
+    Parameters
+    -----------
+    dfg
+        DFG graph
+    log
+        Event log
+    parameters
+        Parameters passed to the algorithm (may include the format, the replay measure and the maximum number of edges
+        in the diagram)
+    """
+
+    return apply(dfg, log=log, parameters=parameters, activities_count=activities_count, measure="frequency")
+
+def apply_performance(dfg, log=None, activities_count=None, parameters=None):
+    """
+    Apply method (to be called from the factory method; calls the graphviz_visualization method)
+
+    Parameters
+    -----------
+    dfg
+        DFG graph
+    log
+        Event log
+    parameters
+        Parameters passed to the algorithm (may include the format, the replay measure and the maximum number of edges
+        in the diagram)
+    """
+
+    return apply(dfg, log=log, parameters=parameters, activities_count=activities_count, measure="performance")
+
+def apply(dfg, log=None, parameters=None, activities_count=None, measure="frequency"):
+    if parameters is None:
+        parameters = {}
+    format = "pdf"
+    maxNoOfEdgesInDiagram = 75
+
+    if "format" in parameters:
+        format = parameters["format"]
+    if "maxNoOfEdgesInDiagram" in parameters:
+        maxNoOfEdgesInDiagram = parameters["maxNoOfEdgesInDiagram"]
+
+    if activities_count is None:
+        activities_count = activities.get_activities_from_log(log)
+
+    return graphviz_visualization(activities_count, dfg, format=format, measure=measure, maxNoOfEdgesInDiagram=maxNoOfEdgesInDiagram)
+
 def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequency", maxNoOfEdgesInDiagram=75):
     """
     Do GraphViz visualization of a DFG graph
@@ -122,7 +173,7 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
     Parameters
     -----------
     activities_count
-        Count of activities in the log (may include activities that are not in the DFG graph
+        Count of activities in the log (may include activities that are not in the DFG graph)
     dfg
         DFG graph
     format

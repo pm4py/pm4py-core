@@ -3,13 +3,11 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from pm4py.log.importer import csv as csv_importer
-from pm4py.log.importer.utils import df_filtering, df_statistics
-from pm4py.log import transform
+from pm4py.log.importer.utils import df_statistics
 import time
-from pm4py.algo.dfg import visualize as dfg_visualize
 from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.models.petri import visualize as pn_viz
-
+from pm4py.visualization.dfg import factory as dfg_vis_factory
 
 time1 = time.time()
 inputLog = "..\\tests\\inputData\\running-example.csv"
@@ -41,7 +39,7 @@ dfg_graph = df_statistics.get_dfg_graph(dataframe)
 #dfg_graph = df_statistics.get_dfg_graph(dataframe, activity_key="event", case_id_glue="case", timestamp_key="completeTime")
 time8 = time.time()
 print("time8 - time7: "+str(time8-time7))
-gviz = dfg_visualize.graphviz_visualization(activities_count, dfg_graph)
+gviz = dfg_vis_factory.apply(dfg_graph, activities_count=activities_count)
 gviz.view()
 net, initial_marking, final_marking = inductive_factory.apply_dfg(dfg_graph)
 gviz = pn_viz.graphviz_visualization(net, initial_marking=initial_marking, final_marking=final_marking, debug=True)
