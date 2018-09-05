@@ -4,6 +4,36 @@ import base64
 from pm4py.models.petri.petrinet import Marking
 from random import random
 
+def apply(net, initial_marking, final_marking, decorations=None, parameters=None):
+    """
+    Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization method)
+
+    Parameters
+    -----------
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    parameters
+        Algorithm parameters
+
+    Returns
+    -----------
+    viz
+        Graph object
+    """
+    if parameters is None:
+        parameters = {}
+    format = "pdf"
+    debug = False
+    if "format" in parameters:
+        format = parameters["format"]
+    if "debug" in parameters:
+        debug = parameters["debug"]
+    return graphviz_visualization(net, format=format, initial_marking=initial_marking, final_marking=final_marking, decorations=decorations, debug=debug)
+
 def graphviz_visualization(net, format="pdf", initial_marking=None, final_marking=None, decorations=None, debug=False):
     """
     Provides visualization for the petrinet
