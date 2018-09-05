@@ -8,17 +8,38 @@ PARAM_ACTIVITY_KEY = 'activity_key'
 
 PARAMETERS = [PARAM_ACTIVITY_KEY]
 
+def transform_align_result_to_simple_dictionary(alignResults):
+    noTraces = len(alignResults)
+    noFitTraces = 0
+    sumFitness = 0.0
+
+    for tr in alignResults:
+        if tr["fitness"] == 1.0:
+            noFitTraces = noFitTraces + 1
+        sumFitness = sumFitness + tr["fitness"]
+
+    percFitTraces = 0.0
+    averageFitness = 0.0
+
+    if noTraces > 0:
+        percFitTraces = (100.0 * float(noFitTraces))/(float(noTraces))
+        averageFitness = float(sumFitness)/float(noTraces)
+
+    return {"percFitTraces": percFitTraces, "averageFitness": averageFitness}
 
 def apply(log, petri_net, initial_marking, final_marking, parameters=None):
+    if parameters is None:
+        parameters = {}
     activity_key = parameters[
         PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     best_worst = alignments.versions.state_equation_a_star.apply(log_lib.log.Trace(), petri_net, initial_marking,
                                                                  final_marking)
     best_worst_costs = best_worst['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
     with mp.Pool(max(1, mp.cpu_count() - 1)) as pool:
-        return pool.starmap(apply_trace, map(
+        alignmentResult = pool.starmap(apply_trace, map(
             lambda tr: (tr, petri_net, initial_marking, final_marking, best_worst_costs, activity_key), log))
 
+        return transform_align_result_to_simple_dictionary(alignmentResult)
 
 def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, activity_key):
     '''
