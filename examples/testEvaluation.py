@@ -7,9 +7,10 @@ from pm4py.algo.inductive.versions import dfg_only
 from pm4py.models import petri
 from pm4py.evaluation.precision import factory as precision_factory
 from pm4py.evaluation.replay_fitness import factory as replay_fitness
+from pm4py.evaluation.generalization import factory as generalization_factory
 
 if __name__ == "__main__":
-    log = xes_importer.import_from_file_xes('..\\tests\\inputData\\running-example.xes')
+    log = xes_importer.import_from_file_xes('..\\tests\\inputData\\reviewing.xes')
     net, marking, final_marking = dfg_only.apply(log, None)
     #petri_exporter.export_petri_to_pnml(net, marking, "running-example.pnml")
     final_marking = petri.petrinet.Marking()
@@ -20,3 +21,5 @@ if __name__ == "__main__":
     print("precision=",precision)
     fitness = replay_fitness.apply(log, net, marking, final_marking)
     print(fitness)
+    generalization = generalization_factory.apply(log, net, marking, final_marking)
+    print("generalization=",generalization)
