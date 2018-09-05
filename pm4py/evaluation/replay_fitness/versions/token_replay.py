@@ -32,7 +32,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
         parameters = {}
     activity_key = parameters[PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-        token_replay.apply(log, petri_net, initial_marking, final_marking)
+        token_replay.apply(log, petri_net, initial_marking, final_marking, activity_key=activity_key)
     noTraces = len(traceIsFit)
     fitTraces = len([x for x in traceIsFit if x])
     sumOfFitness = sum(traceFitnessValue)
