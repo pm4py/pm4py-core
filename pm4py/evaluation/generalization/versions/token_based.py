@@ -54,6 +54,9 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     for trans in transOccMap:
         this_term = 1.0 / sqrt(transOccMap[trans])
         inv_sq_occ_sum = inv_sq_occ_sum + this_term
+    for trans in petri_net.transitions:
+        if not trans in transOccMap:
+            inv_sq_occ_sum = inv_sq_occ_sum + 1
     generalization = 1.0
     if len(petri_net.transitions) > 0:
         generalization = 1.0 - inv_sq_occ_sum / float(len(petri_net.transitions))
