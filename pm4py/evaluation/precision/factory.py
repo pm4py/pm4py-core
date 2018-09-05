@@ -1,9 +1,9 @@
-from pm4py.algo.etconformance.versions import token_based
+from pm4py.evaluation.precision.versions import etconformance_token
 
-TOKEN_BASED = "token_based"
-VERSIONS = {TOKEN_BASED: token_based.apply}
+ETCONFORMANCE_TOKEN = "etconformance"
+VERSIONS = {ETCONFORMANCE_TOKEN: etconformance_token.apply}
 
-def apply(log, net, marking, final_marking, activity_key="concept:name", variant="token_based"):
+def apply(log, net, marking, final_marking, activity_key="concept:name", variant="etconformance"):
     """
     Factory method to apply ET Conformance
 

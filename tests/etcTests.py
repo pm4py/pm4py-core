@@ -5,7 +5,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from tests.constants import INPUT_DATA_DIR
 from pm4py.log.importer import xes as xes_importer
-from pm4py.algo.etconformance import factory as etc_factory
+from pm4py.evaluation.precision import factory as etc_factory
 from pm4py.algo.inductive.versions import dfg_only
 
 class ETCTest(unittest.TestCase):
