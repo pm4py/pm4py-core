@@ -9,6 +9,20 @@ PARAM_ACTIVITY_KEY = 'activity_key'
 PARAMETERS = [PARAM_ACTIVITY_KEY]
 
 def transform_align_result_to_simple_dictionary(alignResults):
+    """
+    Transforms the alignment result to a simple dictionary
+    including the percentage of fit traces and the average fitness
+
+    Parameters
+    ----------
+    alignResults
+        Alignments calculated for the traces in the log
+
+    Returns
+    ----------
+    dictionary
+        Containing two keys (percFitTraces and averageFitness)
+    """
     noTraces = len(alignResults)
     noFitTraces = 0
     sumFitness = 0.0
