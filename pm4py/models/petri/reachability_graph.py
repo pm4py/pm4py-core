@@ -20,6 +20,7 @@ def staterep(name):
 def construct_reachability_graph(net, initial_marking):
     '''
         Creates a reachability graph of a certain Petri net.
+        DO NOT ATTEMPT WITH AN UNBOUNDED PETRI NET, EVER.
 
         Parameters
         ----------
