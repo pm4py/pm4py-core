@@ -43,18 +43,20 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     # groups couple of activities (directly follows relation, we can measure the frequency and the performance)
     directlyFollowsGrouping = dfSuccessiveRows.groupby([activity_key, activity_key+'_2'])['timeDiff']
 
-    dfg = Counter()
-    for couple in directlyFollowsGrouping.groups.keys():
-        # we get all the times interlapsed between them
-        group0 = directlyFollowsGrouping.get_group(couple)
-        if measure == "frequency":
-            # the frequency is the length of the items
-            coupleFrequency = len(group0)
-            dfg[(couple[0], couple[1])] = coupleFrequency
-        elif measure == "performance":
-            # the performance is the average of the list
-            group = list(group0)
-            couplePerformance = mean(group)
-            dfg[(couple[0], couple[1])] = couplePerformance
+    dfg_frequency = {}
+    dfg_performance = {}
 
-    return dfg
+    if measure == "frequency" or measure == "both":
+        dfg_frequency = directlyFollowsGrouping.size().to_dict()
+
+    if measure == "performance" or measure == "both":
+        dfg_performance = directlyFollowsGrouping.agg('mean').to_dict()
+
+    if measure == "frequency":
+        return dfg_frequency
+
+    if measure == "performance":
+        return dfg_performance
+
+    if measure == "both":
+        return [dfg_frequency, dfg_performance]

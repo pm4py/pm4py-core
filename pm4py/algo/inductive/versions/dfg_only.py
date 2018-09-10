@@ -793,7 +793,7 @@ class InductMinDirFollows(object):
             Final marking
         """
 
-        if type(dfg) is Counter:
+        if type(dfg) is Counter or type(dfg) is dict:
             newdfg = []
             for key in dfg:
                 value = dfg[key]
