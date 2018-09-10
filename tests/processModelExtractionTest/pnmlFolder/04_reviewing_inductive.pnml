@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="4646137">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="9832039">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="8907275">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="9831951">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="8907411">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="3336883">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="4645913">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="8907391">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <transition id="4645891">
+        <name>
+          <text>get review 2+complete</text>
+        </name>
+      </transition>
+      <transition id="8907271">
+        <name>
+          <text>invite reviewers+start</text>
+        </name>
+      </transition>
+      <transition id="4645895">
+        <name>
+          <text>time-out 3+complete</text>
+        </name>
+      </transition>
+      <transition id="9831945">
+        <name>
+          <text>collect reviews+complete</text>
+        </name>
+      </transition>
+      <transition id="9832071">
+        <name>
+          <text>skip_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="b6aa3488-2a8a-477a-a255-23e16441c07f"/>
+      </transition>
+      <transition id="9832079">
+        <name>
+          <text>loop_4</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="38818426-5d11-4e3c-b1bc-e3eb108393fb"/>
+      </transition>
+      <transition id="9832097">
+        <name>
+          <text>tau_5</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="91bcbfbb-0969-46b7-a151-060ebac35146"/>
+      </transition>
+      <transition id="9831971">
+        <name>
+          <text>time-out X+complete</text>
+        </name>
+      </transition>
+      <transition id="9831977">
+        <name>
+          <text>get review X+complete</text>
+        </name>
+      </transition>
+      <transition id="9831989">
+        <name>
+          <text>decide+start</text>
+        </name>
+      </transition>
+      <transition id="9831991">
+        <name>
+          <text>decide+complete</text>
+        </name>
+      </transition>
+      <transition id="9832001">
+        <name>
+          <text>reject+start</text>
+        </name>
+      </transition>
+      <transition id="4683465">
+        <name>
+          <text>invite reviewers+complete</text>
+        </name>
+      </transition>
+      <transition id="4646093">
+        <name>
+          <text>loop_2</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="833f156a-53c5-4f6f-a143-e8950b2b021a"/>
+      </transition>
+      <transition id="9832017">
+        <name>
+          <text>accept+complete</text>
+        </name>
+      </transition>
+      <transition id="4646099">
+        <name>
+          <text>collect reviews+start</text>
+        </name>
+      </transition>
+      <transition id="9832019">
+        <name>
+          <text>invite additional reviewer+start</text>
+        </name>
+      </transition>
+      <transition id="9832023">
+        <name>
+          <text>accept+start</text>
+        </name>
+      </transition>
+      <transition id="4646105">
+        <name>
+          <text>skip_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="96157d5d-049d-4cc3-ade2-badf87d8a400"/>
+      </transition>
+      <transition id="4646119">
+        <name>
+          <text>get review 1+complete</text>
+        </name>
+      </transition>
+      <transition id="9832041">
+        <name>
+          <text>invite additional reviewer+complete</text>
+        </name>
+      </transition>
+      <transition id="4646125">
+        <name>
+          <text>get review 3+complete</text>
+        </name>
+      </transition>
+      <transition id="9832053">
+        <name>
+          <text>reject+complete</text>
+        </name>
+      </transition>
+      <transition id="4646135">
+        <name>
+          <text>time-out 2+complete</text>
+        </name>
+      </transition>
+      <transition id="4646143">
+        <name>
+          <text>time-out 1+complete</text>
+        </name>
+      </transition>
+      <arc id="9832065" source="4646137" target="9832071"/>
+      <arc id="4645893" source="8907275" target="4646135"/>
+      <arc id="9831943" source="4645913" target="9831945"/>
+      <arc id="8907273" source="8907271" target="8907411"/>
+      <arc id="4645897" source="8907275" target="4646105"/>
+      <arc id="9832073" source="9832071" target="9831951"/>
+      <arc id="4645901" source="8907275" target="4646119"/>
+      <arc id="4645905" source="4645891" target="3336883"/>
+      <arc id="9831953" source="9831945" target="4646137"/>
+      <arc id="4645907" source="4683465" target="8907275"/>
+      <arc id="8907283" source="8907391" target="8907271"/>
+      <arc id="4645909" source="4646119" target="3336883"/>
+      <arc id="9831959" source="9832053" target="9831951"/>
+      <arc id="9831961" source="4646137" target="9831977"/>
+      <arc id="9832089" source="9832079" target="4646137"/>
+      <arc id="9831963" source="4646137" target="9831971"/>
+      <arc id="9831969" source="4646137" target="9831991"/>
+      <arc id="9832061" source="9831951" target="9832079"/>
+      <arc id="9832101" source="9832097" target="9832039"/>
+      <arc id="9831979" source="9831971" target="9831951"/>
+      <arc id="9831981" source="9831989" target="9831951"/>
+      <arc id="9831987" source="4646137" target="9831989"/>
+      <arc id="9832119" source="4646137" target="9832017"/>
+      <arc id="9831993" source="9832041" target="9831951"/>
+      <arc id="9831999" source="9831977" target="9831951"/>
+      <arc id="9832003" source="4646137" target="9832001"/>
+      <arc id="9832005" source="9832001" target="9831951"/>
+      <arc id="9832007" source="4646137" target="9832019"/>
+      <arc id="4646091" source="3336883" target="4646099"/>
+      <arc id="9832015" source="9831991" target="9831951"/>
+      <arc id="4646101" source="8907275" target="4645891"/>
+      <arc id="9832025" source="9832023" target="9831951"/>
+      <arc id="4646107" source="3336883" target="4646093"/>
+      <arc id="4646111" source="4646093" target="8907275"/>
+      <arc id="9832031" source="9832019" target="9831951"/>
+      <arc id="4646113" source="8907275" target="4646125"/>
+      <arc id="9832033" source="4646137" target="9832023"/>
+      <arc id="4646117" source="4646125" target="3336883"/>
+      <arc id="4646121" source="4645895" target="3336883"/>
+      <arc id="4646123" source="4646105" target="3336883"/>
+      <arc id="9832043" source="4646137" target="9832041"/>
+      <arc id="9832045" source="4646137" target="9832053"/>
+      <arc id="4646127" source="8907275" target="4645895"/>
+      <arc id="4646129" source="4646099" target="4645913"/>
+      <arc id="4646131" source="4646135" target="3336883"/>
+      <arc id="9832051" source="9831951" target="9832097"/>
+      <arc id="4646133" source="8907411" target="4683465"/>
+      <arc id="4646139" source="8907275" target="4646143"/>
+      <arc id="4646141" source="4646143" target="3336883"/>
+      <arc id="9832063" source="9832017" target="9831951"/>
+    </page>
+  </net>
+</pnml>

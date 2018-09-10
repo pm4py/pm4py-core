@@ -1,0 +1,420 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="7655041">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <place id="7654915">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="7655005">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="7306981">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="7655077">
+        <name>
+          <text>p_14</text>
+        </name>
+      </place>
+      <place id="7654951">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="7655973">
+        <name>
+          <text>p_19</text>
+        </name>
+      </place>
+      <place id="7306985">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="7655113">
+        <name>
+          <text>p_16</text>
+        </name>
+      </place>
+      <place id="7654987">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="7656011">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="7655149">
+        <name>
+          <text>p_18</text>
+        </name>
+      </place>
+      <place id="7655023">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="7655059">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <place id="7654933">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="7655095">
+        <name>
+          <text>p_15</text>
+        </name>
+      </place>
+      <place id="7654969">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="7655131">
+        <name>
+          <text>p_17</text>
+        </name>
+      </place>
+      <place id="7306973">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <transition id="7655047">
+        <name>
+          <text>determine likelihood of claim+start</text>
+        </name>
+      </transition>
+      <transition id="7655943">
+        <name>
+          <text>skip_15</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="c9f09f12-21de-401c-90e5-1957c512215a"/>
+      </transition>
+      <transition id="7654921">
+        <name>
+          <text>S check if sufficient information is available+complete</text>
+        </name>
+      </transition>
+      <transition id="7655053">
+        <name>
+          <text>skip_9</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="9c8c47ff-1507-49bd-9855-0a9699beefa7"/>
+      </transition>
+      <transition id="7654927">
+        <name>
+          <text>skip_2</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d2261221-ca55-4690-93ca-82fa44530ac9"/>
+      </transition>
+      <transition id="7655951">
+        <name>
+          <text>skip_16</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="5fa69f43-cde1-4e6d-b8fe-dde0868ac052"/>
+      </transition>
+      <transition id="7655959">
+        <name>
+          <text>skip_17</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="6d81c9ff-4219-4d6a-b3e1-93713e6988dc"/>
+      </transition>
+      <transition id="7655065">
+        <name>
+          <text>determine likelihood of claim+complete</text>
+        </name>
+      </transition>
+      <transition id="7654939">
+        <name>
+          <text>B check if sufficient information is available+start</text>
+        </name>
+      </transition>
+      <transition id="7655071">
+        <name>
+          <text>skip_10</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="9128085e-ab57-49aa-bbad-cac18dfcf85c"/>
+      </transition>
+      <transition id="7655967">
+        <name>
+          <text>loop_18</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="bd3076d1-bad9-47a5-9cef-0b76aebdd379"/>
+      </transition>
+      <transition id="7654945">
+        <name>
+          <text>skip_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="4f3cfe1c-4bea-40b0-9b98-1f342d892d73"/>
+      </transition>
+      <transition id="7655977">
+        <name>
+          <text>end+complete</text>
+        </name>
+      </transition>
+      <transition id="7655083">
+        <name>
+          <text>assess claim+start</text>
+        </name>
+      </transition>
+      <transition id="7654957">
+        <name>
+          <text>B check if sufficient information is available+complete</text>
+        </name>
+      </transition>
+      <transition id="7655983">
+        <name>
+          <text>close claim+complete</text>
+        </name>
+      </transition>
+      <transition id="7655089">
+        <name>
+          <text>skip_11</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="106cde6c-1bc2-4160-96ca-f21750567655"/>
+      </transition>
+      <transition id="7654963">
+        <name>
+          <text>skip_4</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="ca9deb89-033a-4eab-a483-be586d0dc25c"/>
+      </transition>
+      <transition id="7655989">
+        <name>
+          <text>initiate payment+complete</text>
+        </name>
+      </transition>
+      <transition id="7655101">
+        <name>
+          <text>assess claim+complete</text>
+        </name>
+      </transition>
+      <transition id="7655997">
+        <name>
+          <text>skip_19</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="3292ebae-845d-46be-bc90-b838481c65b8"/>
+      </transition>
+      <transition id="7654975">
+        <name>
+          <text>B register claim+start</text>
+        </name>
+      </transition>
+      <transition id="7655107">
+        <name>
+          <text>skip_12</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="45e19ba3-44c7-4461-bf02-ee03f6e024b4"/>
+      </transition>
+      <transition id="7654981">
+        <name>
+          <text>skip_5</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="c54bc65a-493a-407a-982a-fc60ad3d4424"/>
+      </transition>
+      <transition id="7656005">
+        <name>
+          <text>loop_20</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="e60bed48-8dd8-4b39-884f-8beb1737aa38"/>
+      </transition>
+      <transition id="7655119">
+        <name>
+          <text>advise claimant on reimbursement+start</text>
+        </name>
+      </transition>
+      <transition id="7654993">
+        <name>
+          <text>B register claim+complete</text>
+        </name>
+      </transition>
+      <transition id="7656017">
+        <name>
+          <text>tau_21</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="6b181bf0-d13e-48dc-924e-5703d5b7c64b"/>
+      </transition>
+      <transition id="7655125">
+        <name>
+          <text>skip_13</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="b9872363-1f85-4c1f-b9c7-80873333314a"/>
+      </transition>
+      <transition id="7654999">
+        <name>
+          <text>skip_6</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="1c858310-a2d5-4a51-99ca-0b59d58ebee1"/>
+      </transition>
+      <transition id="7307003">
+        <name>
+          <text>skip_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="36ce9657-f670-42e1-b700-e3544ca162c3"/>
+      </transition>
+      <transition id="7655137">
+        <name>
+          <text>advise claimant on reimbursement+complete</text>
+        </name>
+      </transition>
+      <transition id="7655011">
+        <name>
+          <text>S register claim+start</text>
+        </name>
+      </transition>
+      <transition id="7655143">
+        <name>
+          <text>skip_14</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="b0862f32-46f3-4ef9-b64d-c9ba6b7c5e80"/>
+      </transition>
+      <transition id="7655017">
+        <name>
+          <text>skip_7</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d144d55a-0474-4e24-8c13-e69b382d3d7a"/>
+      </transition>
+      <transition id="7306987">
+        <name>
+          <text>incoming claim+complete</text>
+        </name>
+      </transition>
+      <transition id="7655155">
+        <name>
+          <text>close claim+start</text>
+        </name>
+      </transition>
+      <transition id="7306997">
+        <name>
+          <text>S check if sufficient information is available+start</text>
+        </name>
+      </transition>
+      <transition id="7655029">
+        <name>
+          <text>S register claim+complete</text>
+        </name>
+      </transition>
+      <transition id="7655161">
+        <name>
+          <text>initiate payment+start</text>
+        </name>
+      </transition>
+      <transition id="7655035">
+        <name>
+          <text>skip_8</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="b26afeb3-7cbb-4e3a-a2a9-cd6f519f9a5a"/>
+      </transition>
+      <transition id="7655167">
+        <name>
+          <text>end+start</text>
+        </name>
+      </transition>
+      <arc id="7655939" source="7655131" target="7655167"/>
+      <arc id="7655941" source="7655167" target="7655149"/>
+      <arc id="7655049" source="7655023" target="7655047"/>
+      <arc id="7655945" source="7655131" target="7655943"/>
+      <arc id="7654923" source="7306985" target="7654921"/>
+      <arc id="7655051" source="7655047" target="7655041"/>
+      <arc id="7654925" source="7654921" target="7654915"/>
+      <arc id="7655947" source="7655943" target="7655149"/>
+      <arc id="7655055" source="7655023" target="7655053"/>
+      <arc id="7654929" source="7306985" target="7654927"/>
+      <arc id="7655057" source="7655053" target="7655041"/>
+      <arc id="7654931" source="7654927" target="7654915"/>
+      <arc id="7655953" source="7655113" target="7655951"/>
+      <arc id="7655955" source="7655951" target="7655149"/>
+      <arc id="7655961" source="7655095" target="7655959"/>
+      <arc id="7655067" source="7655041" target="7655065"/>
+      <arc id="7655963" source="7655959" target="7655149"/>
+      <arc id="7654941" source="7654915" target="7654939"/>
+      <arc id="7655069" source="7655065" target="7655059"/>
+      <arc id="7654943" source="7654939" target="7654933"/>
+      <arc id="7655073" source="7655041" target="7655071"/>
+      <arc id="7655969" source="7655149" target="7655967"/>
+      <arc id="7654947" source="7654915" target="7654945"/>
+      <arc id="7655075" source="7655071" target="7655059"/>
+      <arc id="7654949" source="7654945" target="7654933"/>
+      <arc id="7655971" source="7655967" target="7655095"/>
+      <arc id="7655979" source="7655149" target="7655977"/>
+      <arc id="7655085" source="7655059" target="7655083"/>
+      <arc id="7655981" source="7655977" target="7655973"/>
+      <arc id="7654959" source="7654933" target="7654957"/>
+      <arc id="7655087" source="7655083" target="7655077"/>
+      <arc id="7654961" source="7654957" target="7654951"/>
+      <arc id="7655985" source="7655149" target="7655983"/>
+      <arc id="7655091" source="7655059" target="7655089"/>
+      <arc id="7655987" source="7655983" target="7655973"/>
+      <arc id="7654965" source="7654933" target="7654963"/>
+      <arc id="7655093" source="7655089" target="7655077"/>
+      <arc id="7654967" source="7654963" target="7654951"/>
+      <arc id="7655991" source="7655149" target="7655989"/>
+      <arc id="7655993" source="7655989" target="7655973"/>
+      <arc id="7655103" source="7655077" target="7655101"/>
+      <arc id="7655999" source="7655149" target="7655997"/>
+      <arc id="7654977" source="7654951" target="7654975"/>
+      <arc id="7655105" source="7655101" target="7655095"/>
+      <arc id="7654979" source="7654975" target="7654969"/>
+      <arc id="7656001" source="7655997" target="7655973"/>
+      <arc id="7655109" source="7655077" target="7655107"/>
+      <arc id="7654983" source="7654951" target="7654981"/>
+      <arc id="7655031" source="7655005" target="7655029"/>
+      <arc id="7654985" source="7654981" target="7654969"/>
+      <arc id="7655111" source="7655107" target="7655095"/>
+      <arc id="7655159" source="7655155" target="7655149"/>
+      <arc id="7656007" source="7655973" target="7656005"/>
+      <arc id="7656009" source="7656005" target="7655149"/>
+      <arc id="7655033" source="7655029" target="7655023"/>
+      <arc id="7655121" source="7655095" target="7655119"/>
+      <arc id="7654995" source="7654969" target="7654993"/>
+      <arc id="7655123" source="7655119" target="7655113"/>
+      <arc id="7654997" source="7654993" target="7654987"/>
+      <arc id="7656019" source="7655973" target="7656017"/>
+      <arc id="7655127" source="7655095" target="7655125"/>
+      <arc id="7656021" source="7656017" target="7656011"/>
+      <arc id="7655001" source="7654969" target="7654999"/>
+      <arc id="7655129" source="7655125" target="7655113"/>
+      <arc id="7655003" source="7654999" target="7654987"/>
+      <arc id="7655139" source="7655113" target="7655137"/>
+      <arc id="7655013" source="7654987" target="7655011"/>
+      <arc id="7655037" source="7655005" target="7655035"/>
+      <arc id="7655015" source="7655011" target="7655005"/>
+      <arc id="7655141" source="7655137" target="7655131"/>
+      <arc id="7655145" source="7655113" target="7655143"/>
+      <arc id="7655165" source="7655161" target="7655149"/>
+      <arc id="7655019" source="7654987" target="7655017"/>
+      <arc id="7655147" source="7655143" target="7655131"/>
+      <arc id="7306989" source="7306973" target="7306987"/>
+      <arc id="7655021" source="7655017" target="7655005"/>
+      <arc id="7306991" source="7306987" target="7306981"/>
+      <arc id="7655039" source="7655035" target="7655023"/>
+      <arc id="7655157" source="7655131" target="7655155"/>
+      <arc id="7306999" source="7306981" target="7306997"/>
+      <arc id="7307001" source="7306997" target="7306985"/>
+      <arc id="7655163" source="7655131" target="7655161"/>
+      <arc id="7307005" source="7306981" target="7307003"/>
+      <arc id="7307007" source="7307003" target="7306985"/>
+    </page>
+  </net>
+</pnml>

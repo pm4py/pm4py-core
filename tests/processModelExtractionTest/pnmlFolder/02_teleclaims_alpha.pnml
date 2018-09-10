@@ -1,0 +1,289 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="4646047">
+        <name>
+          <text>({'close claim+start'}, {'close claim+complete'})</text>
+        </name>
+      </place>
+      <place id="4646081">
+        <name>
+          <text>({'B check if sufficient information is available+complete', 'advise claimant on reimbursement+complete', 'S check if sufficient information is available+complete', 'determine likelihood of claim+complete', 'assess claim+complete', 'close claim+complete'}, {'assess claim+start', 'B register claim+start', 'end+start', 'advise claimant on reimbursement+start'})</text>
+        </name>
+      </place>
+      <place id="4639395">
+        <name>
+          <text>({'B check if sufficient information is available+complete', 'initiate payment+complete', 'advise claimant on reimbursement+complete', 'assess claim+complete', 'close claim+complete'}, {'initiate payment+start', 'end+start', 'advise claimant on reimbursement+start', 'close claim+start'})</text>
+        </name>
+      </place>
+      <place id="4646085">
+        <name>
+          <text>({'end+start'}, {'end+complete'})</text>
+        </name>
+      </place>
+      <place id="4646053">
+        <name>
+          <text>({'initiate payment+start'}, {'initiate payment+complete'})</text>
+        </name>
+      </place>
+      <place id="4645991">
+        <name>
+          <text>({'B check if sufficient information is available+start'}, {'B check if sufficient information is available+complete'})</text>
+        </name>
+      </place>
+      <place id="4646023">
+        <name>
+          <text>({'S register claim+start'}, {'S register claim+complete'})</text>
+        </name>
+      </place>
+      <place id="4639429">
+        <name>
+          <text>({'B check if sufficient information is available+complete', 'initiate payment+complete', 'advise claimant on reimbursement+complete', 'S check if sufficient information is available+complete', 'determine likelihood of claim+complete', 'assess claim+complete', 'close claim+complete'}, {'assess claim+start', 'initiate payment+start', 'end+start', 'advise claimant on reimbursement+start'})</text>
+        </name>
+      </place>
+      <place id="4645995">
+        <name>
+          <text>end</text>
+        </name>
+      </place>
+      <place id="4639371">
+        <name>
+          <text>({'B check if sufficient information is available+complete', 'advise claimant on reimbursement+complete', 'S check if sufficient information is available+complete', 'determine likelihood of claim+complete', 'assess claim+complete', 'close claim+complete'}, {'assess claim+start', 'initiate payment+start', 'end+start', 'advise claimant on reimbursement+start', 'close claim+start'})</text>
+        </name>
+      </place>
+      <place id="4646029">
+        <name>
+          <text>({'S check if sufficient information is available+start'}, {'S check if sufficient information is available+complete'})</text>
+        </name>
+      </place>
+      <place id="4646061">
+        <name>
+          <text>({'B register claim+complete', 'S register claim+complete'}, {'determine likelihood of claim+start'})</text>
+        </name>
+      </place>
+      <place id="4639455">
+        <name>
+          <text>({'B check if sufficient information is available+complete', 'advise claimant on reimbursement+complete', 'S check if sufficient information is available+complete', 'determine likelihood of claim+complete', 'assess claim+complete', 'close claim+complete'}, {'assess claim+start', 'end+start', 'advise claimant on reimbursement+start', 'S register claim+start'})</text>
+        </name>
+      </place>
+      <place id="4646035">
+        <name>
+          <text>({'advise claimant on reimbursement+start'}, {'advise claimant on reimbursement+complete'})</text>
+        </name>
+      </place>
+      <place id="4646069">
+        <name>
+          <text>({'incoming claim+complete'}, {'S check if sufficient information is available+start', 'B check if sufficient information is available+start'})</text>
+        </name>
+      </place>
+      <place id="4646007">
+        <name>
+          <text>({'determine likelihood of claim+start'}, {'determine likelihood of claim+complete'})</text>
+        </name>
+      </place>
+      <place id="4646041">
+        <name>
+          <text>({'assess claim+start'}, {'assess claim+complete'})</text>
+        </name>
+      </place>
+      <place id="4646013">
+        <name>
+          <text>({'B register claim+start'}, {'B register claim+complete'})</text>
+        </name>
+      </place>
+      <place id="4687103">
+        <name>
+          <text>start</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <transition id="4645903">
+        <name>
+          <text>incoming claim+complete</text>
+        </name>
+      </transition>
+      <transition id="4645911">
+        <name>
+          <text>assess claim+start</text>
+        </name>
+      </transition>
+      <transition id="4645917">
+        <name>
+          <text>B check if sufficient information is available+complete</text>
+        </name>
+      </transition>
+      <transition id="4645921">
+        <name>
+          <text>B check if sufficient information is available+start</text>
+        </name>
+      </transition>
+      <transition id="4645925">
+        <name>
+          <text>B register claim+start</text>
+        </name>
+      </transition>
+      <transition id="4645929">
+        <name>
+          <text>determine likelihood of claim+start</text>
+        </name>
+      </transition>
+      <transition id="4645933">
+        <name>
+          <text>B register claim+complete</text>
+        </name>
+      </transition>
+      <transition id="4645937">
+        <name>
+          <text>determine likelihood of claim+complete</text>
+        </name>
+      </transition>
+      <transition id="4645941">
+        <name>
+          <text>S check if sufficient information is available+start</text>
+        </name>
+      </transition>
+      <transition id="4645945">
+        <name>
+          <text>end+complete</text>
+        </name>
+      </transition>
+      <transition id="4645949">
+        <name>
+          <text>end+start</text>
+        </name>
+      </transition>
+      <transition id="4645953">
+        <name>
+          <text>S check if sufficient information is available+complete</text>
+        </name>
+      </transition>
+      <transition id="4645957">
+        <name>
+          <text>S register claim+complete</text>
+        </name>
+      </transition>
+      <transition id="4645961">
+        <name>
+          <text>S register claim+start</text>
+        </name>
+      </transition>
+      <transition id="4645967">
+        <name>
+          <text>advise claimant on reimbursement+start</text>
+        </name>
+      </transition>
+      <transition id="4645971">
+        <name>
+          <text>assess claim+complete</text>
+        </name>
+      </transition>
+      <transition id="4645975">
+        <name>
+          <text>advise claimant on reimbursement+complete</text>
+        </name>
+      </transition>
+      <transition id="4645979">
+        <name>
+          <text>initiate payment+complete</text>
+        </name>
+      </transition>
+      <transition id="4645983">
+        <name>
+          <text>initiate payment+start</text>
+        </name>
+      </transition>
+      <transition id="4645987">
+        <name>
+          <text>close claim+start</text>
+        </name>
+      </transition>
+      <transition id="4645999">
+        <name>
+          <text>close claim+complete</text>
+        </name>
+      </transition>
+      <arc id="4646017" source="4646007" target="4645937"/>
+      <arc id="4646019" source="4645937" target="4646081"/>
+      <arc id="4646021" source="4645949" target="4646085"/>
+      <arc id="4639365" source="4645971" target="4646081"/>
+      <arc id="4646025" source="4646029" target="4645953"/>
+      <arc id="4639369" source="4645999" target="4646081"/>
+      <arc id="4646027" source="4645941" target="4646029"/>
+      <arc id="4639373" source="4646081" target="4645967"/>
+      <arc id="4691727" source="4687103" target="4645903"/>
+      <arc id="4646031" source="4646085" target="4645945"/>
+      <arc id="4646033" source="4645961" target="4646023"/>
+      <arc id="4639377" source="4646081" target="4645925"/>
+      <arc id="4639379" source="4646081" target="4645911"/>
+      <arc id="4639375" source="4646081" target="4645949"/>
+      <arc id="4646037" source="4646041" target="4645971"/>
+      <arc id="4639381" source="4645917" target="4639371"/>
+      <arc id="4646039" source="4645911" target="4646041"/>
+      <arc id="4639383" source="4645999" target="4639371"/>
+      <arc id="4639385" source="4645971" target="4639371"/>
+      <arc id="4646043" source="4646023" target="4645957"/>
+      <arc id="4639387" source="4645937" target="4639371"/>
+      <arc id="4646045" source="4645967" target="4646035"/>
+      <arc id="4639389" source="4645953" target="4639371"/>
+      <arc id="4639391" source="4645975" target="4639371"/>
+      <arc id="4646049" source="4646053" target="4645979"/>
+      <arc id="4639393" source="4639371" target="4645911"/>
+      <arc id="4646051" source="4645983" target="4646053"/>
+      <arc id="4639397" source="4639371" target="4645987"/>
+      <arc id="4646055" source="4646035" target="4645975"/>
+      <arc id="4639399" source="4639371" target="4645967"/>
+      <arc id="4646057" source="4645987" target="4646047"/>
+      <arc id="4639401" source="4639371" target="4645949"/>
+      <arc id="4646059" source="4645933" target="4646061"/>
+      <arc id="4639403" source="4639371" target="4645983"/>
+      <arc id="4639405" source="4645917" target="4639395"/>
+      <arc id="4646063" source="4646069" target="4645921"/>
+      <arc id="4646065" source="4646069" target="4645941"/>
+      <arc id="4639409" source="4639395" target="4645949"/>
+      <arc id="4646067" source="4645903" target="4646069"/>
+      <arc id="4639411" source="4639395" target="4645983"/>
+      <arc id="4639413" source="4645999" target="4639395"/>
+      <arc id="4646071" source="4646047" target="4645999"/>
+      <arc id="4639415" source="4645971" target="4639395"/>
+      <arc id="4646073" source="4645957" target="4646061"/>
+      <arc id="4639417" source="4645975" target="4639395"/>
+      <arc id="4646075" source="4645953" target="4646081"/>
+      <arc id="4639419" source="4645979" target="4639395"/>
+      <arc id="4646077" source="4645975" target="4646081"/>
+      <arc id="4639421" source="4639395" target="4645967"/>
+      <arc id="4646079" source="4645917" target="4646081"/>
+      <arc id="4639423" source="4645975" target="4639429"/>
+      <arc id="4639425" source="4645979" target="4639429"/>
+      <arc id="4646083" source="4646061" target="4645929"/>
+      <arc id="4639427" source="4645917" target="4639429"/>
+      <arc id="4639431" source="4639395" target="4645987"/>
+      <arc id="4639435" source="4645953" target="4639429"/>
+      <arc id="4639437" source="4639429" target="4645983"/>
+      <arc id="4639439" source="4639429" target="4645911"/>
+      <arc id="4639441" source="4645999" target="4639429"/>
+      <arc id="4639443" source="4645971" target="4639429"/>
+      <arc id="4639445" source="4645937" target="4639429"/>
+      <arc id="4639447" source="4639429" target="4645949"/>
+      <arc id="4639449" source="4645953" target="4639455"/>
+      <arc id="4639451" source="4645975" target="4639455"/>
+      <arc id="4639453" source="4645917" target="4639455"/>
+      <arc id="4639457" source="4639429" target="4645967"/>
+      <arc id="4639459" source="4645937" target="4639455"/>
+      <arc id="4645989" source="4645921" target="4645991"/>
+      <arc id="4639463" source="4639455" target="4645961"/>
+      <arc id="4645993" source="4645945" target="4645995"/>
+      <arc id="4639465" source="4639455" target="4645967"/>
+      <arc id="4639467" source="4639455" target="4645949"/>
+      <arc id="4639469" source="4639455" target="4645911"/>
+      <arc id="4639471" source="4645999" target="4639455"/>
+      <arc id="4639473" source="4645971" target="4639455"/>
+      <arc id="4646003" source="4645991" target="4645917"/>
+      <arc id="4646005" source="4645929" target="4646007"/>
+      <arc id="4646009" source="4646013" target="4645933"/>
+      <arc id="4646011" source="4645925" target="4646013"/>
+    </page>
+  </net>
+</pnml>
