@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="4649025">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="4649005">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="4649075">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="4649113">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="4649021">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <transition id="4649027">
+        <name>
+          <text>register request</text>
+        </name>
+      </transition>
+      <transition id="4649091">
+        <name>
+          <text>reinitiate request</text>
+        </name>
+      </transition>
+      <transition id="4649061">
+        <name>
+          <text>skip_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="fba3205d-6b6e-40f9-958b-2c9eaec25d74"/>
+      </transition>
+      <transition id="4649035">
+        <name>
+          <text>examine casually</text>
+        </name>
+      </transition>
+      <transition id="4649099">
+        <name>
+          <text>skip_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="28de97d5-5d2c-442f-9050-431f514f4abf"/>
+      </transition>
+      <transition id="4649069">
+        <name>
+          <text>loop_2</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="35a38dda-4ada-4627-9f0d-7e3391470111"/>
+      </transition>
+      <transition id="4649079">
+        <name>
+          <text>pay compensation</text>
+        </name>
+      </transition>
+      <transition id="4649041">
+        <name>
+          <text>check ticket</text>
+        </name>
+      </transition>
+      <transition id="4649107">
+        <name>
+          <text>loop_4</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="62f6c2e0-3a4c-4e4d-a6c9-c46abd5aa390"/>
+      </transition>
+      <transition id="4649085">
+        <name>
+          <text>reject request</text>
+        </name>
+      </transition>
+      <transition id="4649047">
+        <name>
+          <text>decide</text>
+        </name>
+      </transition>
+      <transition id="4649053">
+        <name>
+          <text>examine thoroughly</text>
+        </name>
+      </transition>
+      <transition id="4649119">
+        <name>
+          <text>tau_5</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="7d75ebe1-5941-4db7-ba1a-4c549bcd3a9f"/>
+      </transition>
+      <arc id="4649089" source="4649085" target="4649075"/>
+      <arc id="4649093" source="4649025" target="4649091"/>
+      <arc id="4649095" source="4649091" target="4649075"/>
+      <arc id="4649101" source="4649025" target="4649099"/>
+      <arc id="4649103" source="4649099" target="4649075"/>
+      <arc id="4649109" source="4649075" target="4649107"/>
+      <arc id="4649111" source="4649107" target="4649025"/>
+      <arc id="4649121" source="4649075" target="4649119"/>
+      <arc id="4649123" source="4649119" target="4649113"/>
+      <arc id="4649029" source="4649005" target="4649027"/>
+      <arc id="4649031" source="4649027" target="4649021"/>
+      <arc id="4649037" source="4649021" target="4649035"/>
+      <arc id="4649039" source="4649035" target="4649025"/>
+      <arc id="4649043" source="4649021" target="4649041"/>
+      <arc id="4649045" source="4649041" target="4649025"/>
+      <arc id="4649049" source="4649021" target="4649047"/>
+      <arc id="4649051" source="4649047" target="4649025"/>
+      <arc id="4649055" source="4649021" target="4649053"/>
+      <arc id="4649057" source="4649053" target="4649025"/>
+      <arc id="4649063" source="4649021" target="4649061"/>
+      <arc id="4649065" source="4649061" target="4649025"/>
+      <arc id="4649071" source="4649025" target="4649069"/>
+      <arc id="4649073" source="4649069" target="4649021"/>
+      <arc id="4649081" source="4649025" target="4649079"/>
+      <arc id="4649083" source="4649079" target="4649075"/>
+      <arc id="4649087" source="4649025" target="4649085"/>
+    </page>
+  </net>
+</pnml>

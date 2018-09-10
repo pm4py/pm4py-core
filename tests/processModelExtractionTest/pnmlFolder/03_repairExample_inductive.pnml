@@ -1,0 +1,328 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="6928225">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="6928325">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="6928357">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <place id="4691911">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="6928203">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="6928269">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="6928365">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <place id="6928207">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="6928307">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="4661813">
+        <name>
+          <text>p_14</text>
+        </name>
+      </place>
+      <place id="6928215">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="6928287">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="4691865">
+        <name>
+          <text>p_16</text>
+        </name>
+      </place>
+      <place id="6928251">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="4661915">
+        <name>
+          <text>p_15</text>
+        </name>
+      </place>
+      <place id="6928191">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <transition id="6928257">
+        <name>
+          <text>Repair (Simple)+complete</text>
+        </name>
+      </transition>
+      <transition id="6928265">
+        <name>
+          <text>skip_2</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="6d6d9f36-6607-4cdc-a999-c8817dbdb04b"/>
+      </transition>
+      <transition id="4691849">
+        <name>
+          <text>loop_14</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="ac5cfcb1-b5db-4417-a1bf-ff78d6bb7443"/>
+      </transition>
+      <transition id="6928271">
+        <name>
+          <text>skip_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="0a90aaa1-387f-4c7d-a438-eb3442addf63"/>
+      </transition>
+      <transition id="6928277">
+        <name>
+          <text>Repair (Complex)+start</text>
+        </name>
+      </transition>
+      <transition id="4691869">
+        <name>
+          <text>Archive Repair+complete</text>
+        </name>
+      </transition>
+      <transition id="4691875">
+        <name>
+          <text>Restart Repair+complete</text>
+        </name>
+      </transition>
+      <transition id="6928299">
+        <name>
+          <text>skip_4</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="a4af62fd-c997-4736-925a-c25fbcf5b402"/>
+      </transition>
+      <transition id="4691885">
+        <name>
+          <text>loop_18</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="82a18ef8-fcaf-4436-9d1e-cb1d336e4a64"/>
+      </transition>
+      <transition id="4691837">
+        <name>
+          <text>tau_19</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="2f82d23c-15c8-4d2b-86f5-46b555631ed0"/>
+      </transition>
+      <transition id="6928309">
+        <name>
+          <text>Test Repair+start</text>
+        </name>
+      </transition>
+      <transition id="6928315">
+        <name>
+          <text>skip_5</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="3b1ec817-cd86-4125-a011-5738963f552f"/>
+      </transition>
+      <transition id="4691901">
+        <name>
+          <text>skip_17</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="5038ce56-90a1-4205-8b61-07e77114169c"/>
+      </transition>
+      <transition id="6928323">
+        <name>
+          <text>skip_6</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="22d2630b-fb7f-4ac1-a7a5-b8dd67eb8a59"/>
+      </transition>
+      <transition id="6928201">
+        <name>
+          <text>Register+complete</text>
+        </name>
+      </transition>
+      <transition id="6928333">
+        <name>
+          <text>skip_7</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="c3e0b1ca-74ff-423f-948f-a635a0fda545"/>
+      </transition>
+      <transition id="6928339">
+        <name>
+          <text>loop_8</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="bdaaf356-e27b-4528-82c4-afd916c5179e"/>
+      </transition>
+      <transition id="6928213">
+        <name>
+          <text>Analyze Defect+start</text>
+        </name>
+      </transition>
+      <transition id="6928347">
+        <name>
+          <text>tauSplit_9</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="4f91fc55-d739-476b-b802-d96e5125fc3e"/>
+      </transition>
+      <transition id="6928223">
+        <name>
+          <text>Repair (Complex)+complete</text>
+        </name>
+      </transition>
+      <transition id="6928353">
+        <name>
+          <text>tauJoin_10</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="35373ea4-4271-40dd-a410-dbd3fc009bc7"/>
+      </transition>
+      <transition id="6928227">
+        <name>
+          <text>Analyze Defect+complete</text>
+        </name>
+      </transition>
+      <transition id="4691813">
+        <name>
+          <text>skip_12</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="8cc218b0-9627-49b1-a685-af2bafefeac3"/>
+      </transition>
+      <transition id="6928237">
+        <name>
+          <text>Repair (Simple)+start</text>
+        </name>
+      </transition>
+      <transition id="4691949">
+        <name>
+          <text>loop_16</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="219782a9-1289-4ea5-97c7-130f057eb629"/>
+      </transition>
+      <transition id="6928241">
+        <name>
+          <text>skip_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="48589b69-3fa9-46af-9a96-e56c820e6496"/>
+      </transition>
+      <transition id="6928373">
+        <name>
+          <text>Inform User+complete</text>
+        </name>
+      </transition>
+      <transition id="4691829">
+        <name>
+          <text>Test Repair+complete</text>
+        </name>
+      </transition>
+      <transition id="4691831">
+        <name>
+          <text>skip_13</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="51abeaec-c8e8-456d-a703-1e0d9f630d60"/>
+      </transition>
+      <transition id="6928381">
+        <name>
+          <text>skip_11</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="48668850-5d35-4924-84b1-ab6fcc84a163"/>
+      </transition>
+      <transition id="4691839">
+        <name>
+          <text>skip_15</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="bda0fd19-8086-4d6a-a0fd-61b48dd7e968"/>
+      </transition>
+      <arc id="6928259" source="6928225" target="6928257"/>
+      <arc id="4691843" source="4691831" target="6928325"/>
+      <arc id="6928261" source="6928257" target="6928251"/>
+      <arc id="4691845" source="6928325" target="4691949"/>
+      <arc id="6928263" source="6928225" target="6928265"/>
+      <arc id="6928267" source="6928265" target="6928251"/>
+      <arc id="4691853" source="6928307" target="4691831"/>
+      <arc id="4691855" source="6928325" target="4691849"/>
+      <arc id="6928273" source="6928277" target="6928269"/>
+      <arc id="4691857" source="4661813" target="4691829"/>
+      <arc id="6928275" source="6928251" target="6928277"/>
+      <arc id="6928375" source="6928357" target="6928373"/>
+      <arc id="4691861" source="4691869" target="4691865"/>
+      <arc id="6928281" source="6928251" target="6928271"/>
+      <arc id="4691867" source="4691949" target="6928215"/>
+      <arc id="4691871" source="4691849" target="6928307"/>
+      <arc id="6928289" source="6928271" target="6928269"/>
+      <arc id="6928291" source="6928269" target="6928223"/>
+      <arc id="6928293" source="6928223" target="6928287"/>
+      <arc id="4691877" source="6928325" target="4691875"/>
+      <arc id="6928295" source="6928269" target="6928299"/>
+      <arc id="4691881" source="4691885" target="6928325"/>
+      <arc id="4691883" source="4691901" target="4691865"/>
+      <arc id="6928301" source="6928299" target="6928287"/>
+      <arc id="6928175" source="6928213" target="6928203"/>
+      <arc id="4691887" source="6928325" target="4691901"/>
+      <arc id="6928311" source="6928309" target="6928307"/>
+      <arc id="4691895" source="4691875" target="4691865"/>
+      <arc id="6928313" source="6928287" target="6928309"/>
+      <arc id="4691897" source="4691865" target="4691885"/>
+      <arc id="4691899" source="6928325" target="4691869"/>
+      <arc id="6928317" source="6928315" target="6928307"/>
+      <arc id="6928319" source="6928287" target="6928315"/>
+      <arc id="4649151" source="4661915" target="6928353"/>
+      <arc id="4691905" source="4691865" target="4691837"/>
+      <arc id="6928199" source="6928191" target="6928201"/>
+      <arc id="6928327" source="6928269" target="6928323"/>
+      <arc id="4661961" source="6928347" target="4661813"/>
+      <arc id="6928331" source="6928323" target="6928307"/>
+      <arc id="4691917" source="4691837" target="4691911"/>
+      <arc id="6928335" source="6928215" target="6928333"/>
+      <arc id="4691919" source="4691813" target="4661915"/>
+      <arc id="6928209" source="6928201" target="6928207"/>
+      <arc id="6928337" source="6928333" target="6928307"/>
+      <arc id="6928211" source="6928207" target="6928213"/>
+      <arc id="6928343" source="6928307" target="6928339"/>
+      <arc id="6928345" source="6928339" target="6928215"/>
+      <arc id="6928351" source="6928307" target="6928347"/>
+      <arc id="6928355" source="6928353" target="6928325"/>
+      <arc id="6928229" source="6928203" target="6928227"/>
+      <arc id="6928233" source="6928227" target="6928215"/>
+      <arc id="6928363" source="6928347" target="6928357"/>
+      <arc id="4691821" source="6928215" target="4691839"/>
+      <arc id="6928239" source="6928215" target="6928237"/>
+      <arc id="6928367" source="6928365" target="6928353"/>
+      <arc id="4691951" source="4691829" target="4661915"/>
+      <arc id="4691823" source="4661813" target="4691813"/>
+      <arc id="6928243" source="6928237" target="6928225"/>
+      <arc id="4691953" source="4691839" target="6928325"/>
+      <arc id="6928245" source="6928215" target="6928241"/>
+      <arc id="6928247" source="6928241" target="6928225"/>
+      <arc id="6928377" source="6928381" target="6928365"/>
+      <arc id="6928379" source="6928357" target="6928381"/>
+      <arc id="6928383" source="6928373" target="6928365"/>
+    </page>
+  </net>
+</pnml>

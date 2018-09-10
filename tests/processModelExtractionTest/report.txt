@@ -1,0 +1,41 @@
+
+
+Fitness on Alpha and Inductive models - measured by token-based replay and alignments
+----
+log                          	fitness_token_alpha          	times_tokenreplay_alpha      	fitness_token_imdf           	times_tokenreplay_imdf       	fitness_align_imdf           	times_alignments_imdf        
+01_running-example.xes.gz    	100.000                      	0.003                        	100.000                      	0.004                        	100.000                      	1.179                        
+02_teleclaims.xes.gz         	82.944                       	0.053                        	100.000                      	0.053                        	100.000                      	30.540                       
+03_repairExample.xes.gz      	100.000                      	0.068                        	100.000                      	0.071                        	100.000                      	16.150                       
+04_reviewing.xes.gz          	100.000                      	0.161                        	100.000                      	0.142                        	100.000                      	4.437                        
+05_bpic2017.xes.gz           	4.963                        	0.259                        	100.000                      	0.259                        	100.000                      	53.436                       
+
+
+Precision measured by ETConformance where activated transitions are retrieved using token replay
+----
+log                          	precision_alpha              	precision_imdf               
+01_running-example.xes.gz    	0.807                        	0.207                        
+02_teleclaims.xes.gz         	0.325                        	0.276                        
+03_repairExample.xes.gz      	0.971                        	0.382                        
+04_reviewing.xes.gz          	0.734                        	0.141                        
+05_bpic2017.xes.gz           	0.648                        	0.855                        
+
+
+Generalization based on token replay transition recall
+----
+log                          	generalization_alpha         	generalization_imdf          
+01_running-example.xes.gz    	0.526                        	0.462                        
+02_teleclaims.xes.gz         	0.978                        	0.884                        
+03_repairExample.xes.gz      	0.967                        	0.833                        
+04_reviewing.xes.gz          	0.895                        	0.828                        
+05_bpic2017.xes.gz           	0.991                        	0.894                        
+
+
+Simplicity based on inverse arc degree
+----
+log                          	simplicity_alpha             	simplicity_imdf              
+01_running-example.xes.gz    	0.533                        	0.722                        
+02_teleclaims.xes.gz         	0.525                        	0.689                        
+03_repairExample.xes.gz      	0.500                        	0.660                        
+04_reviewing.xes.gz          	0.541                        	0.758                        
+05_bpic2017.xes.gz           	0.533                        	0.682                        
+

@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="4648993">
+        <name>
+          <text>({'examine casually', 'examine thoroughly'}, {'decide'})</text>
+        </name>
+      </place>
+      <place id="4648965">
+        <name>
+          <text>({'register request', 'reinitiate request'}, {'examine casually', 'examine thoroughly'})</text>
+        </name>
+      </place>
+      <place id="4648975">
+        <name>
+          <text>({'decide'}, {'pay compensation', 'reject request', 'reinitiate request'})</text>
+        </name>
+      </place>
+      <place id="4646131">
+        <name>
+          <text>start</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="4646135">
+        <name>
+          <text>end</text>
+        </name>
+      </place>
+      <place id="4648985">
+        <name>
+          <text>({'register request', 'reinitiate request'}, {'check ticket'})</text>
+        </name>
+      </place>
+      <place id="4646141">
+        <name>
+          <text>({'check ticket'}, {'decide'})</text>
+        </name>
+      </place>
+      <transition id="4646115">
+        <name>
+          <text>reinitiate request</text>
+        </name>
+      </transition>
+      <transition id="4646119">
+        <name>
+          <text>examine thoroughly</text>
+        </name>
+      </transition>
+      <transition id="4646123">
+        <name>
+          <text>pay compensation</text>
+        </name>
+      </transition>
+      <transition id="4646127">
+        <name>
+          <text>reject request</text>
+        </name>
+      </transition>
+      <transition id="4646099">
+        <name>
+          <text>examine casually</text>
+        </name>
+      </transition>
+      <transition id="4646101">
+        <name>
+          <text>register request</text>
+        </name>
+      </transition>
+      <transition id="4646107">
+        <name>
+          <text>check ticket</text>
+        </name>
+      </transition>
+      <transition id="4646111">
+        <name>
+          <text>decide</text>
+        </name>
+      </transition>
+      <arc id="4648963" source="4646141" target="4646111"/>
+      <arc id="4648995" source="4646099" target="4648993"/>
+      <arc id="4648997" source="4646119" target="4648993"/>
+      <arc id="4648967" source="4646101" target="4648965"/>
+      <arc id="4648987" source="4646101" target="4648985"/>
+      <arc id="4648969" source="4646115" target="4648965"/>
+      <arc id="4648999" source="4648993" target="4646111"/>
+      <arc id="4648971" source="4648965" target="4646099"/>
+      <arc id="4648973" source="4648965" target="4646119"/>
+      <arc id="4648977" source="4646111" target="4648975"/>
+      <arc id="4648979" source="4648975" target="4646123"/>
+      <arc id="4646133" source="4646131" target="4646101"/>
+      <arc id="4648981" source="4648975" target="4646127"/>
+      <arc id="4648983" source="4648975" target="4646115"/>
+      <arc id="4646137" source="4646123" target="4646135"/>
+      <arc id="4646139" source="4646127" target="4646135"/>
+      <arc id="4648991" source="4648985" target="4646107"/>
+      <arc id="4648989" source="4646115" target="4648985"/>
+      <arc id="4646143" source="4646107" target="4646141"/>
+    </page>
+  </net>
+</pnml>
