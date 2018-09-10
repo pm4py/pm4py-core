@@ -10,7 +10,8 @@ from pm4py.algo.tokenreplay.versions import token_replay
 from pm4py.algo.tokenreplay import factory as token_factory
 import time
 
-log = xes_importer.import_from_file_xes('..\\tests\\inputData\\running-example.xes')
+logPath = "..\\tests\\inputData\\running-example.xes"
+log = xes_importer.import_from_file_xes(logPath)
 print("loaded log")
 net, marking, final_marking = inductive_factory.apply(log)
 for place in marking:
@@ -21,17 +22,15 @@ for p in net.places:
         final_marking[p] = 1"""
 for place in final_marking:
 	print("final marking "+place.name)
-gviz = pn_viz.graphviz_visualization(net, initial_marking=marking, final_marking=final_marking, debug=False)
+gviz = pn_viz.graphviz_visualization(net, initial_marking=marking, final_marking=final_marking, debug=True)
 gviz.view()
 time0 = time.time()
 print("started token replay")
+parameters = {"enable_placeFitness": True}
 [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = \
-	token_factory.apply(log, net, marking, final_marking)
-for place in placeFitness:
-	if len(placeFitness[place]['underfedTraces']) > 0:
-		print(place.name)
-print("underfed places: ",[place.name for place in placeFitness.keys() if len(placeFitness[place]['underfedTraces']) > 0])
-print("overfed places: ",[place.name for place in placeFitness.keys() if len(placeFitness[place]['overfedTraces']) > 0])
+	token_factory.apply(log, net, marking, final_marking, parameters=parameters)
+print("underfed places: ",sorted([place.name for place in placeFitness.keys() if len(placeFitness[place]['underfedTraces']) > 0]))
+print("overfed places: ",sorted([place.name for place in placeFitness.keys() if len(placeFitness[place]['overfedTraces']) > 0]))
 time1 = time.time()
 print("time interlapsed",(time1-time0))
 fitTraces = [x for x in traceIsFit if x]
