@@ -58,7 +58,7 @@ if __name__ == '__main__':
     from pm4py.models.transition_system import visualize as ts_vis
 
     net, initial_marking = petri_importer.import_petri_from_pnml(
-        r'C:\Users\pegoraro\Google Drive\PADS\uncertainty\alignments\test1\net1.pnml')
+        r'C:\Users\pegoraro\Google Drive\PADS\uncertainty\net-from-book.pnml')
     ts = construct_reachability_graph(net, initial_marking)
     vis = ts_vis.graphviz.visualize(ts)
     vis.view()
