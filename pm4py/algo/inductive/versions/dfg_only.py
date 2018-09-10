@@ -484,7 +484,7 @@ class Subtree(object):
         self.counts.inc_places()
         return petri.petrinet.PetriNet.Place('p_' + str(self.counts.noOfPlaces))
 
-    def get_new_hidden_trans(self, type="tau"):
+    def get_new_hidden_trans(self, type="unknown"):
         """
         Create a new hidden transition in the Petri net
         """
@@ -652,6 +652,7 @@ class Subtree(object):
         lastAddedPlace
             lastAddedPlace
         """
+
         lastAddedPlace = None
         initialPlace = None
         finalPlace = None
@@ -684,6 +685,7 @@ class Subtree(object):
                 net.places.add(newPlace)
                 petri.utils.add_arc_from_to(initial_connect_to, initialTrans, net)
                 petri.utils.add_arc_from_to(initialTrans, newPlace, net)
+                initialPlace = newPlace
 
         if self.detectedCut == "base_concurrent" or self.detectedCut == "flower":
             if final_connect_to is None or type(final_connect_to) is PetriNet.Transition:
@@ -757,7 +759,8 @@ class Subtree(object):
             lastAddedPlace = finalPlace
 
         if self.detectedCut == "flower" or self.detectedCut == "sequential" or self.detectedCut == "loopCut" or self.detectedCut == "base_concurrent" or self.detectedCut == "parallel" or self.detectedCut == "concurrent":
-            if self.detectedCut == "flower" or must_add_skip:
+            #if self.detectedCut == "flower" or must_add_skip:
+            if must_add_skip:
                 if not (initialPlace.name in self.counts.dictSkips and lastAddedPlace.name in self.counts.dictSkips[initialPlace.name]):
                     skipTrans = self.get_new_hidden_trans(type="skip")
                     net.transitions.add(skipTrans)
@@ -770,7 +773,8 @@ class Subtree(object):
                     self.counts.dictSkips[initialPlace.name].append(lastAddedPlace.name)
 
 
-            if self.detectedCut == "flower" or must_add_loop:
+            #if self.detectedCut == "flower" or must_add_loop:
+            if must_add_loop:
                 if not (initialPlace.name in self.counts.dictLoops and lastAddedPlace.name in self.counts.dictLoops[initialPlace.name]):
                     loopTrans = self.get_new_hidden_trans(type="loop")
                     net.transitions.add(loopTrans)
