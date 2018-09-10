@@ -560,7 +560,32 @@ class Subtree(object):
 
         return max_value
 
-    def verify_skip_transition_necessity(self, mAddSkip, initialDfg, dfg, childrenDfg, childrenActivities):
+    def getSumStartActivitiesCount(self, dfg):
+        """
+        Gets the sum of start activities count inside a DFG
+
+        Parameters
+        -------------
+        dfg
+            Directly-Follows graph
+
+        Returns
+        -------------
+            Sum of start activities count
+        """
+        ingoing = self.get_ingoing_edges(dfg)
+        outgoing = self.get_outgoing_edges(dfg)
+
+        sum_values = 0
+
+        for act in outgoing:
+            if not act in ingoing:
+                for act2 in outgoing[act]:
+                    sum_values += outgoing[act][act2]
+
+        return sum_values
+
+    def verify_skip_transition_necessity(self, mAddSkip, initialDfg, dfg, childrenDfg, activities, childrenActivities, initial_connect_to):
         """
         Utility functions that decides if the skip transition is necessary
 
@@ -575,17 +600,20 @@ class Subtree(object):
         childrenDfg
             Children DFG
         """
+        if initial_connect_to.name == "p_1":
+            return False
         if mAddSkip:
             return True
         maxValueInitial = self.getMaxValue(initialDfg)
-        maxValueDfg = self.getMaxValue(dfg)
-
+        maxValueDfg = self.getMaxValueWithActivitiesSpecification(initialDfg, activities)
+        startActivitiesSumDfg = self.getSumStartActivitiesCount(initialDfg)
         maxValueChildrenDfg = self.getMaxValueWithActivitiesSpecification(dfg, childrenActivities)
 
-        if maxValueChildrenDfg > -1 and maxValueChildrenDfg < maxValueInitial:
+        if maxValueChildrenDfg < maxValueDfg and maxValueChildrenDfg < startActivitiesSumDfg:
             return True
-        if maxValueDfg > -1 and maxValueDfg < maxValueInitial:
-            return True
+
+        #print(childrenActivities, maxValueChildrenDfg, maxValueDfg, startActivitiesSumDfg, maxValueInitial)
+
         return False
 
     def form_petrinet(self, net, initial_marking, final_marking, must_add_initial_place=False, must_add_final_place=False, initial_connect_to=None, final_connect_to=None, must_add_skip=False, must_add_loop=False):
@@ -684,11 +712,11 @@ class Subtree(object):
 
             net, initial_marking, final_marking, lastAddedPlace = self.children[0].form_petrinet(net, initial_marking,
                                                                                       final_marking,
-                                                                                      initial_connect_to=initialPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[0].dfg, self.children[0].activities), must_add_loop=mAddLoop)
+                                                                                      initial_connect_to=initialPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[0].dfg, self.activities, self.children[0].activities, initialPlace), must_add_loop=mAddLoop)
             net, initial_marking, final_marking, lastAddedPlace = self.children[1].form_petrinet(net, initial_marking,
                                                                                       final_marking,
                                                                                         initial_connect_to=lastAddedPlace,
-                                                                                      final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[1].dfg, self.children[1].activities), must_add_loop=mAddLoop)
+                                                                                      final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[1].dfg, self.activities, self.children[1].activities, lastAddedPlace), must_add_loop=mAddLoop)
         elif self.detectedCut == "parallel":
             mAddSkip = False
             mAddLoop = False
@@ -709,7 +737,7 @@ class Subtree(object):
                 net, initial_marking, final_marking, lastAddedPlace = child.form_petrinet(net, initial_marking,
                                                                                           final_marking,
                                                                                         must_add_initial_place=True, must_add_final_place=True,
-                                                                                          initial_connect_to=parallelSplit, final_connect_to=parallelJoin, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg, child.activities), must_add_loop=mAddLoop)
+                                                                                          initial_connect_to=parallelSplit, final_connect_to=parallelJoin, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg, self.activities, child.activities, parallelSplit), must_add_loop=mAddLoop)
 
             lastAddedPlace = finalPlace
 
@@ -724,7 +752,7 @@ class Subtree(object):
             for child in self.children:
                 net, initial_marking, final_marking, lastAddedPlace = child.form_petrinet(net, initial_marking,
                                                                                           final_marking,
-                                                                                          initial_connect_to=initialPlace, final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg, child.activities), must_add_loop=mAddLoop)
+                                                                                          initial_connect_to=initialPlace, final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg, self.activities, child.activities, initialPlace), must_add_loop=mAddLoop)
 
             lastAddedPlace = finalPlace
 
