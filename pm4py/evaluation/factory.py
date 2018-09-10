@@ -52,8 +52,11 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
         token_replay.apply(log, net, initial_marking, final_marking, activity_key=activity_key)
 
+    parameters = {}
+    parameters["activity_key"] = activity_key
+
     fitness = fitness_token_based.get_fitness(traceIsFit, traceFitnessValue)
-    precision = precision_token_based.apply(log, net, initial_marking, final_marking, activity_key=activity_key)
+    precision = precision_token_based.apply(log, net, initial_marking, final_marking, parameters=parameters)
     generalization = generalization_token_based.get_generalization(net, activatedTransitions)
     simplicity = simplicity_arc_degree.apply(net)
 
