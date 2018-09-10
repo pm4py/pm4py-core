@@ -652,7 +652,7 @@ class Subtree(object):
         lastAddedPlace
             lastAddedPlace
         """
-
+        #print(self.recDepth, self.activities, self.detectedCut)
         lastAddedPlace = None
         initialPlace = None
         finalPlace = None
@@ -727,6 +727,14 @@ class Subtree(object):
                 finalPlace = self.get_new_place()
                 net.places.add(finalPlace)
 
+            children_occurrences = []
+            for child in self.children:
+                child_occ = self.getMaxValueWithActivitiesSpecification(self.dfg, child.activities)
+                children_occurrences.append(child_occ)
+            if children_occurrences:
+                if not(children_occurrences[0] == children_occurrences[-1]):
+                    mAddSkip = True
+
             parallelSplit = self.get_new_hidden_trans("tauSplit")
             net.transitions.add(parallelSplit)
             petri.utils.add_arc_from_to(initialPlace, parallelSplit, net)
@@ -736,10 +744,12 @@ class Subtree(object):
             petri.utils.add_arc_from_to(parallelJoin, finalPlace, net)
 
             for child in self.children:
+                mAddSkipFinal = self.verify_skip_transition_necessity(mAddSkip, self.dfg, self.dfg, child.dfg, self.activities, child.activities, parallelSplit)
+
                 net, initial_marking, final_marking, lastAddedPlace = child.form_petrinet(net, initial_marking,
                                                                                           final_marking,
                                                                                         must_add_initial_place=True, must_add_final_place=True,
-                                                                                          initial_connect_to=parallelSplit, final_connect_to=parallelJoin, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg, self.activities, child.activities, parallelSplit), must_add_loop=mAddLoop)
+                                                                                          initial_connect_to=parallelSplit, final_connect_to=parallelJoin, must_add_skip=mAddSkipFinal, must_add_loop=mAddLoop)
 
             lastAddedPlace = finalPlace
 
@@ -750,6 +760,7 @@ class Subtree(object):
             if finalPlace is None:
                 finalPlace = self.get_new_place()
                 net.places.add(finalPlace)
+
 
             for child in self.children:
                 net, initial_marking, final_marking, lastAddedPlace = child.form_petrinet(net, initial_marking,
@@ -773,8 +784,8 @@ class Subtree(object):
                     self.counts.dictSkips[initialPlace.name].append(lastAddedPlace.name)
 
 
-            #if self.detectedCut == "flower" or must_add_loop:
-            if must_add_loop:
+            if self.detectedCut == "flower" or must_add_loop:
+            #if must_add_loop:
                 if not (initialPlace.name in self.counts.dictLoops and lastAddedPlace.name in self.counts.dictLoops[initialPlace.name]):
                     loopTrans = self.get_new_hidden_trans(type="loop")
                     net.transitions.add(loopTrans)
