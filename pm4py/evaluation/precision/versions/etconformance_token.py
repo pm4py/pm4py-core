@@ -1,6 +1,7 @@
 from collections import Counter
 from pm4py.log.log import TraceLog, Event, Trace
 from pm4py.algo.tokenreplay.versions import token_replay
+from pm4py import log as log_lib
 
 """
 Implementation of the approach described in paper
@@ -18,6 +19,11 @@ Then, precision is calculated by the formula used in the paper
 At the moment, the precision value is different from the one provided by the ProM plug-in,
 although the implementation seems to follow the paper concept
 """
+
+PARAM_ACTIVITY_KEY = 'activity_key'
+
+PARAMETERS = [PARAM_ACTIVITY_KEY]
+
 def get_log_prefixes(log, activity_key="concept:name"):
     """
     Get trace log prefixes
@@ -68,7 +74,7 @@ def form_fake_log(prefixesKeys, prefixes, activity_key="concept:name"):
         fake_log.append(trace)
     return fake_log
 
-def apply(log, net, marking, final_marking, activity_key="concept:name"):
+def apply(log, net, marking, final_marking, parameters=None):
     """
     Get ET Conformance precision
 
@@ -85,6 +91,12 @@ def apply(log, net, marking, final_marking, activity_key="concept:name"):
     activity_key
         Activity key
     """
+
+    if parameters is None:
+        parameters = {}
+
+    activity_key = parameters[
+        PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     precision = 0.0
     sumEE = 0
     sumAT = 0
