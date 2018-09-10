@@ -12,10 +12,11 @@ import traceback
 from pm4py.models.petri.exporter import pnml as petri_exporter
 
 if __name__ == "__main__":
-	log = xes_importer.import_from_file_xes('..\\tests\\inputData\\running-example.xes')
+	logPath = "..\\tests\\inputData\\running-example.xes"
+
+	log = xes_importer.import_from_file_xes(logPath)
 
 	net, marking, final_marking = inductive_factory.apply(log)
-	#petri_exporter.export_petri_to_pnml(net, marking, "running-example.pnml")
 	for place in marking:
 		print("initial marking "+place.name)
 	"""final_marking = petri.petrinet.Marking()
@@ -24,7 +25,7 @@ if __name__ == "__main__":
 			final_marking[p] = 1"""
 	for place in final_marking:
 		print("final marking "+place.name)
-	gviz = pn_viz.graphviz_visualization(net, initial_marking=marking, final_marking=final_marking)
+	gviz = pn_viz.graphviz_visualization(net, initial_marking=marking, final_marking=final_marking, debug=True)
 	gviz.view()
 
 	if True:
@@ -46,6 +47,8 @@ if __name__ == "__main__":
 						if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] == None):
 							isFit = False
 					print("isFit = "+str(isFit))
+					print(activatedTransitions[i])
+					print(reachedMarkings[i])
 
 					if isFit:
 						fitTraces.append(log[i])
