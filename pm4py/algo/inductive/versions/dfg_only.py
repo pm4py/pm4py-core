@@ -497,6 +497,26 @@ class Subtree(object):
         """
         return petri.petrinet.PetriNet.Transition(label, label)
 
+    def getSumValuesActivity(self, dict, activity):
+        """
+        Gets the sum of ingoing/outgoing values of an activity
+
+        Parameters
+        -----------
+        dict
+            Dictionary
+        activity
+            Current examined activity
+
+        Returns
+        -----------
+        sum
+        """
+        sum = 0
+        for act2 in dict[activity]:
+            sum += dict[activity][act2]
+        return sum
+
     def getMaxValue(self, dfg):
         """
         Get maximum ingoing/outgoing sum of values related to activities in DFG graph
@@ -506,22 +526,41 @@ class Subtree(object):
         max_value = -1
 
         for act in ingoing:
-            sum = 0
-            for act2 in ingoing[act]:
-                sum += ingoing[act][act2]
+            sum = self.getSumValuesActivity(ingoing, act)
             if sum > max_value:
                 max_value = sum
 
         for act in outgoing:
-            sum = 0
-            for act2 in outgoing[act]:
-                sum += outgoing[act][act2]
+            sum = self.getSumValuesActivity(outgoing, act)
             if sum > max_value:
                 max_value = sum
 
         return max_value
 
-    def verify_skip_transition_necessity(self, mAddSkip, initialDfg, dfg, childrenDfg):
+    def getMaxValueWithActivitiesSpecification(self, dfg, activities):
+        """
+        Get maximum ingoing/outgoing sum of values related to activities in DFG graph
+        (here activities to consider are specified)
+        """
+        ingoing = self.get_ingoing_edges(dfg)
+        outgoing = self.get_outgoing_edges(dfg)
+        max_value = -1
+
+        for act in activities:
+            if act in ingoing:
+                sum = self.getSumValuesActivity(ingoing, act)
+                if sum > max_value:
+                    max_value = sum
+
+        for act in activities:
+            if act in outgoing:
+                sum = self.getSumValuesActivity(outgoing, act)
+                if sum > max_value:
+                    max_value = sum
+
+        return max_value
+
+    def verify_skip_transition_necessity(self, mAddSkip, initialDfg, dfg, childrenDfg, childrenActivities):
         """
         Utility functions that decides if the skip transition is necessary
 
@@ -540,7 +579,9 @@ class Subtree(object):
             return True
         maxValueInitial = self.getMaxValue(initialDfg)
         maxValueDfg = self.getMaxValue(dfg)
-        maxValueChildrenDfg = self.getMaxValue(childrenDfg)
+
+        maxValueChildrenDfg = self.getMaxValueWithActivitiesSpecification(dfg, childrenActivities)
+
         if maxValueChildrenDfg > -1 and maxValueChildrenDfg < maxValueInitial:
             return True
         if maxValueDfg > -1 and maxValueDfg < maxValueInitial:
@@ -583,7 +624,6 @@ class Subtree(object):
         lastAddedPlace
             lastAddedPlace
         """
-        #print(self.recDepth, self.activities, self.detectedCut, initial_connect_to, final_connect_to)
         lastAddedPlace = None
         initialPlace = None
         finalPlace = None
@@ -644,11 +684,11 @@ class Subtree(object):
 
             net, initial_marking, final_marking, lastAddedPlace = self.children[0].form_petrinet(net, initial_marking,
                                                                                       final_marking,
-                                                                                      initial_connect_to=initialPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[0].dfg), must_add_loop=mAddLoop)
+                                                                                      initial_connect_to=initialPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[0].dfg, self.children[0].activities), must_add_loop=mAddLoop)
             net, initial_marking, final_marking, lastAddedPlace = self.children[1].form_petrinet(net, initial_marking,
                                                                                       final_marking,
                                                                                         initial_connect_to=lastAddedPlace,
-                                                                                      final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[1].dfg), must_add_loop=mAddLoop)
+                                                                                      final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[1].dfg, self.children[1].activities), must_add_loop=mAddLoop)
         elif self.detectedCut == "parallel":
             mAddSkip = False
             mAddLoop = False
@@ -669,7 +709,7 @@ class Subtree(object):
                 net, initial_marking, final_marking, lastAddedPlace = child.form_petrinet(net, initial_marking,
                                                                                           final_marking,
                                                                                         must_add_initial_place=True, must_add_final_place=True,
-                                                                                          initial_connect_to=parallelSplit, final_connect_to=parallelJoin, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg), must_add_loop=mAddLoop)
+                                                                                          initial_connect_to=parallelSplit, final_connect_to=parallelJoin, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg, child.activities), must_add_loop=mAddLoop)
 
             lastAddedPlace = finalPlace
 
@@ -684,7 +724,7 @@ class Subtree(object):
             for child in self.children:
                 net, initial_marking, final_marking, lastAddedPlace = child.form_petrinet(net, initial_marking,
                                                                                           final_marking,
-                                                                                          initial_connect_to=initialPlace, final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg), must_add_loop=mAddLoop)
+                                                                                          initial_connect_to=initialPlace, final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg, child.activities), must_add_loop=mAddLoop)
 
             lastAddedPlace = finalPlace
 
