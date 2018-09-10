@@ -747,7 +747,9 @@ def apply(log, net, initialMarking, finalMarking, parameters=None, activity_key=
         useHiddenTransitionsToEnableCorrespondingTransitions = parameters["useHiddenTransitionsToEnableCorrespondingTransitions"]
     if "placesShortestPathByHidden" in parameters:
         placesShortestPathByHidden = parameters["placesShortestPathByHidden"]
+    if "activity_key" in parameters:
+        activity_key = parameters["activity_key"]
 
     return apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=enable_placeFitness, consider_remaining_in_fitness=consider_remaining_in_fitness,
                      tryToReachFinalMarkingThroughHidden=tryToReachFinalMarkingThroughHidden, stopImmediatelyWhenUnfit=stopImmediatelyWhenUnfit,
-                     useHiddenTransitionsToEnableCorrespondingTransitions=useHiddenTransitionsToEnableCorrespondingTransitions, placesShortestPathByHidden=placesShortestPathByHidden)
+                     useHiddenTransitionsToEnableCorrespondingTransitions=useHiddenTransitionsToEnableCorrespondingTransitions, placesShortestPathByHidden=placesShortestPathByHidden, activity_key=activity_key)
