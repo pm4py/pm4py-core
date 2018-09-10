@@ -1,0 +1,71 @@
+MAX_EDGE_PENWIDTH_GRAPHVIZ = 2.6
+MIN_EDGE_PENWIDTH_GRAPHVIZ = 1.0
+
+def human_readable_stat(c):
+    """
+    Transform a timedelta expressed in seconds into a human readable string
+
+    Parameters
+    ----------
+    c
+        Timedelta expressed in seconds
+
+    Returns
+    ----------
+    string
+        Human readable string
+    """
+    c = int(c)
+    days = c // 86400
+    hours = c // 3600 % 24
+    minutes = c // 60 % 60
+    seconds = c % 60
+    if days > 0:
+        return str(days)+"D"
+    if hours > 0:
+        return str(hours)+"h"
+    if minutes > 0:
+        return str(minutes)+"m"
+    return str(seconds)+"s"
+
+def get_arc_penwidth(arc_measure, min_arc_measure, max_arc_measure):
+    """
+    Calculate arc width given the current arc measure value, the minimum arc measure value and the maximum arc measure value
+
+    Parameters
+    -----------
+    arc_measure
+        Current arc measure value
+    min_arc_measure
+        Minimum measure value among all arcs
+    max_arc_measure
+        Maximum measure value among all arcs
+
+    Returns
+    -----------
+    penwidth
+        Current arc width in the graph
+    """
+    return MIN_EDGE_PENWIDTH_GRAPHVIZ + (MAX_EDGE_PENWIDTH_GRAPHVIZ - MIN_EDGE_PENWIDTH_GRAPHVIZ) * (arc_measure - min_arc_measure)/(max_arc_measure - min_arc_measure + 0.00001)
+
+def get_trans_freq_color(trans_count, min_trans_count, max_trans_count):
+    """
+    Gets transition frequency color
+
+    Parameters
+    ----------
+    trans_count
+        Current transition count
+    min_trans_count
+        Minimum transition count
+    max_trans_count
+        Maximum transition count
+
+    Returns
+    ----------
+    color
+        Frequency color for visible transition
+    """
+    transBaseColor = int(255 - 100 * (trans_count - min_trans_count)/(max_trans_count - min_trans_count + 0.00001))
+    transBaseColorHex = str(hex(transBaseColor))[2:].upper()
+    return "#" + transBaseColorHex + transBaseColorHex + "FF"

@@ -4,9 +4,8 @@ import base64
 from copy import deepcopy, copy
 import os, shutil
 from pm4py.log.util import activities
-
-MAX_EDGE_PENWIDTH_GRAPHVIZ = 2.6
-MIN_EDGE_PENWIDTH_GRAPHVIZ = 1.0
+from pm4py.visualization.common.utils import *
+from pm4py.visualization.common.save import *
 
 def get_min_max_value(dfg):
     """
@@ -54,8 +53,7 @@ def assign_penwidth_edges(dfg):
     min_value, max_value = get_min_max_value(dfg)
     for edge in dfg:
         v0 = dfg[edge]
-        v1 = MIN_EDGE_PENWIDTH_GRAPHVIZ + (MAX_EDGE_PENWIDTH_GRAPHVIZ - MIN_EDGE_PENWIDTH_GRAPHVIZ) * (
-                    v0 - min_value) / (max_value - min_value + 0.00001)
+        v1 = get_arc_penwidth(v0, min_value, max_value)
         penwidth[edge] = str(v1)
 
     return penwidth
@@ -80,41 +78,16 @@ def get_activities_color(activities_count):
 
     for ac in activities_count:
         v0 = activities_count[ac]
-        transBaseColor = int(
+        """transBaseColor = int(
             255 - 100 * (v0 - min_value) / (max_value - min_value + 0.00001))
         transBaseColorHex = str(hex(transBaseColor))[2:].upper()
-        v1 = "#" + transBaseColorHex + transBaseColorHex + "FF"
+        v1 = "#" + transBaseColorHex + transBaseColorHex + "FF"""
+
+        v1 = get_trans_freq_color(v0, min_value, max_value)
 
         activities_color[ac] = v1
 
     return activities_color
-
-def human_readable_stat(c):
-    """
-    Transform a timedelta expressed in seconds into a human readable string
-
-    Parameters
-    ----------
-    c
-        Timedelta expressed in seconds
-
-    Returns
-    ----------
-    string
-        Human readable string
-    """
-    c = int(c)
-    days = c // 86400
-    hours = c // 3600 % 24
-    minutes = c // 60 % 60
-    seconds = c % 60
-    if days > 0:
-        return str(days)+"D"
-    if hours > 0:
-        return str(hours)+"h"
-    if minutes > 0:
-        return str(minutes)+"m"
-    return str(seconds)+"s"
 
 def apply_frequency(dfg, log=None, activities_count=None, parameters=None):
     """
@@ -269,17 +242,3 @@ def return_diagram_as_base64(activities_count, dfg, format="svg", measure="frequ
     render = graphviz.render(view=False)
     with open(render, "rb") as f:
         return base64.b64encode(f.read())
-
-def save(gviz, outputFilePath):
-    """
-    Save the diagram
-
-    Parameters
-    -----------
-    gviz
-        GraphViz diagram
-    outputFilePath
-        Path where the GraphViz output should be saved
-    """
-    render = gviz.render()
-    shutil.copyfile(render, outputFilePath)
