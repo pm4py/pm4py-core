@@ -86,7 +86,7 @@ def variants(net, initial_marking, final_marking):
 
     Parameters
     ----------
-    net: A workflow net
+    net: An acyclic workflow net
     initial_marking: The initial marking of the net.
     final_marking: The final marking of the net.
 
