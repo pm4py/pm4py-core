@@ -5,34 +5,34 @@ from pm4py.models.transition_system import utils
 
 def staterep(name):
     '''
-        Creates a string representation for a state of a transition system.
-        Necessary because graphviz does not support symbols other than alphanimerics and '_'.
-        TODO: find a better representation.
+    Creates a string representation for a state of a transition system.
+    Necessary because graphviz does not support symbols other than alphanimerics and '_'.
+    TODO: find a better representation.
 
-        Parameters
-        ----------
-        name: the name of a state
+    Parameters
+    ----------
+    name: the name of a state
 
-        Returns
-        -------
-        Version of the name filtered of non-alphanumerical characters (except '_').
+    Returns
+    -------
+    Version of the name filtered of non-alphanumerical characters (except '_').
     '''
     return re.sub(r'\W+', '', name)
 
 def construct_reachability_graph(net, initial_marking):
     '''
-        Creates a reachability graph of a certain Petri net.
-        DO NOT ATTEMPT WITH AN UNBOUNDED PETRI NET, EVER.
-        TODO: graphviz do not show labeling for the arcs. Add the labeling.
+    Creates a reachability graph of a certain Petri net.
+    DO NOT ATTEMPT WITH AN UNBOUNDED PETRI NET, EVER.
+    TODO: graphviz do not show labeling for the arcs. Add the labeling.
 
-        Parameters
-        ----------
-        net: Petri net
-        initial_marking: initial marking of the Petri net.
+    Parameters
+    ----------
+    net: Petri net
+    initial_marking: initial marking of the Petri net.
 
-        Returns
-        -------
-        re_gr: Transition system that represents the reachability graph of the input Petri net.
+    Returns
+    -------
+    re_gr: Transition system that represents the reachability graph of the input Petri net.
     '''
     active = [initial_marking]
     visited = []
