@@ -70,6 +70,7 @@ class Counts(object):
         """
         self.noOfPlaces = 0
         self.noOfHiddenTransitions = 0
+        self.noOfVisibleTransitions = 0
         self.dictSkips = {}
         self.dictLoops = {}
 
@@ -84,6 +85,12 @@ class Counts(object):
         Increase the number of hidden transitions
         """
         self.noOfHiddenTransitions = self.noOfHiddenTransitions + 1
+
+    def inc_noOfVisible(self):
+        """
+        Increase the number of visible transitions
+        """
+        self.noOfVisibleTransitions = self.noOfVisibleTransitions + 1
 
 class Subtree(object):
     def __init__(self, dfg, initialDfg, activities, counts, recDepth):
@@ -487,13 +494,13 @@ class Subtree(object):
                 for comp in parCut[1]:
                     newDfg = self.filter_dfg_on_act(self.dfg, comp)
                     self.detectedCut = "parallel"
-                    self.children.append(Subtree(newDfg, newDfg, comp, self.counts, self.recDepth + 1))
+                    self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1))
             else:
                 if concCut[0]:
                     for comp in concCut[1]:
                         newDfg = self.filter_dfg_on_act(self.dfg, comp)
                         self.detectedCut = "concurrent"
-                        self.children.append(Subtree(newDfg, newDfg, comp, self.counts, self.recDepth + 1))
+                        self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1))
                 else:
                     if seqCut[0]:
                         dfg1 = self.filter_dfg_on_act(self.dfg, seqCut[1])
@@ -549,6 +556,7 @@ class Subtree(object):
         """
         Create a transitions with the specified label in the Petri net
         """
+        self.counts.inc_noOfVisible()
         return petri.petrinet.PetriNet.Transition(label, label)
 
     def getSumValuesActivity(self, dict, activity):
@@ -639,6 +647,61 @@ class Subtree(object):
 
         return sum_values
 
+    def getSumEndActivitiesCount(self, dfg):
+        """
+        Gets the sum of end activities count inside a DFG
+
+        Parameters
+        -------------
+        dfg
+            Directly-Follows graph
+
+        Returns
+        -------------
+            Sum of start activities count
+        """
+        ingoing = self.get_ingoing_edges(dfg)
+        outgoing = self.get_outgoing_edges(dfg)
+
+        sum_values = 0
+
+        for act in ingoing:
+            if not act in outgoing:
+                for act2 in ingoing[act]:
+                    sum_values += ingoing[act][act2]
+
+        return sum_values
+
+    def sumActivitiesCount(self, dfg, activities):
+        """
+        Gets the sum of specified activities count inside a DFG
+
+        Parameters
+        -------------
+        dfg
+            Directly-Follows graph
+        activities
+            Activities to sum
+
+        Returns
+        -------------
+            Sum of start activities count
+        """
+        ingoing = self.get_ingoing_edges(dfg)
+        outgoing = self.get_outgoing_edges(dfg)
+
+        sum_values = 0
+
+        for act in activities:
+            if act in outgoing:
+                for act2 in outgoing[act]:
+                    sum_values += outgoing[act][act2]
+            if act in ingoing:
+                for act2 in ingoing[act]:
+                    sum_values += ingoing[act][act2]
+
+        return sum_values
+
     def verify_skip_transition_necessity(self, mAddSkip, initialDfg, dfg, childrenDfg, activities, childrenActivities, initial_connect_to):
         """
         Utility functions that decides if the skip transition is necessary
@@ -658,15 +721,19 @@ class Subtree(object):
             return False
         if mAddSkip:
             return True
-        maxValueInitial = self.getMaxValue(initialDfg)
-        maxValueDfg = self.getMaxValueWithActivitiesSpecification(initialDfg, activities)
-        startActivitiesSumDfg = self.getSumStartActivitiesCount(initialDfg)
-        maxValueChildrenDfg = self.getMaxValueWithActivitiesSpecification(dfg, childrenActivities)
 
-        if maxValueChildrenDfg < maxValueDfg and maxValueChildrenDfg < startActivitiesSumDfg:
+        maxValue = self.getMaxValue(initialDfg)
+        sumStartActivitiesCount = self.getSumStartActivitiesCount(initialDfg)
+        endActivitiesCount = self.getSumEndActivitiesCount(initialDfg)
+        maxValueWithActivitiesSpecification = self.sumActivitiesCount(initialDfg, activities)
+
+        condition1 = sumStartActivitiesCount > 0 and maxValueWithActivitiesSpecification < sumStartActivitiesCount
+        condition2 = endActivitiesCount > 0 and maxValueWithActivitiesSpecification < endActivitiesCount
+        condition3 = sumStartActivitiesCount <= 0 and endActivitiesCount <= 0 and maxValue > 0 and maxValueWithActivitiesSpecification < maxValue
+        condition = condition1 or condition2 or condition3
+
+        if condition:
             return True
-
-        #print(childrenActivities, maxValueChildrenDfg, maxValueDfg, startActivitiesSumDfg, maxValueInitial)
 
         return False
 
@@ -751,11 +818,30 @@ class Subtree(object):
             else:
                 lastAddedPlace = final_connect_to
 
+            prevNoOfVisibleTransitions = self.counts.noOfVisibleTransitions
+
             for act in self.activities:
                 trans = self.get_transition(act)
                 net.transitions.add(trans)
                 petri.utils.add_arc_from_to(initialPlace, trans, net)
                 petri.utils.add_arc_from_to(trans, lastAddedPlace, net)
+
+            maxValue = self.getMaxValue(self.initialDfg)
+            sumStartActivitiesCount = self.getSumStartActivitiesCount(self.initialDfg)
+            endActivitiesCount = self.getSumEndActivitiesCount(self.initialDfg)
+            maxValueWithActivitiesSpecification = self.sumActivitiesCount(self.initialDfg, self.activities)
+
+            condition1 = sumStartActivitiesCount > 0 and maxValueWithActivitiesSpecification < sumStartActivitiesCount
+            condition2 = endActivitiesCount > 0 and maxValueWithActivitiesSpecification < endActivitiesCount
+            condition3 = sumStartActivitiesCount <= 0 and endActivitiesCount <= 0 and maxValue > 0 and maxValueWithActivitiesSpecification < maxValue
+            condition = condition1 or condition2 or condition3
+
+            if condition and not initial_connect_to.name == "p_1" and prevNoOfVisibleTransitions > 0:
+                # add skip transition
+                skipTrans = self.get_new_hidden_trans(type="skip")
+                net.transitions.add(skipTrans)
+                petri.utils.add_arc_from_to(initialPlace, skipTrans, net)
+                petri.utils.add_arc_from_to(skipTrans, lastAddedPlace, net)
 
         # iterate over childs
         if self.detectedCut == "sequential" or self.detectedCut == "loopCut":
@@ -824,7 +910,6 @@ class Subtree(object):
             lastAddedPlace = finalPlace
 
         if self.detectedCut == "flower" or self.detectedCut == "sequential" or self.detectedCut == "loopCut" or self.detectedCut == "base_concurrent" or self.detectedCut == "parallel" or self.detectedCut == "concurrent":
-            #if self.detectedCut == "flower" or must_add_skip:
             if must_add_skip:
                 if not (initialPlace.name in self.counts.dictSkips and lastAddedPlace.name in self.counts.dictSkips[initialPlace.name]):
                     skipTrans = self.get_new_hidden_trans(type="skip")
@@ -839,7 +924,6 @@ class Subtree(object):
 
 
             if self.detectedCut == "flower" or must_add_loop:
-            #if must_add_loop:
                 if not (initialPlace.name in self.counts.dictLoops and lastAddedPlace.name in self.counts.dictLoops[initialPlace.name]):
                     loopTrans = self.get_new_hidden_trans(type="loop")
                     net.transitions.add(loopTrans)
