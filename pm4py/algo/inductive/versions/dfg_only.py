@@ -93,7 +93,7 @@ class Counts(object):
         self.noOfVisibleTransitions = self.noOfVisibleTransitions + 1
 
 class Subtree(object):
-    def __init__(self, dfg, initialDfg, activities, counts, recDepth):
+    def __init__(self, dfg, initialDfg, activities, counts, recDepth, noiseThreshold=0):
         """
         Constructor
 
@@ -110,10 +110,88 @@ class Subtree(object):
         recDepth
             Current recursion depth
         """
-        self.dfg = copy(dfg)
+
         self.initialDfg = copy(initialDfg)
         self.counts = counts
         self.recDepth = recDepth
+        self.noiseThreshold = noiseThreshold
+
+        self.initialize_tree(dfg, initialDfg, activities)
+
+    def get_max_activity_count(self, act):
+        """
+        Get maximum count of an ingoing/outgoing edge related to an activity
+
+        Parameters
+        ------------
+        act
+            Activity
+
+        Returns
+        ------------
+        max_value
+            Maximum count of ingoing/outgoing edges to activities
+        """
+        max_value = -1
+        if act in self.ingoing:
+            for act2 in self.ingoing[act]:
+                if self.ingoing[act][act2] > max_value:
+                    max_value = self.ingoing[act][act2]
+        if act in self.outgoing:
+            for act2 in self.outgoing[act]:
+                if self.outgoing[act][act2] > max_value:
+                    max_value = self.outgoing[act][act2]
+        return max_value
+
+    def clean_dfg_based_on_noise_thresh(self):
+        """
+        Clean Directly-Follows graph based on noise threshold
+        when a fallback (flower) is chosen
+
+        Returns
+        ----------
+        newDfg
+            Cleaned dfg based on noise threshold
+        """
+        newDfg = []
+        activ_max_count = {}
+        for act in self.activities:
+            activ_max_count[act] = self.get_max_activity_count(act)
+
+        for el in self.dfg:
+            act1 = el[0][0]
+            act2 = el[0][1]
+            val = el[1]
+
+            if val < max(activ_max_count[act1] * self.noiseThreshold, activ_max_count[act2] * self.noiseThreshold):
+                #print(self.recDepth,"deleting",el)
+                pass
+            else:
+                newDfg.append(el)
+
+        return newDfg
+
+    def initialize_tree(self, dfg, initialDfg, activities, secondIteration=False):
+        """
+        Initialize the tree
+
+
+        Parameters
+        -----------
+        dfg
+            Directly follows graph of this subtree
+        initialDfg
+            Referral directly follows graph that should be taken in account adding hidden/loop transitions
+        activities
+            Activities of this subtree
+        """
+
+        self.secondIteration = secondIteration
+
+        if secondIteration:
+            self.dfg = self.clean_dfg_based_on_noise_thresh()
+        else:
+            self.dfg = copy(dfg)
         if activities is None:
             self.activities = self.get_activities_from_dfg(self.dfg)
         else:
@@ -129,11 +207,10 @@ class Subtree(object):
         self.negatedActivities = self.get_activities_from_dfg(self.negatedDfg)
         self.negatedOutgoing = self.get_outgoing_edges(self.negatedDfg)
         self.negatedIngoing = self.get_ingoing_edges(self.negatedDfg)
-
         self.detectedCut = None
         self.children = []
 
-        self.detect_cut()
+        self.detect_cut(secondIteration=secondIteration)
 
     def negate(self):
         """
@@ -472,7 +549,7 @@ class Subtree(object):
 
         return comps
 
-    def detect_cut(self):
+    def detect_cut(self, secondIteration=False):
         """
         Detect generally a cut in the graph (applying all the algorithms)
         """
@@ -494,28 +571,33 @@ class Subtree(object):
                 for comp in parCut[1]:
                     newDfg = self.filter_dfg_on_act(self.dfg, comp)
                     self.detectedCut = "parallel"
-                    self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1))
+                    self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1, noiseThreshold=self.noiseThreshold))
             else:
                 if concCut[0]:
                     for comp in concCut[1]:
                         newDfg = self.filter_dfg_on_act(self.dfg, comp)
                         self.detectedCut = "concurrent"
-                        self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1))
+                        self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1, noiseThreshold=self.noiseThreshold))
                 else:
                     if seqCut[0]:
                         dfg1 = self.filter_dfg_on_act(self.dfg, seqCut[1])
                         dfg2 = self.filter_dfg_on_act(self.dfg, seqCut[2])
                         self.detectedCut = "sequential"
-                        self.children.append(Subtree(dfg1, self.initialDfg, seqCut[1], self.counts, self.recDepth+1))
-                        self.children.append(Subtree(dfg2, self.initialDfg, seqCut[2], self.counts, self.recDepth+1))
+                        self.children.append(Subtree(dfg1, self.initialDfg, seqCut[1], self.counts, self.recDepth+1, noiseThreshold=self.noiseThreshold))
+                        self.children.append(Subtree(dfg2, self.initialDfg, seqCut[2], self.counts, self.recDepth+1, noiseThreshold=self.noiseThreshold))
                     else:
                         if loopCut[0]:
                             dfg1 = self.filter_dfg_on_act(self.dfg, loopCut[1])
                             dfg2 = self.filter_dfg_on_act(self.dfg, loopCut[2])
                             self.detectedCut = "loopCut"
-                            self.children.append(Subtree(dfg1, self.initialDfg, loopCut[1], self.counts, self.recDepth+1))
-                            self.children.append(Subtree(dfg2, self.initialDfg, loopCut[2], self.counts, self.recDepth + 1))
+                            self.children.append(Subtree(dfg1, self.initialDfg, loopCut[1], self.counts, self.recDepth + 1, noiseThreshold=self.noiseThreshold))
+                            self.children.append(Subtree(dfg2, self.initialDfg, loopCut[2], self.counts, self.recDepth + 1, noiseThreshold=self.noiseThreshold))
                         else:
+                            if self.noiseThreshold > 0:
+                                if not secondIteration:
+                                    self.initialize_tree(self.dfg, self.initialDfg, None, secondIteration=True)
+                            else:
+                                pass
                             self.detectedCut = "flower"
         else:
             self.detectedCut = "base_concurrent"
@@ -613,8 +695,6 @@ class Subtree(object):
                 sum = self.getSumValuesActivity(ingoing, act)
                 if sum > max_value:
                     max_value = sum
-
-        for act in activities:
             if act in outgoing:
                 sum = self.getSumValuesActivity(outgoing, act)
                 if sum > max_value:
@@ -1016,6 +1096,14 @@ class InductMinDirFollows(object):
             Final marking
         """
 
+        if parameters is None:
+            parameters = {}
+
+        noiseThreshold = 0.0
+
+        if "noiseThreshold" in parameters:
+            noiseThreshold = parameters["noiseThreshold"]
+
         if type(dfg) is Counter or type(dfg) is dict:
             newdfg = []
             for key in dfg:
@@ -1024,7 +1112,7 @@ class InductMinDirFollows(object):
             dfg = newdfg
 
         c = Counts()
-        s = Subtree(dfg, dfg, None, c, 0)
+        s = Subtree(dfg, dfg, None, c, 0, noiseThreshold=noiseThreshold)
         net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
         initial_marking = Marking()
         final_marking = Marking()
