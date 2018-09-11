@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="20632289">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="20632247">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="20632143">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="20632181">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="20632155">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="20632189">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <transition id="20632225">
+        <name>
+          <text>skip_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="765368c3-b893-46b8-8c8c-ba8875f74105"/>
+      </transition>
+      <transition id="20632259">
+        <name>
+          <text>skip_8</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="48ebbe07-d528-4ce7-b225-23a9cdd12a6b"/>
+      </transition>
+      <transition id="20632165">
+        <name>
+          <text>Accepted+In Progress</text>
+        </name>
+      </transition>
+      <transition id="20632197">
+        <name>
+          <text>loop_2</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="eeb3d4d2-0a7a-4bb9-a1ff-040bb1cacf31"/>
+      </transition>
+      <transition id="20632231">
+        <name>
+          <text>skip_6</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="5f29e14b-35ca-43b9-abe3-d3ec245c6b11"/>
+      </transition>
+      <transition id="20632171">
+        <name>
+          <text>Queued+Awaiting Assignment</text>
+        </name>
+      </transition>
+      <transition id="20632267">
+        <name>
+          <text>skip_7</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="74269aba-094a-4b04-92fd-f5ab40c7e872"/>
+      </transition>
+      <transition id="20632237">
+        <name>
+          <text>Completed+Closed</text>
+        </name>
+      </transition>
+      <transition id="20632145">
+        <name>
+          <text>tau_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="002ed91f-4244-43cd-9c76-129a6d483755"/>
+      </transition>
+      <transition id="20632177">
+        <name>
+          <text>Accepted+Wait</text>
+        </name>
+      </transition>
+      <transition id="20632217">
+        <name>
+          <text>skip_4</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="253e2c28-9b99-4250-a3d3-0e9230b6ec8f"/>
+      </transition>
+      <transition id="20632209">
+        <name>
+          <text>loop_5</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="7853b59c-9301-4bbd-b2ff-6135e078b239"/>
+      </transition>
+      <transition id="20632243">
+        <name>
+          <text>Completed+Cancelled</text>
+        </name>
+      </transition>
+      <transition id="20632273">
+        <name>
+          <text>loop_9</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="872b5ac0-a4c5-4cc7-8e37-fbea383e7ee5"/>
+      </transition>
+      <transition id="20632183">
+        <name>
+          <text>Unmatched+Unmatched</text>
+        </name>
+      </transition>
+      <transition id="20632185">
+        <name>
+          <text>Accepted+Assigned</text>
+        </name>
+      </transition>
+      <transition id="20632283">
+        <name>
+          <text>tau_10</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="8e0ce83c-fe14-41c2-a937-5ccb2b77376c"/>
+      </transition>
+      <arc id="20632193" source="20632197" target="20632143"/>
+      <arc id="20632195" source="20632181" target="20632197"/>
+      <arc id="20632201" source="20632183" target="20632181"/>
+      <arc id="20632203" source="20632143" target="20632183"/>
+      <arc id="20632205" source="20632181" target="20632185"/>
+      <arc id="20632207" source="20632189" target="20632209"/>
+      <arc id="20632213" source="20632217" target="20632189"/>
+      <arc id="20632215" source="20632181" target="20632217"/>
+      <arc id="20632221" source="20632225" target="20632189"/>
+      <arc id="20632223" source="20632181" target="20632225"/>
+      <arc id="20632227" source="20632185" target="20632189"/>
+      <arc id="20632229" source="20632209" target="20632181"/>
+      <arc id="20632233" source="20632237" target="20632247"/>
+      <arc id="20632235" source="20632189" target="20632237"/>
+      <arc id="20632239" source="20632243" target="20632247"/>
+      <arc id="20632241" source="20632189" target="20632243"/>
+      <arc id="20632251" source="20632189" target="20632231"/>
+      <arc id="20632255" source="20632259" target="20632247"/>
+      <arc id="20632257" source="20632181" target="20632259"/>
+      <arc id="20632263" source="20632267" target="20632247"/>
+      <arc id="20632265" source="20632189" target="20632267"/>
+      <arc id="20632139" source="20632155" target="20632145"/>
+      <arc id="20632271" source="20632231" target="20632247"/>
+      <arc id="20632279" source="20632283" target="20632289"/>
+      <arc id="20632281" source="20632247" target="20632283"/>
+      <arc id="20632159" source="20632145" target="20632143"/>
+      <arc id="20632161" source="20632165" target="20632181"/>
+      <arc id="20632163" source="20632143" target="20632165"/>
+      <arc id="20632291" source="20632273" target="20632181"/>
+      <arc id="20632293" source="20632247" target="20632273"/>
+      <arc id="20632167" source="20632171" target="20632181"/>
+      <arc id="20632169" source="20632143" target="20632171"/>
+      <arc id="20632173" source="20632177" target="20632181"/>
+      <arc id="20632175" source="20632143" target="20632177"/>
+    </page>
+  </net>
+</pnml>

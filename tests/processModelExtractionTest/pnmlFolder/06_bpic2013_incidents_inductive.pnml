@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="4685665">
+        <name>
+          <text>p_2</text>
+        </name>
+      </place>
+      <place id="7286307">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="7286343">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="6604823">
+        <name>
+          <text>p_1</text>
+        </name>
+      </place>
+      <transition id="7286305">
+        <name>
+          <text>Completed+In Call</text>
+        </name>
+      </transition>
+      <transition id="9192451">
+        <name>
+          <text>Accepted+In Progress</text>
+        </name>
+      </transition>
+      <transition id="9192549">
+        <name>
+          <text>Accepted+Wait</text>
+        </name>
+      </transition>
+      <transition id="9192453">
+        <name>
+          <text>Completed+Cancelled</text>
+        </name>
+      </transition>
+      <transition id="7286341">
+        <name>
+          <text>Completed+Closed</text>
+        </name>
+      </transition>
+      <transition id="7286277">
+        <name>
+          <text>loop_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d335a099-4a75-4b39-a905-43ff8af24738"/>
+      </transition>
+      <transition id="9192521">
+        <name>
+          <text>Accepted+Wait - User</text>
+        </name>
+      </transition>
+      <transition id="9192523">
+        <name>
+          <text>Accepted+Assigned</text>
+        </name>
+      </transition>
+      <transition id="7286283">
+        <name>
+          <text>Unmatched+Unmatched</text>
+        </name>
+      </transition>
+      <transition id="7286379">
+        <name>
+          <text>tau_2</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="76918ed6-cd6e-4d33-b6bf-208e666919a6"/>
+      </transition>
+      <transition id="9192465">
+        <name>
+          <text>Accepted+Wait - Implementation</text>
+        </name>
+      </transition>
+      <transition id="9192531">
+        <name>
+          <text>Accepted+Wait - Customer</text>
+        </name>
+      </transition>
+      <transition id="9192469">
+        <name>
+          <text>Accepted+Wait - Vendor</text>
+        </name>
+      </transition>
+      <transition id="7286325">
+        <name>
+          <text>Queued+Awaiting Assignment</text>
+        </name>
+      </transition>
+      <transition id="7286333">
+        <name>
+          <text>tau_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d8092105-ac93-4e02-bc21-9365025d2a59"/>
+      </transition>
+      <transition id="7286303">
+        <name>
+          <text>Completed+Resolved</text>
+        </name>
+      </transition>
+      <arc id="7286279" source="7286325" target="4685665"/>
+      <arc id="9192457" source="6604823" target="9192523"/>
+      <arc id="7286281" source="7286283" target="4685665"/>
+      <arc id="9192461" source="6604823" target="9192465"/>
+      <arc id="9192463" source="9192531" target="4685665"/>
+      <arc id="7286289" source="4685665" target="7286379"/>
+      <arc id="7286291" source="7286379" target="7286343"/>
+      <arc id="7286295" source="6604823" target="7286303"/>
+      <arc id="7286297" source="6604823" target="7286283"/>
+      <arc id="9192475" source="6604823" target="9192521"/>
+      <arc id="9192481" source="9192521" target="4685665"/>
+      <arc id="9192483" source="9192465" target="4685665"/>
+      <arc id="7286313" source="7286307" target="7286333"/>
+      <arc id="9192491" source="6604823" target="9192549"/>
+      <arc id="9192493" source="9192523" target="4685665"/>
+      <arc id="7286317" source="7286333" target="6604823"/>
+      <arc id="9192495" source="6604823" target="9192451"/>
+      <arc id="7286319" source="6604823" target="7286325"/>
+      <arc id="7286321" source="7286303" target="4685665"/>
+      <arc id="7286323" source="7286341" target="4685665"/>
+      <arc id="9192503" source="6604823" target="9192531"/>
+      <arc id="7286331" source="6604823" target="7286341"/>
+      <arc id="9192509" source="9192469" target="4685665"/>
+      <arc id="9192513" source="9192451" target="4685665"/>
+      <arc id="7286339" source="7286277" target="6604823"/>
+      <arc id="9192519" source="6604823" target="9192469"/>
+      <arc id="7286349" source="4685665" target="7286277"/>
+      <arc id="7286491" source="6604823" target="7286305"/>
+      <arc id="7286495" source="7286305" target="4685665"/>
+      <arc id="7286505" source="9192453" target="4685665"/>
+      <arc id="9192569" source="9192549" target="4685665"/>
+      <arc id="4688891" source="6604823" target="9192453"/>
+    </page>
+  </net>
+</pnml>
