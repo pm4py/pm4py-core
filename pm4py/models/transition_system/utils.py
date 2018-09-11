@@ -43,8 +43,58 @@ def remove_arc_from_to(name, fr, to, ts):
     fr.outgoing[:] = [t for t in fr.outgoing if t.name != name]
     to.incoming[:] = [t for t in fr.incoming if t.name != name]
 
+def remove_all_arcs_from_to(fr, to, ts):
+    '''
+    Removes all transitions from a state to another state in some transition system.
+    Assumes from and to are in the transition system!
 
-# def transitive_reduction(ts):
+    Parameters
+    ----------
+    fr: state from
+    to:  state to
+    ts: transition system to use
+
+    Returns
+    -------
+    None
+    '''
+    names_transitions_to_delete = [t.name for t in ts.transitions if t in fr.outgoing and t in to.incoming]
+    ts.transitions[:] = [t for t in ts.transitions if t.name not in  names_transitions_to_delete]
+    fr.outgoing[:] = [t for t in fr.outgoing if t.name not in  names_transitions_to_delete]
+    to.incoming[:] = [t for t in fr.incoming if t.name not in  names_transitions_to_delete]
+
+def transitive_reduction(ts):
+    '''
+    Computes the transitive reduction of an acyclic transition system.
+    Assumes the transition system in input to be acyclic.
+
+    Parameters
+    ----------
+    ts: acyclic transition system to use
+
+    Returns
+    -------
+    The transitive reduction of the transition system
+    '''
+
+    def check(state, child, done):
+        if child not in done:
+            child_children = [tr.to_state for tr in ts.transitions if tr in child.outgoing]
+            for child_child in child_children:
+                remove_all_arcs_from_to(state, child_child, ts)
+                check(state, child_child, done)
+            done.add(child)
+
+    for state in ts.states:
+        done = set()
+        children = [tr.to_state for tr in ts.transitions if tr in state.outgoing]
+        for child in children:
+            check(state, child, done)
+
+
+
+
+
 #     for vertex0 in vertices:
 #         done = set()
 #         for child in vertex0.children:
