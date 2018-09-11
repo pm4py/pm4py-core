@@ -134,9 +134,13 @@ class Subtree(object):
         :return:
         """
         negatedDfg = []
+
         for el in self.dfg:
             if not(el[0][1] in self.outgoing and el[0][0] in self.outgoing[el[0][1]]):
                 negatedDfg.append(el)
+
+        activitiesThatAreNotNegatedDfg = set(set(self.activities)).difference(self.get_activities_from_dfg(negatedDfg))
+
         return negatedDfg
 
     def get_activities_from_dfg(self, dfg):
@@ -285,6 +289,8 @@ class Subtree(object):
         activities
             Activities to consider
         """
+        activities_considered = set()
+
         connectedComponents = []
 
         for act in ingoing:
@@ -296,6 +302,7 @@ class Subtree(object):
 
             if not ingoing_act in connectedComponents:
                 connectedComponents.append(ingoing_act)
+                activities_considered = activities_considered.union(set(ingoing_act))
 
         for act in outgoing:
             if not act in ingoing:
@@ -303,6 +310,7 @@ class Subtree(object):
                 outgoing_act.add(act)
                 if not outgoing_act in connectedComponents:
                     connectedComponents.append(outgoing_act)
+                activities_considered = activities_considered.union(set(outgoing_act))
 
         something_changed = True
         it = 0
@@ -419,6 +427,44 @@ class Subtree(object):
 
         return [False, [], []]
 
+    def add_to_most_probable_component(self, comps, act2, ingoing, outgoing):
+        """
+        Adds a lost component in parallel cut detection to the most probable component
+
+        Parameters
+        -------------
+        comps
+            Connected components
+        act2
+            Activity that has been missed
+        ingoing
+            Map of ingoing activities
+        outgoing
+            Map of outgoing activities
+
+        Returns
+        -------------
+        comps
+            Fixed connected components
+        """
+        sums = []
+        idx_max_sum = 0
+
+        for comp in comps:
+            sum = 0
+            for act1 in comp:
+                if act1 in ingoing and act2 in ingoing[act1]:
+                   sum = sum + ingoing[act1][act2]
+                if act1 in outgoing and act2 in outgoing[act1]:
+                    sum = sum + outgoing[act1][act2]
+            sums.append(sum)
+            if sums[-1] > sums[idx_max_sum]:
+                idx_max_sum = len(sums)-1
+
+        comps[idx_max_sum].add(act2)
+
+        return comps
+
     def detect_cut(self):
         """
         Detect generally a cut in the graph (applying all the algorithms)
@@ -430,6 +476,14 @@ class Subtree(object):
             loopCut = self.detect_loop_cut(self.dfg)
 
             if parCut[0]:
+                union_acti_comp = set()
+                for comp in parCut[1]:
+                    union_acti_comp = union_acti_comp.union(comp)
+                diff_acti_comp = set(self.activities).difference(union_acti_comp)
+
+                for act in diff_acti_comp:
+                    parCut[1] = self.add_to_most_probable_component(parCut[1], act, self.ingoing, self.outgoing)
+
                 for comp in parCut[1]:
                     newDfg = self.filter_dfg_on_act(self.dfg, comp)
                     self.detectedCut = "parallel"
