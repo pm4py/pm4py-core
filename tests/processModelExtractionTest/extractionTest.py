@@ -34,7 +34,7 @@ if __name__ == "__main__":
         return get_elonged_string(stru)
 
     ENABLE_ALIGNMENTS = True
-    logFolder = "logFolder"
+    logFolder = "..\\compressedInputData"
     pnmlFolder = "pnmlFolder"
     pngFolder = "pngFolder"
     times_tokenreplay_alpha = {}
