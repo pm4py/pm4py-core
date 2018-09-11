@@ -699,6 +699,8 @@ class Subtree(object):
             if act in ingoing:
                 for act2 in ingoing[act]:
                     sum_values += ingoing[act][act2]
+            if act in ingoing and act in outgoing:
+                sum_values = int(sum_values / 2)
 
         return sum_values
 
