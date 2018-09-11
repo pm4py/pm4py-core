@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="25709681">
+        <name>
+          <text>start</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="9192455">
+        <name>
+          <text>end</text>
+        </name>
+      </place>
+      <transition id="8652547">
+        <name>
+          <text>Accepted+Assigned</text>
+        </name>
+      </transition>
+      <transition id="9192515">
+        <name>
+          <text>Unmatched+Unmatched</text>
+        </name>
+      </transition>
+      <transition id="4663145">
+        <name>
+          <text>Accepted+In Progress</text>
+        </name>
+      </transition>
+      <transition id="8652553">
+        <name>
+          <text>Accepted+Wait - Vendor</text>
+        </name>
+      </transition>
+      <transition id="8652715">
+        <name>
+          <text>Accepted+Wait - Customer</text>
+        </name>
+      </transition>
+      <transition id="9192507">
+        <name>
+          <text>Completed+Cancelled</text>
+        </name>
+      </transition>
+      <transition id="618669">
+        <name>
+          <text>Queued+Awaiting Assignment</text>
+        </name>
+      </transition>
+      <transition id="8652783">
+        <name>
+          <text>Completed+In Call</text>
+        </name>
+      </transition>
+      <transition id="8652721">
+        <name>
+          <text>Completed+Resolved</text>
+        </name>
+      </transition>
+      <transition id="8652785">
+        <name>
+          <text>Accepted+Wait</text>
+        </name>
+      </transition>
+      <transition id="8652575">
+        <name>
+          <text>Accepted+Wait - Implementation</text>
+        </name>
+      </transition>
+      <transition id="8652571">
+        <name>
+          <text>Accepted+Wait - User</text>
+        </name>
+      </transition>
+      <transition id="8652639">
+        <name>
+          <text>Completed+Closed</text>
+        </name>
+      </transition>
+      <arc id="9192577" source="25709681" target="8652547"/>
+      <arc id="9192485" source="25709681" target="8652721"/>
+      <arc id="9192517" source="25709681" target="8652785"/>
+      <arc id="9192487" source="8652547" target="9192455"/>
+      <arc id="9192459" source="25709681" target="8652783"/>
+      <arc id="26048013" source="25709681" target="8652571"/>
+      <arc id="9192525" source="4663145" target="9192455"/>
+      <arc id="9192527" source="8652721" target="9192455"/>
+      <arc id="9192529" source="25709681" target="618669"/>
+      <arc id="9192497" source="8652571" target="9192455"/>
+      <arc id="9192467" source="8652575" target="9192455"/>
+      <arc id="9192499" source="8652639" target="9192455"/>
+      <arc id="9192533" source="25709681" target="4663145"/>
+      <arc id="9192535" source="9192507" target="9192455"/>
+      <arc id="9192471" source="25709681" target="8652575"/>
+      <arc id="9192505" source="25709681" target="8652553"/>
+      <arc id="9192473" source="8652783" target="9192455"/>
+    </page>
+  </net>
+</pnml>

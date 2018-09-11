@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="20632129">
+        <name>
+          <text>end</text>
+        </name>
+      </place>
+      <place id="20632125">
+        <name>
+          <text>({'Unmatched+Unmatched'}, {'Completed+Closed'})</text>
+        </name>
+      </place>
+      <place id="8960349">
+        <name>
+          <text>start</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <transition id="20632097">
+        <name>
+          <text>Completed+Cancelled</text>
+        </name>
+      </transition>
+      <transition id="20632101">
+        <name>
+          <text>Unmatched+Unmatched</text>
+        </name>
+      </transition>
+      <transition id="20632073">
+        <name>
+          <text>Accepted+In Progress</text>
+        </name>
+      </transition>
+      <transition id="20632105">
+        <name>
+          <text>Accepted+Wait</text>
+        </name>
+      </transition>
+      <transition id="20632075">
+        <name>
+          <text>Queued+Awaiting Assignment</text>
+        </name>
+      </transition>
+      <transition id="20632109">
+        <name>
+          <text>Completed+Closed</text>
+        </name>
+      </transition>
+      <transition id="20632091">
+        <name>
+          <text>Accepted+Assigned</text>
+        </name>
+      </transition>
+      <arc id="6423393" source="8960349" target="20632091"/>
+      <arc id="20632131" source="8960349" target="20632101"/>
+      <arc id="20632133" source="8960349" target="20632073"/>
+      <arc id="20632135" source="8960349" target="20632105"/>
+      <arc id="20632113" source="8960349" target="20632075"/>
+      <arc id="20632121" source="20632125" target="20632109"/>
+      <arc id="20632123" source="20632101" target="20632125"/>
+      <arc id="20632093" source="8960349" target="20632109"/>
+      <arc id="20632127" source="20632109" target="20632129"/>
+    </page>
+  </net>
+</pnml>
