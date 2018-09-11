@@ -82,7 +82,7 @@ def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT
 
 def variants(net, initial_marking, final_marking):
     '''
-    Given a workflow net, initial and final marking extracts a set of variants (list of event) replayable on the net.
+    Given an acyclic workflow net, initial and final marking extracts a set of variants (list of event) replayable on the net.
 
     Parameters
     ----------
@@ -97,17 +97,19 @@ def variants(net, initial_marking, final_marking):
     '''
     active = [(initial_marking, [])]
     visited = []
-    variants = [[]]
+    variants = []
     while active:
         curr_couple = active.pop(0)
         en_tr = petri.semantics.enabled_transitions(net, curr_couple[0])
         for t in en_tr:
-            next_couple = petri.semantics.execute(t, net, curr_couple[0]), list(curr_couple[1]).append(repr(t))
+            next_activitylist = list(curr_couple[1])
+            next_activitylist.append(repr(t))
+            next_couple = (petri.semantics.execute(t, net, curr_couple[0]), next_activitylist)
             if hash(next_couple[0]) == hash(final_marking):
                 variants.append(next_couple[1])
             else:
-                # If the next marking hash is not in visited, if the next marking itself is not already in active and if the next marking is different from the current one
-                if hash(next_couple[0]) not in visited and next((mark for mark in active if hash(mark) == hash(next_couple[0])), None) is None and hash(curr_couple[0]) != hash(next_couple[0]):
+                # If the next marking hash is not in visited, if the next marking+partial trace itself is not already in active and if the next marking+partial trace is different from the current one+partial trace
+                if hash(next_couple[0]) not in visited and next((mark for mark in active if hash(mark[0]) == hash(next_couple[0] and mark[1] == next_couple[1])), None) is None and (hash(curr_couple[0]) != hash(next_couple[0]) or curr_couple[1] != next_couple[1]):
                     active.append(next_couple)
         visited.append(hash(curr_couple[0]))
     return variants
