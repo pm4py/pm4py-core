@@ -26,7 +26,9 @@ class Marking(Counter):
         return True
 
     def __repr__(self):
-        return str([str(p.name) + ":" + str(self.get(p)) for p in self.keys()])
+        # return str([str(p.name) + ":" + str(self.get(p)) for p in self.keys()])
+        # The previous representation had a bug, it took into account the order of the places with tokens
+        return str([str(p.name) + ":" + str(self.get(p)) for p in sorted(list(self.keys()), key=lambda x: x.name)])
 
 
 class PetriNet(object):
