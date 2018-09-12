@@ -6,4 +6,3 @@ flask-cors
 lxml
 graphviz
 pandas
-python-graphviz
