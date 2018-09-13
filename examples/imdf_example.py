@@ -12,7 +12,7 @@ import traceback
 from pm4py.models.petri.exporter import pnml as petri_exporter
 
 if __name__ == "__main__":
-	log = xes_importer.import_from_file_xes('..\\tests\\inputData\\running-example.xes')
+	log = xes_importer.import_from_file_xes(os.path.join('..','tests','inputData','running-example.xes'))
 
 	net, marking, final_marking = inductive_factory.apply(log)
 	#petri_exporter.export_petri_to_pnml(net, marking, "running-example.pnml")
