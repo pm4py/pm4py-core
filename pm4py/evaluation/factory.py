@@ -4,6 +4,8 @@ from pm4py.evaluation.simplicity.versions import arc_degree as simplicity_arc_de
 from pm4py.evaluation.replay_fitness.versions import token_replay as fitness_token_based
 from pm4py.algo.tokenreplay import factory as token_replay
 from pm4py import log as log_lib
+from pm4py import util as pmutil
+from pm4py.log.util import xes as xes_util
 
 PARAM_ACTIVITY_KEY = 'activity_key'
 PARAM_FITNESS_WEIGHT = 'fitness_weight'
@@ -49,8 +51,10 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     simplicity_weight = simplicity_weight / sum_of_weights
     generalization_weight = generalization_weight / sum_of_weights
 
+    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+
     [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-        token_replay.apply(log, net, initial_marking, final_marking, activity_key=activity_key)
+        token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_TR)
 
     parameters = {}
     parameters["activity_key"] = activity_key

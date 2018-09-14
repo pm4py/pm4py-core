@@ -2,6 +2,8 @@ from pm4py.algo.tokenreplay import factory as token_replay
 from pm4py import log as log_lib
 from collections import Counter
 from math import sqrt
+from pm4py import util as pmutil
+from pm4py.log.util import xes as xes_util
 
 PARAM_ACTIVITY_KEY = 'activity_key'
 
@@ -88,7 +90,10 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     if parameters is None:
         parameters = {}
     activity_key = parameters[PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
+
+    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+
     [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-        token_replay.apply(log, petri_net, initial_marking, final_marking, activity_key=activity_key)
+        token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_TR)
 
     return get_generalization(petri_net, activatedTransitions)
