@@ -3,7 +3,7 @@ from pm4py import log as log_lib
 from pm4py import util as pmutil
 from pm4py.log.util import xes as xes_util
 
-PARAM_ACTIVITY_KEY = 'activity_key'
+PARAM_ACTIVITY_KEY = xes_util.DEFAULT_NAME_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY]
 

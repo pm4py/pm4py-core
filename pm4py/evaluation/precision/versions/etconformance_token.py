@@ -2,6 +2,8 @@ from collections import Counter
 from pm4py.log.log import TraceLog, Event, Trace
 from pm4py.algo.tokenreplay.versions import token_replay
 from pm4py import log as log_lib
+from pm4py import util as pmutil
+from pm4py.log.util import xes as xes_util
 
 """
 Implementation of the approach described in paper
@@ -20,11 +22,11 @@ At the moment, the precision value is different from the one provided by the Pro
 although the implementation seems to follow the paper concept
 """
 
-PARAM_ACTIVITY_KEY = 'activity_key'
+PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY]
 
-def get_log_prefixes(log, activity_key="concept:name"):
+def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
     Get trace log prefixes
 
@@ -50,7 +52,7 @@ def get_log_prefixes(log, activity_key="concept:name"):
             i = i + 1
     return prefixes, prefixCount
 
-def form_fake_log(prefixesKeys, prefixes, activity_key="concept:name"):
+def form_fake_log(prefixesKeys, prefixes, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
     Form fake log for replay (putting each prefix as separate trace to align)
 
