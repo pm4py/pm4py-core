@@ -2,7 +2,7 @@ from graphviz import Digraph
 import tempfile
 import base64
 from copy import copy
-from pm4py.filtering.attributes import attributes_filter
+from pm4py.filtering.tracelog.attributes import attributes_filter
 from pm4py.visualization.common.utils import *
 
 
