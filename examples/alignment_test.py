@@ -1,19 +1,28 @@
-import os,sys,inspect
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir)
-from pm4py.algo import alignments
+import inspect
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
+from pm4py.algo import alignments as ali
 from pm4py.models import petri as petri
 from pm4py import log as log_lib
+from pm4py import util
+
+
+def align(trace, net, im, fm, model_cost_function, sync_cost_function):
+    trace_costs = list(map(lambda e: 1000, trace))
+    params = dict()
+    params[util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_lib.util.xes.DEFAULT_NAME_KEY
+    params[ali.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION] = model_cost_function
+    params[ali.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION] = trace_costs
+    params[ali.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
+    return ali.factory.apply(trace, net, im, fm, parameters=params, version=ali.factory.VERSION_STATE_EQUATION_A_STAR)
+
 
 if __name__ == '__main__':
-    # log = log_lib.importer.xes.import_from_path_xes('C:/Users/bas/Desktop/reviewing.xes')
     log = log_lib.importer.xes.import_from_file_xes('C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32f0n05.xes')
-    # net, marking = petri.importer.import_petri_from_pnml('C:/Users/bas/Desktop/reviewingPnml2.pnml')
-    net, marking = petri.importer.pnml.import_petri_from_pnml('C:/Users/bas/Desktop/a32.pnml')
-    # net, imarking = inductive.apply(log)
-    # viz = petri.visualize.graphviz_visualization(net)
-    # viz.view()
+    net, marking = petri.importer.pnml.import_petri_from_pnml(
+        'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32.pnml')
+
     fmarking = petri.petrinet.Marking()
     for p in net.places:
         if len(p.out_arcs) == 0:
@@ -28,12 +37,4 @@ if __name__ == '__main__':
         else:
             model_cost_function[t] = 1
 
-    for t in log:
-        trace_costs = list(map(lambda e: 1000, t))
-        params = dict()
-        params[alignments.factory.PARAM_ACTIVITY_KEY] = log_lib.util.xes.DEFAULT_NAME_KEY
-        params[alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION] = model_cost_function
-        params[alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION] = trace_costs
-        params[alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
-        print(alignments.versions.state_equation_a_star.apply(t, net, marking, fmarking, parameters=params))
-
+    print(list(map(lambda trace: align(trace, net, marking, fmarking, model_cost_function, sync_cost_function), log)))
