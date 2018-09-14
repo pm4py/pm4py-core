@@ -1,16 +1,31 @@
+'''
+This module implements the \"classic\" alpha miner [1]_.
+It converts the input event log, which should be a trace log, to the (well-known) directly follows abstraction.
+For example, when we have a trace of the form (control-flow perspective) <...a,b,...>, we observe the relation a>b, i.e.
+activity a precedes activity b.
+From the directly follows relations, the alpha relations parallelism (||), conflict (x) and causality (->) are deduced.
+These relations form the basics for finding the places in the net.
+Finally, a start and end place is added.
+
+References
+    ----------
+    .. [1] Wil M. P. van der Aalst et al., "Workflow Mining: Discovering Process Models from Event Logs",
+      IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. `DOI <https://doi.org/10.1109/TKDE.2004.47>`_.
+'''
+
+import time
 from itertools import zip_longest
+
+from pm4py import util as pmutil
+from pm4py.algo.alpha.data_structures import alpha_classic_abstraction
 from pm4py.log import util as log_util
 from pm4py.log.util import trace_log as tl_util
 from pm4py.models import petri
-import time
-
-from pm4py.algo.alpha.data_structures import alpha_classic_abstraction
 from pm4py.models.petri.petrinet import Marking
-from pm4py import util as pmutil
 
 
-def apply(trace_log, parameters = None):
-    """
+def apply(trace_log, parameters=None):
+    '''
     This method calls the \"classic\" alpha miner [1]_.
 
     Parameters
@@ -35,12 +50,15 @@ def apply(trace_log, parameters = None):
     .. [1] Wil M. P. van der Aalst et al., "Workflow Mining: Discovering Process Models from Event Logs",
       IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. `DOI <https://doi.org/10.1109/TKDE.2004.47>`_.
 
-    """
+    '''
     if parameters is None:
         parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: log_util.xes.DEFAULT_NAME_KEY}
-    labels = tl_util.get_event_labels(trace_log, activity_key)
-    alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(trace_log, activity_key)
-    pairs = list(map(lambda p: ({p[0]}, {p[1]}), filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p), alpha_abstraction.causal_relation)))
+    labels = tl_util.get_event_labels(trace_log, parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
+    alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(trace_log, parameters[
+        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
+    pairs = list(map(lambda p: ({p[0]}, {p[1]}),
+                     filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p),
+                            alpha_abstraction.causal_relation)))
 
     for i in range(0, len(pairs)):
         t1 = pairs[i]
@@ -50,7 +68,7 @@ def apply(trace_log, parameters = None):
                 if t1[0].issubset(t2[0]) or t1[1].issubset(t2[1]):
                     if not (__check_is_unrelated(alpha_abstraction.parallel_relation, alpha_abstraction.causal_relation,
                                                  t1[0], t2[0]) or __check_is_unrelated(
-                            alpha_abstraction.parallel_relation, alpha_abstraction.causal_relation, t1[1], t2[1])):
+                        alpha_abstraction.parallel_relation, alpha_abstraction.causal_relation, t1[1], t2[1])):
                         new_alpha_pair = (t1[0] | t2[0], t1[1] | t2[1])
                         if new_alpha_pair not in pairs:
                             pairs.append((t1[0] | t2[0], t1[1] | t2[1]))
