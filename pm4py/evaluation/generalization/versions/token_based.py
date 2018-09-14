@@ -5,7 +5,7 @@ from math import sqrt
 from pm4py import util as pmutil
 from pm4py.log.util import xes as xes_util
 
-PARAM_ACTIVITY_KEY = 'activity_key'
+PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY]
 
