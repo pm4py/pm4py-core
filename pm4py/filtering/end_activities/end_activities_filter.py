@@ -1,9 +1,9 @@
 from pm4py.log.log import TraceLog
-from pm4py.log.util import variants as variants_module
+from pm4py.filtering.variants import variants_filter
 
 def get_end_activities_from_log(trace_log, activity_key="concept:name"):
     """
-    Get the end activities of the log along with their count
+    Get the end attributes of the log along with their count
     
     Parameters
     ----------
@@ -15,7 +15,7 @@ def get_end_activities_from_log(trace_log, activity_key="concept:name"):
     Returns
     ----------
     end_activities
-        Dictionary of end activities associated with their count
+        Dictionary of end attributes associated with their count
     """
     end_activities = {}
     
@@ -30,17 +30,17 @@ def get_end_activities_from_log(trace_log, activity_key="concept:name"):
 
 def get_sorted_end_activities_list(end_activities):
     """
-    Gets sorted end activities list
+    Gets sorted end attributes list
     
     Parameters
     ----------
     end_activities
-        Dictionary of end activities associated with their count
+        Dictionary of end attributes associated with their count
     
     Returns
     ----------
     listact
-        Sorted end activities list
+        Sorted end attributes list
     """
     listact = []
     for ea in end_activities:
@@ -50,19 +50,19 @@ def get_sorted_end_activities_list(end_activities):
 
 def get_end_activities_threshold(end_activities, ealist, decreasingFactor):
     """
-    Get end activities cutting threshold
+    Get end attributes cutting threshold
     
     Parameters
     ----------
     end_activities
-        Dictionary of end activities associated with their count
+        Dictionary of end attributes associated with their count
     ealist
-        Sorted end activities list
+        Sorted end attributes list
     
     Returns
     ---------
     threshold
-        End activities cutting threshold
+        End attributes cutting threshold
     """
     
     threshold = ealist[0][1]
@@ -81,13 +81,13 @@ def filter_log_by_end_activities(end_activities, variants, vc, threshold, activi
     Parameters
     ----------
     end_activities
-        Dictionary of end activities associated with their count
+        Dictionary of end attributes associated with their count
     variants
         (If specified) Dictionary with variant as the key and the list of traces as the value
     vc
         List of variant names along with their count
     threshold
-        Cutting threshold (remove variants having end activities which number of occurrences is below the threshold
+        Cutting threshold (remove variants having end attributes which number of occurrences is below the threshold
     activity_key
         (If specified) Specify the activity key in the log (default concept:name)
     
@@ -108,7 +108,7 @@ def filter_log_by_end_activities(end_activities, variants, vc, threshold, activi
 
 def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_key="concept:name"):
     """
-    Apply an end activities filter detecting automatically a percentage
+    Apply an end attributes filter detecting automatically a percentage
     
     Parameters
     ----------
@@ -127,8 +127,8 @@ def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_k
         Filtered log
     """
     if variants is None:
-        variants = variants_module.get_variants_from_log(trace_log, activity_key=activity_key)
-    vc = variants_module.get_variants_sorted_by_count(variants)
+        variants = variants_filter.get_variants_from_log(trace_log, attribute_key=activity_key)
+    vc = variants_filter.get_variants_sorted_by_count(variants)
     end_activities = get_end_activities_from_log(trace_log, activity_key=activity_key)
     ealist = get_sorted_end_activities_list(end_activities)
     eathreshold = get_end_activities_threshold(end_activities, ealist, decreasingFactor)

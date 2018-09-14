@@ -1,7 +1,7 @@
 from copy import copy, deepcopy
 from pm4py.log.log import TraceLog
 
-def get_variants_from_log(trace_log, activity_key="concept:name"):
+def get_variants_from_log(trace_log, attribute_key="concept:name"):
     """
     Gets a dictionary whose key is the variant and as value there
     is the list of traces that share the variant
@@ -10,8 +10,8 @@ def get_variants_from_log(trace_log, activity_key="concept:name"):
     ----------
     trace_log
         Trace log
-    activity_key
-        Field that identifies the activity (must be provided if different from concept:name
+    attribute_key
+        Field that identifies the attribute (must be provided if different from concept:name)
 
     Returns
     ----------
@@ -20,7 +20,7 @@ def get_variants_from_log(trace_log, activity_key="concept:name"):
     """
     variants = {}
     for trace in trace_log:
-        variant = ",".join([x[activity_key] for x in trace])
+        variant = ",".join([x[attribute_key] for x in trace if attribute_key in x])
         if not variant in variants:
             variants[variant] = []
         variants[variant].append(trace)
@@ -119,7 +119,7 @@ def find_auto_threshold(trace_log, variants, decreasingFactor):
     
     return percentage_already_added
 
-def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_key="concept:name"):
+def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, attribute_key="concept:name"):
     """
     Apply a variants filter detecting automatically a percentage
     
@@ -131,8 +131,8 @@ def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_k
         (If specified) Dictionary with variant as the key and the list of traces as the value
     decreasingFactor
         Decreasing factor (stops the algorithm when the next variant by occurrence is below this factor in comparison to previous)
-    activity_key
-        Activity key (must be specified if different from concept:name)
+    attribute_key
+        Attribute key (must be specified if different from concept:name)
     
     Returns
     ----------
@@ -140,7 +140,7 @@ def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_k
         Filtered log
     """
     if variants is None:
-        variants = get_variants_from_log(trace_log, activity_key=activity_key)
+        variants = get_variants_from_log(trace_log, attribute_key=attribute_key)
     variantsPercentage = find_auto_threshold(trace_log, variants, decreasingFactor)
     filteredLog = filter_log_by_variants_percentage(trace_log, variants, variantsPercentage)
     return filteredLog

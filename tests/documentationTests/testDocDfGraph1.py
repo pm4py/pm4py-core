@@ -14,8 +14,8 @@ class DfGraphDocumentationTest(unittest.TestCase):
         log = xes_importer.import_from_file_xes("inputData\\running-example.xes")
         from pm4py.algo.dfg import factory as dfg_factory
         dfg = dfg_factory.apply(log)
-        from pm4py.log.util import activities
-        activities_count = activities.get_activities_from_log(log)
+        from pm4py.filtering.attributes import attributes_filter
+        activities_count = attributes_filter.get_activities_from_log(log)
 
         from pm4py.visualization.dfg.versions import simple_visualize as dfg_visualize
         gviz = dfg_visualize.graphviz_visualization(activities_count, dfg)

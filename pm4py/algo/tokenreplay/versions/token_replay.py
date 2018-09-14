@@ -1,8 +1,7 @@
 from pm4py.models.petri import semantics
-from copy import deepcopy,copy
-import time
+from copy import copy
 from threading import Thread
-from pm4py.log.util import variants as variants_module
+from pm4py.filtering.variants import variants_filter as variants_module
 
 MAX_REC_DEPTH = 50
 MAX_IT_FINAL = 10
@@ -662,7 +661,7 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
     if len(log) > 0:
         if len(log[0]) > 0:
             if activity_key in log[0][0]:
-                variants = variants_module.get_variants_from_log(log, activity_key=activity_key)
+                variants = variants_module.get_variants_from_log(log, attribute_key=activity_key)
                 vc = variants_module.get_variants_sorted_by_count(variants)
                 threads = {}
                 threadsResults = {}

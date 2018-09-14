@@ -10,7 +10,7 @@ Muñoz-Gama, Jorge, and Josep Carmona. "A fresh look at precision in process con
 
 for measuring precision.
 
-For each prefix in the log, the reflected tasks are calculated (outgoing activities from the prefix)
+For each prefix in the log, the reflected tasks are calculated (outgoing attributes from the prefix)
 Then, a token replay is done on the prefix in order to get activated transitions
 Escaping edges is the set difference between activated transitions and reflected tasks
 

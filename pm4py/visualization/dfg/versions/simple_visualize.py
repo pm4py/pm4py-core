@@ -1,11 +1,10 @@
 from graphviz import Digraph
-import tempfile, os
+import tempfile
 import base64
-from copy import deepcopy, copy
-import os, shutil
-from pm4py.log.util import activities
+from copy import copy
+from pm4py.filtering.attributes import attributes_filter
 from pm4py.visualization.common.utils import *
-from pm4py.visualization.common.save import *
+
 
 def get_min_max_value(dfg):
     """
@@ -60,17 +59,17 @@ def assign_penwidth_edges(dfg):
 
 def get_activities_color(activities_count):
     """
-    Get frequency color for activities
+    Get frequency color for attributes
 
     Parameters
     -----------
     activities_count
-        Count of activities in the log
+        Count of attributes in the log
 
     Returns
     -----------
     activities_color
-        Color assigned to activities in the graph
+        Color assigned to attributes in the graph
     """
     activities_color = {}
 
@@ -135,7 +134,7 @@ def apply(dfg, log=None, parameters=None, activities_count=None, measure="freque
         maxNoOfEdgesInDiagram = parameters["maxNoOfEdgesInDiagram"]
 
     if activities_count is None:
-        activities_count = activities.get_activities_from_log(log)
+        activities_count = attributes_filter.get_activities_from_log(log)
 
     return graphviz_visualization(activities_count, dfg, format=format, measure=measure, maxNoOfEdgesInDiagram=maxNoOfEdgesInDiagram)
 
@@ -146,7 +145,7 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
     Parameters
     -----------
     activities_count
-        Count of activities in the log (may include activities that are not in the DFG graph)
+        Count of attributes in the log (may include attributes that are not in the DFG graph)
     dfg
         DFG graph
     format
@@ -190,7 +189,7 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
         if not act in activities_in_dfg:
             del activities_count_int[act]
 
-    # assign activities color
+    # assign attributes color
     activities_color = get_activities_color(activities_count_int)
 
     # represent nodes
@@ -223,7 +222,7 @@ def return_diagram_as_base64(activities_count, dfg, format="svg", measure="frequ
     Parameters
     -----------
     activities_count
-        Count of activities in the log (may include activities that are not in the DFG graph
+        Count of attributes in the log (may include attributes that are not in the DFG graph
     dfg
         DFG graph
     format

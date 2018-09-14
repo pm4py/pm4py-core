@@ -4,7 +4,7 @@ from statistics import mean
 
 def get_activities_count(df, activity_key="concept:name"):
     """
-    Return list of activities contained in the specified column of the CSV
+    Return list of attributes contained in the specified column of the CSV
 
     Parameters
     -----------
@@ -40,7 +40,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     # calculate the difference between the timestamps of two successive events
     dfSuccessiveRows['timeDiff'] = (dfSuccessiveRows[timestamp_key+'_2'] - dfSuccessiveRows[timestamp_key]).apply(
         lambda x: x.total_seconds())
-    # groups couple of activities (directly follows relation, we can measure the frequency and the performance)
+    # groups couple of attributes (directly follows relation, we can measure the frequency and the performance)
     directlyFollowsGrouping = dfSuccessiveRows.groupby([activity_key, activity_key+'_2'])['timeDiff']
 
     dfg_frequency = {}

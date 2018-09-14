@@ -130,7 +130,7 @@ class Subtree(object):
         Returns
         ------------
         max_value
-            Maximum count of ingoing/outgoing edges to activities
+            Maximum count of ingoing/outgoing edges to attributes
         """
         max_value = -1
         if act in self.ingoing:
@@ -229,7 +229,7 @@ class Subtree(object):
 
     def get_activities_from_dfg(self, dfg):
         """
-        Get the list of activities directly from DFG graph
+        Get the list of attributes directly from DFG graph
         """
         set_activities = set()
         for el in dfg:
@@ -263,7 +263,7 @@ class Subtree(object):
 
     def get_activities_self_loop(self):
         """
-        Get activities that are in self-loop in this subtree
+        Get attributes that are in self-loop in this subtree
         """
         self_loop_act = []
         for act in self.outgoing:
@@ -273,7 +273,7 @@ class Subtree(object):
 
     def get_activities_direction(self):
         """
-        Calculate activities direction (Heuristics Miner)
+        Calculate attributes direction (Heuristics Miner)
         """
         direction = {}
         for act in self.activities:
@@ -306,9 +306,9 @@ class Subtree(object):
         act
             Activity
         set1
-            First set of activities
+            First set of attributes
         set2
-            Second set of activities
+            Second set of attributes
         """
         hasOutgoingConnInSet1 = False
         if act[0] in self.outgoing:
@@ -367,9 +367,9 @@ class Subtree(object):
         Parameters
         -----------
         ingoing
-            Ingoing activities
+            Ingoing attributes
         outgoing
-            Outgoing activities
+            Outgoing attributes
         activities
             Activities to consider
         """
@@ -522,9 +522,9 @@ class Subtree(object):
         act2
             Activity that has been missed
         ingoing
-            Map of ingoing activities
+            Map of ingoing attributes
         outgoing
-            Map of outgoing activities
+            Map of outgoing attributes
 
         Returns
         -------------
@@ -604,7 +604,7 @@ class Subtree(object):
 
     def filter_dfg_on_act(self, dfg, listact):
         """
-        Filter a DFG graph on a list of activities
+        Filter a DFG graph on a list of attributes
         (to produce a projected DFG graph)
 
         Parameters
@@ -612,7 +612,7 @@ class Subtree(object):
         dfg
             Current DFG graph
         listact
-            List of activities to filter on
+            List of attributes to filter on
         """
         newDfg = []
         for el in dfg:
@@ -663,7 +663,7 @@ class Subtree(object):
 
     def getMaxValue(self, dfg):
         """
-        Get maximum ingoing/outgoing sum of values related to activities in DFG graph
+        Get maximum ingoing/outgoing sum of values related to attributes in DFG graph
         """
         ingoing = self.get_ingoing_edges(dfg)
         outgoing = self.get_outgoing_edges(dfg)
@@ -683,8 +683,8 @@ class Subtree(object):
 
     def getMaxValueWithActivitiesSpecification(self, dfg, activities):
         """
-        Get maximum ingoing/outgoing sum of values related to activities in DFG graph
-        (here activities to consider are specified)
+        Get maximum ingoing/outgoing sum of values related to attributes in DFG graph
+        (here attributes to consider are specified)
         """
         ingoing = self.get_ingoing_edges(dfg)
         outgoing = self.get_outgoing_edges(dfg)
@@ -704,7 +704,7 @@ class Subtree(object):
 
     def getSumStartActivitiesCount(self, dfg):
         """
-        Gets the sum of start activities count inside a DFG
+        Gets the sum of start attributes count inside a DFG
 
         Parameters
         -------------
@@ -713,7 +713,7 @@ class Subtree(object):
 
         Returns
         -------------
-            Sum of start activities count
+            Sum of start attributes count
         """
         ingoing = self.get_ingoing_edges(dfg)
         outgoing = self.get_outgoing_edges(dfg)
@@ -729,7 +729,7 @@ class Subtree(object):
 
     def getSumEndActivitiesCount(self, dfg):
         """
-        Gets the sum of end activities count inside a DFG
+        Gets the sum of end attributes count inside a DFG
 
         Parameters
         -------------
@@ -738,7 +738,7 @@ class Subtree(object):
 
         Returns
         -------------
-            Sum of start activities count
+            Sum of start attributes count
         """
         ingoing = self.get_ingoing_edges(dfg)
         outgoing = self.get_outgoing_edges(dfg)
@@ -754,7 +754,7 @@ class Subtree(object):
 
     def sumActivitiesCount(self, dfg, activities):
         """
-        Gets the sum of specified activities count inside a DFG
+        Gets the sum of specified attributes count inside a DFG
 
         Parameters
         -------------
@@ -765,7 +765,7 @@ class Subtree(object):
 
         Returns
         -------------
-            Sum of start activities count
+            Sum of start attributes count
         """
         ingoing = self.get_ingoing_edges(dfg)
         outgoing = self.get_outgoing_edges(dfg)
@@ -855,7 +855,7 @@ class Subtree(object):
         lastAddedPlace
             lastAddedPlace
         """
-        #print(self.recDepth, self.activities, self.detectedCut)
+        #print(self.recDepth, self.attributes, self.detectedCut)
         lastAddedPlace = None
         initialPlace = None
         finalPlace = None

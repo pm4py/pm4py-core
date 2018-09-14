@@ -4,7 +4,7 @@ from statistics import mean
 
 def apply(trace_log, parameters=None, activity_key=util.xes.DEFAULT_NAME_KEY, timestamp_key="time:timestamp"):
     '''
-    Measure performance between couples of activities in the DFG graph
+    Measure performance between couples of attributes in the DFG graph
 
     Parameters
     ----------
