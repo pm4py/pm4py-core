@@ -17,7 +17,8 @@ from pm4py.algo.tokenreplay.data_structures import performance_map
 from pm4py.log.util import insert_classifier
 from pm4py.algo.dfg import factory as dfg_factory, replacement as dfg_replacement
 from pm4py.visualization.dfg.versions import simple_visualize as dfg_visualize
-
+from pm4py import util as pmutil
+from pm4py.log.util import xes as xes_util
 
 class shared:
     # contains shared variables
@@ -161,7 +162,7 @@ def get_process_schema():
             if activity_key is None:
                 activity_key = classifier_key
             if activity_key is None:
-                activity_key = "concept:name"
+                activity_key = xes_util.DEFAULT_NAME_KEY
             # release the semaphore
             shared.sem.release()
             # apply automatically a filter
@@ -183,10 +184,14 @@ def get_process_schema():
                 # retrieve the diagram in base64
                 diagram = dfg_visualize.return_diagram_as_base64(activities_count, dfg_filtered_log, format=imageFormat, measure=replayMeasure)
             else:
+                parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+
                 if discoveryAlgorithm == "inductive":
-                    net, initial_marking, final_marking = inductive_factory.apply(log, activity_key=activity_key)
+                    net, initial_marking, final_marking = inductive_factory.apply(log, parameters=parameters)
                 elif discoveryAlgorithm == "alpha":
-                    net, initial_marking, final_marking = alpha_factory.apply(log, activity_key=activity_key)
+                    parameters = {}
+
+                    net, initial_marking, final_marking = alpha_factory.apply(log, parameters=parameters)
                 if replayEnabled:
                     # do the replay
                     [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
