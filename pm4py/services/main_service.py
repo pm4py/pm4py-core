@@ -3,7 +3,8 @@ from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.log.importer import xes as xes_importer, csv as csv_importer
 from pm4py.models.petri.visualize import return_diagram_as_base64
-from pm4py.log.util import auto_filter, activities as activities_module
+from pm4py.filtering.auto_filter import auto_filter
+from pm4py.filtering.attributes import attributes_filter as activities_module
 from pm4py.log import transform
 from flask_cors import CORS
 from threading import Semaphore
@@ -167,12 +168,12 @@ def get_process_schema():
             log = auto_filter.apply_auto_filter(copy(original_log), decreasingFactor=decreasingFactor, activity_key=activity_key)
             # apply a process discovery algorithm
             if discoveryAlgorithm == "dfg":
-                # gets the number of occurrences of the single activities in the filtered log
+                # gets the number of occurrences of the single attributes in the filtered log
                 filtered_log_activities_count = activities_module.get_activities_from_log(log)
                 # gets an intermediate log that is the original log restricted to the list
-                # of activities that appears in the filtered log
-                intermediate_log = activities_module.filter_log_by_specified_activities(original_log, filtered_log_activities_count)
-                # gets the number of occurrences of the single activities in the intermediate log
+                # of attributes that appears in the filtered log
+                intermediate_log = activities_module.filter_log_by_specified_attributes(original_log, filtered_log_activities_count)
+                # gets the number of occurrences of the single attributes in the intermediate log
                 activities_count = activities_module.get_activities_from_log(intermediate_log)
                 # calculate DFG of the filtered log and of the intermediate log
                 dfg_filtered_log = dfg_factory.apply(log, variant=replayMeasure)

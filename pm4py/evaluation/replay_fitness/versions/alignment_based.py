@@ -63,7 +63,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, ac
 
     Parameters
     ----------
-    trace: :class:`list` input trace, assumed to be a list of events (i.e. the code will use the activity key to get the activities)
+    trace: :class:`list` input trace, assumed to be a list of events (i.e. the code will use the activity key to get the attributes)
     petri_net: :class:`pm4py.models.petri.net.PetriNet` the Petri net to use in the alignment
     initial_marking: :class:`pm4py.models.petri.net.Marking` initial marking in the Petri net
     final_marking: :class:`pm4py.models.petri.net.Marking` final marking in the Petri net

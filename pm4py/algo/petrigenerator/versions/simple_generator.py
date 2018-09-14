@@ -12,9 +12,9 @@ class SubtreeGenerator(object):
         Parameters
         ----------
         minNoOfActivitiesPerSubtree
-            Minimum number of activities per distinct subtree
+            Minimum number of attributes per distinct subtree
         maxNoOfActivitiesPerSubtree
-            Maximum number of activities per distinct subtree
+            Maximum number of attributes per distinct subtree
         maxNoOfSubtrees
             Maximum number of subtrees that should be added to the Petri net
         probSpawnSubtree
@@ -259,9 +259,9 @@ def generate_petri(minNoOfActivitiesPerSubtree=2, maxNoOfActivitiesPerSubtree=6,
     Parameters
     ----------
     minNoOfActivitiesPerSubtree
-        Minimum number of activities per distinct subtree
+        Minimum number of attributes per distinct subtree
     maxNoOfActivitiesPerSubtree
-        Maximum number of activities per distinct subtree
+        Maximum number of attributes per distinct subtree
     maxNoOfSubtrees
         Maximum number of subtrees that should be added to the Petri net
     probSpawnSubtree
@@ -287,8 +287,8 @@ def apply(parameters=None):
     ----------
     parameters
         Parameters for the algorithm:
-        minNoOfActivitiesPerSubtree -> Minimum number of activities per distinct subtree
-        maxNoOfActivitiesPerSubtree -> Maximum number of activities per distinct subtree
+        minNoOfActivitiesPerSubtree -> Minimum number of attributes per distinct subtree
+        maxNoOfActivitiesPerSubtree -> Maximum number of attributes per distinct subtree
         maxNoOfSubtrees -> Maximum number of subtrees that should be added to the Petri net
         probSpawnSubtree -> Probability of spawn of a new subtree
         probAutoSkip -> Probability of adding a hidden transition that skips the current subtree

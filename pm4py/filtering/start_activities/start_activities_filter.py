@@ -1,9 +1,10 @@
 from pm4py.log.log import TraceLog
-from pm4py.log.util import variants as variants_module
+from pm4py.filtering.variants import variants_filter
+
 
 def get_start_activities_from_log(trace_log, activity_key="concept:name"):
     """
-    Get the start activities of the log along with their count
+    Get the start attributes of the log along with their count
     
     Parameters
     ----------
@@ -15,7 +16,7 @@ def get_start_activities_from_log(trace_log, activity_key="concept:name"):
     Returns
     ----------
     start_activities
-        Dictionary of start activities associated with their count
+        Dictionary of start attributes associated with their count
     """
     start_activities = {}
     
@@ -30,17 +31,17 @@ def get_start_activities_from_log(trace_log, activity_key="concept:name"):
 
 def get_sorted_start_activities_list(start_activities):
     """
-    Gets sorted start activities list
+    Gets sorted start attributes list
     
     Parameters
     ----------
     start_activities
-        Dictionary of start activities associated with their count
+        Dictionary of start attributes associated with their count
     
     Returns
     ----------
     listact
-        Sorted start activities list
+        Sorted start attributes list
     """
     listact = []
     for sa in start_activities:
@@ -50,19 +51,19 @@ def get_sorted_start_activities_list(start_activities):
 
 def get_start_activities_threshold(start_activities, salist, decreasingFactor):
     """
-    Get start activities cutting threshold
+    Get start attributes cutting threshold
     
     Parameters
     ----------
     start_activities
-        Dictionary of start activities associated with their count
+        Dictionary of start attributes associated with their count
     salist
-        Sorted start activities list
+        Sorted start attributes list
     
     Returns
     ---------
     threshold
-        Start activities cutting threshold
+        Start attributes cutting threshold
     """
     threshold = salist[0][1]
     i = 1
@@ -80,13 +81,13 @@ def filter_log_by_start_activities(start_activities, variants, vc, threshold, ac
     Parameters
     ----------
     start_activities
-        Dictionary of start activities associated with their count
+        Dictionary of start attributes associated with their count
     variants
         (If specified) Dictionary with variant as the key and the list of traces as the value
     vc
         List of variant names along with their count
     threshold
-        Cutting threshold (remove variants having start activities which number of occurrences is below the threshold
+        Cutting threshold (remove variants having start attributes which number of occurrences is below the threshold
     activity_key
         (If specified) Specify the activity key in the log (default concept:name)
     
@@ -107,7 +108,7 @@ def filter_log_by_start_activities(start_activities, variants, vc, threshold, ac
 
 def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_key="concept:name"):
     """
-    Apply an end activities filter detecting automatically a percentage
+    Apply an end attributes filter detecting automatically a percentage
     
     Parameters
     ----------
@@ -126,8 +127,8 @@ def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_k
         Filtered log    
     """
     if variants is None:
-        variants = variants_module.get_variants_from_log(trace_log, activity_key=activity_key)
-    vc = variants_module.get_variants_sorted_by_count(variants)
+        variants = variants_filter.get_variants_from_log(trace_log, attribute_key=activity_key)
+    vc = variants_filter.get_variants_sorted_by_count(variants)
     start_activities = get_start_activities_from_log(trace_log, activity_key=activity_key)
     salist = get_sorted_start_activities_list(start_activities)
     sathreshold = get_start_activities_threshold(start_activities, salist, decreasingFactor)
