@@ -1,5 +1,5 @@
 from pm4py.log.log import TraceLog, Trace
-from pm4py.filtering.variants import variants_filter
+from pm4py.filtering.tracelog.variants import variants_filter
 
 def get_activities_from_log(trace_log, attribute_key="concept:name"):
     """

@@ -1,7 +1,7 @@
 from pm4py.models.petri import semantics
 from copy import copy
 from threading import Thread
-from pm4py.filtering.variants import variants_filter as variants_module
+from pm4py.filtering.tracelog.variants import variants_filter as variants_module
 
 MAX_REC_DEPTH = 50
 MAX_IT_FINAL = 10

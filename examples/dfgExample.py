@@ -4,8 +4,8 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from pm4py.algo.dfg import factory as dfg_factory, replacement as dfg_replacement
 from pm4py.log.importer import xes as xes_importer
-from pm4py.filtering.auto_filter import auto_filter
-from pm4py.filtering.attributes import attributes_filter
+from pm4py.filtering.tracelog.auto_filter import auto_filter
+from pm4py.filtering.tracelog.attributes import attributes_filter
 from pm4py.visualization.dfg import factory as dfg_vis_factory
 
 # measure could be frequency or performance

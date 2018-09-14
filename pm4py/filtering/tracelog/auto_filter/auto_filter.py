@@ -1,8 +1,8 @@
-from pm4py.filtering.variants import variants_filter as variants_module
-from pm4py.filtering.paths import paths_filter
-from pm4py.filtering.start_activities import start_activities_filter
-from pm4py.filtering.attributes import attributes_filter
-from pm4py.filtering.end_activities import end_activities_filter
+from pm4py.filtering.tracelog.variants import variants_filter as variants_module
+from pm4py.filtering.tracelog.paths import paths_filter
+from pm4py.filtering.tracelog.start_activities import start_activities_filter
+from pm4py.filtering.tracelog.attributes import attributes_filter
+from pm4py.filtering.tracelog.end_activities import end_activities_filter
 import gc
 
 def apply_auto_filter(trace_log, decreasingFactor=0.6, activity_key="concept:name"):
