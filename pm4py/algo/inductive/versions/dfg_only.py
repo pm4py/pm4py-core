@@ -9,10 +9,12 @@ import math
 import sys
 from pm4py.models.petri.petrinet import PetriNet
 from collections import Counter
+from pm4py import util as pmutil
+from pm4py.log.util import xes as xes_util
 
 sys.setrecursionlimit(100000)
 
-def apply(trace_log, parameters, activity_key='concept:name'):
+def apply(trace_log, parameters):
     """
     Apply the IMDF algorithm to a log
 
@@ -22,8 +24,6 @@ def apply(trace_log, parameters, activity_key='concept:name'):
         Trace log
     parameters
         Parameters of the algorithm
-    activity_key
-        Attribute corresponding to the activity
 
     Returns
     -----------
@@ -34,10 +34,15 @@ def apply(trace_log, parameters, activity_key='concept:name'):
     final_marking
         Final marking
     """
+    if parameters is None:
+        parameters = {}
+    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     indMinDirFollows = InductMinDirFollows()
     return indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
 
-def apply_dfg(trace_log, parameters, activity_key='concept:name'):
+def apply_dfg(trace_log, parameters):
     """
     Apply the IMDF algorithm to a DFG graph
 
@@ -57,6 +62,11 @@ def apply_dfg(trace_log, parameters, activity_key='concept:name'):
     final_marking
         Final marking
     """
+    if parameters is None:
+        parameters = {}
+    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     indMinDirFollows = InductMinDirFollows()
     return indMinDirFollows.apply_dfg(trace_log, parameters, activity_key=activity_key)
 
