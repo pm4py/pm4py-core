@@ -19,6 +19,7 @@ import numpy as np
 from cvxopt import matrix, solvers
 from dataclasses import dataclass
 
+from pm4py import util as pm4pyutil
 from pm4py import log as log_lib
 from pm4py.algo import alignments
 from pm4py.models import petri
@@ -27,8 +28,9 @@ PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
 
+
 PARAMETERS = [PARAM_TRACE_COST_FUNCTION, PARAM_MODEL_COST_FUNCTION, PARAM_SYNC_COST_FUNCTION,
-              alignments.factory.PARAM_ACTIVITY_KEY]
+              pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
 
 def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
@@ -51,9 +53,9 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
     -------
     dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
     '''
-    activity_key = log_lib.util.xes.DEFAULT_NAME_KEY if parameters is None or alignments.factory.PARAM_ACTIVITY_KEY not in parameters else \
+    activity_key = log_lib.util.xes.DEFAULT_NAME_KEY if parameters is None or pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
         parameters[
-            alignments.factory.PARAM_ACTIVITY_KEY]
+            pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     if parameters is None or PARAM_TRACE_COST_FUNCTION not in parameters or PARAM_MODEL_COST_FUNCTION not in parameters or PARAM_SYNC_COST_FUNCTION not in parameters:
 
         trace_net, trace_im, trace_fm = petri.utils.construct_trace_net(trace, activity_key=activity_key)

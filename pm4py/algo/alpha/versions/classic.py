@@ -6,9 +6,10 @@ import time
 
 from pm4py.algo.alpha.data_structures import alpha_classic_abstraction
 from pm4py.models.petri.petrinet import Marking
+from pm4py import util as pmutil
 
 
-def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
+def apply(trace_log, parameters = None):
     """
     This method calls the \"classic\" alpha miner [1]_.
 
@@ -35,6 +36,8 @@ def apply(trace_log, parameters, activity_key=log_util.xes.DEFAULT_NAME_KEY):
       IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. `DOI <https://doi.org/10.1109/TKDE.2004.47>`_.
 
     """
+    if parameters is None:
+        parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: log_util.xes.DEFAULT_NAME_KEY}
     labels = tl_util.get_event_labels(trace_log, activity_key)
     alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(trace_log, activity_key)
     pairs = list(map(lambda p: ({p[0]}, {p[1]}), filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p), alpha_abstraction.causal_relation)))
