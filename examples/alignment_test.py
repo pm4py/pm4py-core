@@ -2,9 +2,8 @@ import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
-import pm4py.algo.alignments as align
-import pm4py.evaluation as eval
-import pm4py.models.petri as petri
+from pm4py.algo import alignments
+from pm4py.models import petri as petri
 from pm4py import log as log_lib
 
 if __name__ == '__main__':
@@ -28,19 +27,13 @@ if __name__ == '__main__':
             sync_cost_function[t] = 0
         else:
             model_cost_function[t] = 1
-    '''
+
     for t in log:
         trace_costs = list(map(lambda e: 1000, t))
         params = dict()
-        params[align.versions.state_equation_a_star.PARAM_ACTIVITY_KEY] = log_lib.util.xes.DEFAULT_NAME_KEY
-        params[align.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION] = model_cost_function
-        params[align.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION] = trace_costs
-        params[align.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
-        print(align.versions.state_equation_a_star.apply(t, net, marking, fmarking, parameters=params))
-    '''
+        params[alignments.factory.PARAM_ACTIVITY_KEY] = log_lib.util.xes.DEFAULT_NAME_KEY
+        params[alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION] = model_cost_function
+        params[alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION] = trace_costs
+        params[alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
+        print(alignments.versions.state_equation_a_star.apply(t, net, marking, fmarking, parameters=params))
 
-    alignments = eval.replay_fitness.versions.alignment_based.apply(log, net, marking, fmarking, {
-        eval.replay_fitness.versions.alignment_based.PARAM_ACTIVITY_KEY: log_lib.util.xes.DEFAULT_NAME_KEY})
-    for a in alignments:
-        if a['fitness'] < 1.0:
-            print(a)
