@@ -2,9 +2,10 @@ from pm4py.models.petri import visualize
 from pm4py.algo.tokenreplay import factory as token_replay
 from pm4py.algo.tokenreplay.data_structures import performance_map
 from pm4py import log as log_lib
+from pm4py import util as pmutil
 
-PARAM_ACTIVITY_KEY = 'activity_key'
-PARAM_TIMESTAMP_KEY = 'timestamp_key'
+PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+PARAM_TIMESTAMP_KEY = pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY, PARAM_TIMESTAMP_KEY]
 
@@ -39,9 +40,11 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
             PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     timestamp_key = parameters[PARAM_TIMESTAMP_KEY] if PARAM_TIMESTAMP_KEY in parameters else "time:timestamp"
 
+    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+
     # do the replay
     [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = \
-        token_replay.apply(log, net, initial_marking, final_marking, activity_key=activity_key)
+        token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_TR)
 
     element_statistics = performance_map.single_element_statistics(log, net, initial_marking,
                                                                    activatedTransitions,

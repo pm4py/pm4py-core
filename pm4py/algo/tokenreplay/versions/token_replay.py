@@ -2,6 +2,8 @@ from pm4py.models.petri import semantics
 from copy import copy
 from threading import Thread
 from pm4py.filtering.tracelog.variants import variants_filter as variants_module
+from pm4py import util as pmutil
+from pm4py.log.util import xes as xes_util
 
 MAX_REC_DEPTH = 50
 MAX_IT_FINAL = 10
@@ -703,7 +705,7 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
     return [traceIsFit, traceFitnessValue, activatedTransitions, placeFitnessPerTrace, reachedMarkings,
             enabledTransitionsInMarkings]
 
-def apply(log, net, initialMarking, finalMarking, parameters=None, activity_key="concept:name"):
+def apply(log, net, initialMarking, finalMarking, parameters=None):
     """
     Method to apply token-based replay
 
@@ -733,6 +735,7 @@ def apply(log, net, initialMarking, finalMarking, parameters=None, activity_key=
     stopImmediatelyWhenUnfit=False
     useHiddenTransitionsToEnableCorrespondingTransitions=True
     placesShortestPathByHidden=None
+    activity_key = xes_util.DEFAULT_NAME_KEY
 
     if "enable_placeFitness" in parameters:
         enable_placeFitness = parameters["enable_placeFitness"]
@@ -746,8 +749,8 @@ def apply(log, net, initialMarking, finalMarking, parameters=None, activity_key=
         useHiddenTransitionsToEnableCorrespondingTransitions = parameters["useHiddenTransitionsToEnableCorrespondingTransitions"]
     if "placesShortestPathByHidden" in parameters:
         placesShortestPathByHidden = parameters["placesShortestPathByHidden"]
-    if "activity_key" in parameters:
-        activity_key = parameters["activity_key"]
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+        activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
     return apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=enable_placeFitness, consider_remaining_in_fitness=consider_remaining_in_fitness,
                      tryToReachFinalMarkingThroughHidden=tryToReachFinalMarkingThroughHidden, stopImmediatelyWhenUnfit=stopImmediatelyWhenUnfit,

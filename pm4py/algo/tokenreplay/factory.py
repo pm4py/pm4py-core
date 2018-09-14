@@ -3,7 +3,7 @@ from pm4py.algo.tokenreplay.versions import token_replay
 TOKEN_REPLAY = "token_replay"
 VERSIONS = {TOKEN_REPLAY: token_replay.apply}
 
-def apply(log, net, initialMarking, finalMarking, parameters=None, activity_key="concept:name", variant="token_replay"):
+def apply(log, net, initialMarking, finalMarking, parameters=None, variant="token_replay"):
     """
     Factory method to apply token-based replay
     
@@ -24,4 +24,4 @@ def apply(log, net, initialMarking, finalMarking, parameters=None, activity_key=
     variant
         Variant of the algorithm to use
     """
-    return VERSIONS[variant](log, net, initialMarking, finalMarking, parameters=parameters, activity_key=activity_key)
+    return VERSIONS[variant](log, net, initialMarking, finalMarking, parameters=parameters)
