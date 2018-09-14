@@ -15,6 +15,7 @@ from tests.documentationTests.testDocDfGraph1 import DfGraphDocumentationTest
 from tests.documentationTests.testDocXes1 import XES1DocumentationTest
 from tests.documentationTests.testDocCsv1 import CSV1DocumentationTest
 from tests.documentationTests.testDocClassifiers1 import Classifiers1DocumentationTest
+from tests.documentationTests.testDocMeasures import DocMeasuresDocumentationTest
 from tests.dataframePrefiltering import DataframePrefilteringTest
 from tests.filteringTest import LogFilteringTest
 from tests.etcTests import ETCTest
