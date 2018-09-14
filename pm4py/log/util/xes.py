@@ -25,3 +25,4 @@ KEY_URI = 'uri'
 KEY_VALUE = 'value'
 
 DEFAULT_NAME_KEY = 'concept:name'
+DEFAULT_TIMESTAMP_KEY = 'time:timestamp'
