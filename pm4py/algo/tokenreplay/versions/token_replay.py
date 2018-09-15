@@ -232,8 +232,8 @@ def getHiddenTransitionsToEnable(marking, placesWithMissing, placesShortestPathB
             if p1 in placesShortestPathByHidden and p2 in placesShortestPathByHidden[p1]:
                 hiddenTransitionsToEnable.append(placesShortestPathByHidden[p1][p2])
     hiddenTransitionsToEnable = sorted(hiddenTransitionsToEnable, key=lambda x: len(x))
-    scoredTransitions = giveScoreToHiddenTransitions(hiddenTransitionsToEnable)
-    hiddenTransitionsToEnable = [x[0] for x in scoredTransitions]
+    #scoredTransitions = giveScoreToHiddenTransitions(hiddenTransitionsToEnable)
+    #hiddenTransitionsToEnable = [x[0] for x in scoredTransitions]
 
     return hiddenTransitionsToEnable
 
@@ -261,8 +261,8 @@ def getReqTransitionsForFinalMarking(marking, finalMarking, placesShortestPathBy
             if p1 in placesShortestPathByHidden and p2 in placesShortestPathByHidden[p1]:
                 hiddenTransitionsToEnable.append(placesShortestPathByHidden[p1][p2])
     hiddenTransitionsToEnable = sorted(hiddenTransitionsToEnable, key=lambda x: len(x))
-    scoredTransitions = giveScoreToHiddenTransitions(hiddenTransitionsToEnable)
-    hiddenTransitionsToEnable = [x[0] for x in scoredTransitions]
+    #scoredTransitions = giveScoreToHiddenTransitions(hiddenTransitionsToEnable)
+    #hiddenTransitionsToEnable = [x[0] for x in scoredTransitions]
 
     return hiddenTransitionsToEnable
 
@@ -627,7 +627,7 @@ class MarkingToActivityCaching:
         self.cache = 0
         self.cache = {}
 
-def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=False, activity_key="concept:name", tryToReachFinalMarkingThroughHidden=True, stopImmediatelyWhenUnfit=False, useHiddenTransitionsToEnableCorrespondingTransitions=True, placesShortestPathByHidden=None):
+def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False, consider_remaining_in_fitness=False, activity_key="concept:name", tryToReachFinalMarkingThroughHidden=True, stopImmediatelyWhenUnfit=False, useHiddenTransitionsToEnableCorrespondingTransitions=True, placesShortestPathByHidden=None, variants=None):
     """
     Apply token-based replay to a log
 
@@ -663,7 +663,8 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
     if len(log) > 0:
         if len(log[0]) > 0:
             if activity_key in log[0][0]:
-                variants = variants_module.get_variants_from_log(log, attribute_key=activity_key)
+                if variants is None:
+                    variants = variants_module.get_variants_from_log(log, attribute_key=activity_key)
                 vc = variants_module.get_variants_sorted_by_count(variants)
                 threads = {}
                 threadsResults = {}
@@ -736,6 +737,7 @@ def apply(log, net, initialMarking, finalMarking, parameters=None):
     useHiddenTransitionsToEnableCorrespondingTransitions=True
     placesShortestPathByHidden=None
     activity_key = xes_util.DEFAULT_NAME_KEY
+    variants = None
 
     if "enable_placeFitness" in parameters:
         enable_placeFitness = parameters["enable_placeFitness"]
@@ -749,9 +751,11 @@ def apply(log, net, initialMarking, finalMarking, parameters=None):
         useHiddenTransitionsToEnableCorrespondingTransitions = parameters["useHiddenTransitionsToEnableCorrespondingTransitions"]
     if "placesShortestPathByHidden" in parameters:
         placesShortestPathByHidden = parameters["placesShortestPathByHidden"]
+    if "variants" in parameters:
+        variants = parameters["variants"]
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
         activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
     return apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=enable_placeFitness, consider_remaining_in_fitness=consider_remaining_in_fitness,
                      tryToReachFinalMarkingThroughHidden=tryToReachFinalMarkingThroughHidden, stopImmediatelyWhenUnfit=stopImmediatelyWhenUnfit,
-                     useHiddenTransitionsToEnableCorrespondingTransitions=useHiddenTransitionsToEnableCorrespondingTransitions, placesShortestPathByHidden=placesShortestPathByHidden, activity_key=activity_key)
+                     useHiddenTransitionsToEnableCorrespondingTransitions=useHiddenTransitionsToEnableCorrespondingTransitions, placesShortestPathByHidden=placesShortestPathByHidden, activity_key=activity_key, variants=variants)

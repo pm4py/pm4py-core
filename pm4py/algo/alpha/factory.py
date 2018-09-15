@@ -8,7 +8,9 @@ VERSIONS = {ALPHA_VERSION_CLASSIC: versions.classic.apply}
 
 def apply(log, parameters=None, variant=None):
     if parameters is None:
-        parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: xes_util.DEFAULT_NAME_KEY}
+        parameters = {}
+    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     if variant is None:
         variant = ALPHA_VERSION_CLASSIC
     return VERSIONS[variant](log, parameters)

@@ -122,22 +122,6 @@ def apply_performance(dfg, log=None, activities_count=None, parameters=None):
 
     return apply(dfg, log=log, parameters=parameters, activities_count=activities_count, measure="performance")
 
-def apply(dfg, log=None, parameters=None, activities_count=None, measure="frequency"):
-    if parameters is None:
-        parameters = {}
-    format = "pdf"
-    maxNoOfEdgesInDiagram = 75
-
-    if "format" in parameters:
-        format = parameters["format"]
-    if "maxNoOfEdgesInDiagram" in parameters:
-        maxNoOfEdgesInDiagram = parameters["maxNoOfEdgesInDiagram"]
-
-    if activities_count is None:
-        activities_count = attributes_filter.get_activities_from_log(log)
-
-    return graphviz_visualization(activities_count, dfg, format=format, measure=measure, maxNoOfEdgesInDiagram=maxNoOfEdgesInDiagram)
-
 def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequency", maxNoOfEdgesInDiagram=75):
     """
     Do GraphViz visualization of a DFG graph
@@ -215,29 +199,18 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
 
     return viz
 
-def return_diagram_as_base64(activities_count, dfg, format="svg", measure="frequency", maxNoOfEdgesInDiagram=75):
-    """
-    Return process model in Base64 format
+def apply(dfg, log=None, parameters=None, activities_count=None, measure="frequency"):
+    if parameters is None:
+        parameters = {}
+    format = "pdf"
+    maxNoOfEdgesInDiagram = 75
 
-    Parameters
-    -----------
-    activities_count
-        Count of attributes in the log (may include attributes that are not in the DFG graph
-    dfg
-        DFG graph
-    format
-        GraphViz should be represented in this format
-    measure
-        Describes hich measure is assigned to edges in direcly follows graph (frequency/performance)
-    maxNoOfEdgesInDiagram
-        Maximum number of edges in the diagram allowed for visualization
+    if "format" in parameters:
+        format = parameters["format"]
+    if "maxNoOfEdgesInDiagram" in parameters:
+        maxNoOfEdgesInDiagram = parameters["maxNoOfEdgesInDiagram"]
 
-    Returns
-    -----------
-    string
-    """
+    if activities_count is None:
+        activities_count = attributes_filter.get_activities_from_log(log)
 
-    graphviz = graphviz_visualization(activities_count, dfg, format=format, measure=measure)
-    render = graphviz.render(view=False)
-    with open(render, "rb") as f:
-        return base64.b64encode(f.read())
+    return graphviz_visualization(activities_count, dfg, format=format, measure=measure, maxNoOfEdgesInDiagram=maxNoOfEdgesInDiagram)

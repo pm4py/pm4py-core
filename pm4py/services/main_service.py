@@ -2,7 +2,6 @@ from flask import Flask, request
 from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.log.importer import xes_importer as xes_importer, csv_importer as csv_importer
-from pm4py.models.petri.visualize import return_diagram_as_base64
 from pm4py.filtering.tracelog.auto_filter import auto_filter
 from pm4py.filtering.tracelog.attributes import attributes_filter as activities_module
 from pm4py.log import transform
@@ -12,13 +11,14 @@ from copy import copy
 import os
 import base64
 import logging, traceback
-from pm4py.algo.tokenreplay.versions import token_replay
-from pm4py.algo.tokenreplay.data_structures import performance_map
 from pm4py.log.util import insert_classifier
 from pm4py.algo.dfg import factory as dfg_factory, replacement as dfg_replacement
 from pm4py.visualization.dfg.versions import simple_visualize as dfg_visualize
 from pm4py import util as pmutil
 from pm4py.log.util import xes as xes_util
+from pm4py.visualization.petrinet.common import base64conv
+from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.visualization.dfg import factory as dfg_vis_factory
 
 class shared:
     # contains shared variables
@@ -163,6 +163,8 @@ def get_process_schema():
                 activity_key = classifier_key
             if activity_key is None:
                 activity_key = xes_util.DEFAULT_NAME_KEY
+
+            parameters_viz = {"format": imageFormat, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
             # release the semaphore
             shared.sem.release()
             # apply automatically a filter
@@ -181,35 +183,27 @@ def get_process_schema():
                 dfg_intermediate_log = dfg_factory.apply(intermediate_log, variant=replayMeasure)
                 # replace edges values in the filtered DFG from the one found in the intermediate log
                 dfg_filtered_log = dfg_replacement.replace_values(dfg_filtered_log, dfg_intermediate_log)
-                # retrieve the diagram in base64
-                diagram = dfg_visualize.return_diagram_as_base64(activities_count, dfg_filtered_log, format=imageFormat, measure=replayMeasure)
+                gviz = dfg_vis_factory.apply(dfg_filtered_log, activities_count=activities_count, variant=replayMeasure, parameters=parameters_viz)
             else:
-                parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
-
+                parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
                 if discoveryAlgorithm == "inductive":
-                    net, initial_marking, final_marking = inductive_factory.apply(log, parameters=parameters)
+                    net, initial_marking, final_marking = inductive_factory.apply(log, parameters=parameters_discovery)
                 elif discoveryAlgorithm == "alpha":
-                    parameters = {}
-
-                    net, initial_marking, final_marking = alpha_factory.apply(log, parameters=parameters)
+                    net, initial_marking, final_marking = alpha_factory.apply(log, parameters=parameters_discovery)
                 if replayEnabled:
                     # do the replay
-                    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-                        token_replay.apply_log(original_log, net, initial_marking, final_marking, activity_key=activity_key)
-                    element_statistics = performance_map.single_element_statistics(original_log, net, initial_marking, activatedTransitions,
-                                                                                   activity_key=activity_key, timestamp_key=timestamp_key)
-                    aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=replayMeasure)
-                    # return the diagram in base64
-                    diagram = return_diagram_as_base64(net, format=imageFormat, initial_marking=initial_marking, final_marking=final_marking, decorations=aggregated_statistics)
+                    gviz = pn_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=replayMeasure, parameters=parameters_viz)
                 else:
                     # return the diagram in base64
-                    diagram = return_diagram_as_base64(net, format=imageFormat, initial_marking=initial_marking, final_marking=final_marking)
+                    gviz = pn_vis_factory.apply(net, initial_marking, final_marking, parameters=parameters_viz)
+            diagram = base64conv.get_base64_from_gviz(gviz)
             return diagram
         else:
             # release the semaphore
             shared.sem.release()
     except Exception as e:
         # manage exception
+        traceback.print_exc()
         logging.error("exception calculating process schema: "+str(e))
         logging.error("traceback: " + traceback.format_exc())
 

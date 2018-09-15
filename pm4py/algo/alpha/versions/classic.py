@@ -53,13 +53,14 @@ def apply(trace_log, parameters=None):
     '''
     if parameters is None:
         parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: log_util.xes.DEFAULT_NAME_KEY}
+    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
     labels = tl_util.get_event_labels(trace_log, parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
     alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(trace_log, parameters[
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
     pairs = list(map(lambda p: ({p[0]}, {p[1]}),
                      filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p),
                             alpha_abstraction.causal_relation)))
-
     for i in range(0, len(pairs)):
         t1 = pairs[i]
         for j in range(i, len(pairs)):
