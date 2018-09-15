@@ -1,5 +1,5 @@
 from pm4py.services import main_service, http_server
-from pm4py.log.importer import xes as xes_importer
+from pm4py.log.importer import xes_importer as xes_importer
 import configparser
 import os
 from time import sleep

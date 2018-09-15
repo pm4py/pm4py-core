@@ -8,7 +8,7 @@ sys.path.insert(0,parentdir2)
 
 class DocMeasuresDocumentationTest(unittest.TestCase):
 	def test_docmeasures11(self):
-		from pm4py.log.importer import xes as xes_importer
+		from pm4py.log.importer import xes_importer as xes_importer
 
 		log = xes_importer.import_from_file_xes('inputData\\receipt.xes')
 

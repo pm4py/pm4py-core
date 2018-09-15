@@ -12,7 +12,7 @@ class XES1DocumentationTest(unittest.TestCase):
     def test_xes1documentation(self):
         import os
 
-        from pm4py.log.importer import xes as xes_importer
+        from pm4py.log.importer import xes_importer as xes_importer
 
         log = xes_importer.import_from_file_xes("inputData\\running-example.xes")
 
@@ -34,7 +34,7 @@ class XES1DocumentationTest(unittest.TestCase):
                 # print("event index: %d  event activity: %s" % (event_index, event["concept:name"]))
                 pass
 
-        from pm4py.log.exporter import xes as xes_exporter
+        from pm4py.log.exporter import xes_exporter as xes_exporter
 
         xes_exporter.export_log(log, "exportedLog.xes")
         os.remove("exportedLog.xes")

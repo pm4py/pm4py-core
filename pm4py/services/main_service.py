@@ -1,7 +1,7 @@
 from flask import Flask, request
 from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.algo.inductive import factory as inductive_factory
-from pm4py.log.importer import xes as xes_importer, csv as csv_importer
+from pm4py.log.importer import xes_importer as xes_importer, csv_importer as csv_importer
 from pm4py.models.petri.visualize import return_diagram_as_base64
 from pm4py.filtering.tracelog.auto_filter import auto_filter
 from pm4py.filtering.tracelog.attributes import attributes_filter as activities_module

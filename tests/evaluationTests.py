@@ -4,7 +4,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from tests.constants import INPUT_DATA_DIR
-from pm4py.log.importer import xes as xes_importer
+from pm4py.log.importer import xes_importer as xes_importer
 from pm4py.algo.inductive.versions import dfg_only
 from pm4py.evaluation.replay_fitness import factory as fitness_factory
 from pm4py.evaluation.precision import factory as precision_factory

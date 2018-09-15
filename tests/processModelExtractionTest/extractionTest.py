@@ -6,7 +6,7 @@ parentdir2 = os.path.dirname(parentdir)
 sys.path.insert(0,parentdir)
 sys.path.insert(0,parentdir2)
 import time
-from pm4py.log.importer import xes as xes_importer
+from pm4py.log.importer import xes_importer as xes_importer
 from pm4py.algo.inductive import factory as inductive
 from pm4py.algo.alpha import factory as alpha
 from pm4py.evaluation.replay_fitness import factory as fitness_factory
