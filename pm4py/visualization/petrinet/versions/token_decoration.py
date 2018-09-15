@@ -3,6 +3,7 @@ from pm4py.algo.tokenreplay import factory as token_replay
 from pm4py.algo.tokenreplay.data_structures import performance_map
 from pm4py import log as log_lib
 from pm4py import util as pmutil
+from pm4py.filtering.tracelog.variants import variants_filter as variants_module
 
 PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 PARAM_TIMESTAMP_KEY = pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
@@ -40,7 +41,9 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
             PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     timestamp_key = parameters[PARAM_TIMESTAMP_KEY] if PARAM_TIMESTAMP_KEY in parameters else "time:timestamp"
 
-    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+    variants = variants_module.get_variants_from_log(log, attribute_key=activity_key)
+
+    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "variants":variants}
 
     # do the replay
     [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = \
