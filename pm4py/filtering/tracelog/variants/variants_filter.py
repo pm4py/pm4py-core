@@ -18,12 +18,60 @@ def get_variants_from_log(trace_log, attribute_key="concept:name"):
     variant
         Dictionary with variant as the key and the list of traces as the value
     """
+
+    variants_trace_idx = get_variants_from_log_trace_idx(trace_log, attribute_key=attribute_key)
+
+    return convert_variants_trace_idx_to_trace_obj(trace_log, variants_trace_idx)
+
+def convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx):
+    """
+    Converts variants expressed as trace indexes to trace objects
+
+    Parameters
+    -----------
+    log
+        Trace log object
+    variants_trace_idx
+        Variants associated to a list of belonging indexes
+
+    Returns
+    -----------
+    variants
+        Variants associated to a list of belonging traces
+    """
     variants = {}
-    for trace in trace_log:
+
+    for key in variants_trace_idx:
+        variants[key] = []
+        for value in variants_trace_idx[key]:
+            variants[key].append(log[value])
+
+    return variants
+
+def get_variants_from_log_trace_idx(trace_log, attribute_key="concept:name"):
+    """
+    Gets a dictionary whose key is the variant and as value there
+    is the list of traces indexes that share the variant
+
+    Parameters
+    ----------
+    trace_log
+        Trace log
+    attribute_key
+        Field that identifies the attribute (must be provided if different from concept:name)
+
+    Returns
+    ----------
+    variant
+        Dictionary with variant as the key and the list of traces indexes as the value
+    """
+    variants = {}
+    for trace_idx, trace in enumerate(trace_log):
         variant = ",".join([x[attribute_key] for x in trace if attribute_key in x])
         if not variant in variants:
             variants[variant] = []
-        variants[variant].append(trace)
+        variants[variant].append(trace_idx)
+
     return variants
 
 def get_variants_sorted_by_count(variants):

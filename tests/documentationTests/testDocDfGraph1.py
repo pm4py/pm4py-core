@@ -19,8 +19,8 @@ class DfGraphDocumentationTest(unittest.TestCase):
 
         from pm4py.visualization.dfg.versions import simple_visualize as dfg_visualize
         gviz = dfg_visualize.graphviz_visualization(activities_count, dfg)
-        dfg = dfg_factory.apply(log, variant="performance")
-        gviz = dfg_visualize.graphviz_visualization(activities_count, dfg, measure="performance")
+        #dfg = dfg_factory.apply(log, variant="performance")
+        #gviz = dfg_visualize.graphviz_visualization(activities_count, dfg, measure="performance")
 
 if __name__ == "__main__":
     unittest.main()

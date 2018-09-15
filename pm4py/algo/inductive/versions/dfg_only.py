@@ -1082,7 +1082,7 @@ class InductMinDirFollows(object):
         """
         self.trace_log = trace_log
         labels = tl_util.get_event_labels(trace_log, activity_key)
-        dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, activity_key=activity_key).items() if v > 0]
+        dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
         return self.apply_dfg(dfg, parameters)
 
     def apply_dfg(self, dfg, parameters, activity_key="concept:name"):

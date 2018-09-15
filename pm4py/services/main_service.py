@@ -170,6 +170,7 @@ def get_process_schema():
             # apply automatically a filter
             log = auto_filter.apply_auto_filter(copy(original_log), decreasingFactor=decreasingFactor, activity_key=activity_key)
             # apply a process discovery algorithm
+            parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
             if discoveryAlgorithm == "dfg":
                 # gets the number of occurrences of the single attributes in the filtered log
                 filtered_log_activities_count = activities_module.get_activities_from_log(log)
@@ -177,15 +178,14 @@ def get_process_schema():
                 # of attributes that appears in the filtered log
                 intermediate_log = activities_module.filter_log_by_specified_attributes(original_log, filtered_log_activities_count)
                 # gets the number of occurrences of the single attributes in the intermediate log
-                activities_count = activities_module.get_activities_from_log(intermediate_log)
+                activities_count = activities_module.get_activities_from_log(intermediate_log, attribute_key=activity_key)
                 # calculate DFG of the filtered log and of the intermediate log
-                dfg_filtered_log = dfg_factory.apply(log, variant=replayMeasure)
-                dfg_intermediate_log = dfg_factory.apply(intermediate_log, variant=replayMeasure)
+                dfg_filtered_log = dfg_factory.apply(log, parameters = parameters_discovery)
+                dfg_intermediate_log = dfg_factory.apply(intermediate_log, parameters=parameters_discovery)
                 # replace edges values in the filtered DFG from the one found in the intermediate log
                 dfg_filtered_log = dfg_replacement.replace_values(dfg_filtered_log, dfg_intermediate_log)
                 gviz = dfg_vis_factory.apply(dfg_filtered_log, activities_count=activities_count, variant=replayMeasure, parameters=parameters_viz)
             else:
-                parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
                 if discoveryAlgorithm == "inductive":
                     net, initial_marking, final_marking = inductive_factory.apply(log, parameters=parameters_discovery)
                 elif discoveryAlgorithm == "alpha":
