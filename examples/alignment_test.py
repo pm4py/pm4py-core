@@ -19,7 +19,7 @@ def align(trace, net, im, fm, model_cost_function, sync_cost_function):
 
 
 if __name__ == '__main__':
-    log = log_lib.importer.xes.import_from_file_xes('C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32f0n05.xes')
+    log = log_lib.importer.xes_importer.import_from_file_xes('C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32f0n05.xes')
     net, marking = petri.importer.pnml.import_petri_from_pnml(
         'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32.pnml')
 

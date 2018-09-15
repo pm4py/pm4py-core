@@ -3,7 +3,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from pm4py.algo.alpha import factory as alpha_factory
-from pm4py.log.importer import xes as xes_importer
+from pm4py.log.importer import xes_importer as xes_importer
 from pm4py.models.petri import visualize as pn_viz
 from pm4py.models import petri
 from pm4py.algo.tokenreplay.versions import token_replay

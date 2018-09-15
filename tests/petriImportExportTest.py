@@ -8,7 +8,7 @@ from pm4py.models.petri.importer import pnml as petri_importer
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 from pm4py.algo.tokenreplay.versions import token_replay
 from pm4py.models import petri
-from pm4py.log.importer import xes as xes_importer
+from pm4py.log.importer import xes_importer as xes_importer
 import pm4py.algo.alignments as align
 
 class PetriImportExportTest(unittest.TestCase):

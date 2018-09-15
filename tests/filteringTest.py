@@ -4,7 +4,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from tests.constants import INPUT_DATA_DIR
-from pm4py.log.importer import xes as xes_importer
+from pm4py.log.importer import xes_importer as xes_importer
 from pm4py.filtering.tracelog.paths import paths_filter
 from pm4py.filtering.tracelog.start_activities import start_activities_filter
 from pm4py.filtering.tracelog.attributes import attributes_filter

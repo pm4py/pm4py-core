@@ -12,7 +12,7 @@ class TransitionSystemTest(unittest.TestCase):
         from pm4py.algo.transition_system.versions import view_based as ts
 
         inputLog = os.path.join(INPUT_DATA_DIR, "running-example.xes")
-        log = log_lib.importer.xes.import_from_file_xes(inputLog)
+        log = log_lib.importer.xes_importer.import_from_file_xes(inputLog)
         ts = ts.apply(log, parameters={ts.PARAM_KEY_VIEW: ts.VIEW_SEQUENCE, ts.PARAM_KEY_WINDOW: 3,
                                        ts.PARAM_KEY_DIRECTION: ts.DIRECTION_FORWARD})
         viz = ts_viz.graphviz.visualize(ts)
