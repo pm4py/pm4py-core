@@ -8,24 +8,26 @@ import time
 from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.models.petri import visualize as pn_viz
 from pm4py.visualization.dfg import factory as dfg_vis_factory
+from pm4py.log.adapters.pandas import csv_import_adapter as csv_import_adapter
+from pm4py.log.importer.utils import df_filtering
 
 time1 = time.time()
 inputLog = "..\\tests\\inputData\\running-example.csv"
 #inputLog = "C:\\road_traffic.csv"
-dataframe = pandas_df_imp.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
+dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
 time2 = time.time()
 print("time2 - time1: "+str(time2-time1))
-#dataframe = df_filtering.filter_df_on_activities(dataframe, activity_key="concept:name", max_no_activities=25)
+dataframe = df_filtering.filter_df_on_activities(dataframe, activity_key="concept:name", max_no_activities=25)
 time3 = time.time()
 print("time3 - time2: "+str(time3-time2))
-#dataframe = df_filtering.filter_df_on_ncases(dataframe, case_id_glue="case:concept:name", max_no_cases=1000)
+dataframe = df_filtering.filter_df_on_ncases(dataframe, case_id_glue="case:concept:name", max_no_cases=1000)
 time4 = time.time()
 print("time4 - time3: "+str(time4-time3))
-#dataframe = df_filtering.filter_df_on_case_length(dataframe, case_id_glue="case:concept:name", min_trace_length=3, max_trace_length=50)
+dataframe = df_filtering.filter_df_on_case_length(dataframe, case_id_glue="case:concept:name", min_trace_length=3, max_trace_length=50)
 print(dataframe)
 time5 = time.time()
 print("time5 - time4: "+str(time5-time4))
-dataframe = pandas_df_imp.convert_timestamp_columns_in_df(dataframe)
+dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
 time6 = time.time()
 print("time6 - time5: "+str(time6-time5))
 #dataframe = dataframe.sort_values('time:timestamp')
