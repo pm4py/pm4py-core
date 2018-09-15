@@ -2,9 +2,7 @@ from copy import copy
 from pm4py.models.petri import semantics
 from pm4py.models.petri.petrinet import PetriNet
 from statistics import mean, median
-from math import log, e
 from threading import Lock, Thread
-from time import sleep
 from pm4py.visualization.common.utils import *
 
 MAX_NO_THREADS = 1000
