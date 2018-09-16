@@ -12,16 +12,41 @@ def import_log(filename, parameters=None):
     filename
         XES file to parse
     parameters
-        Parameters of the algorithm
+        Parameters of the algorithm, including
+            timestamp_sort -> Specify if we should sort log by timestamp
+            timestamp_key -> If sort is enabled, then sort the log by using this key
+            reverse_sort -> Specify in which direction the log should be sorted
+            index_trace_indexes -> Specify if trace indexes should be added as event attribute for each event
+            max_no_traces_to_import -> Specify the maximum number of traces to import from the log (read in order in the XML file)
 
     Returns
     -----------
     xes
         XES file
     """
+    parameters = None
     if parameters is None:
         parameters = {}
+
+    timestamp_sort=False
+    timestamp_key="time:timestamp"
+    reverse_sort=False
+    insert_trace_indexes=False
+    max_no_traces_to_import=1000000000
+
+    if "timestamp_sort" in parameters:
+        timestamp_sort = parameters["timestamp_sort"]
+    if "timestamp_key" in parameters:
+        timestamp_key = parameters["timestamp_key"]
+    if "reverse_sort" in parameters:
+        reverse_sort = parameters["reverse_sort"]
+    if "insert_trace_indexes" in parameters:
+        insert_trace_indexes = parameters["insert_trace_indexes"]
+    if "max_no_traces_to_import" in parameters:
+        max_no_traces_to_import = parameters["max_no_traces_to_import"]
+
     log = log_lib.log.TraceLog()
+    tracecount = 0
     trace = None
     event = None
     with open(filename, "r") as f:
@@ -59,7 +84,16 @@ def import_log(filename, parameters=None):
                         trace.attributes[content[1]] = content[3]
                 elif tag.startswith("/trace"):
                     log.append(trace)
+                    tracecount += 1
+                    if tracecount > max_no_traces_to_import:
+                        break
                     trace = None
             elif tag.startswith("trace"):
                 trace = log_lib.log.Trace()
+
+    if timestamp_sort:
+        log.sort(timestamp_key=timestamp_key, reverse_sort=reverse_sort)
+    if insert_trace_indexes:
+        log.insert_trace_index_as_event_attribute()
+
     return log

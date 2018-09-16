@@ -21,4 +21,11 @@ def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:tim
         Specify the maximum number of traces to import from the log (read in order in the XML file)
     """
 
-    return iterparse_xes.import_from_file_xes(filename, timestamp_sort=timestamp_sort, timestamp_key=timestamp_key, reverse_sort=reverse_sort, insert_trace_indexes=insert_trace_indexes, max_no_traces_to_import=max_no_traces_to_import)
+    parameters = {}
+    parameters["timestamp_sort"] = timestamp_sort
+    parameters["timestamp_key"] = timestamp_key
+    parameters["reverse_sort"] = reverse_sort
+    parameters["insert_trace_indexes"] = insert_trace_indexes
+    parameters["max_no_traces_to_import"] = max_no_traces_to_import
+
+    return iterparse_xes.import_log(filename, parameters=parameters)

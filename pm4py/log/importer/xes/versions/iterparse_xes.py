@@ -39,10 +39,10 @@ def import_from_xes_string(xes_string, timestamp_sort=False, timestamp_key="time
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(xes_string)
-    log = import_from_file_xes(fp.name, timestamp_sort=timestamp_sort, timestamp_key=timestamp_key,
-                               reverse_sort=reverse_sort,
-                               insert_trace_indexes=insert_trace_indexes,
-                               max_no_traces_to_import=max_no_traces_to_import)
+    log = import_log(fp.name, timestamp_sort=timestamp_sort, timestamp_key=timestamp_key,
+                     reverse_sort=reverse_sort,
+                     insert_trace_indexes=insert_trace_indexes,
+                     max_no_traces_to_import=max_no_traces_to_import)
     os.remove(fp.name)
     return log
 
@@ -67,8 +67,7 @@ def decompress(gzipped_xes):
             shutil.copyfileobj(f_in, f_out)
     return fp.name
 
-def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:timestamp", reverse_sort=False,
-                         insert_trace_indexes=False, max_no_traces_to_import=100000000):
+def import_log(filename, parameters=None):
     """
     Imports an XES file into a log object
 
@@ -76,22 +75,41 @@ def import_from_file_xes(filename, timestamp_sort=False, timestamp_key="time:tim
     ----------
     filename:
         Absolute filename
-    timestamp_sort
-        Specify if we should sort log by timestamp
-    timestamp_key
-        If sort is enabled, then sort the log by using this key
-    reverse_sort
-        Specify in which direction the log should be sorted
-    index_trace_indexes
-        Specify if trace indexes should be added as event attribute for each event
-    max_no_traces_to_import
-        Specify the maximum number of traces to import from the log (read in order in the XML file)
+    parameters
+        Parameters of the algorithm, including
+            timestamp_sort -> Specify if we should sort log by timestamp
+            timestamp_key -> If sort is enabled, then sort the log by using this key
+            reverse_sort -> Specify in which direction the log should be sorted
+            index_trace_indexes -> Specify if trace indexes should be added as event attribute for each event
+            max_no_traces_to_import -> Specify the maximum number of traces to import from the log (read in order in the XML file)
 
     Returns
     -------
     log : :class:`pm4py.log.log.TraceLog`
         A trace log
     """
+
+    parameters = None
+    if parameters is None:
+        parameters = {}
+
+    timestamp_sort=False
+    timestamp_key="time:timestamp"
+    reverse_sort=False
+    insert_trace_indexes=False
+    max_no_traces_to_import=1000000000
+
+    if "timestamp_sort" in parameters:
+        timestamp_sort = parameters["timestamp_sort"]
+    if "timestamp_key" in parameters:
+        timestamp_key = parameters["timestamp_key"]
+    if "reverse_sort" in parameters:
+        reverse_sort = parameters["reverse_sort"]
+    if "insert_trace_indexes" in parameters:
+        insert_trace_indexes = parameters["insert_trace_indexes"]
+    if "max_no_traces_to_import" in parameters:
+        max_no_traces_to_import = parameters["max_no_traces_to_import"]
+
     if filename.endswith("gz"):
         filename = decompress(filename)
 
