@@ -2,7 +2,7 @@ from flask import Flask, request
 from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.log.importer.xes import factory as xes_factory
-from pm4py.log.importer import xes_importer as xes_importer, csv_importer as csv_importer
+from pm4py.log.importer.csv import factory as csv_factory
 from pm4py.filtering.tracelog.auto_filter import auto_filter
 from pm4py.filtering.tracelog.attributes import attributes_filter as activities_module
 from pm4py.log import transform
@@ -14,7 +14,6 @@ import base64
 import logging, traceback
 from pm4py.log.util import insert_classifier
 from pm4py.algo.dfg import factory as dfg_factory, replacement as dfg_replacement
-from pm4py.visualization.dfg.versions import simple_visualize as dfg_visualize
 from pm4py import util as pmutil
 from pm4py.log.util import xes as xes_util
 from pm4py.visualization.petrinet.common import base64conv
@@ -82,7 +81,7 @@ def load_logs():
                             shared.trace_logs[logName].insert_trace_index_as_event_attribute()
                         elif logExtension == "csv":
                             # load CSV files
-                            event_log = csv_importer.import_from_path(fullPath)
+                            event_log = csv_factory.import_log(fullPath)
                             shared.trace_logs[logName] = transform.transform_event_log_to_trace_log(event_log)
                             shared.trace_logs[logName].sort()
                             shared.trace_logs[logName].insert_trace_index_as_event_attribute()

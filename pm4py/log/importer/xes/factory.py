@@ -53,7 +53,7 @@ def import_log(path, parameters=None, variant="iterparse"):
     """
     return VERSIONS[variant](path, parameters=parameters)
 
-def apply(logpath, parameters=None, variant="iterparse"):
+def apply(path, parameters=None, variant="iterparse"):
     """
     Import a XES log into a TraceLog object
 
@@ -74,4 +74,4 @@ def apply(logpath, parameters=None, variant="iterparse"):
     log
         Trace log object
     """
-    return import_log(logpath, parameters=parameters, variant=variant)
+    return import_log(path, parameters=parameters, variant=variant)
