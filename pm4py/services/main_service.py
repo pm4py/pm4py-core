@@ -1,6 +1,7 @@
 from flask import Flask, request
 from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.algo.inductive import factory as inductive_factory
+from pm4py.log.importer.xes import factory as xes_factory
 from pm4py.log.importer import xes_importer as xes_importer, csv_importer as csv_importer
 from pm4py.filtering.tracelog.auto_filter import auto_filter
 from pm4py.filtering.tracelog.attributes import attributes_filter as activities_module
@@ -76,7 +77,7 @@ def load_logs():
                     if not logName in shared.trace_logs:
                         if logExtension == "xes":
                             # load XES files
-                            shared.trace_logs[logName] = xes_importer.import_from_file_xes(fullPath)
+                            shared.trace_logs[logName] = xes_factory.import_log(fullPath, variant="nonstandard")
                             shared.trace_logs[logName].sort()
                             shared.trace_logs[logName].insert_trace_index_as_event_attribute()
                         elif logExtension == "csv":
@@ -158,7 +159,7 @@ def get_process_schema():
         if process in shared.trace_logs:
             # retrieve the log
             original_log = shared.trace_logs[process]
-            original_log, classifier_key = insert_classifier.search_and_insert_event_classifier_attribute(original_log)
+            original_log, classifier_key = insert_classifier.search_and_insert_event_classifier_attribute(original_log, force_activity_transition_insertion=True)
             if activity_key is None:
                 activity_key = classifier_key
             if activity_key is None:
