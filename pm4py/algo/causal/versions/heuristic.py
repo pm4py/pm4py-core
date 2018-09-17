@@ -4,7 +4,7 @@ def apply(dfg):
 
     Parameters
     ----------
-    :param dfg: directly follows relation, should be a dict of the form (activity,activity) -> num of occ.
+    dfg: :class:`dict` directly follows relation, should be a dict of the form (activity,activity) -> num of occ.
 
     Returns
     -------
