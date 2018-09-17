@@ -1,4 +1,5 @@
 from pm4py.log.exporter.xes.versions import etree_xes_exp
+from pm4py.log.util import compression
 
 ETREE = "etree"
 VERSIONS_STRING = {ETREE: etree_xes_exp.export_log_as_string}
@@ -37,9 +38,14 @@ def export_log(log, outputFilePath, variant="etree", parameters=None):
     variant
         Selected variant of the algorithm
     parameters
-        Parameters of the algorithm
+        Parameters of the algorithm:
+            compress -> Indicates that the XES file must be compressed
     """
+    if parameters is None:
+        parameters = {}
     VERSIONS[variant](log, outputFilePath, parameters=parameters)
+    if "compress" in parameters and parameters["compress"]:
+        compression.compress(outputFilePath)
 
 def apply(log, outputFilePath, variant="etree", parameters=None):
     """
@@ -54,6 +60,7 @@ def apply(log, outputFilePath, variant="etree", parameters=None):
     variant
         Selected variant of the algorithm
     parameters
-        Parameters of the algorithm
+        Parameters of the algorithm:
+            compress -> Indicates that the XES file must be compressed
     """
     export_log(log, outputFilePath, variant=variant, parameters=parameters)
