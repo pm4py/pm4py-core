@@ -181,8 +181,8 @@ def get_process_schema():
                 # gets the number of occurrences of the single attributes in the intermediate log
                 activities_count = activities_module.get_activities_from_log(intermediate_log, attribute_key=activity_key)
                 # calculate DFG of the filtered log and of the intermediate log
-                dfg_filtered_log = dfg_factory.apply(log, parameters = parameters_discovery)
-                dfg_intermediate_log = dfg_factory.apply(intermediate_log, parameters=parameters_discovery)
+                dfg_filtered_log = dfg_factory.apply(log, parameters=parameters_discovery, variant=replayMeasure)
+                dfg_intermediate_log = dfg_factory.apply(intermediate_log, parameters=parameters_discovery, variant=replayMeasure)
                 # replace edges values in the filtered DFG from the one found in the intermediate log
                 dfg_filtered_log = dfg_replacement.replace_values(dfg_filtered_log, dfg_intermediate_log)
                 gviz = dfg_vis_factory.apply(dfg_filtered_log, activities_count=activities_count, variant=replayMeasure, parameters=parameters_viz)
