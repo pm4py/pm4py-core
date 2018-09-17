@@ -21,8 +21,30 @@ def get_activities_count(df, activity_key="concept:name"):
     activity_values_dict = dict(df[activity_key].value_counts())
     return activity_values_dict
 
-def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name", timestamp_key="time:timestamp"):
+def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name", timestamp_key="time:timestamp", perf_aggregation_key="mean"):
+    """
+    Get DFG graph from Pandas dataframe
 
+    Parameters
+    -----------
+    df
+        Dataframe
+    measure
+        Measure to use (frequency/performance/both)
+    activity_key
+        Activity key to use in the grouping
+    case_id_glue
+        Case ID identifier
+    timestamp_key
+        Timestamp key
+    perf_aggregation_key
+        Performance aggregation key (mean, median, min, max)
+
+    Returns
+    -----------
+    dfg
+        DFG in the chosen measure (may be only the frequency, only the performance, or both)
+    """
     # to get rows belonging to same case ID together, we need to sort on case ID
     df = df.sort_values([case_id_glue, timestamp_key])
     # to test approaches reduce dataframe to case, activity and complete timestamp columns
@@ -50,7 +72,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         dfg_frequency = directlyFollowsGrouping.size().to_dict()
 
     if measure == "performance" or measure == "both":
-        dfg_performance = directlyFollowsGrouping.agg('mean').to_dict()
+        dfg_performance = directlyFollowsGrouping.agg(perf_aggregation_key).to_dict()
 
     if measure == "frequency":
         return dfg_frequency

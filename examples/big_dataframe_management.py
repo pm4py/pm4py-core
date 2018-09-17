@@ -30,7 +30,7 @@ print("time7 - time6: "+str(time7-time6))
 
 # show the filtered dataframe on the screen
 activities_count = df_statistics.get_activities_count(dataframe)
-[dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both")
+[dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both", perf_aggregation_key="median")
 time8 = time.time()
 print("time8 - time7: "+str(time8-time7))
 gviz = dfg_vis_factory.apply(dfg_frequency, activities_count=activities_count)
