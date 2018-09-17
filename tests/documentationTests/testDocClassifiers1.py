@@ -12,9 +12,9 @@ sys.path.insert(0, parentdir2)
 
 class Classifiers1DocumentationTest(unittest.TestCase):
     def test_classifiers1documentation(self):
-        from pm4py.log.importer import xes_importer as xes_importer
+        from pm4py.log.importer.xes import factory as xes_importer
 
-        log = xes_importer.import_from_file_xes("inputData\\receipt.xes")
+        log = xes_importer.import_log(os.path.join("inputData","receipt.xes"))
         #print(log.classifiers)
 
         from pm4py.log.util import insert_classifier
@@ -28,9 +28,9 @@ class Classifiers1DocumentationTest(unittest.TestCase):
 
         net, initial_marking, final_marking = alpha_miner.apply(log, parameters=parameters)
 
-        from pm4py.log.importer import xes_importer as xes_importer
+        from pm4py.log.importer.xes import factory as xes_importer
 
-        log = xes_importer.import_from_file_xes("inputData\\receipt.xes")
+        log = xes_importer.import_log(os.path.join("inputData","receipt.xes"))
 
         for trace in log:
             for event in trace:

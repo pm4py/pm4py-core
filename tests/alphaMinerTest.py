@@ -3,8 +3,8 @@ import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
-from pm4py.log.importer import csv_importer as csv_importer
-from pm4py.log.importer import xes_importer as xes_importer
+from pm4py.log.importer.csv import factory as csv_importer
+from pm4py.log.importer.xes import factory as xes_importer
 import pm4py.log.transform as log_transform
 from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.models.petri import visualize as pn_viz
@@ -18,9 +18,9 @@ import logging
 class AlphaMinerTest(unittest.TestCase):
 	def obtainPetriNetThroughAlphaMiner(self, logName):
 		if ".xes" in logName:
-			traceLog = xes_importer.import_from_file_xes(logName)
+			traceLog = xes_importer.import_log(logName)
 		else:
-			eventLog = csv_importer.import_from_path(logName)
+			eventLog = csv_importer.import_log(logName)
 			traceLog = log_transform.transform_event_log_to_trace_log(eventLog)
 		net, marking, fmarking = alpha_factory.apply(traceLog)
 		return traceLog, net, marking, fmarking

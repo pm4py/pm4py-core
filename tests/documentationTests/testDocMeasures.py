@@ -8,9 +8,9 @@ sys.path.insert(0,parentdir2)
 
 class DocMeasuresDocumentationTest(unittest.TestCase):
 	def test_docmeasures11(self):
-		from pm4py.log.importer import xes_importer as xes_importer
+		from pm4py.log.importer.xes import factory as xes_importer
 
-		log = xes_importer.import_from_file_xes('inputData\\receipt.xes')
+		log = xes_importer.import_log(os.path.join("inputData", "receipt.xes"))
 
 		from pm4py.algo.alpha import factory as alpha_miner
 		from pm4py.algo.inductive import factory as inductive_miner

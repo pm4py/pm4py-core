@@ -4,7 +4,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from tests.constants import INPUT_DATA_DIR
-from pm4py.log.importer import xes_importer as xes_importer
+from pm4py.log.importer.xes import factory as xes_importer
 from pm4py.algo.inductive.versions import dfg_only
 from pm4py.evaluation.replay_fitness import factory as fitness_factory
 from pm4py.evaluation.precision import factory as precision_factory
@@ -14,7 +14,7 @@ from pm4py.evaluation import factory as evaluation_factory
 
 class ProcessModelEvaluationTests(unittest.TestCase):
     def test_evaluation_pm1(self):
-        log = xes_importer.import_from_file_xes(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, marking, final_marking = dfg_only.apply(log, None)
         fitness = fitness_factory.apply(log, net, marking, final_marking)
         precision = precision_factory.apply(log, net, marking, final_marking)
@@ -22,7 +22,7 @@ class ProcessModelEvaluationTests(unittest.TestCase):
         simplicity = simplicity_factory.apply(net)
 
     def test_evaluation_pm2(self):
-        log = xes_importer.import_from_file_xes(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, marking, final_marking = dfg_only.apply(log, None)
         metrics = evaluation_factory.apply(log, net, marking, final_marking)
 

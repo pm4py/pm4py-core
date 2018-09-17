@@ -8,7 +8,7 @@ from pm4py.models.petri.importer import pnml as petri_importer
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 from pm4py.algo.tokenreplay.versions import token_replay
 from pm4py.models import petri
-from pm4py.log.importer import xes_importer as xes_importer
+from pm4py.log.importer.xes import factory as xes_importer
 import pm4py.algo.alignments as align
 
 class PetriImportExportTest(unittest.TestCase):
@@ -25,7 +25,7 @@ class PetriImportExportTest(unittest.TestCase):
 
     def test_importingPetriLogTokenReplay(self):
         importedPetri1, marking1 = petri_importer.import_petri_from_pnml(os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
-        traceLog = xes_importer.import_from_file_xes(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        traceLog = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         final_marking = petri.petrinet.Marking()
         for p in importedPetri1.places:
             if not p.out_arcs:
@@ -35,7 +35,7 @@ class PetriImportExportTest(unittest.TestCase):
 
     def test_importingPetriLogAlignment(self):
         importedPetri1, marking1 = petri_importer.import_petri_from_pnml(os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
-        traceLog = xes_importer.import_from_file_xes(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        traceLog = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         final_marking = petri.petrinet.Marking()
         for p in importedPetri1.places:
             if not p.out_arcs:

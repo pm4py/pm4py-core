@@ -14,7 +14,7 @@ class CSV1DocumentationTest(unittest.TestCase):
 
         from pm4py.log.importer.csv import factory as csv_importer
 
-        event_log = csv_importer.import_log("inputData\\running-example.csv")
+        event_log = csv_importer.import_log(os.path.join("inputData","running-example.csv"))
 
         event_log_length = len(event_log)
         # print(event_log_length)
@@ -29,7 +29,7 @@ class CSV1DocumentationTest(unittest.TestCase):
         from pm4py.log.importer.csv.versions import pandas_df_imp
         from pm4py.log import transform
 
-        dataframe = pandas_df_imp.import_dataframe_from_path("inputData\\running-example.csv")
+        dataframe = pandas_df_imp.import_dataframe_from_path(os.path.join("inputData","running-example.csv"))
         event_log = pandas_df_imp.convert_dataframe_to_event_log(dataframe)
         trace_log = transform.transform_event_log_to_trace_log(event_log, case_glue="case:concept:name")
 

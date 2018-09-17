@@ -6,6 +6,7 @@ from pm4py.algo import alignments as ali
 from pm4py.models import petri as petri
 from pm4py import log as log_lib
 from pm4py import util
+from pm4py.log.importer.xes import factory as xes_importer
 
 
 def align(trace, net, im, fm, model_cost_function, sync_cost_function):
@@ -19,7 +20,7 @@ def align(trace, net, im, fm, model_cost_function, sync_cost_function):
 
 
 if __name__ == '__main__':
-    log = log_lib.importer.xes_importer.import_from_file_xes('C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32f0n05.xes')
+    log = xes_importer.import_log('C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32f0n05.xes')
     net, marking = petri.importer.pnml.import_petri_from_pnml(
         'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32.pnml')
 
