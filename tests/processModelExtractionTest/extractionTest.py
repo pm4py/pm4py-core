@@ -6,7 +6,7 @@ parentdir2 = os.path.dirname(parentdir)
 sys.path.insert(0,parentdir)
 sys.path.insert(0,parentdir2)
 import time
-from pm4py.log.importer import xes_importer as xes_importer
+from pm4py.log.importer.xes import factory as xes_factory
 from pm4py.algo.inductive import factory as inductive
 from pm4py.algo.alpha import factory as alpha
 from pm4py.evaluation.replay_fitness import factory as fitness_factory
@@ -128,7 +128,7 @@ if __name__ == "__main__":
             print("\nelaborating "+logName)
 
             logPath = os.path.join(logFolder, logName)
-            log = xes_importer.import_from_file_xes(logPath)
+            log = xes_factory.import_log(logPath, variant="iterparse")
 
             log, classifier_key = insert_classifier.search_and_insert_event_classifier_attribute(log)
 

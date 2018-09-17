@@ -1,6 +1,7 @@
 from itertools import islice
 from pm4py import log as log_lib
 import ciso8601
+from pm4py.log.importer.xes.common import compression
 
 def import_log(filename, parameters=None):
     """
@@ -44,6 +45,9 @@ def import_log(filename, parameters=None):
         insert_trace_indexes = parameters["insert_trace_indexes"]
     if "max_no_traces_to_import" in parameters:
         max_no_traces_to_import = parameters["max_no_traces_to_import"]
+
+    if filename.endswith("gz"):
+        filename = compression.decompress(filename)
 
     log = log_lib.log.TraceLog()
     tracecount = 0
