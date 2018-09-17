@@ -4,7 +4,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from tests.constants import INPUT_DATA_DIR
-from pm4py.log.importer import xes_importer as xes_importer
+from pm4py.log.importer.xes import factory as xes_importer
 from pm4py.filtering.tracelog.paths import paths_filter
 from pm4py.filtering.tracelog.start_activities import start_activities_filter
 from pm4py.filtering.tracelog.attributes import attributes_filter
@@ -15,7 +15,7 @@ from pm4py.filtering.tracelog.variants import variants_filter as variants_module
 class LogFilteringTest(unittest.TestCase):
     def test_logfiltering_filtering1(self):
         inputLog = os.path.join(INPUT_DATA_DIR, "running-example.xes")
-        log = xes_importer.import_from_file_xes(inputLog)
+        log = xes_importer.import_log(inputLog)
         log = attributes_filter.apply_auto_filter(log)
         log = variants_module.apply_auto_filter(log)
         log = start_activities_filter.apply_auto_filter(log)

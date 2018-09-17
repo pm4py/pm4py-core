@@ -3,13 +3,14 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from pm4py.algo.alpha import factory as alpha_factory
-from pm4py.log.importer import xes_importer as xes_importer
+from pm4py.log.importer.xes import factory as xes_importer
 from pm4py.models.petri import visualize as pn_viz
 from pm4py.models import petri
 from pm4py.algo.tokenreplay.versions import token_replay
 import time
 
-log = xes_importer.import_from_file_xes('..\\tests\\inputData\\running-example.xes')
+logPath = os.path.join("..","tests","inputData","running-example.xes")
+log = xes_importer.import_log(logPath)
 #log = xes_importer.import_from_path_xes('a32f0n00.xes')
 net, marking, final_marking = alpha_factory.apply(log)
 for place in marking:
