@@ -238,7 +238,7 @@ def export_log_tree(log):
     return tree
 
 
-def export_log_as_string(log):
+def export_log_as_string(log, parameters=None):
     """
     Export a trace log into a string
 
@@ -246,19 +246,24 @@ def export_log_as_string(log):
     -----------
     log: :class:`pm4py.log.log.TraceLog`
         PM4PY trace log
+    parameters
+        Parameters of the algorithm
 
     Returns
     -----------
     logString
         Log as a string
     """
+    if parameters is None:
+        parameters = {}
+
     # Gets the XML tree to export
     tree = export_log_tree(log)
 
-    return etree.tostring(tree, xml_declaration=True, encoding="utf-8")
+    return etree.tostring(tree, xml_declaration=True, encoding="utf-8", pretty_print=True)
 
 
-def export_log(log, outputFilePath):
+def export_log(log, outputFilePath, parameters=None):
     """
     Export XES log from a PM4PY trace log
 
@@ -268,8 +273,12 @@ def export_log(log, outputFilePath):
         PM4PY trace log
     outputFilePath:
         Output file path
+    parameters
+        Parameters of the algorithm
 
     """
+    if parameters is None:
+        parameters = {}
 
     # Gets the XML tree to export
     tree = export_log_tree(log)
