@@ -14,8 +14,8 @@ log = xes_importer.import_from_file_xes('..\\tests\\inputData\\running-example.x
 filtered_log = auto_filter.apply_auto_filter(log)
 filtered_log_activities_count = attributes_filter.get_activities_from_log(filtered_log)
 intermediate_log = attributes_filter.filter_log_by_specified_attributes(log, list(filtered_log_activities_count.keys()))
-dfg_filtered_log = dfg_factory.apply(filtered_log, variant=measure)
-dfg_intermediate_log = dfg_factory.apply(intermediate_log, variant=measure)
+dfg_filtered_log = dfg_factory.apply(filtered_log)
+dfg_intermediate_log = dfg_factory.apply(intermediate_log)
 dfg_filtered_log = dfg_replacement.replace_values(dfg_filtered_log, dfg_intermediate_log)
 
 gviz = dfg_vis_factory.apply(dfg_filtered_log, log=intermediate_log)
