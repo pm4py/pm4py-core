@@ -52,21 +52,3 @@ def filter_df_on_ncases(df, case_id_glue="case:concept:name", max_no_cases=1000)
     cases_to_keep = cases_to_keep[0:min(len(cases_to_keep),max_no_cases)]
     df = df[df[case_id_glue].isin(cases_to_keep)]
     return df
-
-def filter_df_on_case_length(df, case_id_glue="case:concept:name", min_trace_length=3, max_trace_length=50):
-    """
-    Filter a dataframe keeping only the cases that have the specified number of events
-
-    Parameters
-    -----------
-    df
-        Dataframe
-    case_id_glue
-        Case ID column in the CSV
-    min_trace_length
-        Minimum allowed trace length
-    max_trace_length
-        Maximum allowed trace length
-    """
-    df = df.groupby(case_id_glue).filter(lambda x: (len(x)>= min_trace_length and len(x)<=max_trace_length))
-    return df
