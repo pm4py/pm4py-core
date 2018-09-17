@@ -1,5 +1,5 @@
 from pm4py.log.importer.csv.versions import pandas_df_imp
-from pm4py.log.importer.common import string_to_file
+from pm4py.log.util import string_to_file
 
 PANDAS = "pandas"
 VERSIONS = {PANDAS: pandas_df_imp.import_log}

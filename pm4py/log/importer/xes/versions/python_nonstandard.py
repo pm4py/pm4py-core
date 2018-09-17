@@ -1,7 +1,7 @@
-from itertools import islice
 from pm4py import log as log_lib
 import ciso8601
-from pm4py.log.importer.xes.common import compression
+from pm4py.log.util import compression
+
 
 def import_log(filename, parameters=None):
     """

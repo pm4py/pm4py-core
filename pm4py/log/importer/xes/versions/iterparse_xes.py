@@ -2,8 +2,7 @@ from lxml import etree
 from pm4py import log as log_lib
 import ciso8601
 import logging
-import tempfile, os
-from pm4py.log.importer.xes.common import compression
+from pm4py.log.util import compression
 
 # ITERPARSE EVENTS
 EVENT_END = 'end'

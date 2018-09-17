@@ -1,5 +1,5 @@
 from pm4py.log.importer.xes.versions import iterparse_xes, python_nonstandard
-from pm4py.log.importer.common import string_to_file
+from pm4py.log.util import string_to_file
 
 ITERPARSE = "iterparse"
 NONSTANDARD = "nonstandard"
