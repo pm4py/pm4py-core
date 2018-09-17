@@ -106,11 +106,12 @@ def upload_event_log():
             content = request.get_json()
             logId = content['id']
             logContent = base64.b64decode(content['content']).decode("utf-8")
-            log = xes_importer.import_from_xes_string(logContent)
+            log = xes_factory.import_log_from_string(logContent, variant="nonstandard")
             shared.trace_logs[logId] = log
             shared.sem.release()
             return "{\"success\":True}"
         except Exception as e:
+            traceback.print_exc()
             shared.sem.release()
             return "{\"success\":False}"
     return "{\"success\":False}"
@@ -174,10 +175,10 @@ def get_process_schema():
             parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
             if discoveryAlgorithm == "dfg":
                 # gets the number of occurrences of the single attributes in the filtered log
-                filtered_log_activities_count = activities_module.get_activities_from_log(log)
+                filtered_log_activities_count = activities_module.get_activities_from_log(log, attribute_key=activity_key)
                 # gets an intermediate log that is the original log restricted to the list
                 # of attributes that appears in the filtered log
-                intermediate_log = activities_module.filter_log_by_specified_attributes(original_log, filtered_log_activities_count)
+                intermediate_log = activities_module.filter_log_by_specified_attributes(original_log, filtered_log_activities_count, attribute_key=activity_key)
                 # gets the number of occurrences of the single attributes in the intermediate log
                 activities_count = activities_module.get_activities_from_log(intermediate_log, attribute_key=activity_key)
                 # calculate DFG of the filtered log and of the intermediate log
@@ -193,7 +194,7 @@ def get_process_schema():
                     net, initial_marking, final_marking = alpha_factory.apply(log, parameters=parameters_discovery)
                 if replayEnabled:
                     # do the replay
-                    gviz = pn_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=replayMeasure, parameters=parameters_viz)
+                    gviz = pn_vis_factory.apply(net, initial_marking, final_marking, log=original_log, variant=replayMeasure, parameters=parameters_viz)
                 else:
                     # return the diagram in base64
                     gviz = pn_vis_factory.apply(net, initial_marking, final_marking, parameters=parameters_viz)
