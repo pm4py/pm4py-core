@@ -1,8 +1,9 @@
 from lxml import etree
 import uuid
 import pm4py
+from pm4py.models.petri.petrinet import Marking
 
-def export_petri_tree(petrinet, marking):
+def export_petri_tree(petrinet, marking, final_marking=None):
     """
     Export a Petrinet to a XML tree
 
@@ -12,12 +13,17 @@ def export_petri_tree(petrinet, marking):
         Petri net
     marking: :class:`pm4py.models.petri.petrinet.Marking`
         Marking
+    final_marking: :class:`pm4py.models.petri.petrinet.Marking`
+        Final marking (optional)
 
     Returns
     ----------
     tree
         XML tree
     """
+    if final_marking is None:
+        final_marking = Marking()
+
     root = etree.Element("pnml")
     net = etree.SubElement(root, "net")
     net.set("id","net1")
@@ -61,11 +67,21 @@ def export_petri_tree(petrinet, marking):
         else:
             arcEl.set("source", str(transitionsMap[arc.source]))
             arcEl.set("target", str(placesMap[arc.target]))
+
+    if len(final_marking) > 0:
+        finalmarkings = etree.SubElement(net, "finalmarkings")
+        marking = etree.SubElement(finalmarkings, "marking")
+
+        for place in final_marking:
+            placem = etree.SubElement(marking, "place")
+            placem.set("idref", place.name)
+            placem_text = etree.SubElement(placem, "text")
+            placem_text.text = str(final_marking[place])
     tree = etree.ElementTree(root)
 
     return tree
 
-def export_petri_as_string(petrinet, marking):
+def export_petri_as_string(petrinet, marking, final_marking=None):
     """
     Parameters
     ----------
@@ -73,6 +89,8 @@ def export_petri_as_string(petrinet, marking):
         Petri net
     marking: :class:`pm4py.models.petri.petrinet.Marking`
         Marking
+    final_marking: :class:`pm4py.models.petri.petrinet.Marking`
+        Final marking (optional)
 
     Returns
     ----------
@@ -81,11 +99,11 @@ def export_petri_as_string(petrinet, marking):
     """
 
     # gets the XML tree
-    tree = export_petri_tree(petrinet, marking)
+    tree = export_petri_tree(petrinet, marking, final_marking=final_marking)
 
     return etree.tostring(tree, xml_declaration=True, encoding="utf-8")
 
-def export_petri_to_pnml(petrinet, marking, output_filename):
+def export_petri_to_pnml(petrinet, marking, output_filename, final_marking=None):
     """
     Export a Petrinet to a PNML file
 
@@ -95,11 +113,13 @@ def export_petri_to_pnml(petrinet, marking, output_filename):
         Petri net
     marking: :class:`pm4py.models.petri.petrinet.Marking`
         Marking
+    final_marking: :class:`pm4py.models.petri.petrinet.Marking`
+        Final marking (optional)
     output_filename:
         Absolute output file name for saving the pnml file
     """
 
     # gets the XML tree
-    tree = export_petri_tree(petrinet, marking)
+    tree = export_petri_tree(petrinet, marking, final_marking=final_marking)
     # write the tree to a file
     tree.write(output_filename, pretty_print=True, xml_declaration=True, encoding="utf-8")

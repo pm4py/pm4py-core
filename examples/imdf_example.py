@@ -20,10 +20,6 @@ if __name__ == "__main__":
     net, marking, final_marking = inductive_factory.apply(log)
     for place in marking:
         print("initial marking " + place.name)
-    """final_marking = petri.petrinet.Marking()
-    for p in net.places:
-        if not p.out_arcs:
-            final_marking[p] = 1"""
     for place in final_marking:
         print("final marking " + place.name)
     gviz = pn_viz.graphviz_visualization(net, initial_marking=marking, final_marking=final_marking, debug=True)
