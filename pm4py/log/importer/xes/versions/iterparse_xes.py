@@ -3,7 +3,7 @@ from pm4py import log as log_lib
 import ciso8601
 import logging
 import tempfile, os
-import gzip, shutil
+from pm4py.log.importer.xes.common import compression
 
 # ITERPARSE EVENTS
 EVENT_END = 'end'
@@ -45,27 +45,6 @@ def import_from_xes_string(xes_string, timestamp_sort=False, timestamp_key="time
                      max_no_traces_to_import=max_no_traces_to_import)
     os.remove(fp.name)
     return log
-
-def decompress(gzipped_xes):
-    """
-    Decompress a gzipped XES and returns location of the temp file created
-
-    Parameters
-    ----------
-    gzipped_xes
-        Gzipped XES
-
-    Returns
-    ----------
-    decompressedPath
-        Decompressed file path
-    """
-    fp = tempfile.NamedTemporaryFile(suffix='.xes')
-    fp.close()
-    with gzip.open(gzipped_xes, 'rb') as f_in:
-        with open(fp.name, 'wb') as f_out:
-            shutil.copyfileobj(f_in, f_out)
-    return fp.name
 
 def import_log(filename, parameters=None):
     """
@@ -111,7 +90,7 @@ def import_log(filename, parameters=None):
         max_no_traces_to_import = parameters["max_no_traces_to_import"]
 
     if filename.endswith("gz"):
-        filename = decompress(filename)
+        filename = compression.decompress(filename)
 
     context = etree.iterparse(filename, events=['start', 'end'])
 
