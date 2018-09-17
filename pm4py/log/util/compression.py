@@ -1,22 +1,48 @@
-import tempfile, gzip, shutil
+import tempfile, gzip, shutil, os
+import io
 
-def decompress(gzipped_xes):
+def compress(file):
     """
-    Decompress a gzipped XES and returns location of the temp file created
+    Compress a file in-place adding .gz suffix
+
+    Parameters
+    -----------
+    file
+        Uncompressed file
+
+    Returns
+    -----------
+    compressed_file
+        Compressed file path
+    """
+    extension = file.split(".")[-1] + ".gz"
+    fp = tempfile.NamedTemporaryFile(suffix=extension)
+    fp.close()
+    with open(file, 'rb') as f_in:
+        with gzip.open(fp.name, 'wb') as f_out:
+            shutil.copyfileobj(f_in, f_out)
+    shutil.move(fp.name, file+".gz")
+    os.remove(file)
+    return file
+
+def decompress(gzipped_file):
+    """
+    Decompress a gzipped file and returns location of the temp file created
 
     Parameters
     ----------
-    gzipped_xes
-        Gzipped XES
+    gzipped_file
+        Gzipped file
 
     Returns
     ----------
     decompressedPath
         Decompressed file path
     """
-    fp = tempfile.NamedTemporaryFile(suffix='.xes')
+    extension = gzipped_file.split(".")[-1]
+    fp = tempfile.NamedTemporaryFile(suffix=extension)
     fp.close()
-    with gzip.open(gzipped_xes, 'rb') as f_in:
+    with gzip.open(gzipped_file, 'rb') as f_in:
         with open(fp.name, 'wb') as f_out:
             shutil.copyfileobj(f_in, f_out)
     return fp.name
