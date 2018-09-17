@@ -1,13 +1,11 @@
 from lxml import etree
-import uuid
 import time
-import inspect
 from pm4py.models import petri
 from pm4py.models.petri.petrinet import Marking
 from copy import copy, deepcopy
 import logging
-from pm4py.models.petri import visualize as pn_viz
 import tempfile, os
+from pm4py.models.petri.common import final_marking
 
 def import_petri_from_string(petri_string):
     """
@@ -22,9 +20,9 @@ def import_petri_from_string(petri_string):
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(petri_string)
-    net = import_petri_from_pnml(fp.name)
+    net, initial_marking, final_marking = import_petri_from_pnml(fp.name)
     os.remove(fp.name)
-    return net
+    return net, initial_marking, final_marking
 
 def import_petri_from_pnml(inputFilePath):
     """
@@ -35,103 +33,93 @@ def import_petri_from_pnml(inputFilePath):
     inputFilePath
         Input file path
     """
-    context = etree.iterparse(inputFilePath, events=['start', 'end'])
+    tree = etree.parse(inputFilePath)
+    root = tree.getroot()
+
     net = petri.petrinet.PetriNet('imported_' + str(time.time()))
-    markingDict = {}
+    marking = petri.petrinet.Marking()
+    fmarking = petri.petrinet.Marking()
+
+    nett = None
+    page = None
+    finalmarkings = None
+
+    for child in root:
+        nett = child
+
     placesDict = {}
     transDict = {}
 
-    readingWhat = ""
-    readingId = ""
-    readingSource = ""
-    readingTarget = ""
-    transInvis = False
-    isInitialMarking = False
-    initialMarkingCount = 0
+    if nett is not None:
+        for child in nett:
+            if "page" in child.tag:
+                page = child
+            if "finalmarkings" in child.tag:
+                finalmarkings = child
 
-    for tree_event, elem in context:
+    if page is not None:
+        for child in page:
+            if "place" in child.tag:
+                id = child.get("id")
+                place_name = id
+                number = 0
+                for child2 in child:
+                    if "name" in child2.tag:
+                        for child3 in child2:
+                            if child3.text:
+                                place_name = child3.text
+                    if "initialMarking" in child2.tag:
+                        for child3 in child2:
+                            if child3.tag == "text":
+                                number = int(child3.text)
+                placesDict[id] = petri.petrinet.PetriNet.Place(place_name)
+                net.places.add(placesDict[id])
+                if number > 0:
+                    marking[placesDict[id]] = number
 
-        if tree_event == "start":
-            if "place" in elem.tag:
-                isInitialMarking = False
-                readingWhat = "place"
-                readingId = elem.get("id")
-            elif "transition" in elem.tag:
-                readingWhat = "transition"
-                readingId = elem.get("id")
-                transition = petri.petrinet.PetriNet.Transition(readingId, None)
-                transDict[readingId] = transition
-            elif "initialMarking" in elem.tag:
-                readingWhat = "initialMarking"
-            elif "text" in elem.tag:
-                elementText = elem.text
-                if readingWhat == "place":
-                    if elementText is not None and len(elementText) > 1:
-                        place = petri.petrinet.PetriNet.Place(elementText)
-                    else:
-                        place = petri.petrinet.PetriNet.Place(readingId)
-                    placesDict[readingId] = place
-                elif readingWhat == "transition":
-                    if not transInvis:
-                        transDict[readingId].label = elementText
-                        transDict[readingId].name = elementText
-                elif readingWhat == "initialMarking":
-                    isInitialMarking = True
-                    try:
-                        initialMarkingCount = int(elementText)
-                    except:
-                        logging.info("cannot read initial marking number")
-                        initialMarkingCount = 0
-                    if initialMarkingCount > 0:
-                        markingDict[placesDict[readingId]] = initialMarkingCount
-            elif "toolspecific" in elem.tag:
-                if readingWhat == "transition":
-                    activity = elem.get("activity")
-                    if "$invisible$" in activity:
-                        transInvis = True
-                        transDict[readingId].label = None
-        if tree_event == "end":
-            if "place" in elem.tag:
-                readingWhat = 0
-                readingWhat = ""
-            elif "initialMarking" in elem.tag:
-                readingWhat = "place"
-            elif "transition" in elem.tag:
-                readingWhat = 0
-                readingWhat = ""
-                transInvis = False
-    for placeName in placesDict.keys():
-        place = placesDict[placeName]
-        net.places.add(place)
-    for transId in transDict.keys():
-        transition = transDict[transId]
-        net.transitions.add(transition)
-    context = etree.iterparse(inputFilePath, events=['start', 'end'])
-    for tree_event, elem in context:
-        if tree_event == "start":
-            if "arc" in elem.tag:
-                readingWhat = "arc"
-                readingId = elem.get("id")
-                readingSource = elem.get("source")
-                readingTarget = elem.get("target")
-                if readingSource in placesDict.keys() and readingTarget in transDict.keys():
-                    petri.utils.add_arc_from_to(placesDict[readingSource], transDict[readingTarget], net)
-                elif readingTarget in placesDict.keys() and readingSource in transDict.keys():
-                    petri.utils.add_arc_from_to(transDict[readingSource], placesDict[readingTarget], net)
-        if tree_event == "end":
-            if "arc" in elem.tag:
-                readingWhat = 0
-                readingId = 0
-                readingSource = 0
-                readingTarget = 0
-                readingWhat = ""
-                readingId = ""
-                readingSource = ""
-                readingTarget = ""
+    if page is not None:
+        for child in page:
+            if "transition" in child.tag:
+                trans_name = child.get("id")
+                trans_label = trans_name
+                trans_visible = True
+                for child2 in child:
+                    if child2.tag == "name":
+                        for child3 in child2:
+                            if child3.text:
+                                trans_label = child3.text
+                    if "toolspecific" in child2.tag:
+                        activity = child2.get("activity")
+                        if "invisible" in activity:
+                            trans_visible = False
+                if not trans_visible:
+                    trans_label = None
+                transDict[trans_name] = petri.petrinet.PetriNet.Transition(trans_name, trans_label)
+                net.transitions.add(transDict[trans_name])
 
-    netPlaces = copy(net.places)
-    for place in netPlaces:
-        if len(place.in_arcs) == 0 and len(place.out_arcs) == 0:
-            net.places.remove(place)
+    if page is not None:
+        for child in page:
+            if "arc" in child.tag:
+                arc_source = child.get("source")
+                arc_target = child.get("target")
 
-    return net, Marking(markingDict)
+                if arc_source in placesDict and arc_target in transDict:
+                    petri.utils.add_arc_from_to(placesDict[arc_source], transDict[arc_target], net)
+                elif arc_target in placesDict and arc_source in transDict:
+                    petri.utils.add_arc_from_to(transDict[arc_source], placesDict[arc_target], net)
+
+    if finalmarkings is not None:
+        for child in finalmarkings:
+            for child2 in child:
+                id = child2.get("idref")
+                for child3 in child2:
+                    if "text" in child3.tag:
+                        number = int(child3.text)
+                        if number > 0:
+                            fmarking[placesDict[id]] = number
+
+    # generate the final marking in the case has not been found
+    if len(fmarking) == 0:
+        fmarking = final_marking.discover_final_marking(net)
+
+    return net, marking, fmarking

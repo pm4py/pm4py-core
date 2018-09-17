@@ -26,9 +26,9 @@ def export_petri_tree(petrinet, marking):
     page.set("id","n0")
     placesMap = {}
     for place in petrinet.places:
-        placesMap[place] = str(hash(place))
+        placesMap[place] = place.name
         pl = etree.SubElement(page, "place")
-        pl.set("id", str(hash(place)))
+        pl.set("id", place.name)
         plName = etree.SubElement(pl,"name")
         plNameText = etree.SubElement(plName,"text")
         plNameText.text = place.name
@@ -38,9 +38,9 @@ def export_petri_tree(petrinet, marking):
             plInitialMarkingText.text = str(marking[place])
     transitionsMap = {}
     for transition in petrinet.transitions:
-        transitionsMap[transition] = str(hash(transition))
+        transitionsMap[transition] = transition.name
         trans = etree.SubElement(page, "transition")
-        trans.set("id", str(hash(transition)))
+        trans.set("id", transition.name)
         transName = etree.SubElement(trans, "name")
         transText = etree.SubElement(transName, "text")
         if transition.label is not None:

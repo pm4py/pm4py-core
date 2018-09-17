@@ -21,13 +21,8 @@ def align(trace, net, im, fm, model_cost_function, sync_cost_function):
 
 if __name__ == '__main__':
     log = xes_importer.import_log('C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32f0n05.xes')
-    net, marking = petri.importer.pnml.import_petri_from_pnml(
+    net, marking, fmarking = petri.importer.pnml.import_petri_from_pnml(
         'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32.pnml')
-
-    fmarking = petri.petrinet.Marking()
-    for p in net.places:
-        if len(p.out_arcs) == 0:
-            fmarking[p] = 1
 
     model_cost_function = dict()
     sync_cost_function = dict()
