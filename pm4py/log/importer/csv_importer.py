@@ -18,6 +18,8 @@ def import_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort
         Boolean value that tells if the CSV should be ordered
     sort_field
         If sort option is enabled, then the CSV is automatically sorted by the specified column
+    insert_event_indexes
+        Automatically inserts the event indexes into the log
 
      Returns
     -------
@@ -25,4 +27,12 @@ def import_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort
         An event log
     """
 
-    return pandas_df_imp.import_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort, sort_field=sort_field, insert_event_indexes=insert_event_indexes)
+    parameters = {}
+    parameters["sep"] = sep
+    parameters["quotechar"] = quotechar
+    parameters["nrows"] = nrows
+    parameters["sort"] = sort
+    parameters["sort_field"] = sort_field
+    parameters["insert_event_indexes"] = insert_event_indexes
+
+    return pandas_df_imp.import_log(path, parameters=parameters)
