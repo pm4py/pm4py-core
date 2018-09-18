@@ -58,7 +58,7 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
 
     return aggregated_statistics
 
-def apply_frequency(net, initial_marking, final_marking, log=None, parameters=None):
+def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """
     Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization method)
     adding frequency representation obtained by token replay
@@ -81,12 +81,12 @@ def apply_frequency(net, initial_marking, final_marking, log=None, parameters=No
     viz
         Graph object
     """
-    decorations = None
-    if log is not None:
-        decorations = get_decorations(log, net, initial_marking, final_marking, parameters=parameters, measure="frequency")
-    return visualize.apply(net, initial_marking, final_marking, parameters=parameters, decorations=decorations)
+    if aggregated_statistics is not None:
+        if log is not None:
+            aggregated_statistics = get_decorations(log, net, initial_marking, final_marking, parameters=parameters, measure="frequency")
+    return visualize.apply(net, initial_marking, final_marking, parameters=parameters, decorations=aggregated_statistics)
 
-def apply_performance(net, initial_marking, final_marking, log=None, parameters=None):
+def apply_performance(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """
     Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization method)
     adding performance representation obtained by token replay
@@ -109,7 +109,7 @@ def apply_performance(net, initial_marking, final_marking, log=None, parameters=
     viz
         Graph object
     """
-    decorations = None
-    if log is not None:
-        decorations = get_decorations(log, net, initial_marking, final_marking, parameters=parameters, measure="performance")
-    return visualize.apply(net, initial_marking, final_marking, parameters=parameters, decorations=decorations)
+    if aggregated_statistics is not None:
+        if log is not None:
+            aggregated_statistics = get_decorations(log, net, initial_marking, final_marking, parameters=parameters, measure="performance")
+    return visualize.apply(net, initial_marking, final_marking, parameters=parameters, decorations=aggregated_statistics)
