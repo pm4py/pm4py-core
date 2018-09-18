@@ -11,18 +11,24 @@ from pm4py.log.adapters.pandas import csv_import_adapter as csv_import_adapter
 from pm4py.filtering.pandas import df_filtering
 from pm4py.models.petri import vis_trans_shortest_paths
 
-time1 = time.time()
 inputLog = os.path.join("..", "tests", "inputData", "running-example.csv")
+CASEID_GLUE = "case:concept:name"
+ACTIVITY_KEY = "concept:name"
+TIMEST_KEY = "time:timestamp"
+TIMEST_COLUMNS = ["time:timestamp"]
+TIMEST_FORMAT = None
+
+time1 = time.time()
 #inputLog = "C:\\road_traffic.csv"
 dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
 time2 = time.time()
 print("time2 - time1: "+str(time2-time1))
-dataframe = df_filtering.filter_df_on_activities(dataframe, activity_key="concept:name", max_no_activities=25)
+dataframe = df_filtering.filter_df_on_activities(dataframe, activity_key=ACTIVITY_KEY, max_no_activities=25)
 time3 = time.time()
 print("time3 - time2: "+str(time3-time2))
-dataframe = df_filtering.filter_df_on_ncases(dataframe, case_id_glue="case:concept:name", max_no_cases=1000)
+dataframe = df_filtering.filter_df_on_ncases(dataframe, case_id_glue=CASEID_GLUE, max_no_cases=1000)
 time4 = time.time()
-dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
+dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe, timest_columns=TIMEST_COLUMNS, timest_format=TIMEST_FORMAT)
 time6 = time.time()
 print("time6 - time4: "+str(time6-time4))
 #dataframe = dataframe.sort_values('time:timestamp')
@@ -30,8 +36,8 @@ time7 = time.time()
 print("time7 - time6: "+str(time7-time6))
 
 # show the filtered dataframe on the screen
-activities_count = df_statistics.get_activities_count(dataframe)
-[dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both", perf_aggregation_key="median")
+activities_count = df_statistics.get_activities_count(dataframe, activity_key=ACTIVITY_KEY)
+[dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both", perf_aggregation_key="median", case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY, timestamp_key=TIMEST_KEY)
 time8 = time.time()
 print("time8 - time7: "+str(time8-time7))
 gviz = dfg_vis_factory.apply(dfg_frequency, activities_count=activities_count)
