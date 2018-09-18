@@ -19,6 +19,8 @@ from pm4py.log.util import xes as xes_util
 from pm4py.visualization.petrinet.common import base64conv
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
+from pm4py.log.util import xes
+from pm4py.util import constants
 
 class shared:
     # contains shared variables
@@ -169,7 +171,9 @@ def get_process_schema():
             # release the semaphore
             shared.sem.release()
             # apply automatically a filter
-            log = auto_filter.apply_auto_filter(copy(original_log), decreasingFactor=decreasingFactor, activity_key=activity_key)
+            parameters_autofilter = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: xes.DEFAULT_NAME_KEY}
+
+            log = auto_filter.apply_auto_filter(copy(original_log), parameters=parameters_autofilter)
             # apply a process discovery algorithm
             parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
             if discoveryAlgorithm == "dfg":
