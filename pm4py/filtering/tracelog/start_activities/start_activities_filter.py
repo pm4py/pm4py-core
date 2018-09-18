@@ -1,9 +1,9 @@
 from pm4py.log.log import TraceLog
 from pm4py.filtering.tracelog.variants import variants_filter
-from pm4py.log.util import xes as xes_util
+from pm4py.log.util import xes
 from pm4py.util import constants
 
-def get_start_activities_from_log(trace_log, activity_key="concept:name"):
+def get_start_activities_from_log(trace_log, attribute_key="concept:name"):
     """
     Get the start attributes of the log along with their count
     
@@ -11,8 +11,8 @@ def get_start_activities_from_log(trace_log, activity_key="concept:name"):
     ----------
     trace_log
         Trace log
-    activity_key
-        Activity key (must be specified if different from concept:name)
+    attribute_key
+        Attribute key (must be specified if different from concept:name)
     
     Returns
     ----------
@@ -23,7 +23,7 @@ def get_start_activities_from_log(trace_log, activity_key="concept:name"):
     
     for trace in trace_log:
         if len(trace) > 0:
-            activity_first_event = trace[0][activity_key]
+            activity_first_event = trace[0][attribute_key]
             if not activity_first_event in start_activities:
                 start_activities[activity_first_event] = 0
             start_activities[activity_first_event] = start_activities[activity_first_event] + 1
@@ -107,7 +107,7 @@ def filter_log_by_start_activities(start_activities, variants, vc, threshold, ac
                     filtered_log.append(trace)
     return filtered_log
 
-def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_key="concept:name"):
+def apply_auto_filter(trace_log, variants=None, parameters=None):
     """
     Apply an end attributes filter detecting automatically a percentage
     
@@ -117,23 +117,29 @@ def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, activity_k
         Trace log
     variants
         (If specified) Dictionary with variant as the key and the list of traces as the value
-    decreasingFactor
-        Decreasing factor (stops the algorithm when the next end activity by occurrence is below this factor in comparison to previous)
-    activity_key
-        Activity key (must be specified if different from concept:name)
+    parameters
+        Parameters of the algorithm, including:
+            decreasingFactor -> Decreasing factor (stops the algorithm when the next activity by occurrence is below this factor in comparison to previous)
+            attribute_key -> Attribute key (must be specified if different from concept:name)
     
     Returns
     ---------
     filtered_log
         Filtered log    
     """
-    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else 0.6
+
+    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
 
     if variants is None:
         variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
-    start_activities = get_start_activities_from_log(trace_log, activity_key=activity_key)
+    start_activities = get_start_activities_from_log(trace_log, attribute_key=attribute_key)
     salist = get_sorted_start_activities_list(start_activities)
     sathreshold = get_start_activities_threshold(start_activities, salist, decreasingFactor)
-    filtered_log = filter_log_by_start_activities(start_activities, variants, vc, sathreshold, activity_key)
+    filtered_log = filter_log_by_start_activities(start_activities, variants, vc, sathreshold, attribute_key)
     return filtered_log
