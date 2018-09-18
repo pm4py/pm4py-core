@@ -37,21 +37,21 @@ def apply_auto_filter(trace_log, decreasingFactor=0.6, activity_key="concept:nam
 
     variants = variants_module.get_variants(trace_log, parameters=parameters_child)
 
-    filtered_log1 = attributes_filter.apply_auto_filter(trace_log, variants=variants, decreasingFactor=decreasingFactor, attribute_key=activity_key)
+    filtered_log1 = attributes_filter.apply_auto_filter(trace_log, variants=variants, parameters=parameters_child)
     trace_log = None
     gc.collect()
     variants = variants_module.get_variants(filtered_log1, parameters=parameters_child)
-    filtered_log2 = paths_filter.apply_auto_filter(filtered_log1, variants=variants, decreasingFactor=decreasingFactor, attribute_key=activity_key)
+    filtered_log2 = paths_filter.apply_auto_filter(filtered_log1, variants=variants, parameters=parameters_child)
     filtered_log1 = None
     gc.collect()
     variants = variants_module.get_variants(filtered_log2, parameters=parameters_child)
     filtered_log3 = variants_module.apply_auto_filter(filtered_log2, variants=variants, parameters=parameters_child)
     filtered_log2 = None
     gc.collect()
-    filtered_log4 = start_activities_filter.apply_auto_filter(filtered_log3, variants=variants, decreasingFactor=decreasingFactor, activity_key=activity_key)
+    filtered_log4 = start_activities_filter.apply_auto_filter(filtered_log3, variants=variants, parameters=parameters_child)
     filtered_log3 = None
     gc.collect()
-    filtered_log5 = end_activities_filter.apply_auto_filter(filtered_log4, variants=variants, decreasingFactor=decreasingFactor, activity_key=activity_key)
+    filtered_log5 = end_activities_filter.apply_auto_filter(filtered_log4, variants=variants, parameters=parameters_child)
     filtered_log4 = None
     gc.collect()
 

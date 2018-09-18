@@ -2,6 +2,7 @@ from pm4py.log.log import TraceLog, Trace
 from pm4py.filtering.tracelog.variants import variants_filter
 from pm4py.log.util import xes as xes_util
 from pm4py.util import constants
+from pm4py.log.util import xes
 
 def get_paths_from_log(trace_log, attribute_key="concept:name"):
     """
@@ -129,7 +130,7 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key
             filtered_log.append(new_trace)
     return filtered_log
 
-def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, attribute_key="concept:name"):
+def apply_auto_filter(trace_log, variants=None, parameters=None):
     """
     Apply an attributes filter detecting automatically a percentage
 
@@ -139,18 +140,22 @@ def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, attribute_
         Trace log
     variants
         (If specified) Dictionary with variant as the key and the list of traces as the value
-    decreasingFactor
-        Decreasing factor (stops the algorithm when the next activity by occurrence is below this factor in comparison to previous)
-    attribute_key
-        Activity key (must be specified if different from concept:name)
+    parameters
+        Parameters of the algorithm, including:
+            decreasingFactor -> Decreasing factor (stops the algorithm when the next activity by occurrence is below this factor in comparison to previous)
+            attribute_key -> Attribute key (must be specified if different from concept:name)
 
     Returns
     ---------
     filtered_log
         Filtered log
     """
-    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
+    if parameters is None:
+        parameters = {}
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else 0.6
 
+    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:
         variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
