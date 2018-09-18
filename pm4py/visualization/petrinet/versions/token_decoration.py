@@ -51,11 +51,10 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "variants": variants}
 
     # do the replay
-    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = \
-        token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_TR)
+    aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_TR)
 
     element_statistics = performance_map.single_element_statistics(log, net, initial_marking,
-                                                                   activatedTransitions,
+                                                                   aligned_traces,
                                                                    activity_key=activity_key,
                                                                    timestamp_key=timestamp_key)
     aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=measure,

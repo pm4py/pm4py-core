@@ -27,10 +27,7 @@ if __name__ == "__main__":
 
     if True:
         fitTraces = []
-        [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings,
-         enabledTransitionsInMarkings] = token_replay.apply_log(log, net, marking,
-                                                                final_marking,
-                                                                enable_placeFitness=True)
+
         i = 0
         while i < len(log):
             try:
@@ -45,8 +42,6 @@ if __name__ == "__main__":
                         if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] == None):
                             isFit = False
                     print("isFit = " + str(isFit))
-                    print(activatedTransitions[i])
-                    print(reachedMarkings[i])
 
                     if isFit:
                         fitTraces.append(log[i])

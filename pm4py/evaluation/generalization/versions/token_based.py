@@ -9,7 +9,7 @@ PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY]
 
-def get_generalization(petri_net, activatedTransitions):
+def get_generalization(petri_net, aligned_traces):
     """
     Gets the generalization from the Petri net and the list of activated transitions
     during the replay
@@ -28,8 +28,10 @@ def get_generalization(petri_net, activatedTransitions):
 
     Parameters
     -----------
-    activatedTransitions
-        Activated transition during (token-based) replay
+    petri_net
+        Petri net
+    aligned_traces
+        Result of the token-replay
 
     Returns
     -----------
@@ -38,8 +40,8 @@ def get_generalization(petri_net, activatedTransitions):
     """
 
     transOccMap = Counter()
-    for trace in activatedTransitions:
-        for trans in trace:
+    for trace in aligned_traces:
+        for trans in trace["actTrans"]:
             transOccMap[trans] += 1
     inv_sq_occ_sum = 0.0
     for trans in transOccMap:
@@ -93,7 +95,6 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
 
     parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
 
-    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-        token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_TR)
+    aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_TR)
 
-    return get_generalization(petri_net, activatedTransitions)
+    return get_generalization(petri_net, aligned_traces)

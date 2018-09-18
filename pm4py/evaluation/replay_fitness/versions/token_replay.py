@@ -7,26 +7,24 @@ PARAM_ACTIVITY_KEY = xes_util.DEFAULT_NAME_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY]
 
-def get_fitness(traceIsFit, traceFitnessValue):
+def get_fitness(aligned_traces):
     """
     Gets a dictionary expressing fitness in a synthetic way from the list of boolean values
     saying if a trace in the log is fit, and the float values of fitness associated to each trace
 
     Parameters
     ------------
-    traceIsFit
-        Boolean value that tells if a trace is fit according to the model
-    traceFitnessValue
-        List of float values of fitness associated to each trace
+    aligned_traces
+        Result of the token-based replayer
 
     Returns
     -----------
     dictionary
         Containing two keys (percFitTraces and averageFitness)
     """
-    noTraces = len(traceIsFit)
-    fitTraces = len([x for x in traceIsFit if x])
-    sumOfFitness = sum(traceFitnessValue)
+    noTraces = len(aligned_traces)
+    fitTraces = len([x for x in aligned_traces if x["tFit"]])
+    sumOfFitness = sum([x["tValue"] for x in aligned_traces])
     percFitTraces = 0.0
     averageFitness = 0.0
     if noTraces > 0:
@@ -63,8 +61,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
 
     parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
 
-    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-        token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_TR)
+    aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_TR)
 
-    return get_fitness(traceIsFit, traceFitnessValue)
+    return get_fitness(aligned_traces)
 
