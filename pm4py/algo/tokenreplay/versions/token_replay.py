@@ -4,6 +4,7 @@ from threading import Thread
 from pm4py.filtering.tracelog.variants import variants_filter as variants_module
 from pm4py import util as pmutil
 from pm4py.log.util import xes as xes_util
+from pm4py.util import constants
 
 MAX_REC_DEPTH = 50
 MAX_IT_FINAL = 10
@@ -663,7 +664,8 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
         if len(log[0]) > 0:
             if activity_key in log[0][0]:
                 if variants is None:
-                    variants = variants_module.get_variants_from_log(log, attribute_key=activity_key)
+                    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+                    variants = variants_module.get_variants(log, parameters=parameters_variants)
                 vc = variants_module.get_variants_sorted_by_count(variants)
                 threads = {}
                 threadsResults = {}

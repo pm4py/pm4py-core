@@ -1,7 +1,9 @@
 from copy import copy, deepcopy
 from pm4py.log.log import TraceLog
+from pm4py.log.util import xes
+from pm4py.util import constants
 
-def get_variants_from_log(trace_log, attribute_key="concept:name"):
+def get_variants(trace_log, parameters=None):
     """
     Gets a dictionary whose key is the variant and as value there
     is the list of traces that share the variant
@@ -10,8 +12,9 @@ def get_variants_from_log(trace_log, attribute_key="concept:name"):
     ----------
     trace_log
         Trace log
-    attribute_key
-        Field that identifies the attribute (must be provided if different from concept:name)
+    parameters
+        Parameters of the algorithm, including:
+            activity_key -> Attribute identifying the activity in the log
 
     Returns
     ----------
@@ -19,9 +22,39 @@ def get_variants_from_log(trace_log, attribute_key="concept:name"):
         Dictionary with variant as the key and the list of traces as the value
     """
 
-    variants_trace_idx = get_variants_from_log_trace_idx(trace_log, attribute_key=attribute_key)
+    variants_trace_idx = get_variants_from_log_trace_idx(trace_log, parameters=parameters)
 
     return convert_variants_trace_idx_to_trace_obj(trace_log, variants_trace_idx)
+
+def get_variants_from_log_trace_idx(trace_log, parameters=None):
+    """
+    Gets a dictionary whose key is the variant and as value there
+    is the list of traces indexes that share the variant
+
+    Parameters
+    ----------
+    trace_log
+        Trace log
+    parameters
+        Parameters of the algorithm, including:
+            activity_key -> Attribute identifying the activity in the log
+
+    Returns
+    ----------
+    variant
+        Dictionary with variant as the key and the list of traces indexes as the value
+    """
+
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+
+    variants = {}
+    for trace_idx, trace in enumerate(trace_log):
+        variant = ",".join([x[attribute_key] for x in trace if attribute_key in x])
+        if not variant in variants:
+            variants[variant] = []
+        variants[variant].append(trace_idx)
+
+    return variants
 
 def convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx):
     """
@@ -45,32 +78,6 @@ def convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx):
         variants[key] = []
         for value in variants_trace_idx[key]:
             variants[key].append(log[value])
-
-    return variants
-
-def get_variants_from_log_trace_idx(trace_log, attribute_key="concept:name"):
-    """
-    Gets a dictionary whose key is the variant and as value there
-    is the list of traces indexes that share the variant
-
-    Parameters
-    ----------
-    trace_log
-        Trace log
-    attribute_key
-        Field that identifies the attribute (must be provided if different from concept:name)
-
-    Returns
-    ----------
-    variant
-        Dictionary with variant as the key and the list of traces indexes as the value
-    """
-    variants = {}
-    for trace_idx, trace in enumerate(trace_log):
-        variant = ",".join([x[attribute_key] for x in trace if attribute_key in x])
-        if not variant in variants:
-            variants[variant] = []
-        variants[variant].append(trace_idx)
 
     return variants
 
@@ -167,7 +174,7 @@ def find_auto_threshold(trace_log, variants, decreasingFactor):
     
     return percentage_already_added
 
-def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, attribute_key="concept:name"):
+def apply_auto_filter(trace_log, variants=None, parameters=None):
     """
     Apply a variants filter detecting automatically a percentage
     
@@ -175,20 +182,25 @@ def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, attribute_
     ----------
     trace_log
         Trace log
-    variants
-        (If specified) Dictionary with variant as the key and the list of traces as the value
-    decreasingFactor
-        Decreasing factor (stops the algorithm when the next variant by occurrence is below this factor in comparison to previous)
-    attribute_key
-        Attribute key (must be specified if different from concept:name)
+    parameters
+        Parameters of the algorithm, including:
+            activity_key -> Key that identifies the activity
+            decreasingFactor -> Decreasing factor (stops the algorithm when the next variant by occurrence is below this factor in comparison to previous)
     
     Returns
     ----------
     filteredLog
         Filtered log
     """
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else 0.6
+
+    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:
-        variants = get_variants_from_log(trace_log, attribute_key=attribute_key)
+        variants = get_variants(trace_log, parameters=parameters_variants)
     variantsPercentage = find_auto_threshold(trace_log, variants, decreasingFactor)
     filteredLog = filter_log_by_variants_percentage(trace_log, variants, variantsPercentage)
     return filteredLog

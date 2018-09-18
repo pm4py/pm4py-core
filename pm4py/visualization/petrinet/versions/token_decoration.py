@@ -45,7 +45,8 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
             PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     timestamp_key = parameters[PARAM_TIMESTAMP_KEY] if PARAM_TIMESTAMP_KEY in parameters else "time:timestamp"
 
-    variants_idx = variants_module.get_variants_from_log_trace_idx(log, attribute_key=activity_key)
+    parameters_variants = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+    variants_idx = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters_variants)
     variants = variants_module.convert_variants_trace_idx_to_trace_obj(log, variants_idx)
 
     parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "variants": variants}
