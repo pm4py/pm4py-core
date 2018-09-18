@@ -13,10 +13,8 @@ def apply(trace_log, parameters=None, activity_key=util.xes.DEFAULT_NAME_KEY, ti
     parameters
         Possible parameters passed to the algorithms:
             aggregationMeasure -> performance aggregation measure (min, max, mean, median)
-    activity_key
-        Field in the log that represents the activity (must be specified if different from concept:name)
-    timestamp_key
-        Field in the log that represents the timestamp
+            activity_key -> Attribute to use as activity
+            timestamp_key -> Attribute to use as timestamp
 
     Returns
     -------
