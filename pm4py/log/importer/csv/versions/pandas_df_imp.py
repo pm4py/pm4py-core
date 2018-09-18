@@ -46,6 +46,8 @@ def import_log(path, parameters=None):
     sort=False
     sort_field="time:timestamp"
     insert_event_indexes=False
+    timest_format = None
+    timest_columns = None
 
     if parameters is None:
         parameters = {}
@@ -61,8 +63,12 @@ def import_log(path, parameters=None):
         sort_field = parameters["sort_field"]
     if "insert_event_indexes" in parameters:
         insert_event_indexes = parameters["insert_event_indexes"]
+    if "timest_format" in parameters:
+        timest_format = parameters["timest_format"]
+    if "timest_columns" in parameters:
+        timest_columns = parameters["timest_format"]
 
-    df = import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort, sort_field=sort_field)
+    df = import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort, sort_field=sort_field, timest_format=timest_format, timest_columns=timest_columns)
     event_log = convert_dataframe_to_event_log(df)
 
     if insert_event_indexes:
