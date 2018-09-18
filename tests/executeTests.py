@@ -22,6 +22,7 @@ from tests.etcTests import ETCTest
 from tests.petriLogGeneratorTests import PetriLogGeneratorTests
 from tests.transitionSystemTests import TransitionSystemTest
 from tests.evaluationTests import ProcessModelEvaluationTests
+from tests.visualizationTest import VisualizationTest1
 
 if __name__ == "__main__":
 	unittest.main()
