@@ -81,7 +81,7 @@ def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_st
     viz
         Graph object
     """
-    if aggregated_statistics is not None:
+    if aggregated_statistics is None:
         if log is not None:
             aggregated_statistics = get_decorations(log, net, initial_marking, final_marking, parameters=parameters, measure="frequency")
     return visualize.apply(net, initial_marking, final_marking, parameters=parameters, decorations=aggregated_statistics)
@@ -109,7 +109,7 @@ def apply_performance(net, initial_marking, final_marking, log=None, aggregated_
     viz
         Graph object
     """
-    if aggregated_statistics is not None:
+    if aggregated_statistics is None:
         if log is not None:
             aggregated_statistics = get_decorations(log, net, initial_marking, final_marking, parameters=parameters, measure="performance")
     return visualize.apply(net, initial_marking, final_marking, parameters=parameters, decorations=aggregated_statistics)
