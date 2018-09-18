@@ -6,7 +6,8 @@ NONSTANDARD = "nonstandard"
 
 VERSIONS = {ITERPARSE: iterparse_xes.import_log, NONSTANDARD: python_nonstandard.import_log}
 
-def import_log_from_string(log_string, parameters=None, variant="iterparse"):
+
+def import_log_from_string(log_string, parameters=None, variant=ITERPARSE):
     """
     Imports a log from a string
 
@@ -30,7 +31,8 @@ def import_log_from_string(log_string, parameters=None, variant="iterparse"):
     temp_file = string_to_file.import_string_to_temp_file(log_string, "xes")
     return import_log(temp_file, parameters=parameters, variant=variant)
 
-def import_log(path, parameters=None, variant="iterparse"):
+
+def import_log(path, parameters=None, variant=ITERPARSE):
     """
     Import a XES log into a TraceLog object
 
@@ -52,6 +54,7 @@ def import_log(path, parameters=None, variant="iterparse"):
         Trace log object
     """
     return VERSIONS[variant](path, parameters=parameters)
+
 
 def apply(path, parameters=None, variant="iterparse"):
     """
