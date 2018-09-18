@@ -1,24 +1,18 @@
 from pm4py.log import util as log_util
 from pm4py.models.transition_system import transition_system as ts
 import collections
-
-VIEW_MULTI_SET = 'multiset'
-VIEW_SET = 'set'
-VIEW_SEQUENCE = 'sequence'
-
-VIEWS = {VIEW_MULTI_SET, VIEW_SET, VIEW_SEQUENCE}
-
-DIRECTION_FORWARD = 'forward'
-DIRECTION_BACKWARD = 'backward'
-DIRECTIONS = {DIRECTION_FORWARD, DIRECTION_BACKWARD}
-
-PARAM_KEY_VIEW = 'view'
-PARAM_KEY_WINDOW = 'window'
-PARAM_KEY_DIRECTION = 'direction'
-DEFAULT_PARAMETERS = {PARAM_KEY_VIEW: VIEW_MULTI_SET, PARAM_KEY_WINDOW: 5, PARAM_KEY_DIRECTION: DIRECTION_FORWARD}
+from copy import copy
+from pm4py.util import constants
+from pm4py.algo.transition_system.parameters import *
 
 
-def apply(trace_log, parameters=DEFAULT_PARAMETERS, activity_key=log_util.xes.DEFAULT_NAME_KEY):
+def apply(trace_log, parameters=None):
+    if parameters is None:
+        parameters = {}
+    for parameter in DEFAULT_PARAMETERS:
+        if not parameter in parameters:
+            parameters[parameter] = DEFAULT_PARAMETERS[parameter]
+    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else log_util.xes.DEFAULT_NAME_KEY
     transition_system = ts.TransitionSystem()
     control_flow_log = log_util.trace_log.project_traces(trace_log, activity_key)
     l = (list(map(lambda t: __compute_view_sequence(t, parameters), control_flow_log)))
