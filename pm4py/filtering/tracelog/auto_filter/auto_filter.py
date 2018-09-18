@@ -5,8 +5,11 @@ from pm4py.filtering.tracelog.attributes import attributes_filter
 from pm4py.filtering.tracelog.end_activities import end_activities_filter
 import gc
 from pm4py.util import constants
+from pm4py.log.util import xes
+from pm4py.util import constants
+from pm4py.filtering.tracelog.util import filtering_constants
 
-def apply_auto_filter(trace_log, decreasingFactor=0.6, activity_key="concept:name"):
+def apply_auto_filter(trace_log, parameters=None):
     """
     Apply some filters in battery to the log in order to get a simplified log
     
@@ -31,9 +34,19 @@ def apply_auto_filter(trace_log, decreasingFactor=0.6, activity_key="concept:nam
     # - variant filter (keep only variants with a reasonable number of occurrences)
     # - start attributes filter (keep only variants that starts with a plausible start activity)
     # - end attributes filter (keep only variants that starts with a plausible end activity)
+
+    if parameters is None:
+        parameters = {}
+
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+
     parameters_child = {}
     parameters_child["decreasingFactor"] = decreasingFactor
-    parameters_child[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = activity_key
+    parameters_child[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = attribute_key
 
     variants = variants_module.get_variants(trace_log, parameters=parameters_child)
 

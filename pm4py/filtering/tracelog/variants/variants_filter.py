@@ -2,6 +2,7 @@ from copy import copy, deepcopy
 from pm4py.log.log import TraceLog
 from pm4py.log.util import xes
 from pm4py.util import constants
+from pm4py.filtering.tracelog.util import filtering_constants
 
 def get_variants(trace_log, parameters=None):
     """
@@ -196,7 +197,7 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
         parameters = {}
 
     attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else 0.6
+    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:
