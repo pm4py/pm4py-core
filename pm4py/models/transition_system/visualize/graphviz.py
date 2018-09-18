@@ -1,7 +1,9 @@
 from graphviz import Digraph
+import tempfile
 
 def visualize(ts):
-    viz = Digraph(ts.name, filename=ts.name+'.gv', engine='dot')
+    filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    viz = Digraph(ts.name, filename=filename.name, engine='dot')
 
     # states
     viz.attr('node')
