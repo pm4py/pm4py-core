@@ -7,15 +7,15 @@ from tests.constants import INPUT_DATA_DIR
 from pm4py import log as log_lib
 from pm4py.models.transition_system import visualize as ts_viz
 from pm4py.log.importer.xes import factory as xes_importer
+from pm4py.algo.transition_system import factory as ts_factory
+from pm4py.algo.transition_system.parameters import *
 
 class TransitionSystemTest(unittest.TestCase):
     def test_transitionsystem1(self):
-        from pm4py.algo.transition_system.versions import view_based as ts
-
         inputLog = os.path.join(INPUT_DATA_DIR, "running-example.xes")
         log = xes_importer.import_log(inputLog)
-        ts = ts.apply(log, parameters={ts.PARAM_KEY_VIEW: ts.VIEW_SEQUENCE, ts.PARAM_KEY_WINDOW: 3,
-                                       ts.PARAM_KEY_DIRECTION: ts.DIRECTION_FORWARD})
+        ts = ts_factory.apply(log, parameters={PARAM_KEY_VIEW: VIEW_SEQUENCE, PARAM_KEY_WINDOW: 3,
+                                       PARAM_KEY_DIRECTION: DIRECTION_FORWARD})
         viz = ts_viz.graphviz.visualize(ts)
 
 if __name__ == "__main__":
