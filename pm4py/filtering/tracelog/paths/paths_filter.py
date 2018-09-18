@@ -1,6 +1,7 @@
 from pm4py.log.log import TraceLog, Trace
 from pm4py.filtering.tracelog.variants import variants_filter
-
+from pm4py.log.util import xes as xes_util
+from pm4py.util import constants
 
 def get_paths_from_log(trace_log, attribute_key="concept:name"):
     """
@@ -148,8 +149,10 @@ def apply_auto_filter(trace_log, variants=None, decreasingFactor=0.6, attribute_
     filtered_log
         Filtered log
     """
+    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
+
     if variants is None:
-        variants = variants_filter.get_variants_from_log(trace_log, attribute_key=attribute_key)
+        variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
     pths = get_paths_from_log(trace_log, attribute_key=attribute_key)
     plist = get_sorted_paths_list(pths)

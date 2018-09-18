@@ -4,6 +4,7 @@ from pm4py.filtering.tracelog.start_activities import start_activities_filter
 from pm4py.filtering.tracelog.attributes import attributes_filter
 from pm4py.filtering.tracelog.end_activities import end_activities_filter
 import gc
+from pm4py.util import constants
 
 def apply_auto_filter(trace_log, decreasingFactor=0.6, activity_key="concept:name"):
     """
@@ -30,16 +31,21 @@ def apply_auto_filter(trace_log, decreasingFactor=0.6, activity_key="concept:nam
     # - variant filter (keep only variants with a reasonable number of occurrences)
     # - start attributes filter (keep only variants that starts with a plausible start activity)
     # - end attributes filter (keep only variants that starts with a plausible end activity)
-    variants = variants_module.get_variants_from_log(trace_log, attribute_key=activity_key)
+    parameters_child = {}
+    parameters_child["decreasingFactor"] = decreasingFactor
+    parameters_child[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = activity_key
+
+    variants = variants_module.get_variants(trace_log, parameters=parameters_child)
+
     filtered_log1 = attributes_filter.apply_auto_filter(trace_log, variants=variants, decreasingFactor=decreasingFactor, attribute_key=activity_key)
     trace_log = None
     gc.collect()
-    variants = variants_module.get_variants_from_log(filtered_log1, attribute_key=activity_key)
+    variants = variants_module.get_variants(filtered_log1, parameters=parameters_child)
     filtered_log2 = paths_filter.apply_auto_filter(filtered_log1, variants=variants, decreasingFactor=decreasingFactor, attribute_key=activity_key)
     filtered_log1 = None
     gc.collect()
-    variants = variants_module.get_variants_from_log(filtered_log2, attribute_key=activity_key)
-    filtered_log3 = variants_module.apply_auto_filter(filtered_log2, variants=variants, decreasingFactor=decreasingFactor, attribute_key=activity_key)
+    variants = variants_module.get_variants(filtered_log2, parameters=parameters_child)
+    filtered_log3 = variants_module.apply_auto_filter(filtered_log2, variants=variants, parameters=parameters_child)
     filtered_log2 = None
     gc.collect()
     filtered_log4 = start_activities_filter.apply_auto_filter(filtered_log3, variants=variants, decreasingFactor=decreasingFactor, activity_key=activity_key)
