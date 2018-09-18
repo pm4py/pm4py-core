@@ -26,12 +26,7 @@ class PetriImportExportTest(unittest.TestCase):
     def test_importingPetriLogTokenReplay(self):
         importedPetri1, marking1, fmarking1 = petri_importer.import_net(os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
         traceLog = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        final_marking = petri.petrinet.Marking()
-        for p in importedPetri1.places:
-            if not p.out_arcs:
-                final_marking[p] = 1
-        [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = token_replay.apply_log(traceLog, importedPetri1,
-                                                                                                                                                    marking1, final_marking, enable_placeFitness=True)
+        aligned_traces = token_replay.apply_log(traceLog, importedPetri1, marking1, fmarking1)
 
     def test_importingPetriLogAlignment(self):
         importedPetri1, marking1, fmarking1 = petri_importer.import_net(os.path.join(INPUT_DATA_DIR, "running-example.pnml"))

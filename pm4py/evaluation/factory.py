@@ -53,15 +53,14 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
 
     parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
 
-    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-        token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_TR)
+    aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_TR)
 
     parameters = {}
     parameters["activity_key"] = activity_key
 
-    fitness = fitness_token_based.get_fitness(traceIsFit, traceFitnessValue)
+    fitness = fitness_token_based.get_fitness(aligned_traces)
     precision = precision_token_based.apply(log, net, initial_marking, final_marking, parameters=parameters)
-    generalization = generalization_token_based.get_generalization(net, activatedTransitions)
+    generalization = generalization_token_based.get_generalization(net, aligned_traces)
     simplicity = simplicity_arc_degree.apply(net)
 
     dictionary = {}

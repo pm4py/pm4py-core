@@ -648,12 +648,11 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
     markingToActivityCaching = MarkingToActivityCaching()
     if placesShortestPathByHidden is None:
         placesShortestPathByHidden = get_placesShortestPathByHidden(net)
-    traceIsFit = []
-    traceFitnessValue = []
-    activatedTransitions = []
+
     placeFitnessPerTrace = {}
-    reachedMarkings = []
-    enabledTransitionsInMarkings = []
+
+    aligned_traces = []
+
     if enable_placeFitness:
         for place in net.places:
             placeFitnessPerTrace[place] = {"underfedTraces": set(), "overfedTraces": set()}
@@ -696,15 +695,15 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
                 for trace in log:
                     traceVariant =  ",".join([x[activity_key] for x in trace])
                     t = threadsResults[traceVariant]
-                    traceIsFit.append(t["tFit"])
-                    traceFitnessValue.append(t["tValue"])
-                    activatedTransitions.append(t["actTrans"])
-                    reachedMarkings.append(t["reachedMarking"])
-                    enabledTransitionsInMarkings.append(t["enabledTransitionsInMarking"])
+
+                    aligned_traces.append(t)
             else:
                 raise NoConceptNameException("at least an event is without " + activity_key)
-    return [traceIsFit, traceFitnessValue, activatedTransitions, placeFitnessPerTrace, reachedMarkings,
-            enabledTransitionsInMarkings]
+
+    if enable_placeFitness:
+        return aligned_traces, placeFitnessPerTrace
+    else:
+        return aligned_traces
 
 def apply(log, net, initialMarking, finalMarking, parameters=None):
     """

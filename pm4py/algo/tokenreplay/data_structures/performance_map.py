@@ -8,7 +8,7 @@ from pm4py.visualization.common.utils import *
 MAX_NO_THREADS = 1000
 
 class TraceStatistics(Thread):
-    def __init__(self, elStatistics, traceIndex, trace, net, initial_marking, activatedTransitions, activity_key, timestamp_key):
+    def __init__(self, elStatistics, traceIndex, trace, net, initial_marking, aligned_traces, activity_key, timestamp_key):
         """
         Constructor
         """
@@ -17,7 +17,7 @@ class TraceStatistics(Thread):
         self.trace = trace
         self.net = net
         self.initial_marking = initial_marking
-        self.activatedTransitions = activatedTransitions
+        self.activatedTransitions = [x["actTrans"] for x in aligned_traces]
         self.activity_key = activity_key
         self.timestamp_key = timestamp_key
         Thread.__init__(self)
@@ -115,7 +115,7 @@ class ElementStatistics(object):
         self.lock = Lock()
         self.statistics = {}
 
-def single_element_statistics(log, net, initial_marking, activatedTransitions, activity_key="concept:name", timestamp_key="time:timestamp"):
+def single_element_statistics(log, net, initial_marking, aligned_traces, activity_key="concept:name", timestamp_key="time:timestamp"):
     """
     Get single Petrinet element statistics
 
@@ -127,8 +127,8 @@ def single_element_statistics(log, net, initial_marking, activatedTransitions, a
         Petri net
     initial_marking
         Initial marking
-    activatedTransitions
-        Activated transitions
+    aligned_traces
+        Result of the token-based replay
     activity_key
         Activity key (must be specified if different from concept:name)
     timestamp_key
@@ -152,7 +152,7 @@ def single_element_statistics(log, net, initial_marking, activatedTransitions, a
             while len(threads) > 0:
                 threads[0].join()
                 del threads[0]
-        threads.append(TraceStatistics(elStatistics, traceIndex, trace, net, initial_marking, activatedTransitions, activity_key, timestamp_key))
+        threads.append(TraceStatistics(elStatistics, traceIndex, trace, net, initial_marking, aligned_traces, activity_key, timestamp_key))
         threads[-1].start()
         traceIndex = traceIndex + 1
     for thread in threads:

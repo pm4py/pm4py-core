@@ -22,13 +22,9 @@ gviz = pn_viz.graphviz_visualization(net, initial_marking=marking, final_marking
 gviz.view()
 time0 = time.time()
 print("started token replay")
-parameters = {"enable_placeFitness": True}
-[traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] = \
-	token_factory.apply(log, net, marking, final_marking, parameters=parameters)
-print("underfed places: ",sorted([place.name for place in placeFitness.keys() if len(placeFitness[place]['underfedTraces']) > 0]))
-print("overfed places: ",sorted([place.name for place in placeFitness.keys() if len(placeFitness[place]['overfedTraces']) > 0]))
-time1 = time.time()
-print("time interlapsed",(time1-time0))
-fitTraces = [x for x in traceIsFit if x]
-fitness = float(len(fitTraces))/float(len(log))
-print("fitness = "+str(fitness))
+aligned_traces = token_replay.apply(log, net, marking, final_marking)
+fit_traces = [x for x in aligned_traces if x['tFit']]
+perc_fitness = 0.00
+if len(aligned_traces) > 0:
+	perc_fitness = len(fit_traces) / len(aligned_traces)
+print("perc_fitness=",perc_fitness)
