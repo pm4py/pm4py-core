@@ -228,7 +228,7 @@ def aggregate_stats(statistics, elem, aggregationMeasure):
     aggr_stat
         Aggregated statistics
     """
-    if aggregationMeasure == "mean":
+    if aggregationMeasure == "mean" or aggregationMeasure is None:
         aggr_stat = mean(statistics[elem]["performance"])
     elif aggregationMeasure == "median":
         aggr_stat = median(statistics[elem]["performance"])
