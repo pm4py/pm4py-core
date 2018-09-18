@@ -13,9 +13,9 @@ import pm4py.algo.alignments as align
 
 class PetriImportExportTest(unittest.TestCase):
     def test_importingExportingPetri(self):
-        importedPetri1, marking1, fmarking1 = petri_importer.import_petri_from_pnml(os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
-        petri_exporter.export_petri_to_pnml(importedPetri1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
-        importedPetri2, marking2, fmarking2 = petri_importer.import_petri_from_pnml(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
+        importedPetri1, marking1, fmarking1 = petri_importer.import_net(os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
+        petri_exporter.export_net(importedPetri1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
+        importedPetri2, marking2, fmarking2 = petri_importer.import_net(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
 
         self.assertEqual(sorted([x.name for x in importedPetri1.places]), sorted([x.name for x in importedPetri2.places]))
         self.assertEqual(sorted([x.name for x in importedPetri1.transitions]), sorted([x.name for x in importedPetri2.transitions]))
@@ -24,7 +24,7 @@ class PetriImportExportTest(unittest.TestCase):
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
 
     def test_importingPetriLogTokenReplay(self):
-        importedPetri1, marking1, fmarking1 = petri_importer.import_petri_from_pnml(os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
+        importedPetri1, marking1, fmarking1 = petri_importer.import_net(os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
         traceLog = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         final_marking = petri.petrinet.Marking()
         for p in importedPetri1.places:
@@ -34,7 +34,7 @@ class PetriImportExportTest(unittest.TestCase):
                                                                                                                                                     marking1, final_marking, enable_placeFitness=True)
 
     def test_importingPetriLogAlignment(self):
-        importedPetri1, marking1, fmarking1 = petri_importer.import_petri_from_pnml(os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
+        importedPetri1, marking1, fmarking1 = petri_importer.import_net(os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
         traceLog = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         final_marking = petri.petrinet.Marking()
         for p in importedPetri1.places:

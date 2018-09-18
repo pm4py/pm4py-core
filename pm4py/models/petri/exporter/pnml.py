@@ -103,7 +103,7 @@ def export_petri_as_string(petrinet, marking, final_marking=None):
 
     return etree.tostring(tree, xml_declaration=True, encoding="utf-8")
 
-def export_petri_to_pnml(petrinet, marking, output_filename, final_marking=None):
+def export_net(petrinet, marking, output_filename, final_marking=None):
     """
     Export a Petrinet to a PNML file
 

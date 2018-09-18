@@ -20,11 +20,11 @@ def import_petri_from_string(petri_string):
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(petri_string)
-    net, initial_marking, final_marking = import_petri_from_pnml(fp.name)
+    net, initial_marking, final_marking = import_net(fp.name)
     os.remove(fp.name)
     return net, initial_marking, final_marking
 
-def import_petri_from_pnml(inputFilePath):
+def import_net(inputFilePath):
     """
     Import a Petri net from a PNML file
 

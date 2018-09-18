@@ -141,13 +141,13 @@ if __name__ == "__main__":
             parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
             t1 = time.time()
             alpha_model, alpha_initial_marking, alpha_final_marking = alpha.apply(log, parameters=parameters_discovery)
-            pnml_exporter.export_petri_to_pnml(alpha_model, alpha_initial_marking, os.path.join(pnmlFolder, logNamePrefix + "_alpha.pnml"))
+            pnml_exporter.export_net(alpha_model, alpha_initial_marking, os.path.join(pnmlFolder, logNamePrefix + "_alpha.pnml"))
             t2 = time.time()
             print("time interlapsed for calculating Alpha Model",(t2-t1))
 
             t1 = time.time()
             inductive_model, inductive_initial_marking, inductive_final_marking = inductive.apply(log, parameters=parameters_discovery)
-            pnml_exporter.export_petri_to_pnml(inductive_model, inductive_initial_marking, os.path.join(pnmlFolder, logNamePrefix + "_inductive.pnml"))
+            pnml_exporter.export_net(inductive_model, inductive_initial_marking, os.path.join(pnmlFolder, logNamePrefix + "_inductive.pnml"))
             t2 = time.time()
             print("time interlapsed for calculating Inductive Model",(t2-t1))
 
