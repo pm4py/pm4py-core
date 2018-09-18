@@ -4,6 +4,31 @@ from pm4py.log.util import xes
 from pm4py.util import constants
 from pm4py.filtering.tracelog.util import filtering_constants
 
+def apply(trace_log, admitted_end_activities, parameters=None):
+    """
+    Filter the trace log on the specified end activities
+
+    Parameters
+    -----------
+    trace_log
+        Trace log
+    admitted_end_activities
+        Admitted end activities
+    parameters
+        Algorithm parameters
+
+    Returns
+    -----------
+    filtered_log
+        Filtered trace log
+    """
+    if parameters is None:
+        parameters = {}
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+
+    filtered_log = [trace for trace in trace_log if trace and trace[-1][attribute_key] in admitted_end_activities]
+    return filtered_log
+
 def get_end_activities(trace_log, parameters=None):
     """
     Get the end attributes of the log along with their count
