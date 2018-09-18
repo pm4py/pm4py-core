@@ -37,6 +37,10 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     if parameters is None:
         parameters = {}
 
+    aggregationMeasure = None
+    if "aggregationMeasure" in parameters:
+        aggregationMeasure = parameters["aggregationMeasure"]
+
     activity_key = parameters[
             PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     timestamp_key = parameters[PARAM_TIMESTAMP_KEY] if PARAM_TIMESTAMP_KEY in parameters else "time:timestamp"
@@ -54,7 +58,8 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
                                                                    activatedTransitions,
                                                                    activity_key=activity_key,
                                                                    timestamp_key=timestamp_key)
-    aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=measure)
+    aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=measure,
+                                                                 aggregationMeasure=aggregationMeasure)
 
     return aggregated_statistics
 

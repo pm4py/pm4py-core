@@ -1,7 +1,7 @@
 from copy import copy
 from pm4py.models.petri import semantics
 from pm4py.models.petri.petrinet import PetriNet
-from statistics import mean, median
+from statistics import mean, median, stdev
 from threading import Lock, Thread
 from pm4py.visualization.common.utils import *
 
@@ -212,7 +212,38 @@ def find_min_max_arc_frequency(statistics):
                 max_frequency = statistics[elem]["count"]
     return min_frequency, max_frequency
 
-def find_min_max_arc_performance(statistics):
+def aggregate_stats(statistics, elem, aggregationMeasure):
+    """
+    Aggregate the statistics
+
+    Parameters
+    -----------
+    statistics
+        Element statistics
+    elem
+        Current element
+
+    Returns
+    -----------
+    aggr_stat
+        Aggregated statistics
+    """
+    if aggregationMeasure == "mean":
+        aggr_stat = mean(statistics[elem]["performance"])
+    elif aggregationMeasure == "median":
+        aggr_stat = median(statistics[elem]["performance"])
+    elif aggregationMeasure == "stdev":
+        aggr_stat = stdev(statistics[elem]["performance"])
+    elif aggregationMeasure == "sum":
+        aggr_stat = sum(statistics[elem]["performance"])
+    elif aggregationMeasure == "min":
+        aggr_stat = min(statistics[elem]["performance"])
+    elif aggregationMeasure == "max":
+        aggr_stat = max(statistics[elem]["performance"])
+
+    return aggr_stat
+
+def find_min_max_arc_performance(statistics, aggregationMeasure):
     """
     Find minimum and maximum arc performance
 
@@ -233,14 +264,14 @@ def find_min_max_arc_performance(statistics):
     for elem in statistics.keys():
         if type(elem) is PetriNet.Arc:
             if statistics[elem]["performance"]:
-                aggr_stat = mean(statistics[elem]["performance"])
+                aggr_stat = aggregate_stats(statistics, elem, aggregationMeasure)
                 if aggr_stat < min_performance:
                     min_performance = aggr_stat
                 if aggr_stat > max_performance:
                     max_performance = aggr_stat
     return min_performance, max_performance
 
-def aggregate_statistics(statistics, measure="frequency"):
+def aggregate_statistics(statistics, measure="frequency", aggregationMeasure=None):
     """
     Gets aggregated statistics
 
@@ -256,7 +287,7 @@ def aggregate_statistics(statistics, measure="frequency"):
     """
     min_trans_frequency, max_trans_frequency = find_min_max_trans_frequency(statistics)
     min_arc_frequency, max_arc_frequency = find_min_max_arc_frequency(statistics)
-    min_arc_performance, max_arc_performance = find_min_max_arc_performance(statistics)
+    min_arc_performance, max_arc_performance = find_min_max_arc_performance(statistics, aggregationMeasure)
     aggregated_statistics = {}
     for elem in statistics.keys():
         if type(elem) is PetriNet.Arc:
@@ -266,7 +297,7 @@ def aggregate_statistics(statistics, measure="frequency"):
                 aggregated_statistics[elem] = {"label":str(freq),"penwidth":str(arc_penwidth)}
             elif measure == "performance":
                 if statistics[elem]["performance"]:
-                    aggr_stat = mean(statistics[elem]["performance"])
+                    aggr_stat = aggregate_stats(statistics, elem, aggregationMeasure)
                     aggr_stat_hr = human_readable_stat(aggr_stat)
                     arc_penwidth = get_arc_penwidth(aggr_stat, min_arc_performance, max_arc_performance)
                     aggregated_statistics[elem] = {"label":aggr_stat_hr,"penwidth":str(arc_penwidth)}
