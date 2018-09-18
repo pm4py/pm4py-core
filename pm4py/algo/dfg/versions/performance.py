@@ -1,6 +1,6 @@
 from collections import Counter
 from pm4py.log import util
-from statistics import mean, median
+from statistics import mean, median, stdev
 
 def apply(trace_log, parameters=None, activity_key=util.xes.DEFAULT_NAME_KEY, timestamp_key="time:timestamp"):
     '''
@@ -48,6 +48,10 @@ def apply(trace_log, parameters=None, activity_key=util.xes.DEFAULT_NAME_KEY, ti
             ret[key] = min(ret0[key])
         elif aggregationMeasure == "max":
             ret[key] = max(ret0[key])
+        elif aggregationMeasure == "stdev":
+            ret[key] = stdev(ret0[key])
+        elif aggregationMeasure == "sum":
+            ret[key] = sum(ret0[key])
         else:
             ret[key] = mean(ret0[key])
 

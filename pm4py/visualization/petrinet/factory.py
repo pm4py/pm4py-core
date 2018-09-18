@@ -9,5 +9,5 @@ PERFORMANCE_DECORATION = "performance"
 VERSIONS = {WO_DECORATION: wo_decoration.apply, FREQUENCY_DECORATION:token_decoration.apply_frequency,
             PERFORMANCE_DECORATION:token_decoration.apply_performance}
 
-def apply(net, initial_marking, final_marking, log=None, parameters=None, variant="wo_decoration"):
-    return VERSIONS[variant](net, initial_marking, final_marking, log=log, parameters=parameters)
+def apply(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None, variant="wo_decoration"):
+    return VERSIONS[variant](net, initial_marking, final_marking, log=log, aggregated_statistics=aggregated_statistics, parameters=parameters)
