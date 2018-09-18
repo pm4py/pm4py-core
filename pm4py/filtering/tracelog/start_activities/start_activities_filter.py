@@ -4,6 +4,31 @@ from pm4py.log.util import xes
 from pm4py.util import constants
 from pm4py.filtering.tracelog.util import filtering_constants
 
+def apply(trace_log, admitted_start_activities, parameters=None):
+    """
+    Filter the trace log on the specified start activities
+
+    Parameters
+    -----------
+    trace_log
+        Trace log
+    admitted_start_activities
+        Admitted start activities
+    parameters
+        Algorithm parameters
+
+    Returns
+    -----------
+    filtered_log
+        Filtered trace log
+    """
+    if parameters is None:
+        parameters = {}
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+
+    filtered_log = [trace for trace in trace_log if trace and trace[0][attribute_key] in admitted_start_activities]
+    return filtered_log
+
 def get_start_activities(trace_log, parameters=None):
     """
     Get the start attributes of the log along with their count
