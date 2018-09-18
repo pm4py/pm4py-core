@@ -4,7 +4,7 @@ from pm4py.log.util import xes
 from pm4py.util import constants
 from pm4py.filtering.tracelog.util import filtering_constants
 
-def get_start_activities_from_log(trace_log, attribute_key="concept:name"):
+def get_start_activities(trace_log, parameters=None):
     """
     Get the start attributes of the log along with their count
     
@@ -12,14 +12,19 @@ def get_start_activities_from_log(trace_log, attribute_key="concept:name"):
     ----------
     trace_log
         Trace log
-    attribute_key
-        Attribute key (must be specified if different from concept:name)
+    parameters
+        Parameters of the algorithm, including:
+            attribute_key -> Attribute key (must be specified if different from concept:name)
     
     Returns
     ----------
     start_activities
         Dictionary of start attributes associated with their count
     """
+    if parameters is None:
+        parameters = {}
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+
     start_activities = {}
     
     for trace in trace_log:
@@ -139,7 +144,7 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     if variants is None:
         variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
-    start_activities = get_start_activities_from_log(trace_log, attribute_key=attribute_key)
+    start_activities = get_start_activities(trace_log, parameters=parameters_variants)
     salist = get_sorted_start_activities_list(start_activities)
     sathreshold = get_start_activities_threshold(start_activities, salist, decreasingFactor)
     filtered_log = filter_log_by_start_activities(start_activities, variants, vc, sathreshold, attribute_key)
