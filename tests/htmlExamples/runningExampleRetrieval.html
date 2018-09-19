@@ -90,12 +90,21 @@ body.loading .modal {
 			<option value="tsystem3">tsystem3</option>
 		</select>
 		&nbsp;&nbsp;Project. measure: &nbsp;
-		<select id="processMeasureSelection" onchange="somethingChanged()">
+		<select id="processMeasureSelection" onchange="somethingChanged_measure()">
 			<option value="frequency">frequency</option>
 			<option value="performance">performance</option>
 			<option value="frequency_greedy">frequency_greedy</option>
 			<option value="performance_greedy">performance_greedy</option>
 		</select>
+		&nbsp;&nbsp;Aggregation measure: &nbsp;
+		<select id="aggregationMeasure" onchange="somethingChanged()">
+			<option value="mean">mean</option>
+			<option value="sum">sum</option>
+			<option value="median">median</option>
+			<option value="stdev">stdev</option>
+			<option value="min">min</option>
+			<option value="max">max</option>
+		</select>		
 	</div>
 	<div class="slidecontainer">
 		<h3>Process simplicity:</h3>
@@ -141,6 +150,14 @@ body.loading .modal {
 			if (!("replaymeasure" in parameters)) {
 				parameters["replaymeasure"] = "frequency";
 			}
+			if (!("aggregationmeasure" in parameters)) {
+				if (parameters["replaymeasure"] == "frequency" || parameters["replaymeasure"] == "frequency_greedy") {
+					parameters["aggregationmeasure"] = "sum";
+				}
+				else {
+					parameters["aggregationmeasure"] = "mean";
+				}
+			}
 			return parameters;
 		}
 		
@@ -148,6 +165,7 @@ body.loading .modal {
 		document.getElementById("processInputSelection").value = actualParameters["process"];
 		document.getElementById("processDiscoveryAlgorithmSelection").value = actualParameters["discoveryalgorithm"];
 		document.getElementById("processMeasureSelection").value = actualParameters["replaymeasure"];
+		document.getElementById("aggregationMeasure").value = actualParameters["aggregationmeasure"];
 		
 		function updateProcessSchema(decFactor) {
 			$body.addClass("loading");
@@ -169,7 +187,7 @@ body.loading .modal {
 			}
 			
 			$.ajax({
-			  url: "http://"+targetHostname+":"+targetPort+"/getProcessSchema?process="+parameters["process"]+"&discoveryalgorithm="+parameters["discoveryalgorithm"]+"&replaymeasure="+parameters["replaymeasure"]+"&decreasingfactor="+decFactor,
+			  url: "http://"+targetHostname+":"+targetPort+"/getProcessSchema?process="+parameters["process"]+"&discoveryalgorithm="+parameters["discoveryalgorithm"]+"&replaymeasure="+parameters["replaymeasure"]+"&aggregationmeasure="+parameters["aggregationmeasure"]+"&decreasingfactor="+decFactor,
 			  success: function( result ) {
 				document.getElementById("svg1").src = "data:image/svg+xml;base64,"+result;
 				$body.removeClass("loading");
@@ -177,17 +195,32 @@ body.loading .modal {
 			});
 		}
 		
+		function somethingChanged_measure() {
+			measure = document.getElementById("processMeasureSelection").value;
+
+			if (measure == "frequency" || measure == "frequency_greedy") {
+				document.getElementById("aggregationMeasure").value = "sum";
+			}
+			else {
+				document.getElementById("aggregationMeasure").value = "mean";			
+			}
+			
+			somethingChanged();
+		}
+		
 		function somethingChanged() {
 			process = document.getElementById("processInputSelection").value;
 			discoveryalgorithm = document.getElementById("processDiscoveryAlgorithmSelection").value;
 			measure = document.getElementById("processMeasureSelection").value;
 			decFactor = document.getElementById("myRange").value / 100;
+			aggregationMeasure = document.getElementById("aggregationMeasure").value;
 			console.log(process);
 			console.log(discoveryalgorithm);
 			console.log(measure);
 			console.log(decFactor);
+			console.log(aggregationMeasure);
 			
-			newUrl = "runningExampleRetrieval.html?process="+process+"&discoveryalgorithm="+discoveryalgorithm+"&replaymeasure="+measure+"&decreasingfactor="+decFactor;
+			newUrl = "runningExampleRetrieval.html?process="+process+"&discoveryalgorithm="+discoveryalgorithm+"&replaymeasure="+measure+"&aggregationmeasure="+aggregationMeasure+"&decreasingfactor="+decFactor;
 			location.href = newUrl;
 		}
 		
