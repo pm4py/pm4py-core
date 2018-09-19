@@ -31,6 +31,7 @@ def apply(original_log, parameters=None):
             activity key -> Must be specified if different from concept:name
             decreasingFactor -> The higher is the decreasing factor, the more simplified is the process model represented
             replayEnabled -> Boolean that tells if the decoration is enabled or not
+            aggregationMeasure -> Aggregation measure
     """
     if parameters is None:
         parameters = {}
@@ -41,6 +42,10 @@ def apply(original_log, parameters=None):
     imageFormat = parameters["format"] if "format" in parameters else "pdf"
     decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
     replayEnabled = parameters["replayEnabled"] if "replayEnabled" in parameters else True
+    if "frequency" in replayMeasure:
+        aggregationMeasure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "min"
+    elif "performance" in replayMeasure:
+        aggregationMeasure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "mean"
 
     original_log, classifier_key = insert_classifier.search_and_insert_event_classifier_attribute(original_log,
                                                                                                   force_activity_transition_insertion=True)
@@ -49,14 +54,14 @@ def apply(original_log, parameters=None):
     if activity_key is None:
         activity_key = xes_util.DEFAULT_NAME_KEY
 
-    parameters_viz = {"format": imageFormat, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+    parameters_viz = {"format": imageFormat, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "aggregationMeasure": aggregationMeasure}
     # apply automatically a filter
     parameters_autofilter = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
                              "decreasingFactor": decreasingFactor}
 
     log = auto_filter.apply_auto_filter(copy(original_log), parameters=parameters_autofilter)
     # apply a process discovery algorithm
-    parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+    parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "aggregationMeasure": aggregationMeasure}
     if discoveryAlgorithm == "tsystem" or discoveryAlgorithm == "tsystem2":
         parameters_discovery[PARAM_KEY_WINDOW] = 2
         ts_from_log = ts_factory.apply(log, parameters=parameters_discovery)
