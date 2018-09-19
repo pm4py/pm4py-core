@@ -1,8 +1,13 @@
 from pm4py.visualization.transition_system.versions import view_based
 
 VIEW_BASED = "view_based"
+WO_DECORATION = "wo_decoration"
+FREQUENCY_DECORATION = "frequency"
+PERFORMANCE_DECORATION = "performance"
+FREQUENCY_GREEDY = "frequency_greedy"
+PERFORMANCE_GREEDY = "performance_greedy"
 
-VERSIONS = {VIEW_BASED: view_based.apply}
+VERSIONS = {VIEW_BASED: view_based.apply, WO_DECORATION: view_based.apply, FREQUENCY_DECORATION: view_based.apply, PERFORMANCE_DECORATION: view_based.apply, FREQUENCY_GREEDY: view_based.apply, PERFORMANCE_GREEDY: view_based.apply}
 
 def apply(tsys, parameters=None, variant="view_based"):
     """

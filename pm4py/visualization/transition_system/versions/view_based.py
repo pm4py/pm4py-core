@@ -17,5 +17,6 @@ def apply(tsys, parameters=None):
     gviz
         Graph visualization
     """
-    gviz = ts_viz.graphviz.visualize(tsys)
+
+    gviz = ts_viz.graphviz.visualize(tsys, parameters=parameters)
     return gviz

@@ -1,7 +1,12 @@
 from graphviz import Digraph
 import tempfile
 
-def visualize(ts):
+def visualize(ts, parameters=None):
+    if parameters is None:
+        parameters = {}
+
+    format = parameters["format"] if "format" in parameters else "pdf"
+
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph(ts.name, filename=filename.name, engine='dot')
 
@@ -16,5 +21,7 @@ def visualize(ts):
 
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
+
+    viz.format = format
 
     return viz
