@@ -74,6 +74,25 @@ body.loading .modal {
 	</style>
 </head>
 <body>
+	<div class="processMetricSelection">
+		Process:&nbsp;
+		<select id="processInputSelection" onchange="somethingChanged()">
+			<option value="running-example">running-example</option>
+			<option value="receipt">receipt</option>
+			<option value="reviewing">reviewing</option>
+		</select>
+		&nbsp;&nbsp;Discovery algo: &nbsp;
+		<select id="processDiscoveryAlgorithmSelection" onchange="somethingChanged()">
+			<option value="inductive">inductive</option>
+			<option value="alpha">alpha</option>
+			<option value="dfg">dfg</option>
+		</select>
+		&nbsp;&nbsp;Project. measure: &nbsp;
+		<select id="processMeasureSelection" onchange="somethingChanged()">
+			<option value="frequency">frequency</option>
+			<option value="performance">performance</option>
+		</select>
+	</div>
 	<div class="slidecontainer">
 		<h3>Process simplicity:</h3>
 	  <input type="range" min="0" max="100" value="60" class="slider" id="myRange">
@@ -121,6 +140,11 @@ body.loading .modal {
 			return parameters;
 		}
 		
+		actualParameters = addDefaultParametersValues(getParameters(getNavUrl()));
+		document.getElementById("processInputSelection").value = actualParameters["process"];
+		document.getElementById("processDiscoveryAlgorithmSelection").value = actualParameters["discoveryalgorithm"];
+		document.getElementById("processMeasureSelection").value = actualParameters["replaymeasure"];
+		
 		function updateProcessSchema(decFactor) {
 			$body.addClass("loading");
 			parameters = addDefaultParametersValues(getParameters(getNavUrl()));
@@ -146,6 +170,20 @@ body.loading .modal {
 				$body.removeClass("loading");
 			  }
 			});
+		}
+		
+		function somethingChanged() {
+			process = document.getElementById("processInputSelection").value;
+			discoveryalgorithm = document.getElementById("processDiscoveryAlgorithmSelection").value;
+			measure = document.getElementById("processMeasureSelection").value;
+			decFactor = document.getElementById("myRange").value / 100;
+			console.log(process);
+			console.log(discoveryalgorithm);
+			console.log(measure);
+			console.log(decFactor);
+			
+			newUrl = "runningExampleRetrieval.html?process="+process+"&discoveryalgorithm="+discoveryalgorithm+"&replaymeasure="+measure+"&decreasingfactor="+decFactor;
+			location.href = newUrl;
 		}
 		
 		var slider = document.getElementById("myRange");

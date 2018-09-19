@@ -7,7 +7,6 @@ from pm4py.filtering.tracelog.auto_filter import auto_filter
 from pm4py.filtering.tracelog.attributes import attributes_filter as activities_module
 from pm4py.log import transform
 from flask_cors import CORS
-from threading import Semaphore
 from copy import copy
 import os
 import base64
@@ -29,8 +28,6 @@ class shared:
     config = None
     # trace logs
     trace_logs = {}
-    # semaphore
-    sem = Semaphore(1)
 
 app = Flask(__name__)
 CORS(app)
@@ -65,7 +62,6 @@ def load_logs():
     If enabled, load logs in the folder
     """
     if shared.config["logFolder"]["loadLogsAutomatically"]:
-        shared.sem.acquire()
         # loading logs
         logsFolderPath = shared.config["logFolder"]["logFolderPath"]
         folderContent = os.listdir(logsFolderPath)
@@ -91,7 +87,6 @@ def load_logs():
                 # manage exception
                 logging.error("exception loading log: "+str(file)+": "+str(e))
                 logging.error("traceback: "+traceback.format_exc())
-        shared.sem.release()
         # loaded logs
 
 @app.route("/uploadEventLog",methods=["POST"])
@@ -102,18 +97,15 @@ def upload_event_log():
     The upload consists in a JSON that contains the id and the content
     """
     if shared.config["logFolder"]["logUploadPermitted"]:
-        shared.sem.acquire()
         try:
             content = request.get_json()
             logId = content['id']
             logContent = base64.b64decode(content['content']).decode("utf-8")
             log = xes_factory.import_log_from_string(logContent, variant="nonstandard")
             shared.trace_logs[logId] = log
-            shared.sem.release()
             return "{\"success\":True}"
         except Exception as e:
             traceback.print_exc()
-            shared.sem.release()
             return "{\"success\":False}"
     return "{\"success\":False}"
 
@@ -152,10 +144,6 @@ def get_process_schema():
     # replay measure
     replayMeasure = request.args.get('replaymeasure', default="frequency", type=str)
 
-    # acquire the semaphore as we want to access the logs
-    # without desturbing
-    shared.sem.acquire()
-
     try:
         # if the specified process is in memory, then proceed
         if process in shared.trace_logs:
@@ -168,8 +156,6 @@ def get_process_schema():
                 activity_key = xes_util.DEFAULT_NAME_KEY
 
             parameters_viz = {"format": imageFormat, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
-            # release the semaphore
-            shared.sem.release()
             # apply automatically a filter
             parameters_autofilter = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: xes.DEFAULT_NAME_KEY}
 
@@ -204,8 +190,7 @@ def get_process_schema():
             diagram = base64conv.get_base64_from_gviz(gviz)
             return diagram
         else:
-            # release the semaphore
-            shared.sem.release()
+            pass
     except Exception as e:
         # manage exception
         traceback.print_exc()
