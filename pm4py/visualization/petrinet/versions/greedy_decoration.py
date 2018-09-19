@@ -4,6 +4,27 @@ from pm4py.models.petri import vis_trans_shortest_paths
 from pm4py.filtering.tracelog.attributes import attributes_filter
 
 def get_decorated_net(net, initial_marking, final_marking, log, parameters=None, variant="frequency"):
+    """
+    Get a decorated net according to the specified variant (decorate Petri net based on DFG)
+
+    Parameters
+    ------------
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    parameters
+        Algorithm parameters
+    variant
+        Specify if the decoration should take into account the frequency or the performance
+
+    Returns
+    ------------
+    gviz
+        GraphViz object
+    """
     # we find the DFG
     dfg = dfg_factory.apply(log, variant=variant, parameters=parameters)
     # we find shortest paths
@@ -17,7 +38,45 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
                            decorations=aggregated_statistics)
 
 def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
+    """
+    Apply frequency decoration through greedy algorithm (decorate Petri net based on DFG)
+
+    Parameters
+    ------------
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    parameters
+        Algorithm parameters
+
+    Returns
+    ------------
+    gviz
+        GraphViz object
+    """
     return get_decorated_net(net, initial_marking, final_marking, log, parameters=parameters, variant="frequency")
 
 def apply_performance(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
+    """
+    Apply performance decoration through greedy algorithm (decorate Petri net based on DFG)
+
+    Parameters
+    ------------
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    parameters
+        Algorithm parameters
+
+    Returns
+    ------------
+    gviz
+        GraphViz object
+    """
     return get_decorated_net(net, initial_marking, final_marking, log, parameters=parameters, variant="performance")
