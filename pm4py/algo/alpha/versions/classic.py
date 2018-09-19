@@ -22,7 +22,8 @@ from pm4py.log import util as log_util
 from pm4py.log.util import trace_log as tl_util
 from pm4py.models import petri
 from pm4py.models.petri.petrinet import Marking
-
+from pm4py.algo.dfg.versions import native as dfg_inst
+from pm4py.algo.alpha.utils import endpoints
 
 def apply(trace_log, parameters=None):
     '''
@@ -52,11 +53,27 @@ def apply(trace_log, parameters=None):
 
     '''
     if parameters is None:
-        parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: log_util.xes.DEFAULT_NAME_KEY}
+        parameters = {}
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
-    labels = tl_util.get_event_labels(trace_log, parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
-    alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(trace_log, parameters[
+    dfg = {k: v for k, v in dfg_inst.apply(trace_log, parameters=parameters).items() if v > 0}
+    start_activities = endpoints.derive_start_activities_from_tracelog(trace_log, parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
+    end_activities = endpoints.derive_end_activities_from_tracelog(trace_log, parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
+    return apply_dfg(dfg, start_activities, end_activities, parameters=parameters)
+
+def apply_dfg(dfg, start_activities, end_activities, parameters=None):
+    if parameters is None:
+        parameters = {}
+    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
+
+    labels = set()
+    for el in dfg:
+        labels.add(el[0])
+        labels.add(el[1])
+    labels = list(labels)
+
+    alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(start_activities, end_activities, dfg, activity_key=parameters[
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
     pairs = list(map(lambda p: ({p[0]}, {p[1]}),
                      filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p),
@@ -78,7 +95,6 @@ def apply(trace_log, parameters=None):
     label_transition_dict = {}
 
     for i in range(0, len(labels)):
-        #label_transition_dict[labels[i]] = petri.petrinet.PetriNet.Transition('t_' + str(i), labels[i])
         label_transition_dict[labels[i]] = petri.petrinet.PetriNet.Transition(labels[i], labels[i])
         net.transitions.add(label_transition_dict[labels[i]])
 
