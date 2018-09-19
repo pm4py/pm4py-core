@@ -25,6 +25,17 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
     gviz
         GraphViz object
     """
+    if parameters is None:
+        parameters = {}
+
+    if "frequency" in variant:
+        aggregationMeasure = "sum"
+    elif "performance" in variant:
+        aggregationMeasure = "performance"
+
+    if "aggregationMeasure" in parameters:
+        aggregationMeasure = parameters["aggregationMeasure"]
+
     # we find the DFG
     dfg = dfg_factory.apply(log, variant=variant, parameters=parameters)
     # we find shortest paths
@@ -33,7 +44,8 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
     activities_count = attributes_filter.get_activities_from_log(log, parameters=parameters)
     aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
                                                                                                    activities_count,
-                                                                                                   variant=variant)
+                                                                                                   variant=variant,
+                                                                                                   aggregationMeasure=aggregationMeasure)
     return visualize.apply(net, initial_marking, final_marking, parameters=parameters,
                            decorations=aggregated_statistics)
 
