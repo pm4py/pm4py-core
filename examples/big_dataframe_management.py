@@ -17,16 +17,30 @@ ACTIVITY_KEY = "concept:name"
 TIMEST_KEY = "time:timestamp"
 TIMEST_COLUMNS = ["time:timestamp"]
 TIMEST_FORMAT = None
+enable_filtering_on_activities=True
+max_no_of_activities = 25
+enable_filtering_on_cases=True
+max_no_cases=1000
+
+#inputLog = os.path.join("C:\\road_traffic.csv")
+#CASEID_GLUE = "case"
+#ACTIVITY_KEY = "event"
+#TIMEST_KEY = "startTime"
+#TIMEST_COLUMNS = ["startTime"]
+#TIMEST_FORMAT = "%Y/%m/%d %H:%M:%S"
+#enable_filtering_on_activities=False
+#enable_filtering_on_cases=False
 
 time1 = time.time()
-#inputLog = "C:\\road_traffic.csv"
 dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
 time2 = time.time()
 print("time2 - time1: "+str(time2-time1))
-dataframe = df_filtering.filter_df_on_activities(dataframe, activity_key=ACTIVITY_KEY, max_no_activities=25)
+if enable_filtering_on_activities:
+    dataframe = df_filtering.filter_df_on_activities(dataframe, activity_key=ACTIVITY_KEY, max_no_activities=max_no_of_activities)
 time3 = time.time()
 print("time3 - time2: "+str(time3-time2))
-dataframe = df_filtering.filter_df_on_ncases(dataframe, case_id_glue=CASEID_GLUE, max_no_cases=1000)
+if enable_filtering_on_cases:
+    dataframe = df_filtering.filter_df_on_ncases(dataframe, case_id_glue=CASEID_GLUE, max_no_cases=max_no_cases)
 time4 = time.time()
 dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe, timest_columns=TIMEST_COLUMNS, timest_format=TIMEST_FORMAT)
 time6 = time.time()
