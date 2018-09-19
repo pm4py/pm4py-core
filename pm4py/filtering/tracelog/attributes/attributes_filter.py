@@ -5,7 +5,7 @@ from pm4py.util import constants
 from pm4py.log.util import xes
 from pm4py.filtering.tracelog.util import filtering_constants
 
-def get_activities_from_log(trace_log, attribute_key="concept:name"):
+def get_activities_from_log(trace_log, parameters=None):
     """
     Get the attributes of the log along with their count
 
@@ -13,14 +13,19 @@ def get_activities_from_log(trace_log, attribute_key="concept:name"):
     ----------
     trace_log
         Trace log
-    attribute_key
-        Attribute key (must be specified if different from concept:name)
+    parameters
+        Parameters
 
     Returns
     ----------
     attributes
         Dictionary of attributes associated with their count
     """
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+
     activities = {}
 
     for trace in trace_log:
@@ -184,7 +189,7 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     if variants is None:
         variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
-    activities = get_activities_from_log(trace_log, attribute_key=attribute_key)
+    activities = get_activities_from_log(trace_log, parameters=parameters_variants)
     alist = get_sorted_attributes_list(activities)
     thresh = get_attributes_threshold(activities, alist, decreasingFactor)
     filtered_log = filter_log_by_attributes_threshold(trace_log, activities, variants, vc, thresh, attribute_key)

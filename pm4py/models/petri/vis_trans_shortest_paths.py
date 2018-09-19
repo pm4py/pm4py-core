@@ -99,15 +99,14 @@ def get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_c
     decorations_int = {}
     decorations = {}
     if aggregationMeasure is None:
-        if variant == "frequency":
+        if "frequency" in variant:
             aggregationMeasure = "sum"
-        elif variant == "performance":
+        elif "performance" in variant:
             aggregationMeasure = "mean"
     for arc in spaths:
         for couple in spaths[arc]:
             dfg_key = couple[0]
             status = couple[1]
-
             if dfg_key in dfg:
                 if not arc in decorations_single_contrib:
                     decorations_single_contrib[arc] = []
@@ -125,26 +124,28 @@ def get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_c
             decorations_int[arc] = min(decorations_single_contrib[arc])
         elif aggregationMeasure == "max":
             decorations_int[arc] = max(decorations_single_contrib[arc])
-    arcs_min_value = min(list(decorations_int.values()))
-    arcs_max_value = max(list(decorations_int.values()))
-    for arc in decorations_int:
-        if variant == "performance":
-            arcLabel = human_readable_stat(decorations_int[arc])
-        else:
-            arcLabel = str(decorations_int[arc])
-        decorations[arc] = {"label": arcLabel, "penwidth": str(get_arc_penwidth(decorations_int[arc], arcs_min_value, arcs_max_value))}
-    if variant == "frequency":
-        act_min_value = min(list(activities_count.values()))
-        act_max_value = max(list(activities_count.values()))
-        trans_map = {}
-        for trans in net.transitions:
-            if trans.label:
-                trans_map[trans.label] = trans
-        for act in activities_count:
-            if act in trans_map:
-                trans = trans_map[act]
-                color = get_trans_freq_color(activities_count[act], act_min_value, act_max_value)
-                label = act + " (" + str(activities_count[act]) + ")"
-                decorations[trans] = {"label": label, "color": color}
+
+    if decorations_int:
+        arcs_min_value = min(list(decorations_int.values()))
+        arcs_max_value = max(list(decorations_int.values()))
+        for arc in decorations_int:
+            if "performance" in variant:
+                arcLabel = human_readable_stat(decorations_int[arc])
+            else:
+                arcLabel = str(decorations_int[arc])
+            decorations[arc] = {"label": arcLabel, "penwidth": str(get_arc_penwidth(decorations_int[arc], arcs_min_value, arcs_max_value))}
+        if "frequency" in variant:
+            act_min_value = min(list(activities_count.values()))
+            act_max_value = max(list(activities_count.values()))
+            trans_map = {}
+            for trans in net.transitions:
+                if trans.label:
+                    trans_map[trans.label] = trans
+            for act in activities_count:
+                if act in trans_map:
+                    trans = trans_map[act]
+                    color = get_trans_freq_color(activities_count[act], act_min_value, act_max_value)
+                    label = act + " (" + str(activities_count[act]) + ")"
+                    decorations[trans] = {"label": label, "color": color}
 
     return decorations

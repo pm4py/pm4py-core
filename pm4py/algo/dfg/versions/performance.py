@@ -1,8 +1,9 @@
 from collections import Counter
-from pm4py.log import util
 from statistics import mean, median, stdev
+from pm4py.util import constants
+from pm4py.log.util import xes
 
-def apply(trace_log, parameters=None, activity_key=util.xes.DEFAULT_NAME_KEY, timestamp_key="time:timestamp"):
+def apply(trace_log, parameters=None):
     '''
     Measure performance between couples of attributes in the DFG graph
 
@@ -25,10 +26,9 @@ def apply(trace_log, parameters=None, activity_key=util.xes.DEFAULT_NAME_KEY, ti
     if parameters is None:
         parameters = {}
 
-    aggregationMeasure = "mean"
-
-    if "aggregationMeasure" in parameters:
-        aggregationMeasure = parameters["aggregationMeasure"]
+    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    timestamp_key = parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    aggregationMeasure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "mean"
 
     dfgs0 = map((lambda t: [((t[i - 1][activity_key], t[i][activity_key]), (t[i][timestamp_key]-t[i-1][timestamp_key]).total_seconds())
                              for i in range(1, len(t))]), trace_log)

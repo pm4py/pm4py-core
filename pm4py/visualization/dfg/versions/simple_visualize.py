@@ -179,14 +179,14 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
     # represent nodes
     viz.attr('node', shape='box')
     for act in activities_in_dfg:
-        if measure == "frequency":
+        if "frequency" in measure:
             viz.node(act, act + " ("+str(activities_count_int[act])+")", style='filled', fillcolor=activities_color[act])
         else:
             viz.node(act, act)
 
     # represent edges
     for edge in dfg:
-        if measure == "frequency":
+        if "frequency" in measure:
             label = str(dfg[edge])
         else:
             label = human_readable_stat(dfg[edge])
@@ -211,6 +211,6 @@ def apply(dfg, log=None, parameters=None, activities_count=None, measure="freque
         maxNoOfEdgesInDiagram = parameters["maxNoOfEdgesInDiagram"]
 
     if activities_count is None:
-        activities_count = attributes_filter.get_activities_from_log(log)
+        activities_count = attributes_filter.get_activities_from_log(log, parameters=parameters)
 
     return graphviz_visualization(activities_count, dfg, format=format, measure=measure, maxNoOfEdgesInDiagram=maxNoOfEdgesInDiagram)
