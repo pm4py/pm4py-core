@@ -22,6 +22,29 @@ def get_event_labels(log, key):
                 labels.append(e[key])
     return labels
 
+
+def get_event_labels_counted(log, key):
+    '''
+    Fetches the labels (and their frequency) present in a trace log, given a key to use within the events.
+
+    Parameters
+    ----------
+    :param log: trace log to use
+    :param key: to use for event identification, can for example  be "concept:name"
+
+    Returns
+    -------
+    :return: a list of labels
+    '''
+    labels = dict()
+    for t in log:
+        for e in t:
+			if key in e:
+				if e[key] not in labels:
+					labels[key] = 0
+				labels[key] = labels[key] + 1
+    return labels
+
 def get_trace_variants(log, key=xes_util.DEFAULT_NAME_KEY):
     '''
     Returns a pair of a list of (variants, dict[index -> trace]) where the index of a variant maps to all traces describing that variant, with that key.
