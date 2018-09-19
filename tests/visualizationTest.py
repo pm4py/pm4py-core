@@ -20,6 +20,7 @@ from pm4py.models.petri import vis_trans_shortest_paths
 import pm4py.log.transform as log_transform
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 import logging
+from pm4py.util import simple_view
 
 class VisualizationTest1(unittest.TestCase):
     def test_getdfgfreqvis_log(self):
@@ -153,6 +154,11 @@ class VisualizationTest1(unittest.TestCase):
         log = transform.transform_event_log_to_trace_log(event_log)
         net, initial_marking, final_marking = inductive_miner.apply(log)
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant)
+
+    def test_simple_view(self):
+        logPath = os.path.join("inputData","running-example.xes")
+        log = xes_importer.import_log(logPath)
+        gviz = simple_view.apply(log)
 
 if __name__ == "__main__":
     unittest.main()

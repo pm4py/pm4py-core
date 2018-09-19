@@ -159,7 +159,7 @@ def get_process_schema():
             parameters["replayEnabled"] = replayEnabled
             parameters["algorithm"] = discoveryAlgorithm
 
-            gviz = simple_view.get_simple_view(original_log, parameters=parameters)
+            gviz = simple_view.apply(original_log, parameters=parameters)
             diagram = base64conv.get_base64_from_gviz(gviz)
             return diagram
         else:

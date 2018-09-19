@@ -12,7 +12,7 @@ from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 
-def get_simple_view(original_log, parameters=None):
+def apply(original_log, parameters=None):
     """
     Get a picture representing a simplified version of the original log
 
