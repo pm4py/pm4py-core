@@ -40,7 +40,7 @@ def apply(original_log, parameters=None):
     discoveryAlgorithm = parameters["algorithm"] if "algorithm" in parameters else "inductive"
     replayMeasure = parameters["decoration"] if "decoration" in parameters else "frequency"
     imageFormat = parameters["format"] if "format" in parameters else "pdf"
-    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    decreasingFactor = parameters["simplicity"] if "simplicity" in parameters else filtering_constants.DECREASING_FACTOR
     replayEnabled = parameters["replayEnabled"] if "replayEnabled" in parameters else True
     if "frequency" in replayMeasure:
         aggregationMeasure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "min"
