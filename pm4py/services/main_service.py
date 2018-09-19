@@ -157,7 +157,7 @@ def get_process_schema():
 
             parameters_viz = {"format": imageFormat, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
             # apply automatically a filter
-            parameters_autofilter = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+            parameters_autofilter = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "decreasingFactor": decreasingFactor}
 
             log = auto_filter.apply_auto_filter(copy(original_log), parameters=parameters_autofilter)
             # apply a process discovery algorithm
