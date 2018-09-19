@@ -41,8 +41,8 @@ def get_event_labels_counted(log, key):
         for e in t:
             if key in e:
                 if e[key] not in labels:
-                    labels[key] = 0
-                labels[key] = labels[key] + 1
+                    labels[e[key]] = 0
+                labels[e[key]] = labels[e[key]] + 1
     return labels
 
 def get_trace_variants(log, key=xes_util.DEFAULT_NAME_KEY):
