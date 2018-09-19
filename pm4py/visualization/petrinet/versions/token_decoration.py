@@ -4,6 +4,7 @@ from pm4py.algo.tokenreplay.data_structures import performance_map
 from pm4py import log as log_lib
 from pm4py import util as pmutil
 from pm4py.filtering.tracelog.variants import variants_filter as variants_module
+from pm4py.models.petri.reduction import factory as reduction
 import time
 
 PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -54,6 +55,9 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
 
     # do the replay
     aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_TR)
+
+    # apply reduction technique in order to simplify the Petri net
+    net = reduction.apply(net, parameters={"aligned_traces": aligned_traces})
 
     time1 = time.time()
     element_statistics = performance_map.single_element_statistics(log, net, initial_marking,
