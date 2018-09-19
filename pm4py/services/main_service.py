@@ -144,6 +144,11 @@ def get_process_schema():
     replayEnabled = request.args.get('replayenabled', default=True, type=bool)
     # replay measure
     replayMeasure = request.args.get('replaymeasure', default="frequency", type=str)
+    # aggregation measure
+    if "frequency" in replayMeasure:
+        aggregationMeasure = request.args.get('aggregationmeasure', default="sum", type=str)
+    elif "performance" in replayMeasure:
+        aggregationMeasure = request.args.get('aggregationmeasure', default="mean", type=str)
 
     try:
         # if the specified process is in memory, then proceed
@@ -153,11 +158,12 @@ def get_process_schema():
 
             parameters = {}
             parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = activity_key
-            parameters["decreasingFactor"] = decreasingFactor
+            parameters["simplicity"] = decreasingFactor
             parameters["format"] = imageFormat
             parameters["decoration"] = replayMeasure
             parameters["replayEnabled"] = replayEnabled
             parameters["algorithm"] = discoveryAlgorithm
+            parameters["aggregationMeasure"] = aggregationMeasure
 
             gviz = simple_view.apply(original_log, parameters=parameters)
             diagram = base64conv.get_base64_from_gviz(gviz)
