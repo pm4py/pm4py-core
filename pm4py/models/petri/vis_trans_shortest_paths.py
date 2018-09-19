@@ -36,7 +36,7 @@ def get_shortest_paths_from_trans(net, original_trans, spaths):
                     for place_out_arc in target_place.out_arcs:
                         if not place_out_arc in already_visited_places:
                             target_trans = place_out_arc.target
-                            if not target_trans in already_visited_trans:
+                            if not target_trans in already_visited_trans or target_trans == original_trans:
                                 already_visited_trans.append(target_trans)
                                 if target_trans.label:
                                     if not out_arc in spaths:
