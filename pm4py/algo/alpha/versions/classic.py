@@ -62,6 +62,30 @@ def apply(trace_log, parameters=None):
     return apply_dfg(dfg, start_activities, end_activities, parameters=parameters)
 
 def apply_dfg(dfg, start_activities, end_activities, parameters=None):
+    """
+    Applying Alpha Miner starting from the knowledge of the Directly Follows graph,
+    and of the start activities and end activities in the log (possibly inferred from the DFG)
+
+    Parameters
+    ------------
+    dfg
+        Directly-Follows graph
+    start_activities
+        Start activities
+    end_activities
+        End activities
+    parameters
+        Parameters of the algorithm including:
+
+    Returns
+    -------
+    net : :class:`pm4py.models.petri.petrinet.PetriNet`
+        A Petri net describing the event log that is provided as an input
+    initial marking : :class:`pm4py.models.net.Marking`
+        marking object representing the initial marking
+    final marking : :class:`pm4py.models.net.Marking`
+        marking object representing the final marking, not guaranteed that it is actually reachable!
+    """
     if parameters is None:
         parameters = {}
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
