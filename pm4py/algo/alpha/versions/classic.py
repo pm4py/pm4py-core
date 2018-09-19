@@ -78,7 +78,8 @@ def apply(trace_log, parameters=None):
     label_transition_dict = {}
 
     for i in range(0, len(labels)):
-        label_transition_dict[labels[i]] = petri.petrinet.PetriNet.Transition('t_' + str(i), labels[i])
+        #label_transition_dict[labels[i]] = petri.petrinet.PetriNet.Transition('t_' + str(i), labels[i])
+        label_transition_dict[labels[i]] = petri.petrinet.PetriNet.Transition(labels[i], labels[i])
         net.transitions.add(label_transition_dict[labels[i]])
 
     src = __add_source(net, alpha_abstraction.start_activities, label_transition_dict)

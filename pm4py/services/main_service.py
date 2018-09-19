@@ -157,19 +157,19 @@ def get_process_schema():
 
             parameters_viz = {"format": imageFormat, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
             # apply automatically a filter
-            parameters_autofilter = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: xes.DEFAULT_NAME_KEY}
+            parameters_autofilter = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
 
             log = auto_filter.apply_auto_filter(copy(original_log), parameters=parameters_autofilter)
             # apply a process discovery algorithm
             parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
             if discoveryAlgorithm == "dfg":
                 # gets the number of occurrences of the single attributes in the filtered log
-                filtered_log_activities_count = activities_module.get_activities_from_log(log, attribute_key=activity_key)
+                filtered_log_activities_count = activities_module.get_activities_from_log(log, parameters=parameters_autofilter)
                 # gets an intermediate log that is the original log restricted to the list
                 # of attributes that appears in the filtered log
                 intermediate_log = activities_module.filter_log_by_specified_attributes(original_log, filtered_log_activities_count, attribute_key=activity_key)
                 # gets the number of occurrences of the single attributes in the intermediate log
-                activities_count = activities_module.get_activities_from_log(intermediate_log, attribute_key=activity_key)
+                activities_count = activities_module.get_activities_from_log(intermediate_log, parameters=parameters_autofilter)
                 # calculate DFG of the filtered log and of the intermediate log
                 dfg_filtered_log = dfg_factory.apply(log, parameters=parameters_discovery, variant=replayMeasure)
                 dfg_intermediate_log = dfg_factory.apply(intermediate_log, parameters=parameters_discovery, variant=replayMeasure)
