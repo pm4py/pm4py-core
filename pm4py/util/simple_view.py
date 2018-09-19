@@ -11,6 +11,9 @@ from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.algo.transition_system import factory as ts_factory
+from pm4py.visualization.transition_system import factory as ts_vis_factory
+from pm4py.algo.transition_system.parameters import *
 
 def apply(original_log, parameters=None):
     """
@@ -54,7 +57,15 @@ def apply(original_log, parameters=None):
     log = auto_filter.apply_auto_filter(copy(original_log), parameters=parameters_autofilter)
     # apply a process discovery algorithm
     parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
-    if discoveryAlgorithm == "dfg":
+    if discoveryAlgorithm == "tsystem" or discoveryAlgorithm == "tsystem2":
+        parameters_discovery[PARAM_KEY_WINDOW] = 2
+        ts_from_log = ts_factory.apply(log, parameters=parameters_discovery)
+        gviz = ts_vis_factory.apply(ts_from_log, variant=replayMeasure, parameters=parameters_viz)
+    elif discoveryAlgorithm == "tsystem3":
+        parameters_discovery[PARAM_KEY_WINDOW] = 3
+        ts_from_log = ts_factory.apply(log, parameters=parameters_discovery)
+        gviz = ts_vis_factory.apply(ts_from_log, variant=replayMeasure, parameters=parameters_viz)
+    elif discoveryAlgorithm == "dfg":
         # gets the number of occurrences of the single attributes in the filtered log
         filtered_log_activities_count = activities_module.get_activities_from_log(log, parameters=parameters_autofilter)
         # gets an intermediate log that is the original log restricted to the list
