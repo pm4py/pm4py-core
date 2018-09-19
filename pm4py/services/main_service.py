@@ -20,6 +20,7 @@ from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.log.util import xes
 from pm4py.util import constants
+from pm4py.util import simple_view
 
 class shared:
     # contains shared variables
@@ -149,44 +150,16 @@ def get_process_schema():
         if process in shared.trace_logs:
             # retrieve the log
             original_log = shared.trace_logs[process]
-            original_log, classifier_key = insert_classifier.search_and_insert_event_classifier_attribute(original_log, force_activity_transition_insertion=True)
-            if activity_key is None:
-                activity_key = classifier_key
-            if activity_key is None:
-                activity_key = xes_util.DEFAULT_NAME_KEY
 
-            parameters_viz = {"format": imageFormat, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
-            # apply automatically a filter
-            parameters_autofilter = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "decreasingFactor": decreasingFactor}
+            parameters = {}
+            parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = activity_key
+            parameters["decreasingFactor"] = decreasingFactor
+            parameters["format"] = imageFormat
+            parameters["decoration"] = replayMeasure
+            parameters["replayEnabled"] = replayEnabled
+            parameters["algorithm"] = discoveryAlgorithm
 
-            log = auto_filter.apply_auto_filter(copy(original_log), parameters=parameters_autofilter)
-            # apply a process discovery algorithm
-            parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
-            if discoveryAlgorithm == "dfg":
-                # gets the number of occurrences of the single attributes in the filtered log
-                filtered_log_activities_count = activities_module.get_activities_from_log(log, parameters=parameters_autofilter)
-                # gets an intermediate log that is the original log restricted to the list
-                # of attributes that appears in the filtered log
-                intermediate_log = activities_module.filter_log_by_specified_attributes(original_log, filtered_log_activities_count, attribute_key=activity_key)
-                # gets the number of occurrences of the single attributes in the intermediate log
-                activities_count = activities_module.get_activities_from_log(intermediate_log, parameters=parameters_autofilter)
-                # calculate DFG of the filtered log and of the intermediate log
-                dfg_filtered_log = dfg_factory.apply(log, parameters=parameters_discovery, variant=replayMeasure)
-                dfg_intermediate_log = dfg_factory.apply(intermediate_log, parameters=parameters_discovery, variant=replayMeasure)
-                # replace edges values in the filtered DFG from the one found in the intermediate log
-                dfg_filtered_log = dfg_replacement.replace_values(dfg_filtered_log, dfg_intermediate_log)
-                gviz = dfg_vis_factory.apply(dfg_filtered_log, activities_count=activities_count, variant=replayMeasure, parameters=parameters_viz)
-            else:
-                if discoveryAlgorithm == "inductive":
-                    net, initial_marking, final_marking = inductive_factory.apply(log, parameters=parameters_discovery)
-                elif discoveryAlgorithm == "alpha":
-                    net, initial_marking, final_marking = alpha_factory.apply(log, parameters=parameters_discovery)
-                if replayEnabled:
-                    # do the replay
-                    gviz = pn_vis_factory.apply(net, initial_marking, final_marking, log=original_log, variant=replayMeasure, parameters=parameters_viz)
-                else:
-                    # return the diagram in base64
-                    gviz = pn_vis_factory.apply(net, initial_marking, final_marking, parameters=parameters_viz)
+            gviz = simple_view.get_simple_view(original_log, parameters=parameters)
             diagram = base64conv.get_base64_from_gviz(gviz)
             return diagram
         else:
