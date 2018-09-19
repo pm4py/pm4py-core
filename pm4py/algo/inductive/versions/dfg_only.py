@@ -11,6 +11,7 @@ from pm4py.models.petri.petrinet import PetriNet
 from collections import Counter
 from pm4py import util as pmutil
 from pm4py.log.util import xes as xes_util
+from pm4py.algo.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges
 
 sys.setrecursionlimit(100000)
 
@@ -206,17 +207,17 @@ class Subtree(object):
             self.activities = self.get_activities_from_dfg(self.dfg)
         else:
             self.activities = copy(activities)
-        self.outgoing = self.get_outgoing_edges(self.dfg)
-        self.ingoing = self.get_ingoing_edges(self.dfg)
+        self.outgoing = get_outgoing_edges(self.dfg)
+        self.ingoing = get_ingoing_edges(self.dfg)
         self.selfLoopActivities = self.get_activities_self_loop()
-        self.initialOutgoing = self.get_outgoing_edges(self.initialDfg)
-        self.initialIngoing = self.get_ingoing_edges(self.initialDfg)
+        self.initialOutgoing = get_outgoing_edges(self.initialDfg)
+        self.initialIngoing = get_ingoing_edges(self.initialDfg)
         self.activitiesDirection = self.get_activities_direction()
         self.activitiesDirlist = self.get_activities_dirlist()
         self.negatedDfg = self.negate()
         self.negatedActivities = self.get_activities_from_dfg(self.negatedDfg)
-        self.negatedOutgoing = self.get_outgoing_edges(self.negatedDfg)
-        self.negatedIngoing = self.get_ingoing_edges(self.negatedDfg)
+        self.negatedOutgoing = get_outgoing_edges(self.negatedDfg)
+        self.negatedIngoing = get_ingoing_edges(self.negatedDfg)
         self.detectedCut = None
         self.children = []
 
@@ -248,28 +249,6 @@ class Subtree(object):
         list_activities = sorted(list(set_activities))
 
         return list_activities
-
-    def get_outgoing_edges(self, dfg):
-        """
-        Gets outgoing edges of the prvoided DFG graph
-        """
-        outgoing = {}
-        for el in dfg:
-            if not el[0][0] in outgoing:
-                outgoing[el[0][0]] = {}
-            outgoing[el[0][0]][el[0][1]] = el[1]
-        return outgoing
-
-    def get_ingoing_edges(self, dfg):
-        """
-        Get ingoing edges of the provided DFG graph
-        """
-        ingoing = {}
-        for el in dfg:
-            if not el[0][1] in ingoing:
-                ingoing[el[0][1]] = {}
-            ingoing[el[0][1]][el[0][0]] = el[1]
-        return ingoing
 
     def get_activities_self_loop(self):
         """
@@ -675,8 +654,8 @@ class Subtree(object):
         """
         Get maximum ingoing/outgoing sum of values related to attributes in DFG graph
         """
-        ingoing = self.get_ingoing_edges(dfg)
-        outgoing = self.get_outgoing_edges(dfg)
+        ingoing = get_ingoing_edges(dfg)
+        outgoing = get_outgoing_edges(dfg)
         max_value = -1
 
         for act in ingoing:
@@ -696,8 +675,8 @@ class Subtree(object):
         Get maximum ingoing/outgoing sum of values related to attributes in DFG graph
         (here attributes to consider are specified)
         """
-        ingoing = self.get_ingoing_edges(dfg)
-        outgoing = self.get_outgoing_edges(dfg)
+        ingoing = get_ingoing_edges(dfg)
+        outgoing = get_outgoing_edges(dfg)
         max_value = -1
 
         for act in activities:
@@ -725,8 +704,8 @@ class Subtree(object):
         -------------
             Sum of start attributes count
         """
-        ingoing = self.get_ingoing_edges(dfg)
-        outgoing = self.get_outgoing_edges(dfg)
+        ingoing = get_ingoing_edges(dfg)
+        outgoing = get_outgoing_edges(dfg)
 
         sum_values = 0
 
@@ -750,8 +729,8 @@ class Subtree(object):
         -------------
             Sum of start attributes count
         """
-        ingoing = self.get_ingoing_edges(dfg)
-        outgoing = self.get_outgoing_edges(dfg)
+        ingoing = get_ingoing_edges(dfg)
+        outgoing = get_outgoing_edges(dfg)
 
         sum_values = 0
 
@@ -777,8 +756,8 @@ class Subtree(object):
         -------------
             Sum of start attributes count
         """
-        ingoing = self.get_ingoing_edges(dfg)
-        outgoing = self.get_outgoing_edges(dfg)
+        ingoing = get_ingoing_edges(dfg)
+        outgoing = get_outgoing_edges(dfg)
 
         sum_values = 0
 

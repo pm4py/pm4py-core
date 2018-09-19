@@ -5,6 +5,7 @@ sys.path.insert(0,parentdir)
 from pm4py.algo.dfg.adapters.pandas import df_statistics
 import time
 from pm4py.algo.inductive import factory as inductive_factory
+from pm4py.algo.alpha import factory as alpha_factory
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.log.adapters.pandas import csv_import_adapter as csv_import_adapter
@@ -22,14 +23,16 @@ max_no_of_activities = 25
 enable_filtering_on_cases=True
 max_no_cases=1000
 
-#inputLog = os.path.join("C:\\road_traffic.csv")
-#CASEID_GLUE = "case"
-#ACTIVITY_KEY = "event"
-#TIMEST_KEY = "startTime"
-#TIMEST_COLUMNS = ["startTime"]
-#TIMEST_FORMAT = "%Y/%m/%d %H:%M:%S"
-#enable_filtering_on_activities=False
-#enable_filtering_on_cases=False
+"""
+inputLog = os.path.join("C:\\road_traffic.csv")
+CASEID_GLUE = "case"
+ACTIVITY_KEY = "event"
+TIMEST_KEY = "startTime"
+TIMEST_COLUMNS = ["startTime"]
+TIMEST_FORMAT = "%Y/%m/%d %H:%M:%S"
+enable_filtering_on_activities=False
+enable_filtering_on_cases=False
+"""
 
 time1 = time.time()
 dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
@@ -57,6 +60,7 @@ print("time8 - time7: "+str(time8-time7))
 gviz = dfg_vis_factory.apply(dfg_frequency, activities_count=activities_count)
 gviz.view()
 net, initial_marking, final_marking = inductive_factory.apply_dfg(dfg_frequency)
+#net, initial_marking, final_marking = alpha_factory.apply_dfg(dfg_frequency)
 spaths = vis_trans_shortest_paths.get_shortest_paths(net)
 time9 = time.time()
 print("time9 - time8: "+str(time9-time8))
