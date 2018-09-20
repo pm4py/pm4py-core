@@ -4,7 +4,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 import pm4py
 from pm4py.algo.discovery.dfg import replacement as dfg_replacement, factory as dfg_factory
-from pm4py.log.importer.xes import factory as xes_importer
+from pm4py.entities.log.importer.xes import factory as xes_importer
 from pm4py.filtering.tracelog.auto_filter import auto_filter
 from pm4py.filtering.tracelog.attributes import attributes_filter
 from pm4py.visualization.dfg import factory as dfg_vis_factory

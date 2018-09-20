@@ -1,4 +1,4 @@
-from pm4py.log.util import xes as xes_util
+from pm4py.entities.log.util import xes as xes_util
 from pm4py.algo.discovery.alpha import versions
 from pm4py import util as pmutil
 

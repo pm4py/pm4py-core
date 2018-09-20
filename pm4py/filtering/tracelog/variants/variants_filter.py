@@ -1,6 +1,6 @@
 from copy import copy, deepcopy
-from pm4py.log.log import TraceLog
-from pm4py.log.util import xes
+from pm4py.entities.log.log import TraceLog
+from pm4py.entities.log.util import xes
 from pm4py.util import constants
 from pm4py.filtering.tracelog.util import filtering_constants
 

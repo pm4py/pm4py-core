@@ -1,8 +1,7 @@
-from pm4py.log.log import TraceLog, Trace
+from pm4py.entities.log.log import TraceLog, Trace
 from pm4py.filtering.tracelog.variants import variants_filter
-from pm4py.log.util import xes as xes_util
 from pm4py.util import constants
-from pm4py.log.util import xes
+from pm4py.entities.log.util import xes
 from pm4py.filtering.tracelog.util import filtering_constants
 
 def get_activities_from_log(trace_log, parameters=None):

@@ -4,10 +4,10 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 import pm4py
 from pm4py.algo.conformance import alignments as ali
-from pm4py.models import petri as petri
-from pm4py import log as log_lib
+from pm4py.entities import petri as petri
+from pm4py.entities import log as log_lib
 from pm4py import util
-from pm4py.log.importer.xes import factory as xes_importer
+from pm4py.entities.log.importer.xes import factory as xes_importer
 
 
 def align(trace, net, im, fm, model_cost_function, sync_cost_function):
@@ -21,9 +21,15 @@ def align(trace, net, im, fm, model_cost_function, sync_cost_function):
 
 
 if __name__ == '__main__':
-    log = xes_importer.import_log('C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32f0n05.xes')
+    log_path = os.path.join("..","tests","inputData","running-example.xes")
+    pnml_path = os.path.join("..","tests","inputData","running-example.pnml")
+
+    #log_path = 'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32f0n05.xes'
+    #pnml_path = 'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32.pnml'
+
+    log = xes_importer.import_log(log_path)
     net, marking, fmarking = petri.importer.pnml.import_net(
-        'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32.pnml')
+        pnml_path)
 
     model_cost_function = dict()
     sync_cost_function = dict()

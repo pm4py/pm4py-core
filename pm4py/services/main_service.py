@@ -1,7 +1,7 @@
 from flask import Flask, request
-from pm4py.log.importer.xes import factory as xes_factory
-from pm4py.log.importer.csv import factory as csv_factory
-from pm4py.log import transform
+from pm4py.entities.log.importer.xes import factory as xes_factory
+from pm4py.entities.log.importer.csv import factory as csv_factory
+from pm4py.entities.log import transform
 from flask_cors import CORS
 import os
 import base64

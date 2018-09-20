@@ -4,8 +4,8 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from tests.constants import INPUT_DATA_DIR
-from pm4py.models.transition_system import visualize as ts_viz
-from pm4py.log.importer.xes import factory as xes_importer
+from pm4py.entities.transition_system import visualize as ts_viz
+from pm4py.entities.log.importer.xes import factory as xes_importer
 from pm4py.algo.discovery.transition_system import factory as ts_factory
 from pm4py.algo.discovery.transition_system import parameters
 

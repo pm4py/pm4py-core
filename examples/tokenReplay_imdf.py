@@ -4,8 +4,8 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 import pm4py
 from pm4py.algo.discovery.inductive import factory as inductive_factory
-from pm4py.log.importer.xes import factory as xes_importer
-from pm4py.models.petri import visualize as pn_viz
+from pm4py.entities.log.importer.xes import factory as xes_importer
+from pm4py.entities.petri import visualize as pn_viz
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 import time
 

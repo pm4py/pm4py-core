@@ -18,9 +18,9 @@ from itertools import zip_longest
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.alpha.data_structures import alpha_classic_abstraction
-from pm4py.log import util as log_util
-from pm4py.models import petri
-from pm4py.models.petri.petrinet import Marking
+from pm4py.entities.log import util as log_util
+from pm4py.entities import petri
+from pm4py.entities.petri.petrinet import Marking
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.algo.discovery.alpha.utils import endpoints
 from pm4py.algo.discovery.dfg.utils import dfg_utils
@@ -39,7 +39,7 @@ def apply(trace_log, parameters=None):
 
     Returns
     -------
-    net : :class:`pm4py.models.petri.petrinet.PetriNet`
+    net : :class:`pm4py.entities.petri.petrinet.PetriNet`
         A Petri net describing the event log that is provided as an input
     initial marking : :class:`pm4py.models.net.Marking`
         marking object representing the initial marking
@@ -76,7 +76,7 @@ def apply_dfg(dfg, parameters=None):
 
     Returns
     -------
-    net : :class:`pm4py.models.petri.petrinet.PetriNet`
+    net : :class:`pm4py.entities.petri.petrinet.PetriNet`
         A Petri net describing the event log that is provided as an input
     initial marking : :class:`pm4py.models.net.Marking`
         marking object representing the initial marking
@@ -105,7 +105,7 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
 
     Returns
     -------
-    net : :class:`pm4py.models.petri.petrinet.PetriNet`
+    net : :class:`pm4py.entities.petri.petrinet.PetriNet`
         A Petri net describing the event log that is provided as an input
     initial marking : :class:`pm4py.models.net.Marking`
         marking object representing the initial marking

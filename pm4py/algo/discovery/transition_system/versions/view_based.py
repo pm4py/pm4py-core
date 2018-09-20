@@ -1,5 +1,5 @@
-from pm4py.log import util as log_util
-from pm4py.models.transition_system import transition_system as ts
+from pm4py.entities.log import util as log_util
+from pm4py.entities.transition_system import transition_system as ts
 import collections
 from pm4py.util import constants
 from pm4py.algo.discovery.transition_system.parameters import *

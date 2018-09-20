@@ -1,6 +1,6 @@
-from pm4py.models.petri import visualize
+from pm4py.entities.petri import visualize
 from pm4py.algo.discovery.dfg import factory as dfg_factory
-from pm4py.models.petri import vis_trans_shortest_paths
+from pm4py.entities.petri import vis_trans_shortest_paths
 from pm4py.filtering.tracelog.attributes import attributes_filter
 
 def get_decorated_net(net, initial_marking, final_marking, log, parameters=None, variant="frequency"):

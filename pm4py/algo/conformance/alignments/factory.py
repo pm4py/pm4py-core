@@ -4,7 +4,7 @@ This module contains the factory method
 '''
 from pm4py import util as pm4pyutil
 from pm4py.algo.conformance.alignments import versions
-from pm4py.log.util import xes
+from pm4py.entities.log.util import xes
 
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
 VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}

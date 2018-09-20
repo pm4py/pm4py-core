@@ -3,7 +3,7 @@ from pm4py.evaluation.precision.versions import etconformance_token as precision
 from pm4py.evaluation.simplicity.versions import arc_degree as simplicity_arc_degree
 from pm4py.evaluation.replay_fitness.versions import token_replay as fitness_token_based
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
-from pm4py import log as log_lib
+from pm4py.entities import log as log_lib
 from pm4py import util as pmutil
 
 PARAM_ACTIVITY_KEY = 'activity_key'

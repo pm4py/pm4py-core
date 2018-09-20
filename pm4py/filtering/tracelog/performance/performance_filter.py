@@ -1,5 +1,5 @@
-from pm4py.log.log import TraceLog
-from pm4py.log.util import xes
+from pm4py.entities.log.log import TraceLog
+from pm4py.entities.log.util import xes
 from pm4py.util import constants
 
 def satisfy_perf(trace, inf_perf, sup_perf, timestamp_key):

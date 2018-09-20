@@ -1,7 +1,7 @@
 from pm4py.filtering.tracelog.util import filtering_constants
 from pm4py.util import constants
-from pm4py.log.util import xes as xes_util
-from pm4py.log.util import insert_classifier
+from pm4py.entities.log.util import xes as xes_util
+from pm4py.entities.log.util import insert_classifier
 from pm4py import util as pmutil
 from pm4py.filtering.tracelog.auto_filter import auto_filter
 from copy import copy

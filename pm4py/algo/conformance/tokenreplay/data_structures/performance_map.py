@@ -1,6 +1,6 @@
 from copy import copy
-from pm4py.models.petri import semantics
-from pm4py.models.petri.petrinet import PetriNet
+from pm4py.entities.petri import semantics
+from pm4py.entities.petri.petrinet import PetriNet
 from statistics import mean, median, stdev
 from threading import Lock, Thread
 from pm4py.visualization.common.utils import *
