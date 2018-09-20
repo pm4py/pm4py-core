@@ -9,18 +9,22 @@ from pm4py.filtering.tracelog.auto_filter import auto_filter
 from pm4py.filtering.tracelog.attributes import attributes_filter
 from pm4py.visualization.dfg import factory as dfg_vis_factory
 
-# measure could be frequency or performance
-measure = "frequency"
-logPath = os.path.join("..","tests","inputData","running-example.xes")
-log = xes_importer.import_log(logPath)
-filtered_log = auto_filter.apply_auto_filter(log)
-filtered_log_activities_count = attributes_filter.get_activities_from_log(filtered_log)
-intermediate_log = attributes_filter.filter_log_by_specified_attributes(log, list(filtered_log_activities_count.keys()))
-dfg_filtered_log = dfg_factory.apply(filtered_log)
-dfg_intermediate_log = dfg_factory.apply(intermediate_log)
-dfg_filtered_log = dfg_replacement.replace_values(dfg_filtered_log, dfg_intermediate_log)
+def execute_script():
+    # measure could be frequency or performance
+    measure = "frequency"
+    logPath = os.path.join("..","tests","inputData","running-example.xes")
+    log = xes_importer.import_log(logPath)
+    filtered_log = auto_filter.apply_auto_filter(log)
+    filtered_log_activities_count = attributes_filter.get_activities_from_log(filtered_log)
+    intermediate_log = attributes_filter.filter_log_by_specified_attributes(log, list(filtered_log_activities_count.keys()))
+    dfg_filtered_log = dfg_factory.apply(filtered_log)
+    dfg_intermediate_log = dfg_factory.apply(intermediate_log)
+    dfg_filtered_log = dfg_replacement.replace_values(dfg_filtered_log, dfg_intermediate_log)
 
-gviz = dfg_vis_factory.apply(dfg_filtered_log, log=intermediate_log)
-gviz.view()
-#base64 = dfg_visualize.return_diagram_as_base64(activities_count, dfg_filtered_log, measure=measure)
-#print(base64)
+    gviz = dfg_vis_factory.apply(dfg_filtered_log, log=intermediate_log)
+    gviz.view()
+    #base64 = dfg_visualize.return_diagram_as_base64(activities_count, dfg_filtered_log, measure=measure)
+    #print(base64)
+
+if __name__ == "__main__":
+    execute_script()
