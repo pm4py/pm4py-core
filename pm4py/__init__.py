@@ -1,1 +1,1 @@
-from pm4py import algo, evaluation, filtering, entities, services, util, visualization
+from pm4py import algo, evaluation, entities, services, util, visualization

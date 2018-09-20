@@ -1,11 +1,11 @@
-from pm4py.filtering.tracelog.util import filtering_constants
+from pm4py.algo.filtering.tracelog.util import filtering_constants
 from pm4py.util import constants
 from pm4py.entities.log.util import xes as xes_util
 from pm4py.entities.log.util import insert_classifier
 from pm4py import util as pmutil
-from pm4py.filtering.tracelog.auto_filter import auto_filter
+from pm4py.algo.filtering.tracelog.auto_filter import auto_filter
 from copy import copy
-from pm4py.filtering.tracelog.attributes import attributes_filter as activities_module
+from pm4py.algo.filtering.tracelog.attributes import attributes_filter as activities_module
 from pm4py.algo.discovery.dfg import replacement as dfg_replacement, factory as dfg_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.algo.discovery.alpha import factory as alpha_factory

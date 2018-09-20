@@ -1,19 +1,19 @@
 from pm4py.entities.log.log import TraceLog
-from pm4py.filtering.tracelog.variants import variants_filter
+from pm4py.algo.filtering.tracelog.variants import variants_filter
 from pm4py.entities.log.util import xes
 from pm4py.util import constants
-from pm4py.filtering.tracelog.util import filtering_constants
+from pm4py.algo.filtering.tracelog.util import filtering_constants
 
-def apply(trace_log, admitted_end_activities, parameters=None):
+def apply(trace_log, admitted_start_activities, parameters=None):
     """
-    Filter the trace log on the specified end activities
+    Filter the trace log on the specified start activities
 
     Parameters
     -----------
     trace_log
         Trace log
-    admitted_end_activities
-        Admitted end activities
+    admitted_start_activities
+        Admitted start activities
     parameters
         Algorithm parameters
 
@@ -26,12 +26,12 @@ def apply(trace_log, admitted_end_activities, parameters=None):
         parameters = {}
     attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
-    filtered_log = [trace for trace in trace_log if trace and trace[-1][attribute_key] in admitted_end_activities]
+    filtered_log = [trace for trace in trace_log if trace and trace[0][attribute_key] in admitted_start_activities]
     return filtered_log
 
-def get_end_activities(trace_log, parameters=None):
+def get_start_activities(trace_log, parameters=None):
     """
-    Get the end attributes of the log along with their count
+    Get the start attributes of the log along with their count
     
     Parameters
     ----------
@@ -43,84 +43,83 @@ def get_end_activities(trace_log, parameters=None):
     
     Returns
     ----------
-    end_activities
-        Dictionary of end attributes associated with their count
+    start_activities
+        Dictionary of start attributes associated with their count
     """
     if parameters is None:
         parameters = {}
     attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
-    end_activities = {}
+    start_activities = {}
     
     for trace in trace_log:
         if len(trace) > 0:
-            activity_last_event = trace[-1][attribute_key]
-            if not activity_last_event in end_activities:
-                end_activities[activity_last_event] = 0
-            end_activities[activity_last_event] = end_activities[activity_last_event] + 1
+            activity_first_event = trace[0][attribute_key]
+            if not activity_first_event in start_activities:
+                start_activities[activity_first_event] = 0
+            start_activities[activity_first_event] = start_activities[activity_first_event] + 1
     
-    return end_activities
+    return start_activities
 
-def get_sorted_end_activities_list(end_activities):
+def get_sorted_start_activities_list(start_activities):
     """
-    Gets sorted end attributes list
+    Gets sorted start attributes list
     
     Parameters
     ----------
-    end_activities
-        Dictionary of end attributes associated with their count
+    start_activities
+        Dictionary of start attributes associated with their count
     
     Returns
     ----------
     listact
-        Sorted end attributes list
+        Sorted start attributes list
     """
     listact = []
-    for ea in end_activities:
-        listact.append([ea, end_activities[ea]])
+    for sa in start_activities:
+        listact.append([sa, start_activities[sa]])
     listact = sorted(listact, key=lambda x: x[1], reverse=True)
     return listact
 
-def get_end_activities_threshold(end_activities, ealist, decreasingFactor):
+def get_start_activities_threshold(start_activities, salist, decreasingFactor):
     """
-    Get end attributes cutting threshold
+    Get start attributes cutting threshold
     
     Parameters
     ----------
-    end_activities
-        Dictionary of end attributes associated with their count
-    ealist
-        Sorted end attributes list
+    start_activities
+        Dictionary of start attributes associated with their count
+    salist
+        Sorted start attributes list
     
     Returns
     ---------
     threshold
-        End attributes cutting threshold
+        Start attributes cutting threshold
     """
-    
-    threshold = ealist[0][1]
+    threshold = salist[0][1]
     i = 1
-    while i < len(ealist):
-        value = ealist[i][1]
+    while i < len(salist):
+        value = salist[i][1]
         if value > threshold * decreasingFactor:
             threshold = value
         i = i + 1
     return threshold
 
-def filter_log_by_end_activities(end_activities, variants, vc, threshold, activity_key="concept:name"):
+def filter_log_by_start_activities(start_activities, variants, vc, threshold, activity_key="concept:name"):
     """
-    Keep only variants of the log with an end activity which number of occurrences is above the threshold
+    Keep only variants of the log with a start activity which number of occurrences is above the threshold
     
     Parameters
     ----------
-    end_activities
-        Dictionary of end attributes associated with their count
+    start_activities
+        Dictionary of start attributes associated with their count
     variants
         (If specified) Dictionary with variant as the key and the list of traces as the value
     vc
         List of variant names along with their count
     threshold
-        Cutting threshold (remove variants having end attributes which number of occurrences is below the threshold
+        Cutting threshold (remove variants having start attributes which number of occurrences is below the threshold
     activity_key
         (If specified) Specify the activity key in the log (default concept:name)
     
@@ -130,11 +129,11 @@ def filter_log_by_end_activities(end_activities, variants, vc, threshold, activi
         Filtered log
     """ 
     filtered_log = TraceLog()
-    fvea = variants[vc[0][0]][0][-1][activity_key]    
+    fvsa = variants[vc[0][0]][0][0][activity_key]
     for variant in variants:
-        vea = variants[variant][0][-1][activity_key]
-        if vea in end_activities:
-            if vea == fvea or end_activities[vea] >= threshold:
+        vsa = variants[variant][0][0][activity_key]
+        if vsa in start_activities:
+            if vsa == fvsa or start_activities[vsa] >= threshold:
                 for trace in variants[variant]:
                     filtered_log.append(trace)
     return filtered_log
@@ -157,7 +156,7 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     Returns
     ---------
     filtered_log
-        Filtered log
+        Filtered log    
     """
     if parameters is None:
         parameters = {}
@@ -166,12 +165,12 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
+
     if variants is None:
         variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
-    end_activities = get_end_activities(trace_log, parameters=parameters_variants)
-    ealist = get_sorted_end_activities_list(end_activities)
-    eathreshold = get_end_activities_threshold(end_activities, ealist, decreasingFactor)
-    filtered_log = filter_log_by_end_activities(end_activities, variants, vc, eathreshold, attribute_key)
-
+    start_activities = get_start_activities(trace_log, parameters=parameters_variants)
+    salist = get_sorted_start_activities_list(start_activities)
+    sathreshold = get_start_activities_threshold(start_activities, salist, decreasingFactor)
+    filtered_log = filter_log_by_start_activities(start_activities, variants, vc, sathreshold, attribute_key)
     return filtered_log

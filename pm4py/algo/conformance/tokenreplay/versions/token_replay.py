@@ -1,7 +1,7 @@
 from pm4py.entities.petri import semantics
 from copy import copy
 from threading import Thread
-from pm4py.filtering.tracelog.variants import variants_filter as variants_module
+from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
 from pm4py import util as pmutil
 from pm4py.entities.log.util import xes as xes_util
 from pm4py.util import constants

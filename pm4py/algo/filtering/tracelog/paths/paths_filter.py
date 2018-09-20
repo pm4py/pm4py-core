@@ -1,8 +1,8 @@
 from pm4py.entities.log.log import TraceLog, Trace
-from pm4py.filtering.tracelog.variants import variants_filter
+from pm4py.algo.filtering.tracelog.variants import variants_filter
 from pm4py.util import constants
 from pm4py.entities.log.util import xes
-from pm4py.filtering.tracelog.util import filtering_constants
+from pm4py.algo.filtering.tracelog.util import filtering_constants
 
 def get_paths_from_log(trace_log, attribute_key="concept:name"):
     """

@@ -1,1 +1,0 @@
-from pm4py.filtering.tracelog.auto_filter import auto_filter
