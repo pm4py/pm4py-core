@@ -15,7 +15,7 @@ class AlphaMinerDocumentationTest(unittest.TestCase):
 
         from pm4py.algo.discovery.alpha import factory as alpha_miner
         net, initial_marking, final_marking = alpha_miner.apply(log)
-        from pm4py.entities.petri import visualize as pn_viz
+        from pm4py.visualization.petrinet.common import visualize as pn_viz
         gviz = pn_viz.graphviz_visualization(net, initial_marking=initial_marking, final_marking=final_marking)
 
 

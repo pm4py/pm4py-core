@@ -1,1 +1,0 @@
-from pm4py.algo.conformance.tokenreplay.data_structures import performance_map

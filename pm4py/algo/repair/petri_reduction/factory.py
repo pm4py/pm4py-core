@@ -1,4 +1,4 @@
-from pm4py.entities.petri.reduction.versions import tokenbased
+from pm4py.algo.repair.petri_reduction.versions import tokenbased
 
 TOKENBASED = "tokenbased"
 
@@ -6,7 +6,7 @@ VERSIONS = {TOKENBASED: tokenbased.apply}
 
 def apply(net, parameters=None, variant="tokenbased"):
     """
-    Apply a reduction technique specified in variant
+    Apply a petri_reduction technique specified in variant
 
     Parameters
     -----------
