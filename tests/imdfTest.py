@@ -7,10 +7,10 @@ sys.path.insert(0, parentdir)
 from pm4py.log.importer.csv import factory as csv_importer
 from pm4py.log.importer.xes import factory as xes_importer
 import pm4py.log.transform as log_transform
-from pm4py.algo.inductive.versions.dfg_only import InductMinDirFollows as InductMinDirFollows
+from pm4py.algo.discovery.inductive.versions.dfg_only import InductMinDirFollows as InductMinDirFollows
 from pm4py.models.petri import visualize as pn_viz
-from pm4py.algo.tokenreplay.versions import token_replay
-from pm4py.algo.tokenreplay.versions.token_replay import NoConceptNameException
+from pm4py.algo.conformance.tokenreplay.versions import token_replay
+from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNameException
 from pm4py.models import petri
 from pm4py.models.petri.exporter import pnml as petri_exporter
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR

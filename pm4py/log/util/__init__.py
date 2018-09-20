@@ -1,1 +1,1 @@
-from pm4py.log.util import insert_classifier, trace_log, xes
+from pm4py.log.util import compression, insert_classifier, string_to_file, trace_log, xes

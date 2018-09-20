@@ -12,7 +12,7 @@ class DfGraphDocumentationTest(unittest.TestCase):
     def test_dfdoc1(self):
         from pm4py.log.importer.xes import factory as xes_importer
         log = xes_importer.import_log(os.path.join("inputData","running-example.xes"))
-        from pm4py.algo.dfg import factory as dfg_factory
+        from pm4py.algo.discovery.dfg import factory as dfg_factory
         dfg = dfg_factory.apply(log)
         from pm4py.filtering.tracelog.attributes import attributes_filter
         activities_count = attributes_filter.get_activities_from_log(log)

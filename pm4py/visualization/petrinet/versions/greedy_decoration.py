@@ -1,5 +1,5 @@
 from pm4py.models.petri import visualize
-from pm4py.algo.dfg import factory as dfg_factory
+from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.models.petri import vis_trans_shortest_paths
 from pm4py.filtering.tracelog.attributes import attributes_filter
 

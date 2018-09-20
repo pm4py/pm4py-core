@@ -1,24 +1,12 @@
 from flask import Flask, request
-from pm4py.algo.alpha import factory as alpha_factory
-from pm4py.algo.inductive import factory as inductive_factory
 from pm4py.log.importer.xes import factory as xes_factory
 from pm4py.log.importer.csv import factory as csv_factory
-from pm4py.filtering.tracelog.auto_filter import auto_filter
-from pm4py.filtering.tracelog.attributes import attributes_filter as activities_module
 from pm4py.log import transform
 from flask_cors import CORS
-from copy import copy
 import os
 import base64
 import logging, traceback
-from pm4py.log.util import insert_classifier
-from pm4py.algo.dfg import factory as dfg_factory, replacement as dfg_replacement
-from pm4py import util as pmutil
-from pm4py.log.util import xes as xes_util
 from pm4py.visualization.petrinet.common import base64conv
-from pm4py.visualization.petrinet import factory as pn_vis_factory
-from pm4py.visualization.dfg import factory as dfg_vis_factory
-from pm4py.log.util import xes
 from pm4py.util import constants
 from pm4py.util import simple_view
 

@@ -22,7 +22,7 @@ class Classifiers1DocumentationTest(unittest.TestCase):
         log, activity_key = insert_classifier.insert_classifier_attribute(log, "Activity classifier")
         #print(activity_key)
 
-        from pm4py.algo.alpha import factory as alpha_miner
+        from pm4py.algo.discovery.alpha import factory as alpha_miner
 
         parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY : activity_key}
 
@@ -36,7 +36,7 @@ class Classifiers1DocumentationTest(unittest.TestCase):
             for event in trace:
                 event["customClassifier"] = event["concept:name"] + event["lifecycle:transition"]
 
-        from pm4py.algo.alpha import factory as alpha_miner
+        from pm4py.algo.discovery.alpha import factory as alpha_miner
 
         parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: "customClassifier"}
 
