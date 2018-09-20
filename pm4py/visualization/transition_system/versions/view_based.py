@@ -1,4 +1,3 @@
-from pm4py.algo.transition_system.versions import view_based
 from pm4py.models.transition_system import visualize as ts_viz
 
 def apply(tsys, parameters=None):

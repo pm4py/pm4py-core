@@ -6,10 +6,10 @@ sys.path.insert(0,parentdir)
 from pm4py.models.petri.exporter import pnml as petri_exporter
 from pm4py.models.petri.importer import pnml as petri_importer
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
-from pm4py.algo.tokenreplay.versions import token_replay
+from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.models import petri
 from pm4py.log.importer.xes import factory as xes_importer
-import pm4py.algo.alignments as align
+from pm4py.algo.conformance.alignments.versions import state_equation_a_star
 
 class PetriImportExportTest(unittest.TestCase):
     def test_importingExportingPetri(self):
@@ -36,7 +36,7 @@ class PetriImportExportTest(unittest.TestCase):
             if not p.out_arcs:
                 final_marking[p] = 1
         for trace in traceLog:
-            cfResult = align.versions.state_equation_a_star.apply(trace, importedPetri1, marking1, final_marking)['alignment']
+            cfResult = state_equation_a_star.apply(trace, importedPetri1, marking1, final_marking)['alignment']
             isFit = True
             for couple in cfResult:
                 if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] == None):

@@ -1,4 +1,3 @@
-import unittest
 import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
@@ -7,8 +6,8 @@ sys.path.insert(0,parentdir)
 sys.path.insert(0,parentdir2)
 import time
 from pm4py.log.importer.xes import factory as xes_factory
-from pm4py.algo.inductive import factory as inductive
-from pm4py.algo.alpha import factory as alpha
+from pm4py.algo.discovery.inductive import factory as inductive
+from pm4py.algo.discovery.alpha import factory as alpha
 from pm4py.evaluation.replay_fitness import factory as fitness_factory
 from pm4py.evaluation.precision import factory as precision_factory
 from pm4py.evaluation.simplicity import factory as simplicity_factory

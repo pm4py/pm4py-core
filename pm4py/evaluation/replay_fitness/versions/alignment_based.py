@@ -1,8 +1,7 @@
 import multiprocessing as mp
 
 from pm4py import log as log_lib
-from pm4py.algo import alignments
-from pm4py.models import petri
+from pm4py.algo.conformance import alignments
 from pm4py.log.util import xes as xes_util
 
 PARAM_ACTIVITY_KEY = xes_util.DEFAULT_NAME_KEY
@@ -47,8 +46,8 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
         parameters = {}
     activity_key = parameters[
         PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
-    best_worst = alignments.versions.state_equation_a_star.apply(log_lib.log.Trace(), petri_net, initial_marking,
-                                                                 final_marking)
+    best_worst = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(log_lib.log.Trace(), petri_net, initial_marking,
+                                                                                        final_marking)
     best_worst_costs = best_worst['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
     with mp.Pool(max(1, mp.cpu_count() - 1)) as pool:
         alignmentResult = pool.starmap(apply_trace, map(
@@ -74,8 +73,8 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, ac
     -------
     dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
     '''
-    alignment = alignments.versions.state_equation_a_star.apply(trace, petri_net, initial_marking, final_marking, {
-        alignments.versions.state_equation_a_star.PARAM_ACTIVITY_KEY: activity_key})
+    alignment = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(trace, petri_net, initial_marking, final_marking, {
+        pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_ACTIVITY_KEY: activity_key})
     fixed_costs = alignment['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
     fitness = 1 - (fixed_costs / best_worst)
     return {'trace': trace, 'alignment': alignment['alignment'], 'cost': fixed_costs, 'fitness': fitness,

@@ -2,11 +2,11 @@ import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
-from pm4py.algo.alpha import factory as alpha_factory
+import pm4py
+from pm4py.algo.discovery.alpha import factory as alpha_factory
 from pm4py.log.importer.xes import factory as xes_importer
 from pm4py.models.petri import visualize as pn_viz
-from pm4py.models import petri
-from pm4py.algo.tokenreplay import factory as token_replay
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
 import time
 
 logPath = os.path.join("..","tests","inputData","running-example.xes")

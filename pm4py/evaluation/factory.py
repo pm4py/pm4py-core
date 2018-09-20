@@ -2,10 +2,9 @@ from pm4py.evaluation.generalization.versions import token_based as generalizati
 from pm4py.evaluation.precision.versions import etconformance_token as precision_token_based
 from pm4py.evaluation.simplicity.versions import arc_degree as simplicity_arc_degree
 from pm4py.evaluation.replay_fitness.versions import token_replay as fitness_token_based
-from pm4py.algo.tokenreplay import factory as token_replay
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py import log as log_lib
 from pm4py import util as pmutil
-from pm4py.log.util import xes as xes_util
 
 PARAM_ACTIVITY_KEY = 'activity_key'
 PARAM_FITNESS_WEIGHT = 'fitness_weight'

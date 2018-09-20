@@ -6,14 +6,14 @@ from pm4py import util as pmutil
 from pm4py.filtering.tracelog.auto_filter import auto_filter
 from copy import copy
 from pm4py.filtering.tracelog.attributes import attributes_filter as activities_module
-from pm4py.algo.dfg import factory as dfg_factory, replacement as dfg_replacement
+from pm4py.algo.discovery.dfg import replacement as dfg_replacement, factory as dfg_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
-from pm4py.algo.alpha import factory as alpha_factory
-from pm4py.algo.inductive import factory as inductive_factory
+from pm4py.algo.discovery.alpha import factory as alpha_factory
+from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.visualization.petrinet import factory as pn_vis_factory
-from pm4py.algo.transition_system import factory as ts_factory
+from pm4py.algo.discovery.transition_system import factory as ts_factory
 from pm4py.visualization.transition_system import factory as ts_vis_factory
-from pm4py.algo.transition_system.parameters import *
+from pm4py.algo.discovery.transition_system.parameters import *
 
 def apply(original_log, parameters=None):
     """

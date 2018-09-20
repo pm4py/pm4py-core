@@ -1,0 +1,1 @@
+from pm4py.filtering.tracelog.end_activities import end_activities_filter

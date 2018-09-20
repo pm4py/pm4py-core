@@ -1,6 +1,6 @@
 from collections import Counter
 from pm4py.log.log import TraceLog, Event, Trace
-from pm4py.algo.tokenreplay import factory as token_replay
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py import log as log_lib
 from pm4py import util as pmutil
 from pm4py.log.util import xes as xes_util
