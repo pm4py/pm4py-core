@@ -6,7 +6,7 @@ sys.path.insert(0,parentdir)
 from tests.constants import INPUT_DATA_DIR
 from pm4py.entities.log.adapters.pandas import csv_import_adapter as csv_import_adapter
 from pm4py.entities.log.importer.csv.versions import pandas_df_imp
-from pm4py.filtering.pandas import df_filtering
+from pm4py.algo.filtering.pandas import df_filtering
 from pm4py.entities.log import transform
 
 

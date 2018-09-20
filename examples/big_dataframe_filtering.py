@@ -4,7 +4,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 import pm4py
 from pm4py.entities.log.adapters.pandas import csv_import_adapter as csv_import_adapter
-from pm4py.filtering.pandas import df_filtering
+from pm4py.algo.filtering.pandas import df_filtering
 import time
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics

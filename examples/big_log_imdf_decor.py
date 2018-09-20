@@ -6,7 +6,7 @@ import pm4py
 from pm4py.entities.log.importer.xes import factory as xes_importer
 from pm4py.algo.discovery.inductive import factory as inductive_miner
 from pm4py.entities.petri import vis_trans_shortest_paths
-from pm4py.filtering.tracelog.attributes import attributes_filter
+from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 

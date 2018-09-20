@@ -1,1 +1,0 @@
-from pm4py.filtering.tracelog.variants import variants_filter

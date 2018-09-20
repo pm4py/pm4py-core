@@ -3,7 +3,7 @@ from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.algo.conformance.tokenreplay.data_structures import performance_map
 from pm4py.entities import log as log_lib
 from pm4py import util as pmutil
-from pm4py.filtering.tracelog.variants import variants_filter as variants_module
+from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
 from pm4py.entities.petri.reduction import factory as reduction
 import time
 

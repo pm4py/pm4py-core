@@ -5,11 +5,11 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from tests.constants import INPUT_DATA_DIR
 from pm4py.entities.log.importer.xes import factory as xes_importer
-from pm4py.filtering.tracelog.paths import paths_filter
-from pm4py.filtering.tracelog.start_activities import start_activities_filter
-from pm4py.filtering.tracelog.attributes import attributes_filter
-from pm4py.filtering.tracelog.end_activities import end_activities_filter
-from pm4py.filtering.tracelog.variants import variants_filter as variants_module
+from pm4py.algo.filtering.tracelog.paths import paths_filter
+from pm4py.algo.filtering.tracelog.start_activities import start_activities_filter
+from pm4py.algo.filtering.tracelog.attributes import attributes_filter
+from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
+from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
 
 
 class LogFilteringTest(unittest.TestCase):
