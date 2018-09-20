@@ -52,3 +52,26 @@ def filter_df_on_ncases(df, case_id_glue="case:concept:name", max_no_cases=1000)
     cases_to_keep = cases_to_keep[0:min(len(cases_to_keep),max_no_cases)]
     df = df[df[case_id_glue].isin(cases_to_keep)]
     return df
+
+def filter_df_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, max_case_size=None):
+    """
+    Filter a dataframe keeping only cases with at least the specified number of events
+
+    Parameters
+    -----------
+    df
+        Dataframe
+    case_id_glue
+        Case ID column in the CSV
+    max_no_cases
+        Maximum number of cases to keep
+
+    Returns
+    -----------
+    df
+        Filtered dataframe
+    """
+    element_group_size = df[case_id_glue].groupby(df[case_id_glue]).transform('size')
+    if max_case_size:
+        return df[element_group_size > min_case_size and element_group_size < max_case_size]
+    return df[element_group_size > min_case_size]
