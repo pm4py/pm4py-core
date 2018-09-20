@@ -1,3 +1,5 @@
+import pandas as pd
+
 def filter_df_on_activities(df, activity_key="concept:name", max_no_activities=25):
     """
     Filter a dataframe on the specified number of attributes
@@ -75,3 +77,38 @@ def filter_df_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2
     if max_case_size:
         return df[element_group_size > min_case_size and element_group_size < max_case_size]
     return df[element_group_size > min_case_size]
+
+def filter_df_on_case_performance(df, case_id_glue="case:concept:name", timestamp_key="time:timestamp", min_case_performance=0, max_case_performance=10000000000):
+    """
+    Filter a dataframe on case performance
+
+    Parameters
+    -----------
+    df
+        Dataframe
+    case_id_glue
+        Case ID column in the CSV
+    timestamp_key
+        Timestamp column to use for the CSV
+    min_case_performance
+        Minimum case performance
+    max_case_performance
+        Maximum case performance
+
+    Returns
+    -----------
+    df
+        Filtered dataframe
+    """
+    groupedDf = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
+    startEvents = groupedDf.first()
+    endEvents = groupedDf.last()
+    endEvents.columns = [str(col) + '_2' for col in endEvents.columns]
+    stackedDf = pd.concat([startEvents, endEvents], axis=1)
+    stackedDf['DIFF'] = stackedDf[timestamp_key + "_2"] - stackedDf[timestamp_key]
+    stackedDf['DIFF'] = stackedDf['DIFF'].astype('timedelta64[s]')
+    stackedDf = stackedDf[stackedDf['DIFF'] < max_case_performance]
+    stackedDf = stackedDf[stackedDf['DIFF'] > min_case_performance]
+    i1 = df.set_index(case_id_glue).index
+    i2 = stackedDf.set_index(case_id_glue).index
+    return df[i1.isin(i2)]
