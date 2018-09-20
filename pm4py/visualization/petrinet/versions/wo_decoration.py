@@ -1,4 +1,5 @@
-from pm4py.entities.petri import visualize
+from pm4py.visualization.petrinet.common import visualize
+
 
 def apply(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """

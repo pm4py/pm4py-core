@@ -8,7 +8,7 @@ from pm4py.entities.log.importer.csv import factory as csv_importer
 from pm4py.entities.log.importer.xes import factory as xes_importer
 import pm4py.entities.log.transform as log_transform
 from pm4py.algo.discovery.inductive.versions.dfg_only import InductMinDirFollows as InductMinDirFollows
-from pm4py.entities.petri import visualize as pn_viz
+from pm4py.visualization.petrinet.common import visualize as pn_viz
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNameException
 from pm4py.entities import petri

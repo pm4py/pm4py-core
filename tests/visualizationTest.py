@@ -14,7 +14,7 @@ from pm4py.algo.discovery.inductive import factory as inductive_miner
 from pm4py.visualization.petrinet import factory as petri_vis_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-from pm4py.entities.petri import vis_trans_shortest_paths
+from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 from pm4py.util import simple_view
 
 class VisualizationTest1(unittest.TestCase):

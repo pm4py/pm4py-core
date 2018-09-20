@@ -1,6 +1,6 @@
 def apply(net, parameters=None):
     """
-    Apply reduction on the Petrinet removing hidden transitions
+    Apply petri_reduction on the Petrinet removing hidden transitions
     that are unused according to token-based replay
 
     Parameters

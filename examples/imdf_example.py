@@ -10,7 +10,7 @@ sys.path.insert(0, parentdir)
 # from pm4py.algo.inductive.versions import dfg_only
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.entities.log.importer.xes import factory as xes_importer
-from pm4py.entities.petri import visualize as pn_viz
+from pm4py.visualization.petrinet.common import visualize as pn_viz
 import traceback
 
 def execute_script():
