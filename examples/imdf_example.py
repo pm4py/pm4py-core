@@ -10,8 +10,8 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 # from pm4py.algo.inductive.versions import dfg_only
 from pm4py.algo.discovery.inductive import factory as inductive_factory
-from pm4py.log.importer.xes import factory as xes_importer
-from pm4py.models.petri import visualize as pn_viz
+from pm4py.entities.log.importer.xes import factory as xes_importer
+from pm4py.entities.petri import visualize as pn_viz
 import traceback
 
 if __name__ == "__main__":

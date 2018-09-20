@@ -8,9 +8,9 @@ import time
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
-from pm4py.log.adapters.pandas import csv_import_adapter as csv_import_adapter
+from pm4py.entities.log.adapters.pandas import csv_import_adapter as csv_import_adapter
 from pm4py.filtering.pandas import df_filtering
-from pm4py.models.petri import vis_trans_shortest_paths
+from pm4py.entities.petri import vis_trans_shortest_paths
 
 inputLog = os.path.join("..", "tests", "inputData", "running-example.csv")
 CASEID_GLUE = "case:concept:name"

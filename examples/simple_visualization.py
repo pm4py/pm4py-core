@@ -4,7 +4,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 import pm4py
-from pm4py.log.importer.xes import factory as xes_importer
+from pm4py.entities.log.importer.xes import factory as xes_importer
 from pm4py.util import simple_view
 
 logPath = os.path.join("..", "tests", "inputData", "receipt.xes")

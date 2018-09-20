@@ -1,14 +1,14 @@
-from pm4py.log.util import trace_log as tl_util
+from pm4py.entities.log.util import trace_log as tl_util
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
-from pm4py.models import petri
-from pm4py.models.petri.petrinet import Marking
+from pm4py.entities import petri
+from pm4py.entities.petri.petrinet import Marking
 import time
 from copy import copy
 import sys
-from pm4py.models.petri.petrinet import PetriNet
+from pm4py.entities.petri.petrinet import PetriNet
 from collections import Counter
 from pm4py import util as pmutil
-from pm4py.log.util import xes as xes_util
+from pm4py.entities.log.util import xes as xes_util
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges
 
 sys.setrecursionlimit(100000)

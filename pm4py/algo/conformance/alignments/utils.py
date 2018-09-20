@@ -1,4 +1,4 @@
-from pm4py import log as pm4py_log
+from pm4py.entities import log as pm4py_log
 
 
 SKIP = '>>'

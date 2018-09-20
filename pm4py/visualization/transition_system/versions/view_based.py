@@ -1,4 +1,4 @@
-from pm4py.models.transition_system import visualize as ts_viz
+from pm4py.entities.transition_system import visualize as ts_viz
 
 def apply(tsys, parameters=None):
     """

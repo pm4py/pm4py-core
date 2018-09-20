@@ -1,7 +1,7 @@
 from collections import Counter
 from statistics import mean, median, stdev
 from pm4py.util import constants
-from pm4py.log.util import xes
+from pm4py.entities.log.util import xes
 
 def apply(trace_log, parameters=None):
     '''

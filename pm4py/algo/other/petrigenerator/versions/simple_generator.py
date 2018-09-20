@@ -1,4 +1,4 @@
-from pm4py.models import petri
+from pm4py.entities import petri
 import random
 import string
 from copy import copy, deepcopy

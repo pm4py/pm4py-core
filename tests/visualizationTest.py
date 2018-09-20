@@ -4,17 +4,17 @@ import os, sys, inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
-from pm4py.log.importer.xes import factory as xes_importer
-from pm4py.log.adapters.pandas import csv_import_adapter
+from pm4py.entities.log.importer.xes import factory as xes_importer
+from pm4py.entities.log.adapters.pandas import csv_import_adapter
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.log.importer.csv.versions import pandas_df_imp
-from pm4py.log import transform
+from pm4py.entities.log.importer.csv.versions import pandas_df_imp
+from pm4py.entities.log import transform
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.algo.discovery.inductive import factory as inductive_miner
 from pm4py.visualization.petrinet import factory as petri_vis_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.filtering.tracelog.attributes import attributes_filter
-from pm4py.models.petri import vis_trans_shortest_paths
+from pm4py.entities.petri import vis_trans_shortest_paths
 from pm4py.util import simple_view
 
 class VisualizationTest1(unittest.TestCase):

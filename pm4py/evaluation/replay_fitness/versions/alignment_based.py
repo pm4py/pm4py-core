@@ -1,8 +1,8 @@
 import multiprocessing as mp
 
-from pm4py import log as log_lib
+from pm4py.entities import log as log_lib
 from pm4py.algo.conformance import alignments
-from pm4py.log.util import xes as xes_util
+from pm4py.entities.log.util import xes as xes_util
 
 PARAM_ACTIVITY_KEY = xes_util.DEFAULT_NAME_KEY
 
@@ -64,9 +64,9 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, ac
     Parameters
     ----------
     trace: :class:`list` input trace, assumed to be a list of events (i.e. the code will use the activity key to get the attributes)
-    petri_net: :class:`pm4py.models.petri.net.PetriNet` the Petri net to use in the alignment
-    initial_marking: :class:`pm4py.models.petri.net.Marking` initial marking in the Petri net
-    final_marking: :class:`pm4py.models.petri.net.Marking` final marking in the Petri net
+    petri_net: :class:`pm4py.entities.petri.net.PetriNet` the Petri net to use in the alignment
+    initial_marking: :class:`pm4py.entities.petri.net.Marking` initial marking in the Petri net
+    final_marking: :class:`pm4py.entities.petri.net.Marking` final marking in the Petri net
     activity_key: :class:`str` (optional) key to use to identify the activity described by the events
 
     Returns

@@ -1,7 +1,7 @@
 from datetime import datetime
-from pm4py.log.log import TraceLog, EventLog
-from pm4py.log import transform
-from pm4py.log.util import xes
+from pm4py.entities.log.log import TraceLog, EventLog
+from pm4py.entities.log import transform
+from pm4py.entities.log.util import xes
 from pm4py.util import constants
 
 def get_dt_from_string(dt):
