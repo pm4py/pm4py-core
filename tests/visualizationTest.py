@@ -30,7 +30,7 @@ class VisualizationTest1(unittest.TestCase):
         log = xes_importer.import_log(logPath)
         variant = "frequency"
         dfg = dfg_factory.apply(log, variant=variant)
-        activities_count = attributes_filter.get_activities_from_log(log)
+        activities_count = attributes_filter.get_attributes_from_log(log, "concept:name")
         gviz = dfg_vis_factory.apply(dfg, activities_count=activities_count, variant=variant)
 
     def test_getdfgperfvis_log(self):
@@ -60,7 +60,7 @@ class VisualizationTest1(unittest.TestCase):
         net, initial_marking, final_marking = inductive_miner.apply(log)
         variant = "frequency"
         dfg = dfg_factory.apply(log, variant=variant)
-        activities_count = attributes_filter.get_activities_from_log(log)
+        activities_count = attributes_filter.get_attributes_from_log(log, "concept:name")
         spaths = vis_trans_shortest_paths.get_shortest_paths(net)
         aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count, variant=variant)
         parameters_vis = {"format":"svg"}
@@ -72,7 +72,7 @@ class VisualizationTest1(unittest.TestCase):
         net, initial_marking, final_marking = inductive_miner.apply(log)
         variant = "performance"
         dfg = dfg_factory.apply(log, variant=variant)
-        activities_count = attributes_filter.get_activities_from_log(log)
+        activities_count = attributes_filter.get_attributes_from_log(log, "concept:name")
         spaths = vis_trans_shortest_paths.get_shortest_paths(net)
         aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count, variant=variant)
         parameters_vis = {"format":"svg"}

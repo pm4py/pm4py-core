@@ -22,50 +22,6 @@ def get_attributes_count(df, attribute_key="concept:name"):
     attributes_values_dict = dict(df[attribute_key].value_counts())
     return attributes_values_dict
 
-def get_start_activities_count(df, case_id_glue="case:concept:name", activity_key="concept:name"):
-    """
-    Get start activities count
-
-    Parameters
-    -----------
-    df
-        Pandas dataframe
-    case_id_glue
-        Column that identifies the case ID
-    activity_key
-        Column that identifies the activity
-
-    Returns
-    -----------
-    startact_dict
-        Dictionary of start activities along with their count
-    """
-    firstEveDf = df.groupby(case_id_glue).first()
-    startact_dict = dict(firstEveDf[activity_key].value_counts())
-    return startact_dict
-
-def get_end_activities_count(df, case_id_glue="case:concept:name", activity_key="concept:name"):
-    """
-    Get end activities count
-
-    Parameters
-    -----------
-    df
-        Pandas dataframe
-    case_id_glue
-        Column that identifies the case ID
-    activity_key
-        Column that identifies the activity
-
-    Returns
-    -----------
-    endact_dict
-        Dictionary of end activities along with their count
-    """
-    lastEveDf = df.groupby(case_id_glue).last()
-    endact_dict = dict(lastEveDf[activity_key].value_counts())
-    return endact_dict
-
 def get_cases_description(df, case_id_glue="case:concept:name", timestamp_key="time:timestamp", enable_sort=True, sort_by_column="startTime", sort_ascending=True, max_ret_cases=None):
     """
     Get a description of cases present in the Pandas dataframe

@@ -15,7 +15,7 @@ def execute_script():
     logPath = os.path.join("..","tests","inputData","running-example.xes")
     log = xes_importer.import_log(logPath)
     filtered_log = auto_filter.apply_auto_filter(log)
-    filtered_log_activities_count = attributes_filter.get_activities_from_log(filtered_log)
+    filtered_log_activities_count = attributes_filter.get_attributes_from_log(filtered_log, "concept:name")
     intermediate_log = attributes_filter.filter_log_by_specified_attributes(log, list(filtered_log_activities_count.keys()))
     dfg_filtered_log = dfg_factory.apply(filtered_log)
     dfg_intermediate_log = dfg_factory.apply(intermediate_log)
