@@ -1,1 +1,1 @@
-from pm4py.algo.filtering.tracelog import attributes, auto_filter, end_activities, paths, performance, start_activities, timestamp, util, variants
+from pm4py.algo.filtering.tracelog import attributes, auto_filter, end_activities, paths, performance, start_activities, timestamp, variants

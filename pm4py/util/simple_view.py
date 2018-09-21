@@ -1,4 +1,4 @@
-from pm4py.algo.filtering.tracelog.util import filtering_constants
+from pm4py.algo.filtering.common import filtering_constants
 from pm4py.util import constants
 from pm4py.entities.log.util import xes as xes_util
 from pm4py.entities.log.util import insert_classifier

@@ -1,4 +1,7 @@
 from pm4py.algo.filtering.common.start_activities import start_activities_common
+from pm4py.entities.log.util import xes
+from pm4py.util import constants
+from pm4py.algo.filtering.common import filtering_constants
 
 def apply(df, values, parameters=None):
     """
@@ -23,13 +26,13 @@ def apply(df, values, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    case_id_glue = parameters["case_id_glue"] if "case_id_glue" in parameters else "case:concept:name"
-    activity_key = parameters["activity_key"] if "activity_key" in parameters else "concept:name"
+    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
-    
+
     return filter_df_on_start_activities(df, values, case_id_glue=case_id_glue, activity_key=activity_key, positive=positive)
 
-def get_start_activities(df, case_id_glue="case:concept:name", activity_key="concept:name"):
+def get_start_activities(df, case_id_glue=filtering_constants.CASE_CONCEPT_NAME, activity_key=xes.DEFAULT_NAME_KEY):
     """
     Get start activities count
 
@@ -51,7 +54,7 @@ def get_start_activities(df, case_id_glue="case:concept:name", activity_key="con
     startact_dict = dict(firstEveDf[activity_key].value_counts())
     return startact_dict
 
-def filter_df_on_start_activities(df, values, case_id_glue="case:concept:name", activity_key="concept:name", positive=True):
+def filter_df_on_start_activities(df, values, case_id_glue=filtering_constants.CASE_CONCEPT_NAME, activity_key=xes.DEFAULT_NAME_KEY, positive=True):
     """
     Filter dataframe on start activities
 
@@ -81,7 +84,7 @@ def filter_df_on_start_activities(df, values, case_id_glue="case:concept:name", 
         return df[i1.isin(i2)]
     return df[~i1.isin(i2)]
 
-def filter_df_on_start_activities_nocc(df, nocc, sa_count=None, case_id_glue="case:concept:name", activity_key="concept:name"):
+def filter_df_on_start_activities_nocc(df, nocc, sa_count=None, case_id_glue=filtering_constants.CASE_CONCEPT_NAME, activity_key=xes.DEFAULT_NAME_KEY):
     """
     Filter dataframe on start activities number of occurrences
 

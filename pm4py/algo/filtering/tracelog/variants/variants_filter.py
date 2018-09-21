@@ -1,8 +1,8 @@
-from copy import copy, deepcopy
 from pm4py.entities.log.log import TraceLog
 from pm4py.entities.log.util import xes
 from pm4py.util import constants
-from pm4py.algo.filtering.tracelog.util import filtering_constants
+from pm4py.algo.filtering.common import filtering_constants
+
 
 def get_variants(trace_log, parameters=None):
     """

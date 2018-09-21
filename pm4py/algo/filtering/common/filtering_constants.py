@@ -1,0 +1,2 @@
+DECREASING_FACTOR = 0.6
+CASE_CONCEPT_NAME = "case:concept:name"

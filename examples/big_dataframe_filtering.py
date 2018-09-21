@@ -13,6 +13,7 @@ from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
 from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
+from pm4py.util import constants
 
 MAX_NO_ACTIVITIES_PER_MODEL = 25
 GENERATED_IMAGES = []
@@ -94,7 +95,8 @@ def execute_script():
     print("filtering on case performance and generating process schema=",(dd-cc))
 
     if ENABLE_ATTRIBUTE_FILTER:
-        dataframe_att = attributes_filter.apply(dataframe, ATTRIBUTE_VALUES_TO_FILTER, case_id_glue=CASEID_GLUE, attribute_key=ATTRIBUTE_TO_FILTER, positive=True)
+        parameters_att = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: ATTRIBUTE_TO_FILTER, "positive": True}
+        dataframe_att = attributes_filter.apply(dataframe, ATTRIBUTE_VALUES_TO_FILTER, parameters=parameters_att)
         dataframe_att_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_att, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
         del dataframe_att
         calculate_process_schema_from_df(dataframe_att_fa, "FILTER_ATT_FREQUENCY.svg", "FILTER_ATT_PERFORMANCE.svg")
@@ -112,7 +114,7 @@ def execute_script():
     print("finding start and end activities along with their count",(ff-ee))
 
     if ENABLE_STARTACT_FILTER:
-        parameters_sa = {"case_id_glue": CASEID_GLUE, "activity_key": ACTIVITY_KEY}
+        parameters_sa = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ACTIVITY_KEY}
         dataframe_sa = start_activities_filter.apply(dataframe, STARTACT_TO_FILTER, parameters=parameters_sa)
         dataframe_sa_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_sa, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
         del dataframe_sa
@@ -125,7 +127,7 @@ def execute_script():
         print("filtering start activities time=",(gg-ff))
 
     if ENABLE_ENDACT_FILTER:
-        parameters_ea = {"case_id_glue": CASEID_GLUE, "activity_key": ACTIVITY_KEY}
+        parameters_ea = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ACTIVITY_KEY}
         dataframe_ea = end_activities_filter.apply(dataframe, ENDACT_TO_FILTER, parameters=parameters_ea)
         dataframe_ea_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_ea, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
         del dataframe_ea
