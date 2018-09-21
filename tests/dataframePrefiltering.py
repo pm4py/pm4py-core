@@ -7,6 +7,7 @@ from tests.constants import INPUT_DATA_DIR
 from pm4py.entities.log.adapters.pandas import csv_import_adapter as csv_import_adapter
 from pm4py.entities.log.importer.csv.versions import pandas_df_imp
 from pm4py.algo.filtering.pandas import df_filtering
+from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.entities.log import transform
 
 
@@ -14,7 +15,7 @@ class DataframePrefilteringTest(unittest.TestCase):
     def test_prefiltering_dataframe(self):
         inputLog = os.path.join(INPUT_DATA_DIR, "running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
-        dataframe = df_filtering.filter_df_keeping_specno_activities(dataframe, activity_key="concept:name")
+        dataframe = attributes_filter.filter_df_keeping_specno_activities(dataframe, activity_key="concept:name")
         dataframe = df_filtering.filter_df_on_ncases(dataframe, case_id_glue="case:concept:name")
         #dataframe = df_filtering.filter_df_on_case_length(dataframe, case_id_glue="case:concept:name")
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
