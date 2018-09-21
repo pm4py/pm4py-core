@@ -65,7 +65,7 @@ def execute_script():
     [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both", perf_aggregation_key="median", case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY, timestamp_key=TIMEST_KEY)
     if enable_filtering_df:
         print("len dfg_frequency 0=",len(dfg_frequency))
-        dfg_frequency = dfg_filtering.clean_dfg_based_on_noise_thresh(dfg_frequency, None, filtering_df_noise)
+        dfg_frequency = dfg_filtering.apply(dfg_frequency, {"noiseThreshold": filtering_df_noise})
         print("len dfg_frequency 1=",len(dfg_frequency))
     time8 = time.time()
     print("time8 - time7: "+str(time8-time7))
