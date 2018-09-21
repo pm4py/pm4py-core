@@ -1,4 +1,5 @@
 import pandas as pd
+from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 
 def filter_df_on_activities(df, activity_key="concept:name", max_no_activities=25):
     """
@@ -176,6 +177,37 @@ def filter_df_on_start_activities(df, case_id_glue="case:concept:name", activity
         return df[i1.isin(i2)]
     return df[~i1.isin(i2)]
 
+def filter_df_on_start_activities_nocc(df, nocc, sa_count=None, case_id_glue="case:concept:name", activity_key="concept:name"):
+    """
+    Filter dataframe on start activities number of occurrences
+
+    Parameters
+    -----------
+    df
+        Dataframe
+    nocc
+        Minimum number of occurrences of the start activity
+    sa_count
+        (if provided) Dictionary that associates each start activity with its count
+    case_id_glue
+        Column that contains the Case ID
+    activity_key
+        Column that contains the activity
+
+    Returns
+    ------------
+    df
+        Filtered dataframe
+    """
+    firstEveDf = df.groupby(case_id_glue).first()
+    if sa_count is None:
+        sa_count = df_statistics.get_start_activities_count(df)
+    sa_count = [k for k, v in sa_count.items() if v >= nocc]
+    firstEveDf = firstEveDf[firstEveDf[activity_key].isin(sa_count)]
+    i1 = df.set_index(case_id_glue).index
+    i2 = firstEveDf.index
+    return df[i1.isin(i2)]
+
 def filter_df_on_end_activities(df, case_id_glue="case:concept:name", activity_key="concept:name", values=None, positive=True):
     """
     Filter dataframe on end activities
@@ -207,3 +239,29 @@ def filter_df_on_end_activities(df, case_id_glue="case:concept:name", activity_k
     if positive:
         return df[i1.isin(i2)]
     return df[~i1.isin(i2)]
+
+def filter_df_on_end_activities_nocc(df, nocc, ea_count=None, case_id_glue="case:concept:name", activity_key="concept:name"):
+    """
+    Filter dataframe on end activities number of occurrences
+
+    Parameters
+    -----------
+    df
+        Dataframe
+    nocc
+        Minimum number of occurrences of the end activity
+    ea_count
+        (if provided) Dictionary that associates each end activity with its count
+    case_id_glue
+        Column that contains the Case ID
+    activity_key
+        Column that contains the activity
+    """
+    firstEveDf = df.groupby(case_id_glue).last()
+    if ea_count is None:
+        ea_count = df_statistics.get_end_activities_count(df)
+    ea_count = [k for k, v in ea_count.items() if v >= nocc]
+    firstEveDf = firstEveDf[firstEveDf[activity_key].isin(ea_count)]
+    i1 = df.set_index(case_id_glue).index
+    i2 = firstEveDf.index
+    return df[i1.isin(i2)]
