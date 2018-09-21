@@ -3,6 +3,7 @@ from pm4py.algo.filtering.tracelog.variants import variants_filter
 from pm4py.entities.log.util import xes
 from pm4py.util import constants
 from pm4py.algo.filtering.tracelog.util import filtering_constants
+from pm4py.algo.filtering.common.end_activities import end_activities_common
 
 def apply(trace_log, admitted_end_activities, parameters=None):
     """
@@ -60,52 +61,6 @@ def get_end_activities(trace_log, parameters=None):
             end_activities[activity_last_event] = end_activities[activity_last_event] + 1
     
     return end_activities
-
-def get_sorted_end_activities_list(end_activities):
-    """
-    Gets sorted end attributes list
-    
-    Parameters
-    ----------
-    end_activities
-        Dictionary of end attributes associated with their count
-    
-    Returns
-    ----------
-    listact
-        Sorted end attributes list
-    """
-    listact = []
-    for ea in end_activities:
-        listact.append([ea, end_activities[ea]])
-    listact = sorted(listact, key=lambda x: x[1], reverse=True)
-    return listact
-
-def get_end_activities_threshold(end_activities, ealist, decreasingFactor):
-    """
-    Get end attributes cutting threshold
-    
-    Parameters
-    ----------
-    end_activities
-        Dictionary of end attributes associated with their count
-    ealist
-        Sorted end attributes list
-    
-    Returns
-    ---------
-    threshold
-        End attributes cutting threshold
-    """
-    
-    threshold = ealist[0][1]
-    i = 1
-    while i < len(ealist):
-        value = ealist[i][1]
-        if value > threshold * decreasingFactor:
-            threshold = value
-        i = i + 1
-    return threshold
 
 def filter_log_by_end_activities(end_activities, variants, vc, threshold, activity_key="concept:name"):
     """
@@ -170,8 +125,8 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
         variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
     end_activities = get_end_activities(trace_log, parameters=parameters_variants)
-    ealist = get_sorted_end_activities_list(end_activities)
-    eathreshold = get_end_activities_threshold(end_activities, ealist, decreasingFactor)
+    ealist = end_activities_common.get_sorted_end_activities_list(end_activities)
+    eathreshold = end_activities_common.get_end_activities_threshold(end_activities, ealist, decreasingFactor)
     filtered_log = filter_log_by_end_activities(end_activities, variants, vc, eathreshold, attribute_key)
 
     return filtered_log
