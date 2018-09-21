@@ -122,7 +122,7 @@ def filter_df_on_attribute_values(df, case_id_glue="case:concept:name", attribut
     df
         Dataframe
     case_id_glue
-        Case ID colum nin the dataframe
+        Case ID column in the dataframe
     attribute_key
         Attribute we want to filter
     values
@@ -140,6 +140,70 @@ def filter_df_on_attribute_values(df, case_id_glue="case:concept:name", attribut
     filteredDfByEv = df[df[attribute_key].isin(values)]
     i1 = df.set_index(case_id_glue).index
     i2 = filteredDfByEv.set_index(case_id_glue).index
+    if positive:
+        return df[i1.isin(i2)]
+    return df[~i1.isin(i2)]
+
+def filter_df_on_start_activities(df, case_id_glue="case:concept:name", activity_key="concept:name", values=None, positive=True):
+    """
+    Filter dataframe on start activities
+
+    Parameters
+    ----------
+    df
+        Dataframe
+    case_id_glue
+        Case ID column in the dataframe
+    activity_key
+        Column that represent the activity
+    values
+        Values to filter on
+    positive
+        Specifies if the filtered should be applied including traces (positive=True) or excluding traces (positive=False)
+
+    Returns
+    ----------
+    df
+        Filtered dataframe
+    """
+    if values is None:
+        values = []
+    firstEveDf = df.groupby(case_id_glue).first()
+    firstEveDf = firstEveDf[firstEveDf[activity_key].isin(values)]
+    i1 = df.set_index(case_id_glue).index
+    i2 = firstEveDf.index
+    if positive:
+        return df[i1.isin(i2)]
+    return df[~i1.isin(i2)]
+
+def filter_df_on_end_activities(df, case_id_glue="case:concept:name", activity_key="concept:name", values=None, positive=True):
+    """
+    Filter dataframe on end activities
+
+    Parameters
+    ----------
+    df
+        Dataframe
+    case_id_glue
+        Case ID column in the dataframe
+    activity_key
+        Column that represent the activity
+    values
+        Values to filter on
+    positive
+        Specifies if the filtered should be applied including traces (positive=True) or excluding traces (positive=False)
+
+    Returns
+    ----------
+    df
+        Filtered dataframe
+    """
+    if values is None:
+        values = []
+    lastEveDf = df.groupby(case_id_glue).last()
+    lastEveDf = lastEveDf[lastEveDf[activity_key].isin(values)]
+    i1 = df.set_index(case_id_glue).index
+    i2 = lastEveDf.index
     if positive:
         return df[i1.isin(i2)]
     return df[~i1.isin(i2)]

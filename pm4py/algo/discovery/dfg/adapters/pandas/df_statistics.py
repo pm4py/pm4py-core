@@ -2,7 +2,7 @@ import pandas as pd
 from collections import Counter
 from statistics import mean
 
-def get_activities_count(df, activity_key="concept:name"):
+def get_attributes_count(df, attribute_key="concept:name"):
     """
     Return list of attributes contained in the specified column of the CSV
 
@@ -10,16 +10,60 @@ def get_activities_count(df, activity_key="concept:name"):
     -----------
     df
         Pandas dataframe
-    activity_key
-        Columns that is the activity
+    attribute_key
+        Attribute for which we want to known the values and the count
 
     Returns
     -----------
-    activities_values_dict
-        Activities in the specified column, along with their count
+    attributes_values_dict
+        Attributes in the specified column, along with their count
     """
-    activity_values_dict = dict(df[activity_key].value_counts())
-    return activity_values_dict
+    attributes_values_dict = dict(df[attribute_key].value_counts())
+    return attributes_values_dict
+
+def get_start_activities_count(df, case_id_glue="case:concept:name", activity_key="concept:name"):
+    """
+    Get start activities count
+
+    Parameters
+    -----------
+    df
+        Pandas dataframe
+    case_id_glue
+        Column that identifies the case ID
+    activity_key
+        Column that identifies the activity
+
+    Returns
+    -----------
+    startact_dict
+        Dictionary of start activities along with their count
+    """
+    firstEveDf = df.groupby(case_id_glue).first()
+    startact_dict = dict(firstEveDf[activity_key].value_counts())
+    return startact_dict
+
+def get_end_activities_count(df, case_id_glue="case:concept:name", activity_key="concept:name"):
+    """
+    Get end activities count
+
+    Parameters
+    -----------
+    df
+        Pandas dataframe
+    case_id_glue
+        Column that identifies the case ID
+    activity_key
+        Column that identifies the activity
+
+    Returns
+    -----------
+    endact_dict
+        Dictionary of end activities along with their count
+    """
+    lastEveDf = df.groupby(case_id_glue).last()
+    endact_dict = dict(lastEveDf[activity_key].value_counts())
+    return endact_dict
 
 def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name", timestamp_key="time:timestamp", perf_aggregation_key="mean"):
     """
