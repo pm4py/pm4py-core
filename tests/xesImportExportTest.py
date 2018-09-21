@@ -46,6 +46,15 @@ class XesImportExportTest(unittest.TestCase):
             except SyntaxError as e:
                 logging.info("SyntaxError on log " + str(log) + ": " + str(e))
 
+    def test_importExportXESfromGZIP_imp1(self):
+        traceLog = xes_importer.import_log(os.path.join("compressedInputData","01_running-example.xes.gz"))
+        xes_exporter.export_log(traceLog, os.path.join(OUTPUT_DATA_DIR, "01-running-example.xes"), parameters={"compress": True})
+        os.remove(os.path.join(OUTPUT_DATA_DIR, "01-running-example.xes.gz"))
+
+    def test_importXESfromGZIP_imp2(self):
+        traceLog = xes_importer.import_log(os.path.join("compressedInputData","01_running-example.xes.gz"))
+
+
 
 if __name__ == "__main__":
     unittest.main()
