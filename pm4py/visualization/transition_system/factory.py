@@ -1,4 +1,5 @@
 from pm4py.visualization.transition_system.versions import view_based
+from pm4py.visualization.common.save import *
 
 VIEW_BASED = "view_based"
 WO_DECORATION = "wo_decoration"

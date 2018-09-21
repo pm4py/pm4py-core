@@ -14,6 +14,7 @@ from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.algo.discovery.transition_system import factory as ts_factory
 from pm4py.visualization.transition_system import factory as ts_vis_factory
 from pm4py.algo.discovery.transition_system.parameters import *
+from pm4py.visualization.common.save import *
 
 def apply(original_log, parameters=None):
     """
