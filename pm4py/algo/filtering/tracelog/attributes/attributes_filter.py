@@ -3,9 +3,9 @@ from pm4py.algo.filtering.tracelog.variants import variants_filter
 from pm4py.util import constants
 from pm4py.entities.log.util import xes
 from pm4py.algo.filtering.common import filtering_constants
+from pm4py.algo.filtering.common.attributes import attributes_common
 
-
-def get_attributes_from_log(trace_log, attribute_key, parameters=None):
+def get_attribute_values(trace_log, attribute_key, parameters=None):
     """
     Get the attribute values of the log for the specified attribute along with their count
 
@@ -39,56 +39,6 @@ def get_attributes_from_log(trace_log, attribute_key, parameters=None):
                 attributes[attribute] = attributes[attribute] + 1
 
     return attributes
-
-
-def get_sorted_attributes_list(attributes):
-    """
-    Gets sorted attributes list
-
-    Parameters
-    ----------
-    attributes
-        Dictionary of attributes associated with their count
-
-    Returns
-    ----------
-    listact
-        Sorted end attributes list
-    """
-    listattr = []
-    for a in attributes:
-        listattr.append([a, attributes[a]])
-    listattr = sorted(listattr, key=lambda x: x[1], reverse=True)
-    return listattr
-
-
-def get_attributes_threshold(attributes, alist, decreasingFactor, maxActivityCount = 25):
-    """
-    Get attributes cutting threshold
-
-    Parameters
-    ----------
-    attributes
-        Dictionary of attributes associated with their count
-    alist
-        Sorted attributes list
-
-    Returns
-    ---------
-    threshold
-        Activities cutting threshold
-    """
-
-    threshold = alist[0][1]
-    i = 1
-    while i < len(alist):
-        value = alist[i][1]
-        if value > threshold * decreasingFactor:
-            threshold = value
-        if i >= maxActivityCount:
-            break
-        i = i + 1
-    return threshold
 
 def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, threshold, attribute_key="concept:name"):
     """
@@ -191,8 +141,8 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     if variants is None:
         variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
-    activities = get_attributes_from_log(trace_log, attribute_key, parameters=parameters_variants)
-    alist = get_sorted_attributes_list(activities)
-    thresh = get_attributes_threshold(activities, alist, decreasingFactor)
+    activities = get_attribute_values(trace_log, attribute_key, parameters=parameters_variants)
+    alist = attributes_common.get_sorted_attributes_list(activities)
+    thresh = attributes_common.get_attributes_threshold(activities, alist, decreasingFactor)
     filtered_log = filter_log_by_attributes_threshold(trace_log, activities, variants, vc, thresh, attribute_key)
     return filtered_log

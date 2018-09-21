@@ -72,14 +72,14 @@ def apply(original_log, parameters=None):
         gviz = ts_vis_factory.apply(ts_from_log, variant=replayMeasure, parameters=parameters_viz)
     elif discoveryAlgorithm == "dfg":
         # gets the number of occurrences of the single attributes in the filtered log
-        filtered_log_activities_count = activities_module.get_attributes_from_log(log, activity_key, parameters=parameters_autofilter)
+        filtered_log_activities_count = activities_module.get_attribute_values(log, activity_key, parameters=parameters_autofilter)
         # gets an intermediate log that is the original log restricted to the list
         # of attributes that appears in the filtered log
         intermediate_log = activities_module.filter_log_by_specified_attributes(original_log,
                                                                                 filtered_log_activities_count,
                                                                                 attribute_key=activity_key)
         # gets the number of occurrences of the single attributes in the intermediate log
-        activities_count = activities_module.get_attributes_from_log(intermediate_log, activity_key, parameters=parameters_autofilter)
+        activities_count = activities_module.get_attribute_values(intermediate_log, activity_key, parameters=parameters_autofilter)
         # calculate DFG of the filtered log and of the intermediate log
         dfg_filtered_log = dfg_factory.apply(log, parameters=parameters_discovery, variant=replayMeasure)
         dfg_intermediate_log = dfg_factory.apply(intermediate_log, parameters=parameters_discovery,

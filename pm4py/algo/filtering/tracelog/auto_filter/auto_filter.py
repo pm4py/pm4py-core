@@ -17,10 +17,10 @@ def apply_auto_filter(trace_log, parameters=None):
     ----------
     trace_log
         Trace log
-    decreasingFactor
-        Decreasing factor (provided to all algorithms)
-    activity_key
-        Activity key (must be specified if different from concept:name)
+    Parameters
+        Eventual parameters applied to the algorithms:
+            decreasingFactor -> Decreasing factor (provided to all algorithms)
+            activity_key -> Activity key (must be specified if different from concept:name)
     
     Returns
     ---------

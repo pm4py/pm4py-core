@@ -215,6 +215,6 @@ def apply(dfg, log=None, parameters=None, activities_count=None, measure="freque
         maxNoOfEdgesInDiagram = parameters["maxNoOfEdgesInDiagram"]
 
     if activities_count is None:
-        activities_count = attributes_filter.get_attributes_from_log(log, activity_key, parameters=parameters)
+        activities_count = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
 
     return graphviz_visualization(activities_count, dfg, format=format, measure=measure, maxNoOfEdgesInDiagram=maxNoOfEdgesInDiagram)
