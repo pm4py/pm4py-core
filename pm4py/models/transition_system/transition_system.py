@@ -13,8 +13,14 @@ class TransitionSystem(object):
         def __get_outgoing(self):
             return self.__outgoing
 
+        def __set_outgoing(self, outgoing):
+            self.__outgoing = outgoing
+
         def __get_incoming(self):
             return self.__incoming
+
+        def __set_incoming(self, incoming):
+            self.__incoming = incoming
 
         def __get_data(self):
             return self.__data
@@ -23,8 +29,8 @@ class TransitionSystem(object):
             return str(self.name)
 
         name = property(__get_name)
-        incoming = property(__get_incoming)
-        outgoing = property(__get_outgoing)
+        incoming = property(__get_incoming, __set_incoming)
+        outgoing = property(__get_outgoing, __set_outgoing)
         data = property(__get_data)
 
     class Transition(object):
@@ -72,7 +78,10 @@ class TransitionSystem(object):
     def __get_transitions(self):
         return self.__transitions
 
+    def __set_transitions(self, transitions):
+        self.__transitions = transitions
+
     name = property(__get_name, __set_name)
     states = property(__get_states)
-    transitions = property(__get_transitions)
+    transitions = property(__get_transitions, __set_transitions)
 
