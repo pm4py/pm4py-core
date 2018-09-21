@@ -13,6 +13,7 @@ from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.algo.filtering.pandas.auto_filter import auto_filter
 from pm4py.util import constants
+from pm4py.algo.filtering.dfg import dfg_filtering
 
 inputLog = os.path.join("..", "tests", "inputData", "running-example.csv")
 CASEID_GLUE = "case:concept:name"
@@ -23,6 +24,8 @@ TIMEST_FORMAT = None
 enable_auto_filter=True
 enable_filtering_on_cases=True
 max_no_cases=1000
+enable_filtering_df=True
+filtering_df_noise=0.16
 
 """
 inputLog = os.path.join("C:\\road_traffic.csv")
@@ -33,6 +36,8 @@ TIMEST_COLUMNS = ["startTime"]
 TIMEST_FORMAT = "%Y/%m/%d %H:%M:%S"
 enable_filtering_on_activities=False
 enable_filtering_on_cases=False
+enable_filtering_df=True
+filtering_df_noise=0.16
 """
 
 def execute_script():
@@ -58,6 +63,10 @@ def execute_script():
     # show the filtered dataframe on the screen
     activities_count = attributes_filter.get_attribute_values(dataframe, attribute_key=ACTIVITY_KEY)
     [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both", perf_aggregation_key="median", case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY, timestamp_key=TIMEST_KEY)
+    if enable_filtering_df:
+        print("len dfg_frequency 0=",len(dfg_frequency))
+        dfg_frequency = dfg_filtering.clean_dfg_based_on_noise_thresh(dfg_frequency, None, filtering_df_noise)
+        print("len dfg_frequency 1=",len(dfg_frequency))
     time8 = time.time()
     print("time8 - time7: "+str(time8-time7))
     gviz = dfg_vis_factory.apply(dfg_frequency, activities_count=activities_count)
