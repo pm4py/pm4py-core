@@ -4,7 +4,8 @@ import base64
 from copy import copy
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.visualization.common.utils import *
-
+from pm4py.util import constants
+from pm4py.entities.log.util import xes
 
 def get_min_max_value(dfg):
     """
@@ -202,6 +203,9 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
 def apply(dfg, log=None, parameters=None, activities_count=None, measure="frequency"):
     if parameters is None:
         parameters = {}
+
+    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if  constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+
     format = "pdf"
     maxNoOfEdgesInDiagram = 75
 
@@ -211,6 +215,6 @@ def apply(dfg, log=None, parameters=None, activities_count=None, measure="freque
         maxNoOfEdgesInDiagram = parameters["maxNoOfEdgesInDiagram"]
 
     if activities_count is None:
-        activities_count = attributes_filter.get_activities_from_log(log, parameters=parameters)
+        activities_count = attributes_filter.get_attributes_from_log(log, activity_key, parameters=parameters)
 
     return graphviz_visualization(activities_count, dfg, format=format, measure=measure, maxNoOfEdgesInDiagram=maxNoOfEdgesInDiagram)

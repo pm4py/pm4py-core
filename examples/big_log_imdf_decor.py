@@ -29,7 +29,7 @@ def execute_script():
     # we find the DFG
     dfg = dfg_factory.apply(log, variant=variant)
     # we find the number of activities occurrences in the trace log
-    activities_count = attributes_filter.get_activities_from_log(log)
+    activities_count = attributes_filter.get_attributes_from_log(log, "concept:name")
     # we calculate the statistics on the Petri net applying the greedy algorithm
     aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
                                                                                                    activities_count,

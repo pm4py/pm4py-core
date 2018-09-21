@@ -39,7 +39,7 @@ def execute_script():
     time2 = time.time()
     print("time2 - time1: "+str(time2-time1))
     if enable_filtering_on_activities:
-        dataframe = df_filtering.filter_df_on_activities(dataframe, activity_key=ACTIVITY_KEY, max_no_activities=max_no_of_activities)
+        dataframe = df_filtering.filter_df_keeping_specno_activities(dataframe, activity_key=ACTIVITY_KEY, max_no_activities=max_no_of_activities)
     time3 = time.time()
     print("time3 - time2: "+str(time3-time2))
     if enable_filtering_on_cases:
