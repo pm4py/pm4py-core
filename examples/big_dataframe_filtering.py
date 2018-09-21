@@ -9,6 +9,7 @@ from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 
 MAX_NO_ACTIVITIES_PER_MODEL = 25
 GENERATED_IMAGES = []
@@ -20,8 +21,13 @@ ACTIVITY_KEY = "concept:name"
 TIMEST_KEY = "time:timestamp"
 TIMEST_COLUMNS = ["time:timestamp"]
 TIMEST_FORMAT = None
+ENABLE_ATTRIBUTE_FILTER = True
 ATTRIBUTE_TO_FILTER = "concept:name"
 ATTRIBUTE_VALUES_TO_FILTER = ["reject request"]
+ENABLE_STARTACT_FILTER = True
+STARTACT_TO_FILTER = ["register request"]
+ENABLE_ENDACT_FILTER = True
+ENDACT_TO_FILTER = ["pay compensation"]
 
 """
 inputLog = os.path.join("C:\\road_traffic.csv")
@@ -30,13 +36,17 @@ ACTIVITY_KEY = "event"
 TIMEST_KEY = "startTime"
 TIMEST_COLUMNS = ["startTime"]
 TIMEST_FORMAT = "%Y/%m/%d %H:%M:%S"
+ENABLE_ATTRIBUTE_FILTER = True
 ATTRIBUTE_TO_FILTER = "event"
 ATTRIBUTE_VALUES_TO_FILTER = ["Insert Fine Notification"]
+ENABLE_STARTACT_FILTER = True
+STARTACT_TO_FILTER = ["Create Fine"]
+ENABLE_ENDACT_FILTER = True
+ENDACT_TO_FILTER = ["Payment", "Send for Credit Collection"]
 """
 
-
 def calculate_process_schema_from_df(dataframe, path_frequency, path_performance):
-    activities_count = df_statistics.get_activities_count(dataframe, activity_key=ACTIVITY_KEY)
+    activities_count = df_statistics.get_attributes_count(dataframe, attribute_key=ACTIVITY_KEY)
     [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both", perf_aggregation_key="median", case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY, timestamp_key=TIMEST_KEY)
     net, initial_marking, final_marking = inductive_factory.apply_dfg(dfg_frequency)
     spaths = vis_trans_shortest_paths.get_shortest_paths(net)
@@ -74,15 +84,47 @@ def execute_script():
     dd = time.time()
     print("filtering on case performance and generating process schema=",(dd-cc))
 
-    dataframe_att = df_filtering.filter_df_on_attribute_values(dataframe, case_id_glue=CASEID_GLUE, attribute_key=ATTRIBUTE_TO_FILTER, values=ATTRIBUTE_VALUES_TO_FILTER, positive=True)
-    dataframe_att_fa = df_filtering.filter_df_on_activities(dataframe_att, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
-    del dataframe_att
-    calculate_process_schema_from_df(dataframe_att_fa, "FILTER_ATT_FREQUENCY.svg", "FILTER_ATT_PERFORMANCE.svg")
-    GENERATED_IMAGES.append("FILTER_ATT_FREQUENCY.svg")
-    GENERATED_IMAGES.append("FILTER_ATT_PERFORMANCE.svg")
-    del dataframe_att_fa
-    ee = time.time()
-    print("filtering on attribute values and generating process schema=",(ee-dd))
+    if ENABLE_ATTRIBUTE_FILTER:
+        dataframe_att = df_filtering.filter_df_on_attribute_values(dataframe, case_id_glue=CASEID_GLUE, attribute_key=ATTRIBUTE_TO_FILTER, values=ATTRIBUTE_VALUES_TO_FILTER, positive=True)
+        dataframe_att_fa = df_filtering.filter_df_on_activities(dataframe_att, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
+        del dataframe_att
+        calculate_process_schema_from_df(dataframe_att_fa, "FILTER_ATT_FREQUENCY.svg", "FILTER_ATT_PERFORMANCE.svg")
+        GENERATED_IMAGES.append("FILTER_ATT_FREQUENCY.svg")
+        GENERATED_IMAGES.append("FILTER_ATT_PERFORMANCE.svg")
+        del dataframe_att_fa
+        ee = time.time()
+        print("filtering on attribute values and generating process schema=",(ee-dd))
+
+    start_act = df_statistics.get_start_activities_count(dataframe, case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY)
+    print("start activities in the log = ",start_act)
+    end_act = df_statistics.get_end_activities_count(dataframe, case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY)
+    print("end activities in the log = ",end_act)
+    ff = time.time()
+    print("finding start and end activities along with their count",(ff-ee))
+
+    if ENABLE_STARTACT_FILTER:
+        dataframe_sa = df_filtering.filter_df_on_start_activities(dataframe, case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY, values=STARTACT_TO_FILTER)
+        dataframe_sa_fa = df_filtering.filter_df_on_activities(dataframe_sa, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
+        del dataframe_sa
+        calculate_process_schema_from_df(dataframe_sa_fa, "FILTER_SA_FREQUENCY.svg", "FILTER_SA_PERFORMANCE.svg")
+        GENERATED_IMAGES.append("FILTER_SA_FREQUENCY.svg")
+        GENERATED_IMAGES.append("FILTER_SA_PERFORMANCE.svg")
+        del dataframe_sa_fa
+    gg = time.time()
+    if ENABLE_STARTACT_FILTER:
+        print("filtering start activities time=",(gg-ff))
+
+    if ENABLE_ENDACT_FILTER:
+        dataframe_ea = df_filtering.filter_df_on_end_activities(dataframe, case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY, values=ENDACT_TO_FILTER)
+        dataframe_ea_fa = df_filtering.filter_df_on_activities(dataframe_ea, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
+        del dataframe_ea
+        calculate_process_schema_from_df(dataframe_ea_fa, "FILTER_EA_FREQUENCY.svg", "FILTER_EA_PERFORMANCE.svg")
+        GENERATED_IMAGES.append("FILTER_EA_FREQUENCY.svg")
+        GENERATED_IMAGES.append("FILTER_EA_PERFORMANCE.svg")
+        del dataframe_ea_fa
+    hh = time.time()
+    if ENABLE_ENDACT_FILTER:
+        print("filtering end activities time=",(hh-gg))
 
     if REMOVE_GENERATED_IMAGES:
         for image in GENERATED_IMAGES:

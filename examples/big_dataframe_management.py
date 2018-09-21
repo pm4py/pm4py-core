@@ -53,7 +53,7 @@ def execute_script():
     print("time7 - time6: "+str(time7-time6))
 
     # show the filtered dataframe on the screen
-    activities_count = df_statistics.get_activities_count(dataframe, activity_key=ACTIVITY_KEY)
+    activities_count = df_statistics.get_attributes_count(dataframe, attribute_key=ACTIVITY_KEY)
     [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both", perf_aggregation_key="median", case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY, timestamp_key=TIMEST_KEY)
     time8 = time.time()
     print("time8 - time7: "+str(time8-time7))
