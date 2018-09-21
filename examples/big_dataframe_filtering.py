@@ -112,7 +112,8 @@ def execute_script():
     print("finding start and end activities along with their count",(ff-ee))
 
     if ENABLE_STARTACT_FILTER:
-        dataframe_sa = start_activities_filter.apply(dataframe, STARTACT_TO_FILTER, case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY)
+        parameters_sa = {"case_id_glue": CASEID_GLUE, "activity_key": ACTIVITY_KEY}
+        dataframe_sa = start_activities_filter.apply(dataframe, STARTACT_TO_FILTER, parameters=parameters_sa)
         dataframe_sa_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_sa, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
         del dataframe_sa
         calculate_process_schema_from_df(dataframe_sa_fa, "FILTER_SA_FREQUENCY.svg", "FILTER_SA_PERFORMANCE.svg")
@@ -124,7 +125,8 @@ def execute_script():
         print("filtering start activities time=",(gg-ff))
 
     if ENABLE_ENDACT_FILTER:
-        dataframe_ea = end_activities_filter.apply(dataframe, ENDACT_TO_FILTER, case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY)
+        parameters_ea = {"case_id_glue": CASEID_GLUE, "activity_key": ACTIVITY_KEY}
+        dataframe_ea = end_activities_filter.apply(dataframe, ENDACT_TO_FILTER, parameters=parameters_ea)
         dataframe_ea_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_ea, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
         del dataframe_ea
         calculate_process_schema_from_df(dataframe_ea_fa, "FILTER_EA_FREQUENCY.svg", "FILTER_EA_PERFORMANCE.svg")

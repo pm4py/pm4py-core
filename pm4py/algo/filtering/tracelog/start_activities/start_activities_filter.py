@@ -3,6 +3,7 @@ from pm4py.algo.filtering.tracelog.variants import variants_filter
 from pm4py.entities.log.util import xes
 from pm4py.util import constants
 from pm4py.algo.filtering.tracelog.util import filtering_constants
+from pm4py.algo.filtering.common.start_activities import start_activities_common
 
 def apply(trace_log, admitted_start_activities, parameters=None):
     """
@@ -60,51 +61,6 @@ def get_start_activities(trace_log, parameters=None):
             start_activities[activity_first_event] = start_activities[activity_first_event] + 1
     
     return start_activities
-
-def get_sorted_start_activities_list(start_activities):
-    """
-    Gets sorted start attributes list
-    
-    Parameters
-    ----------
-    start_activities
-        Dictionary of start attributes associated with their count
-    
-    Returns
-    ----------
-    listact
-        Sorted start attributes list
-    """
-    listact = []
-    for sa in start_activities:
-        listact.append([sa, start_activities[sa]])
-    listact = sorted(listact, key=lambda x: x[1], reverse=True)
-    return listact
-
-def get_start_activities_threshold(start_activities, salist, decreasingFactor):
-    """
-    Get start attributes cutting threshold
-    
-    Parameters
-    ----------
-    start_activities
-        Dictionary of start attributes associated with their count
-    salist
-        Sorted start attributes list
-    
-    Returns
-    ---------
-    threshold
-        Start attributes cutting threshold
-    """
-    threshold = salist[0][1]
-    i = 1
-    while i < len(salist):
-        value = salist[i][1]
-        if value > threshold * decreasingFactor:
-            threshold = value
-        i = i + 1
-    return threshold
 
 def filter_log_by_start_activities(start_activities, variants, vc, threshold, activity_key="concept:name"):
     """
@@ -170,7 +126,7 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
         variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
     start_activities = get_start_activities(trace_log, parameters=parameters_variants)
-    salist = get_sorted_start_activities_list(start_activities)
-    sathreshold = get_start_activities_threshold(start_activities, salist, decreasingFactor)
+    salist = start_activities_common.get_sorted_start_activities_list(start_activities)
+    sathreshold = start_activities_common.get_start_activities_threshold(start_activities, salist, decreasingFactor)
     filtered_log = filter_log_by_start_activities(start_activities, variants, vc, sathreshold, attribute_key)
     return filtered_log

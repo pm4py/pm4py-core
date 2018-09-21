@@ -1,4 +1,6 @@
-def apply(df, values, case_id_glue="case:concept:name", activity_key="concept:name", positive=True):
+from pm4py.algo.filtering.common.end_activities import end_activities_common
+
+def apply(df, values, parameters=None):
     """
     Filter dataframe on end activities
 
@@ -8,19 +10,24 @@ def apply(df, values, case_id_glue="case:concept:name", activity_key="concept:na
         Dataframe
     values
         Values to filter on
-    case_id_glue
-        Case ID column in the dataframe
-    activity_key
-        Column that represent the activity
-    positive
-        Specifies if the filtered should be applied including traces (positive=True) or excluding traces (positive=False)
+    parameters
+        Possible parameters of the algorithm, including:
+            case_id_glue -> Case ID column in the dataframe
+            activity_key -> Column that represents the activity
+            positive -> Specifies if the filtered should be applied including traces (positive=True) or excluding traces (positive=False)
 
     Returns
     ----------
     df
         Filtered dataframe
     """
-    return filter_df_on_end_activities(df, values, case_id_glue="case:concept:name", activity_key="concept:name", positive=True)
+    if parameters is None:
+        parameters = {}
+    case_id_glue = parameters["case_id_glue"] if "case_id_glue" in parameters else "case:concept:name"
+    activity_key = parameters["activity_key"] if "activity_key" in parameters else "concept:name"
+    positive = parameters["positive"] if "positive" in parameters else True
+
+    return filter_df_on_end_activities(df, values, case_id_glue=case_id_glue, activity_key=activity_key, positive=positive)
 
 def get_end_activities(df, case_id_glue="case:concept:name", activity_key="concept:name"):
     """
