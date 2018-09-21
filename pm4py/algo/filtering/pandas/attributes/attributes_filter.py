@@ -1,6 +1,8 @@
 from pm4py.entities.log.util import xes
 from pm4py.util import constants
 from pm4py.algo.filtering.common import filtering_constants
+from pm4py.algo.filtering.common.attributes import attributes_common
+from pm4py.algo.filtering.pandas import pd_filtering_constants
 
 def apply(df, values, parameters=None):
     """
@@ -31,9 +33,38 @@ def apply(df, values, parameters=None):
 
     return filter_df_on_attribute_values(df, values, case_id_glue=case_id_glue, attribute_key=attribute_key, positive=positive)
 
-def get_attributes_count(df, attribute_key="concept:name"):
+def apply_auto_filter(df, parameters=None):
     """
-    Return list of attributes contained in the specified column of the CSV
+    Apply auto filter on activity values
+
+    Parameters
+    ------------
+    df
+        Dataframe
+    parameters
+        Possible parameters of the algorithm, including:
+            activity_key -> Column containing the activity
+            decreasingFactor -> Decreasing factor that should be passed to the algorithm
+
+    Returns
+    ------------
+    df
+        Filtered dataframe
+    """
+    if parameters is None:
+        parameters = {}
+    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+
+    activities = get_attribute_values(df, activity_key)
+    alist = attributes_common.get_sorted_attributes_list(activities)
+    thresh = attributes_common.get_attributes_threshold(activities, alist, decreasingFactor, minActivityCount=pd_filtering_constants.MIN_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM, maxActivityCount=pd_filtering_constants.MAX_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM)
+
+    return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count=activities)
+
+def get_attribute_values(df, attribute_key):
+    """
+    Return list of attribute values contained in the specified column of the CSV
 
     Parameters
     -----------
@@ -48,6 +79,7 @@ def get_attributes_count(df, attribute_key="concept:name"):
         Attributes in the specified column, along with their count
     """
     attributes_values_dict = dict(df[attribute_key].value_counts())
+    #print("attributes_values_dict=",attributes_values_dict)
     return attributes_values_dict
 
 def filter_df_on_attribute_values(df, values, case_id_glue="case:concept:name", attribute_key="concept:name", positive=True):
@@ -80,6 +112,32 @@ def filter_df_on_attribute_values(df, values, case_id_glue="case:concept:name", 
     if positive:
         return df[i1.isin(i2)]
     return df[~i1.isin(i2)]
+
+def filter_df_keeping_activ_exc_thresh(df, thresh, act_count=None, activity_key="concept:name"):
+    """
+    Filter a dataframe keeping activities exceeding the threshold
+
+    Parameters
+    ------------
+    df
+        Pandas dataframe
+    thresh
+        Threshold to use to cut activities
+    act_count
+        (If provided) Dictionary that associates each activity with its count
+    activity_key
+        Column in which the activity is present
+
+    Returns
+    ------------
+    df
+        Filtered dataframe
+    """
+    if act_count is None:
+        act_count = get_attribute_values(df, activity_key)
+    act_count = [k for k, v in act_count.items() if v >= thresh]
+    df = df[df[activity_key].isin(act_count)]
+    return df
 
 def filter_df_keeping_specno_activities(df, activity_key="concept:name", max_no_activities=25):
     """

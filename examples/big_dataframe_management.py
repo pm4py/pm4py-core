@@ -11,6 +11,8 @@ from pm4py.entities.log.adapters.pandas import csv_import_adapter as csv_import_
 from pm4py.algo.filtering.pandas.cases import case_filter
 from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
+from pm4py.algo.filtering.pandas.auto_filter import auto_filter
+from pm4py.util import constants
 
 inputLog = os.path.join("..", "tests", "inputData", "running-example.csv")
 CASEID_GLUE = "case:concept:name"
@@ -18,8 +20,7 @@ ACTIVITY_KEY = "concept:name"
 TIMEST_KEY = "time:timestamp"
 TIMEST_COLUMNS = ["time:timestamp"]
 TIMEST_FORMAT = None
-enable_filtering_on_activities=True
-max_no_of_activities = 25
+enable_auto_filter=True
 enable_filtering_on_cases=True
 max_no_cases=1000
 
@@ -39,8 +40,8 @@ def execute_script():
     dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
     time2 = time.time()
     print("time2 - time1: "+str(time2-time1))
-    if enable_filtering_on_activities:
-        dataframe = attributes_filter.filter_df_keeping_specno_activities(dataframe, activity_key=ACTIVITY_KEY, max_no_activities=max_no_of_activities)
+    if enable_auto_filter:
+        dataframe = auto_filter.apply_auto_filter(dataframe, parameters={constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ACTIVITY_KEY})
     time3 = time.time()
     print("time3 - time2: "+str(time3-time2))
     if enable_filtering_on_cases:
@@ -55,7 +56,7 @@ def execute_script():
     print("time7 - time6: "+str(time7-time6))
 
     # show the filtered dataframe on the screen
-    activities_count = attributes_filter.get_attributes_count(dataframe, attribute_key=ACTIVITY_KEY)
+    activities_count = attributes_filter.get_attribute_values(dataframe, attribute_key=ACTIVITY_KEY)
     [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both", perf_aggregation_key="median", case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY, timestamp_key=TIMEST_KEY)
     time8 = time.time()
     print("time8 - time7: "+str(time8-time7))

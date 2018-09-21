@@ -31,7 +31,7 @@ class VisualizationTest1(unittest.TestCase):
         log = xes_importer.import_log(logPath)
         variant = "frequency"
         dfg = dfg_factory.apply(log, variant=variant)
-        activities_count = log_attribute_filter.get_attributes_from_log(log, "concept:name")
+        activities_count = log_attribute_filter.get_attribute_values(log, "concept:name")
         gviz = dfg_vis_factory.apply(dfg, activities_count=activities_count, variant=variant)
 
     def test_getdfgperfvis_log(self):
@@ -61,7 +61,7 @@ class VisualizationTest1(unittest.TestCase):
         net, initial_marking, final_marking = inductive_miner.apply(log)
         variant = "frequency"
         dfg = dfg_factory.apply(log, variant=variant)
-        activities_count = log_attribute_filter.get_attributes_from_log(log, "concept:name")
+        activities_count = log_attribute_filter.get_attribute_values(log, "concept:name")
         spaths = vis_trans_shortest_paths.get_shortest_paths(net)
         aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count, variant=variant)
         parameters_vis = {"format":"svg"}
@@ -73,7 +73,7 @@ class VisualizationTest1(unittest.TestCase):
         net, initial_marking, final_marking = inductive_miner.apply(log)
         variant = "performance"
         dfg = dfg_factory.apply(log, variant=variant)
-        activities_count = log_attribute_filter.get_attributes_from_log(log, "concept:name")
+        activities_count = log_attribute_filter.get_attribute_values(log, "concept:name")
         spaths = vis_trans_shortest_paths.get_shortest_paths(net)
         aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count, variant=variant)
         parameters_vis = {"format":"svg"}
@@ -84,7 +84,7 @@ class VisualizationTest1(unittest.TestCase):
         logPath = os.path.join("inputData","running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(logPath)
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
-        activities_count = pd_attribute_filter.get_attributes_count(dataframe)
+        activities_count = pd_attribute_filter.get_attribute_values(dataframe, "concept:name")
         dfg_frequency = df_statistics.get_dfg_graph(dataframe, measure="frequency")
         gviz = dfg_vis_factory.apply(dfg_frequency, activities_count=activities_count, variant=variant)
 
@@ -93,7 +93,7 @@ class VisualizationTest1(unittest.TestCase):
         logPath = os.path.join("inputData","running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(logPath)
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
-        activities_count = pd_attribute_filter.get_attributes_count(dataframe)
+        activities_count = pd_attribute_filter.get_attribute_values(dataframe, "concept:name")
         [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both")
         gviz = dfg_vis_factory.apply(dfg_performance, activities_count=activities_count, variant=variant)
 
@@ -102,7 +102,7 @@ class VisualizationTest1(unittest.TestCase):
         logPath = os.path.join("inputData","running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(logPath)
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
-        activities_count = pd_attribute_filter.get_attributes_count(dataframe)
+        activities_count = pd_attribute_filter.get_attribute_values(dataframe, "concept:name")
         dfg_frequency = df_statistics.get_dfg_graph(dataframe, measure=variant)
         net, initial_marking, final_marking = inductive_miner.apply_dfg(dfg_frequency)
         spaths = vis_trans_shortest_paths.get_shortest_paths(net)
@@ -119,7 +119,7 @@ class VisualizationTest1(unittest.TestCase):
         logPath = os.path.join("inputData","running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(logPath)
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
-        activities_count = pd_attribute_filter.get_attributes_count(dataframe)
+        activities_count = pd_attribute_filter.get_attribute_values(dataframe, "concept:name")
         [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both")
         net, initial_marking, final_marking = inductive_miner.apply_dfg(dfg_frequency)
         spaths = vis_trans_shortest_paths.get_shortest_paths(net)

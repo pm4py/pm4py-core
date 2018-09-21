@@ -51,7 +51,7 @@ ENDACT_TO_FILTER = ["Payment", "Send for Credit Collection"]
 """
 
 def calculate_process_schema_from_df(dataframe, path_frequency, path_performance):
-    activities_count = attributes_filter.get_attributes_count(dataframe, attribute_key=ACTIVITY_KEY)
+    activities_count = attributes_filter.get_attribute_values(dataframe, attribute_key=ACTIVITY_KEY)
     [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both", perf_aggregation_key="median", case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY, timestamp_key=TIMEST_KEY)
     net, initial_marking, final_marking = inductive_factory.apply_dfg(dfg_frequency)
     spaths = vis_trans_shortest_paths.get_shortest_paths(net)
@@ -97,7 +97,9 @@ def execute_script():
 
     if ENABLE_ATTRIBUTE_FILTER:
         parameters_att = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: ATTRIBUTE_TO_FILTER, "positive": True}
-        dataframe_att = attributes_filter.apply(dataframe, ATTRIBUTE_VALUES_TO_FILTER, parameters=parameters_att)
+        #dataframe_att = attributes_filter.apply(dataframe, ATTRIBUTE_VALUES_TO_FILTER, parameters=parameters_att)
+        dataframe_att = attributes_filter.apply_auto_filter(dataframe, parameters=parameters_att)
+        print("all the activities in the log", attributes_filter.get_attribute_values(dataframe_att, ACTIVITY_KEY))
         dataframe_att_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_att, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
         del dataframe_att
         calculate_process_schema_from_df(dataframe_att_fa, "FILTER_ATT_FREQUENCY.svg", "FILTER_ATT_PERFORMANCE.svg")

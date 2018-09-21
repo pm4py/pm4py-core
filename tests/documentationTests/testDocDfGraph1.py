@@ -15,7 +15,7 @@ class DfGraphDocumentationTest(unittest.TestCase):
         from pm4py.algo.discovery.dfg import factory as dfg_factory
         dfg = dfg_factory.apply(log)
         from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-        activities_count = attributes_filter.get_attributes_from_log(log, "concept:name")
+        activities_count = attributes_filter.get_attribute_values(log, "concept:name")
 
         from pm4py.visualization.dfg.versions import simple_visualize as dfg_visualize
         gviz = dfg_visualize.graphviz_visualization(activities_count, dfg)
