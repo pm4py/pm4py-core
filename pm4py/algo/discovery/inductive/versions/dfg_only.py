@@ -9,7 +9,8 @@ from pm4py.entities.petri.petrinet import PetriNet
 from collections import Counter
 from pm4py import util as pmutil
 from pm4py.entities.log.util import xes as xes_util
-from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges
+from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg
+from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 
 sys.setrecursionlimit(100000)
 
@@ -127,59 +128,6 @@ class Subtree(object):
 
         self.initialize_tree(dfg, initialDfg, activities)
 
-    def get_max_activity_count(self, act):
-        """
-        Get maximum count of an ingoing/outgoing edge related to an activity
-
-        Parameters
-        ------------
-        act
-            Activity
-
-        Returns
-        ------------
-        max_value
-            Maximum count of ingoing/outgoing edges to attributes
-        """
-        max_value = -1
-        if act in self.ingoing:
-            for act2 in self.ingoing[act]:
-                if self.ingoing[act][act2] > max_value:
-                    max_value = self.ingoing[act][act2]
-        if act in self.outgoing:
-            for act2 in self.outgoing[act]:
-                if self.outgoing[act][act2] > max_value:
-                    max_value = self.outgoing[act][act2]
-        return max_value
-
-    def clean_dfg_based_on_noise_thresh(self):
-        """
-        Clean Directly-Follows graph based on noise threshold
-        when a fallback (flower) is chosen
-
-        Returns
-        ----------
-        newDfg
-            Cleaned dfg based on noise threshold
-        """
-        newDfg = []
-        activ_max_count = {}
-        for act in self.activities:
-            activ_max_count[act] = self.get_max_activity_count(act)
-
-        for el in self.dfg:
-            act1 = el[0][0]
-            act2 = el[0][1]
-            val = el[1]
-
-            if val < max(activ_max_count[act1] * self.noiseThreshold, activ_max_count[act2] * self.noiseThreshold):
-                #print(self.recDepth,"deleting",el)
-                pass
-            else:
-                newDfg.append(el)
-
-        return newDfg
-
     def initialize_tree(self, dfg, initialDfg, activities, secondIteration=False):
         """
         Initialize the tree
@@ -197,14 +145,16 @@ class Subtree(object):
 
         self.secondIteration = secondIteration
 
-        if secondIteration:
-            self.dfg = self.clean_dfg_based_on_noise_thresh()
-        else:
-            self.dfg = copy(dfg)
         if activities is None:
-            self.activities = self.get_activities_from_dfg(self.dfg)
+            self.activities = get_activities_from_dfg(dfg)
         else:
             self.activities = copy(activities)
+
+        if secondIteration:
+            self.dfg = clean_dfg_based_on_noise_thresh(self.dfg, self.activities, self.noiseThreshold)
+        else:
+            self.dfg = copy(dfg)
+
         self.outgoing = get_outgoing_edges(self.dfg)
         self.ingoing = get_ingoing_edges(self.dfg)
         self.selfLoopActivities = self.get_activities_self_loop()
@@ -213,7 +163,7 @@ class Subtree(object):
         self.activitiesDirection = self.get_activities_direction()
         self.activitiesDirlist = self.get_activities_dirlist()
         self.negatedDfg = self.negate()
-        self.negatedActivities = self.get_activities_from_dfg(self.negatedDfg)
+        self.negatedActivities = get_activities_from_dfg(self.negatedDfg)
         self.negatedOutgoing = get_outgoing_edges(self.negatedDfg)
         self.negatedIngoing = get_ingoing_edges(self.negatedDfg)
         self.detectedCut = None
@@ -232,21 +182,9 @@ class Subtree(object):
             if not(el[0][1] in self.outgoing and el[0][0] in self.outgoing[el[0][1]]):
                 negatedDfg.append(el)
 
-        activitiesThatAreNotNegatedDfg = set(set(self.activities)).difference(self.get_activities_from_dfg(negatedDfg))
+        activitiesThatAreNotNegatedDfg = set(set(self.activities)).difference(get_activities_from_dfg(negatedDfg))
 
         return negatedDfg
-
-    def get_activities_from_dfg(self, dfg):
-        """
-        Get the list of attributes directly from DFG graph
-        """
-        set_activities = set()
-        for el in dfg:
-            set_activities.add(el[0][0])
-            set_activities.add(el[0][1])
-        list_activities = sorted(list(set_activities))
-
-        return list_activities
 
     def get_activities_self_loop(self):
         """

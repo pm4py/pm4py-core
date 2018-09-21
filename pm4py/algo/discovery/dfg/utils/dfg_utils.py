@@ -31,6 +31,7 @@ def get_ingoing_edges(dfg):
             ingoing[el[0][1]][el[0][0]] = el[1]
     return ingoing
 
+
 def infer_start_activities(dfg):
     """
     Infer start activities from a Directly-Follows Graph
@@ -56,6 +57,7 @@ def infer_start_activities(dfg):
 
     return start_activities
 
+
 def infer_end_activities(dfg):
     """
     Infer end activities from a Directly-Follows Graph
@@ -80,3 +82,54 @@ def infer_end_activities(dfg):
             end_activities.append(act)
 
     return end_activities
+
+def get_activities_from_dfg(dfg):
+    """
+    Get the list of attributes directly from DFG graph
+
+    Parameters
+    -----------
+    dfg
+        Directly-Follows graph
+
+    Returns
+    -----------
+    list_activities
+        List of activities that are present in the DFG graph
+    """
+    set_activities = set()
+    for el in dfg:
+        set_activities.add(el[0][0])
+        set_activities.add(el[0][1])
+    list_activities = sorted(list(set_activities))
+
+    return list_activities
+
+def get_max_activity_count(dfg, act):
+    """
+    Get maximum count of an ingoing/outgoing edge related to an activity
+
+    Parameters
+    ------------
+    dfg
+        Directly-Follows graph
+    act
+        Activity
+
+    Returns
+    ------------
+    max_value
+        Maximum count of ingoing/outgoing edges to attributes
+    """
+    ingoing = get_ingoing_edges(dfg)
+    outgoing = get_outgoing_edges(dfg)
+    max_value = -1
+    if act in ingoing:
+        for act2 in ingoing[act]:
+            if ingoing[act][act2] > max_value:
+                max_value = ingoing[act][act2]
+    if act in outgoing:
+        for act2 in outgoing[act]:
+            if outgoing[act][act2] > max_value:
+                max_value = outgoing[act][act2]
+    return max_value
