@@ -62,16 +62,22 @@ def calculate_process_schema_from_df(dataframe, path_frequency, path_performance
 def execute_script():
     aa = time.time()
     dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
+    dataframe = csv_import_adapter.convert_caseid_column_to_str(dataframe, case_id_glue=CASEID_GLUE)
     dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe, timest_format=TIMEST_FORMAT, timest_columns=TIMEST_COLUMNS)
     dataframe_fa = df_filtering.filter_df_on_activities(dataframe, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
     bb = time.time()
     print("importing log time=",(bb-aa))
+    cases_desc = df_statistics.get_cases_description(dataframe, case_id_glue=CASEID_GLUE, timestamp_key=TIMEST_KEY,
+                                                     sort_by_column="caseDuration", sort_ascending=False, max_ret_cases=1000)
+    print(cases_desc)
+    bb2 = time.time()
+    print("calculating and printing cases_desc = ",(bb2-bb))
     calculate_process_schema_from_df(dataframe_fa, "NOFILTERS_FREQUENCY.svg", "NOFILTERS_PERFORMANCE.svg")
     GENERATED_IMAGES.append("NOFILTERS_FREQUENCY.svg")
     GENERATED_IMAGES.append("NOFILTERS_PERFORMANCE.svg")
     del dataframe_fa
     cc = time.time()
-    print("saving initial Inductive Miner process schema along with frequency metrics=",(cc-bb))
+    print("saving initial Inductive Miner process schema along with frequency metrics=",(cc-bb2))
 
     dataframe_cp = df_filtering.filter_df_on_case_performance(dataframe, case_id_glue=CASEID_GLUE, timestamp_key=TIMEST_KEY, min_case_performance=100000, max_case_performance=10000000)
     dataframe_cp_fa = df_filtering.filter_df_on_activities(dataframe_cp, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)

@@ -105,10 +105,10 @@ def filter_df_on_case_performance(df, case_id_glue="case:concept:name", timestam
     endEvents = groupedDf.last()
     endEvents.columns = [str(col) + '_2' for col in endEvents.columns]
     stackedDf = pd.concat([startEvents, endEvents], axis=1)
-    stackedDf['DIFF'] = stackedDf[timestamp_key + "_2"] - stackedDf[timestamp_key]
-    stackedDf['DIFF'] = stackedDf['DIFF'].astype('timedelta64[s]')
-    stackedDf = stackedDf[stackedDf['DIFF'] < max_case_performance]
-    stackedDf = stackedDf[stackedDf['DIFF'] > min_case_performance]
+    stackedDf['caseDuration'] = stackedDf[timestamp_key + "_2"] - stackedDf[timestamp_key]
+    stackedDf['caseDuration'] = stackedDf['caseDuration'].astype('timedelta64[s]')
+    stackedDf = stackedDf[stackedDf['caseDuration'] < max_case_performance]
+    stackedDf = stackedDf[stackedDf['caseDuration'] > min_case_performance]
     i1 = df.set_index(case_id_glue).index
     i2 = stackedDf.set_index(case_id_glue).index
     return df[i1.isin(i2)]

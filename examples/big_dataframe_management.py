@@ -45,6 +45,7 @@ def execute_script():
     if enable_filtering_on_cases:
         dataframe = df_filtering.filter_df_on_ncases(dataframe, case_id_glue=CASEID_GLUE, max_no_cases=max_no_cases)
     time4 = time.time()
+    dataframe = csv_import_adapter.convert_caseid_column_to_str(dataframe, case_id_glue=CASEID_GLUE)
     dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe, timest_columns=TIMEST_COLUMNS, timest_format=TIMEST_FORMAT)
     time6 = time.time()
     print("time6 - time4: "+str(time6-time4))

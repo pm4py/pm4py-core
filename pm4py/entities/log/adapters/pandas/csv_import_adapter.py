@@ -66,6 +66,25 @@ def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=
     os.remove(fp.name)
     return df
 
+def convert_caseid_column_to_str(df, case_id_glue="case:concept:name"):
+    """
+    Convert Case ID column to string
+
+    Parameters
+    -----------
+    df
+        Pandas dataframe
+    case_id_glue
+        Case ID glue (that is used to connect the cases)
+
+    Returns
+    -----------
+    df
+        Pandas dataframe with case ID column as string
+    """
+    df[case_id_glue] = df[case_id_glue].astype(str)
+    return df
+
 def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None):
     """
     Convert all dataframe columns in a dataframe
