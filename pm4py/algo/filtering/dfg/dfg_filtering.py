@@ -1,9 +1,9 @@
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_max_activity_count, get_activities_from_dfg
+from pm4py.algo.filtering.common import filtering_constants
 
 def clean_dfg_based_on_noise_thresh(dfg, activities, noiseThreshold):
     """
     Clean Directly-Follows graph based on noise threshold
-    when a fallback (flower) is chosen
 
     Parameters
     ----------
@@ -53,3 +53,28 @@ def clean_dfg_based_on_noise_thresh(dfg, activities, noiseThreshold):
                 pass
 
     return newDfg
+
+
+def apply(dfg, parameters=None):
+    """
+    Clean Directly-Follows graph based on noise threshold
+
+    Parameters
+    -----------
+    dfg
+        Directly-Follows graph
+    parameters
+        Possible parameters of the algorithm, including:
+            noiseThreshold -> Threshold of noise in the algorithm
+
+    Returns
+    ----------
+    newDfg
+        Cleaned dfg based on noise threshold
+    """
+    if parameters is None:
+        parameters = {}
+    noiseThreshold = parameters[
+        "noiseThreshold"] if "noiseThreshold" in parameters else filtering_constants.DEFAULT_NOISE_THRESH_DF
+
+    return clean_dfg_based_on_noise_thresh(dfg, None, noiseThreshold)
