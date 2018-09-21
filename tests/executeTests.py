@@ -24,6 +24,7 @@ from tests.petriLogGeneratorTests import PetriLogGeneratorTests
 from tests.transitionSystemTests import TransitionSystemTest
 from tests.evaluationTests import ProcessModelEvaluationTests
 from tests.visualizationTest import VisualizationTest1
+from tests.caseManagementTest import CaseManagementTest
 
 if __name__ == "__main__":
 	unittest.main()
