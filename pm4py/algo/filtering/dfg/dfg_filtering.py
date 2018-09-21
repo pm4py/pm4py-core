@@ -23,19 +23,33 @@ def clean_dfg_based_on_noise_thresh(dfg, activities, noiseThreshold):
     if activities is None:
         activities = get_activities_from_dfg(dfg)
 
-    newDfg = []
+    newDfg = None
     activ_max_count = {}
     for act in activities:
         activ_max_count[act] = get_max_activity_count(dfg, act)
 
     for el in dfg:
-        act1 = el[0][0]
-        act2 = el[0][1]
-        val = el[1]
+        if type(el[0]) is str:
+            if newDfg is None:
+                newDfg = {}
+            act1 = el[0]
+            act2 = el[1]
+            val = dfg[el]
+        else:
+            if newDfg is None:
+                newDfg = []
+            act1 = el[0][0]
+            act2 = el[0][1]
+            val = el[1]
 
         if val < max(activ_max_count[act1] * noiseThreshold, activ_max_count[act2] * noiseThreshold):
             pass
         else:
-            newDfg.append(el)
+            if type(el[0]) is str:
+                newDfg[el] = dfg[el]
+                pass
+            else:
+                newDfg.append(el)
+                pass
 
     return newDfg

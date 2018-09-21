@@ -99,8 +99,12 @@ def get_activities_from_dfg(dfg):
     """
     set_activities = set()
     for el in dfg:
-        set_activities.add(el[0][0])
-        set_activities.add(el[0][1])
+        if type(el[0]) is str:
+            set_activities.add(el[0])
+            set_activities.add(el[1])
+        else:
+            set_activities.add(el[0][0])
+            set_activities.add(el[0][1])
     list_activities = sorted(list(set_activities))
 
     return list_activities
