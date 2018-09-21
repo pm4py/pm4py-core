@@ -3,7 +3,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from pm4py.entities.log.adapters.pandas import csv_import_adapter as csv_import_adapter
-from pm4py.algo.filtering.pandas import df_filtering
+from pm4py.algo.filtering.pandas.cases import case_filter
 import time
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
@@ -14,6 +14,7 @@ from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
 from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.util import constants
+from pm4py.algo.filtering.pandas.cases import case_filter
 
 MAX_NO_ACTIVITIES_PER_MODEL = 25
 GENERATED_IMAGES = []
@@ -83,7 +84,7 @@ def execute_script():
     cc = time.time()
     print("saving initial Inductive Miner process schema along with frequency metrics=",(cc-bb2))
 
-    dataframe_cp = df_filtering.filter_df_on_case_performance(dataframe, case_id_glue=CASEID_GLUE, timestamp_key=TIMEST_KEY, min_case_performance=100000, max_case_performance=10000000)
+    dataframe_cp = case_filter.filter_df_on_case_performance(dataframe, case_id_glue=CASEID_GLUE, timestamp_key=TIMEST_KEY, min_case_performance=100000, max_case_performance=10000000)
     dataframe_cp_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_cp, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
     dataframe_cp = None
     del dataframe_cp

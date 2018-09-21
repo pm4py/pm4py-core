@@ -8,7 +8,7 @@ from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.entities.log.adapters.pandas import csv_import_adapter as csv_import_adapter
-from pm4py.algo.filtering.pandas import df_filtering
+from pm4py.algo.filtering.pandas.cases import case_filter
 from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
 
@@ -44,7 +44,7 @@ def execute_script():
     time3 = time.time()
     print("time3 - time2: "+str(time3-time2))
     if enable_filtering_on_cases:
-        dataframe = df_filtering.filter_df_on_ncases(dataframe, case_id_glue=CASEID_GLUE, max_no_cases=max_no_cases)
+        dataframe = case_filter.filter_df_on_ncases(dataframe, case_id_glue=CASEID_GLUE, max_no_cases=max_no_cases)
     time4 = time.time()
     dataframe = csv_import_adapter.convert_caseid_column_to_str(dataframe, case_id_glue=CASEID_GLUE)
     dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe, timest_columns=TIMEST_COLUMNS, timest_format=TIMEST_FORMAT)
