@@ -1,4 +1,7 @@
 from pm4py.algo.filtering.common.end_activities import end_activities_common
+from pm4py.entities.log.util import xes
+from pm4py.util import constants
+from pm4py.algo.filtering.common import filtering_constants
 
 def apply(df, values, parameters=None):
     """
@@ -23,13 +26,20 @@ def apply(df, values, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    case_id_glue = parameters["case_id_glue"] if "case_id_glue" in parameters else "case:concept:name"
-    activity_key = parameters["activity_key"] if "activity_key" in parameters else "concept:name"
+    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
 
     return filter_df_on_end_activities(df, values, case_id_glue=case_id_glue, activity_key=activity_key, positive=positive)
 
-def get_end_activities(df, case_id_glue="case:concept:name", activity_key="concept:name"):
+def apply_auto_filter(df, parameters=None):
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+
+def get_end_activities(df, case_id_glue=constants.PARAMETER_CONSTANT_CASEID_KEY, activity_key=xes.DEFAULT_NAME_KEY):
     """
     Get end activities count
 
@@ -51,7 +61,7 @@ def get_end_activities(df, case_id_glue="case:concept:name", activity_key="conce
     endact_dict = dict(lastEveDf[activity_key].value_counts())
     return endact_dict
 
-def filter_df_on_end_activities(df, values, case_id_glue="case:concept:name", activity_key="concept:name", positive=True):
+def filter_df_on_end_activities(df, values, case_id_glue=constants.PARAMETER_CONSTANT_CASEID_KEY, activity_key=xes.DEFAULT_NAME_KEY, positive=True):
     """
     Filter dataframe on end activities
 
@@ -81,7 +91,7 @@ def filter_df_on_end_activities(df, values, case_id_glue="case:concept:name", ac
         return df[i1.isin(i2)]
     return df[~i1.isin(i2)]
 
-def filter_df_on_end_activities_nocc(df, nocc, ea_count=None, case_id_glue="case:concept:name", activity_key="concept:name"):
+def filter_df_on_end_activities_nocc(df, nocc, ea_count=None, case_id_glue=constants.PARAMETER_CONSTANT_CASEID_KEY, activity_key=xes.DEFAULT_NAME_KEY):
     """
     Filter dataframe on end activities number of occurrences
 

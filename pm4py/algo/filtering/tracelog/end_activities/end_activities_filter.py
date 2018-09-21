@@ -2,7 +2,7 @@ from pm4py.entities.log.log import TraceLog
 from pm4py.algo.filtering.tracelog.variants import variants_filter
 from pm4py.entities.log.util import xes
 from pm4py.util import constants
-from pm4py.algo.filtering.tracelog.util import filtering_constants
+from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.end_activities import end_activities_common
 
 def apply(trace_log, admitted_end_activities, parameters=None):
