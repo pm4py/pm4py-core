@@ -3,25 +3,6 @@ from collections import Counter
 from statistics import mean
 import numpy as np
 
-def get_attributes_count(df, attribute_key="concept:name"):
-    """
-    Return list of attributes contained in the specified column of the CSV
-
-    Parameters
-    -----------
-    df
-        Pandas dataframe
-    attribute_key
-        Attribute for which we want to known the values and the count
-
-    Returns
-    -----------
-    attributes_values_dict
-        Attributes in the specified column, along with their count
-    """
-    attributes_values_dict = dict(df[attribute_key].value_counts())
-    return attributes_values_dict
-
 def get_cases_description(df, case_id_glue="case:concept:name", timestamp_key="time:timestamp", enable_sort=True, sort_by_column="startTime", sort_ascending=True, max_ret_cases=None):
     """
     Get a description of cases present in the Pandas dataframe
