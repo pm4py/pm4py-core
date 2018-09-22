@@ -92,33 +92,3 @@ def transitive_reduction(ts):
         children = [tr.to_state for tr in ts.transitions if tr in state.outgoing]
         for child in children:
             check(state, child, done)
-
-
-if __name__ == '__main__':
-    ts = transition_system.TransitionSystem()
-    a = transition_system.TransitionSystem.State('A')
-    ts.states.add(a)
-    b = transition_system.TransitionSystem.State('B')
-    ts.states.add(b)
-    c = transition_system.TransitionSystem.State('C')
-    ts.states.add(c)
-    d = transition_system.TransitionSystem.State('D')
-    ts.states.add(d)
-    e = transition_system.TransitionSystem.State('E')
-    ts.states.add(e)
-    add_arc_from_to('AB', a, b, ts)
-    add_arc_from_to('AC', a, c, ts)
-    add_arc_from_to('AD', a, d, ts)
-    add_arc_from_to('AE', a, e, ts)
-    add_arc_from_to('BD', b, d, ts)
-    add_arc_from_to('CD', c, d, ts)
-    add_arc_from_to('CE', c, e, ts)
-    add_arc_from_to('DE', d, e, ts)
-
-    from pm4py.models.transition_system import visualize as ts_vis
-
-    # vis = ts_vis.graphviz.visualize(ts)
-    # vis.view()
-    transitive_reduction(ts)
-    vis2 = ts_vis.graphviz.visualize(ts)
-    vis2.view()
