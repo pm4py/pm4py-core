@@ -1,11 +1,11 @@
 from graphviz import Digraph
-import tempfile, os
+import tempfile
 import base64
-from copy import deepcopy, copy
-import os, shutil
-from pm4py.log.util import activities
+from copy import copy
+from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.visualization.common.utils import *
-from pm4py.visualization.common.save import *
+from pm4py.util import constants
+from pm4py.entities.log.util import xes
 
 def get_min_max_value(dfg):
     """
@@ -60,17 +60,17 @@ def assign_penwidth_edges(dfg):
 
 def get_activities_color(activities_count):
     """
-    Get frequency color for activities
+    Get frequency color for attributes
 
     Parameters
     -----------
     activities_count
-        Count of activities in the log
+        Count of attributes in the log
 
     Returns
     -----------
     activities_color
-        Color assigned to activities in the graph
+        Color assigned to attributes in the graph
     """
     activities_color = {}
 
@@ -123,22 +123,6 @@ def apply_performance(dfg, log=None, activities_count=None, parameters=None):
 
     return apply(dfg, log=log, parameters=parameters, activities_count=activities_count, measure="performance")
 
-def apply(dfg, log=None, parameters=None, activities_count=None, measure="frequency"):
-    if parameters is None:
-        parameters = {}
-    format = "pdf"
-    maxNoOfEdgesInDiagram = 75
-
-    if "format" in parameters:
-        format = parameters["format"]
-    if "maxNoOfEdgesInDiagram" in parameters:
-        maxNoOfEdgesInDiagram = parameters["maxNoOfEdgesInDiagram"]
-
-    if activities_count is None:
-        activities_count = activities.get_activities_from_log(log)
-
-    return graphviz_visualization(activities_count, dfg, format=format, measure=measure, maxNoOfEdgesInDiagram=maxNoOfEdgesInDiagram)
-
 def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequency", maxNoOfEdgesInDiagram=75):
     """
     Do GraphViz visualization of a DFG graph
@@ -146,7 +130,7 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
     Parameters
     -----------
     activities_count
-        Count of activities in the log (may include activities that are not in the DFG graph)
+        Count of attributes in the log (may include attributes that are not in the DFG graph)
     dfg
         DFG graph
     format
@@ -190,20 +174,20 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
         if not act in activities_in_dfg:
             del activities_count_int[act]
 
-    # assign activities color
+    # assign attributes color
     activities_color = get_activities_color(activities_count_int)
 
     # represent nodes
     viz.attr('node', shape='box')
     for act in activities_in_dfg:
-        if measure == "frequency":
+        if "frequency" in measure:
             viz.node(act, act + " ("+str(activities_count_int[act])+")", style='filled', fillcolor=activities_color[act])
         else:
             viz.node(act, act)
 
     # represent edges
     for edge in dfg:
-        if measure == "frequency":
+        if "frequency" in measure:
             label = str(dfg[edge])
         else:
             label = human_readable_stat(dfg[edge])
@@ -216,29 +200,21 @@ def graphviz_visualization(activities_count, dfg, format="pdf", measure="frequen
 
     return viz
 
-def return_diagram_as_base64(activities_count, dfg, format="svg", measure="frequency", maxNoOfEdgesInDiagram=75):
-    """
-    Return process model in Base64 format
+def apply(dfg, log=None, parameters=None, activities_count=None, measure="frequency"):
+    if parameters is None:
+        parameters = {}
 
-    Parameters
-    -----------
-    activities_count
-        Count of activities in the log (may include activities that are not in the DFG graph
-    dfg
-        DFG graph
-    format
-        GraphViz should be represented in this format
-    measure
-        Describes hich measure is assigned to edges in direcly follows graph (frequency/performance)
-    maxNoOfEdgesInDiagram
-        Maximum number of edges in the diagram allowed for visualization
+    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if  constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
-    Returns
-    -----------
-    string
-    """
+    format = "pdf"
+    maxNoOfEdgesInDiagram = 75
 
-    graphviz = graphviz_visualization(activities_count, dfg, format=format, measure=measure)
-    render = graphviz.render(view=False)
-    with open(render, "rb") as f:
-        return base64.b64encode(f.read())
+    if "format" in parameters:
+        format = parameters["format"]
+    if "maxNoOfEdgesInDiagram" in parameters:
+        maxNoOfEdgesInDiagram = parameters["maxNoOfEdgesInDiagram"]
+
+    if activities_count is None:
+        activities_count = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
+
+    return graphviz_visualization(activities_count, dfg, format=format, measure=measure, maxNoOfEdgesInDiagram=maxNoOfEdgesInDiagram)

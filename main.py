@@ -1,8 +1,6 @@
 from pm4py.services import main_service, http_server
-from pm4py.log.importer import xes as xes_importer
 import configparser
-import os
-from time import sleep
+
 # read configuration file (service setup)
 config = configparser.ConfigParser()
 config.read('serviceConfiguration.ini')

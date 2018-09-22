@@ -1,22 +1,14 @@
 from flask import Flask, request
-from pm4py.algo.alpha import factory as alpha_factory
-from pm4py.algo.inductive import factory as inductive_factory
-from pm4py.log.importer import xes as xes_importer, csv as csv_importer
-from pm4py.models.petri.visualize import return_diagram_as_base64
-from pm4py.log.util import auto_filter, activities as activities_module
-from pm4py.log import transform
+from pm4py.entities.log.importer.xes import factory as xes_factory
+from pm4py.entities.log.importer.csv import factory as csv_factory
+from pm4py.entities.log import transform
 from flask_cors import CORS
-from threading import Semaphore
-from copy import copy
 import os
 import base64
 import logging, traceback
-from pm4py.algo.tokenreplay.versions import token_replay
-from pm4py.algo.tokenreplay.data_structures import performance_map
-from pm4py.log.util import insert_classifier
-from pm4py.algo.dfg import factory as dfg_factory, replacement as dfg_replacement
-from pm4py.visualization.dfg.versions import simple_visualize as dfg_visualize
-
+from pm4py.visualization.petrinet.common import base64conv
+from pm4py.util import constants
+from pm4py.util import simple_view
 
 class shared:
     # contains shared variables
@@ -25,8 +17,6 @@ class shared:
     config = None
     # trace logs
     trace_logs = {}
-    # semaphore
-    sem = Semaphore(1)
 
 app = Flask(__name__)
 CORS(app)
@@ -61,7 +51,6 @@ def load_logs():
     If enabled, load logs in the folder
     """
     if shared.config["logFolder"]["loadLogsAutomatically"]:
-        shared.sem.acquire()
         # loading logs
         logsFolderPath = shared.config["logFolder"]["logFolderPath"]
         folderContent = os.listdir(logsFolderPath)
@@ -74,12 +63,12 @@ def load_logs():
                     if not logName in shared.trace_logs:
                         if logExtension == "xes":
                             # load XES files
-                            shared.trace_logs[logName] = xes_importer.import_from_file_xes(fullPath)
+                            shared.trace_logs[logName] = xes_factory.import_log(fullPath, variant="nonstandard")
                             shared.trace_logs[logName].sort()
                             shared.trace_logs[logName].insert_trace_index_as_event_attribute()
                         elif logExtension == "csv":
                             # load CSV files
-                            event_log = csv_importer.import_from_path(fullPath)
+                            event_log = csv_factory.import_log(fullPath)
                             shared.trace_logs[logName] = transform.transform_event_log_to_trace_log(event_log)
                             shared.trace_logs[logName].sort()
                             shared.trace_logs[logName].insert_trace_index_as_event_attribute()
@@ -87,7 +76,6 @@ def load_logs():
                 # manage exception
                 logging.error("exception loading log: "+str(file)+": "+str(e))
                 logging.error("traceback: "+traceback.format_exc())
-        shared.sem.release()
         # loaded logs
 
 @app.route("/uploadEventLog",methods=["POST"])
@@ -98,17 +86,15 @@ def upload_event_log():
     The upload consists in a JSON that contains the id and the content
     """
     if shared.config["logFolder"]["logUploadPermitted"]:
-        shared.sem.acquire()
         try:
             content = request.get_json()
             logId = content['id']
             logContent = base64.b64decode(content['content']).decode("utf-8")
-            log = xes_importer.import_from_xes_string(logContent)
+            log = xes_factory.import_log_from_string(logContent, variant="nonstandard")
             shared.trace_logs[logId] = log
-            shared.sem.release()
             return "{\"success\":True}"
         except Exception as e:
-            shared.sem.release()
+            traceback.print_exc()
             return "{\"success\":False}"
     return "{\"success\":False}"
 
@@ -146,64 +132,35 @@ def get_process_schema():
     replayEnabled = request.args.get('replayenabled', default=True, type=bool)
     # replay measure
     replayMeasure = request.args.get('replaymeasure', default="frequency", type=str)
-
-    # acquire the semaphore as we want to access the logs
-    # without desturbing
-    shared.sem.acquire()
+    # aggregation measure
+    if "frequency" in replayMeasure:
+        aggregationMeasure = request.args.get('aggregationmeasure', default="sum", type=str)
+    elif "performance" in replayMeasure:
+        aggregationMeasure = request.args.get('aggregationmeasure', default="mean", type=str)
 
     try:
         # if the specified process is in memory, then proceed
         if process in shared.trace_logs:
             # retrieve the log
             original_log = shared.trace_logs[process]
-            original_log, classifier_key = insert_classifier.search_and_insert_event_classifier_attribute(original_log)
-            if activity_key is None:
-                activity_key = classifier_key
-            if activity_key is None:
-                activity_key = "concept:name"
-            # release the semaphore
-            shared.sem.release()
-            # apply automatically a filter
-            log = auto_filter.apply_auto_filter(copy(original_log), decreasingFactor=decreasingFactor, activity_key=activity_key)
-            # apply a process discovery algorithm
-            if discoveryAlgorithm == "dfg":
-                # gets the number of occurrences of the single activities in the filtered log
-                filtered_log_activities_count = activities_module.get_activities_from_log(log)
-                # gets an intermediate log that is the original log restricted to the list
-                # of activities that appears in the filtered log
-                intermediate_log = activities_module.filter_log_by_specified_activities(original_log, filtered_log_activities_count)
-                # gets the number of occurrences of the single activities in the intermediate log
-                activities_count = activities_module.get_activities_from_log(intermediate_log)
-                # calculate DFG of the filtered log and of the intermediate log
-                dfg_filtered_log = dfg_factory.apply(log, variant=replayMeasure)
-                dfg_intermediate_log = dfg_factory.apply(intermediate_log, variant=replayMeasure)
-                # replace edges values in the filtered DFG from the one found in the intermediate log
-                dfg_filtered_log = dfg_replacement.replace_values(dfg_filtered_log, dfg_intermediate_log)
-                # retrieve the diagram in base64
-                diagram = dfg_visualize.return_diagram_as_base64(activities_count, dfg_filtered_log, format=imageFormat, measure=replayMeasure)
-            else:
-                if discoveryAlgorithm == "inductive":
-                    net, initial_marking, final_marking = inductive_factory.apply(log, activity_key=activity_key)
-                elif discoveryAlgorithm == "alpha":
-                    net, initial_marking, final_marking = alpha_factory.apply(log, activity_key=activity_key)
-                if replayEnabled:
-                    # do the replay
-                    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-                        token_replay.apply_log(original_log, net, initial_marking, final_marking, activity_key=activity_key)
-                    element_statistics = performance_map.single_element_statistics(original_log, net, initial_marking, activatedTransitions,
-                                                                                   activity_key=activity_key, timestamp_key=timestamp_key)
-                    aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=replayMeasure)
-                    # return the diagram in base64
-                    diagram = return_diagram_as_base64(net, format=imageFormat, initial_marking=initial_marking, final_marking=final_marking, decorations=aggregated_statistics)
-                else:
-                    # return the diagram in base64
-                    diagram = return_diagram_as_base64(net, format=imageFormat, initial_marking=initial_marking, final_marking=final_marking)
+
+            parameters = {}
+            parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = activity_key
+            parameters["simplicity"] = decreasingFactor
+            parameters["format"] = imageFormat
+            parameters["decoration"] = replayMeasure
+            parameters["replayEnabled"] = replayEnabled
+            parameters["algorithm"] = discoveryAlgorithm
+            parameters["aggregationMeasure"] = aggregationMeasure
+
+            gviz = simple_view.apply(original_log, parameters=parameters)
+            diagram = base64conv.get_base64_from_gviz(gviz)
             return diagram
         else:
-            # release the semaphore
-            shared.sem.release()
+            pass
     except Exception as e:
         # manage exception
+        traceback.print_exc()
         logging.error("exception calculating process schema: "+str(e))
         logging.error("traceback: " + traceback.format_exc())
 

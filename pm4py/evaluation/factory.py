@@ -2,8 +2,9 @@ from pm4py.evaluation.generalization.versions import token_based as generalizati
 from pm4py.evaluation.precision.versions import etconformance_token as precision_token_based
 from pm4py.evaluation.simplicity.versions import arc_degree as simplicity_arc_degree
 from pm4py.evaluation.replay_fitness.versions import token_replay as fitness_token_based
-from pm4py.algo.tokenreplay import factory as token_replay
-from pm4py import log as log_lib
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.entities import log as log_lib
+from pm4py import util as pmutil
 
 PARAM_ACTIVITY_KEY = 'activity_key'
 PARAM_FITNESS_WEIGHT = 'fitness_weight'
@@ -49,15 +50,16 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     simplicity_weight = simplicity_weight / sum_of_weights
     generalization_weight = generalization_weight / sum_of_weights
 
-    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-        token_replay.apply(log, net, initial_marking, final_marking, activity_key=activity_key)
+    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+
+    aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_TR)
 
     parameters = {}
     parameters["activity_key"] = activity_key
 
-    fitness = fitness_token_based.get_fitness(traceIsFit, traceFitnessValue)
+    fitness = fitness_token_based.get_fitness(aligned_traces)
     precision = precision_token_based.apply(log, net, initial_marking, final_marking, parameters=parameters)
-    generalization = generalization_token_based.get_generalization(net, activatedTransitions)
+    generalization = generalization_token_based.get_generalization(net, aligned_traces)
     simplicity = simplicity_arc_degree.apply(net)
 
     dictionary = {}
