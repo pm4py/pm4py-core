@@ -1,7 +1,9 @@
 from collections import Counter
-from pm4py.log.log import TraceLog, Event, Trace
-from pm4py.algo.tokenreplay.versions import token_replay
-from pm4py import log as log_lib
+from pm4py.entities.log.log import TraceLog, Event, Trace
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.entities import log as log_lib
+from pm4py import util as pmutil
+from pm4py.entities.log.util import xes as xes_util
 
 """
 Implementation of the approach described in paper
@@ -10,7 +12,7 @@ Muñoz-Gama, Jorge, and Josep Carmona. "A fresh look at precision in process con
 
 for measuring precision.
 
-For each prefix in the log, the reflected tasks are calculated (outgoing activities from the prefix)
+For each prefix in the log, the reflected tasks are calculated (outgoing attributes from the prefix)
 Then, a token replay is done on the prefix in order to get activated transitions
 Escaping edges is the set difference between activated transitions and reflected tasks
 
@@ -20,11 +22,11 @@ At the moment, the precision value is different from the one provided by the Pro
 although the implementation seems to follow the paper concept
 """
 
-PARAM_ACTIVITY_KEY = 'activity_key'
+PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY]
 
-def get_log_prefixes(log, activity_key="concept:name"):
+def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
     Get trace log prefixes
 
@@ -50,7 +52,7 @@ def get_log_prefixes(log, activity_key="concept:name"):
             i = i + 1
     return prefixes, prefixCount
 
-def form_fake_log(prefixesKeys, prefixes, activity_key="concept:name"):
+def form_fake_log(prefixesKeys, prefixes, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
     Form fake log for replay (putting each prefix as separate trace to align)
 
@@ -103,13 +105,20 @@ def apply(log, net, marking, final_marking, parameters=None):
     prefixes, prefixCount = get_log_prefixes(log, activity_key=activity_key)
     prefixesKeys = list(prefixes.keys())
     fake_log = form_fake_log(prefixesKeys, prefixes, activity_key=activity_key)
-    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings,enabledTransitionsInMarkings] = token_replay.apply_log(fake_log, net, marking, final_marking, consider_remaining_in_fitness=False, tryToReachFinalMarkingThroughHidden=False, stopImmediatelyWhenUnfit=True, useHiddenTransitionsToEnableCorrespondingTransitions=True, activity_key=activity_key)
+
+    parameters_TR = {}
+    parameters_TR["consider_remaining_in_fitness"] = False
+    parameters_TR["tryToReachFinalMarkingThroughHidden"] = False
+    parameters_TR["stopImmediatelyWhenUnfit"] = True
+    parameters_TR["useHiddenTransitionsToEnableCorrespondingTransitions"] = True
+    parameters_TR["activity_key"] = activity_key
+    aligned_traces = token_replay.apply(fake_log, net, marking, final_marking, parameters=parameters_TR)
 
     i = 0
-    while i < len(traceIsFit):
-        if traceIsFit[i]:
+    while i < len(aligned_traces):
+        if aligned_traces[i]["tFit"]:
             logTransitions = set(prefixes[prefixesKeys[i]])
-            activatedTransitionsLabels = set([x.label for x in enabledTransitionsInMarkings[i] if x.label is not None])
+            activatedTransitionsLabels = set([x.label for x in aligned_traces[i]["actTrans"] if x.label is not None])
             sumAT += len(activatedTransitionsLabels) * prefixCount[prefixesKeys[i]]
             escapingEdges = activatedTransitionsLabels.difference(logTransitions)
             sumEE += len(escapingEdges) * prefixCount[prefixesKeys[i]]

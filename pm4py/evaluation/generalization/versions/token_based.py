@@ -1,13 +1,14 @@
-from pm4py.algo.tokenreplay import factory as token_replay
-from pm4py import log as log_lib
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.entities import log as log_lib
 from collections import Counter
 from math import sqrt
+from pm4py import util as pmutil
 
-PARAM_ACTIVITY_KEY = 'activity_key'
+PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY]
 
-def get_generalization(petri_net, activatedTransitions):
+def get_generalization(petri_net, aligned_traces):
     """
     Gets the generalization from the Petri net and the list of activated transitions
     during the replay
@@ -26,8 +27,10 @@ def get_generalization(petri_net, activatedTransitions):
 
     Parameters
     -----------
-    activatedTransitions
-        Activated transition during (token-based) replay
+    petri_net
+        Petri net
+    aligned_traces
+        Result of the token-replay
 
     Returns
     -----------
@@ -36,8 +39,8 @@ def get_generalization(petri_net, activatedTransitions):
     """
 
     transOccMap = Counter()
-    for trace in activatedTransitions:
-        for trans in trace:
+    for trace in aligned_traces:
+        for trans in trace["actTrans"]:
             transOccMap[trans] += 1
     inv_sq_occ_sum = 0.0
     for trans in transOccMap:
@@ -88,7 +91,9 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     if parameters is None:
         parameters = {}
     activity_key = parameters[PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
-    [traceIsFit, traceFitnessValue, activatedTransitions, placeFitness, reachedMarkings, enabledTransitionsInMarkings] =\
-        token_replay.apply(log, petri_net, initial_marking, final_marking, activity_key=activity_key)
 
-    return get_generalization(petri_net, activatedTransitions)
+    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+
+    aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_TR)
+
+    return get_generalization(petri_net, aligned_traces)

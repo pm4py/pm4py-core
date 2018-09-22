@@ -2,41 +2,29 @@
 
 Fitness on Alpha and Inductive models - measured by token-based replay and alignments
 ----
-log                          	fitness_token_alpha          	times_tokenreplay_alpha      	fitness_token_imdf           	times_tokenreplay_imdf       	fitness_align_imdf           	times_alignments_imdf        
-01_running-example.xes.gz    	100.000                      	0.003                        	100.000                      	0.003                        	100.000                      	1.168                        
-02_teleclaims.xes.gz         	82.944                       	0.050                        	100.000                      	0.053                        	100.000                      	26.631                       
-03_repairExample.xes.gz      	100.000                      	0.061                        	42.935                       	0.097                        	42.754                       	14.357                       
-04_reviewing.xes.gz          	100.000                      	0.125                        	100.000                      	0.128                        	100.000                      	4.137                        
-05_bpic2017.xes.gz           	56.765                       	0.249                        	100.000                      	0.239                        	100.000                      	60.538                       
-06_bpic2013_incidents.xes.gz 	0.013                        	2.567                        	100.000                      	2.203                        	100.000                      	36.114                       
-07_bpic2013_problems.xes.gz  	0.000                        	0.610                        	99.126                       	0.194                        	99.126                       	5.083                        
-08_receipt.xes.gz            	8.159                        	0.190                        	100.000                      	0.109                        	95.886                       	34.626                       
+log                          	fitness_token_alpha          	times_tokenreplay_alpha      	fitness_token_imdf           	times_tokenreplay_imdf       
+01_running-example.xes.gz    	100.000                      	0.003                        	100.000                      	0.003                        
+02_teleclaims.xes.gz         	100.000                      	0.056                        	100.000                      	0.057                        
+03_repairExample.xes.gz      	100.000                      	0.038                        	100.000                      	0.038                        
+04_reviewing.xes.gz          	100.000                      	0.051                        	100.000                      	0.050                        
 
 
 Precision measured by ETConformance where activated transitions are retrieved using token replay
 ----
 log                          	precision_alpha              	precision_imdf               
-01_running-example.xes.gz    	0.807                        	0.207                        
-02_teleclaims.xes.gz         	0.325                        	0.308                        
-03_repairExample.xes.gz      	0.971                        	0.438                        
-04_reviewing.xes.gz          	0.734                        	0.141                        
-05_bpic2017.xes.gz           	0.684                        	0.855                        
-06_bpic2013_incidents.xes.gz 	0.000                        	0.359                        
-07_bpic2013_problems.xes.gz  	0.916                        	0.584                        
-08_receipt.xes.gz            	0.351                        	0.210                        
+01_running-example.xes.gz    	0.104                        	0.104                        
+02_teleclaims.xes.gz         	0.000                        	0.000                        
+03_repairExample.xes.gz      	0.000                        	0.000                        
+04_reviewing.xes.gz          	0.000                        	0.000                        
 
 
 Generalization based on token replay transition recall
 ----
 log                          	generalization_alpha         	generalization_imdf          
 01_running-example.xes.gz    	0.526                        	0.462                        
-02_teleclaims.xes.gz         	0.978                        	0.928                        
-03_repairExample.xes.gz      	0.967                        	0.852                        
-04_reviewing.xes.gz          	0.895                        	0.900                        
-05_bpic2017.xes.gz           	0.991                        	0.844                        
-06_bpic2013_incidents.xes.gz 	0.864                        	0.888                        
-07_bpic2013_problems.xes.gz  	0.849                        	0.688                        
-08_receipt.xes.gz            	0.755                        	0.667                        
+02_teleclaims.xes.gz         	0.000                        	0.000                        
+03_repairExample.xes.gz      	0.000                        	0.000                        
+04_reviewing.xes.gz          	0.000                        	0.000                        
 
 
 Simplicity based on inverse arc degree
@@ -44,10 +32,6 @@ Simplicity based on inverse arc degree
 log                          	simplicity_alpha             	simplicity_imdf              
 01_running-example.xes.gz    	0.533                        	0.722                        
 02_teleclaims.xes.gz         	0.525                        	0.678                        
-03_repairExample.xes.gz      	0.500                        	0.636                        
-04_reviewing.xes.gz          	0.541                        	0.742                        
-05_bpic2017.xes.gz           	0.533                        	0.682                        
-06_bpic2013_incidents.xes.gz 	0.867                        	0.800                        
-07_bpic2013_problems.xes.gz  	0.700                        	0.739                        
-08_receipt.xes.gz            	0.321                        	0.764                        
+03_repairExample.xes.gz      	0.500                        	0.644                        
+04_reviewing.xes.gz          	0.541                        	0.750                        
 
