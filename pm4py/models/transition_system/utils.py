@@ -39,9 +39,10 @@ def remove_arc_from_to(name, fr, to, ts):
     -------
     None
     '''
-    ts.transitions[:] = [t for t in ts.transitions if t.name != name]
-    fr.outgoing[:] = [t for t in fr.outgoing if t.name != name]
-    to.incoming[:] = [t for t in fr.incoming if t.name != name]
+    ts.transitions = [t for t in ts.transitions if t.name != name]
+    fr.outgoing = [t for t in fr.outgoing if t.name != name]
+    to.incoming = [t for t in to.incoming if t.name != name]
+
 
 def remove_all_arcs_from_to(fr, to, ts):
     '''
@@ -59,9 +60,10 @@ def remove_all_arcs_from_to(fr, to, ts):
     None
     '''
     names_transitions_to_delete = [t.name for t in ts.transitions if t in fr.outgoing and t in to.incoming]
-    ts.transitions[:] = [t for t in ts.transitions if t.name not in  names_transitions_to_delete]
-    fr.outgoing[:] = [t for t in fr.outgoing if t.name not in  names_transitions_to_delete]
-    to.incoming[:] = [t for t in fr.incoming if t.name not in  names_transitions_to_delete]
+    ts.transitions = [t for t in ts.transitions if t.name not in names_transitions_to_delete]
+    fr.outgoing = [t for t in fr.outgoing if t.name not in names_transitions_to_delete]
+    to.incoming = [t for t in to.incoming if t.name not in names_transitions_to_delete]
+
 
 def transitive_reduction(ts):
     '''
@@ -74,7 +76,7 @@ def transitive_reduction(ts):
 
     Returns
     -------
-    The transitive reduction of the transition system
+    None
     '''
 
     def check(state, child, done):
@@ -92,18 +94,31 @@ def transitive_reduction(ts):
             check(state, child, done)
 
 
+if __name__ == '__main__':
+    ts = transition_system.TransitionSystem()
+    a = transition_system.TransitionSystem.State('A')
+    ts.states.add(a)
+    b = transition_system.TransitionSystem.State('B')
+    ts.states.add(b)
+    c = transition_system.TransitionSystem.State('C')
+    ts.states.add(c)
+    d = transition_system.TransitionSystem.State('D')
+    ts.states.add(d)
+    e = transition_system.TransitionSystem.State('E')
+    ts.states.add(e)
+    add_arc_from_to('AB', a, b, ts)
+    add_arc_from_to('AC', a, c, ts)
+    add_arc_from_to('AD', a, d, ts)
+    add_arc_from_to('AE', a, e, ts)
+    add_arc_from_to('BD', b, d, ts)
+    add_arc_from_to('CD', c, d, ts)
+    add_arc_from_to('CE', c, e, ts)
+    add_arc_from_to('DE', d, e, ts)
 
+    from pm4py.models.transition_system import visualize as ts_vis
 
-
-#     for vertex0 in vertices:
-#         done = set()
-#         for child in vertex0.children:
-#             df(edges, vertex0, child, done)
-#
-#     df = function(edges, vertex0, child0, done)
-#     if child0 in done:
-#         return
-#     for child in child0.children:
-#         edge.discard((vertex0, child))
-#         df(edges, vertex0, child, done)
-#     done.add(child0)
+    # vis = ts_vis.graphviz.visualize(ts)
+    # vis.view()
+    transitive_reduction(ts)
+    vis2 = ts_vis.graphviz.visualize(ts)
+    vis2.view()
