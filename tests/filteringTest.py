@@ -34,5 +34,11 @@ class LogFilteringTest(unittest.TestCase):
         log1 = attributes_filter.apply(log, ["reject request"], parameters={"positive": True})
         log2 = attributes_filter.apply(log, ["reject request"], parameters={"positive": True})
 
+    def test_filtering_variants(self):
+        inputLog = os.path.join(INPUT_DATA_DIR, "running-example.xes")
+        log = xes_importer.import_log(inputLog)
+        log1 = variants_module.apply(log, ["register request,examine casually,check ticket,decide,reinitiate request,examine thoroughly,check ticket,decide,pay compensation"], parameters={"positive":False})
+        log2 = variants_module.apply(log, ["register request,examine casually,check ticket,decide,reinitiate request,examine thoroughly,check ticket,decide,pay compensation"], parameters={"positive":True})
+
 if __name__ == "__main__":
     unittest.main()
