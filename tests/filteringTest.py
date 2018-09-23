@@ -56,5 +56,11 @@ class LogFilteringTest(unittest.TestCase):
         log = xes_importer.import_log(inputLog)
         cases = case_filter.filter_on_case_size(log, min_case_size=3, max_case_size=5)
 
+    def test_pathsfilter(self):
+        inputLog = os.path.join(INPUT_DATA_DIR, "running-example.xes")
+        log = xes_importer.import_log(inputLog)
+        log1 = paths_filter.apply(log, [("examine casually", "check ticket")], {"positive": True})
+        log2 = paths_filter.apply(log, [("examine casually", "check ticket")], {"positive": False})
+
 if __name__ == "__main__":
     unittest.main()
