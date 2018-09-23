@@ -3,6 +3,32 @@ from pm4py.entities.log.util import xes
 from pm4py.util import constants
 from pm4py.algo.filtering.common import filtering_constants
 
+def apply(trace_log, admitted_variants, parameters=None):
+    """
+    Filter log keeping/removing only provided variants
+
+    Parameters
+    -----------
+    trace_log
+        Trace log object
+    admitted_variants
+        Admitted variants
+    parameters
+        Parameters of the algorithm, including:
+            activity_key -> Attribute identifying the activity in the log
+            positive -> Indicate if events should be kept/removed
+    """
+
+    if parameters is None:
+        parameters = {}
+    positive = parameters["positive"] if "positive" in parameters else True
+    variants = get_variants(trace_log, parameters=parameters)
+    trace_log = TraceLog()
+    for variant in variants:
+        if (positive and variant in admitted_variants) or (not(positive) and not(variant in admitted_variants)):
+            for trace in variants[variant]:
+                trace_log.append(trace)
+    return trace_log
 
 def get_variants(trace_log, parameters=None):
     """
@@ -45,6 +71,8 @@ def get_variants_from_log_trace_idx(trace_log, parameters=None):
     variant
         Dictionary with variant as the key and the list of traces indexes as the value
     """
+    if parameters is None:
+        parameters = {}
 
     attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 

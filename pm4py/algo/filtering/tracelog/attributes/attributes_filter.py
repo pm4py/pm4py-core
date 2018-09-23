@@ -15,8 +15,10 @@ def apply_events(trace_log, values, parameters=None):
         Trace log
     values
         Allowed attributes
-    attribute_key
-        Activiy key (must be specified if different from concept:name)
+    parameters
+        Parameters of the algorithm, including:
+            activity_key -> Attribute identifying the activity in the log
+            positive -> Indicate if events should be kept/removed
 
     Returns
     -----------
@@ -54,8 +56,10 @@ def apply(trace_log, values, parameters=None):
         Trace log
     values
         Allowed attributes
-    attribute_key
-        Activiy key (must be specified if different from concept:name)
+    parameters
+        Parameters of the algorithm, including:
+            activity_key -> Attribute identifying the activity in the log
+            positive -> Indicate if events should be kept/removed
 
     Returns
     -----------
