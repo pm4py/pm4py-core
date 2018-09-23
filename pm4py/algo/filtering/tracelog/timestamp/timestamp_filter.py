@@ -148,3 +148,9 @@ def apply_events(trace_log, dt1, dt2, parameters=None):
     filtered_trace_log = transform.transform_event_log_to_trace_log(filtered_event_log)
 
     return filtered_trace_log
+
+def apply(df, parameters=None):
+    raise Exception("apply method not available for timestamp filter")
+
+def apply_auto_filter(df, parameters=None):
+    raise Exception("apply_auto_filter method not available for timestamp filter")
