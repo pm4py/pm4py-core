@@ -58,13 +58,13 @@ def apply_auto_filter(df, parameters=None):
     activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
-    end_activities = get_end_activities(df, case_id_glue=case_id_glue, activity_key=activity_key)
+    end_activities = get_end_activities(df, parameters=parameters)
     ealist = end_activities_common.get_sorted_end_activities_list(end_activities)
     eathreshold = end_activities_common.get_end_activities_threshold(end_activities, ealist, decreasingFactor)
 
     return filter_df_on_end_activities_nocc(df, eathreshold, ea_count=end_activities, case_id_glue=case_id_glue, activity_key=activity_key)
 
-def get_end_activities(df, case_id_glue=filtering_constants.CASE_CONCEPT_NAME, activity_key=xes.DEFAULT_NAME_KEY):
+def get_end_activities(df, parameters=None):
     """
     Get end activities count
 
@@ -72,16 +72,22 @@ def get_end_activities(df, case_id_glue=filtering_constants.CASE_CONCEPT_NAME, a
     -----------
     df
         Pandas dataframe
-    case_id_glue
-        Column that identifies the case ID
-    activity_key
-        Column that identifies the activity
+    parameters
+        Parameters of the algorithm, including:
+            case_id_glue -> Case ID column in the dataframe
+            activity_key -> Column that represents the activity
 
     Returns
     -----------
     endact_dict
         Dictionary of end activities along with their count
     """
+    if parameters is None:
+        parameters = {}
+
+    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+
     lastEveDf = df.groupby(case_id_glue).last()
     endact_dict = dict(lastEveDf[activity_key].value_counts())
     return endact_dict

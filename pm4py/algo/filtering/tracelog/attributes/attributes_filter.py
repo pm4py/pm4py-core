@@ -26,8 +26,6 @@ def get_attribute_values(trace_log, attribute_key, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-
     attributes = {}
 
     for trace in trace_log:
