@@ -10,7 +10,7 @@ from pm4py.algo.filtering.tracelog.start_activities import start_activities_filt
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
 from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
-
+from pm4py.algo.cases.tracelog import case_statistics
 
 class LogFilteringTest(unittest.TestCase):
     def test_logfiltering_filtering1(self):
@@ -39,6 +39,11 @@ class LogFilteringTest(unittest.TestCase):
         log = xes_importer.import_log(inputLog)
         log1 = variants_module.apply(log, ["register request,examine casually,check ticket,decide,reinitiate request,examine thoroughly,check ticket,decide,pay compensation"], parameters={"positive":False})
         log2 = variants_module.apply(log, ["register request,examine casually,check ticket,decide,reinitiate request,examine thoroughly,check ticket,decide,pay compensation"], parameters={"positive":True})
+
+    def test_obtaining_variants(self):
+        inputLog = os.path.join(INPUT_DATA_DIR, "running-example.xes")
+        log = xes_importer.import_log(inputLog)
+        stats = case_statistics.get_variant_statistics(log)
 
 if __name__ == "__main__":
     unittest.main()
