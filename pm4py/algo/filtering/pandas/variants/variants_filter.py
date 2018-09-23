@@ -4,6 +4,49 @@ from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.cases.pandas import case_statistics
 import time
 
+def apply_auto_filter(df, parameters=None):
+    """
+    Apply an automatic filter on variants
+
+    Parameters
+    -----------
+    df
+        Dataframe
+    admitted_variants
+        List of admitted variants (to include/exclude)
+    parameters
+        Parameters of the algorithm, including:
+            case_id_glue -> Column that contains the Case ID
+            activity_key -> Column that contains the activity
+            variants_df -> If provided, avoid recalculation of the variants dataframe
+            decreasingFactor -> Decreasing factor that should be passed to the algorithm
+
+    Returns
+    -----------
+    df
+        Filtered dataframe
+    """
+    if parameters is None:
+        parameters = {}
+    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    variants = case_statistics.get_variants_statistics(df, parameters=parameters)
+    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+
+    admitted_variants = []
+    if len(variants) > 0:
+        currentVariantCount = variants[0][case_id_glue]
+
+        i = 0
+        while i < len(variants):
+            if variants[i][case_id_glue] >= decreasingFactor * currentVariantCount:
+                admitted_variants.append(variants[i]["variant"])
+            else:
+                break
+            currentVariantCount = variants[i][case_id_glue]
+            i = i + 1
+
+    return apply(df, admitted_variants, parameters=parameters)
+
 def apply(df, admitted_variants, parameters=None):
     """
     Apply a filter on variants
