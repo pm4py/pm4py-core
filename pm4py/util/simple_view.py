@@ -76,9 +76,9 @@ def apply(original_log, parameters=None):
         filtered_log_activities_count = activities_module.get_attribute_values(log, activity_key, parameters=parameters_autofilter)
         # gets an intermediate log that is the original log restricted to the list
         # of attributes that appears in the filtered log
-        intermediate_log = activities_module.filter_log_by_specified_attributes(original_log,
-                                                                                filtered_log_activities_count,
-                                                                                attribute_key=activity_key)
+        intermediate_log = activities_module.apply_events(original_log,
+                                                          filtered_log_activities_count,
+                                                          parameters=parameters_autofilter)
         # gets the number of occurrences of the single attributes in the intermediate log
         activities_count = activities_module.get_attribute_values(intermediate_log, activity_key, parameters=parameters_autofilter)
         # calculate DFG of the filtered log and of the intermediate log

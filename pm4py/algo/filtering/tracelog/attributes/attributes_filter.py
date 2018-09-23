@@ -5,6 +5,45 @@ from pm4py.entities.log.util import xes
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.attributes import attributes_common
 
+def apply_events(trace_log, values, parameters=None):
+    """
+    Filter log by keeping only events with an attribute value that belongs to the provided values list
+
+    Parameters
+    -----------
+    trace_log
+        Trace log
+    values
+        Allowed attributes
+    attribute_key
+        Activiy key (must be specified if different from concept:name)
+
+    Returns
+    -----------
+    filtered_log
+        Filtered log
+    """
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
+    positive = parameters["positive"] if "positive" in parameters else True
+
+    filtered_log = TraceLog()
+    for trace in trace_log:
+        new_trace = Trace()
+
+        j = 0
+        while j < len(trace):
+            if attribute_key in trace[j]:
+                attribute_value = trace[j][attribute_key]
+                if (positive and attribute_value in values) or (not(positive) and not(attribute_value in values)):
+                    new_trace.append(trace[j])
+            j = j + 1
+        if len(new_trace) > 0:
+            filtered_log.append(new_trace)
+    return filtered_log
+
 def get_attribute_values(trace_log, attribute_key, parameters=None):
     """
     Get the attribute values of the log for the specified attribute along with their count
@@ -73,38 +112,6 @@ def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, thre
                 if attribute_value in attributes:
                     if attribute_value in fva or attributes[attribute_value] >= threshold:
                         new_trace.append(trace[j])
-            j = j + 1
-        if len(new_trace) > 0:
-            filtered_log.append(new_trace)
-    return filtered_log
-
-def filter_log_by_specified_attributes(trace_log, attributes_list, attribute_key="concept:name"):
-    """
-    Filter log by keeping only attributes that belongs to the activity list
-
-    Parameters
-    -----------
-    trace_log
-        Trace log
-    attributes_list
-        Allowed attributes
-    attribute_key
-        Activiy key (must be specified if different from concept:name)
-
-    Returns
-    -----------
-    filtered_log
-        Filtered log
-    """
-    filtered_log = TraceLog()
-    for trace in trace_log:
-        new_trace = Trace()
-        j = 0
-        while j < len(trace):
-            if attribute_key in trace[j]:
-                attribute_value = trace[j][attribute_key]
-                if attribute_value in attributes_list:
-                    new_trace.append(trace[j])
             j = j + 1
         if len(new_trace) > 0:
             filtered_log.append(new_trace)
