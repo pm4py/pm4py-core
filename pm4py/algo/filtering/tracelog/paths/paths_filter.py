@@ -4,6 +4,43 @@ from pm4py.util import constants
 from pm4py.entities.log.util import xes
 from pm4py.algo.filtering.common import filtering_constants
 
+def apply(trace_log, paths, parameters=None):
+    """
+    Apply a filter on traces containing / not containing a path
+
+    Parameters
+    -----------
+    trace_log
+        Trace log
+    paths
+        Paths that we are looking for (expressed as tuple of 2 strings)
+    parameters
+        Parameters of the algorithm, including:
+            activity_key -> Attribute identifying the activity in the log
+            positive -> Indicate if events should be kept/removed
+
+    Returns
+    -----------
+    filtered_log
+        Filtered trace log
+    """
+    if parameters is None:
+        parameters = {}
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
+    positive = parameters["positive"] if "positive" in parameters else True
+    filtered_log = TraceLog()
+    for trace in trace_log:
+        found = False
+        i = 0
+        while i < len(trace)-1:
+            path = (trace[i][attribute_key], trace[i+1][attribute_key])
+            if path in paths:
+                found = True
+                break
+            i = i + 1
+        if (found and positive) or (not(found) and not(positive)):
+            filtered_log.append(trace)
+    return filtered_log
 
 def get_paths_from_log(trace_log, attribute_key="concept:name"):
     """
