@@ -89,3 +89,27 @@ def get_variants_statistics(df, parameters=None):
     if max_variants_to_return:
         variantsList = variantsList[:min(len(variantsList), max_variants_to_return)]
     return variantsList
+
+def get_events(df, case_id, parameters=None):
+    """
+    Get events belonging to the specified case
+
+    Parameters
+    -----------
+    df
+        Pandas dataframe
+    case_id
+        Required case ID
+    parameters
+        Possible parameters of the algorithm, including:
+            case_id_glue -> Column in which the case ID is contained
+
+    Returns
+    ----------
+    list_eve
+        List of events belonging to the case
+    """
+    if parameters is None:
+        parameters = {}
+    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    return df[df[case_id_glue] == case_id].to_dict('records')

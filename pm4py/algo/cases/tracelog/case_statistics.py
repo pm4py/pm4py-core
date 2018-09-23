@@ -60,3 +60,63 @@ def get_cases_description(trace_log, parameters=None):
         statistics_dict[str(el[0])] = {"startTime": el[1], "endTime": el[2], "caseDuration": el[3]}
 
     return statistics_dict
+
+def index_tracelog_accordingto_caseid(log, case_id, parameters=None):
+    """
+    Index a trace log according to case ID
+
+    Parameters
+    -----------
+    log
+        Trace log object
+    case_id
+        Required case ID
+    parameters
+        Possible parameters of the algorithm, including:
+            case id key -> Trace attribute in which the Case ID is contained
+
+    Returns
+    -----------
+    dict
+        Dictionary that has the case IDs as keys and the corresponding case as value
+    """
+
+    if parameters is None:
+        parameters = {}
+
+    case_id_key = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else xes.DEFAULT_TRACEID_KEY
+    indexed_log = {}
+
+    for trace in log:
+        trace_id = trace.attributes[case_id_key]
+        indexed_log[trace_id] = trace
+
+    return indexed_log
+
+def get_events(log, case_id, parameters=None):
+    """
+    Get events belonging to the specified case
+
+    Parameters
+    -----------
+    log
+        Trace log object
+    case_id
+        Required case ID
+    parameters
+        Possible parameters of the algorithm, including:
+            case id key -> Trace attribute in which the case ID is contained
+            indexed_log -> Indexed log (if it has been calculated previously)
+
+    Returns
+    ----------
+    list_eve
+        List of events belonging to the case
+    """
+    if parameters is None:
+        parameters = {}
+    indexed_log = parameters["indexed_log"] if "indexed_log" in parameters else index_tracelog_accordingto_caseid(log, parameters)
+    list_eve = []
+    for event in indexed_log[case_id]:
+        list_eve.append(dict(event))
+    return list_eve
