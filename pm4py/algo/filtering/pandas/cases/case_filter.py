@@ -1,6 +1,6 @@
 import pandas as pd
 
-def filter_df_on_ncases(df, case_id_glue="case:concept:name", max_no_cases=1000):
+def filter_on_ncases(df, case_id_glue="case:concept:name", max_no_cases=1000):
     """
     Filter a dataframe keeping only the specified maximum number of cases
 
@@ -26,7 +26,7 @@ def filter_df_on_ncases(df, case_id_glue="case:concept:name", max_no_cases=1000)
     df = df[df[case_id_glue].isin(cases_to_keep)]
     return df
 
-def filter_df_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, max_case_size=None):
+def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, max_case_size=None):
     """
     Filter a dataframe keeping only cases with at least the specified number of events
 
@@ -49,7 +49,7 @@ def filter_df_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2
         return df[element_group_size > min_case_size and element_group_size < max_case_size]
     return df[element_group_size > min_case_size]
 
-def filter_df_on_case_performance(df, case_id_glue="case:concept:name", timestamp_key="time:timestamp", min_case_performance=0, max_case_performance=10000000000):
+def filter_on_case_performance(df, case_id_glue="case:concept:name", timestamp_key="time:timestamp", min_case_performance=0, max_case_performance=10000000000):
     """
     Filter a dataframe on case performance
 

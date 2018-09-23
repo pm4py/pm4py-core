@@ -1,1 +1,0 @@
-from pm4py.algo.filtering.tracelog.performance import performance_filter
