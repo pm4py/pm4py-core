@@ -4,9 +4,37 @@ from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.attributes import attributes_common
 from pm4py.algo.filtering.pandas import pd_filtering_constants
 
+def apply_events(df, values, parameters=None):
+    """
+    Filter dataframe on attribute values (filter traces)
+
+    Parameters
+    ----------
+    df
+        Dataframe
+    values
+        Values to filter on
+    parameters
+        Possible parameters of the algorithm, including:
+            attribute_key -> Attribute we want to filter
+            positive -> Specifies if the filter should be applied including traces (positive=True) or excluding traces (positive=False)
+    Returns
+    ----------
+    df
+        Filtered dataframe
+    """
+    if parameters is None:
+        parameters = {}
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
+    positive = parameters["positive"] if "positive" in parameters else True
+    if positive:
+        return df[df[attribute_key].isin(values)]
+    else:
+        return df[~df[attribute_key].isin(values)]
+
 def apply(df, values, parameters=None):
     """
-    Filter dataframe on attribute values
+    Filter dataframe on attribute values (filter traces)
 
     Parameters
     ----------
