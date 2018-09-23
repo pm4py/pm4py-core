@@ -20,5 +20,15 @@ class CaseManagementTest(unittest.TestCase):
         df = pandas_df_imp.import_dataframe_from_path(logPath)
         cases = case_statistics_pd.get_cases_description(df)
 
+    def test_eventretrieval_pandas(self):
+        logPath = os.path.join("inputData","running-example.csv")
+        df = pandas_df_imp.import_dataframe_from_path(logPath)
+        events = case_statistics_pd.get_events(df, 1)
+
+    def test_eventretrieval_log(self):
+        logPath = os.path.join("inputData","running-example.xes")
+        log = xes_importer.import_log(logPath)
+        events = case_statistics_log.get_events(log, "1")
+
 if __name__ == "__main__":
     unittest.main()

@@ -75,8 +75,10 @@ def execute_script():
     dataframe_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
     bb = time.time()
     print("importing log time=",(bb-aa))
-    cases_desc = case_statistics.get_cases_description(dataframe, case_id_glue=CASEID_GLUE, timestamp_key=TIMEST_KEY,
-                                                     sort_by_column="caseDuration", sort_ascending=False, max_ret_cases=1000)
+
+    parameters_cde = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_TIMESTAMP_KEY: TIMEST_KEY, "sort_by_column": "caseDuration", "sort_ascending":False, "max_ret_cases":1000}
+    cases_desc = case_statistics.get_cases_description(dataframe, parameters=parameters_cde)
+
     print(cases_desc)
     bb2 = time.time()
     print("calculating and printing cases_desc = ",(bb2-bb))
