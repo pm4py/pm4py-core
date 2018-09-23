@@ -88,7 +88,7 @@ def execute_script():
     cc = time.time()
     print("saving initial Inductive Miner process schema along with frequency metrics=",(cc-bb2))
 
-    dataframe_cp = case_filter.filter_df_on_case_performance(dataframe, case_id_glue=CASEID_GLUE, timestamp_key=TIMEST_KEY, min_case_performance=100000, max_case_performance=10000000)
+    dataframe_cp = case_filter.filter_on_case_performance(dataframe, case_id_glue=CASEID_GLUE, timestamp_key=TIMEST_KEY, min_case_performance=100000, max_case_performance=10000000)
     dataframe_cp_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_cp, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
     dataframe_cp = None
     if DELETE_VARIABLES:

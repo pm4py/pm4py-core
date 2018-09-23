@@ -50,7 +50,7 @@ def execute_script():
     time3 = time.time()
     print("time3 - time2: "+str(time3-time2))
     if enable_filtering_on_cases:
-        dataframe = case_filter.filter_df_on_ncases(dataframe, case_id_glue=CASEID_GLUE, max_no_cases=max_no_cases)
+        dataframe = case_filter.filter_on_ncases(dataframe, case_id_glue=CASEID_GLUE, max_no_cases=max_no_cases)
     time4 = time.time()
     dataframe = csv_import_adapter.convert_caseid_column_to_str(dataframe, case_id_glue=CASEID_GLUE)
     dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe, timest_columns=TIMEST_COLUMNS, timest_format=TIMEST_FORMAT)
