@@ -34,6 +34,7 @@ ENABLE_STARTACT_FILTER = True
 STARTACT_TO_FILTER = ["register request"]
 ENABLE_ENDACT_FILTER = True
 ENDACT_TO_FILTER = ["pay compensation"]
+DELETE_VARIABLES = False
 
 """
 inputLog = os.path.join("C:\\road_traffic.csv")
@@ -49,6 +50,7 @@ ENABLE_STARTACT_FILTER = True
 STARTACT_TO_FILTER = ["Create Fine"]
 ENABLE_ENDACT_FILTER = True
 ENDACT_TO_FILTER = ["Payment", "Send for Credit Collection"]
+DELETE_VARIABLES = True
 """
 
 def calculate_process_schema_from_df(dataframe, path_frequency, path_performance):
@@ -81,32 +83,37 @@ def execute_script():
     calculate_process_schema_from_df(dataframe_fa, "NOFILTERS_FREQUENCY.svg", "NOFILTERS_PERFORMANCE.svg")
     GENERATED_IMAGES.append("NOFILTERS_FREQUENCY.svg")
     GENERATED_IMAGES.append("NOFILTERS_PERFORMANCE.svg")
-    del dataframe_fa
+    if DELETE_VARIABLES:
+        del dataframe_fa
     cc = time.time()
     print("saving initial Inductive Miner process schema along with frequency metrics=",(cc-bb2))
 
     dataframe_cp = case_filter.filter_df_on_case_performance(dataframe, case_id_glue=CASEID_GLUE, timestamp_key=TIMEST_KEY, min_case_performance=100000, max_case_performance=10000000)
     dataframe_cp_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_cp, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
     dataframe_cp = None
-    del dataframe_cp
+    if DELETE_VARIABLES:
+        del dataframe_cp
     calculate_process_schema_from_df(dataframe_cp_fa, "FILTER_CP_FREQUENCY.svg", "FILTER_CP_PERFORMANCE.svg")
     GENERATED_IMAGES.append("FILTER_CP_FREQUENCY.svg")
     GENERATED_IMAGES.append("FILTER_CP_PERFORMANCE.svg")
-    del dataframe_cp_fa
+    if DELETE_VARIABLES:
+        del dataframe_cp_fa
     dd = time.time()
     print("filtering on case performance and generating process schema=",(dd-cc))
 
     if ENABLE_ATTRIBUTE_FILTER:
-        parameters_att = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: ATTRIBUTE_TO_FILTER, "positive": True}
-        #dataframe_att = attributes_filter.apply(dataframe, ATTRIBUTE_VALUES_TO_FILTER, parameters=parameters_att)
-        dataframe_att = attributes_filter.apply_auto_filter(dataframe, parameters=parameters_att)
+        parameters_att = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: ATTRIBUTE_TO_FILTER, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ATTRIBUTE_TO_FILTER, "positive": True}
+        dataframe_att = attributes_filter.apply(dataframe, ATTRIBUTE_VALUES_TO_FILTER, parameters=parameters_att)
+        #dataframe_att = attributes_filter.apply_auto_filter(dataframe, parameters=parameters_att)
         print("all the activities in the log", attributes_filter.get_attribute_values(dataframe_att, ACTIVITY_KEY))
         dataframe_att_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_att, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
-        del dataframe_att
+        if DELETE_VARIABLES:
+            del dataframe_att
         calculate_process_schema_from_df(dataframe_att_fa, "FILTER_ATT_FREQUENCY.svg", "FILTER_ATT_PERFORMANCE.svg")
         GENERATED_IMAGES.append("FILTER_ATT_FREQUENCY.svg")
         GENERATED_IMAGES.append("FILTER_ATT_PERFORMANCE.svg")
-        del dataframe_att_fa
+        if DELETE_VARIABLES:
+            del dataframe_att_fa
         ee = time.time()
         print("filtering on attribute values and generating process schema=",(ee-dd))
 
@@ -125,11 +132,13 @@ def execute_script():
                                                                  activity_key=ACTIVITY_KEY)
         print("start activities in the filtered log = ", start_act)
         dataframe_sa_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_sa, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
-        del dataframe_sa
+        if DELETE_VARIABLES:
+            del dataframe_sa
         calculate_process_schema_from_df(dataframe_sa_fa, "FILTER_SA_FREQUENCY.svg", "FILTER_SA_PERFORMANCE.svg")
         GENERATED_IMAGES.append("FILTER_SA_FREQUENCY.svg")
         GENERATED_IMAGES.append("FILTER_SA_PERFORMANCE.svg")
-        del dataframe_sa_fa
+        if DELETE_VARIABLES:
+            del dataframe_sa_fa
     gg = time.time()
     if ENABLE_STARTACT_FILTER:
         print("filtering start activities time=",(gg-ff))
@@ -142,11 +151,13 @@ def execute_script():
                                                            activity_key=ACTIVITY_KEY)
         print("end activities in the filtered log = ", end_act)
         dataframe_ea_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_ea, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
-        del dataframe_ea
+        if DELETE_VARIABLES:
+            del dataframe_ea
         calculate_process_schema_from_df(dataframe_ea_fa, "FILTER_EA_FREQUENCY.svg", "FILTER_EA_PERFORMANCE.svg")
         GENERATED_IMAGES.append("FILTER_EA_FREQUENCY.svg")
         GENERATED_IMAGES.append("FILTER_EA_PERFORMANCE.svg")
-        del dataframe_ea_fa
+        if DELETE_VARIABLES:
+            del dataframe_ea_fa
     hh = time.time()
     if ENABLE_ENDACT_FILTER:
         print("filtering end activities time=",(hh-gg))
