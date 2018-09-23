@@ -3,7 +3,7 @@ from collections import Counter
 from statistics import mean
 import numpy as np
 
-def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name", timestamp_key="time:timestamp", perf_aggregation_key="mean"):
+def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name", timestamp_key="time:timestamp", perf_aggregation_key="mean", sort_required=True):
     """
     Get DFG graph from Pandas dataframe
 
@@ -21,14 +21,17 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         Timestamp key
     perf_aggregation_key
         Performance aggregation key (mean, median, min, max)
+    sort_required
+        Specify if a sort on the Case ID and the timestamp is required
 
     Returns
     -----------
     dfg
         DFG in the chosen measure (may be only the frequency, only the performance, or both)
     """
-    # to get rows belonging to same case ID together, we need to sort on case ID
-    df = df.sort_values([case_id_glue, timestamp_key])
+    if sort_required:
+        # to get rows belonging to same case ID together, we need to sort on case ID
+        df = df.sort_values([case_id_glue, timestamp_key])
     # to test approaches reduce dataframe to case, activity and complete timestamp columns
     dfReduced = df[[case_id_glue, activity_key, timestamp_key]]
     # shift the dataframe by 1, in order to couple successive rows
@@ -42,8 +45,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     dfSuccessiveRows = dfSuccessiveRows[dfSuccessiveRows[case_id_glue] == dfSuccessiveRows[case_id_glue+'_2']]
 
     # calculate the difference between the timestamps of two successive events
-    dfSuccessiveRows['caseDuration'] = (dfSuccessiveRows[timestamp_key+'_2'] - dfSuccessiveRows[timestamp_key]).apply(
-        lambda x: x.total_seconds())
+    dfSuccessiveRows['caseDuration'] = (dfSuccessiveRows[timestamp_key+'_2'] - dfSuccessiveRows[timestamp_key]).astype('timedelta64[s]')
     # groups couple of attributes (directly follows relation, we can measure the frequency and the performance)
     directlyFollowsGrouping = dfSuccessiveRows.groupby([activity_key, activity_key+'_2'])['caseDuration']
 

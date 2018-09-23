@@ -55,7 +55,7 @@ DELETE_VARIABLES = True
 
 def calculate_process_schema_from_df(dataframe, path_frequency, path_performance):
     activities_count = attributes_filter.get_attribute_values(dataframe, attribute_key=ACTIVITY_KEY)
-    [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both", perf_aggregation_key="median", case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY, timestamp_key=TIMEST_KEY)
+    [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both", perf_aggregation_key="median", case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY, timestamp_key=TIMEST_KEY, sort_required=False)
     net, initial_marking, final_marking = inductive_factory.apply_dfg(dfg_frequency)
     spaths = vis_trans_shortest_paths.get_shortest_paths(net)
     aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg_frequency, spaths, activities_count, variant="frequency")
@@ -72,6 +72,7 @@ def execute_script():
     dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
     dataframe = csv_import_adapter.convert_caseid_column_to_str(dataframe, case_id_glue=CASEID_GLUE)
     dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe, timest_format=TIMEST_FORMAT, timest_columns=TIMEST_COLUMNS)
+    dataframe = dataframe.sort_values([CASEID_GLUE, TIMEST_KEY])
     dataframe_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
     bb = time.time()
     print("importing log time=",(bb-aa))
