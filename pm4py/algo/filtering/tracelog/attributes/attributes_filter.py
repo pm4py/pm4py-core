@@ -44,6 +44,50 @@ def apply_events(trace_log, values, parameters=None):
             filtered_log.append(new_trace)
     return filtered_log
 
+def apply(trace_log, values, parameters=None):
+    """
+    Filter log by keeping only traces that has/has not events with an attribute value that belongs to the provided values list
+
+    Parameters
+    -----------
+    trace_log
+        Trace log
+    values
+        Allowed attributes
+    attribute_key
+        Activiy key (must be specified if different from concept:name)
+
+    Returns
+    -----------
+    filtered_log
+        Filtered log
+    """
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
+    positive = parameters["positive"] if "positive" in parameters else True
+
+    filtered_log = TraceLog()
+    for trace in trace_log:
+        new_trace = Trace()
+
+        found = False
+        j = 0
+        while j < len(trace):
+            if attribute_key in trace[j]:
+                attribute_value = trace[j][attribute_key]
+                if attribute_value in values:
+                    found = True
+            j = j + 1
+
+        if (found and positive) or (not(found) and not(positive)):
+            new_trace = trace
+
+        if len(new_trace) > 0:
+            filtered_log.append(new_trace)
+    return filtered_log
+
 def get_attribute_values(trace_log, attribute_key, parameters=None):
     """
     Get the attribute values of the log for the specified attribute along with their count
