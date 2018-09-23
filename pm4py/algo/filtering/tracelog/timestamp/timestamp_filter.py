@@ -1,25 +1,8 @@
-from datetime import datetime
 from pm4py.entities.log.log import TraceLog, EventLog
 from pm4py.entities.log import transform
 from pm4py.entities.log.util import xes
 from pm4py.util import constants
-
-def get_dt_from_string(dt):
-    """
-    If the date is expressed as string, do the conversion to a datetime.datetime object
-
-    Parameters
-    -----------
-    dt
-        Date (string or datetime.datetime)
-
-    Returns
-    -----------
-    dt
-        Datetime object
-    """
-    if type(dt) is str:
-        return datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
+from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
 
 def is_contained(trace, dt1, dt2, timestamp_key):
     """
