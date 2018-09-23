@@ -58,6 +58,32 @@ def get_cases_description(df, parameters=None):
     ret = stackedDf.to_dict('index')
     return ret
 
+def get_variants_df(df, parameters=None):
+    """
+    Get variants dataframe from a Pandas dataframe
+
+    Parameters
+    -----------
+    df
+        Dataframe
+    parameters
+        Parameters of the algorithm, including:
+            case_id_glue -> Column that contains the Case ID
+            activity_key -> Column that contains the activity
+
+    Returns
+    -----------
+    variants_df
+        Variants dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+
+    return df.groupby(case_id_glue)[activity_key].agg({'variant': lambda col: ','.join(col)})
+
 def get_variants_statistics(df, parameters=None):
     """
     Get variants from a Pandas dataframe
@@ -71,6 +97,7 @@ def get_variants_statistics(df, parameters=None):
             case_id_glue -> Column that contains the Case ID
             activity_key -> Column that contains the activity
             max_variants_to_return -> Maximum number of variants to return
+            variants_df -> If provided, avoid recalculation of the variants dataframe
 
     Returns
     -----------
@@ -79,12 +106,11 @@ def get_variants_statistics(df, parameters=None):
     """
     if parameters is None:
         parameters = {}
-
     case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
-    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
-    variantsDf = df.groupby(case_id_glue)[activity_key].agg({'variant': lambda col: ','.join(col)}).reset_index()
-    variantsList = variantsDf.groupby("variant").agg("count").reset_index().to_dict('records')
+    variants_df = parameters["variants_df"] if "variants_df" in parameters else get_variants_df(df, parameters=parameters)
+    variants_df = variants_df.reset_index()
+    variantsList = variants_df.groupby("variant").agg("count").reset_index().to_dict('records')
     variantsList = sorted(variantsList, key=lambda x: x[case_id_glue], reverse=True)
     if max_variants_to_return:
         variantsList = variantsList[:min(len(variantsList), max_variants_to_return)]
