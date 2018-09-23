@@ -38,5 +38,11 @@ class DataframePrefilteringTest(unittest.TestCase):
         chosenVariants = [variants[0]["variant"]]
         dataframe = variants_filter.apply(dataframe, chosenVariants)
 
+    def test_filtering_attr_events(self):
+        inputLog = os.path.join(INPUT_DATA_DIR, "running-example.csv")
+        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
+        df1 = attributes_filter.apply_events(dataframe, ["reject request"], parameters={"positive": True})
+        df2 = attributes_filter.apply_events(dataframe, ["reject request"], parameters={"positive": False})
+
 if __name__ == "__main__":
     unittest.main()
