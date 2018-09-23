@@ -12,7 +12,7 @@ from pm4py.algo.filtering.pandas.cases import case_filter
 from pm4py.algo.filtering.pandas.variants import variants_filter
 from pm4py.algo.cases.pandas import case_statistics
 from pm4py.entities.log import transform
-
+from pm4py.algo.filtering.pandas.paths import paths_filter
 
 class DataframePrefilteringTest(unittest.TestCase):
     def test_prefiltering_dataframe(self):
@@ -43,6 +43,12 @@ class DataframePrefilteringTest(unittest.TestCase):
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
         df1 = attributes_filter.apply_events(dataframe, ["reject request"], parameters={"positive": True})
         df2 = attributes_filter.apply_events(dataframe, ["reject request"], parameters={"positive": False})
+
+    def test_filtering_paths(self):
+        inputLog = os.path.join(INPUT_DATA_DIR, "running-example.csv")
+        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
+        df3 = paths_filter.apply(dataframe, [("examine casually", "check ticket")], {"positive": False})
+        df3 = paths_filter.apply(dataframe, [("examine casually", "check ticket")], {"positive": True})
 
 if __name__ == "__main__":
     unittest.main()
