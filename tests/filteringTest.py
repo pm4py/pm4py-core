@@ -22,5 +22,17 @@ class LogFilteringTest(unittest.TestCase):
         log = end_activities_filter.apply_auto_filter(log)
         log = paths_filter.apply_auto_filter(log)
 
+    def test_filtering_attributes_events(self):
+        inputLog = os.path.join(INPUT_DATA_DIR, "running-example.xes")
+        log = xes_importer.import_log(inputLog)
+        log1 = attributes_filter.apply_events(log, ["reject request"], parameters={"positive": True})
+        log2 = attributes_filter.apply_events(log, ["reject request"], parameters={"positive": True})
+
+    def test_filtering_attributes_traces(self):
+        inputLog = os.path.join(INPUT_DATA_DIR, "running-example.xes")
+        log = xes_importer.import_log(inputLog)
+        log1 = attributes_filter.apply(log, ["reject request"], parameters={"positive": True})
+        log2 = attributes_filter.apply(log, ["reject request"], parameters={"positive": True})
+
 if __name__ == "__main__":
     unittest.main()
