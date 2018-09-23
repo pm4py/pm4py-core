@@ -1,5 +1,38 @@
 from pm4py.util import constants
 from pm4py.entities.log.util import xes
+from pm4py.algo.filtering.tracelog.variants import variants_filter
+
+def get_variant_statistics(trace_log, parameters=None):
+    """
+    Gets a dictionary whose key is the variant and as value there
+    is the list of traces that share the variant
+
+    Parameters
+    ----------
+    trace_log
+        Trace log
+    parameters
+        Parameters of the algorithm, including:
+            activity_key -> Attribute identifying the activity in the log
+            max_variants_to_return -> Maximum number of variants to return
+            variants -> If provided, avoid recalculation of the variants
+
+    Returns
+    ----------
+    variants_list
+        List of variants along the statistics
+    """
+
+    if parameters is None:
+        parameters = {}
+    max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
+    variants = parameters["variants"] if "variants" in parameters else variants_filter.get_variants(trace_log, parameters=parameters)
+    variants_list = []
+    for variant in variants:
+        variants_list.append({"variant": variant, "count": len(variants[variant])})
+    if max_variants_to_return:
+        variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
+    return variants_list
 
 def get_cases_description(trace_log, parameters=None):
     """
