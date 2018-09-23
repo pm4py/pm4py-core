@@ -62,7 +62,7 @@ def apply_auto_filter(df, parameters=None):
 
     return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count=activities)
 
-def get_attribute_values(df, attribute_key):
+def get_attribute_values(df, attribute_key, parameters=None):
     """
     Return list of attribute values contained in the specified column of the CSV
 
@@ -72,12 +72,17 @@ def get_attribute_values(df, attribute_key):
         Pandas dataframe
     attribute_key
         Attribute for which we want to known the values and the count
+    parameters
+        Possible parameters of the algorithm
 
     Returns
     -----------
     attributes_values_dict
         Attributes in the specified column, along with their count
     """
+    if parameters is None:
+        parameters = {}
+    
     attributes_values_dict = dict(df[attribute_key].value_counts())
     #print("attributes_values_dict=",attributes_values_dict)
     return attributes_values_dict

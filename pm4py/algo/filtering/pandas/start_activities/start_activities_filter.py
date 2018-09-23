@@ -58,13 +58,13 @@ def apply_auto_filter(df, parameters=None):
     activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
-    start_activities = get_start_activities(df, case_id_glue=case_id_glue, activity_key=activity_key)
+    start_activities = get_start_activities(df, parameters=parameters)
     salist = start_activities_common.get_sorted_start_activities_list(start_activities)
     sathreshold = start_activities_common.get_start_activities_threshold(start_activities, salist, decreasingFactor)
 
     return filter_df_on_start_activities_nocc(df, sathreshold, sa_count=start_activities, case_id_glue=case_id_glue, activity_key=activity_key)
 
-def get_start_activities(df, case_id_glue=filtering_constants.CASE_CONCEPT_NAME, activity_key=xes.DEFAULT_NAME_KEY):
+def get_start_activities(df, parameters=None):
     """
     Get start activities count
 
@@ -72,16 +72,22 @@ def get_start_activities(df, case_id_glue=filtering_constants.CASE_CONCEPT_NAME,
     -----------
     df
         Pandas dataframe
-    case_id_glue
-        Column that identifies the case ID
-    activity_key
-        Column that identifies the activity
+    parameters
+        Parameters of the algorithm, including:
+            case_id_glue -> Case ID column in the dataframe
+            activity_key -> Column that represents the activity
 
     Returns
     -----------
     startact_dict
         Dictionary of start activities along with their count
     """
+    if parameters is None:
+        parameters = {}
+
+    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+
     firstEveDf = df.groupby(case_id_glue).first()
     startact_dict = dict(firstEveDf[activity_key].value_counts())
     return startact_dict

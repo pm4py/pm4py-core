@@ -117,19 +117,20 @@ def execute_script():
         ee = time.time()
         print("filtering on attribute values and generating process schema=",(ee-dd))
 
-    start_act = start_activities_filter.get_start_activities(dataframe, case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY)
+    parameters_sa = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ACTIVITY_KEY}
+    parameters_ea = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE,
+                     constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ACTIVITY_KEY}
+    start_act = start_activities_filter.get_start_activities(dataframe, parameters=parameters_sa)
     print("start activities in the log = ",start_act)
-    end_act = end_activities_filter.get_end_activities(dataframe, case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY)
+    end_act = end_activities_filter.get_end_activities(dataframe, parameters=parameters_ea)
     print("end activities in the log = ",end_act)
     ff = time.time()
     print("finding start and end activities along with their count",(ff-ee))
 
     if ENABLE_STARTACT_FILTER:
-        parameters_sa = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ACTIVITY_KEY}
         dataframe_sa = start_activities_filter.apply(dataframe, STARTACT_TO_FILTER, parameters=parameters_sa)
         #dataframe_sa = start_activities_filter.apply_auto_filter(dataframe, parameters=parameters_sa)
-        start_act = start_activities_filter.get_start_activities(dataframe_sa, case_id_glue=CASEID_GLUE,
-                                                                 activity_key=ACTIVITY_KEY)
+        start_act = start_activities_filter.get_start_activities(dataframe_sa, parameters=parameters_sa)
         print("start activities in the filtered log = ", start_act)
         dataframe_sa_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_sa, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
         if DELETE_VARIABLES:
@@ -144,11 +145,9 @@ def execute_script():
         print("filtering start activities time=",(gg-ff))
 
     if ENABLE_ENDACT_FILTER:
-        parameters_ea = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ACTIVITY_KEY}
         dataframe_ea = end_activities_filter.apply(dataframe, ENDACT_TO_FILTER, parameters=parameters_ea)
         #dataframe_ea = end_activities_filter.apply_auto_filter(dataframe, parameters=parameters_ea)
-        end_act = end_activities_filter.get_end_activities(dataframe_ea, case_id_glue=CASEID_GLUE,
-                                                           activity_key=ACTIVITY_KEY)
+        end_act = end_activities_filter.get_end_activities(dataframe_ea, parameters=parameters_ea)
         print("end activities in the filtered log = ", end_act)
         dataframe_ea_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_ea, activity_key=ACTIVITY_KEY, max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
         if DELETE_VARIABLES:
