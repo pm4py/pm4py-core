@@ -1,4 +1,7 @@
-def get_cases_description(trace_log, case_id_key="concept:name", timestamp_key="time:timestamp", enable_sort=True, sort_by_index=1, sort_ascending=True, max_ret_cases=None):
+from pm4py.util import constants
+from pm4py.entities.log.util import xes
+
+def get_cases_description(trace_log, parameters=None):
     """
     Get a description of cases present in the trace log
 
@@ -6,29 +9,34 @@ def get_cases_description(trace_log, case_id_key="concept:name", timestamp_key="
     -----------
     trace_log
         Trace log
-    case_id_key
-        Trace attribute in which the case ID is contained
-    timestamp_key
-        Column that identifies the timestamp
-    enable_sort
-        Enable sorting of cases
-    sort_by_index
-        Sort the cases using this index:
+    parameters
+        Parameters of the algorithm, including:
+        case_id_key -> Trace attribute in which the case ID is contained
+        timestamp_key -> Column that identifies the timestamp
+        enable_sort -> Enable sorting of cases
+        sort_by_index ->         Sort the cases using this index:
             0 -> case ID
             1 -> start time
             2 -> end time
             3 -> difference
-
-    sort_ascending
-        Set sort direction (boolean; it true then the sort direction is ascending, otherwise descending)
-    max_ret_cases
-        Set the maximum number of returned cases
+        sort_ascending -> Set sort direction (boolean; it true then the sort direction is ascending, otherwise descending)
+        max_ret_cases -> Set the maximum number of returned cases
 
     Returns
     -----------
     ret
         Dictionary of cases associated to their start timestamp, their end timestamp and their duration
     """
+
+    if parameters is None:
+        parameters = {}
+
+    case_id_key = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else xes.DEFAULT_TRACEID_KEY
+    timestamp_key = parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    enable_sort = parameters["enable_sort"] if "enable_sort" in parameters else True
+    sort_by_index = parameters["sort_by_index"] if "sort_by_index" in parameters else 0
+    sort_ascending = parameters["sort_ascending"] if "sort_ascending" in parameters else "ascending"
+    max_ret_cases = parameters["max_ret_cases"] if "max_ret_cases" in parameters else None
 
     statistics_list = []
 
