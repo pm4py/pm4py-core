@@ -29,6 +29,49 @@ def filter_on_case_performance(trace_log, inf_perf, sup_perf, parameters=None):
     filtered_log = TraceLog([trace for trace in trace_log if satisfy_perf(trace, inf_perf, sup_perf, timestamp_key)])
     return filtered_log
 
+def filter_on_ncases(trace_log, max_no_cases=1000):
+    """
+    Get only a specified number of cases from a trace log
+
+    Parameters
+    -----------
+    trace_log
+        Trace log
+    ncases
+        Desidered number of cases from the trace log
+
+    Returns
+    -----------
+    filtered_log
+        Filtered log
+    """
+    filtered_log = TraceLog(trace_log[:min(len(trace_log), max_no_cases)])
+    return filtered_log
+
+def filter_on_case_size(trace_log, min_case_size=2, max_case_size=None):
+    """
+    Get only cases in the log with a given size
+
+    Parameters
+    -----------
+    trace_log
+        Trace log
+    min_case_size
+        Minimum desidered size of cases
+    max_case_size
+        Maximum desidered size of cases
+
+    Returns
+    -----------
+    filtered_log
+        Filtered log
+    """
+    if max_case_size is not None:
+        filtered_log = TraceLog([trace for trace in trace_log if len(trace)>=min_case_size and len(trace)<=max_case_size])
+    else:
+        filtered_log = TraceLog([trace for trace in trace_log if len(trace) >= min_case_size])
+    return filtered_log
+
 def satisfy_perf(trace, inf_perf, sup_perf, timestamp_key):
     """
     Checks if the trace satisfy the performance requirements
