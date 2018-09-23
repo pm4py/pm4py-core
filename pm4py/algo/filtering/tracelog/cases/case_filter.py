@@ -97,3 +97,9 @@ def satisfy_perf(trace, inf_perf, sup_perf, timestamp_key):
         if trace_duration >= inf_perf and trace_duration <= sup_perf:
             return True
     return False
+
+def apply(df, parameters=None):
+    raise Exception("apply method not available for case filter")
+
+def apply_auto_filter(df, parameters=None):
+    raise Exception("apply_auto_filter method not available for case filter")
