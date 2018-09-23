@@ -41,8 +41,9 @@ def filter_traces_contained(log, dt1, dt2, parameters=None):
         Lower bound to the interval
     dt2
         Upper bound to the interval
-    timestamp_key
-        Timestamp attribute
+    parameters
+        Possible parameters of the algorithm, including:
+            timestamp_key -> Attribute to use as timestamp
 
     Returns
     ------------
@@ -99,8 +100,9 @@ def filter_traces_intersecting(log, dt1, dt2, parameters=None):
         Lower bound to the interval
     dt2
         Upper bound to the interval
-    timestamp_key
-        Timestamp attribute
+    parameters
+        Possible parameters of the algorithm, including:
+            timestamp_key -> Attribute to use as timestamp
 
     Returns
     ------------
@@ -128,8 +130,9 @@ def apply_events(trace_log, dt1, dt2, parameters=None):
         Lower bound to the interval
     dt2
         Upper bound to the interval
-    timestamp_key
-        Timestamp attribute
+    parameters
+        Possible parameters of the algorithm, including:
+            timestamp_key -> Attribute to use as timestamp
 
     Returns
     ------------

@@ -11,8 +11,8 @@ def apply(df, paths, parameters=None):
     ----------
     df
         Dataframe
-    values
-        Values to filter on
+    paths
+        Paths to filter on
     parameters
         Possible parameters of the algorithm, including:
             case_id_glue -> Case ID column in the dataframe
