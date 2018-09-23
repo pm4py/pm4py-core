@@ -9,6 +9,7 @@ from pm4py.entities.log.importer.csv.versions import pandas_df_imp
 from pm4py.algo.filtering.pandas.auto_filter import auto_filter
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.algo.filtering.pandas.cases import case_filter
+from pm4py.algo.filtering.pandas.variants import variants_filter
 from pm4py.entities.log import transform
 
 
@@ -28,6 +29,13 @@ class DataframePrefilteringTest(unittest.TestCase):
         inputLog = os.path.join(INPUT_DATA_DIR, "running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
         dataframe = auto_filter.apply_auto_filter(dataframe)
+
+    def test_filtering_variants(self):
+        inputLog = os.path.join(INPUT_DATA_DIR, "running-example.csv")
+        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
+        variants = variants_filter.get_variants(dataframe)
+        chosenVariants = [variants[0]["variant"]]
+        dataframe = variants_filter.apply(dataframe, chosenVariants)
 
 if __name__ == "__main__":
     unittest.main()
