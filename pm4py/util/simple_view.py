@@ -58,6 +58,7 @@ def apply(original_log, parameters=None):
     parameters_viz = {"format": imageFormat, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "aggregationMeasure": aggregationMeasure}
     # apply automatically a filter
     parameters_autofilter = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
+                             constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key,
                              "decreasingFactor": decreasingFactor}
 
     log = auto_filter.apply_auto_filter(copy(original_log), parameters=parameters_autofilter)
