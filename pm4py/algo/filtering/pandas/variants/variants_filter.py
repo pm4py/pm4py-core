@@ -29,6 +29,8 @@ def apply_auto_filter(df, parameters=None):
     if parameters is None:
         parameters = {}
     case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    variants_df = case_statistics.get_variants_df(df, parameters=parameters)
+    parameters["variants_df"] = variants_df
     variants = case_statistics.get_variants_statistics(df, parameters=parameters)
     decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
