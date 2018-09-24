@@ -33,7 +33,7 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
     if "frequency" in variant:
         aggregationMeasure = "sum"
     elif "performance" in variant:
-        aggregationMeasure = "performance"
+        aggregationMeasure = "mean"
 
     if "aggregationMeasure" in parameters:
         aggregationMeasure = parameters["aggregationMeasure"]
@@ -50,6 +50,7 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
                                                                                                    activities_count,
                                                                                                    variant=variant,
                                                                                                    aggregationMeasure=aggregationMeasure)
+
     return visualize.apply(net, initial_marking, final_marking, parameters=parameters,
                            decorations=aggregated_statistics)
 
