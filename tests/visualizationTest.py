@@ -17,6 +17,7 @@ from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter as log_attribute_filter
 from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 from pm4py.util import simple_view
+from pm4py.algo.filtering.tracelog.auto_filter import auto_filter
 
 class VisualizationTest1(unittest.TestCase):
     def test_getdfgfreqvis_log(self):
@@ -152,9 +153,14 @@ class VisualizationTest1(unittest.TestCase):
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant)
 
     def test_simple_view(self):
-        logPath = os.path.join("inputData","running-example.xes")
+        logPath = os.path.join("inputData","receipt.xes")
         log = xes_importer.import_log(logPath)
-        gviz = simple_view.apply(log)
+        filtered_log = auto_filter.apply_auto_filter(log)
+        gviz = simple_view.apply(filtered_log, {"algorithm":"alpha", "decoration":"frequency"})
+        gviz = simple_view.apply(filtered_log, {"algorithm":"inductive", "decoration":"frequency"})
+        gviz = simple_view.apply(filtered_log, {"algorithm":"dfg", "decoration":"frequency"})
+        gviz = simple_view.apply(filtered_log, {"algorithm":"tsystem2", "decoration":"frequency"})
+        gviz = simple_view.apply(filtered_log, {"algorithm":"tsystem3", "decoration":"frequency"})
 
 if __name__ == "__main__":
     unittest.main()
