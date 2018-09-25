@@ -1,5 +1,6 @@
 import multiprocessing as mp
 
+import pm4py
 from pm4py.entities import log as log_lib
 from pm4py.algo.conformance import alignments
 from pm4py.entities.log.util import xes as xes_util
