@@ -17,7 +17,7 @@ def align(trace, net, im, fm, model_cost_function, sync_cost_function):
     params[pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION] = model_cost_function
     params[pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION] = trace_costs
     params[pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
-    return ali.factory.apply(trace, net, im, fm, parameters=params, version=ali.factory.VERSION_STATE_EQUATION_A_STAR)
+    return ali.factory.apply(trace, net, im, fm, parameters=params, variant=ali.factory.VERSION_STATE_EQUATION_A_STAR)
 
 def execute_script():
     log_path = os.path.join("..","tests","inputData","running-example.xes")
