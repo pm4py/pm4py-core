@@ -41,7 +41,7 @@ def apply(trace_log, parameters):
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-    enable_reduction = parameters["enable_reduction"] if "enable_reduction" in parameters else True
+    enable_reduction = parameters["enable_reduction"] if "enable_reduction" in parameters else False
 
     indMinDirFollows = InductMinDirFollows()
     net, initial_marking, final_marking = indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
@@ -52,10 +52,13 @@ def apply(trace_log, parameters):
 
         # apply petri_reduction technique in order to simplify the Petri net
         net = reduction.apply(net, parameters={"aligned_traces": aligned_traces})
+    else:
+        # clean net from duplicate hidden transitions
+        net = clean_duplicate_transitions(net)
 
     return net, initial_marking, final_marking
 
-def clean_duplicate_transitions(self, net):
+def clean_duplicate_transitions(net):
     """
     Clean duplicate transitions in a Petri net
 
