@@ -512,22 +512,34 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
         i = i + 1
 
     if tryToReachFinalMarkingThroughHidden and not usedPostfixCache:
-        i = 0
-        while i < MAX_IT_FINAL:
-            if not break_condition_final_marking(marking, finalMarking):
-                hiddenTransitionsToEnable = getReqTransitionsForFinalMarking(marking, finalMarking, placesShortestPathByHidden)
+        if len(finalMarking) == 1:
+            for place in finalMarking:
+                sinkPlace = place
 
-                for group in hiddenTransitionsToEnable:
-                    for t in group:
+            connectionsToSink = []
+            for place in marking:
+                if place in placesShortestPathByHidden and sinkPlace in placesShortestPathByHidden[place]:
+                    connectionsToSink.append([place, placesShortestPathByHidden[place][sinkPlace]])
+            connectionsToSink = sorted(connectionsToSink, key=lambda x: len(x[1]))
+
+            i = 0
+            while i < MAX_IT_FINAL:
+                j = 0
+                while j < len(connectionsToSink):
+                    z = 0
+                    while z < len(connectionsToSink[j][1]):
+                        t = connectionsToSink[j][1][z]
                         if semantics.is_enabled(t, net, marking):
                             marking = semantics.execute(t, net, marking)
                             activatedTransitions.append(t)
                             allVisitedMarkings.append(marking)
-                    if break_condition_final_marking(marking, finalMarking):
-                        break
-            else:
-                break
-            i = i + 1
+                            del connectionsToSink[j][1][0]
+                            continue
+                        else:
+                            break
+                        z = z + 1
+                    j = j + 1
+                i = i + 1
 
     markingBeforeCleaning = copy(marking)
 
