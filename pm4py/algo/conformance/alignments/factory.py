@@ -51,7 +51,7 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None, var
         parameters = {pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: xes.DEFAULT_NAME_KEY}
     parameters2 = copy(parameters)
     if not pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION in parameters2:
-        parameters2[pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION] = list(map(lambda e: 1000, trace))
+        parameters2[pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION] = list(map(lambda e: ali.utils.STD_MODEL_LOG_MOVE_COST, trace))
     return VERSIONS[variant](trace, petri_net, initial_marking, final_marking, parameters2)
 
 def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, variant=VERSION_STATE_EQUATION_A_STAR):
@@ -96,7 +96,7 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         sync_cost_function = dict()
         for t in petri_net.transitions:
             if t.label is not None:
-                model_cost_function[t] = 1000
+                model_cost_function[t] = ali.utils.STD_MODEL_LOG_MOVE_COST
                 sync_cost_function[t] = 0
             else:
                 model_cost_function[t] = 1
@@ -109,7 +109,10 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     alignments = list(map(lambda trace: apply(trace, petri_net, initial_marking, final_marking, parameters=parameters, variant=variant), log))
 
     # assign fitness to traces
-    for align in alignments:
-        align['fitness'] = 1 - ((align['cost']  // ali.utils.STD_MODEL_LOG_MOVE_COST) / best_worst_cost)
+    for index, align in enumerate(alignments):
+        align_cost = align['cost']  // ali.utils.STD_MODEL_LOG_MOVE_COST
+
+        #align['fitness'] = 1 - ((align['cost']  // ali.utils.STD_MODEL_LOG_MOVE_COST) / best_worst_cost)
+        align['fitness'] = 1 - ((align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
 
     return alignments
