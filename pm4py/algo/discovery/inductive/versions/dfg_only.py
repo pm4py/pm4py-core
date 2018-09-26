@@ -55,7 +55,7 @@ def apply(trace_log, parameters):
 
     return net, initial_marking, final_marking
 
-def apply_dfg(trace_log, parameters):
+def apply_dfg(dfg, parameters):
     """
     Apply the IMDF algorithm to a DFG graph
 
@@ -81,7 +81,7 @@ def apply_dfg(trace_log, parameters):
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     indMinDirFollows = InductMinDirFollows()
-    net, initial_marking, final_marking = indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
+    net, initial_marking, final_marking = indMinDirFollows.apply_dfg(dfg, parameters, activity_key=activity_key)
 
     return net, initial_marking, final_marking
 
