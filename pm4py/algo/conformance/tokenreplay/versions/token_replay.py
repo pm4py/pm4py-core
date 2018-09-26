@@ -536,7 +536,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                             #del connectionsToSink[j][1][0]
                             continue
                         else:
-                            print(t.name,"not enabled")
+                            #print(t.name,"not enabled")
                             break
                         z = z + 1
                     j = j + 1
