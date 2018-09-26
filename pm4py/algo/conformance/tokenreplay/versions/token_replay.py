@@ -533,7 +533,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                             marking = semantics.execute(t, net, marking)
                             activatedTransitions.append(t)
                             allVisitedMarkings.append(marking)
-                            del connectionsToSink[j][1][0]
+                            #del connectionsToSink[j][1][0]
                             continue
                         else:
                             break
