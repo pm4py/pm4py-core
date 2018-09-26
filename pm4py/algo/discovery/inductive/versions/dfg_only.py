@@ -11,6 +11,8 @@ from pm4py import util as pmutil
 from pm4py.entities.log.util import xes as xes_util
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg
 from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.algo.repair.petri_reduction import factory as reduction
 
 sys.setrecursionlimit(100000)
 
@@ -39,8 +41,19 @@ def apply(trace_log, parameters):
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+    enable_reduction = parameters["enable_reduction"] if "enable_reduction" in parameters else True
+
     indMinDirFollows = InductMinDirFollows()
-    return indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
+    net, initial_marking, final_marking = indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
+
+    if enable_reduction:
+        # do the replay
+        aligned_traces = token_replay.apply(trace_log, net, initial_marking, final_marking, parameters=parameters)
+
+        # apply petri_reduction technique in order to simplify the Petri net
+        net = reduction.apply(net, parameters={"aligned_traces": aligned_traces})
+
+    return net, initial_marking, final_marking
 
 def apply_dfg(trace_log, parameters):
     """
@@ -68,7 +81,9 @@ def apply_dfg(trace_log, parameters):
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     indMinDirFollows = InductMinDirFollows()
-    return indMinDirFollows.apply_dfg(trace_log, parameters, activity_key=activity_key)
+    net, initial_marking, final_marking = indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
+
+    return net, initial_marking, final_marking
 
 class Counts(object):
     """
@@ -411,6 +426,7 @@ class Subtree(object):
         LOOP_CONST_1 = 0.2
         LOOP_CONST_2 = 0.02
         LOOP_CONST_3 = -0.2
+        LOOP_CONST_4 = -0.7
 
         if len(self.activitiesDirlist) > 1:
             set1 = set()
@@ -422,6 +438,9 @@ class Subtree(object):
                     for act in activInput:
                         if not act == self.activitiesDirlist[0][0] and self.activitiesDirection[act] < LOOP_CONST_2:
                             set2.add(act)
+
+            if self.activitiesDirlist[-1][1] < LOOP_CONST_4:
+                set2.add(self.activitiesDirlist[-1][0])
 
             if len(set2) > 0:
                 for act in self.activities:
