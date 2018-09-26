@@ -55,6 +55,48 @@ def apply(trace_log, parameters):
 
     return net, initial_marking, final_marking
 
+def clean_duplicate_transitions(self, net):
+    """
+    Clean duplicate transitions in a Petri net
+
+    Parameters
+    ------------
+    net
+        Petri net
+
+    Returns
+    ------------
+    net
+        Cleaned Petri net
+    """
+    transitions = list(net.transitions)
+    alreadyVisitedCombo = set()
+    # while cycle because we have to delete some of them
+    i = 0
+    while i < len(transitions):
+        trans = transitions[i]
+        if trans.label is None:
+            in_arcs = trans.in_arcs
+            out_arcs = trans.out_arcs
+            to_delete = False
+            for in_arc in in_arcs:
+                in_place = in_arc.source
+                for out_arc in out_arcs:
+                    out_place = out_arc.target
+                    combo = in_place.name + " " + out_place.name
+                    if combo in alreadyVisitedCombo:
+                        to_delete = True
+                        break
+                    alreadyVisitedCombo.add(combo)
+            if to_delete:
+                for arc in in_arcs:
+                    net.arcs.remove(arc)
+                for arc in out_arcs:
+                    net.arcs.remove(arc)
+                net.transitions.remove(trans)
+        i = i + 1
+    return net
+
 def apply_dfg(dfg, parameters):
     """
     Apply the IMDF algorithm to a DFG graph
@@ -82,6 +124,9 @@ def apply_dfg(dfg, parameters):
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     indMinDirFollows = InductMinDirFollows()
     net, initial_marking, final_marking = indMinDirFollows.apply_dfg(dfg, parameters, activity_key=activity_key)
+
+    # clean net from duplicate hidden transitions
+    net = clean_duplicate_transitions(net)
 
     return net, initial_marking, final_marking
 
@@ -1019,48 +1064,6 @@ class InductMinDirFollows(object):
         dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
         return self.apply_dfg(dfg, parameters)
 
-    def clean_duplicate_transitions(self, net):
-        """
-        Clean duplicate transitions in a Petri net
-
-        Parameters
-        ------------
-        net
-            Petri net
-
-        Returns
-        ------------
-        net
-            Cleaned Petri net
-        """
-        transitions = list(net.transitions)
-        alreadyVisitedCombo = set()
-        # while cycle because we have to delete some of them
-        i = 0
-        while i < len(transitions):
-            trans = transitions[i]
-            if trans.label is None:
-                in_arcs = trans.in_arcs
-                out_arcs = trans.out_arcs
-                to_delete = False
-                for in_arc in in_arcs:
-                    in_place = in_arc.source
-                    for out_arc in out_arcs:
-                        out_place = out_arc.target
-                        combo = in_place.name + " " + out_place.name
-                        if combo in alreadyVisitedCombo:
-                            to_delete = True
-                            break
-                        alreadyVisitedCombo.add(combo)
-                if to_delete:
-                    for arc in in_arcs:
-                        net.arcs.remove(arc)
-                    for arc in out_arcs:
-                        net.arcs.remove(arc)
-                    net.transitions.remove(trans)
-            i = i + 1
-        return net
-
     def apply_dfg(self, dfg, parameters, activity_key="concept:name"):
         """
         Apply the IMDF algorithm to a DFG graph
@@ -1103,8 +1106,5 @@ class InductMinDirFollows(object):
         initial_marking = Marking()
         final_marking = Marking()
         net, initial_marking, final_marking, lastAddedPlace = s.form_petrinet(net, initial_marking, final_marking)
-
-        # clean net from duplicate hidden transitions
-        net = self.clean_duplicate_transitions(net)
 
         return net, initial_marking, final_marking
