@@ -41,7 +41,7 @@ def apply(original_log, parameters=None):
     activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else None
     discoveryAlgorithm = parameters["algorithm"] if "algorithm" in parameters else "inductive"
     replayMeasure = parameters["decoration"] if "decoration" in parameters else "frequency"
-    imageFormat = parameters["format"] if "format" in parameters else "pdf"
+    imageFormat = parameters["format"] if "format" in parameters else "png"
     decreasingFactor = parameters["simplicity"] if "simplicity" in parameters else filtering_constants.DECREASING_FACTOR
     replayEnabled = parameters["replayEnabled"] if "replayEnabled" in parameters else True
     if "frequency" in replayMeasure:
