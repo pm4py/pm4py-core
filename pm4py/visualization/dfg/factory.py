@@ -1,6 +1,7 @@
 from pm4py.visualization.dfg.versions import simple_visualize
 import os, shutil
 from pm4py.visualization.common.save import *
+from pm4py.visualization.common.gview import *
 
 FREQUENCY = "frequency"
 PERFORMANCE = "performance"
