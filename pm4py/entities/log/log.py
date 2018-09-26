@@ -21,11 +21,11 @@ class Event(Mapping):
     def __len__(self):
         return len(self._dict)
 
-    def __str__(self):
-        return str(self._dict)
-
     def __delitem__(self, key):
         del self._dict[key]
+
+    def __repr__(self):
+        return str(dict(self))
 
 
 class EventLog(Sequence):
@@ -163,9 +163,6 @@ class Trace(Sequence):
     def count(self, x):
         return self._list.count(x)
 
-    def __str__(self):
-        return str(self._list)
-
     def append(self, x):
         self._list.append(x)
 
@@ -189,6 +186,9 @@ class Trace(Sequence):
         self._list.sort(key=lambda x: x[timestamp_key], reverse=reverse_sort)
 
     attributes = property(_get_attributes)
+
+    def __repr__(self):
+        return str({"attributes": self._attributes, "events": self._list})
 
 
 class TraceLog(EventLog):
