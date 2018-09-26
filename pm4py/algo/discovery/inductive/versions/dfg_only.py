@@ -41,7 +41,8 @@ def apply(trace_log, parameters):
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-    enable_reduction = parameters["enable_reduction"] if "enable_reduction" in parameters else False
+    # apply the reduction by default only on very small logs
+    enable_reduction = parameters["enable_reduction"] if "enable_reduction" in parameters else len(trace_log) < 30
 
     indMinDirFollows = InductMinDirFollows()
     net, initial_marking, final_marking = indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
