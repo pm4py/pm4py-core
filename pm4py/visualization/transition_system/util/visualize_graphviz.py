@@ -5,7 +5,7 @@ def visualize(ts, parameters=None):
     if parameters is None:
         parameters = {}
 
-    format = parameters["format"] if "format" in parameters else "pdf"
+    format = parameters["format"] if "format" in parameters else "png"
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph(ts.name, filename=filename.name, engine='dot')

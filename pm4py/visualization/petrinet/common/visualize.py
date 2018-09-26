@@ -26,7 +26,7 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
     """
     if parameters is None:
         parameters = {}
-    format = "pdf"
+    format = "png"
     debug = False
     if "format" in parameters:
         format = parameters["format"]
@@ -34,7 +34,7 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
         debug = parameters["debug"]
     return graphviz_visualization(net, format=format, initial_marking=initial_marking, final_marking=final_marking, decorations=decorations, debug=debug)
 
-def graphviz_visualization(net, format="pdf", initial_marking=None, final_marking=None, decorations=None, debug=False):
+def graphviz_visualization(net, format="png", initial_marking=None, final_marking=None, decorations=None, debug=False):
     """
     Provides visualization for the petrinet
 
