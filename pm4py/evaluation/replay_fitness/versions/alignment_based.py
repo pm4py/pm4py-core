@@ -9,26 +9,28 @@ PARAM_ACTIVITY_KEY = xes_util.DEFAULT_NAME_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY]
 
-def transform_align_result_to_simple_dictionary(alignResults):
+def evaluate(aligned_traces, parameters=None):
     """
     Transforms the alignment result to a simple dictionary
     including the percentage of fit traces and the average fitness
 
     Parameters
     ----------
-    alignResults
+    aligned_traces
         Alignments calculated for the traces in the log
+    parameters
+        Possible parameters of the evaluation
 
     Returns
     ----------
     dictionary
         Containing two keys (percFitTraces and averageFitness)
     """
-    noTraces = len(alignResults)
+    noTraces = len(aligned_traces)
     noFitTraces = 0
     sumFitness = 0.0
 
-    for tr in alignResults:
+    for tr in aligned_traces:
         if tr["fitness"] == 1.0:
             noFitTraces = noFitTraces + 1
         sumFitness = sumFitness + tr["fitness"]
@@ -54,7 +56,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
         alignmentResult = pool.starmap(apply_trace, map(
             lambda tr: (tr, petri_net, initial_marking, final_marking, best_worst_costs, activity_key), log))
 
-        return transform_align_result_to_simple_dictionary(alignmentResult)
+        return evaluate(alignmentResult)
 
 def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, activity_key):
     '''
