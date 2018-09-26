@@ -5,12 +5,15 @@ This module contains the factory method
 from pm4py import util as pm4pyutil
 from pm4py.algo.conformance.alignments import versions
 from pm4py.entities.log.util import xes
+from pm4py.entities.log import log as log_implementation
 import pm4py
 from pm4py.algo.conformance import alignments as ali
 from copy import copy
+from pm4py.algo.conformance.alignments import utils
 
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
 VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}
+VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost}
 
 
 def apply(trace, petri_net, initial_marking, final_marking, parameters=None, variant=VERSION_STATE_EQUATION_A_STAR):
@@ -97,8 +100,16 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
                 sync_cost_function[t] = 0
             else:
                 model_cost_function[t] = 1
+
+    best_worst_cost = VERSIONS_COST[variant](petri_net, initial_marking, final_marking)
+
     parameters[pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = activity_key
     parameters[pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION] = model_cost_function
     parameters[pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
     alignments = list(map(lambda trace: apply(trace, petri_net, initial_marking, final_marking, parameters=parameters, variant=variant), log))
+
+    # assign fitness to traces
+    for align in alignments:
+        align['fitness'] = 1 - ((align['cost']  // ali.utils.STD_MODEL_LOG_MOVE_COST) / best_worst_cost)
+
     return alignments
