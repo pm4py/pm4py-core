@@ -61,7 +61,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
         parameters = {}
     activity_key = parameters[PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
 
-    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "consider_remaining_in_fitness": True}
 
     aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_TR)
 
