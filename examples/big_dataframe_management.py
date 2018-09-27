@@ -15,6 +15,8 @@ from pm4py.algo.filtering.pandas.auto_filter import auto_filter
 from pm4py.util import constants
 from pm4py.algo.filtering.dfg import dfg_filtering
 
+SEP = ","
+QUOTECHAR = None
 inputLog = os.path.join("..", "tests", "inputData", "running-example.csv")
 CASEID_GLUE = "case:concept:name"
 ACTIVITY_KEY = "concept:name"
@@ -25,28 +27,34 @@ enable_auto_filter=True
 enable_filtering_on_cases=True
 max_no_cases=1000
 enable_filtering_df=True
-filtering_df_noise=0.16
+filtering_df_noise=0.01
 
 """
+SEP = ","
+QUOTECHAR = None
 inputLog = os.path.join("C:\\road_traffic.csv")
 CASEID_GLUE = "case"
 ACTIVITY_KEY = "event"
 TIMEST_KEY = "startTime"
 TIMEST_COLUMNS = ["startTime"]
 TIMEST_FORMAT = "%Y/%m/%d %H:%M:%S"
+enable_auto_filter=False
 enable_filtering_on_activities=False
 enable_filtering_on_cases=False
 enable_filtering_df=True
-filtering_df_noise=0.16
+filtering_df_noise=0.01
 """
 
 def execute_script():
     time1 = time.time()
-    dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=',')
+    dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(inputLog, sep=SEP, quotechar=QUOTECHAR)
     time2 = time.time()
     print("time2 - time1: "+str(time2-time1))
+    parameters_filtering = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ACTIVITY_KEY}
     if enable_auto_filter:
-        dataframe = auto_filter.apply_auto_filter(dataframe, parameters={constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ACTIVITY_KEY})
+        dataframe = auto_filter.apply_auto_filter(dataframe, parameters=parameters_filtering)
+    else:
+        dataframe = attributes_filter.apply_auto_filter(dataframe, parameters=parameters_filtering)
     time3 = time.time()
     print("time3 - time2: "+str(time3-time2))
     if enable_filtering_on_cases:
