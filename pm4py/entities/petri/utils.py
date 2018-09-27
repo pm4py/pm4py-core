@@ -1,6 +1,36 @@
 from pm4py.entities import petri
 from pm4py.entities.log.util import xes as xes_util
 
+def remove_transition(net, trans):
+    """
+    Remove a transition from a Petri net
+
+    Parameters
+    ----------
+    net
+        Petri net
+    trans
+        Transition to remove
+
+    Returns
+    ----------
+    net
+        Petri net
+    """
+    if trans in net.transitions:
+        print("removing ",trans.name)
+        in_arcs = trans.in_arcs
+        for arc in in_arcs:
+            place = arc.source
+            place.out_arcs.remove(arc)
+            net.arcs.remove(arc)
+        out_arcs = trans.out_arcs
+        for arc in out_arcs:
+            place = arc.target
+            place.in_arcs.remove(arc)
+            net.arcs.remove(arc)
+        net.transitions.remove(trans)
+    return net
 
 def add_arc_from_to(fr, to, net, weight=1):
     '''
