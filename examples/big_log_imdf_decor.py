@@ -37,9 +37,9 @@ def execute_script():
                                                                                                    aggregationMeasure=aggregationMeasure)
     # we find the gviz
     parameters_viz = {"format":"svg"}
-    gviz = pn_vis_factory.apply(net, initial_marking, final_marking, variant=variant, aggregated_statistics=aggregated_statistics)
+    gviz = pn_vis_factory.apply(net, initial_marking, final_marking, variant=variant, aggregated_statistics=aggregated_statistics, parameters={"format": "svg"})
     # we show the viz on screen
-    gviz.view()
+    pn_vis_factory.view(gviz)
     # we save the vis to file
     #pn_vis_factory.save(gviz, "receipt.pnml")
 

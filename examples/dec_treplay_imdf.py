@@ -15,9 +15,9 @@ def execute_script():
     net, initial_marking, final_marking = inductive_miner.apply(log)
     # get visualization
     variant = "performance"
-    parameters_viz = {"aggregationMeasure":"mean"}
+    parameters_viz = {"aggregationMeasure":"mean", "format":"svg"}
     gviz = pn_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant, parameters=parameters_viz)
-    gviz.view()
+    pn_vis_factory.view(gviz)
 
 if __name__ == "__main__":
     execute_script()
