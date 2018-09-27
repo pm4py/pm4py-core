@@ -18,7 +18,6 @@ def remove_transition(net, trans):
         Petri net
     """
     if trans in net.transitions:
-        print("removing ",trans.name)
         in_arcs = trans.in_arcs
         for arc in in_arcs:
             place = arc.source
