@@ -13,8 +13,8 @@ def execute_script():
     logPath = os.path.join("..","tests","inputData","running-example.xes")
     log = xes_importer.import_log(logPath)
     ts = ts_factory.apply(log, parameters={PARAM_KEY_WINDOW: 2})
-    viz = ts_vis_factory.apply(ts)
-    viz.view()
+    viz = ts_vis_factory.apply(ts, parameters={"format":"svg"})
+    ts_vis_factory.view(viz)
 
 if __name__ == '__main__':
     execute_script()

@@ -21,8 +21,8 @@ def execute_script():
     dfg_intermediate_log = dfg_factory.apply(intermediate_log)
     dfg_filtered_log = dfg_replacement.replace_values(dfg_filtered_log, dfg_intermediate_log)
 
-    gviz = dfg_vis_factory.apply(dfg_filtered_log, log=intermediate_log)
-    gviz.view()
+    gviz = dfg_vis_factory.apply(dfg_filtered_log, log=intermediate_log, parameters={"format": "svg"})
+    dfg_vis_factory.view(gviz)
     #base64 = dfg_visualize.return_diagram_as_base64(activities_count, dfg_filtered_log, measure=measure)
     #print(base64)
 
