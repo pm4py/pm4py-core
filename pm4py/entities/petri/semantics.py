@@ -54,28 +54,6 @@ def execute(t, pn, m):
 
     return m_out
 
-def weak_is_enabled(t, pn, m):
-    '''
-    Verifies whether a given transition is enabled in a given Petri net and marking
-    (even if the object is not apparently present in the Petri net)
-
-    Parameters
-    ----------
-    :param t: transition to check
-    :param pn: Petri net
-    :param m: marking to check
-
-    Returns
-    -------
-    :return: true if enabled, false otherwise
-    '''
-
-    for a in t.in_arcs:
-        print(a, m[a.source])
-        if m[a.source] < a.weight:
-            return False
-    return True
-
 def weak_execute(t, pn, m):
     """
     Execute a transition even if it is not fully enabled
