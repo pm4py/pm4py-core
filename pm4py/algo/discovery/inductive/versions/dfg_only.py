@@ -47,15 +47,15 @@ def apply(trace_log, parameters):
     indMinDirFollows = InductMinDirFollows()
     net, initial_marking, final_marking = indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
 
+    # clean net from duplicate hidden transitions
+    net = clean_duplicate_transitions(net)
+
     if enable_reduction:
         # do the replay
         aligned_traces = token_replay.apply(trace_log, net, initial_marking, final_marking, parameters=parameters)
 
         # apply petri_reduction technique in order to simplify the Petri net
         net = reduction.apply(net, parameters={"aligned_traces": aligned_traces})
-    else:
-        # clean net from duplicate hidden transitions
-        net = clean_duplicate_transitions(net)
 
     return net, initial_marking, final_marking
 
@@ -93,11 +93,7 @@ def clean_duplicate_transitions(net):
                         break
                     alreadyVisitedCombo.add(combo)
             if to_delete:
-                for arc in in_arcs:
-                    net.arcs.remove(arc)
-                for arc in out_arcs:
-                    net.arcs.remove(arc)
-                net.transitions.remove(trans)
+                net = petri.utils.remove_transition(net, trans)
         i = i + 1
     return net
 
