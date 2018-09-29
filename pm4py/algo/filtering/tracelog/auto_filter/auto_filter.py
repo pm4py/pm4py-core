@@ -59,6 +59,7 @@ def apply_auto_filter(trace_log, parameters=None):
     gc.collect()
     variants = variants_module.get_variants(filtered_log2, parameters=parameters_child)
     filtered_log3 = variants_module.apply_auto_filter(filtered_log2, variants=variants, parameters=parameters_child)
+    variants = variants_module.get_variants(filtered_log3, parameters=parameters_child)
     filtered_log2 = None
     gc.collect()
     filtered_log4 = start_activities_filter.apply_auto_filter(filtered_log3, variants=variants, parameters=parameters_child)
