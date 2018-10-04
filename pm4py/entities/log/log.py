@@ -53,6 +53,9 @@ class EventLog(Sequence):
     def __reversed__(self):
         return reversed(self._list)
 
+    def __setitem__(self, key, value):
+        self._list[key] = value
+
     def index(self, x, start: int = ..., end: int = ...):
         return self._list.index(x, start, end)
 
@@ -156,6 +159,9 @@ class Trace(Sequence):
 
     def __reversed__(self):
         return reversed(self._list)
+
+    def __setitem__(self, key, value):
+        self._list[key] = value
 
     def index(self, x, start: int = ..., end: int = ...):
         return self._list.index(x, start, end)
