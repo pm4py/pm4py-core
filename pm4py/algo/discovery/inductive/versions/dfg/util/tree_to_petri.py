@@ -1,6 +1,7 @@
 from pm4py.entities import petri
 from pm4py.entities.petri.petrinet import PetriNet
-from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg
+from pm4py.algo.discovery.dfg.utils.dfg_utils import max_occ_all_activ, sum_start_activities_count, \
+    sum_end_activities_count, sum_activities_count, max_occ_among_specif_activ
 
 
 def get_new_place(counts):
@@ -25,155 +26,6 @@ def get_transition(counts, label):
     """
     counts.inc_noOfVisible()
     return petri.petrinet.PetriNet.Transition(label, label)
-
-
-def sum_ingoutg_val_activ(dict, activity):
-    """
-    Gets the sum of ingoing/outgoing values of an activity
-
-    Parameters
-    -----------
-    dict
-        Dictionary
-    activity
-        Current examined activity
-
-    Returns
-    -----------
-    sum
-    """
-    sum = 0
-    for act2 in dict[activity]:
-        sum += dict[activity][act2]
-    return sum
-
-
-def max_occ_all_activ(dfg):
-    """
-    Get maximum ingoing/outgoing sum of values related to attributes in DFG graph
-    """
-    ingoing = get_ingoing_edges(dfg)
-    outgoing = get_outgoing_edges(dfg)
-    max_value = -1
-
-    for act in ingoing:
-        sum = sum_ingoutg_val_activ(ingoing, act)
-        if sum > max_value:
-            max_value = sum
-
-    for act in outgoing:
-        sum = sum_ingoutg_val_activ(outgoing, act)
-        if sum > max_value:
-            max_value = sum
-
-    return max_value
-
-
-def max_occ_among_specif_activ(dfg, activities):
-    """
-    Get maximum ingoing/outgoing sum of values related to attributes in DFG graph
-    (here attributes to consider are specified)
-    """
-    ingoing = get_ingoing_edges(dfg)
-    outgoing = get_outgoing_edges(dfg)
-    max_value = -1
-
-    for act in activities:
-        if act in ingoing:
-            sum = sum_ingoutg_val_activ(ingoing, act)
-            if sum > max_value:
-                max_value = sum
-        if act in outgoing:
-            sum = sum_ingoutg_val_activ(outgoing, act)
-            if sum > max_value:
-                max_value = sum
-
-    return max_value
-
-
-def sum_start_activities_count(dfg):
-    """
-    Gets the sum of start attributes count inside a DFG
-
-    Parameters
-    -------------
-    dfg
-        Directly-Follows graph
-
-    Returns
-    -------------
-        Sum of start attributes count
-    """
-    ingoing = get_ingoing_edges(dfg)
-    outgoing = get_outgoing_edges(dfg)
-
-    sum_values = 0
-
-    for act in outgoing:
-        if not act in ingoing:
-            for act2 in outgoing[act]:
-                sum_values += outgoing[act][act2]
-
-    return sum_values
-
-
-def sum_end_activities_count(dfg):
-    """
-    Gets the sum of end attributes count inside a DFG
-
-    Parameters
-    -------------
-    dfg
-        Directly-Follows graph
-
-    Returns
-    -------------
-        Sum of start attributes count
-    """
-    ingoing = get_ingoing_edges(dfg)
-    outgoing = get_outgoing_edges(dfg)
-
-    sum_values = 0
-
-    for act in ingoing:
-        if not act in outgoing:
-            for act2 in ingoing[act]:
-                sum_values += ingoing[act][act2]
-
-    return sum_values
-
-
-def sum_activities_count(dfg, activities):
-    """
-    Gets the sum of specified attributes count inside a DFG
-
-    Parameters
-    -------------
-    dfg
-        Directly-Follows graph
-    activities
-        Activities to sum
-
-    Returns
-    -------------
-        Sum of start attributes count
-    """
-    ingoing = get_ingoing_edges(dfg)
-    outgoing = get_outgoing_edges(dfg)
-
-    sum_values = 0
-
-    for act in activities:
-        if act in outgoing:
-            for act2 in outgoing[act]:
-                sum_values += outgoing[act][act2]
-        if act in ingoing:
-            for act2 in ingoing[act]:
-                sum_values += ingoing[act][act2]
-        if act in ingoing and act in outgoing:
-            sum_values = int(sum_values / 2)
-
-    return sum_values
 
 
 def verify_skip_transition_necessity(mAddSkip, initialDfg, dfg, childrenDfg, activities, childrenActivities,
@@ -350,22 +202,23 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
                                                                                             0].activities,
                                                                                         initialPlace),
                                                                                     must_add_loop=mAddLoop)
-        net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(tree.children[1], recDepth + 1, counts, net,
-                                                                            initial_marking,
-                                                                            final_marking,
-                                                                            initial_connect_to=lastAddedPlace,
-                                                                            final_connect_to=finalPlace,
-                                                                            must_add_skip=verify_skip_transition_necessity(
-                                                                                mAddSkip,
-                                                                                tree.initialDfg,
-                                                                                tree.dfg,
-                                                                                tree.children[
-                                                                                    1].dfg,
-                                                                                tree.activities,
-                                                                                tree.children[
-                                                                                    1].activities,
-                                                                                lastAddedPlace),
-                                                                            must_add_loop=mAddLoop)
+        net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(tree.children[1], recDepth + 1,
+                                                                                    counts, net,
+                                                                                    initial_marking,
+                                                                                    final_marking,
+                                                                                    initial_connect_to=lastAddedPlace,
+                                                                                    final_connect_to=finalPlace,
+                                                                                    must_add_skip=verify_skip_transition_necessity(
+                                                                                        mAddSkip,
+                                                                                        tree.initialDfg,
+                                                                                        tree.dfg,
+                                                                                        tree.children[
+                                                                                            1].dfg,
+                                                                                        tree.activities,
+                                                                                        tree.children[
+                                                                                            1].activities,
+                                                                                        lastAddedPlace),
+                                                                                    must_add_loop=mAddLoop)
     elif tree.detectedCut == "parallel":
         mAddSkip = False
         mAddLoop = False
@@ -394,14 +247,15 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
             mAddSkipFinal = verify_skip_transition_necessity(mAddSkip, tree.dfg, tree.dfg, child.dfg,
                                                              tree.activities, child.activities, parallelSplit)
 
-            net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(child, recDepth + 1, counts, net, initial_marking,
-                                                                                              final_marking,
-                                                                                              must_add_initial_place=True,
-                                                                                              must_add_final_place=True,
-                                                                                              initial_connect_to=parallelSplit,
-                                                                                              final_connect_to=parallelJoin,
-                                                                                              must_add_skip=mAddSkipFinal,
-                                                                                              must_add_loop=mAddLoop)
+            net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(child, recDepth + 1, counts,
+                                                                                        net, initial_marking,
+                                                                                        final_marking,
+                                                                                        must_add_initial_place=True,
+                                                                                        must_add_final_place=True,
+                                                                                        initial_connect_to=parallelSplit,
+                                                                                        final_connect_to=parallelJoin,
+                                                                                        must_add_skip=mAddSkipFinal,
+                                                                                        must_add_loop=mAddLoop)
 
         lastAddedPlace = finalPlace
 
@@ -414,18 +268,19 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
             net.places.add(finalPlace)
 
         for child in tree.children:
-            net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(child, recDepth + 1, counts, net, initial_marking,
-                                                                                              final_marking,
-                                                                                              initial_connect_to=initialPlace,
-                                                                                              final_connect_to=finalPlace,
-                                                                                              must_add_skip=verify_skip_transition_necessity(
-                                                                                                  mAddSkip,
-                                                                                                  tree.initialDfg,
-                                                                                                  tree.dfg, child.dfg,
-                                                                                                  tree.activities,
-                                                                                                  child.activities,
-                                                                                                  initialPlace),
-                                                                                              must_add_loop=mAddLoop)
+            net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(child, recDepth + 1, counts,
+                                                                                        net, initial_marking,
+                                                                                        final_marking,
+                                                                                        initial_connect_to=initialPlace,
+                                                                                        final_connect_to=finalPlace,
+                                                                                        must_add_skip=verify_skip_transition_necessity(
+                                                                                            mAddSkip,
+                                                                                            tree.initialDfg,
+                                                                                            tree.dfg, child.dfg,
+                                                                                            tree.activities,
+                                                                                            child.activities,
+                                                                                            initialPlace),
+                                                                                        must_add_loop=mAddLoop)
 
         lastAddedPlace = finalPlace
 
