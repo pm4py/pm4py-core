@@ -31,14 +31,14 @@ def filter_on_case_performance(trace_log, inf_perf, sup_perf, parameters=None):
 
 def filter_on_ncases(trace_log, max_no_cases=1000):
     """
-    Get only a specified number of cases from a trace log
+    Get only a specified number of traces from a trace log
 
     Parameters
     -----------
     trace_log
         Trace log
     ncases
-        Desidered number of cases from the trace log
+        Desidered number of traces from the trace log
 
     Returns
     -----------
@@ -50,16 +50,16 @@ def filter_on_ncases(trace_log, max_no_cases=1000):
 
 def filter_on_case_size(trace_log, min_case_size=2, max_case_size=None):
     """
-    Get only cases in the log with a given size
+    Get only traces in the log with a given size
 
     Parameters
     -----------
     trace_log
         Trace log
     min_case_size
-        Minimum desidered size of cases
+        Minimum desidered size of traces
     max_case_size
-        Maximum desidered size of cases
+        Maximum desidered size of traces
 
     Returns
     -----------

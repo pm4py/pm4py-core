@@ -37,7 +37,7 @@ def get_variants_statistics(df, parameters=None):
 
 def get_cases_description(df, parameters=None):
     """
-    Get a description of cases present in the Pandas dataframe
+    Get a description of traces present in the Pandas dataframe
 
     Parameters
     -----------
@@ -47,15 +47,15 @@ def get_cases_description(df, parameters=None):
         Parameters of the algorithm, including:
             case_id_glue -> Column that identifies the case ID
             timestamp_key -> Column that identifies the timestamp
-            enable_sort -> Enable sorting of cases
-            sort_by_column -> Sort cases inside the dataframe using the specified column. Admitted values: startTime, endTime, caseDuration
+            enable_sort -> Enable sorting of traces
+            sort_by_column -> Sort traces inside the dataframe using the specified column. Admitted values: startTime, endTime, caseDuration
             sort_ascending -> Set sort direction (boolean; it true then the sort direction is ascending, otherwise descending)
-            max_ret_cases -> Set the maximum number of returned cases
+            max_ret_cases -> Set the maximum number of returned traces
 
     Returns
     -----------
     ret
-        Dictionary of cases associated to their start timestamp, their end timestamp and their duration
+        Dictionary of traces associated to their start timestamp, their end timestamp and their duration
     """
     if parameters is None:
         parameters = {}

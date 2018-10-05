@@ -75,7 +75,7 @@ def convert_caseid_column_to_str(df, case_id_glue="case:concept:name"):
     df
         Pandas dataframe
     case_id_glue
-        Case ID glue (that is used to connect the cases)
+        Case ID glue (that is used to connect the traces)
 
     Returns
     -----------

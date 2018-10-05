@@ -1,1 +1,1 @@
-from pm4py.algo import conformance, discovery, other, filtering, cases
+from pm4py.algo import conformance, discovery, other, filtering

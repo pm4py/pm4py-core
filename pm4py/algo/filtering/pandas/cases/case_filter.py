@@ -2,7 +2,7 @@ import pandas as pd
 
 def filter_on_ncases(df, case_id_glue="case:concept:name", max_no_cases=1000):
     """
-    Filter a dataframe keeping only the specified maximum number of cases
+    Filter a dataframe keeping only the specified maximum number of traces
 
     Parameters
     -----------
@@ -11,7 +11,7 @@ def filter_on_ncases(df, case_id_glue="case:concept:name", max_no_cases=1000):
     case_id_glue
         Case ID column in the CSV
     max_no_cases
-        Maximum number of cases to keep
+        Maximum number of traces to keep
 
     Returns
     ------------
@@ -28,7 +28,7 @@ def filter_on_ncases(df, case_id_glue="case:concept:name", max_no_cases=1000):
 
 def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, max_case_size=None):
     """
-    Filter a dataframe keeping only cases with at least the specified number of events
+    Filter a dataframe keeping only traces with at least the specified number of events
 
     Parameters
     -----------
@@ -37,7 +37,7 @@ def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, m
     case_id_glue
         Case ID column in the CSV
     max_no_cases
-        Maximum number of cases to keep
+        Maximum number of traces to keep
 
     Returns
     -----------

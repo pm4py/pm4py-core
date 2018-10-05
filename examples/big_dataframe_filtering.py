@@ -14,7 +14,7 @@ from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.util import constants
 from pm4py.algo.filtering.pandas.cases import case_filter
-from pm4py.algo.cases.pandas import case_statistics
+from pm4py.statistics.traces.pandas import case_statistics
 
 MAX_NO_ACTIVITIES_PER_MODEL = 25
 GENERATED_IMAGES = []

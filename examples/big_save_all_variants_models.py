@@ -11,7 +11,7 @@ from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.util import constants
-from pm4py.algo.cases.pandas import case_statistics
+from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.algo.filtering.pandas.variants import variants_filter
 import shutil
 
