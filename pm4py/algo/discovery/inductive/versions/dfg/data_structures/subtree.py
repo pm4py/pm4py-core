@@ -2,6 +2,7 @@ from copy import copy
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg
 from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.algo.discovery.inductive.util import shared_constants
+from pm4py.algo.discovery.dfg.utils.dfg_utils import filter_dfg_on_act
 
 class Subtree(object):
     def __init__(self, dfg, initialDfg, activities, counts, recDepth, noiseThreshold=0):
@@ -398,21 +399,21 @@ class Subtree(object):
                     parCut[1] = self.add_to_most_probable_component(parCut[1], act, self.ingoing, self.outgoing)
 
                 for comp in parCut[1]:
-                    newDfg = self.filter_dfg_on_act(self.dfg, comp)
+                    newDfg = filter_dfg_on_act(self.dfg, comp)
                     self.detectedCut = "parallel"
                     self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1,
                                                  noiseThreshold=self.noiseThreshold))
             else:
                 if concCut[0]:
                     for comp in concCut[1]:
-                        newDfg = self.filter_dfg_on_act(self.dfg, comp)
+                        newDfg = filter_dfg_on_act(self.dfg, comp)
                         self.detectedCut = "concurrent"
                         self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1,
                                                      noiseThreshold=self.noiseThreshold))
                 else:
                     if seqCut[0]:
-                        dfg1 = self.filter_dfg_on_act(self.dfg, seqCut[1])
-                        dfg2 = self.filter_dfg_on_act(self.dfg, seqCut[2])
+                        dfg1 = filter_dfg_on_act(self.dfg, seqCut[1])
+                        dfg2 = filter_dfg_on_act(self.dfg, seqCut[2])
                         self.detectedCut = "sequential"
                         self.children.append(Subtree(dfg1, self.initialDfg, seqCut[1], self.counts, self.recDepth + 1,
                                                      noiseThreshold=self.noiseThreshold))
@@ -420,8 +421,8 @@ class Subtree(object):
                                                      noiseThreshold=self.noiseThreshold))
                     else:
                         if loopCut[0]:
-                            dfg1 = self.filter_dfg_on_act(self.dfg, loopCut[1])
-                            dfg2 = self.filter_dfg_on_act(self.dfg, loopCut[2])
+                            dfg1 = filter_dfg_on_act(self.dfg, loopCut[1])
+                            dfg2 = filter_dfg_on_act(self.dfg, loopCut[2])
                             self.detectedCut = "loopCut"
                             self.children.append(
                                 Subtree(dfg1, self.initialDfg, loopCut[1], self.counts, self.recDepth + 1,
@@ -438,21 +439,3 @@ class Subtree(object):
                             self.detectedCut = "flower"
         else:
             self.detectedCut = "base_concurrent"
-
-    def filter_dfg_on_act(self, dfg, listact):
-        """
-        Filter a DFG graph on a list of attributes
-        (to produce a projected DFG graph)
-
-        Parameters
-        -----------
-        dfg
-            Current DFG graph
-        listact
-            List of attributes to filter on
-        """
-        newDfg = []
-        for el in dfg:
-            if el[0][0] in listact and el[0][1] in listact:
-                newDfg.append(el)
-        return newDfg

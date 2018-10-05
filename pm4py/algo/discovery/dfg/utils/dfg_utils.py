@@ -137,3 +137,169 @@ def get_max_activity_count(dfg, act):
             if outgoing[act][act2] > max_value:
                 max_value = outgoing[act][act2]
     return max_value
+
+def sum_ingoutg_val_activ(dict, activity):
+    """
+    Gets the sum of ingoing/outgoing values of an activity
+
+    Parameters
+    -----------
+    dict
+        Dictionary
+    activity
+        Current examined activity
+
+    Returns
+    -----------
+    sum
+    """
+    sum = 0
+    for act2 in dict[activity]:
+        sum += dict[activity][act2]
+    return sum
+
+
+def max_occ_all_activ(dfg):
+    """
+    Get maximum ingoing/outgoing sum of values related to attributes in DFG graph
+    """
+    ingoing = get_ingoing_edges(dfg)
+    outgoing = get_outgoing_edges(dfg)
+    max_value = -1
+
+    for act in ingoing:
+        sum = sum_ingoutg_val_activ(ingoing, act)
+        if sum > max_value:
+            max_value = sum
+
+    for act in outgoing:
+        sum = sum_ingoutg_val_activ(outgoing, act)
+        if sum > max_value:
+            max_value = sum
+
+    return max_value
+
+
+def max_occ_among_specif_activ(dfg, activities):
+    """
+    Get maximum ingoing/outgoing sum of values related to attributes in DFG graph
+    (here attributes to consider are specified)
+    """
+    ingoing = get_ingoing_edges(dfg)
+    outgoing = get_outgoing_edges(dfg)
+    max_value = -1
+
+    for act in activities:
+        if act in ingoing:
+            sum = sum_ingoutg_val_activ(ingoing, act)
+            if sum > max_value:
+                max_value = sum
+        if act in outgoing:
+            sum = sum_ingoutg_val_activ(outgoing, act)
+            if sum > max_value:
+                max_value = sum
+
+    return max_value
+
+
+def sum_start_activities_count(dfg):
+    """
+    Gets the sum of start attributes count inside a DFG
+
+    Parameters
+    -------------
+    dfg
+        Directly-Follows graph
+
+    Returns
+    -------------
+        Sum of start attributes count
+    """
+    ingoing = get_ingoing_edges(dfg)
+    outgoing = get_outgoing_edges(dfg)
+
+    sum_values = 0
+
+    for act in outgoing:
+        if not act in ingoing:
+            for act2 in outgoing[act]:
+                sum_values += outgoing[act][act2]
+
+    return sum_values
+
+
+def sum_end_activities_count(dfg):
+    """
+    Gets the sum of end attributes count inside a DFG
+
+    Parameters
+    -------------
+    dfg
+        Directly-Follows graph
+
+    Returns
+    -------------
+        Sum of start attributes count
+    """
+    ingoing = get_ingoing_edges(dfg)
+    outgoing = get_outgoing_edges(dfg)
+
+    sum_values = 0
+
+    for act in ingoing:
+        if not act in outgoing:
+            for act2 in ingoing[act]:
+                sum_values += ingoing[act][act2]
+
+    return sum_values
+
+
+def sum_activities_count(dfg, activities):
+    """
+    Gets the sum of specified attributes count inside a DFG
+
+    Parameters
+    -------------
+    dfg
+        Directly-Follows graph
+    activities
+        Activities to sum
+
+    Returns
+    -------------
+        Sum of start attributes count
+    """
+    ingoing = get_ingoing_edges(dfg)
+    outgoing = get_outgoing_edges(dfg)
+
+    sum_values = 0
+
+    for act in activities:
+        if act in outgoing:
+            for act2 in outgoing[act]:
+                sum_values += outgoing[act][act2]
+        if act in ingoing:
+            for act2 in ingoing[act]:
+                sum_values += ingoing[act][act2]
+        if act in ingoing and act in outgoing:
+            sum_values = int(sum_values / 2)
+
+    return sum_values
+
+def filter_dfg_on_act(dfg, listact):
+    """
+    Filter a DFG graph on a list of attributes
+    (to produce a projected DFG graph)
+
+    Parameters
+    -----------
+    dfg
+        Current DFG graph
+    listact
+        List of attributes to filter on
+    """
+    newDfg = []
+    for el in dfg:
+        if el[0][0] in listact and el[0][1] in listact:
+            newDfg.append(el)
+    return newDfg
