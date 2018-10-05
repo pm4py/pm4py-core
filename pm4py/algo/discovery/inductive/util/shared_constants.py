@@ -1,3 +1,6 @@
+"""
+Shared constants useful for Inductive Miner application
+"""
 APPLY_REDUCTION_ON_SMALL_LOG = True
 MAX_LOG_SIZE_FOR_REDUCTION = 30
 
