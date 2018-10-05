@@ -12,7 +12,6 @@ from pm4py.entities.log.util import xes as xes_util
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg
 from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
-from pm4py.algo.repair.petri_reduction import factory as reduction
 
 sys.setrecursionlimit(100000)
 
@@ -55,7 +54,7 @@ def apply(trace_log, parameters):
         aligned_traces = token_replay.apply(trace_log, net, initial_marking, final_marking, parameters=parameters)
 
         # apply petri_reduction technique in order to simplify the Petri net
-        net = reduction.apply(net, parameters={"aligned_traces": aligned_traces})
+        net = petri_reduction_treplay(net, parameters={"aligned_traces": aligned_traces})
 
     return net, initial_marking, final_marking
 
@@ -95,6 +94,42 @@ def clean_duplicate_transitions(net):
             if to_delete:
                 net = petri.utils.remove_transition(net, trans)
         i = i + 1
+    return net
+
+def petri_reduction_treplay(net, parameters=None):
+    """
+    Apply petri_reduction on the Petrinet removing hidden transitions
+    that are unused according to token-based replay
+
+    Parameters
+    -----------
+    net
+        Petri net
+    parameters
+        Parameters of the algorithm, including:
+            aligned_traces -> Result of alignment according to token-based replay
+    Returns
+    -----------
+    net
+        Reduced Petri net
+    """
+    if parameters is None:
+        parameters = {}
+
+    aligned_traces = parameters["aligned_traces"]
+
+    enabledTransInAtLeastOneTrace = set()
+
+    for trace in aligned_traces:
+        for trans in trace["actTrans"]:
+            enabledTransInAtLeastOneTrace.add(trans)
+
+    transitions = list(net.transitions)
+    for trans in transitions:
+        if trans.label is None:
+            if not trans in enabledTransInAtLeastOneTrace:
+                net = petri.utils.remove_transition(net, trans)
+
     return net
 
 def apply_dfg(dfg, parameters):
