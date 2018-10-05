@@ -111,7 +111,7 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
             petri.utils.add_arc_from_to(final_place, final_connect_to, net)
         else:
             final_place = final_connect_to
-        if counts.noOfPlaces == 2 and len(tree.activities) > 1:
+        if counts.num_places == 2 and len(tree.activities) > 1:
             initial_trans = get_new_hidden_trans(counts, type="tau")
             net.transitions.add(initial_trans)
             new_place = get_new_place(counts)
@@ -130,7 +130,7 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
         else:
             last_added_place = final_connect_to
 
-        prev_no_visible_trans = counts.noOfVisibleTransitions
+        prev_no_visible_trans = counts.num_visible_trans
 
         for act in tree.activities:
             trans = get_transition(counts, act)
@@ -250,30 +250,30 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
 
     if tree.detected_cut == "flower" or tree.detected_cut == "sequential" or tree.detected_cut == "loopCut" or tree.detected_cut == "base_concurrent" or tree.detected_cut == "parallel" or tree.detected_cut == "concurrent":
         if must_add_skip:
-            if not (initial_place.name in counts.dictSkips and last_added_place.name in counts.dictSkips[
+            if not (initial_place.name in counts.dict_skips and last_added_place.name in counts.dict_skips[
                 initial_place.name]):
                 skipTrans = get_new_hidden_trans(counts, type="skip")
                 net.transitions.add(skipTrans)
                 petri.utils.add_arc_from_to(initial_place, skipTrans, net)
                 petri.utils.add_arc_from_to(skipTrans, last_added_place, net)
 
-                if not initial_place.name in counts.dictSkips:
-                    counts.dictSkips[initial_place.name] = []
+                if not initial_place.name in counts.dict_skips:
+                    counts.dict_skips[initial_place.name] = []
 
-                counts.dictSkips[initial_place.name].append(last_added_place.name)
+                counts.dict_skips[initial_place.name].append(last_added_place.name)
 
         if tree.detected_cut == "flower" or must_add_loop:
-            if not (initial_place.name in counts.dictLoops and last_added_place.name in counts.dictLoops[
+            if not (initial_place.name in counts.dict_loops and last_added_place.name in counts.dict_loops[
                 initial_place.name]):
                 loopTrans = get_new_hidden_trans(counts, type="loop")
                 net.transitions.add(loopTrans)
                 petri.utils.add_arc_from_to(last_added_place, loopTrans, net)
                 petri.utils.add_arc_from_to(loopTrans, initial_place, net)
 
-                if not initial_place.name in counts.dictLoops:
-                    counts.dictLoops[initial_place.name] = []
+                if not initial_place.name in counts.dict_loops:
+                    counts.dict_loops[initial_place.name] = []
 
-                counts.dictLoops[initial_place.name].append(last_added_place.name)
+                counts.dict_loops[initial_place.name].append(last_added_place.name)
 
     if recDepth == 0:
         if len(sink.out_arcs) == 0 and len(sink.in_arcs) == 0:
