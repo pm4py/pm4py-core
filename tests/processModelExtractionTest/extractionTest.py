@@ -129,7 +129,7 @@ if __name__ == "__main__":
             logPath = os.path.join(logFolder, logName)
             log = xes_factory.import_log(logPath, variant="iterparse")
 
-            log, classifier_key = insert_classifier.search_and_insert_event_classifier_attribute(log)
+            log, classifier_key = insert_classifier.search_and_insert_activity_classifier_attribute(log)
 
             print("loaded log")
 

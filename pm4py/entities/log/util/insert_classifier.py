@@ -1,4 +1,4 @@
-def search_and_insert_event_classifier_attribute(log, force_activity_transition_insertion=False):
+def search_and_insert_activity_classifier_attribute(log, force_activity_transition_insertion=False):
     """
     Search among classifiers expressed in the log one that is good for the process model extraction
 
@@ -21,9 +21,9 @@ def search_and_insert_event_classifier_attribute(log, force_activity_transition_
         classifier = "Activity classifier"
     elif log.classifiers and "MXML Legacy Classifier" in log.classifiers and log.classifiers["MXML Legacy Classifier"]:
         classifier = "MXML Legacy Classifier"
-    return insert_classifier_attribute(log, classifier, force_activity_transition_insertion=force_activity_transition_insertion)
+    return insert_activity_classifier_attribute(log, classifier, force_activity_transition_insertion=force_activity_transition_insertion)
 
-def insert_classifier_attribute(log, classifier, force_activity_transition_insertion=False):
+def insert_activity_classifier_attribute(log, classifier, force_activity_transition_insertion=False):
     """
     Insert the specified classifier as additional event attribute in the log
 
