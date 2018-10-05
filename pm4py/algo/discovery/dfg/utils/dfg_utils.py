@@ -83,6 +83,7 @@ def infer_end_activities(dfg):
 
     return end_activities
 
+
 def get_activities_from_dfg(dfg):
     """
     Get the list of attributes directly from DFG graph
@@ -108,6 +109,7 @@ def get_activities_from_dfg(dfg):
     list_activities = sorted(list(set_activities))
 
     return list_activities
+
 
 def get_max_activity_count(dfg, act):
     """
@@ -137,6 +139,7 @@ def get_max_activity_count(dfg, act):
             if outgoing[act][act2] > max_value:
                 max_value = outgoing[act][act2]
     return max_value
+
 
 def sum_ingoutg_val_activ(dict, activity):
     """
@@ -286,6 +289,7 @@ def sum_activities_count(dfg, activities):
 
     return sum_values
 
+
 def filter_dfg_on_act(dfg, listact):
     """
     Filter a DFG graph on a list of attributes
@@ -303,3 +307,68 @@ def filter_dfg_on_act(dfg, listact):
         if el[0][0] in listact and el[0][1] in listact:
             newDfg.append(el)
     return newDfg
+
+
+def negate(dfg):
+    """
+    Negate relationship in the DFG graph
+    :return:
+    """
+    negatedDfg = []
+
+    outgoing = get_outgoing_edges(dfg)
+
+    for el in dfg:
+        if not (el[0][1] in outgoing and el[0][0] in outgoing[el[0][1]]):
+            negatedDfg.append(el)
+
+    return negatedDfg
+
+
+def get_activities_dirlist(activities_direction):
+    """
+    Activities direction list
+    """
+    dirlist = []
+    for act in activities_direction:
+        dirlist.append([act, activities_direction[act]])
+    dirlist = sorted(dirlist, key=lambda x: (x[1], x[0]), reverse=True)
+    return dirlist
+
+
+def get_activities_self_loop(dfg):
+    """
+    Get attributes that are in self-loop in this subtree
+    """
+    self_loop_act = []
+
+    outgoing = get_outgoing_edges(dfg)
+
+    for act in outgoing:
+        if act in list(outgoing[act].keys()):
+            self_loop_act.append(act)
+    return self_loop_act
+
+
+def get_activities_direction(dfg, activities):
+    """
+    Calculate attributes direction (Heuristics Miner)
+    """
+
+    if activities is None:
+        activities = get_activities_from_dfg(dfg)
+
+    ingoing_list = get_ingoing_edges(dfg)
+    outgoing_list = get_outgoing_edges(dfg)
+
+    direction = {}
+    for act in activities:
+        outgoing = 0
+        ingoing = 0
+        if act in outgoing_list:
+            outgoing = sum(list(outgoing_list[act].values()))
+        if act in ingoing_list:
+            ingoing = sum(list(ingoing_list[act].values()))
+        dependency = (outgoing - ingoing) / (ingoing + outgoing + 1)
+        direction[act] = dependency
+    return direction

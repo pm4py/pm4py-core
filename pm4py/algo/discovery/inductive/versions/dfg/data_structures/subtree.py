@@ -2,7 +2,9 @@ from copy import copy
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg
 from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.algo.discovery.inductive.util import shared_constants
-from pm4py.algo.discovery.dfg.utils.dfg_utils import filter_dfg_on_act
+from pm4py.algo.discovery.dfg.utils.dfg_utils import filter_dfg_on_act, negate, get_activities_dirlist, \
+    get_activities_self_loop, get_activities_direction
+
 
 class Subtree(object):
     def __init__(self, dfg, initialDfg, activities, counts, recDepth, noiseThreshold=0):
@@ -57,14 +59,16 @@ class Subtree(object):
         else:
             self.dfg = copy(dfg)
 
+        self.initialDfg = initialDfg
+
         self.outgoing = get_outgoing_edges(self.dfg)
         self.ingoing = get_ingoing_edges(self.dfg)
-        self.selfLoopActivities = self.get_activities_self_loop()
+        self.selfLoopActivities = get_activities_self_loop(self.dfg)
         self.initialOutgoing = get_outgoing_edges(self.initialDfg)
         self.initialIngoing = get_ingoing_edges(self.initialDfg)
-        self.activitiesDirection = self.get_activities_direction()
-        self.activitiesDirlist = self.get_activities_dirlist()
-        self.negatedDfg = self.negate()
+        self.activitiesDirection = get_activities_direction(self.dfg, self.activities)
+        self.activitiesDirlist = get_activities_dirlist(self.activitiesDirection)
+        self.negatedDfg = negate(self.dfg)
         self.negatedActivities = get_activities_from_dfg(self.negatedDfg)
         self.negatedOutgoing = get_outgoing_edges(self.negatedDfg)
         self.negatedIngoing = get_ingoing_edges(self.negatedDfg)
@@ -72,57 +76,6 @@ class Subtree(object):
         self.children = []
 
         self.detect_cut(secondIteration=secondIteration)
-
-    def negate(self):
-        """
-        Negate relationship in the DFG graph
-        :return:
-        """
-        negatedDfg = []
-
-        for el in self.dfg:
-            if not (el[0][1] in self.outgoing and el[0][0] in self.outgoing[el[0][1]]):
-                negatedDfg.append(el)
-
-        activitiesThatAreNotNegatedDfg = set(set(self.activities)).difference(get_activities_from_dfg(negatedDfg))
-
-        return negatedDfg
-
-    def get_activities_self_loop(self):
-        """
-        Get attributes that are in self-loop in this subtree
-        """
-        self_loop_act = []
-        for act in self.outgoing:
-            if act in list(self.outgoing[act].keys()):
-                self_loop_act.append(act)
-        return self_loop_act
-
-    def get_activities_direction(self):
-        """
-        Calculate attributes direction (Heuristics Miner)
-        """
-        direction = {}
-        for act in self.activities:
-            outgoing = 0
-            ingoing = 0
-            if act in self.outgoing:
-                outgoing = sum(list(self.outgoing[act].values()))
-            if act in self.ingoing:
-                ingoing = sum(list(self.ingoing[act].values()))
-            dependency = (outgoing - ingoing) / (ingoing + outgoing + 1)
-            direction[act] = dependency
-        return direction
-
-    def get_activities_dirlist(self):
-        """
-        Activities direction list
-        """
-        dirlist = []
-        for act in self.activitiesDirection:
-            dirlist.append([act, self.activitiesDirection[act]])
-        dirlist = sorted(dirlist, key=lambda x: (x[1], x[0]), reverse=True)
-        return dirlist
 
     def determine_best_set_sequential(self, act, set1, set2):
         """
