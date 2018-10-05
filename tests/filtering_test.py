@@ -12,7 +12,7 @@ from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
 from pm4py.algo.filtering.tracelog.cases import case_filter
 from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
-from pm4py.algo.cases.tracelog import case_statistics
+from pm4py.statistics.traces.tracelog import case_statistics
 
 
 class LogFilteringTest(unittest.TestCase):

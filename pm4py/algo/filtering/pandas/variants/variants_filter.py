@@ -1,8 +1,7 @@
-from pm4py.objects.log.util import xes
 from pm4py.util import constants
 from pm4py.algo.filtering.common import filtering_constants
-from pm4py.algo.cases.pandas import case_statistics
-import time
+from pm4py.statistics.traces.pandas import case_statistics
+
 
 def apply_auto_filter(df, parameters=None):
     """

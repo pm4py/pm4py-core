@@ -11,7 +11,7 @@ from pm4py.algo.filtering.pandas.auto_filter import auto_filter
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.algo.filtering.pandas.cases import case_filter
 from pm4py.algo.filtering.pandas.variants import variants_filter
-from pm4py.algo.cases.pandas import case_statistics
+from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.objects.log import transform
 from pm4py.algo.filtering.pandas.paths import paths_filter
 from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
