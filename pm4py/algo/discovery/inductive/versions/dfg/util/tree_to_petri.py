@@ -2,17 +2,19 @@ from pm4py.entities import petri
 from pm4py.entities.petri.petrinet import PetriNet
 from pm4py.algo.discovery.dfg.utils.dfg_utils import max_occ_all_activ, sum_start_activities_count, \
     sum_end_activities_count, sum_activities_count, max_occ_among_specif_activ
-from pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add import get_new_place, get_new_hidden_trans, get_transition
+from pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add import get_new_place, get_new_hidden_trans, \
+    get_transition
 
-def verify_skip_transition_necessity(mAddSkip, initialDfg, activities, initial_connect_to):
+
+def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities, initial_connect_to):
     """
     Utility functions that decides if the skip transition is necessary
 
     Parameters
     ----------
-    mAddSkip
+    must_add_skip
         Boolean value, provided by the parent caller, that tells if the skip is absolutely necessary
-    initialDfg
+    initial_dfg
         Initial DFG
     activities
         Provided activities of the DFG
@@ -21,17 +23,17 @@ def verify_skip_transition_necessity(mAddSkip, initialDfg, activities, initial_c
     """
     if initial_connect_to.name == "p_1":
         return False
-    if mAddSkip:
+    if must_add_skip:
         return True
 
-    maxValue = max_occ_all_activ(initialDfg)
-    sumStartActivitiesCount = sum_start_activities_count(initialDfg)
-    endActivitiesCount = sum_end_activities_count(initialDfg)
-    maxValueWithActivitiesSpecification = sum_activities_count(initialDfg, activities)
+    max_value = max_occ_all_activ(initial_dfg)
+    start_activities_count = sum_start_activities_count(initial_dfg)
+    end_activities_count = sum_end_activities_count(initial_dfg)
+    max_val_act_spec = sum_activities_count(initial_dfg, activities)
 
-    condition1 = sumStartActivitiesCount > 0 and maxValueWithActivitiesSpecification < sumStartActivitiesCount
-    condition2 = endActivitiesCount > 0 and maxValueWithActivitiesSpecification < endActivitiesCount
-    condition3 = sumStartActivitiesCount <= 0 and endActivitiesCount <= 0 and maxValue > 0 and maxValueWithActivitiesSpecification < maxValue
+    condition1 = start_activities_count > 0 and max_val_act_spec < start_activities_count
+    condition2 = end_activities_count > 0 and max_val_act_spec < end_activities_count
+    condition3 = start_activities_count <= 0 and end_activities_count <= 0 and max_value > 0 and max_val_act_spec < max_value
     condition = condition1 or condition2 or condition3
 
     if condition:
@@ -84,113 +86,113 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
     lastAddedPlace
         lastAddedPlace
     """
-    lastAddedPlace = None
-    initialPlace = None
-    finalPlace = None
+    last_added_place = None
+    initial_place = None
+    final_place = None
     if recDepth == 0:
         source = get_new_place(counts)
         initial_connect_to = source
-        initialPlace = source
+        initial_place = source
         net.places.add(source)
         sink = get_new_place(counts)
         final_connect_to = sink
         net.places.add(sink)
-        lastAddedPlace = sink
+        last_added_place = sink
     elif recDepth > 0:
         if must_add_initial_place or type(initial_connect_to) is PetriNet.Transition:
-            initialPlace = get_new_place(counts)
-            net.places.add(initialPlace)
-            petri.utils.add_arc_from_to(initial_connect_to, initialPlace, net)
+            initial_place = get_new_place(counts)
+            net.places.add(initial_place)
+            petri.utils.add_arc_from_to(initial_connect_to, initial_place, net)
         else:
-            initialPlace = initial_connect_to
+            initial_place = initial_connect_to
         if must_add_final_place or type(final_connect_to) is PetriNet.Transition:
-            finalPlace = get_new_place(counts)
-            net.places.add(finalPlace)
-            petri.utils.add_arc_from_to(finalPlace, final_connect_to, net)
+            final_place = get_new_place(counts)
+            net.places.add(final_place)
+            petri.utils.add_arc_from_to(final_place, final_connect_to, net)
         else:
-            finalPlace = final_connect_to
+            final_place = final_connect_to
         if counts.noOfPlaces == 2 and len(tree.activities) > 1:
-            initialTrans = get_new_hidden_trans(counts, type="tau")
-            net.transitions.add(initialTrans)
-            newPlace = get_new_place(counts)
-            net.places.add(newPlace)
-            petri.utils.add_arc_from_to(initial_connect_to, initialTrans, net)
-            petri.utils.add_arc_from_to(initialTrans, newPlace, net)
-            initialPlace = newPlace
+            initial_trans = get_new_hidden_trans(counts, type="tau")
+            net.transitions.add(initial_trans)
+            new_place = get_new_place(counts)
+            net.places.add(new_place)
+            petri.utils.add_arc_from_to(initial_connect_to, initial_trans, net)
+            petri.utils.add_arc_from_to(initial_trans, new_place, net)
+            initial_place = new_place
 
-    if tree.detectedCut == "base_concurrent" or tree.detectedCut == "flower":
+    if tree.detected_cut == "base_concurrent" or tree.detected_cut == "flower":
         if final_connect_to is None or type(final_connect_to) is PetriNet.Transition:
-            if finalPlace is not None:
-                lastAddedPlace = finalPlace
+            if final_place is not None:
+                last_added_place = final_place
             else:
-                lastAddedPlace = get_new_place(counts)
-                net.places.add(lastAddedPlace)
+                last_added_place = get_new_place(counts)
+                net.places.add(last_added_place)
         else:
-            lastAddedPlace = final_connect_to
+            last_added_place = final_connect_to
 
-        prevNoOfVisibleTransitions = counts.noOfVisibleTransitions
+        prev_no_visible_trans = counts.noOfVisibleTransitions
 
         for act in tree.activities:
             trans = get_transition(counts, act)
             net.transitions.add(trans)
-            petri.utils.add_arc_from_to(initialPlace, trans, net)
-            petri.utils.add_arc_from_to(trans, lastAddedPlace, net)
+            petri.utils.add_arc_from_to(initial_place, trans, net)
+            petri.utils.add_arc_from_to(trans, last_added_place, net)
 
-        maxValue = max_occ_all_activ(tree.initialDfg)
-        sumStartActivitiesCount = sum_start_activities_count(tree.initialDfg)
-        endActivitiesCount = sum_end_activities_count(tree.initialDfg)
-        maxValueWithActivitiesSpecification = sum_activities_count(tree.initialDfg, tree.activities)
+        max_value = max_occ_all_activ(tree.initial_dfg)
+        start_activities_count = sum_start_activities_count(tree.initial_dfg)
+        end_activities_count = sum_end_activities_count(tree.initial_dfg)
+        max_val_act_spec = sum_activities_count(tree.initial_dfg, tree.activities)
 
-        condition1 = sumStartActivitiesCount > 0 and maxValueWithActivitiesSpecification < sumStartActivitiesCount
-        condition2 = endActivitiesCount > 0 and maxValueWithActivitiesSpecification < endActivitiesCount
-        condition3 = sumStartActivitiesCount <= 0 and endActivitiesCount <= 0 and maxValue > 0 and maxValueWithActivitiesSpecification < maxValue
+        condition1 = start_activities_count > 0 and max_val_act_spec < start_activities_count
+        condition2 = end_activities_count > 0 and max_val_act_spec < end_activities_count
+        condition3 = start_activities_count <= 0 and end_activities_count <= 0 and max_value > 0 and max_val_act_spec < max_value
         condition = condition1 or condition2 or condition3
 
-        if condition and not initial_connect_to.name == "p_1" and prevNoOfVisibleTransitions > 0:
+        if condition and not initial_connect_to.name == "p_1" and prev_no_visible_trans > 0:
             # add skip transition
             skipTrans = get_new_hidden_trans(counts, type="skip")
             net.transitions.add(skipTrans)
-            petri.utils.add_arc_from_to(initialPlace, skipTrans, net)
-            petri.utils.add_arc_from_to(skipTrans, lastAddedPlace, net)
+            petri.utils.add_arc_from_to(initial_place, skipTrans, net)
+            petri.utils.add_arc_from_to(skipTrans, last_added_place, net)
 
     # iterate over childs
-    if tree.detectedCut == "sequential" or tree.detectedCut == "loopCut":
+    if tree.detected_cut == "sequential" or tree.detected_cut == "loopCut":
 
         mAddSkip = False
         mAddLoop = False
-        if tree.detectedCut == "loopCut":
+        if tree.detected_cut == "loopCut":
             mAddSkip = True
             mAddLoop = True
 
-        net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(tree.children[0], recDepth + 1,
-                                                                                    counts, net, initial_marking,
-                                                                                    final_marking,
-                                                                                    initial_connect_to=initialPlace,
-                                                                                    must_add_skip=verify_skip_transition_necessity(
-                                                                                        mAddSkip,
-                                                                                        tree.initialDfg,
-                                                                                        tree.activities,
-                                                                                        initialPlace),
-                                                                                    must_add_loop=mAddLoop)
-        net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(tree.children[1], recDepth + 1,
-                                                                                    counts, net,
-                                                                                    initial_marking,
-                                                                                    final_marking,
-                                                                                    initial_connect_to=lastAddedPlace,
-                                                                                    final_connect_to=finalPlace,
-                                                                                    must_add_skip=verify_skip_transition_necessity(
-                                                                                        mAddSkip,
-                                                                                        tree.initialDfg,
-                                                                                        tree.activities,
-                                                                                        lastAddedPlace),
-                                                                                    must_add_loop=mAddLoop)
-    elif tree.detectedCut == "parallel":
+        net, initial_marking, final_marking, last_added_place, counts = form_petrinet(tree.children[0], recDepth + 1,
+                                                                                      counts, net, initial_marking,
+                                                                                      final_marking,
+                                                                                      initial_connect_to=initial_place,
+                                                                                      must_add_skip=verify_skip_transition_necessity(
+                                                                                          mAddSkip,
+                                                                                          tree.initial_dfg,
+                                                                                          tree.activities,
+                                                                                          initial_place),
+                                                                                      must_add_loop=mAddLoop)
+        net, initial_marking, final_marking, last_added_place, counts = form_petrinet(tree.children[1], recDepth + 1,
+                                                                                      counts, net,
+                                                                                      initial_marking,
+                                                                                      final_marking,
+                                                                                      initial_connect_to=last_added_place,
+                                                                                      final_connect_to=final_place,
+                                                                                      must_add_skip=verify_skip_transition_necessity(
+                                                                                          mAddSkip,
+                                                                                          tree.initial_dfg,
+                                                                                          tree.activities,
+                                                                                          last_added_place),
+                                                                                      must_add_loop=mAddLoop)
+    elif tree.detected_cut == "parallel":
         mAddSkip = False
         mAddLoop = False
 
-        if finalPlace is None:
-            finalPlace = get_new_place(counts)
-            net.places.add(finalPlace)
+        if final_place is None:
+            final_place = get_new_place(counts)
+            net.places.add(final_place)
 
         children_occurrences = []
         for child in tree.children:
@@ -202,81 +204,81 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
 
         parallelSplit = get_new_hidden_trans(counts, "tauSplit")
         net.transitions.add(parallelSplit)
-        petri.utils.add_arc_from_to(initialPlace, parallelSplit, net)
+        petri.utils.add_arc_from_to(initial_place, parallelSplit, net)
 
         parallelJoin = get_new_hidden_trans(counts, "tauJoin")
         net.transitions.add(parallelJoin)
-        petri.utils.add_arc_from_to(parallelJoin, finalPlace, net)
+        petri.utils.add_arc_from_to(parallelJoin, final_place, net)
 
         for child in tree.children:
             mAddSkipFinal = verify_skip_transition_necessity(mAddSkip, tree.dfg, tree.activities, parallelSplit)
 
-            net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(child, recDepth + 1, counts,
-                                                                                        net, initial_marking,
-                                                                                        final_marking,
-                                                                                        must_add_initial_place=True,
-                                                                                        must_add_final_place=True,
-                                                                                        initial_connect_to=parallelSplit,
-                                                                                        final_connect_to=parallelJoin,
-                                                                                        must_add_skip=mAddSkipFinal,
-                                                                                        must_add_loop=mAddLoop)
+            net, initial_marking, final_marking, last_added_place, counts = form_petrinet(child, recDepth + 1, counts,
+                                                                                          net, initial_marking,
+                                                                                          final_marking,
+                                                                                          must_add_initial_place=True,
+                                                                                          must_add_final_place=True,
+                                                                                          initial_connect_to=parallelSplit,
+                                                                                          final_connect_to=parallelJoin,
+                                                                                          must_add_skip=mAddSkipFinal,
+                                                                                          must_add_loop=mAddLoop)
 
-        lastAddedPlace = finalPlace
+        last_added_place = final_place
 
-    elif tree.detectedCut == "concurrent":
+    elif tree.detected_cut == "concurrent":
         mAddSkip = False
         mAddLoop = False
 
-        if finalPlace is None:
-            finalPlace = get_new_place(counts)
-            net.places.add(finalPlace)
+        if final_place is None:
+            final_place = get_new_place(counts)
+            net.places.add(final_place)
 
         for child in tree.children:
-            net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(child, recDepth + 1, counts,
-                                                                                        net, initial_marking,
-                                                                                        final_marking,
-                                                                                        initial_connect_to=initialPlace,
-                                                                                        final_connect_to=finalPlace,
-                                                                                        must_add_skip=verify_skip_transition_necessity(
-                                                                                            mAddSkip,
-                                                                                            tree.initialDfg,
-                                                                                            tree.activities,
-                                                                                            initialPlace),
-                                                                                        must_add_loop=mAddLoop)
+            net, initial_marking, final_marking, last_added_place, counts = form_petrinet(child, recDepth + 1, counts,
+                                                                                          net, initial_marking,
+                                                                                          final_marking,
+                                                                                          initial_connect_to=initial_place,
+                                                                                          final_connect_to=final_place,
+                                                                                          must_add_skip=verify_skip_transition_necessity(
+                                                                                              mAddSkip,
+                                                                                              tree.initial_dfg,
+                                                                                              tree.activities,
+                                                                                              initial_place),
+                                                                                          must_add_loop=mAddLoop)
 
-        lastAddedPlace = finalPlace
+        last_added_place = final_place
 
-    if tree.detectedCut == "flower" or tree.detectedCut == "sequential" or tree.detectedCut == "loopCut" or tree.detectedCut == "base_concurrent" or tree.detectedCut == "parallel" or tree.detectedCut == "concurrent":
+    if tree.detected_cut == "flower" or tree.detected_cut == "sequential" or tree.detected_cut == "loopCut" or tree.detected_cut == "base_concurrent" or tree.detected_cut == "parallel" or tree.detected_cut == "concurrent":
         if must_add_skip:
-            if not (initialPlace.name in counts.dictSkips and lastAddedPlace.name in counts.dictSkips[
-                initialPlace.name]):
+            if not (initial_place.name in counts.dictSkips and last_added_place.name in counts.dictSkips[
+                initial_place.name]):
                 skipTrans = get_new_hidden_trans(counts, type="skip")
                 net.transitions.add(skipTrans)
-                petri.utils.add_arc_from_to(initialPlace, skipTrans, net)
-                petri.utils.add_arc_from_to(skipTrans, lastAddedPlace, net)
+                petri.utils.add_arc_from_to(initial_place, skipTrans, net)
+                petri.utils.add_arc_from_to(skipTrans, last_added_place, net)
 
-                if not initialPlace.name in counts.dictSkips:
-                    counts.dictSkips[initialPlace.name] = []
+                if not initial_place.name in counts.dictSkips:
+                    counts.dictSkips[initial_place.name] = []
 
-                counts.dictSkips[initialPlace.name].append(lastAddedPlace.name)
+                counts.dictSkips[initial_place.name].append(last_added_place.name)
 
-        if tree.detectedCut == "flower" or must_add_loop:
-            if not (initialPlace.name in counts.dictLoops and lastAddedPlace.name in counts.dictLoops[
-                initialPlace.name]):
+        if tree.detected_cut == "flower" or must_add_loop:
+            if not (initial_place.name in counts.dictLoops and last_added_place.name in counts.dictLoops[
+                initial_place.name]):
                 loopTrans = get_new_hidden_trans(counts, type="loop")
                 net.transitions.add(loopTrans)
-                petri.utils.add_arc_from_to(lastAddedPlace, loopTrans, net)
-                petri.utils.add_arc_from_to(loopTrans, initialPlace, net)
+                petri.utils.add_arc_from_to(last_added_place, loopTrans, net)
+                petri.utils.add_arc_from_to(loopTrans, initial_place, net)
 
-                if not initialPlace.name in counts.dictLoops:
-                    counts.dictLoops[initialPlace.name] = []
+                if not initial_place.name in counts.dictLoops:
+                    counts.dictLoops[initial_place.name] = []
 
-                counts.dictLoops[initialPlace.name].append(lastAddedPlace.name)
+                counts.dictLoops[initial_place.name].append(last_added_place.name)
 
     if recDepth == 0:
         if len(sink.out_arcs) == 0 and len(sink.in_arcs) == 0:
             net.places.remove(sink)
-            sink = lastAddedPlace
+            sink = last_added_place
 
         if len(sink.out_arcs) > 0:
             newSink = get_new_place(counts)
@@ -301,4 +303,4 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
         initial_marking[source] = 1
         final_marking[sink] = 1
 
-    return net, initial_marking, final_marking, lastAddedPlace, counts
+    return net, initial_marking, final_marking, last_added_place, counts
