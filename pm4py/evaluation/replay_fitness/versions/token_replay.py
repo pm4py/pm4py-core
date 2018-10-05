@@ -1,11 +1,6 @@
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.entities import log as log_lib
 from pm4py import util as pmutil
-from pm4py.entities.log.util import xes as xes_util
-
-PARAM_ACTIVITY_KEY = xes_util.DEFAULT_NAME_KEY
-
-PARAMETERS = [PARAM_ACTIVITY_KEY]
 
 def evaluate(aligned_traces, parameters=None):
     """
@@ -59,7 +54,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
 
     if parameters is None:
         parameters = {}
-    activity_key = parameters[PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
+    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
 
     parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "consider_remaining_in_fitness": True}
 

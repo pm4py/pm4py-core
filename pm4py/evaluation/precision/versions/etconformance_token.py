@@ -111,7 +111,8 @@ def apply(log, net, marking, final_marking, parameters=None):
     parameters_TR["tryToReachFinalMarkingThroughHidden"] = False
     parameters_TR["stopImmediatelyWhenUnfit"] = True
     parameters_TR["useHiddenTransitionsToEnableCorrespondingTransitions"] = True
-    parameters_TR["activity_key"] = activity_key
+    parameters_TR[PARAM_ACTIVITY_KEY] = activity_key
+
     aligned_traces = token_replay.apply(fake_log, net, marking, final_marking, parameters=parameters_TR)
 
     i = 0

@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <transition id="accept+complete">
+        <name>
+          <text>accept+complete</text>
+        </name>
+      </transition>
+      <transition id="get review 3+complete">
+        <name>
+          <text>get review 3+complete</text>
+        </name>
+      </transition>
+      <transition id="decide+start">
+        <name>
+          <text>decide+start</text>
+        </name>
+      </transition>
+      <transition id="decide+complete">
+        <name>
+          <text>decide+complete</text>
+        </name>
+      </transition>
+      <transition id="loop_1">
+        <name>
+          <text>loop_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="e48d1035-01d4-4750-a50f-eff926d8fb8a"/>
+      </transition>
+      <transition id="time-out X+complete">
+        <name>
+          <text>time-out X+complete</text>
+        </name>
+      </transition>
+      <transition id="loop_3">
+        <name>
+          <text>loop_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="3d7ab292-95e2-4554-96e8-6096d75c635c"/>
+      </transition>
+      <transition id="tau_11">
+        <name>
+          <text>tau_11</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="8d70cc4c-64e8-4ffc-8116-ed53d0227c5b"/>
+      </transition>
+      <transition id="time-out 3+complete">
+        <name>
+          <text>time-out 3+complete</text>
+        </name>
+      </transition>
+      <transition id="collect reviews+start">
+        <name>
+          <text>collect reviews+start</text>
+        </name>
+      </transition>
+      <transition id="time-out 1+complete">
+        <name>
+          <text>time-out 1+complete</text>
+        </name>
+      </transition>
+      <transition id="time-out 2+complete">
+        <name>
+          <text>time-out 2+complete</text>
+        </name>
+      </transition>
+      <transition id="reject+start">
+        <name>
+          <text>reject+start</text>
+        </name>
+      </transition>
+      <transition id="accept+start">
+        <name>
+          <text>accept+start</text>
+        </name>
+      </transition>
+      <transition id="reject+complete">
+        <name>
+          <text>reject+complete</text>
+        </name>
+      </transition>
+      <transition id="invite reviewers+complete">
+        <name>
+          <text>invite reviewers+complete</text>
+        </name>
+      </transition>
+      <transition id="collect reviews+complete">
+        <name>
+          <text>collect reviews+complete</text>
+        </name>
+      </transition>
+      <transition id="get review X+complete">
+        <name>
+          <text>get review X+complete</text>
+        </name>
+      </transition>
+      <transition id="get review 2+complete">
+        <name>
+          <text>get review 2+complete</text>
+        </name>
+      </transition>
+      <transition id="invite additional reviewer+complete">
+        <name>
+          <text>invite additional reviewer+complete</text>
+        </name>
+      </transition>
+      <transition id="get review 1+complete">
+        <name>
+          <text>get review 1+complete</text>
+        </name>
+      </transition>
+      <transition id="invite additional reviewer+start">
+        <name>
+          <text>invite additional reviewer+start</text>
+        </name>
+      </transition>
+      <transition id="invite reviewers+start">
+        <name>
+          <text>invite reviewers+start</text>
+        </name>
+      </transition>
+      <arc id="12809859" source="source" target="invite reviewers+start"/>
+      <arc id="13286917" source="p_4" target="get review 3+complete"/>
+      <arc id="2918025" source="p_4" target="get review 2+complete"/>
+      <arc id="13287051" source="decide+complete" target="p_8"/>
+      <arc id="12809741" source="p_4" target="get review 1+complete"/>
+      <arc id="13286925" source="p_4" target="time-out 1+complete"/>
+      <arc id="13286927" source="get review 3+complete" target="p_5"/>
+      <arc id="13286929" source="time-out 1+complete" target="p_5"/>
+      <arc id="13286931" source="p_5" target="loop_1"/>
+      <arc id="13287061" source="p_7" target="decide+complete"/>
+      <arc id="13286937" source="loop_1" target="p_4"/>
+      <arc id="12809757" source="invite reviewers+start" target="p_3"/>
+      <arc id="13287069" source="reject+complete" target="p_10"/>
+      <arc id="13287071" source="accept+complete" target="p_10"/>
+      <arc id="13287073" source="p_7" target="invite additional reviewer+complete"/>
+      <arc id="13287075" source="p_8" target="loop_3"/>
+      <arc id="12809767" source="time-out 2+complete" target="p_5"/>
+      <arc id="13286955" source="p_10" target="tau_11"/>
+      <arc id="13286957" source="p_8" target="accept+start"/>
+      <arc id="13286959" source="p_5" target="collect reviews+start"/>
+      <arc id="12809905" source="p_4" target="time-out 2+complete"/>
+      <arc id="13287091" source="loop_3" target="p_7"/>
+      <arc id="13286963" source="tau_11" target="sink"/>
+      <arc id="13287097" source="accept+start" target="p_9"/>
+      <arc id="12809789" source="time-out 3+complete" target="p_5"/>
+      <arc id="13286975" source="collect reviews+start" target="p_6"/>
+      <arc id="13287107" source="reject+start" target="p_9"/>
+      <arc id="13287109" source="p_8" target="reject+start"/>
+      <arc id="13286983" source="collect reviews+complete" target="p_7"/>
+      <arc id="12809931" source="p_3" target="invite reviewers+complete"/>
+      <arc id="13286987" source="p_6" target="collect reviews+complete"/>
+      <arc id="12809933" source="invite reviewers+complete" target="p_4"/>
+      <arc id="13286995" source="time-out X+complete" target="p_8"/>
+      <arc id="13287003" source="p_7" target="time-out X+complete"/>
+      <arc id="2918109" source="get review 2+complete" target="p_5"/>
+      <arc id="12809827" source="p_4" target="time-out 3+complete"/>
+      <arc id="13287139" source="p_9" target="accept+complete"/>
+      <arc id="13287013" source="p_7" target="decide+start"/>
+      <arc id="13287019" source="p_7" target="invite additional reviewer+start"/>
+      <arc id="13287021" source="invite additional reviewer+complete" target="p_8"/>
+      <arc id="13287023" source="p_7" target="get review X+complete"/>
+      <arc id="13287157" source="p_9" target="reject+complete"/>
+      <arc id="13287031" source="invite additional reviewer+start" target="p_8"/>
+      <arc id="12809849" source="get review 1+complete" target="p_5"/>
+      <arc id="13287037" source="decide+start" target="p_8"/>
+      <arc id="13287039" source="get review X+complete" target="p_8"/>
+    </page>
+  </net>
+</pnml>
