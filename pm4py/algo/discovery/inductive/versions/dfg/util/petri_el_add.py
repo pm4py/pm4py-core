@@ -12,7 +12,7 @@ def get_new_hidden_trans(counts, type="unknown"):
     """
     Create a new hidden transition in the Petri net
     """
-    counts.inc_noOfHidden()
+    counts.inc_no_hidden()
     return petri.petrinet.PetriNet.Transition(type + '_' + str(counts.num_hidden), None)
 
 
@@ -20,5 +20,5 @@ def get_transition(counts, label):
     """
     Create a transitions with the specified label in the Petri net
     """
-    counts.inc_noOfVisible()
+    counts.inc_no_visible()
     return petri.petrinet.PetriNet.Transition(label, label)

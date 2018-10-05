@@ -19,13 +19,13 @@ class Counts(object):
         """
         self.num_places = self.num_places + 1
 
-    def inc_noOfHidden(self):
+    def inc_no_hidden(self):
         """
         Increase the number of hidden transitions
         """
         self.num_hidden = self.num_hidden + 1
 
-    def inc_noOfVisible(self):
+    def inc_no_visible(self):
         """
         Increase the number of visible transitions
         """
