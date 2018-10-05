@@ -23,7 +23,8 @@ class DocMeasuresDocumentationTest(unittest.TestCase):
         from pm4py.evaluation.replay_fitness import factory as replay_factory
 
         fitness_alpha = replay_factory.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking)
-        fitness_inductive = replay_factory.apply(log, inductive_petri, inductive_initial_marking, inductive_final_marking)
+        fitness_inductive = replay_factory.apply(log, inductive_petri, inductive_initial_marking,
+                                                 inductive_final_marking)
         # print("fitness_alpha=",fitness_alpha)
         # print("fitness_inductive=",fitness_inductive)
 
@@ -38,7 +39,8 @@ class DocMeasuresDocumentationTest(unittest.TestCase):
 
         from pm4py.evaluation.generalization import factory as generalization_factory
 
-        generalization_alpha = generalization_factory.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking)
+        generalization_alpha = generalization_factory.apply(log, alpha_petri, alpha_initial_marking,
+                                                            alpha_final_marking)
         generalization_inductive = generalization_factory.apply(log, inductive_petri, inductive_initial_marking,
                                                                 inductive_final_marking)
 

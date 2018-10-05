@@ -1,8 +1,9 @@
 import unittest
-import os,sys,inspect
+import os, sys, inspect
+
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir)
+sys.path.insert(0, parentdir)
 from tests.imp_everything import Pm4pyImportPackageTest
 from tests.xes_impexp_test import XesImportExportTest
 from tests.csv_impexp_test import CsvImportExportTest
@@ -27,4 +28,4 @@ from tests.visual_test import VisualizationTest1
 from tests.case_man_test import CaseManagementTest
 
 if __name__ == "__main__":
-	unittest.main()
+    unittest.main()
