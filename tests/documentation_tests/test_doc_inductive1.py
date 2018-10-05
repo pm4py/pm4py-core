@@ -10,7 +10,7 @@ sys.path.insert(0, parentdir2)
 
 class InductiveMinerDocumentationTest(unittest.TestCase):
     def test_inductivedoc1(self):
-        from pm4py.entities.log.importer.xes import factory as xes_importer
+        from pm4py.objects.log.importer.xes import factory as xes_importer
         log = xes_importer.import_log(os.path.join("input_data", "running-example.xes"))
 
         from pm4py.algo.discovery.inductive import factory as inductive_miner

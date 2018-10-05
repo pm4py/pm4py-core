@@ -5,7 +5,7 @@ from copy import copy
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.visualization.common.utils import *
 from pm4py.util import constants
-from pm4py.entities.log.util import xes
+from pm4py.objects.log.util import xes
 
 def get_min_max_value(dfg):
     """

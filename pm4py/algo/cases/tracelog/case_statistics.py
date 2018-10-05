@@ -1,5 +1,5 @@
 from pm4py.util import constants
-from pm4py.entities.log.util import xes
+from pm4py.objects.log.util import xes
 from pm4py.algo.filtering.tracelog.variants import variants_filter
 
 def get_variant_statistics(trace_log, parameters=None):

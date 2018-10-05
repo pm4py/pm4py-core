@@ -1,1 +1,0 @@
-from pm4py.entities.petri.common import final_marking, initial_marking

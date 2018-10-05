@@ -4,8 +4,8 @@ import os, sys, inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
-from pm4py.entities.log.importer.xes import factory as xes_importer
-from pm4py.entities import petri
+from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.objects import petri
 from pm4py.algo.discovery.alpha import factory as alpha_factory
 from pm4py.algo.discovery.inductive.versions.dfg import dfg_only
 from tests.constants import INPUT_DATA_DIR

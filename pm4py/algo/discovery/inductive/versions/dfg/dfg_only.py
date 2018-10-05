@@ -1,12 +1,12 @@
-from pm4py.entities.log.util import trace_log as tl_util
+from pm4py.objects.log.util import trace_log as tl_util
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
-from pm4py.entities import petri
-from pm4py.entities.petri.petrinet import Marking
+from pm4py.objects import petri
+from pm4py.objects.petri.petrinet import Marking
 import time
 import sys
 from collections import Counter
 from pm4py import util as pmutil
-from pm4py.entities.log.util import xes as xes_util
+from pm4py.objects.log.util import xes as xes_util
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.algo.discovery.inductive.util import petri_cleaning, shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts

@@ -18,9 +18,9 @@ from itertools import zip_longest
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.alpha.data_structures import alpha_classic_abstraction
-from pm4py.entities.log import util as log_util
-from pm4py.entities import petri
-from pm4py.entities.petri.petrinet import Marking
+from pm4py.objects.log import util as log_util
+from pm4py.objects import petri
+from pm4py.objects.petri.petrinet import Marking
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.algo.discovery.alpha.utils import endpoints
 from pm4py.algo.discovery.dfg.utils import dfg_utils

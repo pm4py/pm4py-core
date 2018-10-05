@@ -6,15 +6,15 @@ parentdir2 = os.path.dirname(parentdir)
 sys.path.insert(0, parentdir)
 sys.path.insert(0, parentdir2)
 import time
-from pm4py.entities.log.importer.xes import factory as xes_factory
+from pm4py.objects.log.importer.xes import factory as xes_factory
 from pm4py.algo.discovery.inductive import factory as inductive
 from pm4py.algo.discovery.alpha import factory as alpha
 from pm4py.evaluation.replay_fitness import factory as fitness_factory
 from pm4py.evaluation.precision import factory as precision_factory
 from pm4py.evaluation.simplicity import factory as simplicity_factory
 from pm4py.evaluation.generalization import factory as generalization_factory
-from pm4py.entities.log.util import insert_classifier
-from pm4py.entities.petri.exporter import pnml as pnml_exporter
+from pm4py.objects.log.util import insert_classifier
+from pm4py.objects.petri.exporter import pnml as pnml_exporter
 from pm4py.visualization.petrinet import factory as petri_vis_factory
 from pm4py.visualization.common.save import save as vis_save
 from pm4py import util as pmutil

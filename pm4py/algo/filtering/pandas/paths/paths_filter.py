@@ -1,4 +1,4 @@
-from pm4py.entities.log.util import xes
+from pm4py.objects.log.util import xes
 from pm4py.util import constants
 import pandas as pd
 from pm4py.algo.filtering.common import filtering_constants

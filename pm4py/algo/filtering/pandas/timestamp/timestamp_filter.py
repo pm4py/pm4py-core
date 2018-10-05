@@ -1,5 +1,5 @@
 from pm4py.util import constants
-from pm4py.entities.log.util import xes
+from pm4py.objects.log.util import xes
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
 import pandas as pd

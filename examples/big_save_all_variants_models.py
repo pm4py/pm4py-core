@@ -3,7 +3,7 @@ import os, sys, inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
-from pm4py.entities.log.adapters.pandas import csv_import_adapter as csv_import_adapter
+from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
 import time
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.visualization.petrinet.util import vis_trans_shortest_paths

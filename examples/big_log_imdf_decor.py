@@ -3,7 +3,7 @@ import os, sys, inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
-from pm4py.entities.log.importer.xes import factory as xes_importer
+from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.algo.discovery.inductive import factory as inductive_miner
 from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
