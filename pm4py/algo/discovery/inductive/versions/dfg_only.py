@@ -16,6 +16,17 @@ from pm4py.algo.discovery.inductive.util import petri_cleaning
 
 sys.setrecursionlimit(100000)
 
+
+class shared_constants:
+    APPLY_REDUCTION_ON_SMALL_LOG = True
+    MAX_LOG_SIZE_FOR_REDUCTION = 30
+
+    LOOP_CONST_1 = 0.2
+    LOOP_CONST_2 = 0.02
+    LOOP_CONST_3 = -0.2
+    LOOP_CONST_4 = -0.7
+
+
 def apply(trace_log, parameters):
     """
     Apply the IMDF algorithm to a log
@@ -42,7 +53,8 @@ def apply(trace_log, parameters):
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     # apply the reduction by default only on very small logs
-    enable_reduction = parameters["enable_reduction"] if "enable_reduction" in parameters else len(trace_log) < 30
+    enable_reduction = parameters["enable_reduction"] if "enable_reduction" in parameters else (
+                shared_constants.APPLY_REDUCTION_ON_SMALL_LOG and shared_constants.MAX_LOG_SIZE_FOR_REDUCTION)
 
     indMinDirFollows = InductMinDirFollows()
     net, initial_marking, final_marking = indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
@@ -58,6 +70,7 @@ def apply(trace_log, parameters):
         net = petri_cleaning.petri_reduction_treplay(net, parameters={"aligned_traces": aligned_traces})
 
     return net, initial_marking, final_marking
+
 
 def apply_dfg(dfg, parameters):
     """
@@ -92,10 +105,12 @@ def apply_dfg(dfg, parameters):
 
     return net, initial_marking, final_marking
 
+
 class Counts(object):
     """
     Shared variables among executions
     """
+
     def __init__(self):
         """
         Constructor
@@ -123,6 +138,7 @@ class Counts(object):
         Increase the number of visible transitions
         """
         self.noOfVisibleTransitions = self.noOfVisibleTransitions + 1
+
 
 class Subtree(object):
     def __init__(self, dfg, initialDfg, activities, counts, recDepth, noiseThreshold=0):
@@ -201,7 +217,7 @@ class Subtree(object):
         negatedDfg = []
 
         for el in self.dfg:
-            if not(el[0][1] in self.outgoing and el[0][0] in self.outgoing[el[0][1]]):
+            if not (el[0][1] in self.outgoing and el[0][0] in self.outgoing[el[0][1]]):
                 negatedDfg.append(el)
 
         activitiesThatAreNotNegatedDfg = set(set(self.activities)).difference(get_activities_from_dfg(negatedDfg))
@@ -230,7 +246,7 @@ class Subtree(object):
                 outgoing = sum(list(self.outgoing[act].values()))
             if act in self.ingoing:
                 ingoing = sum(list(self.ingoing[act].values()))
-            dependency = (outgoing - ingoing)/(ingoing + outgoing + 1)
+            dependency = (outgoing - ingoing) / (ingoing + outgoing + 1)
             direction[act] = dependency
         return direction
 
@@ -290,12 +306,13 @@ class Subtree(object):
         if len(self.activitiesDirlist) > 0:
             set1.add(self.activitiesDirlist[0][0])
         if len(self.activitiesDirlist) > -1:
-            if not (self.activitiesDirlist[0][0] in self.ingoing and self.activitiesDirlist[-1][0] in self.ingoing[self.activitiesDirlist[0][0]]):
+            if not (self.activitiesDirlist[0][0] in self.ingoing and self.activitiesDirlist[-1][0] in self.ingoing[
+                self.activitiesDirlist[0][0]]):
                 set2.add(self.activitiesDirlist[-1][0])
             else:
                 return [False, [], []]
         i = 1
-        while i < len(self.activitiesDirlist)-1:
+        while i < len(self.activitiesDirlist) - 1:
             act = self.activitiesDirlist[i]
             ret, set1, set2 = self.determine_best_set_sequential(act, set1, set2)
             if ret is False:
@@ -396,7 +413,8 @@ class Subtree(object):
 
                 for act1 in conn1:
                     for act2 in conn2:
-                        if not((act1 in self.outgoing and act2 in self.outgoing[act1]) and (act1 in self.ingoing and act2 in self.ingoing[act1])):
+                        if not ((act1 in self.outgoing and act2 in self.outgoing[act1]) and (
+                                act1 in self.ingoing and act2 in self.ingoing[act1])):
                             return False
                 j = j + 1
             i = i + 1
@@ -430,29 +448,26 @@ class Subtree(object):
         """
         Detect loop cut
         """
-        LOOP_CONST_1 = 0.2
-        LOOP_CONST_2 = 0.02
-        LOOP_CONST_3 = -0.2
-        LOOP_CONST_4 = -0.7
 
         if len(self.activitiesDirlist) > 1:
             set1 = set()
             set2 = set()
 
-            if self.activitiesDirlist[0][1] > LOOP_CONST_1:
+            if self.activitiesDirlist[0][1] > shared_constants.LOOP_CONST_1:
                 if self.activitiesDirlist[0][0] in self.ingoing:
                     activInput = list(self.ingoing[self.activitiesDirlist[0][0]])
                     for act in activInput:
-                        if not act == self.activitiesDirlist[0][0] and self.activitiesDirection[act] < LOOP_CONST_2:
+                        if not act == self.activitiesDirlist[0][0] and self.activitiesDirection[
+                            act] < shared_constants.LOOP_CONST_2:
                             set2.add(act)
 
-            if self.activitiesDirlist[-1][1] < LOOP_CONST_4:
+            if self.activitiesDirlist[-1][1] < shared_constants.LOOP_CONST_4:
                 set2.add(self.activitiesDirlist[-1][0])
 
             if len(set2) > 0:
                 for act in self.activities:
                     if not act in set2 or act in set1:
-                        if self.activitiesDirection[act] < LOOP_CONST_3:
+                        if self.activitiesDirection[act] < shared_constants.LOOP_CONST_3:
                             set2.add(act)
                         else:
                             set1.add(act)
@@ -489,12 +504,12 @@ class Subtree(object):
             sum = 0
             for act1 in comp:
                 if act1 in ingoing and act2 in ingoing[act1]:
-                   sum = sum + ingoing[act1][act2]
+                    sum = sum + ingoing[act1][act2]
                 if act1 in outgoing and act2 in outgoing[act1]:
                     sum = sum + outgoing[act1][act2]
             sums.append(sum)
             if sums[-1] > sums[idx_max_sum]:
-                idx_max_sum = len(sums)-1
+                idx_max_sum = len(sums) - 1
 
         comps[idx_max_sum].add(act2)
 
@@ -522,27 +537,35 @@ class Subtree(object):
                 for comp in parCut[1]:
                     newDfg = self.filter_dfg_on_act(self.dfg, comp)
                     self.detectedCut = "parallel"
-                    self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1, noiseThreshold=self.noiseThreshold))
+                    self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1,
+                                                 noiseThreshold=self.noiseThreshold))
             else:
                 if concCut[0]:
                     for comp in concCut[1]:
                         newDfg = self.filter_dfg_on_act(self.dfg, comp)
                         self.detectedCut = "concurrent"
-                        self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1, noiseThreshold=self.noiseThreshold))
+                        self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1,
+                                                     noiseThreshold=self.noiseThreshold))
                 else:
                     if seqCut[0]:
                         dfg1 = self.filter_dfg_on_act(self.dfg, seqCut[1])
                         dfg2 = self.filter_dfg_on_act(self.dfg, seqCut[2])
                         self.detectedCut = "sequential"
-                        self.children.append(Subtree(dfg1, self.initialDfg, seqCut[1], self.counts, self.recDepth+1, noiseThreshold=self.noiseThreshold))
-                        self.children.append(Subtree(dfg2, self.initialDfg, seqCut[2], self.counts, self.recDepth+1, noiseThreshold=self.noiseThreshold))
+                        self.children.append(Subtree(dfg1, self.initialDfg, seqCut[1], self.counts, self.recDepth + 1,
+                                                     noiseThreshold=self.noiseThreshold))
+                        self.children.append(Subtree(dfg2, self.initialDfg, seqCut[2], self.counts, self.recDepth + 1,
+                                                     noiseThreshold=self.noiseThreshold))
                     else:
                         if loopCut[0]:
                             dfg1 = self.filter_dfg_on_act(self.dfg, loopCut[1])
                             dfg2 = self.filter_dfg_on_act(self.dfg, loopCut[2])
                             self.detectedCut = "loopCut"
-                            self.children.append(Subtree(dfg1, self.initialDfg, loopCut[1], self.counts, self.recDepth + 1, noiseThreshold=self.noiseThreshold))
-                            self.children.append(Subtree(dfg2, self.initialDfg, loopCut[2], self.counts, self.recDepth + 1, noiseThreshold=self.noiseThreshold))
+                            self.children.append(
+                                Subtree(dfg1, self.initialDfg, loopCut[1], self.counts, self.recDepth + 1,
+                                        noiseThreshold=self.noiseThreshold))
+                            self.children.append(
+                                Subtree(dfg2, self.initialDfg, loopCut[2], self.counts, self.recDepth + 1,
+                                        noiseThreshold=self.noiseThreshold))
                         else:
                             if self.noiseThreshold > 0:
                                 if not secondIteration:
@@ -583,7 +606,7 @@ class Subtree(object):
         Create a new hidden transition in the Petri net
         """
         self.counts.inc_noOfHidden()
-        return petri.petrinet.PetriNet.Transition(type+'_' + str(self.counts.noOfHiddenTransitions), None)
+        return petri.petrinet.PetriNet.Transition(type + '_' + str(self.counts.noOfHiddenTransitions), None)
 
     def get_transition(self, label):
         """
@@ -735,7 +758,8 @@ class Subtree(object):
 
         return sum_values
 
-    def verify_skip_transition_necessity(self, mAddSkip, initialDfg, dfg, childrenDfg, activities, childrenActivities, initial_connect_to):
+    def verify_skip_transition_necessity(self, mAddSkip, initialDfg, dfg, childrenDfg, activities, childrenActivities,
+                                         initial_connect_to):
         """
         Utility functions that decides if the skip transition is necessary
 
@@ -770,7 +794,9 @@ class Subtree(object):
 
         return False
 
-    def form_petrinet(self, net, initial_marking, final_marking, must_add_initial_place=False, must_add_final_place=False, initial_connect_to=None, final_connect_to=None, must_add_skip=False, must_add_loop=False):
+    def form_petrinet(self, net, initial_marking, final_marking, must_add_initial_place=False,
+                      must_add_final_place=False, initial_connect_to=None, final_connect_to=None, must_add_skip=False,
+                      must_add_loop=False):
         """
         Form a Petri net from the current tree structure
 
@@ -806,7 +832,7 @@ class Subtree(object):
         lastAddedPlace
             lastAddedPlace
         """
-        #print(self.recDepth, self.attributes, self.detectedCut)
+        # print(self.recDepth, self.attributes, self.detectedCut)
         lastAddedPlace = None
         initialPlace = None
         finalPlace = None
@@ -886,12 +912,34 @@ class Subtree(object):
                 mAddLoop = True
 
             net, initial_marking, final_marking, lastAddedPlace = self.children[0].form_petrinet(net, initial_marking,
-                                                                                      final_marking,
-                                                                                      initial_connect_to=initialPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[0].dfg, self.activities, self.children[0].activities, initialPlace), must_add_loop=mAddLoop)
+                                                                                                 final_marking,
+                                                                                                 initial_connect_to=initialPlace,
+                                                                                                 must_add_skip=self.verify_skip_transition_necessity(
+                                                                                                     mAddSkip,
+                                                                                                     self.initialDfg,
+                                                                                                     self.dfg,
+                                                                                                     self.children[
+                                                                                                         0].dfg,
+                                                                                                     self.activities,
+                                                                                                     self.children[
+                                                                                                         0].activities,
+                                                                                                     initialPlace),
+                                                                                                 must_add_loop=mAddLoop)
             net, initial_marking, final_marking, lastAddedPlace = self.children[1].form_petrinet(net, initial_marking,
-                                                                                      final_marking,
-                                                                                        initial_connect_to=lastAddedPlace,
-                                                                                      final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, self.children[1].dfg, self.activities, self.children[1].activities, lastAddedPlace), must_add_loop=mAddLoop)
+                                                                                                 final_marking,
+                                                                                                 initial_connect_to=lastAddedPlace,
+                                                                                                 final_connect_to=finalPlace,
+                                                                                                 must_add_skip=self.verify_skip_transition_necessity(
+                                                                                                     mAddSkip,
+                                                                                                     self.initialDfg,
+                                                                                                     self.dfg,
+                                                                                                     self.children[
+                                                                                                         1].dfg,
+                                                                                                     self.activities,
+                                                                                                     self.children[
+                                                                                                         1].activities,
+                                                                                                     lastAddedPlace),
+                                                                                                 must_add_loop=mAddLoop)
         elif self.detectedCut == "parallel":
             mAddSkip = False
             mAddLoop = False
@@ -905,7 +953,7 @@ class Subtree(object):
                 child_occ = self.getMaxValueWithActivitiesSpecification(self.dfg, child.activities)
                 children_occurrences.append(child_occ)
             if children_occurrences:
-                if not(children_occurrences[0] == children_occurrences[-1]):
+                if not (children_occurrences[0] == children_occurrences[-1]):
                     mAddSkip = True
 
             parallelSplit = self.get_new_hidden_trans("tauSplit")
@@ -917,12 +965,17 @@ class Subtree(object):
             petri.utils.add_arc_from_to(parallelJoin, finalPlace, net)
 
             for child in self.children:
-                mAddSkipFinal = self.verify_skip_transition_necessity(mAddSkip, self.dfg, self.dfg, child.dfg, self.activities, child.activities, parallelSplit)
+                mAddSkipFinal = self.verify_skip_transition_necessity(mAddSkip, self.dfg, self.dfg, child.dfg,
+                                                                      self.activities, child.activities, parallelSplit)
 
                 net, initial_marking, final_marking, lastAddedPlace = child.form_petrinet(net, initial_marking,
                                                                                           final_marking,
-                                                                                        must_add_initial_place=True, must_add_final_place=True,
-                                                                                          initial_connect_to=parallelSplit, final_connect_to=parallelJoin, must_add_skip=mAddSkipFinal, must_add_loop=mAddLoop)
+                                                                                          must_add_initial_place=True,
+                                                                                          must_add_final_place=True,
+                                                                                          initial_connect_to=parallelSplit,
+                                                                                          final_connect_to=parallelJoin,
+                                                                                          must_add_skip=mAddSkipFinal,
+                                                                                          must_add_loop=mAddLoop)
 
             lastAddedPlace = finalPlace
 
@@ -934,17 +987,25 @@ class Subtree(object):
                 finalPlace = self.get_new_place()
                 net.places.add(finalPlace)
 
-
             for child in self.children:
                 net, initial_marking, final_marking, lastAddedPlace = child.form_petrinet(net, initial_marking,
                                                                                           final_marking,
-                                                                                          initial_connect_to=initialPlace, final_connect_to=finalPlace, must_add_skip=self.verify_skip_transition_necessity(mAddSkip, self.initialDfg, self.dfg, child.dfg, self.activities, child.activities, initialPlace), must_add_loop=mAddLoop)
+                                                                                          initial_connect_to=initialPlace,
+                                                                                          final_connect_to=finalPlace,
+                                                                                          must_add_skip=self.verify_skip_transition_necessity(
+                                                                                              mAddSkip, self.initialDfg,
+                                                                                              self.dfg, child.dfg,
+                                                                                              self.activities,
+                                                                                              child.activities,
+                                                                                              initialPlace),
+                                                                                          must_add_loop=mAddLoop)
 
             lastAddedPlace = finalPlace
 
         if self.detectedCut == "flower" or self.detectedCut == "sequential" or self.detectedCut == "loopCut" or self.detectedCut == "base_concurrent" or self.detectedCut == "parallel" or self.detectedCut == "concurrent":
             if must_add_skip:
-                if not (initialPlace.name in self.counts.dictSkips and lastAddedPlace.name in self.counts.dictSkips[initialPlace.name]):
+                if not (initialPlace.name in self.counts.dictSkips and lastAddedPlace.name in self.counts.dictSkips[
+                    initialPlace.name]):
                     skipTrans = self.get_new_hidden_trans(type="skip")
                     net.transitions.add(skipTrans)
                     petri.utils.add_arc_from_to(initialPlace, skipTrans, net)
@@ -955,9 +1016,9 @@ class Subtree(object):
 
                     self.counts.dictSkips[initialPlace.name].append(lastAddedPlace.name)
 
-
             if self.detectedCut == "flower" or must_add_loop:
-                if not (initialPlace.name in self.counts.dictLoops and lastAddedPlace.name in self.counts.dictLoops[initialPlace.name]):
+                if not (initialPlace.name in self.counts.dictLoops and lastAddedPlace.name in self.counts.dictLoops[
+                    initialPlace.name]):
                     loopTrans = self.get_new_hidden_trans(type="loop")
                     net.transitions.add(loopTrans)
                     petri.utils.add_arc_from_to(lastAddedPlace, loopTrans, net)
@@ -998,6 +1059,7 @@ class Subtree(object):
 
         return net, initial_marking, final_marking, lastAddedPlace
 
+
 class InductMinDirFollows(object):
     def apply(self, trace_log, parameters, activity_key="concept:name"):
         """
@@ -1023,7 +1085,8 @@ class InductMinDirFollows(object):
         """
         self.trace_log = trace_log
         labels = tl_util.get_event_labels(trace_log, activity_key)
-        dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
+        dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
         return self.apply_dfg(dfg, parameters)
 
     def apply_dfg(self, dfg, parameters, activity_key="concept:name"):
