@@ -7,7 +7,7 @@ sys.path.insert(0, parentdir)
 from tests.constants import INPUT_DATA_DIR
 from pm4py.entities.log.importer.xes import factory as xes_importer
 from pm4py.evaluation.precision import factory as etc_factory
-from pm4py.algo.discovery.inductive.versions import dfg_only
+from pm4py.algo.discovery.inductive.versions.dfg import dfg_only
 
 
 class ETCTest(unittest.TestCase):

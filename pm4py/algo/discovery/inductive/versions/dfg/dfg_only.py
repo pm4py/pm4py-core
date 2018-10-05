@@ -13,7 +13,7 @@ from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thre
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.algo.discovery.inductive.util import petri_cleaning, shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
-from pm4py.algo.discovery.inductive.util.tree_to_petri import form_petrinet
+from pm4py.algo.discovery.inductive.versions.dfg.tree_to_petri import form_petrinet
 
 sys.setrecursionlimit(100000)
 

@@ -1,4 +1,4 @@
-from pm4py.algo.discovery.inductive.versions import dfg_only
+from pm4py.algo.discovery.inductive.versions.dfg import dfg_only
 
 INDUCTIVE_ONLY_DFG = 'only_dfg'
 VERSIONS = {INDUCTIVE_ONLY_DFG: dfg_only.apply}
