@@ -4,8 +4,8 @@ This module contains the factory method
 '''
 from pm4py import util as pm4pyutil
 from pm4py.algo.conformance.alignments import versions
-from pm4py.entities.log.util import xes
-from pm4py.entities.log import log as log_implementation
+from pm4py.objects.log.util import xes
+from pm4py.objects.log import log as log_implementation
 import pm4py
 from pm4py.algo.conformance import alignments as ali
 from copy import copy
@@ -85,7 +85,7 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     """
     if parameters is None:
         parameters = {}
-    activity_key = parameters[pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else pm4py.entities.log.util.xes.DEFAULT_NAME_KEY
+    activity_key = parameters[pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else pm4py.objects.log.util.xes.DEFAULT_NAME_KEY
     model_cost_function = parameters[pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION] if pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION in parameters else None
     sync_cost_function = parameters[pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION] if pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION in parameters else None
     if model_cost_function is None or sync_cost_function is None:

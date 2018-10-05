@@ -1,5 +1,5 @@
-from pm4py.entities import petri
-from pm4py.entities.petri.petrinet import PetriNet
+from pm4py.objects import petri
+from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.algo.discovery.dfg.utils.dfg_utils import max_occ_all_activ, sum_start_activities_count, \
     sum_end_activities_count, sum_activities_count, max_occ_among_specif_activ
 from pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add import get_new_place, get_new_hidden_trans, \

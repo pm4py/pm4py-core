@@ -1,5 +1,5 @@
-from pm4py.entities.log.log import TraceLog
-from pm4py.entities.log.util import xes
+from pm4py.objects.log.log import TraceLog
+from pm4py.objects.log.util import xes
 from pm4py.util import constants
 
 def filter_on_case_performance(trace_log, inf_perf, sup_perf, parameters=None):

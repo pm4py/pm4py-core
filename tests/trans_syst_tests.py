@@ -6,7 +6,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 import pm4py
 from tests.constants import INPUT_DATA_DIR
-from pm4py.entities.log.importer.xes import factory as xes_importer
+from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.algo.discovery.transition_system import factory as ts_factory
 from pm4py.algo.discovery.transition_system import parameters
 

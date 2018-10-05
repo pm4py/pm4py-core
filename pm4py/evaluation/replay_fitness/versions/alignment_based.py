@@ -1,7 +1,7 @@
 import multiprocessing as mp
 
 import pm4py
-from pm4py.entities import log as log_lib
+from pm4py.objects import log as log_lib
 from pm4py.algo.conformance import alignments
 from pm4py import util as pmutil
 
@@ -63,9 +63,9 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, ac
     Parameters
     ----------
     trace: :class:`list` input trace, assumed to be a list of events (i.e. the code will use the activity key to get the attributes)
-    petri_net: :class:`pm4py.entities.petri.net.PetriNet` the Petri net to use in the alignment
-    initial_marking: :class:`pm4py.entities.petri.net.Marking` initial marking in the Petri net
-    final_marking: :class:`pm4py.entities.petri.net.Marking` final marking in the Petri net
+    petri_net: :class:`pm4py.objects.petri.net.PetriNet` the Petri net to use in the alignment
+    initial_marking: :class:`pm4py.objects.petri.net.Marking` initial marking in the Petri net
+    final_marking: :class:`pm4py.objects.petri.net.Marking` final marking in the Petri net
     activity_key: :class:`str` (optional) key to use to identify the activity described by the events
 
     Returns

@@ -5,10 +5,10 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 import pm4py
 from pm4py.algo.conformance import alignments as ali
-from pm4py.entities import petri as petri
-from pm4py.entities import log as log_lib
+from pm4py.objects import petri as petri
+from pm4py.objects import log as log_lib
 from pm4py import util
-from pm4py.entities.log.importer.xes import factory as xes_importer
+from pm4py.objects.log.importer.xes import factory as xes_importer
 
 
 def align(trace, net, im, fm, model_cost_function, sync_cost_function):

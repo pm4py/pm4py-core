@@ -4,7 +4,7 @@ from pm4py.algo.filtering.tracelog.start_activities import start_activities_filt
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
 import gc
-from pm4py.entities.log.util import xes
+from pm4py.objects.log.util import xes
 from pm4py.util import constants
 from pm4py.algo.filtering.common import filtering_constants
 

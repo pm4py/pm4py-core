@@ -21,11 +21,11 @@ from cvxopt import matrix, solvers
 from dataclasses import dataclass
 
 from pm4py import util as pm4pyutil
-from pm4py.entities import log as log_lib
+from pm4py.objects import log as log_lib
 from pm4py.algo.conformance import alignments
-from pm4py.entities import petri
+from pm4py.objects import petri
 
-from pm4py.entities.log import log as log_implementation
+from pm4py.objects.log import log as log_implementation
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
@@ -65,9 +65,9 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
     Parameters
     ----------
     trace: :class:`list` input trace, assumed to be a list of events (i.e. the code will use the activity key to get the attributes)
-    petri_net: :class:`pm4py.entities.petri.net.PetriNet` the Petri net to use in the alignment
-    initial_marking: :class:`pm4py.entities.petri.net.Marking` initial marking in the Petri net
-    final_marking: :class:`pm4py.entities.petri.net.Marking` final marking in the Petri net
+    petri_net: :class:`pm4py.objects.petri.net.PetriNet` the Petri net to use in the alignment
+    initial_marking: :class:`pm4py.objects.petri.net.Marking` initial marking in the Petri net
+    final_marking: :class:`pm4py.objects.petri.net.Marking` final marking in the Petri net
     parameters: :class:`dict` (optional) dictionary containing one of the following:
         PARAM_TRACE_COST_FUNCTION: :class:`list` (parameter) mapping of each index of the trace to a positive cost value
         PARAM_MODEL_COST_FUNCTION: :class:`dict` (parameter) mapping of each transition in the model to corresponding model cost
@@ -115,9 +115,9 @@ def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, sk
 
     Parameters
     ----------
-    sync_prod: :class:`pm4py.entities.petri.net.PetriNet` synchronous product net
-    initial_marking: :class:`pm4py.entities.petri.net.Marking` initial marking in the synchronous product net
-    final_marking: :class:`pm4py.entities.petri.net.Marking` final marking in the synchronous product net
+    sync_prod: :class:`pm4py.objects.petri.net.PetriNet` synchronous product net
+    initial_marking: :class:`pm4py.objects.petri.net.Marking` initial marking in the synchronous product net
+    final_marking: :class:`pm4py.objects.petri.net.Marking` final marking in the synchronous product net
     cost_function: :class:`dict` cost function mapping transitions to the synchronous product net
     skip: :class:`Any` symbol to use for skips in the alignment
 

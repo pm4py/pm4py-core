@@ -1,4 +1,4 @@
-from pm4py.entities import petri
+from pm4py.objects import petri
 
 def clean_duplicate_transitions(net):
     """

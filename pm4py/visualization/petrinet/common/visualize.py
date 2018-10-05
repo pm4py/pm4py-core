@@ -1,7 +1,7 @@
 from graphviz import Digraph
 import tempfile, os, shutil
 import base64
-from pm4py.entities.petri.petrinet import Marking
+from pm4py.objects.petri.petrinet import Marking
 from random import random
 
 def apply(net, initial_marking, final_marking, decorations=None, parameters=None):

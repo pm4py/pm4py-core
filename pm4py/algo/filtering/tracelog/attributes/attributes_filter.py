@@ -1,7 +1,7 @@
-from pm4py.entities.log.log import TraceLog, Trace
+from pm4py.objects.log.log import TraceLog, Trace
 from pm4py.algo.filtering.tracelog.variants import variants_filter
 from pm4py.util import constants
-from pm4py.entities.log.util import xes
+from pm4py.objects.log.util import xes
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.attributes import attributes_common
 
