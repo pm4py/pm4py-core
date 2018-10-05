@@ -33,6 +33,8 @@ def insert_activity_classifier_attribute(log, classifier, force_activity_transit
         Trace log
     classifier
         Event classifier
+    force_activity_transition_insertion
+        Optionally force the activitiy+transition classifier insertion
 
     Returns
     --------
@@ -40,8 +42,6 @@ def insert_activity_classifier_attribute(log, classifier, force_activity_transit
         Trace log (plus eventually one additional event attribute as the classifier)
     classifier_attr_key
         Attribute name of the attribute that contains the classifier value
-    force_activity_transition_insertion
-        Optionally force the activitiy+transition classifier insertion
     """
     classifier_attr_key = None
     if classifier is not None:
@@ -57,4 +57,30 @@ def insert_activity_classifier_attribute(log, classifier, force_activity_transit
                 for event in trace:
                     classifier_value = event["concept:name"] + "+" + event["lifecycle:transition"]
                     event[classifier_attr_key] = classifier_value
+    return log, classifier_attr_key
+
+def insert_trace_classifier_attribute(log, classifier):
+    """
+    Insert the specified classifier as additional trace attribute in the log
+
+    Parameter
+    -----------
+    log
+        Trace log
+    classifier
+        Event classifier
+
+    Returns
+    -----------
+    log
+        Trace log (plus eventually one additional event attribute as the classifier)
+    classifier_attr_key
+        Attribute name of the attribute that contains the classifier value
+    """
+    classifier_attr_key = None
+    if classifier is not None:
+        classifier_attr_key = "@@traceClassifier"
+        for trace in log:
+            classifier_value = "+".join([trace.attributes[x] for x in log.classifiers[classifier]])
+            trace.attributes[classifier_attr_key] = classifier_value
     return log, classifier_attr_key
