@@ -12,19 +12,10 @@ from pm4py.entities.log.util import xes as xes_util
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg
 from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
-from pm4py.algo.discovery.inductive.util import petri_cleaning
+from pm4py.algo.discovery.inductive.util import petri_cleaning, shared_constants
+from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 
 sys.setrecursionlimit(100000)
-
-
-class shared_constants:
-    APPLY_REDUCTION_ON_SMALL_LOG = True
-    MAX_LOG_SIZE_FOR_REDUCTION = 30
-
-    LOOP_CONST_1 = 0.2
-    LOOP_CONST_2 = 0.02
-    LOOP_CONST_3 = -0.2
-    LOOP_CONST_4 = -0.7
 
 
 def apply(trace_log, parameters):
@@ -54,7 +45,7 @@ def apply(trace_log, parameters):
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     # apply the reduction by default only on very small logs
     enable_reduction = parameters["enable_reduction"] if "enable_reduction" in parameters else (
-                shared_constants.APPLY_REDUCTION_ON_SMALL_LOG and shared_constants.MAX_LOG_SIZE_FOR_REDUCTION)
+            shared_constants.APPLY_REDUCTION_ON_SMALL_LOG and shared_constants.MAX_LOG_SIZE_FOR_REDUCTION)
 
     indMinDirFollows = InductMinDirFollows()
     net, initial_marking, final_marking = indMinDirFollows.apply(trace_log, parameters, activity_key=activity_key)
@@ -106,38 +97,79 @@ def apply_dfg(dfg, parameters):
     return net, initial_marking, final_marking
 
 
-class Counts(object):
-    """
-    Shared variables among executions
-    """
+class InductMinDirFollows(object):
+    def apply(self, trace_log, parameters, activity_key="concept:name"):
+        """
+        Apply the IMDF algorithm to a log
 
-    def __init__(self):
-        """
-        Constructor
-        """
-        self.noOfPlaces = 0
-        self.noOfHiddenTransitions = 0
-        self.noOfVisibleTransitions = 0
-        self.dictSkips = {}
-        self.dictLoops = {}
+        Parameters
+        -----------
+        trace_log
+            Trace log
+        parameters
+            Parameters of the algorithm
+        activity_key
+            Attribute corresponding to the activity
 
-    def inc_places(self):
+        Returns
+        -----------
+        net
+            Petri net
+        initial_marking
+            Initial marking
+        final_marking
+            Final marking
         """
-        Increase the number of places
-        """
-        self.noOfPlaces = self.noOfPlaces + 1
+        self.trace_log = trace_log
+        labels = tl_util.get_event_labels(trace_log, activity_key)
+        dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
+        return self.apply_dfg(dfg, parameters)
 
-    def inc_noOfHidden(self):
+    def apply_dfg(self, dfg, parameters, activity_key="concept:name"):
         """
-        Increase the number of hidden transitions
-        """
-        self.noOfHiddenTransitions = self.noOfHiddenTransitions + 1
+        Apply the IMDF algorithm to a DFG graph
 
-    def inc_noOfVisible(self):
+        Parameters
+        -----------
+        dfg
+            Directly-Follows graph
+        parameters
+            Parameters of the algorithm
+
+        Returns
+        -----------
+        net
+            Petri net
+        initial_marking
+            Initial marking
+        final_marking
+            Final marking
         """
-        Increase the number of visible transitions
-        """
-        self.noOfVisibleTransitions = self.noOfVisibleTransitions + 1
+
+        if parameters is None:
+            parameters = {}
+
+        noiseThreshold = 0.0
+
+        if "noiseThreshold" in parameters:
+            noiseThreshold = parameters["noiseThreshold"]
+
+        if type(dfg) is Counter or type(dfg) is dict:
+            newdfg = []
+            for key in dfg:
+                value = dfg[key]
+                newdfg.append((key, value))
+            dfg = newdfg
+
+        c = Counts()
+        s = Subtree(dfg, dfg, None, c, 0, noiseThreshold=noiseThreshold)
+        net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
+        initial_marking = Marking()
+        final_marking = Marking()
+        net, initial_marking, final_marking, lastAddedPlace = s.form_petrinet(net, initial_marking, final_marking)
+
+        return net, initial_marking, final_marking
 
 
 class Subtree(object):
@@ -1058,78 +1090,3 @@ class Subtree(object):
             final_marking[sink] = 1
 
         return net, initial_marking, final_marking, lastAddedPlace
-
-
-class InductMinDirFollows(object):
-    def apply(self, trace_log, parameters, activity_key="concept:name"):
-        """
-        Apply the IMDF algorithm to a log
-
-        Parameters
-        -----------
-        trace_log
-            Trace log
-        parameters
-            Parameters of the algorithm
-        activity_key
-            Attribute corresponding to the activity
-
-        Returns
-        -----------
-        net
-            Petri net
-        initial_marking
-            Initial marking
-        final_marking
-            Final marking
-        """
-        self.trace_log = trace_log
-        labels = tl_util.get_event_labels(trace_log, activity_key)
-        dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
-        return self.apply_dfg(dfg, parameters)
-
-    def apply_dfg(self, dfg, parameters, activity_key="concept:name"):
-        """
-        Apply the IMDF algorithm to a DFG graph
-
-        Parameters
-        -----------
-        dfg
-            Directly-Follows graph
-        parameters
-            Parameters of the algorithm
-
-        Returns
-        -----------
-        net
-            Petri net
-        initial_marking
-            Initial marking
-        final_marking
-            Final marking
-        """
-
-        if parameters is None:
-            parameters = {}
-
-        noiseThreshold = 0.0
-
-        if "noiseThreshold" in parameters:
-            noiseThreshold = parameters["noiseThreshold"]
-
-        if type(dfg) is Counter or type(dfg) is dict:
-            newdfg = []
-            for key in dfg:
-                value = dfg[key]
-                newdfg.append((key, value))
-            dfg = newdfg
-
-        c = Counts()
-        s = Subtree(dfg, dfg, None, c, 0, noiseThreshold=noiseThreshold)
-        net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
-        initial_marking = Marking()
-        final_marking = Marking()
-        net, initial_marking, final_marking, lastAddedPlace = s.form_petrinet(net, initial_marking, final_marking)
-
-        return net, initial_marking, final_marking
