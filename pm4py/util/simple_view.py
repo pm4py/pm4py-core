@@ -49,8 +49,8 @@ def apply(original_log, parameters=None):
     elif "performance" in replayMeasure:
         aggregationMeasure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "mean"
 
-    original_log, classifier_key = insert_classifier.search_and_insert_event_classifier_attribute(original_log,
-                                                                                                  force_activity_transition_insertion=True)
+    original_log, classifier_key = insert_classifier.search_and_insert_activity_classifier_attribute(original_log,
+                                                                                                     force_activity_transition_insertion=True)
     if activity_key is None:
         activity_key = classifier_key
     if activity_key is None:

@@ -19,7 +19,7 @@ class Classifiers1DocumentationTest(unittest.TestCase):
 
         from pm4py.entities.log.util import insert_classifier
 
-        log, activity_key = insert_classifier.insert_classifier_attribute(log, "Activity classifier")
+        log, activity_key = insert_classifier.insert_activity_classifier_attribute(log, "Activity classifier")
         #print(activity_key)
 
         from pm4py.algo.discovery.alpha import factory as alpha_miner
