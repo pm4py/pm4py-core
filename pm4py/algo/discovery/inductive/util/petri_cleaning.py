@@ -15,7 +15,7 @@ def clean_duplicate_transitions(net):
         Cleaned Petri net
     """
     transitions = list(net.transitions)
-    alreadyVisitedCombo = set()
+    already_visited_combo = set()
     # while cycle because we have to delete some of them
     i = 0
     while i < len(transitions):
@@ -29,10 +29,10 @@ def clean_duplicate_transitions(net):
                 for out_arc in out_arcs:
                     out_place = out_arc.target
                     combo = in_place.name + " " + out_place.name
-                    if combo in alreadyVisitedCombo:
+                    if combo in already_visited_combo:
                         to_delete = True
                         break
-                    alreadyVisitedCombo.add(combo)
+                    already_visited_combo.add(combo)
             if to_delete:
                 net = petri.utils.remove_transition(net, trans)
         i = i + 1
@@ -60,16 +60,16 @@ def petri_reduction_treplay(net, parameters=None):
 
     aligned_traces = parameters["aligned_traces"]
 
-    enabledTransInAtLeastOneTrace = set()
+    enabled_trans_in_at_least_one_trace = set()
 
     for trace in aligned_traces:
         for trans in trace["actTrans"]:
-            enabledTransInAtLeastOneTrace.add(trans)
+            enabled_trans_in_at_least_one_trace.add(trans)
 
     transitions = list(net.transitions)
     for trans in transitions:
         if trans.label is None:
-            if not trans in enabledTransInAtLeastOneTrace:
+            if not trans in enabled_trans_in_at_least_one_trace:
                 net = petri.utils.remove_transition(net, trans)
 
     return net
