@@ -7,26 +7,26 @@ class Counts(object):
         """
         Constructor
         """
-        self.noOfPlaces = 0
-        self.noOfHiddenTransitions = 0
-        self.noOfVisibleTransitions = 0
-        self.dictSkips = {}
-        self.dictLoops = {}
+        self.num_places = 0
+        self.num_hidden = 0
+        self.num_visible_trans = 0
+        self.dict_skips = {}
+        self.dict_loops = {}
 
     def inc_places(self):
         """
         Increase the number of places
         """
-        self.noOfPlaces = self.noOfPlaces + 1
+        self.num_places = self.num_places + 1
 
     def inc_noOfHidden(self):
         """
         Increase the number of hidden transitions
         """
-        self.noOfHiddenTransitions = self.noOfHiddenTransitions + 1
+        self.num_hidden = self.num_hidden + 1
 
     def inc_noOfVisible(self):
         """
         Increase the number of visible transitions
         """
-        self.noOfVisibleTransitions = self.noOfVisibleTransitions + 1
+        self.num_visible_trans = self.num_visible_trans + 1
