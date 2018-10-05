@@ -312,47 +312,43 @@ def filter_dfg_on_act(dfg, listact):
 def negate(dfg):
     """
     Negate relationship in the DFG graph
-    :return:
+
+    Parameters
+    ----------
+    dfg
+        Directly-Follows graph
+
+    Returns
+    ----------
+    negated_dfg
+        Negated Directly-Follows graph (for parallel cut detection)
     """
-    negatedDfg = []
+    negated_dfg = []
 
     outgoing = get_outgoing_edges(dfg)
 
     for el in dfg:
         if not (el[0][1] in outgoing and el[0][0] in outgoing[el[0][1]]):
-            negatedDfg.append(el)
+            negated_dfg.append(el)
 
-    return negatedDfg
-
-
-def get_activities_dirlist(activities_direction):
-    """
-    Activities direction list
-    """
-    dirlist = []
-    for act in activities_direction:
-        dirlist.append([act, activities_direction[act]])
-    dirlist = sorted(dirlist, key=lambda x: (x[1], x[0]), reverse=True)
-    return dirlist
-
-
-def get_activities_self_loop(dfg):
-    """
-    Get attributes that are in self-loop in this subtree
-    """
-    self_loop_act = []
-
-    outgoing = get_outgoing_edges(dfg)
-
-    for act in outgoing:
-        if act in list(outgoing[act].keys()):
-            self_loop_act.append(act)
-    return self_loop_act
-
+    return negated_dfg
 
 def get_activities_direction(dfg, activities):
     """
-    Calculate attributes direction (Heuristics Miner)
+    Calculate activities direction (in a similar way to Heuristics Miner)
+
+    Parameters
+    -----------
+    dfg
+        Directly-follows graph
+    activities
+        (if provided) activities of the subtree
+
+    Returns
+    -----------
+    direction
+        Dictionary that contains for each direction a number that goes from -1 (all ingoing edges)
+        to 1 (all outgoing edges)
     """
 
     if activities is None:
@@ -372,3 +368,49 @@ def get_activities_direction(dfg, activities):
         dependency = (outgoing - ingoing) / (ingoing + outgoing + 1)
         direction[act] = dependency
     return direction
+
+def get_activities_dirlist(activities_direction):
+    """
+    Form an ordered list out of a dictionary that contains for each activity
+    the direction (going from -1 if all ingoing edges, to 1 if all outgoing edges)
+
+    Parameters
+    -----------
+    activities_direction
+        Dictionary that contains for each direction a number that goes from -1 (all ingoing edges)
+        to 1 (all outgoing edges)
+
+    Returns
+    ----------
+    dirlist
+        Sorted list of couples of activity plus the direction
+    """
+    dirlist = []
+    for act in activities_direction:
+        dirlist.append([act, activities_direction[act]])
+    dirlist = sorted(dirlist, key=lambda x: (x[1], x[0]), reverse=True)
+    return dirlist
+
+
+def get_activities_self_loop(dfg):
+    """
+    Get attributes that are in self-loop in this subtree
+
+    Parameters
+    ----------
+    dfg
+        Directly-follows graph
+
+    Returns
+    ----------
+    self_loop_act
+        Activities of the graph that are in subloop
+    """
+    self_loop_act = []
+
+    outgoing = get_outgoing_edges(dfg)
+
+    for act in outgoing:
+        if act in list(outgoing[act].keys()):
+            self_loop_act.append(act)
+    return self_loop_act
