@@ -9,6 +9,7 @@ from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 import time
 
+
 def execute_script():
     logPath = "..\\tests\\input_data\\running-example.xes"
     log = xes_importer.import_log(logPath)
@@ -18,7 +19,7 @@ def execute_script():
         print("initial marking " + place.name)
     for place in final_marking:
         print("final marking " + place.name)
-    gviz = pn_vis_factory.apply(net, marking, final_marking, parameters={"format":"svg"})
+    gviz = pn_vis_factory.apply(net, marking, final_marking, parameters={"format": "svg"})
     pn_vis_factory.view(gviz)
     time0 = time.time()
     print("started token replay")
@@ -28,6 +29,7 @@ def execute_script():
     if len(aligned_traces) > 0:
         perc_fitness = len(fit_traces) / len(aligned_traces)
     print("perc_fitness=", perc_fitness)
+
 
 if __name__ == "__main__":
     execute_script()

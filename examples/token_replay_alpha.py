@@ -13,13 +13,12 @@ import time
 def execute_script():
     logPath = os.path.join("..", "tests", "input_data", "running-example.xes")
     log = xes_importer.import_log(logPath)
-    # log = xes_importer.import_from_path_xes('a32f0n00.xes')
     net, marking, final_marking = alpha_factory.apply(log)
     for place in marking:
         print("initial marking " + place.name)
     for place in final_marking:
         print("final marking " + place.name)
-    gviz = pn_vis_factory.apply(net, marking, final_marking, parameters={"format":"svg"})
+    gviz = pn_vis_factory.apply(net, marking, final_marking, parameters={"format": "svg"})
     pn_vis_factory.view(gviz)
     time0 = time.time()
     print("started token replay")
