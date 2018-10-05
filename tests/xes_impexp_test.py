@@ -9,7 +9,7 @@ from pm4py.entities.log.exporter.xes import factory as xes_exporter
 from pm4py.entities.log.importer.csv import factory as csv_importer
 from pm4py.entities.log.exporter.csv import factory as csv_exporter
 import pm4py.entities.log.transform as log_transform
-from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
+from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR, COMPRESSED_INPUT_DATA
 import logging
 
 
@@ -47,12 +47,12 @@ class XesImportExportTest(unittest.TestCase):
                 logging.info("SyntaxError on log " + str(log) + ": " + str(e))
 
     def test_importExportXESfromGZIP_imp1(self):
-        traceLog = xes_importer.import_log(os.path.join("compressedInputData","01_running-example.xes.gz"))
+        traceLog = xes_importer.import_log(os.path.join(COMPRESSED_INPUT_DATA,"01_running-example.xes.gz"))
         xes_exporter.export_log(traceLog, os.path.join(OUTPUT_DATA_DIR, "01-running-example.xes"), parameters={"compress": True})
         os.remove(os.path.join(OUTPUT_DATA_DIR, "01-running-example.xes.gz"))
 
     def test_importXESfromGZIP_imp2(self):
-        traceLog = xes_importer.import_log(os.path.join("compressedInputData","01_running-example.xes.gz"))
+        traceLog = xes_importer.import_log(os.path.join(COMPRESSED_INPUT_DATA,"01_running-example.xes.gz"))
 
 
 

@@ -12,7 +12,7 @@ class DocMeasuresDocumentationTest(unittest.TestCase):
     def test_docmeasures11(self):
         from pm4py.entities.log.importer.xes import factory as xes_importer
 
-        log = xes_importer.import_log(os.path.join("inputData", "receipt.xes"))
+        log = xes_importer.import_log(os.path.join("input_data", "receipt.xes"))
 
         from pm4py.algo.discovery.alpha import factory as alpha_miner
         from pm4py.algo.discovery.inductive import factory as inductive_miner

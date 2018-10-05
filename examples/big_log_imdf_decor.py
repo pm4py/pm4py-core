@@ -11,7 +11,7 @@ from pm4py.visualization.petrinet import factory as pn_vis_factory
 
 def execute_script():
     # read the log using the nonstandard importer (faster)
-    logPath = os.path.join("..","tests","inputData","receipt.xes")
+    logPath = os.path.join("..","tests","input_data","receipt.xes")
     log = xes_importer.import_log(logPath, variant="nonstandard")
     # applies Inductive Miner on the log
     net, initial_marking, final_marking = inductive_miner.apply(log)

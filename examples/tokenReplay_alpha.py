@@ -11,7 +11,7 @@ import time
 
 
 def execute_script():
-    logPath = os.path.join("..", "tests", "inputData", "running-example.xes")
+    logPath = os.path.join("..", "tests", "input_data", "running-example.xes")
     log = xes_importer.import_log(logPath)
     # log = xes_importer.import_from_path_xes('a32f0n00.xes')
     net, marking, final_marking = alpha_factory.apply(log)

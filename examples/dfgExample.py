@@ -12,7 +12,7 @@ from pm4py.visualization.dfg import factory as dfg_vis_factory
 def execute_script():
     # measure could be frequency or performance
     measure = "frequency"
-    logPath = os.path.join("..","tests","inputData","running-example.xes")
+    logPath = os.path.join("..","tests","input_data","running-example.xes")
     log = xes_importer.import_log(logPath)
     filtered_log = auto_filter.apply_auto_filter(log)
     filtered_log_activities_count = attributes_filter.get_attribute_values(filtered_log, "concept:name")

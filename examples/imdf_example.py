@@ -14,7 +14,7 @@ from pm4py.visualization.petrinet import factory as pn_vis_factory
 import traceback
 
 def execute_script():
-    logPath = os.path.join("..","tests","inputData","running-example.xes")
+    logPath = os.path.join("..","tests","input_data","running-example.xes")
 
     log = xes_importer.import_log(logPath)
 

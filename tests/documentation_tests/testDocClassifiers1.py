@@ -14,7 +14,7 @@ class Classifiers1DocumentationTest(unittest.TestCase):
     def test_classifiers1documentation(self):
         from pm4py.entities.log.importer.xes import factory as xes_importer
 
-        log = xes_importer.import_log(os.path.join("inputData","receipt.xes"))
+        log = xes_importer.import_log(os.path.join("input_data","receipt.xes"))
         #print(log.classifiers)
 
         from pm4py.entities.log.util import insert_classifier
@@ -30,7 +30,7 @@ class Classifiers1DocumentationTest(unittest.TestCase):
 
         from pm4py.entities.log.importer.xes import factory as xes_importer
 
-        log = xes_importer.import_log(os.path.join("inputData","receipt.xes"))
+        log = xes_importer.import_log(os.path.join("input_data","receipt.xes"))
 
         for trace in log:
             for event in trace:
