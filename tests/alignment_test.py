@@ -1,14 +1,16 @@
 import unittest
-import os,sys,inspect
+import os, sys, inspect
+
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir)
+sys.path.insert(0, parentdir)
 from pm4py.entities.log.importer.xes import factory as xes_importer
 from pm4py.entities import petri
 from pm4py.algo.discovery.alpha import factory as alpha_factory
 from pm4py.algo.discovery.inductive.versions import dfg_only
 from tests.constants import INPUT_DATA_DIR
 from pm4py.algo.conformance.alignments.versions import state_equation_a_star
+
 
 class AlignmentTest(unittest.TestCase):
     def test_alignment_alpha(self):
@@ -38,6 +40,7 @@ class AlignmentTest(unittest.TestCase):
                     isFit = False
             if not isFit:
                 raise Exception("should be fit")
+
 
 if __name__ == "__main__":
     unittest.main()

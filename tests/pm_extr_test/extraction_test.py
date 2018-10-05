@@ -1,9 +1,10 @@
-import os,sys,inspect
+import os, sys, inspect
+
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 parentdir2 = os.path.dirname(parentdir)
-sys.path.insert(0,parentdir)
-sys.path.insert(0,parentdir2)
+sys.path.insert(0, parentdir)
+sys.path.insert(0, parentdir2)
 import time
 from pm4py.entities.log.importer.xes import factory as xes_factory
 from pm4py.algo.discovery.inductive import factory as inductive
@@ -33,6 +34,7 @@ if __name__ == "__main__":
 
         return get_elonged_string(stru)
 
+
     ENABLE_ALIGNMENTS = True
     logFolder = "..\\compressed_input_data"
     pnmlFolder = "pnml_folder"
@@ -57,11 +59,13 @@ if __name__ == "__main__":
         F.write("\n\n")
         F.write("Fitness on Alpha and Inductive models - measured by token-based replay and alignments\n")
         F.write("----\n")
-        F.write(get_elonged_string("log") + "\t" + get_elonged_string("fitness_token_alpha") + "\t" + get_elonged_string(
+        F.write(
+            get_elonged_string("log") + "\t" + get_elonged_string("fitness_token_alpha") + "\t" + get_elonged_string(
                 "times_tokenreplay_alpha") + "\t" + get_elonged_string(
                 "fitness_token_imdf") + "\t" + get_elonged_string("times_tokenreplay_imdf"))
         if ENABLE_ALIGNMENTS:
-            F.write("\t" + get_elonged_string("fitness_align_imdf") + "\t" + get_elonged_string("times_alignments_imdf"))
+            F.write(
+                "\t" + get_elonged_string("fitness_align_imdf") + "\t" + get_elonged_string("times_alignments_imdf"))
         F.write("\n")
         for logName in precision_alpha:
             # F.write("%s\t\t%.3f\t\t%.3f\n" % (logName, fitness_token_alpha[logName], fitness_token_imdf[logName]))
@@ -120,11 +124,12 @@ if __name__ == "__main__":
         F.write("\n")
         F.close()
 
+
     for logName in os.listdir(logFolder):
         if "." in logName:
             logNamePrefix = logName.split(".")[0]
 
-            print("\nelaborating "+logName)
+            print("\nelaborating " + logName)
 
             logPath = os.path.join(logFolder, logName)
             log = xes_factory.import_log(logPath, variant="iterparse")
@@ -137,48 +142,65 @@ if __name__ == "__main__":
             if not classifier_key is None:
                 activity_key = classifier_key
 
-            parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key}
+            parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
+                                    pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key}
             t1 = time.time()
             alpha_model, alpha_initial_marking, alpha_final_marking = alpha.apply(log, parameters=parameters_discovery)
-            pnml_exporter.export_net(alpha_model, alpha_initial_marking, os.path.join(pnmlFolder, logNamePrefix + "_alpha.pnml"))
+            pnml_exporter.export_net(alpha_model, alpha_initial_marking,
+                                     os.path.join(pnmlFolder, logNamePrefix + "_alpha.pnml"))
             t2 = time.time()
-            print("time interlapsed for calculating Alpha Model",(t2-t1))
+            print("time interlapsed for calculating Alpha Model", (t2 - t1))
 
             t1 = time.time()
-            inductive_model, inductive_initial_marking, inductive_final_marking = inductive.apply(log, parameters=parameters_discovery)
-            pnml_exporter.export_net(inductive_model, inductive_initial_marking, os.path.join(pnmlFolder, logNamePrefix + "_inductive.pnml"))
+            inductive_model, inductive_initial_marking, inductive_final_marking = inductive.apply(log,
+                                                                                                  parameters=parameters_discovery)
+            pnml_exporter.export_net(inductive_model, inductive_initial_marking,
+                                     os.path.join(pnmlFolder, logNamePrefix + "_inductive.pnml"))
             t2 = time.time()
-            print("time interlapsed for calculating Inductive Model",(t2-t1))
+            print("time interlapsed for calculating Inductive Model", (t2 - t1))
 
-            parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key, "format":"png"}
+            parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
+                          pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key, "format": "png"}
 
-            alpha_vis = petri_vis_factory.apply(alpha_model, alpha_initial_marking, alpha_final_marking, log=log, parameters=parameters, variant="frequency")
+            alpha_vis = petri_vis_factory.apply(alpha_model, alpha_initial_marking, alpha_final_marking, log=log,
+                                                parameters=parameters, variant="frequency")
             vis_save(alpha_vis, os.path.join(pngFolder, logNamePrefix + "_alpha.png"))
-            inductive_vis = petri_vis_factory.apply(inductive_model, inductive_initial_marking, inductive_final_marking, log=log, parameters=parameters, variant="frequency")
+            inductive_vis = petri_vis_factory.apply(inductive_model, inductive_initial_marking, inductive_final_marking,
+                                                    log=log, parameters=parameters, variant="frequency")
             vis_save(inductive_vis, os.path.join(pngFolder, logNamePrefix + "_inductive.png"))
 
             t1 = time.time()
-            fitness_token_alpha[logName] = fitness_factory.apply(log, alpha_model, alpha_initial_marking, alpha_final_marking, parameters=parameters)['percFitTraces']
+            fitness_token_alpha[logName] = \
+            fitness_factory.apply(log, alpha_model, alpha_initial_marking, alpha_final_marking, parameters=parameters)[
+                'percFitTraces']
             t2 = time.time()
             times_tokenreplay_alpha[logName] = t2 - t1
 
             t1 = time.time()
-            fitness_token_imdf[logName] = fitness_factory.apply(log, inductive_model, inductive_initial_marking, inductive_final_marking, parameters=parameters)['percFitTraces']
+            fitness_token_imdf[logName] = \
+            fitness_factory.apply(log, inductive_model, inductive_initial_marking, inductive_final_marking,
+                                  parameters=parameters)['percFitTraces']
             t2 = time.time()
             times_tokenreplay_imdf[logName] = t2 - t1
 
             if ENABLE_ALIGNMENTS:
                 t1 = time.time()
-                fitness_align_imdf[logName] = fitness_factory.apply(log, inductive_model, inductive_initial_marking, inductive_final_marking, variant="alignments", parameters=parameters)['percFitTraces']
+                fitness_align_imdf[logName] = \
+                fitness_factory.apply(log, inductive_model, inductive_initial_marking, inductive_final_marking,
+                                      variant="alignments", parameters=parameters)['percFitTraces']
                 t2 = time.time()
                 times_alignments_imdf[logName] = t2 - t1
 
-            precision_alpha[logName] = precision_factory.apply(log, alpha_model, alpha_initial_marking, alpha_final_marking, parameters=parameters)
-            generalization_alpha[logName] = generalization_factory.apply(log, alpha_model, alpha_initial_marking, alpha_final_marking, parameters=parameters)
+            precision_alpha[logName] = precision_factory.apply(log, alpha_model, alpha_initial_marking,
+                                                               alpha_final_marking, parameters=parameters)
+            generalization_alpha[logName] = generalization_factory.apply(log, alpha_model, alpha_initial_marking,
+                                                                         alpha_final_marking, parameters=parameters)
             simplicity_alpha[logName] = simplicity_factory.apply(alpha_model, parameters=parameters)
 
-            precision_imdf[logName] = precision_factory.apply(log, inductive_model, inductive_initial_marking, inductive_final_marking, parameters=parameters)
-            generalization_imdf[logName] = generalization_factory.apply(log, inductive_model, inductive_initial_marking, inductive_final_marking, parameters=parameters)
+            precision_imdf[logName] = precision_factory.apply(log, inductive_model, inductive_initial_marking,
+                                                              inductive_final_marking, parameters=parameters)
+            generalization_imdf[logName] = generalization_factory.apply(log, inductive_model, inductive_initial_marking,
+                                                                        inductive_final_marking, parameters=parameters)
             simplicity_imdf[logName] = simplicity_factory.apply(inductive_model, parameters=parameters)
 
             write_report()

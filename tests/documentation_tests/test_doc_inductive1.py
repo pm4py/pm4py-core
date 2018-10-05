@@ -19,7 +19,5 @@ class InductiveMinerDocumentationTest(unittest.TestCase):
         gviz = pn_viz.graphviz_visualization(net, initial_marking=initial_marking, final_marking=final_marking)
 
 
-# gviz.view()
-
 if __name__ == "__main__":
     unittest.main()

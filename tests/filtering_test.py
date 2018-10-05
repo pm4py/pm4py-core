@@ -1,8 +1,9 @@
 import unittest
-import os,sys,inspect
+import os, sys, inspect
+
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir)
+sys.path.insert(0, parentdir)
 from tests.constants import INPUT_DATA_DIR
 from pm4py.entities.log.importer.xes import factory as xes_importer
 from pm4py.algo.filtering.tracelog.paths import paths_filter
@@ -12,6 +13,7 @@ from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
 from pm4py.algo.filtering.tracelog.cases import case_filter
 from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
 from pm4py.algo.cases.tracelog import case_statistics
+
 
 class LogFilteringTest(unittest.TestCase):
     def test_logfiltering_filtering1(self):
@@ -38,8 +40,12 @@ class LogFilteringTest(unittest.TestCase):
     def test_filtering_variants(self):
         inputLog = os.path.join(INPUT_DATA_DIR, "running-example.xes")
         log = xes_importer.import_log(inputLog)
-        log1 = variants_module.apply(log, ["register request,examine casually,check ticket,decide,reinitiate request,examine thoroughly,check ticket,decide,pay compensation"], parameters={"positive":False})
-        log2 = variants_module.apply(log, ["register request,examine casually,check ticket,decide,reinitiate request,examine thoroughly,check ticket,decide,pay compensation"], parameters={"positive":True})
+        log1 = variants_module.apply(log, [
+            "register request,examine casually,check ticket,decide,reinitiate request,examine thoroughly,check ticket,decide,pay compensation"],
+                                     parameters={"positive": False})
+        log2 = variants_module.apply(log, [
+            "register request,examine casually,check ticket,decide,reinitiate request,examine thoroughly,check ticket,decide,pay compensation"],
+                                     parameters={"positive": True})
 
     def test_obtaining_variants(self):
         inputLog = os.path.join(INPUT_DATA_DIR, "running-example.xes")
@@ -61,6 +67,7 @@ class LogFilteringTest(unittest.TestCase):
         log = xes_importer.import_log(inputLog)
         log1 = paths_filter.apply(log, [("examine casually", "check ticket")], {"positive": True})
         log2 = paths_filter.apply(log, [("examine casually", "check ticket")], {"positive": False})
+
 
 if __name__ == "__main__":
     unittest.main()
