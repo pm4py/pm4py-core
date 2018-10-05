@@ -1,1 +1,1 @@
-from pm4py.algo.discovery.inductive.versions.dfg.util import tree_to_petri
+from pm4py.algo.discovery.inductive.versions.dfg.util import tree_to_petri, petri_el_add
