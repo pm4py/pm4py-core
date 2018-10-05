@@ -25,7 +25,7 @@ LOG_FILE = "log_file.txt"
 REMOVE_TARGET_FOLDERS_WHEN_FINISHED = True
 MIN_VAR_OCC = 1
 
-inputLog = os.path.join("..", "tests", "inputData", "running-example.csv")
+inputLog = os.path.join("..", "tests", "input_data", "running-example.csv")
 CASEID_GLUE = "case:concept:name"
 ACTIVITY_KEY = "concept:name"
 TIMEST_KEY = "time:timestamp"

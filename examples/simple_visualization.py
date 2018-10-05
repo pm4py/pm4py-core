@@ -8,7 +8,7 @@ from pm4py.entities.log.importer.xes import factory as xes_importer
 from pm4py.util import simple_view
 
 def execute_script():
-    logPath = os.path.join("..", "tests", "inputData", "receipt.xes")
+    logPath = os.path.join("..", "tests", "input_data", "receipt.xes")
     #logPath = "C:\\SEPSIS.xes"
     log = xes_importer.import_log(logPath)
     gviz = simple_view.apply(log, parameters={"format":"svg"})

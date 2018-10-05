@@ -17,7 +17,7 @@ from pm4py.algo.filtering.dfg import dfg_filtering
 
 SEP = ","
 QUOTECHAR = None
-inputLog = os.path.join("..", "tests", "inputData", "running-example.csv")
+inputLog = os.path.join("..", "tests", "input_data", "running-example.csv")
 CASEID_GLUE = "case:concept:name"
 ACTIVITY_KEY = "concept:name"
 TIMEST_KEY = "time:timestamp"

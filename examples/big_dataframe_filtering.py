@@ -21,7 +21,7 @@ MAX_NO_ACTIVITIES_PER_MODEL = 25
 GENERATED_IMAGES = []
 REMOVE_GENERATED_IMAGES = True
 
-inputLog = os.path.join("..", "tests", "inputData", "running-example.csv")
+inputLog = os.path.join("..", "tests", "input_data", "running-example.csv")
 CASEID_GLUE = "case:concept:name"
 ACTIVITY_KEY = "concept:name"
 TIMEST_KEY = "time:timestamp"

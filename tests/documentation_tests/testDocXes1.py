@@ -14,7 +14,7 @@ class XES1DocumentationTest(unittest.TestCase):
 
         from pm4py.entities.log.importer.xes import factory as xes_importer
 
-        log = xes_importer.import_log("inputData\\running-example.xes")
+        log = xes_importer.import_log("input_data\\running-example.xes")
 
         log_lenth = len(log)
         first_trace_length = len(log[0])

@@ -20,8 +20,8 @@ def align(trace, net, im, fm, model_cost_function, sync_cost_function):
     return ali.factory.apply(trace, net, im, fm, parameters=params, variant=ali.factory.VERSION_STATE_EQUATION_A_STAR)
 
 def execute_script():
-    log_path = os.path.join("..","tests","inputData","running-example.xes")
-    pnml_path = os.path.join("..","tests","inputData","running-example.pnml")
+    log_path = os.path.join("..","tests","input_data","running-example.xes")
+    pnml_path = os.path.join("..","tests","input_data","running-example.pnml")
 
     #log_path = 'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32f0n05.xes'
     #pnml_path = 'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32.pnml'
