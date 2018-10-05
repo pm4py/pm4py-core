@@ -2,34 +2,9 @@ from pm4py.entities import petri
 from pm4py.entities.petri.petrinet import PetriNet
 from pm4py.algo.discovery.dfg.utils.dfg_utils import max_occ_all_activ, sum_start_activities_count, \
     sum_end_activities_count, sum_activities_count, max_occ_among_specif_activ
+from pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add import get_new_place, get_new_hidden_trans, get_transition
 
-
-def get_new_place(counts):
-    """
-    Create a new place in the Petri net
-    """
-    counts.inc_places()
-    return petri.petrinet.PetriNet.Place('p_' + str(counts.noOfPlaces))
-
-
-def get_new_hidden_trans(counts, type="unknown"):
-    """
-    Create a new hidden transition in the Petri net
-    """
-    counts.inc_noOfHidden()
-    return petri.petrinet.PetriNet.Transition(type + '_' + str(counts.noOfHiddenTransitions), None)
-
-
-def get_transition(counts, label):
-    """
-    Create a transitions with the specified label in the Petri net
-    """
-    counts.inc_noOfVisible()
-    return petri.petrinet.PetriNet.Transition(label, label)
-
-
-def verify_skip_transition_necessity(mAddSkip, initialDfg, dfg, childrenDfg, activities, childrenActivities,
-                                     initial_connect_to):
+def verify_skip_transition_necessity(mAddSkip, initialDfg, activities, initial_connect_to):
     """
     Utility functions that decides if the skip transition is necessary
 
@@ -39,10 +14,10 @@ def verify_skip_transition_necessity(mAddSkip, initialDfg, dfg, childrenDfg, act
         Boolean value, provided by the parent caller, that tells if the skip is absolutely necessary
     initialDfg
         Initial DFG
-    dfg
-        Directly follows graph
-    childrenDfg
-        Children DFG
+    activities
+        Provided activities of the DFG
+    initial_connect_to
+        Source place of the subtree
     """
     if initial_connect_to.name == "p_1":
         return False
@@ -194,12 +169,7 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
                                                                                     must_add_skip=verify_skip_transition_necessity(
                                                                                         mAddSkip,
                                                                                         tree.initialDfg,
-                                                                                        tree.dfg,
-                                                                                        tree.children[
-                                                                                            0].dfg,
                                                                                         tree.activities,
-                                                                                        tree.children[
-                                                                                            0].activities,
                                                                                         initialPlace),
                                                                                     must_add_loop=mAddLoop)
         net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(tree.children[1], recDepth + 1,
@@ -211,12 +181,7 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
                                                                                     must_add_skip=verify_skip_transition_necessity(
                                                                                         mAddSkip,
                                                                                         tree.initialDfg,
-                                                                                        tree.dfg,
-                                                                                        tree.children[
-                                                                                            1].dfg,
                                                                                         tree.activities,
-                                                                                        tree.children[
-                                                                                            1].activities,
                                                                                         lastAddedPlace),
                                                                                     must_add_loop=mAddLoop)
     elif tree.detectedCut == "parallel":
@@ -244,8 +209,7 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
         petri.utils.add_arc_from_to(parallelJoin, finalPlace, net)
 
         for child in tree.children:
-            mAddSkipFinal = verify_skip_transition_necessity(mAddSkip, tree.dfg, tree.dfg, child.dfg,
-                                                             tree.activities, child.activities, parallelSplit)
+            mAddSkipFinal = verify_skip_transition_necessity(mAddSkip, tree.dfg, tree.activities, parallelSplit)
 
             net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(child, recDepth + 1, counts,
                                                                                         net, initial_marking,
@@ -276,9 +240,7 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
                                                                                         must_add_skip=verify_skip_transition_necessity(
                                                                                             mAddSkip,
                                                                                             tree.initialDfg,
-                                                                                            tree.dfg, child.dfg,
                                                                                             tree.activities,
-                                                                                            child.activities,
                                                                                             initialPlace),
                                                                                         must_add_loop=mAddLoop)
 
