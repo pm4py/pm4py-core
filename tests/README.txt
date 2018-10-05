@@ -1,3 +1,3 @@
 To execute all tests:
 
-python executeTests.py
+python execute_tests.py
