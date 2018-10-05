@@ -7,7 +7,7 @@ from pm4py.algo.discovery.dfg.utils.dfg_utils import filter_dfg_on_act, negate, 
 
 
 class Subtree(object):
-    def __init__(self, dfg, initialDfg, activities, counts, recDepth, noiseThreshold=0):
+    def __init__(self, dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0):
         """
         Constructor
 
@@ -15,24 +15,24 @@ class Subtree(object):
         -----------
         dfg
             Directly follows graph of this subtree
-        initialDfg
+        initial_dfg
             Referral directly follows graph that should be taken in account adding hidden/loop transitions
         activities
             Activities of this subtree
         counts
             Shared variable
-        recDepth
+        rec_depth
             Current recursion depth
         """
 
-        self.initialDfg = copy(initialDfg)
+        self.initial_dfg = copy(initial_dfg)
         self.counts = counts
-        self.recDepth = recDepth
-        self.noiseThreshold = noiseThreshold
+        self.rec_depth = rec_depth
+        self.noise_threshold = noise_threshold
 
-        self.initialize_tree(dfg, initialDfg, activities)
+        self.initialize_tree(dfg, initial_dfg, activities)
 
-    def initialize_tree(self, dfg, initialDfg, activities, secondIteration=False):
+    def initialize_tree(self, dfg, initial_dfg, activities, second_iteration=False):
         """
         Initialize the tree
 
@@ -41,41 +41,41 @@ class Subtree(object):
         -----------
         dfg
             Directly follows graph of this subtree
-        initialDfg
+        initial_dfg
             Referral directly follows graph that should be taken in account adding hidden/loop transitions
         activities
             Activities of this subtree
         """
 
-        self.secondIteration = secondIteration
+        self.second_iteration = second_iteration
 
         if activities is None:
             self.activities = get_activities_from_dfg(dfg)
         else:
             self.activities = copy(activities)
 
-        if secondIteration:
-            self.dfg = clean_dfg_based_on_noise_thresh(self.dfg, self.activities, self.noiseThreshold)
+        if second_iteration:
+            self.dfg = clean_dfg_based_on_noise_thresh(self.dfg, self.activities, self.noise_threshold)
         else:
             self.dfg = copy(dfg)
 
-        self.initialDfg = initialDfg
+        self.initial_dfg = initial_dfg
 
         self.outgoing = get_outgoing_edges(self.dfg)
         self.ingoing = get_ingoing_edges(self.dfg)
-        self.selfLoopActivities = get_activities_self_loop(self.dfg)
-        self.initialOutgoing = get_outgoing_edges(self.initialDfg)
-        self.initialIngoing = get_ingoing_edges(self.initialDfg)
-        self.activitiesDirection = get_activities_direction(self.dfg, self.activities)
-        self.activitiesDirlist = get_activities_dirlist(self.activitiesDirection)
-        self.negatedDfg = negate(self.dfg)
-        self.negatedActivities = get_activities_from_dfg(self.negatedDfg)
-        self.negatedOutgoing = get_outgoing_edges(self.negatedDfg)
-        self.negatedIngoing = get_ingoing_edges(self.negatedDfg)
-        self.detectedCut = None
+        self.self_loop_activities = get_activities_self_loop(self.dfg)
+        self.initial_outgoing = get_outgoing_edges(self.initial_dfg)
+        self.initial_ingoing = get_ingoing_edges(self.initial_dfg)
+        self.activities_direction = get_activities_direction(self.dfg, self.activities)
+        self.activities_dir_list = get_activities_dirlist(self.activities_direction)
+        self.negated_dfg = negate(self.dfg)
+        self.negated_activities = get_activities_from_dfg(self.negated_dfg)
+        self.negated_outgoing = get_outgoing_edges(self.negated_dfg)
+        self.negated_ingoing = get_ingoing_edges(self.negated_dfg)
+        self.detected_cut = None
         self.children = []
 
-        self.detect_cut(secondIteration=secondIteration)
+        self.detect_cut(second_iteration=second_iteration)
 
     def determine_best_set_sequential(self, act, set1, set2):
         """
@@ -90,23 +90,23 @@ class Subtree(object):
         set2
             Second set of attributes
         """
-        hasOutgoingConnInSet1 = False
+        has_outgoing_conn_set1 = False
         if act[0] in self.outgoing:
             for act2 in self.outgoing[act[0]]:
                 if act2 in set1:
-                    hasOutgoingConnInSet1 = True
-        hasIngoingConnInSet2 = False
+                    has_outgoing_conn_set1 = True
+        has_ingoing_conn_set2 = False
         if act[0] in self.ingoing:
             for act2 in self.ingoing[act[0]]:
                 if act2 in set2:
-                    hasIngoingConnInSet2 = True
+                    has_ingoing_conn_set2 = True
 
-        if hasOutgoingConnInSet1 and hasIngoingConnInSet2:
+        if has_outgoing_conn_set1 and has_ingoing_conn_set2:
             return [False, set1, set2]
 
-        if hasOutgoingConnInSet1:
+        if has_outgoing_conn_set1:
             set1.add(act[0])
-        elif hasIngoingConnInSet2:
+        elif has_ingoing_conn_set2:
             set2.add(act[0])
         else:
             set2.add(act[0])
@@ -120,17 +120,17 @@ class Subtree(object):
         set1 = set()
         set2 = set()
 
-        if len(self.activitiesDirlist) > 0:
-            set1.add(self.activitiesDirlist[0][0])
-        if len(self.activitiesDirlist) > -1:
-            if not (self.activitiesDirlist[0][0] in self.ingoing and self.activitiesDirlist[-1][0] in self.ingoing[
-                self.activitiesDirlist[0][0]]):
-                set2.add(self.activitiesDirlist[-1][0])
+        if len(self.activities_dir_list) > 0:
+            set1.add(self.activities_dir_list[0][0])
+        if len(self.activities_dir_list) > -1:
+            if not (self.activities_dir_list[0][0] in self.ingoing and self.activities_dir_list[-1][0] in self.ingoing[
+                self.activities_dir_list[0][0]]):
+                set2.add(self.activities_dir_list[-1][0])
             else:
                 return [False, [], []]
         i = 1
-        while i < len(self.activitiesDirlist) - 1:
-            act = self.activitiesDirlist[i]
+        while i < len(self.activities_dir_list) - 1:
+            act = self.activities_dir_list[i]
             ret, set1, set2 = self.determine_best_set_sequential(act, set1, set2)
             if ret is False:
                 return [False, [], []]
@@ -156,7 +156,7 @@ class Subtree(object):
         """
         activities_considered = set()
 
-        connectedComponents = []
+        connected_components = []
 
         for act in ingoing:
             ingoing_act = set(ingoing[act].keys())
@@ -165,16 +165,16 @@ class Subtree(object):
 
             ingoing_act.add(act)
 
-            if not ingoing_act in connectedComponents:
-                connectedComponents.append(ingoing_act)
+            if not ingoing_act in connected_components:
+                connected_components.append(ingoing_act)
                 activities_considered = activities_considered.union(set(ingoing_act))
 
         for act in outgoing:
             if not act in ingoing:
                 outgoing_act = set(outgoing[act].keys())
                 outgoing_act.add(act)
-                if not outgoing_act in connectedComponents:
-                    connectedComponents.append(outgoing_act)
+                if not outgoing_act in connected_components:
+                    connected_components.append(outgoing_act)
                 activities_considered = activities_considered.union(set(outgoing_act))
 
         something_changed = True
@@ -183,34 +183,34 @@ class Subtree(object):
             it = it + 1
             something_changed = False
 
-            oldConnectedComponents = copy(connectedComponents)
-            connectedComponents = 0
-            connectedComponents = []
+            old_connected_components = copy(connected_components)
+            connected_components = 0
+            connected_components = []
 
             i = 0
-            while i < len(oldConnectedComponents):
-                conn1 = oldConnectedComponents[i]
+            while i < len(old_connected_components):
+                conn1 = old_connected_components[i]
                 j = i + 1
-                while j < len(oldConnectedComponents):
-                    conn2 = oldConnectedComponents[j]
+                while j < len(old_connected_components):
+                    conn2 = old_connected_components[j]
                     inte = conn1.intersection(conn2)
 
                     if len(inte) > 0:
                         conn1 = conn1.union(conn2)
                         something_changed = True
-                        del oldConnectedComponents[j]
+                        del old_connected_components[j]
                         continue
                     j = j + 1
 
-                if not conn1 in connectedComponents:
-                    connectedComponents.append(conn1)
+                if not conn1 in connected_components:
+                    connected_components.append(conn1)
                 i = i + 1
 
-        if len(connectedComponents) == 0:
+        if len(connected_components) == 0:
             for activity in activities:
-                connectedComponents.append([activity])
+                connected_components.append([activity])
 
-        return connectedComponents
+        return connected_components
 
     def checkParCut(self, conn_components):
         """
@@ -253,7 +253,7 @@ class Subtree(object):
         """
         Detects parallel cut
         """
-        conn_components = self.get_connected_components(self.negatedIngoing, self.negatedOutgoing, self.activities)
+        conn_components = self.get_connected_components(self.negated_ingoing, self.negated_outgoing, self.activities)
 
         if len(conn_components) > 1:
             if self.checkParCut(conn_components):
@@ -266,25 +266,25 @@ class Subtree(object):
         Detect loop cut
         """
 
-        if len(self.activitiesDirlist) > 1:
+        if len(self.activities_dir_list) > 1:
             set1 = set()
             set2 = set()
 
-            if self.activitiesDirlist[0][1] > shared_constants.LOOP_CONST_1:
-                if self.activitiesDirlist[0][0] in self.ingoing:
-                    activInput = list(self.ingoing[self.activitiesDirlist[0][0]])
+            if self.activities_dir_list[0][1] > shared_constants.LOOP_CONST_1:
+                if self.activities_dir_list[0][0] in self.ingoing:
+                    activInput = list(self.ingoing[self.activities_dir_list[0][0]])
                     for act in activInput:
-                        if not act == self.activitiesDirlist[0][0] and self.activitiesDirection[
+                        if not act == self.activities_dir_list[0][0] and self.activities_direction[
                             act] < shared_constants.LOOP_CONST_2:
                             set2.add(act)
 
-            if self.activitiesDirlist[-1][1] < shared_constants.LOOP_CONST_4:
-                set2.add(self.activitiesDirlist[-1][0])
+            if self.activities_dir_list[-1][1] < shared_constants.LOOP_CONST_4:
+                set2.add(self.activities_dir_list[-1][0])
 
             if len(set2) > 0:
                 for act in self.activities:
                     if not act in set2 or act in set1:
-                        if self.activitiesDirection[act] < shared_constants.LOOP_CONST_3:
+                        if self.activities_direction[act] < shared_constants.LOOP_CONST_3:
                             set2.add(act)
                         else:
                             set1.add(act)
@@ -332,63 +332,63 @@ class Subtree(object):
 
         return comps
 
-    def detect_cut(self, secondIteration=False):
+    def detect_cut(self, second_iteration=False):
         """
         Detect generally a cut in the graph (applying all the algorithms)
         """
         if self.dfg:
-            parCut = self.detect_parallel_cut()
-            concCut = self.detect_concurrent_cut()
-            seqCut = self.detect_sequential_cut(self.dfg)
-            loopCut = self.detect_loop_cut(self.dfg)
+            par_cut = self.detect_parallel_cut()
+            conc_cut = self.detect_concurrent_cut()
+            seq_cut = self.detect_sequential_cut(self.dfg)
+            loop_cut = self.detect_loop_cut(self.dfg)
 
-            if parCut[0]:
+            if par_cut[0]:
                 union_acti_comp = set()
-                for comp in parCut[1]:
+                for comp in par_cut[1]:
                     union_acti_comp = union_acti_comp.union(comp)
                 diff_acti_comp = set(self.activities).difference(union_acti_comp)
 
                 for act in diff_acti_comp:
-                    parCut[1] = self.add_to_most_probable_component(parCut[1], act, self.ingoing, self.outgoing)
+                    par_cut[1] = self.add_to_most_probable_component(par_cut[1], act, self.ingoing, self.outgoing)
 
-                for comp in parCut[1]:
+                for comp in par_cut[1]:
                     newDfg = filter_dfg_on_act(self.dfg, comp)
-                    self.detectedCut = "parallel"
-                    self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1,
-                                                 noiseThreshold=self.noiseThreshold))
+                    self.detected_cut = "parallel"
+                    self.children.append(Subtree(newDfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
+                                                 noise_threshold=self.noise_threshold))
             else:
-                if concCut[0]:
-                    for comp in concCut[1]:
+                if conc_cut[0]:
+                    for comp in conc_cut[1]:
                         newDfg = filter_dfg_on_act(self.dfg, comp)
-                        self.detectedCut = "concurrent"
-                        self.children.append(Subtree(newDfg, self.initialDfg, comp, self.counts, self.recDepth + 1,
-                                                     noiseThreshold=self.noiseThreshold))
+                        self.detected_cut = "concurrent"
+                        self.children.append(Subtree(newDfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
+                                                     noise_threshold=self.noise_threshold))
                 else:
-                    if seqCut[0]:
-                        dfg1 = filter_dfg_on_act(self.dfg, seqCut[1])
-                        dfg2 = filter_dfg_on_act(self.dfg, seqCut[2])
-                        self.detectedCut = "sequential"
-                        self.children.append(Subtree(dfg1, self.initialDfg, seqCut[1], self.counts, self.recDepth + 1,
-                                                     noiseThreshold=self.noiseThreshold))
-                        self.children.append(Subtree(dfg2, self.initialDfg, seqCut[2], self.counts, self.recDepth + 1,
-                                                     noiseThreshold=self.noiseThreshold))
+                    if seq_cut[0]:
+                        dfg1 = filter_dfg_on_act(self.dfg, seq_cut[1])
+                        dfg2 = filter_dfg_on_act(self.dfg, seq_cut[2])
+                        self.detected_cut = "sequential"
+                        self.children.append(Subtree(dfg1, self.initial_dfg, seq_cut[1], self.counts, self.rec_depth + 1,
+                                                     noise_threshold=self.noise_threshold))
+                        self.children.append(Subtree(dfg2, self.initial_dfg, seq_cut[2], self.counts, self.rec_depth + 1,
+                                                     noise_threshold=self.noise_threshold))
                     else:
-                        if loopCut[0]:
-                            dfg1 = filter_dfg_on_act(self.dfg, loopCut[1])
-                            dfg2 = filter_dfg_on_act(self.dfg, loopCut[2])
-                            self.detectedCut = "loopCut"
+                        if loop_cut[0]:
+                            dfg1 = filter_dfg_on_act(self.dfg, loop_cut[1])
+                            dfg2 = filter_dfg_on_act(self.dfg, loop_cut[2])
+                            self.detected_cut = "loopCut"
                             self.children.append(
-                                Subtree(dfg1, self.initialDfg, loopCut[1], self.counts, self.recDepth + 1,
-                                        noiseThreshold=self.noiseThreshold))
+                                Subtree(dfg1, self.initial_dfg, loop_cut[1], self.counts, self.rec_depth + 1,
+                                        noise_threshold=self.noise_threshold))
                             self.children.append(
-                                Subtree(dfg2, self.initialDfg, loopCut[2], self.counts, self.recDepth + 1,
-                                        noiseThreshold=self.noiseThreshold))
+                                Subtree(dfg2, self.initial_dfg, loop_cut[2], self.counts, self.rec_depth + 1,
+                                        noise_threshold=self.noise_threshold))
                         else:
-                            if self.noiseThreshold > 0:
-                                if not secondIteration:
-                                    self.initialize_tree(self.dfg, self.initialDfg, None, secondIteration=True)
+                            if self.noise_threshold > 0:
+                                if not second_iteration:
+                                    self.initialize_tree(self.dfg, self.initial_dfg, None, second_iteration=True)
                             else:
                                 pass
-                            self.detectedCut = "flower"
+                            self.detected_cut = "flower"
         else:
-            self.detectedCut = "base_concurrent"
+            self.detected_cut = "base_concurrent"

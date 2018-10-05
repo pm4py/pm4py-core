@@ -161,7 +161,7 @@ class InductMinDirFollows(object):
             dfg = newdfg
 
         c = Counts()
-        s = Subtree(dfg, dfg, None, c, 0, noiseThreshold=noiseThreshold)
+        s = Subtree(dfg, dfg, None, c, 0, noise_threshold=noiseThreshold)
         net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
         initial_marking = Marking()
         final_marking = Marking()
