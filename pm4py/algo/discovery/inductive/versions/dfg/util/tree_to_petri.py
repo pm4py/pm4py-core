@@ -6,7 +6,7 @@ from pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add import get_ne
     get_transition
 
 
-def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities, initial_connect_to):
+def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities):
     """
     Utility functions that decides if the skip transition is necessary
 
@@ -21,8 +21,6 @@ def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities, ini
     initial_connect_to
         Source place of the subtree
     """
-    if initial_connect_to.name == "p_1":
-        return False
     if must_add_skip:
         return True
 
@@ -138,17 +136,9 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
             petri.utils.add_arc_from_to(initial_place, trans, net)
             petri.utils.add_arc_from_to(trans, last_added_place, net)
 
-        max_value = max_occ_all_activ(tree.initial_dfg)
-        start_activities_count = sum_start_activities_count(tree.initial_dfg)
-        end_activities_count = sum_end_activities_count(tree.initial_dfg)
-        max_val_act_spec = sum_activities_count(tree.initial_dfg, tree.activities)
 
-        condition1 = start_activities_count > 0 and max_val_act_spec < start_activities_count
-        condition2 = end_activities_count > 0 and max_val_act_spec < end_activities_count
-        condition3 = start_activities_count <= 0 and end_activities_count <= 0 and max_value > 0 and max_val_act_spec < max_value
-        condition = condition1 or condition2 or condition3
 
-        if condition and not initial_connect_to.name == "p_1" and prev_no_visible_trans > 0:
+        if verify_skip_transition_necessity(must_add_skip, tree.initial_dfg, tree.activities) and not initial_connect_to.name == "p_1" and prev_no_visible_trans > 0:
             # add skip transition
             skipTrans = get_new_hidden_trans(counts, type="skip")
             net.transitions.add(skipTrans)
@@ -171,8 +161,7 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
                                                                                       must_add_skip=verify_skip_transition_necessity(
                                                                                           mAddSkip,
                                                                                           tree.initial_dfg,
-                                                                                          tree.activities,
-                                                                                          initial_place),
+                                                                                          tree.activities),
                                                                                       must_add_loop=mAddLoop)
         net, initial_marking, final_marking, last_added_place, counts = form_petrinet(tree.children[1], recDepth + 1,
                                                                                       counts, net,
@@ -183,8 +172,7 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
                                                                                       must_add_skip=verify_skip_transition_necessity(
                                                                                           mAddSkip,
                                                                                           tree.initial_dfg,
-                                                                                          tree.activities,
-                                                                                          last_added_place),
+                                                                                          tree.activities),
                                                                                       must_add_loop=mAddLoop)
     elif tree.detected_cut == "parallel":
         mAddSkip = False
@@ -211,7 +199,7 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
         petri.utils.add_arc_from_to(parallelJoin, final_place, net)
 
         for child in tree.children:
-            mAddSkipFinal = verify_skip_transition_necessity(mAddSkip, tree.dfg, tree.activities, parallelSplit)
+            mAddSkipFinal = verify_skip_transition_necessity(mAddSkip, tree.dfg, tree.activities)
 
             net, initial_marking, final_marking, last_added_place, counts = form_petrinet(child, recDepth + 1, counts,
                                                                                           net, initial_marking,
@@ -242,8 +230,7 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
                                                                                           must_add_skip=verify_skip_transition_necessity(
                                                                                               mAddSkip,
                                                                                               tree.initial_dfg,
-                                                                                              tree.activities,
-                                                                                              initial_place),
+                                                                                              tree.activities),
                                                                                           must_add_loop=mAddLoop)
 
         last_added_place = final_place
