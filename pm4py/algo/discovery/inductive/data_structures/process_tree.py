@@ -1,3 +1,5 @@
+from pm4py.algo.discovery.inductive.data_structures import process_tree
+
 class ProcessTree(object):
     def __init__(self):
         """
@@ -5,47 +7,41 @@ class ProcessTree(object):
         """
         # reset variables
         self.operator = 0
-        self.children = 0
-        self.current_lev_elems = 0
-        self.flower = False
-        self.base_case = False
+        self.rec_depth = 0
 
         self.operator = ""
         self.children = []
-        self.current_lev_elems = []
 
     def __repr__(self):
-        ret_list = ["ProcessTree: "]
+        if self.rec_depth == 0:
+            ret_list = ["ProcessTree: "]
+        else:
+            ret_list = [""]
+
         ret_list.append(self.operator + "(")
-        els_count = 0
-        if not self.base_case:
-            for child in self.children:
-                if els_count > 0:
-                    ret_list.append(",")
-                ret_list.append(repr(child))
-                els_count = els_count + 1
-        for trans in self.current_lev_elems:
-            if els_count > 0:
+
+        for index, child in enumerate(self.children):
+            if index > 0:
                 ret_list.append(",")
-            ret_list.append(repr(trans))
-        if self.base_case and self.flower:
-            ret_list.append(")")
+            ret_list.append(repr(child))
+
         ret_list.append(")")
+
         return "".join(ret_list)
 
-    def add_transition(self, name, label):
+    def add_subtree(self, subtree):
+        self.children.append(subtree)
+
+    def add_transition(self, trans):
         proceed_to_add = True
-        if label is None:
-            if "skip" in name:
-                added_skip_trans = [x for x in self.current_lev_elems if "skip" in x.name]
-                if added_skip_trans:
-                    proceed_to_add = False
-            if "loop" in name:
-                added_skip_trans = [x for x in self.current_lev_elems if "loop" in x.name]
+        if trans.label is None:
+            if "skip" in trans.name:
+                #print([type(x) for x in self.children])
+                added_skip_trans = [x for x in self.children if type(x) is process_tree.PT_Transition and "skip" in x.name]
                 if added_skip_trans:
                     proceed_to_add = False
         if proceed_to_add:
-            self.current_lev_elems.append(PT_Transition(name, label))
+            self.children.append(trans)
 
 class PT_Transition(object):
     def __init__(self, name, label):
