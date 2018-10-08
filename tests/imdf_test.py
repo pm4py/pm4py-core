@@ -14,6 +14,7 @@ from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNa
 from pm4py.objects import petri
 from pm4py.objects.petri.exporter import pnml as petri_exporter
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
+from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 import logging
 
 
@@ -25,7 +26,8 @@ class InductiveMinerDFTest(unittest.TestCase):
             eventLog = csv_importer.import_log(logName)
             traceLog = log_transform.transform_event_log_to_trace_log(eventLog)
         imdf = InductMinDirFollows()
-        net, marking, final_marking = imdf.apply(traceLog, None)
+        dfg = [(k, v) for k, v in dfg_inst.apply(traceLog).items() if v > 0]
+        net, marking, final_marking = imdf.apply_dfg(dfg, None)
         return traceLog, net, marking, final_marking
 
     def test_applyImdfToXES(self):

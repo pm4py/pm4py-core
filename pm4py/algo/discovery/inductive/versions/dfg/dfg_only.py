@@ -102,7 +102,7 @@ def apply_dfg(dfg, parameters):
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     indMinDirFollows = InductMinDirFollows()
-    net, initial_marking, final_marking = indMinDirFollows.apply_dfg(dfg, parameters, activity_key=activity_key)
+    net, initial_marking, final_marking = indMinDirFollows.apply_dfg(dfg, parameters)
 
     # clean net from duplicate hidden transitions
     net = petri_cleaning.clean_duplicate_transitions(net)
