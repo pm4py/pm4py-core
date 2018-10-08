@@ -2,6 +2,7 @@ import pm4py
 from pm4py.algo.discovery.inductive.data_structures.process_tree import ProcessTree, PT_Transition
 from pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans import verify_skip_transition_necessity, verify_skip_for_parallel_cut
 from pm4py.algo.discovery.inductive.data_structures import tree_constants
+from pm4py.algo.discovery.dfg.utils.dfg_utils import get_activities_self_loop
 
 def get_transition(counts, label):
     """
@@ -18,6 +19,26 @@ def get_new_hidden_trans(counts, type="unknown"):
     counts.inc_no_hidden()
     return PT_Transition(type + '_' + str(counts.num_hidden), None)
 
+def check_loop_need(spec_tree_struct):
+    """
+    Check whether a forced loop transitions shall be added
+
+    Parameters
+    -----------
+    spec_tree_struct
+        Internal tree structure (after application of Inductive Miner)
+
+    Returns
+    -----------
+    need_loop_on_subtree
+        Checks if the loop on the subtree is needed
+    """
+    self_loop_activities = set(get_activities_self_loop(spec_tree_struct.initial_dfg))
+    self_loop_activities = self_loop_activities.intersection(set(spec_tree_struct.activities))
+
+    need_loop_on_subtree = len(self_loop_activities) > 0
+
+    return need_loop_on_subtree
 
 def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False):
     """
@@ -42,19 +63,24 @@ def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False):
     final_tree_repr = ProcessTree()
     final_tree_repr.rec_depth = rec_depth
 
-    if spec_tree_struct.detected_cut == "base_concurrent":
-        final_tree_repr.operator = tree_constants.EXCLUSIVE_OPERATOR
-        child_tree = final_tree_repr
-    elif spec_tree_struct.detected_cut == "flower":
+    need_loop_on_subtree = check_loop_need(spec_tree_struct)
+
+    if spec_tree_struct.detected_cut == "flower" or (spec_tree_struct.detected_cut == "base_concurrent" and need_loop_on_subtree):
         final_tree_repr.operator = tree_constants.LOOP_OPERATOR
         child_tree = ProcessTree()
         child_tree.operator = tree_constants.EXCLUSIVE_OPERATOR
         rec_depth = rec_depth + 1
         child_tree.rec_depth = rec_depth
         final_tree_repr.add_subtree(child_tree)
+    elif spec_tree_struct.detected_cut == "base_concurrent":
+        final_tree_repr.operator = tree_constants.EXCLUSIVE_OPERATOR
+        child_tree = final_tree_repr
     elif spec_tree_struct.detected_cut == "sequential":
         final_tree_repr.operator = tree_constants.SEQUENTIAL_OPERATOR
-        child_tree = final_tree_repr
+        if need_loop_on_subtree:
+            child_tree = final_tree_repr
+        else:
+            child_tree = final_tree_repr
     elif spec_tree_struct.detected_cut == "loopCut":
         final_tree_repr.operator = tree_constants.LOOP_OPERATOR
         child_tree = ProcessTree()
@@ -64,10 +90,17 @@ def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False):
         final_tree_repr.add_subtree(child_tree)
     elif spec_tree_struct.detected_cut == "concurrent":
         final_tree_repr.operator = tree_constants.EXCLUSIVE_OPERATOR
-        child_tree = final_tree_repr
+        if need_loop_on_subtree:
+            child_tree = final_tree_repr
+        else:
+            child_tree = final_tree_repr
     elif spec_tree_struct.detected_cut == "parallel":
         final_tree_repr.operator = tree_constants.PARALLEL_OPERATOR
-        child_tree = final_tree_repr
+        if need_loop_on_subtree:
+            child_tree = final_tree_repr
+        else:
+            child_tree = final_tree_repr
+
     if spec_tree_struct.detected_cut == "base_concurrent" or spec_tree_struct.detected_cut == "flower":
         for act in spec_tree_struct.activities:
             child_tree.add_transition(get_transition(counts, act))
