@@ -19,14 +19,15 @@ sys.setrecursionlimit(100000)
 
 def apply(trace_log, parameters):
     """
-    Apply the IMDF algorithm to a log
+    Apply the IMDF algorithm to a log obtaining a Petri net along with an initial and final marking
 
     Parameters
     -----------
     trace_log
         Trace log
     parameters
-        Parameters of the algorithm
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
 
     Returns
     -----------
@@ -47,7 +48,8 @@ def apply(trace_log, parameters):
             shared_constants.APPLY_REDUCTION_ON_SMALL_LOG and shared_constants.MAX_LOG_SIZE_FOR_REDUCTION)
 
     # get the DFG
-    dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
+    dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={
+        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
     indMinDirFollows = InductMinDirFollows()
     net, initial_marking, final_marking = indMinDirFollows.apply_dfg(dfg, parameters)
@@ -64,7 +66,24 @@ def apply(trace_log, parameters):
 
     return net, initial_marking, final_marking
 
+
 def apply_tree(trace_log, parameters):
+    """
+    Apply the IMDF algorithm to a log obtaining a process tree
+
+    Parameters
+    ----------
+    trace_log
+        Trace log
+    parameters
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
+
+    Returns
+    ----------
+    tree
+        Process tree
+    """
     if parameters is None:
         parameters = {}
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
@@ -72,20 +91,23 @@ def apply_tree(trace_log, parameters):
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
     # get the DFG
-    dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
+    dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={
+        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
     return apply_tree_dfg(dfg, parameters)
 
+
 def apply_dfg(dfg, parameters):
     """
-    Apply the IMDF algorithm to a DFG graph
+    Apply the IMDF algorithm to a DFG graph obtaining a Petri net along with an initial and final marking
 
     Parameters
     -----------
     dfg
         Directly-Follows graph
     parameters
-        Parameters of the algorithm
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
 
     Returns
     -----------
@@ -109,7 +131,24 @@ def apply_dfg(dfg, parameters):
 
     return net, initial_marking, final_marking
 
+
 def apply_tree_dfg(dfg, parameters):
+    """
+    Apply the IMDF algorithm to a DFG graph obtaining a process tree
+
+    Parameters
+    ----------
+    dfg
+        Directly-follows graph
+    parameters
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
+
+    Returns
+    ----------
+    tree
+        Process tree
+    """
     if parameters is None:
         parameters = {}
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
@@ -119,17 +158,19 @@ def apply_tree_dfg(dfg, parameters):
 
     return indMinDirFollows.apply_tree_dfg(dfg, parameters)
 
+
 class InductMinDirFollows(object):
     def apply_dfg(self, dfg, parameters):
         """
-        Apply the IMDF algorithm to a DFG graph
+        Apply the IMDF algorithm to a DFG graph obtaining a Petri net along with an initial and final marking
 
         Parameters
         -----------
         dfg
             Directly-Follows graph
         parameters
-            Parameters of the algorithm
+            Parameters of the algorithm, including:
+                pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
 
         Returns
         -----------
@@ -161,11 +202,28 @@ class InductMinDirFollows(object):
         net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
         initial_marking = Marking()
         final_marking = Marking()
-        net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(s, 0, c, net, initial_marking, final_marking)
+        net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(s, 0, c, net, initial_marking,
+                                                                                    final_marking)
 
         return net, initial_marking, final_marking
 
     def apply_tree_dfg(self, dfg, parameters):
+        """
+        Apply the IMDF algorithm to a DFG graph obtaining a process tree
+
+        Parameters
+        ----------
+        dfg
+            Directly-follows graph
+        parameters
+            Parameters of the algorithm, including:
+                pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
+
+        Returns
+        ----------
+        tree
+            Process tree
+        """
         if parameters is None:
             parameters = {}
 

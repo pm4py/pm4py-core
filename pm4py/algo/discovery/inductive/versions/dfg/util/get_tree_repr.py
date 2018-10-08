@@ -5,7 +5,7 @@ from pm4py.algo.discovery.inductive.data_structures import tree_constants
 
 def get_transition(counts, label):
     """
-    Create a transitions with the specified label in the Petri net
+    Create a node (transition) with the specified label in the process tree
     """
     counts.inc_no_visible()
     return PT_Transition(label, label)
@@ -13,13 +13,32 @@ def get_transition(counts, label):
 
 def get_new_hidden_trans(counts, type="unknown"):
     """
-    Create a new hidden transition in the Petri net
+    Create a hidden node (transition) in the process tree
     """
     counts.inc_no_hidden()
     return PT_Transition(type + '_' + str(counts.num_hidden), None)
 
 
 def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False):
+    """
+    Get the representation of a process tree
+
+    Parameters
+    -----------
+    spec_tree_struct
+        Internal tree structure (after application of Inductive Miner)
+    rec_depth
+        Current recursion depth
+    counts
+        Count object (keep track of the number of nodes (transitions) added to the tree
+    must_add_skip
+        Boolean value that indicate if we are forced to add the skip
+
+    Returns
+    -----------
+    final_tree_repr
+        Representation of the tree (could be printed, transformed, viewed)
+    """
     final_tree_repr = ProcessTree()
     final_tree_repr.rec_depth = rec_depth
 
