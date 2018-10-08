@@ -184,6 +184,6 @@ class InductMinDirFollows(object):
         c = Counts()
         s = Subtree(dfg, dfg, None, c, 0, noise_threshold=noiseThreshold)
 
-        tree_repr, c = get_tree_repr.get_list_trans_representation_of_tree(s, None, 0, c)
+        tree_repr, c = get_tree_repr.get_repr(s, None, 0, c)
 
         return tree_repr
