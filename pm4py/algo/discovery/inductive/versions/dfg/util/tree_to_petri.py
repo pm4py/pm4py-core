@@ -1,44 +1,8 @@
 from pm4py.objects import petri
 from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.algo.discovery.dfg.utils.dfg_utils import max_occ_all_activ, sum_start_activities_count, \
-    sum_end_activities_count, sum_activities_count, max_occ_among_specif_activ
 from pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add import get_new_place, get_new_hidden_trans, \
     get_transition
-
-
-def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities):
-    """
-    Utility functions that decides if the skip transition is necessary
-
-    Parameters
-    ----------
-    must_add_skip
-        Boolean value, provided by the parent caller, that tells if the skip is absolutely necessary
-    initial_dfg
-        Initial DFG
-    activities
-        Provided activities of the DFG
-    initial_connect_to
-        Source place of the subtree
-    """
-    if must_add_skip:
-        return True
-
-    max_value = max_occ_all_activ(initial_dfg)
-    start_activities_count = sum_start_activities_count(initial_dfg)
-    end_activities_count = sum_end_activities_count(initial_dfg)
-    max_val_act_spec = sum_activities_count(initial_dfg, activities)
-
-    condition1 = start_activities_count > 0 and max_val_act_spec < start_activities_count
-    condition2 = end_activities_count > 0 and max_val_act_spec < end_activities_count
-    condition3 = start_activities_count <= 0 and end_activities_count <= 0 and max_value > 0 and max_val_act_spec < max_value
-    condition = condition1 or condition2 or condition3
-
-    if condition:
-        return True
-
-    return False
-
+from pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans import verify_skip_transition_necessity, verify_skip_for_parallel_cut
 
 def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, must_add_initial_place=False,
                   must_add_final_place=False, initial_connect_to=None, final_connect_to=None, must_add_skip=False,
@@ -175,20 +139,13 @@ def form_petrinet(tree, recDepth, counts, net, initial_marking, final_marking, m
                                                                                           tree.activities),
                                                                                       must_add_loop=mAddLoop)
     elif tree.detected_cut == "parallel":
-        mAddSkip = False
         mAddLoop = False
 
         if final_place is None:
             final_place = get_new_place(counts)
             net.places.add(final_place)
 
-        children_occurrences = []
-        for child in tree.children:
-            child_occ = max_occ_among_specif_activ(tree.dfg, child.activities)
-            children_occurrences.append(child_occ)
-        if children_occurrences:
-            if not (children_occurrences[0] == children_occurrences[-1]):
-                mAddSkip = True
+        mAddSkip = verify_skip_for_parallel_cut(tree.dfg, tree.children)
 
         parallelSplit = get_new_hidden_trans(counts, "tauSplit")
         net.transitions.add(parallelSplit)
