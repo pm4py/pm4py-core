@@ -85,6 +85,7 @@ class ProcessTree(object):
                 return self.children[0].get_first_terminal_child_transitions()
             else:
                 return self.children
+        return []
 
     def get_last_terminal_child_transitions(self):
         """
@@ -100,6 +101,7 @@ class ProcessTree(object):
                 return self.children[-1].get_last_terminal_child_transitions()
             else:
                 return self.children
+        return []
 
     def check_initial_loop(self):
         """
