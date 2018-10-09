@@ -51,11 +51,7 @@ def apply(trace_log, parameters):
     dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
-    indMinDirFollows = InductMinDirFollows()
-    net, initial_marking, final_marking = indMinDirFollows.apply_dfg(dfg, parameters)
-
-    # clean net from duplicate hidden transitions
-    net = petri_cleaning.clean_duplicate_transitions(net)
+    net, initial_marking, final_marking = apply_dfg(dfg, parameters=parameters)
 
     if enable_reduction:
         # do the replay
@@ -120,11 +116,26 @@ def apply_dfg(dfg, parameters):
     """
     if parameters is None:
         parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-    indMinDirFollows = InductMinDirFollows()
-    net, initial_marking, final_marking = indMinDirFollows.apply_dfg(dfg, parameters)
+
+    noiseThreshold = 0.0
+
+    if "noiseThreshold" in parameters:
+        noiseThreshold = parameters["noiseThreshold"]
+
+    if type(dfg) is Counter or type(dfg) is dict:
+        newdfg = []
+        for key in dfg:
+            value = dfg[key]
+            newdfg.append((key, value))
+        dfg = newdfg
+
+    c = Counts()
+    s = Subtree(dfg, dfg, None, c, 0, noise_threshold=noiseThreshold)
+    net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
+    initial_marking = Marking()
+    final_marking = Marking()
+    net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(s, 0, c, net, initial_marking,
+                                                                                final_marking)
 
     # clean net from duplicate hidden transitions
     net = petri_cleaning.clean_duplicate_transitions(net)
@@ -151,97 +162,22 @@ def apply_tree_dfg(dfg, parameters):
     """
     if parameters is None:
         parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
 
-    indMinDirFollows = InductMinDirFollows()
+    noiseThreshold = 0.0
 
-    return indMinDirFollows.apply_tree_dfg(dfg, parameters)
+    if "noiseThreshold" in parameters:
+        noiseThreshold = parameters["noiseThreshold"]
 
+    if type(dfg) is Counter or type(dfg) is dict:
+        newdfg = []
+        for key in dfg:
+            value = dfg[key]
+            newdfg.append((key, value))
+        dfg = newdfg
 
-class InductMinDirFollows(object):
-    def apply_dfg(self, dfg, parameters):
-        """
-        Apply the IMDF algorithm to a DFG graph obtaining a Petri net along with an initial and final marking
+    c = Counts()
+    s = Subtree(dfg, dfg, None, c, 0, noise_threshold=noiseThreshold)
 
-        Parameters
-        -----------
-        dfg
-            Directly-Follows graph
-        parameters
-            Parameters of the algorithm, including:
-                pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
+    tree_repr, c = get_tree_repr.get_repr(s, 0, c)
 
-        Returns
-        -----------
-        net
-            Petri net
-        initial_marking
-            Initial marking
-        final_marking
-            Final marking
-        """
-
-        if parameters is None:
-            parameters = {}
-
-        noiseThreshold = 0.0
-
-        if "noiseThreshold" in parameters:
-            noiseThreshold = parameters["noiseThreshold"]
-
-        if type(dfg) is Counter or type(dfg) is dict:
-            newdfg = []
-            for key in dfg:
-                value = dfg[key]
-                newdfg.append((key, value))
-            dfg = newdfg
-
-        c = Counts()
-        s = Subtree(dfg, dfg, None, c, 0, noise_threshold=noiseThreshold)
-        net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
-        initial_marking = Marking()
-        final_marking = Marking()
-        net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(s, 0, c, net, initial_marking,
-                                                                                    final_marking)
-
-        return net, initial_marking, final_marking
-
-    def apply_tree_dfg(self, dfg, parameters):
-        """
-        Apply the IMDF algorithm to a DFG graph obtaining a process tree
-
-        Parameters
-        ----------
-        dfg
-            Directly-follows graph
-        parameters
-            Parameters of the algorithm, including:
-                pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
-
-        Returns
-        ----------
-        tree
-            Process tree
-        """
-        if parameters is None:
-            parameters = {}
-
-        noiseThreshold = 0.0
-
-        if "noiseThreshold" in parameters:
-            noiseThreshold = parameters["noiseThreshold"]
-
-        if type(dfg) is Counter or type(dfg) is dict:
-            newdfg = []
-            for key in dfg:
-                value = dfg[key]
-                newdfg.append((key, value))
-            dfg = newdfg
-
-        c = Counts()
-        s = Subtree(dfg, dfg, None, c, 0, noise_threshold=noiseThreshold)
-
-        tree_repr, c = get_tree_repr.get_repr(s, 0, c)
-
-        return tree_repr
+    return tree_repr
