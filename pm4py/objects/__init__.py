@@ -1,1 +1,1 @@
-from pm4py.objects import log, petri, transition_system
+from pm4py.objects import log, petri, transition_system, conversion
