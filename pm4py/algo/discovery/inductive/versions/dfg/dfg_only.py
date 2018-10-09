@@ -1,8 +1,4 @@
-from pm4py.objects.log.util import trace_log as tl_util
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
-from pm4py.objects import petri
-from pm4py.objects.petri.petrinet import Marking
-import time
 import sys
 from collections import Counter
 from pm4py import util as pmutil
@@ -10,9 +6,9 @@ from pm4py.objects.log.util import xes as xes_util
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.algo.discovery.inductive.util import petri_cleaning, shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
-from pm4py.algo.discovery.inductive.versions.dfg.util.tree_to_petri import form_petrinet
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree import Subtree
 from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr
+from pm4py.objects.conversion.tree_to_petri import factory as tree_to_petri
 
 sys.setrecursionlimit(100000)
 
@@ -114,31 +110,8 @@ def apply_dfg(dfg, parameters):
     final_marking
         Final marking
     """
-    if parameters is None:
-        parameters = {}
-
-    noiseThreshold = 0.0
-
-    if "noiseThreshold" in parameters:
-        noiseThreshold = parameters["noiseThreshold"]
-
-    if type(dfg) is Counter or type(dfg) is dict:
-        newdfg = []
-        for key in dfg:
-            value = dfg[key]
-            newdfg.append((key, value))
-        dfg = newdfg
-
-    c = Counts()
-    s = Subtree(dfg, dfg, None, c, 0, noise_threshold=noiseThreshold)
-    net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
-    initial_marking = Marking()
-    final_marking = Marking()
-    net, initial_marking, final_marking, lastAddedPlace, counts = form_petrinet(s, 0, c, net, initial_marking,
-                                                                                final_marking)
-
-    # clean net from duplicate hidden transitions
-    net = petri_cleaning.clean_duplicate_transitions(net)
+    tree = apply_tree_dfg(dfg, parameters)
+    net, initial_marking, final_marking = tree_to_petri.apply(tree)
 
     return net, initial_marking, final_marking
 
