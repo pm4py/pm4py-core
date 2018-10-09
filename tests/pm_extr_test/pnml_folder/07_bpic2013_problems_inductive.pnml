@@ -2,14 +2,9 @@
 <pnml>
   <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
     <page id="n0">
-      <place id="p_4">
+      <place id="p_5">
         <name>
-          <text>p_4</text>
-        </name>
-      </place>
-      <place id="p_3">
-        <name>
-          <text>p_3</text>
+          <text>p_5</text>
         </name>
       </place>
       <place id="source">
@@ -20,14 +15,9 @@
           <text>1</text>
         </initialMarking>
       </place>
-      <place id="p_5">
+      <place id="p_4">
         <name>
-          <text>p_5</text>
-        </name>
-      </place>
-      <place id="p_6">
-        <name>
-          <text>p_6</text>
+          <text>p_4</text>
         </name>
       </place>
       <place id="sink">
@@ -35,70 +25,80 @@
           <text>sink</text>
         </name>
       </place>
-      <transition id="Unmatched+Unmatched">
+      <place id="p_6">
         <name>
-          <text>Unmatched+Unmatched</text>
+          <text>p_6</text>
         </name>
-      </transition>
-      <transition id="loop_5">
+      </place>
+      <place id="p_3">
         <name>
-          <text>loop_5</text>
+          <text>p_3</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="bddd6fa0-64ae-4995-a77f-e457f4876e66"/>
-      </transition>
-      <transition id="Completed+Closed">
-        <name>
-          <text>Completed+Closed</text>
-        </name>
-      </transition>
-      <transition id="skip_4">
-        <name>
-          <text>skip_4</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="5025ceb6-9c81-459f-b6c2-70fdd14e62cf"/>
-      </transition>
+      </place>
       <transition id="Accepted+Assigned">
         <name>
           <text>Accepted+Assigned</text>
         </name>
-      </transition>
-      <transition id="loop_9">
-        <name>
-          <text>loop_9</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="ca6c88a8-ab2f-415c-b622-70828c954644"/>
-      </transition>
-      <transition id="tau_1">
-        <name>
-          <text>tau_1</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="02195938-e625-4d8b-a346-182ef03f9230"/>
-      </transition>
-      <transition id="tau_10">
-        <name>
-          <text>tau_10</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="b88cc3b9-3b40-4096-84c4-f22122084eed"/>
       </transition>
       <transition id="Completed+Cancelled">
         <name>
           <text>Completed+Cancelled</text>
         </name>
       </transition>
+      <transition id="tau_2">
+        <name>
+          <text>tau_2</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="50fcf509-b400-4fc0-ae36-da7b1e131c70"/>
+      </transition>
+      <transition id="skip_8">
+        <name>
+          <text>skip_8</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="37307106-53b4-4ae8-bff6-efe09cf5f738"/>
+      </transition>
+      <transition id="tau_1">
+        <name>
+          <text>tau_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="3d629080-40ad-478f-8612-151c81363036"/>
+      </transition>
+      <transition id="skip_5">
+        <name>
+          <text>skip_5</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="dd19e3a7-fe08-48cd-95d5-678ec8a0a793"/>
+      </transition>
+      <transition id="loop_7">
+        <name>
+          <text>loop_7</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="01a61b15-5ad3-4f59-a40f-1630fd1e668e"/>
+      </transition>
       <transition id="Accepted+In Progress">
         <name>
           <text>Accepted+In Progress</text>
         </name>
       </transition>
-      <transition id="loop_2">
+      <transition id="Unmatched+Unmatched">
         <name>
-          <text>loop_2</text>
+          <text>Unmatched+Unmatched</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="db1f90ad-63f1-486e-924a-b8600e437379"/>
+      </transition>
+      <transition id="loop_3">
+        <name>
+          <text>loop_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="a3e8a170-b644-4562-ab52-7fc1e2617452"/>
       </transition>
       <transition id="Accepted+Wait">
         <name>
           <text>Accepted+Wait</text>
+        </name>
+      </transition>
+      <transition id="Completed+Closed">
+        <name>
+          <text>Completed+Closed</text>
         </name>
       </transition>
       <transition id="Queued+Awaiting Assignment">
@@ -106,32 +106,40 @@
           <text>Queued+Awaiting Assignment</text>
         </name>
       </transition>
-      <arc id="29512069" source="skip_4" target="p_5"/>
-      <arc id="29512071" source="p_4" target="skip_4"/>
-      <arc id="29512087" source="Completed+Cancelled" target="p_6"/>
-      <arc id="29512089" source="p_5" target="Completed+Cancelled"/>
-      <arc id="29512093" source="Completed+Closed" target="p_6"/>
-      <arc id="29512095" source="p_5" target="Completed+Closed"/>
-      <arc id="29512127" source="p_6" target="loop_9"/>
-      <arc id="29512005" source="tau_1" target="p_3"/>
-      <arc id="29512007" source="source" target="tau_1"/>
-      <arc id="29512137" source="tau_10" target="sink"/>
-      <arc id="29512139" source="p_6" target="tau_10"/>
-      <arc id="29512017" source="p_3" target="Queued+Awaiting Assignment"/>
-      <arc id="29512019" source="p_3" target="Accepted+In Progress"/>
-      <arc id="29512149" source="loop_9" target="p_4"/>
-      <arc id="29512023" source="Accepted+Wait" target="p_4"/>
-      <arc id="29512025" source="p_3" target="Accepted+Wait"/>
-      <arc id="29512029" source="Unmatched+Unmatched" target="p_4"/>
-      <arc id="29512031" source="p_3" target="Unmatched+Unmatched"/>
-      <arc id="29512035" source="Queued+Awaiting Assignment" target="p_4"/>
-      <arc id="29512037" source="Accepted+In Progress" target="p_4"/>
-      <arc id="29512039" source="Accepted+Assigned" target="p_5"/>
-      <arc id="29512041" source="p_4" target="Accepted+Assigned"/>
-      <arc id="29512051" source="loop_2" target="p_3"/>
-      <arc id="29512053" source="p_4" target="loop_2"/>
-      <arc id="29512061" source="loop_5" target="p_4"/>
-      <arc id="29512063" source="p_5" target="loop_5"/>
+      <transition id="loop_4">
+        <name>
+          <text>loop_4</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="eb5e507d-5421-4cfd-b6c9-c3b3c9f4dac6"/>
+      </transition>
+      <arc id="25134213" source="Unmatched+Unmatched" target="p_5"/>
+      <arc id="25134091" source="source" target="tau_1"/>
+      <arc id="25134219" source="Accepted+In Progress" target="p_5"/>
+      <arc id="25134221" source="p_3" target="Accepted+In Progress"/>
+      <arc id="25134225" source="Accepted+Wait" target="p_5"/>
+      <arc id="25134227" source="p_3" target="Accepted+Wait"/>
+      <arc id="25134231" source="Queued+Awaiting Assignment" target="p_5"/>
+      <arc id="25134233" source="p_3" target="Queued+Awaiting Assignment"/>
+      <arc id="25134237" source="p_3" target="skip_5"/>
+      <arc id="25134239" source="skip_5" target="p_5"/>
+      <arc id="25134245" source="loop_7" target="p_5"/>
+      <arc id="25134247" source="p_6" target="loop_7"/>
+      <arc id="25134261" source="p_5" target="Accepted+Assigned"/>
+      <arc id="25134273" source="skip_8" target="p_6"/>
+      <arc id="25134275" source="p_5" target="skip_8"/>
+      <arc id="25134281" source="Accepted+Assigned" target="p_6"/>
+      <arc id="25134283" source="p_6" target="Completed+Closed"/>
+      <arc id="25134171" source="p_4" target="loop_3"/>
+      <arc id="25134299" source="Completed+Cancelled" target="p_4"/>
+      <arc id="25134301" source="p_6" target="Completed+Cancelled"/>
+      <arc id="25134177" source="tau_2" target="sink"/>
+      <arc id="25134305" source="Completed+Closed" target="p_4"/>
+      <arc id="25134179" source="p_4" target="tau_2"/>
+      <arc id="25134189" source="tau_1" target="p_3"/>
+      <arc id="25134191" source="loop_3" target="p_3"/>
+      <arc id="25134193" source="p_3" target="Unmatched+Unmatched"/>
+      <arc id="25134201" source="loop_4" target="p_3"/>
+      <arc id="25134203" source="p_5" target="loop_4"/>
     </page>
   </net>
 </pnml>
