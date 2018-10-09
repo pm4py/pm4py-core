@@ -2,59 +2,9 @@
 <pnml>
   <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
     <page id="n0">
-      <place id="p_12">
-        <name>
-          <text>p_12</text>
-        </name>
-      </place>
-      <place id="p_5">
-        <name>
-          <text>p_5</text>
-        </name>
-      </place>
-      <place id="p_4">
-        <name>
-          <text>p_4</text>
-        </name>
-      </place>
       <place id="p_13">
         <name>
           <text>p_13</text>
-        </name>
-      </place>
-      <place id="sink">
-        <name>
-          <text>sink</text>
-        </name>
-      </place>
-      <place id="p_7">
-        <name>
-          <text>p_7</text>
-        </name>
-      </place>
-      <place id="p_9">
-        <name>
-          <text>p_9</text>
-        </name>
-      </place>
-      <place id="p_17">
-        <name>
-          <text>p_17</text>
-        </name>
-      </place>
-      <place id="p_19">
-        <name>
-          <text>p_19</text>
-        </name>
-      </place>
-      <place id="p_8">
-        <name>
-          <text>p_8</text>
-        </name>
-      </place>
-      <place id="p_10">
-        <name>
-          <text>p_10</text>
         </name>
       </place>
       <place id="source">
@@ -65,9 +15,14 @@
           <text>1</text>
         </initialMarking>
       </place>
-      <place id="p_21">
+      <place id="p_11">
         <name>
-          <text>p_21</text>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
         </name>
       </place>
       <place id="p_18">
@@ -75,34 +30,14 @@
           <text>p_18</text>
         </name>
       </place>
-      <place id="p_20">
-        <name>
-          <text>p_20</text>
-        </name>
-      </place>
-      <place id="p_15">
-        <name>
-          <text>p_15</text>
-        </name>
-      </place>
-      <place id="p_16">
-        <name>
-          <text>p_16</text>
-        </name>
-      </place>
       <place id="p_3">
         <name>
           <text>p_3</text>
         </name>
       </place>
-      <place id="p_11">
+      <place id="p_10">
         <name>
-          <text>p_11</text>
-        </name>
-      </place>
-      <place id="p_14">
-        <name>
-          <text>p_14</text>
+          <text>p_10</text>
         </name>
       </place>
       <place id="p_6">
@@ -110,317 +45,171 @@
           <text>p_6</text>
         </name>
       </place>
-      <transition id="loop_25">
+      <place id="p_9">
         <name>
-          <text>loop_25</text>
+          <text>p_9</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d0a2c79b-240e-4b5d-8d93-88d56b9916f7"/>
+      </place>
+      <place id="p_16">
+        <name>
+          <text>p_16</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_12">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <place id="p_19">
+        <name>
+          <text>p_19</text>
+        </name>
+      </place>
+      <place id="p_15">
+        <name>
+          <text>p_15</text>
+        </name>
+      </place>
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_20">
+        <name>
+          <text>p_20</text>
+        </name>
+      </place>
+      <place id="p_14">
+        <name>
+          <text>p_14</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_22">
+        <name>
+          <text>p_22</text>
+        </name>
+      </place>
+      <place id="p_17">
+        <name>
+          <text>p_17</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_21">
+        <name>
+          <text>p_21</text>
+        </name>
+      </place>
+      <transition id="T13 Adjust document X request unlicensed+complete">
+        <name>
+          <text>T13 Adjust document X request unlicensed+complete</text>
+        </name>
       </transition>
       <transition id="skip_24">
         <name>
           <text>skip_24</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="5f6300a1-d31f-41a6-b9c6-596549498b7e"/>
-      </transition>
-      <transition id="T07-2 Draft intern advice aspect 2+complete">
-        <name>
-          <text>T07-2 Draft intern advice aspect 2+complete</text>
-        </name>
-      </transition>
-      <transition id="T18 Adjust report Y to stop indicition+complete">
-        <name>
-          <text>T18 Adjust report Y to stop indicition+complete</text>
-        </name>
-      </transition>
-      <transition id="skip_20">
-        <name>
-          <text>skip_20</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d0ab0bb0-8ba8-4fb9-96c6-e4c009a88ae2"/>
-      </transition>
-      <transition id="loop_27">
-        <name>
-          <text>loop_27</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="0e98bea0-2647-4163-8df7-8fcf732e1c00"/>
-      </transition>
-      <transition id="loop_41">
-        <name>
-          <text>loop_41</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d69626c8-1926-46f7-a75a-8860eeed0f6b"/>
-      </transition>
-      <transition id="tauSplit_4">
-        <name>
-          <text>tauSplit_4</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d1be4c52-96e0-435f-83b1-1f782753b9b3"/>
-      </transition>
-      <transition id="skip_17">
-        <name>
-          <text>skip_17</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="3e67f6a0-bc23-42db-b75f-296d22f3a177"/>
-      </transition>
-      <transition id="skip_2">
-        <name>
-          <text>skip_2</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="bf0c7725-b166-45bf-8939-17dc6bff189d"/>
-      </transition>
-      <transition id="T09-2 Process or receive external advice from party 2+complete">
-        <name>
-          <text>T09-2 Process or receive external advice from party 2+complete</text>
-        </name>
-      </transition>
-      <transition id="T14 Determine document X request unlicensed+complete">
-        <name>
-          <text>T14 Determine document X request unlicensed+complete</text>
-        </name>
-      </transition>
-      <transition id="skip_36">
-        <name>
-          <text>skip_36</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="c7b449ef-8f3e-4778-bb69-8a373fe0a6ea"/>
-      </transition>
-      <transition id="skip_40">
-        <name>
-          <text>skip_40</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="ee97a731-ed58-4444-88e2-976abd97ad74"/>
-      </transition>
-      <transition id="loop_19">
-        <name>
-          <text>loop_19</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="34ef68ce-c2e2-4a58-bd10-cceea218df69"/>
-      </transition>
-      <transition id="tauJoin_38">
-        <name>
-          <text>tauJoin_38</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="96b3e3c6-a7dd-4934-aad9-b43d58643704"/>
-      </transition>
-      <transition id="skip_39">
-        <name>
-          <text>skip_39</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="512b9190-213a-4240-86bd-18ff436376b4"/>
-      </transition>
-      <transition id="T07-4 Draft internal advice to hold for type 4+complete">
-        <name>
-          <text>T07-4 Draft internal advice to hold for type 4+complete</text>
-        </name>
-      </transition>
-      <transition id="T11 Create document X request unlicensed+complete">
-        <name>
-          <text>T11 Create document X request unlicensed+complete</text>
-        </name>
-      </transition>
-      <transition id="skip_32">
-        <name>
-          <text>skip_32</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="1e61d199-1c85-403b-a91c-fda790f7a742"/>
-      </transition>
-      <transition id="skip_7">
-        <name>
-          <text>skip_7</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="b4e8d1d9-cd1e-45ac-a42a-34bc98f95fe8"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="b1d56e73-b617-4faf-8065-78c9a2793520"/>
       </transition>
       <transition id="skip_31">
         <name>
           <text>skip_31</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="8d81291c-88f0-4af1-8ccc-c2ad1a0bfeee"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="449d47ec-74b6-4366-8fcc-24980afa7033"/>
       </transition>
-      <transition id="loop_22">
+      <transition id="loop_4">
         <name>
-          <text>loop_22</text>
+          <text>loop_4</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="ba945b12-30ed-4bc9-b065-12f4ea670f13"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="5029d436-579c-4e02-b6cd-4da157fe1711"/>
       </transition>
-      <transition id="skip_6">
+      <transition id="skip_10">
         <name>
-          <text>skip_6</text>
+          <text>skip_10</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="4b6eff68-7582-4e5b-91df-15e393ebacb4"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="cc28955b-3c13-4bac-b55b-f7227ed38ca5"/>
+      </transition>
+      <transition id="loop_5">
+        <name>
+          <text>loop_5</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="06d3f162-b7de-4582-b170-84d934fbc58b"/>
       </transition>
       <transition id="skip_18">
         <name>
           <text>skip_18</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="7f2c2975-138b-433b-ae56-e834fd617e43"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="9fa6cd01-2c67-4044-80fb-c86e76d79c0c"/>
       </transition>
-      <transition id="skip_15">
+      <transition id="tauSplit_11">
         <name>
-          <text>skip_15</text>
+          <text>tauSplit_11</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="58ff793a-bd43-4d69-996d-b55981d05787"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="eff69e33-0ef5-471f-a7e8-bd6b88c23899"/>
       </transition>
-      <transition id="skip_29">
+      <transition id="skip_26">
         <name>
-          <text>skip_29</text>
+          <text>skip_26</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="531f5970-38e7-4cbf-b381-9db757673ef6"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="b868999a-7a7f-4c8b-b6dc-3e59b1f7efb4"/>
       </transition>
-      <transition id="tau_43">
+      <transition id="tauJoin_35">
         <name>
-          <text>tau_43</text>
+          <text>tauJoin_35</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="009798d3-0aaa-47aa-82ae-14dfa978599d"/>
-      </transition>
-      <transition id="skip_21">
-        <name>
-          <text>skip_21</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="eb512f5a-bf44-40ea-8052-134df6702b0d"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="24335a49-3a3b-42cb-a188-faad9fae4387"/>
       </transition>
       <transition id="T12 Check document X request unlicensed+complete">
         <name>
           <text>T12 Check document X request unlicensed+complete</text>
         </name>
       </transition>
-      <transition id="T07-5 Draft intern advice aspect 5+complete">
+      <transition id="skip_16">
         <name>
-          <text>T07-5 Draft intern advice aspect 5+complete</text>
+          <text>skip_16</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="101714a9-9e4a-4838-98cf-bbcfbf50a4db"/>
+      </transition>
+      <transition id="skip_33">
+        <name>
+          <text>skip_33</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="80d16b49-b430-4799-a527-cf2b1b74e6c9"/>
+      </transition>
+      <transition id="T09-3 Process or receive external advice from party 3+complete">
+        <name>
+          <text>T09-3 Process or receive external advice from party 3+complete</text>
         </name>
       </transition>
-      <transition id="tauSplit_37">
+      <transition id="tauSplit_34">
         <name>
-          <text>tauSplit_37</text>
+          <text>tauSplit_34</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d96da3c3-8b62-4d82-b504-8a5f9cad776a"/>
-      </transition>
-      <transition id="T03 Adjust confirmation of receipt+complete">
-        <name>
-          <text>T03 Adjust confirmation of receipt+complete</text>
-        </name>
-      </transition>
-      <transition id="T10 Determine necessity to stop indication+complete">
-        <name>
-          <text>T10 Determine necessity to stop indication+complete</text>
-        </name>
-      </transition>
-      <transition id="skip_42">
-        <name>
-          <text>skip_42</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="e7b6ea04-99fc-4cb2-87e3-6839ef4b1fe4"/>
-      </transition>
-      <transition id="T19 Determine report Y to stop indication+complete">
-        <name>
-          <text>T19 Determine report Y to stop indication+complete</text>
-        </name>
-      </transition>
-      <transition id="T07-1 Draft intern advice aspect 1+complete">
-        <name>
-          <text>T07-1 Draft intern advice aspect 1+complete</text>
-        </name>
-      </transition>
-      <transition id="T08 Draft and send request for advice+complete">
-        <name>
-          <text>T08 Draft and send request for advice+complete</text>
-        </name>
-      </transition>
-      <transition id="skip_9">
-        <name>
-          <text>skip_9</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="dddb4620-c7b9-473b-9dc8-eba3aa717b8c"/>
-      </transition>
-      <transition id="T06 Determine necessity of stop advice+complete">
-        <name>
-          <text>T06 Determine necessity of stop advice+complete</text>
-        </name>
-      </transition>
-      <transition id="tauJoin_5">
-        <name>
-          <text>tauJoin_5</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="e13b8bc9-ae57-498b-9cab-8ed5b9318184"/>
-      </transition>
-      <transition id="skip_1">
-        <name>
-          <text>skip_1</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="6d100275-4b20-452d-8fbe-88a6ada898d2"/>
-      </transition>
-      <transition id="T07-3 Draft intern advice hold for aspect 3+complete">
-        <name>
-          <text>T07-3 Draft intern advice hold for aspect 3+complete</text>
-        </name>
-      </transition>
-      <transition id="skip_11">
-        <name>
-          <text>skip_11</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="18514fcc-53de-49d6-a2be-2c8833da20a5"/>
-      </transition>
-      <transition id="T09-4 Process or receive external advice from party 4+complete">
-        <name>
-          <text>T09-4 Process or receive external advice from party 4+complete</text>
-        </name>
-      </transition>
-      <transition id="T17 Check report Y to stop indication+complete">
-        <name>
-          <text>T17 Check report Y to stop indication+complete</text>
-        </name>
-      </transition>
-      <transition id="loop_13">
-        <name>
-          <text>loop_13</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d9c1057a-c3ae-48fb-9e70-e403f0f51369"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="0ccc4ff6-bfbb-4706-a5df-bb2e50b618aa"/>
       </transition>
       <transition id="T16 Report reasons to hold request+complete">
         <name>
           <text>T16 Report reasons to hold request+complete</text>
         </name>
       </transition>
-      <transition id="Confirmation of receipt+complete">
-        <name>
-          <text>Confirmation of receipt+complete</text>
-        </name>
-      </transition>
-      <transition id="T13 Adjust document X request unlicensed+complete">
-        <name>
-          <text>T13 Adjust document X request unlicensed+complete</text>
-        </name>
-      </transition>
-      <transition id="skip_12">
-        <name>
-          <text>skip_12</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="e5c3a292-ecf8-4d42-aa29-dc4f0a9cad27"/>
-      </transition>
-      <transition id="T05 Print and send confirmation of receipt+complete">
-        <name>
-          <text>T05 Print and send confirmation of receipt+complete</text>
-        </name>
-      </transition>
-      <transition id="skip_8">
-        <name>
-          <text>skip_8</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="74e37ab1-c760-4127-bd83-a16a539923a5"/>
-      </transition>
-      <transition id="skip_34">
-        <name>
-          <text>skip_34</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="6fa02454-31df-4d94-94d7-b55a0943da13"/>
-      </transition>
       <transition id="T09-1 Process or receive external advice from party 1+complete">
         <name>
           <text>T09-1 Process or receive external advice from party 1+complete</text>
-        </name>
-      </transition>
-      <transition id="T09-3 Process or receive external advice from party 3+complete">
-        <name>
-          <text>T09-3 Process or receive external advice from party 3+complete</text>
         </name>
       </transition>
       <transition id="T04 Determine confirmation of receipt+complete">
@@ -428,131 +217,275 @@
           <text>T04 Determine confirmation of receipt+complete</text>
         </name>
       </transition>
+      <transition id="T07-1 Draft intern advice aspect 1+complete">
+        <name>
+          <text>T07-1 Draft intern advice aspect 1+complete</text>
+        </name>
+      </transition>
+      <transition id="T18 Adjust report Y to stop indicition+complete">
+        <name>
+          <text>T18 Adjust report Y to stop indicition+complete</text>
+        </name>
+      </transition>
+      <transition id="T06 Determine necessity of stop advice+complete">
+        <name>
+          <text>T06 Determine necessity of stop advice+complete</text>
+        </name>
+      </transition>
+      <transition id="T09-2 Process or receive external advice from party 2+complete">
+        <name>
+          <text>T09-2 Process or receive external advice from party 2+complete</text>
+        </name>
+      </transition>
+      <transition id="loop_8">
+        <name>
+          <text>loop_8</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="6b6891aa-06f1-434e-b57c-d77c0e48e2b6"/>
+      </transition>
+      <transition id="T14 Determine document X request unlicensed+complete">
+        <name>
+          <text>T14 Determine document X request unlicensed+complete</text>
+        </name>
+      </transition>
+      <transition id="skip_20">
+        <name>
+          <text>skip_20</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="fcfb1ab4-b1c4-477d-9a16-94b81241d760"/>
+      </transition>
+      <transition id="T17 Check report Y to stop indication+complete">
+        <name>
+          <text>T17 Check report Y to stop indication+complete</text>
+        </name>
+      </transition>
+      <transition id="skip_29">
+        <name>
+          <text>skip_29</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="9e77254f-704c-46af-8868-81a713964e59"/>
+      </transition>
+      <transition id="skip_7">
+        <name>
+          <text>skip_7</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="53acfc7d-c137-4d2f-b89e-61014d9b6f77"/>
+      </transition>
+      <transition id="T07-4 Draft internal advice to hold for type 4+complete">
+        <name>
+          <text>T07-4 Draft internal advice to hold for type 4+complete</text>
+        </name>
+      </transition>
+      <transition id="skip_21">
+        <name>
+          <text>skip_21</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="e50fe75d-1178-44f4-b541-52d98b9e6f26"/>
+      </transition>
+      <transition id="T03 Adjust confirmation of receipt+complete">
+        <name>
+          <text>T03 Adjust confirmation of receipt+complete</text>
+        </name>
+      </transition>
+      <transition id="skip_36">
+        <name>
+          <text>skip_36</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="eea1626d-faa6-4804-abda-c92f46b50854"/>
+      </transition>
+      <transition id="tau_1">
+        <name>
+          <text>tau_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="b69998f3-8991-4816-88a1-f73aedba3ef5"/>
+      </transition>
       <transition id="T02 Check confirmation of receipt+complete">
         <name>
           <text>T02 Check confirmation of receipt+complete</text>
         </name>
       </transition>
-      <arc id="15283715" source="p_8" target="tauJoin_5"/>
-      <arc id="12205575" source="T07-2 Draft intern advice aspect 2+complete" target="p_21"/>
-      <arc id="12205577" source="p_20" target="skip_40"/>
-      <arc id="15283727" source="T16 Report reasons to hold request+complete" target="p_11"/>
-      <arc id="15285263" source="p_4" target="skip_20"/>
-      <arc id="15285265" source="skip_20" target="p_13"/>
-      <arc id="15283731" source="p_5" target="tauSplit_4"/>
-      <arc id="15285269" source="p_14" target="loop_25"/>
-      <arc id="15283735" source="p_4" target="skip_2"/>
-      <arc id="15285271" source="skip_31" target="p_15"/>
-      <arc id="15283739" source="p_6" target="T14 Determine document X request unlicensed+complete"/>
-      <arc id="15283747" source="skip_2" target="p_5"/>
-      <arc id="15283749" source="p_11" target="loop_13"/>
-      <arc id="15285285" source="T09-4 Process or receive external advice from party 4+complete" target="p_13"/>
-      <arc id="15285287" source="T03 Adjust confirmation of receipt+complete" target="p_15"/>
-      <arc id="12205605" source="tauSplit_37" target="p_18"/>
-      <arc id="12205607" source="loop_41" target="p_14"/>
-      <arc id="15283761" source="p_7" target="skip_6"/>
-      <arc id="15285297" source="skip_24" target="p_14"/>
-      <arc id="15283763" source="skip_6" target="p_8"/>
-      <arc id="12205617" source="skip_40" target="p_21"/>
-      <arc id="15285303" source="p_12" target="skip_17"/>
-      <arc id="15283769" source="T09-1 Process or receive external advice from party 1+complete" target="p_13"/>
-      <arc id="15283771" source="tauSplit_4" target="p_9"/>
-      <arc id="15285307" source="p_3" target="skip_21"/>
-      <arc id="15283773" source="T09-3 Process or receive external advice from party 3+complete" target="p_12"/>
-      <arc id="15285317" source="p_13" target="loop_19"/>
-      <arc id="12205637" source="p_15" target="loop_41"/>
-      <arc id="15285321" source="p_12" target="T17 Check report Y to stop indication+complete"/>
-      <arc id="15285323" source="skip_17" target="p_13"/>
-      <arc id="15283789" source="skip_1" target="p_4"/>
-      <arc id="15283791" source="skip_12" target="p_11"/>
-      <arc id="12205649" source="p_17" target="skip_36"/>
-      <arc id="12205651" source="p_19" target="tauJoin_38"/>
-      <arc id="12205655" source="p_18" target="skip_39"/>
-      <arc id="15283801" source="tauJoin_5" target="p_6"/>
-      <arc id="15285337" source="p_12" target="T05 Print and send confirmation of receipt+complete"/>
-      <arc id="15283803" source="T08 Draft and send request for advice+complete" target="p_8"/>
-      <arc id="12205659" source="skip_36" target="p_15"/>
-      <arc id="15285341" source="skip_32" target="p_15"/>
-      <arc id="15283813" source="p_9" target="skip_7"/>
-      <arc id="15283817" source="skip_7" target="p_10"/>
-      <arc id="15285353" source="p_13" target="T06 Determine necessity of stop advice+complete"/>
-      <arc id="12205675" source="T07-1 Draft intern advice aspect 1+complete" target="p_19"/>
-      <arc id="12205673" source="p_3" target="skip_42"/>
-      <arc id="15283823" source="p_11" target="T09-3 Process or receive external advice from party 3+complete"/>
-      <arc id="15285361" source="T05 Print and send confirmation of receipt+complete" target="p_13"/>
-      <arc id="15283827" source="Confirmation of receipt+complete" target="p_3"/>
-      <arc id="12205685" source="skip_39" target="p_19"/>
-      <arc id="15283835" source="loop_13" target="p_4"/>
-      <arc id="15285375" source="p_14" target="T10 Determine necessity to stop indication+complete"/>
-      <arc id="15283841" source="T14 Determine document X request unlicensed+complete" target="p_11"/>
-      <arc id="15285377" source="p_13" target="T07-3 Draft intern advice hold for aspect 3+complete"/>
-      <arc id="15283843" source="p_7" target="T08 Draft and send request for advice+complete"/>
-      <arc id="15285379" source="T07-3 Draft intern advice hold for aspect 3+complete" target="p_14"/>
-      <arc id="15285381" source="p_14" target="loop_27"/>
-      <arc id="15285383" source="loop_25" target="p_13"/>
-      <arc id="15283855" source="T07-5 Draft intern advice aspect 5+complete" target="p_10"/>
-      <arc id="15285391" source="skip_18" target="p_13"/>
-      <arc id="15285393" source="p_14" target="T13 Adjust document X request unlicensed+complete"/>
-      <arc id="12205713" source="p_20" target="T07-2 Draft intern advice aspect 2+complete"/>
-      <arc id="15285397" source="p_13" target="T11 Create document X request unlicensed+complete"/>
-      <arc id="15285399" source="T11 Create document X request unlicensed+complete" target="p_14"/>
-      <arc id="15285401" source="p_13" target="loop_22"/>
-      <arc id="12205721" source="tauJoin_38" target="p_15"/>
-      <arc id="15283867" source="p_6" target="T09-2 Process or receive external advice from party 2+complete"/>
-      <arc id="15285405" source="p_16" target="skip_31"/>
-      <arc id="15285407" source="p_13" target="skip_24"/>
-      <arc id="15283873" source="p_6" target="T07-4 Draft internal advice to hold for type 4+complete"/>
-      <arc id="15283875" source="T07-4 Draft internal advice to hold for type 4+complete" target="p_11"/>
-      <arc id="12205731" source="skip_42" target="p_15"/>
-      <arc id="15283877" source="p_5" target="skip_8"/>
-      <arc id="15285415" source="loop_19" target="p_11"/>
-      <arc id="12205735" source="p_17" target="T12 Check document X request unlicensed+complete"/>
-      <arc id="15283885" source="T09-2 Process or receive external advice from party 2+complete" target="p_11"/>
-      <arc id="15285423" source="p_14" target="skip_29"/>
-      <arc id="15285425" source="skip_29" target="p_16"/>
-      <arc id="15283891" source="p_10" target="tauJoin_5"/>
-      <arc id="15283897" source="p_4" target="T04 Determine confirmation of receipt+complete"/>
-      <arc id="15285433" source="loop_22" target="p_3"/>
-      <arc id="15283899" source="p_5" target="skip_11"/>
-      <arc id="15285437" source="T06 Determine necessity of stop advice+complete" target="p_14"/>
-      <arc id="15283903" source="p_9" target="T07-5 Draft intern advice aspect 5+complete"/>
-      <arc id="12205761" source="tauSplit_37" target="p_20"/>
-      <arc id="15283909" source="T04 Determine confirmation of receipt+complete" target="p_5"/>
-      <arc id="15283911" source="skip_15" target="p_12"/>
-      <arc id="15285447" source="p_16" target="T03 Adjust confirmation of receipt+complete"/>
-      <arc id="15283913" source="T18 Adjust report Y to stop indicition+complete" target="p_11"/>
-      <arc id="15285449" source="T17 Check report Y to stop indication+complete" target="p_13"/>
-      <arc id="12205767" source="p_14" target="tauSplit_37"/>
-      <arc id="12205771" source="p_15" target="tau_43"/>
-      <arc id="15283917" source="p_6" target="skip_9"/>
-      <arc id="15283921" source="skip_11" target="p_11"/>
-      <arc id="15285457" source="T10 Determine necessity to stop indication+complete" target="p_16"/>
-      <arc id="15285459" source="p_13" target="T19 Determine report Y to stop indication+complete"/>
-      <arc id="15283925" source="skip_9" target="p_11"/>
-      <arc id="15285461" source="loop_27" target="p_3"/>
-      <arc id="15283927" source="p_6" target="T16 Report reasons to hold request+complete"/>
-      <arc id="15285463" source="p_14" target="skip_34"/>
-      <arc id="15283929" source="p_3" target="T02 Check confirmation of receipt+complete"/>
-      <arc id="12205783" source="T12 Check document X request unlicensed+complete" target="p_15"/>
-      <arc id="15283931" source="p_11" target="skip_15"/>
-      <arc id="15285467" source="T19 Determine report Y to stop indication+complete" target="p_14"/>
-      <arc id="15285469" source="T13 Adjust document X request unlicensed+complete" target="p_17"/>
-      <arc id="12205791" source="tau_43" target="sink"/>
-      <arc id="15285473" source="p_14" target="skip_32"/>
-      <arc id="15283939" source="T02 Check confirmation of receipt+complete" target="p_4"/>
-      <arc id="15285475" source="p_12" target="T09-4 Process or receive external advice from party 4+complete"/>
-      <arc id="15285479" source="p_11" target="skip_18"/>
-      <arc id="15283949" source="p_3" target="skip_1"/>
-      <arc id="15285485" source="skip_34" target="p_17"/>
-      <arc id="15283951" source="skip_8" target="p_6"/>
-      <arc id="15283953" source="p_4" target="skip_12"/>
-      <arc id="15285491" source="skip_21" target="p_13"/>
-      <arc id="15283959" source="p_6" target="T18 Adjust report Y to stop indicition+complete"/>
-      <arc id="12205815" source="p_21" target="tauJoin_38"/>
-      <arc id="15283963" source="p_12" target="T09-1 Process or receive external advice from party 1+complete"/>
-      <arc id="15283965" source="tauSplit_4" target="p_7"/>
-      <arc id="12205823" source="p_18" target="T07-1 Draft intern advice aspect 1+complete"/>
-      <arc id="15087561" source="source" target="Confirmation of receipt+complete"/>
+      <transition id="loop_23">
+        <name>
+          <text>loop_23</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="ec3a3258-61ed-4388-b060-9cbfc07ef301"/>
+      </transition>
+      <transition id="T11 Create document X request unlicensed+complete">
+        <name>
+          <text>T11 Create document X request unlicensed+complete</text>
+        </name>
+      </transition>
+      <transition id="skip_39">
+        <name>
+          <text>skip_39</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="e572ba3f-88a9-4c7f-8a5c-db375b56744f"/>
+      </transition>
+      <transition id="T08 Draft and send request for advice+complete">
+        <name>
+          <text>T08 Draft and send request for advice+complete</text>
+        </name>
+      </transition>
+      <transition id="skip_14">
+        <name>
+          <text>skip_14</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="6881ddb2-3016-492b-af86-c9838f549466"/>
+      </transition>
+      <transition id="T19 Determine report Y to stop indication+complete">
+        <name>
+          <text>T19 Determine report Y to stop indication+complete</text>
+        </name>
+      </transition>
+      <transition id="Confirmation of receipt+complete">
+        <name>
+          <text>Confirmation of receipt+complete</text>
+        </name>
+      </transition>
+      <transition id="T09-4 Process or receive external advice from party 4+complete">
+        <name>
+          <text>T09-4 Process or receive external advice from party 4+complete</text>
+        </name>
+      </transition>
+      <transition id="T07-3 Draft intern advice hold for aspect 3+complete">
+        <name>
+          <text>T07-3 Draft intern advice hold for aspect 3+complete</text>
+        </name>
+      </transition>
+      <transition id="T07-2 Draft intern advice aspect 2+complete">
+        <name>
+          <text>T07-2 Draft intern advice aspect 2+complete</text>
+        </name>
+      </transition>
+      <transition id="tau_2">
+        <name>
+          <text>tau_2</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="7880fcae-12aa-44fb-9b39-a46f37670f2c"/>
+      </transition>
+      <transition id="T07-5 Draft intern advice aspect 5+complete">
+        <name>
+          <text>T07-5 Draft intern advice aspect 5+complete</text>
+        </name>
+      </transition>
+      <transition id="T05 Print and send confirmation of receipt+complete">
+        <name>
+          <text>T05 Print and send confirmation of receipt+complete</text>
+        </name>
+      </transition>
+      <transition id="tauJoin_12">
+        <name>
+          <text>tauJoin_12</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d8829937-e268-4178-9bad-764efaaeef8b"/>
+      </transition>
+      <transition id="T10 Determine necessity to stop indication+complete">
+        <name>
+          <text>T10 Determine necessity to stop indication+complete</text>
+        </name>
+      </transition>
+      <arc id="7930883" source="T06 Determine necessity of stop advice+complete" target="p_6"/>
+      <arc id="10182151" source="p_19" target="T07-1 Draft intern advice aspect 1+complete"/>
+      <arc id="7930893" source="p_7" target="T07-3 Draft intern advice hold for aspect 3+complete"/>
+      <arc id="7930909" source="T19 Determine report Y to stop indication+complete" target="p_6"/>
+      <arc id="4960285" source="T12 Check document X request unlicensed+complete" target="p_4"/>
+      <arc id="4960291" source="p_6" target="tauSplit_34"/>
+      <arc id="7930917" source="T11 Create document X request unlicensed+complete" target="p_6"/>
+      <arc id="4960293" source="skip_31" target="p_18"/>
+      <arc id="7831591" source="T13 Adjust document X request unlicensed+complete" target="p_18"/>
+      <arc id="4960295" source="tauJoin_35" target="p_4"/>
+      <arc id="7831593" source="p_6" target="skip_31"/>
+      <arc id="4960299" source="skip_33" target="p_4"/>
+      <arc id="7831597" source="skip_29" target="p_4"/>
+      <arc id="10182203" source="skip_36" target="p_20"/>
+      <arc id="7831617" source="p_17" target="skip_29"/>
+      <arc id="7930947" source="skip_24" target="p_6"/>
+      <arc id="7831619" source="p_6" target="T13 Adjust document X request unlicensed+complete"/>
+      <arc id="7930969" source="T10 Determine necessity to stop indication+complete" target="p_17"/>
+      <arc id="7930973" source="p_6" target="skip_26"/>
+      <arc id="10182253" source="p_20" target="tauJoin_35"/>
+      <arc id="7930991" source="p_7" target="T06 Determine necessity of stop advice+complete"/>
+      <arc id="4960367" source="p_18" target="skip_33"/>
+      <arc id="7931017" source="p_7" target="T19 Determine report Y to stop indication+complete"/>
+      <arc id="7931025" source="p_7" target="T11 Create document X request unlicensed+complete"/>
+      <arc id="7931027" source="p_6" target="T10 Determine necessity to stop indication+complete"/>
+      <arc id="10182305" source="tauSplit_34" target="p_21"/>
+      <arc id="7931049" source="skip_26" target="p_17"/>
+      <arc id="10182319" source="p_21" target="skip_39"/>
+      <arc id="4960445" source="p_18" target="T12 Check document X request unlicensed+complete"/>
+      <arc id="10182341" source="p_21" target="T07-2 Draft intern advice aspect 2+complete"/>
+      <arc id="10182343" source="T07-2 Draft intern advice aspect 2+complete" target="p_22"/>
+      <arc id="10182347" source="skip_39" target="p_22"/>
+      <arc id="10182359" source="T07-1 Draft intern advice aspect 1+complete" target="p_20"/>
+      <arc id="10182361" source="tauSplit_34" target="p_19"/>
+      <arc id="7931109" source="T07-3 Draft intern advice hold for aspect 3+complete" target="p_6"/>
+      <arc id="10182393" source="p_19" target="skip_36"/>
+      <arc id="10182395" source="p_22" target="tauJoin_35"/>
+      <arc id="7931133" source="p_7" target="skip_24"/>
+      <arc id="10864899" source="p_11" target="T16 Report reasons to hold request+complete"/>
+      <arc id="10864903" source="skip_18" target="p_9"/>
+      <arc id="10864907" source="p_11" target="skip_18"/>
+      <arc id="10864909" source="T16 Report reasons to hold request+complete" target="p_9"/>
+      <arc id="10864921" source="T09-2 Process or receive external advice from party 2+complete" target="p_9"/>
+      <arc id="10864923" source="T14 Determine document X request unlicensed+complete" target="p_9"/>
+      <arc id="10864927" source="T18 Adjust report Y to stop indicition+complete" target="p_9"/>
+      <arc id="10864933" source="p_11" target="T09-2 Process or receive external advice from party 2+complete"/>
+      <arc id="4966183" source="T05 Print and send confirmation of receipt+complete" target="p_7"/>
+      <arc id="10864937" source="p_11" target="T18 Adjust report Y to stop indicition+complete"/>
+      <arc id="4966185" source="p_16" target="skip_21"/>
+      <arc id="10864939" source="T07-4 Draft internal advice to hold for type 4+complete" target="p_9"/>
+      <arc id="4966189" source="loop_23" target="p_7"/>
+      <arc id="10864945" source="p_11" target="T14 Determine document X request unlicensed+complete"/>
+      <arc id="10864947" source="p_11" target="T07-4 Draft internal advice to hold for type 4+complete"/>
+      <arc id="4966201" source="p_16" target="T05 Print and send confirmation of receipt+complete"/>
+      <arc id="10864955" source="skip_16" target="p_15"/>
+      <arc id="10864957" source="p_14" target="skip_16"/>
+      <arc id="10864963" source="p_14" target="T08 Draft and send request for advice+complete"/>
+      <arc id="11357509" source="tau_2" target="sink"/>
+      <arc id="10864967" source="T08 Draft and send request for advice+complete" target="p_15"/>
+      <arc id="10864969" source="p_15" target="tauJoin_12"/>
+      <arc id="10864971" source="skip_14" target="p_13"/>
+      <arc id="7424853" source="T03 Adjust confirmation of receipt+complete" target="p_4"/>
+      <arc id="10864983" source="tauSplit_11" target="p_14"/>
+      <arc id="10864991" source="T07-5 Draft intern advice aspect 5+complete" target="p_13"/>
+      <arc id="10864993" source="p_12" target="skip_14"/>
+      <arc id="4966247" source="p_16" target="T09-4 Process or receive external advice from party 4+complete"/>
+      <arc id="4966249" source="skip_20" target="p_16"/>
+      <arc id="11357553" source="p_6" target="loop_5"/>
+      <arc id="10865009" source="p_12" target="T07-5 Draft intern advice aspect 5+complete"/>
+      <arc id="10865017" source="tauSplit_11" target="p_12"/>
+      <arc id="10865019" source="p_13" target="tauJoin_12"/>
+      <arc id="10865023" source="skip_10" target="p_10"/>
+      <arc id="10865027" source="tauJoin_12" target="p_11"/>
+      <arc id="7424899" source="p_17" target="T03 Adjust confirmation of receipt+complete"/>
+      <arc id="4966277" source="p_16" target="T17 Check report Y to stop indication+complete"/>
+      <arc id="10865031" source="p_10" target="tauSplit_11"/>
+      <arc id="10865033" source="T04 Determine confirmation of receipt+complete" target="p_10"/>
+      <arc id="10865041" source="p_8" target="T04 Determine confirmation of receipt+complete"/>
+      <arc id="4966289" source="T09-4 Process or receive external advice from party 4+complete" target="p_7"/>
+      <arc id="10865043" source="p_8" target="skip_10"/>
+      <arc id="10865049" source="p_7" target="loop_8"/>
+      <arc id="11357605" source="tau_1" target="p_3"/>
+      <arc id="10865065" source="loop_8" target="p_8"/>
+      <arc id="10865067" source="T02 Check confirmation of receipt+complete" target="p_8"/>
+      <arc id="10865073" source="p_5" target="skip_7"/>
+      <arc id="10865075" source="skip_7" target="p_8"/>
+      <arc id="11357621" source="source" target="tau_1"/>
+      <arc id="10865081" source="p_5" target="T02 Check confirmation of receipt+complete"/>
+      <arc id="11357625" source="loop_5" target="p_5"/>
+      <arc id="4966343" source="p_9" target="skip_20"/>
+      <arc id="4966345" source="p_16" target="T09-1 Process or receive external advice from party 1+complete"/>
+      <arc id="4966351" source="p_6" target="loop_23"/>
+      <arc id="4966357" source="T09-3 Process or receive external advice from party 3+complete" target="p_16"/>
+      <arc id="11357661" source="Confirmation of receipt+complete" target="p_5"/>
+      <arc id="11357669" source="p_4" target="tau_2"/>
+      <arc id="4966375" source="T09-1 Process or receive external advice from party 1+complete" target="p_7"/>
+      <arc id="4966379" source="skip_21" target="p_7"/>
+      <arc id="11357679" source="p_4" target="loop_4"/>
+      <arc id="11357683" source="p_3" target="Confirmation of receipt+complete"/>
+      <arc id="11357685" source="loop_4" target="p_5"/>
+      <arc id="4966391" source="p_9" target="T09-3 Process or receive external advice from party 3+complete"/>
+      <arc id="4966395" source="T17 Check report Y to stop indication+complete" target="p_7"/>
     </page>
   </net>
 </pnml>

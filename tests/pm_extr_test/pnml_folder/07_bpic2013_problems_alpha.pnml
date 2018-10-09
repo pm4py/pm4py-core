@@ -2,11 +2,6 @@
 <pnml>
   <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
     <page id="n0">
-      <place id="end">
-        <name>
-          <text>end</text>
-        </name>
-      </place>
       <place id="({'Unmatched+Unmatched'}, {'Completed+Closed'})">
         <name>
           <text>({'Unmatched+Unmatched'}, {'Completed+Closed'})</text>
@@ -20,9 +15,19 @@
           <text>1</text>
         </initialMarking>
       </place>
+      <place id="end">
+        <name>
+          <text>end</text>
+        </name>
+      </place>
       <transition id="Accepted+Wait">
         <name>
           <text>Accepted+Wait</text>
+        </name>
+      </transition>
+      <transition id="Unmatched+Unmatched">
+        <name>
+          <text>Unmatched+Unmatched</text>
         </name>
       </transition>
       <transition id="Completed+Closed">
@@ -30,9 +35,14 @@
           <text>Completed+Closed</text>
         </name>
       </transition>
-      <transition id="Unmatched+Unmatched">
+      <transition id="Accepted+Assigned">
         <name>
-          <text>Unmatched+Unmatched</text>
+          <text>Accepted+Assigned</text>
+        </name>
+      </transition>
+      <transition id="Completed+Cancelled">
+        <name>
+          <text>Completed+Cancelled</text>
         </name>
       </transition>
       <transition id="Queued+Awaiting Assignment">
@@ -45,18 +55,8 @@
           <text>Accepted+In Progress</text>
         </name>
       </transition>
-      <transition id="Completed+Cancelled">
-        <name>
-          <text>Completed+Cancelled</text>
-        </name>
-      </transition>
-      <transition id="Accepted+Assigned">
-        <name>
-          <text>Accepted+Assigned</text>
-        </name>
-      </transition>
-      <arc id="29511993" source="({'Unmatched+Unmatched'}, {'Completed+Closed'})" target="Completed+Closed"/>
-      <arc id="10488613" source="Unmatched+Unmatched" target="({'Unmatched+Unmatched'}, {'Completed+Closed'})"/>
+      <arc id="25134107" source="({'Unmatched+Unmatched'}, {'Completed+Closed'})" target="Completed+Closed"/>
+      <arc id="7209043" source="Unmatched+Unmatched" target="({'Unmatched+Unmatched'}, {'Completed+Closed'})"/>
     </page>
   </net>
 </pnml>

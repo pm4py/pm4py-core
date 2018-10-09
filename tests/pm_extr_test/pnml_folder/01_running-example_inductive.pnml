@@ -2,24 +2,29 @@
 <pnml>
   <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
     <page id="n0">
-      <place id="p_4">
-        <name>
-          <text>p_4</text>
-        </name>
-      </place>
-      <place id="sink">
-        <name>
-          <text>sink</text>
-        </name>
-      </place>
       <place id="p_5">
         <name>
           <text>p_5</text>
         </name>
       </place>
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
       <place id="p_6">
         <name>
           <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
         </name>
       </place>
       <place id="source">
@@ -35,70 +40,19 @@
           <text>p_7</text>
         </name>
       </place>
-      <place id="p_3">
+      <transition id="examine thoroughly">
         <name>
-          <text>p_3</text>
+          <text>examine thoroughly</text>
         </name>
-      </place>
-      <transition id="tau_13">
-        <name>
-          <text>tau_13</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="795be86f-ba07-4060-8cce-ab65fb6a9659"/>
-      </transition>
-      <transition id="check ticket">
-        <name>
-          <text>check ticket</text>
-        </name>
-      </transition>
-      <transition id="skip_3">
-        <name>
-          <text>skip_3</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="cba8295b-8728-4cec-8bc2-9ed5a2965411"/>
-      </transition>
-      <transition id="loop_4">
-        <name>
-          <text>loop_4</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="8fdf5cd0-0447-4adc-b6af-281e3d429d84"/>
-      </transition>
-      <transition id="loop_6">
-        <name>
-          <text>loop_6</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="3b35343f-bf03-4ea6-b00a-10f57c7cfb30"/>
       </transition>
       <transition id="decide">
         <name>
           <text>decide</text>
         </name>
       </transition>
-      <transition id="loop_8">
-        <name>
-          <text>loop_8</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="76f0a09b-5487-4eca-b56b-9754b5a75466"/>
-      </transition>
-      <transition id="loop_10">
-        <name>
-          <text>loop_10</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="fb2d3472-3bf1-44c0-96cc-c79b7c940dc3"/>
-      </transition>
       <transition id="reinitiate request">
         <name>
           <text>reinitiate request</text>
-        </name>
-      </transition>
-      <transition id="register request">
-        <name>
-          <text>register request</text>
-        </name>
-      </transition>
-      <transition id="reject request">
-        <name>
-          <text>reject request</text>
         </name>
       </transition>
       <transition id="examine casually">
@@ -106,60 +60,82 @@
           <text>examine casually</text>
         </name>
       </transition>
+      <transition id="tau_1">
+        <name>
+          <text>tau_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="64f609d8-fb0c-4a5e-a89f-6ea59204637f"/>
+      </transition>
+      <transition id="skip_5">
+        <name>
+          <text>skip_5</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="98f75ed7-e25c-48d0-8be4-d0edf00fa411"/>
+      </transition>
+      <transition id="check ticket">
+        <name>
+          <text>check ticket</text>
+        </name>
+      </transition>
+      <transition id="register request">
+        <name>
+          <text>register request</text>
+        </name>
+      </transition>
       <transition id="pay compensation">
         <name>
           <text>pay compensation</text>
         </name>
       </transition>
-      <transition id="examine thoroughly">
+      <transition id="loop_4">
         <name>
-          <text>examine thoroughly</text>
+          <text>loop_4</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="29f644ad-6a30-4ee1-9dd4-4da414222a2e"/>
+      </transition>
+      <transition id="reject request">
+        <name>
+          <text>reject request</text>
         </name>
       </transition>
-      <transition id="skip_1">
+      <transition id="skip_6">
         <name>
-          <text>skip_1</text>
+          <text>skip_6</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="2a119303-8dbb-4588-aed0-23fdcb714caa"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="25f6673e-9bfc-41cc-9685-af1539695ee4"/>
       </transition>
-      <transition id="loop_12">
+      <transition id="loop_2">
         <name>
-          <text>loop_12</text>
+          <text>loop_2</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="8ba2a4dd-0dd4-45b5-b0f3-54f85f2736b8"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="26ffe0b7-b175-47cd-99b2-1e21fe53747d"/>
       </transition>
-      <arc id="5382155" source="p_7" target="tau_13"/>
-      <arc id="5377421" source="p_4" target="check ticket"/>
-      <arc id="5382157" source="tau_13" target="sink"/>
-      <arc id="5377423" source="check ticket" target="p_5"/>
-      <arc id="5377429" source="p_4" target="skip_3"/>
-      <arc id="5377431" source="skip_3" target="p_5"/>
-      <arc id="5377437" source="p_5" target="loop_4"/>
-      <arc id="5377439" source="loop_4" target="p_4"/>
-      <arc id="5377453" source="p_5" target="loop_6"/>
-      <arc id="5377455" source="loop_6" target="p_3"/>
-      <arc id="5377463" source="p_5" target="decide"/>
-      <arc id="5377465" source="decide" target="p_6"/>
-      <arc id="5377479" source="p_6" target="loop_8"/>
-      <arc id="5377481" source="loop_8" target="p_5"/>
-      <arc id="5377495" source="p_6" target="loop_10"/>
-      <arc id="5377497" source="loop_10" target="p_3"/>
-      <arc id="5377505" source="p_6" target="reinitiate request"/>
-      <arc id="5377533" source="p_7" target="loop_12"/>
-      <arc id="5377507" source="reinitiate request" target="p_7"/>
-      <arc id="5377381" source="source" target="register request"/>
-      <arc id="5377383" source="register request" target="p_3"/>
-      <arc id="5377511" source="p_6" target="reject request"/>
-      <arc id="5377513" source="reject request" target="p_7"/>
-      <arc id="5377389" source="p_3" target="examine casually"/>
-      <arc id="5377517" source="p_6" target="pay compensation"/>
-      <arc id="5377391" source="examine casually" target="p_4"/>
-      <arc id="5377519" source="pay compensation" target="p_7"/>
-      <arc id="5377395" source="p_3" target="examine thoroughly"/>
-      <arc id="5377397" source="examine thoroughly" target="p_4"/>
-      <arc id="5377403" source="p_3" target="skip_1"/>
-      <arc id="5377405" source="skip_1" target="p_4"/>
-      <arc id="5377535" source="loop_12" target="p_6"/>
+      <arc id="4924293" source="p_4" target="examine thoroughly"/>
+      <arc id="4924295" source="examine thoroughly" target="p_7"/>
+      <arc id="4924299" source="p_4" target="examine casually"/>
+      <arc id="4924301" source="examine casually" target="p_7"/>
+      <arc id="4924305" source="p_4" target="skip_5"/>
+      <arc id="4924307" source="skip_5" target="p_7"/>
+      <arc id="4924313" source="p_7" target="check ticket"/>
+      <arc id="4924315" source="check ticket" target="p_6"/>
+      <arc id="4924319" source="p_7" target="skip_6"/>
+      <arc id="4924321" source="skip_6" target="p_6"/>
+      <arc id="4924327" source="p_6" target="decide"/>
+      <arc id="4924329" source="decide" target="p_5"/>
+      <arc id="4924207" source="p_3" target="tau_1"/>
+      <arc id="4924209" source="tau_1" target="sink"/>
+      <arc id="4924341" source="p_5" target="pay compensation"/>
+      <arc id="4924343" source="pay compensation" target="p_3"/>
+      <arc id="4924347" source="p_5" target="reject request"/>
+      <arc id="4924349" source="reject request" target="p_3"/>
+      <arc id="4924353" source="p_5" target="reinitiate request"/>
+      <arc id="4924355" source="reinitiate request" target="p_3"/>
+      <arc id="4924251" source="source" target="register request"/>
+      <arc id="4924253" source="register request" target="p_4"/>
+      <arc id="4924257" source="p_3" target="loop_2"/>
+      <arc id="4924259" source="loop_2" target="p_4"/>
+      <arc id="4924281" source="p_6" target="loop_4"/>
+      <arc id="4924283" source="loop_4" target="p_4"/>
     </page>
   </net>
 </pnml>
