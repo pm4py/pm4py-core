@@ -56,7 +56,7 @@ def import_log(path, parameters=None, variant=ITERPARSE):
     return VERSIONS[variant](path, parameters=parameters)
 
 
-def apply(path, parameters=None, variant="iterparse"):
+def     apply(path, parameters=None, variant=ITERPARSE):
     """
     Import a XES log into a TraceLog object
 
