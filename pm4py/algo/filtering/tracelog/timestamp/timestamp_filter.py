@@ -80,9 +80,9 @@ def is_intersecting(trace, dt1, dt2, timestamp_key):
         Is true if the trace is contained
     """
     if trace:
-        condition1 = trace[0][timestamp_key].replace(tzinfo=None) > dt1 and trace[0][timestamp_key].replace(tzinfo=None) < dt2
-        condition2 = trace[-1][timestamp_key].replace(tzinfo=None) > dt1 and trace[-1][timestamp_key].replace(tzinfo=None) < dt2
-        condition3 = trace[0][timestamp_key].replace(tzinfo=None) < dt1 and trace[0][timestamp_key].replace(tzinfo=None) > dt2
+        condition1 = dt1 < trace[0][timestamp_key].replace(tzinfo=None) < dt2
+        condition2 = dt1 < trace[-1][timestamp_key].replace(tzinfo=None) < dt2
+        condition3 = dt2 < trace[0][timestamp_key].replace(tzinfo=None) < dt1
 
         if condition1 or condition2 or condition3:
             return True
@@ -147,7 +147,7 @@ def apply_events(trace_log, dt1, dt2, parameters=None):
     dt2 = get_dt_from_string(dt2)
 
     event_log = transform.transform_trace_log_to_event_log(trace_log)
-    filtered_event_log = EventLog([x for x in event_log if x[timestamp_key].replace(tzinfo=None) > dt1 and x[timestamp_key].replace(tzinfo=None) < dt2])
+    filtered_event_log = EventLog([x for x in event_log if dt1 < x[timestamp_key].replace(tzinfo=None) < dt2])
     filtered_trace_log = transform.transform_event_log_to_trace_log(filtered_event_log)
 
     return filtered_trace_log

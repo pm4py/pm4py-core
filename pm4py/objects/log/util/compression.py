@@ -1,5 +1,4 @@
 import tempfile, gzip, shutil, os
-import io
 
 def compress(file):
     """

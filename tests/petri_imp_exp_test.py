@@ -48,7 +48,7 @@ class PetriImportExportTest(unittest.TestCase):
             cfResult = state_equation_a_star.apply(trace, importedPetri1, marking1, final_marking)['alignment']
             isFit = True
             for couple in cfResult:
-                if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] == None):
+                if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] is None):
                     isFit = False
             if not isFit:
                 raise Exception("should be fit")

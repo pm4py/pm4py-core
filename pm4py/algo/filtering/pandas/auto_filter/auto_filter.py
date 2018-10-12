@@ -2,7 +2,6 @@ from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
 from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
 from pm4py.algo.filtering.pandas.variants import variants_filter
-import time
 
 def apply_auto_filter(df, parameters=None):
     """

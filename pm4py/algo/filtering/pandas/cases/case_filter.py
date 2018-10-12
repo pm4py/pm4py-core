@@ -36,8 +36,8 @@ def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, m
         Dataframe
     case_id_glue
         Case ID column in the CSV
-    max_no_cases
-        Maximum number of traces to keep
+    max_case_size
+        Maximum case size
 
     Returns
     -----------
@@ -46,7 +46,7 @@ def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, m
     """
     element_group_size = df[case_id_glue].groupby(df[case_id_glue]).transform('size')
     if max_case_size:
-        return df[element_group_size >= min_case_size and element_group_size <= max_case_size]
+        return df[min_case_size <= element_group_size <= max_case_size]
     return df[element_group_size >= min_case_size]
 
 def filter_on_case_performance(df, case_id_glue="case:concept:name", timestamp_key="time:timestamp", min_case_performance=0, max_case_performance=10000000000):

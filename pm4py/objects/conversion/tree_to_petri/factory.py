@@ -14,7 +14,7 @@ def apply(tree, parameters=None, variant="classic"):
         Process tree
     parameters
         Parameters of the algorithm
-    Variant
+    variant
         Chosen variant of the algorithm (only classic)
 
     Returns

@@ -1,5 +1,5 @@
-from pm4py.visualization.common.save import *
-from pm4py.visualization.common.gview import *
+from pm4py.visualization.common.save import save
+from pm4py.visualization.common.gview import view
 from pm4py.visualization.process_tree.versions import wo_decoration
 
 WO_DECORATION = "wo_decoration"

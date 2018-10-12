@@ -37,7 +37,7 @@ def filter_on_ncases(trace_log, max_no_cases=1000):
     -----------
     trace_log
         Trace log
-    ncases
+    max_no_cases
         Desidered number of traces from the trace log
 
     Returns
@@ -67,7 +67,7 @@ def filter_on_case_size(trace_log, min_case_size=2, max_case_size=None):
         Filtered log
     """
     if max_case_size is not None:
-        filtered_log = TraceLog([trace for trace in trace_log if len(trace)>=min_case_size and len(trace)<=max_case_size])
+        filtered_log = TraceLog([trace for trace in trace_log if min_case_size <= len(trace) <= max_case_size])
     else:
         filtered_log = TraceLog([trace for trace in trace_log if len(trace) >= min_case_size])
     return filtered_log
@@ -94,12 +94,11 @@ def satisfy_perf(trace, inf_perf, sup_perf, timestamp_key):
     """
     if trace:
         trace_duration = (trace[-1][timestamp_key] - trace[0][timestamp_key]).total_seconds()
-        if trace_duration >= inf_perf and trace_duration <= sup_perf:
-            return True
+        return inf_perf <= trace_duration <= sup_perf
     return False
 
 def apply(df, parameters=None):
-    raise Exception("apply method not available for case filter")
+    raise NotImplementedError("apply method not available for case filter")
 
 def apply_auto_filter(df, parameters=None):
-    raise Exception("apply_auto_filter method not available for case filter")
+    raise NotImplementedError("apply_auto_filter method not available for case filter")

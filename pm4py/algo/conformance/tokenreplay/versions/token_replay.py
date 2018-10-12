@@ -16,7 +16,7 @@ class NoConceptNameException(Exception):
     def __init__(self, message):
         self.message = message
 
-def add_missingTokens(t, net, marking, trace, traceIndex):
+def add_missingTokens(t, marking):
     """
     Adds missing tokens needed to activate a transition
 
@@ -24,14 +24,8 @@ def add_missingTokens(t, net, marking, trace, traceIndex):
     ----------
     t
         Transition that should be enabled
-    net
-        Petri net
     marking
         Current marking
-    trace
-        Examined trace
-    traceIndex
-        Trace index
     """
     missing = 0
     tokensAdded = {}
@@ -484,7 +478,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                         if stopImmediatelyWhenUnfit:
                             missing = missing + 1
                             break
-                        [m, tokensAdded] = add_missingTokens(t, net, marking, trace, i)
+                        [m, tokensAdded] = add_missingTokens(t, marking)
                         missing = missing + m
                         if enable_placeFitness:
                             for place in tokensAdded.keys():

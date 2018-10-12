@@ -52,7 +52,7 @@ def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
             i = i + 1
     return prefixes, prefixCount
 
-def form_fake_log(prefixesKeys, prefixes, activity_key=xes_util.DEFAULT_NAME_KEY):
+def form_fake_log(prefixesKeys, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
     Form fake log for replay (putting each prefix as separate trace to align)
 
@@ -60,8 +60,6 @@ def form_fake_log(prefixesKeys, prefixes, activity_key=xes_util.DEFAULT_NAME_KEY
     ----------
     prefixesKeys
         Keys of the prefixes (to form a log with a given order)
-    prefixes
-        All prefixes found in the log
     activity_key
         Activity key (must be provided if different from concept:name)
     """
@@ -90,8 +88,9 @@ def apply(log, net, marking, final_marking, parameters=None):
         Initial marking
     final_marking
         Final marking
-    activity_key
-        Activity key
+    parameters
+        Parameters of the algorithm, including:
+            pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> Activity key
     """
 
     if parameters is None:
@@ -104,14 +103,15 @@ def apply(log, net, marking, final_marking, parameters=None):
     sumAT = 0
     prefixes, prefixCount = get_log_prefixes(log, activity_key=activity_key)
     prefixesKeys = list(prefixes.keys())
-    fake_log = form_fake_log(prefixesKeys, prefixes, activity_key=activity_key)
+    fake_log = form_fake_log(prefixesKeys, activity_key=activity_key)
 
-    parameters_TR = {}
-    parameters_TR["consider_remaining_in_fitness"] = False
-    parameters_TR["tryToReachFinalMarkingThroughHidden"] = False
-    parameters_TR["stopImmediatelyWhenUnfit"] = True
-    parameters_TR["useHiddenTransitionsToEnableCorrespondingTransitions"] = True
-    parameters_TR[PARAM_ACTIVITY_KEY] = activity_key
+    parameters_TR = {
+        "consider_remaining_in_fitness": False,
+        "tryToReachFinalMarkingThroughHidden": False,
+        "stopImmediatelyWhenUnfit": True,
+        "useHiddenTransitionsToEnableCorrespondingTransitions": True,
+        PARAM_ACTIVITY_KEY: activity_key
+    }
 
     aligned_traces = token_replay.apply(fake_log, net, marking, final_marking, parameters=parameters_TR)
 
