@@ -1,7 +1,7 @@
 from pm4py.algo.other.petrigenerator.versions import simple_generator
 
 SIMPLE_GENERATOR = "simple_generator"
-VERSIONS = {SIMPLE_GENERATOR: simple_generator}
+VERSIONS = {SIMPLE_GENERATOR: simple_generator.apply}
 
 def apply(parameters=None, variant="SIMPLE_GENERATOR"):
     """

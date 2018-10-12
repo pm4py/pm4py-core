@@ -141,7 +141,11 @@ def filter_df_on_end_activities_nocc(df, nocc, ea_count=None, case_id_glue=filte
     """
     firstEveDf = df.groupby(case_id_glue).last()
     if ea_count is None:
-        ea_count = get_end_activities(df, case_id_glue=case_id_glue, activity_key=activity_key)
+        parameters = {
+            constants.PARAMETER_CONSTANT_CASEID_KEY: case_id_glue,
+            constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key
+        }
+        ea_count = get_end_activities(df, parameters=parameters)
     ea_count = [k for k, v in ea_count.items() if v >= nocc]
     firstEveDf = firstEveDf[firstEveDf[activity_key].isin(ea_count)]
     i1 = df.set_index(case_id_glue).index

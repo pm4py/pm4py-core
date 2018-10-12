@@ -17,8 +17,9 @@ def apply(log, net, marking, final_marking, parameters=None, variant="etconforma
         Initial marking
     final_marking
         Final marking
-    activity_key
-        Activity key (must be specified if different from token based)
+    parameters
+        Parameters of the algorithm, including:
+            pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> Activity key
     variant
         Variant of the algorithm that should be applied
     """

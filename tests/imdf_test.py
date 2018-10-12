@@ -14,7 +14,6 @@ from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNa
 from pm4py.objects import petri
 from pm4py.objects.petri.exporter import pnml as petri_exporter
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
-from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 import logging
 
 

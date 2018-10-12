@@ -13,7 +13,7 @@ def apply_playout(net, initialMarking, noTraces=100, maxTraceLength=100):
         Petri net to play-out
     initialMarking
         Initial marking of the Petri net
-    noOfTraces
+    noTraces
         Number of traces to generate
     maxTraceLength
         Maximum number of events per trace (do break)
@@ -48,11 +48,9 @@ def apply(net, initialMarking, parameters=None):
     net
         Petri net to play-out
     parameters
-        Parameters of the algorithm
-
-    Parameters:
-        noTraces -> Number of traces of the log to generate
-        maxTraceLength -> Maximum trace length
+        Parameters of the algorithm:
+            noTraces -> Number of traces of the log to generate
+            maxTraceLength -> Maximum trace length
     """
     if parameters is None:
         parameters = {}

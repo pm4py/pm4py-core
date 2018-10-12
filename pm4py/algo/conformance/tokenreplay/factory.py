@@ -18,9 +18,9 @@ def apply(log, net, initialMarking, finalMarking, parameters=None, variant="toke
     finalMarking
         Final marking
     parameters
-        Parameters of the algorithm
-    activity_key
-        Activity key (must be specified by the algorithm)
+        Parameters of the algorithm, including:
+            pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> Activity key
+
     variant
         Variant of the algorithm to use
     """

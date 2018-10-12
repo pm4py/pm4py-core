@@ -20,9 +20,6 @@ def clean_dfg_based_on_noise_thresh(dfg, activities, noiseThreshold):
         Cleaned dfg based on noise threshold
     """
 
-    if activities is None:
-        activities = get_activities_from_dfg(dfg)
-
     newDfg = None
     activ_max_count = {}
     for act in activities:
@@ -77,4 +74,6 @@ def apply(dfg, parameters=None):
     noiseThreshold = parameters[
         "noiseThreshold"] if "noiseThreshold" in parameters else filtering_constants.DEFAULT_NOISE_THRESH_DF
 
-    return clean_dfg_based_on_noise_thresh(dfg, None, noiseThreshold)
+    activities = get_activities_from_dfg(dfg)
+
+    return clean_dfg_based_on_noise_thresh(dfg, activities, noiseThreshold)

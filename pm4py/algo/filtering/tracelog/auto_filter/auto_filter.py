@@ -17,7 +17,7 @@ def apply_auto_filter(trace_log, parameters=None):
     ----------
     trace_log
         Trace log
-    Parameters
+    parameters
         Eventual parameters applied to the algorithms:
             decreasingFactor -> Decreasing factor (provided to all algorithms)
             activity_key -> Activity key (must be specified if different from concept:name)
@@ -27,7 +27,7 @@ def apply_auto_filter(trace_log, parameters=None):
     filtered_log
         Filtered log
     """
-    
+
     # the following filters are applied:
     # - activity filter (keep only attributes with a reasonable number of occurrences)
     # - paths filter (keep only paths with a reasonable number of occurrences)
@@ -41,12 +41,12 @@ def apply_auto_filter(trace_log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    attribute_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    decreasing_factor = parameters[
+        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
-    parameters_child = {}
-    parameters_child["decreasingFactor"] = decreasingFactor
-    parameters_child[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = attribute_key
+    parameters_child = {"decreasingFactor": decreasing_factor, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
 
     variants = variants_module.get_variants(trace_log, parameters=parameters_child)
 
@@ -62,10 +62,12 @@ def apply_auto_filter(trace_log, parameters=None):
     variants = variants_module.get_variants(filtered_log3, parameters=parameters_child)
     filtered_log2 = None
     gc.collect()
-    filtered_log4 = start_activities_filter.apply_auto_filter(filtered_log3, variants=variants, parameters=parameters_child)
+    filtered_log4 = start_activities_filter.apply_auto_filter(filtered_log3, variants=variants,
+                                                              parameters=parameters_child)
     filtered_log3 = None
     gc.collect()
-    filtered_log5 = end_activities_filter.apply_auto_filter(filtered_log4, variants=variants, parameters=parameters_child)
+    filtered_log5 = end_activities_filter.apply_auto_filter(filtered_log4, variants=variants,
+                                                            parameters=parameters_child)
     filtered_log4 = None
     gc.collect()
 

@@ -44,7 +44,7 @@ def execute_script():
                     isFit = True
                     for couple in cfResult:
                         print(couple)
-                        if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] == None):
+                        if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] is None):
                             isFit = False
                     print("isFit = " + str(isFit))
 

@@ -35,7 +35,7 @@ def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     return VERSIONS[variant](log, parameters)
 
-def apply_dfg(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
+def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     """
     Apply Alpha Miner to a DFG graph
 
@@ -62,4 +62,4 @@ def apply_dfg(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
         parameters = {}
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    return VERSIONS_DFG[variant](log, parameters)
+    return VERSIONS_DFG[variant](dfg, parameters)

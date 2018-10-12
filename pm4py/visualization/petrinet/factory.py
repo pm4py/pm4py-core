@@ -1,7 +1,6 @@
 from pm4py.visualization.petrinet.versions import wo_decoration, token_decoration, greedy_decoration
-import os, shutil
-from pm4py.visualization.common.save import *
-from pm4py.visualization.common.gview import *
+from pm4py.visualization.common.save import save
+from pm4py.visualization.common.gview import view
 
 WO_DECORATION = "wo_decoration"
 FREQUENCY_DECORATION = "frequency"

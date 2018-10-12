@@ -1,7 +1,4 @@
 import pandas as pd
-from collections import Counter
-from statistics import mean
-import numpy as np
 
 def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name", timestamp_key="time:timestamp", perf_aggregation_key="mean", sort_required=True):
     """
