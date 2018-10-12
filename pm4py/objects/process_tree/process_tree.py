@@ -1,4 +1,5 @@
-from pm4py.algo.discovery.inductive.data_structures import process_tree, tree_constants
+from pm4py.objects.process_tree import tree_constants
+
 
 class ProcessTree(object):
     def __init__(self):
@@ -65,7 +66,7 @@ class ProcessTree(object):
         if trans.label is None:
             if "skip" in trans.name:
                 added_skip_trans = [x for x in self.children if
-                                    type(x) is process_tree.PT_Transition and "skip" in x.name]
+                                    type(x) is PT_Transition and "skip" in x.name]
                 if added_skip_trans:
                     proceed_to_add = False
         if proceed_to_add:
@@ -81,7 +82,7 @@ class ProcessTree(object):
             List of transitions belonging to the first terminal child node
         """
         if self.children:
-            if type(self.children[0]) is process_tree.ProcessTree:
+            if type(self.children[0]) is ProcessTree:
                 return self.children[0].get_first_terminal_child_transitions()
             else:
                 return self.children
@@ -97,7 +98,7 @@ class ProcessTree(object):
             List of transitions belonging to the first terminal child node
         """
         if self.children:
-            if type(self.children[-1]) is process_tree.ProcessTree:
+            if type(self.children[-1]) is ProcessTree:
                 return self.children[-1].get_last_terminal_child_transitions()
             else:
                 return self.children
@@ -113,7 +114,7 @@ class ProcessTree(object):
             True if it starts with an initial loop
         """
         if self.children:
-            if type(self.children[0]) is process_tree.ProcessTree:
+            if type(self.children[0]) is ProcessTree:
                 if self.children[0].operator == tree_constants.LOOP_OPERATOR:
                     return True
                 else:
@@ -130,7 +131,7 @@ class ProcessTree(object):
             True if it ends with a terminal loop
         """
         if self.children:
-            if type(self.children[-1]) is process_tree.ProcessTree:
+            if type(self.children[-1]) is ProcessTree:
                 if self.children[-1].operator == tree_constants.LOOP_OPERATOR:
                     return True
                 else:

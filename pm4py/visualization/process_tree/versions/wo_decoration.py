@@ -1,7 +1,7 @@
 from graphviz import Digraph
 import tempfile
 import uuid
-from pm4py.algo.discovery.inductive.data_structures import process_tree, tree_constants
+from pm4py.objects.process_tree import process_tree, tree_constants
 
 DEFAULT_CIRCLE_WIDTH = 0.6
 DEFAULT_CIRCLE_FONT_SIZE = 14
