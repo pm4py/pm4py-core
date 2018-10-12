@@ -1,7 +1,6 @@
-import pm4py
-from pm4py.algo.discovery.inductive.data_structures.process_tree import ProcessTree, PT_Transition
+from pm4py.objects.process_tree.process_tree import ProcessTree, PT_Transition
 from pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans import verify_skip_transition_necessity, verify_skip_for_parallel_cut
-from pm4py.algo.discovery.inductive.data_structures import tree_constants
+from pm4py.objects.process_tree import tree_constants
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_activities_self_loop
 
 def get_transition(counts, label):

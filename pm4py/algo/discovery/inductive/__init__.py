@@ -1,1 +1,1 @@
-from pm4py.algo.discovery.inductive import factory, versions, util, data_structures
+from pm4py.algo.discovery.inductive import factory, versions, util

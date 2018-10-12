@@ -5,7 +5,7 @@ from pm4py.objects.petri.petrinet import Marking
 from pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add import get_new_place, get_new_hidden_trans, \
     get_transition
 import time
-from pm4py.algo.discovery.inductive.data_structures import process_tree, tree_constants
+from pm4py.objects.process_tree import process_tree, tree_constants
 from pm4py.algo.discovery.inductive.util import petri_cleaning
 
 def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree, counts, rec_depth, force_add_skip=False):
