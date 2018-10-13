@@ -123,7 +123,7 @@ def apply_performance(dfg, log=None, activities_count=None, parameters=None):
 
     return apply(dfg, log=log, parameters=parameters, activities_count=activities_count, measure="performance")
 
-def graphviz_visualization(activities_count, dfg, format="png", measure="frequency", maxNoOfEdgesInDiagram=75):
+def graphviz_visualization(activities_count, dfg, format="png", measure="frequency", max_no_of_edges_in_diagram=75):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -137,7 +137,7 @@ def graphviz_visualization(activities_count, dfg, format="png", measure="frequen
         GraphViz should be represented in this format
     measure
         Describes which measure is assigned to edges in direcly follows graph (frequency/performance)
-    maxNoOfEdgesInDiagram
+    max_no_of_edges_in_diagram
         Maximum number of edges in the diagram allowed for visualization
 
     Returns
@@ -149,15 +149,15 @@ def graphviz_visualization(activities_count, dfg, format="png", measure="frequen
     viz = Digraph("", filename=filename.name, engine='dot')
 
     # first, remove edges in diagram that exceeds the maximum number of edges in the diagram
-    dfgKeyValueList = []
+    dfg_key_value_list = []
     for edge in dfg:
-        dfgKeyValueList.append([edge, dfg[edge]])
-    dfgKeyValueList = sorted(dfgKeyValueList, key=lambda x: x[1], reverse=True)
-    dfgKeyValueList = dfgKeyValueList[0:min(len(dfgKeyValueList),maxNoOfEdgesInDiagram)]
-    dfgAllowedKeys = [x[0] for x in dfgKeyValueList]
-    dfgKeys = list(dfg.keys())
-    for edge in dfgKeys:
-        if not edge in dfgAllowedKeys:
+        dfg_key_value_list.append([edge, dfg[edge]])
+    dfg_key_value_list = sorted(dfg_key_value_list, key=lambda x: x[1], reverse=True)
+    dfg_key_value_list = dfg_key_value_list[0:min(len(dfg_key_value_list), max_no_of_edges_in_diagram)]
+    dfg_allowed_keys = [x[0] for x in dfg_key_value_list]
+    dfg_keys = list(dfg.keys())
+    for edge in dfg_keys:
+        if not edge in dfg_allowed_keys:
             del dfg[edge]
 
     # calculate edges penwidth
@@ -207,14 +207,14 @@ def apply(dfg, log=None, parameters=None, activities_count=None, measure="freque
     activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if  constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
     format = "png"
-    maxNoOfEdgesInDiagram = 75
+    max_no_of_edges_in_diagram = 75
 
     if "format" in parameters:
         format = parameters["format"]
     if "maxNoOfEdgesInDiagram" in parameters:
-        maxNoOfEdgesInDiagram = parameters["maxNoOfEdgesInDiagram"]
+        max_no_of_edges_in_diagram = parameters["maxNoOfEdgesInDiagram"]
 
     if activities_count is None:
         activities_count = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
 
-    return graphviz_visualization(activities_count, dfg, format=format, measure=measure, maxNoOfEdgesInDiagram=maxNoOfEdgesInDiagram)
+    return graphviz_visualization(activities_count, dfg, format=format, measure=measure, max_no_of_edges_in_diagram=max_no_of_edges_in_diagram)

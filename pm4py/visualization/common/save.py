@@ -1,6 +1,6 @@
 import os, shutil
 
-def save(gviz, outputFilePath):
+def save(gviz, output_file_path):
     """
     Save the diagram
 
@@ -8,8 +8,8 @@ def save(gviz, outputFilePath):
     -----------
     gviz
         GraphViz diagram
-    outputFilePath
+    output_file_path
         Path where the GraphViz output should be saved
     """
     render = gviz.render()
-    shutil.copyfile(render, outputFilePath)
+    shutil.copyfile(render, output_file_path)

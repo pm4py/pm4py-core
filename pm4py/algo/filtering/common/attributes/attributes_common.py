@@ -19,7 +19,7 @@ def get_sorted_attributes_list(attributes):
     return listattr
 
 
-def get_attributes_threshold(attributes, alist, decreasingFactor, minActivityCount = 1, maxActivityCount = 25):
+def get_attributes_threshold(attributes, alist, decreasing_factor, min_activity_count = 1, max_activity_count = 25):
     """
     Get attributes cutting threshold
 
@@ -36,14 +36,14 @@ def get_attributes_threshold(attributes, alist, decreasingFactor, minActivityCou
         Activities cutting threshold
     """
 
-    i = max(0, min(minActivityCount-1, len(alist)-1))
+    i = max(0, min(min_activity_count - 1, len(alist) - 1))
     threshold = alist[i][1]
     i = i + 1
     while i < len(alist):
         value = alist[i][1]
-        if value > threshold * decreasingFactor:
+        if value > threshold * decreasing_factor:
             threshold = value
-        if i >= maxActivityCount:
+        if i >= max_activity_count:
             break
         i = i + 1
     return threshold

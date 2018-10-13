@@ -29,14 +29,14 @@ def apply(df, paths, parameters=None):
     case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
     attribute_key = parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
-    filtDf = df[[case_id_glue, attribute_key]]
-    filtDifShifted = filtDf.shift(-1)
-    filtDifShifted.columns = [str(col) + '_2' for col in filtDifShifted.columns]
-    stackedDf = pd.concat([filtDf, filtDifShifted], axis=1)
-    stackedDf["@@path"] = stackedDf[attribute_key] + "," + stackedDf[attribute_key+"_2"]
-    stackedDf = stackedDf[stackedDf["@@path"].isin(paths)]
+    filt_df = df[[case_id_glue, attribute_key]]
+    filt_dif_shifted = filt_df.shift(-1)
+    filt_dif_shifted.columns = [str(col) + '_2' for col in filt_dif_shifted.columns]
+    stacked_df = pd.concat([filt_df, filt_dif_shifted], axis=1)
+    stacked_df["@@path"] = stacked_df[attribute_key] + "," + stacked_df[attribute_key+"_2"]
+    stacked_df = stacked_df[stacked_df["@@path"].isin(paths)]
     i1 = df.set_index(case_id_glue).index
-    i2 = stackedDf.set_index(case_id_glue).index
+    i2 = stacked_df.set_index(case_id_glue).index
     if positive:
         return df[i1.isin(i2)]
     else:

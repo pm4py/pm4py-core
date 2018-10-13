@@ -136,10 +136,10 @@ def apply_tree_dfg(dfg, parameters):
     if parameters is None:
         parameters = {}
 
-    noiseThreshold = 0.0
+    noise_threshold = 0.0
 
     if "noiseThreshold" in parameters:
-        noiseThreshold = parameters["noiseThreshold"]
+        noise_threshold = parameters["noiseThreshold"]
 
     if type(dfg) is Counter or type(dfg) is dict:
         newdfg = []
@@ -149,7 +149,7 @@ def apply_tree_dfg(dfg, parameters):
         dfg = newdfg
 
     c = Counts()
-    s = Subtree(dfg, dfg, None, c, 0, noise_threshold=noiseThreshold)
+    s = Subtree(dfg, dfg, None, c, 0, noise_threshold=noise_threshold)
 
     tree_repr, c = get_tree_repr.get_repr(s, 0, c)
 

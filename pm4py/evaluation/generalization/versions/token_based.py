@@ -38,16 +38,16 @@ def get_generalization(petri_net, aligned_traces):
         Generalization measure
     """
 
-    transOccMap = Counter()
+    trans_occ_map = Counter()
     for trace in aligned_traces:
         for trans in trace["activated_transitions"]:
-            transOccMap[trans] += 1
+            trans_occ_map[trans] += 1
     inv_sq_occ_sum = 0.0
-    for trans in transOccMap:
-        this_term = 1.0 / sqrt(transOccMap[trans])
+    for trans in trans_occ_map:
+        this_term = 1.0 / sqrt(trans_occ_map[trans])
         inv_sq_occ_sum = inv_sq_occ_sum + this_term
     for trans in petri_net.transitions:
-        if not trans in transOccMap:
+        if not trans in trans_occ_map:
             inv_sq_occ_sum = inv_sq_occ_sum + 1
     generalization = 1.0
     if len(petri_net.transitions) > 0:
@@ -92,8 +92,8 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
         parameters = {}
     activity_key = parameters[PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
 
-    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+    parameters_tr = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
 
-    aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_TR)
+    aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_tr)
 
     return get_generalization(petri_net, aligned_traces)

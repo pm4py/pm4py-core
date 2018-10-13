@@ -13,8 +13,8 @@ from pm4py.algo.discovery.transition_system import parameters
 
 class TransitionSystemTest(unittest.TestCase):
     def test_transitionsystem1(self):
-        inputLog = os.path.join(INPUT_DATA_DIR, "running-example.xes")
-        log = xes_importer.import_log(inputLog)
+        input_log = os.path.join(INPUT_DATA_DIR, "running-example.xes")
+        log = xes_importer.import_log(input_log)
         ts = ts_factory.apply(log, parameters={parameters.PARAM_KEY_VIEW: parameters.VIEW_SEQUENCE,
                                                parameters.PARAM_KEY_WINDOW: 3,
                                                parameters.PARAM_KEY_DIRECTION: parameters.DIRECTION_FORWARD})

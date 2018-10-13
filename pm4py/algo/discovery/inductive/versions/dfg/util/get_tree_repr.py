@@ -1,4 +1,4 @@
-from pm4py.objects.process_tree.process_tree import ProcessTree, PT_Transition
+from pm4py.objects.process_tree.process_tree import ProcessTree, PTTransition
 from pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans import verify_skip_transition_necessity, verify_skip_for_parallel_cut
 from pm4py.objects.process_tree import tree_constants
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_activities_self_loop
@@ -8,7 +8,7 @@ def get_transition(counts, label):
     Create a node (transition) with the specified label in the process tree
     """
     counts.inc_no_visible()
-    return PT_Transition(label, label)
+    return PTTransition(label, label)
 
 
 def get_new_hidden_trans(counts, type="unknown"):
@@ -16,7 +16,7 @@ def get_new_hidden_trans(counts, type="unknown"):
     Create a hidden node (transition) in the process tree
     """
     counts.inc_no_hidden()
-    return PT_Transition(type + '_' + str(counts.num_hidden), None)
+    return PTTransition(type + '_' + str(counts.num_hidden), None)
 
 def check_loop_need(spec_tree_struct):
     """
@@ -119,15 +119,15 @@ def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False):
         child_tree.add_subtree(child0)
         child_tree.add_subtree(child1)
     if spec_tree_struct.detected_cut == "parallel":
-        mAddSkip = verify_skip_for_parallel_cut(spec_tree_struct.dfg, spec_tree_struct.children)
+        m_add_skip = verify_skip_for_parallel_cut(spec_tree_struct.dfg, spec_tree_struct.children)
         for child in spec_tree_struct.children:
-            mAddSkipFinal = verify_skip_transition_necessity(mAddSkip, spec_tree_struct.dfg, spec_tree_struct.activities)
-            child_final, counts = get_repr(child, rec_depth + 1, counts, must_add_skip=mAddSkipFinal)
+            m_add_skip_final = verify_skip_transition_necessity(m_add_skip, spec_tree_struct.dfg, spec_tree_struct.activities)
+            child_final, counts = get_repr(child, rec_depth + 1, counts, must_add_skip=m_add_skip_final)
             child_tree.add_subtree(child_final)
     if spec_tree_struct.detected_cut == "concurrent":
         for child in spec_tree_struct.children:
-            mAddSkipFinal = verify_skip_transition_necessity(False, spec_tree_struct.dfg, spec_tree_struct.activities)
-            child_final, counts = get_repr(child, rec_depth + 1, counts, must_add_skip=mAddSkipFinal)
+            m_add_skip_final = verify_skip_transition_necessity(False, spec_tree_struct.dfg, spec_tree_struct.activities)
+            child_final, counts = get_repr(child, rec_depth + 1, counts, must_add_skip=m_add_skip_final)
             child_tree.add_subtree(child_final)
 
     return final_tree_repr, counts

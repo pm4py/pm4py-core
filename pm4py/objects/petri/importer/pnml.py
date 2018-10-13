@@ -24,16 +24,16 @@ def import_petri_from_string(petri_string):
     os.remove(fp.name)
     return net, initial_marking, final_marking
 
-def import_net(inputFilePath):
+def import_net(input_file_path):
     """
     Import a Petri net from a PNML file
 
     Parameters
     ----------
-    inputFilePath
+    input_file_path
         Input file path
     """
-    tree = etree.parse(inputFilePath)
+    tree = etree.parse(input_file_path)
     root = tree.getroot()
 
     net = petri.petrinet.PetriNet('imported_' + str(time.time()))
@@ -47,8 +47,8 @@ def import_net(inputFilePath):
     for child in root:
         nett = child
 
-    placesDict = {}
-    transDict = {}
+    places_dict = {}
+    trans_dict = {}
 
     if nett is not None:
         for child in nett:
@@ -72,10 +72,10 @@ def import_net(inputFilePath):
                         for child3 in child2:
                             if child3.tag == "text":
                                 number = int(child3.text)
-                placesDict[id] = petri.petrinet.PetriNet.Place(place_name)
-                net.places.add(placesDict[id])
+                places_dict[id] = petri.petrinet.PetriNet.Place(place_name)
+                net.places.add(places_dict[id])
                 if number > 0:
-                    marking[placesDict[id]] = number
+                    marking[places_dict[id]] = number
 
     if page is not None:
         for child in page:
@@ -94,8 +94,8 @@ def import_net(inputFilePath):
                             trans_visible = False
                 if not trans_visible:
                     trans_label = None
-                transDict[trans_name] = petri.petrinet.PetriNet.Transition(trans_name, trans_label)
-                net.transitions.add(transDict[trans_name])
+                trans_dict[trans_name] = petri.petrinet.PetriNet.Transition(trans_name, trans_label)
+                net.transitions.add(trans_dict[trans_name])
 
     if page is not None:
         for child in page:
@@ -103,10 +103,10 @@ def import_net(inputFilePath):
                 arc_source = child.get("source")
                 arc_target = child.get("target")
 
-                if arc_source in placesDict and arc_target in transDict:
-                    petri.utils.add_arc_from_to(placesDict[arc_source], transDict[arc_target], net)
-                elif arc_target in placesDict and arc_source in transDict:
-                    petri.utils.add_arc_from_to(transDict[arc_source], placesDict[arc_target], net)
+                if arc_source in places_dict and arc_target in trans_dict:
+                    petri.utils.add_arc_from_to(places_dict[arc_source], trans_dict[arc_target], net)
+                elif arc_target in places_dict and arc_source in trans_dict:
+                    petri.utils.add_arc_from_to(trans_dict[arc_source], places_dict[arc_target], net)
 
     if finalmarkings is not None:
         for child in finalmarkings:
@@ -116,7 +116,7 @@ def import_net(inputFilePath):
                     if "text" in child3.tag:
                         number = int(child3.text)
                         if number > 0:
-                            fmarking[placesDict[id]] = number
+                            fmarking[places_dict[id]] = number
 
     # generate the final marking in the case has not been found
     if len(fmarking) == 0:

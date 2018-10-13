@@ -19,15 +19,15 @@ def evaluate(aligned_traces, parameters=None):
     dictionary
         Containing two keys (percFitTraces and averageFitness)
     """
-    noTraces = len(aligned_traces)
-    fitTraces = len([x for x in aligned_traces if x["trace_is_fit"]])
-    sumOfFitness = sum([x["trace_fitness"] for x in aligned_traces])
-    percFitTraces = 0.0
-    averageFitness = 0.0
-    if noTraces > 0:
-        percFitTraces = float(100.0 * fitTraces)/float(noTraces)
-        averageFitness = float(sumOfFitness)/float(noTraces)
-    return {"percFitTraces": percFitTraces, "averageFitness": averageFitness}
+    no_traces = len(aligned_traces)
+    fit_traces = len([x for x in aligned_traces if x["trace_is_fit"]])
+    sum_of_fitness = sum([x["trace_fitness"] for x in aligned_traces])
+    perc_fit_traces = 0.0
+    average_fitness = 0.0
+    if no_traces > 0:
+        perc_fit_traces = float(100.0 * fit_traces)/float(no_traces)
+        average_fitness = float(sum_of_fitness) / float(no_traces)
+    return {"percFitTraces": perc_fit_traces, "averageFitness": average_fitness}
 
 def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     """
@@ -56,9 +56,9 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
         parameters = {}
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
 
-    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "consider_remaining_in_fitness": True}
+    parameters_tr = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "consider_remaining_in_fitness": True}
 
-    aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_TR)
+    aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_tr)
 
     return evaluate(aligned_traces)
 

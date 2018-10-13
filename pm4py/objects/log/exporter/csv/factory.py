@@ -24,7 +24,7 @@ def export_log_as_string(log, variant="pandas", parameters=None):
     """
     return VERSIONS_STRING[variant](log, parameters=parameters)
 
-def export_log(log, outputFilePath, variant="pandas", parameters=None):
+def export_log(log, output_file_path, variant="pandas", parameters=None):
     """
     Factory method to export a CSV from an event log
 
@@ -32,16 +32,16 @@ def export_log(log, outputFilePath, variant="pandas", parameters=None):
     -----------
     log
         Event log
-    outputFilePath
+    output_file_path
         Output file path
     variant
         Selected variant of the algorithm
     parameters
         Parameters of the algorithm
     """
-    VERSIONS[variant](log, outputFilePath, parameters=parameters)
+    VERSIONS[variant](log, output_file_path, parameters=parameters)
 
-def apply(log, outputFilePath, variant="pandas", parameters=None):
+def apply(log, output_file_path, variant="pandas", parameters=None):
     """
     Factory method to export a CSV from an event log
 
@@ -49,11 +49,11 @@ def apply(log, outputFilePath, variant="pandas", parameters=None):
     -----------
     log
         Event log
-    outputFilePath
+    output_file_path
         Output file path
     variant
         Selected variant of the algorithm
     parameters
         Parameters of the algorithm
     """
-    export_log(log, outputFilePath, variant=variant, parameters=parameters)
+    export_log(log, output_file_path, variant=variant, parameters=parameters)

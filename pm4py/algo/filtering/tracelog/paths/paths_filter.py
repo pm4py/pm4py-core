@@ -90,7 +90,7 @@ def get_sorted_paths_list(paths):
     listpaths = sorted(listpaths, key=lambda x: x[1], reverse=True)
     return listpaths
 
-def get_paths_threshold(paths, plist, decreasingFactor):
+def get_paths_threshold(paths, plist, decreasing_factor):
     """
     Get end attributes cutting threshold
 
@@ -111,7 +111,7 @@ def get_paths_threshold(paths, plist, decreasingFactor):
     i = 1
     while i < len(plist):
         value = plist[i][1]
-        if value > threshold * decreasingFactor:
+        if value > threshold * decreasing_factor:
             threshold = value
         i = i + 1
     return threshold
@@ -191,7 +191,7 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     if parameters is None:
         parameters = {}
     attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    decreasing_factor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:
@@ -199,6 +199,6 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     vc = variants_filter.get_variants_sorted_by_count(variants)
     pths = get_paths_from_log(trace_log, attribute_key=attribute_key)
     plist = get_sorted_paths_list(pths)
-    thresh = get_paths_threshold(pths, plist, decreasingFactor)
+    thresh = get_paths_threshold(pths, plist, decreasing_factor)
     filtered_log = filter_log_by_paths(trace_log, pths, variants, vc, thresh, attribute_key)
     return filtered_log

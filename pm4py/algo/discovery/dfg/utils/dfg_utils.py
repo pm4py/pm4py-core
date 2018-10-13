@@ -302,11 +302,11 @@ def filter_dfg_on_act(dfg, listact):
     listact
         List of attributes to filter on
     """
-    newDfg = []
+    new_dfg = []
     for el in dfg:
         if el[0][0] in listact and el[0][1] in listact:
-            newDfg.append(el)
-    return newDfg
+            new_dfg.append(el)
+    return new_dfg
 
 
 def negate(dfg):

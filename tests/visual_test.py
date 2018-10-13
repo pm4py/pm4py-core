@@ -22,44 +22,44 @@ from pm4py.algo.filtering.tracelog.auto_filter import auto_filter
 
 class VisualizationTest1(unittest.TestCase):
     def test_getdfgfreqvis_log(self):
-        logPath = os.path.join("input_data", "running-example.xes")
-        log = xes_importer.import_log(logPath)
+        log_path = os.path.join("input_data", "running-example.xes")
+        log = xes_importer.import_log(log_path)
         variant = "frequency"
         dfg = dfg_factory.apply(log, variant=variant)
         gviz = dfg_vis_factory.apply(dfg, log=log, variant=variant)
 
     def test_getdfgfreqvis_acticount(self):
-        logPath = os.path.join("input_data", "running-example.xes")
-        log = xes_importer.import_log(logPath)
+        log_path = os.path.join("input_data", "running-example.xes")
+        log = xes_importer.import_log(log_path)
         variant = "frequency"
         dfg = dfg_factory.apply(log, variant=variant)
         activities_count = log_attribute_filter.get_attribute_values(log, "concept:name")
         gviz = dfg_vis_factory.apply(dfg, activities_count=activities_count, variant=variant)
 
     def test_getdfgperfvis_log(self):
-        logPath = os.path.join("input_data", "running-example.xes")
-        log = xes_importer.import_log(logPath)
+        log_path = os.path.join("input_data", "running-example.xes")
+        log = xes_importer.import_log(log_path)
         variant = "performance"
         dfg = dfg_factory.apply(log, variant=variant)
         gviz = dfg_vis_factory.apply(dfg, log=log, variant=variant)
 
     def test_getpetrifreqvis_token(self):
-        logPath = os.path.join("input_data", "running-example.xes")
-        log = xes_importer.import_log(logPath)
+        log_path = os.path.join("input_data", "running-example.xes")
+        log = xes_importer.import_log(log_path)
         net, initial_marking, final_marking = inductive_miner.apply(log)
         variant = "frequency"
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant)
 
     def test_getpetriperfvis_token(self):
-        logPath = os.path.join("input_data", "running-example.xes")
-        log = xes_importer.import_log(logPath)
+        log_path = os.path.join("input_data", "running-example.xes")
+        log = xes_importer.import_log(log_path)
         variant = "performance"
         net, initial_marking, final_marking = inductive_miner.apply(log)
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant)
 
     def test_getpetrifreqvis_greedy(self):
-        logPath = os.path.join("input_data", "running-example.xes")
-        log = xes_importer.import_log(logPath)
+        log_path = os.path.join("input_data", "running-example.xes")
+        log = xes_importer.import_log(log_path)
         net, initial_marking, final_marking = inductive_miner.apply(log)
         variant = "frequency"
         dfg = dfg_factory.apply(log, variant=variant)
@@ -73,8 +73,8 @@ class VisualizationTest1(unittest.TestCase):
                                        variant=variant, parameters=parameters_vis)
 
     def test_getpetriperfvis_greedy(self):
-        logPath = os.path.join("input_data", "running-example.xes")
-        log = xes_importer.import_log(logPath)
+        log_path = os.path.join("input_data", "running-example.xes")
+        log = xes_importer.import_log(log_path)
         net, initial_marking, final_marking = inductive_miner.apply(log)
         variant = "performance"
         dfg = dfg_factory.apply(log, variant=variant)
@@ -89,8 +89,8 @@ class VisualizationTest1(unittest.TestCase):
 
     def test_getdfgfreqvis_dataframe(self):
         variant = "frequency"
-        logPath = os.path.join("input_data", "running-example.csv")
-        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(logPath)
+        log_path = os.path.join("input_data", "running-example.csv")
+        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
         activities_count = pd_attribute_filter.get_attribute_values(dataframe, "concept:name")
         dfg_frequency = df_statistics.get_dfg_graph(dataframe, measure="frequency")
@@ -98,8 +98,8 @@ class VisualizationTest1(unittest.TestCase):
 
     def test_getdfgperfvis_dataframe(self):
         variant = "performance"
-        logPath = os.path.join("input_data", "running-example.csv")
-        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(logPath)
+        log_path = os.path.join("input_data", "running-example.csv")
+        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
         activities_count = pd_attribute_filter.get_attribute_values(dataframe, "concept:name")
         [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both")
@@ -107,8 +107,8 @@ class VisualizationTest1(unittest.TestCase):
 
     def test_getpetrifreqvis_dataframe_greedy(self):
         variant = "frequency"
-        logPath = os.path.join("input_data", "running-example.csv")
-        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(logPath)
+        log_path = os.path.join("input_data", "running-example.csv")
+        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
         activities_count = pd_attribute_filter.get_attribute_values(dataframe, "concept:name")
         dfg_frequency = df_statistics.get_dfg_graph(dataframe, measure=variant)
@@ -124,8 +124,8 @@ class VisualizationTest1(unittest.TestCase):
 
     def test_getpetriperfvis_dataframe_greedy(self):
         variant = "performance"
-        logPath = os.path.join("input_data", "running-example.csv")
-        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(logPath)
+        log_path = os.path.join("input_data", "running-example.csv")
+        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
         activities_count = pd_attribute_filter.get_attribute_values(dataframe, "concept:name")
         [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both")
@@ -141,8 +141,8 @@ class VisualizationTest1(unittest.TestCase):
 
     def test_getpetrifreqvis_dataframe_convert_token(self):
         variant = "frequency"
-        logPath = os.path.join("input_data", "running-example.csv")
-        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(logPath)
+        log_path = os.path.join("input_data", "running-example.csv")
+        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
         event_log = pandas_df_imp.convert_dataframe_to_event_log(dataframe)
         log = transform.transform_event_log_to_trace_log(event_log)
@@ -151,8 +151,8 @@ class VisualizationTest1(unittest.TestCase):
 
     def test_getpetriperfvis_dataframe_convert_token(self):
         variant = "performance"
-        logPath = os.path.join("input_data", "running-example.csv")
-        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(logPath)
+        log_path = os.path.join("input_data", "running-example.csv")
+        dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
         event_log = pandas_df_imp.convert_dataframe_to_event_log(dataframe)
         log = transform.transform_event_log_to_trace_log(event_log)
@@ -160,8 +160,8 @@ class VisualizationTest1(unittest.TestCase):
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant)
 
     def test_simple_view(self):
-        logPath = os.path.join("input_data", "receipt.xes")
-        log = xes_importer.import_log(logPath)
+        log_path = os.path.join("input_data", "receipt.xes")
+        log = xes_importer.import_log(log_path)
         filtered_log = auto_filter.apply_auto_filter(log)
         gviz = simple_view.apply(filtered_log, {"algorithm": "alpha", "decoration": "frequency"})
         gviz = simple_view.apply(filtered_log, {"algorithm": "inductive", "decoration": "frequency"})

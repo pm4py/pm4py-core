@@ -19,7 +19,7 @@ def get_sorted_start_activities_list(start_activities):
     return listact
 
 
-def get_start_activities_threshold(start_activities, salist, decreasingFactor):
+def get_start_activities_threshold(start_activities, salist, decreasing_factor):
     """
     Get start attributes cutting threshold
 
@@ -39,7 +39,7 @@ def get_start_activities_threshold(start_activities, salist, decreasingFactor):
     i = 1
     while i < len(salist):
         value = salist[i][1]
-        if value > threshold * decreasingFactor:
+        if value > threshold * decreasing_factor:
             threshold = value
         i = i + 1
     return threshold

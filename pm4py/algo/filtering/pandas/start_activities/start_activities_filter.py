@@ -56,11 +56,11 @@ def apply_auto_filter(df, parameters=None):
 
     case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
     activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    decreasing_factor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     start_activities = get_start_activities(df, parameters=parameters)
     salist = start_activities_common.get_sorted_start_activities_list(start_activities)
-    sathreshold = start_activities_common.get_start_activities_threshold(start_activities, salist, decreasingFactor)
+    sathreshold = start_activities_common.get_start_activities_threshold(start_activities, salist, decreasing_factor)
 
     return filter_df_on_start_activities_nocc(df, sathreshold, sa_count=start_activities, case_id_glue=case_id_glue, activity_key=activity_key)
 
@@ -88,8 +88,8 @@ def get_start_activities(df, parameters=None):
     case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
     activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
-    firstEveDf = df.groupby(case_id_glue).first()
-    startact_dict = dict(firstEveDf[activity_key].value_counts())
+    first_eve_df = df.groupby(case_id_glue).first()
+    startact_dict = dict(first_eve_df[activity_key].value_counts())
     return startact_dict
 
 def filter_df_on_start_activities(df, values, case_id_glue=filtering_constants.CASE_CONCEPT_NAME, activity_key=xes.DEFAULT_NAME_KEY, positive=True):
@@ -114,10 +114,10 @@ def filter_df_on_start_activities(df, values, case_id_glue=filtering_constants.C
     df
         Filtered dataframe
     """
-    firstEveDf = df.groupby(case_id_glue).first()
-    firstEveDf = firstEveDf[firstEveDf[activity_key].isin(values)]
+    first_eve_df = df.groupby(case_id_glue).first()
+    first_eve_df = first_eve_df[first_eve_df[activity_key].isin(values)]
     i1 = df.set_index(case_id_glue).index
-    i2 = firstEveDf.index
+    i2 = first_eve_df.index
     if positive:
         return df[i1.isin(i2)]
     return df[~i1.isin(i2)]
@@ -144,11 +144,11 @@ def filter_df_on_start_activities_nocc(df, nocc, sa_count=None, case_id_glue=fil
     df
         Filtered dataframe
     """
-    firstEveDf = df.groupby(case_id_glue).first()
+    first_eve_df = df.groupby(case_id_glue).first()
     if sa_count is None:
         sa_count = get_start_activities(df)
     sa_count = [k for k, v in sa_count.items() if v >= nocc]
-    firstEveDf = firstEveDf[firstEveDf[activity_key].isin(sa_count)]
+    first_eve_df = first_eve_df[first_eve_df[activity_key].isin(sa_count)]
     i1 = df.set_index(case_id_glue).index
-    i2 = firstEveDf.index
+    i2 = first_eve_df.index
     return df[i1.isin(i2)]

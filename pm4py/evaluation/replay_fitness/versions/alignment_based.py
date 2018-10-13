@@ -22,23 +22,23 @@ def evaluate(aligned_traces, parameters=None):
     dictionary
         Containing two keys (percFitTraces and averageFitness)
     """
-    noTraces = len(aligned_traces)
-    noFitTraces = 0
-    sumFitness = 0.0
+    no_traces = len(aligned_traces)
+    no_fit_traces = 0
+    sum_fitness = 0.0
 
     for tr in aligned_traces:
         if tr["fitness"] == 1.0:
-            noFitTraces = noFitTraces + 1
-        sumFitness = sumFitness + tr["fitness"]
+            no_fit_traces = no_fit_traces + 1
+        sum_fitness = sum_fitness + tr["fitness"]
 
-    percFitTraces = 0.0
-    averageFitness = 0.0
+    perc_fit_traces = 0.0
+    average_fitness = 0.0
 
-    if noTraces > 0:
-        percFitTraces = (100.0 * float(noFitTraces))/(float(noTraces))
-        averageFitness = float(sumFitness)/float(noTraces)
+    if no_traces > 0:
+        perc_fit_traces = (100.0 * float(no_fit_traces))/(float(no_traces))
+        average_fitness = float(sum_fitness)/float(no_traces)
 
-    return {"percFitTraces": percFitTraces, "averageFitness": averageFitness}
+    return {"percFitTraces": perc_fit_traces, "averageFitness": average_fitness}
 
 def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     if parameters is None:

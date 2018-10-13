@@ -19,7 +19,7 @@ def get_sorted_end_activities_list(end_activities):
     return listact
 
 
-def get_end_activities_threshold(end_activities, ealist, decreasingFactor):
+def get_end_activities_threshold(end_activities, ealist, decreasing_factor):
     """
     Get end attributes cutting threshold
 
@@ -40,7 +40,7 @@ def get_end_activities_threshold(end_activities, ealist, decreasingFactor):
     i = 1
     while i < len(ealist):
         value = ealist[i][1]
-        if value > threshold * decreasingFactor:
+        if value > threshold * decreasing_factor:
             threshold = value
         i = i + 1
     return threshold

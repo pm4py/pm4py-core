@@ -28,7 +28,7 @@ def apply(trace_log, parameters=None):
 
     activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     timestamp_key = parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
-    aggregationMeasure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "mean"
+    aggregation_measure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "mean"
 
     dfgs0 = map((lambda t: [((t[i - 1][activity_key], t[i][activity_key]), (t[i][timestamp_key]-t[i-1][timestamp_key]).total_seconds())
                              for i in range(1, len(t))]), trace_log)
@@ -40,15 +40,15 @@ def apply(trace_log, parameters=None):
             ret0[couple[0]].append(couple[1])
     ret = Counter()
     for key in ret0:
-        if aggregationMeasure == "median":
+        if aggregation_measure == "median":
             ret[key] = median(ret0[key])
-        elif aggregationMeasure == "min":
+        elif aggregation_measure == "min":
             ret[key] = min(ret0[key])
-        elif aggregationMeasure == "max":
+        elif aggregation_measure == "max":
             ret[key] = max(ret0[key])
-        elif aggregationMeasure == "stdev":
+        elif aggregation_measure == "stdev":
             ret[key] = stdev(ret0[key])
-        elif aggregationMeasure == "sum":
+        elif aggregation_measure == "sum":
             ret[key] = sum(ret0[key])
         else:
             ret[key] = mean(ret0[key])

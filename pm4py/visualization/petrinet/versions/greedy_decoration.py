@@ -31,12 +31,12 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
         parameters = {}
 
     if "frequency" in variant:
-        aggregationMeasure = "sum"
+        aggregation_measure = "sum"
     elif "performance" in variant:
-        aggregationMeasure = "mean"
+        aggregation_measure = "mean"
 
     if "aggregationMeasure" in parameters:
-        aggregationMeasure = parameters["aggregationMeasure"]
+        aggregation_measure = parameters["aggregationMeasure"]
 
     activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if  constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
@@ -49,7 +49,7 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
     aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
                                                                                                    activities_count,
                                                                                                    variant=variant,
-                                                                                                   aggregationMeasure=aggregationMeasure)
+                                                                                                   aggregation_measure=aggregation_measure)
 
     return visualize.apply(net, initial_marking, final_marking, parameters=parameters,
                            decorations=aggregated_statistics)

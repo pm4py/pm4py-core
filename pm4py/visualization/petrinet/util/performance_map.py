@@ -7,7 +7,7 @@ from pm4py.visualization.common.utils import *
 
 MAX_NO_THREADS = 1000
 
-def calculate_annotation_for_trace(trace, net, initial_marking, actTrans, activity_key):
+def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activity_key):
     """
     Calculate annotation for a trace in the variant, in order to retrieve information
     useful for calculate frequency/performance for all the traces belonging to the variant
@@ -20,7 +20,7 @@ def calculate_annotation_for_trace(trace, net, initial_marking, actTrans, activi
         Petri net
     initial_marking
         Initial marking
-    actTrans
+    act_trans
         Activated transitions during token replay of the given trace
     activity_key
         Attribute that identifies the activity (must be specified if different from concept:name)
@@ -30,56 +30,56 @@ def calculate_annotation_for_trace(trace, net, initial_marking, actTrans, activi
     annotation
         Statistics annotation for the given trace
     """
-    annotations_placesTrans = {}
+    annotations_places_trans = {}
     annotations_arcs = {}
-    tracePlaceStats = {}
-    currentTraceIndex = 0
+    trace_place_stats = {}
+    current_trace_index = 0
     j = 0
     marking = copy(initial_marking)
     for place in marking:
-        if not place in annotations_placesTrans:
-            annotations_placesTrans[place] = {"count":0}
-            annotations_placesTrans[place]["count"] = annotations_placesTrans[place]["count"] + marking[place]
-        tracePlaceStats[place] = [currentTraceIndex] * marking[place]
+        if not place in annotations_places_trans:
+            annotations_places_trans[place] = {"count":0}
+            annotations_places_trans[place]["count"] = annotations_places_trans[place]["count"] + marking[place]
+        trace_place_stats[place] = [current_trace_index] * marking[place]
     z = 0
-    while z < len(actTrans):
-        trans = actTrans[z]
-        if not trans in annotations_placesTrans:
-            annotations_placesTrans[trans] = {"count": 0}
-            annotations_placesTrans[trans]["count"] = annotations_placesTrans[trans]["count"] + 1
+    while z < len(act_trans):
+        trans = act_trans[z]
+        if not trans in annotations_places_trans:
+            annotations_places_trans[trans] = {"count": 0}
+            annotations_places_trans[trans]["count"] = annotations_places_trans[trans]["count"] + 1
 
         new_marking = semantics.weak_execute(trans, net, marking)
         if not new_marking:
             break
         marking_diff = set(new_marking).difference(set(marking))
         for place in marking_diff:
-            if not place in annotations_placesTrans:
-                annotations_placesTrans[place] = {"count": 0}
-                annotations_placesTrans[place]["count"] = annotations_placesTrans[place]["count"] + max(new_marking[place] - marking[place], 1)
+            if not place in annotations_places_trans:
+                annotations_places_trans[place] = {"count": 0}
+                annotations_places_trans[place]["count"] = annotations_places_trans[place]["count"] + max(new_marking[place] - marking[place], 1)
         marking = new_marking
         if j < len(trace):
-            currentTraceIndex = j
+            current_trace_index = j
             if trans.label == trace[j][activity_key]:
                 j = j + 1
         for arc in trans.in_arcs:
-            sourcePlace = arc.source
+            source_place = arc.source
             if not arc in annotations_arcs:
                 annotations_arcs[arc] = {"performance": [], "count": 0}
                 annotations_arcs[arc]["count"] = annotations_arcs[arc]["count"] + 1
-            if sourcePlace in tracePlaceStats and tracePlaceStats[sourcePlace]:
-                annotations_arcs[arc]["performance"].append([currentTraceIndex, tracePlaceStats[sourcePlace][0]])
-                del tracePlaceStats[sourcePlace][0]
+            if source_place in trace_place_stats and trace_place_stats[source_place]:
+                annotations_arcs[arc]["performance"].append([current_trace_index, trace_place_stats[source_place][0]])
+                del trace_place_stats[source_place][0]
         for arc in trans.out_arcs:
-            targetPlace = arc.target
-            if not arc in annotations_arcs:
+            target_place = arc.target
+            if arc not in annotations_arcs:
                 annotations_arcs[arc] = {"performance": [], "count": 0}
                 annotations_arcs[arc]["count"] = annotations_arcs[arc]["count"] + 1
-            if not targetPlace in tracePlaceStats:
-                tracePlaceStats[targetPlace] = []
-            tracePlaceStats[targetPlace].append(currentTraceIndex)
+            if target_place not in trace_place_stats:
+                trace_place_stats[target_place] = []
+            trace_place_stats[target_place].append(current_trace_index)
         z = z + 1
 
-    return annotations_placesTrans, annotations_arcs
+    return annotations_places_trans, annotations_arcs
 
 def single_element_statistics(log, net, initial_marking, aligned_traces, variants_idx, activity_key="concept:name", timestamp_key="time:timestamp"):
     """
@@ -112,13 +112,13 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
 
     for variant in variants_idx:
         first_trace = log[variants_idx[variant][0]]
-        actTrans = aligned_traces[variants_idx[variant][0]]["activated_transitions"]
-        annotations_placesTrans, annotations_arcs = calculate_annotation_for_trace(first_trace, net, initial_marking, actTrans, activity_key)
+        act_trans = aligned_traces[variants_idx[variant][0]]["activated_transitions"]
+        annotations_places_trans, annotations_arcs = calculate_annotation_for_trace(first_trace, net, initial_marking, act_trans, activity_key)
 
-        for el in annotations_placesTrans:
+        for el in annotations_places_trans:
             if not el in statistics:
                 statistics[el] = {"count": 0}
-            statistics[el]["count"] += annotations_placesTrans[el]["count"] * len(variants_idx[variant])
+            statistics[el]["count"] += annotations_places_trans[el]["count"] * len(variants_idx[variant])
 
         for el in annotations_arcs:
             if not el in statistics:
@@ -183,7 +183,7 @@ def find_min_max_arc_frequency(statistics):
                 max_frequency = statistics[elem]["count"]
     return min_frequency, max_frequency
 
-def aggregate_stats(statistics, elem, aggregationMeasure):
+def aggregate_stats(statistics, elem, aggregation_measure):
     """
     Aggregate the statistics
 
@@ -199,22 +199,22 @@ def aggregate_stats(statistics, elem, aggregationMeasure):
     aggr_stat
         Aggregated statistics
     """
-    if aggregationMeasure == "mean" or aggregationMeasure is None:
+    if aggregation_measure == "mean" or aggregation_measure is None:
         aggr_stat = mean(statistics[elem]["performance"])
-    elif aggregationMeasure == "median":
+    elif aggregation_measure == "median":
         aggr_stat = median(statistics[elem]["performance"])
-    elif aggregationMeasure == "stdev":
+    elif aggregation_measure == "stdev":
         aggr_stat = stdev(statistics[elem]["performance"])
-    elif aggregationMeasure == "sum":
+    elif aggregation_measure == "sum":
         aggr_stat = sum(statistics[elem]["performance"])
-    elif aggregationMeasure == "min":
+    elif aggregation_measure == "min":
         aggr_stat = min(statistics[elem]["performance"])
-    elif aggregationMeasure == "max":
+    elif aggregation_measure == "max":
         aggr_stat = max(statistics[elem]["performance"])
 
     return aggr_stat
 
-def find_min_max_arc_performance(statistics, aggregationMeasure):
+def find_min_max_arc_performance(statistics, aggregation_measure):
     """
     Find minimum and maximum arc performance
 
@@ -235,14 +235,14 @@ def find_min_max_arc_performance(statistics, aggregationMeasure):
     for elem in statistics.keys():
         if type(elem) is PetriNet.Arc:
             if statistics[elem]["performance"]:
-                aggr_stat = aggregate_stats(statistics, elem, aggregationMeasure)
+                aggr_stat = aggregate_stats(statistics, elem, aggregation_measure)
                 if aggr_stat < min_performance:
                     min_performance = aggr_stat
                 if aggr_stat > max_performance:
                     max_performance = aggr_stat
     return min_performance, max_performance
 
-def aggregate_statistics(statistics, measure="frequency", aggregationMeasure=None):
+def aggregate_statistics(statistics, measure="frequency", aggregation_measure=None):
     """
     Gets aggregated statistics
 
@@ -258,7 +258,7 @@ def aggregate_statistics(statistics, measure="frequency", aggregationMeasure=Non
     """
     min_trans_frequency, max_trans_frequency = find_min_max_trans_frequency(statistics)
     min_arc_frequency, max_arc_frequency = find_min_max_arc_frequency(statistics)
-    min_arc_performance, max_arc_performance = find_min_max_arc_performance(statistics, aggregationMeasure)
+    min_arc_performance, max_arc_performance = find_min_max_arc_performance(statistics, aggregation_measure)
     aggregated_statistics = {}
     for elem in statistics.keys():
         if type(elem) is PetriNet.Arc:
@@ -268,7 +268,7 @@ def aggregate_statistics(statistics, measure="frequency", aggregationMeasure=Non
                 aggregated_statistics[elem] = {"label":str(freq),"penwidth":str(arc_penwidth)}
             elif measure == "performance":
                 if statistics[elem]["performance"]:
-                    aggr_stat = aggregate_stats(statistics, elem, aggregationMeasure)
+                    aggr_stat = aggregate_stats(statistics, elem, aggregation_measure)
                     aggr_stat_hr = human_readable_stat(aggr_stat)
                     arc_penwidth = get_arc_penwidth(aggr_stat, min_arc_performance, max_arc_performance)
                     aggregated_statistics[elem] = {"label":aggr_stat_hr,"penwidth":str(arc_penwidth)}

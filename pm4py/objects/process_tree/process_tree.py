@@ -66,7 +66,7 @@ class ProcessTree(object):
         if trans.label is None:
             if "skip" in trans.name:
                 added_skip_trans = [x for x in self.children if
-                                    type(x) is PT_Transition and "skip" in x.name]
+                                    type(x) is PTTransition and "skip" in x.name]
                 if added_skip_trans:
                     proceed_to_add = False
         if proceed_to_add:
@@ -170,7 +170,7 @@ class ProcessTree(object):
 
         return condition1 or condition2
 
-class PT_Transition(object):
+class PTTransition(object):
     def __init__(self, name, label):
         """
         Constructor

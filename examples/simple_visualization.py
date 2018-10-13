@@ -8,8 +8,8 @@ from pm4py.util import simple_view
 
 
 def execute_script():
-    logPath = os.path.join("..", "tests", "input_data", "receipt.xes")
-    log = xes_importer.import_log(logPath)
+    log_path = os.path.join("..", "tests", "input_data", "receipt.xes")
+    log = xes_importer.import_log(log_path)
     gviz = simple_view.apply(log, parameters={"format": "svg"})
     simple_view.view(gviz)
 

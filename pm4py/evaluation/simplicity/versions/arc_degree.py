@@ -16,8 +16,8 @@ def apply(petri_net, parameters=None):
     simplicity
         Simplicity measure associated to the Petri net
     """
-    arcDegree = 0.0
+    arc_degree = 0.0
     if len(petri_net.transitions) > 0:
-        arcDegree = float(len(petri_net.places)) / float(len(petri_net.transitions))
-    simplicity = 1.0 / (1.0 + arcDegree)
+        arc_degree = float(len(petri_net.places)) / float(len(petri_net.transitions))
+    simplicity = 1.0 / (1.0 + arc_degree)
     return simplicity

@@ -188,7 +188,7 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     if parameters is None:
         parameters = {}
     attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    decreasing_factor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:
@@ -196,6 +196,6 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     vc = variants_filter.get_variants_sorted_by_count(variants)
     activities = get_attribute_values(trace_log, attribute_key, parameters=parameters_variants)
     alist = attributes_common.get_sorted_attributes_list(activities)
-    thresh = attributes_common.get_attributes_threshold(activities, alist, decreasingFactor)
+    thresh = attributes_common.get_attributes_threshold(activities, alist, decreasing_factor)
     filtered_log = filter_log_by_attributes_threshold(trace_log, activities, variants, vc, thresh, attribute_key)
     return filtered_log

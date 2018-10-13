@@ -38,36 +38,36 @@ def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
         Activity key (must be provided if different from concept:name)
     """
     prefixes = {}
-    prefixCount = Counter()
+    prefix_count = Counter()
     for trace in log:
         i = 1
         while i < len(trace) - 1:
-            redTrace = trace[0:i]
-            prefix = ",".join([x[activity_key] for x in redTrace])
-            nextActivity = trace[i][activity_key]
+            red_trace = trace[0:i]
+            prefix = ",".join([x[activity_key] for x in red_trace])
+            next_activity = trace[i][activity_key]
             if not prefix in prefixes:
                 prefixes[prefix] = set()
-            prefixes[prefix].add(nextActivity)
-            prefixCount[prefix] += 1
+            prefixes[prefix].add(next_activity)
+            prefix_count[prefix] += 1
             i = i + 1
-    return prefixes, prefixCount
+    return prefixes, prefix_count
 
-def form_fake_log(prefixesKeys, activity_key=xes_util.DEFAULT_NAME_KEY):
+def form_fake_log(prefixes_keys, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
     Form fake log for replay (putting each prefix as separate trace to align)
 
     Parameters
     ----------
-    prefixesKeys
+    prefixes_keys
         Keys of the prefixes (to form a log with a given order)
     activity_key
         Activity key (must be provided if different from concept:name)
     """
     fake_log = TraceLog()
-    for prefix in prefixesKeys:
+    for prefix in prefixes_keys:
         trace = Trace()
-        prefixActivities = prefix.split(",")
-        for activity in prefixActivities:
+        prefix_activities = prefix.split(",")
+        for activity in prefix_activities:
             event = Event()
             event[activity_key] = activity
             trace.append(event)
@@ -99,13 +99,13 @@ def apply(log, net, marking, final_marking, parameters=None):
     activity_key = parameters[
         PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     precision = 0.0
-    sumEE = 0
-    sumAT = 0
-    prefixes, prefixCount = get_log_prefixes(log, activity_key=activity_key)
-    prefixesKeys = list(prefixes.keys())
-    fake_log = form_fake_log(prefixesKeys, activity_key=activity_key)
+    sum_ee = 0
+    sum_at = 0
+    prefixes, prefix_count = get_log_prefixes(log, activity_key=activity_key)
+    prefixes_keys = list(prefixes.keys())
+    fake_log = form_fake_log(prefixes_keys, activity_key=activity_key)
 
-    parameters_TR = {
+    parameters_tr = {
         "consider_remaining_in_fitness": False,
         "try_to_reach_final_marking_through_hidden": False,
         "stop_immediately_unfit": True,
@@ -113,19 +113,19 @@ def apply(log, net, marking, final_marking, parameters=None):
         PARAM_ACTIVITY_KEY: activity_key
     }
 
-    aligned_traces = token_replay.apply(fake_log, net, marking, final_marking, parameters=parameters_TR)
+    aligned_traces = token_replay.apply(fake_log, net, marking, final_marking, parameters=parameters_tr)
 
     i = 0
     while i < len(aligned_traces):
         if aligned_traces[i]["trace_is_fit"]:
-            logTransitions = set(prefixes[prefixesKeys[i]])
-            activatedTransitionsLabels = set([x.label for x in aligned_traces[i]["activated_transitions"] if x.label is not None])
-            sumAT += len(activatedTransitionsLabels) * prefixCount[prefixesKeys[i]]
-            escapingEdges = activatedTransitionsLabels.difference(logTransitions)
-            sumEE += len(escapingEdges) * prefixCount[prefixesKeys[i]]
+            log_transitions = set(prefixes[prefixes_keys[i]])
+            activated_transitions_labels = set([x.label for x in aligned_traces[i]["activated_transitions"] if x.label is not None])
+            sum_at += len(activated_transitions_labels) * prefix_count[prefixes_keys[i]]
+            escaping_edges = activated_transitions_labels.difference(log_transitions)
+            sum_ee += len(escaping_edges) * prefix_count[prefixes_keys[i]]
         i = i + 1
 
-    if sumAT > 0:
-        precision = 1 - float(sumEE)/float(sumAT)
+    if sum_at > 0:
+        precision = 1 - float(sum_ee)/float(sum_at)
 
     return precision

@@ -38,9 +38,9 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     if parameters is None:
         parameters = {}
 
-    aggregationMeasure = None
+    aggregation_measure = None
     if "aggregationMeasure" in parameters:
-        aggregationMeasure = parameters["aggregationMeasure"]
+        aggregation_measure = parameters["aggregationMeasure"]
 
     activity_key = parameters[
             PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
@@ -50,10 +50,10 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     variants_idx = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters_variants)
     variants = variants_module.convert_variants_trace_idx_to_trace_obj(log, variants_idx)
 
-    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "variants": variants}
+    parameters_tr = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "variants": variants}
 
     # do the replay
-    aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_TR)
+    aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_tr)
 
     # apply petri_reduction technique in order to simplify the Petri net
     #net = reduction.apply(net, parameters={"aligned_traces": aligned_traces})
@@ -66,7 +66,7 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     time2 = time.time()
 
     aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=measure,
-                                                                 aggregationMeasure=aggregationMeasure)
+                                                                 aggregation_measure=aggregation_measure)
 
     return aggregated_statistics
 
