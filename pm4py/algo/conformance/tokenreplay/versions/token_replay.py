@@ -436,6 +436,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
     """
     trace_activities = [event[activity_key] for event in trace]
     activatedTransitions = []
+    transitionsWithProblems = []
     allVisitedMarkings = []
     activatingTransitionIndex = {}
     activatingTransitionInterval = []
@@ -475,6 +476,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                         prevLenActivatedTransitions = len(activatedTransitions)
                         [net, marking, activatedTransitions, allVisitedMarkings] = apply_hiddenTrans(t, net, marking, placesShortestPathByHidden, activatedTransitions, 0, visitedTransitions, allVisitedMarkings)
                     if not semantics.is_enabled(t, net, marking):
+                        transitionsWithProblems.append(t)
                         if stopImmediatelyWhenUnfit:
                             missing = missing + 1
                             break
@@ -600,7 +602,7 @@ def apply_trace(trace, net, initialMarking, finalMarking, transMap, enable_place
                     if not activity in markingToActivityCaching.cache[startMarkingHash]:
                         markingToActivityCaching.cache[startMarkingHash][activity] = {"startMarking":startMarkingObject, "endMarking":endMarkingObject,"thisActTrans":thisActivatedTrans,"thisVisMarkings":thisVisitedMarkings, "previousActivity":previousActivity}
 
-    return [is_fit, trace_fitness, activatedTransitions, markingBeforeCleaning, get_visible_transitions_eventually_enabled_by_marking(net, markingBeforeCleaning)]
+    return [is_fit, trace_fitness, activatedTransitions, transitionsWithProblems, markingBeforeCleaning, get_visible_transitions_eventually_enabled_by_marking(net, markingBeforeCleaning)]
 
 class ApplyTraceTokenReplay(Thread):
     def __init__(self, trace, net, initialMarking, finalMarking, transMap, enable_placeFitness, place_fitness, placesShortestPathByHidden, consider_remaining_in_fitness, activity_key="concept:name", tryToReachFinalMarkingThroughHidden=True, stopImmediatelyWhenUnfit=False, useHiddenTransitionsToEnableCorrespondingTransitions=True, postFixCaching=None, markingToActivityCaching=None):
@@ -628,7 +630,7 @@ class ApplyTraceTokenReplay(Thread):
         """
         Runs the thread and stores the results
         """
-        self.tFit, self.tValue, self.actTrans, self.reachedMarking, self.enabledTransitionsInMarking =\
+        self.tFit, self.tValue, self.actTrans, self.transWithProblems, self.reachedMarking, self.enabledTransitionsInMarking =\
             apply_trace(self.trace, self.net, self.initialMarking, self.finalMarking, self.transMap,
                                                            self.enable_placeFitness, self.place_fitness,
                                                            self.placesShortestPathByHidden, self.consider_remaining_in_fitness, activity_key=self.activity_key,
@@ -702,7 +704,7 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
                         while len(threadsKeys) > 0:
                             t = threads[threadsKeys[0]]
                             t.join()
-                            threadsResults[threadsKeys[0]] = {"tFit":copy(t.tFit),"tValue":copy(t.tValue),"actTrans":copy(t.actTrans),"reachedMarking":copy(t.reachedMarking),"enabledTransitionsInMarking":copy(t.enabledTransitionsInMarking)}
+                            threadsResults[threadsKeys[0]] = {"tFit":copy(t.tFit),"tValue":copy(t.tValue),"actTrans":copy(t.actTrans),"reachedMarking":copy(t.reachedMarking),"enabledTransitionsInMarking":copy(t.enabledTransitionsInMarking), "transWithProblems": copy(t.transWithProblems)}
                             del threads[threadsKeys[0]]
                             del threadsKeys[0]
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initialMarking, finalMarking, transMap, enable_placeFitness, placeFitnessPerTrace, placesShortestPathByHidden, consider_remaining_in_fitness, activity_key=activity_key, tryToReachFinalMarkingThroughHidden=tryToReachFinalMarkingThroughHidden, stopImmediatelyWhenUnfit=stopImmediatelyWhenUnfit, useHiddenTransitionsToEnableCorrespondingTransitions=useHiddenTransitionsToEnableCorrespondingTransitions, postFixCaching=postFixCaching, markingToActivityCaching=markingToActivityCaching)
@@ -715,7 +717,8 @@ def apply_log(log, net, initialMarking, finalMarking, enable_placeFitness=False,
                     t.join()
                     threadsResults[threadsKeys[0]] = {"tFit": copy(t.tFit), "tValue": copy(t.tValue), "actTrans": copy(t.actTrans),
                                                "reachedMarking": copy(t.reachedMarking),
-                                               "enabledTransitionsInMarking": copy(t.enabledTransitionsInMarking)}
+                                               "enabledTransitionsInMarking": copy(t.enabledTransitionsInMarking),
+                                                      "transWithProblems": copy(t.transWithProblems)}
                     del threads[threadsKeys[0]]
                     del threadsKeys[0]
                 for trace in log:
