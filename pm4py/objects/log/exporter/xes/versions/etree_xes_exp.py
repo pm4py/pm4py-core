@@ -16,7 +16,7 @@ TYPE_CORRESPONDENCE = {
 DEFAULT_TYPE = xes_util.TAG_STRING
 
 
-def get_XES_attr_type(attr_type):
+def get_xes_attr_type(attr_type):
     """
     Transform a Python attribute type (e.g. str, datetime) into a XES attribute type (e.g. string, date)
 
@@ -32,7 +32,7 @@ def get_XES_attr_type(attr_type):
     return attr_type_xes
 
 
-def get_XES_attr_value(attr_value, attr_type_xes):
+def get_xes_attr_value(attr_value, attr_type_xes):
     """
     Transform an attribute value from Python format to XES format (the type is provided as argument)
 
@@ -141,7 +141,7 @@ def export_attributes_element(log_element, xml_element):
     for attr in log_element:
         if attr is not None:
             attr_type = type(log_element[attr]).__name__
-            attr_type_xes = get_XES_attr_type(attr_type)
+            attr_type_xes = get_xes_attr_type(attr_type)
             if attr_type is not None and attr_type_xes is not None:
                 if attr_type_xes == xes_util.TAG_LIST:
                     if log_element[attr]['value'] is None:
@@ -151,7 +151,7 @@ def export_attributes_element(log_element, xml_element):
                         export_attributes_element(log_element[attr]['children'], this_attribute_values)
                     else:
                         attr_type = type(log_element[attr]['value']).__name__
-                        attr_type_xes = get_XES_attr_type(attr_type)
+                        attr_type_xes = get_xes_attr_type(attr_type)
                         if attr_type is not None and attr_type_xes is not None:
                             attr_value = log_element[attr]['value']
                             if attr_value is not None:
@@ -160,7 +160,7 @@ def export_attributes_element(log_element, xml_element):
                                 this_attribute.set(xes_util.KEY_VALUE, str(log_element[attr]['value']))
                                 export_attributes_element(log_element[attr]['children'], this_attribute)
                 else:
-                    attr_value = get_XES_attr_value(log_element[attr], attr_type_xes)
+                    attr_value = get_xes_attr_value(log_element[attr], attr_type_xes)
                     if attr_value is not None:
                         this_attribute = etree.SubElement(xml_element, attr_type_xes)
                         this_attribute.set(xes_util.KEY_KEY, attr)

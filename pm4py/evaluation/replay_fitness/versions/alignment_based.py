@@ -49,10 +49,10 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
                                                                                         final_marking)
     best_worst_costs = best_worst['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
     with mp.Pool(max(1, mp.cpu_count() - 1)) as pool:
-        alignmentResult = pool.starmap(apply_trace, map(
+        alignment_result = pool.starmap(apply_trace, map(
             lambda tr: (tr, petri_net, initial_marking, final_marking, best_worst_costs, activity_key), log))
 
-        return evaluate(alignmentResult)
+        return evaluate(alignment_result)
 
 def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, activity_key):
     '''
