@@ -1,9 +1,3 @@
-import unittest
-import os, sys, inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 from tests.constants import INPUT_DATA_DIR
 from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
 from pm4py.objects.log.importer.csv.versions import pandas_df_imp
@@ -15,7 +9,8 @@ from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.objects.log import transform
 from pm4py.algo.filtering.pandas.paths import paths_filter
 from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
-
+import unittest
+import os
 
 class DataframePrefilteringTest(unittest.TestCase):
     def test_prefiltering_dataframe(self):

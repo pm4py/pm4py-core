@@ -1,14 +1,10 @@
-import unittest
-import os, sys, inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 import pm4py
 from tests.constants import INPUT_DATA_DIR
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.algo.discovery.transition_system import factory as ts_factory
 from pm4py.algo.discovery.transition_system import parameters
+import unittest
+import os
 
 
 class TransitionSystemTest(unittest.TestCase):

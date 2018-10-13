@@ -1,9 +1,3 @@
-import unittest
-import os, sys, inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 from pm4py.objects.petri.exporter import pnml as petri_exporter
 from pm4py.objects.petri.importer import pnml as petri_importer
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
@@ -11,6 +5,8 @@ from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.objects import petri
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.algo.conformance.alignments.versions import state_equation_a_star
+import unittest
+import os
 
 
 class PetriImportExportTest(unittest.TestCase):

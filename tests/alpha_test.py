@@ -1,11 +1,3 @@
-import unittest
-import os
-import sys
-import inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 from pm4py.objects.log.importer.csv import factory as csv_importer
 from pm4py.objects.log.importer.xes import factory as xes_importer
 import pm4py.objects.log.transform as log_transform
@@ -17,7 +9,8 @@ from pm4py.objects import petri
 from pm4py.objects.petri.exporter import pnml as petri_exporter
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 import logging
-
+import unittest
+import os
 
 class AlphaMinerTest(unittest.TestCase):
     def obtainPetriNetThroughAlphaMiner(self, log_name):
