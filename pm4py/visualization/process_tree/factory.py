@@ -1,5 +1,5 @@
-from pm4py.visualization.common.save import save
-from pm4py.visualization.common.gview import view
+from pm4py.visualization.common import save as gsave
+from pm4py.visualization.common import gview
 from pm4py.visualization.process_tree.versions import wo_decoration
 
 WO_DECORATION = "wo_decoration"
@@ -36,3 +36,27 @@ def apply(tree, parameters=None, variant="wo_decoration"):
         GraphViz object
     """
     return VERSIONS[variant](tree, parameters=parameters)
+
+def save(gviz, output_file_path):
+    """
+    Save the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    output_file_path
+        Path where the GraphViz output should be saved
+    """
+    gsave.save(gviz, output_file_path)
+
+def view(gviz):
+    """
+    View the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    """
+    gview.view(gviz)

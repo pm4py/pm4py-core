@@ -28,4 +28,27 @@ from tests.visual_test import VisualizationTest1
 from tests.case_man_test import CaseManagementTest
 
 if __name__ == "__main__":
+    test1_object = Pm4pyImportPackageTest()
+    test2_object = XesImportExportTest()
+    test3_object = CsvImportExportTest()
+    test4_object = AlphaMinerTest()
+    test5_object = InductiveMinerDFTest()
+    test6_object = AlignmentTest()
+    test7_object = PetriImportExportTest()
+    test8_object = AlphaMinerDocumentationTest()
+    test9_object = InductiveMinerDocumentationTest()
+    test10_object = DfGraphDocumentationTest()
+    test11_object = XES1DocumentationTest()
+    test12_object = CSV1DocumentationTest()
+    test13_object = Classifiers1DocumentationTest()
+    test14_object = DocMeasuresDocumentationTest()
+    test15_object = DataframePrefilteringTest()
+    test16_object = LogFilteringTest()
+    test17_object = ETCTest()
+    test18_object = PetriLogGeneratorTests()
+    test19_object = TransitionSystemTest()
+    test20_object = ProcessModelEvaluationTests()
+    test21_object = VisualizationTest1()
+    test22_object = CaseManagementTest()
+
     unittest.main()

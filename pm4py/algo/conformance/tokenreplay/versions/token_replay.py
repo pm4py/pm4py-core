@@ -576,8 +576,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         # try to reach the final marking in a different fashion, if not already reached
         if not break_condition_final_marking(marking, final_marking):
             if len(final_marking) == 1:
-                for place in final_marking:
-                    sink_place = place
+                sink_place = list(final_marking)[0]
 
                 connections_to_sink = []
                 for place in marking:

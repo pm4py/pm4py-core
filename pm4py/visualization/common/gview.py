@@ -1,4 +1,12 @@
 def view(gviz):
+    """
+    View the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    """
     is_ipynb = False
 
     try:

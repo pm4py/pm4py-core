@@ -1,6 +1,5 @@
 from graphviz import Digraph
 import tempfile
-import base64
 from copy import copy
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.visualization.common.utils import *

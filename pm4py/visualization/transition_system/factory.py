@@ -1,6 +1,6 @@
 from pm4py.visualization.transition_system.versions import view_based
-from pm4py.visualization.common.save import save
-from pm4py.visualization.common.gview import view
+from pm4py.visualization.common import save as gsave
+from pm4py.visualization.common import gview
 
 VIEW_BASED = "view_based"
 WO_DECORATION = "wo_decoration"
@@ -10,6 +10,30 @@ FREQUENCY_GREEDY = "frequency_greedy"
 PERFORMANCE_GREEDY = "performance_greedy"
 
 VERSIONS = {VIEW_BASED: view_based.apply, WO_DECORATION: view_based.apply, FREQUENCY_DECORATION: view_based.apply, PERFORMANCE_DECORATION: view_based.apply, FREQUENCY_GREEDY: view_based.apply, PERFORMANCE_GREEDY: view_based.apply}
+
+def save(gviz, output_file_path):
+    """
+    Save the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    output_file_path
+        Path where the GraphViz output should be saved
+    """
+    gsave.save(gviz, output_file_path)
+
+def view(gviz):
+    """
+    View the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    """
+    gview.view(gviz)
 
 def apply(tsys, parameters=None, variant="view_based"):
     """

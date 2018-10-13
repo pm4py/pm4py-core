@@ -14,8 +14,32 @@ from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.algo.discovery.transition_system import factory as ts_factory
 from pm4py.visualization.transition_system import factory as ts_vis_factory
 from pm4py.algo.discovery.transition_system.parameters import *
-from pm4py.visualization.common.save import *
-from pm4py.visualization.common.gview import *
+from pm4py.visualization.common import save as gsave
+from pm4py.visualization.common import gview
+
+def save(gviz, output_file_path):
+    """
+    Save the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    output_file_path
+        Path where the GraphViz output should be saved
+    """
+    gsave.save(gviz, output_file_path)
+
+def view(gviz):
+    """
+    View the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    """
+    gview.view(gviz)
 
 def apply(original_log, parameters=None):
     """
@@ -44,6 +68,7 @@ def apply(original_log, parameters=None):
     image_format = parameters["format"] if "format" in parameters else "png"
     decreasing_factor = parameters["simplicity"] if "simplicity" in parameters else filtering_constants.DECREASING_FACTOR
     replay_enabled = parameters["replayEnabled"] if "replayEnabled" in parameters else True
+    aggregation_measure = "mean"
     if "frequency" in replay_measure:
         aggregation_measure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "min"
     elif "performance" in replay_measure:
@@ -94,7 +119,7 @@ def apply(original_log, parameters=None):
     else:
         if discovery_algorithm == "inductive":
             net, initial_marking, final_marking = inductive_factory.apply(log, parameters=parameters_discovery)
-        elif discovery_algorithm == "alpha":
+        else:
             net, initial_marking, final_marking = alpha_factory.apply(log, parameters=parameters_discovery)
         if replay_enabled:
             # do the replay

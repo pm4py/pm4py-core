@@ -88,8 +88,10 @@ def project_traces(trace_log, keys=xes_util.DEFAULT_NAME_KEY):
         return list(map(lambda t: list(map(lambda e: {key: e[key] for key in keys}))))
 
 
-def derive_and_lift_trace_attributes_from_event_attributes(log, ignore=set(), retain_on_event_level=False,
+def derive_and_lift_trace_attributes_from_event_attributes(log, ignore=None, retain_on_event_level=False,
                                                            verbose=False):
+    if ignore is None:
+        ignore = set()
     candidates = set(log[0][0].keys())
     for i in ignore:
         candidates.remove(i)
@@ -116,8 +118,8 @@ def derive_and_lift_trace_attributes_from_event_attributes(log, ignore=set(), re
     for t in log:
         for key in candidates:
             t.attributes[key] = t[0][key]
-        if not retain_on_event_level:
-            for e in t:
-                del e[key]
+            if not retain_on_event_level:
+                for e in t:
+                    del e[key]
 
     return log

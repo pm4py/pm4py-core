@@ -25,8 +25,8 @@ def transform_event_log_to_trace_log(log, case_glue='case:concept:name', include
     for event in log:
         glue = event[case_glue]
         if glue not in traces:
+            trace_attr = {}
             if includes_case_attributes:
-                trace_attr = {}
                 for k in event.keys():
                     if k.startswith(case_attribute_prefix):
                         trace_attr[k.replace(case_attribute_prefix, '')] = event[k]
@@ -49,7 +49,7 @@ def transform_trace_log_to_event_log(log, include_case_attributes=True, case_att
     ----------
     log: :class:`pm4py.log.log.TraceLog`
         A trace Log
-    includes_case_attributes:
+    include_case_attributes:
         Default is True
     case_attribute_prefix:
         Default is 'case:'
