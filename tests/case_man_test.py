@@ -1,14 +1,9 @@
-import unittest
-import os, sys, inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.statistics.traces.tracelog import case_statistics as case_statistics_log
 from pm4py.statistics.traces.pandas import case_statistics as case_statistics_pd
 from pm4py.objects.log.importer.csv.versions import pandas_df_imp
-
+import unittest
+import os
 
 class CaseManagementTest(unittest.TestCase):
     def test_casemanagementlogs(self):

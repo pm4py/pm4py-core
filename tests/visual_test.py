@@ -1,9 +1,3 @@
-import unittest
-import os, sys, inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
@@ -18,6 +12,8 @@ from pm4py.algo.filtering.tracelog.attributes import attributes_filter as log_at
 from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 from pm4py.util import simple_view
 from pm4py.algo.filtering.tracelog.auto_filter import auto_filter
+import unittest
+import os
 
 
 class VisualizationTest1(unittest.TestCase):

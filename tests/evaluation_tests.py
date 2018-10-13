@@ -1,9 +1,3 @@
-import unittest
-import os, sys, inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 from tests.constants import INPUT_DATA_DIR
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.algo.discovery.inductive.versions.dfg import dfg_only
@@ -12,7 +6,8 @@ from pm4py.evaluation.precision import factory as precision_factory
 from pm4py.evaluation.generalization import factory as generalization_factory
 from pm4py.evaluation.simplicity import factory as simplicity_factory
 from pm4py.evaluation import factory as evaluation_factory
-
+import unittest
+import os
 
 class ProcessModelEvaluationTests(unittest.TestCase):
     def test_evaluation_pm1(self):
