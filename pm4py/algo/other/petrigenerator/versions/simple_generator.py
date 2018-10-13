@@ -101,6 +101,7 @@ class SubtreeGenerator(object):
         chosen_behavior
             (If specified) Chosen behavior for the current subtree
         """
+        num_of_activities_this_subtree = 0
         self.noOfSubtrees = self.noOfSubtrees + 1
         this_possible_behaviors = deepcopy(self.possible_behaviors)
         if rec_depth == 0:
@@ -111,7 +112,6 @@ class SubtreeGenerator(object):
         if chosen_behavior is None:
             chosen_behavior = random.choice(this_possible_behaviors)
         if chosen_behavior == "sequential" or chosen_behavior == "flower":
-            num_of_activities_this_subtree = 0
             while num_of_activities_this_subtree < self.minNoOfActivitiesPerSubtree:
                 num_of_activities_this_subtree = random.randrange(0, self.maxNoOfActivitiesPerSubtree)
             activities_names = []
@@ -255,7 +255,7 @@ class SubtreeGenerator(object):
                     petri.utils.add_arc_from_to(self.lastAddedPlace, auto_loop, self.net)
 
 
-def generate_petri(nin_no_activities_per_subtree=2, max_no_activities_per_subtree=6, max_no_subtrees=5, prob_spawn_subtree=0.6, prob_auto_skip=0.35, prob_auto_loop=0.0, possible_behaviors=["sequential", "concurrent", "flower", "parallel"]):
+def generate_petri(nin_no_activities_per_subtree=2, max_no_activities_per_subtree=6, max_no_subtrees=5, prob_spawn_subtree=0.6, prob_auto_skip=0.35, prob_auto_loop=0.0, possible_behaviors=None):
     """
     Generate workflow net
 
@@ -276,6 +276,8 @@ def generate_petri(nin_no_activities_per_subtree=2, max_no_activities_per_subtre
     possible_behaviors
         Possible behaviors admitted (sequential, concurrent, parallel, flower)
     """
+    if possible_behaviors is None:
+        possible_behaviors = ["sequential", "concurrent", "flower", "parallel"]
     stg = SubtreeGenerator(nin_no_activities_per_subtree, max_no_activities_per_subtree, max_no_subtrees, prob_spawn_subtree, prob_auto_skip, prob_auto_loop, possible_behaviors)
     marking = petri.petrinet.Marking({stg.startPlace: 1})
     final_marking = petri.petrinet.Marking({stg.lastAddedPlace: 1})

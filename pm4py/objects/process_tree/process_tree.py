@@ -27,7 +27,7 @@ class ProcessTree(object):
         else:
             ret_list = [""]
 
-        condition_wo_operator = self.operator == tree_constants.EXCLUSIVE_OPERATOR and len(self.children) == 1 and type(self.children[0]) is process_tree.PT_Transition
+        condition_wo_operator = self.operator == tree_constants.EXCLUSIVE_OPERATOR and len(self.children) == 1 and type(self.children[0]) is PTTransition
 
         if not condition_wo_operator:
             ret_list.append(self.operator + "(")

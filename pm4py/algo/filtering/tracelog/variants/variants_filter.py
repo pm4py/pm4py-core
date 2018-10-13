@@ -191,6 +191,7 @@ def find_auto_threshold(trace_log, variants, decreasing_factor):
     already_added_sum = 0
     
     prev_var_count = -1
+    percentage_already_added = 0
     i = 0
     while i < len(variant_count):
         varcount = variant_count[i][1]

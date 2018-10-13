@@ -1,4 +1,4 @@
-import os, shutil, tempfile
+import tempfile
 
 def import_string_to_temp_file(stri, extension):
     """

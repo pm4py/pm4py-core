@@ -1,4 +1,4 @@
-import os, shutil
+import shutil
 
 def save(gviz, output_file_path):
     """

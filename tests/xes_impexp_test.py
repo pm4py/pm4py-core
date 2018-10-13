@@ -50,7 +50,7 @@ class XesImportExportTest(unittest.TestCase):
 
     def test_importXESfromGZIP_imp2(self):
         trace_log = xes_importer.import_log(os.path.join(COMPRESSED_INPUT_DATA, "01_running-example.xes.gz"))
-        trace_log is None
+        del trace_log
 
 
 if __name__ == "__main__":

@@ -82,8 +82,6 @@ def apply(tree, parameters=None):
             circle_font_size -> Font size associated to the operators
             box_width -> Width of the box associated to the transitions
             box_font_size -> Font size associated to the transitions boxes
-    variant
-        Variant of the algorithm to use
 
     Returns
     -----------

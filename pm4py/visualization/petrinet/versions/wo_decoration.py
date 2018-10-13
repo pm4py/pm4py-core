@@ -23,6 +23,4 @@ def apply(net, initial_marking, final_marking, log=None, aggregated_statistics=N
     viz
         Graph object
     """
-    log is None
-    aggregated_statistics is None
     return visualize.apply(net, initial_marking, final_marking, parameters=parameters)

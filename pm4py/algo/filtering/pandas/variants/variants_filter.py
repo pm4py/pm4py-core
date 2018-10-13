@@ -11,8 +11,6 @@ def apply_auto_filter(df, parameters=None):
     -----------
     df
         Dataframe
-    admitted_variants
-        List of admitted variants (to include/exclude)
     parameters
         Parameters of the algorithm, including:
             case_id_glue -> Column that contains the Case ID
