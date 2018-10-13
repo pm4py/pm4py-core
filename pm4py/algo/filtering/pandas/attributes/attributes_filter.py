@@ -82,11 +82,11 @@ def apply_auto_filter(df, parameters=None):
     if parameters is None:
         parameters = {}
     activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    decreasing_factor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     activities = get_attribute_values(df, activity_key)
     alist = attributes_common.get_sorted_attributes_list(activities)
-    thresh = attributes_common.get_attributes_threshold(activities, alist, decreasingFactor, minActivityCount=pd_filtering_constants.MIN_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM, maxActivityCount=pd_filtering_constants.MAX_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM)
+    thresh = attributes_common.get_attributes_threshold(activities, alist, decreasing_factor, min_activity_count=pd_filtering_constants.MIN_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM, max_activity_count=pd_filtering_constants.MAX_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM)
 
     return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count=activities)
 
@@ -139,9 +139,9 @@ def filter_df_on_attribute_values(df, values, case_id_glue="case:concept:name", 
     """
     if values is None:
         values = []
-    filteredDfByEv = df[df[attribute_key].isin(values)]
+    filtered_df_by_ev = df[df[attribute_key].isin(values)]
     i1 = df.set_index(case_id_glue).index
-    i2 = filteredDfByEv.set_index(case_id_glue).index
+    i2 = filtered_df_by_ev.set_index(case_id_glue).index
     if positive:
         return df[i1.isin(i2)]
     return df[~i1.isin(i2)]

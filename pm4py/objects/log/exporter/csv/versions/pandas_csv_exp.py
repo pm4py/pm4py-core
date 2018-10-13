@@ -19,8 +19,8 @@ def get_dataframe_from_log(log):
     """
     if type(log) is log_instance.TraceLog:
         log = log_transform.transform_trace_log_to_event_log(log)
-    transfLog = [dict(x) for x in log]
-    df = pd.DataFrame.from_dict(transfLog)
+    transf_log = [dict(x) for x in log]
+    df = pd.DataFrame.from_dict(transf_log)
 
     return df
 
@@ -49,7 +49,7 @@ def export_log_as_string(log, parameters=None):
     return df.to_string()
 
 
-def export_log(log, outputFilePath, parameters=None):
+def export_log(log, output_file_path, parameters=None):
     """
     Exports the given log to CSV format
 
@@ -57,7 +57,7 @@ def export_log(log, outputFilePath, parameters=None):
     ----------
     log: :class:`pm4py.log.log.EventLog`
         Event log. Also, can take a trace log and convert it to event log
-    outputFilePath:
+    output_file_path:
         Output file path
     parameters
         Possible parameters of the algorithm
@@ -66,4 +66,4 @@ def export_log(log, outputFilePath, parameters=None):
         parameters = {}
 
     df = get_dataframe_from_log(log)
-    df.to_csv(outputFilePath)
+    df.to_csv(output_file_path)

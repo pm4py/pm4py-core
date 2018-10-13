@@ -48,7 +48,7 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
         if final_entity_subtree is not None and type(final_entity_subtree) is PetriNet.Transition:
             petri.utils.add_arc_from_to(final_place, final_entity_subtree, net)
     tree_subtrees = [child for child in tree.children if type(child) is process_tree.ProcessTree]
-    tree_transitions = [child for child in tree.children if type(child) is process_tree.PT_Transition]
+    tree_transitions = [child for child in tree.children if type(child) is process_tree.PTTransition]
 
     for trans in tree_transitions:
         if trans.label is None:

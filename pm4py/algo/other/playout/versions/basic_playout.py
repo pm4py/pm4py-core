@@ -3,7 +3,7 @@ from pm4py.objects.petri import semantics
 from copy import copy
 from random import shuffle
 
-def apply_playout(net, initialMarking, noTraces=100, maxTraceLength=100):
+def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100):
     """
     Do the playout of a Petrinet generating a log
 
@@ -11,35 +11,35 @@ def apply_playout(net, initialMarking, noTraces=100, maxTraceLength=100):
     ----------
     net
         Petri net to play-out
-    initialMarking
+    initial_marking
         Initial marking of the Petri net
-    noTraces
+    no_traces
         Number of traces to generate
-    maxTraceLength
+    max_trace_length
         Maximum number of events per trace (do break)
     """
     log = log_instance.TraceLog()
-    for i in range(noTraces):
+    for i in range(no_traces):
         trace = log_instance.Trace()
         trace.attributes["concept:name"] = str(i)
-        marking = copy(initialMarking)
+        marking = copy(initial_marking)
         while semantics.enabled_transitions(net, marking):
-            allEnabledTrans = semantics.enabled_transitions(net, marking)
-            allEnabledTrans = list(allEnabledTrans)
-            shuffle(allEnabledTrans)
-            trans = allEnabledTrans[0]
+            all_enabled_trans = semantics.enabled_transitions(net, marking)
+            all_enabled_trans = list(all_enabled_trans)
+            shuffle(all_enabled_trans)
+            trans = all_enabled_trans[0]
             if trans.label is not None:
                 event = log_instance.Event()
                 event["concept:name"] = trans.label
                 trace.append(event)
             marking = semantics.execute(trans, net, marking)
-            if len(trace) > maxTraceLength:
+            if len(trace) > max_trace_length:
                 break
         if len(trace) > 0:
             log.append(trace)
     return log
 
-def apply(net, initialMarking, parameters=None):
+def apply(net, initial_marking, parameters=None):
     """
     Do the playout of a Petrinet generating a log
 
@@ -54,11 +54,11 @@ def apply(net, initialMarking, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    noTraces = 100
-    maxTraceLength = 100
+    no_traces = 100
+    max_trace_length = 100
     if "noTraces" in parameters:
-        noTraces = parameters["noTraces"]
+        no_traces = parameters["noTraces"]
     if "maxTraceLength" in parameters:
-        maxTraceLength = parameters["maxTraceLength"]
+        max_trace_length = parameters["maxTraceLength"]
 
-    return apply_playout(net, initialMarking, maxTraceLength=maxTraceLength, noTraces=noTraces)
+    return apply_playout(net, initial_marking, max_trace_length=max_trace_length, no_traces=no_traces)

@@ -3,7 +3,7 @@ from pm4py.algo.conformance.tokenreplay.versions import token_replay
 TOKEN_REPLAY = "token_replay"
 VERSIONS = {TOKEN_REPLAY: token_replay.apply}
 
-def apply(log, net, initialMarking, finalMarking, parameters=None, variant="token_replay"):
+def apply(log, net, initial_marking, final_marking, parameters=None, variant="token_replay"):
     """
     Factory method to apply token-based replay
     
@@ -13,9 +13,9 @@ def apply(log, net, initialMarking, finalMarking, parameters=None, variant="toke
         Log
     net
         Petri net
-    initialMarking
+    initial_marking
         Initial marking
-    finalMarking
+    final_marking
         Final marking
     parameters
         Parameters of the algorithm, including:
@@ -24,4 +24,4 @@ def apply(log, net, initialMarking, finalMarking, parameters=None, variant="toke
     variant
         Variant of the algorithm to use
     """
-    return VERSIONS[variant](log, net, initialMarking, finalMarking, parameters=parameters)
+    return VERSIONS[variant](log, net, initial_marking, final_marking, parameters=parameters)

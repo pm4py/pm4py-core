@@ -29,11 +29,11 @@ def get_variants_statistics(df, parameters=None):
     max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
     variants_df = parameters["variants_df"] if "variants_df" in parameters else get_variants_df(df, parameters=parameters)
     variants_df = variants_df.reset_index()
-    variantsList = variants_df.groupby("variant").agg("count").reset_index().to_dict('records')
-    variantsList = sorted(variantsList, key=lambda x: x[case_id_glue], reverse=True)
+    variants_list = variants_df.groupby("variant").agg("count").reset_index().to_dict('records')
+    variants_list = sorted(variants_list, key=lambda x: x[case_id_glue], reverse=True)
     if max_variants_to_return:
-        variantsList = variantsList[:min(len(variantsList), max_variants_to_return)]
-    return variantsList
+        variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
+    return variants_list
 
 def get_cases_description(df, parameters=None):
     """
@@ -67,27 +67,27 @@ def get_cases_description(df, parameters=None):
     sort_ascending = parameters["sort_ascending"] if "sort_ascending" in parameters else "ascending"
     max_ret_cases = parameters["max_ret_cases"] if "max_ret_cases" in parameters else None
 
-    groupedDf = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
-    firstEveDf = groupedDf.first()
-    lastEveDf = groupedDf.last()
-    del groupedDf
-    lastEveDf.columns = [str(col) + '_2' for col in firstEveDf.columns]
-    stackedDf = pd.concat([firstEveDf, lastEveDf], axis=1)
-    del firstEveDf
-    del lastEveDf
-    del stackedDf[case_id_glue]
-    del stackedDf[case_id_glue+"_2"]
-    stackedDf['caseDuration'] = stackedDf[timestamp_key + "_2"] - stackedDf[timestamp_key]
-    stackedDf['caseDuration'] = stackedDf['caseDuration'].astype('timedelta64[s]')
-    stackedDf[timestamp_key + "_2"] = stackedDf[timestamp_key + "_2"].astype('int64')//10**9
-    stackedDf[timestamp_key] = stackedDf[timestamp_key].astype('int64')//10**9
-    stackedDf = stackedDf.rename(columns={timestamp_key: 'startTime', timestamp_key+"_2": 'endTime'})
+    grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
+    first_eve_df = grouped_df.first()
+    last_eve_df = grouped_df.last()
+    del grouped_df
+    last_eve_df.columns = [str(col) + '_2' for col in first_eve_df.columns]
+    stacked_df = pd.concat([first_eve_df, last_eve_df], axis=1)
+    del first_eve_df
+    del last_eve_df
+    del stacked_df[case_id_glue]
+    del stacked_df[case_id_glue+"_2"]
+    stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
+    stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
+    stacked_df[timestamp_key + "_2"] = stacked_df[timestamp_key + "_2"].astype('int64')//10**9
+    stacked_df[timestamp_key] = stacked_df[timestamp_key].astype('int64')//10**9
+    stacked_df = stacked_df.rename(columns={timestamp_key: 'startTime', timestamp_key+"_2": 'endTime'})
     if enable_sort:
-        stackedDf = stackedDf.sort_values(sort_by_column, ascending=sort_ascending)
+        stacked_df = stacked_df.sort_values(sort_by_column, ascending=sort_ascending)
 
     if max_ret_cases is not None:
-        stackedDf = stackedDf.head(n=min(max_ret_cases, len(stackedDf)))
-    ret = stackedDf.to_dict('index')
+        stacked_df = stacked_df.head(n=min(max_ret_cases, len(stacked_df)))
+    ret = stacked_df.to_dict('index')
     return ret
 
 def get_variants_df(df, parameters=None):

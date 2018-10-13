@@ -11,8 +11,8 @@ import time
 
 
 def execute_script():
-    logPath = os.path.join("..", "tests", "input_data", "running-example.xes")
-    log = xes_importer.import_log(logPath)
+    log_path = os.path.join("..", "tests", "input_data", "running-example.xes")
+    log = xes_importer.import_log(log_path)
     net, marking, final_marking = alpha_factory.apply(log)
     for place in marking:
         print("initial marking " + place.name)

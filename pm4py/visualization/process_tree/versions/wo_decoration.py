@@ -35,7 +35,7 @@ def repr_tree(tree, viz, current_node, rec_depth, parameters):
         (partial) GraphViz object
     """
     for child in tree.children:
-        if type(child) is process_tree.PT_Transition:
+        if type(child) is process_tree.PTTransition:
             viz.attr('node', shape='box', fixedsize='true', width=parameters["box_width"], fontsize=parameters["box_font_size"])
             this_trans_id = str(uuid.uuid4())
             if child.label is None:
@@ -46,7 +46,7 @@ def repr_tree(tree, viz, current_node, rec_depth, parameters):
         elif type(child) is process_tree.ProcessTree:
             condition_wo_operator = child.operator == tree_constants.EXCLUSIVE_OPERATOR and len(
                 child.children) == 1 and type(
-                child.children[0]) is process_tree.PT_Transition
+                child.children[0]) is process_tree.PTTransition
             if condition_wo_operator:
                 childchild = child.children[0]
                 viz.attr('node', shape='box', fixedsize='true', width=parameters["box_width"], fontsize=parameters["box_font_size"])

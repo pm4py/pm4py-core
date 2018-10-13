@@ -25,7 +25,7 @@ def export_log_as_string(log, variant="etree", parameters=None):
     """
     return VERSIONS_STRING[variant](log, parameters=parameters)
 
-def export_log(log, outputFilePath, variant="etree", parameters=None):
+def export_log(log, output_file_path, variant="etree", parameters=None):
     """
     Factory method to export a XES from an trace log
 
@@ -33,7 +33,7 @@ def export_log(log, outputFilePath, variant="etree", parameters=None):
     -----------
     log
         Trace log
-    outputFilePath
+    output_file_path
         Output file path
     variant
         Selected variant of the algorithm
@@ -43,11 +43,11 @@ def export_log(log, outputFilePath, variant="etree", parameters=None):
     """
     if parameters is None:
         parameters = {}
-    VERSIONS[variant](log, outputFilePath, parameters=parameters)
+    VERSIONS[variant](log, output_file_path, parameters=parameters)
     if "compress" in parameters and parameters["compress"]:
-        compression.compress(outputFilePath)
+        compression.compress(output_file_path)
 
-def apply(log, outputFilePath, variant="etree", parameters=None):
+def apply(log, output_file_path, variant="etree", parameters=None):
     """
     Factory method to export a XES from an trace log
 
@@ -55,7 +55,7 @@ def apply(log, outputFilePath, variant="etree", parameters=None):
     -----------
     log
         Trace log
-    outputFilePath
+    output_file_path
         Output file path
     variant
         Selected variant of the algorithm
@@ -63,4 +63,4 @@ def apply(log, outputFilePath, variant="etree", parameters=None):
         Parameters of the algorithm:
             compress -> Indicates that the XES file must be compressed
     """
-    export_log(log, outputFilePath, variant=variant, parameters=parameters)
+    export_log(log, output_file_path, variant=variant, parameters=parameters)

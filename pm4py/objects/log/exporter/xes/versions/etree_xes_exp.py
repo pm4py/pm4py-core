@@ -16,39 +16,39 @@ TYPE_CORRESPONDENCE = {
 DEFAULT_TYPE = xes_util.TAG_STRING
 
 
-def get_XES_attr_type(attrType):
+def get_XES_attr_type(attr_type):
     """
     Transform a Python attribute type (e.g. str, datetime) into a XES attribute type (e.g. string, date)
 
     Parameters
     ----------
-    attrType:
+    attr_type:
         Python attribute type
     """
-    if attrType in TYPE_CORRESPONDENCE:
-        attrTypeXES = TYPE_CORRESPONDENCE[attrType]
+    if attr_type in TYPE_CORRESPONDENCE:
+        attr_type_xes = TYPE_CORRESPONDENCE[attr_type]
     else:
-        attrTypeXES = DEFAULT_TYPE
-    return attrTypeXES
+        attr_type_xes = DEFAULT_TYPE
+    return attr_type_xes
 
 
-def get_XES_attr_value(attrValue, attrTypeXES):
+def get_XES_attr_value(attr_value, attr_type_xes):
     """
     Transform an attribute value from Python format to XES format (the type is provided as argument)
 
     Parameters
     ----------
-    attrValue:
+    attr_value:
         XES attribute value
-    attrTypeXES:
+    attr_type_xes:
         XES attribute type
 
     """
-    if attrTypeXES == xes_util.TAG_DATE:
-        defaultDateRepr = attrValue.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + attrValue.strftime('%z')[
-                                                                            0:3] + ":" + attrValue.strftime('%z')[3:5]
-        return defaultDateRepr.replace(" ", "T")
-    return str(attrValue)
+    if attr_type_xes == xes_util.TAG_DATE:
+        default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + attr_value.strftime('%z')[
+                                                                            0:3] + ":" + attr_value.strftime('%z')[3:5]
+        return default_date_repr.replace(" ", "T")
+    return str(attr_value)
 
 
 def export_attributes(log, root):
@@ -79,12 +79,12 @@ def export_extensions(log, root):
 
     """
     for ext in log.extensions.keys():
-        extValue = log.extensions[ext]
-        logExtension = etree.SubElement(root, xes_util.TAG_EXTENSION)
-        if not ext is None and not extValue[xes_util.KEY_PREFIX] is None and not extValue[xes_util.KEY_URI] is None:
-            logExtension.set(xes_util.KEY_NAME, ext)
-            logExtension.set(xes_util.KEY_PREFIX, extValue[xes_util.KEY_PREFIX])
-            logExtension.set(xes_util.KEY_URI, extValue[xes_util.KEY_URI])
+        ext_value = log.extensions[ext]
+        log_extension = etree.SubElement(root, xes_util.TAG_EXTENSION)
+        if not ext is None and not ext_value[xes_util.KEY_PREFIX] is None and not ext_value[xes_util.KEY_URI] is None:
+            log_extension.set(xes_util.KEY_NAME, ext)
+            log_extension.set(xes_util.KEY_PREFIX, ext_value[xes_util.KEY_PREFIX])
+            log_extension.set(xes_util.KEY_URI, ext_value[xes_util.KEY_URI])
 
 
 def export_globals(log, root):
@@ -100,9 +100,9 @@ def export_globals(log, root):
 
     """
     for glob in log.omni_present.keys():
-        globEls = log.omni_present[glob]
-        xesGlobal = etree.SubElement(root, xes_util.TAG_GLOBAL)
-        export_attributes_element(globEls, xesGlobal)
+        glob_els = log.omni_present[glob]
+        xes_global = etree.SubElement(root, xes_util.TAG_GLOBAL)
+        export_attributes_element(glob_els, xes_global)
 
 
 def export_classifiers(log, root):
@@ -118,53 +118,53 @@ def export_classifiers(log, root):
 
     """
     for clas in log.classifiers.keys():
-        clasValue = log.classifiers[clas]
+        clas_value = log.classifiers[clas]
         classifier = etree.SubElement(root, xes_util.TAG_CLASSIFIER)
         classifier.set(xes_util.KEY_NAME, clas)
-        classifier.set(xes_util.KEY_KEYS, " ".join(clasValue))
+        classifier.set(xes_util.KEY_KEYS, " ".join(clas_value))
 
 
-def export_attributes_element(logElement, xmlElement):
+def export_attributes_element(log_element, xml_element):
     """
     Export attributes related to a single element
 
     Parameters
     ----------
-    logElement:
+    log_element:
         Element in trace log (event, trace ...)
-    xmlElement:
+    xml_element:
         XML element
     """
-    if hasattr(logElement, "attributes"):
-        logElement = logElement.attributes
+    if hasattr(log_element, "attributes"):
+        log_element = log_element.attributes
 
-    for attr in logElement:
+    for attr in log_element:
         if attr is not None:
-            attrType = type(logElement[attr]).__name__
-            attrTypeXES = get_XES_attr_type(attrType)
-            if attrType is not None and attrTypeXES is not None:
-                if attrTypeXES == xes_util.TAG_LIST:
-                    if logElement[attr]['value'] is None:
-                        thisAttribute = etree.SubElement(xmlElement, attrTypeXES)
-                        thisAttribute.set(xes_util.KEY_KEY, attr)
-                        thisAttributeValues = etree.SubElement(thisAttribute, "values")
-                        export_attributes_element(logElement[attr]['children'], thisAttributeValues)
+            attr_type = type(log_element[attr]).__name__
+            attr_type_xes = get_XES_attr_type(attr_type)
+            if attr_type is not None and attr_type_xes is not None:
+                if attr_type_xes == xes_util.TAG_LIST:
+                    if log_element[attr]['value'] is None:
+                        this_attribute = etree.SubElement(xml_element, attr_type_xes)
+                        this_attribute.set(xes_util.KEY_KEY, attr)
+                        this_attribute_values = etree.SubElement(this_attribute, "values")
+                        export_attributes_element(log_element[attr]['children'], this_attribute_values)
                     else:
-                        attrType = type(logElement[attr]['value']).__name__
-                        attrTypeXES = get_XES_attr_type(attrType)
-                        if attrType is not None and attrTypeXES is not None:
-                            attrValue = logElement[attr]['value']
-                            if attrValue is not None:
-                                thisAttribute = etree.SubElement(xmlElement, attrTypeXES)
-                                thisAttribute.set(xes_util.KEY_KEY, attr)
-                                thisAttribute.set(xes_util.KEY_VALUE, str(logElement[attr]['value']))
-                                export_attributes_element(logElement[attr]['children'], thisAttribute)
+                        attr_type = type(log_element[attr]['value']).__name__
+                        attr_type_xes = get_XES_attr_type(attr_type)
+                        if attr_type is not None and attr_type_xes is not None:
+                            attr_value = log_element[attr]['value']
+                            if attr_value is not None:
+                                this_attribute = etree.SubElement(xml_element, attr_type_xes)
+                                this_attribute.set(xes_util.KEY_KEY, attr)
+                                this_attribute.set(xes_util.KEY_VALUE, str(log_element[attr]['value']))
+                                export_attributes_element(log_element[attr]['children'], this_attribute)
                 else:
-                    attrValue = get_XES_attr_value(logElement[attr], attrTypeXES)
-                    if attrValue is not None:
-                        thisAttribute = etree.SubElement(xmlElement, attrTypeXES)
-                        thisAttribute.set(xes_util.KEY_KEY, attr)
-                        thisAttribute.set(xes_util.KEY_VALUE, str(attrValue))
+                    attr_value = get_XES_attr_value(log_element[attr], attr_type_xes)
+                    if attr_value is not None:
+                        this_attribute = etree.SubElement(xml_element, attr_type_xes)
+                        this_attribute.set(xes_util.KEY_KEY, attr)
+                        this_attribute.set(xes_util.KEY_VALUE, str(attr_value))
 
 
 def export_traces_events(tr, trace):
@@ -263,7 +263,7 @@ def export_log_as_string(log, parameters=None):
     return etree.tostring(tree, xml_declaration=True, encoding="utf-8", pretty_print=True)
 
 
-def export_log(log, outputFilePath, parameters=None):
+def export_log(log, output_file_path, parameters=None):
     """
     Export XES log from a PM4PY trace log
 
@@ -271,7 +271,7 @@ def export_log(log, outputFilePath, parameters=None):
     ----------
     log: :class:`pm4py.log.log.TraceLog`
         PM4PY trace log
-    outputFilePath:
+    output_file_path:
         Output file path
     parameters
         Parameters of the algorithm
@@ -283,4 +283,4 @@ def export_log(log, outputFilePath, parameters=None):
     # Gets the XML tree to export
     tree = export_log_tree(log)
     # Effectively do the export of the event log
-    tree.write(outputFilePath, pretty_print=True, xml_declaration=True, encoding="utf-8")
+    tree.write(output_file_path, pretty_print=True, xml_declaration=True, encoding="utf-8")

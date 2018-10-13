@@ -131,7 +131,7 @@ def get_variants_sorted_by_count(variants):
     var_count = sorted(var_count, key=lambda x: x[1], reverse=True)
     return var_count
 
-def filter_log_by_variants_percentage(trace_log, variants, variantPercentage=0.0):
+def filter_log_by_variants_percentage(trace_log, variants, variants_percentage=0.0):
     """
     Filter the log by variants percentage
 
@@ -141,7 +141,7 @@ def filter_log_by_variants_percentage(trace_log, variants, variantPercentage=0.0
         Trace log
     variants
         Dictionary with variant as the key and the list of traces as the value
-    variantPercentage
+    variants_percentage
         Percentage of variants that should be kept (the most common variant is always kept)
 
     Returns
@@ -159,7 +159,7 @@ def filter_log_by_variants_percentage(trace_log, variants, variantPercentage=0.0
         variant = variant_count[i][0]
         varcount = variant_count[i][1]
         percentage_already_added = already_added_sum / no_of_traces
-        if already_added_sum == 0 or percentage_already_added < variantPercentage:
+        if already_added_sum == 0 or percentage_already_added < variants_percentage:
             for trace in variants[variant]:
                 filtered_log.append(trace)
             already_added_sum = already_added_sum + varcount
@@ -167,7 +167,7 @@ def filter_log_by_variants_percentage(trace_log, variants, variantPercentage=0.0
 
     return filtered_log
 
-def find_auto_threshold(trace_log, variants, decreasingFactor):
+def find_auto_threshold(trace_log, variants, decreasing_factor):
     """
     Find automatically variants filtering threshold
     based on specified decreasing factor
@@ -178,7 +178,7 @@ def find_auto_threshold(trace_log, variants, decreasingFactor):
         Trace log
     variants
         Dictionary with variant as the key and the list of traces as the value
-    decreasingFactor
+    decreasing_factor
         Decreasing factor (stops the algorithm when the next variant by occurrence is below this factor in comparison to previous)
     
     Returns
@@ -190,15 +190,15 @@ def find_auto_threshold(trace_log, variants, decreasingFactor):
     variant_count = get_variants_sorted_by_count(variants)
     already_added_sum = 0
     
-    prevVarCount = -1
+    prev_var_count = -1
     i = 0
     while i < len(variant_count):
         variant = variant_count[i][0]
         varcount = variant_count[i][1]
         percentage_already_added = already_added_sum / no_of_traces
-        if already_added_sum == 0 or varcount > decreasingFactor * prevVarCount:
+        if already_added_sum == 0 or varcount > decreasing_factor * prev_var_count:
             already_added_sum = already_added_sum + varcount
-        prevVarCount = varcount
+        prev_var_count = varcount
         i = i + 1
     
     return percentage_already_added
@@ -225,11 +225,11 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
         parameters = {}
 
     attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasingFactor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    decreasing_factor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:
         variants = get_variants(trace_log, parameters=parameters_variants)
-    variantsPercentage = find_auto_threshold(trace_log, variants, decreasingFactor)
-    filteredLog = filter_log_by_variants_percentage(trace_log, variants, variantsPercentage)
-    return filteredLog
+    variants_percentage = find_auto_threshold(trace_log, variants, decreasing_factor)
+    filtered_log = filter_log_by_variants_percentage(trace_log, variants, variants_percentage)
+    return filtered_log

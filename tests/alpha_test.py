@@ -18,14 +18,14 @@ import logging
 
 
 class AlphaMinerTest(unittest.TestCase):
-    def obtainPetriNetThroughAlphaMiner(self, logName):
-        if ".xes" in logName:
-            traceLog = xes_importer.import_log(logName)
+    def obtainPetriNetThroughAlphaMiner(self, log_name):
+        if ".xes" in log_name:
+            trace_log = xes_importer.import_log(log_name)
         else:
-            eventLog = csv_importer.import_log(logName)
-            traceLog = log_transform.transform_event_log_to_trace_log(eventLog)
-        net, marking, fmarking = alpha_factory.apply(traceLog)
-        return traceLog, net, marking, fmarking
+            event_log = csv_importer.import_log(log_name)
+            trace_log = log_transform.transform_event_log_to_trace_log(event_log)
+        net, marking, fmarking = alpha_factory.apply(trace_log)
+        return trace_log, net, marking, fmarking
 
     def test_applyAlphaMinerToXES(self):
         # calculate and compare Petri nets obtained on the same log to verify that instances
@@ -94,11 +94,11 @@ class AlphaMinerTest(unittest.TestCase):
         logs = os.listdir(PROBLEMATIC_XES_DIR)
         for log in logs:
             try:
-                logFullPath = os.path.join(PROBLEMATIC_XES_DIR, log)
+                log_full_path = os.path.join(PROBLEMATIC_XES_DIR, log)
                 # calculate and compare Petri nets obtained on the same log to verify that instances
                 # are working correctly
-                log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughAlphaMiner(logFullPath)
-                log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughAlphaMiner(logFullPath)
+                log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughAlphaMiner(log_full_path)
+                log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughAlphaMiner(log_full_path)
                 self.assertEqual(len(net1.places), len(net2.places))
                 self.assertEqual(len(net1.transitions), len(net2.transitions))
                 self.assertEqual(len(net1.arcs), len(net2.arcs))

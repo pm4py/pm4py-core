@@ -20,7 +20,7 @@ class NoConceptNameException(Exception):
         self.message = message
 
 
-def add_missingTokens(t, marking):
+def add_missing_tokens(t, marking):
     """
     Adds missing tokens needed to activate a transition
 
@@ -526,7 +526,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         if stop_immediately_unfit:
                             missing = missing + 1
                             break
-                        [m, tokens_added] = add_missingTokens(t, marking)
+                        [m, tokens_added] = add_missing_tokens(t, marking)
                         missing = missing + m
                         if enable_place_fitness:
                             for place in tokens_added.keys():

@@ -272,8 +272,8 @@ class Subtree(object):
 
             if self.activities_dir_list[0][1] > shared_constants.LOOP_CONST_1:
                 if self.activities_dir_list[0][0] in self.ingoing:
-                    activInput = list(self.ingoing[self.activities_dir_list[0][0]])
-                    for act in activInput:
+                    activ_input = list(self.ingoing[self.activities_dir_list[0][0]])
+                    for act in activ_input:
                         if not act == self.activities_dir_list[0][0] and self.activities_direction[
                             act] < shared_constants.LOOP_CONST_2:
                             set2.add(act)
@@ -352,16 +352,16 @@ class Subtree(object):
                     par_cut[1] = self.add_to_most_probable_component(par_cut[1], act, self.ingoing, self.outgoing)
 
                 for comp in par_cut[1]:
-                    newDfg = filter_dfg_on_act(self.dfg, comp)
+                    new_dfg = filter_dfg_on_act(self.dfg, comp)
                     self.detected_cut = "parallel"
-                    self.children.append(Subtree(newDfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
+                    self.children.append(Subtree(new_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
                                                  noise_threshold=self.noise_threshold))
             else:
                 if conc_cut[0]:
                     for comp in conc_cut[1]:
-                        newDfg = filter_dfg_on_act(self.dfg, comp)
+                        new_dfg = filter_dfg_on_act(self.dfg, comp)
                         self.detected_cut = "concurrent"
-                        self.children.append(Subtree(newDfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
+                        self.children.append(Subtree(new_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
                                                      noise_threshold=self.noise_threshold))
                 else:
                     if seq_cut[0]:

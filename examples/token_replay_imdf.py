@@ -11,8 +11,8 @@ import time
 
 
 def execute_script():
-    logPath = "..\\tests\\input_data\\running-example.xes"
-    log = xes_importer.import_log(logPath)
+    log_path = "..\\tests\\input_data\\running-example.xes"
+    log = xes_importer.import_log(log_path)
     print("loaded log")
     net, marking, final_marking = inductive_factory.apply(log)
     for place in marking:

@@ -32,9 +32,9 @@ def filter_traces_contained(df, dt1, dt2, parameters=None):
     case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
-    groupedDf = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
-    first = groupedDf.first()
-    last = groupedDf.last()
+    grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
+    first = grouped_df.first()
+    last = grouped_df.last()
     last.columns = [str(col) + '_2' for col in last.columns]
     stacked = pd.concat([first, last], axis=1)
     stacked = stacked[stacked[timestamp_key]>dt1]
@@ -71,9 +71,9 @@ def filter_traces_intersecting(df, dt1, dt2, parameters=None):
     case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
-    groupedDf = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
-    first = groupedDf.first()
-    last = groupedDf.last()
+    grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
+    first = grouped_df.first()
+    last = grouped_df.last()
     last.columns = [str(col) + '_2' for col in last.columns]
     stacked = pd.concat([first, last], axis=1)
     stacked1 = stacked[stacked[timestamp_key]>dt1]

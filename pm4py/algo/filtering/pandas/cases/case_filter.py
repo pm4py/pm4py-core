@@ -71,17 +71,17 @@ def filter_on_case_performance(df, case_id_glue="case:concept:name", timestamp_k
     df
         Filtered dataframe
     """
-    groupedDf = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
-    startEvents = groupedDf.first()
-    endEvents = groupedDf.last()
-    endEvents.columns = [str(col) + '_2' for col in endEvents.columns]
-    stackedDf = pd.concat([startEvents, endEvents], axis=1)
-    stackedDf['caseDuration'] = stackedDf[timestamp_key + "_2"] - stackedDf[timestamp_key]
-    stackedDf['caseDuration'] = stackedDf['caseDuration'].astype('timedelta64[s]')
-    stackedDf = stackedDf[stackedDf['caseDuration'] < max_case_performance]
-    stackedDf = stackedDf[stackedDf['caseDuration'] > min_case_performance]
+    grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
+    start_events = grouped_df.first()
+    end_events = grouped_df.last()
+    end_events.columns = [str(col) + '_2' for col in end_events.columns]
+    stacked_df = pd.concat([start_events, end_events], axis=1)
+    stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
+    stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
+    stacked_df = stacked_df[stacked_df['caseDuration'] < max_case_performance]
+    stacked_df = stacked_df[stacked_df['caseDuration'] > min_case_performance]
     i1 = df.set_index(case_id_glue).index
-    i2 = stackedDf.set_index(case_id_glue).index
+    i2 = stacked_df.set_index(case_id_glue).index
     return df[i1.isin(i2)]
 
 def apply(df, parameters=None):

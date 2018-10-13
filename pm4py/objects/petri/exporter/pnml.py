@@ -30,43 +30,43 @@ def export_petri_tree(petrinet, marking, final_marking=None):
     net.set("type","http://www.pnml.org/version-2009/grammar/pnmlcoremodel")
     page = etree.SubElement(net, "page")
     page.set("id","n0")
-    placesMap = {}
+    places_map = {}
     for place in petrinet.places:
-        placesMap[place] = place.name
+        places_map[place] = place.name
         pl = etree.SubElement(page, "place")
         pl.set("id", place.name)
-        plName = etree.SubElement(pl,"name")
-        plNameText = etree.SubElement(plName,"text")
-        plNameText.text = place.name
+        pl_name = etree.SubElement(pl,"name")
+        pl_name_text = etree.SubElement(pl_name,"text")
+        pl_name_text.text = place.name
         if place in marking:
-            plInitialMarking = etree.SubElement(pl,"initialMarking")
-            plInitialMarkingText = etree.SubElement(plInitialMarking,"text")
-            plInitialMarkingText.text = str(marking[place])
-    transitionsMap = {}
+            pl_initial_marking = etree.SubElement(pl,"initialMarking")
+            pl_initial_marking_text = etree.SubElement(pl_initial_marking,"text")
+            pl_initial_marking_text.text = str(marking[place])
+    transitions_map = {}
     for transition in petrinet.transitions:
-        transitionsMap[transition] = transition.name
+        transitions_map[transition] = transition.name
         trans = etree.SubElement(page, "transition")
         trans.set("id", transition.name)
-        transName = etree.SubElement(trans, "name")
-        transText = etree.SubElement(transName, "text")
+        trans_name = etree.SubElement(trans, "name")
+        trans_text = etree.SubElement(trans_name, "text")
         if transition.label is not None:
-            transText.text = transition.label
+            trans_text.text = transition.label
         else:
-            transText.text = transition.name
-            toolSpecific = etree.SubElement(trans, "toolspecific")
-            toolSpecific.set("tool", "ProM")
-            toolSpecific.set("version", "6.4")
-            toolSpecific.set("activity", "$invisible$")
-            toolSpecific.set("localNodeID", str(uuid.uuid4()))
+            trans_text.text = transition.name
+            tool_specific = etree.SubElement(trans, "toolspecific")
+            tool_specific.set("tool", "ProM")
+            tool_specific.set("version", "6.4")
+            tool_specific.set("activity", "$invisible$")
+            tool_specific.set("localNodeID", str(uuid.uuid4()))
     for arc in petrinet.arcs:
-        arcEl = etree.SubElement(page, "arc")
-        arcEl.set("id", str(hash(arc)))
+        arc_el = etree.SubElement(page, "arc")
+        arc_el.set("id", str(hash(arc)))
         if type(arc.source) is pm4py.objects.petri.petrinet.PetriNet.Place:
-            arcEl.set("source", str(placesMap[arc.source]))
-            arcEl.set("target", str(transitionsMap[arc.target]))
+            arc_el.set("source", str(places_map[arc.source]))
+            arc_el.set("target", str(transitions_map[arc.target]))
         else:
-            arcEl.set("source", str(transitionsMap[arc.source]))
-            arcEl.set("target", str(placesMap[arc.target]))
+            arc_el.set("source", str(transitions_map[arc.source]))
+            arc_el.set("target", str(places_map[arc.target]))
 
     if len(final_marking) > 0:
         finalmarkings = etree.SubElement(net, "finalmarkings")

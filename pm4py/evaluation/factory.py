@@ -50,9 +50,9 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     simplicity_weight = simplicity_weight / sum_of_weights
     generalization_weight = generalization_weight / sum_of_weights
 
-    parameters_TR = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+    parameters_tr = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
 
-    aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_TR)
+    aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_tr)
 
     parameters = {
         "activity_key": activity_key
@@ -63,14 +63,14 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     generalization = generalization_token_based.get_generalization(net, aligned_traces)
     simplicity = simplicity_arc_degree.apply(net)
 
-    metricsAverageWeight = fitness_weight * fitness["averageFitness"] + precision_weight * precision\
+    metrics_average_weight = fitness_weight * fitness["averageFitness"] + precision_weight * precision\
                            + generalization_weight * generalization + simplicity_weight * simplicity
     dictionary = {
         "fitness": fitness,
         "precision": precision,
         "generalization": generalization,
         "simplicity": simplicity,
-        "metricsAverageWeight": metricsAverageWeight
+        "metricsAverageWeight": metrics_average_weight
     }
 
     return dictionary

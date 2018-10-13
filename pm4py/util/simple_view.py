@@ -39,15 +39,15 @@ def apply(original_log, parameters=None):
         parameters = {}
 
     activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else None
-    discoveryAlgorithm = parameters["algorithm"] if "algorithm" in parameters else "inductive"
-    replayMeasure = parameters["decoration"] if "decoration" in parameters else "frequency"
-    imageFormat = parameters["format"] if "format" in parameters else "png"
-    decreasingFactor = parameters["simplicity"] if "simplicity" in parameters else filtering_constants.DECREASING_FACTOR
-    replayEnabled = parameters["replayEnabled"] if "replayEnabled" in parameters else True
-    if "frequency" in replayMeasure:
-        aggregationMeasure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "min"
-    elif "performance" in replayMeasure:
-        aggregationMeasure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "mean"
+    discovery_algorithm = parameters["algorithm"] if "algorithm" in parameters else "inductive"
+    replay_measure = parameters["decoration"] if "decoration" in parameters else "frequency"
+    image_format = parameters["format"] if "format" in parameters else "png"
+    decreasing_factor = parameters["simplicity"] if "simplicity" in parameters else filtering_constants.DECREASING_FACTOR
+    replay_enabled = parameters["replayEnabled"] if "replayEnabled" in parameters else True
+    if "frequency" in replay_measure:
+        aggregation_measure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "min"
+    elif "performance" in replay_measure:
+        aggregation_measure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "mean"
 
     original_log, classifier_key = insert_classifier.search_and_insert_activity_classifier_attribute(original_log,
                                                                                                      force_activity_transition_insertion=True)
@@ -56,24 +56,24 @@ def apply(original_log, parameters=None):
     if activity_key is None:
         activity_key = xes_util.DEFAULT_NAME_KEY
 
-    parameters_viz = {"format": imageFormat, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "aggregationMeasure": aggregationMeasure}
+    parameters_viz = {"format": image_format, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "aggregationMeasure": aggregation_measure}
     # apply automatically a filter
     parameters_autofilter = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
                              constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key,
-                             "decreasingFactor": decreasingFactor}
+                             "decreasingFactor": decreasing_factor}
 
     log = auto_filter.apply_auto_filter(copy(original_log), parameters=parameters_autofilter)
     # apply a process discovery algorithm
-    parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "aggregationMeasure": aggregationMeasure}
-    if discoveryAlgorithm == "tsystem" or discoveryAlgorithm == "tsystem2":
+    parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "aggregationMeasure": aggregation_measure}
+    if discovery_algorithm == "tsystem" or discovery_algorithm == "tsystem2":
         parameters_discovery[PARAM_KEY_WINDOW] = 2
         ts_from_log = ts_factory.apply(log, parameters=parameters_discovery)
-        gviz = ts_vis_factory.apply(ts_from_log, variant=replayMeasure, parameters=parameters_viz)
-    elif discoveryAlgorithm == "tsystem3":
+        gviz = ts_vis_factory.apply(ts_from_log, variant=replay_measure, parameters=parameters_viz)
+    elif discovery_algorithm == "tsystem3":
         parameters_discovery[PARAM_KEY_WINDOW] = 3
         ts_from_log = ts_factory.apply(log, parameters=parameters_discovery)
-        gviz = ts_vis_factory.apply(ts_from_log, variant=replayMeasure, parameters=parameters_viz)
-    elif discoveryAlgorithm == "dfg":
+        gviz = ts_vis_factory.apply(ts_from_log, variant=replay_measure, parameters=parameters_viz)
+    elif discovery_algorithm == "dfg":
         # gets the number of occurrences of the single attributes in the filtered log
         filtered_log_activities_count = activities_module.get_attribute_values(log, activity_key, parameters=parameters_autofilter)
         # gets an intermediate log that is the original log restricted to the list
@@ -84,21 +84,21 @@ def apply(original_log, parameters=None):
         # gets the number of occurrences of the single attributes in the intermediate log
         activities_count = activities_module.get_attribute_values(intermediate_log, activity_key, parameters=parameters_autofilter)
         # calculate DFG of the filtered log and of the intermediate log
-        dfg_filtered_log = dfg_factory.apply(log, parameters=parameters_discovery, variant=replayMeasure)
+        dfg_filtered_log = dfg_factory.apply(log, parameters=parameters_discovery, variant=replay_measure)
         dfg_intermediate_log = dfg_factory.apply(intermediate_log, parameters=parameters_discovery,
-                                                 variant=replayMeasure)
+                                                 variant=replay_measure)
         # replace edges values in the filtered DFG from the one found in the intermediate log
         dfg_filtered_log = dfg_replacement.replace_values(dfg_filtered_log, dfg_intermediate_log)
-        gviz = dfg_vis_factory.apply(dfg_filtered_log, activities_count=activities_count, variant=replayMeasure,
+        gviz = dfg_vis_factory.apply(dfg_filtered_log, activities_count=activities_count, variant=replay_measure,
                                      parameters=parameters_viz)
     else:
-        if discoveryAlgorithm == "inductive":
+        if discovery_algorithm == "inductive":
             net, initial_marking, final_marking = inductive_factory.apply(log, parameters=parameters_discovery)
-        elif discoveryAlgorithm == "alpha":
+        elif discovery_algorithm == "alpha":
             net, initial_marking, final_marking = alpha_factory.apply(log, parameters=parameters_discovery)
-        if replayEnabled:
+        if replay_enabled:
             # do the replay
-            gviz = pn_vis_factory.apply(net, initial_marking, final_marking, log=original_log, variant=replayMeasure,
+            gviz = pn_vis_factory.apply(net, initial_marking, final_marking, log=original_log, variant=replay_measure,
                                         parameters=parameters_viz)
         else:
             # return the diagram in base64
