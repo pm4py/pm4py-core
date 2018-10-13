@@ -23,7 +23,7 @@ def execute_script():
     time0 = time.time()
     print("started token replay")
     aligned_traces = token_replay.apply(log, net, marking, final_marking)
-    fit_traces = [x for x in aligned_traces if x['tFit']]
+    fit_traces = [x for x in aligned_traces if x['trace_is_fit']]
     perc_fitness = 0.00
     if len(aligned_traces) > 0:
         perc_fitness = len(fit_traces) / len(aligned_traces)

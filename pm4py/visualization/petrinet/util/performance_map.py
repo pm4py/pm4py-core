@@ -112,7 +112,7 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
 
     for variant in variants_idx:
         first_trace = log[variants_idx[variant][0]]
-        actTrans = aligned_traces[variants_idx[variant][0]]["actTrans"]
+        actTrans = aligned_traces[variants_idx[variant][0]]["activated_transitions"]
         annotations_placesTrans, annotations_arcs = calculate_annotation_for_trace(first_trace, net, initial_marking, actTrans, activity_key)
 
         for el in annotations_placesTrans:

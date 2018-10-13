@@ -20,8 +20,8 @@ def evaluate(aligned_traces, parameters=None):
         Containing two keys (percFitTraces and averageFitness)
     """
     noTraces = len(aligned_traces)
-    fitTraces = len([x for x in aligned_traces if x["tFit"]])
-    sumOfFitness = sum([x["tValue"] for x in aligned_traces])
+    fitTraces = len([x for x in aligned_traces if x["trace_is_fit"]])
+    sumOfFitness = sum([x["trace_fitness"] for x in aligned_traces])
     percFitTraces = 0.0
     averageFitness = 0.0
     if noTraces > 0:
