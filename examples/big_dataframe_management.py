@@ -1,10 +1,4 @@
-import os, sys, inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-import time
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
@@ -15,6 +9,8 @@ from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.algo.filtering.pandas.auto_filter import auto_filter
 from pm4py.util import constants
 from pm4py.algo.filtering.dfg import dfg_filtering
+import os
+import time
 
 SEP = ","
 QUOTECHAR = None

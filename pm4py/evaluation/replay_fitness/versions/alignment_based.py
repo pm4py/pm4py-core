@@ -1,9 +1,10 @@
 import multiprocessing as mp
 
 import pm4py
-from pm4py.objects import log as log_lib
-from pm4py.algo.conformance import alignments
 from pm4py import util as pmutil
+from pm4py.algo.conformance import alignments
+from pm4py.objects import log as log_lib
+
 
 def evaluate(aligned_traces, parameters=None):
     """
@@ -40,6 +41,7 @@ def evaluate(aligned_traces, parameters=None):
 
     return {"percFitTraces": perc_fit_traces, "averageFitness": average_fitness}
 
+
 def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     if parameters is None:
         parameters = {}
@@ -53,6 +55,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
             lambda tr: (tr, petri_net, initial_marking, final_marking, best_worst_costs, activity_key), log))
 
         return evaluate(alignment_result)
+
 
 def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, activity_key):
     '''
