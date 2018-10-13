@@ -3,7 +3,7 @@ import copy
 
 
 def is_enabled(t, pn, m):
-    '''
+    """
     Verifies whether a given transition is enabled in a given Petri net and marking
 
     Parameters
@@ -15,7 +15,7 @@ def is_enabled(t, pn, m):
     Returns
     -------
     :return: true if enabled, false otherwise
-    '''
+    """
 
     if t not in pn.transitions:
         return False
@@ -26,7 +26,7 @@ def is_enabled(t, pn, m):
     return True
 
 def execute(t, pn, m):
-    '''
+    """
     Executes a given transition in a given Petri net and Marking
 
     Parameters
@@ -38,7 +38,7 @@ def execute(t, pn, m):
     Returns
     -------
     :return: newly reached marking if :param t: is enabled, None otherwise
-    '''
+    """
 
     if not is_enabled(t, pn, m):
         return None
@@ -80,7 +80,7 @@ def weak_execute(t, pn, m):
 
 
 def enabled_transitions(pn, m):
-    '''
+    """
     Returns a set of enabled transitions in a Petri net and given marking
 
     Parameters
@@ -91,7 +91,7 @@ def enabled_transitions(pn, m):
     Returns
     -------
     :return: set of enabled transitions
-    '''
+    """
     enabled = set()
     for t in pn.transitions:
         if is_enabled(t, pn, m):

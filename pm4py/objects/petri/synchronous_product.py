@@ -2,7 +2,7 @@ from pm4py.objects import petri
 
 
 def construct(pn1, im1, fm1, pn2, im2, fm2, skip):
-    '''
+    """
     Constructs the synchronous product net of two given Petri nets.
 
 
@@ -17,7 +17,7 @@ def construct(pn1, im1, fm1, pn2, im2, fm2, skip):
     Returns
     -------
     :return: Synchronous product net and associated marking labels are of the form (a,>>)
-    '''
+    """
     sync_net = petri.petrinet.PetriNet('synchronous_product_net of %s and %s' % (pn1.name, pn2.name))
     t1_map, p1_map = __copy_into(pn1, sync_net, True, skip)
     t2_map, p2_map = __copy_into(pn2, sync_net, False, skip)
@@ -51,7 +51,7 @@ def construct(pn1, im1, fm1, pn2, im2, fm2, skip):
 
 
 def construct_cost_aware(pn1, im1, fm1, pn2, im2, fm2, skip, pn1_costs, pn2_costs, sync_costs):
-    '''
+    """
     Constructs the synchronous product net of two given Petri nets.
 
 
@@ -69,7 +69,7 @@ def construct_cost_aware(pn1, im1, fm1, pn2, im2, fm2, skip, pn1_costs, pn2_cost
     Returns
     -------
     :return: Synchronous product net and associated marking labels are of the form (a,>>)
-    '''
+    """
     sync_net = petri.petrinet.PetriNet('synchronous_product_net of %s and %s' % (pn1.name, pn2.name))
     t1_map, p1_map = __copy_into(pn1, sync_net, True, skip)
     t2_map, p2_map = __copy_into(pn2, sync_net, False, skip)

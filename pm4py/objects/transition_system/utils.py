@@ -2,7 +2,7 @@ from pm4py.objects.transition_system import transition_system
 
 
 def add_arc_from_to(name, fr, to, ts, data=None):
-    '''
+    """
     Adds a transition from a state to another state in some transition system.
     Assumes from and to are in the transition system!
 
@@ -16,7 +16,7 @@ def add_arc_from_to(name, fr, to, ts, data=None):
     Returns
     -------
     None
-    '''
+    """
     tran = transition_system.TransitionSystem.Transition(name, fr, to, data)
     ts.transitions.add(tran)
     fr.outgoing.add(tran)
@@ -24,7 +24,7 @@ def add_arc_from_to(name, fr, to, ts, data=None):
 
 
 def remove_arc_from_to(name, fr, to, ts):
-    '''
+    """
     Removes a transition with a specific name from a state to another state in some transition system.
     Assumes from and to are in the transition system!
 
@@ -38,14 +38,14 @@ def remove_arc_from_to(name, fr, to, ts):
     Returns
     -------
     None
-    '''
+    """
     ts.transitions = [t for t in ts.transitions if t.name != name]
     fr.outgoing = [t for t in fr.outgoing if t.name != name]
     to.incoming = [t for t in to.incoming if t.name != name]
 
 
 def remove_all_arcs_from_to(fr, to, ts):
-    '''
+    """
     Removes all transitions from a state to another state in some transition system.
     Assumes from and to are in the transition system!
 
@@ -58,7 +58,7 @@ def remove_all_arcs_from_to(fr, to, ts):
     Returns
     -------
     None
-    '''
+    """
     names_transitions_to_delete = [t.name for t in ts.transitions if t in fr.outgoing and t in to.incoming]
     ts.transitions = [t for t in ts.transitions if t.name not in names_transitions_to_delete]
     fr.outgoing = [t for t in fr.outgoing if t.name not in names_transitions_to_delete]
@@ -66,7 +66,7 @@ def remove_all_arcs_from_to(fr, to, ts):
 
 
 def transitive_reduction(ts):
-    '''
+    """
     Computes the transitive reduction of an acyclic transition system.
     Assumes the transition system in input to be acyclic.
 
@@ -77,7 +77,7 @@ def transitive_reduction(ts):
     Returns
     -------
     None
-    '''
+    """
 
     def check(state, child, done):
         if child not in done:

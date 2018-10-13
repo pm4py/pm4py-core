@@ -3,7 +3,7 @@ from pm4py import util as pmutil
 from pm4py.objects.log.util import xes as xes_util
 
 def apply(trace_log, parameters=None):
-    '''
+    """
     Counts the number of directly follows occurrences, i.e. of the form <...a,b...>, in an event log.
 
     Parameters
@@ -18,7 +18,7 @@ def apply(trace_log, parameters=None):
     -------
     dfg
         DFG graph
-    '''
+    """
     if parameters is None:
         parameters = {}
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:

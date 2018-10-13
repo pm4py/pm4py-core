@@ -1,4 +1,4 @@
-'''
+"""
 This module implements the \"classic\" alpha miner [1]_.
 It converts the input event log, which should be a trace log, to the (well-known) directly follows abstraction.
 For example, when we have a trace of the form (control-flow perspective) <...a,b,...>, we observe the relation a>b, i.e.
@@ -11,7 +11,7 @@ References
     ----------
     .. [1] Wil M. P. van der Aalst et al., "Workflow Mining: Discovering Process Models from Event Logs",
       IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. `DOI <https://doi.org/10.1109/TKDE.2004.47>`_.
-'''
+"""
 
 import time
 from itertools import zip_longest
@@ -26,7 +26,7 @@ from pm4py.algo.discovery.alpha.utils import endpoints
 from pm4py.algo.discovery.dfg.utils import dfg_utils
 
 def apply(trace_log, parameters=None):
-    '''
+    """
     This method calls the \"classic\" alpha miner [1]_.
 
     Parameters
@@ -53,7 +53,7 @@ def apply(trace_log, parameters=None):
     .. [1] Wil M. P. van der Aalst et al., "Workflow Mining: Discovering Process Models from Event Logs",
       IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. `DOI <https://doi.org/10.1109/TKDE.2004.47>`_.
 
-    '''
+    """
     if parameters is None:
         parameters = {}
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:

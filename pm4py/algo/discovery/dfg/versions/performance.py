@@ -4,7 +4,7 @@ from pm4py.util import constants
 from pm4py.objects.log.util import xes
 
 def apply(trace_log, parameters=None):
-    '''
+    """
     Measure performance between couples of attributes in the DFG graph
 
     Parameters
@@ -21,7 +21,7 @@ def apply(trace_log, parameters=None):
     -------
     dfg
         DFG graph
-    '''
+    """
 
     if parameters is None:
         parameters = {}
