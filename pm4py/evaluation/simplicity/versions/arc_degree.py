@@ -16,6 +16,9 @@ def apply(petri_net, parameters=None):
     simplicity
         Simplicity measure associated to the Petri net
     """
+    if parameters is None:
+        parameters = {}
+    str(parameters)
     arc_degree = 0.0
     if len(petri_net.transitions) > 0:
         arc_degree = float(len(petri_net.places)) / float(len(petri_net.transitions))

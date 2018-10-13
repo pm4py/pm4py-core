@@ -1,5 +1,6 @@
 from pm4py.visualization.petrinet.common import visualize
 
+
 def apply(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """
     Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization method)
@@ -22,4 +23,6 @@ def apply(net, initial_marking, final_marking, log=None, aggregated_statistics=N
     viz
         Graph object
     """
+    log is None
+    aggregated_statistics is None
     return visualize.apply(net, initial_marking, final_marking, parameters=parameters)

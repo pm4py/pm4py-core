@@ -19,6 +19,9 @@ def evaluate(aligned_traces, parameters=None):
     dictionary
         Containing two keys (percFitTraces and averageFitness)
     """
+    if parameters is None:
+        parameters = {}
+    str(parameters)
     no_traces = len(aligned_traces)
     fit_traces = len([x for x in aligned_traces if x["trace_is_fit"]])
     sum_of_fitness = sum([x["trace_fitness"] for x in aligned_traces])

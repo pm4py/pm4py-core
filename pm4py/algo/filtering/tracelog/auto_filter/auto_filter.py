@@ -52,23 +52,28 @@ def apply_auto_filter(trace_log, parameters=None):
 
     filtered_log1 = attributes_filter.apply_auto_filter(trace_log, variants=variants, parameters=parameters_child)
     trace_log = None
+    trace_log is None
     gc.collect()
     variants = variants_module.get_variants(filtered_log1, parameters=parameters_child)
     filtered_log2 = paths_filter.apply_auto_filter(filtered_log1, variants=variants, parameters=parameters_child)
     filtered_log1 = None
+    filtered_log1 is None
     gc.collect()
     variants = variants_module.get_variants(filtered_log2, parameters=parameters_child)
     filtered_log3 = variants_module.apply_auto_filter(filtered_log2, variants=variants, parameters=parameters_child)
     variants = variants_module.get_variants(filtered_log3, parameters=parameters_child)
     filtered_log2 = None
+    filtered_log2 is None
     gc.collect()
     filtered_log4 = start_activities_filter.apply_auto_filter(filtered_log3, variants=variants,
                                                               parameters=parameters_child)
     filtered_log3 = None
+    filtered_log3 is None
     gc.collect()
     filtered_log5 = end_activities_filter.apply_auto_filter(filtered_log4, variants=variants,
                                                             parameters=parameters_child)
     filtered_log4 = None
+    filtered_log4 is None
     gc.collect()
 
     return filtered_log5

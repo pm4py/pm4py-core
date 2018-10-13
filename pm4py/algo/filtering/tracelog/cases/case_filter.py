@@ -98,7 +98,11 @@ def satisfy_perf(trace, inf_perf, sup_perf, timestamp_key):
     return False
 
 def apply(df, parameters=None):
+    df is None
+    parameters is None
     raise NotImplementedError("apply method not available for case filter")
 
 def apply_auto_filter(df, parameters=None):
+    df is None
+    parameters is None
     raise NotImplementedError("apply_auto_filter method not available for case filter")
