@@ -1,9 +1,10 @@
-from pm4py.objects.petri import semantics
 from copy import copy
 from threading import Thread
-from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
+
 from pm4py import util as pmutil
+from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
 from pm4py.objects.log.util import xes as xes_util
+from pm4py.objects.petri import semantics
 from pm4py.util import constants
 
 MAX_REC_DEPTH = 50
@@ -482,14 +483,14 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     while i < len(trace):
         if ENABLE_POSTFIX_CACHE and (str(trace_activities) in post_fix_caching.cache and
                                      hash(marking) in post_fix_caching.cache[str(trace_activities)]):
-            trans_to_act = post_fix_caching.cache[str(trace_activities)][hash(marking)]["transToAct"]
+            trans_to_act = post_fix_caching.cache[str(trace_activities)][hash(marking)]["trans_to_activate"]
             z = 0
             while z < len(trans_to_act):
                 t = trans_to_act[z]
                 activated_transitions.append(t)
                 z = z + 1
             used_postfix_cache = True
-            marking = post_fix_caching.cache[str(trace_activities)][hash(marking)]["finalMarking"]
+            marking = post_fix_caching.cache[str(trace_activities)][hash(marking)]["final_marking"]
             break
         else:
             prev_len_activated_transitions = len(activated_transitions)
@@ -498,10 +499,12 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                                            and trace[i - 1][activity_key] ==
                                            marking_to_activity_caching.cache[hash(marking)][trace[i][activity_key]]
                                            ["previousActivity"]):
-                this_end_marking = marking_to_activity_caching.cache[hash(marking)][trace[i][activity_key]]["endMarking"]
-                this_act_trans = marking_to_activity_caching.cache[hash(marking)][trace[i][activity_key]]["thisActTrans"]
+                this_end_marking = marking_to_activity_caching.cache[hash(marking)][trace[i][activity_key]][
+                    "end_marking"]
+                this_act_trans = marking_to_activity_caching.cache[hash(marking)][trace[i][activity_key]][
+                    "this_activated_transitions"]
                 this_vis_markings = marking_to_activity_caching.cache[hash(marking)][trace[i][activity_key]][
-                    "thisVisMarkings"]
+                    "this_visited_markings"]
                 activated_transitions = activated_transitions + this_act_trans
                 all_visited_markings = all_visited_markings + this_vis_markings
                 marking = copy(this_end_marking)
@@ -528,7 +531,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         if enable_place_fitness:
                             for place in tokens_added.keys():
                                 if place in place_fitness:
-                                    place_fitness[place]["underfedTraces"].add(trace)
+                                    place_fitness[place]["underfed_traces"].add(trace)
                     c = get_consumed_tokens(t, net)
                     p = get_produced_tokens(t, net)
                     consumed = consumed + c
@@ -609,8 +612,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             if enable_place_fitness:
                 if marking[p] > 0:
                     if p in place_fitness:
-                        if trace not in place_fitness[p]["underfedTraces"]:
-                            place_fitness[p]["overfedTraces"].add(trace)
+                        if trace not in place_fitness[p]["underfed_traces"]:
+                            place_fitness[p]["overfed_traces"].add(trace)
         remaining = remaining + marking[p]
     if consider_remaining_in_fitness:
         is_fit = (missing == 0) and (remaining == 0)
@@ -628,8 +631,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 post_fix_caching.cache[suffix] = {}
             if activating_transition_index[suffix]["marking"] not in post_fix_caching.cache[suffix]:
                 post_fix_caching.cache[suffix][activating_transition_index[suffix]["marking"]] = \
-                    {"transToAct": activated_transitions[activating_transition_index[suffix]["index"]:],
-                     "finalMarking": marking}
+                    {"trans_to_activate": activated_transitions[activating_transition_index[suffix]["index"]:],
+                     "final_marking": marking}
         for trans in activating_transition_interval:
             activity = trans[0]
             start_marking_index = trans[1]
@@ -647,8 +650,9 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         marking_to_activity_caching.cache[start_marking_hash] = {}
                     if activity not in marking_to_activity_caching.cache[start_marking_hash]:
                         marking_to_activity_caching.cache[start_marking_hash][activity] = {
-                            "startMarking": start_marking_object, "endMarking": end_marking_object,
-                            "thisActTrans": this_activated_trans, "thisVisMarkings": this_visited_markings,
+                            "start_marking": start_marking_object, "end_marking": end_marking_object,
+                            "this_activated_transitions": this_activated_trans,
+                            "this_visited_markings": this_visited_markings,
                             "previousActivity": previous_activity}
 
     return [is_fit, trace_fitness, activated_transitions, transitions_with_problems, marking_before_cleaning,
@@ -799,7 +803,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
 
     if enable_place_fitness:
         for place in net.places:
-            place_fitness_per_trace[place] = {"underfedTraces": set(), "overfedTraces": set()}
+            place_fitness_per_trace[place] = {"underfed_traces": set(), "overfed_traces": set()}
     trans_map = {}
     for t in net.transitions:
         trans_map[t.label] = t
@@ -821,12 +825,14 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                         while len(threads_keys) > 0:
                             t = threads[threads_keys[0]]
                             t.join()
-                            threads_results[threads_keys[0]] = {"tFit": copy(t.t_fit), "tValue": copy(t.t_value),
-                                                              "actTrans": copy(t.act_trans),
-                                                              "reachedMarking": copy(t.reached_marking),
-                                                              "enabledTransitionsInMarking": copy(
+                            threads_results[threads_keys[0]] = {"trace_is_fit": copy(t.t_fit),
+                                                                "trace_fitness": copy(t.t_value),
+                                                                "activated_transitions": copy(t.act_trans),
+                                                                "reached_marking": copy(t.reached_marking),
+                                                                "enabled_transitions_in_marking": copy(
                                                                   t.enabled_transitions_in_marking),
-                                                              "transWithProblems": copy(t.trans_with_problems)}
+                                                                "transitions_with_problems": copy(
+                                                                    t.trans_with_problems)}
                             del threads[threads_keys[0]]
                             del threads_keys[0]
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
@@ -844,12 +850,12 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                 while len(threads_keys) > 0:
                     t = threads[threads_keys[0]]
                     t.join()
-                    threads_results[threads_keys[0]] = {"tFit": copy(t.t_fit), "tValue": copy(t.t_value),
-                                                      "actTrans": copy(t.act_trans),
-                                                      "reachedMarking": copy(t.reached_marking),
-                                                      "enabledTransitionsInMarking": copy(
+                    threads_results[threads_keys[0]] = {"trace_is_fit": copy(t.t_fit), "trace_fitness": copy(t.t_value),
+                                                        "activated_transitions": copy(t.act_trans),
+                                                        "reached_marking": copy(t.reached_marking),
+                                                        "enabled_transitions_in_marking": copy(
                                                           t.enabled_transitions_in_marking),
-                                                      "transWithProblems": copy(t.trans_with_problems)}
+                                                        "transitions_with_problems": copy(t.trans_with_problems)}
                     del threads[threads_keys[0]]
                     del threads_keys[0]
                 for trace in log:
@@ -895,19 +901,19 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     activity_key = xes_util.DEFAULT_NAME_KEY
     variants = None
 
-    if "enable_placeFitness" in parameters:
-        enable_place_fitness = parameters["enable_placeFitness"]
+    if "enable_place_fitness" in parameters:
+        enable_place_fitness = parameters["enable_place_fitness"]
     if "consider_remaining_in_fitness" in parameters:
         consider_remaining_in_fitness = parameters["consider_remaining_in_fitness"]
-    if "tryToReachFinalMarkingThroughHidden" in parameters:
-        try_to_reach_final_marking_through_hidden = parameters["tryToReachFinalMarkingThroughHidden"]
-    if "stopImmediatelyWhenUnfit" in parameters:
-        stop_immediately_unfit = parameters["stopImmediatelyWhenUnfit"]
-    if "useHiddenTransitionsToEnableCorrespondingTransitions" in parameters:
+    if "try_to_reach_final_marking_through_hidden" in parameters:
+        try_to_reach_final_marking_through_hidden = parameters["try_to_reach_final_marking_through_hidden"]
+    if "stop_immediately_unfit" in parameters:
+        stop_immediately_unfit = parameters["stop_immediately_unfit"]
+    if "walk_through_hidden_trans" in parameters:
         walk_through_hidden_trans = parameters[
-            "useHiddenTransitionsToEnableCorrespondingTransitions"]
-    if "placesShortestPathByHidden" in parameters:
-        places_shortest_path_by_hidden = parameters["placesShortestPathByHidden"]
+            "walk_through_hidden_trans"]
+    if "places_shortest_path_by_hidden" in parameters:
+        places_shortest_path_by_hidden = parameters["places_shortest_path_by_hidden"]
     if "variants" in parameters:
         variants = parameters["variants"]
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:

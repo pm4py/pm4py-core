@@ -107,9 +107,9 @@ def apply(log, net, marking, final_marking, parameters=None):
 
     parameters_TR = {
         "consider_remaining_in_fitness": False,
-        "tryToReachFinalMarkingThroughHidden": False,
-        "stopImmediatelyWhenUnfit": True,
-        "useHiddenTransitionsToEnableCorrespondingTransitions": True,
+        "try_to_reach_final_marking_through_hidden": False,
+        "stop_immediately_unfit": True,
+        "walk_through_hidden_trans": True,
         PARAM_ACTIVITY_KEY: activity_key
     }
 
@@ -117,9 +117,9 @@ def apply(log, net, marking, final_marking, parameters=None):
 
     i = 0
     while i < len(aligned_traces):
-        if aligned_traces[i]["tFit"]:
+        if aligned_traces[i]["trace_is_fit"]:
             logTransitions = set(prefixes[prefixesKeys[i]])
-            activatedTransitionsLabels = set([x.label for x in aligned_traces[i]["actTrans"] if x.label is not None])
+            activatedTransitionsLabels = set([x.label for x in aligned_traces[i]["activated_transitions"] if x.label is not None])
             sumAT += len(activatedTransitionsLabels) * prefixCount[prefixesKeys[i]]
             escapingEdges = activatedTransitionsLabels.difference(logTransitions)
             sumEE += len(escapingEdges) * prefixCount[prefixesKeys[i]]

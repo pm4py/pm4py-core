@@ -63,7 +63,7 @@ def petri_reduction_treplay(net, parameters=None):
     enabled_trans_in_at_least_one_trace = set()
 
     for trace in aligned_traces:
-        for trans in trace["actTrans"]:
+        for trans in trace["activated_transitions"]:
             enabled_trans_in_at_least_one_trace.add(trans)
 
     transitions = list(net.transitions)

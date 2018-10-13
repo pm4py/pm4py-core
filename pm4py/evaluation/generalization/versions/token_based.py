@@ -40,7 +40,7 @@ def get_generalization(petri_net, aligned_traces):
 
     transOccMap = Counter()
     for trace in aligned_traces:
-        for trans in trace["actTrans"]:
+        for trans in trace["activated_transitions"]:
             transOccMap[trans] += 1
     inv_sq_occ_sum = 0.0
     for trans in transOccMap:
