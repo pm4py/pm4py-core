@@ -1,5 +1,6 @@
-from pm4py.algo.discovery.causal.factory import CAUSAL_ALPHA
 from pm4py.algo.discovery.causal import factory as causal_factory
+from pm4py.algo.discovery.causal.factory import CAUSAL_ALPHA
+
 
 class ClassicAlphaAbstraction:
     '''

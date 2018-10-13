@@ -1,14 +1,9 @@
-import os, sys, inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 from pm4py.algo.discovery.dfg import replacement as dfg_replacement, factory as dfg_factory
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.algo.filtering.tracelog.auto_filter import auto_filter
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.visualization.dfg import factory as dfg_vis_factory
-
+import os
 
 def execute_script():
     # measure could be frequency or performance

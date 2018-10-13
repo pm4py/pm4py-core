@@ -1,10 +1,4 @@
-import os, sys, inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
-import time
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 from pm4py.visualization.petrinet import factory as pn_vis_factory
@@ -15,6 +9,8 @@ from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.util import constants
 from pm4py.algo.filtering.pandas.cases import case_filter
 from pm4py.statistics.traces.pandas import case_statistics
+import time
+import os
 
 MAX_NO_ACTIVITIES_PER_MODEL = 25
 GENERATED_IMAGES = []

@@ -1,8 +1,9 @@
-import os, sys, inspect
+import inspect
+import os
+import sys
 
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
+
 import examples.alignment_test
 import examples.big_dataframe_filtering
 import examples.big_dataframe_management

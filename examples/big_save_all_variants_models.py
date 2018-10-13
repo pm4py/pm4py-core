@@ -1,10 +1,4 @@
-import os, sys, inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
 from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
-import time
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 from pm4py.visualization.petrinet import factory as pn_vis_factory
@@ -14,6 +8,8 @@ from pm4py.util import constants
 from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.algo.filtering.pandas.variants import variants_filter
 import shutil
+import time
+import os
 
 TARGET_FOLDER_FREQ = "all_variants_freq"
 TARGET_FOLDER_PERF = "all_variants_perf"
