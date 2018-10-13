@@ -1,4 +1,4 @@
-'''
+"""
 This module contains code that allows us to compute alignments on the basis of a regular A* search on the state-space
 of the synchronous product net of a trace and a Petri net.
 The main algorithm follows [1]_.
@@ -11,7 +11,7 @@ References
 .. [1] Sebastiaan J. van Zelst et al., "Tuning Alignment Computation: An Experimental Evaluation",
       ATAED@Petri Nets/ACSD 2017: 6-20. `http://ceur-ws.org/Vol-1847/paper01.pdf`_.
 
-'''
+"""
 import pm4py
 import heapq
 from typing import Any
@@ -59,7 +59,7 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking):
     return best_worst['cost']  // alignments.utils.STD_MODEL_LOG_MOVE_COST
 
 def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
-    '''
+    """
     Performs the basic alignment search, given a trace and a net.
 
     Parameters
@@ -77,7 +77,7 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
     Returns
     -------
     dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
-    '''
+    """
     activity_key = log_lib.util.xes.DEFAULT_NAME_KEY if parameters is None or pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
         parameters[
             pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
@@ -110,7 +110,7 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
 
 
 def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, skip):
-    '''
+    """
     Performs the basic alignment search on top of the synchronous product net, given a cost function and skip-symbol
 
     Parameters
@@ -124,7 +124,7 @@ def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, sk
     Returns
     -------
     dictionary : :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
-    '''
+    """
     return __search(sync_prod, initial_marking, final_marking, cost_function, skip)
 
 
@@ -207,7 +207,7 @@ def __trust_solution(x):
 
 
 def __compute_exact_heuristic(sync_net, incidence_matrix, marking, cost_vec, fin_vec):
-    '''
+    """
     Computes an exact heuristic using an LP based on the marking equation.
 
     Parameters
@@ -221,7 +221,7 @@ def __compute_exact_heuristic(sync_net, incidence_matrix, marking, cost_vec, fin
     Returns
     -------
     :return: h: heuristic value, x: solution vector
-    '''
+    """
     m_vec = incidence_matrix.encode_marking(marking)
     G = matrix(-np.eye(len(sync_net.transitions)))
     h_cvx = matrix(np.zeros(len(sync_net.transitions)))

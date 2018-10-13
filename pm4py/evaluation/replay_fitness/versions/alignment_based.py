@@ -58,7 +58,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
 
 
 def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, activity_key):
-    '''
+    """
     Performs the basic alignment search, given a trace, a net and the costs of the \"best of the worst\".
     The costs of the best of the worst allows us to deduce the fitness of the trace.
     We compute the fitness by means of 1 - alignment costs / best of worst costs (i.e. costs of 0 => fitness 1)
@@ -74,7 +74,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, ac
     Returns
     -------
     dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
-    '''
+    """
     alignment = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(trace, petri_net, initial_marking, final_marking, {
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key})
     fixed_costs = alignment['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST

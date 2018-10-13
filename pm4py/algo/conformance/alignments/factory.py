@@ -1,7 +1,7 @@
-'''
+"""
 This module contains the factory method
 
-'''
+"""
 from pm4py import util as pm4pyutil
 from pm4py.algo.conformance.alignments import versions
 from pm4py.objects.log.util import xes

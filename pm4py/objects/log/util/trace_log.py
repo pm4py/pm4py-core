@@ -3,7 +3,7 @@ from pm4py.objects.log.util import xes as xes_util
 
 # TODO: we can do some instance checking and then support both trace level and event level logs..
 def get_event_labels(log, key):
-    '''
+    """
     Fetches the labels present in a trace log, given a key to use within the events.
 
     Parameters
@@ -14,7 +14,7 @@ def get_event_labels(log, key):
     Returns
     -------
     :return: a list of labels
-    '''
+    """
     labels = []
     for t in log:
         for e in t:
@@ -24,7 +24,7 @@ def get_event_labels(log, key):
 
 
 def get_event_labels_counted(log, key):
-    '''
+    """
     Fetches the labels (and their frequency) present in a trace log, given a key to use within the events.
 
     Parameters
@@ -35,7 +35,7 @@ def get_event_labels_counted(log, key):
     Returns
     -------
     :return: a list of labels
-    '''
+    """
     labels = dict()
     for t in log:
         for e in t:
@@ -47,7 +47,7 @@ def get_event_labels_counted(log, key):
 
 
 def get_trace_variants(log, key=xes_util.DEFAULT_NAME_KEY):
-    '''
+    """
     Returns a pair of a list of (variants, dict[index -> trace]) where the index of a variant maps to all traces describing that variant, with that key.
 
     Parameters
@@ -58,7 +58,7 @@ def get_trace_variants(log, key=xes_util.DEFAULT_NAME_KEY):
     Returns
     -------
     :return:
-    '''
+    """
     variants = []
     variant_map = dict()
     for t in log:
@@ -73,7 +73,7 @@ def get_trace_variants(log, key=xes_util.DEFAULT_NAME_KEY):
 
 
 def project_traces(trace_log, keys=xes_util.DEFAULT_NAME_KEY):
-    '''
+    """
     projects traces on a (set of) event attribute key(s).
     If the key provided is of type string, each trace is converted into a list of strings.
     If the key provided is a collection, each trace is converted into a list of (smaller) dicts of key value pairs
@@ -81,7 +81,7 @@ def project_traces(trace_log, keys=xes_util.DEFAULT_NAME_KEY):
     :param trace_log:
     :param keys:
     :return:
-    '''
+    """
     if isinstance(keys, str):
         return list(map(lambda t: list(map(lambda e: e[keys], t)), trace_log))
     else:
