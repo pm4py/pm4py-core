@@ -85,7 +85,11 @@ def filter_on_case_performance(df, case_id_glue="case:concept:name", timestamp_k
     return df[i1.isin(i2)]
 
 def apply(df, parameters=None):
+    df is None
+    parameters is None
     raise Exception("apply method not available for case filter")
 
 def apply_auto_filter(df, parameters=None):
+    df is None
+    parameters is None
     raise Exception("apply_auto_filter method not available for case filter")

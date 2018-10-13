@@ -1,7 +1,9 @@
-from pm4py.objects import petri
 import random
 import string
-from copy import copy, deepcopy
+from copy import deepcopy
+
+from pm4py.objects import petri
+
 
 # Generate a Petri net with an initial marking that is a workflow net
 class SubtreeGenerator(object):
@@ -74,7 +76,7 @@ class SubtreeGenerator(object):
         """
         while True:
             activity_name = self.generate_string(4)
-            if not activity_name in self.addedActivities:
+            if activity_name not in self.addedActivities:
                 self.addedActivities.add(activity_name)
                 return activity_name
 
@@ -252,6 +254,7 @@ class SubtreeGenerator(object):
                     petri.utils.add_arc_from_to(auto_loop, subtree_source_node, self.net)
                     petri.utils.add_arc_from_to(self.lastAddedPlace, auto_loop, self.net)
 
+
 def generate_petri(nin_no_activities_per_subtree=2, max_no_activities_per_subtree=6, max_no_subtrees=5, prob_spawn_subtree=0.6, prob_auto_skip=0.35, prob_auto_loop=0.0, possible_behaviors=["sequential", "concurrent", "flower", "parallel"]):
     """
     Generate workflow net
@@ -278,6 +281,7 @@ def generate_petri(nin_no_activities_per_subtree=2, max_no_activities_per_subtre
     final_marking = petri.petrinet.Marking({stg.lastAddedPlace: 1})
     return stg.net, marking, final_marking
 
+
 def apply(parameters=None):
     """
     Generate a Petri net
@@ -296,13 +300,13 @@ def apply(parameters=None):
     """
     if parameters is None:
         parameters = {}
-    min_no_of_activities_per_subtree=2
-    max_no_of_activities_per_subtree=6
-    max_no_of_subtrees=5
-    prow_spawn_subtree=0.6
-    prob_auto_skip=0.35
-    prob_auto_loop=0.0
-    possible_behaviors = ["sequential","concurrent","flower","parallel"]
+    min_no_of_activities_per_subtree = 2
+    max_no_of_activities_per_subtree = 6
+    max_no_of_subtrees = 5
+    prow_spawn_subtree = 0.6
+    prob_auto_skip = 0.35
+    prob_auto_loop = 0.0
+    possible_behaviors = ["sequential", "concurrent", "flower", "parallel"]
     if "minNoOfActivitiesPerSubtree" in parameters:
         min_no_of_activities_per_subtree = parameters["minNoOfActivitiesPerSubtree"]
     if "maxNoOfSubtrees" in parameters:

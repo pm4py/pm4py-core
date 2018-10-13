@@ -1,5 +1,7 @@
 from statistics import mean, median, stdev
+
 from pm4py.visualization.common.utils import *
+
 
 def get_shortest_paths_from_trans(net, original_trans, spaths):
     """
@@ -28,25 +30,26 @@ def get_shortest_paths_from_trans(net, original_trans, spaths):
         trans = trans_list.pop(0)
         already_visited_trans.append(trans)
         for out_arc in trans.out_arcs:
-            if not out_arc in already_visited_arcs:
+            if out_arc not in already_visited_arcs:
                 already_visited_arcs.append(out_arc)
                 target_place = out_arc.target
-                if not target_place in already_visited_places:
+                if target_place not in already_visited_places:
                     already_visited_places.append(target_place)
                     for place_out_arc in target_place.out_arcs:
-                        if not place_out_arc in already_visited_places:
+                        if place_out_arc not in already_visited_places:
                             target_trans = place_out_arc.target
-                            if not target_trans in already_visited_trans or target_trans == original_trans:
+                            if target_trans not in already_visited_trans or target_trans == original_trans:
                                 already_visited_trans.append(target_trans)
                                 if target_trans.label:
-                                    if not out_arc in spaths:
+                                    if out_arc not in spaths:
                                         spaths[out_arc] = set()
-                                    if not place_out_arc in spaths:
+                                    if place_out_arc not in spaths:
                                         spaths[place_out_arc] = set()
                                     spaths[out_arc].add(((original_trans.name, target_trans.name), 0))
                                     spaths[place_out_arc].add(((original_trans.name, target_trans.name), 1))
                                 trans_list.append(target_trans)
     return spaths
+
 
 def get_shortest_paths(net):
     """
@@ -67,6 +70,7 @@ def get_shortest_paths(net):
         if trans.label:
             spaths = get_shortest_paths_from_trans(net, trans, spaths)
     return spaths
+
 
 def get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count, variant="frequency", aggregation_measure=None):
     """
@@ -108,7 +112,7 @@ def get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_c
             dfg_key = couple[0]
             status = couple[1]
             if dfg_key in dfg:
-                if not arc in decorations_single_contrib:
+                if arc not in decorations_single_contrib:
                     decorations_single_contrib[arc] = []
                 decorations_single_contrib[arc].append(dfg[dfg_key])
     for arc in decorations_single_contrib:

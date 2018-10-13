@@ -8,6 +8,7 @@ import logging
 import unittest
 import os
 
+
 class XesImportExportTest(unittest.TestCase):
     def test_importExportXEStoXES(self):
         trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
@@ -49,6 +50,7 @@ class XesImportExportTest(unittest.TestCase):
 
     def test_importXESfromGZIP_imp2(self):
         trace_log = xes_importer.import_log(os.path.join(COMPRESSED_INPUT_DATA, "01_running-example.xes.gz"))
+        trace_log is None
 
 
 if __name__ == "__main__":

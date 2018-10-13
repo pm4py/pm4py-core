@@ -8,6 +8,7 @@ from pm4py.objects.log.util import compression
 EVENT_END = 'end'
 EVENT_START = 'start'
 
+
 def import_log(filename, parameters=None):
     """
     Imports an XES file into a log object
@@ -34,11 +35,11 @@ def import_log(filename, parameters=None):
     if parameters is None:
         parameters = {}
 
-    timestamp_sort=False
-    timestamp_key="time:timestamp"
-    reverse_sort=False
-    insert_trace_indexes=False
-    max_no_traces_to_import=1000000000
+    timestamp_sort = False
+    timestamp_key = "time:timestamp"
+    reverse_sort = False
+    insert_trace_indexes = False
+    max_no_traces_to_import = 1000000000
 
     if "timestamp_sort" in parameters:
         timestamp_sort = parameters["timestamp_sort"]
@@ -67,7 +68,7 @@ def import_log(filename, parameters=None):
             parent = tree[elem.getparent()] if elem.getparent() in tree else None
 
             if elem.tag.endswith(log_lib.util.xes.TAG_STRING):
-                if not parent is None:
+                if parent is not None:
                     tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY),
                                              elem.get(log_lib.util.xes.KEY_VALUE), tree)
                 continue
@@ -76,7 +77,7 @@ def import_log(filename, parameters=None):
                 try:
                     dt = ciso8601.parse_datetime(elem.get(log_lib.util.xes.KEY_VALUE))
                     tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), dt, tree)
-                except:
+                except Exception as e:
                     logging.info("failed to parse date: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
                 continue
 
@@ -97,40 +98,40 @@ def import_log(filename, parameters=None):
                 continue
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_FLOAT):
-                if not parent is None:
+                if parent is not None:
                     try:
                         val = float(elem.get(log_lib.util.xes.KEY_VALUE))
                         tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
-                    except:
+                    except Exception as e:
                         logging.info("failed to parse float: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
                 continue
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_INT):
-                if not parent is None:
+                if parent is not None:
                     try:
                         val = int(elem.get(log_lib.util.xes.KEY_VALUE))
                         tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
-                    except:
+                    except Exception as e:
                         logging.info("failed to parse int: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
                 continue
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_BOOLEAN):
-                if not parent is None:
+                if parent is not None:
                     try:
                         val = bool(elem.get(log_lib.util.xes.KEY_VALUE))
                         tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
-                    except:
+                    except Exception as e:
                         logging.info("failed to parse boolean: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
                 continue
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_LIST):
-                if not parent is None:
+                if parent is not None:
                     # lists have no value, hence we put None as a value
                     tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), None, tree)
                 continue
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_ID):
-                if not parent is None:
+                if parent is not None:
                     tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY),
                                              elem.get(log_lib.util.xes.KEY_VALUE), tree)
                 continue

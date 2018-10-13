@@ -1,6 +1,7 @@
 from graphviz import Digraph
 import tempfile
 
+
 def visualize(ts, parameters=None):
     if parameters is None:
         parameters = {}

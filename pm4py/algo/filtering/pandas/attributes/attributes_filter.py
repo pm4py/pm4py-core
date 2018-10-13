@@ -110,7 +110,7 @@ def get_attribute_values(df, attribute_key, parameters=None):
     """
     if parameters is None:
         parameters = {}
-
+    str(parameters)
     attributes_values_dict = dict(df[attribute_key].value_counts())
     #print("attributes_values_dict=",attributes_values_dict)
     return attributes_values_dict

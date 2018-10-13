@@ -23,6 +23,7 @@ class VisualizationTest1(unittest.TestCase):
         variant = "frequency"
         dfg = dfg_factory.apply(log, variant=variant)
         gviz = dfg_vis_factory.apply(dfg, log=log, variant=variant)
+        gviz is None
 
     def test_getdfgfreqvis_acticount(self):
         log_path = os.path.join("input_data", "running-example.xes")
@@ -31,6 +32,7 @@ class VisualizationTest1(unittest.TestCase):
         dfg = dfg_factory.apply(log, variant=variant)
         activities_count = log_attribute_filter.get_attribute_values(log, "concept:name")
         gviz = dfg_vis_factory.apply(dfg, activities_count=activities_count, variant=variant)
+        gviz is None
 
     def test_getdfgperfvis_log(self):
         log_path = os.path.join("input_data", "running-example.xes")
@@ -38,6 +40,7 @@ class VisualizationTest1(unittest.TestCase):
         variant = "performance"
         dfg = dfg_factory.apply(log, variant=variant)
         gviz = dfg_vis_factory.apply(dfg, log=log, variant=variant)
+        gviz is None
 
     def test_getpetrifreqvis_token(self):
         log_path = os.path.join("input_data", "running-example.xes")
@@ -45,6 +48,7 @@ class VisualizationTest1(unittest.TestCase):
         net, initial_marking, final_marking = inductive_miner.apply(log)
         variant = "frequency"
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant)
+        gviz is None
 
     def test_getpetriperfvis_token(self):
         log_path = os.path.join("input_data", "running-example.xes")
@@ -52,6 +56,7 @@ class VisualizationTest1(unittest.TestCase):
         variant = "performance"
         net, initial_marking, final_marking = inductive_miner.apply(log)
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant)
+        gviz is None
 
     def test_getpetrifreqvis_greedy(self):
         log_path = os.path.join("input_data", "running-example.xes")
@@ -67,6 +72,7 @@ class VisualizationTest1(unittest.TestCase):
         parameters_vis = {"format": "svg"}
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, aggregated_statistics=aggregated_statistics,
                                        variant=variant, parameters=parameters_vis)
+        gviz is None
 
     def test_getpetriperfvis_greedy(self):
         log_path = os.path.join("input_data", "running-example.xes")
@@ -82,6 +88,7 @@ class VisualizationTest1(unittest.TestCase):
         parameters_vis = {"format": "svg"}
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, aggregated_statistics=aggregated_statistics,
                                        variant=variant, parameters=parameters_vis)
+        gviz is None
 
     def test_getdfgfreqvis_dataframe(self):
         variant = "frequency"
@@ -91,6 +98,7 @@ class VisualizationTest1(unittest.TestCase):
         activities_count = pd_attribute_filter.get_attribute_values(dataframe, "concept:name")
         dfg_frequency = df_statistics.get_dfg_graph(dataframe, measure="frequency")
         gviz = dfg_vis_factory.apply(dfg_frequency, activities_count=activities_count, variant=variant)
+        gviz is None
 
     def test_getdfgperfvis_dataframe(self):
         variant = "performance"
@@ -99,7 +107,9 @@ class VisualizationTest1(unittest.TestCase):
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
         activities_count = pd_attribute_filter.get_attribute_values(dataframe, "concept:name")
         [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both")
+        dfg_frequency is None
         gviz = dfg_vis_factory.apply(dfg_performance, activities_count=activities_count, variant=variant)
+        gviz is None
 
     def test_getpetrifreqvis_dataframe_greedy(self):
         variant = "frequency"
@@ -117,6 +127,7 @@ class VisualizationTest1(unittest.TestCase):
                                                                                                        variant=variant)
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, variant=variant,
                                        aggregated_statistics=aggregated_statistics)
+        gviz is None
 
     def test_getpetriperfvis_dataframe_greedy(self):
         variant = "performance"
@@ -134,6 +145,7 @@ class VisualizationTest1(unittest.TestCase):
                                                                                                        variant=variant)
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, variant=variant,
                                        aggregated_statistics=aggregated_statistics)
+        gviz is None
 
     def test_getpetrifreqvis_dataframe_convert_token(self):
         variant = "frequency"
@@ -144,6 +156,7 @@ class VisualizationTest1(unittest.TestCase):
         log = transform.transform_event_log_to_trace_log(event_log)
         net, initial_marking, final_marking = inductive_miner.apply(log)
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant)
+        gviz is None
 
     def test_getpetriperfvis_dataframe_convert_token(self):
         variant = "performance"
@@ -154,16 +167,22 @@ class VisualizationTest1(unittest.TestCase):
         log = transform.transform_event_log_to_trace_log(event_log)
         net, initial_marking, final_marking = inductive_miner.apply(log)
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant)
+        gviz is None
 
     def test_simple_view(self):
         log_path = os.path.join("input_data", "receipt.xes")
         log = xes_importer.import_log(log_path)
         filtered_log = auto_filter.apply_auto_filter(log)
         gviz = simple_view.apply(filtered_log, {"algorithm": "alpha", "decoration": "frequency"})
+        gviz is None
         gviz = simple_view.apply(filtered_log, {"algorithm": "inductive", "decoration": "frequency"})
+        gviz is None
         gviz = simple_view.apply(filtered_log, {"algorithm": "dfg", "decoration": "frequency"})
+        gviz is None
         gviz = simple_view.apply(filtered_log, {"algorithm": "tsystem2", "decoration": "frequency"})
+        gviz is None
         gviz = simple_view.apply(filtered_log, {"algorithm": "tsystem3", "decoration": "frequency"})
+        gviz is None
 
 
 if __name__ == "__main__":

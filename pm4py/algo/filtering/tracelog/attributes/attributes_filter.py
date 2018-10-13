@@ -112,6 +112,7 @@ def get_attribute_values(trace_log, attribute_key, parameters=None):
     """
     if parameters is None:
         parameters = {}
+    str(parameters)
 
     attributes = {}
 

@@ -1,8 +1,9 @@
+import tempfile
+
 from graphviz import Digraph
-import tempfile, os, shutil
-import base64
+
 from pm4py.objects.petri.petrinet import Marking
-from random import random
+
 
 def apply(net, initial_marking, final_marking, decorations=None, parameters=None):
     """
@@ -33,6 +34,7 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
     if "debug" in parameters:
         debug = parameters["debug"]
     return graphviz_visualization(net, format=format, initial_marking=initial_marking, final_marking=final_marking, decorations=decorations, debug=debug)
+
 
 def graphviz_visualization(net, format="png", initial_marking=None, final_marking=None, decorations=None, debug=False):
     """
@@ -66,7 +68,7 @@ def graphviz_visualization(net, format="png", initial_marking=None, final_markin
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph(net.name, filename=filename.name, engine='dot')
 
-    #transitions
+    # transitions
     viz.attr('node', shape='box')
     for t in net.transitions:
         if t.label is not None:
@@ -80,7 +82,7 @@ def graphviz_visualization(net, format="png", initial_marking=None, final_markin
             else:
                 viz.node(str(t.name), "", style='filled', fillcolor="black")
 
-    #places
+    # places
     viz.attr('node', shape='circle', fixedsize='true', width='0.75')
     for p in net.places:
         if p in initial_marking:
@@ -93,8 +95,7 @@ def graphviz_visualization(net, format="png", initial_marking=None, final_markin
             else:
                 viz.node(str(p.name), "")
 
-
-    #arcs
+    # arcs
     for a in net.arcs:
         if a in decorations:
             viz.edge(str(a.source.name), str(a.target.name), label=decorations[a]["label"], penwidth=decorations[a]["penwidth"])

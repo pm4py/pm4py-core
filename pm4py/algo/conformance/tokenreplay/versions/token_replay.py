@@ -270,7 +270,7 @@ def enable_hidden_transitions(net, marking, activated_transitions, visited_trans
         Transition against we should check if they are enabled
     """
     something_changed = True
-    j_indexes = [0 for x in hidden_transitions_to_enable]
+    j_indexes = [0] * len(hidden_transitions_to_enable)
     z = 0
     while something_changed:
         something_changed = False

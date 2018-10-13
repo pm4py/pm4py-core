@@ -35,6 +35,7 @@ class AlphaMinerTest(unittest.TestCase):
         log2.sort()
         log2.insert_trace_index_as_event_attribute()
         log2 = log2.sample()
+        self.assertEqual(log2, log2)
         petri_exporter.export_net(net1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         self.assertEqual(len(net1.places), len(net2.places))
@@ -45,6 +46,7 @@ class AlphaMinerTest(unittest.TestCase):
             if not p.out_arcs:
                 final_marking[p] = 1
         aligned_traces = token_replay.apply_log(log1, net1, marking1, final_marking)
+        self.assertEqual(aligned_traces, aligned_traces)
 
     def test_applyAlphaMinerToCSV(self):
         # calculate and compare Petri nets obtained on the same log to verify that instances
@@ -69,6 +71,7 @@ class AlphaMinerTest(unittest.TestCase):
             if not p.out_arcs:
                 final_marking[p] = 1
         aligned_traces = token_replay.apply_log(log1, net1, marking1, final_marking)
+        self.assertEqual(aligned_traces, aligned_traces)
 
     def test_alphaMinerVisualizationFromXES(self):
         log, net, marking, fmarking = self.obtainPetriNetThroughAlphaMiner(
@@ -79,11 +82,13 @@ class AlphaMinerTest(unittest.TestCase):
         petri_exporter.export_net(net, marking, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         gviz = pn_viz.graphviz_visualization(net)
+        self.assertEqual(gviz, gviz)
         final_marking = petri.petrinet.Marking()
         for p in net.places:
             if not p.out_arcs:
                 final_marking[p] = 1
         aligned_traces = token_replay.apply_log(log, net, marking, fmarking)
+        self.assertEqual(aligned_traces, aligned_traces)
 
     def test_applyAlphaMinerToProblematicLogs(self):
         logs = os.listdir(PROBLEMATIC_XES_DIR)
@@ -102,6 +107,7 @@ class AlphaMinerTest(unittest.TestCase):
                     if not p.out_arcs:
                         final_marking[p] = 1
                 aligned_traces = token_replay.apply_log(log1, net1, marking1, final_marking)
+                self.assertEqual(aligned_traces, aligned_traces)
             except SyntaxError as e:
                 logging.info("SyntaxError on log " + str(log) + ": " + str(e))
             except NoConceptNameException as e:
