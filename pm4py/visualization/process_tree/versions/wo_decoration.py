@@ -105,7 +105,7 @@ def apply(tree, parameters=None):
     parameters["box_width"] = str(parameters["box_width"])
     parameters["box_font_size"] = str(parameters["box_font_size"])
 
-    format = parameters["format"] if "format" in parameters else "png"
+    image_format = parameters["format"] if "format" in parameters else "png"
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph("pt", filename=filename.name, engine='dot')
@@ -120,6 +120,6 @@ def apply(tree, parameters=None):
 
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
-    viz.format = format
+    viz.format = image_format
 
     return viz

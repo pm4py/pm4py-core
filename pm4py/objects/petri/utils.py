@@ -126,7 +126,7 @@ def variants(net, initial_marking, final_marking):
     """
     active = [(initial_marking, [])]
     visited = []
-    variants = []
+    this_variants = []
     for i in range(10000000):
         if not active:
             break
@@ -137,10 +137,10 @@ def variants(net, initial_marking, final_marking):
             next_activitylist.append(repr(t))
             next_couple = (petri.semantics.execute(t, net, curr_couple[0]), next_activitylist)
             if hash(next_couple[0]) == hash(final_marking):
-                variants.append(next_couple[1])
+                this_variants.append(next_couple[1])
             else:
                 # If the next marking hash is not in visited, if the next marking+partial trace itself is not already in active and if the next marking+partial trace is different from the current one+partial trace
                 if hash(next_couple[0]) not in visited and next((mark for mark in active if hash(mark[0]) == hash(next_couple[0] and mark[1] == next_couple[1])), None) is None and (hash(curr_couple[0]) != hash(next_couple[0]) or curr_couple[1] != next_couple[1]):
                     active.append(next_couple)
         visited.append(hash(curr_couple[0]))
-    return variants
+    return this_variants

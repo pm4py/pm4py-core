@@ -17,9 +17,9 @@ def import_petri_from_string(petri_string):
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(petri_string)
-    net, initial_marking, final_marking = import_net(fp.name)
+    net, initial_marking, this_final_marking = import_net(fp.name)
     os.remove(fp.name)
-    return net, initial_marking, final_marking
+    return net, initial_marking, this_final_marking
 
 def import_net(input_file_path):
     """
@@ -57,8 +57,8 @@ def import_net(input_file_path):
     if page is not None:
         for child in page:
             if "place" in child.tag:
-                id = child.get("id")
-                place_name = id
+                place_id = child.get("id")
+                place_name = place_id
                 number = 0
                 for child2 in child:
                     if "name" in child2.tag:
@@ -69,10 +69,10 @@ def import_net(input_file_path):
                         for child3 in child2:
                             if child3.tag == "text":
                                 number = int(child3.text)
-                places_dict[id] = petri.petrinet.PetriNet.Place(place_name)
-                net.places.add(places_dict[id])
+                places_dict[place_id] = petri.petrinet.PetriNet.Place(place_name)
+                net.places.add(places_dict[place_id])
                 if number > 0:
-                    marking[places_dict[id]] = number
+                    marking[places_dict[place_id]] = number
 
     if page is not None:
         for child in page:
@@ -108,12 +108,12 @@ def import_net(input_file_path):
     if finalmarkings is not None:
         for child in finalmarkings:
             for child2 in child:
-                id = child2.get("idref")
+                place_id = child2.get("idref")
                 for child3 in child2:
                     if "text" in child3.tag:
                         number = int(child3.text)
                         if number > 0:
-                            fmarking[places_dict[id]] = number
+                            fmarking[places_dict[place_id]] = number
 
     # generate the final marking in the case has not been found
     if len(fmarking) == 0:

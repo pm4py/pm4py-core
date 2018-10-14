@@ -6,7 +6,7 @@ def visualize(ts, parameters=None):
     if parameters is None:
         parameters = {}
 
-    format = parameters["format"] if "format" in parameters else "png"
+    image_format = parameters["format"] if "format" in parameters else "png"
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph(ts.name, filename=filename.name, engine='dot')
@@ -23,6 +23,6 @@ def visualize(ts, parameters=None):
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
 
-    viz.format = format
+    viz.format = image_format
 
     return viz
