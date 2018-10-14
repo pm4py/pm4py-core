@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 # -- Project information -----------------------------------------------------
 
 project = 'pm4py'
-copyright = '2018, PADS @ RWTH / PADS @ Fraunhofer FIT'
+project_copyright = '2018, PADS @ RWTH / PADS @ Fraunhofer FIT'
 author = 'PADS @ RWTH / PADS @ Fraunhofer FIT'
 
 # The short X.Y version
