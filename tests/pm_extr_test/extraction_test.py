@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
 
     def get_elonged_float(value):
-        stru = "%.3f" % (value)
+        stru = "%.3f" % value
 
         return get_elonged_string(stru)
 
@@ -67,34 +67,34 @@ if __name__ == "__main__":
             f.write(
                 "\t" + get_elonged_string("fitness_align_imdf") + "\t" + get_elonged_string("times_alignments_imdf"))
         f.write("\n")
-        for logName in precision_alpha:
+        for this_logname in precision_alpha:
             # F.write("%s\t\t%.3f\t\t%.3f\n" % (logName, fitness_token_alpha[logName], fitness_token_imdf[logName]))
-            f.write(get_elonged_string(logName))
+            f.write(get_elonged_string(this_logname))
             f.write("\t")
-            f.write(get_elonged_float(fitness_token_alpha[logName]))
+            f.write(get_elonged_float(fitness_token_alpha[this_logname]))
             f.write("\t")
-            f.write(get_elonged_float(times_tokenreplay_alpha[logName]))
+            f.write(get_elonged_float(times_tokenreplay_alpha[this_logname]))
             f.write("\t")
-            f.write(get_elonged_float(fitness_token_imdf[logName]))
+            f.write(get_elonged_float(fitness_token_imdf[this_logname]))
             f.write("\t")
-            f.write(get_elonged_float(times_tokenreplay_imdf[logName]))
+            f.write(get_elonged_float(times_tokenreplay_imdf[this_logname]))
             if ENABLE_ALIGNMENTS:
                 f.write("\t")
-                f.write(get_elonged_float(fitness_align_imdf[logName]))
+                f.write(get_elonged_float(fitness_align_imdf[this_logname]))
                 f.write("\t")
-                f.write(get_elonged_float(times_alignments_imdf[logName]))
+                f.write(get_elonged_float(times_alignments_imdf[this_logname]))
             f.write("\n")
         f.write("\n\n")
         f.write("Precision measured by ETConformance where activated transitions are retrieved using token replay\n")
         f.write("----\n")
         f.write(get_elonged_string("log") + "\t" + get_elonged_string("precision_alpha") + "\t" + get_elonged_string(
             "precision_imdf") + "\n")
-        for logName in precision_alpha:
-            f.write(get_elonged_string(logName))
+        for this_logname in precision_alpha:
+            f.write(get_elonged_string(this_logname))
             f.write("\t")
-            f.write(get_elonged_float(precision_alpha[logName]))
+            f.write(get_elonged_float(precision_alpha[this_logname]))
             f.write("\t")
-            f.write(get_elonged_float(precision_imdf[logName]))
+            f.write(get_elonged_float(precision_imdf[this_logname]))
             f.write("\n")
         f.write("\n\n")
         f.write("Generalization based on token replay transition recall\n")
@@ -102,24 +102,24 @@ if __name__ == "__main__":
         f.write(
             get_elonged_string("log") + "\t" + get_elonged_string("generalization_alpha") + "\t" + get_elonged_string(
                 "generalization_imdf") + "\n")
-        for logName in precision_alpha:
-            f.write(get_elonged_string(logName))
+        for this_logname in precision_alpha:
+            f.write(get_elonged_string(this_logname))
             f.write("\t")
-            f.write(get_elonged_float(generalization_alpha[logName]))
+            f.write(get_elonged_float(generalization_alpha[this_logname]))
             f.write("\t")
-            f.write(get_elonged_float(generalization_imdf[logName]))
+            f.write(get_elonged_float(generalization_imdf[this_logname]))
             f.write("\n")
         f.write("\n\n")
         f.write("Simplicity based on inverse arc degree\n")
         f.write("----\n")
         f.write(get_elonged_string("log") + "\t" + get_elonged_string("simplicity_alpha") + "\t" + get_elonged_string(
             "simplicity_imdf") + "\n")
-        for logName in precision_alpha:
-            f.write(get_elonged_string(logName))
+        for this_logname in precision_alpha:
+            f.write(get_elonged_string(this_logname))
             f.write("\t")
-            f.write(get_elonged_float(simplicity_alpha[logName]))
+            f.write(get_elonged_float(simplicity_alpha[this_logname]))
             f.write("\t")
-            f.write(get_elonged_float(simplicity_imdf[logName]))
+            f.write(get_elonged_float(simplicity_imdf[this_logname]))
             f.write("\n")
         f.write("\n")
         f.close()

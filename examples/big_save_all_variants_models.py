@@ -34,9 +34,9 @@ TIMEST_FORMAT = "%Y/%m/%d %H:%M:%S"
 """
 
 
-def calculate_process_schema_from_df(dataframe, path_frequency, path_performance):
-    activities_count = attributes_filter.get_attribute_values(dataframe, attribute_key=ACTIVITY_KEY)
-    [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both",
+def calculate_process_schema_from_df(this_df, path_frequency, path_performance):
+    activities_count = attributes_filter.get_attribute_values(this_df, attribute_key=ACTIVITY_KEY)
+    [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(this_df, measure="both",
                                                                    perf_aggregation_key="median",
                                                                    case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY,
                                                                    timestamp_key=TIMEST_KEY, sort_required=False)
