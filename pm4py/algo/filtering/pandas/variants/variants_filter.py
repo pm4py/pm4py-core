@@ -35,14 +35,12 @@ def apply_auto_filter(df, parameters=None):
     if len(variants) > 0:
         current_variant_count = variants[0][case_id_glue]
 
-        i = 0
-        while i < len(variants):
+        for i in range(len(variants)):
             if variants[i][case_id_glue] >= decreasing_factor * current_variant_count:
                 admitted_variants.append(variants[i]["variant"])
             else:
                 break
             current_variant_count = variants[i][case_id_glue]
-            i = i + 1
 
     return apply(df, admitted_variants, parameters=parameters)
 

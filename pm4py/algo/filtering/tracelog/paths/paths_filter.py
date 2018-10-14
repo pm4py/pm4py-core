@@ -31,13 +31,11 @@ def apply(trace_log, paths, parameters=None):
     filtered_log = TraceLog()
     for trace in trace_log:
         found = False
-        i = 0
-        while i < len(trace)-1:
+        for i in range(len(trace)-1):
             path = (trace[i][attribute_key], trace[i+1][attribute_key])
             if path in paths:
                 found = True
                 break
-            i = i + 1
         if (found and positive) or (not(found) and not(positive)):
             filtered_log.append(trace)
     return filtered_log
@@ -60,14 +58,12 @@ def get_paths_from_log(trace_log, attribute_key="concept:name"):
     """
     paths = {}
     for trace in trace_log:
-        i = 0
-        while i < len(trace)-1:
+        for i in range(0, len(trace)-1):
             if attribute_key in trace[i] and attribute_key in trace[i+1]:
                 path = trace[i][attribute_key] + "," + trace[i + 1][attribute_key]
                 if not path in paths:
                     paths[path] = 0
                 paths[path] = paths[path] + 1
-            i = i + 1
     return paths
 
 def get_sorted_paths_list(paths):
@@ -108,12 +104,10 @@ def get_paths_threshold(paths, plist, decreasing_factor):
     """
 
     threshold = plist[0][1]
-    i = 1
-    while i < len(plist):
+    for i in range(1, len(plist)):
         value = plist[i][1]
         if value > threshold * decreasing_factor:
             threshold = value
-        i = i + 1
     return threshold
 
 def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key="concept:name"):
@@ -143,17 +137,16 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key
     filtered_log = TraceLog()
     fvft = variants[vc[0][0]][0]
     fvp = set()
-    i = 0
-    while i < len(fvft) - 1:
+    for i in range(0, len(fvft) - 1):
         path = fvft[i][attribute_key] + "," + fvft[i + 1][attribute_key]
         fvp.add(path)
-        i = i + 1
     for trace in trace_log:
         new_trace = Trace()
         if len(trace) > 0:
             new_trace.append(trace[0])
-            j = 1
-            while j < len(trace)-1:
+            for j in range(1, len(trace)-1):
+                if j >= len(trace):
+                    break
                 if attribute_key in trace[j] and attribute_key in trace[j+1]:
                     path = trace[j][attribute_key] + "," + trace[j + 1][attribute_key]
                     if path in paths:
@@ -161,7 +154,6 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key
                             new_trace.append(trace[j])
                             new_trace.append(trace[j+1])
                             j = j + 1
-                j = j + 1
         if len(trace) > 1 and not j == len(trace):
             new_trace.append(trace[-1])
         if len(new_trace) > 0:

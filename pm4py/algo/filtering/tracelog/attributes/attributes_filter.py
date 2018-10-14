@@ -35,13 +35,11 @@ def apply_events(trace_log, values, parameters=None):
     for trace in trace_log:
         new_trace = Trace()
 
-        j = 0
-        while j < len(trace):
+        for j in range(len(trace)):
             if attribute_key in trace[j]:
                 attribute_value = trace[j][attribute_key]
                 if (positive and attribute_value in values) or (not(positive) and not(attribute_value in values)):
                     new_trace.append(trace[j])
-            j = j + 1
         if len(new_trace) > 0:
             filtered_log.append(new_trace)
     return filtered_log
@@ -77,13 +75,11 @@ def apply(trace_log, values, parameters=None):
         new_trace = Trace()
 
         found = False
-        j = 0
-        while j < len(trace):
+        for j in range(len(trace)):
             if attribute_key in trace[j]:
                 attribute_value = trace[j][attribute_key]
                 if attribute_value in values:
                     found = True
-            j = j + 1
 
         if (found and positive) or (not(found) and not(positive)):
             new_trace = trace
@@ -154,14 +150,12 @@ def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, thre
     fva = [x[attribute_key] for x in variants[vc[0][0]][0] if attribute_key in x]
     for trace in trace_log:
         new_trace = Trace()
-        j = 0
-        while j < len(trace):
+        for j in range(len(trace)):
             if attribute_key in trace[j]:
                 attribute_value = trace[j][attribute_key]
                 if attribute_value in attributes:
                     if attribute_value in fva or attributes[attribute_value] >= threshold:
                         new_trace.append(trace[j])
-            j = j + 1
         if len(new_trace) > 0:
             filtered_log.append(new_trace)
     return filtered_log

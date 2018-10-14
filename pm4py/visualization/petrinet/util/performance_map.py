@@ -42,8 +42,7 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
             annotations_places_trans[place] = {"count": 0}
             annotations_places_trans[place]["count"] = annotations_places_trans[place]["count"] + marking[place]
         trace_place_stats[place] = [current_trace_index] * marking[place]
-    z = 0
-    while z < len(act_trans):
+    for z in range(len(act_trans)):
         trans = act_trans[z]
         if trans not in annotations_places_trans:
             annotations_places_trans[trans] = {"count": 0}
@@ -78,7 +77,6 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
             if target_place not in trace_place_stats:
                 trace_place_stats[target_place] = []
             trace_place_stats[target_place].append(current_trace_index)
-        z = z + 1
 
     return annotations_places_trans, annotations_arcs
 

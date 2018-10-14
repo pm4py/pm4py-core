@@ -109,7 +109,7 @@ class EventLog(Sequence):
         """
         new_log = EventLog(attributes=self.attributes, extensions=self.extensions, globals=self._omni, classifiers=self.classifiers)
         set_events = set()
-        while len(set_events) < min(no_events, len(self._list)):
+        for i in range(0, min(no_events, len(self._list))):
             set_events.add(random.randrange(0, len(self._list)))
         set_events = list(set_events)
         set_events.sort()
@@ -128,10 +128,8 @@ class EventLog(Sequence):
         """
 
         if not type(self) is TraceLog:
-            i = 0
-            while i < len(self._list):
+            for i in range(0, len(self._list)):
                 self._list[i][event_index_attr_name] = i+1
-                i = i + 1
 
     attributes = property(_get_attributes)
     extensions = property(_get_extensions)
@@ -233,7 +231,7 @@ class TraceLog(EventLog):
         """
         new_log = TraceLog(attributes=self.attributes, extensions=self.extensions, globals=self._omni, classifiers=self.classifiers)
         set_traces = set()
-        while len(set_traces) < min(no_traces, len(self._list)):
+        for i in range(0, min(no_traces, len(self._list))):
             set_traces.add(random.randrange(0, len(self._list)))
         set_traces = list(set_traces)
         set_traces.sort()
@@ -251,10 +249,6 @@ class TraceLog(EventLog):
         trace_index_attr_name
             Attribute name given to the trace index
         """
-        i = 0
-        while i < len(self._list):
-            j = 0
-            while j < len(self._list[i]):
+        for i in range(len(self._list)):
+            for j in range(len(self._list[i])):
                 self._list[i][j][trace_index_attr_name] = i+1
-                j = j + 1
-            i = i + 1

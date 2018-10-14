@@ -40,8 +40,7 @@ def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
     prefixes = {}
     prefix_count = Counter()
     for trace in log:
-        i = 1
-        while i < len(trace) - 1:
+        for i in range(1, len(trace) - 1):
             red_trace = trace[0:i]
             prefix = ",".join([x[activity_key] for x in red_trace])
             next_activity = trace[i][activity_key]
@@ -49,7 +48,6 @@ def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
                 prefixes[prefix] = set()
             prefixes[prefix].add(next_activity)
             prefix_count[prefix] += 1
-            i = i + 1
     return prefixes, prefix_count
 
 def form_fake_log(prefixes_keys, activity_key=xes_util.DEFAULT_NAME_KEY):
@@ -115,15 +113,13 @@ def apply(log, net, marking, final_marking, parameters=None):
 
     aligned_traces = token_replay.apply(fake_log, net, marking, final_marking, parameters=parameters_tr)
 
-    i = 0
-    while i < len(aligned_traces):
+    for i in range(len(aligned_traces)):
         if aligned_traces[i]["trace_is_fit"]:
             log_transitions = set(prefixes[prefixes_keys[i]])
             activated_transitions_labels = set([x.label for x in aligned_traces[i]["activated_transitions"] if x.label is not None])
             sum_at += len(activated_transitions_labels) * prefix_count[prefixes_keys[i]]
             escaping_edges = activated_transitions_labels.difference(log_transitions)
             sum_ee += len(escaping_edges) * prefix_count[prefixes_keys[i]]
-        i = i + 1
 
     if sum_at > 0:
         precision = 1 - float(sum_ee)/float(sum_at)

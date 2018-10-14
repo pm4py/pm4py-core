@@ -154,8 +154,7 @@ def filter_log_by_variants_percentage(trace_log, variants, variants_percentage=0
     variant_count = get_variants_sorted_by_count(variants)
     already_added_sum = 0
 
-    i = 0
-    while i < len(variant_count):
+    for i in range(len(variant_count)):
         variant = variant_count[i][0]
         varcount = variant_count[i][1]
         percentage_already_added = already_added_sum / no_of_traces
@@ -163,7 +162,6 @@ def filter_log_by_variants_percentage(trace_log, variants, variants_percentage=0
             for trace in variants[variant]:
                 filtered_log.append(trace)
             already_added_sum = already_added_sum + varcount
-        i = i + 1
 
     return filtered_log
 
@@ -192,14 +190,12 @@ def find_auto_threshold(trace_log, variants, decreasing_factor):
     
     prev_var_count = -1
     percentage_already_added = 0
-    i = 0
-    while i < len(variant_count):
+    for i in range(len(variant_count)):
         varcount = variant_count[i][1]
         percentage_already_added = already_added_sum / no_of_traces
         if already_added_sum == 0 or varcount > decreasing_factor * prev_var_count:
             already_added_sum = already_added_sum + varcount
         prev_var_count = varcount
-        i = i + 1
     
     return percentage_already_added
 
