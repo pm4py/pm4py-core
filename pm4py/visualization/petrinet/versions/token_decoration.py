@@ -1,13 +1,13 @@
+import pm4py
 from pm4py.visualization.petrinet.common import visualize
 from pm4py.visualization.petrinet.util import performance_map
 from pm4py.objects import log as log_lib
-from pm4py import util as pmutil
 from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 import time
 
-PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
-PARAM_TIMESTAMP_KEY = pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+PARAM_ACTIVITY_KEY = pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+PARAM_TIMESTAMP_KEY = pm4py.util.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY, PARAM_TIMESTAMP_KEY]
 
