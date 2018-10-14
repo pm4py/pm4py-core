@@ -2,7 +2,6 @@ from copy import copy
 from pm4py.objects.petri import semantics
 from pm4py.objects.petri.petrinet import PetriNet
 from statistics import mean, median, stdev
-from threading import Lock, Thread
 from pm4py.visualization.common.utils import *
 
 MAX_NO_THREADS = 1000
@@ -202,6 +201,7 @@ def aggregate_stats(statistics, elem, aggregation_measure):
     aggr_stat
         Aggregated statistics
     """
+    aggr_stat = 0
     if aggregation_measure == "mean" or aggregation_measure is None:
         aggr_stat = mean(statistics[elem]["performance"])
     elif aggregation_measure == "median":

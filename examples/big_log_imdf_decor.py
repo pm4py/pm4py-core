@@ -19,10 +19,9 @@ def execute_script():
     # we decide if we should decorate it with frequency or performance
     variant = "frequency"
     # we decide the aggregation measure (sum, min, max, mean, median, stdev)
+    aggregation_measure = "mean"
     if variant == "frequency":
         aggregation_measure = "sum"
-    elif variant == "performance":
-        aggregation_measure = "mean"
     # we find the DFG
     dfg = dfg_factory.apply(log, variant=variant)
     # we find the number of activities occurrences in the trace log

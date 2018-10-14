@@ -64,6 +64,7 @@ def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False):
 
     need_loop_on_subtree = check_loop_need(spec_tree_struct)
 
+    child_tree = ProcessTree()
     if spec_tree_struct.detected_cut == "flower" or (spec_tree_struct.detected_cut == "base_concurrent" and need_loop_on_subtree):
         final_tree_repr.operator = tree_constants.LOOP_OPERATOR
         child_tree = ProcessTree()

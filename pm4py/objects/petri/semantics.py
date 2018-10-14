@@ -1,4 +1,3 @@
-from pm4py.objects.petri.petrinet import Marking
 import copy
 
 

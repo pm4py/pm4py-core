@@ -1,7 +1,6 @@
 from pm4py.algo.other.petrigenerator.versions import simple_generator as petri_generator
 from pm4py.algo.other.playout import factory as playout_factory
 import unittest
-import os
 
 
 class PetriLogGeneratorTests(unittest.TestCase):

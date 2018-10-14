@@ -1,10 +1,13 @@
-import unittest
 import os
+import unittest
+
 
 class Pm4pyImportPackageTest(unittest.TestCase):
     def test_importeverything(self):
         import pm4py
-
+        log = pm4py.objects.log.importer.xes.versions.python_nonstandard.import_log(
+            os.path.join("input_data", "running-example.xes"))
+        self.assertEqual(len(log), 6)
 
 if __name__ == "__main__":
     unittest.main()
