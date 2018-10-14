@@ -12,7 +12,7 @@ def view(gviz):
     try:
         get_ipython()
         is_ipynb = True
-    except:
+    except Exception as e:
         pass
 
     if is_ipynb:

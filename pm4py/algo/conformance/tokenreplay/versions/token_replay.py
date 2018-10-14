@@ -271,8 +271,7 @@ def enable_hidden_transitions(net, marking, activated_transitions, visited_trans
     """
     something_changed = True
     j_indexes = [0] * len(hidden_transitions_to_enable)
-    z = 0
-    while something_changed:
+    for z in range(10000000):
         something_changed = False
         while j_indexes[z % len(hidden_transitions_to_enable)] < len(
                 hidden_transitions_to_enable[z % len(hidden_transitions_to_enable)]):
@@ -290,6 +289,8 @@ def enable_hidden_transitions(net, marking, activated_transitions, visited_trans
             if semantics.is_enabled(t, net, marking):
                 break
         if semantics.is_enabled(t, net, marking):
+            break
+        if not something_changed:
             break
         z = z + 1
     return [marking, activated_transitions, visited_transitions, all_visited_markings]
@@ -339,10 +340,8 @@ def apply_hidden_trans(t, net, marking, places_shortest_path_by_hidden, activate
         if not semantics.is_enabled(t, net, marking):
             hidden_transitions_to_enable = get_hidden_transitions_to_enable(marking, places_with_missing,
                                                                             places_shortest_path_by_hidden)
-            z = 0
-            while z < len(hidden_transitions_to_enable):
-                k = 0
-                while k < len(hidden_transitions_to_enable[z]):
+            for z in range(len(hidden_transitions_to_enable)):
+                for k in range(len(hidden_transitions_to_enable[z])):
                     t4 = hidden_transitions_to_enable[z][k]
                     if not t4 == t:
                         if not t4 in visited_transitions:
@@ -360,8 +359,6 @@ def apply_hidden_trans(t, net, marking, places_shortest_path_by_hidden, activate
                                 activated_transitions.append(t4)
                                 visited_transitions.add(t4)
                                 all_visited_markings.append(marking)
-                    k = k + 1
-                z = z + 1
         if not semantics.is_enabled(t, net, marking):
             if not (marking_at_start == marking):
                 [net, marking, activated_transitions, all_visited_markings] = apply_hidden_trans(t, net, marking,
@@ -389,8 +386,7 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
     visible_transitions = set()
     visited_transitions = set()
 
-    i = 0
-    while i < len(all_enabled_transitions):
+    for i in range(len(all_enabled_transitions)):
         t = all_enabled_transitions[i]
         if t not in visited_transitions:
             if t.label is not None:
@@ -402,7 +398,6 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
                     new_enabled_transitions = list(semantics.enabled_transitions(net, new_marking))
                     all_enabled_transitions = all_enabled_transitions + new_enabled_transitions
             visited_transitions.add(t)
-        i = i + 1
 
     return visible_transitions
 
@@ -479,16 +474,13 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     missing = 0
     consumed = 0
     produced = 0
-    i = 0
-    while i < len(trace):
+    for i in range(len(trace)):
         if ENABLE_POSTFIX_CACHE and (str(trace_activities) in post_fix_caching.cache and
                                      hash(marking) in post_fix_caching.cache[str(trace_activities)]):
             trans_to_act = post_fix_caching.cache[str(trace_activities)][hash(marking)]["trans_to_activate"]
-            z = 0
-            while z < len(trans_to_act):
+            for z in range(len(trans_to_act)):
                 t = trans_to_act[z]
                 activated_transitions.append(t)
-                z = z + 1
             used_postfix_cache = True
             marking = post_fix_caching.cache[str(trace_activities)][hash(marking)]["final_marking"]
             break
@@ -552,11 +544,9 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 activating_transition_interval.append(
                     [trace[i][activity_key], prev_len_activated_transitions, len(activated_transitions),
                      ""])
-        i = i + 1
 
     if try_to_reach_final_marking_through_hidden and not used_postfix_cache:
-        i = 0
-        while i < MAX_IT_FINAL:
+        for i in range(MAX_IT_FINAL):
             if not break_condition_final_marking(marking, final_marking):
                 hidden_transitions_to_enable = get_req_transitions_for_final_marking(marking, final_marking,
                                                                                   places_shortest_path_by_hidden)
@@ -571,7 +561,6 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         break
             else:
                 break
-            i = i + 1
 
         # try to reach the final marking in a different fashion, if not already reached
         if not break_condition_final_marking(marking, final_marking):
@@ -584,12 +573,9 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         connections_to_sink.append([place, places_shortest_path_by_hidden[place][sink_place]])
                 connections_to_sink = sorted(connections_to_sink, key=lambda x: len(x[1]))
 
-                i = 0
-                while i < MAX_IT_FINAL:
-                    j = 0
-                    while j < len(connections_to_sink):
-                        z = 0
-                        while z < len(connections_to_sink[j][1]):
+                for i in range(MAX_IT_FINAL):
+                    for j in range(len(connections_to_sink)):
+                        for z in range(len(connections_to_sink[j][1])):
                             t = connections_to_sink[j][1][z]
                             if semantics.is_enabled(t, net, marking):
                                 marking = semantics.execute(t, net, marking)
@@ -598,9 +584,6 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                                 continue
                             else:
                                 break
-                            z = z + 1
-                        j = j + 1
-                    i = i + 1
 
     marking_before_cleaning = copy(marking)
 
@@ -816,15 +799,14 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                 threads = {}
                 threads_results = {}
 
-                i = 0
-                while i < len(vc):
+                for i in range(len(vc)):
                     variant = vc[i][0]
                     threads_keys = list(threads.keys())
                     if len(threads_keys) > MAX_NO_THREADS:
-                        while len(threads_keys) > 0:
-                            t = threads[threads_keys[0]]
+                        for j in range(len(threads_keys)):
+                            t = threads[threads_keys[j]]
                             t.join()
-                            threads_results[threads_keys[0]] = {"trace_is_fit": copy(t.t_fit),
+                            threads_results[threads_keys[j]] = {"trace_is_fit": copy(t.t_fit),
                                                                 "trace_fitness": copy(t.t_value),
                                                                 "activated_transitions": copy(t.act_trans),
                                                                 "reached_marking": copy(t.reached_marking),
@@ -832,8 +814,9 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                                   t.enabled_transitions_in_marking),
                                                                 "transitions_with_problems": copy(
                                                                     t.trans_with_problems)}
-                            del threads[threads_keys[0]]
-                            del threads_keys[0]
+                            del threads[threads_keys[j]]
+                        threads_keys = 0
+                        threads_keys = []
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
                                                              trans_map, enable_place_fitness, place_fitness_per_trace,
                                                              places_shortest_path_by_hidden, consider_remaining_in_fitness,
@@ -844,19 +827,17 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                              post_fix_caching=post_fix_cache,
                                                              marking_to_activity_caching=marking_to_activity_cache)
                     threads[variant].start()
-                    i = i + 1
                 threads_keys = list(threads.keys())
-                while len(threads_keys) > 0:
-                    t = threads[threads_keys[0]]
+                for j in range(len(threads_keys)):
+                    t = threads[threads_keys[j]]
                     t.join()
-                    threads_results[threads_keys[0]] = {"trace_is_fit": copy(t.t_fit), "trace_fitness": copy(t.t_value),
+                    threads_results[threads_keys[j]] = {"trace_is_fit": copy(t.t_fit), "trace_fitness": copy(t.t_value),
                                                         "activated_transitions": copy(t.act_trans),
                                                         "reached_marking": copy(t.reached_marking),
                                                         "enabled_transitions_in_marking": copy(
                                                           t.enabled_transitions_in_marking),
                                                         "transitions_with_problems": copy(t.trans_with_problems)}
-                    del threads[threads_keys[0]]
-                    del threads_keys[0]
+                    del threads[threads_keys[j]]
                 for trace in log:
                     trace_variant = ",".join([x[activity_key] for x in trace])
                     t = threads_results[trace_variant]
