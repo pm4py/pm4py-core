@@ -72,6 +72,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, ac
     petri_net: :class:`pm4py.objects.petri.net.PetriNet` the Petri net to use in the alignment
     initial_marking: :class:`pm4py.objects.petri.net.Marking` initial marking in the Petri net
     final_marking: :class:`pm4py.objects.petri.net.Marking` final marking in the Petri net
+    best_worst: cost of the best worst alignment of a trace (empty trace aligned to the model)
     activity_key: :class:`str` (optional) key to use to identify the activity described by the events
 
     Returns

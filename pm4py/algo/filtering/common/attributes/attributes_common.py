@@ -19,7 +19,7 @@ def get_sorted_attributes_list(attributes):
     return listattr
 
 
-def get_attributes_threshold(attributes, alist, decreasing_factor, min_activity_count = 1, max_activity_count = 25):
+def get_attributes_threshold(attributes, alist, decreasing_factor, min_activity_count=1, max_activity_count=25):
     """
     Get attributes cutting threshold
 
@@ -29,6 +29,12 @@ def get_attributes_threshold(attributes, alist, decreasing_factor, min_activity_
         Dictionary of attributes associated with their count
     alist
         Sorted attributes list
+    decreasing_factor
+        Decreasing factor of the algorithm
+    min_activity_count
+        Minimum number of activities to include
+    max_activity_count
+        Maximum number of activities to include
 
     Returns
     ---------

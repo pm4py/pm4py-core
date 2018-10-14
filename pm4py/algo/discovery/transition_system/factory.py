@@ -17,6 +17,9 @@ def apply(trace_log, parameters=None, variant=VIEW_BASED):
             view
             window
             direction
+    variant
+        Variant of the algorithm to use, including:
+            view_based
 
     Returns
     ----------

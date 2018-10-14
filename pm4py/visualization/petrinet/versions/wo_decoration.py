@@ -15,6 +15,8 @@ def apply(net, initial_marking, final_marking, log=None, aggregated_statistics=N
         Final marking
     log
         (Optional) trace log
+    aggregated_statistics
+        Dictionary containing the frequency statistics
     parameters
         Algorithm parameters
 

@@ -10,6 +10,8 @@ def apply(petri_net, parameters=None):
     -----------
     petri_net
         Petri net
+    parameters
+        Possible parameters of the algorithm
 
     Returns
     -----------

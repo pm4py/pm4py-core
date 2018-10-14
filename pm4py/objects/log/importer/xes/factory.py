@@ -22,6 +22,9 @@ def import_log_from_string(log_string, parameters=None, variant=ITERPARSE):
             reverse_sort -> Specify in which direction the log should be sorted
             index_trace_indexes -> Specify if trace indexes should be added as event attribute for each event
             max_no_traces_to_import -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+    variant
+        Variant of the algorithm to use, including:
+            iterparse, nonstandard
 
     Returns
     -----------
@@ -47,6 +50,9 @@ def import_log(path, parameters=None, variant=ITERPARSE):
             reverse_sort -> Specify in which direction the log should be sorted
             index_trace_indexes -> Specify if trace indexes should be added as event attribute for each event
             max_no_traces_to_import -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+    variant
+        Variant of the algorithm to use, including:
+            iterparse, nonstandard
 
     Returns
     -----------
@@ -56,7 +62,7 @@ def import_log(path, parameters=None, variant=ITERPARSE):
     return VERSIONS[variant](path, parameters=parameters)
 
 
-def     apply(path, parameters=None, variant=ITERPARSE):
+def apply(path, parameters=None, variant=ITERPARSE):
     """
     Import a XES log into a TraceLog object
 
@@ -71,6 +77,9 @@ def     apply(path, parameters=None, variant=ITERPARSE):
             reverse_sort -> Specify in which direction the log should be sorted
             index_trace_indexes -> Specify if trace indexes should be added as event attribute for each event
             max_no_traces_to_import -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+    variant
+        Variant of the algorithm to use, including:
+            iterparse, nonstandard
 
     Returns
     -----------

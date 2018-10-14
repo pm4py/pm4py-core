@@ -40,6 +40,7 @@ def add_arc_from_to(fr, to, net, weight=1):
     fr: transition/place from
     to:  transition/place to
     net: net to use
+    weight: weight associated to the arc
 
     Returns
     -------

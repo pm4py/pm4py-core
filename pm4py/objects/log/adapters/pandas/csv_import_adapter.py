@@ -52,6 +52,10 @@ def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=
         Boolean value that tells if the CSV should be ordered
     sort_field
         If sort option is enabled, then the CSV is automatically sorted by the specified column
+    timest_format
+        (If provided) Format of the timestamp columns in the CSV file
+    timest_columns
+        Columns of the CSV that shall be converted into timestamp
 
     Returns
     -----------
@@ -93,11 +97,16 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
     -----------
     df
         Dataframe
+    timest_format
+        (If provided) Format of the timestamp columns in the CSV file
+    timest_columns
+        Columns of the CSV that shall be converted into timestamp
 
     Returns
     ------------
     df
         Dataframe with timestamp columns converted
+
     """
     for col in df.columns:
         if timest_columns is None or col in timest_columns:
@@ -130,6 +139,10 @@ def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None, sort=F
         Boolean value that tells if the CSV should be ordered
     sort_field
         If sort option is enabled, then the CSV is automatically sorted by the specified column
+    timest_format
+        (If provided) Format of the timestamp columns in the CSV file
+    timest_columns
+        Columns of the CSV that shall be converted into timestamp
 
      Returns
     -------

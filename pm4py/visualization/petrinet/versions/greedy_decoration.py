@@ -17,6 +17,8 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
         Initial marking
     final_marking
         Final marking
+    log
+        Log to use to decorate the Petri net
     parameters
         Algorithm parameters
     variant
@@ -68,6 +70,10 @@ def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_st
         Initial marking
     final_marking
         Final marking
+    log
+        Log to use to decorate the Petri net
+    aggregated_statistics
+        Dictionary containing the frequency statistics
     parameters
         Algorithm parameters
 
@@ -90,6 +96,10 @@ def apply_performance(net, initial_marking, final_marking, log=None, aggregated_
         Initial marking
     final_marking
         Final marking
+    log
+        Log to use to decorate the Petri net
+    aggregated_statistics
+        Dictionary containing the frequency statistics
     parameters
         Algorithm parameters
 

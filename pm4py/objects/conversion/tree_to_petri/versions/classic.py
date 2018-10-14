@@ -24,6 +24,10 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
         Final entity (place/transition) that should be attached from the subtree
     counts
         Counts object (keeps the number of places, transitions and hidden transitions)
+    rec_depth
+        Recursion depth of the current iteration
+    force_add_skip
+        Boolean value that tells if the addition of a skip is mandatory
 
     Returns
     ----------

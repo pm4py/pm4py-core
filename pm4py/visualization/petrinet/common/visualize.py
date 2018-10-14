@@ -17,6 +17,8 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
         Initial marking
     final_marking
         Final marking
+    decorations
+        Decorations for elements in the Petri net
     parameters
         Algorithm parameters
 
@@ -44,6 +46,8 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     ----------
     net: :class:`pm4py.entities.petri.petrinet.PetriNet`
         Petri net
+    image_format
+        Format that should be associated to the image
     initial_marking
         Initial marking of the Petri net
     final_marking

@@ -29,6 +29,8 @@ def get_start_activities_threshold(start_activities, salist, decreasing_factor):
         Dictionary of start attributes associated with their count
     salist
         Sorted start attributes list
+    decreasing_factor
+        Decreasing factor of the algorithm
 
     Returns
     ---------

@@ -19,6 +19,9 @@ def import_log_from_string(log_string, parameters=None, variant="pandas"):
             nrows -> (if specified) Maximum number of rows to read from the CSV
             sort -> Boolean value that tells if the CSV should be ordered
             sort_field -> If sort option is enabled, then the CSV is automatically sorted by the specified column
+    variant
+        Variant of the algorithm to use, including:
+            pandas
 
     Returns
     -----------
@@ -43,6 +46,9 @@ def import_log(path, parameters=None, variant="pandas"):
             nrows -> (if specified) Maximum number of rows to read from the CSV
             sort -> Boolean value that tells if the CSV should be ordered
             sort_field -> If sort option is enabled, then the CSV is automatically sorted by the specified column
+    variant
+        Variant of the algorithm to use, including:
+            pandas
 
     Returns
     -----------
@@ -66,6 +72,9 @@ def apply(path, parameters=None, variant="pandas"):
             nrows -> (if specified) Maximum number of rows to read from the CSV
             sort -> Boolean value that tells if the CSV should be ordered
             sort_field -> If sort option is enabled, then the CSV is automatically sorted by the specified column
+    variant
+        Variant of the algorithm to use, including:
+            pandas
 
     Returns
     -----------
