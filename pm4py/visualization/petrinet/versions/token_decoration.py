@@ -46,11 +46,11 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
             PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     timestamp_key = parameters[PARAM_TIMESTAMP_KEY] if PARAM_TIMESTAMP_KEY in parameters else "time:timestamp"
 
-    parameters_variants = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+    parameters_variants = {PARAM_ACTIVITY_KEY: activity_key}
     variants_idx = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters_variants)
     variants = variants_module.convert_variants_trace_idx_to_trace_obj(log, variants_idx)
 
-    parameters_tr = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "variants": variants}
+    parameters_tr = {PARAM_ACTIVITY_KEY: activity_key, "variants": variants}
 
     # do the replay
     aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_tr)
