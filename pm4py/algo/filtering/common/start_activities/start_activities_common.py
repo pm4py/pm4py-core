@@ -36,10 +36,8 @@ def get_start_activities_threshold(start_activities, salist, decreasing_factor):
         Start attributes cutting threshold
     """
     threshold = salist[0][1]
-    i = 1
-    while i < len(salist):
+    for i in range(1, len(salist)):
         value = salist[i][1]
         if value > threshold * decreasing_factor:
             threshold = value
-        i = i + 1
     return threshold

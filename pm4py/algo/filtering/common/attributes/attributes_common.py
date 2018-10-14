@@ -35,14 +35,13 @@ def get_attributes_threshold(attributes, alist, decreasing_factor, min_activity_
     threshold
         Activities cutting threshold
     """
-    i = max(0, min(min_activity_count - 1, len(alist) - 1))
-    threshold = alist[i][1]
-    i = i + 1
-    while i < len(alist):
+    index = max(0, min(min_activity_count - 1, len(alist) - 1))
+    threshold = alist[index][1]
+    index = index + 1
+    for i in range(index, len(alist)):
         value = alist[i][1]
         if value > threshold * decreasing_factor:
             threshold = value
         if i >= max_activity_count:
             break
-        i = i + 1
     return threshold

@@ -37,8 +37,7 @@ def get_end_activities_threshold(end_activities, ealist, decreasing_factor):
     """
 
     threshold = ealist[0][1]
-    i = 1
-    while i < len(ealist):
+    for i in range(1, len(ealist)):
         value = ealist[i][1]
         if value > threshold * decreasing_factor:
             threshold = value

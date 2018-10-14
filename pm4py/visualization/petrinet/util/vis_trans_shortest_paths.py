@@ -26,7 +26,9 @@ def get_shortest_paths_from_trans(net, original_trans, spaths):
     already_visited_trans = []
     already_visited_places = []
     trans_list = [original_trans]
-    while trans_list:
+    for i in range(10000000):
+        if not trans_list:
+            break
         trans = trans_list.pop(0)
         already_visited_trans.append(trans)
         for out_arc in trans.out_arcs:
