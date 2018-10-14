@@ -6,15 +6,13 @@ def search_and_insert_activity_classifier_attribute(log, force_activity_transiti
     -----------
     log
         Trace log
+    force_activity_transition_insertion
+        Optionally force the activitiy+transition classifier insertion
 
     Returns
     -----------
     log
         Trace log (plus eventually one additional event attribute as the classifier)
-    classifier_attr_key
-        Attribute name of the attribute that contains the classifier value
-    force_activity_transition_insertion
-        Optionally force the activitiy+transition classifier insertion
     """
     classifier = None
     if log.classifiers and "Activity classifier" in log.classifiers and log.classifiers["Activity classifier"]:

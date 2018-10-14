@@ -22,6 +22,9 @@ def apply(trace_log, parameters=None, variant=DFG_NATIVE):
             aggregationMeasure -> performance aggregation measure (min, max, mean, median)
             activity_key -> Attribute to use as activity
             timestamp_key -> Attribute to use as timestamp
+    variant
+        Variant of the algorithm to use, possible values:
+            native, frequency, performance, frequency_greedy, performance_greedy
 
     Returns
     -------

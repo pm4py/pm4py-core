@@ -11,9 +11,13 @@ def apply(net, initial_marking, parameters=None, variant="basic_playout"):
     -----------
     net
         Petri net to play-out
+    initial_marking
+        Initial marking of the Petri net
     parameters
         Parameters of the algorithm:
             noTraces -> Number of traces of the log to generate
             maxTraceLength -> Maximum trace length
+    variant
+        Variant of the algorithm to use
     """
     return VERSIONS[variant](net, initial_marking, parameters=parameters)

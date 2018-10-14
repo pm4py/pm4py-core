@@ -98,6 +98,8 @@ def apply_frequency(dfg, log=None, activities_count=None, parameters=None):
         DFG graph
     log
         Event log
+    activities_count
+        (If provided) Dictionary that associates to each activity its count
     parameters
         Parameters passed to the algorithm (may include the format, the replay measure and the maximum number of edges
         in the diagram)
@@ -115,6 +117,8 @@ def apply_performance(dfg, log=None, activities_count=None, parameters=None):
         DFG graph
     log
         Event log
+    activities_count
+        (If provided) Dictionary that associates to each activity its count
     parameters
         Parameters passed to the algorithm (may include the format, the replay measure and the maximum number of edges
         in the diagram)

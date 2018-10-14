@@ -36,6 +36,8 @@ def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, m
         Dataframe
     case_id_glue
         Case ID column in the CSV
+    min_case_size
+        Minimum size of a case
     max_case_size
         Maximum case size
 

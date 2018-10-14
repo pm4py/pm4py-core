@@ -65,6 +65,7 @@ def construct_cost_aware(pn1, im1, fm1, pn2, im2, fm2, skip, pn1_costs, pn2_cost
     :param pn1_costs: dictionary mapping transitions of pn1 to corresponding costs
     :param pn2_costs: dictionary mapping transitions of pn2 to corresponding costs
     :param pn1_costs: dictionary mapping pairs of transitions in pn1 and pn2 to costs
+    :param sync_costs: Costs of sync moves
 
     Returns
     -------

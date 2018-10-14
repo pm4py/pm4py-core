@@ -62,6 +62,8 @@ class Subtree(object):
             Referral directly follows graph that should be taken in account adding hidden/loop transitions
         activities
             Activities of this subtree
+        second_iteration
+            Boolean that indicates if we are executing this method for the second time
         """
 
         self.second_iteration = second_iteration

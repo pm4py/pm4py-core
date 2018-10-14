@@ -49,6 +49,8 @@ def apply(net, initial_marking, parameters=None):
     -----------
     net
         Petri net to play-out
+    initial_marking
+        Initial marking of the Petri net
     parameters
         Parameters of the algorithm:
             noTraces -> Number of traces of the log to generate

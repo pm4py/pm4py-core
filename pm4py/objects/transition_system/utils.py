@@ -12,6 +12,7 @@ def add_arc_from_to(name, fr, to, ts, data=None):
     fr: state from
     to:  state to
     ts: transition system to use
+    data: data associated to the Transition System
 
     Returns
     -------

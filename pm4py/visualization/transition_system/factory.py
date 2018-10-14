@@ -45,6 +45,9 @@ def apply(tsys, parameters=None, variant="view_based"):
         Transition system
     parameters
         Optional parameters of the algorithm
+    variant
+        Variant of the algorithm to use, including:
+            view_based
 
     Returns
     ----------

@@ -18,5 +18,7 @@ def apply(parameters=None, variant="SIMPLE_GENERATOR"):
         probAutoSkip -> Probability of adding a hidden transition that skips the current subtree
         probAutoLoop -> Probability of adding a hidden transition that loops on the current subtree
         possible_behaviors -> Possible behaviors admitted (sequential, concurrent, parallel, flower)
+    variant
+        Variant of the algorithm to use
     """
     return VERSIONS[variant](parameters)

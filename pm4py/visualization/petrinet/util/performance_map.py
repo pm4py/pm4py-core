@@ -195,6 +195,8 @@ def aggregate_stats(statistics, elem, aggregation_measure):
         Element statistics
     elem
         Current element
+    aggregation_measure
+        Aggregation measure (e.g. mean, min) to use
 
     Returns
     -----------
@@ -226,6 +228,8 @@ def find_min_max_arc_performance(statistics, aggregation_measure):
     -----------
     statistics
         Element statistics
+    aggregation_measure
+        Aggregation measure (e.g. mean, min) to use
 
     Returns
     -----------
@@ -255,6 +259,10 @@ def aggregate_statistics(statistics, measure="frequency", aggregation_measure=No
     ----------
     statistics
         Individual element statistics (including unaggregated performances)
+    measure
+        Desidered view on data (frequency or performance)
+    aggregation_measure
+        Aggregation measure (e.g. mean, min) to use
 
     Returns
     ----------

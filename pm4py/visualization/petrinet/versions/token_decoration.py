@@ -85,6 +85,8 @@ def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_st
         Final marking
     log
         (Optional) trace log
+    aggregated_statistics
+        Dictionary containing the frequency statistics
     parameters
         Algorithm parameters (including the activity key used during the replay, and the timestamp key)
 
@@ -97,6 +99,7 @@ def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_st
         if log is not None:
             aggregated_statistics = get_decorations(log, net, initial_marking, final_marking, parameters=parameters, measure="frequency")
     return visualize.apply(net, initial_marking, final_marking, parameters=parameters, decorations=aggregated_statistics)
+
 
 def apply_performance(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """
@@ -113,6 +116,8 @@ def apply_performance(net, initial_marking, final_marking, log=None, aggregated_
         Final marking
     log
         (Optional) trace log
+    aggregated_statistics
+        Dictionary containing the frequency statistics
     parameters
         Algorithm parameters (including the activity key used during the replay, and the timestamp key)
 

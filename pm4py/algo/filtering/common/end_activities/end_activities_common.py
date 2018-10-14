@@ -29,6 +29,8 @@ def get_end_activities_threshold(end_activities, ealist, decreasing_factor):
         Dictionary of end attributes associated with their count
     ealist
         Sorted end attributes list
+    decreasing_factor
+        Decreasing factor of the algorithm
 
     Returns
     ---------

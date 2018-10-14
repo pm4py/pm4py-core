@@ -207,6 +207,8 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     ----------
     trace_log
         Trace log
+    variants
+        Variants contained in the log
     parameters
         Parameters of the algorithm, including:
             activity_key -> Key that identifies the activity
