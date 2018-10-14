@@ -77,7 +77,9 @@ def import_log(filename, parameters=None):
                 try:
                     dt = ciso8601.parse_datetime(elem.get(log_lib.util.xes.KEY_VALUE))
                     tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), dt, tree)
-                except Exception as e:
+                except TypeError:
+                    logging.info("failed to parse date: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
+                except ValueError:
                     logging.info("failed to parse date: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
                 continue
 
@@ -102,7 +104,7 @@ def import_log(filename, parameters=None):
                     try:
                         val = float(elem.get(log_lib.util.xes.KEY_VALUE))
                         tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
-                    except Exception as e:
+                    except ValueError:
                         logging.info("failed to parse float: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
                 continue
 
@@ -111,7 +113,7 @@ def import_log(filename, parameters=None):
                     try:
                         val = int(elem.get(log_lib.util.xes.KEY_VALUE))
                         tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
-                    except Exception as e:
+                    except ValueError:
                         logging.info("failed to parse int: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
                 continue
 
@@ -120,7 +122,7 @@ def import_log(filename, parameters=None):
                     try:
                         val = bool(elem.get(log_lib.util.xes.KEY_VALUE))
                         tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
-                    except Exception as e:
+                    except ValueError:
                         logging.info("failed to parse boolean: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
                 continue
 
