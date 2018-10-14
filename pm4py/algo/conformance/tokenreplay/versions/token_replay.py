@@ -273,8 +273,8 @@ def enable_hidden_transitions(net, marking, activated_transitions, visited_trans
     j_indexes = [0] * len(hidden_transitions_to_enable)
     for z in range(10000000):
         something_changed = False
-        while j_indexes[z % len(hidden_transitions_to_enable)] < len(
-                hidden_transitions_to_enable[z % len(hidden_transitions_to_enable)]):
+        for k in range(j_indexes[z % len(hidden_transitions_to_enable)], len(
+                hidden_transitions_to_enable[z % len(hidden_transitions_to_enable)])):
             t3 = hidden_transitions_to_enable[z % len(hidden_transitions_to_enable)][
                 j_indexes[z % len(hidden_transitions_to_enable)]]
             if not t3 == t:
@@ -292,7 +292,6 @@ def enable_hidden_transitions(net, marking, activated_transitions, visited_trans
             break
         if not something_changed:
             break
-        z = z + 1
     return [marking, activated_transitions, visited_transitions, all_visited_markings]
 
 
