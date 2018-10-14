@@ -1,1 +1,1 @@
-from pm4py.util import constants, simple_view
+from pm4py.util import constants
