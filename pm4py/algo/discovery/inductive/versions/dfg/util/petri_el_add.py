@@ -8,12 +8,12 @@ def get_new_place(counts):
     return petri.petrinet.PetriNet.Place('p_' + str(counts.num_places))
 
 
-def get_new_hidden_trans(counts, type="unknown"):
+def get_new_hidden_trans(counts, type_trans="unknown"):
     """
     Create a new hidden transition in the Petri net
     """
     counts.inc_no_hidden()
-    return petri.petrinet.PetriNet.Transition(type + '_' + str(counts.num_hidden), None)
+    return petri.petrinet.PetriNet.Transition(type_trans + '_' + str(counts.num_hidden), None)
 
 
 def get_transition(counts, label):

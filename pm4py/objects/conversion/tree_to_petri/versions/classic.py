@@ -52,7 +52,7 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
 
     for trans in tree_transitions:
         if trans.label is None:
-            petri_trans = get_new_hidden_trans(counts, type="skip")
+            petri_trans = get_new_hidden_trans(counts, type_trans="skip")
         else:
             petri_trans = get_transition(counts, trans.label)
         net.transitions.add(petri_trans)
@@ -64,10 +64,10 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
             net, counts, intermediate_place = recursively_add_tree(subtree, net, initial_place, final_place, counts,
                                                                    rec_depth + 1, force_add_skip=force_add_skip)
     elif tree.operator == tree_constants.PARALLEL_OPERATOR:
-        new_initial_trans = get_new_hidden_trans(counts, type="tauSplit")
+        new_initial_trans = get_new_hidden_trans(counts, type_trans="tauSplit")
         net.transitions.add(new_initial_trans)
         petri.utils.add_arc_from_to(initial_place, new_initial_trans, net)
-        new_final_trans = get_new_hidden_trans(counts, type="tauJoin")
+        new_final_trans = get_new_hidden_trans(counts, type_trans="tauJoin")
         net.transitions.add(new_final_trans)
         petri.utils.add_arc_from_to(new_final_trans, final_place, net)
 
@@ -78,7 +78,7 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
         net, counts, intermediate_place = recursively_add_tree(tree_subtrees[0], net, initial_place, None, counts, rec_depth + 1, force_add_skip=force_add_skip)
         net, counts, last_added_place = recursively_add_tree(tree_subtrees[1], net, intermediate_place, final_place, counts, rec_depth + 1, force_add_skip=force_add_skip)
     elif tree.operator == tree_constants.LOOP_OPERATOR:
-        loop_trans = get_new_hidden_trans(counts, type="loop")
+        loop_trans = get_new_hidden_trans(counts, type_trans="loop")
         net.transitions.add(loop_trans)
         petri.utils.add_arc_from_to(final_place, loop_trans, net)
         petri.utils.add_arc_from_to(loop_trans, initial_place, net)
@@ -87,7 +87,7 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
                                                                rec_depth + 1, force_add_skip=True)
 
     if force_add_skip and tree_transitions:
-        skip_trans = get_new_hidden_trans(counts, type="skip")
+        skip_trans = get_new_hidden_trans(counts, type_trans="skip")
         net.transitions.add(skip_trans)
         petri.utils.add_arc_from_to(initial_place, skip_trans, net)
         petri.utils.add_arc_from_to(skip_trans, final_place, net)
@@ -134,7 +134,7 @@ def apply(tree, parameters=None):
     if initial_mandatory:
         initial_place = get_new_place(counts)
         net.places.add(initial_place)
-        tau_initial = get_new_hidden_trans(counts, type="tau")
+        tau_initial = get_new_hidden_trans(counts, type_trans="tau")
         net.transitions.add(tau_initial)
         petri.utils.add_arc_from_to(source, tau_initial, net)
         petri.utils.add_arc_from_to(tau_initial, initial_place, net)
@@ -143,7 +143,7 @@ def apply(tree, parameters=None):
     if final_mandatory:
         final_place = get_new_place(counts)
         net.places.add(final_place)
-        tau_final = get_new_hidden_trans(counts, type="tau")
+        tau_final = get_new_hidden_trans(counts, type_trans="tau")
         net.transitions.add(tau_final)
         petri.utils.add_arc_from_to(final_place, tau_final, net)
         petri.utils.add_arc_from_to(tau_final, sink, net)

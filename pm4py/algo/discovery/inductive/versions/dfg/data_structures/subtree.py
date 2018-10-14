@@ -30,6 +30,23 @@ class Subtree(object):
         self.rec_depth = rec_depth
         self.noise_threshold = noise_threshold
 
+        self.second_iteration = None
+        self.activities = None
+        self.dfg = None
+        self.outgoing = None
+        self.ingoing = None
+        self.self_loop_activities = None
+        self.initial_ingoing = None
+        self.initial_outgoing = None
+        self.activities_direction = None
+        self.activities_dir_list = None
+        self.negated_dfg = None
+        self.negated_activities = None
+        self.negated_outgoing = None
+        self.negated_ingoing = None
+        self.detected_cut = None
+        self.children = None
+
         self.initialize_tree(dfg, initial_dfg, activities)
 
     def initialize_tree(self, dfg, initial_dfg, activities, second_iteration=False):
@@ -312,13 +329,13 @@ class Subtree(object):
         idx_max_sum = 0
 
         for comp in comps:
-            sum = 0
+            summ = 0
             for act1 in comp:
                 if act1 in ingoing and act2 in ingoing[act1]:
-                    sum = sum + ingoing[act1][act2]
+                    summ = summ + ingoing[act1][act2]
                 if act1 in outgoing and act2 in outgoing[act1]:
-                    sum = sum + outgoing[act1][act2]
-            sums.append(sum)
+                    summ = summ + outgoing[act1][act2]
+            sums.append(summ)
             if sums[-1] > sums[idx_max_sum]:
                 idx_max_sum = len(sums) - 1
 

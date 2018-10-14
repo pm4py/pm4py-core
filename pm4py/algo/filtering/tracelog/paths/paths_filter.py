@@ -36,7 +36,7 @@ def apply(trace_log, paths, parameters=None):
             if path in paths:
                 found = True
                 break
-        if (found and positive) or (not(found) and not(positive)):
+        if (found and positive) or (not found and not positive):
             filtered_log.append(trace)
     return filtered_log
 

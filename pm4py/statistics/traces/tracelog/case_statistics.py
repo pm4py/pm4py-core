@@ -82,7 +82,7 @@ def get_cases_description(trace_log, parameters=None):
             statistics_list.append([ci, st, et, diff])
 
     if enable_sort:
-        statistics_list = sorted(statistics_list, key=lambda x: x[sort_by_index], reverse=not(sort_ascending))
+        statistics_list = sorted(statistics_list, key=lambda x: x[sort_by_index], reverse=not sort_ascending)
 
     if max_ret_cases is not None:
         statistics_list = statistics_list[:max(len(statistics_list), max_ret_cases)]

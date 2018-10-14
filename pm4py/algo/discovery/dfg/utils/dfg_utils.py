@@ -141,25 +141,25 @@ def get_max_activity_count(dfg, act):
     return max_value
 
 
-def sum_ingoutg_val_activ(dict, activity):
+def sum_ingoutg_val_activ(dictio, activity):
     """
     Gets the sum of ingoing/outgoing values of an activity
 
     Parameters
     -----------
-    dict
+    dictio
         Dictionary
     activity
         Current examined activity
 
     Returns
     -----------
-    sum
+    summ
     """
-    sum = 0
-    for act2 in dict[activity]:
-        sum += dict[activity][act2]
-    return sum
+    summ = 0
+    for act2 in dictio[activity]:
+        summ += dictio[activity][act2]
+    return summ
 
 
 def max_occ_all_activ(dfg):
@@ -171,14 +171,14 @@ def max_occ_all_activ(dfg):
     max_value = -1
 
     for act in ingoing:
-        sum = sum_ingoutg_val_activ(ingoing, act)
-        if sum > max_value:
-            max_value = sum
+        summ = sum_ingoutg_val_activ(ingoing, act)
+        if summ > max_value:
+            max_value = summ
 
     for act in outgoing:
-        sum = sum_ingoutg_val_activ(outgoing, act)
-        if sum > max_value:
-            max_value = sum
+        summ = sum_ingoutg_val_activ(outgoing, act)
+        if summ > max_value:
+            max_value = summ
 
     return max_value
 
@@ -194,13 +194,13 @@ def max_occ_among_specif_activ(dfg, activities):
 
     for act in activities:
         if act in ingoing:
-            sum = sum_ingoutg_val_activ(ingoing, act)
-            if sum > max_value:
-                max_value = sum
+            summ = sum_ingoutg_val_activ(ingoing, act)
+            if summ > max_value:
+                max_value = summ
         if act in outgoing:
-            sum = sum_ingoutg_val_activ(outgoing, act)
-            if sum > max_value:
-                max_value = sum
+            summ = sum_ingoutg_val_activ(outgoing, act)
+            if summ > max_value:
+                max_value = summ
 
     return max_value
 

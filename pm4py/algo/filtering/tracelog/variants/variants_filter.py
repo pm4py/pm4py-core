@@ -25,7 +25,7 @@ def apply(trace_log, admitted_variants, parameters=None):
     variants = get_variants(trace_log, parameters=parameters)
     trace_log = TraceLog()
     for variant in variants:
-        if (positive and variant in admitted_variants) or (not(positive) and not(variant in admitted_variants)):
+        if (positive and variant in admitted_variants) or (not positive and not variant in admitted_variants):
             for trace in variants[variant]:
                 trace_log.append(trace)
     return trace_log

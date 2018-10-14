@@ -38,7 +38,7 @@ def apply_events(trace_log, values, parameters=None):
         for j in range(len(trace)):
             if attribute_key in trace[j]:
                 attribute_value = trace[j][attribute_key]
-                if (positive and attribute_value in values) or (not(positive) and not(attribute_value in values)):
+                if (positive and attribute_value in values) or (not positive and not attribute_value in values):
                     new_trace.append(trace[j])
         if len(new_trace) > 0:
             filtered_log.append(new_trace)
@@ -81,7 +81,7 @@ def apply(trace_log, values, parameters=None):
                 if attribute_value in values:
                     found = True
 
-        if (found and positive) or (not(found) and not(positive)):
+        if (found and positive) or (not found and not positive):
             new_trace = trace
 
         if len(new_trace) > 0:

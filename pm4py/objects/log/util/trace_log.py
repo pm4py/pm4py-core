@@ -69,7 +69,7 @@ def get_trace_variants(log, key=xes_util.DEFAULT_NAME_KEY):
                 continue
         variant_map[len(variants)] = [t]
         variants.append(variant)
-    return (variants, variant_map)
+    return variants, variant_map
 
 
 def project_traces(trace_log, keys=xes_util.DEFAULT_NAME_KEY):
