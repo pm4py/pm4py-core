@@ -30,6 +30,8 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
     if parameters is None:
         parameters = {}
 
+    aggregation_measure = "mean"
+
     if "frequency" in variant:
         aggregation_measure = "sum"
     elif "performance" in variant:

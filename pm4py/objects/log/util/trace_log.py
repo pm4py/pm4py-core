@@ -85,7 +85,7 @@ def project_traces(trace_log, keys=xes_util.DEFAULT_NAME_KEY):
     if isinstance(keys, str):
         return list(map(lambda t: list(map(lambda e: e[keys], t)), trace_log))
     else:
-        return list(map(lambda t: list(map(lambda e: {key: e[key] for key in keys}))))
+        return list(map(lambda t: list(map(lambda e: {key: e[key] for key in keys}, t)), trace_log))
 
 
 def derive_and_lift_trace_attributes_from_event_attributes(log, ignore=None, retain_on_event_level=False,

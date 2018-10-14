@@ -24,7 +24,7 @@ def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities):
 
     condition1 = start_activities_count > 0 and max_val_act_spec < start_activities_count
     condition2 = end_activities_count > 0 and max_val_act_spec < end_activities_count
-    condition3 = start_activities_count <= 0 and end_activities_count <= 0 and 0 < max_val_act_spec < max_value
+    condition3 = max(start_activities_count, end_activities_count) <= 0 < max_val_act_spec < max_value
     condition = condition1 or condition2 or condition3
 
     if condition:

@@ -74,6 +74,7 @@ class SubtreeGenerator(object):
         """
         Generate an activity name
         """
+        activity_name = ""
         for i in range(100000):
             activity_name = self.generate_string(4)
             if activity_name not in self.addedActivities:
@@ -103,6 +104,10 @@ class SubtreeGenerator(object):
             (If specified) Chosen behavior for the current subtree
         """
         num_of_activities_this_subtree = 0
+        num_of_child_subtrees = 0
+        activities_names = []
+        added_transitions = []
+        subtrees_types = []
         self.noOfSubtrees = self.noOfSubtrees + 1
         this_possible_behaviors = deepcopy(self.possible_behaviors)
         if rec_depth == 0:
@@ -117,8 +122,6 @@ class SubtreeGenerator(object):
                 if num_of_activities_this_subtree >= self.minNoOfActivitiesPerSubtree:
                     break
                 num_of_activities_this_subtree = random.randrange(0, self.maxNoOfActivitiesPerSubtree)
-            activities_names = []
-            added_transitions = []
             for i in range(num_of_activities_this_subtree):
                 activity_name = self.generate_activity()
                 activities_names.append(activity_name)
@@ -131,7 +134,6 @@ class SubtreeGenerator(object):
                 if num_of_child_subtrees >= self.minNoOfActivitiesPerSubtree:
                     break
                 num_of_child_subtrees = random.randrange(0, self.maxNoOfActivitiesPerSubtree)
-            subtrees_types = []
             for i in range(num_of_child_subtrees):
                 if self.noOfSubtrees >= self.maxNoOfSubtrees:
                     subtrees_types.append("sequential")
@@ -308,7 +310,7 @@ def apply(parameters=None):
     min_no_of_activities_per_subtree = 2
     max_no_of_activities_per_subtree = 6
     max_no_of_subtrees = 5
-    prow_spawn_subtree = 0.6
+    prob_spawn_subtree = 0.6
     prob_auto_skip = 0.35
     prob_auto_loop = 0.0
     possible_behaviors = ["sequential", "concurrent", "flower", "parallel"]

@@ -94,8 +94,10 @@ def get_paths_threshold(paths, plist, decreasing_factor):
     ----------
     paths
         Dictionary of paths associated with their count
-    listpaths
-        Sorted paths list
+    plist
+        List of paths ordered by number of occurrences
+    decreasing_factor
+        Decreasing factor of the algorithm
 
     Returns
     ---------
@@ -142,9 +144,9 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key
         fvp.add(path)
     for trace in trace_log:
         new_trace = Trace()
+        jj = 0
         if len(trace) > 0:
             new_trace.append(trace[0])
-            jj = 0
             for j in range(1, len(trace)-1):
                 jj = j
                 if j >= len(trace):

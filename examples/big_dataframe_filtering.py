@@ -138,6 +138,7 @@ def execute_script():
         ee = time.time()
         print("filtering on attribute values and generating process schema=", (ee - dd))
 
+    ee = time.time()
     parameters_sa = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE,
                      constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ACTIVITY_KEY}
     parameters_ea = {constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE,

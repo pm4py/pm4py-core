@@ -223,10 +223,10 @@ def __compute_exact_heuristic(sync_net, incidence_matrix, marking, cost_vec, fin
     :return: h: heuristic value, x: solution vector
     """
     m_vec = incidence_matrix.encode_marking(marking)
-    G = matrix(-np.eye(len(sync_net.transitions)))
+    g_matrix = matrix(-np.eye(len(sync_net.transitions)))
     h_cvx = matrix(np.zeros(len(sync_net.transitions)))
-    A = matrix(incidence_matrix.A, tc='d')
-    h_obj = solvers.lp(matrix(cost_vec, tc='d'), G, h_cvx, A.trans(),
+    a_matrix = matrix(incidence_matrix.A, tc='d')
+    h_obj = solvers.lp(matrix(cost_vec, tc='d'), g_matrix, h_cvx, a_matrix.trans(),
                        matrix([i - j for i, j in zip(fin_vec, m_vec)], tc='d'), solver='glpk',
                        options={'glpk': {'msg_lev': 'GLP_MSG_OFF'}})
     h = h_obj['primal objective']
@@ -283,10 +283,10 @@ class SearchTuple:
         return ret
 
     def __repr__(self):
-        stringBuild = []
-        stringBuild.append("\nm=" + str(self.m))
-        stringBuild.append(" f=" + str(self.f))
-        stringBuild.append(' g=' + str(self.g))
-        stringBuild.append(" h=" + str(self.h))
-        stringBuild.append(" path=" + str(self.__get_firing_sequence()) + "\n\n")
-        return " ".join(stringBuild)
+        string_build = []
+        string_build.append("\nm=" + str(self.m))
+        string_build.append(" f=" + str(self.f))
+        string_build.append(' g=' + str(self.g))
+        string_build.append(" h=" + str(self.h))
+        string_build.append(" path=" + str(self.__get_firing_sequence()) + "\n\n")
+        return " ".join(string_build)

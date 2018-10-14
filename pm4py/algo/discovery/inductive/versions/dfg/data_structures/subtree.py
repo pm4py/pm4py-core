@@ -211,7 +211,7 @@ class Subtree(object):
 
         return connected_components
 
-    def checkParCut(self, conn_components):
+    def check_par_cut(self, conn_components):
         """
         Checks if in a parallel cut all relations are present
 
@@ -250,7 +250,7 @@ class Subtree(object):
         conn_components = self.get_connected_components(self.negated_ingoing, self.negated_outgoing, self.activities)
 
         if len(conn_components) > 1:
-            if self.checkParCut(conn_components):
+            if self.check_par_cut(conn_components):
                 return [True, conn_components]
 
         return [False, []]

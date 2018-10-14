@@ -1,9 +1,6 @@
 from lxml import etree
 import time
 from pm4py.objects import petri
-from pm4py.objects.petri.petrinet import Marking
-from copy import copy, deepcopy
-import logging
 import tempfile, os
 from pm4py.objects.petri.common import final_marking
 

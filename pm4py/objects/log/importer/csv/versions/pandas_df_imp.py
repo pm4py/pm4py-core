@@ -1,5 +1,4 @@
 from pm4py.objects import log
-import tempfile, os
 from pm4py.objects.log.adapters.pandas.csv_import_adapter import import_dataframe_from_path
 
 def convert_dataframe_to_event_log(df):
