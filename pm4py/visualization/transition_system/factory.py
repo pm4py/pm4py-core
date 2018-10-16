@@ -33,7 +33,7 @@ def view(gviz):
     gviz
         GraphViz diagram
     """
-    gview.view(gviz)
+    return gview.view(gviz)
 
 def apply(tsys, parameters=None, variant="view_based"):
     """
