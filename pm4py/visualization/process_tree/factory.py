@@ -59,4 +59,4 @@ def view(gviz):
     gviz
         GraphViz diagram
     """
-    gview.view(gviz)
+    return gview.view(gviz)
