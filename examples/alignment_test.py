@@ -1,20 +1,22 @@
-import pm4py
-from pm4py.algo.conformance import alignments as ali
-from pm4py.objects import petri as petri
-from pm4py.objects import log as log_lib
-from pm4py import util
-from pm4py.objects.log.importer.xes import factory as xes_importer
 import os
+
+import pm4py
+from pm4py import util
+from pm4py.algo.conformance import alignments as ali
+from pm4py.objects import log as log_lib
+from pm4py.objects import petri as petri
+from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_MODEL_COST_FUNCTION
+from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
+from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
 
 def align(trace, net, im, fm, model_cost_function, sync_cost_function):
     trace_costs = list(map(lambda e: 1000, trace))
     params = dict()
     params[util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_lib.util.xes.DEFAULT_NAME_KEY
-    params[
-        pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION] = model_cost_function
-    params[pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION] = trace_costs
-    params[
-        pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
+    params[PARAM_MODEL_COST_FUNCTION] = model_cost_function
+    params[PARAM_TRACE_COST_FUNCTION] = trace_costs
+    params[PARAM_SYNC_COST_FUNCTION] = sync_cost_function
     return ali.factory.apply(trace, net, im, fm, parameters=params, variant=ali.factory.VERSION_STATE_EQUATION_A_STAR)
 
 

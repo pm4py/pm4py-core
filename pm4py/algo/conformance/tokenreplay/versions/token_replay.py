@@ -275,7 +275,7 @@ def enable_hidden_transitions(net, marking, activated_transitions, visited_trans
                 j_indexes[z % len(hidden_transitions_to_enable)]]
             if not t3 == t:
                 if semantics.is_enabled(t3, net, marking):
-                    if not t3 in visited_transitions:
+                    if t3 not in visited_transitions:
                         marking = semantics.execute(t3, net, marking)
                         activated_transitions.append(t3)
                         visited_transitions.add(t3)
@@ -291,9 +291,9 @@ def enable_hidden_transitions(net, marking, activated_transitions, visited_trans
     return [marking, activated_transitions, visited_transitions, all_visited_markings]
 
 
-def apply_hidden_trans(t, net, marking, places_shortest_path_by_hidden, activated_transitions, rec_depth,
-                       visited_transitions,
-                       all_visited_markings):
+def apply_hidden_trans(t, net, marking, places_shortest_paths_by_hidden, act_tr, rec_depth,
+                       visit_trans,
+                       vis_mark):
     """
     Apply hidden transitions in order to enable a given transition
 
@@ -305,65 +305,65 @@ def apply_hidden_trans(t, net, marking, places_shortest_path_by_hidden, activate
         Petri net
     marking
         Marking
-    places_shortest_path_by_hidden
+    places_shortest_paths_by_hidden
         Shortest paths between places connected by hidden transitions
-    activated_transitions
+    act_tr
         All activated transitions
     rec_depth
         Current recursion depth
-    visited_transitions
+    visit_trans
         All visited transitions by hiddenTrans method
-    all_visited_markings
+    vis_mark
         All visited markings
     """
-    if rec_depth >= MAX_REC_DEPTH_HIDTRANSENABL or t in visited_transitions:
-        return [net, marking, activated_transitions, all_visited_markings]
-    visited_transitions.add(t)
+    if rec_depth >= MAX_REC_DEPTH_HIDTRANSENABL or t in visit_trans:
+        return [net, marking, act_tr, vis_mark]
+    visit_trans.add(t)
     marking_at_start = copy(marking)
     places_with_missing = get_places_with_missing_tokens(t, marking)
     hidden_transitions_to_enable = get_hidden_transitions_to_enable(marking, places_with_missing,
-                                                                    places_shortest_path_by_hidden)
+                                                                    places_shortest_paths_by_hidden)
 
     if hidden_transitions_to_enable:
-        [marking, activated_transitions, visited_transitions, all_visited_markings] = enable_hidden_transitions(net,
-                                                                                                                marking,
-                                                                                                                activated_transitions,
-                                                                                                                visited_transitions,
-                                                                                                                all_visited_markings,
-                                                                                                                hidden_transitions_to_enable,
-                                                                                                                t)
+        [marking, act_tr, visit_trans, vis_mark] = enable_hidden_transitions(net,
+                                                                             marking,
+                                                                             act_tr,
+                                                                             visit_trans,
+                                                                             vis_mark,
+                                                                             hidden_transitions_to_enable,
+                                                                             t)
         if not semantics.is_enabled(t, net, marking):
             hidden_transitions_to_enable = get_hidden_transitions_to_enable(marking, places_with_missing,
-                                                                            places_shortest_path_by_hidden)
+                                                                            places_shortest_paths_by_hidden)
             for z in range(len(hidden_transitions_to_enable)):
                 for k in range(len(hidden_transitions_to_enable[z])):
                     t4 = hidden_transitions_to_enable[z][k]
                     if not t4 == t:
-                        if not t4 in visited_transitions:
+                        if t4 not in visit_trans:
                             if not semantics.is_enabled(t4, net, marking):
-                                [net, marking, activated_transitions, all_visited_markings] = apply_hidden_trans(t4,
-                                                                                                                 net,
-                                                                                                                 marking,
-                                                                                                                 places_shortest_path_by_hidden,
-                                                                                                                 activated_transitions,
-                                                                                                                 rec_depth + 1,
-                                                                                                                 visited_transitions,
-                                                                                                                 all_visited_markings)
+                                [net, marking, act_tr, vis_mark] = apply_hidden_trans(t4,
+                                                                                      net,
+                                                                                      marking,
+                                                                                      places_shortest_paths_by_hidden,
+                                                                                      act_tr,
+                                                                                      rec_depth + 1,
+                                                                                      visit_trans,
+                                                                                      vis_mark)
                             if semantics.is_enabled(t4, net, marking):
                                 marking = semantics.execute(t4, net, marking)
-                                activated_transitions.append(t4)
-                                visited_transitions.add(t4)
-                                all_visited_markings.append(marking)
+                                act_tr.append(t4)
+                                visit_trans.add(t4)
+                                vis_mark.append(marking)
         if not semantics.is_enabled(t, net, marking):
             if not (marking_at_start == marking):
-                [net, marking, activated_transitions, all_visited_markings] = apply_hidden_trans(t, net, marking,
-                                                                                                 places_shortest_path_by_hidden,
-                                                                                                 activated_transitions,
-                                                                                                 rec_depth + 1,
-                                                                                                 visited_transitions,
-                                                                                                 all_visited_markings)
+                [net, marking, act_tr, vis_mark] = apply_hidden_trans(t, net, marking,
+                                                                      places_shortest_paths_by_hidden,
+                                                                      act_tr,
+                                                                      rec_depth + 1,
+                                                                      visit_trans,
+                                                                      vis_mark)
 
-    return [net, marking, activated_transitions, all_visited_markings]
+    return [net, marking, act_tr, vis_mark]
 
 
 def get_visible_transitions_eventually_enabled_by_marking(net, marking):
@@ -458,14 +458,14 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         Stores the marking-to-activity cache
     """
     trace_activities = [event[activity_key] for event in trace]
-    activated_transitions = []
+    act_trans = []
     transitions_with_problems = []
-    all_visited_markings = []
+    vis_mark = []
     activating_transition_index = {}
     activating_transition_interval = []
     used_postfix_cache = False
     marking = copy(initial_marking)
-    all_visited_markings.append(marking)
+    vis_mark.append(marking)
     missing = 0
     consumed = 0
     produced = 0
@@ -475,12 +475,12 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             trans_to_act = post_fix_caching.cache[str(trace_activities)][hash(marking)]["trans_to_activate"]
             for z in range(len(trans_to_act)):
                 t = trans_to_act[z]
-                activated_transitions.append(t)
+                act_trans.append(t)
             used_postfix_cache = True
             marking = post_fix_caching.cache[str(trace_activities)][hash(marking)]["final_marking"]
             break
         else:
-            prev_len_activated_transitions = len(activated_transitions)
+            prev_len_activated_transitions = len(act_trans)
             if ENABLE_MARKTOACT_CACHE and (hash(marking) in marking_to_activity_caching.cache and
                                            trace[i][activity_key] in marking_to_activity_caching.cache[hash(marking)]
                                            and trace[i - 1][activity_key] ==
@@ -492,8 +492,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     "this_activated_transitions"]
                 this_vis_markings = marking_to_activity_caching.cache[hash(marking)][trace[i][activity_key]][
                     "this_visited_markings"]
-                activated_transitions = activated_transitions + this_act_trans
-                all_visited_markings = all_visited_markings + this_vis_markings
+                act_trans = act_trans + this_act_trans
+                vis_mark = vis_mark + this_vis_markings
                 marking = copy(this_end_marking)
             else:
                 if trace[i][activity_key] in trans_map:
@@ -501,14 +501,14 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     if walk_through_hidden_trans and not semantics.is_enabled(t, net,
                                                                               marking):
                         visited_transitions = set()
-                        prev_len_activated_transitions = len(activated_transitions)
-                        [net, marking, activated_transitions, all_visited_markings] = apply_hidden_trans(t, net,
-                                                                                                         marking,
-                                                                                                         places_shortest_path_by_hidden,
-                                                                                                         activated_transitions,
-                                                                                                         0,
-                                                                                                         visited_transitions,
-                                                                                                         all_visited_markings)
+                        prev_len_activated_transitions = len(act_trans)
+                        [net, marking, act_trans, vis_mark] = apply_hidden_trans(t, net,
+                                                                                 marking,
+                                                                                 places_shortest_path_by_hidden,
+                                                                                 act_trans,
+                                                                                 0,
+                                                                                 visited_transitions,
+                                                                                 vis_mark)
                     if not semantics.is_enabled(t, net, marking):
                         transitions_with_problems.append(t)
                         if stop_immediately_unfit:
@@ -526,19 +526,19 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     produced = produced + p
                     if semantics.is_enabled(t, net, marking):
                         marking = semantics.execute(t, net, marking)
-                        activated_transitions.append(t)
-                        all_visited_markings.append(marking)
+                        act_trans.append(t)
+                        vis_mark.append(marking)
             del trace_activities[0]
             if len(trace_activities) < MAX_POSTFIX_SUFFIX_LENGTH:
-                activating_transition_index[str(trace_activities)] = {"index": len(activated_transitions),
+                activating_transition_index[str(trace_activities)] = {"index": len(act_trans),
                                                                       "marking": hash(marking)}
             if i > 0:
                 activating_transition_interval.append(
-                    [trace[i][activity_key], prev_len_activated_transitions, len(activated_transitions),
+                    [trace[i][activity_key], prev_len_activated_transitions, len(act_trans),
                      trace[i - 1][activity_key]])
             else:
                 activating_transition_interval.append(
-                    [trace[i][activity_key], prev_len_activated_transitions, len(activated_transitions),
+                    [trace[i][activity_key], prev_len_activated_transitions, len(act_trans),
                      ""])
 
     if try_to_reach_final_marking_through_hidden and not used_postfix_cache:
@@ -551,8 +551,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     for t in group:
                         if semantics.is_enabled(t, net, marking):
                             marking = semantics.execute(t, net, marking)
-                            activated_transitions.append(t)
-                            all_visited_markings.append(marking)
+                            act_trans.append(t)
+                            vis_mark.append(marking)
                     if break_condition_final_marking(marking, final_marking):
                         break
             else:
@@ -575,8 +575,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             t = connections_to_sink[j][1][z]
                             if semantics.is_enabled(t, net, marking):
                                 marking = semantics.execute(t, net, marking)
-                                activated_transitions.append(t)
-                                all_visited_markings.append(marking)
+                                act_trans.append(t)
+                                vis_mark.append(marking)
                                 continue
                             else:
                                 break
@@ -609,20 +609,20 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 post_fix_caching.cache[suffix] = {}
             if activating_transition_index[suffix]["marking"] not in post_fix_caching.cache[suffix]:
                 post_fix_caching.cache[suffix][activating_transition_index[suffix]["marking"]] = \
-                    {"trans_to_activate": activated_transitions[activating_transition_index[suffix]["index"]:],
+                    {"trans_to_activate": act_trans[activating_transition_index[suffix]["index"]:],
                      "final_marking": marking}
         for trans in activating_transition_interval:
             activity = trans[0]
             start_marking_index = trans[1]
             end_marking_index = trans[2]
             previous_activity = trans[3]
-            if end_marking_index < len(all_visited_markings):
-                start_marking_object = all_visited_markings[start_marking_index]
+            if end_marking_index < len(vis_mark):
+                start_marking_object = vis_mark[start_marking_index]
                 start_marking_hash = hash(start_marking_object)
-                end_marking_object = all_visited_markings[end_marking_index]
+                end_marking_object = vis_mark[end_marking_index]
                 if activity in trans_map:
-                    this_activated_trans = activated_transitions[start_marking_index:end_marking_index]
-                    this_visited_markings = all_visited_markings[start_marking_index + 1:end_marking_index + 1]
+                    this_activated_trans = act_trans[start_marking_index:end_marking_index]
+                    this_visited_markings = vis_mark[start_marking_index + 1:end_marking_index + 1]
 
                     if start_marking_hash not in marking_to_activity_caching.cache:
                         marking_to_activity_caching.cache[start_marking_hash] = {}
@@ -633,14 +633,14 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             "this_visited_markings": this_visited_markings,
                             "previousActivity": previous_activity}
 
-    return [is_fit, trace_fitness, activated_transitions, transitions_with_problems, marking_before_cleaning,
+    return [is_fit, trace_fitness, act_trans, transitions_with_problems, marking_before_cleaning,
             get_visible_transitions_eventually_enabled_by_marking(net, marking_before_cleaning)]
 
 
 class ApplyTraceTokenReplay(Thread):
     def __init__(self, trace, net, initial_marking, final_marking, trans_map, enable_place_fitness, place_fitness,
                  places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
-                 try_to_reach_final_marking_through_hidden=True, stop_immediately_when_unfit=False,
+                 reach_mark_through_hidden=True, stop_immediately_when_unfit=False,
                  walk_through_hidden_trans=True, post_fix_caching=None,
                  marking_to_activity_caching=None):
         """
@@ -656,7 +656,7 @@ class ApplyTraceTokenReplay(Thread):
         self.places_shortest_path_by_hidden = places_shortest_path_by_hidden
         self.consider_remaining_in_fitness = consider_remaining_in_fitness
         self.activity_key = activity_key
-        self.try_to_reach_final_marking_through_hidden = try_to_reach_final_marking_through_hidden
+        self.try_to_reach_final_marking_through_hidden = reach_mark_through_hidden
         self.stop_immediately_when_unfit = stop_immediately_when_unfit
         self.walk_through_hidden_trans = walk_through_hidden_trans
         self.post_fix_caching = post_fix_caching
@@ -664,9 +664,9 @@ class ApplyTraceTokenReplay(Thread):
         self.t_fit = None
         self.t_value = None
         self.act_trans = None
-        self.trans_with_problems = None
+        self.trans_probl = None
         self.reached_marking = None
-        self.enabled_transitions_in_marking = None
+        self.enabled_trans_in_mark = None
 
         Thread.__init__(self)
 
@@ -674,7 +674,7 @@ class ApplyTraceTokenReplay(Thread):
         """
         Runs the thread and stores the results
         """
-        self.t_fit, self.t_value, self.act_trans, self.trans_with_problems, self.reached_marking, self.enabled_transitions_in_marking = \
+        self.t_fit, self.t_value, self.act_trans, self.trans_probl, self.reached_marking, self.enabled_trans_in_mark = \
             apply_trace(self.trace, self.net, self.initial_marking, self.final_marking, self.trans_map,
                         self.enable_place_fitness, self.place_fitness,
                         self.places_shortest_path_by_hidden, self.consider_remaining_in_fitness,
@@ -739,7 +739,7 @@ class MarkingToActivityCaching:
 
 
 def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=False, consider_remaining_in_fitness=False,
-              activity_key="concept:name", try_to_reach_final_marking_through_hidden=True, stop_immediately_unfit=False,
+              activity_key="concept:name", reach_mark_through_hidden=True, stop_immediately_unfit=False,
               walk_through_hidden_trans=True, places_shortest_path_by_hidden=None,
               variants=None):
     """
@@ -761,7 +761,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
         Boolean value telling if the remaining tokens should be considered in fitness evaluation
     activity_key
         Name of the attribute that contains the activity
-    try_to_reach_final_marking_through_hidden
+    reach_mark_through_hidden
         Boolean value that decides if we shall try to reach the final marking through hidden transitions
     stop_immediately_unfit
         Boolean value that decides if we shall stop immediately when a non-conformance is detected
@@ -809,9 +809,9 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                                 "activated_transitions": copy(t.act_trans),
                                                                 "reached_marking": copy(t.reached_marking),
                                                                 "enabled_transitions_in_marking": copy(
-                                                                    t.enabled_transitions_in_marking),
+                                                                    t.enabled_trans_in_mark),
                                                                 "transitions_with_problems": copy(
-                                                                    t.trans_with_problems)}
+                                                                    t.trans_probl)}
                             del threads[threads_keys[j]]
                         del threads_keys
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
@@ -819,7 +819,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                              places_shortest_path_by_hidden,
                                                              consider_remaining_in_fitness,
                                                              activity_key=activity_key,
-                                                             try_to_reach_final_marking_through_hidden=try_to_reach_final_marking_through_hidden,
+                                                             reach_mark_through_hidden=reach_mark_through_hidden,
                                                              stop_immediately_when_unfit=stop_immediately_unfit,
                                                              walk_through_hidden_trans=walk_through_hidden_trans,
                                                              post_fix_caching=post_fix_cache,
@@ -833,8 +833,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                         "activated_transitions": copy(t.act_trans),
                                                         "reached_marking": copy(t.reached_marking),
                                                         "enabled_transitions_in_marking": copy(
-                                                            t.enabled_transitions_in_marking),
-                                                        "transitions_with_problems": copy(t.trans_with_problems)}
+                                                            t.enabled_trans_in_mark),
+                                                        "transitions_with_problems": copy(t.trans_probl)}
                     del threads[threads_keys[j]]
                 for trace in log:
                     trace_variant = ",".join([x[activity_key] for x in trace])
@@ -899,7 +899,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
 
     return apply_log(log, net, initial_marking, final_marking, enable_place_fitness=enable_place_fitness,
                      consider_remaining_in_fitness=consider_remaining_in_fitness,
-                     try_to_reach_final_marking_through_hidden=try_to_reach_final_marking_through_hidden,
+                     reach_mark_through_hidden=try_to_reach_final_marking_through_hidden,
                      stop_immediately_unfit=stop_immediately_unfit,
                      walk_through_hidden_trans=walk_through_hidden_trans,
                      places_shortest_path_by_hidden=places_shortest_path_by_hidden, activity_key=activity_key,
