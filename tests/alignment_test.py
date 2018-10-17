@@ -1,11 +1,13 @@
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.objects import petri
+import os
+import unittest
+
+from pm4py.algo.conformance.alignments.versions import state_equation_a_star
 from pm4py.algo.discovery.alpha import factory as alpha_factory
 from pm4py.algo.discovery.inductive.versions.dfg import dfg_only
+from pm4py.objects import petri
+from pm4py.objects.log.importer.xes import factory as xes_importer
 from tests.constants import INPUT_DATA_DIR
-from pm4py.algo.conformance.alignments.versions import state_equation_a_star
-import unittest
-import os
+
 
 class AlignmentTest(unittest.TestCase):
     def test_alignment_alpha(self):

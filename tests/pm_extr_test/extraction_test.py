@@ -1,25 +1,28 @@
-import os, sys, inspect
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-parentdir2 = os.path.dirname(parentdir)
-sys.path.insert(0, parentdir)
-sys.path.insert(0, parentdir2)
-import time
-from pm4py.objects.log.importer.xes import factory as xes_factory
-from pm4py.algo.discovery.inductive import factory as inductive
-from pm4py.algo.discovery.alpha import factory as alpha
-from pm4py.evaluation.replay_fitness import factory as fitness_factory
-from pm4py.evaluation.precision import factory as precision_factory
-from pm4py.evaluation.simplicity import factory as simplicity_factory
-from pm4py.evaluation.generalization import factory as generalization_factory
-from pm4py.objects.log.util import insert_classifier
-from pm4py.objects.petri.exporter import pnml as pnml_exporter
-from pm4py.visualization.petrinet import factory as petri_vis_factory
-from pm4py.visualization.common.save import save as vis_save
-from pm4py import util as pmutil
+import inspect
+import os
+import sys
 
 if __name__ == "__main__":
+    currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    parentdir = os.path.dirname(currentdir)
+    parentdir2 = os.path.dirname(parentdir)
+    sys.path.insert(0, parentdir)
+    sys.path.insert(0, parentdir2)
+    import time
+    from pm4py.objects.log.importer.xes import factory as xes_factory
+    from pm4py.algo.discovery.inductive import factory as inductive
+    from pm4py.algo.discovery.alpha import factory as alpha
+    from pm4py.evaluation.replay_fitness import factory as fitness_factory
+    from pm4py.evaluation.precision import factory as precision_factory
+    from pm4py.evaluation.simplicity import factory as simplicity_factory
+    from pm4py.evaluation.generalization import factory as generalization_factory
+    from pm4py.objects.log.util import insert_classifier
+    from pm4py.objects.petri.exporter import pnml as pnml_exporter
+    from pm4py.visualization.petrinet import factory as petri_vis_factory
+    from pm4py.visualization.common.save import save as vis_save
+    from pm4py import util as pmutil
+
+
     def get_elonged_string(stru):
         nchar = 30
 
@@ -139,7 +142,7 @@ if __name__ == "__main__":
             print("loaded log")
 
             activity_key = "concept:name"
-            if not classifier_key is None:
+            if classifier_key is not None:
                 activity_key = classifier_key
 
             parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
@@ -152,9 +155,8 @@ if __name__ == "__main__":
             print("time interlapsed for calculating Alpha Model", (t2 - t1))
 
             t1 = time.time()
-            inductive_model, inductive_initial_marking, inductive_final_marking = inductive.apply(log,
-                                                                                                  parameters=parameters_discovery)
-            pnml_exporter.export_net(inductive_model, inductive_initial_marking,
+            inductive_model, inductive_im, inductive_fm = inductive.apply(log, parameters=parameters_discovery)
+            pnml_exporter.export_net(inductive_model, inductive_im,
                                      os.path.join(pnmlFolder, logNamePrefix + "_inductive.pnml"))
             t2 = time.time()
             print("time interlapsed for calculating Inductive Model", (t2 - t1))
@@ -165,29 +167,30 @@ if __name__ == "__main__":
             alpha_vis = petri_vis_factory.apply(alpha_model, alpha_initial_marking, alpha_final_marking, log=log,
                                                 parameters=parameters, variant="frequency")
             vis_save(alpha_vis, os.path.join(pngFolder, logNamePrefix + "_alpha.png"))
-            inductive_vis = petri_vis_factory.apply(inductive_model, inductive_initial_marking, inductive_final_marking,
+            inductive_vis = petri_vis_factory.apply(inductive_model, inductive_im, inductive_fm,
                                                     log=log, parameters=parameters, variant="frequency")
             vis_save(inductive_vis, os.path.join(pngFolder, logNamePrefix + "_inductive.png"))
 
             t1 = time.time()
             fitness_token_alpha[logName] = \
-            fitness_factory.apply(log, alpha_model, alpha_initial_marking, alpha_final_marking, parameters=parameters)[
-                'percFitTraces']
+                fitness_factory.apply(log, alpha_model, alpha_initial_marking, alpha_final_marking,
+                                      parameters=parameters)[
+                    'percFitTraces']
             t2 = time.time()
             times_tokenreplay_alpha[logName] = t2 - t1
 
             t1 = time.time()
             fitness_token_imdf[logName] = \
-            fitness_factory.apply(log, inductive_model, inductive_initial_marking, inductive_final_marking,
-                                  parameters=parameters)['percFitTraces']
+                fitness_factory.apply(log, inductive_model, inductive_im, inductive_fm, parameters=parameters)[
+                    'percFitTraces']
             t2 = time.time()
             times_tokenreplay_imdf[logName] = t2 - t1
 
             if ENABLE_ALIGNMENTS:
                 t1 = time.time()
                 fitness_align_imdf[logName] = \
-                fitness_factory.apply(log, inductive_model, inductive_initial_marking, inductive_final_marking,
-                                      variant="alignments", parameters=parameters)['percFitTraces']
+                    fitness_factory.apply(log, inductive_model, inductive_im, inductive_fm,
+                                          variant="alignments", parameters=parameters)['percFitTraces']
                 t2 = time.time()
                 times_alignments_imdf[logName] = t2 - t1
 
@@ -197,10 +200,10 @@ if __name__ == "__main__":
                                                                          alpha_final_marking, parameters=parameters)
             simplicity_alpha[logName] = simplicity_factory.apply(alpha_model, parameters=parameters)
 
-            precision_imdf[logName] = precision_factory.apply(log, inductive_model, inductive_initial_marking,
-                                                              inductive_final_marking, parameters=parameters)
-            generalization_imdf[logName] = generalization_factory.apply(log, inductive_model, inductive_initial_marking,
-                                                                        inductive_final_marking, parameters=parameters)
+            precision_imdf[logName] = precision_factory.apply(log, inductive_model, inductive_im,
+                                                              inductive_fm, parameters=parameters)
+            generalization_imdf[logName] = generalization_factory.apply(log, inductive_model, inductive_im,
+                                                                        inductive_fm, parameters=parameters)
             simplicity_imdf[logName] = simplicity_factory.apply(inductive_model, parameters=parameters)
 
             write_report()

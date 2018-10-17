@@ -1,9 +1,12 @@
 import multiprocessing as mp
 
 import pm4py
-from pm4py import util as pmutil
 from pm4py.algo.conformance import alignments
+from pm4py.algo.conformance.alignments.versions.state_equation_a_star import apply as apply_alignments
 from pm4py.objects import log as log_lib
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+
+DEFAULT_NAME_KEY = log_lib.util.xes.DEFAULT_NAME_KEY
 
 
 def evaluate(aligned_traces, parameters=None):
@@ -49,7 +52,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     if parameters is None:
         parameters = {}
     activity_key = parameters[
-        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     best_worst = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(log_lib.log.Trace(), petri_net,
                                                                                         initial_marking,
                                                                                         final_marking)
@@ -80,9 +83,8 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, ac
     -------
     dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
     """
-    alignment = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(trace, petri_net,
-                                                                                       initial_marking, final_marking, {
-                                                                                           pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key})
+    alignment = apply_alignments(trace, petri_net, initial_marking, final_marking,
+                                 {PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key})
     fixed_costs = alignment['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
     if best_worst > 0:
         fitness = 1 - (fixed_costs / best_worst)
