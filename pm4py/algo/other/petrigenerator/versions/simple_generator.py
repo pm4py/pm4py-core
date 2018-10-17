@@ -36,6 +36,7 @@ class SubtreeGenerator(object):
         self.probAutoLoop = prob_auto_loop
         self.possible_behaviors = possible_behaviors
         self.lastAddedPlace = None
+        self.generated_string = False
         self.noOfPlaces = 0
         self.noOfHiddenTrans = 0
         self.noOfSubtrees = 0
