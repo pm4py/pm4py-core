@@ -121,7 +121,11 @@ def apply_events(df, dt1, dt2, parameters=None):
     return df
 
 def apply(df, parameters=None):
+    del df
+    del parameters
     raise Exception("apply method not available for timestamp filter")
 
 def apply_auto_filter(df, parameters=None):
+    del df
+    del parameters
     raise Exception("apply_auto_filter method not available for timestamp filter")

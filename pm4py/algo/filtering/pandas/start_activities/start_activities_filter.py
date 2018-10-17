@@ -60,7 +60,7 @@ def apply_auto_filter(df, parameters=None):
 
     start_activities = get_start_activities(df, parameters=parameters)
     salist = start_activities_common.get_sorted_start_activities_list(start_activities)
-    sathreshold = start_activities_common.get_start_activities_threshold(start_activities, salist, decreasing_factor)
+    sathreshold = start_activities_common.get_start_activities_threshold(salist, decreasing_factor)
 
     return filter_df_on_start_activities_nocc(df, sathreshold, sa_count=start_activities, case_id_glue=case_id_glue, activity_key=activity_key)
 

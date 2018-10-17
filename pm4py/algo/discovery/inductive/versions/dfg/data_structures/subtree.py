@@ -132,7 +132,7 @@ class Subtree(object):
 
         return [True, set1, set2]
 
-    def detect_sequential_cut(self, dfg):
+    def detect_sequential_cut(self):
         """
         Detect sequential cut in DFG graph
         """
@@ -147,13 +147,11 @@ class Subtree(object):
                 set2.add(self.activities_dir_list[-1][0])
             else:
                 return [False, [], []]
-        i = 1
         for i in range(1, len(self.activities_dir_list) - 1):
             act = self.activities_dir_list[i]
             ret, set1, set2 = self.determine_best_set_sequential(act, set1, set2)
             if ret is False:
                 return [False, [], []]
-            i = i + 1
 
         if len(set1) > 0 and len(set2) > 0:
             if not set1 == set2:
@@ -204,7 +202,7 @@ class Subtree(object):
 
         return [False, []]
 
-    def detect_loop_cut(self, dfg):
+    def detect_loop_cut(self):
         """
         Detect loop cut
         """
@@ -244,8 +242,8 @@ class Subtree(object):
         if self.dfg:
             par_cut = self.detect_parallel_cut()
             conc_cut = self.detect_concurrent_cut()
-            seq_cut = self.detect_sequential_cut(self.dfg)
-            loop_cut = self.detect_loop_cut(self.dfg)
+            seq_cut = self.detect_sequential_cut()
+            loop_cut = self.detect_loop_cut()
 
             if par_cut[0]:
                 union_acti_comp = set()
