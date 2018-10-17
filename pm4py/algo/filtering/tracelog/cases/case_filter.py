@@ -2,6 +2,7 @@ from pm4py.objects.log.log import TraceLog
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
 
+
 def filter_on_case_performance(trace_log, inf_perf, sup_perf, parameters=None):
     """
     Gets a filtered trace log keeping only traces that satisfy the given performance requirements
@@ -29,6 +30,7 @@ def filter_on_case_performance(trace_log, inf_perf, sup_perf, parameters=None):
     filtered_log = TraceLog([trace for trace in trace_log if satisfy_perf(trace, inf_perf, sup_perf, timestamp_key)])
     return filtered_log
 
+
 def filter_on_ncases(trace_log, max_no_cases=1000):
     """
     Get only a specified number of traces from a trace log
@@ -47,6 +49,7 @@ def filter_on_ncases(trace_log, max_no_cases=1000):
     """
     filtered_log = TraceLog(trace_log[:min(len(trace_log), max_no_cases)])
     return filtered_log
+
 
 def filter_on_case_size(trace_log, min_case_size=2, max_case_size=None):
     """
@@ -71,6 +74,7 @@ def filter_on_case_size(trace_log, min_case_size=2, max_case_size=None):
     else:
         filtered_log = TraceLog([trace for trace in trace_log if len(trace) >= min_case_size])
     return filtered_log
+
 
 def satisfy_perf(trace, inf_perf, sup_perf, timestamp_key):
     """
@@ -97,8 +101,10 @@ def satisfy_perf(trace, inf_perf, sup_perf, timestamp_key):
         return inf_perf <= trace_duration <= sup_perf
     return False
 
+
 def apply(df, parameters=None):
     raise NotImplementedError("apply method not available for case filter")
+
 
 def apply_auto_filter(df, parameters=None):
     raise NotImplementedError("apply_auto_filter method not available for case filter")

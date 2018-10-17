@@ -1,5 +1,6 @@
 import tempfile
 
+
 def import_string_to_temp_file(stri, extension):
     """
     Import string to temporary file
@@ -16,7 +17,7 @@ def import_string_to_temp_file(stri, extension):
     path
         Temporary file path
     """
-    fp = tempfile.NamedTemporaryFile(suffix='.'+extension)
+    fp = tempfile.NamedTemporaryFile(suffix='.' + extension)
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(stri)

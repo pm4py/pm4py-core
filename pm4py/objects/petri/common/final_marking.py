@@ -1,5 +1,6 @@
 from pm4py.objects.petri.petrinet import Marking
 
+
 def discover_final_marking(petri):
     """
     Discovers final marking from a Petri net

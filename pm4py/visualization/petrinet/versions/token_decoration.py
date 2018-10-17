@@ -1,15 +1,15 @@
 import pm4py
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
+from pm4py.objects import log as log_lib
 from pm4py.visualization.petrinet.common import visualize
 from pm4py.visualization.petrinet.util import performance_map
-from pm4py.objects import log as log_lib
-from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
-from pm4py.algo.conformance.tokenreplay import factory as token_replay
-import time
 
 PARAM_ACTIVITY_KEY = pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 PARAM_TIMESTAMP_KEY = pm4py.util.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY, PARAM_TIMESTAMP_KEY]
+
 
 def get_decorations(log, net, initial_marking, final_marking, parameters=None, measure="frequency"):
     """
@@ -43,7 +43,7 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
         aggregation_measure = parameters["aggregationMeasure"]
 
     activity_key = parameters[
-            PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
+        PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     timestamp_key = parameters[PARAM_TIMESTAMP_KEY] if PARAM_TIMESTAMP_KEY in parameters else "time:timestamp"
 
     parameters_variants = {PARAM_ACTIVITY_KEY: activity_key}
@@ -56,7 +56,7 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_tr)
 
     # apply petri_reduction technique in order to simplify the Petri net
-    #net = reduction.apply(net, parameters={"aligned_traces": aligned_traces})
+    # net = reduction.apply(net, parameters={"aligned_traces": aligned_traces})
 
     element_statistics = performance_map.single_element_statistics(log, net, initial_marking,
                                                                    aligned_traces, variants_idx,
@@ -67,6 +67,7 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
                                                                  aggregation_measure=aggregation_measure)
 
     return aggregated_statistics
+
 
 def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """
@@ -95,8 +96,10 @@ def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_st
     """
     if aggregated_statistics is None:
         if log is not None:
-            aggregated_statistics = get_decorations(log, net, initial_marking, final_marking, parameters=parameters, measure="frequency")
-    return visualize.apply(net, initial_marking, final_marking, parameters=parameters, decorations=aggregated_statistics)
+            aggregated_statistics = get_decorations(log, net, initial_marking, final_marking, parameters=parameters,
+                                                    measure="frequency")
+    return visualize.apply(net, initial_marking, final_marking, parameters=parameters,
+                           decorations=aggregated_statistics)
 
 
 def apply_performance(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
@@ -126,5 +129,7 @@ def apply_performance(net, initial_marking, final_marking, log=None, aggregated_
     """
     if aggregated_statistics is None:
         if log is not None:
-            aggregated_statistics = get_decorations(log, net, initial_marking, final_marking, parameters=parameters, measure="performance")
-    return visualize.apply(net, initial_marking, final_marking, parameters=parameters, decorations=aggregated_statistics)
+            aggregated_statistics = get_decorations(log, net, initial_marking, final_marking, parameters=parameters,
+                                                    measure="performance")
+    return visualize.apply(net, initial_marking, final_marking, parameters=parameters,
+                           decorations=aggregated_statistics)

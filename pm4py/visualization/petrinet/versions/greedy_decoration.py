@@ -1,9 +1,10 @@
-from pm4py.visualization.petrinet.common import visualize
-from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-from pm4py.util import constants
 from pm4py.objects.log.util import xes
+from pm4py.util import constants
+from pm4py.visualization.petrinet.common import visualize
+from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
+
 
 def get_decorated_net(net, initial_marking, final_marking, log, parameters=None, variant="frequency"):
     """
@@ -42,7 +43,8 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
     if "aggregationMeasure" in parameters:
         aggregation_measure = parameters["aggregationMeasure"]
 
-    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if  constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    activity_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
     # we find the DFG
     dfg = dfg_factory.apply(log, variant=variant, parameters=parameters)
@@ -57,6 +59,7 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
 
     return visualize.apply(net, initial_marking, final_marking, parameters=parameters,
                            decorations=aggregated_statistics)
+
 
 def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """
@@ -83,6 +86,7 @@ def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_st
         GraphViz object
     """
     return get_decorated_net(net, initial_marking, final_marking, log, parameters=parameters, variant="frequency")
+
 
 def apply_performance(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """

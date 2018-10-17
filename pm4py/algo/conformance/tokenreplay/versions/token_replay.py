@@ -15,6 +15,7 @@ MAX_NO_THREADS = 1000
 ENABLE_POSTFIX_CACHE = True
 ENABLE_MARKTOACT_CACHE = True
 
+
 class NoConceptNameException(Exception):
     def __init__(self, message):
         self.message = message
@@ -501,12 +502,13 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                                                                               marking):
                         visited_transitions = set()
                         prev_len_activated_transitions = len(activated_transitions)
-                        [net, marking, activated_transitions, all_visited_markings] = apply_hidden_trans(t, net, marking,
-                                                                                                      places_shortest_path_by_hidden,
-                                                                                                      activated_transitions,
-                                                                                                      0,
-                                                                                                      visited_transitions,
-                                                                                                      all_visited_markings)
+                        [net, marking, activated_transitions, all_visited_markings] = apply_hidden_trans(t, net,
+                                                                                                         marking,
+                                                                                                         places_shortest_path_by_hidden,
+                                                                                                         activated_transitions,
+                                                                                                         0,
+                                                                                                         visited_transitions,
+                                                                                                         all_visited_markings)
                     if not semantics.is_enabled(t, net, marking):
                         transitions_with_problems.append(t)
                         if stop_immediately_unfit:
@@ -529,7 +531,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             del trace_activities[0]
             if len(trace_activities) < MAX_POSTFIX_SUFFIX_LENGTH:
                 activating_transition_index[str(trace_activities)] = {"index": len(activated_transitions),
-                                                                    "marking": hash(marking)}
+                                                                      "marking": hash(marking)}
             if i > 0:
                 activating_transition_interval.append(
                     [trace[i][activity_key], prev_len_activated_transitions, len(activated_transitions),
@@ -543,7 +545,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         for i in range(MAX_IT_FINAL):
             if not break_condition_final_marking(marking, final_marking):
                 hidden_transitions_to_enable = get_req_transitions_for_final_marking(marking, final_marking,
-                                                                                  places_shortest_path_by_hidden)
+                                                                                     places_shortest_path_by_hidden)
 
                 for group in hidden_transitions_to_enable:
                     for t in group:
@@ -680,7 +682,8 @@ class ApplyTraceTokenReplay(Thread):
                         try_to_reach_final_marking_through_hidden=self.try_to_reach_final_marking_through_hidden,
                         stop_immediately_unfit=self.stop_immediately_when_unfit,
                         walk_through_hidden_trans=self.walk_through_hidden_trans,
-                        post_fix_caching=self.post_fix_caching, marking_to_activity_caching=self.marking_to_activity_caching)
+                        post_fix_caching=self.post_fix_caching,
+                        marking_to_activity_caching=self.marking_to_activity_caching)
 
 
 class PostFixCaching:
@@ -701,6 +704,7 @@ class MarkingToActivityCaching:
     def __init__(self):
         self.cache = 0
         self.cache = {}
+
 
 """
     net
@@ -805,14 +809,15 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                                 "activated_transitions": copy(t.act_trans),
                                                                 "reached_marking": copy(t.reached_marking),
                                                                 "enabled_transitions_in_marking": copy(
-                                                                  t.enabled_transitions_in_marking),
+                                                                    t.enabled_transitions_in_marking),
                                                                 "transitions_with_problems": copy(
                                                                     t.trans_with_problems)}
                             del threads[threads_keys[j]]
                         del threads_keys
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
                                                              trans_map, enable_place_fitness, place_fitness_per_trace,
-                                                             places_shortest_path_by_hidden, consider_remaining_in_fitness,
+                                                             places_shortest_path_by_hidden,
+                                                             consider_remaining_in_fitness,
                                                              activity_key=activity_key,
                                                              try_to_reach_final_marking_through_hidden=try_to_reach_final_marking_through_hidden,
                                                              stop_immediately_when_unfit=stop_immediately_unfit,
@@ -828,7 +833,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                         "activated_transitions": copy(t.act_trans),
                                                         "reached_marking": copy(t.reached_marking),
                                                         "enabled_transitions_in_marking": copy(
-                                                          t.enabled_transitions_in_marking),
+                                                            t.enabled_transitions_in_marking),
                                                         "transitions_with_problems": copy(t.trans_with_problems)}
                     del threads[threads_keys[j]]
                 for trace in log:

@@ -1,4 +1,5 @@
 from lxml import etree
+
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log import transform as log_transform
 from pm4py.objects.log.util import xes as xes_util
@@ -46,7 +47,8 @@ def get_xes_attr_value(attr_value, attr_type_xes):
     """
     if attr_type_xes == xes_util.TAG_DATE:
         default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + attr_value.strftime('%z')[
-                                                                            0:3] + ":" + attr_value.strftime('%z')[3:5]
+                                                                               0:3] + ":" + attr_value.strftime('%z')[
+                                                                                            3:5]
         return default_date_repr.replace(" ", "T")
     return str(attr_value)
 

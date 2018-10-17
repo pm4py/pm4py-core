@@ -1,10 +1,10 @@
+from pm4py import util as pmutil
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.evaluation.generalization.versions import token_based as generalization_token_based
 from pm4py.evaluation.precision.versions import etconformance_token as precision_token_based
-from pm4py.evaluation.simplicity.versions import arc_degree as simplicity_arc_degree
 from pm4py.evaluation.replay_fitness.versions import token_replay as fitness_token_based
-from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.evaluation.simplicity.versions import arc_degree as simplicity_arc_degree
 from pm4py.objects import log as log_lib
-from pm4py import util as pmutil
 
 PARAM_ACTIVITY_KEY = 'activity_key'
 PARAM_FITNESS_WEIGHT = 'fitness_weight'
@@ -12,7 +12,9 @@ PARAM_PRECISION_WEIGHT = 'precision_weight'
 PARAM_SIMPLICITY_WEIGHT = 'simplicity_weight'
 PARAM_GENERALIZATION_WEIGHT = 'generalization_weight'
 
-PARAMETERS = [PARAM_ACTIVITY_KEY, PARAM_FITNESS_WEIGHT, PARAM_PRECISION_WEIGHT, PARAM_SIMPLICITY_WEIGHT, PARAM_GENERALIZATION_WEIGHT]
+PARAMETERS = [PARAM_ACTIVITY_KEY, PARAM_FITNESS_WEIGHT, PARAM_PRECISION_WEIGHT, PARAM_SIMPLICITY_WEIGHT,
+              PARAM_GENERALIZATION_WEIGHT]
+
 
 def apply_token_replay(log, net, initial_marking, final_marking, parameters=None):
     """
@@ -38,11 +40,13 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     """
     if parameters is None:
         parameters = {}
-    activity_key = parameters[PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
+    activity_key = parameters[
+        PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     fitness_weight = parameters[PARAM_FITNESS_WEIGHT] if PARAM_FITNESS_WEIGHT in parameters else 0.25
     precision_weight = parameters[PARAM_PRECISION_WEIGHT] if PARAM_PRECISION_WEIGHT in parameters else 0.25
     simplicity_weight = parameters[PARAM_SIMPLICITY_WEIGHT] if PARAM_SIMPLICITY_WEIGHT in parameters else 0.25
-    generalization_weight = parameters[PARAM_GENERALIZATION_WEIGHT] if PARAM_GENERALIZATION_WEIGHT in parameters else 0.25
+    generalization_weight = parameters[
+        PARAM_GENERALIZATION_WEIGHT] if PARAM_GENERALIZATION_WEIGHT in parameters else 0.25
 
     sum_of_weights = (fitness_weight + precision_weight + simplicity_weight + generalization_weight)
     fitness_weight = fitness_weight / sum_of_weights
@@ -63,8 +67,8 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     generalization = generalization_token_based.get_generalization(net, aligned_traces)
     simplicity = simplicity_arc_degree.apply(net)
 
-    metrics_average_weight = fitness_weight * fitness["averageFitness"] + precision_weight * precision\
-                           + generalization_weight * generalization + simplicity_weight * simplicity
+    metrics_average_weight = fitness_weight * fitness["averageFitness"] + precision_weight * precision \
+                             + generalization_weight * generalization + simplicity_weight * simplicity
     dictionary = {
         "fitness": fitness,
         "precision": precision,
@@ -75,8 +79,10 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
 
     return dictionary
 
+
 TOKEN_BASED = "token_based"
 VERSIONS = {TOKEN_BASED: apply_token_replay}
+
 
 def apply(log, net, initial_marking, final_marking, parameters=None, variant="token_based"):
     return VERSIONS[variant](log, net, initial_marking, final_marking, parameters=parameters)

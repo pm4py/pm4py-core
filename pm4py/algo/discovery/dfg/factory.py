@@ -9,6 +9,7 @@ DFG_PERFORMANCE_GREEDY = 'performance_greedy'
 versions = {DFG_NATIVE: native.apply, DFG_FREQUENCY: native.apply, DFG_PERFORMANCE: performance.apply,
             DFG_FREQUENCY_GREEDY: native.apply, DFG_PERFORMANCE_GREEDY: performance.apply}
 
+
 def apply(trace_log, parameters=None, variant=DFG_NATIVE):
     """
     Calculates DFG graph (frequency or performance) starting from a trace log

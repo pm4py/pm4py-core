@@ -7,6 +7,7 @@ VERSIONS_EVALUATION = {ALIGNMENT_BASED: alignment_based.evaluate, TOKEN_BASED: t
 
 PARAM_ACTIVITY_KEY = 'activity_key'
 
+
 def apply(log, petri_net, initial_marking, final_marking, parameters=None, variant="token_replay"):
     """
     Apply fitness evaluation starting from an event log and a marked Petri net,
@@ -33,6 +34,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None, varia
         Fitness evaluation
     """
     return VERSIONS[variant](log, petri_net, initial_marking, final_marking, parameters=parameters)
+
 
 def evaluate(results, parameters="None", variant="token_replay"):
     """

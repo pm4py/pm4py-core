@@ -1,6 +1,5 @@
 from pm4py.objects import log as pm4py_log
 
-
 SKIP = '>>'
 STD_MODEL_LOG_MOVE_COST = 10000
 STD_TAU_COST = 1
@@ -40,5 +39,3 @@ def construct_event_level_cost_function(log, activity_cost_map, activity_key=pm4
             t_costs.append(activity_cost_map[e[activity_key]])
         costs.append(t_costs)
     return costs
-
-

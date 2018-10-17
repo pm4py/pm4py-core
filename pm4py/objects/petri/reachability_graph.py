@@ -1,7 +1,9 @@
 import re
+
 from pm4py.objects import petri
 from pm4py.objects.transition_system import transition_system as ts
 from pm4py.objects.transition_system import utils
+
 
 def staterep(name):
     """
@@ -18,6 +20,7 @@ def staterep(name):
     Version of the name filtered of non-alphanumerical characters (except '_').
     """
     return re.sub(r'\W+', '', name)
+
 
 def construct_reachability_graph(net, initial_marking):
     """
@@ -52,7 +55,8 @@ def construct_reachability_graph(net, initial_marking):
                 re_gr.states.add(next_state)
             utils.add_arc_from_to(repr(t), curr_state, next_state, re_gr)
             # If the next marking hash is not in visited, if the next marking itself is not already in active and if the next marking is different from the current one
-            if hash(next_mark) not in visited and next((mark for mark in active if hash(mark) == hash(next_mark)), None) is None and hash(curr_mark) != hash(next_mark):
+            if hash(next_mark) not in visited and next((mark for mark in active if hash(mark) == hash(next_mark)),
+                                                       None) is None and hash(curr_mark) != hash(next_mark):
                 active.append(next_mark)
         visited.append(hash(curr_mark))
     return re_gr

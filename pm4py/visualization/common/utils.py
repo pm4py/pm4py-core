@@ -1,6 +1,7 @@
 MAX_EDGE_PENWIDTH_GRAPHVIZ = 2.6
 MIN_EDGE_PENWIDTH_GRAPHVIZ = 1.0
 
+
 def human_readable_stat(c):
     """
     Transform a timedelta expressed in seconds into a human readable string
@@ -23,16 +24,17 @@ def human_readable_stat(c):
     minutes = c // 60 % 60
     seconds = c % 60
     if years > 0:
-        return str(years)+"Y"
+        return str(years) + "Y"
     if months > 0:
-        return str(months)+"MO"
+        return str(months) + "MO"
     if days > 0:
-        return str(days)+"D"
+        return str(days) + "D"
     if hours > 0:
-        return str(hours)+"h"
+        return str(hours) + "h"
     if minutes > 0:
-        return str(minutes)+"m"
-    return str(seconds)+"s"
+        return str(minutes) + "m"
+    return str(seconds) + "s"
+
 
 def get_arc_penwidth(arc_measure, min_arc_measure, max_arc_measure):
     """
@@ -52,7 +54,9 @@ def get_arc_penwidth(arc_measure, min_arc_measure, max_arc_measure):
     penwidth
         Current arc width in the graph
     """
-    return MIN_EDGE_PENWIDTH_GRAPHVIZ + (MAX_EDGE_PENWIDTH_GRAPHVIZ - MIN_EDGE_PENWIDTH_GRAPHVIZ) * (arc_measure - min_arc_measure)/(max_arc_measure - min_arc_measure + 0.00001)
+    return MIN_EDGE_PENWIDTH_GRAPHVIZ + (MAX_EDGE_PENWIDTH_GRAPHVIZ - MIN_EDGE_PENWIDTH_GRAPHVIZ) * (
+                arc_measure - min_arc_measure) / (max_arc_measure - min_arc_measure + 0.00001)
+
 
 def get_trans_freq_color(trans_count, min_trans_count, max_trans_count):
     """
@@ -72,6 +76,6 @@ def get_trans_freq_color(trans_count, min_trans_count, max_trans_count):
     color
         Frequency color for visible transition
     """
-    trans_base_color = int(255 - 100 * (trans_count - min_trans_count)/(max_trans_count - min_trans_count + 0.00001))
+    trans_base_color = int(255 - 100 * (trans_count - min_trans_count) / (max_trans_count - min_trans_count + 0.00001))
     trans_base_color_hex = str(hex(trans_base_color))[2:].upper()
     return "#" + trans_base_color_hex + trans_base_color_hex + "FF"

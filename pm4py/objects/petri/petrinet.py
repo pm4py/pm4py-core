@@ -145,6 +145,3 @@ class PetriNet(object):
     places = property(__get_places)
     transitions = property(__get_transitions)
     arcs = property(__get_arcs)
-
-
-

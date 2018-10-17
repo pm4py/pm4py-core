@@ -1,8 +1,9 @@
 from collections import Counter
-from pm4py.objects.log.log import TraceLog, Event, Trace
+
+from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.objects import log as log_lib
-from pm4py import util as pmutil
+from pm4py.objects.log.log import TraceLog, Event, Trace
 from pm4py.objects.log.util import xes as xes_util
 
 """
@@ -25,6 +26,7 @@ although the implementation seems to follow the paper concept
 PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY]
+
 
 def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
@@ -50,6 +52,7 @@ def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
             prefix_count[prefix] += 1
     return prefixes, prefix_count
 
+
 def form_fake_log(prefixes_keys, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
     Form fake log for replay (putting each prefix as separate trace to align)
@@ -71,6 +74,7 @@ def form_fake_log(prefixes_keys, activity_key=xes_util.DEFAULT_NAME_KEY):
             trace.append(event)
         fake_log.append(trace)
     return fake_log
+
 
 def apply(log, net, marking, final_marking, parameters=None):
     """
@@ -116,12 +120,13 @@ def apply(log, net, marking, final_marking, parameters=None):
     for i in range(len(aligned_traces)):
         if aligned_traces[i]["trace_is_fit"]:
             log_transitions = set(prefixes[prefixes_keys[i]])
-            activated_transitions_labels = set([x.label for x in aligned_traces[i]["activated_transitions"] if x.label is not None])
+            activated_transitions_labels = set(
+                [x.label for x in aligned_traces[i]["activated_transitions"] if x.label is not None])
             sum_at += len(activated_transitions_labels) * prefix_count[prefixes_keys[i]]
             escaping_edges = activated_transitions_labels.difference(log_transitions)
             sum_ee += len(escaping_edges) * prefix_count[prefixes_keys[i]]
 
     if sum_at > 0:
-        precision = 1 - float(sum_ee)/float(sum_at)
+        precision = 1 - float(sum_ee) / float(sum_at)
 
     return precision

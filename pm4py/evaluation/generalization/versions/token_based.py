@@ -1,12 +1,14 @@
-from pm4py.algo.conformance.tokenreplay import factory as token_replay
-from pm4py.objects import log as log_lib
 from collections import Counter
 from math import sqrt
+
 from pm4py import util as pmutil
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.objects import log as log_lib
 
 PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 PARAMETERS = [PARAM_ACTIVITY_KEY]
+
 
 def get_generalization(petri_net, aligned_traces):
     """
@@ -54,6 +56,7 @@ def get_generalization(petri_net, aligned_traces):
         generalization = 1.0 - inv_sq_occ_sum / float(len(petri_net.transitions))
     return generalization
 
+
 def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     """
     Calculates generalization on the provided log and Petri net.
@@ -90,7 +93,8 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    activity_key = parameters[PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
+    activity_key = parameters[
+        PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
 
     parameters_tr = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
 

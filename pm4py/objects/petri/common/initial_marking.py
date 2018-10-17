@@ -1,5 +1,6 @@
 from pm4py.objects.petri.petrinet import Marking
 
+
 def discover_initial_marking(petri):
     """
     Discovers initial marking from a Petri net

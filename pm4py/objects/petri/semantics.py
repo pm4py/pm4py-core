@@ -24,6 +24,7 @@ def is_enabled(t, pn, m):
                 return False
     return True
 
+
 def execute(t, pn, m):
     """
     Executes a given transition in a given Petri net and Marking
@@ -52,6 +53,7 @@ def execute(t, pn, m):
         m_out[a.target] += a.weight
 
     return m_out
+
 
 def weak_execute(t, pn, m):
     """

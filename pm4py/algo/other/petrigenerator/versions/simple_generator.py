@@ -7,7 +7,8 @@ from pm4py.objects import petri
 
 # Generate a Petri net with an initial marking that is a workflow net
 class SubtreeGenerator(object):
-    def __init__(self, min_no_activities_per_subtree, max_no_activities_per_subtree, max_no_subtrees, prob_spawn_subtree, prob_auto_skip, prob_auto_loop, possible_behaviors):
+    def __init__(self, min_no_activities_per_subtree, max_no_activities_per_subtree, max_no_subtrees,
+                 prob_spawn_subtree, prob_auto_skip, prob_auto_loop, possible_behaviors):
         """
         Constructor
 
@@ -145,7 +146,8 @@ class SubtreeGenerator(object):
             next_source_node = subtree_source_node
             for i in range(num_of_activities_this_subtree):
                 petri.utils.add_arc_from_to(next_source_node, added_transitions[i], self.net)
-                if i == num_of_activities_this_subtree-1 and subtree_target_node is not None and type(subtree_target_node) is petri.petrinet.PetriNet.Place:
+                if i == num_of_activities_this_subtree - 1 and subtree_target_node is not None and type(
+                        subtree_target_node) is petri.petrinet.PetriNet.Place:
                     next_source_node = subtree_target_node
                 else:
                     self.noOfPlaces = self.noOfPlaces + 1
@@ -174,18 +176,21 @@ class SubtreeGenerator(object):
                 petri.utils.add_arc_from_to(subtree_source_node, added_transitions[i], self.net)
                 petri.utils.add_arc_from_to(added_transitions[i], intermediate_place, self.net)
             self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-            skip_trans = petri.petrinet.PetriNet.Transition('skipFlower' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
+            skip_trans = petri.petrinet.PetriNet.Transition(
+                'skipFlower' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
             self.net.transitions.add(skip_trans)
             petri.utils.add_arc_from_to(subtree_source_node, skip_trans, self.net)
             petri.utils.add_arc_from_to(skip_trans, intermediate_place, self.net)
-            if not(subtree_source_node.name == "start"):
+            if not (subtree_source_node.name == "start"):
                 self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-                loop_trans = petri.petrinet.PetriNet.Transition('loopFlower' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
+                loop_trans = petri.petrinet.PetriNet.Transition(
+                    'loopFlower' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
                 self.net.transitions.add(loop_trans)
                 petri.utils.add_arc_from_to(loop_trans, subtree_source_node, self.net)
                 petri.utils.add_arc_from_to(intermediate_place, loop_trans, self.net)
             self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-            tau_trans = petri.petrinet.PetriNet.Transition('tauFlower' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
+            tau_trans = petri.petrinet.PetriNet.Transition(
+                'tauFlower' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
             self.net.transitions.add(tau_trans)
             petri.utils.add_arc_from_to(intermediate_place, tau_trans, self.net)
             petri.utils.add_arc_from_to(tau_trans, target_place, self.net)
@@ -202,12 +207,14 @@ class SubtreeGenerator(object):
             connection_node = petri.petrinet.PetriNet.Place('p' + str(self.noOfPlaces))
             self.net.places.add(connection_node)
             for i in range(num_of_child_subtrees):
-                self.add_subtree(subtree_source_node, rec_depth + 1, subtree_target_node=connection_node, chosen_behavior=subtrees_types[i])
+                self.add_subtree(subtree_source_node, rec_depth + 1, subtree_target_node=connection_node,
+                                 chosen_behavior=subtrees_types[i])
             if subtree_target_node is not None and type(subtree_target_node) is petri.petrinet.PetriNet.Transition:
                 petri.utils.add_arc_from_to(connection_node, subtree_target_node, self.net)
             if subtree_target_node is not None and type(subtree_target_node) is petri.petrinet.PetriNet.Place:
                 self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-                hidden_trans = petri.petrinet.PetriNet.Transition('tauConcurrent' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
+                hidden_trans = petri.petrinet.PetriNet.Transition(
+                    'tauConcurrent' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
                 self.net.transitions.add(hidden_trans)
                 petri.utils.add_arc_from_to(connection_node, hidden_trans, self.net)
                 petri.utils.add_arc_from_to(hidden_trans, subtree_target_node, self.net)
@@ -219,7 +226,8 @@ class SubtreeGenerator(object):
             connection_node = petri.petrinet.PetriNet.Place('p' + str(self.noOfPlaces))
             self.net.places.add(connection_node)
             self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-            tau_parallel_join = petri.petrinet.PetriNet.Transition('tauParallelJoin' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
+            tau_parallel_join = petri.petrinet.PetriNet.Transition(
+                'tauParallelJoin' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
             self.net.transitions.add(tau_parallel_join)
             petri.utils.add_arc_from_to(tau_parallel_join, connection_node, self.net)
             self.noOfHiddenTrans = self.noOfHiddenTrans + 1
@@ -232,12 +240,14 @@ class SubtreeGenerator(object):
                 this_index_source_node = petri.petrinet.PetriNet.Place('p' + str(self.noOfPlaces))
                 self.net.places.add(this_index_source_node)
                 petri.utils.add_arc_from_to(tau_parallel_split, this_index_source_node, self.net)
-                self.add_subtree(this_index_source_node, rec_depth + 1, subtree_target_node=tau_parallel_join, chosen_behavior=subtrees_types[i])
+                self.add_subtree(this_index_source_node, rec_depth + 1, subtree_target_node=tau_parallel_join,
+                                 chosen_behavior=subtrees_types[i])
             if subtree_target_node is not None and type(subtree_target_node) is petri.petrinet.PetriNet.Transition:
                 petri.utils.add_arc_from_to(connection_node, subtree_target_node, self.net)
             if subtree_target_node is not None and type(subtree_target_node) is petri.petrinet.PetriNet.Place:
                 self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-                hidden_trans = petri.petrinet.PetriNet.Transition('tauParFinal' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
+                hidden_trans = petri.petrinet.PetriNet.Transition(
+                    'tauParFinal' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
                 self.net.transitions.add(hidden_trans)
                 petri.utils.add_arc_from_to(connection_node, hidden_trans, self.net)
                 petri.utils.add_arc_from_to(hidden_trans, subtree_target_node, self.net)
@@ -248,7 +258,8 @@ class SubtreeGenerator(object):
             r = random.random()
             if r < self.probAutoSkip:
                 self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-                auto_skip = petri.petrinet.PetriNet.Transition('autoSkip' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
+                auto_skip = petri.petrinet.PetriNet.Transition(
+                    'autoSkip' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
                 self.net.transitions.add(auto_skip)
                 petri.utils.add_arc_from_to(subtree_source_node, auto_skip, self.net)
                 petri.utils.add_arc_from_to(auto_skip, self.lastAddedPlace, self.net)
@@ -256,13 +267,15 @@ class SubtreeGenerator(object):
                 r = random.random()
                 if r < self.probAutoLoop:
                     self.noOfHiddenTrans = self.noOfHiddenTrans + 1
-                    auto_loop = petri.petrinet.PetriNet.Transition('autoLoop' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
+                    auto_loop = petri.petrinet.PetriNet.Transition(
+                        'autoLoop' + str(rec_depth) + '_' + str(self.noOfHiddenTrans), None)
                     self.net.transitions.add(auto_loop)
                     petri.utils.add_arc_from_to(auto_loop, subtree_source_node, self.net)
                     petri.utils.add_arc_from_to(self.lastAddedPlace, auto_loop, self.net)
 
 
-def generate_petri(nin_no_activities_per_subtree=2, max_no_activities_per_subtree=6, max_no_subtrees=5, prob_spawn_subtree=0.6, prob_auto_skip=0.35, prob_auto_loop=0.0, possible_behaviors=None):
+def generate_petri(nin_no_activities_per_subtree=2, max_no_activities_per_subtree=6, max_no_subtrees=5,
+                   prob_spawn_subtree=0.6, prob_auto_skip=0.35, prob_auto_loop=0.0, possible_behaviors=None):
     """
     Generate workflow net
 
@@ -285,7 +298,8 @@ def generate_petri(nin_no_activities_per_subtree=2, max_no_activities_per_subtre
     """
     if possible_behaviors is None:
         possible_behaviors = ["sequential", "concurrent", "flower", "parallel"]
-    stg = SubtreeGenerator(nin_no_activities_per_subtree, max_no_activities_per_subtree, max_no_subtrees, prob_spawn_subtree, prob_auto_skip, prob_auto_loop, possible_behaviors)
+    stg = SubtreeGenerator(nin_no_activities_per_subtree, max_no_activities_per_subtree, max_no_subtrees,
+                           prob_spawn_subtree, prob_auto_skip, prob_auto_loop, possible_behaviors)
     marking = petri.petrinet.Marking({stg.startPlace: 1})
     final_marking = petri.petrinet.Marking({stg.lastAddedPlace: 1})
     return stg.net, marking, final_marking
@@ -328,4 +342,8 @@ def apply(parameters=None):
         prob_auto_loop = parameters["probAutoLoop"]
     if "possible_behaviors" in parameters:
         possible_behaviors = parameters["possible_behaviors"]
-    return generate_petri(nin_no_activities_per_subtree=min_no_of_activities_per_subtree, max_no_activities_per_subtree=max_no_of_activities_per_subtree, max_no_subtrees=max_no_of_subtrees, prob_spawn_subtree=prob_spawn_subtree, prob_auto_skip=prob_auto_skip, prob_auto_loop=prob_auto_loop, possible_behaviors=possible_behaviors)
+    return generate_petri(nin_no_activities_per_subtree=min_no_of_activities_per_subtree,
+                          max_no_activities_per_subtree=max_no_of_activities_per_subtree,
+                          max_no_subtrees=max_no_of_subtrees, prob_spawn_subtree=prob_spawn_subtree,
+                          prob_auto_skip=prob_auto_skip, prob_auto_loop=prob_auto_loop,
+                          possible_behaviors=possible_behaviors)

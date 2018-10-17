@@ -30,9 +30,9 @@ PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
 
-
 PARAMETERS = [PARAM_TRACE_COST_FUNCTION, PARAM_MODEL_COST_FUNCTION, PARAM_SYNC_COST_FUNCTION,
               pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+
 
 def get_best_worst_cost(petri_net, initial_marking, final_marking):
     """
@@ -55,7 +55,8 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking):
     best_worst = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(log_implementation.Trace(),
                                                                                         petri_net, initial_marking,
                                                                                         final_marking)
-    return best_worst['cost']  // alignments.utils.STD_MODEL_LOG_MOVE_COST
+    return best_worst['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
+
 
 def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
     """

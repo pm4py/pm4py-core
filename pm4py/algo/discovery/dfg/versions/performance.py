@@ -1,7 +1,9 @@
 from collections import Counter
 from statistics import mean, median, stdev
-from pm4py.util import constants
+
 from pm4py.objects.log.util import xes
+from pm4py.util import constants
+
 
 def apply(trace_log, parameters=None):
     """
@@ -26,12 +28,15 @@ def apply(trace_log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    timestamp_key = parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    activity_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    timestamp_key = parameters[
+        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
     aggregation_measure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "mean"
 
-    dfgs0 = map((lambda t: [((t[i - 1][activity_key], t[i][activity_key]), (t[i][timestamp_key]-t[i-1][timestamp_key]).total_seconds())
-                             for i in range(1, len(t))]), trace_log)
+    dfgs0 = map((lambda t: [
+        ((t[i - 1][activity_key], t[i][activity_key]), (t[i][timestamp_key] - t[i - 1][timestamp_key]).total_seconds())
+        for i in range(1, len(t))]), trace_log)
     ret0 = {}
     for el in dfgs0:
         for couple in el:

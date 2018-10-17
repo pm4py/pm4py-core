@@ -1,6 +1,6 @@
-from pm4py.util import constants
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.statistics.traces.pandas import case_statistics
+from pm4py.util import constants
 
 
 def apply_auto_filter(df, parameters=None):
@@ -25,11 +25,13 @@ def apply_auto_filter(df, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    case_id_glue = parameters[
+        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
     variants_df = case_statistics.get_variants_df(df, parameters=parameters)
     parameters["variants_df"] = variants_df
     variants = case_statistics.get_variants_statistics(df, parameters=parameters)
-    decreasing_factor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    decreasing_factor = parameters[
+        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     admitted_variants = []
     if len(variants) > 0:
@@ -43,6 +45,7 @@ def apply_auto_filter(df, parameters=None):
             current_variant_count = variants[i][case_id_glue]
 
     return apply(df, admitted_variants, parameters=parameters)
+
 
 def apply(df, admitted_variants, parameters=None):
     """
@@ -69,9 +72,11 @@ def apply(df, admitted_variants, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    case_id_glue = parameters[
+        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
     positive = parameters["positive"] if "positive" in parameters else True
-    variants_df = parameters["variants_df"] if "variants_df" in parameters else case_statistics.get_variants_df(df, parameters=parameters)
+    variants_df = parameters["variants_df"] if "variants_df" in parameters else case_statistics.get_variants_df(df,
+                                                                                                                parameters=parameters)
     variants_df = variants_df[variants_df["variant"].isin(admitted_variants)]
     i1 = df.set_index(case_id_glue).index
     i2 = variants_df.index

@@ -1,8 +1,9 @@
-from pm4py.objects.log.log import TraceLog, Trace
-from pm4py.algo.filtering.tracelog.variants import variants_filter
-from pm4py.util import constants
-from pm4py.objects.log.util import xes
 from pm4py.algo.filtering.common import filtering_constants
+from pm4py.algo.filtering.tracelog.variants import variants_filter
+from pm4py.objects.log.log import TraceLog, Trace
+from pm4py.objects.log.util import xes
+from pm4py.util import constants
+
 
 def apply(trace_log, paths, parameters=None):
     """
@@ -26,19 +27,21 @@ def apply(trace_log, paths, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
+    attribute_key = parameters[
+        constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
     filtered_log = TraceLog()
     for trace in trace_log:
         found = False
-        for i in range(len(trace)-1):
-            path = (trace[i][attribute_key], trace[i+1][attribute_key])
+        for i in range(len(trace) - 1):
+            path = (trace[i][attribute_key], trace[i + 1][attribute_key])
             if path in paths:
                 found = True
                 break
         if (found and positive) or (not found and not positive):
             filtered_log.append(trace)
     return filtered_log
+
 
 def get_paths_from_log(trace_log, attribute_key="concept:name"):
     """
@@ -58,13 +61,14 @@ def get_paths_from_log(trace_log, attribute_key="concept:name"):
     """
     paths = {}
     for trace in trace_log:
-        for i in range(0, len(trace)-1):
-            if attribute_key in trace[i] and attribute_key in trace[i+1]:
+        for i in range(0, len(trace) - 1):
+            if attribute_key in trace[i] and attribute_key in trace[i + 1]:
                 path = trace[i][attribute_key] + "," + trace[i + 1][attribute_key]
                 if not path in paths:
                     paths[path] = 0
                 paths[path] = paths[path] + 1
     return paths
+
 
 def get_sorted_paths_list(paths):
     """
@@ -85,6 +89,7 @@ def get_sorted_paths_list(paths):
         listpaths.append([p, paths[p]])
     listpaths = sorted(listpaths, key=lambda x: x[1], reverse=True)
     return listpaths
+
 
 def get_paths_threshold(paths, plist, decreasing_factor):
     """
@@ -111,6 +116,7 @@ def get_paths_threshold(paths, plist, decreasing_factor):
         if value > threshold * decreasing_factor:
             threshold = value
     return threshold
+
 
 def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key="concept:name"):
     """
@@ -147,22 +153,23 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key
         jj = 0
         if len(trace) > 0:
             new_trace.append(trace[0])
-            for j in range(1, len(trace)-1):
+            for j in range(1, len(trace) - 1):
                 jj = j
                 if j >= len(trace):
                     break
-                if attribute_key in trace[j] and attribute_key in trace[j+1]:
+                if attribute_key in trace[j] and attribute_key in trace[j + 1]:
                     path = trace[j][attribute_key] + "," + trace[j + 1][attribute_key]
                     if path in paths:
                         if path in fvp or paths[path] >= threshold:
                             new_trace.append(trace[j])
-                            new_trace.append(trace[j+1])
+                            new_trace.append(trace[j + 1])
                             j = j + 1
         if len(trace) > 1 and not jj == len(trace):
             new_trace.append(trace[-1])
         if len(new_trace) > 0:
             filtered_log.append(new_trace)
     return filtered_log
+
 
 def apply_auto_filter(trace_log, variants=None, parameters=None):
     """
@@ -186,8 +193,10 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasing_factor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    attribute_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    decreasing_factor = parameters[
+        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:

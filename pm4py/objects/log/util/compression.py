@@ -1,4 +1,8 @@
-import tempfile, gzip, shutil, os
+import gzip
+import os
+import shutil
+import tempfile
+
 
 def compress(file):
     """
@@ -20,9 +24,10 @@ def compress(file):
     with open(file, 'rb') as f_in:
         with gzip.open(fp.name, 'wb') as f_out:
             shutil.copyfileobj(f_in, f_out)
-    shutil.move(fp.name, file+".gz")
+    shutil.move(fp.name, file + ".gz")
     os.remove(file)
     return file
+
 
 def decompress(gzipped_file):
     """

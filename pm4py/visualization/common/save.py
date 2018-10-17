@@ -1,5 +1,6 @@
 import shutil
 
+
 def save(gviz, output_file_path):
     """
     Save the diagram

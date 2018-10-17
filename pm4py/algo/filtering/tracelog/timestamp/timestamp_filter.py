@@ -1,8 +1,9 @@
-from pm4py.objects.log.log import TraceLog, EventLog
+from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
 from pm4py.objects.log import transform
+from pm4py.objects.log.log import TraceLog, EventLog
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
-from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
+
 
 def is_contained(trace, dt1, dt2, timestamp_key):
     """
@@ -29,6 +30,7 @@ def is_contained(trace, dt1, dt2, timestamp_key):
             return True
     return False
 
+
 def filter_traces_contained(log, dt1, dt2, parameters=None):
     """
     Get traces that are contained in the given interval
@@ -52,7 +54,8 @@ def filter_traces_contained(log, dt1, dt2, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    timestamp_key = parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    timestamp_key = parameters[
+        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
     filtered_log = TraceLog([trace for trace in log if is_contained(trace, dt1, dt2, timestamp_key)])
@@ -87,6 +90,7 @@ def is_intersecting(trace, dt1, dt2, timestamp_key):
         if condition1 or condition2 or condition3:
             return True
     return False
+
 
 def filter_traces_intersecting(log, dt1, dt2, parameters=None):
     """
@@ -153,10 +157,12 @@ def apply_events(trace_log, dt1, dt2, parameters=None):
 
     return filtered_trace_log
 
+
 def apply(df, parameters=None):
     del df
     del parameters
     raise Exception("apply method not available for timestamp filter")
+
 
 def apply_auto_filter(df, parameters=None):
     del df

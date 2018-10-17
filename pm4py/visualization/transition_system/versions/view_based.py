@@ -1,5 +1,6 @@
 import pm4py
 
+
 def apply(tsys, parameters=None):
     """
     Get visualization of a Transition System

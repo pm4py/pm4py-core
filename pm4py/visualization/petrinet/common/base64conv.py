@@ -1,5 +1,6 @@
 import base64
 
+
 def get_base64_from_gviz(gviz):
     """
     Get base 64 from string content of the file
