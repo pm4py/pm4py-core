@@ -258,6 +258,7 @@ def export_log_as_string(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
+    del parameters
 
     # Gets the XML tree to export
     tree = export_log_tree(log)
@@ -281,6 +282,7 @@ def export_log(log, output_file_path, parameters=None):
     """
     if parameters is None:
         parameters = {}
+    del parameters
 
     # Gets the XML tree to export
     tree = export_log_tree(log)

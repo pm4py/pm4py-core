@@ -64,7 +64,7 @@ def apply(trace_log, parameters=None):
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
     end_activities = endpoints.derive_end_activities_from_tracelog(trace_log, parameters[
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
-    return apply_dfg_sa_ea(dfg, None, None, parameters=parameters)
+    return apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=parameters)
 
 
 def apply_dfg(dfg, parameters=None):

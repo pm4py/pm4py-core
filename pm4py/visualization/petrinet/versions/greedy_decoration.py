@@ -85,6 +85,7 @@ def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_st
     gviz
         GraphViz object
     """
+    del aggregated_statistics
     return get_decorated_net(net, initial_marking, final_marking, log, parameters=parameters, variant="frequency")
 
 
@@ -112,4 +113,5 @@ def apply_performance(net, initial_marking, final_marking, log=None, aggregated_
     gviz
         GraphViz object
     """
+    del aggregated_statistics
     return get_decorated_net(net, initial_marking, final_marking, log, parameters=parameters, variant="performance")

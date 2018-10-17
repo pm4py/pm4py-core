@@ -44,6 +44,7 @@ def export_log_as_string(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
+    del parameters
 
     df = get_dataframe_from_log(log)
 
@@ -65,6 +66,7 @@ def export_log(log, output_file_path, parameters=None):
     """
     if parameters is None:
         parameters = {}
+    del parameters
 
     df = get_dataframe_from_log(log)
     df.to_csv(output_file_path)

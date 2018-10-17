@@ -48,4 +48,6 @@ def apply(df, paths, parameters=None):
 
 
 def apply_auto_filter(df, parameters=None):
+    del df
+    del parameters
     raise Exception("apply_auto_filter method not available for paths filter on dataframe")

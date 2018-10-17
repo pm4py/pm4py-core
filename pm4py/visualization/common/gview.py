@@ -12,7 +12,7 @@ def view(gviz):
     try:
         get_ipython()
         is_ipynb = True
-    except NameError as e:
+    except NameError:
         # we are not inside Jupyter, do nothing
         pass
 
