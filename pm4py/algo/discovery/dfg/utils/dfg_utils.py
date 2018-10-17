@@ -1,3 +1,5 @@
+from copy import copy
+
 def get_outgoing_edges(dfg):
     """
     Gets outgoing edges of the provided DFG graph
@@ -414,3 +416,111 @@ def get_activities_self_loop(dfg):
         if act in list(outgoing[act].keys()):
             self_loop_act.append(act)
     return self_loop_act
+
+
+def get_connected_components(ingoing, outgoing, activities):
+    """
+    Get connected components in the DFG graph
+
+    Parameters
+    -----------
+    ingoing
+        Ingoing attributes
+    outgoing
+        Outgoing attributes
+    activities
+        Activities to consider
+    """
+    activities_considered = set()
+
+    connected_components = []
+
+    for act in ingoing:
+        ingoing_act = set(ingoing[act].keys())
+        if act in outgoing:
+            ingoing_act = ingoing_act.union(set(outgoing[act].keys()))
+
+        ingoing_act.add(act)
+
+        if not ingoing_act in connected_components:
+            connected_components.append(ingoing_act)
+            activities_considered = activities_considered.union(set(ingoing_act))
+
+    for act in outgoing:
+        if not act in ingoing:
+            outgoing_act = set(outgoing[act].keys())
+            outgoing_act.add(act)
+            if not outgoing_act in connected_components:
+                connected_components.append(outgoing_act)
+            activities_considered = activities_considered.union(set(outgoing_act))
+
+    max_it = len(connected_components)
+    for it in range(max_it-1):
+        something_changed = False
+
+        old_connected_components = copy(connected_components)
+        connected_components = []
+
+        for i in range(len(old_connected_components)):
+            conn1 = old_connected_components[i]
+
+            if conn1 is not None:
+                for j in range(i+1, len(old_connected_components)):
+                    conn2 = old_connected_components[j]
+                    if conn2 is not None:
+                        inte = conn1.intersection(conn2)
+
+                        if len(inte) > 0:
+                            conn1 = conn1.union(conn2)
+                            something_changed = True
+                            old_connected_components[j] = None
+
+            if conn1 is not None and conn1 not in connected_components:
+                connected_components.append(conn1)
+
+        if not something_changed:
+            break
+
+    if len(connected_components) == 0:
+        for activity in activities:
+            connected_components.append([activity])
+
+    return connected_components
+
+def add_to_most_probable_component(comps, act2, ingoing, outgoing):
+    """
+    Adds a lost component in parallel cut detection to the most probable component
+
+    Parameters
+    -------------
+    comps
+        Connected components
+    act2
+        Activity that has been missed
+    ingoing
+        Map of ingoing attributes
+    outgoing
+        Map of outgoing attributes
+
+    Returns
+    -------------
+    comps
+        Fixed connected components
+    """
+    sums = []
+    idx_max_sum = 0
+
+    for comp in comps:
+        summ = 0
+        for act1 in comp:
+            if act1 in ingoing and act2 in ingoing[act1]:
+                summ = summ + ingoing[act1][act2]
+            if act1 in outgoing and act2 in outgoing[act1]:
+                summ = summ + outgoing[act1][act2]
+        sums.append(summ)
+        if sums[-1] > sums[idx_max_sum]:
+            idx_max_sum = len(sums) - 1
+
+    comps[idx_max_sum].add(act2)
+
+    return comps
