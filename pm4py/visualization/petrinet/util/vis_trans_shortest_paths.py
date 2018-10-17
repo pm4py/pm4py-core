@@ -3,15 +3,13 @@ from statistics import mean, median, stdev
 from pm4py.visualization.common.utils import *
 
 
-def get_shortest_paths_from_trans(net, original_trans, spaths):
+def get_shortest_paths_from_trans(original_trans, spaths):
     """
     Get arcs that are shortest paths between a given
     visible transition and other visible transitions
 
     Parameters
     -----------
-    net
-        Petri net
     original_trans
         Original transition
     spaths
@@ -70,7 +68,7 @@ def get_shortest_paths(net):
     spaths = {}
     for trans in net.transitions:
         if trans.label:
-            spaths = get_shortest_paths_from_trans(net, trans, spaths)
+            spaths = get_shortest_paths_from_trans(trans, spaths)
     return spaths
 
 
@@ -112,7 +110,6 @@ def get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_c
     for arc in spaths:
         for couple in spaths[arc]:
             dfg_key = couple[0]
-            status = couple[1]
             if dfg_key in dfg:
                 if arc not in decorations_single_contrib:
                     decorations_single_contrib[arc] = []

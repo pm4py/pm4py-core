@@ -41,7 +41,7 @@ def add_missing_tokens(t, marking):
     return [missing, tokens_added]
 
 
-def get_consumed_tokens(t, net):
+def get_consumed_tokens(t):
     """
     Get tokens consumed firing a transition
 
@@ -49,8 +49,6 @@ def get_consumed_tokens(t, net):
     ----------
     t
         Transition that should be enabled
-    net
-        Petri net
     """
     consumed = 0
     for a in t.in_arcs:
@@ -58,7 +56,7 @@ def get_consumed_tokens(t, net):
     return consumed
 
 
-def get_produced_tokens(t, net):
+def get_produced_tokens(t):
     """
     Get tokens produced firing a transition
 
@@ -66,8 +64,6 @@ def get_produced_tokens(t, net):
     ----------
     t
         Transition that should be enabled
-    net
-        Petri net
     """
     produced = 0
     for a in t.out_arcs:
@@ -522,8 +518,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             for place in tokens_added.keys():
                                 if place in place_fitness:
                                     place_fitness[place]["underfed_traces"].add(trace)
-                    c = get_consumed_tokens(t, net)
-                    p = get_produced_tokens(t, net)
+                    c = get_consumed_tokens(t)
+                    p = get_produced_tokens(t)
                     consumed = consumed + c
                     produced = produced + p
                     if semantics.is_enabled(t, net, marking):
@@ -813,8 +809,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                                 "transitions_with_problems": copy(
                                                                     t.trans_with_problems)}
                             del threads[threads_keys[j]]
-                        threads_keys = 0
-                        threads_keys = []
+                        del threads_keys
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
                                                              trans_map, enable_place_fitness, place_fitness_per_trace,
                                                              places_shortest_path_by_hidden, consider_remaining_in_fitness,
