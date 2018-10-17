@@ -18,6 +18,9 @@ import os
 
 class VisualizationTest1(unittest.TestCase):
     def test_getdfgfreqvis_log(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         log_path = os.path.join("input_data", "running-example.xes")
         log = xes_importer.import_log(log_path)
         variant = "frequency"
@@ -26,6 +29,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getdfgfreqvis_acticount(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         log_path = os.path.join("input_data", "running-example.xes")
         log = xes_importer.import_log(log_path)
         variant = "frequency"
@@ -35,6 +41,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getdfgperfvis_log(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         log_path = os.path.join("input_data", "running-example.xes")
         log = xes_importer.import_log(log_path)
         variant = "performance"
@@ -43,6 +52,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getpetrifreqvis_token(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         log_path = os.path.join("input_data", "running-example.xes")
         log = xes_importer.import_log(log_path)
         net, initial_marking, final_marking = inductive_miner.apply(log)
@@ -51,6 +63,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getpetriperfvis_token(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         log_path = os.path.join("input_data", "running-example.xes")
         log = xes_importer.import_log(log_path)
         variant = "performance"
@@ -59,6 +74,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getpetrifreqvis_greedy(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         log_path = os.path.join("input_data", "running-example.xes")
         log = xes_importer.import_log(log_path)
         net, initial_marking, final_marking = inductive_miner.apply(log)
@@ -75,6 +93,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getpetriperfvis_greedy(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         log_path = os.path.join("input_data", "running-example.xes")
         log = xes_importer.import_log(log_path)
         net, initial_marking, final_marking = inductive_miner.apply(log)
@@ -91,6 +112,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getdfgfreqvis_dataframe(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         variant = "frequency"
         log_path = os.path.join("input_data", "running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
@@ -101,6 +125,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getdfgperfvis_dataframe(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         variant = "performance"
         log_path = os.path.join("input_data", "running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
@@ -112,6 +139,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getpetrifreqvis_dataframe_greedy(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         variant = "frequency"
         log_path = os.path.join("input_data", "running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
@@ -130,6 +160,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getpetriperfvis_dataframe_greedy(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         variant = "performance"
         log_path = os.path.join("input_data", "running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
@@ -148,6 +181,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getpetrifreqvis_dataframe_convert_token(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         variant = "frequency"
         log_path = os.path.join("input_data", "running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
@@ -159,6 +195,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_getpetriperfvis_dataframe_convert_token(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         variant = "performance"
         log_path = os.path.join("input_data", "running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(log_path)
@@ -170,6 +209,9 @@ class VisualizationTest1(unittest.TestCase):
         del gviz
 
     def test_simple_view(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         log_path = os.path.join("input_data", "receipt.xes")
         log = xes_importer.import_log(log_path)
         filtered_log = auto_filter.apply_auto_filter(log)

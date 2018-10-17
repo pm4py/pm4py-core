@@ -14,6 +14,10 @@ import os
 
 class AlphaMinerTest(unittest.TestCase):
     def obtainPetriNetThroughAlphaMiner(self, log_name):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
+
         if ".xes" in log_name:
             trace_log = xes_importer.import_log(log_name)
         else:
@@ -23,6 +27,9 @@ class AlphaMinerTest(unittest.TestCase):
         return trace_log, net, marking, fmarking
 
     def test_applyAlphaMinerToXES(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         # calculate and compare Petri nets obtained on the same log to verify that instances
         # are working correctly
         log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughAlphaMiner(
@@ -49,6 +56,9 @@ class AlphaMinerTest(unittest.TestCase):
         self.assertEqual(aligned_traces, aligned_traces)
 
     def test_applyAlphaMinerToCSV(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         # calculate and compare Petri nets obtained on the same log to verify that instances
         # are working correctly
         log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughAlphaMiner(
@@ -74,6 +84,9 @@ class AlphaMinerTest(unittest.TestCase):
         self.assertEqual(aligned_traces, aligned_traces)
 
     def test_alphaMinerVisualizationFromXES(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         log, net, marking, fmarking = self.obtainPetriNetThroughAlphaMiner(
             os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         log.sort()
@@ -91,6 +104,9 @@ class AlphaMinerTest(unittest.TestCase):
         self.assertEqual(aligned_traces, aligned_traces)
 
     def test_applyAlphaMinerToProblematicLogs(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         logs = os.listdir(PROBLEMATIC_XES_DIR)
         for log in logs:
             try:

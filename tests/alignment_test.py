@@ -9,6 +9,9 @@ import os
 
 class AlignmentTest(unittest.TestCase):
     def test_alignment_alpha(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, marking, fmarking = alpha_factory.apply(trace_log)
         final_marking = petri.petrinet.Marking()
@@ -25,6 +28,9 @@ class AlignmentTest(unittest.TestCase):
                 raise Exception("should be fit")
 
     def test_alignment_pnml(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, marking, final_marking = dfg_only.apply(trace_log, None)
         for trace in trace_log:

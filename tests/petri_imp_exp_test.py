@@ -11,6 +11,9 @@ import os
 
 class PetriImportExportTest(unittest.TestCase):
     def test_importingExportingPetri(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         imported_petri1, marking1, fmarking1 = petri_importer.import_net(
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
         petri_exporter.export_net(imported_petri1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
@@ -27,12 +30,19 @@ class PetriImportExportTest(unittest.TestCase):
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
 
     def test_importingPetriLogTokenReplay(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         imported_petri1, marking1, fmarking1 = petri_importer.import_net(
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
         trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         aligned_traces = token_replay.apply_log(trace_log, imported_petri1, marking1, fmarking1)
+        del aligned_traces
 
     def test_importingPetriLogAlignment(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         imported_petri1, marking1, fmarking1 = petri_importer.import_net(
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
         trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
