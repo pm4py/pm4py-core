@@ -33,7 +33,6 @@ def import_log(filename, parameters=None):
         A trace log
     """
 
-    parameters = None
     if parameters is None:
         parameters = {}
 

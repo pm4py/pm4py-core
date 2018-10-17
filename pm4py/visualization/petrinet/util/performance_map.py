@@ -8,7 +8,7 @@ from pm4py.visualization.common.utils import *
 MAX_NO_THREADS = 1000
 
 
-def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activity_key):
+def calculate_annotation_for_trace(trace, initial_marking, act_trans, activity_key):
     """
     Calculate annotation for a trace in the variant, in order to retrieve information
     useful for calculate frequency/performance for all the traces belonging to the variant
@@ -17,8 +17,6 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
     -----------
     trace
         Trace
-    net
-        Petri net
     initial_marking
         Initial marking
     act_trans
@@ -48,7 +46,7 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
             annotations_places_trans[trans] = {"count": 0}
             annotations_places_trans[trans]["count"] = annotations_places_trans[trans]["count"] + 1
 
-        new_marking = semantics.weak_execute(trans, net, marking)
+        new_marking = semantics.weak_execute(trans, marking)
         if not new_marking:
             break
         marking_diff = set(new_marking).difference(set(marking))
@@ -82,7 +80,7 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
     return annotations_places_trans, annotations_arcs
 
 
-def single_element_statistics(log, net, initial_marking, aligned_traces, variants_idx, activity_key="concept:name",
+def single_element_statistics(log, initial_marking, aligned_traces, variants_idx, activity_key="concept:name",
                               timestamp_key="time:timestamp"):
     """
     Get single Petrinet element statistics
@@ -91,8 +89,6 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
     ------------
     log
         Log
-    net
-        Petri net
     initial_marking
         Initial marking
     aligned_traces
@@ -115,7 +111,7 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
     for variant in variants_idx:
         first_trace = log[variants_idx[variant][0]]
         act_trans = aligned_traces[variants_idx[variant][0]]["activated_transitions"]
-        annotations_places_trans, annotations_arcs = calculate_annotation_for_trace(first_trace, net, initial_marking,
+        annotations_places_trans, annotations_arcs = calculate_annotation_for_trace(first_trace, initial_marking,
                                                                                     act_trans, activity_key)
 
         for el in annotations_places_trans:

@@ -94,8 +94,6 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION] if pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION in parameters else None
     if model_cost_function is None or sync_cost_function is None:
         # reset variables value
-        model_cost_function = 0
-        sync_cost_function = 0
         model_cost_function = dict()
         sync_cost_function = dict()
         for t in petri_net.transitions:
@@ -118,8 +116,7 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
 
     # assign fitness to traces
     for index, align in enumerate(alignments):
-        align_cost = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
-
+        #align_cost = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
         # align['fitness'] = 1 - ((align['cost']  // ali.utils.STD_MODEL_LOG_MOVE_COST) / best_worst_cost)
         align['fitness'] = 1 - (
                     (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))

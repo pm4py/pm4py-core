@@ -68,7 +68,7 @@ def apply_auto_filter(df, parameters=None):
 
     end_activities = get_end_activities(df, parameters=parameters)
     ealist = end_activities_common.get_sorted_end_activities_list(end_activities)
-    eathreshold = end_activities_common.get_end_activities_threshold(end_activities, ealist, decreasing_factor)
+    eathreshold = end_activities_common.get_end_activities_threshold(ealist, decreasing_factor)
 
     return filter_df_on_end_activities_nocc(df, eathreshold, ea_count=end_activities, case_id_glue=case_id_glue,
                                             activity_key=activity_key)

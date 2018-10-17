@@ -91,14 +91,12 @@ def get_sorted_paths_list(paths):
     return listpaths
 
 
-def get_paths_threshold(paths, plist, decreasing_factor):
+def get_paths_threshold(plist, decreasing_factor):
     """
     Get end attributes cutting threshold
 
     Parameters
     ----------
-    paths
-        Dictionary of paths associated with their count
     plist
         List of paths ordered by number of occurrences
     decreasing_factor
@@ -163,7 +161,6 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key
                         if path in fvp or paths[path] >= threshold:
                             new_trace.append(trace[j])
                             new_trace.append(trace[j + 1])
-                            j = j + 1
         if len(trace) > 1 and not jj == len(trace):
             new_trace.append(trace[-1])
         if len(new_trace) > 0:
@@ -204,6 +201,6 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     vc = variants_filter.get_variants_sorted_by_count(variants)
     pths = get_paths_from_log(trace_log, attribute_key=attribute_key)
     plist = get_sorted_paths_list(pths)
-    thresh = get_paths_threshold(pths, plist, decreasing_factor)
+    thresh = get_paths_threshold(plist, decreasing_factor)
     filtered_log = filter_log_by_paths(trace_log, pths, variants, vc, thresh, attribute_key)
     return filtered_log

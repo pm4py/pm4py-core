@@ -121,6 +121,7 @@ class InductiveMinerDFTest(unittest.TestCase):
                     if not p.out_arcs:
                         final_marking[p] = 1
                 aligned_traces = token_replay.apply_log(log1, net1, marking1, final_marking)
+                del aligned_traces
             except SyntaxError as e:
                 logging.info("SyntaxError on log " + str(log) + ": " + str(e))
             except NoConceptNameException as e:

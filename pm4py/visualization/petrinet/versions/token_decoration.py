@@ -58,7 +58,7 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     # apply petri_reduction technique in order to simplify the Petri net
     # net = reduction.apply(net, parameters={"aligned_traces": aligned_traces})
 
-    element_statistics = performance_map.single_element_statistics(log, net, initial_marking,
+    element_statistics = performance_map.single_element_statistics(log, initial_marking,
                                                                    aligned_traces, variants_idx,
                                                                    activity_key=activity_key,
                                                                    timestamp_key=timestamp_key)

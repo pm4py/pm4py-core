@@ -26,7 +26,6 @@ def import_log(filename, parameters=None):
     xes
         XES file
     """
-    parameters = None
     if parameters is None:
         parameters = {}
 
