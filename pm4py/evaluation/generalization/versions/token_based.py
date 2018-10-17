@@ -49,7 +49,7 @@ def get_generalization(petri_net, aligned_traces):
         this_term = 1.0 / sqrt(trans_occ_map[trans])
         inv_sq_occ_sum = inv_sq_occ_sum + this_term
     for trans in petri_net.transitions:
-        if not trans in trans_occ_map:
+        if trans not in trans_occ_map:
             inv_sq_occ_sum = inv_sq_occ_sum + 1
     generalization = 1.0
     if len(petri_net.transitions) > 0:

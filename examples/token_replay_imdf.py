@@ -4,6 +4,7 @@ from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 import time
 
+
 def execute_script():
     log_path = "..\\tests\\input_data\\running-example.xes"
     log = xes_importer.import_log(log_path)

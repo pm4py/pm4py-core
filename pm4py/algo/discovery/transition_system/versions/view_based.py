@@ -3,21 +3,21 @@ import collections
 from pm4py.algo.discovery.transition_system.parameters import *
 from pm4py.objects.log import util as log_util
 from pm4py.objects.transition_system import transition_system as ts
-from pm4py.util import constants
-
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 
 def apply(trace_log, parameters=None):
     if parameters is None:
         parameters = {}
     for parameter in DEFAULT_PARAMETERS:
-        if not parameter in parameters:
+        if parameter not in parameters:
             parameters[parameter] = DEFAULT_PARAMETERS[parameter]
     activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else log_util.xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     transition_system = ts.TransitionSystem()
     control_flow_log = log_util.trace_log.project_traces(trace_log, activity_key)
-    l = (list(map(lambda t: __compute_view_sequence(t, parameters), control_flow_log)))
-    for vs in l:
+    view_sequence = (list(map(lambda t: __compute_view_sequence(t, parameters), control_flow_log)))
+    for vs in view_sequence:
         __construct_state_path(vs, transition_system)
     return transition_system
 

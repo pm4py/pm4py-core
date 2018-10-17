@@ -71,8 +71,8 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
 
 def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """
-    Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization method)
-    adding frequency representation obtained by token replay
+    Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization
+    method) adding frequency representation obtained by token replay
 
     Parameters
     -----------
@@ -104,8 +104,8 @@ def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_st
 
 def apply_performance(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """
-    Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization method)
-    adding performance representation obtained by token replay
+    Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization
+    method) adding performance representation obtained by token replay
 
     Parameters
     -----------

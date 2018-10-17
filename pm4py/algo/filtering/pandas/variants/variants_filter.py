@@ -1,6 +1,7 @@
 from pm4py.algo.filtering.common import filtering_constants
+from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.statistics.traces.pandas import case_statistics
-from pm4py.util import constants
+from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 
 
 def apply_auto_filter(df, parameters=None):
@@ -26,7 +27,7 @@ def apply_auto_filter(df, parameters=None):
     if parameters is None:
         parameters = {}
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     variants_df = case_statistics.get_variants_df(df, parameters=parameters)
     parameters["variants_df"] = variants_df
     variants = case_statistics.get_variants_statistics(df, parameters=parameters)
@@ -61,7 +62,8 @@ def apply(df, admitted_variants, parameters=None):
         Parameters of the algorithm, including:
             case_id_glue -> Column that contains the Case ID
             activity_key -> Column that contains the activity
-            positive -> Specifies if the filter should be applied including traces (positive=True) or excluding traces (positive=False)
+            positive -> Specifies if the filter should be applied including traces (positive=True)
+            or excluding traces (positive=False)
             variants_df -> If provided, avoid recalculation of the variants dataframe
 
     Returns
@@ -73,7 +75,7 @@ def apply(df, admitted_variants, parameters=None):
         parameters = {}
 
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     positive = parameters["positive"] if "positive" in parameters else True
     variants_df = parameters["variants_df"] if "variants_df" in parameters else case_statistics.get_variants_df(df,
                                                                                                                 parameters=parameters)
