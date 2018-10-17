@@ -68,6 +68,7 @@ class SubtreeGenerator(object):
         n_letters
             Number of letters of the string
         """
+        self.generated_string = True
         return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(n_letters))
 
     def generate_activity(self):
