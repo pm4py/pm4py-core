@@ -127,6 +127,6 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     vc = variants_filter.get_variants_sorted_by_count(variants)
     start_activities = get_start_activities(trace_log, parameters=parameters_variants)
     salist = start_activities_common.get_sorted_start_activities_list(start_activities)
-    sathreshold = start_activities_common.get_start_activities_threshold(start_activities, salist, decreasing_factor)
+    sathreshold = start_activities_common.get_start_activities_threshold(salist, decreasing_factor)
     filtered_log = filter_log_by_start_activities(start_activities, variants, vc, sathreshold, attribute_key)
     return filtered_log
