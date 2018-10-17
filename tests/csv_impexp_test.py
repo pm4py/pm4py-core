@@ -9,6 +9,9 @@ import os
 
 class CsvImportExportTest(unittest.TestCase):
     def test_importExportCSVtoXES(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         event_log = csv_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.csv"))
         event_log.sort()
         event_log.sample()
@@ -24,6 +27,9 @@ class CsvImportExportTest(unittest.TestCase):
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example-exported.xes"))
 
     def test_importExportCSVtoCSV(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         event_log = csv_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.csv"))
         event_log.sort()
         event_log.sample()

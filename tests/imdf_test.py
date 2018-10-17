@@ -14,6 +14,9 @@ import os
 
 class InductiveMinerDFTest(unittest.TestCase):
     def obtainPetriNetThroughImdf(self, log_name):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         if ".xes" in log_name:
             trace_log = xes_importer.import_log(log_name)
         else:
@@ -23,6 +26,9 @@ class InductiveMinerDFTest(unittest.TestCase):
         return trace_log, net, marking, final_marking
 
     def test_applyImdfToXES(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         # calculate and compare Petri nets obtained on the same log to verify that instances
         # are working correctly
         log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughImdf(
@@ -45,8 +51,12 @@ class InductiveMinerDFTest(unittest.TestCase):
             if not p.out_arcs:
                 final_marking[p] = 1
         aligned_traces = token_replay.apply_log(log1, net1, marking1, final_marking)
+        del aligned_traces
 
     def test_applyImdfToCSV(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         # calculate and compare Petri nets obtained on the same log to verify that instances
         # are working correctly
         log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughImdf(
@@ -69,8 +79,12 @@ class InductiveMinerDFTest(unittest.TestCase):
             if not p.out_arcs:
                 final_marking[p] = 1
         aligned_traces = token_replay.apply_log(log1, net1, marking1, final_marking)
+        del aligned_traces
 
     def test_imdfVisualizationFromXES(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         log, net, marking, fmarking = self.obtainPetriNetThroughImdf(
             os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         log.sort()
@@ -84,8 +98,13 @@ class InductiveMinerDFTest(unittest.TestCase):
             if not p.out_arcs:
                 final_marking[p] = 1
         aligned_traces = token_replay.apply_log(log, net, marking, final_marking)
+        del gviz
+        del aligned_traces
 
     def test_applyImdfToProblematicLogs(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
         logs = os.listdir(PROBLEMATIC_XES_DIR)
         for log in logs:
             try:
