@@ -1,7 +1,9 @@
-import pm4py.objects.log.log as log_instance
-from pm4py.objects.petri import semantics
 from copy import copy
 from random import shuffle
+
+import pm4py.objects.log.log as log_instance
+from pm4py.objects.petri import semantics
+
 
 def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100):
     """
@@ -40,6 +42,7 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100):
         if len(trace) > 0:
             log.append(trace)
     return log
+
 
 def apply(net, initial_marking, parameters=None):
     """

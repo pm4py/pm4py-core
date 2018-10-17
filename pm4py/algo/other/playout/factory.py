@@ -3,6 +3,7 @@ from pm4py.algo.other.playout.versions import basic_playout
 BASIC_PLAYOUT = "basic_playout"
 VERSIONS = {BASIC_PLAYOUT: basic_playout.apply}
 
+
 def apply(net, initial_marking, parameters=None, variant="basic_playout"):
     """
     Do the playout of a Petrinet generating a log

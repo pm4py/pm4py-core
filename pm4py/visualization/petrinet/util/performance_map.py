@@ -1,7 +1,8 @@
 from copy import copy
+from statistics import mean, median, stdev
+
 from pm4py.objects.petri import semantics
 from pm4py.objects.petri.petrinet import PetriNet
-from statistics import mean, median, stdev
 from pm4py.visualization.common.utils import *
 
 MAX_NO_THREADS = 1000
@@ -54,7 +55,8 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
         for place in marking_diff:
             if place not in annotations_places_trans:
                 annotations_places_trans[place] = {"count": 0}
-                annotations_places_trans[place]["count"] = annotations_places_trans[place]["count"] + max(new_marking[place] - marking[place], 1)
+                annotations_places_trans[place]["count"] = annotations_places_trans[place]["count"] + max(
+                    new_marking[place] - marking[place], 1)
         marking = new_marking
         if j < len(trace):
             current_trace_index = j
@@ -80,7 +82,8 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
     return annotations_places_trans, annotations_arcs
 
 
-def single_element_statistics(log, net, initial_marking, aligned_traces, variants_idx, activity_key="concept:name", timestamp_key="time:timestamp"):
+def single_element_statistics(log, net, initial_marking, aligned_traces, variants_idx, activity_key="concept:name",
+                              timestamp_key="time:timestamp"):
     """
     Get single Petrinet element statistics
 
@@ -112,7 +115,8 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
     for variant in variants_idx:
         first_trace = log[variants_idx[variant][0]]
         act_trans = aligned_traces[variants_idx[variant][0]]["activated_transitions"]
-        annotations_places_trans, annotations_arcs = calculate_annotation_for_trace(first_trace, net, initial_marking, act_trans, activity_key)
+        annotations_places_trans, annotations_arcs = calculate_annotation_for_trace(first_trace, net, initial_marking,
+                                                                                    act_trans, activity_key)
 
         for el in annotations_places_trans:
             if el not in statistics:
@@ -278,19 +282,19 @@ def aggregate_statistics(statistics, measure="frequency", aggregation_measure=No
             if measure == "frequency":
                 freq = statistics[elem]["count"]
                 arc_penwidth = get_arc_penwidth(freq, min_arc_frequency, max_arc_frequency)
-                aggregated_statistics[elem] = {"label": str(freq),"penwidth": str(arc_penwidth)}
+                aggregated_statistics[elem] = {"label": str(freq), "penwidth": str(arc_penwidth)}
             elif measure == "performance":
                 if statistics[elem]["performance"]:
                     aggr_stat = aggregate_stats(statistics, elem, aggregation_measure)
                     aggr_stat_hr = human_readable_stat(aggr_stat)
                     arc_penwidth = get_arc_penwidth(aggr_stat, min_arc_performance, max_arc_performance)
-                    aggregated_statistics[elem] = {"label": aggr_stat_hr,"penwidth": str(arc_penwidth)}
+                    aggregated_statistics[elem] = {"label": aggr_stat_hr, "penwidth": str(arc_penwidth)}
         elif type(elem) is PetriNet.Transition:
             if measure == "frequency":
                 if elem.label is not None:
                     freq = statistics[elem]["count"]
                     color = get_trans_freq_color(freq, min_trans_frequency, max_trans_frequency)
-                    aggregated_statistics[elem] = {"label": elem.label+" ("+str(freq)+")", "color": color}
+                    aggregated_statistics[elem] = {"label": elem.label + " (" + str(freq) + ")", "color": color}
         elif type(elem) is PetriNet.Place:
             pass
     return aggregated_statistics

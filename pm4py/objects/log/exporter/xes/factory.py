@@ -5,6 +5,7 @@ ETREE = "etree"
 VERSIONS_STRING = {ETREE: etree_xes_exp.export_log_as_string}
 VERSIONS = {ETREE: etree_xes_exp.export_log}
 
+
 def export_log_as_string(log, variant="etree", parameters=None):
     """
     Factory method to export a XES from an trace log as a string
@@ -24,6 +25,7 @@ def export_log_as_string(log, variant="etree", parameters=None):
         String describing the XES
     """
     return VERSIONS_STRING[variant](log, parameters=parameters)
+
 
 def export_log(log, output_file_path, variant="etree", parameters=None):
     """
@@ -46,6 +48,7 @@ def export_log(log, output_file_path, variant="etree", parameters=None):
     VERSIONS[variant](log, output_file_path, parameters=parameters)
     if "compress" in parameters and parameters["compress"]:
         compression.compress(output_file_path)
+
 
 def apply(log, output_file_path, variant="etree", parameters=None):
     """

@@ -1,5 +1,6 @@
 from pm4py.objects import petri
 
+
 def clean_duplicate_transitions(net):
     """
     Clean duplicate transitions in a Petri net
@@ -34,6 +35,7 @@ def clean_duplicate_transitions(net):
             if to_delete:
                 net = petri.utils.remove_transition(net, trans)
     return net
+
 
 def petri_reduction_treplay(net, parameters=None):
     """

@@ -1,7 +1,8 @@
 from pm4py.objects.log import log as log_instance
 
 
-def transform_event_log_to_trace_log(log, case_glue='case:concept:name', includes_case_attributes=True, case_attribute_prefix='case:'):
+def transform_event_log_to_trace_log(log, case_glue='case:concept:name', includes_case_attributes=True,
+                                     case_attribute_prefix='case:'):
     """
     Converts the event log to a trace log
 
@@ -38,7 +39,8 @@ def transform_event_log_to_trace_log(log, case_glue='case:concept:name', include
                     del event[k]
 
         traces[glue].append(event)
-    return log_instance.TraceLog(traces.values(), attributes=log.attributes, classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions)
+    return log_instance.TraceLog(traces.values(), attributes=log.attributes, classifiers=log.classifiers,
+                                 omni_present=log.omni_present, extensions=log.extensions)
 
 
 def transform_trace_log_to_event_log(log, include_case_attributes=True, case_attribute_prefix='case:'):
@@ -66,5 +68,5 @@ def transform_trace_log_to_event_log(log, include_case_attributes=True, case_att
                 for key, value in trace.attributes.items():
                     event[case_attribute_prefix + key] = value
             events.append(event)
-    return log_instance.EventLog(events, attributes=log.attributes, classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions)
-
+    return log_instance.EventLog(events, attributes=log.attributes, classifiers=log.classifiers,
+                                 omni_present=log.omni_present, extensions=log.extensions)

@@ -4,6 +4,7 @@ PANDAS = "pandas"
 VERSIONS_STRING = {PANDAS: pandas_csv_exp.export_log_as_string}
 VERSIONS = {PANDAS: pandas_csv_exp.export_log}
 
+
 def export_log_as_string(log, variant="pandas", parameters=None):
     """
     Factory method to export a CSV from an event log as a string
@@ -24,6 +25,7 @@ def export_log_as_string(log, variant="pandas", parameters=None):
     """
     return VERSIONS_STRING[variant](log, parameters=parameters)
 
+
 def export_log(log, output_file_path, variant="pandas", parameters=None):
     """
     Factory method to export a CSV from an event log
@@ -40,6 +42,7 @@ def export_log(log, output_file_path, variant="pandas", parameters=None):
         Parameters of the algorithm
     """
     VERSIONS[variant](log, output_file_path, parameters=parameters)
+
 
 def apply(log, output_file_path, variant="pandas", parameters=None):
     """

@@ -1,8 +1,12 @@
-from lxml import etree
+import os
+import tempfile
 import time
+
+from lxml import etree
+
 from pm4py.objects import petri
-import tempfile, os
 from pm4py.objects.petri.common import final_marking
+
 
 def import_petri_from_string(petri_string):
     """
@@ -20,6 +24,7 @@ def import_petri_from_string(petri_string):
     net, initial_marking, this_final_marking = import_net(fp.name)
     os.remove(fp.name)
     return net, initial_marking, this_final_marking
+
 
 def import_net(input_file_path):
     """

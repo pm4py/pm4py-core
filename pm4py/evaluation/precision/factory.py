@@ -3,6 +3,7 @@ from pm4py.evaluation.precision.versions import etconformance_token
 ETCONFORMANCE_TOKEN = "etconformance"
 VERSIONS = {ETCONFORMANCE_TOKEN: etconformance_token.apply}
 
+
 def apply(log, net, marking, final_marking, parameters=None, variant="etconformance"):
     """
     Factory method to apply ET Conformance

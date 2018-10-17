@@ -1,5 +1,4 @@
 class TransitionSystem(object):
-
     class State(object):
         def __init__(self, name, incoming=None, outgoing=None, data=None):
             self.__name = name
@@ -84,4 +83,3 @@ class TransitionSystem(object):
     name = property(__get_name, __set_name)
     states = property(__get_states)
     transitions = property(__get_transitions, __set_transitions)
-

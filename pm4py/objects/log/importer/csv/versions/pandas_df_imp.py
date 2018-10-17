@@ -1,6 +1,7 @@
 from pm4py.objects import log
 from pm4py.objects.log.adapters.pandas.csv_import_adapter import import_dataframe_from_path
 
+
 def convert_dataframe_to_event_log(df):
     """
     Converts a dataframe to an event log
@@ -16,6 +17,7 @@ def convert_dataframe_to_event_log(df):
         An event log
     """
     return log.log.EventLog(df.to_dict('records'), attributes={'origin': 'csv'})
+
 
 def import_log(path, parameters=None):
     """
@@ -40,11 +42,11 @@ def import_log(path, parameters=None):
     """
 
     sep = ","
-    quotechar=None
-    nrows=None
-    sort=False
-    sort_field="time:timestamp"
-    insert_event_indexes=False
+    quotechar = None
+    nrows = None
+    sort = False
+    sort_field = "time:timestamp"
+    insert_event_indexes = False
     timest_format = None
     timest_columns = None
 
@@ -67,7 +69,8 @@ def import_log(path, parameters=None):
     if "timest_columns" in parameters:
         timest_columns = parameters["timest_format"]
 
-    df = import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort, sort_field=sort_field, timest_format=timest_format, timest_columns=timest_columns)
+    df = import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort, sort_field=sort_field,
+                                    timest_format=timest_format, timest_columns=timest_columns)
     event_log = convert_dataframe_to_event_log(df)
 
     if insert_event_indexes:

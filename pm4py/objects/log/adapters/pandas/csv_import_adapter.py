@@ -1,5 +1,8 @@
+import os
+import tempfile
+
 import pandas as pd
-import tempfile, os
+
 
 def import_dataframe_from_path_wo_timeconversion(path, sep=',', quotechar=None, nrows=None):
     """
@@ -34,7 +37,9 @@ def import_dataframe_from_path_wo_timeconversion(path, sep=',', quotechar=None, 
 
     return df
 
-def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None, sort=False, sort_field="time:timestamp", timest_format=None, timest_columns=None):
+
+def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None, sort=False,
+                                     sort_field="time:timestamp", timest_format=None, timest_columns=None):
     """
     Import dataframe from CSV string
 
@@ -66,9 +71,11 @@ def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(csv_string)
-    df = import_dataframe_from_path(fp.name, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort, sort_field=sort_field, timest_format=timest_format, timest_columns=timest_columns)
+    df = import_dataframe_from_path(fp.name, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort,
+                                    sort_field=sort_field, timest_format=timest_format, timest_columns=timest_columns)
     os.remove(fp.name)
     return df
+
 
 def convert_caseid_column_to_str(df, case_id_glue="case:concept:name"):
     """
@@ -88,6 +95,7 @@ def convert_caseid_column_to_str(df, case_id_glue="case:concept:name"):
     """
     df[case_id_glue] = df[case_id_glue].astype(str)
     return df
+
 
 def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None):
     """
@@ -117,11 +125,13 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
                     else:
                         df[col] = pd.to_datetime(df[col], format=timest_format)
                 except ValueError:
-                    #print("exception converting column: "+str(col))
+                    # print("exception converting column: "+str(col))
                     pass
     return df
 
-def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort_field="time:timestamp", timest_format=None, timest_columns=None):
+
+def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort_field="time:timestamp",
+                               timest_format=None, timest_columns=None):
     """
     Imports a dataframe from the given path
 

@@ -1,9 +1,10 @@
-from pm4py.objects.log.log import TraceLog
-from pm4py.algo.filtering.tracelog.variants import variants_filter
-from pm4py.objects.log.util import xes
-from pm4py.util import constants
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.end_activities import end_activities_common
+from pm4py.algo.filtering.tracelog.variants import variants_filter
+from pm4py.objects.log.log import TraceLog
+from pm4py.objects.log.util import xes
+from pm4py.util import constants
+
 
 def apply(trace_log, admitted_end_activities, parameters=None):
     """
@@ -25,10 +26,12 @@ def apply(trace_log, admitted_end_activities, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    attribute_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
     filtered_log = [trace for trace in trace_log if trace and trace[-1][attribute_key] in admitted_end_activities]
     return filtered_log
+
 
 def get_end_activities(trace_log, parameters=None):
     """
@@ -49,18 +52,20 @@ def get_end_activities(trace_log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    attribute_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
     end_activities = {}
-    
+
     for trace in trace_log:
         if len(trace) > 0:
             activity_last_event = trace[-1][attribute_key]
             if not activity_last_event in end_activities:
                 end_activities[activity_last_event] = 0
             end_activities[activity_last_event] = end_activities[activity_last_event] + 1
-    
+
     return end_activities
+
 
 def filter_log_by_end_activities(end_activities, variants, vc, threshold, activity_key="concept:name"):
     """
@@ -83,9 +88,9 @@ def filter_log_by_end_activities(end_activities, variants, vc, threshold, activi
     ----------
     filtered_log
         Filtered log
-    """ 
+    """
     filtered_log = TraceLog()
-    fvea = variants[vc[0][0]][0][-1][activity_key]    
+    fvea = variants[vc[0][0]][0][-1][activity_key]
     for variant in variants:
         vea = variants[variant][0][-1][activity_key]
         if vea in end_activities:
@@ -93,6 +98,7 @@ def filter_log_by_end_activities(end_activities, variants, vc, threshold, activi
                 for trace in variants[variant]:
                     filtered_log.append(trace)
     return filtered_log
+
 
 def apply_auto_filter(trace_log, variants=None, parameters=None):
     """
@@ -117,8 +123,10 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasing_factor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    attribute_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    decreasing_factor = parameters[
+        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:

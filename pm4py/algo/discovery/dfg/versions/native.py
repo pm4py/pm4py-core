@@ -1,6 +1,8 @@
 from collections import Counter
+
 from pm4py import util as pmutil
 from pm4py.objects.log.util import xes as xes_util
+
 
 def apply(trace_log, parameters=None):
     """

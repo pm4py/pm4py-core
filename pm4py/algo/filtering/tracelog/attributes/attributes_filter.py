@@ -1,9 +1,10 @@
-from pm4py.objects.log.log import TraceLog, Trace
-from pm4py.algo.filtering.tracelog.variants import variants_filter
-from pm4py.util import constants
-from pm4py.objects.log.util import xes
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.attributes import attributes_common
+from pm4py.algo.filtering.tracelog.variants import variants_filter
+from pm4py.objects.log.log import TraceLog, Trace
+from pm4py.objects.log.util import xes
+from pm4py.util import constants
+
 
 def apply_events(trace_log, values, parameters=None):
     """
@@ -28,7 +29,8 @@ def apply_events(trace_log, values, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
+    attribute_key = parameters[
+        constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
 
     filtered_log = TraceLog()
@@ -43,6 +45,7 @@ def apply_events(trace_log, values, parameters=None):
         if len(new_trace) > 0:
             filtered_log.append(new_trace)
     return filtered_log
+
 
 def apply(trace_log, values, parameters=None):
     """
@@ -67,7 +70,8 @@ def apply(trace_log, values, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
+    attribute_key = parameters[
+        constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
 
     filtered_log = TraceLog()
@@ -87,6 +91,7 @@ def apply(trace_log, values, parameters=None):
         if len(new_trace) > 0:
             filtered_log.append(new_trace)
     return filtered_log
+
 
 def get_attribute_values(trace_log, attribute_key, parameters=None):
     """
@@ -121,6 +126,7 @@ def get_attribute_values(trace_log, attribute_key, parameters=None):
                 attributes[attribute] = attributes[attribute] + 1
 
     return attributes
+
 
 def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, threshold, attribute_key="concept:name"):
     """
@@ -160,6 +166,7 @@ def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, thre
             filtered_log.append(new_trace)
     return filtered_log
 
+
 def apply_auto_filter(trace_log, variants=None, parameters=None):
     """
     Apply an attributes filter detecting automatically a percentage
@@ -182,8 +189,10 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasing_factor = parameters["decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    attribute_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    decreasing_factor = parameters[
+        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:

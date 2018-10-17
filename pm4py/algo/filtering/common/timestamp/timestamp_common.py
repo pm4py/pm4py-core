@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 def get_dt_from_string(dt):
     """
     If the date is expressed as string, do the conversion to a datetime.datetime object

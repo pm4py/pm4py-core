@@ -1,5 +1,6 @@
-from graphviz import Digraph
 import tempfile
+
+from graphviz import Digraph
 
 
 def visualize(ts, parameters=None):

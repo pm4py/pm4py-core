@@ -131,5 +131,3 @@ def __copy_into(source_net, target_net, upper, skip):
             petri.utils.add_arc_from_to(t_map[t], p_map[a.target], target_net)
 
     return t_map, p_map
-
-

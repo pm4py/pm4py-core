@@ -4,6 +4,7 @@ CLASSIC = "classic"
 
 VERSIONS = {CLASSIC: classic.apply}
 
+
 def apply(tree, parameters=None, variant="classic"):
     """
     Factory method for converting from Process Tree to Petri net

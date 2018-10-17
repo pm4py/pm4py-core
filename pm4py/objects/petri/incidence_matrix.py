@@ -1,4 +1,3 @@
-
 class IncidenceMatrix(object):
 
     def __init__(self, net):

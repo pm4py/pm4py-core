@@ -1,7 +1,9 @@
 import pandas as pd
+
+from pm4py.algo.filtering.common import filtering_constants
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
-from pm4py.algo.filtering.common import filtering_constants
+
 
 def get_variants_statistics(df, parameters=None):
     """
@@ -25,15 +27,18 @@ def get_variants_statistics(df, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    case_id_glue = parameters[
+        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
     max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
-    variants_df = parameters["variants_df"] if "variants_df" in parameters else get_variants_df(df, parameters=parameters)
+    variants_df = parameters["variants_df"] if "variants_df" in parameters else get_variants_df(df,
+                                                                                                parameters=parameters)
     variants_df = variants_df.reset_index()
     variants_list = variants_df.groupby("variant").agg("count").reset_index().to_dict('records')
     variants_list = sorted(variants_list, key=lambda x: x[case_id_glue], reverse=True)
     if max_variants_to_return:
         variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
     return variants_list
+
 
 def get_cases_description(df, parameters=None):
     """
@@ -60,8 +65,10 @@ def get_cases_description(df, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
-    timestamp_key = parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    case_id_glue = parameters[
+        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    timestamp_key = parameters[
+        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
     enable_sort = parameters["enable_sort"] if "enable_sort" in parameters else True
     sort_by_column = parameters["sort_by_column"] if "sort_by_column" in parameters else "startTime"
     sort_ascending = parameters["sort_ascending"] if "sort_ascending" in parameters else "ascending"
@@ -76,12 +83,12 @@ def get_cases_description(df, parameters=None):
     del first_eve_df
     del last_eve_df
     del stacked_df[case_id_glue]
-    del stacked_df[case_id_glue+"_2"]
+    del stacked_df[case_id_glue + "_2"]
     stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
     stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
-    stacked_df[timestamp_key + "_2"] = stacked_df[timestamp_key + "_2"].astype('int64')//10**9
-    stacked_df[timestamp_key] = stacked_df[timestamp_key].astype('int64')//10**9
-    stacked_df = stacked_df.rename(columns={timestamp_key: 'startTime', timestamp_key+"_2": 'endTime'})
+    stacked_df[timestamp_key + "_2"] = stacked_df[timestamp_key + "_2"].astype('int64') // 10 ** 9
+    stacked_df[timestamp_key] = stacked_df[timestamp_key].astype('int64') // 10 ** 9
+    stacked_df = stacked_df.rename(columns={timestamp_key: 'startTime', timestamp_key + "_2": 'endTime'})
     if enable_sort:
         stacked_df = stacked_df.sort_values(sort_by_column, ascending=sort_ascending)
 
@@ -89,6 +96,7 @@ def get_cases_description(df, parameters=None):
         stacked_df = stacked_df.head(n=min(max_ret_cases, len(stacked_df)))
     ret = stacked_df.to_dict('index')
     return ret
+
 
 def get_variants_df(df, parameters=None):
     """
@@ -111,10 +119,13 @@ def get_variants_df(df, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
-    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    case_id_glue = parameters[
+        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    activity_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
     return df.groupby(case_id_glue)[activity_key].agg({'variant': lambda col: ','.join(col)})
+
 
 def get_events(df, case_id, parameters=None):
     """
@@ -137,5 +148,6 @@ def get_events(df, case_id, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    case_id_glue = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+    case_id_glue = parameters[
+        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
     return df[df[case_id_glue] == case_id].to_dict('records')

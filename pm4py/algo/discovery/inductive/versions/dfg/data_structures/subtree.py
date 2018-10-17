@@ -1,9 +1,11 @@
 from copy import copy
-from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg, get_connected_components, add_to_most_probable_component
-from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
-from pm4py.algo.discovery.inductive.util import shared_constants
+
 from pm4py.algo.discovery.dfg.utils.dfg_utils import filter_dfg_on_act, negate, get_activities_dirlist, \
     get_activities_self_loop, get_activities_direction
+from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg, \
+    get_connected_components, add_to_most_probable_component
+from pm4py.algo.discovery.inductive.util import shared_constants
+from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 
 
 class Subtree(object):
@@ -169,7 +171,7 @@ class Subtree(object):
         """
         for i in range(len(conn_components)):
             conn1 = conn_components[i]
-            for j in range(i+1, len(conn_components)):
+            for j in range(i + 1, len(conn_components)):
                 conn2 = conn_components[j]
                 for act1 in conn1:
                     for act2 in conn2:
@@ -271,10 +273,12 @@ class Subtree(object):
                         dfg1 = filter_dfg_on_act(self.dfg, seq_cut[1])
                         dfg2 = filter_dfg_on_act(self.dfg, seq_cut[2])
                         self.detected_cut = "sequential"
-                        self.children.append(Subtree(dfg1, self.initial_dfg, seq_cut[1], self.counts, self.rec_depth + 1,
-                                                     noise_threshold=self.noise_threshold))
-                        self.children.append(Subtree(dfg2, self.initial_dfg, seq_cut[2], self.counts, self.rec_depth + 1,
-                                                     noise_threshold=self.noise_threshold))
+                        self.children.append(
+                            Subtree(dfg1, self.initial_dfg, seq_cut[1], self.counts, self.rec_depth + 1,
+                                    noise_threshold=self.noise_threshold))
+                        self.children.append(
+                            Subtree(dfg2, self.initial_dfg, seq_cut[2], self.counts, self.rec_depth + 1,
+                                    noise_threshold=self.noise_threshold))
                     else:
                         if loop_cut[0]:
                             dfg1 = filter_dfg_on_act(self.dfg, loop_cut[1])

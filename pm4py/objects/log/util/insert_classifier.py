@@ -19,7 +19,9 @@ def search_and_insert_activity_classifier_attribute(log, force_activity_transiti
         classifier = "Activity classifier"
     elif log.classifiers and "MXML Legacy Classifier" in log.classifiers and log.classifiers["MXML Legacy Classifier"]:
         classifier = "MXML Legacy Classifier"
-    return insert_activity_classifier_attribute(log, classifier, force_activity_transition_insertion=force_activity_transition_insertion)
+    return insert_activity_classifier_attribute(log, classifier,
+                                                force_activity_transition_insertion=force_activity_transition_insertion)
+
 
 def insert_activity_classifier_attribute(log, classifier, force_activity_transition_insertion=False):
     """
@@ -56,6 +58,7 @@ def insert_activity_classifier_attribute(log, classifier, force_activity_transit
                     classifier_value = event["concept:name"] + "+" + event["lifecycle:transition"]
                     event[classifier_attr_key] = classifier_value
     return log, classifier_attr_key
+
 
 def insert_trace_classifier_attribute(log, classifier):
     """

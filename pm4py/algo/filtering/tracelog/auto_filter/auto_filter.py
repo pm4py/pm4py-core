@@ -1,12 +1,13 @@
-from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
-from pm4py.algo.filtering.tracelog.paths import paths_filter
-from pm4py.algo.filtering.tracelog.start_activities import start_activities_filter
+import gc
+
+from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
-import gc
+from pm4py.algo.filtering.tracelog.paths import paths_filter
+from pm4py.algo.filtering.tracelog.start_activities import start_activities_filter
+from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
-from pm4py.algo.filtering.common import filtering_constants
 
 
 def apply_auto_filter(trace_log, parameters=None):

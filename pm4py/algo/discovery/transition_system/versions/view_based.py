@@ -1,8 +1,9 @@
+import collections
+
+from pm4py.algo.discovery.transition_system.parameters import *
 from pm4py.objects.log import util as log_util
 from pm4py.objects.transition_system import transition_system as ts
-import collections
 from pm4py.util import constants
-from pm4py.algo.discovery.transition_system.parameters import *
 
 
 def apply(trace_log, parameters=None):
@@ -11,7 +12,8 @@ def apply(trace_log, parameters=None):
     for parameter in DEFAULT_PARAMETERS:
         if not parameter in parameters:
             parameters[parameter] = DEFAULT_PARAMETERS[parameter]
-    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else log_util.xes.DEFAULT_NAME_KEY
+    activity_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else log_util.xes.DEFAULT_NAME_KEY
     transition_system = ts.TransitionSystem()
     control_flow_log = log_util.trace_log.project_traces(trace_log, activity_key)
     l = (list(map(lambda t: __compute_view_sequence(t, parameters), control_flow_log)))
@@ -42,9 +44,11 @@ def __compute_view_sequence(trace, parameters):
     view_sequences = list()
     for i in range(0, len(trace) + 1):
         if parameters[PARAM_KEY_DIRECTION] == DIRECTION_FORWARD:
-            view_sequences.append((__apply_abstr(trace[i:i+parameters[PARAM_KEY_WINDOW]], parameters), trace[i] if i < len(trace) else None))
+            view_sequences.append((__apply_abstr(trace[i:i + parameters[PARAM_KEY_WINDOW]], parameters),
+                                   trace[i] if i < len(trace) else None))
         else:
-            view_sequences.append((__apply_abstr(trace[max(0, i - parameters[PARAM_KEY_WINDOW]):i], parameters), trace[i] if i < len(trace) else None))
+            view_sequences.append((__apply_abstr(trace[max(0, i - parameters[PARAM_KEY_WINDOW]):i], parameters),
+                                   trace[i] if i < len(trace) else None))
     return view_sequences
 
 

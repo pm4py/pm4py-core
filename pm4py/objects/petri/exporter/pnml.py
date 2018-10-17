@@ -1,7 +1,10 @@
-from lxml import etree
 import uuid
+
+from lxml import etree
+
 import pm4py
 from pm4py.objects.petri.petrinet import Marking
+
 
 def export_petri_tree(petrinet, marking, final_marking=None):
     """
@@ -26,21 +29,21 @@ def export_petri_tree(petrinet, marking, final_marking=None):
 
     root = etree.Element("pnml")
     net = etree.SubElement(root, "net")
-    net.set("id","net1")
-    net.set("type","http://www.pnml.org/version-2009/grammar/pnmlcoremodel")
+    net.set("id", "net1")
+    net.set("type", "http://www.pnml.org/version-2009/grammar/pnmlcoremodel")
     page = etree.SubElement(net, "page")
-    page.set("id","n0")
+    page.set("id", "n0")
     places_map = {}
     for place in petrinet.places:
         places_map[place] = place.name
         pl = etree.SubElement(page, "place")
         pl.set("id", place.name)
-        pl_name = etree.SubElement(pl,"name")
-        pl_name_text = etree.SubElement(pl_name,"text")
+        pl_name = etree.SubElement(pl, "name")
+        pl_name_text = etree.SubElement(pl_name, "text")
         pl_name_text.text = place.name
         if place in marking:
-            pl_initial_marking = etree.SubElement(pl,"initialMarking")
-            pl_initial_marking_text = etree.SubElement(pl_initial_marking,"text")
+            pl_initial_marking = etree.SubElement(pl, "initialMarking")
+            pl_initial_marking_text = etree.SubElement(pl_initial_marking, "text")
             pl_initial_marking_text.text = str(marking[place])
     transitions_map = {}
     for transition in petrinet.transitions:
@@ -81,6 +84,7 @@ def export_petri_tree(petrinet, marking, final_marking=None):
 
     return tree
 
+
 def export_petri_as_string(petrinet, marking, final_marking=None):
     """
     Parameters
@@ -102,6 +106,7 @@ def export_petri_as_string(petrinet, marking, final_marking=None):
     tree = export_petri_tree(petrinet, marking, final_marking=final_marking)
 
     return etree.tostring(tree, xml_declaration=True, encoding="utf-8")
+
 
 def export_net(petrinet, marking, output_filename, final_marking=None):
     """

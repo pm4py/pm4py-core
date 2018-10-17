@@ -1,21 +1,23 @@
-from pm4py.algo.filtering.common import filtering_constants
-from pm4py.util import constants
-from pm4py.objects.log.util import xes as xes_util
-from pm4py.objects.log.util import insert_classifier
-from pm4py import util as pmutil
-from pm4py.algo.filtering.tracelog.auto_filter import auto_filter
 from copy import copy
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter as activities_module
-from pm4py.algo.discovery.dfg import replacement as dfg_replacement, factory as dfg_factory
-from pm4py.visualization.dfg import factory as dfg_vis_factory
+
+from pm4py import util as pmutil
 from pm4py.algo.discovery.alpha import factory as alpha_factory
+from pm4py.algo.discovery.dfg import replacement as dfg_replacement, factory as dfg_factory
 from pm4py.algo.discovery.inductive import factory as inductive_factory
-from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.algo.discovery.transition_system import factory as ts_factory
-from pm4py.visualization.transition_system import factory as ts_vis_factory
 from pm4py.algo.discovery.transition_system.parameters import *
-from pm4py.visualization.common import save as gsave
+from pm4py.algo.filtering.common import filtering_constants
+from pm4py.algo.filtering.tracelog.attributes import attributes_filter as activities_module
+from pm4py.algo.filtering.tracelog.auto_filter import auto_filter
+from pm4py.objects.log.util import insert_classifier
+from pm4py.objects.log.util import xes as xes_util
+from pm4py.util import constants
 from pm4py.visualization.common import gview
+from pm4py.visualization.common import save as gsave
+from pm4py.visualization.dfg import factory as dfg_vis_factory
+from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.visualization.transition_system import factory as ts_vis_factory
+
 
 def save(gviz, output_file_path):
     """
@@ -30,6 +32,7 @@ def save(gviz, output_file_path):
     """
     gsave.save(gviz, output_file_path)
 
+
 def view(gviz):
     """
     View the diagram
@@ -40,6 +43,7 @@ def view(gviz):
         GraphViz diagram
     """
     gview.view(gviz)
+
 
 def apply(original_log, parameters=None):
     """
@@ -62,11 +66,13 @@ def apply(original_log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else None
+    activity_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else None
     discovery_algorithm = parameters["algorithm"] if "algorithm" in parameters else "inductive"
     replay_measure = parameters["decoration"] if "decoration" in parameters else "frequency"
     image_format = parameters["format"] if "format" in parameters else "png"
-    decreasing_factor = parameters["simplicity"] if "simplicity" in parameters else filtering_constants.DECREASING_FACTOR
+    decreasing_factor = parameters[
+        "simplicity"] if "simplicity" in parameters else filtering_constants.DECREASING_FACTOR
     replay_enabled = parameters["replayEnabled"] if "replayEnabled" in parameters else True
     aggregation_measure = "mean"
     if "frequency" in replay_measure:
@@ -81,7 +87,8 @@ def apply(original_log, parameters=None):
     if activity_key is None:
         activity_key = xes_util.DEFAULT_NAME_KEY
 
-    parameters_viz = {"format": image_format, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "aggregationMeasure": aggregation_measure}
+    parameters_viz = {"format": image_format, pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
+                      "aggregationMeasure": aggregation_measure}
     # apply automatically a filter
     parameters_autofilter = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
                              constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key,
@@ -89,7 +96,8 @@ def apply(original_log, parameters=None):
 
     log = auto_filter.apply_auto_filter(copy(original_log), parameters=parameters_autofilter)
     # apply a process discovery algorithm
-    parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "aggregationMeasure": aggregation_measure}
+    parameters_discovery = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
+                            "aggregationMeasure": aggregation_measure}
     if discovery_algorithm == "tsystem" or discovery_algorithm == "tsystem2":
         parameters_discovery[PARAM_KEY_WINDOW] = 2
         ts_from_log = ts_factory.apply(log, parameters=parameters_discovery)
@@ -100,14 +108,16 @@ def apply(original_log, parameters=None):
         gviz = ts_vis_factory.apply(ts_from_log, variant=replay_measure, parameters=parameters_viz)
     elif discovery_algorithm == "dfg":
         # gets the number of occurrences of the single attributes in the filtered log
-        filtered_log_activities_count = activities_module.get_attribute_values(log, activity_key, parameters=parameters_autofilter)
+        filtered_log_activities_count = activities_module.get_attribute_values(log, activity_key,
+                                                                               parameters=parameters_autofilter)
         # gets an intermediate log that is the original log restricted to the list
         # of attributes that appears in the filtered log
         intermediate_log = activities_module.apply_events(original_log,
                                                           filtered_log_activities_count,
                                                           parameters=parameters_autofilter)
         # gets the number of occurrences of the single attributes in the intermediate log
-        activities_count = activities_module.get_attribute_values(intermediate_log, activity_key, parameters=parameters_autofilter)
+        activities_count = activities_module.get_attribute_values(intermediate_log, activity_key,
+                                                                  parameters=parameters_autofilter)
         # calculate DFG of the filtered log and of the intermediate log
         dfg_filtered_log = dfg_factory.apply(log, parameters=parameters_discovery, variant=replay_measure)
         dfg_intermediate_log = dfg_factory.apply(intermediate_log, parameters=parameters_discovery,

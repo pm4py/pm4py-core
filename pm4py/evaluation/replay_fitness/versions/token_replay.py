@@ -1,6 +1,7 @@
+from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.objects import log as log_lib
-from pm4py import util as pmutil
+
 
 def evaluate(aligned_traces, parameters=None):
     """
@@ -28,9 +29,10 @@ def evaluate(aligned_traces, parameters=None):
     perc_fit_traces = 0.0
     average_fitness = 0.0
     if no_traces > 0:
-        perc_fit_traces = float(100.0 * fit_traces)/float(no_traces)
+        perc_fit_traces = float(100.0 * fit_traces) / float(no_traces)
         average_fitness = float(sum_of_fitness) / float(no_traces)
     return {"percFitTraces": perc_fit_traces, "averageFitness": average_fitness}
+
 
 def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     """
@@ -57,11 +59,12 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
 
     if parameters is None:
         parameters = {}
-    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
+    activity_key = parameters[
+        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
 
-    parameters_tr = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, "consider_remaining_in_fitness": True}
+    parameters_tr = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
+                     "consider_remaining_in_fitness": True}
 
     aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_tr)
 
     return evaluate(aligned_traces)
-

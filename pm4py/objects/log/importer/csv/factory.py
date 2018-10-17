@@ -4,6 +4,7 @@ from pm4py.objects.log.util import string_to_file
 PANDAS = "pandas"
 VERSIONS = {PANDAS: pandas_df_imp.import_log}
 
+
 def import_log_from_string(log_string, parameters=None, variant="pandas"):
     """
     Import a CSV log from a string
@@ -31,6 +32,7 @@ def import_log_from_string(log_string, parameters=None, variant="pandas"):
     temp_file = string_to_file.import_string_to_temp_file(log_string, "csv")
     return import_log(temp_file, parameters=parameters, variant=variant)
 
+
 def import_log(path, parameters=None, variant="pandas"):
     """
     Import a CSV log into an EventLog object
@@ -56,6 +58,7 @@ def import_log(path, parameters=None, variant="pandas"):
         Event log object
     """
     return VERSIONS[variant](path, parameters=parameters)
+
 
 def apply(path, parameters=None, variant="pandas"):
     """

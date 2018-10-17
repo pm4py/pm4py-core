@@ -1,7 +1,9 @@
-from lxml import etree
-from pm4py.objects import log as log_lib
 import ciso8601
 import logging
+
+from lxml import etree
+
+from pm4py.objects import log as log_lib
 from pm4py.objects.log.util import compression
 
 # ITERPARSE EVENTS

@@ -1,6 +1,7 @@
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_max_activity_count, get_activities_from_dfg
 from pm4py.algo.filtering.common import filtering_constants
 
+
 def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold):
     """
     Clean Directly-Follows graph based on noise threshold

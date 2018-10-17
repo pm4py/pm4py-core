@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def filter_on_ncases(df, case_id_glue="case:concept:name", max_no_cases=1000):
     """
     Filter a dataframe keeping only the specified maximum number of traces
@@ -22,9 +23,10 @@ def filter_on_ncases(df, case_id_glue="case:concept:name", max_no_cases=1000):
     cases_to_keep = []
     for case in cases_values_dict:
         cases_to_keep.append(case)
-    cases_to_keep = cases_to_keep[0:min(len(cases_to_keep),max_no_cases)]
+    cases_to_keep = cases_to_keep[0:min(len(cases_to_keep), max_no_cases)]
     df = df[df[case_id_glue].isin(cases_to_keep)]
     return df
+
 
 def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, max_case_size=None):
     """
@@ -51,7 +53,9 @@ def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, m
         return df[min_case_size <= element_group_size <= max_case_size]
     return df[element_group_size >= min_case_size]
 
-def filter_on_case_performance(df, case_id_glue="case:concept:name", timestamp_key="time:timestamp", min_case_performance=0, max_case_performance=10000000000):
+
+def filter_on_case_performance(df, case_id_glue="case:concept:name", timestamp_key="time:timestamp",
+                               min_case_performance=0, max_case_performance=10000000000):
     """
     Filter a dataframe on case performance
 
@@ -86,8 +90,10 @@ def filter_on_case_performance(df, case_id_glue="case:concept:name", timestamp_k
     i2 = stacked_df.set_index(case_id_glue).index
     return df[i1.isin(i2)]
 
+
 def apply(df, parameters=None):
     raise Exception("apply method not available for case filter")
+
 
 def apply_auto_filter(df, parameters=None):
     raise Exception("apply_auto_filter method not available for case filter")

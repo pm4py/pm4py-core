@@ -1,6 +1,7 @@
 from pm4py.algo.discovery.dfg.utils.dfg_utils import max_occ_all_activ, sum_start_activities_count, \
     sum_end_activities_count, sum_activities_count, max_occ_among_specif_activ
 
+
 def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities):
     """
     Utility functions that decides if the skip transition is necessary
@@ -31,6 +32,7 @@ def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities):
         return True
 
     return False
+
 
 def verify_skip_for_parallel_cut(dfg, children):
     """

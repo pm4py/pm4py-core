@@ -1,6 +1,8 @@
 import pandas as pd
 
-def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name", timestamp_key="time:timestamp", perf_aggregation_key="mean", sort_required=True):
+
+def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name",
+                  timestamp_key="time:timestamp", perf_aggregation_key="mean", sort_required=True):
     """
     Get DFG graph from Pandas dataframe
 
@@ -39,12 +41,13 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     df_successive_rows = pd.concat([df_reduced, df_reduced_shifted], axis=1)
     # as successive rows in the sorted dataframe may belong to different case IDs we have to restrict ourselves to successive
     # rows belonging to same case ID
-    df_successive_rows = df_successive_rows[df_successive_rows[case_id_glue] == df_successive_rows[case_id_glue+'_2']]
+    df_successive_rows = df_successive_rows[df_successive_rows[case_id_glue] == df_successive_rows[case_id_glue + '_2']]
 
     # calculate the difference between the timestamps of two successive events
-    df_successive_rows['caseDuration'] = (df_successive_rows[timestamp_key+'_2'] - df_successive_rows[timestamp_key]).astype('timedelta64[s]')
+    df_successive_rows['caseDuration'] = (
+                df_successive_rows[timestamp_key + '_2'] - df_successive_rows[timestamp_key]).astype('timedelta64[s]')
     # groups couple of attributes (directly follows relation, we can measure the frequency and the performance)
-    directly_follows_grouping = df_successive_rows.groupby([activity_key, activity_key+'_2'])['caseDuration']
+    directly_follows_grouping = df_successive_rows.groupby([activity_key, activity_key + '_2'])['caseDuration']
 
     dfg_frequency = {}
     dfg_performance = {}

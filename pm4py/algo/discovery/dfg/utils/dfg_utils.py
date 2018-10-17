@@ -1,5 +1,6 @@
 from copy import copy
 
+
 def get_outgoing_edges(dfg):
     """
     Gets outgoing edges of the provided DFG graph
@@ -335,6 +336,7 @@ def negate(dfg):
 
     return negated_dfg
 
+
 def get_activities_direction(dfg, activities):
     """
     Calculate activities direction (in a similar way to Heuristics Miner)
@@ -370,6 +372,7 @@ def get_activities_direction(dfg, activities):
         dependency = (outgoing - ingoing) / (ingoing + outgoing + 1)
         direction[act] = dependency
     return direction
+
 
 def get_activities_dirlist(activities_direction):
     """
@@ -455,7 +458,7 @@ def get_connected_components(ingoing, outgoing, activities):
             activities_considered = activities_considered.union(set(outgoing_act))
 
     max_it = len(connected_components)
-    for it in range(max_it-1):
+    for it in range(max_it - 1):
         something_changed = False
 
         old_connected_components = copy(connected_components)
@@ -465,7 +468,7 @@ def get_connected_components(ingoing, outgoing, activities):
             conn1 = old_connected_components[i]
 
             if conn1 is not None:
-                for j in range(i+1, len(old_connected_components)):
+                for j in range(i + 1, len(old_connected_components)):
                     conn2 = old_connected_components[j]
                     if conn2 is not None:
                         inte = conn1.intersection(conn2)
@@ -486,6 +489,7 @@ def get_connected_components(ingoing, outgoing, activities):
             connected_components.append([activity])
 
     return connected_components
+
 
 def add_to_most_probable_component(comps, act2, ingoing, outgoing):
     """

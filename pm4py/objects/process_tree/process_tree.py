@@ -27,7 +27,8 @@ class ProcessTree(object):
         else:
             ret_list = [""]
 
-        condition_wo_operator = self.operator == tree_constants.EXCLUSIVE_OPERATOR and len(self.children) == 1 and type(self.children[0]) is PTTransition
+        condition_wo_operator = self.operator == tree_constants.EXCLUSIVE_OPERATOR and len(self.children) == 1 and type(
+            self.children[0]) is PTTransition
 
         if not condition_wo_operator:
             ret_list.append(self.operator + "(")
@@ -169,6 +170,7 @@ class ProcessTree(object):
         condition2 = len(self.get_last_terminal_child_transitions()) > 1
 
         return condition1 or condition2
+
 
 class PTTransition(object):
     def __init__(self, name, label):

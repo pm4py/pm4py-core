@@ -1,10 +1,13 @@
-from graphviz import Digraph
 import tempfile
 from copy import copy
+
+from graphviz import Digraph
+
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-from pm4py.visualization.common.utils import *
-from pm4py.util import constants
 from pm4py.objects.log.util import xes
+from pm4py.util import constants
+from pm4py.visualization.common.utils import *
+
 
 def get_min_max_value(dfg):
     """
@@ -34,6 +37,7 @@ def get_min_max_value(dfg):
 
     return min_value, max_value
 
+
 def assign_penwidth_edges(dfg):
     """
     Assign penwidth to edges in directly-follows graph
@@ -56,6 +60,7 @@ def assign_penwidth_edges(dfg):
         penwidth[edge] = str(v1)
 
     return penwidth
+
 
 def get_activities_color(activities_count):
     """
@@ -88,6 +93,7 @@ def get_activities_color(activities_count):
 
     return activities_color
 
+
 def apply_frequency(dfg, log=None, activities_count=None, parameters=None):
     """
     Apply method (to be called from the factory method; calls the graphviz_visualization method)
@@ -106,6 +112,7 @@ def apply_frequency(dfg, log=None, activities_count=None, parameters=None):
     """
 
     return apply(dfg, log=log, parameters=parameters, activities_count=activities_count, measure="frequency")
+
 
 def apply_performance(dfg, log=None, activities_count=None, parameters=None):
     """
@@ -127,7 +134,8 @@ def apply_performance(dfg, log=None, activities_count=None, parameters=None):
     return apply(dfg, log=log, parameters=parameters, activities_count=activities_count, measure="performance")
 
 
-def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency", max_no_of_edges_in_diagram=75):
+def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
+                           max_no_of_edges_in_diagram=75):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -185,7 +193,8 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     viz.attr('node', shape='box')
     for act in activities_in_dfg:
         if "frequency" in measure:
-            viz.node(act, act + " ("+str(activities_count_int[act])+")", style='filled', fillcolor=activities_color[act])
+            viz.node(act, act + " (" + str(activities_count_int[act]) + ")", style='filled',
+                     fillcolor=activities_color[act])
         else:
             viz.node(act, act)
 
@@ -204,11 +213,13 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
 
     return viz
 
+
 def apply(dfg, log=None, parameters=None, activities_count=None, measure="frequency"):
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if  constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    activity_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
     image_format = "png"
     max_no_of_edges_in_diagram = 75
@@ -221,4 +232,5 @@ def apply(dfg, log=None, parameters=None, activities_count=None, measure="freque
     if activities_count is None:
         activities_count = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
 
-    return graphviz_visualization(activities_count, dfg, image_format=image_format, measure=measure, max_no_of_edges_in_diagram=max_no_of_edges_in_diagram)
+    return graphviz_visualization(activities_count, dfg, image_format=image_format, measure=measure,
+                                  max_no_of_edges_in_diagram=max_no_of_edges_in_diagram)

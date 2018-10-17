@@ -1,3 +1,2 @@
-from pm4py.objects.petri import common, exporter, importer, incidence_matrix, petrinet,\
+from pm4py.objects.petri import common, exporter, importer, incidence_matrix, petrinet, \
     reachability_graph, semantics, synchronous_product, utils
-

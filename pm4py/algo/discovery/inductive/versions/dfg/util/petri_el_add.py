@@ -1,5 +1,6 @@
 from pm4py.objects import petri
 
+
 def get_new_place(counts):
     """
     Create a new place in the Petri net

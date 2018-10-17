@@ -1,5 +1,6 @@
-from pm4py.objects import log as log_lib
 import ciso8601
+
+from pm4py.objects import log as log_lib
 from pm4py.objects.log.util import compression
 
 
@@ -29,11 +30,11 @@ def import_log(filename, parameters=None):
     if parameters is None:
         parameters = {}
 
-    timestamp_sort=False
-    timestamp_key="time:timestamp"
-    reverse_sort=False
-    insert_trace_indexes=False
-    max_no_traces_to_import=1000000000
+    timestamp_sort = False
+    timestamp_key = "time:timestamp"
+    reverse_sort = False
+    insert_trace_indexes = False
+    max_no_traces_to_import = 1000000000
 
     if "timestamp_sort" in parameters:
         timestamp_sort = parameters["timestamp_sort"]
@@ -59,7 +60,7 @@ def import_log(filename, parameters=None):
             tag = content[0].split("<")[1]
             if not trace is None:
                 if not event is None:
-                    if len(content)==5:
+                    if len(content) == 5:
                         if tag.startswith("string"):
                             event[content[1]] = content[3]
                         elif tag.startswith("date"):
@@ -75,7 +76,7 @@ def import_log(filename, parameters=None):
                         event = None
                 elif tag.startswith("event"):
                     event = log_lib.log.Event()
-                elif len(content)==5:
+                elif len(content) == 5:
                     if tag.startswith("string"):
                         trace.attributes[content[1]] = content[3]
                     elif tag.startswith("date"):

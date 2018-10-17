@@ -35,10 +35,12 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
         image_format = parameters["format"]
     if "debug" in parameters:
         debug = parameters["debug"]
-    return graphviz_visualization(net, image_format=image_format, initial_marking=initial_marking, final_marking=final_marking, decorations=decorations, debug=debug)
+    return graphviz_visualization(net, image_format=image_format, initial_marking=initial_marking,
+                                  final_marking=final_marking, decorations=decorations, debug=debug)
 
 
-def graphviz_visualization(net, image_format="png", initial_marking=None, final_marking=None, decorations=None, debug=False):
+def graphviz_visualization(net, image_format="png", initial_marking=None, final_marking=None, decorations=None,
+                           debug=False):
     """
     Provides visualization for the petrinet
 
@@ -77,7 +79,8 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     for t in net.transitions:
         if t.label is not None:
             if t in decorations:
-                viz.node(str(t.name), decorations[t]["label"], style='filled', fillcolor=decorations[t]["color"], border='1')
+                viz.node(str(t.name), decorations[t]["label"], style='filled', fillcolor=decorations[t]["color"],
+                         border='1')
             else:
                 viz.node(str(t.name), str(t.label))
         else:
@@ -102,7 +105,8 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     # arcs
     for a in net.arcs:
         if a in decorations:
-            viz.edge(str(a.source.name), str(a.target.name), label=decorations[a]["label"], penwidth=decorations[a]["penwidth"])
+            viz.edge(str(a.source.name), str(a.target.name), label=decorations[a]["label"],
+                     penwidth=decorations[a]["penwidth"])
         else:
             viz.edge(str(a.source.name), str(a.target.name))
     viz.attr(overlap='false')

@@ -1,6 +1,7 @@
-from collections.abc import Mapping, Sequence
 import random
+from collections.abc import Mapping, Sequence
 from copy import copy
+
 
 class Event(Mapping):
     """ Object useful for the second
@@ -107,7 +108,8 @@ class EventLog(Sequence):
         newLog
             Filtered log
         """
-        new_log = EventLog(attributes=self.attributes, extensions=self.extensions, globals=self._omni, classifiers=self.classifiers)
+        new_log = EventLog(attributes=self.attributes, extensions=self.extensions, globals=self._omni,
+                           classifiers=self.classifiers)
         set_events = set()
         for i in range(0, min(no_events, len(self._list))):
             set_events.add(random.randrange(0, len(self._list)))
@@ -129,7 +131,7 @@ class EventLog(Sequence):
 
         if not type(self) is TraceLog:
             for i in range(0, len(self._list)):
-                self._list[i][event_index_attr_name] = i+1
+                self._list[i][event_index_attr_name] = i + 1
 
     attributes = property(_get_attributes)
     extensions = property(_get_extensions)
@@ -229,7 +231,8 @@ class TraceLog(EventLog):
         newLog
             Filtered log
         """
-        new_log = TraceLog(attributes=self.attributes, extensions=self.extensions, globals=self._omni, classifiers=self.classifiers)
+        new_log = TraceLog(attributes=self.attributes, extensions=self.extensions, globals=self._omni,
+                           classifiers=self.classifiers)
         set_traces = set()
         for i in range(0, min(no_traces, len(self._list))):
             set_traces.add(random.randrange(0, len(self._list)))
@@ -251,4 +254,4 @@ class TraceLog(EventLog):
         """
         for i in range(len(self._list)):
             for j in range(len(self._list[i])):
-                self._list[i][j][trace_index_attr_name] = i+1
+                self._list[i][j][trace_index_attr_name] = i + 1

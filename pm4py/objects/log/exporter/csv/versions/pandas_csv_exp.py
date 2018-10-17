@@ -1,6 +1,7 @@
+import pandas as pd
+
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log import transform as log_transform
-import pandas as pd
 
 
 def get_dataframe_from_log(log):

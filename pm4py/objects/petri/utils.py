@@ -1,6 +1,7 @@
 from pm4py.objects import petri
 from pm4py.objects.log.util import xes as xes_util
 
+
 def remove_transition(net, trans):
     """
     Remove a transition from a Petri net
@@ -30,6 +31,7 @@ def remove_transition(net, trans):
             net.arcs.remove(arc)
         net.transitions.remove(trans)
     return net
+
 
 def add_arc_from_to(fr, to, net, weight=1):
     """
@@ -67,20 +69,22 @@ def construct_trace_net(trace, trace_name_key=xes_util.DEFAULT_NAME_KEY, activit
     tuple: :class:`tuple` of the net, initial marking and the final marking
 
     """
-    net = petri.petrinet.PetriNet('trace net of %s' % trace.attributes[trace_name_key] if trace_name_key in trace.attributes else ' ')
+    net = petri.petrinet.PetriNet(
+        'trace net of %s' % trace.attributes[trace_name_key] if trace_name_key in trace.attributes else ' ')
     place_map = {0: petri.petrinet.PetriNet.Place('p_0')}
     net.places.add(place_map[0])
     for i in range(0, len(trace)):
         t = petri.petrinet.PetriNet.Transition('t' + str(i), trace[i][activity_key])
         net.transitions.add(t)
-        place_map[i+1] = petri.petrinet.PetriNet.Place('p_' + str(i+1))
-        net.places.add(place_map[i+1])
+        place_map[i + 1] = petri.petrinet.PetriNet.Place('p_' + str(i + 1))
+        net.places.add(place_map[i + 1])
         petri.utils.add_arc_from_to(place_map[i], t, net)
-        petri.utils.add_arc_from_to(t, place_map[i+1], net)
+        petri.utils.add_arc_from_to(t, place_map[i + 1], net)
     return net, petri.petrinet.Marking({place_map[0]: 1}), petri.petrinet.Marking({place_map[len(trace)]: 1})
 
 
-def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT_NAME_KEY, activity_key=xes_util.DEFAULT_NAME_KEY):
+def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT_NAME_KEY,
+                                   activity_key=xes_util.DEFAULT_NAME_KEY):
     """
     Creates a trace net, i.e. a trace in Petri net form.
 
@@ -96,7 +100,8 @@ def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT
     tuple: :class:`tuple` of the net, initial marking and the final marking
 
     """
-    net = petri.petrinet.PetriNet('trace net of %s' % trace.attributes[trace_name_key] if trace_name_key in trace.attributes else ' ')
+    net = petri.petrinet.PetriNet(
+        'trace net of %s' % trace.attributes[trace_name_key] if trace_name_key in trace.attributes else ' ')
     place_map = {0: petri.petrinet.PetriNet.Place('p_0')}
     net.places.add(place_map[0])
     cost_map = dict()
@@ -104,11 +109,12 @@ def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT
         t = petri.petrinet.PetriNet.Transition('t' + str(i), trace[i][activity_key])
         cost_map[t] = costs[i]
         net.transitions.add(t)
-        place_map[i+1] = petri.petrinet.PetriNet.Place('p_' + str(i+1))
-        net.places.add(place_map[i+1])
+        place_map[i + 1] = petri.petrinet.PetriNet.Place('p_' + str(i + 1))
+        net.places.add(place_map[i + 1])
         petri.utils.add_arc_from_to(place_map[i], t, net)
-        petri.utils.add_arc_from_to(t, place_map[i+1], net)
+        petri.utils.add_arc_from_to(t, place_map[i + 1], net)
     return net, petri.petrinet.Marking({place_map[0]: 1}), petri.petrinet.Marking({place_map[len(trace)]: 1}), cost_map
+
 
 def variants(net, initial_marking, final_marking):
     """
@@ -141,7 +147,9 @@ def variants(net, initial_marking, final_marking):
                 this_variants.append(next_couple[1])
             else:
                 # If the next marking hash is not in visited, if the next marking+partial trace itself is not already in active and if the next marking+partial trace is different from the current one+partial trace
-                if hash(next_couple[0]) not in visited and next((mark for mark in active if hash(mark[0]) == hash(next_couple[0] and mark[1] == next_couple[1])), None) is None and (hash(curr_couple[0]) != hash(next_couple[0]) or curr_couple[1] != next_couple[1]):
+                if hash(next_couple[0]) not in visited and next((mark for mark in active if hash(mark[0]) == hash(
+                        next_couple[0] and mark[1] == next_couple[1])), None) is None and (
+                        hash(curr_couple[0]) != hash(next_couple[0]) or curr_couple[1] != next_couple[1]):
                     active.append(next_couple)
         visited.append(hash(curr_couple[0]))
     return this_variants

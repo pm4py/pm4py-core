@@ -18,12 +18,13 @@ from itertools import zip_longest
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.alpha.data_structures import alpha_classic_abstraction
-from pm4py.objects.log import util as log_util
-from pm4py.objects import petri
-from pm4py.objects.petri.petrinet import Marking
-from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.algo.discovery.alpha.utils import endpoints
 from pm4py.algo.discovery.dfg.utils import dfg_utils
+from pm4py.algo.discovery.dfg.versions import native as dfg_inst
+from pm4py.objects import petri
+from pm4py.objects.log import util as log_util
+from pm4py.objects.petri.petrinet import Marking
+
 
 def apply(trace_log, parameters=None):
     """
@@ -59,9 +60,12 @@ def apply(trace_log, parameters=None):
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
     dfg = {k: v for k, v in dfg_inst.apply(trace_log, parameters=parameters).items() if v > 0}
-    start_activities = endpoints.derive_start_activities_from_tracelog(trace_log, parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
-    end_activities = endpoints.derive_end_activities_from_tracelog(trace_log, parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
+    start_activities = endpoints.derive_start_activities_from_tracelog(trace_log, parameters[
+        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
+    end_activities = endpoints.derive_end_activities_from_tracelog(trace_log, parameters[
+        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
     return apply_dfg_sa_ea(dfg, None, None, parameters=parameters)
+
 
 def apply_dfg(dfg, parameters=None):
     """
@@ -87,6 +91,7 @@ def apply_dfg(dfg, parameters=None):
     """
 
     return apply_dfg_sa_ea(dfg, None, None, parameters=parameters)
+
 
 def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
     """
@@ -131,8 +136,9 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
     if end_activities is None:
         end_activities = dfg_utils.infer_end_activities(dfg)
 
-    alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(start_activities, end_activities, dfg, activity_key=parameters[
-        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
+    alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(start_activities, end_activities, dfg,
+                                                                          activity_key=parameters[
+                                                                              pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
     pairs = list(map(lambda p: ({p[0]}, {p[1]}),
                      filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p),
                             alpha_abstraction.causal_relation)))

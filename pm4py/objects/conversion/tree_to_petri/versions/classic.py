@@ -1,14 +1,17 @@
+import time
+
+from pm4py.algo.discovery.inductive.util import petri_cleaning
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
-from pm4py.objects import petri
-from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.objects.petri.petrinet import Marking
 from pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add import get_new_place, get_new_hidden_trans, \
     get_transition
-import time
+from pm4py.objects import petri
+from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.process_tree import process_tree, tree_constants
-from pm4py.algo.discovery.inductive.util import petri_cleaning
 
-def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree, counts, rec_depth, force_add_skip=False):
+
+def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree, counts, rec_depth,
+                         force_add_skip=False):
     """
     Recursively add the subtrees to the Petri net
 
@@ -76,18 +79,22 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
         petri.utils.add_arc_from_to(new_final_trans, final_place, net)
 
         for subtree in tree_subtrees:
-            net, counts, intermediate_place = recursively_add_tree(subtree, net, new_initial_trans, new_final_trans, counts,
+            net, counts, intermediate_place = recursively_add_tree(subtree, net, new_initial_trans, new_final_trans,
+                                                                   counts,
                                                                    rec_depth + 1, force_add_skip=force_add_skip)
     elif tree.operator == tree_constants.SEQUENTIAL_OPERATOR:
-        net, counts, intermediate_place = recursively_add_tree(tree_subtrees[0], net, initial_place, None, counts, rec_depth + 1, force_add_skip=force_add_skip)
-        net, counts, last_added_place = recursively_add_tree(tree_subtrees[1], net, intermediate_place, final_place, counts, rec_depth + 1, force_add_skip=force_add_skip)
+        net, counts, intermediate_place = recursively_add_tree(tree_subtrees[0], net, initial_place, None, counts,
+                                                               rec_depth + 1, force_add_skip=force_add_skip)
+        net, counts, last_added_place = recursively_add_tree(tree_subtrees[1], net, intermediate_place, final_place,
+                                                             counts, rec_depth + 1, force_add_skip=force_add_skip)
     elif tree.operator == tree_constants.LOOP_OPERATOR:
         loop_trans = get_new_hidden_trans(counts, type_trans="loop")
         net.transitions.add(loop_trans)
         petri.utils.add_arc_from_to(final_place, loop_trans, net)
         petri.utils.add_arc_from_to(loop_trans, initial_place, net)
 
-        net, counts, intermediate_place = recursively_add_tree(tree_subtrees[0], net, initial_place, final_place, counts,
+        net, counts, intermediate_place = recursively_add_tree(tree_subtrees[0], net, initial_place, final_place,
+                                                               counts,
                                                                rec_depth + 1, force_add_skip=True)
 
     if force_add_skip and tree_transitions:
@@ -97,6 +104,7 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
         petri.utils.add_arc_from_to(skip_trans, final_place, net)
 
     return net, counts, final_place
+
 
 def apply(tree, parameters=None):
     """
