@@ -18,9 +18,11 @@ def apply_auto_filter(df, parameters=None):
             case_id_glue -> Column where the case ID is present
             activity_key -> Column where the activity is present
             decreasingFactor -> Decreasing factor (provided to all algorithms)
-            enable_activities_filter -> Enables or disables auto filter on activities number (it is useful to disable if the dataframe
-                                        has been already filtered by activities number before). Default is True
-            enable_variants_filter -> Enables or disables auto filter on variants (that is slower than others). Default is False
+            enable_activities_filter -> Enables or disables auto filter on activities number
+            (it is useful to disable if the dataframe has been already filtered by activities number before).
+            Default is True
+            enable_variants_filter -> Enables or disables auto filter on variants (that is slower than others).
+            Default is False
             enable_start_activities_filter -> Enables or disables auto filter on start activities. Default is False
             enable_end_activities_filter -> Enables or disables auto filter on end activities. Default is True
 

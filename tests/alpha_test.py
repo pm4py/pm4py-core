@@ -1,16 +1,18 @@
-from pm4py.objects.log.importer.csv import factory as csv_importer
-from pm4py.objects.log.importer.xes import factory as xes_importer
+import logging
+import os
+import unittest
+
 import pm4py.objects.log.transform as log_transform
-from pm4py.algo.discovery.alpha import factory as alpha_factory
-from pm4py.visualization.petrinet.common import visualize as pn_viz
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNameException
+from pm4py.algo.discovery.alpha import factory as alpha_factory
 from pm4py.objects import petri
+from pm4py.objects.log.importer.csv import factory as csv_importer
+from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.petri.exporter import pnml as petri_exporter
+from pm4py.visualization.petrinet.common import visualize as pn_viz
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
-import logging
-import unittest
-import os
+
 
 class AlphaMinerTest(unittest.TestCase):
     def obtainPetriNetThroughAlphaMiner(self, log_name):

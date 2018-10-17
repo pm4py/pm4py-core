@@ -1,14 +1,14 @@
 import os
 
-import pm4py
 from pm4py import util
 from pm4py.algo.conformance import alignments as ali
+from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_MODEL_COST_FUNCTION
+from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
+from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
 from pm4py.objects import log as log_lib
 from pm4py.objects import petri as petri
 from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_MODEL_COST_FUNCTION
-from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
-from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
+
 
 def align(trace, net, im, fm, model_cost_function, sync_cost_function):
     trace_costs = list(map(lambda e: 1000, trace))

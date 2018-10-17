@@ -8,6 +8,7 @@ from pm4py.algo.filtering.tracelog.start_activities import start_activities_filt
 from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
 def apply_auto_filter(trace_log, parameters=None):
@@ -43,7 +44,7 @@ def apply_auto_filter(trace_log, parameters=None):
         parameters = {}
 
     attribute_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     decreasing_factor = parameters[
         "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
@@ -52,24 +53,24 @@ def apply_auto_filter(trace_log, parameters=None):
     variants = variants_module.get_variants(trace_log, parameters=parameters_child)
 
     filtered_log1 = attributes_filter.apply_auto_filter(trace_log, variants=variants, parameters=parameters_child)
-    trace_log = None
-    gc.collect()
+    del trace_log
+    #gc.collect()
     variants = variants_module.get_variants(filtered_log1, parameters=parameters_child)
     filtered_log2 = paths_filter.apply_auto_filter(filtered_log1, variants=variants, parameters=parameters_child)
-    filtered_log1 = None
-    gc.collect()
+    del filtered_log1
+    #gc.collect()
     variants = variants_module.get_variants(filtered_log2, parameters=parameters_child)
     filtered_log3 = variants_module.apply_auto_filter(filtered_log2, variants=variants, parameters=parameters_child)
     variants = variants_module.get_variants(filtered_log3, parameters=parameters_child)
-    filtered_log2 = None
-    gc.collect()
+    del filtered_log2
+    #gc.collect()
     filtered_log4 = start_activities_filter.apply_auto_filter(filtered_log3, variants=variants,
                                                               parameters=parameters_child)
-    filtered_log3 = None
-    gc.collect()
+    del filtered_log3
+    #gc.collect()
     filtered_log5 = end_activities_filter.apply_auto_filter(filtered_log4, variants=variants,
                                                             parameters=parameters_child)
-    filtered_log4 = None
-    gc.collect()
+    del filtered_log4
+    #gc.collect()
 
     return filtered_log5

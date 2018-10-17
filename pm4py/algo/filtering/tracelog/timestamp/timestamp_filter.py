@@ -3,6 +3,8 @@ from pm4py.objects.log import transform
 from pm4py.objects.log.log import TraceLog, EventLog
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
+from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 
 
 def is_contained(trace, dt1, dt2, timestamp_key):
@@ -55,7 +57,7 @@ def filter_traces_contained(log, dt1, dt2, parameters=None):
     if parameters is None:
         parameters = {}
     timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
     filtered_log = TraceLog([trace for trace in log if is_contained(trace, dt1, dt2, timestamp_key)])
@@ -116,7 +118,7 @@ def filter_traces_intersecting(log, dt1, dt2, parameters=None):
     if parameters is None:
         parameters = {}
     timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
     filtered_log = TraceLog([trace for trace in log if is_intersecting(trace, dt1, dt2, timestamp_key)])
@@ -147,7 +149,7 @@ def apply_events(trace_log, dt1, dt2, parameters=None):
     if parameters is None:
         parameters = {}
     timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
 

@@ -22,9 +22,12 @@ from dataclasses import dataclass
 import pm4py
 from pm4py import util as pm4pyutil
 from pm4py.algo.conformance import alignments
-from pm4py.objects import log as log_lib
 from pm4py.objects import petri
 from pm4py.objects.log import log as log_implementation
+from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
+from pm4py.objects.petri.synchronous_product import construct_cost_aware
+from pm4py.objects.petri.utils import construct_trace_net_cost_aware
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
@@ -64,21 +67,24 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
 
     Parameters
     ----------
-    trace: :class:`list` input trace, assumed to be a list of events (i.e. the code will use the activity key to get the attributes)
+    trace: :class:`list` input trace, assumed to be a list of events (i.e. the code will use the activity key
+    to get the attributes)
     petri_net: :class:`pm4py.objects.petri.net.PetriNet` the Petri net to use in the alignment
     initial_marking: :class:`pm4py.objects.petri.net.Marking` initial marking in the Petri net
     final_marking: :class:`pm4py.objects.petri.net.Marking` final marking in the Petri net
     parameters: :class:`dict` (optional) dictionary containing one of the following:
         PARAM_TRACE_COST_FUNCTION: :class:`list` (parameter) mapping of each index of the trace to a positive cost value
-        PARAM_MODEL_COST_FUNCTION: :class:`dict` (parameter) mapping of each transition in the model to corresponding model cost
-        PARAM_SYNC_COST_FUNCTION: :class:`dict` (parameter) mapping of each transition in the model to corresponding synchronous costs
+        PARAM_MODEL_COST_FUNCTION: :class:`dict` (parameter) mapping of each transition in the model to corresponding
+        model cost
+        PARAM_SYNC_COST_FUNCTION: :class:`dict` (parameter) mapping of each transition in the model to corresponding
+        synchronous costs
         PARAM_ACTIVITY_KEY: :class:`str` (parameter) key to use to identify the activity described by the events
 
     Returns
     -------
     dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
     """
-    activity_key = log_lib.util.xes.DEFAULT_NAME_KEY if parameters is None or pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
+    activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
         parameters[
             pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     if parameters is None or PARAM_TRACE_COST_FUNCTION not in parameters or PARAM_MODEL_COST_FUNCTION not in parameters or PARAM_SYNC_COST_FUNCTION not in parameters:
@@ -91,17 +97,17 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
                                                                                                   alignments.utils.SKIP)
         cost_function = alignments.utils.construct_standard_cost_function(sync_prod, alignments.utils.SKIP)
     else:
-        trace_net, trace_im, trace_fm, trace_net_costs = petri.utils.construct_trace_net_cost_aware(trace,
-                                                                                                    parameters[
-                                                                                                        PARAM_TRACE_COST_FUNCTION],
-                                                                                                    activity_key=activity_key)
+        trace_net, trace_im, trace_fm, trace_net_costs = construct_trace_net_cost_aware(trace,
+                                                                                        parameters[
+                                                                                            PARAM_TRACE_COST_FUNCTION],
+                                                                                        activity_key=activity_key)
         revised_sync = dict()
         for t_trace in trace_net.transitions:
             for t_model in petri_net.transitions:
                 if t_trace.label == t_model.label:
                     revised_sync[(t_trace, t_model)] = parameters[PARAM_SYNC_COST_FUNCTION][t_model]
 
-        sync_prod, sync_initial_marking, sync_final_marking, cost_function = petri.synchronous_product.construct_cost_aware(
+        sync_prod, sync_initial_marking, sync_final_marking, cost_function = construct_cost_aware(
             trace_net, trace_im, trace_fm, petri_net, initial_marking, final_marking, alignments.utils.SKIP,
             trace_net_costs, parameters[PARAM_MODEL_COST_FUNCTION], revised_sync)
 
@@ -123,7 +129,8 @@ def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, sk
 
     Returns
     -------
-    dictionary : :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
+    dictionary : :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states**
+    and **traversed_arcs**
     """
     return __search(sync_prod, initial_marking, final_marking, cost_function, skip)
 
