@@ -1,7 +1,10 @@
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.end_activities import end_activities_common
+from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.objects.log.util import xes
+from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util import constants
+from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
 def apply(df, values, parameters=None):
@@ -18,7 +21,8 @@ def apply(df, values, parameters=None):
         Possible parameters of the algorithm, including:
             case_id_glue -> Case ID column in the dataframe
             activity_key -> Column that represents the activity
-            positive -> Specifies if the filtered should be applied including traces (positive=True) or excluding traces (positive=False)
+            positive -> Specifies if the filtered should be applied including traces (positive=True)
+            or excluding traces (positive=False)
 
     Returns
     ----------
@@ -28,9 +32,9 @@ def apply(df, values, parameters=None):
     if parameters is None:
         parameters = {}
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
 
     return filter_df_on_end_activities(df, values, case_id_glue=case_id_glue, activity_key=activity_key,
@@ -60,9 +64,9 @@ def apply_auto_filter(df, parameters=None):
         parameters = {}
 
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     decreasing_factor = parameters[
         "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
@@ -96,9 +100,9 @@ def get_end_activities(df, parameters=None):
         parameters = {}
 
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
 
     last_eve_df = df.groupby(case_id_glue).last()
     endact_dict = dict(last_eve_df[activity_key].value_counts())
@@ -121,7 +125,8 @@ def filter_df_on_end_activities(df, values, case_id_glue=filtering_constants.CAS
     activity_key
         Column that represent the activity
     positive
-        Specifies if the filtered should be applied including traces (positive=True) or excluding traces (positive=False)
+        Specifies if the filtered should be applied including traces (positive=True) or excluding traces
+        (positive=False)
 
     Returns
     ----------

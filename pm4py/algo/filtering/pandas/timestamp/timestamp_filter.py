@@ -1,9 +1,9 @@
 import pandas as pd
 
-from pm4py.algo.filtering.common import filtering_constants
+from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
-from pm4py.objects.log.util import xes
-from pm4py.util import constants
+from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY, PARAMETER_CONSTANT_CASEID_KEY
 
 
 def filter_traces_contained(df, dt1, dt2, parameters=None):
@@ -31,9 +31,9 @@ def filter_traces_contained(df, dt1, dt2, parameters=None):
     if parameters is None:
         parameters = {}
     timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
@@ -73,9 +73,9 @@ def filter_traces_intersecting(df, dt1, dt2, parameters=None):
     if parameters is None:
         parameters = {}
     timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
@@ -120,7 +120,7 @@ def apply_events(df, dt1, dt2, parameters=None):
         parameters = {}
 
     timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
 

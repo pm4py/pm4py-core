@@ -48,7 +48,8 @@ def get_event_labels_counted(log, key):
 
 def get_trace_variants(log, key=xes_util.DEFAULT_NAME_KEY):
     """
-    Returns a pair of a list of (variants, dict[index -> trace]) where the index of a variant maps to all traces describing that variant, with that key.
+    Returns a pair of a list of (variants, dict[index -> trace]) where the index of a variant maps to all traces
+    describing that variant, with that key.
 
     Parameters
     ---------

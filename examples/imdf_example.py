@@ -39,7 +39,7 @@ def execute_script():
 
                     if is_fit:
                         fit_traces.append(log[i])
-            except TypeError as e:
+            except TypeError:
                 print("EXCEPTION ", i)
                 traceback.print_exc()
         print(fit_traces)

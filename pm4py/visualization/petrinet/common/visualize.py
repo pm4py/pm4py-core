@@ -7,7 +7,8 @@ from pm4py.objects.petri.petrinet import Marking
 
 def apply(net, initial_marking, final_marking, decorations=None, parameters=None):
     """
-    Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization method)
+    Apply method for Petri net visualization (useful for recall from factory; it calls the
+    graphviz_visualization method)
 
     Parameters
     -----------

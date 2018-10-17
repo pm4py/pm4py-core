@@ -38,7 +38,8 @@ def human_readable_stat(c):
 
 def get_arc_penwidth(arc_measure, min_arc_measure, max_arc_measure):
     """
-    Calculate arc width given the current arc measure value, the minimum arc measure value and the maximum arc measure value
+    Calculate arc width given the current arc measure value, the minimum arc measure value and the
+    maximum arc measure value
 
     Parameters
     -----------
