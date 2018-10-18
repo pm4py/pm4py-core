@@ -84,9 +84,9 @@ class VisualizationTest1(unittest.TestCase):
         dfg = dfg_factory.apply(log, variant=variant)
         activities_count = log_attribute_filter.get_attribute_values(log, "concept:name")
         spaths = vis_trans_shortest_paths.get_shortest_paths(net)
-        aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
-                                                                                                       activities_count,
-                                                                                                       variant=variant)
+        aggregated_statistics = vis_trans_shortest_paths.get_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
+                                                                                                   activities_count,
+                                                                                                   variant=variant)
         parameters_vis = {"format": "svg"}
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, aggregated_statistics=aggregated_statistics,
                                        variant=variant, parameters=parameters_vis)
@@ -103,9 +103,9 @@ class VisualizationTest1(unittest.TestCase):
         dfg = dfg_factory.apply(log, variant=variant)
         activities_count = log_attribute_filter.get_attribute_values(log, "concept:name")
         spaths = vis_trans_shortest_paths.get_shortest_paths(net)
-        aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
-                                                                                                       activities_count,
-                                                                                                       variant=variant)
+        aggregated_statistics = vis_trans_shortest_paths.get_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
+                                                                                                   activities_count,
+                                                                                                   variant=variant)
         parameters_vis = {"format": "svg"}
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, aggregated_statistics=aggregated_statistics,
                                        variant=variant, parameters=parameters_vis)
@@ -150,11 +150,11 @@ class VisualizationTest1(unittest.TestCase):
         dfg_frequency = df_statistics.get_dfg_graph(dataframe, measure=variant)
         net, initial_marking, final_marking = inductive_miner.apply_dfg(dfg_frequency)
         spaths = vis_trans_shortest_paths.get_shortest_paths(net)
-        aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net,
-                                                                                                       dfg_frequency,
-                                                                                                       spaths,
-                                                                                                       activities_count,
-                                                                                                       variant=variant)
+        aggregated_statistics = vis_trans_shortest_paths.get_decorations_from_dfg_spaths_acticount(net,
+                                                                                                   dfg_frequency,
+                                                                                                   spaths,
+                                                                                                   activities_count,
+                                                                                                   variant=variant)
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, variant=variant,
                                        aggregated_statistics=aggregated_statistics)
         del gviz
@@ -171,11 +171,11 @@ class VisualizationTest1(unittest.TestCase):
         [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both")
         net, initial_marking, final_marking = inductive_miner.apply_dfg(dfg_frequency)
         spaths = vis_trans_shortest_paths.get_shortest_paths(net)
-        aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net,
-                                                                                                       dfg_performance,
-                                                                                                       spaths,
-                                                                                                       activities_count,
-                                                                                                       variant=variant)
+        aggregated_statistics = vis_trans_shortest_paths.get_decorations_from_dfg_spaths_acticount(net,
+                                                                                                   dfg_performance,
+                                                                                                   spaths,
+                                                                                                   activities_count,
+                                                                                                   variant=variant)
         gviz = petri_vis_factory.apply(net, initial_marking, final_marking, variant=variant,
                                        aggregated_statistics=aggregated_statistics)
         del gviz

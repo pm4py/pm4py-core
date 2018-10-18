@@ -11,7 +11,7 @@ from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_a
 from pm4py.util import constants
 from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.visualization.petrinet import factory as pn_vis_factory
-from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_net_decorations_from_dfg_spaths_acticount
+from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_decorations_from_dfg_spaths_acticount
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_shortest_paths
 
 SEP = ","
@@ -89,10 +89,10 @@ def execute_script():
     spaths = get_shortest_paths(net)
     time9 = time.time()
     print("time9 - time8: " + str(time9 - time8))
-    aggregated_statistics = get_net_decorations_from_dfg_spaths_acticount(net, dfg_performance,
-                                                                          spaths,
-                                                                          activities_count,
-                                                                          variant="performance")
+    aggregated_statistics = get_decorations_from_dfg_spaths_acticount(net, dfg_performance,
+                                                                      spaths,
+                                                                      activities_count,
+                                                                      variant="performance")
     gviz = pn_vis_factory.apply(net, initial_marking, final_marking, variant="performance",
                                 aggregated_statistics=aggregated_statistics, parameters={"format": "svg"})
     time10 = time.time()

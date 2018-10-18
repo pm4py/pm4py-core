@@ -5,7 +5,7 @@ from pm4py.algo.discovery.inductive import factory as inductive_miner
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.petrinet import factory as pn_vis_factory
-from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_net_decorations_from_dfg_spaths_acticount
+from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_decorations_from_dfg_spaths_acticount
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_shortest_paths
 
 
@@ -30,10 +30,10 @@ def execute_script():
     # we find the number of activities occurrences in the trace log
     activities_count = attributes_filter.get_attribute_values(log, "concept:name")
     # we calculate the statistics on the Petri net applying the greedy algorithm
-    aggregated_statistics = get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
-                                                                          activities_count,
-                                                                          variant=variant,
-                                                                          aggregation_measure=aggregation_measure)
+    aggregated_statistics = get_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
+                                                                      activities_count,
+                                                                      variant=variant,
+                                                                      aggregation_measure=aggregation_measure)
     # we find the gviz
     parameters_viz = {"format": "svg"}
     gviz = pn_vis_factory.apply(net, initial_marking, final_marking, variant=variant,
