@@ -1,8 +1,11 @@
 import pandas as pd
 
-from pm4py.algo.filtering.common import filtering_constants
+from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.objects.log.util import xes
-from pm4py.util import constants
+from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
 def get_variants_statistics(df, parameters=None):
@@ -28,7 +31,7 @@ def get_variants_statistics(df, parameters=None):
     if parameters is None:
         parameters = {}
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
     variants_df = parameters["variants_df"] if "variants_df" in parameters else get_variants_df(df,
                                                                                                 parameters=parameters)
@@ -53,8 +56,10 @@ def get_cases_description(df, parameters=None):
             case_id_glue -> Column that identifies the case ID
             timestamp_key -> Column that identifies the timestamp
             enable_sort -> Enable sorting of traces
-            sort_by_column -> Sort traces inside the dataframe using the specified column. Admitted values: startTime, endTime, caseDuration
-            sort_ascending -> Set sort direction (boolean; it true then the sort direction is ascending, otherwise descending)
+            sort_by_column -> Sort traces inside the dataframe using the specified column.
+            Admitted values: startTime, endTime, caseDuration
+            sort_ascending -> Set sort direction (boolean; it true then the sort direction is ascending,
+            otherwise descending)
             max_ret_cases -> Set the maximum number of returned traces
 
     Returns
@@ -66,9 +71,9 @@ def get_cases_description(df, parameters=None):
         parameters = {}
 
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     enable_sort = parameters["enable_sort"] if "enable_sort" in parameters else True
     sort_by_column = parameters["sort_by_column"] if "sort_by_column" in parameters else "startTime"
     sort_ascending = parameters["sort_ascending"] if "sort_ascending" in parameters else "ascending"
@@ -120,9 +125,9 @@ def get_variants_df(df, parameters=None):
         parameters = {}
 
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
     return df.groupby(case_id_glue)[activity_key].agg({'variant': lambda col: ','.join(col)})
 
@@ -149,5 +154,5 @@ def get_events(df, case_id, parameters=None):
     if parameters is None:
         parameters = {}
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     return df[df[case_id_glue] == case_id].to_dict('records')

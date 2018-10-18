@@ -24,6 +24,7 @@ from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.objects import petri
 from pm4py.objects.log import util as log_util
 from pm4py.objects.petri.petrinet import Marking
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
 def apply(trace_log, parameters=None):
@@ -57,7 +58,7 @@ def apply(trace_log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
     dfg = {k: v for k, v in dfg_inst.apply(trace_log, parameters=parameters).items() if v > 0}
     start_activities = endpoints.derive_start_activities_from_tracelog(trace_log, parameters[
@@ -121,7 +122,7 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
 
     labels = set()
@@ -138,7 +139,7 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
 
     alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(start_activities, end_activities, dfg,
                                                                           activity_key=parameters[
-                                                                              pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
+                                                                              PARAMETER_CONSTANT_ACTIVITY_KEY])
     pairs = list(map(lambda p: ({p[0]}, {p[1]}),
                      filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p),
                             alpha_abstraction.causal_relation)))
