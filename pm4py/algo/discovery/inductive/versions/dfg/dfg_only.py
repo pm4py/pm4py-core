@@ -24,7 +24,8 @@ def apply(trace_log, parameters):
         Trace log
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
 
     Returns
     -----------
@@ -70,7 +71,8 @@ def apply_tree(trace_log, parameters):
         Trace log
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
 
     Returns
     ----------
@@ -100,7 +102,8 @@ def apply_dfg(dfg, parameters):
         Directly-Follows graph
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
 
     Returns
     -----------
@@ -127,7 +130,8 @@ def apply_tree_dfg(dfg, parameters):
         Directly-follows graph
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
 
     Returns
     ----------

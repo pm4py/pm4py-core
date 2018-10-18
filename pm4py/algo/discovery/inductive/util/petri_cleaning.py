@@ -68,7 +68,7 @@ def petri_reduction_treplay(net, parameters=None):
     transitions = list(net.transitions)
     for trans in transitions:
         if trans.label is None:
-            if not trans in enabled_trans_in_at_least_one_trace:
+            if trans not in enabled_trans_in_at_least_one_trace:
                 net = petri.utils.remove_transition(net, trans)
 
     return net

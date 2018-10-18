@@ -2,10 +2,9 @@ from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.end_activities import end_activities_common
 from pm4py.algo.filtering.tracelog.variants import variants_filter
 from pm4py.objects.log.log import TraceLog
-from pm4py.objects.log.util import xes
-from pm4py.util import constants
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+
 
 def apply(trace_log, admitted_end_activities, parameters=None):
     """

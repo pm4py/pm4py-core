@@ -25,7 +25,8 @@ def import_log(filename, parameters=None):
             timestamp_key -> If sort is enabled, then sort the log by using this key
             reverse_sort -> Specify in which direction the log should be sorted
             index_trace_indexes -> Specify if trace indexes should be added as event attribute for each event
-            max_no_traces_to_import -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            max_no_traces_to_import -> Specify the maximum number of traces to import from the log
+            (read in order in the XML file)
 
     Returns
     -------

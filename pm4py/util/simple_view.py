@@ -59,7 +59,8 @@ def apply(original_log, parameters=None):
             decoration -> Decoration to use in the diagram (e.g. frequency, performance)
             format -> Produced image format
             activity key -> Must be specified if different from concept:name
-            decreasingFactor -> The higher is the decreasing factor, the more simplified is the process model represented
+            decreasingFactor -> The higher is the decreasing factor, the more simplified is the process model
+            represented
             replayEnabled -> Boolean that tells if the decoration is enabled or not
             aggregationMeasure -> Aggregation measure
     """
@@ -80,8 +81,8 @@ def apply(original_log, parameters=None):
     elif "performance" in replay_measure:
         aggregation_measure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "mean"
 
-    original_log, classifier_key = insert_classifier.search_and_insert_activity_classifier_attribute(original_log,
-                                                                                                     force_activity_transition_insertion=True)
+    original_log, classifier_key = insert_classifier.search_act_class_attr(original_log,
+                                                                           force_activity_transition_insertion=True)
     if activity_key is None:
         activity_key = classifier_key
     if activity_key is None:
