@@ -10,7 +10,7 @@ from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_a
 from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.util import constants
 from pm4py.visualization.petrinet import factory as pn_vis_factory
-from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_net_decorations_from_dfg_spaths_acticount
+from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_decorations_from_dfg_spaths_acticount
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_shortest_paths
 
 TARGET_FOLDER_FREQ = "all_variants_freq"
@@ -44,18 +44,18 @@ def calculate_process_schema_from_df(this_df, path_frequency, path_performance):
                                                                    timestamp_key=TIMEST_KEY, sort_required=False)
     net, initial_marking, final_marking = inductive_factory.apply_dfg(dfg_frequency)
     spaths = get_shortest_paths(net)
-    aggregated_statistics = get_net_decorations_from_dfg_spaths_acticount(net, dfg_frequency,
-                                                                          spaths,
-                                                                          activities_count,
-                                                                          variant="frequency")
+    aggregated_statistics = get_decorations_from_dfg_spaths_acticount(net, dfg_frequency,
+                                                                      spaths,
+                                                                      activities_count,
+                                                                      variant="frequency")
     parameters_viz = {"format": "svg"}
     gviz = pn_vis_factory.apply(net, initial_marking, final_marking, variant="frequency",
                                 aggregated_statistics=aggregated_statistics, parameters=parameters_viz)
     pn_vis_factory.save(gviz, path_frequency)
-    aggregated_statistics = get_net_decorations_from_dfg_spaths_acticount(net, dfg_performance,
-                                                                          spaths,
-                                                                          activities_count,
-                                                                          variant="performance")
+    aggregated_statistics = get_decorations_from_dfg_spaths_acticount(net, dfg_performance,
+                                                                      spaths,
+                                                                      activities_count,
+                                                                      variant="performance")
     parameters_viz = {"format": "svg"}
     gviz = pn_vis_factory.apply(net, initial_marking, final_marking, variant="performance",
                                 aggregated_statistics=aggregated_statistics, parameters=parameters_viz)

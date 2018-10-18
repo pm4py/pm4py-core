@@ -72,8 +72,8 @@ def get_shortest_paths(net):
     return spaths
 
 
-def get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count, variant="frequency",
-                                                  aggregation_measure=None):
+def get_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count, variant="frequency",
+                                              aggregation_measure=None):
     """
     Get decorations from Petrinet without doing any replay
     but based on DFG measures, shortest paths and activities count.

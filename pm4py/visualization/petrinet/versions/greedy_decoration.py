@@ -52,10 +52,10 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
     spaths = vis_trans_shortest_paths.get_shortest_paths(net)
     # we find the number of activities occurrences in the trace log
     activities_count = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
-    aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
-                                                                                                   activities_count,
-                                                                                                   variant=variant,
-                                                                                                   aggregation_measure=aggregation_measure)
+    aggregated_statistics = vis_trans_shortest_paths.get_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
+                                                                                               activities_count,
+                                                                                               variant=variant,
+                                                                                               aggregation_measure=aggregation_measure)
 
     return visualize.apply(net, initial_marking, final_marking, parameters=parameters,
                            decorations=aggregated_statistics)

@@ -1,18 +1,19 @@
-from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
-from pm4py.algo.discovery.inductive import factory as inductive_factory
-from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
-from pm4py.visualization.petrinet import factory as pn_vis_factory
+import os
+import time
+
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
+from pm4py.algo.discovery.inductive import factory as inductive_factory
+from pm4py.algo.filtering.pandas.attributes import attributes_filter
+from pm4py.algo.filtering.pandas.cases import case_filter
 from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
 from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
-from pm4py.algo.filtering.pandas.attributes import attributes_filter
-from pm4py.util import constants
-from pm4py.algo.filtering.pandas.cases import case_filter
+from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
 from pm4py.statistics.traces.pandas import case_statistics
-import time
-import os
+from pm4py.util import constants
+from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 
-MAX_NO_ACTIVITIES_PER_MODEL = 25
+MAX_NO_ACTIVITIES = 25
 GENERATED_IMAGES = []
 REMOVE_GENERATED_IMAGES = True
 
@@ -57,18 +58,18 @@ def calculate_process_schema_from_df(dataframe, path_frequency, path_performance
                                                                    timestamp_key=TIMEST_KEY, sort_required=False)
     net, initial_marking, final_marking = inductive_factory.apply_dfg(dfg_frequency)
     spaths = vis_trans_shortest_paths.get_shortest_paths(net)
-    aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg_frequency,
-                                                                                                   spaths,
-                                                                                                   activities_count,
-                                                                                                   variant="frequency")
+    aggregated_statistics = vis_trans_shortest_paths.get_decorations_from_dfg_spaths_acticount(net, dfg_frequency,
+                                                                                               spaths,
+                                                                                               activities_count,
+                                                                                               variant="frequency")
     parameters_viz = {"format": "svg"}
     gviz = pn_vis_factory.apply(net, initial_marking, final_marking, variant="frequency",
                                 aggregated_statistics=aggregated_statistics, parameters=parameters_viz)
     pn_vis_factory.save(gviz, path_frequency)
-    aggregated_statistics = vis_trans_shortest_paths.get_net_decorations_from_dfg_spaths_acticount(net, dfg_performance,
-                                                                                                   spaths,
-                                                                                                   activities_count,
-                                                                                                   variant="performance")
+    aggregated_statistics = vis_trans_shortest_paths.get_decorations_from_dfg_spaths_acticount(net, dfg_performance,
+                                                                                               spaths,
+                                                                                               activities_count,
+                                                                                               variant="performance")
     parameters_viz = {"format": "svg"}
     gviz = pn_vis_factory.apply(net, initial_marking, final_marking, variant="performance",
                                 aggregated_statistics=aggregated_statistics, parameters=parameters_viz)
@@ -82,8 +83,8 @@ def execute_script():
     dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe, timest_format=TIMEST_FORMAT,
                                                                    timest_columns=TIMEST_COLUMNS)
     dataframe = dataframe.sort_values([CASEID_GLUE, TIMEST_KEY])
-    dataframe_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe, activity_key=ACTIVITY_KEY,
-                                                                         max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
+    dataframe_fa = attributes_filter.filter_df_keeping_spno_activities(dataframe, activity_key=ACTIVITY_KEY,
+                                                                       max_no_activities=MAX_NO_ACTIVITIES)
     bb = time.time()
     print("importing log time=", (bb - aa))
 
@@ -105,8 +106,8 @@ def execute_script():
 
     dataframe_cp = case_filter.filter_on_case_performance(dataframe, case_id_glue=CASEID_GLUE, timestamp_key=TIMEST_KEY,
                                                           min_case_performance=100000, max_case_performance=10000000)
-    dataframe_cp_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_cp, activity_key=ACTIVITY_KEY,
-                                                                            max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
+    dataframe_cp_fa = attributes_filter.filter_df_keeping_spno_activities(dataframe_cp, activity_key=ACTIVITY_KEY,
+                                                                          max_no_activities=MAX_NO_ACTIVITIES)
     dataframe_cp = None
     if DELETE_VARIABLES:
         del dataframe_cp
@@ -125,9 +126,9 @@ def execute_script():
         dataframe_att = attributes_filter.apply(dataframe, ATTRIBUTE_VALUES_TO_FILTER, parameters=parameters_att)
         # dataframe_att = attributes_filter.apply_auto_filter(dataframe, parameters=parameters_att)
         print("all the activities in the log", attributes_filter.get_attribute_values(dataframe_att, ACTIVITY_KEY))
-        dataframe_att_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_att,
-                                                                                 activity_key=ACTIVITY_KEY,
-                                                                                 max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
+        dataframe_att_fa = attributes_filter.filter_df_keeping_spno_activities(dataframe_att,
+                                                                               activity_key=ACTIVITY_KEY,
+                                                                               max_no_activities=MAX_NO_ACTIVITIES)
         if DELETE_VARIABLES:
             del dataframe_att
         calculate_process_schema_from_df(dataframe_att_fa, "FILTER_ATT_FREQUENCY.svg", "FILTER_ATT_PERFORMANCE.svg")
@@ -155,8 +156,8 @@ def execute_script():
         # dataframe_sa = start_activities_filter.apply_auto_filter(dataframe, parameters=parameters_sa)
         start_act = start_activities_filter.get_start_activities(dataframe_sa, parameters=parameters_sa)
         print("start activities in the filtered log = ", start_act)
-        dataframe_sa_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_sa, activity_key=ACTIVITY_KEY,
-                                                                                max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
+        dataframe_sa_fa = attributes_filter.filter_df_keeping_spno_activities(dataframe_sa, activity_key=ACTIVITY_KEY,
+                                                                              max_no_activities=MAX_NO_ACTIVITIES)
         if DELETE_VARIABLES:
             del dataframe_sa
         calculate_process_schema_from_df(dataframe_sa_fa, "FILTER_SA_FREQUENCY.svg", "FILTER_SA_PERFORMANCE.svg")
@@ -173,8 +174,8 @@ def execute_script():
         # dataframe_ea = end_activities_filter.apply_auto_filter(dataframe, parameters=parameters_ea)
         end_act = end_activities_filter.get_end_activities(dataframe_ea, parameters=parameters_ea)
         print("end activities in the filtered log = ", end_act)
-        dataframe_ea_fa = attributes_filter.filter_df_keeping_specno_activities(dataframe_ea, activity_key=ACTIVITY_KEY,
-                                                                                max_no_activities=MAX_NO_ACTIVITIES_PER_MODEL)
+        dataframe_ea_fa = attributes_filter.filter_df_keeping_spno_activities(dataframe_ea, activity_key=ACTIVITY_KEY,
+                                                                              max_no_activities=MAX_NO_ACTIVITIES)
         if DELETE_VARIABLES:
             del dataframe_ea
         calculate_process_schema_from_df(dataframe_ea_fa, "FILTER_EA_FREQUENCY.svg", "FILTER_EA_PERFORMANCE.svg")

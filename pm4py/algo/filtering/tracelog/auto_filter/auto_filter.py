@@ -1,5 +1,3 @@
-import gc
-
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
@@ -54,23 +52,18 @@ def apply_auto_filter(trace_log, parameters=None):
 
     filtered_log1 = attributes_filter.apply_auto_filter(trace_log, variants=variants, parameters=parameters_child)
     del trace_log
-    #gc.collect()
     variants = variants_module.get_variants(filtered_log1, parameters=parameters_child)
     filtered_log2 = paths_filter.apply_auto_filter(filtered_log1, variants=variants, parameters=parameters_child)
     del filtered_log1
-    #gc.collect()
     variants = variants_module.get_variants(filtered_log2, parameters=parameters_child)
     filtered_log3 = variants_module.apply_auto_filter(filtered_log2, variants=variants, parameters=parameters_child)
     variants = variants_module.get_variants(filtered_log3, parameters=parameters_child)
     del filtered_log2
-    #gc.collect()
     filtered_log4 = start_activities_filter.apply_auto_filter(filtered_log3, variants=variants,
                                                               parameters=parameters_child)
     del filtered_log3
-    #gc.collect()
     filtered_log5 = end_activities_filter.apply_auto_filter(filtered_log4, variants=variants,
                                                             parameters=parameters_child)
     del filtered_log4
-    #gc.collect()
 
     return filtered_log5
