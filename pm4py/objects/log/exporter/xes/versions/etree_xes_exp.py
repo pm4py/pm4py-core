@@ -83,7 +83,7 @@ def export_extensions(log, root):
     for ext in log.extensions.keys():
         ext_value = log.extensions[ext]
         log_extension = etree.SubElement(root, xes_util.TAG_EXTENSION)
-        if not ext is None and not ext_value[xes_util.KEY_PREFIX] is None and not ext_value[xes_util.KEY_URI] is None:
+        if ext is not None and not ext_value[xes_util.KEY_PREFIX] is None and ext_value[xes_util.KEY_URI] is not None:
             log_extension.set(xes_util.KEY_NAME, ext)
             log_extension.set(xes_util.KEY_PREFIX, ext_value[xes_util.KEY_PREFIX])
             log_extension.set(xes_util.KEY_URI, ext_value[xes_util.KEY_URI])

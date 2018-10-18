@@ -55,7 +55,7 @@ def infer_start_activities(dfg):
     start_activities = []
 
     for act in outgoing:
-        if not act in ingoing:
+        if act not in ingoing:
             start_activities.append(act)
 
     return start_activities
@@ -81,7 +81,7 @@ def infer_end_activities(dfg):
     end_activities = []
 
     for act in ingoing:
-        if not act in outgoing:
+        if act not in outgoing:
             end_activities.append(act)
 
     return end_activities
@@ -227,7 +227,7 @@ def sum_start_activities_count(dfg):
     sum_values = 0
 
     for act in outgoing:
-        if not act in ingoing:
+        if act not in ingoing:
             for act2 in outgoing[act]:
                 sum_values += outgoing[act][act2]
 
@@ -253,7 +253,7 @@ def sum_end_activities_count(dfg):
     sum_values = 0
 
     for act in ingoing:
-        if not act in outgoing:
+        if act not in outgoing:
             for act2 in ingoing[act]:
                 sum_values += ingoing[act][act2]
 
@@ -445,15 +445,15 @@ def get_connected_components(ingoing, outgoing, activities):
 
         ingoing_act.add(act)
 
-        if not ingoing_act in connected_components:
+        if ingoing_act not in connected_components:
             connected_components.append(ingoing_act)
             activities_considered = activities_considered.union(set(ingoing_act))
 
     for act in outgoing:
-        if not act in ingoing:
+        if act not in ingoing:
             outgoing_act = set(outgoing[act].keys())
             outgoing_act.add(act)
-            if not outgoing_act in connected_components:
+            if outgoing_act not in connected_components:
                 connected_components.append(outgoing_act)
             activities_considered = activities_considered.union(set(outgoing_act))
 

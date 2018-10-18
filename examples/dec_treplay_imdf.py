@@ -1,7 +1,9 @@
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.discovery.inductive import factory as inductive_miner
-from pm4py.visualization.petrinet import factory as pn_vis_factory
 import os
+
+from pm4py.algo.discovery.inductive import factory as inductive_miner
+from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.visualization.petrinet import factory as pn_vis_factory
+
 
 def execute_script():
     # import the log

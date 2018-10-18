@@ -1,9 +1,11 @@
-from tests.constants import INPUT_DATA_DIR
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.evaluation.precision import factory as etc_factory
-from pm4py.algo.discovery.inductive.versions.dfg import dfg_only
-import unittest
 import os
+import unittest
+
+from pm4py.algo.discovery.inductive.versions.dfg import dfg_only
+from pm4py.evaluation.precision import factory as etc_factory
+from pm4py.objects.log.importer.xes import factory as xes_importer
+from tests.constants import INPUT_DATA_DIR
+
 
 class ETCTest(unittest.TestCase):
     def test_etc1(self):

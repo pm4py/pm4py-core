@@ -4,7 +4,10 @@ from pm4py.algo.filtering.tracelog.variants import variants_filter
 from pm4py.objects.log.log import TraceLog
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
-
+from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
+from pm4py.algo.filtering.common.filtering_constants import DECREASING_FACTOR
 
 def apply(trace_log, admitted_start_activities, parameters=None):
     """
@@ -27,7 +30,7 @@ def apply(trace_log, admitted_start_activities, parameters=None):
     if parameters is None:
         parameters = {}
     attribute_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
 
     filtered_log = [trace for trace in trace_log if trace and trace[0][attribute_key] in admitted_start_activities]
     return filtered_log
@@ -53,14 +56,14 @@ def get_start_activities(trace_log, parameters=None):
     if parameters is None:
         parameters = {}
     attribute_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
 
     start_activities = {}
 
     for trace in trace_log:
         if len(trace) > 0:
             activity_first_event = trace[0][attribute_key]
-            if not activity_first_event in start_activities:
+            if activity_first_event not in start_activities:
                 start_activities[activity_first_event] = 0
             start_activities[activity_first_event] = start_activities[activity_first_event] + 1
 
@@ -112,7 +115,8 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
         (If specified) Dictionary with variant as the key and the list of traces as the value
     parameters
         Parameters of the algorithm, including:
-            decreasingFactor -> Decreasing factor (stops the algorithm when the next activity by occurrence is below this factor in comparison to previous)
+            decreasingFactor -> Decreasing factor (stops the algorithm when the next activity by occurrence is below
+            this factor in comparison to previous)
             attribute_key -> Attribute key (must be specified if different from concept:name)
     
     Returns
@@ -124,9 +128,9 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
         parameters = {}
 
     attribute_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     decreasing_factor = parameters[
-        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+        "decreasingFactor"] if "decreasingFactor" in parameters else DECREASING_FACTOR
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
 

@@ -36,7 +36,8 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     Returns
     -----------
     dictionary
-        Dictionary containing fitness, precision, generalization and simplicity; along with the average weight of these metrics
+        Dictionary containing fitness, precision, generalization and simplicity; along with the average weight of
+        these metrics
     """
     if parameters is None:
         parameters = {}

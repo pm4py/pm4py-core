@@ -9,7 +9,8 @@ from pm4py.objects.log.util import xes as xes_util
 """
 Implementation of the approach described in paper
 
-Muñoz-Gama, Jorge, and Josep Carmona. "A fresh look at precision in process conformance." International Conference on Business Process Management. Springer, Berlin, Heidelberg, 2010.
+Muñoz-Gama, Jorge, and Josep Carmona. "A fresh look at precision in process conformance." International Conference
+on Business Process Management. Springer, Berlin, Heidelberg, 2010.
 
 for measuring precision.
 
@@ -46,7 +47,7 @@ def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
             red_trace = trace[0:i]
             prefix = ",".join([x[activity_key] for x in red_trace])
             next_activity = trace[i][activity_key]
-            if not prefix in prefixes:
+            if prefix not in prefixes:
                 prefixes[prefix] = set()
             prefixes[prefix].add(next_activity)
             prefix_count[prefix] += 1

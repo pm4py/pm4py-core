@@ -32,7 +32,7 @@ def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     """
     if parameters is None:
         parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     return VERSIONS[variant](log, parameters)
 
@@ -62,6 +62,6 @@ def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     """
     if parameters is None:
         parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     return VERSIONS_DFG[variant](dfg, parameters)

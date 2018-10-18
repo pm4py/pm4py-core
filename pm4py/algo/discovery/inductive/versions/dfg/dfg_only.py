@@ -37,7 +37,7 @@ def apply(trace_log, parameters):
     """
     if parameters is None:
         parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     # apply the reduction by default only on very small logs
@@ -79,7 +79,7 @@ def apply_tree(trace_log, parameters):
     """
     if parameters is None:
         parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
