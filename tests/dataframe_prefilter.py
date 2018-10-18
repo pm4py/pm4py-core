@@ -1,16 +1,18 @@
-from tests.constants import INPUT_DATA_DIR
-from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
-from pm4py.objects.log.importer.csv.versions import pandas_df_imp
-from pm4py.algo.filtering.pandas.auto_filter import auto_filter
+import os
+import unittest
+
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
+from pm4py.algo.filtering.pandas.auto_filter import auto_filter
 from pm4py.algo.filtering.pandas.cases import case_filter
-from pm4py.algo.filtering.pandas.variants import variants_filter
-from pm4py.statistics.traces.pandas import case_statistics
-from pm4py.objects.log import transform
 from pm4py.algo.filtering.pandas.paths import paths_filter
 from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
-import unittest
-import os
+from pm4py.algo.filtering.pandas.variants import variants_filter
+from pm4py.objects.log import transform
+from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
+from pm4py.objects.log.importer.csv.versions import pandas_df_imp
+from pm4py.statistics.traces.pandas import case_statistics
+from tests.constants import INPUT_DATA_DIR
+
 
 class DataframePrefilteringTest(unittest.TestCase):
     def test_prefiltering_dataframe(self):

@@ -1,13 +1,15 @@
-from tests.constants import INPUT_DATA_DIR
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.discovery.inductive.versions.dfg import dfg_only
-from pm4py.evaluation.replay_fitness import factory as fitness_factory
-from pm4py.evaluation.precision import factory as precision_factory
-from pm4py.evaluation.generalization import factory as generalization_factory
-from pm4py.evaluation.simplicity import factory as simplicity_factory
-from pm4py.evaluation import factory as evaluation_factory
-import unittest
 import os
+import unittest
+
+from pm4py.algo.discovery.inductive.versions.dfg import dfg_only
+from pm4py.evaluation import factory as evaluation_factory
+from pm4py.evaluation.generalization import factory as generalization_factory
+from pm4py.evaluation.precision import factory as precision_factory
+from pm4py.evaluation.replay_fitness import factory as fitness_factory
+from pm4py.evaluation.simplicity import factory as simplicity_factory
+from pm4py.objects.log.importer.xes import factory as xes_importer
+from tests.constants import INPUT_DATA_DIR
+
 
 class ProcessModelEvaluationTests(unittest.TestCase):
     def test_evaluation_pm1(self):

@@ -39,13 +39,13 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     df_reduced_shifted.columns = [str(col) + '_2' for col in df_reduced_shifted.columns]
     # concate the two dataframe to get a unique dataframe
     df_successive_rows = pd.concat([df_reduced, df_reduced_shifted], axis=1)
-    # as successive rows in the sorted dataframe may belong to different case IDs we have to restrict ourselves to successive
-    # rows belonging to same case ID
+    # as successive rows in the sorted dataframe may belong to different case IDs we have to restrict ourselves to
+    # successive rows belonging to same case ID
     df_successive_rows = df_successive_rows[df_successive_rows[case_id_glue] == df_successive_rows[case_id_glue + '_2']]
 
     # calculate the difference between the timestamps of two successive events
     df_successive_rows['caseDuration'] = (
-                df_successive_rows[timestamp_key + '_2'] - df_successive_rows[timestamp_key]).astype('timedelta64[s]')
+            df_successive_rows[timestamp_key + '_2'] - df_successive_rows[timestamp_key]).astype('timedelta64[s]')
     # groups couple of attributes (directly follows relation, we can measure the frequency and the performance)
     directly_follows_grouping = df_successive_rows.groupby([activity_key, activity_key + '_2'])['caseDuration']
 
