@@ -19,7 +19,8 @@ def import_log(filename, parameters=None):
             timestamp_key -> If sort is enabled, then sort the log by using this key
             reverse_sort -> Specify in which direction the log should be sorted
             index_trace_indexes -> Specify if trace indexes should be added as event attribute for each event
-            max_no_traces_to_import -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            max_no_traces_to_import -> Specify the maximum number of traces to import from the log
+            (read in order in the XML file)
 
     Returns
     -----------
@@ -57,8 +58,8 @@ def import_log(filename, parameters=None):
         for line in f:
             content = line.split("\"")
             tag = content[0].split("<")[1]
-            if not trace is None:
-                if not event is None:
+            if trace is not None:
+                if event is not None:
                     if len(content) == 5:
                         if tag.startswith("string"):
                             event[content[1]] = content[3]

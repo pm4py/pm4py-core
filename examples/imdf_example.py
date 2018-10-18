@@ -1,9 +1,11 @@
+import os
+import traceback
+
 import pm4py
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.petrinet import factory as pn_vis_factory
-import traceback
-import os
+
 
 def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "running-example.xes")
@@ -25,7 +27,7 @@ def execute_script():
             try:
                 print("\n", i, [x["concept:name"] for x in log[i]])
                 cf_result = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(log[i], net, marking,
-                                                                                                  final_marking)[
+                                                                                                   final_marking)[
                     'alignment']
                 if cf_result is None:
                     print("alignment is none!")

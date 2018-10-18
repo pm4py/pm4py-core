@@ -1,4 +1,4 @@
-def search_and_insert_activity_classifier_attribute(log, force_activity_transition_insertion=False):
+def search_act_class_attr(log, force_activity_transition_insertion=False):
     """
     Search among classifiers expressed in the log one that is good for the process model extraction
 

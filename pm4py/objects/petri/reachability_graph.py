@@ -54,7 +54,8 @@ def construct_reachability_graph(net, initial_marking):
                 next_state = ts.TransitionSystem.State(staterep(repr(next_mark)))
                 re_gr.states.add(next_state)
             utils.add_arc_from_to(repr(t), curr_state, next_state, re_gr)
-            # If the next marking hash is not in visited, if the next marking itself is not already in active and if the next marking is different from the current one
+            # If the next marking hash is not in visited, if the next marking itself is not already in active
+            # and if the next marking is different from the current one
             if hash(next_mark) not in visited and next((mark for mark in active if hash(mark) == hash(next_mark)),
                                                        None) is None and hash(curr_mark) != hash(next_mark):
                 active.append(next_mark)

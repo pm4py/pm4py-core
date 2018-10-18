@@ -12,5 +12,6 @@ class Pm4pyImportPackageTest(unittest.TestCase):
             os.path.join("input_data", "running-example.xes"))
         self.assertEqual(len(log), 6)
 
+
 if __name__ == "__main__":
     unittest.main()

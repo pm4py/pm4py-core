@@ -5,7 +5,7 @@ from graphviz import Digraph
 
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.objects.log.util import xes
-from pm4py.util import constants
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.visualization.common.utils import *
 
 
@@ -169,7 +169,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     dfg_allowed_keys = [x[0] for x in dfg_key_value_list]
     dfg_keys = list(dfg.keys())
     for edge in dfg_keys:
-        if not edge in dfg_allowed_keys:
+        if edge not in dfg_allowed_keys:
             del dfg[edge]
 
     # calculate edges penwidth
@@ -183,7 +183,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         activities_in_dfg.add(edge[1])
 
     for act in ackeys:
-        if not act in activities_in_dfg:
+        if act not in activities_in_dfg:
             del activities_count_int[act]
 
     # assign attributes color
@@ -219,7 +219,7 @@ def apply(dfg, log=None, parameters=None, activities_count=None, measure="freque
         parameters = {}
 
     activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
     image_format = "png"
     max_no_of_edges_in_diagram = 75

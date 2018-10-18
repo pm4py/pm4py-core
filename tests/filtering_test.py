@@ -1,14 +1,16 @@
-from tests.constants import INPUT_DATA_DIR
-from pm4py.objects.log.importer.xes import factory as xes_importer
+import os
+import unittest
+
+from pm4py.algo.filtering.tracelog.attributes import attributes_filter
+from pm4py.algo.filtering.tracelog.cases import case_filter
+from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
 from pm4py.algo.filtering.tracelog.paths import paths_filter
 from pm4py.algo.filtering.tracelog.start_activities import start_activities_filter
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
-from pm4py.algo.filtering.tracelog.cases import case_filter
 from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
+from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.statistics.traces.tracelog import case_statistics
-import unittest
-import os
+from tests.constants import INPUT_DATA_DIR
+
 
 class LogFilteringTest(unittest.TestCase):
     def test_logfiltering_filtering1(self):
@@ -52,11 +54,13 @@ class LogFilteringTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         input_log = os.path.join(INPUT_DATA_DIR, "running-example.xes")
         log = xes_importer.import_log(input_log)
+        considered_variant = "register request,examine casually,check ticket,decide,reinitiate request"
+        considered_variant = considered_variant + ",examine thoroughly,check ticket,decide,pay compensation"
         log1 = variants_module.apply(log, [
-            "register request,examine casually,check ticket,decide,reinitiate request,examine thoroughly,check ticket,decide,pay compensation"],
+            considered_variant],
                                      parameters={"positive": False})
         log2 = variants_module.apply(log, [
-            "register request,examine casually,check ticket,decide,reinitiate request,examine thoroughly,check ticket,decide,pay compensation"],
+            considered_variant],
                                      parameters={"positive": True})
         del log1
         del log2

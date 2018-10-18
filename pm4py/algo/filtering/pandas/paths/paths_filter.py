@@ -1,8 +1,9 @@
 import pandas as pd
 
-from pm4py.algo.filtering.common import filtering_constants
-from pm4py.objects.log.util import xes
-from pm4py.util import constants
+from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
+from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 
 
 def apply(df, paths, parameters=None):
@@ -19,7 +20,8 @@ def apply(df, paths, parameters=None):
         Possible parameters of the algorithm, including:
             case_id_glue -> Case ID column in the dataframe
             attribute_key -> Attribute we want to filter
-            positive -> Specifies if the filter should be applied including traces (positive=True) or excluding traces (positive=False)
+            positive -> Specifies if the filter should be applied including traces (positive=True)
+            or excluding traces (positive=False)
     Returns
     ----------
     df
@@ -29,9 +31,9 @@ def apply(df, paths, parameters=None):
         parameters = {}
     paths = [path[0] + "," + path[1] for path in paths]
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else filtering_constants.CASE_CONCEPT_NAME
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     attribute_key = parameters[
-        constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] if constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
     filt_df = df[[case_id_glue, attribute_key]]
     filt_dif_shifted = filt_df.shift(-1)

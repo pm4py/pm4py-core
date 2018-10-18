@@ -8,7 +8,8 @@ def apply(dfg):
 
     Returns
     -------
-    :return: dictionary containing all causal relations as keys (with value inbetween -1 and 1 indicating that how strong it holds)
+    :return: dictionary containing all causal relations as keys (with value inbetween -1 and 1 indicating that
+    how strong it holds)
     """
     causal_heur = {}
     for (f, t) in dfg:

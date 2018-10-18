@@ -1,16 +1,18 @@
-from pm4py.objects.log.importer.csv import factory as csv_importer
-from pm4py.objects.log.importer.xes import factory as xes_importer
+import logging
+import os
+import unittest
+
 import pm4py.objects.log.transform as log_transform
-from pm4py.algo.discovery.inductive import factory as inductive_miner
-from pm4py.visualization.petrinet.common import visualize as pn_viz
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNameException
+from pm4py.algo.discovery.inductive import factory as inductive_miner
 from pm4py.objects import petri
+from pm4py.objects.log.importer.csv import factory as csv_importer
+from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.petri.exporter import pnml as petri_exporter
+from pm4py.visualization.petrinet.common import visualize as pn_viz
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
-import logging
-import unittest
-import os
+
 
 class InductiveMinerDFTest(unittest.TestCase):
     def obtainPetriNetThroughImdf(self, log_name):
@@ -44,8 +46,6 @@ class InductiveMinerDFTest(unittest.TestCase):
         petri_exporter.export_net(net1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         self.assertEqual(len(net1.places), len(net2.places))
-        #self.assertEqual(len(net1.transitions), len(net2.transitions))
-        #self.assertEqual(len(net1.arcs), len(net2.arcs))
         final_marking = petri.petrinet.Marking()
         for p in net1.places:
             if not p.out_arcs:
@@ -72,8 +72,6 @@ class InductiveMinerDFTest(unittest.TestCase):
         petri_exporter.export_net(net1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         self.assertEqual(len(net1.places), len(net2.places))
-        #self.assertEqual(len(net1.transitions), len(net2.transitions))
-        #self.assertEqual(len(net1.arcs), len(net2.arcs))
         final_marking = petri.petrinet.Marking()
         for p in net1.places:
             if not p.out_arcs:
@@ -114,8 +112,6 @@ class InductiveMinerDFTest(unittest.TestCase):
                 log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughImdf(log_full_path)
                 log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughImdf(log_full_path)
                 self.assertEqual(len(net1.places), len(net2.places))
-                #self.assertEqual(len(net1.transitions), len(net2.transitions))
-                #self.assertEqual(len(net1.arcs), len(net2.arcs))
                 final_marking = petri.petrinet.Marking()
                 for p in net1.places:
                     if not p.out_arcs:

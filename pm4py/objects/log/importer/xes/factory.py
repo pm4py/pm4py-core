@@ -21,7 +21,8 @@ def import_log_from_string(log_string, parameters=None, variant=ITERPARSE):
             timestamp_key -> If sort is enabled, then sort the log by using this key
             reverse_sort -> Specify in which direction the log should be sorted
             index_trace_indexes -> Specify if trace indexes should be added as event attribute for each event
-            max_no_traces_to_import -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            max_no_traces_to_import -> Specify the maximum number of traces to import from the log
+            (read in order in the XML file)
     variant
         Variant of the algorithm to use, including:
             iterparse, nonstandard
@@ -49,7 +50,8 @@ def import_log(path, parameters=None, variant=ITERPARSE):
             timestamp_key -> If sort is enabled, then sort the log by using this key
             reverse_sort -> Specify in which direction the log should be sorted
             index_trace_indexes -> Specify if trace indexes should be added as event attribute for each event
-            max_no_traces_to_import -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            max_no_traces_to_import -> Specify the maximum number of traces to import from the log
+            (read in order in the XML file)
     variant
         Variant of the algorithm to use, including:
             iterparse, nonstandard
@@ -76,7 +78,8 @@ def apply(path, parameters=None, variant=ITERPARSE):
             timestamp_key -> If sort is enabled, then sort the log by using this key
             reverse_sort -> Specify in which direction the log should be sorted
             index_trace_indexes -> Specify if trace indexes should be added as event attribute for each event
-            max_no_traces_to_import -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            max_no_traces_to_import -> Specify the maximum number of traces to import from the log
+            (read in order in the XML file)
     variant
         Variant of the algorithm to use, including:
             iterparse, nonstandard
