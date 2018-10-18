@@ -128,6 +128,7 @@ def apply(tree, parameters=None):
     """
     if parameters is None:
         parameters = {}
+    del parameters
 
     counts = Counts()
     net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))

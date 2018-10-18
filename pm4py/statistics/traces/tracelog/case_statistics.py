@@ -103,7 +103,7 @@ def get_cases_description(trace_log, parameters=None):
     return statistics_dict
 
 
-def index_tracelog_caseid(log, case_id, parameters=None):
+def index_tracelog_caseid(log, parameters=None):
     """
     Index a trace log according to case ID
 
@@ -111,8 +111,6 @@ def index_tracelog_caseid(log, case_id, parameters=None):
     -----------
     log
         Trace log object
-    case_id
-        Required case ID
     parameters
         Possible parameters of the algorithm, including:
             case id key -> Trace attribute in which the Case ID is contained

@@ -35,7 +35,6 @@ def execute_script():
                                                                       variant=variant,
                                                                       aggregation_measure=aggregation_measure)
     # we find the gviz
-    parameters_viz = {"format": "svg"}
     gviz = pn_vis_factory.apply(net, initial_marking, final_marking, variant=variant,
                                 aggregated_statistics=aggregated_statistics, parameters={"format": "svg"})
     # we show the viz on screen
