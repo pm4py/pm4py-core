@@ -1,10 +1,8 @@
 from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
 from pm4py.objects.log import transform
 from pm4py.objects.log.log import TraceLog, EventLog
-from pm4py.objects.log.util import xes
-from pm4py.util import constants
-from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
 def is_contained(trace, dt1, dt2, timestamp_key):

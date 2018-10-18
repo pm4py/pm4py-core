@@ -212,11 +212,13 @@ class Subtree(object):
             set1 = set()
             set2 = set()
 
+            LC2 = shared_constants.LOOP_CONST_2
+
             if self.activities_dir_list[0][1] > shared_constants.LOOP_CONST_1:
                 if self.activities_dir_list[0][0] in self.ingoing:
                     activ_input = list(self.ingoing[self.activities_dir_list[0][0]])
                     for act in activ_input:
-                        if not act == self.activities_dir_list[0][0] and self.activities_direction[act] < shared_constants.LOOP_CONST_2:
+                        if not act == self.activities_dir_list[0][0] and self.activities_direction[act] < LC2:
                             set2.add(act)
 
             if self.activities_dir_list[-1][1] < shared_constants.LOOP_CONST_4:
