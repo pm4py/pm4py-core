@@ -1,9 +1,11 @@
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.statistics.traces.tracelog import case_statistics as case_statistics_log
-from pm4py.statistics.traces.pandas import case_statistics as case_statistics_pd
-from pm4py.objects.log.importer.csv.versions import pandas_df_imp
-import unittest
 import os
+import unittest
+
+from pm4py.objects.log.importer.csv.versions import pandas_df_imp
+from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.statistics.traces.pandas import case_statistics as case_statistics_pd
+from pm4py.statistics.traces.tracelog import case_statistics as case_statistics_log
+
 
 class CaseManagementTest(unittest.TestCase):
     def test_casemanagementlogs(self):

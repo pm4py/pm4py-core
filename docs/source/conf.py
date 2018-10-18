@@ -14,9 +14,8 @@
 #
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('../../'))
-
-
 
 # -- Project information -----------------------------------------------------
 
@@ -29,7 +28,6 @@ version = ''
 # The full version, including alpha/beta/rc tags
 release = ''
 
-
 # -- General configuration ---------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -41,9 +39,9 @@ release = ''
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-	'sphinx.ext.viewcode',
+    'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-	'sphinx.ext.napoleon'
+    'sphinx.ext.napoleon'
 ]
 
 autodoc_mock_imports = ["cvxopt"]
@@ -77,7 +75,6 @@ exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
-
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -113,7 +110,6 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'pm4pydoc'
 
-
 # -- Options for LaTeX output ------------------------------------------------
 
 latex_elements = {
@@ -142,7 +138,6 @@ latex_documents = [
      'PADS @ RWTH / PADS @ Fraunhofer FIT', 'manual'),
 ]
 
-
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
@@ -151,7 +146,6 @@ man_pages = [
     (master_doc, 'pm4py', 'pm4py Documentation',
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output ----------------------------------------------
 
@@ -163,6 +157,5 @@ texinfo_documents = [
      author, 'pm4py', 'One line description of project.',
      'Miscellaneous'),
 ]
-
 
 # -- Extension configuration -------------------------------------------------
