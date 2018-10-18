@@ -1,6 +1,7 @@
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.statistics.traces.pandas import case_statistics
+from pm4py.statistics.traces.pandas.case_statistics import get_variants_df
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 
 
@@ -77,8 +78,8 @@ def apply(df, admitted_variants, parameters=None):
     case_id_glue = parameters[
         PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     positive = parameters["positive"] if "positive" in parameters else True
-    variants_df = parameters["variants_df"] if "variants_df" in parameters else case_statistics.get_variants_df(df,
-                                                                                                                parameters=parameters)
+    variants_df = parameters["variants_df"] if "variants_df" in parameters else get_variants_df(df,
+                                                                                                parameters=parameters)
     variants_df = variants_df[variants_df["variant"].isin(admitted_variants)]
     i1 = df.set_index(case_id_glue).index
     i2 = variants_df.index

@@ -1,8 +1,7 @@
+from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.petrinet import factory as pn_vis_factory
-from pm4py.algo.conformance.tokenreplay.versions import token_replay
-import time
 
 
 def execute_script():
