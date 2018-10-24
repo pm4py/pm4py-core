@@ -64,12 +64,15 @@ def get_trace_variants(log, key=xes_util.DEFAULT_NAME_KEY):
     variant_map = dict()
     for t in log:
         variant = list(map(lambda e: e[key], t))
+        new = True
         for i in range(0, len(variants)):
             if variants[i] == variant:
                 variant_map[i].append(t)
-                continue
-        variant_map[len(variants)] = [t]
-        variants.append(variant)
+                new = False
+                break
+        if new:
+            variant_map[len(variants)] = [t]
+            variants.append(variant)
     return variants, variant_map
 
 

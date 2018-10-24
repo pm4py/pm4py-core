@@ -156,3 +156,10 @@ def variants(net, initial_marking, final_marking):
                     active.append(next_couple)
         visited.append(hash(curr_couple[0]))
     return this_variants
+
+
+def get_transition_by_name(net, transition_name):
+    for t in net.transitions:
+        if t.name == transition_name:
+            return t
+    return None
