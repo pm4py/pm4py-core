@@ -11,7 +11,6 @@ if __name__ == "__main__":
     from examples import test_evaluation
     from examples import token_replay_alpha
     from examples import token_replay_imdf
-    from examples import transition_system_test
 
     print("\n\nalignment_test")
     alignment_test.execute_script()
@@ -25,5 +24,3 @@ if __name__ == "__main__":
     token_replay_alpha.execute_script()
     print("\n\ntokenReplay_imdf")
     token_replay_imdf.execute_script()
-    print("\n\ntransition_system_test")
-    transition_system_test.execute_script()
