@@ -22,7 +22,6 @@ if __name__ == "__main__":
     from tests.documentation_tests.test_doc_classifiers1 import Classifiers1DocumentationTest
     from tests.documentation_tests.test_doc_measures import DocMeasuresDocumentationTest
     from tests.etc_tests import ETCTest
-    from tests.trans_syst_tests import TransitionSystemTest
     from tests.evaluation_tests import ProcessModelEvaluationTests
 
     test1_object = Pm4pyImportPackageTest()
@@ -40,7 +39,6 @@ if __name__ == "__main__":
     test13_object = Classifiers1DocumentationTest()
     test14_object = DocMeasuresDocumentationTest()
     test17_object = ETCTest()
-    test19_object = TransitionSystemTest()
     test20_object = ProcessModelEvaluationTests()
 
     unittest.main()
