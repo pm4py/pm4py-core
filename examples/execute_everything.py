@@ -7,9 +7,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfi
 if __name__ == "__main__":
     from examples import alignment_test
     from examples import dec_treplay_imdf
-    from examples import dfg_example
     from examples import imdf_example
-    from examples import simple_visualization
     from examples import test_evaluation
     from examples import token_replay_alpha
     from examples import token_replay_imdf
@@ -19,12 +17,8 @@ if __name__ == "__main__":
     alignment_test.execute_script()
     print("\n\ndec_treplay_imdf")
     dec_treplay_imdf.execute_script()
-    print("\n\ndfgExample")
-    dfg_example.execute_script()
     print("\n\nimdf_example")
     imdf_example.execute_script()
-    print("\n\nsimple_visualization")
-    simple_visualization.execute_script()
     print("\n\ntestEvaluation")
     test_evaluation.execute_script()
     print("\n\ntokenReplay_alpha")

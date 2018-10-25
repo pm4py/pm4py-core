@@ -24,7 +24,6 @@ if __name__ == "__main__":
     from tests.etc_tests import ETCTest
     from tests.trans_syst_tests import TransitionSystemTest
     from tests.evaluation_tests import ProcessModelEvaluationTests
-    from tests.visual_test import VisualizationTest1
 
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
@@ -43,6 +42,5 @@ if __name__ == "__main__":
     test17_object = ETCTest()
     test19_object = TransitionSystemTest()
     test20_object = ProcessModelEvaluationTests()
-    test21_object = VisualizationTest1()
 
     unittest.main()
