@@ -10,6 +10,7 @@ TYPE_CORRESPONDENCE = {
     "int": xes_util.TAG_INT,
     "float": xes_util.TAG_FLOAT,
     "datetime": xes_util.TAG_DATE,
+    "Timestamp": xes_util.TAG_DATE,
     "bool": xes_util.TAG_BOOLEAN,
     "dict": xes_util.TAG_LIST
 }
@@ -46,9 +47,12 @@ def get_xes_attr_value(attr_value, attr_type_xes):
 
     """
     if attr_type_xes == xes_util.TAG_DATE:
-        default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + attr_value.strftime('%z')[
-                                                                               0:3] + ":" + attr_value.strftime('%z')[
-                                                                                            3:5]
+        if attr_value.strftime('%z') and len(attr_value.strftime('%z')) > 5:
+            default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + attr_value.strftime('%z')[
+                                                                                   0:3] + ":" + attr_value.strftime('%z')[
+                                                                                                3:5]
+        else:
+            default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
         return default_date_repr.replace(" ", "T")
     return str(attr_value)
 
