@@ -67,7 +67,7 @@ def import_log(path, parameters=None):
     if "timest_format" in parameters:
         timest_format = parameters["timest_format"]
     if "timest_columns" in parameters:
-        timest_columns = parameters["timest_format"]
+        timest_columns = parameters["timest_columns"]
 
     df = import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort, sort_field=sort_field,
                                     timest_format=timest_format, timest_columns=timest_columns)
@@ -77,3 +77,4 @@ def import_log(path, parameters=None):
         event_log.insert_event_index_as_event_attribute()
 
     return event_log
+
