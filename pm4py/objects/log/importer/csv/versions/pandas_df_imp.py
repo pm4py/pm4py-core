@@ -77,3 +77,4 @@ def import_log(path, parameters=None):
         event_log.insert_event_index_as_event_attribute()
 
     return event_log
+
