@@ -16,7 +16,7 @@ References
 import time
 from itertools import zip_longest
 
-from pm4py import util as pmutil
+from pm4py import util as pm_util
 from pm4py.algo.discovery.alpha.data_structures import alpha_classic_abstraction
 from pm4py.algo.discovery.alpha.utils import endpoints
 from pm4py.algo.discovery.dfg.utils import dfg_utils
@@ -33,7 +33,7 @@ def apply(trace_log, parameters=None):
 
     Parameters
     ----------
-    trace_log : :class:`pm4py.log.log.TraceLog`
+    trace_log: :class:`pm4py.log.log.TraceLog`
         Event log to use in the alpha miner, note that it should be a TraceLog!
     parameters:
         Parameters of the algorithm, including:
@@ -43,11 +43,11 @@ def apply(trace_log, parameters=None):
 
     Returns
     -------
-    net : :class:`pm4py.entities.petri.petrinet.PetriNet`
+    net: :class:`pm4py.entities.petri.petrinet.PetriNet`
         A Petri net describing the event log that is provided as an input
-    initial marking : :class:`pm4py.models.net.Marking`
+    initial marking: :class:`pm4py.models.net.Marking`
         marking object representing the initial marking
-    final marking : :class:`pm4py.models.net.Marking`
+    final marking: :class:`pm4py.models.net.Marking`
         marking object representing the final marking, not guaranteed that it is actually reachable!
 
     References
@@ -58,13 +58,13 @@ def apply(trace_log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
+    if pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
     dfg = {k: v for k, v in dfg_inst.apply(trace_log, parameters=parameters).items() if v > 0}
     start_activities = endpoints.derive_start_activities_from_tracelog(trace_log, parameters[
-        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
+        pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
     end_activities = endpoints.derive_end_activities_from_tracelog(trace_log, parameters[
-        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
+        pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
     return apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=parameters)
 
 
@@ -122,8 +122,8 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
+    if pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
 
     labels = set()
     for el in dfg:
