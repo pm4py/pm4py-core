@@ -129,6 +129,10 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
     for el in dfg:
         labels.add(el[0])
         labels.add(el[1])
+    for a in start_activities:
+        labels.add(a)
+    for a in end_activities:
+        labels.add(a)
     labels = list(labels)
 
     if start_activities is None:
