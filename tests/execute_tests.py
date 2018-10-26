@@ -21,14 +21,8 @@ if __name__ == "__main__":
     from tests.documentation_tests.test_doc_csv1 import CSV1DocumentationTest
     from tests.documentation_tests.test_doc_classifiers1 import Classifiers1DocumentationTest
     from tests.documentation_tests.test_doc_measures import DocMeasuresDocumentationTest
-    from tests.dataframe_prefilter import DataframePrefilteringTest
-    from tests.filtering_test import LogFilteringTest
     from tests.etc_tests import ETCTest
-    from tests.petri_log_gen_tests import PetriLogGeneratorTests
-    from tests.trans_syst_tests import TransitionSystemTest
     from tests.evaluation_tests import ProcessModelEvaluationTests
-    from tests.visual_test import VisualizationTest1
-    from tests.case_man_test import CaseManagementTest
 
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
@@ -44,13 +38,7 @@ if __name__ == "__main__":
     test12_object = CSV1DocumentationTest()
     test13_object = Classifiers1DocumentationTest()
     test14_object = DocMeasuresDocumentationTest()
-    test15_object = DataframePrefilteringTest()
-    test16_object = LogFilteringTest()
     test17_object = ETCTest()
-    test18_object = PetriLogGeneratorTests()
-    test19_object = TransitionSystemTest()
     test20_object = ProcessModelEvaluationTests()
-    test21_object = VisualizationTest1()
-    test22_object = CaseManagementTest()
 
     unittest.main()
