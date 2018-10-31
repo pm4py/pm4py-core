@@ -457,6 +457,13 @@ def get_connected_components(ingoing, outgoing, activities):
                 connected_components.append(outgoing_act)
             activities_considered = activities_considered.union(set(outgoing_act))
 
+    for activ in activities:
+        if activ not in activities_considered:
+            added_set = set()
+            added_set.add(activ)
+            connected_components.append(added_set)
+            activities_considered.add(activ)
+
     max_it = len(connected_components)
     for it in range(max_it - 1):
         something_changed = False
