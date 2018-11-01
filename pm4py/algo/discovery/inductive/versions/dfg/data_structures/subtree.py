@@ -132,7 +132,7 @@ class Subtree(object):
         elif has_ingoing_conn_set2:
             set2.add(act[0])
         else:
-            if preferred_set1:
+            if preferred_set1 or act[1] < shared_constants.SEQ_SET2_CONST:
                 set2.add(act[0])
             else:
                 set1.add(act[0])
@@ -251,10 +251,18 @@ class Subtree(object):
         Detect generally a cut in the graph (applying all the algorithms)
         """
         if self.dfg:
+            #print("\n\n")
             par_cut = self.detect_parallel_cut()
             conc_cut = self.detect_concurrent_cut()
             seq_cut = self.detect_sequential_cut()
             loop_cut = self.detect_loop_cut()
+
+            #print("rec_depth=",self.rec_depth)
+            #print("activities=",self.activities)
+            #print("par_cut=",par_cut)
+            #print("conc_cut=",conc_cut)
+            #print("seq_cut=",seq_cut)
+            #print("loop_cut=",loop_cut)
 
             if par_cut[0]:
                 union_acti_comp = set()
