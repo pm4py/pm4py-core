@@ -98,7 +98,7 @@ class Subtree(object):
 
         self.detect_cut(second_iteration=second_iteration)
 
-    def determine_best_set_sequential(self, act, set1, set2):
+    def determine_best_set_sequential(self, act, set1, set2, preferred_set1):
         """
         Determine best set to assign the current activity
 
@@ -110,6 +110,8 @@ class Subtree(object):
             First set of attributes
         set2
             Second set of attributes
+        preferred_set1
+            Boolean value that decides if activities goes preferrely in set1 or in set2
         """
         has_outgoing_conn_set1 = False
         if act[0] in self.outgoing:
@@ -130,7 +132,10 @@ class Subtree(object):
         elif has_ingoing_conn_set2:
             set2.add(act[0])
         else:
-            set2.add(act[0])
+            if preferred_set1 or act[1] < shared_constants.SEQ_SET2_CONST:
+                set2.add(act[0])
+            else:
+                set1.add(act[0])
 
         return [True, set1, set2]
 
@@ -143,16 +148,20 @@ class Subtree(object):
 
         if len(self.activities_dir_list) > 0:
             set1.add(self.activities_dir_list[0][0])
-        if len(self.activities_dir_list) > -1:
             if not (self.activities_dir_list[0][0] in self.ingoing and self.activities_dir_list[-1][0] in self.ingoing[self.activities_dir_list[0][0]]):
                 set2.add(self.activities_dir_list[-1][0])
             else:
                 return [False, [], []]
-        for i in range(1, len(self.activities_dir_list) - 1):
-            act = self.activities_dir_list[i]
-            ret, set1, set2 = self.determine_best_set_sequential(act, set1, set2)
-            if ret is False:
-                return [False, [], []]
+
+            preferred_set1 = abs(self.activities_dir_list[0][1]) > abs(self.activities_dir_list[-1][1])
+
+            for i in range(1, len(self.activities_dir_list) - 1):
+                act = self.activities_dir_list[i]
+                ret, set1, set2 = self.determine_best_set_sequential(act, set1, set2, preferred_set1)
+                if ret is False:
+                    return [False, [], []]
+        else:
+            return [False, [], []]
 
         if len(set1) > 0 and len(set2) > 0:
             if not set1 == set2:
@@ -242,10 +251,18 @@ class Subtree(object):
         Detect generally a cut in the graph (applying all the algorithms)
         """
         if self.dfg:
+            #print("\n\n")
             par_cut = self.detect_parallel_cut()
             conc_cut = self.detect_concurrent_cut()
             seq_cut = self.detect_sequential_cut()
             loop_cut = self.detect_loop_cut()
+
+            #print("rec_depth=",self.rec_depth)
+            #print("activities=",self.activities)
+            #print("par_cut=",par_cut)
+            #print("conc_cut=",conc_cut)
+            #print("seq_cut=",seq_cut)
+            #print("loop_cut=",loop_cut)
 
             if par_cut[0]:
                 union_acti_comp = set()
