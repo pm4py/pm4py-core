@@ -179,16 +179,26 @@ class Subtree(object):
         conn_components
             Connected components
         """
+        count_tot = 0
+        count_neg = 0
         for i in range(len(conn_components)):
             conn1 = conn_components[i]
             for j in range(i + 1, len(conn_components)):
                 conn2 = conn_components[j]
                 for act1 in conn1:
                     for act2 in conn2:
+                        count_tot = count_tot + 1
                         if not ((act1 in self.outgoing and act2 in self.outgoing[act1]) and (
                                 act1 in self.ingoing and act2 in self.ingoing[act1])):
-                            return False
-        return True
+                            count_neg = count_neg + 1
+
+        #print("count_tot=",count_tot)
+        #print("count_neg=",count_neg)
+
+        if count_neg <= shared_constants.PAR_CUT_CONSTANT * count_tot:
+            return True
+
+        return False
 
     def detect_concurrent_cut(self):
         """
@@ -206,7 +216,7 @@ class Subtree(object):
         """
         Detects parallel cut
         """
-        conn_components = get_connected_components(self.negated_ingoing, self.negated_outgoing, self.activities)
+        conn_components = get_connected_components(self.negated_ingoing, self.negated_outgoing, self.activities, force_insert_missing_acti=False)
 
         if len(conn_components) > 1:
             if self.check_par_cut(conn_components):

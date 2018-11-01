@@ -421,7 +421,7 @@ def get_activities_self_loop(dfg):
     return self_loop_act
 
 
-def get_connected_components(ingoing, outgoing, activities):
+def get_connected_components(ingoing, outgoing, activities, force_insert_missing_acti=True):
     """
     Get connected components in the DFG graph
 
@@ -433,6 +433,8 @@ def get_connected_components(ingoing, outgoing, activities):
         Outgoing attributes
     activities
         Activities to consider
+    force_insert_missing_acti
+        Force the insertion of a missing activity
     """
     activities_considered = set()
 
@@ -457,12 +459,13 @@ def get_connected_components(ingoing, outgoing, activities):
                 connected_components.append(outgoing_act)
             activities_considered = activities_considered.union(set(outgoing_act))
 
-    for activ in activities:
-        if activ not in activities_considered:
-            added_set = set()
-            added_set.add(activ)
-            connected_components.append(added_set)
-            activities_considered.add(activ)
+    if force_insert_missing_acti:
+        for activ in activities:
+            if activ not in activities_considered:
+                added_set = set()
+                added_set.add(activ)
+                connected_components.append(added_set)
+                activities_considered.add(activ)
 
     max_it = len(connected_components)
     for it in range(max_it - 1):
