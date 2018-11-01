@@ -132,7 +132,7 @@ class Subtree(object):
         elif has_ingoing_conn_set2:
             set2.add(act[0])
         else:
-            if preferred_set1 or act[1] < shared_constants.SEQ_SET2_CONST:
+            if (preferred_set1 or act[1] < shared_constants.SEQ_SET2_CONST) and not (act[1] > shared_constants.SEQ_SET1_CONST):
                 set2.add(act[0])
             else:
                 set1.add(act[0])
@@ -147,6 +147,8 @@ class Subtree(object):
         set2 = set()
 
         if len(self.activities_dir_list) > 0:
+            #print(self.activities_dir_list)
+
             set1.add(self.activities_dir_list[0][0])
             if not (self.activities_dir_list[0][0] in self.ingoing and self.activities_dir_list[-1][0] in self.ingoing[self.activities_dir_list[0][0]]):
                 set2.add(self.activities_dir_list[-1][0])
@@ -263,6 +265,8 @@ class Subtree(object):
             #print("conc_cut=",conc_cut)
             #print("seq_cut=",seq_cut)
             #print("loop_cut=",loop_cut)
+
+            #input()
 
             if par_cut[0]:
                 union_acti_comp = set()

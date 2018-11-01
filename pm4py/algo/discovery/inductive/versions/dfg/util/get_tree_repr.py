@@ -82,29 +82,16 @@ def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False):
         child_tree = final_tree_repr
     elif spec_tree_struct.detected_cut == "sequential":
         final_tree_repr.operator = tree_constants.SEQUENTIAL_OPERATOR
-        if need_loop_on_subtree:
-            child_tree = final_tree_repr
-        else:
-            child_tree = final_tree_repr
+        child_tree = final_tree_repr
     elif spec_tree_struct.detected_cut == "loopCut":
         final_tree_repr.operator = tree_constants.LOOP_OPERATOR
-        child_tree = ProcessTree()
-        child_tree.operator = tree_constants.SEQUENTIAL_OPERATOR
-        rec_depth = rec_depth + 1
-        child_tree.rec_depth = rec_depth
-        final_tree_repr.add_subtree(child_tree)
+        child_tree = final_tree_repr
     elif spec_tree_struct.detected_cut == "concurrent":
         final_tree_repr.operator = tree_constants.EXCLUSIVE_OPERATOR
-        if need_loop_on_subtree:
-            child_tree = final_tree_repr
-        else:
-            child_tree = final_tree_repr
+        child_tree = final_tree_repr
     elif spec_tree_struct.detected_cut == "parallel":
         final_tree_repr.operator = tree_constants.PARALLEL_OPERATOR
-        if need_loop_on_subtree:
-            child_tree = final_tree_repr
-        else:
-            child_tree = final_tree_repr
+        child_tree = final_tree_repr
 
     if spec_tree_struct.detected_cut == "base_concurrent" or spec_tree_struct.detected_cut == "flower":
         for act in spec_tree_struct.activities:
@@ -114,16 +101,12 @@ def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False):
             # add skip transition
             child_tree.add_transition(get_new_hidden_trans(counts, type_trans="skip"))
     if spec_tree_struct.detected_cut == "sequential" or spec_tree_struct.detected_cut == "loopCut":
-        child0, counts = get_repr(spec_tree_struct.children[0], rec_depth + 1, counts,
-                                  must_add_skip=verify_skip_transition_necessity(False,
-                                                                                 spec_tree_struct.initial_dfg,
-                                                                                 spec_tree_struct.activities))
-        child1, counts = get_repr(spec_tree_struct.children[1], rec_depth + 1, counts,
-                                  must_add_skip=verify_skip_transition_necessity(False,
-                                                                                 spec_tree_struct.initial_dfg,
-                                                                                 spec_tree_struct.activities))
-        child_tree.add_subtree(child0)
-        child_tree.add_subtree(child1)
+        for ch in spec_tree_struct.children:
+            child, counts = get_repr(ch, rec_depth + 1, counts,
+                                      must_add_skip=verify_skip_transition_necessity(False,
+                                                                                     ch.initial_dfg,
+                                                                                     ch.activities))
+            child_tree.add_subtree(child)
     if spec_tree_struct.detected_cut == "parallel":
         m_add_skip = verify_skip_for_parallel_cut(spec_tree_struct.dfg, spec_tree_struct.children)
         for child in spec_tree_struct.children:
