@@ -127,3 +127,24 @@ def derive_and_lift_trace_attributes_from_event_attributes(log, ignore=None, ret
                     del e[key]
 
     return log
+
+
+def add_artificial_start_end_to_trace(trace, s='[start>', e='[end]'):
+    '''
+    Adds an artificial start and end to the given trace. Note: doesn't copy the trace.
+    If the start (resp. end) symbol is None, it will not be added.
+
+    Parameters
+    ----------
+    trace: input trace
+    s: start symbol
+    e: end symbol
+
+    Returns
+    -------
+    trace with the start and end symbol appended.
+    '''
+    if s is not None:
+        return [s] + trace + [e] if e is not None else [s] + trace
+    else:
+        return trace + [e] if e is not None else trace
