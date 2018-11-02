@@ -37,6 +37,6 @@ setup(
     url='http://www.pm4py.org/',
     license='GPL 3.0',
     author='https://pm4py.github.io/team.html',
-    author_email='s.j.v.zelst@pads.rwth-aachen.de',
+    author_email='pm4py@pads.rwth-aachen.de',
     description='Process Mining for Python'
 )
