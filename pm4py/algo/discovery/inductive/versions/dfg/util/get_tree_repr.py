@@ -43,7 +43,7 @@ def check_loop_need(spec_tree_struct):
     return need_loop_on_subtree
 
 
-def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False):
+def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False, contains_empty_traces=False):
     """
     Get the representation of a process tree
 
@@ -57,16 +57,21 @@ def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False):
         Count object (keep track of the number of nodes (transitions) added to the tree
     must_add_skip
         Boolean value that indicate if we are forced to add the skip
+    contains_empty_traces
+        Boolean value that is True if the event log from which the DFG has been extracted contains empty traces
 
     Returns
     -----------
     final_tree_repr
         Representation of the tree (could be printed, transformed, viewed)
     """
+    need_loop_on_subtree = check_loop_need(spec_tree_struct)
+
     final_tree_repr = ProcessTree()
     final_tree_repr.rec_depth = rec_depth
 
-    need_loop_on_subtree = check_loop_need(spec_tree_struct)
+    if contains_empty_traces and rec_depth == 0:
+        rec_depth = rec_depth + 1
 
     child_tree = ProcessTree()
     if spec_tree_struct.detected_cut == "flower" or (
@@ -120,5 +125,14 @@ def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False):
                                                                 spec_tree_struct.activities)
             child_final, counts = get_repr(child, rec_depth + 1, counts, must_add_skip=m_add_skip_final)
             child_tree.add_subtree(child_final)
+
+    if contains_empty_traces and rec_depth == 1:
+        master_tree_repr = ProcessTree()
+        master_tree_repr.rec_depth = 0
+        master_tree_repr.operator = tree_constants.EXCLUSIVE_OPERATOR
+        master_tree_repr.add_transition(get_new_hidden_trans(counts, type_trans="skip"))
+        master_tree_repr.add_subtree(final_tree_repr)
+
+        return master_tree_repr, counts
 
     return final_tree_repr, counts
