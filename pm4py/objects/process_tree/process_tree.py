@@ -73,7 +73,7 @@ class ProcessTree(object):
         trace = concurrent_trace.get_trace()
         return trace
 
-    def generate_log(self, no_traces=3):
+    def generate_log(self, no_traces=100):
         """
         Generate a log with the given number of traces from the current process tree
 
