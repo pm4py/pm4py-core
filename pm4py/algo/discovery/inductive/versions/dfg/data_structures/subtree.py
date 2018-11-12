@@ -132,7 +132,8 @@ class Subtree(object):
         elif has_ingoing_conn_set2:
             set2.add(act[0])
         else:
-            if (preferred_set1 or act[1] < shared_constants.SEQ_SET2_CONST) and not (act[1] > shared_constants.SEQ_SET1_CONST):
+            if (preferred_set1 or act[1] < shared_constants.SEQ_SET2_CONST) and not (
+                    act[1] > shared_constants.SEQ_SET1_CONST):
                 set2.add(act[0])
             else:
                 set1.add(act[0])
@@ -147,10 +148,11 @@ class Subtree(object):
         set2 = set()
 
         if len(self.activities_dir_list) > 0:
-            #print(self.activities_dir_list)
+            # print(self.activities_dir_list)
 
             set1.add(self.activities_dir_list[0][0])
-            if not (self.activities_dir_list[0][0] in self.ingoing and self.activities_dir_list[-1][0] in self.ingoing[self.activities_dir_list[0][0]]):
+            if not (self.activities_dir_list[0][0] in self.ingoing and self.activities_dir_list[-1][0] in self.ingoing[
+                self.activities_dir_list[0][0]]):
                 set2.add(self.activities_dir_list[-1][0])
             else:
                 return [False, [], []]
@@ -192,8 +194,8 @@ class Subtree(object):
                                 act1 in self.ingoing and act2 in self.ingoing[act1])):
                             count_neg = count_neg + 1
 
-        #print("count_tot=",count_tot)
-        #print("count_neg=",count_neg)
+        # print("count_tot=",count_tot)
+        # print("count_neg=",count_neg)
 
         if count_neg <= shared_constants.PAR_CUT_CONSTANT * count_tot:
             return True
@@ -216,7 +218,8 @@ class Subtree(object):
         """
         Detects parallel cut
         """
-        conn_components = get_connected_components(self.negated_ingoing, self.negated_outgoing, self.activities, force_insert_missing_acti=False)
+        conn_components = get_connected_components(self.negated_ingoing, self.negated_outgoing, self.activities,
+                                                   force_insert_missing_acti=False)
 
         if len(conn_components) > 1:
             if self.check_par_cut(conn_components):
@@ -235,6 +238,8 @@ class Subtree(object):
 
             LC2 = shared_constants.LOOP_CONST_2
 
+            #print("self.activities_dir_list=", self.activities_dir_list)
+
             if self.activities_dir_list[0][1] > shared_constants.LOOP_CONST_1:
                 if self.activities_dir_list[0][0] in self.ingoing:
                     activ_input = list(self.ingoing[self.activities_dir_list[0][0]])
@@ -242,7 +247,10 @@ class Subtree(object):
                         if not act == self.activities_dir_list[0][0] and self.activities_direction[act] < LC2:
                             set2.add(act)
 
-            if self.activities_dir_list[-1][1] < shared_constants.LOOP_CONST_4:
+            # the constant LOOP_CONST_4 has been revised; moreover it is checked if the 'in-strength' of the exit
+            # activity is greater than the 'out-strength' of the any activity in the graph
+            if self.activities_dir_list[-1][1] < shared_constants.LOOP_CONST_4 and abs(
+                    self.activities_dir_list[-1][1]) > abs(self.activities_dir_list[0][1]):
                 set2.add(self.activities_dir_list[-1][0])
 
             if len(set2) > 0:
@@ -263,7 +271,7 @@ class Subtree(object):
         Detect generally a cut in the graph (applying all the algorithms)
         """
         if self.dfg:
-            #print("\n\n")
+            # print("\n\n")
             par_cut = self.detect_parallel_cut()
             conc_cut = self.detect_concurrent_cut()
             seq_cut = self.detect_sequential_cut()
@@ -276,7 +284,7 @@ class Subtree(object):
             #print("seq_cut=",seq_cut)
             #print("loop_cut=",loop_cut)
 
-            #input()
+            # input()
 
             if par_cut[0]:
                 union_acti_comp = set()
