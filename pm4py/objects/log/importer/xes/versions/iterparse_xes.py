@@ -162,7 +162,12 @@ def import_log(filename, parameters=None):
                 if log is None:
                     raise SyntaxError('classifier found outside of <log> tag')
                 if elem.get(log_lib.util.xes.KEY_KEYS) is not None:
-                    log.classifiers[elem.get(log_lib.util.xes.KEY_NAME)] = elem.get(log_lib.util.xes.KEY_KEYS).split()
+                    classifier_value = elem.get(log_lib.util.xes.KEY_KEYS)
+                    if "'" in classifier_value:
+                        log.classifiers[elem.get(log_lib.util.xes.KEY_NAME)] = [x for x in classifier_value.split("'")
+                                                                                if x.strip()]
+                    else:
+                        log.classifiers[elem.get(log_lib.util.xes.KEY_NAME)] = classifier_value.split()
                 continue
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_LOG):
