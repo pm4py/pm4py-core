@@ -1,4 +1,5 @@
 from pm4py.objects.log.util import xes as xes_util
+from pm4py.objects.log import log
 
 
 # TODO: we can do some instance checking and then support both trace level and event level logs..
@@ -127,3 +128,11 @@ def derive_and_lift_trace_attributes_from_event_attributes(log, ignore=None, ret
                     del e[key]
 
     return log
+
+
+def add_artficial_start_and_end(trace_log, start='[start>', end='[end]', activity_key=xes_util.DEFAULT_NAME_KEY):
+    for trace in trace_log:
+        trace.insert(0, log.Event({activity_key: start}))
+        trace.append(log.Event({activity_key: end}))
+    return trace_log
+
