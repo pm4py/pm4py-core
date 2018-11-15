@@ -169,6 +169,9 @@ class Trace(Sequence):
     def count(self, x):
         return self._list.count(x)
 
+    def insert(self, i, x):
+        self._list.insert(i, x)
+
     def append(self, x):
         self._list.append(x)
 
