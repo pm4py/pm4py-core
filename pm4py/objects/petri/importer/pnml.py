@@ -74,7 +74,7 @@ def import_net(input_file_path):
                         for child3 in child2:
                             if child3.tag == "text":
                                 number = int(child3.text)
-                places_dict[place_id] = petri.petrinet.PetriNet.Place(place_name)
+                places_dict[place_id] = petri.petrinet.PetriNet.Place(place_id)
                 net.places.add(places_dict[place_id])
                 if number > 0:
                     marking[places_dict[place_id]] = number
