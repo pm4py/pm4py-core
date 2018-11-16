@@ -1,6 +1,6 @@
 from pm4py.objects.random_variables.normal.random_variable import Normal
 from pm4py.objects.random_variables.uniform.random_variable import Uniform
-
+from pm4py.objects.random_variables.constant0.random_variable import Constant0
 
 class RandomVariable(object):
     def __init__(self):
@@ -88,11 +88,13 @@ class RandomVariable(object):
         else:
             N = Normal()
             U = Uniform()
+            C0 = Constant0()
             N.calculate_parameters(values)
             U.calculate_parameters(values)
             likelihoods = []
             likelihoods.append([N, N.calculate_loglikelihood(values)])
             likelihoods.append([U, U.calculate_loglikelihood(values)])
+            likelihoods.append([C0, C0.calculate_loglikelihood(values)])
             likelihoods = sorted(likelihoods, key=lambda x: x[1], reverse=True)
 
             if debug_mode:

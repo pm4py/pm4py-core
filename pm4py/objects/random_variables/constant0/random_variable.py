@@ -1,25 +1,22 @@
-from scipy.stats import uniform
+from pm4py.objects.random_variables.uniform.random_variable import Uniform
 import numpy as np
 import sys
 
 
-class Uniform(object):
+class Constant0(Uniform):
     """
-    Describes an uniform variable
+    Describes a constant0-equal-to-0 random variable
     """
-    def __init__(self, loc=0, scale=1):
+    def __init__(self):
         """
         Constructor
 
         Parameters
-        -----------
-        loc
-            Start of the interval
-        scale
-            Scale of the interval
+        ----------
+        value
+            Constant value of the distribution
         """
-        self.loc = loc
-        self.scale = scale
+        Uniform.__init__(self, loc=0, scale=0)
 
     def read_from_string(self, distribution_parameters):
         """
@@ -30,8 +27,7 @@ class Uniform(object):
         distribution_parameters
             Current distribution parameters as exported on the Petri net
         """
-        self.loc = distribution_parameters.split(";")[0]
-        self.scale = distribution_parameters.split(";")[0]
+        return None
 
     def get_transition_type(self):
         """
@@ -42,7 +38,7 @@ class Uniform(object):
         transition_type
             String representing the type of the transition
         """
-        return "TIMED"
+        return "IMMEDIATE"
 
     def get_distribution_type(self):
         """
@@ -53,7 +49,7 @@ class Uniform(object):
         distribution_type
             String representing the distribution type
         """
-        return "UNIFORM"
+        return "IMMEDIATE"
 
     def get_distribution_parameters(self):
         """
@@ -64,9 +60,20 @@ class Uniform(object):
         distribution_parameters
             String representing distribution parameters
         """
-        return str(self.loc) + ";" + str(self.scale)
+        return None
 
-    def calculate_loglikelihood(self, values):
+    def get_value(self):
+        """
+        Get a random value following the distribution
+
+        Returns
+        -----------
+        value
+            Value obtained following the distribution
+        """
+        return 0
+
+    def calculate_loglikelihood(self, values, tol=0.0001):
         """
         Calculate log likelihood
 
@@ -80,35 +87,10 @@ class Uniform(object):
         likelihood
             Log likelihood that the values follows the distribution
         """
-        if len(values) > 0:
-            sum = 0
-            for value in values:
-                sum = sum + np.log(uniform.pdf(value,self.loc,self.scale))
-            return sum
+        values_0 = [x for x in values if abs(x)<tol]
+        if len(values) == len(values_0):
+            return sys.float_info.max
         return -sys.float_info.max
-
-    def calculate_parameters(self, values):
-        """
-        Calculate parameters of the current distribution
-
-        Parameters
-        -----------
-        values
-            Empirical values to work on
-        """
-        if len(values) > 0:
-            self.loc, self.scale = uniform.fit(values)
-
-    def get_value(self):
-        """
-        Get a random value following the distribution
-
-        Returns
-        -----------
-        value
-            Value obtained following the distribution
-        """
-        return uniform.rvs(self.loc, self.scale)
 
     def __str__(self):
         """
@@ -119,7 +101,7 @@ class Uniform(object):
         repr
             Representation of the current object
         """
-        return self.get_distribution_type() + " " + self.get_distribution_parameters()
+        return self.get_distribution_type()
 
     def __repr__(self):
         """
@@ -130,4 +112,4 @@ class Uniform(object):
         repr
             Representation of the current object
         """
-        return self.get_distribution_type() + " " + self.get_distribution_parameters()
+        return self.get_distribution_type()
