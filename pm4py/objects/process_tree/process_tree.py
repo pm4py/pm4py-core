@@ -1,6 +1,8 @@
 from pm4py.objects.process_tree import tree_constants
 from pm4py.objects.process_tree.trace_generation.concurrent_trace import ConcurrentTrace
 from pm4py.objects.log.log import TraceLog
+from copy import copy
+
 
 class ProcessTree(object):
     def __init__(self):
@@ -68,9 +70,12 @@ class ProcessTree(object):
         trace
             Trace of trace log object
         """
+        this_rec_depth = copy(self.rec_depth)
+        self.rec_depth = 0
         concurrent_trace = ConcurrentTrace()
         self.node_object.generate_events_trace(concurrent_trace)
         trace = concurrent_trace.get_trace()
+        self.rec_depth = this_rec_depth
         return trace
 
     def generate_log(self, no_traces=100):
