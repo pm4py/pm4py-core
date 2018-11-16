@@ -16,6 +16,9 @@ class InductiveMinerDFTest(unittest.TestCase):
         tree = inductive_miner.apply_tree(log)
         gviz = pt_vis_factory.apply(tree)
         del gviz
+        # test log generation
+        log = tree.generate_log()
+        del log
 
     def test_tree_receipt(self):
         # to avoid static method warnings in tests,
@@ -25,6 +28,9 @@ class InductiveMinerDFTest(unittest.TestCase):
         tree = inductive_miner.apply_tree(log)
         gviz = pt_vis_factory.apply(tree)
         del gviz
+        # test log generation
+        log = tree.generate_log()
+        del log
 
 
 if __name__ == "__main__":

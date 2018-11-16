@@ -1,5 +1,6 @@
 from pm4py.objects.process_tree import tree_constants
-
+from pm4py.objects.process_tree.trace_generation.concurrent_trace import ConcurrentTrace
+from pm4py.objects.log.log import TraceLog
 
 class ProcessTree(object):
     def __init__(self):
@@ -12,6 +13,8 @@ class ProcessTree(object):
 
         self.operator = ""
         self.children = []
+
+        self.node_object = None
 
     def __repr__(self):
         """
@@ -42,6 +45,49 @@ class ProcessTree(object):
             ret_list.append(")")
 
         return "".join(ret_list)
+
+    def set_operator(self, operator):
+        """
+        Set operator for the current subtree
+
+        Parameters
+        -----------
+        operator
+            Operator to set
+        """
+        self.operator = operator
+
+        self.node_object = tree_constants.MAPPING[self.operator](self)
+
+    def generate_trace(self):
+        """
+        Generate a trace out of the current process tree
+
+        Returns
+        ---------
+        trace
+            Trace of trace log object
+        """
+        concurrent_trace = ConcurrentTrace()
+        self.node_object.generate_events_trace(concurrent_trace)
+        trace = concurrent_trace.get_trace()
+        return trace
+
+    def generate_log(self, no_traces=100):
+        """
+        Generate a log with the given number of traces from the current process tree
+
+        Returns
+        ----------
+        log
+            Trace log whose traces follow the process tree
+        """
+        log = TraceLog()
+
+        for i in range(no_traces):
+            log.append(self.generate_trace())
+
+        return log
 
     def add_subtree(self, subtree):
         """
