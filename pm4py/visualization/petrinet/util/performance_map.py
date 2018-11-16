@@ -43,7 +43,7 @@ def calculate_annotation_for_trace(trace, initial_marking, act_trans, activity_k
     for z in range(len(act_trans)):
         trans = act_trans[z]
         if trans not in annotations_places_trans:
-            annotations_places_trans[trans] = {"count": 0}
+            annotations_places_trans[trans] = {"count": 0, "performance": []}
             annotations_places_trans[trans]["count"] = annotations_places_trans[trans]["count"] + 1
 
         new_marking = semantics.weak_execute(trans, marking)
@@ -60,13 +60,33 @@ def calculate_annotation_for_trace(trace, initial_marking, act_trans, activity_k
             current_trace_index = j
             if trans.label == trace[j][activity_key]:
                 j = j + 1
+
+        in_arc_indexes = [trace_place_stats[arc.source][0] for arc in trans.in_arcs if trace_place_stats[arc.source]]
+        if in_arc_indexes:
+            min_in_arc_indexes = min(in_arc_indexes)
+            max_in_arc_indexes = max(in_arc_indexes)
+        else:
+            min_in_arc_indexes = None
+            max_in_arc_indexes = None
+        performance_for_this_trans_execution = None
+        performance_for_this_trans_execution = []
+
         for arc in trans.in_arcs:
             source_place = arc.source
             if arc not in annotations_arcs:
                 annotations_arcs[arc] = {"performance": [], "count": 0}
                 annotations_arcs[arc]["count"] = annotations_arcs[arc]["count"] + 1
             if source_place in trace_place_stats and trace_place_stats[source_place]:
-                annotations_arcs[arc]["performance"].append([current_trace_index, trace_place_stats[source_place][0]])
+                if trans.label:
+                    annotations_arcs[arc]["performance"].append(
+                        [current_trace_index, trace_place_stats[source_place][0]])
+                    performance_for_this_trans_execution.append(
+                        [[current_trace_index, trace_place_stats[source_place][0]],
+                         current_trace_index - trace_place_stats[source_place][0]])
+                elif min_in_arc_indexes:
+                    annotations_arcs[arc]["performance"].append([current_trace_index, current_trace_index])
+                    performance_for_this_trans_execution.append([[current_trace_index, current_trace_index], 0])
+
                 del trace_place_stats[source_place][0]
         for arc in trans.out_arcs:
             target_place = arc.target
@@ -75,7 +95,16 @@ def calculate_annotation_for_trace(trace, initial_marking, act_trans, activity_k
                 annotations_arcs[arc]["count"] = annotations_arcs[arc]["count"] + 1
             if target_place not in trace_place_stats:
                 trace_place_stats[target_place] = []
-            trace_place_stats[target_place].append(current_trace_index)
+
+            if trans.label:
+                trace_place_stats[target_place].append(current_trace_index)
+            elif max_in_arc_indexes:
+                trace_place_stats[target_place].append(max_in_arc_indexes)
+
+        if performance_for_this_trans_execution:
+            performance_for_this_trans_execution = sorted(performance_for_this_trans_execution, key=lambda x: x[1])
+
+            annotations_places_trans[trans]["performance"].append(performance_for_this_trans_execution[0][0])
 
     return annotations_places_trans, annotations_arcs
 
@@ -116,9 +145,15 @@ def single_element_statistics(log, initial_marking, aligned_traces, variants_idx
 
         for el in annotations_places_trans:
             if el not in statistics:
-                statistics[el] = {"count": 0}
+                statistics[el] = {"count": 0, "performance": []}
             statistics[el]["count"] += annotations_places_trans[el]["count"] * len(variants_idx[variant])
-
+            if "performance" in annotations_places_trans[el]:
+                for trace_idx in variants_idx[variant]:
+                    trace = log[trace_idx]
+                    for perf_couple in annotations_places_trans[el]["performance"]:
+                        perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][
+                            timestamp_key]).total_seconds()
+                        statistics[el]["performance"].append(perf)
         for el in annotations_arcs:
             if el not in statistics:
                 statistics[el] = {"count": 0, "performance": []}
@@ -128,6 +163,7 @@ def single_element_statistics(log, initial_marking, aligned_traces, variants_idx
                 for perf_couple in annotations_arcs[el]["performance"]:
                     perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][timestamp_key]).total_seconds()
                     statistics[el]["performance"].append(perf)
+
     return statistics
 
 
