@@ -8,7 +8,7 @@ from pm4py.visualization.common.utils import *
 MAX_NO_THREADS = 1000
 
 
-def calculate_annotation_for_trace(trace, initial_marking, act_trans, activity_key):
+def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activity_key):
     """
     Calculate annotation for a trace in the variant, in order to retrieve information
     useful for calculate frequency/performance for all the traces belonging to the variant
@@ -17,6 +17,8 @@ def calculate_annotation_for_trace(trace, initial_marking, act_trans, activity_k
     -----------
     trace
         Trace
+    net
+        Petri net
     initial_marking
         Initial marking
     act_trans
@@ -40,11 +42,28 @@ def calculate_annotation_for_trace(trace, initial_marking, act_trans, activity_k
             annotations_places_trans[place] = {"count": 0}
             annotations_places_trans[place]["count"] = annotations_places_trans[place]["count"] + marking[place]
         trace_place_stats[place] = [current_trace_index] * marking[place]
+
     for z in range(len(act_trans)):
+        enabled_trans_in_marking = semantics.enabled_transitions(net, marking)
+        # print("enabled_trans_in_marking", enabled_trans_in_marking)
+
+        for trans in enabled_trans_in_marking:
+            if trans not in annotations_places_trans:
+                annotations_places_trans[trans] = {"count": 0, "performance": [], "no_of_times_enabled": 0,
+                                                   "no_of_times_activated": 0}
+            annotations_places_trans[trans]["no_of_times_enabled"] = annotations_places_trans[trans][
+                                                                         "no_of_times_enabled"] + 1
+
         trans = act_trans[z]
         if trans not in annotations_places_trans:
-            annotations_places_trans[trans] = {"count": 0, "performance": []}
-            annotations_places_trans[trans]["count"] = annotations_places_trans[trans]["count"] + 1
+            annotations_places_trans[trans] = {"count": 0, "performance": [], "no_of_times_enabled": 0,
+                                               "no_of_times_activated": 0}
+        annotations_places_trans[trans]["count"] = annotations_places_trans[trans]["count"] + 1
+        if trans not in enabled_trans_in_marking:
+            annotations_places_trans[trans]["no_of_times_enabled"] = annotations_places_trans[trans][
+                                                                         "no_of_times_enabled"] + 1
+        annotations_places_trans[trans]["no_of_times_activated"] = annotations_places_trans[trans][
+                                                                       "no_of_times_activated"] + 1
 
         new_marking = semantics.weak_execute(trans, marking)
         if not new_marking:
@@ -61,7 +80,8 @@ def calculate_annotation_for_trace(trace, initial_marking, act_trans, activity_k
             if trans.label == trace[j][activity_key]:
                 j = j + 1
 
-        in_arc_indexes = [trace_place_stats[arc.source][0] for arc in trans.in_arcs if arc.source in trace_place_stats and trace_place_stats[arc.source]]
+        in_arc_indexes = [trace_place_stats[arc.source][0] for arc in trans.in_arcs if
+                          arc.source in trace_place_stats and trace_place_stats[arc.source]]
         if in_arc_indexes:
             min_in_arc_indexes = min(in_arc_indexes)
             max_in_arc_indexes = max(in_arc_indexes)
@@ -109,7 +129,7 @@ def calculate_annotation_for_trace(trace, initial_marking, act_trans, activity_k
     return annotations_places_trans, annotations_arcs
 
 
-def single_element_statistics(log, initial_marking, aligned_traces, variants_idx, activity_key="concept:name",
+def single_element_statistics(log, net, initial_marking, aligned_traces, variants_idx, activity_key="concept:name",
                               timestamp_key="time:timestamp"):
     """
     Get single Petrinet element statistics
@@ -118,6 +138,8 @@ def single_element_statistics(log, initial_marking, aligned_traces, variants_idx
     ------------
     log
         Log
+    net
+        Petri net
     initial_marking
         Initial marking
     aligned_traces
@@ -140,13 +162,19 @@ def single_element_statistics(log, initial_marking, aligned_traces, variants_idx
     for variant in variants_idx:
         first_trace = log[variants_idx[variant][0]]
         act_trans = aligned_traces[variants_idx[variant][0]]["activated_transitions"]
-        annotations_places_trans, annotations_arcs = calculate_annotation_for_trace(first_trace, initial_marking,
+        annotations_places_trans, annotations_arcs = calculate_annotation_for_trace(first_trace, net, initial_marking,
                                                                                     act_trans, activity_key)
 
         for el in annotations_places_trans:
             if el not in statistics:
-                statistics[el] = {"count": 0, "performance": []}
+                statistics[el] = {"count": 0, "performance": [], "no_of_times_enabled": 0, "no_of_times_activated": 0}
             statistics[el]["count"] += annotations_places_trans[el]["count"] * len(variants_idx[variant])
+            if "no_of_times_enabled" in annotations_places_trans[el]:
+                statistics[el]["no_of_times_enabled"] += annotations_places_trans[el]["no_of_times_enabled"] * len(
+                    variants_idx[variant])
+                statistics[el]["no_of_times_activated"] += annotations_places_trans[el]["no_of_times_activated"] * len(
+                    variants_idx[variant])
+
             if "performance" in annotations_places_trans[el]:
                 for trace_idx in variants_idx[variant]:
                     trace = log[trace_idx]
