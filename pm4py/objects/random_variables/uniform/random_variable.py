@@ -110,6 +110,22 @@ class Uniform(object):
         """
         return uniform.rvs(self.loc, self.scale)
 
+    def get_values(self, no_values=400):
+        """
+        Get some random values following the distribution
+
+        Parameters
+        -----------
+        no_values
+            Number of values to return
+
+        Returns
+        ----------
+        values
+            Values extracted according to the probability distribution
+        """
+        return [self.get_value() for i in range(no_values)]
+
     def __str__(self):
         """
         Returns a representation of the current object

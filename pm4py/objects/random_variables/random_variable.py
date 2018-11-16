@@ -125,6 +125,23 @@ class RandomVariable(object):
         if self.random_variable is not None:
             return self.random_variable.get_value()
 
+    def get_values(self, no_values=400):
+        """
+        Get some random values following the distribution
+
+        Parameters
+        -----------
+        no_values
+            Number of values to return
+
+        Returns
+        ----------
+        values
+            Values extracted according to the probability distribution
+        """
+        if self.random_variable is not None:
+            return self.random_variable.get_values(no_values=no_values)
+
     def __str__(self):
         """
         Returns a representation of the current object

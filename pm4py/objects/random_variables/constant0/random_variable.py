@@ -73,6 +73,22 @@ class Constant0(Uniform):
         """
         return 0
 
+    def get_values(self, no_values=400):
+        """
+        Get some random values following the distribution
+
+        Parameters
+        -----------
+        no_values
+            Number of values to return
+
+        Returns
+        ----------
+        values
+            Values extracted according to the probability distribution
+        """
+        return [self.get_value() for i in range(no_values)]
+
     def calculate_loglikelihood(self, values, tol=0.0001):
         """
         Calculate log likelihood

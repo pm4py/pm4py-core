@@ -16,7 +16,7 @@ class RandomVariableTest(unittest.TestCase):
         scale = 32
         tol = 0.15
         U = Uniform(loc=loc, scale=scale)
-        values = [U.get_value() for i in range(400)]
+        values = U.get_values(no_values=400)
         R = RandomVariable()
         R.calculate_parameters(values)
         if not R.get_distribution_type() == "UNIFORM":
@@ -36,7 +36,7 @@ class RandomVariableTest(unittest.TestCase):
         sigma = 4
         tol = 0.15
         N = Normal(mu=mu, sigma=sigma)
-        values = [N.get_value() for i in range(400)]
+        values = N.get_values(no_values=400)
         R = RandomVariable()
         R.calculate_parameters(values)
         if not R.get_distribution_type() == "NORMAL":
@@ -56,7 +56,7 @@ class RandomVariableTest(unittest.TestCase):
         scale = 4
         tol = 0.2
         E = Exponential(loc=loc, scale=scale)
-        values = [E.get_value() for i in range(400)]
+        values = E.get_values(no_values=400)
         R = RandomVariable()
         R.calculate_parameters(values)
         if not R.get_distribution_type() == "EXPONENTIAL":
