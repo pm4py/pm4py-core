@@ -7,3 +7,4 @@ flask-cors
 lxml
 graphviz
 pandas
+scipy
