@@ -1,4 +1,4 @@
-from pm4py.objects.process_tree.nodes_objects import parallel as parallel_thread
+from pm4py.objects.process_tree.nodes_threads import parallel as parallel_thread
 from pm4py.objects.process_tree.nodes_objects.nodeobject import NodeObject
 
 
