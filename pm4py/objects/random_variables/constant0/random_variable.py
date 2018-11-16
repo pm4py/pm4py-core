@@ -1,9 +1,9 @@
 from pm4py.objects.random_variables.uniform.random_variable import Uniform
 import numpy as np
 import sys
+from pm4py.objects.random_variables.basic_structure import BasicStructureRandomVariable
 
-
-class Constant0(Uniform):
+class Constant0(BasicStructureRandomVariable):
     """
     Describes a constant0-equal-to-0 random variable
     """
@@ -60,7 +60,7 @@ class Constant0(Uniform):
         distribution_parameters
             String representing distribution parameters
         """
-        return None
+        return "UNDEFINED"
 
     def get_value(self):
         """

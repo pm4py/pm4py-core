@@ -1,9 +1,10 @@
 from scipy.stats import norm
 import numpy as np
 import sys
+from pm4py.objects.random_variables.basic_structure import BasicStructureRandomVariable
 
 
-class Normal(object):
+class Normal(BasicStructureRandomVariable):
     """
     Describes a normal variable
     """
@@ -32,17 +33,6 @@ class Normal(object):
         """
         self.mu = distribution_parameters.split(";")[0]
         self.sigma = distribution_parameters.split(";")[0]
-
-    def get_transition_type(self):
-        """
-        Get the type of transition associated to the current distribution
-
-        Returns
-        -----------
-        transition_type
-            String representing the type of the transition
-        """
-        return "TIMED"
 
     def get_distribution_type(self):
         """
@@ -109,41 +99,3 @@ class Normal(object):
             Value obtained following the distribution
         """
         return norm.rvs(self.mu, self.sigma)
-
-    def get_values(self, no_values=400):
-        """
-        Get some random values following the distribution
-
-        Parameters
-        -----------
-        no_values
-            Number of values to return
-
-        Returns
-        ----------
-        values
-            Values extracted according to the probability distribution
-        """
-        return [self.get_value() for i in range(no_values)]
-
-    def __str__(self):
-        """
-        Returns a representation of the current object
-
-        Returns
-        ----------
-        repr
-            Representation of the current object
-        """
-        return self.get_distribution_type() + " " + self.get_distribution_parameters()
-
-    def __repr__(self):
-        """
-        Returns a representation of the current object
-
-        Returns
-        ----------
-        repr
-            Representation of the current object
-        """
-        return self.get_distribution_type() + " " + self.get_distribution_parameters()
