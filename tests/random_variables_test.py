@@ -3,6 +3,7 @@ import unittest
 from pm4py.objects.random_variables.normal.random_variable import Normal
 from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.objects.random_variables.uniform.random_variable import Uniform
+from pm4py.objects.random_variables.constant0.random_variable import Constant0
 
 
 class RandomVariableTest(unittest.TestCase):
@@ -45,3 +46,37 @@ class RandomVariableTest(unittest.TestCase):
         diff_value_sigma = abs(sigma - sigma_R) / (max(abs(sigma), abs(sigma_R)))
         if diff_value_mu > tol or diff_value_sigma > tol:
             raise Exception("parameters found outside tolerance")
+
+    def test_constant0_variable(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
+        C = Constant0()
+        values = []
+        loglikeli = C.calculate_loglikelihood(values)
+        if abs(loglikeli) < 10000000:
+            raise Exception("problem in managing constant variables")
+        R = RandomVariable()
+        R.calculate_parameters(values)
+        if not R.get_distribution_type() == "IMMEDIATE":
+            raise Exception("Expected a constant!")
+        loglikeli = R.calculate_loglikelihood(values)
+        if abs(loglikeli) < 10000000:
+            raise Exception("problem in managing constant variables (2)")
+
+    def test_constant0_variable_2(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
+        C = Constant0()
+        values = [0.0000001,-0.0000001,0.0000002]
+        loglikeli = C.calculate_loglikelihood(values)
+        if abs(loglikeli) < 10000000:
+            raise Exception("problem in managing constant variables")
+        R = RandomVariable()
+        R.calculate_parameters(values)
+        if not R.get_distribution_type() == "IMMEDIATE":
+            raise Exception("Expected a constant!")
+        loglikeli = R.calculate_loglikelihood(values)
+        if abs(loglikeli) < 10000000:
+            raise Exception("problem in managing constant variables (2)")

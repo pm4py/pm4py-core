@@ -1,5 +1,7 @@
 from scipy.stats import norm
 import numpy as np
+import sys
+
 
 class Normal(object):
     """
@@ -30,6 +32,17 @@ class Normal(object):
         """
         self.mu = distribution_parameters.split(";")[0]
         self.sigma = distribution_parameters.split(";")[0]
+
+    def get_transition_type(self):
+        """
+        Get the type of transition associated to the current distribution
+
+        Returns
+        -----------
+        transition_type
+            String representing the type of the transition
+        """
+        return "TIMED"
 
     def get_distribution_type(self):
         """
@@ -67,10 +80,12 @@ class Normal(object):
         likelihood
             Log likelihood that the values follows the distribution
         """
-        sum = 0
-        for value in values:
-            sum = sum + np.log(norm.pdf(value,self.mu,self.sigma))
-        return sum
+        if len(values) > 1:
+            sum = 0
+            for value in values:
+                sum = sum + np.log(norm.pdf(value,self.mu,self.sigma))
+            return sum
+        return -sys.float_info.max
 
     def calculate_parameters(self, values):
         """
@@ -81,7 +96,8 @@ class Normal(object):
         values
             Empirical values to work on
         """
-        self.mu, self.sigma = norm.fit(values)
+        if len(values) > 1:
+            self.mu, self.sigma = norm.fit(values)
 
     def get_value(self):
         """
