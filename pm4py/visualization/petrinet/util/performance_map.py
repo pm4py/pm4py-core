@@ -61,7 +61,7 @@ def calculate_annotation_for_trace(trace, initial_marking, act_trans, activity_k
             if trans.label == trace[j][activity_key]:
                 j = j + 1
 
-        in_arc_indexes = [trace_place_stats[arc.source][0] for arc in trans.in_arcs if trace_place_stats[arc.source]]
+        in_arc_indexes = [trace_place_stats[arc.source][0] for arc in trans.in_arcs if arc.source in trace_place_stats and trace_place_stats[arc.source]]
         if in_arc_indexes:
             min_in_arc_indexes = min(in_arc_indexes)
             max_in_arc_indexes = max(in_arc_indexes)
