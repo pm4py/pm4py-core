@@ -21,6 +21,8 @@ class Uniform(BasicStructureRandomVariable):
         """
         self.loc = loc
         self.scale = scale
+        self.priority = 0
+        BasicStructureRandomVariable.__init__(self)
 
     def read_from_string(self, distribution_parameters):
         """
@@ -32,7 +34,7 @@ class Uniform(BasicStructureRandomVariable):
             Current distribution parameters as exported on the Petri net
         """
         self.loc = distribution_parameters.split(";")[0]
-        self.scale = distribution_parameters.split(";")[0]
+        self.scale = distribution_parameters.split(";")[1]
 
     def get_distribution_type(self):
         """

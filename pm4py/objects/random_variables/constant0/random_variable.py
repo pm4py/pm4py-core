@@ -17,6 +17,7 @@ class Constant0(BasicStructureRandomVariable):
             Constant value of the distribution
         """
         Uniform.__init__(self, loc=0, scale=0)
+        self.priority = 1
 
     def read_from_string(self, distribution_parameters):
         """
