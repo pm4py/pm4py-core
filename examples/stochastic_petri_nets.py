@@ -8,6 +8,7 @@ from pm4py.objects.petri.reachability_graph import construct_reachability_graph
 from pm4py.objects.stochastic_petri import map as stochastic_map
 from pm4py.objects.stochastic_petri import tangible_reachability
 from pm4py.visualization.transition_system import factory as ts_vis_factory
+from pm4py.objects.stochastic_petri import ctmc
 
 
 def execute_script():
@@ -16,7 +17,7 @@ def execute_script():
     # obtain Petri net through Alpha Miner
     net, initial_marking, final_marking = alpha_miner.apply(log)
     # obtain stochastic information for transitions in the model
-    s_map = stochastic_map.get_map_from_log_and_net(log, net, initial_marking, final_marking)
+    s_map = stochastic_map.get_map_from_log_and_net(log, net, initial_marking, final_marking, force_distribution="EXPONENTIAL")
     # export the current stochastic Petri net
     petri_exporter.export_net(net, initial_marking, "example.pnml", final_marking=final_marking, stochastic_map=s_map)
     # re-import the current stochastic Petri net from file
@@ -31,6 +32,8 @@ def execute_script():
     # visualize the tangible reachability graph on the screen
     viz = ts_vis_factory.apply(tang_reach_graph, parameters={"format": "svg", "show_labels": True, "show_names": False})
     ts_vis_factory.view(viz)
+    # gets the Q matrix assuming exponential distributions
+    Q_matrix = ctmc.get_Q_matrix_from_tangible_exponential(tang_reach_graph, s_map)
 
 
 if __name__ == "__main__":
