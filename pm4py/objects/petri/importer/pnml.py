@@ -91,9 +91,11 @@ def import_net(input_file_path):
                             if child3.text:
                                 trans_label = child3.text
                     if "toolspecific" in child2.tag:
-                        activity = child2.get("activity")
-                        if "invisible" in activity:
-                            trans_visible = False
+                        tool = child2.get("tool")
+                        if "ProM" in tool:
+                            activity = child2.get("activity")
+                            if "invisible" in activity:
+                                trans_visible = False
                 if not trans_visible:
                     trans_label = None
                 trans_dict[trans_name] = petri.petrinet.PetriNet.Transition(trans_name, trans_label)
