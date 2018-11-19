@@ -21,6 +21,8 @@ class Normal(BasicStructureRandomVariable):
         """
         self.mu = mu
         self.sigma = sigma
+        self.priority = 0
+        BasicStructureRandomVariable.__init__(self)
 
     def read_from_string(self, distribution_parameters):
         """
@@ -32,7 +34,7 @@ class Normal(BasicStructureRandomVariable):
             Current distribution parameters as exported on the Petri net
         """
         self.mu = distribution_parameters.split(";")[0]
-        self.sigma = distribution_parameters.split(";")[0]
+        self.sigma = distribution_parameters.split(";")[1]
 
     def get_distribution_type(self):
         """

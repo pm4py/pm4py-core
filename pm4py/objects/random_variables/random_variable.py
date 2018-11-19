@@ -143,6 +143,18 @@ class RandomVariable(object):
         if self.random_variable is not None:
             return self.random_variable.get_values(no_values=no_values)
 
+    def get_weight(self):
+        """
+        Getter of weight
+
+        Returns
+        ----------
+        weight
+            Weight of the transition
+        """
+        if self.random_variable is not None:
+            return self.random_variable.get_weight()
+
     def set_weight(self, weight):
         """
         Setter of the weight
@@ -154,6 +166,30 @@ class RandomVariable(object):
         """
         if self.random_variable is not None:
             self.random_variable.set_weight(weight)
+
+    def get_priority(self):
+        """
+        Getter of the priority
+
+        Returns
+        -----------
+        priority
+            Priority of the transition
+        """
+        if self.random_variable is not None:
+            return self.random_variable.get_priority()
+
+    def set_priority(self, priority):
+        """
+        Setter of the priority variable
+
+        Parameters
+        ------------
+        priority
+            Priority of the transition
+        """
+        if self.random_variable is not None:
+            self.random_variable.set_priority(priority)
 
     def __str__(self):
         """

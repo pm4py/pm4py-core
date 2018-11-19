@@ -5,6 +5,17 @@ class BasicStructureRandomVariable(object):
         """
         self.weight = 0
 
+    def get_weight(self):
+        """
+        Getter of weight
+
+        Returns
+        ----------
+        weight
+            Weight of the transition
+        """
+        return self.weight
+
     def set_weight(self, weight):
         """
         Setter of weight variable
@@ -15,6 +26,28 @@ class BasicStructureRandomVariable(object):
             Weight of the transition
         """
         self.weight = weight
+
+    def get_priority(self):
+        """
+        Getter of the priority
+
+        Returns
+        -----------
+        priority
+            Priority of the transition
+        """
+        return self.priority
+
+    def set_priority(self, priority):
+        """
+        Setter of the priority variable
+
+        Parameters
+        ------------
+        priority
+            Priority of the transition
+        """
+        self.priority = priority
 
     def get_transition_type(self):
         """

@@ -21,6 +21,8 @@ class Exponential(BasicStructureRandomVariable):
         """
         self.loc = loc
         self.scale = scale
+        self.priority = 0
+        BasicStructureRandomVariable.__init__(self)
 
     def read_from_string(self, distribution_parameters):
         """
@@ -31,8 +33,8 @@ class Exponential(BasicStructureRandomVariable):
         distribution_parameters
             Current distribution parameters as exported on the Petri net
         """
-        self.loc = distribution_parameters.split(";")[0]
-        self.scale = distribution_parameters.split(";")[0]
+        self.loc = 0
+        self.scale = 1.0 / float(distribution_parameters)
 
     def get_distribution_type(self):
         """
@@ -54,7 +56,9 @@ class Exponential(BasicStructureRandomVariable):
         distribution_parameters
             String representing distribution parameters
         """
-        return str(self.loc) + ";" + str(self.scale)
+        if self.scale > 0:
+            return str(1.0 / float(self.scale))
+        return "UNDEFINED"
 
     def calculate_loglikelihood(self, values):
         """
@@ -87,7 +91,7 @@ class Exponential(BasicStructureRandomVariable):
             Empirical values to work on
         """
         if len(values) > 1:
-            self.loc, self.scale = expon.fit(values)
+            self.loc, self.scale = expon.fit(values, floc=0)
 
     def get_value(self):
         """
