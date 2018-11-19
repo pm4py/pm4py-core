@@ -84,7 +84,7 @@ class RandomVariable(object):
         if self.random_variable is not None:
             return self.random_variable.calculate_loglikelihood(values)
 
-    def calculate_parameters(self, values, parameters=None):
+    def calculate_parameters(self, values, parameters=None, force_distribution=None):
         """
         Calculate parameters of the current distribution
 
@@ -94,6 +94,8 @@ class RandomVariable(object):
             Empirical values to work on
         parameters
             Possible parameters of the algorithm
+        force_distribution
+            If provided, distribution to force usage (e.g. EXPONENTIAL)
 
         """
 
@@ -113,10 +115,13 @@ class RandomVariable(object):
             U.calculate_parameters(values)
             E.calculate_parameters(values)
             likelihoods = []
-            likelihoods.append([N, N.calculate_loglikelihood(values)])
-            likelihoods.append([U, U.calculate_loglikelihood(values)])
-            likelihoods.append([E, E.calculate_loglikelihood(values)])
             likelihoods.append([C0, C0.calculate_loglikelihood(values)])
+            if force_distribution == "NORMAL" or force_distribution is None:
+                likelihoods.append([N, N.calculate_loglikelihood(values)])
+            if force_distribution == "UNIFORM" or force_distribution is None:
+                likelihoods.append([U, U.calculate_loglikelihood(values)])
+            if force_distribution == "EXPONENTIAL" or force_distribution is None:
+                likelihoods.append([E, E.calculate_loglikelihood(values)])
             likelihoods = [x for x in likelihoods if str(x[1]) != 'nan']
             likelihoods = sorted(likelihoods, key=lambda x: x[1], reverse=True)
 
