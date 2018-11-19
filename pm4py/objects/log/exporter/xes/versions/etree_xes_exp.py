@@ -127,8 +127,11 @@ def export_classifiers(log, root):
         clas_value = log.classifiers[clas]
         classifier = etree.SubElement(root, xes_util.TAG_CLASSIFIER)
         classifier.set(xes_util.KEY_NAME, clas)
+        values_spaces = [(" " in x) for x in clas_value]
+        values_spaces = [x for x in values_spaces if x]
+        if len(values_spaces) > 0:
+            clas_value = ["'" + x + "'" for x in clas_value]
         classifier.set(xes_util.KEY_KEYS, " ".join(clas_value))
-
 
 def export_attributes_element(log_element, xml_element):
     """
