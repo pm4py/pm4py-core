@@ -10,7 +10,7 @@ PARAM_ACTIVITY_KEY = pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 PARAM_TIMESTAMP_KEY = pm4py.util.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
-def get_map_from_log_and_net(log, net, initial_marking, final_marking, parameters=None):
+def get_map_from_log_and_net(log, net, initial_marking, final_marking, force_distribution=None, parameters=None):
     """
     Get transition stochastic distribution map given the log and the Petri net
 
@@ -24,6 +24,8 @@ def get_map_from_log_and_net(log, net, initial_marking, final_marking, parameter
         Initial marking of the Petri net
     final_marking
         Final marking of the Petri net
+    force_distribution
+        If provided, distribution to force usage (e.g. EXPONENTIAL)
     parameters
         Parameters of the algorithm, including:
             PARAM_ACTIVITY_KEY -> activity name
@@ -62,7 +64,7 @@ def get_map_from_log_and_net(log, net, initial_marking, final_marking, parameter
             values = element_statistics[el]["performance"]
 
             R = RandomVariable()
-            R.calculate_parameters(values)
+            R.calculate_parameters(values, force_distribution=force_distribution)
 
             no_of_times_enabled = element_statistics[el]['no_of_times_enabled']
             no_of_times_activated = element_statistics[el]['no_of_times_activated']
