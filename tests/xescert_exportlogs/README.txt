@@ -1,0 +1,1 @@
+This folder shall contain the logs exported by the XES certification script.
