@@ -105,6 +105,7 @@ class RandomVariable(object):
             likelihoods.append([U, U.calculate_loglikelihood(values)])
             likelihoods.append([E, E.calculate_loglikelihood(values)])
             likelihoods.append([C0, C0.calculate_loglikelihood(values)])
+            likelihoods = [x for x in likelihoods if str(x[1]) != 'nan']
             likelihoods = sorted(likelihoods, key=lambda x: x[1], reverse=True)
 
             if debug_mode:
