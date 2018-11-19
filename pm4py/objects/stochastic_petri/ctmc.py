@@ -1,4 +1,7 @@
 import numpy as np
+from scipy.linalg import expm
+from collections import Counter
+
 
 def get_Q_matrix_from_tangible_exponential(tangible_reach_graph, stochastic_info):
     """
@@ -38,3 +41,67 @@ def get_Q_matrix_from_tangible_exponential(tangible_reach_graph, stochastic_info
         Q_matrix[i, i] = -sum_lambda
 
     return Q_matrix
+
+
+def transient_analysis_from_tangible_q_matrix_and_single_state(tangible_reach_graph, Q_matrix, source_state, time_diff):
+    """
+    Do transient analysis from tangible reachability graph, Q matrix and a single state to start from
+
+    Parameters
+    -----------
+    tangible_reach_graph
+        Tangible reachability graph
+    Q_matrix
+        Q matrix
+    source_state
+        Source state to consider
+    time_diff
+        Time interval we want to investigate
+
+    Returns
+    -----------
+    transient_result
+        Transient analysis result
+    """
+    states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)
+    state_index = states.index(source_state)
+
+    states_vector = np.zeros((1, len(states)))
+    states_vector[0, state_index] = 1
+
+    return transient_analysis_from_tangible_q_matrix_and_states_vector(tangible_reach_graph, Q_matrix, states_vector, time_diff)
+
+
+def transient_analysis_from_tangible_q_matrix_and_states_vector(tangible_reach_graph, Q_matrix, states_vector, time_diff):
+    """
+    Do transient analysis from tangible reachability graph, Q matrix and a vector of probability of states
+
+    Parameters
+    ------------
+    tangible_reach_graph
+        Tangible reachability graph
+    Q_matrix
+        Q matrix
+    states_vector
+        Vector of states probabilities to start from
+    time_diff
+        Time interval we want to investigate
+
+    Returns
+    -----------
+    transient_result
+        Transient analysis result
+    """
+    transient_result = Counter()
+    states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)
+
+    Ht = expm(Q_matrix * time_diff)
+
+    res = np.matmul(states_vector, Ht)
+    # normalize to 1 the vector of probabilities
+    res = res / np.sum(res)
+
+    for i in range(len(states)):
+        transient_result[states[i]] = res[0, i]
+
+    return transient_result

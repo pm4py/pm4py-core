@@ -34,6 +34,22 @@ def execute_script():
     ts_vis_factory.view(viz)
     # gets the Q matrix assuming exponential distributions
     Q_matrix = ctmc.get_Q_matrix_from_tangible_exponential(tang_reach_graph, s_map)
+    # pick a state to start from
+    states = sorted(list(tang_reach_graph.states), key=lambda x: x.name)
+    state = states[0]
+    print("\n\nstarting from state = ", state.name)
+    # do transient analysis after 1 day
+    transient_result = ctmc.transient_analysis_from_tangible_q_matrix_and_single_state(tang_reach_graph, Q_matrix,
+                                                                                       state, 86400)
+    print("\nprobability for each state after 1 day = ", transient_result)
+    # do transient analysis after 10 days
+    transient_result = ctmc.transient_analysis_from_tangible_q_matrix_and_single_state(tang_reach_graph, Q_matrix,
+                                                                                       state, 864000)
+    print("\nprobability for each state after 10 days = ", transient_result)
+    # do transient analysis after 100 days
+    transient_result = ctmc.transient_analysis_from_tangible_q_matrix_and_single_state(tang_reach_graph, Q_matrix,
+                                                                                       state, 8640000)
+    print("\nprobability for each state after 100 days = ", transient_result)
 
 
 if __name__ == "__main__":
