@@ -1,4 +1,21 @@
 class BasicStructureRandomVariable(object):
+    def __init__(self):
+        """
+        Constructor
+        """
+        self.weight = 0
+
+    def set_weight(self, weight):
+        """
+        Setter of weight variable
+
+        Parameters
+        -----------
+        weight
+            Weight of the transition
+        """
+        self.weight = weight
+
     def get_transition_type(self):
         """
         Get the type of transition associated to the current distribution
