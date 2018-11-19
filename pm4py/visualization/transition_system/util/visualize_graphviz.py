@@ -8,6 +8,7 @@ def visualize(ts, parameters=None):
         parameters = {}
 
     image_format = parameters["format"] if "format" in parameters else "png"
+    show_labels = parameters["show_labels"] if "show_labels" in parameters else False
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph(ts.name, filename=filename.name, engine='dot')
@@ -19,7 +20,10 @@ def visualize(ts, parameters=None):
 
     # arcs
     for t in ts.transitions:
-        viz.edge(str(t.from_state.name), str(t.to_state.name))
+        if show_labels:
+            viz.edge(str(t.from_state.name), str(t.to_state.name), label=t.name)
+        else:
+            viz.edge(str(t.from_state.name), str(t.to_state.name))
 
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
