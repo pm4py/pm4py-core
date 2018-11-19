@@ -52,8 +52,8 @@ class RandomVariableTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        loc = 53
-        scale = 4
+        loc = 0
+        scale = 5
         tol = 0.2
         E = Exponential(loc=loc, scale=scale)
         values = E.get_values(no_values=400)
@@ -63,8 +63,8 @@ class RandomVariableTest(unittest.TestCase):
             raise Exception("Expected an exponential!")
         loc_R = R.random_variable.loc
         scale_R = R.random_variable.scale
-        diff_value_loc = abs(loc - loc_R) / (max(abs(loc), abs(loc_R)))
-        diff_value_scale = abs(scale - scale_R) / (max(abs(scale), abs(scale_R)))
+        diff_value_loc = abs(loc - loc_R) / (max(abs(loc), abs(loc_R)) + 0.000001)
+        diff_value_scale = abs(scale - scale_R) / (max(abs(scale), abs(scale_R)) + 0.000001)
         if diff_value_loc > tol or diff_value_scale > tol:
             raise Exception("parameters found outside tolerance")
 
