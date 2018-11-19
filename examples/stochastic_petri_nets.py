@@ -30,7 +30,7 @@ def execute_script():
     # get the tangible reachability graph from the reachability graph and the stochastic map
     tang_reach_graph = tangible_reachability.get_tangible_reachability_from_reachability(reachab_graph, s_map)
     # visualize the tangible reachability graph on the screen
-    viz = ts_vis_factory.apply(tang_reach_graph, parameters={"format": "svg", "show_labels": True, "show_names": False})
+    viz = ts_vis_factory.apply(tang_reach_graph, parameters={"format": "svg", "show_labels": True, "show_names": True})
     ts_vis_factory.view(viz)
     # gets the Q matrix assuming exponential distributions
     Q_matrix = ctmc.get_Q_matrix_from_tangible_exponential(tang_reach_graph, s_map)
