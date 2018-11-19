@@ -43,6 +43,18 @@ class RandomVariable(object):
         if self.random_variable is not None:
             return self.random_variable.get_distribution_type()
 
+    def get_transition_type(self):
+        """
+        Get the type of transition associated to the current distribution
+
+        Returns
+        -----------
+        transition_type
+            String representing the type of the transition
+        """
+        if self.random_variable is not None:
+            return self.random_variable.get_transition_type()
+
     def get_distribution_parameters(self):
         """
         Get a string representing distribution parameters
