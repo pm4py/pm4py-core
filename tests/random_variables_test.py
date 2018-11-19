@@ -13,6 +13,7 @@ from pm4py.objects.stochastic_petri import map as stochastic_map
 from pm4py.objects.petri.reachability_graph import construct_reachability_graph
 from pm4py.visualization.transition_system import factory as ts_vis_factory
 from pm4py.objects.stochastic_petri import tangible_reachability
+from pm4py.objects.stochastic_petri import ctmc
 
 
 class RandomVariableTest(unittest.TestCase):
@@ -122,3 +123,12 @@ class RandomVariableTest(unittest.TestCase):
         tang_reach_graph = tangible_reachability.get_tangible_reachability_from_reachability(reachab_graph,
                                                                                              s_map)
         viz = ts_vis_factory.apply(tang_reach_graph, parameters={"format": "svg", "show_labels": True})
+        # gets the Q matrix assuming exponential distributions
+        Q_matrix = ctmc.get_Q_matrix_from_tangible_exponential(tang_reach_graph, s_map)
+        # pick a state to start from
+        states = sorted(list(tang_reach_graph.states), key=lambda x: x.name)
+        state = states[0]
+        transient_result = ctmc.transient_analysis_from_tangible_q_matrix_and_single_state(tang_reach_graph, Q_matrix,
+                                                                                           state, 86400)
+        transient_result = ctmc.transient_analysis_from_tangible_q_matrix_and_single_state(tang_reach_graph, Q_matrix,
+                                                                                           state, 864000)
