@@ -143,6 +143,18 @@ class RandomVariable(object):
         if self.random_variable is not None:
             return self.random_variable.get_values(no_values=no_values)
 
+    def set_weight(self, weight):
+        """
+        Setter of the weight
+
+        Parameters
+        -----------
+        weight
+            Weight of the transition
+        """
+        if self.random_variable is not None:
+            self.random_variable.set_weight(weight)
+
     def __str__(self):
         """
         Returns a representation of the current object
