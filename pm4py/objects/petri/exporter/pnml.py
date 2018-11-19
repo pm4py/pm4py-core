@@ -70,7 +70,7 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
             distribution_priority.set("key", "priority")
             distribution_priority.text = str(random_variable.get_priority())
             distribution_invisible = etree.SubElement(stochastic_information, "property")
-            distribution_invisible.set("key", "invisibile")
+            distribution_invisible.set("key", "invisible")
             distribution_invisible.text = str(True if transition.label is None else False).lower()
             distribution_weight = etree.SubElement(stochastic_information, "property")
             distribution_weight.set("key","weight")
