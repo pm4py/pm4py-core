@@ -9,6 +9,7 @@ def visualize(ts, parameters=None):
 
     image_format = parameters["format"] if "format" in parameters else "png"
     show_labels = parameters["show_labels"] if "show_labels" in parameters else False
+    show_names = parameters["show_names"] if "show_names" in parameters else False
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph(ts.name, filename=filename.name, engine='dot')
@@ -16,8 +17,10 @@ def visualize(ts, parameters=None):
     # states
     viz.attr('node')
     for s in ts.states:
-        viz.node(str(s.name))
-
+        if show_names:
+            viz.node(str(s.name))
+        else:
+            viz.node(str(s.name), "")
     # arcs
     for t in ts.transitions:
         if show_labels:
