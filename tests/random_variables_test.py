@@ -5,6 +5,14 @@ from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.objects.random_variables.uniform.random_variable import Uniform
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
 from pm4py.objects.random_variables.constant0.random_variable import Constant0
+import os
+from pm4py.objects.log.importer.xes import factory as xes_importer
+from tests.constants import INPUT_DATA_DIR
+from pm4py.algo.discovery.alpha import factory as alpha_miner
+from pm4py.objects.stochastic_petri import map as stochastic_map
+from pm4py.objects.petri.reachability_graph import construct_reachability_graph
+from pm4py.visualization.transition_system import factory as ts_vis_factory
+from pm4py.objects.stochastic_petri import tangible_reachability
 
 
 class RandomVariableTest(unittest.TestCase):
@@ -101,3 +109,16 @@ class RandomVariableTest(unittest.TestCase):
         loglikeli = R.calculate_loglikelihood(values)
         if abs(loglikeli) < 10000000:
             raise Exception("problem in managing constant variables (2)")
+
+    def test_tangiblereachabilitygraph_calc(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
+        input_log = os.path.join(INPUT_DATA_DIR, "running-example.xes")
+        log = xes_importer.import_log(input_log)
+        net, initial_marking, final_marking = alpha_miner.apply(log)
+        s_map = stochastic_map.get_map_from_log_and_net(log, net, initial_marking, final_marking)
+        reachab_graph = construct_reachability_graph(net, initial_marking)
+        tang_reach_graph = tangible_reachability.get_tangible_reachability_from_reachability(reachab_graph,
+                                                                                             s_map)
+        viz = ts_vis_factory.apply(tang_reach_graph, parameters={"format": "svg", "show_labels": True})
