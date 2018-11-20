@@ -125,6 +125,12 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
     if pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
 
+    if start_activities is None:
+        start_activities = dfg_utils.infer_start_activities(dfg)
+
+    if end_activities is None:
+        end_activities = dfg_utils.infer_end_activities(dfg)
+
     labels = set()
     for el in dfg:
         labels.add(el[0])
@@ -134,12 +140,6 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
     for a in end_activities:
         labels.add(a)
     labels = list(labels)
-
-    if start_activities is None:
-        start_activities = dfg_utils.infer_start_activities(dfg)
-
-    if end_activities is None:
-        end_activities = dfg_utils.infer_end_activities(dfg)
 
     alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(start_activities, end_activities, dfg,
                                                                           activity_key=parameters[
