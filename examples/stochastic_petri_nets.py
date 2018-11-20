@@ -50,6 +50,8 @@ def execute_script():
     transient_result = ctmc.transient_analysis_from_tangible_q_matrix_and_single_state(tang_reach_graph, Q_matrix,
                                                                                        state, 8640000)
     print("\nprobability for each state after 100 days = ", transient_result)
+    steady_state = ctmc.steadystate_analysis_from_tangible_q_matrix(tang_reach_graph, Q_matrix)
+    print("\nsteady state = ",steady_state)
 
 
 if __name__ == "__main__":

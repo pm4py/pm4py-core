@@ -132,3 +132,4 @@ class RandomVariableTest(unittest.TestCase):
                                                                                            state, 86400)
         transient_result = ctmc.transient_analysis_from_tangible_q_matrix_and_single_state(tang_reach_graph, Q_matrix,
                                                                                            state, 864000)
+        steady_state = ctmc.steadystate_analysis_from_tangible_q_matrix(tang_reach_graph, Q_matrix)
