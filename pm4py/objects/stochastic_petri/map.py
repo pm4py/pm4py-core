@@ -5,6 +5,7 @@ from pm4py.objects import log as log_lib
 from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.visualization.petrinet.util import performance_map
+from pm4py.objects.random_variables.exponential.random_variable import Exponential
 
 PARAM_ACTIVITY_KEY = pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 PARAM_TIMESTAMP_KEY = pm4py.util.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
@@ -73,6 +74,43 @@ def get_map_from_log_and_net(log, net, initial_marking, final_marking, force_dis
                 R.set_weight(float(no_of_times_activated) / float(no_of_times_enabled))
             else:
                 R.set_weight(0.0)
+
+            stochastic_map[el] = R
+
+    return stochastic_map
+
+def get_map_exponential_from_aggstatistics_and_net(agg_statistics, net, initial_marking, final_marking, parameters=None):
+    """
+    Get transition stochastic distribution map (exponential variable forced) given the log and the Petri net
+
+    Parameters
+    -----------
+    agg_statistics
+        Aggregated statistics calculated on the DFG graph and the Petri net
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    -----------
+    stochastic_map
+        Map that to each transition associates a random variable
+    """
+    stochastic_map = {}
+
+    if parameters is None:
+        parameters = {}
+
+    for el in agg_statistics:
+        if type(el) is PetriNet.Transition:
+            R = RandomVariable()
+            R.random_variable = Exponential()
+            R.random_variable.scale = agg_statistics[el]["performance"]
 
             stochastic_map[el] = R
 
