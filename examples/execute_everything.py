@@ -14,6 +14,7 @@ if __name__ == "__main__":
     from examples import token_replay_imdf
     from examples import transition_system_test
     from examples import stochastic_petri_nets
+    from examples import stochastic_petri_df
 
     print("\n\nbig_log_imdf_decor frequency")
     big_log_imdf_decor.execute_script(variant="frequency")
@@ -35,3 +36,5 @@ if __name__ == "__main__":
     transition_system_test.execute_script()
     print("\n\nstochastic_petri_nets")
     stochastic_petri_nets.execute_script()
+    print("\n\nstochastic_petri_df")
+    stochastic_petri_df.execute_script()
