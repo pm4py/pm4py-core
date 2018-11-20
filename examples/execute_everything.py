@@ -5,6 +5,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    from examples import big_log_imdf_decor
     from examples import alignment_test
     from examples import dec_treplay_imdf
     from examples import imdf_example
@@ -14,6 +15,10 @@ if __name__ == "__main__":
     from examples import transition_system_test
     from examples import stochastic_petri_nets
 
+    print("\n\nbig_log_imdf_decor frequency")
+    big_log_imdf_decor.execute_script(variant="frequency")
+    print("\n\nbig_log_imdf_decor performance")
+    big_log_imdf_decor.execute_script(variant="performance")
     print("\n\nalignment_test")
     alignment_test.execute_script()
     print("\n\ndec_treplay_imdf")
