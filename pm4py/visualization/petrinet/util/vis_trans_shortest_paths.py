@@ -162,6 +162,7 @@ def get_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count
         elif "performance" in variant:
             for act in decorations_single_contrib_trans:
                 if act in trans_map:
+                    trans = trans_map[act]
                     trans_values = list(decorations_single_contrib_trans[act].values())
                     decorations[trans] = {"performance": mean(trans_values)}
 
