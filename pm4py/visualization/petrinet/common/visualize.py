@@ -79,7 +79,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     viz.attr('node', shape='box')
     for t in net.transitions:
         if t.label is not None:
-            if t in decorations:
+            if t in decorations and "label" in decorations[t] and "color" in decorations[t]:
                 viz.node(str(t.name), decorations[t]["label"], style='filled', fillcolor=decorations[t]["color"],
                          border='1')
             else:

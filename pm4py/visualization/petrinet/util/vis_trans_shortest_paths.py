@@ -101,6 +101,7 @@ def get_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count
         Decorations to use for the Petri net
     """
     decorations_single_contrib = {}
+    decorations_single_contrib_trans = {}
     decorations_int = {}
     decorations = {}
     if aggregation_measure is None:
@@ -115,19 +116,25 @@ def get_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count
                 if arc not in decorations_single_contrib:
                     decorations_single_contrib[arc] = []
                 decorations_single_contrib[arc].append(dfg[dfg_key])
+                if dfg_key[1] not in decorations_single_contrib_trans:
+                    decorations_single_contrib_trans[dfg_key[1]] = {}
+                decorations_single_contrib_trans[dfg_key[1]][dfg_key[0]] = dfg[dfg_key]
     for arc in decorations_single_contrib:
+        decorations_value = None
         if aggregation_measure == "sum":
-            decorations_int[arc] = sum(decorations_single_contrib[arc])
+            decorations_value = sum(decorations_single_contrib[arc])
         elif aggregation_measure == "mean":
-            decorations_int[arc] = mean(decorations_single_contrib[arc])
+            decorations_value = mean(decorations_single_contrib[arc])
         elif aggregation_measure == "median":
-            decorations_int[arc] = median(decorations_single_contrib[arc])
+            decorations_value = median(decorations_single_contrib[arc])
         elif aggregation_measure == "stdev":
-            decorations_int[arc] = stdev(decorations_single_contrib[arc])
+            decorations_value = stdev(decorations_single_contrib[arc])
         elif aggregation_measure == "min":
-            decorations_int[arc] = min(decorations_single_contrib[arc])
+            decorations_value = min(decorations_single_contrib[arc])
         elif aggregation_measure == "max":
-            decorations_int[arc] = max(decorations_single_contrib[arc])
+            decorations_value = max(decorations_single_contrib[arc])
+        if decorations_value is not None:
+            decorations_int[arc] = decorations_value
 
     if decorations_int:
         arcs_min_value = min(list(decorations_int.values()))
@@ -139,18 +146,23 @@ def get_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count
                 arc_label = str(decorations_int[arc])
             decorations[arc] = {"label": arc_label,
                                 "penwidth": str(get_arc_penwidth(decorations_int[arc], arcs_min_value, arcs_max_value))}
+        trans_map = {}
+        for trans in net.transitions:
+            if trans.label:
+                trans_map[trans.label] = trans
         if "frequency" in variant:
             act_min_value = min(list(activities_count.values()))
             act_max_value = max(list(activities_count.values()))
-            trans_map = {}
-            for trans in net.transitions:
-                if trans.label:
-                    trans_map[trans.label] = trans
             for act in activities_count:
                 if act in trans_map:
                     trans = trans_map[act]
                     color = get_trans_freq_color(activities_count[act], act_min_value, act_max_value)
                     label = act + " (" + str(activities_count[act]) + ")"
                     decorations[trans] = {"label": label, "color": color}
+        elif "performance" in variant:
+            for act in decorations_single_contrib_trans:
+                if act in trans_map:
+                    trans_values = list(decorations_single_contrib_trans[act].values())
+                    decorations[trans] = {"performance": mean(trans_values)}
 
     return decorations
