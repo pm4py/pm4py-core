@@ -8,7 +8,7 @@ from pm4py.visualization.common.utils import *
 MAX_NO_THREADS = 1000
 
 
-def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activity_key):
+def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activity_key, ht_perf_method="last"):
     """
     Calculate annotation for a trace in the variant, in order to retrieve information
     useful for calculate frequency/performance for all the traces belonging to the variant
@@ -25,6 +25,9 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
         Activated transitions during token replay of the given trace
     activity_key
         Attribute that identifies the activity (must be specified if different from concept:name)
+    ht_perf_method
+        Method to use in order to annotate hidden transitions (performance value could be put on the last possible
+        point (last) or in the first possible point (first)
 
     Returns
     ----------
@@ -97,7 +100,7 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
                 annotations_arcs[arc] = {"performance": [], "count": 0}
                 annotations_arcs[arc]["count"] = annotations_arcs[arc]["count"] + 1
             if source_place in trace_place_stats and trace_place_stats[source_place]:
-                if trans.label:
+                if trans.label or ht_perf_method == "first":
                     annotations_arcs[arc]["performance"].append(
                         [current_trace_index, trace_place_stats[source_place][0]])
                     performance_for_this_trans_execution.append(
@@ -116,7 +119,7 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
             if target_place not in trace_place_stats:
                 trace_place_stats[target_place] = []
 
-            if trans.label:
+            if trans.label or ht_perf_method == "first":
                 trace_place_stats[target_place].append(current_trace_index)
             elif max_in_arc_indexes:
                 trace_place_stats[target_place].append(max_in_arc_indexes)
@@ -130,7 +133,7 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
 
 
 def single_element_statistics(log, net, initial_marking, aligned_traces, variants_idx, activity_key="concept:name",
-                              timestamp_key="time:timestamp"):
+                              timestamp_key="time:timestamp", ht_perf_method="last"):
     """
     Get single Petrinet element statistics
 
@@ -150,6 +153,9 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
         Activity key (must be specified if different from concept:name)
     timestamp_key
         Timestamp key (must be specified if different from time:timestamp)
+    ht_perf_method
+        Method to use in order to annotate hidden transitions (performance value could be put on the last possible
+        point (last) or in the first possible point (first)
 
     Returns
     ------------
