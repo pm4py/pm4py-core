@@ -53,6 +53,8 @@ def add_arc_from_to(fr, to, net, weight=1):
     fr.out_arcs.add(a)
     to.in_arcs.add(a)
 
+    return a
+
 
 def construct_trace_net(trace, trace_name_key=xes_util.DEFAULT_NAME_KEY, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
