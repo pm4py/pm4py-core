@@ -39,5 +39,16 @@ setup(
     license='GPL 3.0',
     author='https://pm4py.github.io/team.html',
     author_email='pm4py@pads.rwth-aachen.de',
-    description='Process Mining for Python'
+    description='Process Mining for Python',
+    install_requires=[
+        'numpy',
+        'ciso8601',
+        'cvxopt',
+        'dataclasses',
+        'flask',
+        'flask-cors',
+        'lxml',
+        'graphviz',
+        'pandas'
+    ]
 )
