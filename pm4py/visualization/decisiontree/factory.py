@@ -7,8 +7,32 @@ CLASSIC = "classic"
 
 VERSIONS = {CLASSIC: classic.apply}
 
+
 def apply(clf, feature_names, classes, parameters=None, variant="classic"):
-    return VERSIONS[CLASSIC](clf, feature_names, classes, parameters=parameters)
+    """
+    Factory method to apply the visualization of the decision tree
+
+    Parameters
+    ------------
+    clf
+        Decision tree
+    feature_names
+        Names of the provided features
+    classes
+        Names of the target classes
+    parameters
+        Possible parameters of the algorithm, including:
+            format -> Image format (pdf, svg, png ...)
+    variant
+        Variant of the algorithm
+
+    Returns
+    ------------
+    gviz
+        GraphViz object
+    """
+    return VERSIONS[variant](clf, feature_names, classes, parameters=parameters)
+
 
 def save(gviz, output_file_path):
     """

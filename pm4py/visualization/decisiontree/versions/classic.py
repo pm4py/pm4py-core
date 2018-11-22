@@ -4,6 +4,26 @@ import tempfile
 
 
 def apply(clf, feature_names, classes, parameters=None):
+    """
+    Apply the visualization of the decision tree
+
+    Parameters
+    ------------
+    clf
+        Decision tree
+    feature_names
+        Names of the provided features
+    classes
+        Names of the target classes
+    parameters
+        Possible parameters of the algorithm, including:
+            format -> Image format (pdf, svg, png ...)
+
+    Returns
+    ------------
+    gviz
+        GraphViz object
+    """
     if parameters is None:
         parameters = {}
 
