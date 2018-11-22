@@ -12,6 +12,7 @@ if __name__ == "__main__":
     from examples import test_evaluation
     from examples import token_replay_alpha
     from examples import token_replay_imdf
+    from examples import decisiontree_example
 
     print("\n\nbig_log_imdf_decor frequency")
     big_log_imdf_decor.execute_script(variant="frequency")
@@ -29,3 +30,5 @@ if __name__ == "__main__":
     token_replay_alpha.execute_script()
     print("\n\ntokenReplay_imdf")
     token_replay_imdf.execute_script()
+    print("\n\ndecisiontree_example")
+    decisiontree_example.execute_script()

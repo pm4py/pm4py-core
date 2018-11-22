@@ -79,3 +79,25 @@ def get_class_representation_by_str_ev_attr_value_value(log, str_attr_name):
 
     target = np.array(target)
     return target, classes
+
+
+def get_class_representation_by_trace_duration(log, target_trace_duration, timestamp_key="time:timestamp"):
+    count = 0
+    dictionary = {}
+    target = []
+    classes = []
+
+    for trace in log:
+        value = "LESSEQUAL"
+        if len(trace) > 0 and timestamp_key in trace[0] and timestamp_key in trace[-1]:
+            diff = (trace[-1][timestamp_key] - trace[0][timestamp_key]).total_seconds()
+            if diff > target_trace_duration:
+                value = "GREATER"
+        if not str(value) in dictionary:
+            dictionary[str(value)] = count
+            classes.append(str(value))
+            count = count + 1
+        target.append(dictionary[str(value)])
+
+    target = np.array(target)
+    return target, classes
