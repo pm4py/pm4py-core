@@ -11,7 +11,7 @@ PARAM_TIMESTAMP_KEY = pm4py.util.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 PARAMETERS = [PARAM_ACTIVITY_KEY, PARAM_TIMESTAMP_KEY]
 
 
-def get_decorations(log, net, initial_marking, final_marking, parameters=None, measure="frequency"):
+def get_decorations(log, net, initial_marking, final_marking, parameters=None, measure="frequency", ht_perf_method="last"):
     """
     Calculate decorations in order to annotate the Petri net
 
@@ -29,6 +29,9 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
         Parameters associated to the algorithm
     measure
         Measure to represent on the process model (frequency/performance)
+    ht_perf_method
+        Method to use in order to annotate hidden transitions (performance value could be put on the last possible
+        point (last) or in the first possible point (first)
 
     Returns
     ------------
@@ -61,7 +64,8 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     element_statistics = performance_map.single_element_statistics(log, net, initial_marking,
                                                                    aligned_traces, variants_idx,
                                                                    activity_key=activity_key,
-                                                                   timestamp_key=timestamp_key)
+                                                                   timestamp_key=timestamp_key,
+                                                                   ht_perf_method=ht_perf_method)
 
     aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=measure,
                                                                  aggregation_measure=aggregation_measure)
