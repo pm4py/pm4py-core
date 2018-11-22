@@ -233,29 +233,24 @@ def get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr):
     feature_names = []
     count = 0
     dictionary = {}
-    inv_dictionary = {}
     for trace_attribute in str_tr_attr:
         values = get_all_string_trace_attribute_values(log, trace_attribute)
         for value in values:
             dictionary[value] = count
-            inv_dictionary[count] = value
             feature_names.append(value)
             count = count + 1
     for event_attribute in str_ev_attr:
         values = get_all_string_event_attribute_values(log, event_attribute)
         for value in values:
             dictionary[value] = count
-            inv_dictionary[count] = value
             feature_names.append(value)
             count = count + 1
     for trace_attribute in num_tr_attr:
         dictionary[get_numeric_trace_attribute_rep(trace_attribute)] = count
-        inv_dictionary[count] = value
         feature_names.append(trace_attribute)
         count = count + 1
     for event_attribute in num_ev_attr:
         dictionary[get_numeric_event_attribute_rep(event_attribute)] = count
-        inv_dictionary[count] = value
         feature_names.append(event_attribute)
         count = count + 1
     for trace in log:

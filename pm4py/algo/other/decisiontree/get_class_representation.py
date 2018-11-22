@@ -82,6 +82,25 @@ def get_class_representation_by_str_ev_attr_value_value(log, str_attr_name):
 
 
 def get_class_representation_by_trace_duration(log, target_trace_duration, timestamp_key="time:timestamp"):
+    """
+    Get class representation by splitting traces according to trace duration
+
+    Parameters
+    ------------
+    log
+        Trace log
+    target_trace_duration
+        Target trace duration
+    timestamp_key
+        Timestamp key
+
+    Returns
+    ------------
+    target
+        Target part for decision tree learning
+    classes
+        Name of the classes, in order
+    """
     count = 0
     dictionary = {}
     target = []
