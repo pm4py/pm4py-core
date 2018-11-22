@@ -169,7 +169,8 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
         first_trace = log[variants_idx[variant][0]]
         act_trans = aligned_traces[variants_idx[variant][0]]["activated_transitions"]
         annotations_places_trans, annotations_arcs = calculate_annotation_for_trace(first_trace, net, initial_marking,
-                                                                                    act_trans, activity_key)
+                                                                                    act_trans, activity_key,
+                                                                                    ht_perf_method=ht_perf_method)
 
         for el in annotations_places_trans:
             if el not in statistics:
