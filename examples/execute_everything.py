@@ -15,6 +15,8 @@ if __name__ == "__main__":
     from examples import transition_system_test
     from examples import stochastic_petri_nets
     from examples import stochastic_petri_df
+    from examples import big_dataframe_filtering
+    from examples import big_dataframe_management
 
     print("\n\nbig_log_imdf_decor frequency")
     big_log_imdf_decor.execute_script(variant="frequency")
@@ -38,3 +40,7 @@ if __name__ == "__main__":
     stochastic_petri_nets.execute_script()
     print("\n\nstochastic_petri_df")
     stochastic_petri_df.execute_script()
+    print("\n\nbig_dataframe_filtering")
+    big_dataframe_filtering.execute_script()
+    print("\n\nbig_dataframe_management")
+    big_dataframe_management.execute_script()

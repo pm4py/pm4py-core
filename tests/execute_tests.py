@@ -24,6 +24,8 @@ if __name__ == "__main__":
     from tests.documentation_tests.test_doc_measures import DocMeasuresDocumentationTest
     from tests.etc_tests import ETCTest
     from tests.evaluation_tests import ProcessModelEvaluationTests
+    from tests.filtering_test import LogFilteringTest
+    from tests.dataframe_prefilter import DataframePrefilteringTest
 
     test_rv = RandomVariableTest()
     test1_object = Pm4pyImportPackageTest()
@@ -42,5 +44,7 @@ if __name__ == "__main__":
     test14_object = DocMeasuresDocumentationTest()
     test17_object = ETCTest()
     test20_object = ProcessModelEvaluationTests()
+    filtering_test = LogFilteringTest()
+    prefiltering_test = DataframePrefilteringTest()
 
     unittest.main()
