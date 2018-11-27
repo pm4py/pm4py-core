@@ -1,1 +1,1 @@
-from pm4py.algo.filtering import tracelog, common, dfg
+from pm4py.algo.filtering import pandas, tracelog, common, dfg

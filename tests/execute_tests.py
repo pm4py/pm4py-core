@@ -24,6 +24,8 @@ if __name__ == "__main__":
     from tests.etc_tests import ETCTest
     from tests.evaluation_tests import ProcessModelEvaluationTests
     from tests.dec_tree_test import DecisionTreeTest
+    from tests.filtering_test import LogFilteringTest
+    from tests.dataframe_prefilter import DataframePrefilteringTest
 
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
@@ -42,5 +44,7 @@ if __name__ == "__main__":
     test17_object = ETCTest()
     test20_object = ProcessModelEvaluationTests()
     test21_object = DecisionTreeTest()
+    filtering_test = LogFilteringTest()
+    prefiltering_test = DataframePrefilteringTest()
 
     unittest.main()
