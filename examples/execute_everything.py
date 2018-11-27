@@ -14,6 +14,8 @@ if __name__ == "__main__":
     from examples import token_replay_imdf
     from examples import decisiontree_example
     from examples import clustering_example
+    from examples import big_dataframe_filtering
+    from examples import big_dataframe_management
 
     print("\n\nbig_log_imdf_decor frequency")
     big_log_imdf_decor.execute_script(variant="frequency")
@@ -35,3 +37,7 @@ if __name__ == "__main__":
     decisiontree_example.execute_script()
     print("\n\nclustering_example")
     clustering_example.execute_script()
+    print("\n\nbig_dataframe_filtering")
+    big_dataframe_filtering.execute_script()
+    print("\n\nbig_dataframe_management")
+    big_dataframe_management.execute_script()

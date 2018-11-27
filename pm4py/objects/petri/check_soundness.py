@@ -1,0 +1,195 @@
+from pm4py.objects.petri import incidence_matrix
+import numpy as np
+from scipy.optimize import linprog
+import networkx as nx
+
+
+def create_networkx_graph(net, unique_source, unique_sink):
+    """
+    Create a NetworkX graph from a Petri net, returning also correspondences for the unique
+    source and the unique sink places that were discovered
+
+    Parameters
+    -------------
+    net
+        Petri net
+    unique_source
+        Unique source place
+    unique_sink
+        Unique sink place
+
+    Returns
+    -------------
+    G
+        NetworkX graph
+    unique_source_corr
+        Correspondence in the NetworkX graph of the unique source place
+    unique_sink_corr
+        Correspondence in the NetworkX graph of the unique sink place
+    """
+
+    G = nx.Graph()
+    dictionary = {}
+    for place in net.places:
+        dictionary[place] = len(dictionary)
+        G.add_node(dictionary[place])
+    for transition in net.transitions:
+        dictionary[transition] = len(dictionary)
+        G.add_node(dictionary[transition])
+    for arc in net.arcs:
+        G.add_edge(dictionary[arc.source], dictionary[arc.target])
+    return G, dictionary[unique_source], dictionary[unique_sink]
+
+
+def check_source_and_sink_reachability(net, unique_source, unique_sink):
+    """
+    Checks reachability of the source and the sink place from all other nodes (places/transitions)
+    of the Petri net
+
+    Parameters
+    -------------
+    net
+        Petri net
+    unique_source
+        Unique source place of the Petri net
+    unique_sink
+        Unique sink place of the Petri net
+
+    Returns
+    -------------
+    boolean
+        Boolean value that is true if each node is in a path from the source place to the sink place
+    """
+    graph, unique_source_corr, unique_sink_corr = create_networkx_graph(net, unique_source, unique_sink)
+    nodes_list = list(graph.nodes())
+    finish_to_sink = list(nx.ancestors(graph, unique_sink_corr))
+    connected_to_source = list(nx.descendants(graph, unique_source_corr))
+    if len(finish_to_sink) == len(nodes_list) - 1 and len(connected_to_source) == len(nodes_list) - 1:
+        return True
+    return False
+
+def check_source_place_presence(net):
+    """
+    Check if there is a unique source place with empty connections
+
+    Parameters
+    -------------
+    net
+        Petri net
+
+    Returns
+    -------------
+    place
+        Unique source place (or None otherwise)
+    """
+    count_empty_input = 0
+    unique_source = None
+    for place in net.places:
+        if len(place.in_arcs) == 0:
+            count_empty_input = count_empty_input + 1
+            unique_source = place
+    if count_empty_input == 1:
+        return unique_source
+    return None
+
+
+def check_sink_place_presence(net):
+    """
+    Check if there is a unique sink place with empty connections
+
+    Parameters
+    -------------
+    net
+        Petri net
+
+    Returns
+    -------------
+    place
+        Unique source place (or None otherwise)
+    """
+    count_empty_output = 0
+    unique_sink = None
+    for place in net.places:
+        if len(place.out_arcs) == 0:
+            count_empty_output = count_empty_output + 1
+            unique_sink = place
+    if count_empty_output == 1:
+        return unique_sink
+    return None
+
+
+def check_wfnet(net):
+    """
+    Check if the Petri net is a workflow net
+
+    Parameters
+    ------------
+    net
+        Petri net
+
+    Returns
+    ------------
+    boolean
+        Boolean value that is true when the Petri net is a workflow net
+    """
+    unique_source_place = check_source_place_presence(net)
+    unique_sink_place = check_sink_place_presence(net)
+    source_sink_reachability = check_source_and_sink_reachability(net, unique_source_place, unique_sink_place)
+
+    return (unique_source_place is not None) and (unique_sink_place is not None) and source_sink_reachability
+
+
+def check_soundness_wfnet(net):
+    """
+    Check if a workflow net is sound by using the incidence matrix
+
+    Parameters
+    -------------
+    net
+        Petri net
+
+    Returns
+    -------------
+    boolean
+        Boolean value (True if the WFNet is sound; False if it is not sound)
+    """
+    matrix = np.asmatrix(incidence_matrix.construct(net).a_matrix)
+    matrix = np.transpose(matrix)
+    id_matrix = np.identity(matrix.shape[1]) * -1
+    vstack_matrix = np.vstack((matrix, id_matrix))
+    c = np.ones(matrix.shape[1])
+    bub = np.zeros(matrix.shape[0] + matrix.shape[1])
+    i = matrix.shape[0]
+    while i < matrix.shape[0] + matrix.shape[1]:
+        bub[i] = -0.01
+        i = i + 1
+    try:
+        solution = linprog(c, A_ub = vstack_matrix, b_ub = bub)
+        if solution.success:
+            return True
+    except:
+        return False
+    return False
+
+
+def check_petri_wfnet_and_soundness(net):
+    """
+    Check if the provided Petri net is a sound workflow net:
+    - firstly, it is checked if it is a workflow net
+    - secondly, it is checked if it is a sound workflow net
+
+    Parameters
+    -------------
+    net
+        Petri net
+
+    Returns
+    -------------
+    boolean
+        Boolean value (True if the Petri net is a sound workflow net)
+    """
+    is_wfnet = check_wfnet(net)
+    #print("is_wfnet = ",is_wfnet)
+    if is_wfnet:
+        return check_soundness_wfnet(net)
+    return False
