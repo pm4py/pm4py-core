@@ -38,7 +38,10 @@ def create_networkx_graph(net, unique_source, unique_sink):
         G.add_node(dictionary[transition])
     for arc in net.arcs:
         G.add_edge(dictionary[arc.source], dictionary[arc.target])
-    return G, dictionary[unique_source], dictionary[unique_sink]
+    unique_source_corr = dictionary[unique_source] if unique_source in dictionary else None
+    unique_sink_corr = dictionary[unique_sink] if unique_sink in dictionary else None
+
+    return G, unique_source_corr, unique_sink_corr
 
 
 def check_source_and_sink_reachability(net, unique_source, unique_sink):
@@ -61,12 +64,14 @@ def check_source_and_sink_reachability(net, unique_source, unique_sink):
         Boolean value that is true if each node is in a path from the source place to the sink place
     """
     graph, unique_source_corr, unique_sink_corr = create_networkx_graph(net, unique_source, unique_sink)
-    nodes_list = list(graph.nodes())
-    finish_to_sink = list(nx.ancestors(graph, unique_sink_corr))
-    connected_to_source = list(nx.descendants(graph, unique_source_corr))
-    if len(finish_to_sink) == len(nodes_list) - 1 and len(connected_to_source) == len(nodes_list) - 1:
-        return True
+    if unique_source_corr is not None and unique_sink_corr is not None:
+        nodes_list = list(graph.nodes())
+        finish_to_sink = list(nx.ancestors(graph, unique_sink_corr))
+        connected_to_source = list(nx.descendants(graph, unique_source_corr))
+        if len(finish_to_sink) == len(nodes_list) - 1 and len(connected_to_source) == len(nodes_list) - 1:
+            return True
     return False
+
 
 def check_source_place_presence(net):
     """
