@@ -1,7 +1,72 @@
 from pm4py.objects.petri import incidence_matrix
 import numpy as np
 from scipy.optimize import linprog
+import networkx as nx
 
+
+def create_networkx_graph(net, unique_source, unique_sink):
+    """
+    Create a NetworkX graph from a Petri net, returning also correspondences for the unique
+    source and the unique sink places that were discovered
+
+    Parameters
+    -------------
+    net
+        Petri net
+    unique_source
+        Unique source place
+    unique_sink
+        Unique sink place
+
+    Returns
+    -------------
+    G
+        NetworkX graph
+    unique_source_corr
+        Correspondence in the NetworkX graph of the unique source place
+    unique_sink_corr
+        Correspondence in the NetworkX graph of the unique sink place
+    """
+
+    G = nx.Graph()
+    dictionary = {}
+    for place in net.places:
+        dictionary[place] = len(dictionary)
+        G.add_node(dictionary[place])
+    for transition in net.transitions:
+        dictionary[transition] = len(dictionary)
+        G.add_node(dictionary[transition])
+    for arc in net.arcs:
+        G.add_edge(dictionary[arc.source], dictionary[arc.target])
+    return G, dictionary[unique_source], dictionary[unique_sink]
+
+
+def check_source_and_sink_reachability(net, unique_source, unique_sink):
+    """
+    Checks reachability of the source and the sink place from all other nodes (places/transitions)
+    of the Petri net
+
+    Parameters
+    -------------
+    net
+        Petri net
+    unique_source
+        Unique source place of the Petri net
+    unique_sink
+        Unique sink place of the Petri net
+
+    Returns
+    -------------
+    boolean
+        Boolean value that is true if each node is in a path from the source place to the sink place
+    """
+    graph, unique_source_corr, unique_sink_corr = create_networkx_graph(net, unique_source, unique_sink)
+    nodes_list = list(graph.nodes())
+    finish_to_sink = list(nx.ancestors(graph, unique_sink_corr))
+    connected_to_source = list(nx.descendants(graph, unique_source_corr))
+    if len(finish_to_sink) == len(nodes_list) - 1 and len(connected_to_source) == len(nodes_list) - 1:
+        return True
+    return False
 
 def check_source_place_presence(net):
     """
@@ -14,16 +79,18 @@ def check_source_place_presence(net):
 
     Returns
     -------------
-    boolean
-        Boolean value that is true when the Petri net has an unique source place with no input connections
+    place
+        Unique source place (or None otherwise)
     """
     count_empty_input = 0
+    unique_source = None
     for place in net.places:
         if len(place.in_arcs) == 0:
             count_empty_input = count_empty_input + 1
+            unique_source = place
     if count_empty_input == 1:
-        return True
-    return False
+        return unique_source
+    return None
 
 
 def check_sink_place_presence(net):
@@ -37,16 +104,18 @@ def check_sink_place_presence(net):
 
     Returns
     -------------
-    boolean
-        Boolean value that is true when the Petri net has an unique sink place with no output connections
+    place
+        Unique source place (or None otherwise)
     """
     count_empty_output = 0
+    unique_sink = None
     for place in net.places:
         if len(place.out_arcs) == 0:
             count_empty_output = count_empty_output + 1
+            unique_sink = place
     if count_empty_output == 1:
-        return True
-    return False
+        return unique_sink
+    return None
 
 
 def check_wfnet(net):
@@ -63,10 +132,11 @@ def check_wfnet(net):
     boolean
         Boolean value that is true when the Petri net is a workflow net
     """
-    source_place_presence = check_source_place_presence(net)
-    sink_place_presence = check_sink_place_presence(net)
+    unique_source_place = check_source_place_presence(net)
+    unique_sink_place = check_sink_place_presence(net)
+    source_sink_reachability = check_source_and_sink_reachability(net, unique_source_place, unique_sink_place)
 
-    return source_place_presence and sink_place_presence
+    return (unique_source_place is not None) and (unique_sink_place is not None) and source_sink_reachability
 
 
 def check_soundness_wfnet(net):
