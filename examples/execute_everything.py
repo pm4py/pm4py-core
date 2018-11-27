@@ -12,6 +12,8 @@ if __name__ == "__main__":
     from examples import test_evaluation
     from examples import token_replay_alpha
     from examples import token_replay_imdf
+    from examples import big_dataframe_filtering
+    from examples import big_dataframe_management
 
     print("\n\nbig_log_imdf_decor frequency")
     big_log_imdf_decor.execute_script(variant="frequency")
@@ -29,3 +31,7 @@ if __name__ == "__main__":
     token_replay_alpha.execute_script()
     print("\n\ntokenReplay_imdf")
     token_replay_imdf.execute_script()
+    print("\n\nbig_dataframe_filtering")
+    big_dataframe_filtering.execute_script()
+    print("\n\nbig_dataframe_management")
+    big_dataframe_management.execute_script()
