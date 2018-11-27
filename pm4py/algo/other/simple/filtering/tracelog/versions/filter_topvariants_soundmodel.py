@@ -38,7 +38,7 @@ def apply(log, parameters=None):
         variant = all_variants_list[i][0]
         considered_variants.append(variant)
         filtered_log = variants_filter.apply(log, considered_variants)
-        if discovery_algorithm == "alphaclassic":
+        if discovery_algorithm == "alphaclassic" or discovery_algorithm == "alpha":
             net, initial_marking, final_marking = alpha_miner.apply(filtered_log)
         is_sound = check_soundness.check_petri_wfnet_and_soundness(net)
         if is_sound:
