@@ -6,7 +6,7 @@ import pm4py
 from pm4py.objects.petri.petrinet import Marking
 
 
-def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None):
+def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None, export_prom5=False):
     """
     Export a Petrinet to a XML tree
 
@@ -20,6 +20,8 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
         Final marking (optional)
     stochastic_map
         (only for stochastics) map that associates to each transition a probability distribution
+    export_prom5
+        Enables exporting PNML files in a format that is ProM5-friendly
 
     Returns
     ----------
@@ -33,8 +35,11 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
     net = etree.SubElement(root, "net")
     net.set("id", "net1")
     net.set("type", "http://www.pnml.org/version-2009/grammar/pnmlcoremodel")
-    page = etree.SubElement(net, "page")
-    page.set("id", "n0")
+    if export_prom5 is True:
+        page = net
+    else:
+        page = etree.SubElement(net, "page")
+        page.set("id", "n0")
     places_map = {}
     for place in petrinet.places:
         places_map[place] = place.name
@@ -73,7 +78,7 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
             distribution_invisible.set("key", "invisible")
             distribution_invisible.text = str(True if transition.label is None else False).lower()
             distribution_weight = etree.SubElement(stochastic_information, "property")
-            distribution_weight.set("key","weight")
+            distribution_weight.set("key", "weight")
             distribution_weight.text = str(random_variable.get_weight())
         if transition.label is not None:
             trans_text.text = transition.label
@@ -84,6 +89,19 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
             tool_specific.set("version", "6.4")
             tool_specific.set("activity", "$invisible$")
             tool_specific.set("localNodeID", str(uuid.uuid4()))
+        if export_prom5 is True:
+            if transition.label is not None:
+                prom5_specific = etree.SubElement(trans, "toolspecific")
+                prom5_specific.set("tool", "ProM")
+                prom5_specific.set("version", "5.2")
+                log_event_prom5 = etree.SubElement(prom5_specific, "logevent")
+                event_name = transition.label.split("+")[0]
+                event_transition = transition.label.split("+")[1] if len(
+                    transition.label.split("+")) > 1 else "complete"
+                log_event_prom5_name = etree.SubElement(log_event_prom5, "name")
+                log_event_prom5_name.text = event_name
+                log_event_prom5_type = etree.SubElement(log_event_prom5, "type")
+                log_event_prom5_type.text = event_transition
     for arc in petrinet.arcs:
         arc_el = etree.SubElement(page, "arc")
         arc_el.set("id", str(hash(arc)))
@@ -108,7 +126,7 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
     return tree
 
 
-def export_petri_as_string(petrinet, marking, final_marking=None, stochastic_map=None):
+def export_petri_as_string(petrinet, marking, final_marking=None, stochastic_map=None, export_prom5=False):
     """
     Parameters
     ----------
@@ -120,6 +138,8 @@ def export_petri_as_string(petrinet, marking, final_marking=None, stochastic_map
         Final marking (optional)
     stochastic_map
         (only for stochastics) map that associates to each transition a probability distribution
+    export_prom5
+        Enables exporting PNML files in a format that is ProM5-friendly
 
     Returns
     ----------
@@ -128,12 +148,13 @@ def export_petri_as_string(petrinet, marking, final_marking=None, stochastic_map
     """
 
     # gets the XML tree
-    tree = export_petri_tree(petrinet, marking, final_marking=final_marking, stochastic_map=stochastic_map)
+    tree = export_petri_tree(petrinet, marking, final_marking=final_marking, stochastic_map=stochastic_map,
+                             export_prom5=export_prom5)
 
     return etree.tostring(tree, xml_declaration=True, encoding="utf-8")
 
 
-def export_net(petrinet, marking, output_filename, final_marking=None, stochastic_map=None):
+def export_net(petrinet, marking, output_filename, final_marking=None, stochastic_map=None, export_prom5=False):
     """
     Export a Petrinet to a PNML file
 
@@ -149,9 +170,13 @@ def export_net(petrinet, marking, output_filename, final_marking=None, stochasti
         Absolute output file name for saving the pnml file
     stochastic_map
         (only for stochastics) map that associates to each transition a probability distribution
+     export_prom5
+        Enables exporting PNML files in a format that is ProM5-friendly
     """
 
     # gets the XML tree
-    tree = export_petri_tree(petrinet, marking, final_marking=final_marking, stochastic_map=stochastic_map)
+    tree = export_petri_tree(petrinet, marking, final_marking=final_marking, stochastic_map=stochastic_map,
+                             export_prom5=export_prom5)
+
     # write the tree to a file
     tree.write(output_filename, pretty_print=True, xml_declaration=True, encoding="utf-8")
