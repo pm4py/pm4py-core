@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='pm4py',
-    version='0.1',
+    version='0.1.1',
     packages=['pm4py', 'pm4py.algo', 'pm4py.algo.discovery', 'pm4py.algo.discovery.dfg',
               'pm4py.algo.discovery.dfg.utils', 'pm4py.algo.discovery.dfg.adapters',
               'pm4py.algo.discovery.dfg.adapters.pandas', 'pm4py.algo.discovery.dfg.versions',
