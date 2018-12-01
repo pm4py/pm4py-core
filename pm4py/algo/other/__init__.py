@@ -1,1 +1,1 @@
-from pm4py.algo.other import simple, checkout
+from pm4py.algo.other import simple, playout
