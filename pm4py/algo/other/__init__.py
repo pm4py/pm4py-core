@@ -1,1 +1,1 @@
-from pm4py.algo.other import decisiontree, clustering, simple
+from pm4py.algo.other import simple, checkout, decisiontree, clustering
