@@ -378,22 +378,32 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
         Current marking
     """
     all_enabled_transitions = list(semantics.enabled_transitions(net, marking))
+    initial_all_enabled_transitions_marking_dictio = {}
+    all_enabled_transitions_marking_dictio = {}
+    for trans in all_enabled_transitions:
+        all_enabled_transitions_marking_dictio[trans] = marking
+        initial_all_enabled_transitions_marking_dictio[trans] = marking
     visible_transitions = set()
     visited_transitions = set()
 
     i = 0
     while i < len(all_enabled_transitions):
         t = all_enabled_transitions[i]
-        if t not in visited_transitions:
+        marking_copy = copy(all_enabled_transitions_marking_dictio[t])
+
+        if repr([t, marking_copy]) not in visited_transitions:
+            #print(repr([t, marking_copy]))
             if t.label is not None:
                 visible_transitions.add(t)
             else:
-                marking_copy = copy(marking)
                 if semantics.is_enabled(t, net, marking_copy):
                     new_marking = semantics.execute(t, net, marking_copy)
                     new_enabled_transitions = list(semantics.enabled_transitions(net, new_marking))
-                    all_enabled_transitions = all_enabled_transitions + new_enabled_transitions
-            visited_transitions.add(t)
+                    for t2 in new_enabled_transitions:
+                        #if t2 not in all_enabled_transitions:
+                        all_enabled_transitions.append(t2)
+                        all_enabled_transitions_marking_dictio[t2] = new_marking
+            visited_transitions.add(repr([t, marking_copy]))
         i = i + 1
 
     return visible_transitions
@@ -601,7 +611,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         is_fit = (missing == 0)
 
     if consumed > 0 and produced > 0:
-        trace_fitness = (1.0 - float(missing) / float(consumed)) * (1.0 - float(remaining) / float(produced))
+        trace_fitness = 0.5 * (1.0 - float(missing) / float(consumed)) + 0.5 * (1.0 - float(remaining) / float(produced))
     else:
         trace_fitness = 1.0
 
