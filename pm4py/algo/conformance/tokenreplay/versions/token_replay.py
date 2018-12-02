@@ -381,7 +381,8 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
     visible_transitions = set()
     visited_transitions = set()
 
-    for i in range(len(all_enabled_transitions)):
+    i = 0
+    while i < len(all_enabled_transitions):
         t = all_enabled_transitions[i]
         if t not in visited_transitions:
             if t.label is not None:
@@ -393,6 +394,7 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
                     new_enabled_transitions = list(semantics.enabled_transitions(net, new_marking))
                     all_enabled_transitions = all_enabled_transitions + new_enabled_transitions
             visited_transitions.add(t)
+        i = i + 1
 
     return visible_transitions
 
