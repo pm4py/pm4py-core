@@ -43,7 +43,7 @@ def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
     prefixes = {}
     prefix_count = Counter()
     for trace in log:
-        for i in range(1, len(trace) - 1):
+        for i in range(1, len(trace)):
             red_trace = trace[0:i]
             prefix = ",".join([x[activity_key] for x in red_trace])
             next_activity = trace[i][activity_key]
