@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="({'Accepted+In Progress'}, {'Completed+Resolved'})">
+        <name>
+          <text>({'Accepted+In Progress'}, {'Completed+Resolved'})</text>
+        </name>
+      </place>
+      <place id="({'Completed+Resolved'}, {'Completed+Closed'})">
+        <name>
+          <text>({'Completed+Resolved'}, {'Completed+Closed'})</text>
+        </name>
+      </place>
+      <place id="({'Queued+Awaiting Assignment'}, {'Accepted+In Progress'})">
+        <name>
+          <text>({'Queued+Awaiting Assignment'}, {'Accepted+In Progress'})</text>
+        </name>
+      </place>
+      <place id="start">
+        <name>
+          <text>start</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="end">
+        <name>
+          <text>end</text>
+        </name>
+      </place>
+      <transition id="Completed+Resolved">
+        <name>
+          <text>Completed+Resolved</text>
+        </name>
+      </transition>
+      <transition id="Accepted+In Progress">
+        <name>
+          <text>Accepted+In Progress</text>
+        </name>
+      </transition>
+      <transition id="Completed+Closed">
+        <name>
+          <text>Completed+Closed</text>
+        </name>
+      </transition>
+      <transition id="Queued+Awaiting Assignment">
+        <name>
+          <text>Queued+Awaiting Assignment</text>
+        </name>
+      </transition>
+      <arc id="181108485345" source="start" target="Queued+Awaiting Assignment"/>
+      <arc id="-9223371855746290649" source="({'Accepted+In Progress'}, {'Completed+Resolved'})" target="Completed+Resolved"/>
+      <arc id="181108485226" source="Accepted+In Progress" target="({'Accepted+In Progress'}, {'Completed+Resolved'})"/>
+      <arc id="181108485359" source="Completed+Closed" target="end"/>
+      <arc id="181108485296" source="Completed+Resolved" target="({'Completed+Resolved'}, {'Completed+Closed'})"/>
+      <arc id="181108485205" source="({'Completed+Resolved'}, {'Completed+Closed'})" target="Completed+Closed"/>
+      <arc id="181108485142" source="({'Queued+Awaiting Assignment'}, {'Accepted+In Progress'})" target="Accepted+In Progress"/>
+      <arc id="-9223371855746290565" source="Queued+Awaiting Assignment" target="({'Queued+Awaiting Assignment'}, {'Accepted+In Progress'})"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="end">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

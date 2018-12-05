@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="({'Confirmation of receipt+complete'}, {'T02 Check confirmation of receipt+complete'})">
+        <name>
+          <text>({'Confirmation of receipt+complete'}, {'T02 Check confirmation of receipt+complete'})</text>
+        </name>
+      </place>
+      <place id="({'T06 Determine necessity of stop advice+complete', 'T07-1 Draft intern advice aspect 1+complete'}, {'T08 Draft and send request for advice+complete', 'T07-3 Draft intern advice hold for aspect 3+complete', 'T10 Determine necessity to stop indication+complete', 'T07-1 Draft intern advice aspect 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'})">
+        <name>
+          <text>({'T06 Determine necessity of stop advice+complete', 'T07-1 Draft intern advice aspect 1+complete'}, {'T08 Draft and send request for advice+complete', 'T07-3 Draft intern advice hold for aspect 3+complete', 'T10 Determine necessity to stop indication+complete', 'T07-1 Draft intern advice aspect 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'})</text>
+        </name>
+      </place>
+      <place id="({'T02 Check confirmation of receipt+complete'}, {'T04 Determine confirmation of receipt+complete'})">
+        <name>
+          <text>({'T02 Check confirmation of receipt+complete'}, {'T04 Determine confirmation of receipt+complete'})</text>
+        </name>
+      </place>
+      <place id="({'T04 Determine confirmation of receipt+complete'}, {'T05 Print and send confirmation of receipt+complete'})">
+        <name>
+          <text>({'T04 Determine confirmation of receipt+complete'}, {'T05 Print and send confirmation of receipt+complete'})</text>
+        </name>
+      </place>
+      <place id="start">
+        <name>
+          <text>start</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="({'T04 Determine confirmation of receipt+complete', 'T07-2 Draft intern advice aspect 2+complete', 'T09-1 Process or receive external advice from party 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'}, {'T06 Determine necessity of stop advice+complete'})">
+        <name>
+          <text>({'T04 Determine confirmation of receipt+complete', 'T07-2 Draft intern advice aspect 2+complete', 'T09-1 Process or receive external advice from party 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'}, {'T06 Determine necessity of stop advice+complete'})</text>
+        </name>
+      </place>
+      <place id="({'T08 Draft and send request for advice+complete'}, {'T09-1 Process or receive external advice from party 1+complete'})">
+        <name>
+          <text>({'T08 Draft and send request for advice+complete'}, {'T09-1 Process or receive external advice from party 1+complete'})</text>
+        </name>
+      </place>
+      <place id="({'T07-3 Draft intern advice hold for aspect 3+complete'}, {'T07-2 Draft intern advice aspect 2+complete'})">
+        <name>
+          <text>({'T07-3 Draft intern advice hold for aspect 3+complete'}, {'T07-2 Draft intern advice aspect 2+complete'})</text>
+        </name>
+      </place>
+      <place id="({'T05 Print and send confirmation of receipt+complete'}, {'T10 Determine necessity to stop indication+complete'})">
+        <name>
+          <text>({'T05 Print and send confirmation of receipt+complete'}, {'T10 Determine necessity to stop indication+complete'})</text>
+        </name>
+      </place>
+      <place id="end">
+        <name>
+          <text>end</text>
+        </name>
+      </place>
+      <transition id="T04 Determine confirmation of receipt+complete">
+        <name>
+          <text>T04 Determine confirmation of receipt+complete</text>
+        </name>
+      </transition>
+      <transition id="T05 Print and send confirmation of receipt+complete">
+        <name>
+          <text>T05 Print and send confirmation of receipt+complete</text>
+        </name>
+      </transition>
+      <transition id="T07-1 Draft intern advice aspect 1+complete">
+        <name>
+          <text>T07-1 Draft intern advice aspect 1+complete</text>
+        </name>
+      </transition>
+      <transition id="T07-2 Draft intern advice aspect 2+complete">
+        <name>
+          <text>T07-2 Draft intern advice aspect 2+complete</text>
+        </name>
+      </transition>
+      <transition id="T09-1 Process or receive external advice from party 1+complete">
+        <name>
+          <text>T09-1 Process or receive external advice from party 1+complete</text>
+        </name>
+      </transition>
+      <transition id="T08 Draft and send request for advice+complete">
+        <name>
+          <text>T08 Draft and send request for advice+complete</text>
+        </name>
+      </transition>
+      <transition id="T02 Check confirmation of receipt+complete">
+        <name>
+          <text>T02 Check confirmation of receipt+complete</text>
+        </name>
+      </transition>
+      <transition id="T07-4 Draft internal advice to hold for type 4+complete">
+        <name>
+          <text>T07-4 Draft internal advice to hold for type 4+complete</text>
+        </name>
+      </transition>
+      <transition id="T07-3 Draft intern advice hold for aspect 3+complete">
+        <name>
+          <text>T07-3 Draft intern advice hold for aspect 3+complete</text>
+        </name>
+      </transition>
+      <transition id="T10 Determine necessity to stop indication+complete">
+        <name>
+          <text>T10 Determine necessity to stop indication+complete</text>
+        </name>
+      </transition>
+      <transition id="Confirmation of receipt+complete">
+        <name>
+          <text>Confirmation of receipt+complete</text>
+        </name>
+      </transition>
+      <transition id="T06 Determine necessity of stop advice+complete">
+        <name>
+          <text>T06 Determine necessity of stop advice+complete</text>
+        </name>
+      </transition>
+      <arc id="-9223371855746516848" source="T05 Print and send confirmation of receipt+complete" target="({'T05 Print and send confirmation of receipt+complete'}, {'T10 Determine necessity to stop indication+complete'})"/>
+      <arc id="-9223371855746516841" source="({'T05 Print and send confirmation of receipt+complete'}, {'T10 Determine necessity to stop indication+complete'})" target="T10 Determine necessity to stop indication+complete"/>
+      <arc id="-9223371855746516834" source="T07-3 Draft intern advice hold for aspect 3+complete" target="({'T07-3 Draft intern advice hold for aspect 3+complete'}, {'T07-2 Draft intern advice aspect 2+complete'})"/>
+      <arc id="181108258978" source="T07-2 Draft intern advice aspect 2+complete" target="({'T04 Determine confirmation of receipt+complete', 'T07-2 Draft intern advice aspect 2+complete', 'T09-1 Process or receive external advice from party 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'}, {'T06 Determine necessity of stop advice+complete'})"/>
+      <arc id="-9223371855746516827" source="({'T06 Determine necessity of stop advice+complete', 'T07-1 Draft intern advice aspect 1+complete'}, {'T08 Draft and send request for advice+complete', 'T07-3 Draft intern advice hold for aspect 3+complete', 'T10 Determine necessity to stop indication+complete', 'T07-1 Draft intern advice aspect 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'})" target="T08 Draft and send request for advice+complete"/>
+      <arc id="181108258985" source="({'T06 Determine necessity of stop advice+complete', 'T07-1 Draft intern advice aspect 1+complete'}, {'T08 Draft and send request for advice+complete', 'T07-3 Draft intern advice hold for aspect 3+complete', 'T10 Determine necessity to stop indication+complete', 'T07-1 Draft intern advice aspect 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'})" target="T07-1 Draft intern advice aspect 1+complete"/>
+      <arc id="181105097143" source="T02 Check confirmation of receipt+complete" target="({'T02 Check confirmation of receipt+complete'}, {'T04 Determine confirmation of receipt+complete'})"/>
+      <arc id="-9223371855746516806" source="T08 Draft and send request for advice+complete" target="({'T08 Draft and send request for advice+complete'}, {'T09-1 Process or receive external advice from party 1+complete'})"/>
+      <arc id="181105097157" source="Confirmation of receipt+complete" target="({'Confirmation of receipt+complete'}, {'T02 Check confirmation of receipt+complete'})"/>
+      <arc id="181105097164" source="({'T04 Determine confirmation of receipt+complete'}, {'T05 Print and send confirmation of receipt+complete'})" target="T05 Print and send confirmation of receipt+complete"/>
+      <arc id="181108259027" source="({'T06 Determine necessity of stop advice+complete', 'T07-1 Draft intern advice aspect 1+complete'}, {'T08 Draft and send request for advice+complete', 'T07-3 Draft intern advice hold for aspect 3+complete', 'T10 Determine necessity to stop indication+complete', 'T07-1 Draft intern advice aspect 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'})" target="T10 Determine necessity to stop indication+complete"/>
+      <arc id="-9223371855746516778" source="({'T07-3 Draft intern advice hold for aspect 3+complete'}, {'T07-2 Draft intern advice aspect 2+complete'})" target="T07-2 Draft intern advice aspect 2+complete"/>
+      <arc id="181108259034" source="T09-1 Process or receive external advice from party 1+complete" target="({'T04 Determine confirmation of receipt+complete', 'T07-2 Draft intern advice aspect 2+complete', 'T09-1 Process or receive external advice from party 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'}, {'T06 Determine necessity of stop advice+complete'})"/>
+      <arc id="-9223371855746516771" source="({'T04 Determine confirmation of receipt+complete', 'T07-2 Draft intern advice aspect 2+complete', 'T09-1 Process or receive external advice from party 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'}, {'T06 Determine necessity of stop advice+complete'})" target="T06 Determine necessity of stop advice+complete"/>
+      <arc id="-9223371855749678627" source="T10 Determine necessity to stop indication+complete" target="end"/>
+      <arc id="181105097185" source="({'T02 Check confirmation of receipt+complete'}, {'T04 Determine confirmation of receipt+complete'})" target="T04 Determine confirmation of receipt+complete"/>
+      <arc id="181108259041" source="T06 Determine necessity of stop advice+complete" target="({'T06 Determine necessity of stop advice+complete', 'T07-1 Draft intern advice aspect 1+complete'}, {'T08 Draft and send request for advice+complete', 'T07-3 Draft intern advice hold for aspect 3+complete', 'T10 Determine necessity to stop indication+complete', 'T07-1 Draft intern advice aspect 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'})"/>
+      <arc id="-9223371855749678620" source="({'Confirmation of receipt+complete'}, {'T02 Check confirmation of receipt+complete'})" target="T02 Check confirmation of receipt+complete"/>
+      <arc id="-9223371855746516764" source="({'T06 Determine necessity of stop advice+complete', 'T07-1 Draft intern advice aspect 1+complete'}, {'T08 Draft and send request for advice+complete', 'T07-3 Draft intern advice hold for aspect 3+complete', 'T10 Determine necessity to stop indication+complete', 'T07-1 Draft intern advice aspect 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'})" target="T07-3 Draft intern advice hold for aspect 3+complete"/>
+      <arc id="181108259048" source="T07-1 Draft intern advice aspect 1+complete" target="({'T06 Determine necessity of stop advice+complete', 'T07-1 Draft intern advice aspect 1+complete'}, {'T08 Draft and send request for advice+complete', 'T07-3 Draft intern advice hold for aspect 3+complete', 'T10 Determine necessity to stop indication+complete', 'T07-1 Draft intern advice aspect 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'})"/>
+      <arc id="-9223371855749678613" source="start" target="Confirmation of receipt+complete"/>
+      <arc id="-9223371855746516757" source="({'T06 Determine necessity of stop advice+complete', 'T07-1 Draft intern advice aspect 1+complete'}, {'T08 Draft and send request for advice+complete', 'T07-3 Draft intern advice hold for aspect 3+complete', 'T10 Determine necessity to stop indication+complete', 'T07-1 Draft intern advice aspect 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'})" target="T07-4 Draft internal advice to hold for type 4+complete"/>
+      <arc id="181108259055" source="T07-4 Draft internal advice to hold for type 4+complete" target="({'T04 Determine confirmation of receipt+complete', 'T07-2 Draft intern advice aspect 2+complete', 'T09-1 Process or receive external advice from party 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'}, {'T06 Determine necessity of stop advice+complete'})"/>
+      <arc id="181105097206" source="T04 Determine confirmation of receipt+complete" target="({'T04 Determine confirmation of receipt+complete'}, {'T05 Print and send confirmation of receipt+complete'})"/>
+      <arc id="181108259062" source="({'T08 Draft and send request for advice+complete'}, {'T09-1 Process or receive external advice from party 1+complete'})" target="T09-1 Process or receive external advice from party 1+complete"/>
+      <arc id="-9223371855746516743" source="T04 Determine confirmation of receipt+complete" target="({'T04 Determine confirmation of receipt+complete', 'T07-2 Draft intern advice aspect 2+complete', 'T09-1 Process or receive external advice from party 1+complete', 'T07-4 Draft internal advice to hold for type 4+complete'}, {'T06 Determine necessity of stop advice+complete'})"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="end">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

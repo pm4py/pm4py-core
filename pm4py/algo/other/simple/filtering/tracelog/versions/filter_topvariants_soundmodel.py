@@ -1,9 +1,9 @@
-from pm4py.algo.filtering.tracelog.variants import variants_filter
-from pm4py.algo.discovery.alpha import factory as alpha_miner
-from pm4py.objects.petri import check_soundness
 from pm4py.algo.conformance.alignments import factory as alignment_factory
+from pm4py.algo.discovery.alpha import factory as alpha_miner
+from pm4py.algo.filtering.tracelog.variants import variants_filter
+from pm4py.evaluation.replay_fitness import factory as replay_fitness_factory
 from pm4py.objects.log.log import TraceLog
-from pm4py.algo.conformance.alignments import utils as align_utils
+from pm4py.objects.petri import check_soundness
 
 
 def apply(log, parameters=None):
@@ -52,15 +52,9 @@ def apply(log, parameters=None):
         else:
             try:
                 alignments = alignment_factory.apply(filtered_log, net, initial_marking, final_marking)
-                everything_fit = True
-                for align in alignments:
-                    if align["cost"] >= align_utils.STD_MODEL_LOG_MOVE_COST:
-                        everything_fit = False
-
-                if everything_fit:
-                    #print(i,"sound",considered_variants)
-                    pass
-                else:
+                fitness = replay_fitness_factory.apply(filtered_log, net, initial_marking, final_marking,
+                                                       parameters=parameters)
+                if fitness["log_fitness"] < 0.99999:
                     del considered_variants[-1]
                     del considered_traces[-1]
             except TypeError:
