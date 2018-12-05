@@ -28,10 +28,16 @@ def evaluate(aligned_traces, parameters=None):
     sum_of_fitness = sum([x["trace_fitness"] for x in aligned_traces])
     perc_fit_traces = 0.0
     average_fitness = 0.0
-    if no_traces > 0:
+    log_fitness = 0
+    total_M = sum([x["M"] for x in aligned_traces])
+    total_C = sum([x["C"] for x in aligned_traces])
+    total_R = sum([x["R"] for x in aligned_traces])
+    total_P = sum([x["P"] for x in aligned_traces])
+    if no_traces > 0 and total_C > 0 and total_P > 0:
         perc_fit_traces = float(100.0 * fit_traces) / float(no_traces)
         average_fitness = float(sum_of_fitness) / float(no_traces)
-    return {"percFitTraces": perc_fit_traces, "averageFitness": average_fitness}
+        log_fitness = 0.5 * (1 - total_M / total_C) + 0.5 * (1 - total_R / total_P)
+    return {"perc_fit_traces": perc_fit_traces, "average_trace_fitness": average_fitness, "log_fitness": log_fitness}
 
 
 def apply(log, petri_net, initial_marking, final_marking, parameters=None):
