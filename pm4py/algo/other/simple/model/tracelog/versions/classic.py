@@ -5,6 +5,7 @@ from pm4py.algo.other.simple.filtering.tracelog.versions import filter_topvarian
 from pm4py.objects.log.util import insert_classifier
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.algo.discovery.dfg import factory as dfg_factory
 
 
 def apply(log, parameters=None):
@@ -51,8 +52,6 @@ def apply(log, parameters=None):
         "include_filtered_dfg_frequency"] if "include_filtered_dfg_frequency" in parameters else True
     include_filtered_dfg_performance = parameters[
         "include_filtered_dfg_performance"] if "include_filtered_dfg_performance" in parameters else True
-    apply_dfg_filtering = parameters["apply_dfg_filtering"] if "apply_dfg_filtering" in parameters else True
-    dfg_filtering_threshold = parameters["dfg_filtering_threshold"] if "dfg_filtering_threshold" in parameters else 0.01
 
     if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters:
         activity_key = parameters[
@@ -82,6 +81,15 @@ def apply(log, parameters=None):
         filtered_log = filter_topvariants_soundmodel.apply(log, parameters=parameters)
     elif "inductive" in discovery_algorithm:
         filtered_log = auto_filter.apply(log, parameters=parameters)
+
+    if include_dfg_frequency:
+        dfg_frequency = dfg_factory.apply(log, parameters=parameters, variant="frequency")
+    if include_dfg_performance:
+        dfg_performance = dfg_factory.apply(log, parameters=parameters, variant="performance")
+    if include_filtered_dfg_frequency:
+        filtered_dfg_frequency = dfg_factory.apply(filtered_log, parameters=parameters, variant="frequency")
+    if include_filtered_dfg_performance:
+        filtered_dfg_performance = dfg_factory.apply(filtered_log, parameters=parameters, variant="performance")
 
     if "alpha" in discovery_algorithm:
         net, initial_marking, final_marking = alpha_miner.apply(filtered_log, parameters=parameters)
