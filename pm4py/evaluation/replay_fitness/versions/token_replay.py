@@ -29,10 +29,10 @@ def evaluate(aligned_traces, parameters=None):
     perc_fit_traces = 0.0
     average_fitness = 0.0
     log_fitness = 0
-    total_M = sum([x["M"] for x in aligned_traces])
-    total_C = sum([x["C"] for x in aligned_traces])
-    total_R = sum([x["R"] for x in aligned_traces])
-    total_P = sum([x["P"] for x in aligned_traces])
+    total_M = sum([x["missing_tokens"] for x in aligned_traces])
+    total_C = sum([x["consumed_tokens"] for x in aligned_traces])
+    total_R = sum([x["remaining_tokens"] for x in aligned_traces])
+    total_P = sum([x["produced_tokens"] for x in aligned_traces])
     if no_traces > 0 and total_C > 0 and total_P > 0:
         perc_fit_traces = float(100.0 * fit_traces) / float(no_traces)
         average_fitness = float(sum_of_fitness) / float(no_traces)
