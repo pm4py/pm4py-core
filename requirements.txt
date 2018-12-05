@@ -8,3 +8,4 @@ lxml
 graphviz
 pandas
 networkx==1.11
+scipy

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pm4py',
-    version='0.2',
+    version='0.2.1',
     packages=['pm4py', 'pm4py.algo', 'pm4py.algo.other', 'pm4py.algo.other.simple', 'pm4py.algo.other.simple.model',
               'pm4py.algo.other.simple.model.tracelog', 'pm4py.algo.other.simple.model.tracelog.versions',
               'pm4py.algo.other.simple.filtering', 'pm4py.algo.other.simple.filtering.tracelog',
@@ -54,7 +54,7 @@ setup(
     url='http://www.pm4py.org',
     license='GPL 3.0',
     author='PADS',
-    author_email='https://pm4py.github.io/team.html',
+    author_email='pm4py@pads.rwth-aachen.de',
     description='Process Mining for Python',
     install_requires=[
         'numpy',
@@ -66,6 +66,7 @@ setup(
         'lxml',
         'graphviz',
         'pandas',
-        'networkx==1.11'
+        'networkx==1.11',
+        'scipy'
     ]
 )
