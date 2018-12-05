@@ -175,14 +175,14 @@ if __name__ == "__main__":
             fitness_token_alpha[logName] = \
                 fitness_factory.apply(log, alpha_model, alpha_initial_marking, alpha_final_marking,
                                       parameters=parameters)[
-                    'percFitTraces']
+                    'perc_fit_traces']
             t2 = time.time()
             times_tokenreplay_alpha[logName] = t2 - t1
 
             t1 = time.time()
             fitness_token_imdf[logName] = \
                 fitness_factory.apply(log, inductive_model, inductive_im, inductive_fm, parameters=parameters)[
-                    'percFitTraces']
+                    'perc_fit_traces']
             t2 = time.time()
             times_tokenreplay_imdf[logName] = t2 - t1
 

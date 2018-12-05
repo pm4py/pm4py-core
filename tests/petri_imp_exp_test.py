@@ -5,6 +5,7 @@ from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.objects import petri
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.algo.conformance.alignments.versions import state_equation_a_star
+from pm4py.objects.petri import check_soundness
 import unittest
 import os
 
@@ -16,9 +17,11 @@ class PetriImportExportTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         imported_petri1, marking1, fmarking1 = petri_importer.import_net(
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
+        soundness = check_soundness.check_petri_wfnet_and_soundness(imported_petri1)
         petri_exporter.export_net(imported_petri1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         imported_petri2, marking2, fmarking2 = petri_importer.import_net(
             os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
+        soundness = check_soundness.check_petri_wfnet_and_soundness(imported_petri2)
 
         self.assertEqual(sorted([x.name for x in imported_petri1.places]),
                          sorted([x.name for x in imported_petri2.places]))
@@ -35,6 +38,7 @@ class PetriImportExportTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         imported_petri1, marking1, fmarking1 = petri_importer.import_net(
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
+        soundness = check_soundness.check_petri_wfnet_and_soundness(imported_petri1)
         trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         aligned_traces = token_replay.apply_log(trace_log, imported_petri1, marking1, fmarking1)
         del aligned_traces
@@ -45,6 +49,7 @@ class PetriImportExportTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         imported_petri1, marking1, fmarking1 = petri_importer.import_net(
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
+        soundness = check_soundness.check_petri_wfnet_and_soundness(imported_petri1)
         trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         final_marking = petri.petrinet.Marking()
         for p in imported_petri1.places:

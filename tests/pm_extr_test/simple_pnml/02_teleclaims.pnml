@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="({'B check if sufficient information is available+complete'}, {'B register claim+start'})">
+        <name>
+          <text>({'B check if sufficient information is available+complete'}, {'B register claim+start'})</text>
+        </name>
+      </place>
+      <place id="end">
+        <name>
+          <text>end</text>
+        </name>
+      </place>
+      <place id="({'advise claimant on reimbursement+start'}, {'advise claimant on reimbursement+complete'})">
+        <name>
+          <text>({'advise claimant on reimbursement+start'}, {'advise claimant on reimbursement+complete'})</text>
+        </name>
+      </place>
+      <place id="({'B register claim+complete', 'S register claim+complete'}, {'determine likelihood of claim+start'})">
+        <name>
+          <text>({'B register claim+complete', 'S register claim+complete'}, {'determine likelihood of claim+start'})</text>
+        </name>
+      </place>
+      <place id="({'S check if sufficient information is available+start'}, {'S check if sufficient information is available+complete'})">
+        <name>
+          <text>({'S check if sufficient information is available+start'}, {'S check if sufficient information is available+complete'})</text>
+        </name>
+      </place>
+      <place id="({'B register claim+start'}, {'B register claim+complete'})">
+        <name>
+          <text>({'B register claim+start'}, {'B register claim+complete'})</text>
+        </name>
+      </place>
+      <place id="({'initiate payment+start'}, {'initiate payment+complete'})">
+        <name>
+          <text>({'initiate payment+start'}, {'initiate payment+complete'})</text>
+        </name>
+      </place>
+      <place id="({'close claim+start'}, {'close claim+complete'})">
+        <name>
+          <text>({'close claim+start'}, {'close claim+complete'})</text>
+        </name>
+      </place>
+      <place id="({'advise claimant on reimbursement+complete', 'initiate payment+complete', 'assess claim+complete'}, {'advise claimant on reimbursement+start', 'initiate payment+start', 'close claim+start'})">
+        <name>
+          <text>({'advise claimant on reimbursement+complete', 'initiate payment+complete', 'assess claim+complete'}, {'advise claimant on reimbursement+start', 'initiate payment+start', 'close claim+start'})</text>
+        </name>
+      </place>
+      <place id="({'determine likelihood of claim+complete'}, {'assess claim+start'})">
+        <name>
+          <text>({'determine likelihood of claim+complete'}, {'assess claim+start'})</text>
+        </name>
+      </place>
+      <place id="({'end+start'}, {'end+complete'})">
+        <name>
+          <text>({'end+start'}, {'end+complete'})</text>
+        </name>
+      </place>
+      <place id="({'S register claim+start'}, {'S register claim+complete'})">
+        <name>
+          <text>({'S register claim+start'}, {'S register claim+complete'})</text>
+        </name>
+      </place>
+      <place id="({'incoming claim+complete'}, {'S check if sufficient information is available+start', 'B check if sufficient information is available+start'})">
+        <name>
+          <text>({'incoming claim+complete'}, {'S check if sufficient information is available+start', 'B check if sufficient information is available+start'})</text>
+        </name>
+      </place>
+      <place id="({'close claim+complete', 'S check if sufficient information is available+complete'}, {'S register claim+start', 'end+start'})">
+        <name>
+          <text>({'close claim+complete', 'S check if sufficient information is available+complete'}, {'S register claim+start', 'end+start'})</text>
+        </name>
+      </place>
+      <place id="({'assess claim+start'}, {'assess claim+complete'})">
+        <name>
+          <text>({'assess claim+start'}, {'assess claim+complete'})</text>
+        </name>
+      </place>
+      <place id="start">
+        <name>
+          <text>start</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="({'B check if sufficient information is available+start'}, {'B check if sufficient information is available+complete'})">
+        <name>
+          <text>({'B check if sufficient information is available+start'}, {'B check if sufficient information is available+complete'})</text>
+        </name>
+      </place>
+      <place id="({'determine likelihood of claim+start'}, {'determine likelihood of claim+complete'})">
+        <name>
+          <text>({'determine likelihood of claim+start'}, {'determine likelihood of claim+complete'})</text>
+        </name>
+      </place>
+      <transition id="advise claimant on reimbursement+start">
+        <name>
+          <text>advise claimant on reimbursement+start</text>
+        </name>
+      </transition>
+      <transition id="close claim+start">
+        <name>
+          <text>close claim+start</text>
+        </name>
+      </transition>
+      <transition id="initiate payment+complete">
+        <name>
+          <text>initiate payment+complete</text>
+        </name>
+      </transition>
+      <transition id="S register claim+start">
+        <name>
+          <text>S register claim+start</text>
+        </name>
+      </transition>
+      <transition id="S check if sufficient information is available+start">
+        <name>
+          <text>S check if sufficient information is available+start</text>
+        </name>
+      </transition>
+      <transition id="end+start">
+        <name>
+          <text>end+start</text>
+        </name>
+      </transition>
+      <transition id="B check if sufficient information is available+start">
+        <name>
+          <text>B check if sufficient information is available+start</text>
+        </name>
+      </transition>
+      <transition id="determine likelihood of claim+start">
+        <name>
+          <text>determine likelihood of claim+start</text>
+        </name>
+      </transition>
+      <transition id="B check if sufficient information is available+complete">
+        <name>
+          <text>B check if sufficient information is available+complete</text>
+        </name>
+      </transition>
+      <transition id="B register claim+start">
+        <name>
+          <text>B register claim+start</text>
+        </name>
+      </transition>
+      <transition id="B register claim+complete">
+        <name>
+          <text>B register claim+complete</text>
+        </name>
+      </transition>
+      <transition id="incoming claim+complete">
+        <name>
+          <text>incoming claim+complete</text>
+        </name>
+      </transition>
+      <transition id="close claim+complete">
+        <name>
+          <text>close claim+complete</text>
+        </name>
+      </transition>
+      <transition id="determine likelihood of claim+complete">
+        <name>
+          <text>determine likelihood of claim+complete</text>
+        </name>
+      </transition>
+      <transition id="end+complete">
+        <name>
+          <text>end+complete</text>
+        </name>
+      </transition>
+      <transition id="assess claim+start">
+        <name>
+          <text>assess claim+start</text>
+        </name>
+      </transition>
+      <transition id="assess claim+complete">
+        <name>
+          <text>assess claim+complete</text>
+        </name>
+      </transition>
+      <transition id="initiate payment+start">
+        <name>
+          <text>initiate payment+start</text>
+        </name>
+      </transition>
+      <transition id="advise claimant on reimbursement+complete">
+        <name>
+          <text>advise claimant on reimbursement+complete</text>
+        </name>
+      </transition>
+      <transition id="S check if sufficient information is available+complete">
+        <name>
+          <text>S check if sufficient information is available+complete</text>
+        </name>
+      </transition>
+      <transition id="S register claim+complete">
+        <name>
+          <text>S register claim+complete</text>
+        </name>
+      </transition>
+      <arc id="-9223371855745788798" source="initiate payment+start" target="({'initiate payment+start'}, {'initiate payment+complete'})"/>
+      <arc id="-9223371855745787644" source="close claim+start" target="({'close claim+start'}, {'close claim+complete'})"/>
+      <arc id="181108988168" source="B check if sufficient information is available+start" target="({'B check if sufficient information is available+start'}, {'B check if sufficient information is available+complete'})"/>
+      <arc id="-9223371855745788791" source="({'advise claimant on reimbursement+start'}, {'advise claimant on reimbursement+complete'})" target="advise claimant on reimbursement+complete"/>
+      <arc id="-9223371855745787511" source="({'advise claimant on reimbursement+complete', 'initiate payment+complete', 'assess claim+complete'}, {'advise claimant on reimbursement+start', 'initiate payment+start', 'close claim+start'})" target="advise claimant on reimbursement+start"/>
+      <arc id="-9223371855745787637" source="({'close claim+start'}, {'close claim+complete'})" target="close claim+complete"/>
+      <arc id="-9223371855745788784" source="advise claimant on reimbursement+start" target="({'advise claimant on reimbursement+start'}, {'advise claimant on reimbursement+complete'})"/>
+      <arc id="181108988182" source="({'end+start'}, {'end+complete'})" target="end+complete"/>
+      <arc id="-9223371855745787623" source="end+start" target="({'end+start'}, {'end+complete'})"/>
+      <arc id="181108988196" source="({'B check if sufficient information is available+start'}, {'B check if sufficient information is available+complete'})" target="B check if sufficient information is available+complete"/>
+      <arc id="-9223371855745787483" source="({'advise claimant on reimbursement+complete', 'initiate payment+complete', 'assess claim+complete'}, {'advise claimant on reimbursement+start', 'initiate payment+start', 'close claim+start'})" target="close claim+start"/>
+      <arc id="-9223371855745787609" source="B check if sufficient information is available+complete" target="({'B check if sufficient information is available+complete'}, {'B register claim+start'})"/>
+      <arc id="-9223371855745787602" source="({'B check if sufficient information is available+complete'}, {'B register claim+start'})" target="B register claim+start"/>
+      <arc id="181108988210" source="B register claim+start" target="({'B register claim+start'}, {'B register claim+complete'})"/>
+      <arc id="-9223371855745787469" source="initiate payment+complete" target="({'advise claimant on reimbursement+complete', 'initiate payment+complete', 'assess claim+complete'}, {'advise claimant on reimbursement+start', 'initiate payment+start', 'close claim+start'})"/>
+      <arc id="181108988217" source="({'B register claim+start'}, {'B register claim+complete'})" target="B register claim+complete"/>
+      <arc id="-9223371855745787588" source="incoming claim+complete" target="({'incoming claim+complete'}, {'S check if sufficient information is available+start', 'B check if sufficient information is available+start'})"/>
+      <arc id="181108988350" source="close claim+complete" target="({'close claim+complete', 'S check if sufficient information is available+complete'}, {'S register claim+start', 'end+start'})"/>
+      <arc id="181108986944" source="start" target="incoming claim+complete"/>
+      <arc id="181108988224" source="({'incoming claim+complete'}, {'S check if sufficient information is available+start', 'B check if sufficient information is available+start'})" target="B check if sufficient information is available+start"/>
+      <arc id="-9223371855745787581" source="({'incoming claim+complete'}, {'S check if sufficient information is available+start', 'B check if sufficient information is available+start'})" target="S check if sufficient information is available+start"/>
+      <arc id="181108986951" source="end+complete" target="end"/>
+      <arc id="-9223371855745787574" source="S register claim+complete" target="({'B register claim+complete', 'S register claim+complete'}, {'determine likelihood of claim+start'})"/>
+      <arc id="181108986958" source="S check if sufficient information is available+start" target="({'S check if sufficient information is available+start'}, {'S check if sufficient information is available+complete'})"/>
+      <arc id="181108988238" source="B register claim+complete" target="({'B register claim+complete', 'S register claim+complete'}, {'determine likelihood of claim+start'})"/>
+      <arc id="-9223371855745788847" source="({'S check if sufficient information is available+start'}, {'S check if sufficient information is available+complete'})" target="S check if sufficient information is available+complete"/>
+      <arc id="-9223371855745787567" source="({'B register claim+complete', 'S register claim+complete'}, {'determine likelihood of claim+start'})" target="determine likelihood of claim+start"/>
+      <arc id="181108988245" source="S check if sufficient information is available+complete" target="({'close claim+complete', 'S check if sufficient information is available+complete'}, {'S register claim+start', 'end+start'})"/>
+      <arc id="-9223371855745788840" source="S register claim+start" target="({'S register claim+start'}, {'S register claim+complete'})"/>
+      <arc id="181108986972" source="({'S register claim+start'}, {'S register claim+complete'})" target="S register claim+complete"/>
+      <arc id="181108988252" source="({'close claim+complete', 'S check if sufficient information is available+complete'}, {'S register claim+start', 'end+start'})" target="end+start"/>
+      <arc id="-9223371855745787553" source="assess claim+complete" target="({'advise claimant on reimbursement+complete', 'initiate payment+complete', 'assess claim+complete'}, {'advise claimant on reimbursement+start', 'initiate payment+start', 'close claim+start'})"/>
+      <arc id="181108986979" source="determine likelihood of claim+start" target="({'determine likelihood of claim+start'}, {'determine likelihood of claim+complete'})"/>
+      <arc id="181108988259" source="advise claimant on reimbursement+complete" target="({'advise claimant on reimbursement+complete', 'initiate payment+complete', 'assess claim+complete'}, {'advise claimant on reimbursement+start', 'initiate payment+start', 'close claim+start'})"/>
+      <arc id="-9223371855745788826" source="({'determine likelihood of claim+start'}, {'determine likelihood of claim+complete'})" target="determine likelihood of claim+complete"/>
+      <arc id="-9223371855745787546" source="({'advise claimant on reimbursement+complete', 'initiate payment+complete', 'assess claim+complete'}, {'advise claimant on reimbursement+start', 'initiate payment+start', 'close claim+start'})" target="initiate payment+start"/>
+      <arc id="181108986986" source="({'determine likelihood of claim+complete'}, {'assess claim+start'})" target="assess claim+start"/>
+      <arc id="-9223371855745788819" source="determine likelihood of claim+complete" target="({'determine likelihood of claim+complete'}, {'assess claim+start'})"/>
+      <arc id="-9223371855745788812" source="assess claim+start" target="({'assess claim+start'}, {'assess claim+complete'})"/>
+      <arc id="-9223371855745787532" source="({'close claim+complete', 'S check if sufficient information is available+complete'}, {'S register claim+start', 'end+start'})" target="S register claim+start"/>
+      <arc id="181108987000" source="({'initiate payment+start'}, {'initiate payment+complete'})" target="initiate payment+complete"/>
+      <arc id="181108987007" source="({'assess claim+start'}, {'assess claim+complete'})" target="assess claim+complete"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="end">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

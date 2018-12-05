@@ -1,12 +1,36 @@
-from pm4py.algo.other.simple.filtering.tracelog.versions import filter_topvariants_soundmodel
+from pm4py.algo.discovery.alpha import factory as alpha_miner
+from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.algo.filtering.tracelog.auto_filter import auto_filter
+from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
+from pm4py.algo.other.simple.filtering.tracelog.versions import filter_topvariants_soundmodel
+from pm4py.objects.log.util import insert_classifier
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.algo.discovery.alpha import factory as alpha_miner
 
 
-def apply(log, parameters=None):
+def apply(log, parameters=None, classic_output=False):
+    """
+    Gets a simple model out of a log
+
+    Parameters
+    -------------
+    log
+        Trace log
+    parameters
+        Parameters of the algorithm, including:
+            maximum_number_activities -> Maximum number of activities to keep
+            discovery_algorithm -> Discovery algorithm to use (alpha, inductive)
+            desidered_output -> Desidered output of the algorithm (default: Petri)
+            include_filtered_log -> Include the filtered log in the output
+            include_dfg_frequency -> Include the DFG of frequencies in the output
+            include_dfg_performance -> Include the DFG of performance in the output
+            include_filtered_dfg_frequency -> Include the filtered DFG of frequencies in the output
+            include_filtered_dfg_performance -> Include the filtered DFG of performance in the output
+    classic_output
+        Determine if the output shall contains directly the objects (e.g. net, initial_marking, final_marking)
+        or can return a more detailed dictionary
+    """
     if parameters is None:
         parameters = {}
 
@@ -32,13 +56,21 @@ def apply(log, parameters=None):
         "include_filtered_dfg_frequency"] if "include_filtered_dfg_frequency" in parameters else True
     include_filtered_dfg_performance = parameters[
         "include_filtered_dfg_performance"] if "include_filtered_dfg_performance" in parameters else True
-    apply_dfg_filtering = parameters["apply_dfg_filtering"] if "apply_dfg_filtering" in parameters else True
-    dfg_filtering_threshold = parameters["dfg_filtering_threshold"] if "dfg_filtering_threshold" in parameters else 0.01
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+    if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters:
+        activity_key = parameters[
+            PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+        parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
+    else:
+        log, activity_key = insert_classifier.search_act_class_attr(log)
+        if activity_key is None:
+            activity_key = DEFAULT_NAME_KEY
+        parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
 
-    activities_count_dictio = attributes_filter.get_attribute_values(log, attribute_key)
+    if PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[PARAMETER_CONSTANT_ACTIVITY_KEY] = parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY]
+
+    activities_count_dictio = attributes_filter.get_attribute_values(log, activity_key)
     activities_count_list = []
     for activity in activities_count_dictio:
         activities_count_list.append([activity, activities_count_dictio[activity]])
@@ -50,12 +82,22 @@ def apply(log, parameters=None):
     log = attributes_filter.apply(log, activities_keep_list, parameters=parameters)
 
     if "alpha" in discovery_algorithm:
-        filtered_log = filter_topvariants_soundmodel.apply(log, parameters=parameters)
+        filtered_log = end_activities_filter.apply_auto_filter(log, parameters=parameters)
+        filtered_log = filter_topvariants_soundmodel.apply(filtered_log, parameters=parameters)
     elif "inductive" in discovery_algorithm:
         filtered_log = auto_filter.apply(log, parameters=parameters)
 
+    if include_dfg_frequency:
+        dfg_frequency = dfg_factory.apply(log, parameters=parameters, variant="frequency")
+    if include_dfg_performance:
+        dfg_performance = dfg_factory.apply(log, parameters=parameters, variant="performance")
+    if include_filtered_dfg_frequency:
+        filtered_dfg_frequency = dfg_factory.apply(filtered_log, parameters=parameters, variant="frequency")
+    if include_filtered_dfg_performance:
+        filtered_dfg_performance = dfg_factory.apply(filtered_log, parameters=parameters, variant="performance")
+
     if "alpha" in discovery_algorithm:
-        net, initial_marking, final_marking = alpha_miner.apply(filtered_log)
+        net, initial_marking, final_marking = alpha_miner.apply(filtered_log, parameters=parameters)
 
     if filtered_log is not None and include_filtered_log:
         returned_dictionary["filtered_log"] = filtered_log
@@ -75,5 +117,9 @@ def apply(log, parameters=None):
         returned_dictionary["filtered_dfg_frequency"] = filtered_dfg_frequency
     if filtered_dfg_performance is not None and include_filtered_dfg_performance:
         returned_dictionary["filtered_dfg_performance"] = filtered_dfg_performance
+
+    if classic_output:
+        if net is not None and desidered_output == "petri":
+            return net, initial_marking, final_marking
 
     return returned_dictionary

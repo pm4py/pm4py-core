@@ -12,8 +12,8 @@ MAX_IT_FINAL = 10
 MAX_REC_DEPTH_HIDTRANSENABL = 5
 MAX_POSTFIX_SUFFIX_LENGTH = 20
 MAX_NO_THREADS = 1000
-ENABLE_POSTFIX_CACHE = True
-ENABLE_MARKTOACT_CACHE = True
+ENABLE_POSTFIX_CACHE = False
+ENABLE_MARKTOACT_CACHE = False
 
 
 class NoConceptNameException(Exception):
@@ -611,7 +611,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         is_fit = (missing == 0)
 
     if consumed > 0 and produced > 0:
-        trace_fitness = 0.5 * (1.0 - float(missing) / float(consumed)) + 0.5 * (1.0 - float(remaining) / float(produced))
+        trace_fitness = (1.0 - float(missing) / float(consumed)) * (1.0 - float(remaining) / float(produced))
     else:
         trace_fitness = 1.0
 
@@ -646,7 +646,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             "previousActivity": previous_activity}
 
     return [is_fit, trace_fitness, act_trans, transitions_with_problems, marking_before_cleaning,
-            get_visible_transitions_eventually_enabled_by_marking(net, marking_before_cleaning)]
+            get_visible_transitions_eventually_enabled_by_marking(net, marking_before_cleaning), missing, consumed,
+            remaining, produced]
 
 
 class ApplyTraceTokenReplay(Thread):
@@ -679,6 +680,10 @@ class ApplyTraceTokenReplay(Thread):
         self.trans_probl = None
         self.reached_marking = None
         self.enabled_trans_in_mark = None
+        self.missing = None
+        self.consumed = None
+        self.remaining = None
+        self.produced = None
 
         Thread.__init__(self)
 
@@ -686,7 +691,7 @@ class ApplyTraceTokenReplay(Thread):
         """
         Runs the thread and stores the results
         """
-        self.t_fit, self.t_value, self.act_trans, self.trans_probl, self.reached_marking, self.enabled_trans_in_mark = \
+        self.t_fit, self.t_value, self.act_trans, self.trans_probl, self.reached_marking, self.enabled_trans_in_mark, self.missing, self.consumed, self.remaining, self.produced = \
             apply_trace(self.trace, self.net, self.initial_marking, self.final_marking, self.trans_map,
                         self.enable_place_fitness, self.place_fitness,
                         self.places_shortest_path_by_hidden, self.consider_remaining_in_fitness,
@@ -823,7 +828,11 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                                 "enabled_transitions_in_marking": copy(
                                                                     t.enabled_trans_in_mark),
                                                                 "transitions_with_problems": copy(
-                                                                    t.trans_probl)}
+                                                                    t.trans_probl),
+                                                                "M": t.missing,
+                                                                "C": t.consumed,
+                                                                "R": t.remaining,
+                                                                "P": t.produced}
                             del threads[threads_keys[j]]
                         del threads_keys
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
@@ -846,7 +855,11 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                         "reached_marking": copy(t.reached_marking),
                                                         "enabled_transitions_in_marking": copy(
                                                             t.enabled_trans_in_mark),
-                                                        "transitions_with_problems": copy(t.trans_probl)}
+                                                        "transitions_with_problems": copy(t.trans_probl),
+                                                        "M": t.missing,
+                                                        "C": t.consumed,
+                                                        "R": t.remaining,
+                                                        "P": t.produced}
                     del threads[threads_keys[j]]
                 for trace in log:
                     trace_variant = ",".join([x[activity_key] for x in trace])

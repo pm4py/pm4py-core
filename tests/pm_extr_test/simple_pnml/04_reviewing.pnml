@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="({'time-out 1+complete', 'get review 1+complete', 'invite reviewers+complete'}, {'get review 2+complete', 'time-out 2+complete'})">
+        <name>
+          <text>({'time-out 1+complete', 'get review 1+complete', 'invite reviewers+complete'}, {'get review 2+complete', 'time-out 2+complete'})</text>
+        </name>
+      </place>
+      <place id="end">
+        <name>
+          <text>end</text>
+        </name>
+      </place>
+      <place id="({'collect reviews+start'}, {'collect reviews+complete'})">
+        <name>
+          <text>({'collect reviews+start'}, {'collect reviews+complete'})</text>
+        </name>
+      </place>
+      <place id="({'invite additional reviewer+complete'}, {'get review X+complete', 'time-out X+complete'})">
+        <name>
+          <text>({'invite additional reviewer+complete'}, {'get review X+complete', 'time-out X+complete'})</text>
+        </name>
+      </place>
+      <place id="({'decide+start'}, {'decide+complete'})">
+        <name>
+          <text>({'decide+start'}, {'decide+complete'})</text>
+        </name>
+      </place>
+      <place id="start">
+        <name>
+          <text>start</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="({'invite reviewers+start'}, {'invite reviewers+complete'})">
+        <name>
+          <text>({'invite reviewers+start'}, {'invite reviewers+complete'})</text>
+        </name>
+      </place>
+      <place id="({'invite additional reviewer+start'}, {'invite additional reviewer+complete'})">
+        <name>
+          <text>({'invite additional reviewer+start'}, {'invite additional reviewer+complete'})</text>
+        </name>
+      </place>
+      <place id="({'get review 1+complete', 'invite reviewers+complete'}, {'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'})">
+        <name>
+          <text>({'get review 1+complete', 'invite reviewers+complete'}, {'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'})</text>
+        </name>
+      </place>
+      <place id="({'reject+start'}, {'reject+complete'})">
+        <name>
+          <text>({'reject+start'}, {'reject+complete'})</text>
+        </name>
+      </place>
+      <place id="({'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'}, {'time-out 1+complete', 'get review 1+complete', 'collect reviews+start'})">
+        <name>
+          <text>({'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'}, {'time-out 1+complete', 'get review 1+complete', 'collect reviews+start'})</text>
+        </name>
+      </place>
+      <place id="({'collect reviews+complete', 'get review X+complete', 'time-out X+complete'}, {'decide+start'})">
+        <name>
+          <text>({'collect reviews+complete', 'get review X+complete', 'time-out X+complete'}, {'decide+start'})</text>
+        </name>
+      </place>
+      <place id="({'accept+start'}, {'accept+complete'})">
+        <name>
+          <text>({'accept+start'}, {'accept+complete'})</text>
+        </name>
+      </place>
+      <place id="({'decide+complete'}, {'invite additional reviewer+start', 'reject+start', 'accept+start'})">
+        <name>
+          <text>({'decide+complete'}, {'invite additional reviewer+start', 'reject+start', 'accept+start'})</text>
+        </name>
+      </place>
+      <transition id="collect reviews+complete">
+        <name>
+          <text>collect reviews+complete</text>
+        </name>
+      </transition>
+      <transition id="invite additional reviewer+complete">
+        <name>
+          <text>invite additional reviewer+complete</text>
+        </name>
+      </transition>
+      <transition id="get review 2+complete">
+        <name>
+          <text>get review 2+complete</text>
+        </name>
+      </transition>
+      <transition id="time-out X+complete">
+        <name>
+          <text>time-out X+complete</text>
+        </name>
+      </transition>
+      <transition id="time-out 2+complete">
+        <name>
+          <text>time-out 2+complete</text>
+        </name>
+      </transition>
+      <transition id="collect reviews+start">
+        <name>
+          <text>collect reviews+start</text>
+        </name>
+      </transition>
+      <transition id="decide+complete">
+        <name>
+          <text>decide+complete</text>
+        </name>
+      </transition>
+      <transition id="reject+complete">
+        <name>
+          <text>reject+complete</text>
+        </name>
+      </transition>
+      <transition id="get review 3+complete">
+        <name>
+          <text>get review 3+complete</text>
+        </name>
+      </transition>
+      <transition id="invite additional reviewer+start">
+        <name>
+          <text>invite additional reviewer+start</text>
+        </name>
+      </transition>
+      <transition id="time-out 1+complete">
+        <name>
+          <text>time-out 1+complete</text>
+        </name>
+      </transition>
+      <transition id="invite reviewers+complete">
+        <name>
+          <text>invite reviewers+complete</text>
+        </name>
+      </transition>
+      <transition id="decide+start">
+        <name>
+          <text>decide+start</text>
+        </name>
+      </transition>
+      <transition id="accept+start">
+        <name>
+          <text>accept+start</text>
+        </name>
+      </transition>
+      <transition id="get review X+complete">
+        <name>
+          <text>get review X+complete</text>
+        </name>
+      </transition>
+      <transition id="reject+start">
+        <name>
+          <text>reject+start</text>
+        </name>
+      </transition>
+      <transition id="invite reviewers+start">
+        <name>
+          <text>invite reviewers+start</text>
+        </name>
+      </transition>
+      <transition id="get review 1+complete">
+        <name>
+          <text>get review 1+complete</text>
+        </name>
+      </transition>
+      <transition id="accept+complete">
+        <name>
+          <text>accept+complete</text>
+        </name>
+      </transition>
+      <arc id="-9223371855748842748" source="({'decide+complete'}, {'invite additional reviewer+start', 'reject+start', 'accept+start'})" target="accept+start"/>
+      <arc id="181105933064" source="({'time-out 1+complete', 'get review 1+complete', 'invite reviewers+complete'}, {'get review 2+complete', 'time-out 2+complete'})" target="get review 2+complete"/>
+      <arc id="181105933197" source="({'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'}, {'time-out 1+complete', 'get review 1+complete', 'collect reviews+start'})" target="get review 1+complete"/>
+      <arc id="181105933071" source="reject+complete" target="end"/>
+      <arc id="181105933204" source="time-out X+complete" target="({'collect reviews+complete', 'get review X+complete', 'time-out X+complete'}, {'decide+start'})"/>
+      <arc id="181105933078" source="({'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'}, {'time-out 1+complete', 'get review 1+complete', 'collect reviews+start'})" target="time-out 1+complete"/>
+      <arc id="-9223371855748842601" source="({'collect reviews+complete', 'get review X+complete', 'time-out X+complete'}, {'decide+start'})" target="decide+start"/>
+      <arc id="-9223371855749650656" source="invite reviewers+complete" target="({'get review 1+complete', 'invite reviewers+complete'}, {'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'})"/>
+      <arc id="181105933218" source="({'decide+start'}, {'decide+complete'})" target="decide+complete"/>
+      <arc id="181105933092" source="start" target="invite reviewers+start"/>
+      <arc id="-9223371855748842587" source="get review 1+complete" target="({'time-out 1+complete', 'get review 1+complete', 'invite reviewers+complete'}, {'get review 2+complete', 'time-out 2+complete'})"/>
+      <arc id="-9223371855748842713" source="decide+complete" target="({'decide+complete'}, {'invite additional reviewer+start', 'reject+start', 'accept+start'})"/>
+      <arc id="181105933225" source="({'invite additional reviewer+complete'}, {'get review X+complete', 'time-out X+complete'})" target="time-out X+complete"/>
+      <arc id="181105933099" source="({'reject+start'}, {'reject+complete'})" target="reject+complete"/>
+      <arc id="-9223371855748842706" source="reject+start" target="({'reject+start'}, {'reject+complete'})"/>
+      <arc id="181105933232" source="({'decide+complete'}, {'invite additional reviewer+start', 'reject+start', 'accept+start'})" target="invite additional reviewer+start"/>
+      <arc id="181105933106" source="collect reviews+complete" target="({'collect reviews+complete', 'get review X+complete', 'time-out X+complete'}, {'decide+start'})"/>
+      <arc id="-9223371855748842573" source="({'invite reviewers+start'}, {'invite reviewers+complete'})" target="invite reviewers+complete"/>
+      <arc id="181105933239" source="collect reviews+start" target="({'collect reviews+start'}, {'collect reviews+complete'})"/>
+      <arc id="-9223371855748842692" source="get review 2+complete" target="({'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'}, {'time-out 1+complete', 'get review 1+complete', 'collect reviews+start'})"/>
+      <arc id="181105933120" source="time-out 2+complete" target="({'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'}, {'time-out 1+complete', 'get review 1+complete', 'collect reviews+start'})"/>
+      <arc id="181105125184" source="({'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'}, {'time-out 1+complete', 'get review 1+complete', 'collect reviews+start'})" target="collect reviews+start"/>
+      <arc id="-9223371855749650495" source="({'get review 1+complete', 'invite reviewers+complete'}, {'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'})" target="get review 3+complete"/>
+      <arc id="181105933253" source="invite additional reviewer+complete" target="({'invite additional reviewer+complete'}, {'get review X+complete', 'time-out X+complete'})"/>
+      <arc id="181105125317" source="({'get review 1+complete', 'invite reviewers+complete'}, {'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'})" target="time-out 2+complete"/>
+      <arc id="-9223371855748842552" source="get review 3+complete" target="({'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'}, {'time-out 1+complete', 'get review 1+complete', 'collect reviews+start'})"/>
+      <arc id="181105933134" source="time-out 1+complete" target="({'time-out 1+complete', 'get review 1+complete', 'invite reviewers+complete'}, {'get review 2+complete', 'time-out 2+complete'})"/>
+      <arc id="-9223371855748842545" source="({'decide+complete'}, {'invite additional reviewer+start', 'reject+start', 'accept+start'})" target="reject+start"/>
+      <arc id="-9223371855748842671" source="accept+complete" target="end"/>
+      <arc id="181105933267" source="accept+start" target="({'accept+start'}, {'accept+complete'})"/>
+      <arc id="181105125331" source="get review 1+complete" target="({'get review 1+complete', 'invite reviewers+complete'}, {'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'})"/>
+      <arc id="-9223371855748842524" source="({'invite additional reviewer+complete'}, {'get review X+complete', 'time-out X+complete'})" target="get review X+complete"/>
+      <arc id="-9223371855749650586" source="({'get review 1+complete', 'invite reviewers+complete'}, {'get review 3+complete', 'get review 2+complete', 'time-out 2+complete'})" target="get review 2+complete"/>
+      <arc id="-9223371855748842643" source="({'time-out 1+complete', 'get review 1+complete', 'invite reviewers+complete'}, {'get review 2+complete', 'time-out 2+complete'})" target="time-out 2+complete"/>
+      <arc id="181105933295" source="invite reviewers+start" target="({'invite reviewers+start'}, {'invite reviewers+complete'})"/>
+      <arc id="181105933169" source="invite reviewers+complete" target="({'time-out 1+complete', 'get review 1+complete', 'invite reviewers+complete'}, {'get review 2+complete', 'time-out 2+complete'})"/>
+      <arc id="-9223371855748842510" source="invite additional reviewer+start" target="({'invite additional reviewer+start'}, {'invite additional reviewer+complete'})"/>
+      <arc id="-9223371855748842636" source="get review X+complete" target="({'collect reviews+complete', 'get review X+complete', 'time-out X+complete'}, {'decide+start'})"/>
+      <arc id="181105933302" source="({'collect reviews+start'}, {'collect reviews+complete'})" target="collect reviews+complete"/>
+      <arc id="-9223371855748842629" source="({'accept+start'}, {'accept+complete'})" target="accept+complete"/>
+      <arc id="181105933309" source="({'invite additional reviewer+start'}, {'invite additional reviewer+complete'})" target="invite additional reviewer+complete"/>
+      <arc id="181105933183" source="decide+start" target="({'decide+start'}, {'decide+complete'})"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="end">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

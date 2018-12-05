@@ -26,6 +26,7 @@ if __name__ == "__main__":
     from tests.evaluation_tests import ProcessModelEvaluationTests
     from tests.filtering_test import LogFilteringTest
     from tests.dataframe_prefilter import DataframePrefilteringTest
+    from tests.simple_execution import SimpleExecutionTest
 
     test_rv = RandomVariableTest()
     test1_object = Pm4pyImportPackageTest()
@@ -46,5 +47,6 @@ if __name__ == "__main__":
     test20_object = ProcessModelEvaluationTests()
     filtering_test = LogFilteringTest()
     prefiltering_test = DataframePrefilteringTest()
+    simpleex_test = SimpleExecutionTest()
 
     unittest.main()
