@@ -1,1 +1,1 @@
-from pm4py.algo.other.simple import filtering, model, decoration
+from pm4py.algo.other.simple import filtering, model
