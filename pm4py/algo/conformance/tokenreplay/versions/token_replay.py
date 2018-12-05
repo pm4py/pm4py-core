@@ -829,10 +829,10 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                                     t.enabled_trans_in_mark),
                                                                 "transitions_with_problems": copy(
                                                                     t.trans_probl),
-                                                                "M": t.missing,
-                                                                "C": t.consumed,
-                                                                "R": t.remaining,
-                                                                "P": t.produced}
+                                                                "missing_tokens": t.missing,
+                                                                "consumed_tokens": t.consumed,
+                                                                "remaining_tokens": t.remaining,
+                                                                "produced_tokens": t.produced}
                             del threads[threads_keys[j]]
                         del threads_keys
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
@@ -856,10 +856,10 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                         "enabled_transitions_in_marking": copy(
                                                             t.enabled_trans_in_mark),
                                                         "transitions_with_problems": copy(t.trans_probl),
-                                                        "M": t.missing,
-                                                        "C": t.consumed,
-                                                        "R": t.remaining,
-                                                        "P": t.produced}
+                                                        "missing_tokens": t.missing,
+                                                        "consumed_tokens": t.consumed,
+                                                        "remaining_tokens": t.remaining,
+                                                        "produced_tokens": t.produced}
                     del threads[threads_keys[j]]
                 for trace in log:
                     trace_variant = ",".join([x[activity_key] for x in trace])
