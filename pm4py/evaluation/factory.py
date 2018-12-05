@@ -68,7 +68,7 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     generalization = generalization_token_based.get_generalization(net, aligned_traces)
     simplicity = simplicity_arc_degree.apply(net)
 
-    metrics_average_weight = fitness_weight * fitness["averageFitness"] + precision_weight * precision \
+    metrics_average_weight = fitness_weight * fitness["log_fitness"] + precision_weight * precision \
                              + generalization_weight * generalization + simplicity_weight * simplicity
     dictionary = {
         "fitness": fitness,

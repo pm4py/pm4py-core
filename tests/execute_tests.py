@@ -26,6 +26,7 @@ if __name__ == "__main__":
     from tests.dec_tree_test import DecisionTreeTest
     from tests.filtering_test import LogFilteringTest
     from tests.dataframe_prefilter import DataframePrefilteringTest
+    from tests.simple_execution import SimpleExecutionTest
 
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
@@ -46,5 +47,6 @@ if __name__ == "__main__":
     test21_object = DecisionTreeTest()
     filtering_test = LogFilteringTest()
     prefiltering_test = DataframePrefilteringTest()
+    simpleex_test = SimpleExecutionTest()
 
     unittest.main()
