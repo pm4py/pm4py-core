@@ -11,6 +11,7 @@ from pm4py.objects.log.importer.csv import factory as csv_importer
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.petri.exporter import pnml as petri_exporter
 from pm4py.visualization.petrinet.common import visualize as pn_viz
+from pm4py.objects.petri import check_soundness
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 
 
@@ -25,6 +26,8 @@ class InductiveMinerDFTest(unittest.TestCase):
             event_log = csv_importer.import_log(log_name)
             trace_log = log_transform.transform_event_log_to_trace_log(event_log)
         net, marking, final_marking = inductive_miner.apply(trace_log, None)
+        soundness = check_soundness.check_petri_wfnet_and_soundness(net)
+        
         return trace_log, net, marking, final_marking
 
     def test_applyImdfToXES(self):
