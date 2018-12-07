@@ -1,5 +1,7 @@
 from pm4py.objects import petri
 from pm4py.objects.log.util import xes as xes_util
+import networkx as nx
+from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
 
 
 def remove_transition(net, trans):
@@ -161,7 +163,47 @@ def variants(net, initial_marking, final_marking):
 
 
 def get_transition_by_name(net, transition_name):
+    """
+    Get a transition by its name
+
+    Parameters
+    ------------
+    net
+        Petri net
+    transition_name
+        Transition name
+
+    Returns
+    ------------
+    transition
+        Transition object
+    """
     for t in net.transitions:
         if t.name == transition_name:
             return t
     return None
+
+
+def get_cycles_petri_net_places(net):
+    """
+    Get the cycles of a Petri net (returning only list of places belonging to the cycle)
+
+    Parameters
+    -------------
+    net
+        Petri net
+
+    Returns
+    -------------
+    cycles
+        Cycles (places) of the Petri net
+    """
+    graph, inv_dictionary = create_networkx_directed_graph(net)
+    cycles = nx.simple_cycles(graph)
+    cycles_places = []
+    for cycle in cycles:
+        cycles_places.append([])
+        for el in cycle:
+            if el in inv_dictionary and type(inv_dictionary[el]) is petri.petrinet.PetriNet.Place:
+                cycles_places[-1].append(inv_dictionary[el])
+    return cycles_places
