@@ -1,47 +1,9 @@
-from pm4py.objects.petri import incidence_matrix
+import networkx as nx
 import numpy as np
 from scipy.optimize import linprog
-import networkx as nx
 
-
-def create_networkx_graph(net, unique_source, unique_sink):
-    """
-    Create a NetworkX graph from a Petri net, returning also correspondences for the unique
-    source and the unique sink places that were discovered
-
-    Parameters
-    -------------
-    net
-        Petri net
-    unique_source
-        Unique source place
-    unique_sink
-        Unique sink place
-
-    Returns
-    -------------
-    G
-        NetworkX graph
-    unique_source_corr
-        Correspondence in the NetworkX graph of the unique source place
-    unique_sink_corr
-        Correspondence in the NetworkX graph of the unique sink place
-    """
-
-    G = nx.Graph()
-    dictionary = {}
-    for place in net.places:
-        dictionary[place] = len(dictionary)
-        G.add_node(dictionary[place])
-    for transition in net.transitions:
-        dictionary[transition] = len(dictionary)
-        G.add_node(dictionary[transition])
-    for arc in net.arcs:
-        G.add_edge(dictionary[arc.source], dictionary[arc.target])
-    unique_source_corr = dictionary[unique_source] if unique_source in dictionary else None
-    unique_sink_corr = dictionary[unique_sink] if unique_sink in dictionary else None
-
-    return G, unique_source_corr, unique_sink_corr
+from pm4py.objects.petri import incidence_matrix
+from pm4py.objects.petri.networkx_graph import create_networkx_undirected_graph
 
 
 def check_source_and_sink_reachability(net, unique_source, unique_sink):
@@ -63,7 +25,8 @@ def check_source_and_sink_reachability(net, unique_source, unique_sink):
     boolean
         Boolean value that is true if each node is in a path from the source place to the sink place
     """
-    graph, unique_source_corr, unique_sink_corr = create_networkx_graph(net, unique_source, unique_sink)
+    graph, unique_source_corr, unique_sink_corr, inv_dictionary = create_networkx_undirected_graph(net, unique_source,
+                                                                                                   unique_sink)
     if unique_source_corr is not None and unique_sink_corr is not None:
         nodes_list = list(graph.nodes())
         finish_to_sink = list(nx.ancestors(graph, unique_sink_corr))
@@ -169,7 +132,7 @@ def check_soundness_wfnet(net):
         bub[i] = -0.01
         i = i + 1
     try:
-        solution = linprog(c, A_ub = vstack_matrix, b_ub = bub)
+        solution = linprog(c, A_ub=vstack_matrix, b_ub=bub)
         if solution.success:
             return True
     except:
@@ -194,7 +157,7 @@ def check_petri_wfnet_and_soundness(net):
         Boolean value (True if the Petri net is a sound workflow net)
     """
     is_wfnet = check_wfnet(net)
-    #print("is_wfnet = ",is_wfnet)
+    # print("is_wfnet = ",is_wfnet)
     if is_wfnet:
         return check_soundness_wfnet(net)
     return False
