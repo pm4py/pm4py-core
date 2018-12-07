@@ -207,3 +207,46 @@ def get_cycles_petri_net_places(net):
             if el in inv_dictionary and type(inv_dictionary[el]) is petri.petrinet.PetriNet.Place:
                 cycles_places[-1].append(inv_dictionary[el])
     return cycles_places
+
+
+def get_strongly_connected_subnets(net):
+    """
+    Get the strongly connected components subnets in the Petri net
+
+    Parameters
+    -------------
+    net
+        Petri net
+
+    Returns
+    -------------
+    strongly_connected_transitions
+        List of strongly connected transitions of the Petri net
+    """
+    graph, inv_dictionary = create_networkx_directed_graph(net)
+    sccg = nx.strongly_connected_component_subgraphs(graph)
+    strongly_connected_subnets = []
+    for sg in list(sccg):
+        if len(sg.nodes()) > 1:
+            subnet = petri.petrinet.PetriNet()
+            imarking = petri.petrinet.Marking()
+            fmarking = petri.petrinet.Marking()
+            corr = {}
+            for node in sg.nodes():
+                if node in inv_dictionary:
+                    if type(inv_dictionary[node]) is petri.petrinet.PetriNet.Transition:
+                        prev_trans = inv_dictionary[node]
+                        new_trans = petri.petrinet.PetriNet.Transition(prev_trans.name, prev_trans.label)
+                        corr[node] = new_trans
+                        subnet.transitions.add(new_trans)
+                    if type(inv_dictionary[node]) is petri.petrinet.PetriNet.Place:
+                        prev_place = inv_dictionary[node]
+                        new_place = petri.petrinet.PetriNet.Place(prev_place.name)
+                        corr[node] = new_place
+                        subnet.places.add(new_place)
+            for edge in sg.edges():
+                add_arc_from_to(corr[edge[0]], corr[edge[1]], subnet)
+            strongly_connected_subnets.append([subnet, imarking, fmarking])
+
+    return strongly_connected_subnets
+
