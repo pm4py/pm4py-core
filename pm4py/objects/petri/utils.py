@@ -34,6 +34,36 @@ def remove_transition(net, trans):
         net.transitions.remove(trans)
     return net
 
+def remove_place(net, place):
+    """
+    Remove a place from a Petri net
+
+    Parameters
+    -------------
+    net
+        Petri net
+    place
+        Place to remove
+
+    Returns
+    -------------
+    net
+        Petri net
+    """
+    if place in net.places:
+        in_arcs = place.in_arcs
+        for arc in in_arcs:
+            trans = arc.source
+            trans.out_arcs.remove(arc)
+            net.arcs.remove(arc)
+        out_arcs = place.out_arcs
+        for arc in out_arcs:
+            trans = arc.target
+            trans.in_arcs.remove(arc)
+            net.arcs.remove(arc)
+        net.places.remove(place)
+    return net
+
 
 def add_arc_from_to(fr, to, net, weight=1):
     """
