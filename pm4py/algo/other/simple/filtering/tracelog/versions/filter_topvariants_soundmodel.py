@@ -40,6 +40,7 @@ def apply(log, parameters=None):
     i = 0
     while i < min(len(all_variants_list), max_no_variants):
         variant = all_variants_list[i][0]
+
         considered_variants.append(variant)
         considered_traces.append(all_variants_dictio[variant][0])
         filtered_log = TraceLog(considered_traces)

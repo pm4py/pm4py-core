@@ -1,1 +1,1 @@
-from pm4py.algo.other.simple.filtering import tracelog
+from pm4py.algo.other.simple.filtering import tracelog, pandas
