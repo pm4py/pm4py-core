@@ -12,6 +12,7 @@ from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.objects.petri import check_soundness
 from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 
@@ -37,12 +38,18 @@ def apply(df, parameters=None):
     if parameters is None:
         parameters = {}
 
-    CASEID_GLUE = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    ACTIVITY_KEY = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    TIMEST_KEY = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
+    if PARAMETER_CONSTANT_CASEID_KEY not in parameters:
+        parameters[PARAMETER_CONSTANT_CASEID_KEY] = CASE_CONCEPT_NAME
+    if PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[PARAMETER_CONSTANT_ACTIVITY_KEY] = DEFAULT_NAME_KEY
+    if PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
+        parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY] = DEFAULT_TIMESTAMP_KEY
+    if PARAMETER_CONSTANT_ATTRIBUTE_KEY not in parameters:
+        parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY] = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY]
+
+    CASEID_GLUE = parameters[PARAMETER_CONSTANT_CASEID_KEY]
+    ACTIVITY_KEY = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY]
+    TIMEST_KEY = parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY]
 
     max_no_variants = parameters["max_no_variants"] if "max_no_variants" in parameters else 20
 
@@ -55,7 +62,7 @@ def apply(df, parameters=None):
     for var in variant_stats:
         all_variants_list.append([var["variant"], var[CASEID_GLUE]])
 
-    all_variants_list = sorted(all_variants_list, key=lambda x: x[1], reverse=True)
+    all_variants_list = sorted(all_variants_list, key=lambda x: (x[1], x[0]), reverse=True)
 
     considered_variants = []
     considered_traces = []
@@ -66,7 +73,7 @@ def apply(df, parameters=None):
 
         considered_variants.append(variant)
 
-        filtered_df = variants_filter.apply(df, considered_variants)
+        filtered_df = variants_filter.apply(df, considered_variants, parameters=parameters)
 
         dfg_frequency = dfg_util.get_dfg_graph(filtered_df, measure="frequency",
                                                perf_aggregation_key="median",
@@ -80,12 +87,16 @@ def apply(df, parameters=None):
         if not is_sound:
             del considered_variants[-1]
         else:
-            traces_of_this_variant = variants_filter.apply(df, [variant]).groupby(CASEID_GLUE)
-            traces_of_this_variant_keys = list(traces_of_this_variant.groups)
+            traces_of_this_variant = variants_filter.apply(df, [variant], parameters=parameters).groupby(CASEID_GLUE)
+            traces_of_this_variant_keys = list(traces_of_this_variant.groups.keys())
             trace_of_this_variant = traces_of_this_variant.get_group(traces_of_this_variant_keys[0])
 
-            considered_traces.append(transform.transform_event_log_to_trace_log(
-                pandas_df_imp.convert_dataframe_to_event_log(trace_of_this_variant))[0])
+            this_trace = transform.transform_event_log_to_trace_log(
+                pandas_df_imp.convert_dataframe_to_event_log(trace_of_this_variant), case_glue=CASEID_GLUE)[0]
+            if not ACTIVITY_KEY == DEFAULT_NAME_KEY:
+                for j in range(len(this_trace)):
+                    this_trace[j][DEFAULT_NAME_KEY] = this_trace[j][ACTIVITY_KEY]
+            considered_traces.append(this_trace)
             filtered_log = TraceLog(considered_traces)
 
             try:
@@ -101,4 +112,4 @@ def apply(df, parameters=None):
 
         i = i + 1
 
-    return variants_filter.apply(df, considered_variants)
+    return variants_filter.apply(df, considered_variants, parameters=parameters)
