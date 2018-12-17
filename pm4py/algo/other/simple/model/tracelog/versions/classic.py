@@ -2,6 +2,7 @@ from pm4py.algo.discovery.alpha import factory as alpha_miner
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.algo.filtering.tracelog.auto_filter import auto_filter
+from pm4py.algo.filtering.tracelog.start_activities import start_activities_filter
 from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
 from pm4py.algo.other.simple.filtering.tracelog.versions import filter_topvariants_soundmodel
 from pm4py.objects.log.util import insert_classifier
@@ -82,7 +83,8 @@ def apply(log, parameters=None, classic_output=False):
     log = attributes_filter.apply(log, activities_keep_list, parameters=parameters)
 
     if "alpha" in discovery_algorithm:
-        filtered_log = end_activities_filter.apply_auto_filter(log, parameters=parameters)
+        filtered_log = start_activities_filter.apply_auto_filter(log, parameters=parameters)
+        filtered_log = end_activities_filter.apply_auto_filter(filtered_log, parameters=parameters)
         filtered_log = filter_topvariants_soundmodel.apply(filtered_log, parameters=parameters)
     elif "inductive" in discovery_algorithm:
         filtered_log = auto_filter.apply(log, parameters=parameters)
