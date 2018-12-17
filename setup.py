@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pm4py',
-    version='0.2.1',
+    version='0.2.2',
     packages=['pm4py', 'pm4py.algo', 'pm4py.algo.other', 'pm4py.algo.other.simple', 'pm4py.algo.other.simple.model',
               'pm4py.algo.other.simple.model.tracelog', 'pm4py.algo.other.simple.model.tracelog.versions',
               'pm4py.algo.other.simple.filtering', 'pm4py.algo.other.simple.filtering.tracelog',
