@@ -102,7 +102,7 @@ class LpPerfBounds(object):
         else:
             c[target_column] = 1
 
-        solution = linprog(c, A_ub=self.Aub, b_ub=self.bub, A_eq=self.Aeq, b_eq=self.beq, options={'tol': 1e-7})
+        solution = linprog(c, A_ub=self.Aub, b_ub=self.bub, A_eq=self.Aeq, b_eq=self.beq, options={'tol': 8e-9})
 
         return solution
 
