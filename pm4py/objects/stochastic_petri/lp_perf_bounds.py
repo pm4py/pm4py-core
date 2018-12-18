@@ -37,8 +37,27 @@ class LpPerfBounds(object):
         self.build_preset_postset()
         self.build_var_corr()
         self.build_problem()
-        solution = self.solve_problem("theta_decide", maximize=True)
+        #solution = self.solve_problem("theta_decide", maximize=False)
+        solution = self.solve_problem("q_pay compensation", maximize=False)
+
         print(solution)
+
+        for place in self.net.places:
+            summ1 = 0.0
+            summ2 = 0.0
+            for trans in self.postsets[place]:
+                mu = float(self.smap[trans].get_distribution_parameters())
+                summ1 = summ1 + mu
+            for trans in self.presets[place]:
+                mu = float(self.smap[trans].get_distribution_parameters())
+                qt = self.var_corr["q_"+trans.name]
+                qt_val = solution.x[qt]
+                summ2 = summ2 + mu * qt_val
+            print("AAAAAAAAA",place,summ2/summ1)
+
+        if solution.success:
+            for var in self.inv_var_corr:
+                print(self.inv_var_corr[var], solution.x[var])
 
     def build_preset_postset(self):
         """
@@ -92,6 +111,9 @@ class LpPerfBounds(object):
         self.variable_count = variable_corr + 1
 
     def solve_problem(self, target_variable, maximize=False):
+        """
+        Solve the linear programming problem
+        """
         target_column = self.var_corr[target_variable]
 
         c = np.zeros(self.variable_count)
@@ -100,9 +122,9 @@ class LpPerfBounds(object):
         else:
             c[target_column] = 1
 
-        solution = linprog(c, A_ub=self.Aub, b_ub=self.bub, A_eq=self.Aeq, b_eq=self.beq)
+        solution = linprog(c, A_ub=self.Aub, b_ub=self.bub, A_eq=self.Aeq, b_eq=self.beq, options={'tol': 1e-7})
 
-        return solution.x[target_column]
+        return solution
 
     def build_problem(self):
         """
@@ -110,11 +132,17 @@ class LpPerfBounds(object):
         """
         Aeq_1, beq_1, Aub_1, bub_1 = self.build_1_throughput()
         Aeq_2, beq_2, Aub_2, bub_2 = self.build_2_flowbalance()
+        Aeq_5, beq_5, Aub_5, bub_5 = self.build_5_liveness()
+        Aeq_6, beq_6, Aub_6, bub_6 = self.build_6_liveness()
+        Aeq_18, beq_18, Aub_18, bub_18 = self.build_18_samplepath()
+        Aeq_19, beq_19, Aub_19, bub_19 = self.build_19_samplepath()
+        Aeq_26, beq_26, Aub_26, bub_26 = self.build_26_littlelaw()
+        Aeq_general, beq_general, Aub_general, bub_general = self.build_general_cond()
 
-        self.Aeq = np.vstack((Aeq_1, Aeq_2))
-        self.beq = np.vstack((beq_1, beq_2))
-        self.Aub = np.vstack((Aub_1, Aub_2))
-        self.bub = np.vstack((bub_1, bub_2))
+        self.Aeq = np.vstack((Aeq_1, Aeq_2, Aeq_5, Aeq_6, Aeq_18, Aeq_19, Aeq_26, Aeq_general))
+        self.beq = np.vstack((beq_1, beq_2, beq_5, beq_6, beq_18, beq_19, beq_26, beq_general))
+        self.Aub = np.vstack((Aub_1, Aub_2, Aub_5, Aub_6, Aub_18, Aub_19, Aub_26, Aub_general))
+        self.bub = np.vstack((bub_1, bub_2, bub_5, bub_6, bub_18, bub_19, bub_26, bub_general))
 
     def build_1_throughput(self):
         """
@@ -154,14 +182,113 @@ class LpPerfBounds(object):
                 mu = float(self.smap[transition].get_distribution_parameters())
                 thetatp = self.postsets[place][transition]
                 c2 = self.var_corr["q_"+transition.name]
-                print(index, c2)
                 Aeq_2[index, c2] = Aeq_2[index, c2] - mu * thetatp
-
-        print(Aeq_2)
 
         return Aeq_2, beq_2, Aub_2, bub_2
 
+    def build_5_liveness(self):
+        """
+        Liveness equation
+        """
+        Aeq_5 = np.zeros((0, self.variable_count))
+        beq_5 = np.zeros((0, 1))
+        Aub_5 = np.zeros((1, self.variable_count))
+        bub_5 = np.zeros((1, 1))
 
+        for index, transition in enumerate(self.net.transitions):
+            qt = self.var_corr["q_" + transition.name]
+            Aub_5[0, qt] = Aub_5[0, qt] - 1
+        bub_5[0] = -1
+
+        return Aeq_5, beq_5, Aub_5, bub_5
+
+    def build_6_liveness(self):
+        """
+        Liveness equation (second part)
+        """
+        Aeq_6 = np.zeros((0, self.variable_count))
+        beq_6 = np.zeros((0, 1))
+        Aub_6 = np.zeros((len(self.net.places), self.variable_count))
+        bub_6 = np.zeros((len(self.net.places), 1))
+
+        for index, place in enumerate(self.net.places):
+            xp = self.var_corr["x_"+place.name]
+            Aub_6[index, xp] = Aub_6[index,xp] + xp
+            for trans in self.net.transitions:
+                ypt = self.var_corr["y_"+place.name+"_"+trans.name]
+                Aub_6[index, ypt] = Aub_6[index, ypt] - ypt
+
+        return Aeq_6, beq_6, Aub_6, bub_6
+
+    def build_18_samplepath(self):
+        """
+        Sample path condition
+        """
+        Aeq_18 = np.zeros((0, self.variable_count))
+        beq_18 = np.zeros((0, 1))
+        Aub_18 = np.zeros((len(self.net.transitions), self.variable_count))
+        bub_18 = np.zeros((len(self.net.transitions), 1))
+
+        for index, trans in enumerate(self.net.transitions):
+            qt = self.var_corr["q_"+trans.name]
+            Aub_18[index, qt] = 1
+            bub_18[index] = 1
+
+        return Aeq_18, beq_18, Aub_18, bub_18
+
+    def build_19_samplepath(self):
+        """
+        Simple path condition
+        """
+        Aeq_19 = np.zeros((0, self.variable_count))
+        beq_19 = np.zeros((0, 1))
+        Aub_19 = np.zeros((len(self.net.places)*len(self.net.transitions), self.variable_count))
+        bub_19 = np.zeros((len(self.net.places)*len(self.net.transitions), 1))
+
+        count = 0
+        for place in self.net.places:
+            xp = self.var_corr["x_"+place.name]
+            for trans in self.net.transitions:
+                ypt = self.var_corr["y_"+place.name+"_"+trans.name]
+                Aub_19[count, ypt] = 1
+                Aub_19[count, xp] = -1
+                count = count + 1
+
+        return Aeq_19, beq_19, Aub_19, bub_19
+
+    def build_26_littlelaw(self):
+        """
+        Little law equation
+        """
+        Aeq_26 = np.zeros((0, self.variable_count))
+        beq_26 = np.zeros((0,1))
+        Aub_26 = np.zeros((len(self.net.places), self.variable_count))
+        bub_26 = np.zeros((len(self.net.places), 1))
+
+        for index, place in enumerate(self.net.places):
+            xp = self.var_corr["x_"+place.name]
+            summ1 = 0
+            for output_trans in self.postsets[place]:
+                summ1 = summ1 + float(self.smap[output_trans].get_distribution_parameters())
+            Aub_26[index, xp] = Aub_26[index, xp] - summ1
+            for input_trans in self.presets[place]:
+                qt = self.var_corr["q_"+input_trans.name]
+                mu = float(self.smap[input_trans].get_distribution_parameters())
+                w = self.presets[place][input_trans]
+                Aub_26[index, qt] = Aub_26[index, qt] + mu * w
+
+        return Aeq_26, beq_26, Aub_26, bub_26
+
+    def build_general_cond(self):
+        """
+        General conditions on the non-negativity of the variables
+        """
+        Aeq_general = np.zeros((0, self.variable_count))
+        beq_general = np.zeros((0,1))
+        Aub_general = -np.eye(len(self.net.places) + 2*len(self.net.transitions) + len(self.net.places)*len(self.net.transitions), self.variable_count)
+        bub_general = np.zeros((len(self.net.places) + 2*len(self.net.transitions) + len(self.net.places)*len(self.net.transitions), 1))
+
+        return Aeq_general, beq_general, Aub_general, bub_general
 
     def transform_net(self, net0, initial_marking0, final_marking0, s_map, avg_time_starts):
         """
