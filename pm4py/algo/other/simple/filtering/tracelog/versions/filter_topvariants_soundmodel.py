@@ -33,13 +33,14 @@ def apply(log, parameters=None):
     all_variants_list = []
     for var in all_variants_dictio:
         all_variants_list.append([var, len(all_variants_dictio[var])])
-    all_variants_list = sorted(all_variants_list, key=lambda x: x[1], reverse=True)
+    all_variants_list = sorted(all_variants_list, key=lambda x: (x[1], x[0]), reverse=True)
     considered_variants = []
     considered_traces = []
 
     i = 0
     while i < min(len(all_variants_list), max_no_variants):
         variant = all_variants_list[i][0]
+
         considered_variants.append(variant)
         considered_traces.append(all_variants_dictio[variant][0])
         filtered_log = TraceLog(considered_traces)
