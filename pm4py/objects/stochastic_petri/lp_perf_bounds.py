@@ -136,13 +136,15 @@ class LpPerfBounds(object):
         Aeq_6, beq_6, Aub_6, bub_6 = self.build_6_liveness()
         Aeq_18, beq_18, Aub_18, bub_18 = self.build_18_samplepath()
         Aeq_19, beq_19, Aub_19, bub_19 = self.build_19_samplepath()
+        Aeq_21, beq_21, Aub_21, bub_21 = self.build_21_samplepath()
+        Aeq_22, beq_22, Aub_22, bub_22 = self.build_22_samplepath()
         Aeq_26, beq_26, Aub_26, bub_26 = self.build_26_littlelaw()
         Aeq_general, beq_general, Aub_general, bub_general = self.build_general_cond()
 
-        self.Aeq = np.vstack((Aeq_1, Aeq_2, Aeq_5, Aeq_6, Aeq_18, Aeq_19, Aeq_26, Aeq_general))
-        self.beq = np.vstack((beq_1, beq_2, beq_5, beq_6, beq_18, beq_19, beq_26, beq_general))
-        self.Aub = np.vstack((Aub_1, Aub_2, Aub_5, Aub_6, Aub_18, Aub_19, Aub_26, Aub_general))
-        self.bub = np.vstack((bub_1, bub_2, bub_5, bub_6, bub_18, bub_19, bub_26, bub_general))
+        self.Aeq = np.vstack((Aeq_1, Aeq_2, Aeq_5, Aeq_6, Aeq_18, Aeq_19, Aeq_21, Aeq_22, Aeq_26, Aeq_general))
+        self.beq = np.vstack((beq_1, beq_2, beq_5, beq_6, beq_18, beq_19, beq_21, beq_22, beq_26, beq_general))
+        self.Aub = np.vstack((Aub_1, Aub_2, Aub_5, Aub_6, Aub_18, Aub_19, Aub_21, Aub_22, Aub_26, Aub_general))
+        self.bub = np.vstack((bub_1, bub_2, bub_5, bub_6, bub_18, bub_19, bub_21, bub_22, bub_26, bub_general))
 
     def build_1_throughput(self):
         """
@@ -255,6 +257,56 @@ class LpPerfBounds(object):
                 count = count + 1
 
         return Aeq_19, beq_19, Aub_19, bub_19
+
+    def build_21_samplepath(self):
+        count_available = 0
+        for trans in self.net.transitions:
+            if len(trans.in_arcs) == 1:
+                count_available = count_available + 1
+
+        Aeq_21 = np.zeros((0, self.variable_count))
+        beq_21 = np.zeros((0, 1))
+        Aub_21 = np.zeros((count_available, self.variable_count))
+        bub_21 = np.zeros((count_available, 1))
+
+        count = 0
+        for trans in self.net.transitions:
+            if len(trans.in_arcs) == 1:
+                place = list(trans.in_arcs)[0].source
+                w = self.presets[trans][place]
+                ypt = self.var_corr["y_"+place.name+"_"+trans.name]
+                xp = self.var_corr["x_"+place.name]
+                Aub_21[count, xp] = 1
+                Aub_21[count, ypt] = -1
+                bub_21[count] = w - 1
+                count = count + 1
+
+        return Aeq_21, beq_21, Aub_21, bub_21
+
+
+    def build_22_samplepath(self):
+        count_trans_preset = 0
+        for trans in self.net.transitions:
+            for place in self.presets[trans]:
+                count_trans_preset = count_trans_preset + 1
+
+        Aeq_22 = np.zeros((0, self.variable_count))
+        beq_22 = np.zeros((0, 1))
+        Aub_22 = np.zeros((count_trans_preset, self.variable_count))
+        bub_22 = np.zeros((count_trans_preset, 1))
+
+        count = 0
+        for trans in self.net.transitions:
+            for place in self.presets[trans]:
+                w = self.presets[trans][place]
+                ypt = self.var_corr["y_"+place.name+"_"+trans.name]
+                qt = self.var_corr["q_"+trans.name]
+
+                Aub_22[count, qt] = w
+                Aub_22[count, ypt] = -1
+                count = count + 1
+
+        return Aeq_22, beq_22, Aub_22, bub_22
 
     def build_26_littlelaw(self):
         """
