@@ -6,6 +6,7 @@ from pm4py.objects.random_variables.random_variable import RandomVariable
 import numpy as np
 from scipy.optimize import linprog
 
+DEFAULT_REPLACEMENT_IMMEDIATE = 1000
 
 class LpPerfBounds(object):
     def __init__(self, net, initial_marking, final_marking, smap, avg_time_starts):
@@ -37,27 +38,6 @@ class LpPerfBounds(object):
         self.build_preset_postset()
         self.build_var_corr()
         self.build_problem()
-        #solution = self.solve_problem("theta_decide", maximize=False)
-        solution = self.solve_problem("q_pay compensation", maximize=False)
-
-        print(solution)
-
-        for place in self.net.places:
-            summ1 = 0.0
-            summ2 = 0.0
-            for trans in self.postsets[place]:
-                mu = float(self.smap[trans].get_distribution_parameters())
-                summ1 = summ1 + mu
-            for trans in self.presets[place]:
-                mu = float(self.smap[trans].get_distribution_parameters())
-                qt = self.var_corr["q_"+trans.name]
-                qt_val = solution.x[qt]
-                summ2 = summ2 + mu * qt_val
-            print("AAAAAAAAA",place,summ2/summ1)
-
-        if solution.success:
-            for var in self.inv_var_corr:
-                print(self.inv_var_corr[var], solution.x[var])
 
     def build_preset_postset(self):
         """
@@ -132,6 +112,8 @@ class LpPerfBounds(object):
         """
         Aeq_1, beq_1, Aub_1, bub_1 = self.build_1_throughput()
         Aeq_2, beq_2, Aub_2, bub_2 = self.build_2_flowbalance()
+        Aeq_3, beq_3, Aub_3, bub_3 = self.build_3_secondmoment()
+        Aeq_4, beq_4, Aub_4, bub_4 = self.build_4_populationcovariance()
         Aeq_5, beq_5, Aub_5, bub_5 = self.build_5_liveness()
         Aeq_6, beq_6, Aub_6, bub_6 = self.build_6_liveness()
         Aeq_18, beq_18, Aub_18, bub_18 = self.build_18_samplepath()
@@ -141,10 +123,10 @@ class LpPerfBounds(object):
         Aeq_26, beq_26, Aub_26, bub_26 = self.build_26_littlelaw()
         Aeq_general, beq_general, Aub_general, bub_general = self.build_general_cond()
 
-        self.Aeq = np.vstack((Aeq_1, Aeq_2, Aeq_5, Aeq_6, Aeq_18, Aeq_19, Aeq_21, Aeq_22, Aeq_26, Aeq_general))
-        self.beq = np.vstack((beq_1, beq_2, beq_5, beq_6, beq_18, beq_19, beq_21, beq_22, beq_26, beq_general))
-        self.Aub = np.vstack((Aub_1, Aub_2, Aub_5, Aub_6, Aub_18, Aub_19, Aub_21, Aub_22, Aub_26, Aub_general))
-        self.bub = np.vstack((bub_1, bub_2, bub_5, bub_6, bub_18, bub_19, bub_21, bub_22, bub_26, bub_general))
+        self.Aeq = np.vstack((Aeq_1, Aeq_2, Aeq_3, Aeq_4, Aeq_5, Aeq_6, Aeq_18, Aeq_19, Aeq_21, Aeq_22, Aeq_26, Aeq_general))
+        self.beq = np.vstack((beq_1, beq_2, beq_3, beq_4, beq_5, beq_6, beq_18, beq_19, beq_21, beq_22, beq_26, beq_general))
+        self.Aub = np.vstack((Aub_1, Aub_2, Aub_3, Aub_4, Aub_5, Aub_6, Aub_18, Aub_19, Aub_21, Aub_22, Aub_26, Aub_general))
+        self.bub = np.vstack((bub_1, bub_2, bub_3, bub_4, bub_5, bub_6, bub_18, bub_19, bub_21, bub_22, bub_26, bub_general))
 
     def build_1_throughput(self):
         """
@@ -187,6 +169,86 @@ class LpPerfBounds(object):
                 Aeq_2[index, c2] = Aeq_2[index, c2] - mu * thetatp
 
         return Aeq_2, beq_2, Aub_2, bub_2
+
+    def build_3_secondmoment(self):
+        """
+        Second moment equation
+        """
+        Aeq_3 = np.zeros((len(self.net.places), self.variable_count))
+        beq_3 = np.zeros((len(self.net.places), 1))
+        Aub_3 = np.zeros((0, self.variable_count))
+        bub_3 = np.zeros((0,1))
+
+        for index, place in enumerate(self.net.places):
+            for transition in self.presets[place]:
+                mu = float(self.smap[transition].get_distribution_parameters())
+                w = self.presets[place][transition]
+                ypt = self.var_corr["y_"+place.name+"_"+transition.name]
+                qt = self.var_corr["q_"+transition.name]
+                Aeq_3[index, ypt] = Aeq_3[index, ypt] + 2 * mu * w
+                Aeq_3[index, qt] = Aeq_3[index, qt] + mu * w * w
+                if transition in self.postsets[place]:
+                    w2 = self.postsets[place][transition]
+                    Aeq_3[index,qt] = Aeq_3[index, qt] - 2 * mu * w * w2
+            for transition in self.postsets[place]:
+                mu = float(self.smap[transition].get_distribution_parameters())
+                w = self.postsets[place][transition]
+                ypt = self.var_corr["y_"+place.name+"_"+transition.name]
+                qt = self.var_corr["q_"+transition.name]
+                Aeq_3[index, ypt] = Aeq_3[index, ypt] - 2 * mu * w
+                Aeq_3[index, qt] = Aeq_3[index, qt] + mu * w * w
+        return Aeq_3, beq_3, Aub_3, bub_3
+
+    def build_4_populationcovariance(self):
+        """
+        Population covariance equation
+        """
+        Aeq_4 = np.zeros((len(self.net.places)*(len(self.net.places)-1), self.variable_count))
+        beq_4 = np.zeros((len(self.net.places)*(len(self.net.places)-1), 1))
+        Aub_4 = np.zeros((0, self.variable_count))
+        bub_4 = np.zeros((0,1))
+
+        count = 0
+        for p1 in self.net.places:
+            for p2 in self.net.places:
+                if not p1 == p2:
+                    for transition in self.presets[p2]:
+                        mu = float(self.smap[transition].get_distribution_parameters())
+                        w = self.presets[p2][transition]
+                        yp1t = self.var_corr["y_"+p1.name+"_"+transition.name]
+                        Aeq_4[count, yp1t] = Aeq_4[count, yp1t] + mu * w
+                    for transition in self.postsets[p2]:
+                        mu = float(self.smap[transition].get_distribution_parameters())
+                        w = self.postsets[p2][transition]
+                        yp1t = self.var_corr["y_"+p1.name+"_"+transition.name]
+                        Aeq_4[count, yp1t] = Aeq_4[count, yp1t] - mu * w
+                    for transition in self.presets[p1]:
+                        mu = float(self.smap[transition].get_distribution_parameters())
+                        w = self.presets[p1][transition]
+                        yp2t = self.var_corr["y_"+p2.name+"_"+transition.name]
+                        qt = self.var_corr["q_" + transition.name]
+                        Aeq_4[count, yp2t] = Aeq_4[count, yp2t] + mu * w
+                        if transition in self.presets[p2]:
+                            w2 = self.presets[p2][transition]
+                            Aeq_4[count, qt] = Aeq_4[count, qt] + mu * w * w2
+                        if transition in self.postsets[p2]:
+                            w2 = self.postsets[p2][transition]
+                            Aeq_4[count, qt] = Aeq_4[count, qt] - mu * w * w2
+                    for transition in self.postsets[p1]:
+                        mu = float(self.smap[transition].get_distribution_parameters())
+                        w = self.postsets[p1][transition]
+                        yp2t = self.var_corr["y_"+p2.name+"_"+transition.name]
+                        qt = self.var_corr["q_" + transition.name]
+                        Aeq_4[count, yp2t] = Aeq_4[count, yp2t] - mu * w
+                        if transition in self.presets[p2]:
+                            w2 = self.presets[p2][transition]
+                            Aeq_4[count, qt] = Aeq_4[count, qt] - mu * w * w2
+                        if transition in self.postsets[p2]:
+                            w2 = self.postsets[p2][transition]
+                            Aeq_4[count, qt] = Aeq_4[count, qt] + mu * w * w2
+                    count = count + 1
+
+        return Aeq_4, beq_4, Aub_4, bub_4
 
     def build_5_liveness(self):
         """
