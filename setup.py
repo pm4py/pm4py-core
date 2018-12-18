@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='pm4py-source',
+    name='pm4py',
     version='0.2.2',
     packages=['build.lib.pm4py', 'build.lib.pm4py.algo', 'build.lib.pm4py.algo.other',
               'build.lib.pm4py.algo.other.simple', 'build.lib.pm4py.algo.other.simple.model',
