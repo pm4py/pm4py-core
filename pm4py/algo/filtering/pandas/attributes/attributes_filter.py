@@ -217,10 +217,11 @@ def filter_df_keeping_spno_activities(df, activity_key="concept:name", max_no_ac
     activity_values_ordered_list = []
     for act in activity_values_dict:
         activity_values_ordered_list.append([act, activity_values_dict[act]])
-    activity_values_ordered_list = sorted(activity_values_ordered_list)
+    activity_values_ordered_list = sorted(activity_values_ordered_list, key=lambda x: (x[1], x[0]), reverse=True)
     # keep only a number of attributes <= max_no_activities
     activity_values_ordered_list = activity_values_ordered_list[
                                    0:min(len(activity_values_ordered_list), max_no_activities)]
     activity_to_keep = [x[0] for x in activity_values_ordered_list]
+
     df = df[df[activity_key].isin(activity_to_keep)]
     return df
