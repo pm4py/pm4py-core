@@ -118,6 +118,13 @@ class LpPerfBounds(object):
         """
         Build the linear programming problem
         """
+
+        for trans in self.smap:
+            rv = self.smap[trans]
+            if rv.get_transition_type() == "IMMEDIATE":
+                new_rv = Exponential()
+                new_rv.scale = DEFAULT_REPLACEMENT_IMMEDIATE
+                self.smap[trans] = new_rv
         Aeq_1, beq_1, Aub_1, bub_1 = self.build_1_throughput()
         Aeq_2, beq_2, Aub_2, bub_2 = self.build_2_flowbalance()
         Aeq_3, beq_3, Aub_3, bub_3 = self.build_3_secondmoment()
