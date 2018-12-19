@@ -8,13 +8,16 @@ from pm4py.statistics.traces.tracelog.case_arrival import get_case_arrival_avg
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 
+#log_name = "C:\\roadtraffic.xes"
 log_name = os.path.join("tests", "input_data", "running-example.xes")
 log = xes_importer.apply(log_name, variant="nonstandard")
+print("imported log")
 # obtain a simple, sound workflow net, containing only visibile unique transitions,
 # applying the Alpha Miner to some of the top variants (methods by Ale)
 activity_key = "concept:name"
 parameters = {PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key, PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key}
 net, initial_marking, final_marking = simple_extraction_factory.apply(log, classic_output=True, parameters=parameters)
+print("obtained model")
 # visualize the output Petri net
 gviz = pn_vis_factory.apply(net, initial_marking, final_marking)
 # pn_vis_factory.view(gviz)
