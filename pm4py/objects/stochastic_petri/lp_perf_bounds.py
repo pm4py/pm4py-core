@@ -472,9 +472,14 @@ class LpPerfBounds(object):
 
         # copy the Petri net object (assure that we do not change the original Petri net)
         [net1, initial_marking1, final_marking1] = copy([net0, initial_marking0, final_marking0])
-        # on the copied Petri net, remove the place(s) in the final marking
-        for place in final_marking1:
-            net1 = remove_place(net1, place)
+        # on the copied Petri net, add a sucking transition for the final marking
+        for index, place in enumerate(final_marking1):
+            suck_transition = PetriNet.Transition("SUCK_TRANSITION"+str(index), None)
+            net1.transitions.add(suck_transition)
+            add_arc_from_to(place, suck_transition, net1)
+            hidden_generator_distr = Exponential()
+            hidden_generator_distr.scale = avg_time_starts
+            s_map[suck_transition] = hidden_generator_distr
         # on the copied Petri net, remove both the place(s) in the initial marking and
         # the immediate transitions that are connected to it.
         target_places = []
