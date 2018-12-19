@@ -26,17 +26,14 @@ smap = stochastic_map.get_map_from_log_and_net(log, net, initial_marking, final_
                                                force_distribution="EXPONENTIAL")
 print("smap=", smap)
 
-chosen_var = "theta_decide"
-for avg_time_s in [100000, 200000, 300000, 400000, 500000]:
-    perf_bound_obj = LpPerfBounds(net, initial_marking, final_marking, smap, avg_time_s)
-    print(perf_bound_obj.var_corr)
+perf_bound_obj = LpPerfBounds(net, initial_marking, final_marking, smap, avg_time_starts)
+net1, imarking1, fmarking1 = perf_bound_obj.get_net()
+gviz = pn_vis_factory.apply(net1, imarking1, fmarking1)
 
-    net1, imarking1, fmarking1 = perf_bound_obj.get_net()
-    gviz = pn_vis_factory.apply(net1, imarking1, fmarking1)
-    # pn_vis_factory.view(gviz)
+for var in perf_bound_obj.var_corr:
+    corr = perf_bound_obj.var_corr[var]
 
-    minimum = perf_bound_obj.solve_problem(chosen_var, maximize=False)
-    maximum = perf_bound_obj.solve_problem(chosen_var, maximize=True)
+    minimum = perf_bound_obj.solve_problem(var, maximize=False)
+    maximum = perf_bound_obj.solve_problem(var, maximize=True)
 
-    print(chosen_var, avg_time_s, minimum.x[perf_bound_obj.var_corr[chosen_var]],
-          maximum.x[perf_bound_obj.var_corr[chosen_var]])
+    print(var, minimum[corr], maximum[corr])
