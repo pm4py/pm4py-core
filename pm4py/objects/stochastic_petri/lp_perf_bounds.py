@@ -1,12 +1,14 @@
-from pm4py.objects.petri.petrinet import PetriNet, Marking
 from copy import copy
+
+import numpy as np
+from cvxopt import matrix, solvers
+
+from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import remove_place, remove_transition, add_arc_from_to
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
-from pm4py.objects.random_variables.random_variable import RandomVariable
-import numpy as np
-from scipy.optimize import linprog
 
 DEFAULT_REPLACEMENT_IMMEDIATE = 1000
+
 
 class LpPerfBounds(object):
     def __init__(self, net, initial_marking, final_marking, smap, avg_time_starts):
@@ -27,8 +29,8 @@ class LpPerfBounds(object):
             Average time interlapsed between case starts (may be real or provided)
         """
         self.net, self.initial_marking, self.final_marking, self.smap = self.transform_net(net, initial_marking,
-                                                                                            final_marking, smap,
-                                                                                            avg_time_starts)
+                                                                                           final_marking, smap,
+                                                                                           avg_time_starts)
         self.presets = {}
         self.postsets = {}
         self.var_corr = {}
@@ -68,17 +70,17 @@ class LpPerfBounds(object):
         """
         variable_corr = 0
         for place in self.net.places:
-            variable_name = "x_"+place.name
+            variable_name = "x_" + place.name
             variable_corr = len(list(self.var_corr.keys()))
             self.var_corr[variable_name] = variable_corr
             self.inv_var_corr[variable_corr] = variable_name
         for transition in self.net.transitions:
-            variable_name = "q_"+transition.name
+            variable_name = "q_" + transition.name
             variable_corr = len(list(self.var_corr.keys()))
             self.var_corr[variable_name] = variable_corr
             self.inv_var_corr[variable_corr] = variable_name
         for transition in self.net.transitions:
-            variable_name = "theta_"+transition.name
+            variable_name = "theta_" + transition.name
             variable_corr = len(list(self.var_corr.keys()))
             self.var_corr[variable_name] = variable_corr
             self.inv_var_corr[variable_corr] = variable_name
@@ -96,15 +98,21 @@ class LpPerfBounds(object):
         """
         target_column = self.var_corr[target_variable]
 
-        c = np.zeros(self.variable_count)
+        c = [0.0] * self.variable_count
         if maximize:
-            c[target_column] = -1
+            c[target_column] = -1.0
         else:
-            c[target_column] = 1
+            c[target_column] = 1.0
 
-        solution = linprog(c, A_ub=self.Aub, b_ub=self.bub, A_eq=self.Aeq, b_eq=self.beq, options={'tol': 8e-9})
+        c = matrix(c)
 
-        return solution
+        solvers.options['show_progress'] = False
+        solution = solvers.lp(c, self.Aub, self.bub,
+                              A=self.Aeq, b=self.beq)
+
+        # solution = linprog(c, A_ub=self.Aub, b_ub=self.bub, A_eq=self.Aeq, b_eq=self.beq, options={'tol': 8e-9})
+
+        return list(solution['x'])
 
     def build_problem(self):
         """
@@ -123,10 +131,29 @@ class LpPerfBounds(object):
         Aeq_26, beq_26, Aub_26, bub_26 = self.build_26_littlelaw()
         Aeq_general, beq_general, Aub_general, bub_general = self.build_general_cond()
 
-        self.Aeq = np.vstack((Aeq_1, Aeq_2, Aeq_3, Aeq_4, Aeq_5, Aeq_6, Aeq_18, Aeq_19, Aeq_21, Aeq_22, Aeq_26, Aeq_general))
-        self.beq = np.vstack((beq_1, beq_2, beq_3, beq_4, beq_5, beq_6, beq_18, beq_19, beq_21, beq_22, beq_26, beq_general))
-        self.Aub = np.vstack((Aub_1, Aub_2, Aub_3, Aub_4, Aub_5, Aub_6, Aub_18, Aub_19, Aub_21, Aub_22, Aub_26, Aub_general))
-        self.bub = np.vstack((bub_1, bub_2, bub_3, bub_4, bub_5, bub_6, bub_18, bub_19, bub_21, bub_22, bub_26, bub_general))
+        self.Aeq = np.vstack(
+            (Aeq_1, Aeq_2, Aeq_3, Aeq_4, Aeq_5, Aeq_6, Aeq_18, Aeq_19, Aeq_21, Aeq_22, Aeq_26, Aeq_general))
+        self.beq = np.vstack(
+            (beq_1, beq_2, beq_3, beq_4, beq_5, beq_6, beq_18, beq_19, beq_21, beq_22, beq_26, beq_general))
+        self.Aub = np.vstack(
+            (Aub_1, Aub_2, Aub_3, Aub_4, Aub_5, Aub_6, Aub_18, Aub_19, Aub_21, Aub_22, Aub_26, Aub_general))
+        self.bub = np.vstack(
+            (bub_1, bub_2, bub_3, bub_4, bub_5, bub_6, bub_18, bub_19, bub_21, bub_22, bub_26, bub_general))
+
+        # remove rendundant rows
+        i = 1
+        while i <= self.Aeq.shape[0]:
+            partial_rank = np.linalg.matrix_rank(self.Aeq[0:i, ])
+            if i > partial_rank:
+                self.Aeq = np.delete(self.Aeq, i-1, 0)
+                self.beq = np.delete(self.beq, i-1, 0)
+                continue
+            i = i + 1
+
+        self.Aeq = matrix(np.transpose(self.Aeq.astype(np.float64)).tolist())
+        self.beq = matrix(np.transpose(self.beq.astype(np.float64)).tolist())
+        self.Aub = matrix(np.transpose(self.Aub.astype(np.float64)).tolist())
+        self.bub = matrix(np.transpose(self.bub.astype(np.float64)).tolist())
 
     def build_1_throughput(self):
         """
@@ -135,11 +162,11 @@ class LpPerfBounds(object):
         Aeq_1 = np.zeros((len(self.net.transitions), self.variable_count))
         beq_1 = np.zeros((len(self.net.transitions), 1))
         Aub_1 = np.zeros((0, self.variable_count))
-        bub_1 = np.zeros((0,1))
+        bub_1 = np.zeros((0, 1))
 
         for index, transition in enumerate(self.net.transitions):
-            c1 = self.var_corr["theta_"+transition.name]
-            c2 = self.var_corr["q_"+transition.name]
+            c1 = self.var_corr["theta_" + transition.name]
+            c2 = self.var_corr["q_" + transition.name]
             mu = float(self.smap[transition].get_distribution_parameters())
 
             Aeq_1[index, c1] = 1
@@ -154,18 +181,18 @@ class LpPerfBounds(object):
         Aeq_2 = np.zeros((len(self.net.places), self.variable_count))
         beq_2 = np.zeros((len(self.net.places), 1))
         Aub_2 = np.zeros((0, self.variable_count))
-        bub_2 = np.zeros((0,1))
+        bub_2 = np.zeros((0, 1))
 
         for index, place in enumerate(self.net.places):
             for transition in self.presets[place].keys():
                 mu = float(self.smap[transition].get_distribution_parameters())
                 thetatp = self.presets[place][transition]
-                c1 = self.var_corr["q_"+transition.name]
+                c1 = self.var_corr["q_" + transition.name]
                 Aeq_2[index, c1] = Aeq_2[index, c1] + mu * thetatp
             for transition in self.postsets[place].keys():
                 mu = float(self.smap[transition].get_distribution_parameters())
                 thetatp = self.postsets[place][transition]
-                c2 = self.var_corr["q_"+transition.name]
+                c2 = self.var_corr["q_" + transition.name]
                 Aeq_2[index, c2] = Aeq_2[index, c2] - mu * thetatp
 
         return Aeq_2, beq_2, Aub_2, bub_2
@@ -177,24 +204,24 @@ class LpPerfBounds(object):
         Aeq_3 = np.zeros((len(self.net.places), self.variable_count))
         beq_3 = np.zeros((len(self.net.places), 1))
         Aub_3 = np.zeros((0, self.variable_count))
-        bub_3 = np.zeros((0,1))
+        bub_3 = np.zeros((0, 1))
 
         for index, place in enumerate(self.net.places):
             for transition in self.presets[place]:
                 mu = float(self.smap[transition].get_distribution_parameters())
                 w = self.presets[place][transition]
-                ypt = self.var_corr["y_"+place.name+"_"+transition.name]
-                qt = self.var_corr["q_"+transition.name]
+                ypt = self.var_corr["y_" + place.name + "_" + transition.name]
+                qt = self.var_corr["q_" + transition.name]
                 Aeq_3[index, ypt] = Aeq_3[index, ypt] + 2 * mu * w
                 Aeq_3[index, qt] = Aeq_3[index, qt] + mu * w * w
                 if transition in self.postsets[place]:
                     w2 = self.postsets[place][transition]
-                    Aeq_3[index,qt] = Aeq_3[index, qt] - 2 * mu * w * w2
+                    Aeq_3[index, qt] = Aeq_3[index, qt] - 2 * mu * w * w2
             for transition in self.postsets[place]:
                 mu = float(self.smap[transition].get_distribution_parameters())
                 w = self.postsets[place][transition]
-                ypt = self.var_corr["y_"+place.name+"_"+transition.name]
-                qt = self.var_corr["q_"+transition.name]
+                ypt = self.var_corr["y_" + place.name + "_" + transition.name]
+                qt = self.var_corr["q_" + transition.name]
                 Aeq_3[index, ypt] = Aeq_3[index, ypt] - 2 * mu * w
                 Aeq_3[index, qt] = Aeq_3[index, qt] + mu * w * w
         return Aeq_3, beq_3, Aub_3, bub_3
@@ -203,10 +230,10 @@ class LpPerfBounds(object):
         """
         Population covariance equation
         """
-        Aeq_4 = np.zeros((len(self.net.places)*(len(self.net.places)-1), self.variable_count))
-        beq_4 = np.zeros((len(self.net.places)*(len(self.net.places)-1), 1))
+        Aeq_4 = np.zeros((len(self.net.places) * (len(self.net.places) - 1), self.variable_count))
+        beq_4 = np.zeros((len(self.net.places) * (len(self.net.places) - 1), 1))
         Aub_4 = np.zeros((0, self.variable_count))
-        bub_4 = np.zeros((0,1))
+        bub_4 = np.zeros((0, 1))
 
         count = 0
         for p1 in self.net.places:
@@ -215,17 +242,17 @@ class LpPerfBounds(object):
                     for transition in self.presets[p2]:
                         mu = float(self.smap[transition].get_distribution_parameters())
                         w = self.presets[p2][transition]
-                        yp1t = self.var_corr["y_"+p1.name+"_"+transition.name]
+                        yp1t = self.var_corr["y_" + p1.name + "_" + transition.name]
                         Aeq_4[count, yp1t] = Aeq_4[count, yp1t] + mu * w
                     for transition in self.postsets[p2]:
                         mu = float(self.smap[transition].get_distribution_parameters())
                         w = self.postsets[p2][transition]
-                        yp1t = self.var_corr["y_"+p1.name+"_"+transition.name]
+                        yp1t = self.var_corr["y_" + p1.name + "_" + transition.name]
                         Aeq_4[count, yp1t] = Aeq_4[count, yp1t] - mu * w
                     for transition in self.presets[p1]:
                         mu = float(self.smap[transition].get_distribution_parameters())
                         w = self.presets[p1][transition]
-                        yp2t = self.var_corr["y_"+p2.name+"_"+transition.name]
+                        yp2t = self.var_corr["y_" + p2.name + "_" + transition.name]
                         qt = self.var_corr["q_" + transition.name]
                         Aeq_4[count, yp2t] = Aeq_4[count, yp2t] + mu * w
                         if transition in self.presets[p2]:
@@ -237,7 +264,7 @@ class LpPerfBounds(object):
                     for transition in self.postsets[p1]:
                         mu = float(self.smap[transition].get_distribution_parameters())
                         w = self.postsets[p1][transition]
-                        yp2t = self.var_corr["y_"+p2.name+"_"+transition.name]
+                        yp2t = self.var_corr["y_" + p2.name + "_" + transition.name]
                         qt = self.var_corr["q_" + transition.name]
                         Aeq_4[count, yp2t] = Aeq_4[count, yp2t] - mu * w
                         if transition in self.presets[p2]:
@@ -276,10 +303,10 @@ class LpPerfBounds(object):
         bub_6 = np.zeros((len(self.net.places), 1))
 
         for index, place in enumerate(self.net.places):
-            xp = self.var_corr["x_"+place.name]
-            Aub_6[index, xp] = Aub_6[index,xp] + xp
+            xp = self.var_corr["x_" + place.name]
+            Aub_6[index, xp] = Aub_6[index, xp] + xp
             for trans in self.net.transitions:
-                ypt = self.var_corr["y_"+place.name+"_"+trans.name]
+                ypt = self.var_corr["y_" + place.name + "_" + trans.name]
                 Aub_6[index, ypt] = Aub_6[index, ypt] - ypt
 
         return Aeq_6, beq_6, Aub_6, bub_6
@@ -294,7 +321,7 @@ class LpPerfBounds(object):
         bub_18 = np.zeros((len(self.net.transitions), 1))
 
         for index, trans in enumerate(self.net.transitions):
-            qt = self.var_corr["q_"+trans.name]
+            qt = self.var_corr["q_" + trans.name]
             Aub_18[index, qt] = 1
             bub_18[index] = 1
 
@@ -306,14 +333,14 @@ class LpPerfBounds(object):
         """
         Aeq_19 = np.zeros((0, self.variable_count))
         beq_19 = np.zeros((0, 1))
-        Aub_19 = np.zeros((len(self.net.places)*len(self.net.transitions), self.variable_count))
-        bub_19 = np.zeros((len(self.net.places)*len(self.net.transitions), 1))
+        Aub_19 = np.zeros((len(self.net.places) * len(self.net.transitions), self.variable_count))
+        bub_19 = np.zeros((len(self.net.places) * len(self.net.transitions), 1))
 
         count = 0
         for place in self.net.places:
-            xp = self.var_corr["x_"+place.name]
+            xp = self.var_corr["x_" + place.name]
             for trans in self.net.transitions:
-                ypt = self.var_corr["y_"+place.name+"_"+trans.name]
+                ypt = self.var_corr["y_" + place.name + "_" + trans.name]
                 Aub_19[count, ypt] = 1
                 Aub_19[count, xp] = -1
                 count = count + 1
@@ -336,15 +363,14 @@ class LpPerfBounds(object):
             if len(trans.in_arcs) == 1:
                 place = list(trans.in_arcs)[0].source
                 w = self.presets[trans][place]
-                ypt = self.var_corr["y_"+place.name+"_"+trans.name]
-                xp = self.var_corr["x_"+place.name]
+                ypt = self.var_corr["y_" + place.name + "_" + trans.name]
+                xp = self.var_corr["x_" + place.name]
                 Aub_21[count, xp] = 1
                 Aub_21[count, ypt] = -1
                 bub_21[count] = w - 1
                 count = count + 1
 
         return Aeq_21, beq_21, Aub_21, bub_21
-
 
     def build_22_samplepath(self):
         count_trans_preset = 0
@@ -361,8 +387,8 @@ class LpPerfBounds(object):
         for trans in self.net.transitions:
             for place in self.presets[trans]:
                 w = self.presets[trans][place]
-                ypt = self.var_corr["y_"+place.name+"_"+trans.name]
-                qt = self.var_corr["q_"+trans.name]
+                ypt = self.var_corr["y_" + place.name + "_" + trans.name]
+                qt = self.var_corr["q_" + trans.name]
 
                 Aub_22[count, qt] = w
                 Aub_22[count, ypt] = -1
@@ -375,18 +401,18 @@ class LpPerfBounds(object):
         Little law equation
         """
         Aeq_26 = np.zeros((0, self.variable_count))
-        beq_26 = np.zeros((0,1))
+        beq_26 = np.zeros((0, 1))
         Aub_26 = np.zeros((len(self.net.places), self.variable_count))
         bub_26 = np.zeros((len(self.net.places), 1))
 
         for index, place in enumerate(self.net.places):
-            xp = self.var_corr["x_"+place.name]
+            xp = self.var_corr["x_" + place.name]
             summ1 = 0
             for output_trans in self.postsets[place]:
                 summ1 = summ1 + float(self.smap[output_trans].get_distribution_parameters())
             Aub_26[index, xp] = Aub_26[index, xp] - summ1
             for input_trans in self.presets[place]:
-                qt = self.var_corr["q_"+input_trans.name]
+                qt = self.var_corr["q_" + input_trans.name]
                 mu = float(self.smap[input_trans].get_distribution_parameters())
                 w = self.presets[place][input_trans]
                 Aub_26[index, qt] = Aub_26[index, qt] + mu * w
@@ -398,9 +424,12 @@ class LpPerfBounds(object):
         General conditions on the non-negativity of the variables
         """
         Aeq_general = np.zeros((0, self.variable_count))
-        beq_general = np.zeros((0,1))
-        Aub_general = -np.eye(len(self.net.places) + 2*len(self.net.transitions) + len(self.net.places)*len(self.net.transitions), self.variable_count)
-        bub_general = np.zeros((len(self.net.places) + 2*len(self.net.transitions) + len(self.net.places)*len(self.net.transitions), 1))
+        beq_general = np.zeros((0, 1))
+        Aub_general = -np.eye(
+            len(self.net.places) + 2 * len(self.net.transitions) + len(self.net.places) * len(self.net.transitions),
+            self.variable_count)
+        bub_general = np.zeros((len(self.net.places) + 2 * len(self.net.transitions) + len(self.net.places) * len(
+            self.net.transitions), 1))
 
         return Aeq_general, beq_general, Aub_general, bub_general
 
@@ -456,7 +485,7 @@ class LpPerfBounds(object):
         # add hidden case-generation transitions to the model.
         # all places that are left orphan by the previous operation are targeted.
         for index, place in enumerate(target_places):
-            hidden_generator_trans = PetriNet.Transition("HIDDEN_GENERATOR_TRANS"+str(index), None)
+            hidden_generator_trans = PetriNet.Transition("HIDDEN_GENERATOR_TRANS" + str(index), None)
             net1.transitions.add(hidden_generator_trans)
             add_arc_from_to(hidden_generator_trans, place, net1)
             hidden_generator_distr = Exponential()
@@ -466,7 +495,6 @@ class LpPerfBounds(object):
         initial_marking = Marking()
         final_marking = Marking()
         return net1, initial_marking, final_marking, s_map
-
 
     def get_net(self):
         """
