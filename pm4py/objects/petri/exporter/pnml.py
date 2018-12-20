@@ -73,7 +73,8 @@ def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False)
                 prom5_specific.set("version", "5.2")
                 log_event_prom5 = etree.SubElement(prom5_specific, "logevent")
                 event_name = transition.label.split("+")[0]
-                event_transition = transition.label.split("+")[1] if len(transition.label.split("+"))>1 else "complete"
+                event_transition = transition.label.split("+")[1] if len(
+                    transition.label.split("+")) > 1 else "complete"
                 log_event_prom5_name = etree.SubElement(log_event_prom5, "name")
                 log_event_prom5_name.text = event_name
                 log_event_prom5_type = etree.SubElement(log_event_prom5, "type")

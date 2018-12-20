@@ -86,9 +86,10 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
         intermediate_place = initial_place
         for i in range(len(tree_subtrees)):
             final_connection_place = None
-            if i == len(tree_subtrees)-1:
+            if i == len(tree_subtrees) - 1:
                 final_connection_place = final_place
-            net, counts, intermediate_place = recursively_add_tree(tree_subtrees[i], net, intermediate_place, final_connection_place, counts,
+            net, counts, intermediate_place = recursively_add_tree(tree_subtrees[i], net, intermediate_place,
+                                                                   final_connection_place, counts,
                                                                    rec_depth + 1, force_add_skip=force_add_skip)
     elif tree.operator == tree_constants.LOOP_OPERATOR:
         loop_trans = get_new_hidden_trans(counts, type_trans="loop")

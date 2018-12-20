@@ -1,0 +1,439 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.objects.process_tree package &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pm4py.objects.process_tree package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.process_tree.process_tree">pm4py.objects.process_tree.process_tree module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.process_tree.tree_constants">pm4py.objects.process_tree.tree_constants module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.process_tree">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pm4py.objects.process_tree package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pm4py.objects.process_tree.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pm4py-objects-process-tree-package">
+<h1>pm4py.objects.process_tree package<a class="headerlink" href="#pm4py-objects-process-tree-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pm4py.objects.process_tree.nodes_objects.html">pm4py.objects.process_tree.nodes_objects package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_objects.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_objects.html#module-pm4py.objects.process_tree.nodes_objects.exclusive">pm4py.objects.process_tree.nodes_objects.exclusive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_objects.html#module-pm4py.objects.process_tree.nodes_objects.loop">pm4py.objects.process_tree.nodes_objects.loop module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_objects.html#module-pm4py.objects.process_tree.nodes_objects.nodeobject">pm4py.objects.process_tree.nodes_objects.nodeobject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_objects.html#module-pm4py.objects.process_tree.nodes_objects.parallel">pm4py.objects.process_tree.nodes_objects.parallel module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_objects.html#module-pm4py.objects.process_tree.nodes_objects.sequential">pm4py.objects.process_tree.nodes_objects.sequential module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_objects.html#module-pm4py.objects.process_tree.nodes_objects">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pm4py.objects.process_tree.nodes_threads.html">pm4py.objects.process_tree.nodes_threads package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_threads.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_threads.html#module-pm4py.objects.process_tree.nodes_threads.exclusive">pm4py.objects.process_tree.nodes_threads.exclusive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_threads.html#module-pm4py.objects.process_tree.nodes_threads.loop">pm4py.objects.process_tree.nodes_threads.loop module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_threads.html#module-pm4py.objects.process_tree.nodes_threads.nodethread">pm4py.objects.process_tree.nodes_threads.nodethread module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_threads.html#module-pm4py.objects.process_tree.nodes_threads.parallel">pm4py.objects.process_tree.nodes_threads.parallel module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_threads.html#module-pm4py.objects.process_tree.nodes_threads.sequential">pm4py.objects.process_tree.nodes_threads.sequential module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.nodes_threads.html#module-pm4py.objects.process_tree.nodes_threads">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pm4py.objects.process_tree.trace_generation.html">pm4py.objects.process_tree.trace_generation package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.trace_generation.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.trace_generation.html#module-pm4py.objects.process_tree.trace_generation.concurrent_trace">pm4py.objects.process_tree.trace_generation.concurrent_trace module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.process_tree.trace_generation.html#module-pm4py.objects.process_tree.trace_generation">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.objects.process_tree.process_tree">
+<span id="pm4py-objects-process-tree-process-tree-module"></span><h2>pm4py.objects.process_tree.process_tree module<a class="headerlink" href="#module-pm4py.objects.process_tree.process_tree" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.objects.process_tree.process_tree.PTTransition">
+<em class="property">class </em><code class="descclassname">pm4py.objects.process_tree.process_tree.</code><code class="descname">PTTransition</code><span class="sig-paren">(</span><em>name</em>, <em>label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#PTTransition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.PTTransition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree">
+<em class="property">class </em><code class="descclassname">pm4py.objects.process_tree.process_tree.</code><code class="descname">ProcessTree</code><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree.add_subtree">
+<code class="descname">add_subtree</code><span class="sig-paren">(</span><em>subtree</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree.add_subtree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree.add_subtree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new subtree to the current one</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>subtree</strong> – Subtree to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree.add_transition">
+<code class="descname">add_transition</code><span class="sig-paren">(</span><em>trans</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree.add_transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree.add_transition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new transition to the subtree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>trans</strong> – Transition to add (visible or invisible)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree.check_initial_loop">
+<code class="descname">check_initial_loop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree.check_initial_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree.check_initial_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the tree, on-the-left, starts with a loop</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if it starts with an initial loop</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree.check_tau_mandatory_at_final_marking">
+<code class="descname">check_tau_mandatory_at_final_marking</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree.check_tau_mandatory_at_final_marking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree.check_tau_mandatory_at_final_marking" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a conversion to a Petri net is operated, check if is mandatory to add a hidden transition
+at final marking</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean that is true if it is mandatory to add a hidden transition connecting
+the rest of the process to the final marking</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree.check_tau_mandatory_at_initial_marking">
+<code class="descname">check_tau_mandatory_at_initial_marking</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree.check_tau_mandatory_at_initial_marking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree.check_tau_mandatory_at_initial_marking" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a conversion to a Petri net is operated, check if is mandatory to add a hidden transition
+at initial marking</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean that is true if it is mandatory to add a hidden transition connecting the initial marking
+to the rest of the process</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree.check_terminal_loop">
+<code class="descname">check_terminal_loop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree.check_terminal_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree.check_terminal_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the tree, on-the-right, ends with a loop</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if it ends with a terminal loop</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree.generate_log">
+<code class="descname">generate_log</code><span class="sig-paren">(</span><em>no_traces=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree.generate_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree.generate_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a log with the given number of traces from the current process tree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Trace log whose traces follow the process tree</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">log</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree.generate_trace">
+<code class="descname">generate_trace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree.generate_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree.generate_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a trace out of the current process tree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Trace of trace log object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">trace</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree.get_first_terminal_child_transitions">
+<code class="descname">get_first_terminal_child_transitions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree.get_first_terminal_child_transitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree.get_first_terminal_child_transitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the list of transitions belonging to the first terminal child node of the current tree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of transitions belonging to the first terminal child node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">transitions_list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree.get_last_terminal_child_transitions">
+<code class="descname">get_last_terminal_child_transitions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree.get_last_terminal_child_transitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree.get_last_terminal_child_transitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the list of transitions belonging to the last terminal child node of the current tree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of transitions belonging to the first terminal child node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">transitions_list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.process_tree.process_tree.ProcessTree.set_operator">
+<code class="descname">set_operator</code><span class="sig-paren">(</span><em>operator</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/process_tree.html#ProcessTree.set_operator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.process_tree.ProcessTree.set_operator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set operator for the current subtree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>operator</strong> – Operator to set</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.process_tree.tree_constants">
+<span id="pm4py-objects-process-tree-tree-constants-module"></span><h2>pm4py.objects.process_tree.tree_constants module<a class="headerlink" href="#module-pm4py.objects.process_tree.tree_constants" title="Permalink to this headline">¶</a></h2>
+<p>Some constants useful in representing process trees</p>
+</div>
+<div class="section" id="module-pm4py.objects.process_tree">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.objects.process_tree" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

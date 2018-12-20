@@ -28,14 +28,3 @@ def construct_standard_cost_function(synchronous_product_net, skip):
             else:
                 costs[t] = STD_SYNC_COST
     return costs
-
-
-def construct_event_level_cost_function(log, activity_cost_map, activity_key=pm4py_log.util.xes.DEFAULT_NAME_KEY):
-    log = pm4py_log.util.general.convert(log, pm4py_log.log.TRACE_LOG)
-    costs = list()
-    for t in log:
-        t_costs = list()
-        for e in t:
-            t_costs.append(activity_cost_map[e[activity_key]])
-        costs.append(t_costs)
-    return costs

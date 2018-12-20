@@ -91,7 +91,6 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
         else:
             min_in_arc_indexes = None
             max_in_arc_indexes = None
-        performance_for_this_trans_execution = None
         performance_for_this_trans_execution = []
 
         for arc in trans.in_arcs:

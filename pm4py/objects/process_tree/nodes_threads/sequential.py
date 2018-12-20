@@ -1,5 +1,6 @@
-from pm4py.objects.process_tree.nodes_threads.nodethread import NodeThread
 from pm4py.objects.process_tree import process_tree
+from pm4py.objects.process_tree.nodes_threads.nodethread import NodeThread
+
 
 class Sequential(NodeThread):
     def __init__(self, node_object):

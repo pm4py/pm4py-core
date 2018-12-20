@@ -108,9 +108,9 @@ def get_repr(spec_tree_struct, rec_depth, counts, must_add_skip=False, contains_
     if spec_tree_struct.detected_cut == "sequential" or spec_tree_struct.detected_cut == "loopCut":
         for ch in spec_tree_struct.children:
             child, counts = get_repr(ch, rec_depth + 1, counts,
-                                      must_add_skip=verify_skip_transition_necessity(False,
-                                                                                     ch.initial_dfg,
-                                                                                     ch.activities))
+                                     must_add_skip=verify_skip_transition_necessity(False,
+                                                                                    ch.initial_dfg,
+                                                                                    ch.activities))
             child_tree.add_subtree(child)
     if spec_tree_struct.detected_cut == "parallel":
         m_add_skip = verify_skip_for_parallel_cut(spec_tree_struct.dfg, spec_tree_struct.children)

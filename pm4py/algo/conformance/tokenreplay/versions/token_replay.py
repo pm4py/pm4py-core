@@ -392,7 +392,6 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
         marking_copy = copy(all_enabled_transitions_marking_dictio[t])
 
         if repr([t, marking_copy]) not in visited_transitions:
-            #print(repr([t, marking_copy]))
             if t.label is not None:
                 visible_transitions.add(t)
             else:
@@ -400,7 +399,6 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
                     new_marking = semantics.execute(t, net, marking_copy)
                     new_enabled_transitions = list(semantics.enabled_transitions(net, new_marking))
                     for t2 in new_enabled_transitions:
-                        #if t2 not in all_enabled_transitions:
                         all_enabled_transitions.append(t2)
                         all_enabled_transitions_marking_dictio[t2] = new_marking
             visited_transitions.add(repr([t, marking_copy]))

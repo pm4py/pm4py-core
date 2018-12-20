@@ -148,8 +148,6 @@ class Subtree(object):
         set2 = set()
 
         if len(self.activities_dir_list) > 0:
-            # print(self.activities_dir_list)
-
             set1.add(self.activities_dir_list[0][0])
             if not (self.activities_dir_list[0][0] in self.ingoing and self.activities_dir_list[-1][0] in self.ingoing[
                 self.activities_dir_list[0][0]]):
@@ -194,9 +192,6 @@ class Subtree(object):
                                 act1 in self.ingoing and act2 in self.ingoing[act1])):
                             count_neg = count_neg + 1
 
-        # print("count_tot=",count_tot)
-        # print("count_neg=",count_neg)
-
         if count_neg <= shared_constants.PAR_CUT_CONSTANT * count_tot:
             return True
 
@@ -236,15 +231,13 @@ class Subtree(object):
             set1 = set()
             set2 = set()
 
-            LC2 = shared_constants.LOOP_CONST_2
-
-            #print("self.activities_dir_list=", self.activities_dir_list)
+            lc2 = shared_constants.LOOP_CONST_2
 
             if self.activities_dir_list[0][1] > shared_constants.LOOP_CONST_1:
                 if self.activities_dir_list[0][0] in self.ingoing:
                     activ_input = list(self.ingoing[self.activities_dir_list[0][0]])
                     for act in activ_input:
-                        if not act == self.activities_dir_list[0][0] and self.activities_direction[act] < LC2:
+                        if not act == self.activities_dir_list[0][0] and self.activities_direction[act] < lc2:
                             set2.add(act)
 
             # the constant LOOP_CONST_4 has been revised; moreover it is checked if the 'in-strength' of the exit
@@ -276,15 +269,6 @@ class Subtree(object):
             conc_cut = self.detect_concurrent_cut()
             seq_cut = self.detect_sequential_cut()
             loop_cut = self.detect_loop_cut()
-
-            #print("rec_depth=",self.rec_depth)
-            #print("activities=",self.activities)
-            #print("par_cut=",par_cut)
-            #print("conc_cut=",conc_cut)
-            #print("seq_cut=",seq_cut)
-            #print("loop_cut=",loop_cut)
-
-            # input()
 
             if par_cut[0]:
                 union_acti_comp = set()
