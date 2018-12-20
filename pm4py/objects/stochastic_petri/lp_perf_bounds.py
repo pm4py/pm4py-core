@@ -1,11 +1,14 @@
 from copy import copy
 
+import cvxopt
 import numpy as np
 from cvxopt import matrix, solvers
 
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import remove_place, remove_transition, add_arc_from_to
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
+
+import sys
 
 DEFAULT_REPLACEMENT_IMMEDIATE = 1000
 
@@ -106,13 +109,23 @@ class LpPerfBounds(object):
 
         c = matrix(c)
 
+        solvers.options['glpk'] = {}
+        solvers.options['glpk']['LPX_K_MSGLEV'] = 0
+        solvers.options['glpk']['msg_lev'] = 'GLP_MSG_OFF'
+        solvers.options['glpk']['show_progress'] = False
+        solvers.options['msg_lev'] = 'GLP_MSG_OFF'
         solvers.options['show_progress'] = False
         solution = solvers.lp(c, self.Aub, self.bub,
-                              A=self.Aeq, b=self.beq)
+                              A=self.Aeq, b=self.beq, solver='glpk')
 
         # solution = linprog(c, A_ub=self.Aub, b_ub=self.bub, A_eq=self.Aeq, b_eq=self.beq, options={'tol': 8e-9})
 
-        return list(solution['x'])
+        if solution and 'x' in solution and solution['x'] is not None:
+            return list(solution['x'])
+        else:
+            if maximize:
+                return [sys.float_info.max] * len(list(self.var_corr.keys()))
+            return [sys.float_info.min] * len(list(self.var_corr.keys()))
 
     def build_problem(self):
         """
@@ -148,14 +161,27 @@ class LpPerfBounds(object):
             (bub_1, bub_2, bub_3, bub_4, bub_5, bub_6, bub_18, bub_19, bub_21, bub_22, bub_26, bub_general))
 
         # remove rendundant rows
+        """i = 1
+        while i <= self.Aub.shape[0]:
+            partial_rank = np.linalg.matrix_rank(self.Aub[0:i, ])
+            if i > partial_rank:
+                self.Aub = np.delete(self.Aub, i-1, 0)
+                self.bub = np.delete(self.bub, i-1, 0)
+                continue
+            i = i + 1"""
         i = 1
         while i <= self.Aeq.shape[0]:
             partial_rank = np.linalg.matrix_rank(self.Aeq[0:i, ])
             if i > partial_rank:
-                self.Aeq = np.delete(self.Aeq, i-1, 0)
-                self.beq = np.delete(self.beq, i-1, 0)
+                self.Aeq = np.delete(self.Aeq, i - 1, 0)
+                self.beq = np.delete(self.beq, i - 1, 0)
                 continue
             i = i + 1
+
+        print(np.linalg.matrix_rank(self.Aub), self.Aub.shape)
+        print(np.linalg.matrix_rank(self.Aeq), self.Aeq.shape)
+        comb_matrix = np.vstack((self.Aub, self.Aeq))
+        print(np.linalg.matrix_rank(comb_matrix), comb_matrix.shape)
 
         self.Aeq = matrix(np.transpose(self.Aeq.astype(np.float64)).tolist())
         self.beq = matrix(np.transpose(self.beq.astype(np.float64)).tolist())
@@ -474,7 +500,7 @@ class LpPerfBounds(object):
         [net1, initial_marking1, final_marking1] = copy([net0, initial_marking0, final_marking0])
         # on the copied Petri net, add a sucking transition for the final marking
         for index, place in enumerate(final_marking1):
-            suck_transition = PetriNet.Transition("SUCK_TRANSITION"+str(index), None)
+            suck_transition = PetriNet.Transition("SUCK_TRANSITION" + str(index), None)
             net1.transitions.add(suck_transition)
             add_arc_from_to(place, suck_transition, net1)
             hidden_generator_distr = Exponential()
