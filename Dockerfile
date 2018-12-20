@@ -8,11 +8,14 @@ RUN apt-get -y install python-pydot python-pydot-ng graphviz
 RUN pip install lxml
 RUN pip install graphviz
 RUN pip install ciso8601
+RUN pip install numpy
+RUN pip install scipy
 RUN pip install pandas
 RUN pip install dataclasses
 RUN pip install cvxopt
 RUN pip install flask
 RUN pip install flask-cors
+RUN pip install networkx==1.11
 
 COPY . /app
 
