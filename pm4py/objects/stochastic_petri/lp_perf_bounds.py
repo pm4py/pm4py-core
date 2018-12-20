@@ -116,7 +116,7 @@ class LpPerfBounds(object):
         solvers.options['msg_lev'] = 'GLP_MSG_OFF'
         solvers.options['show_progress'] = False
         solution = solvers.lp(c, self.Aub, self.bub,
-                              A=self.Aeq, b=self.beq, solver='glpk')
+                              A=self.Aeq, b=self.beq)
 
         # solution = linprog(c, A_ub=self.Aub, b_ub=self.bub, A_eq=self.Aeq, b_eq=self.beq, options={'tol': 8e-9})
 

@@ -135,7 +135,7 @@ class RandomVariable(object):
             else:
                 avg_values = np.average(values)
                 if values and avg_values > 0.00000:
-                    E.scale = 1.0 / avg_values
+                    E.scale = avg_values
                     self.random_variable = E
                 else:
                     self.random_variable = C0
