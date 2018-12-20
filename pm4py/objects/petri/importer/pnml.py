@@ -6,7 +6,6 @@ from lxml import etree
 
 from pm4py.objects import petri
 from pm4py.objects.petri.common import final_marking
-
 from pm4py.objects.random_variables.random_variable import RandomVariable
 
 
@@ -25,7 +24,8 @@ def import_petri_from_string(petri_string, return_stochastic_information=False):
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(petri_string)
-    net, initial_marking, this_final_marking = import_net(fp.name)
+    net, initial_marking, this_final_marking = import_net(fp.name,
+                                                          return_stochastic_information=return_stochastic_information)
     os.remove(fp.name)
     return net, initial_marking, this_final_marking
 

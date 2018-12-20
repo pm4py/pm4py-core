@@ -1,12 +1,13 @@
-from pm4py.objects.random_variables.uniform.random_variable import Uniform
-import numpy as np
 import sys
-from pm4py.objects.random_variables.basic_structure import BasicStructureRandomVariable
 
-class Constant0(BasicStructureRandomVariable):
+from pm4py.objects.random_variables.uniform.random_variable import Uniform
+
+
+class Constant0(Uniform):
     """
     Describes a constant0-equal-to-0 random variable
     """
+
     def __init__(self):
         """
         Constructor
@@ -98,13 +99,15 @@ class Constant0(BasicStructureRandomVariable):
         ------------
         values
             Empirical values to work on
+        tol
+            Tolerance about float values (consider them 0?)
 
         Returns
         ------------
         likelihood
             Log likelihood that the values follows the distribution
         """
-        values_0 = [x for x in values if abs(x)<tol]
+        values_0 = [x for x in values if abs(x) < tol]
         if len(values) == len(values_0):
             return sys.float_info.max
         return -sys.float_info.max

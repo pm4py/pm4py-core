@@ -170,7 +170,7 @@ def export_net(petrinet, marking, output_filename, final_marking=None, stochasti
         Absolute output file name for saving the pnml file
     stochastic_map
         (only for stochastics) map that associates to each transition a probability distribution
-     export_prom5
+    export_prom5
         Enables exporting PNML files in a format that is ProM5-friendly
     """
 

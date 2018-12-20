@@ -3,9 +3,9 @@ from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
 from pm4py.objects import log as log_lib
 from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.random_variables.exponential.random_variable import Exponential
 from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.visualization.petrinet.util import performance_map
-from pm4py.objects.random_variables.exponential.random_variable import Exponential
 
 PARAM_ACTIVITY_KEY = pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 PARAM_TIMESTAMP_KEY = pm4py.util.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
@@ -64,22 +64,23 @@ def get_map_from_log_and_net(log, net, initial_marking, final_marking, force_dis
         if type(el) is PetriNet.Transition and "performance" in element_statistics[el]:
             values = element_statistics[el]["performance"]
 
-            R = RandomVariable()
-            R.calculate_parameters(values, force_distribution=force_distribution)
+            rand = RandomVariable()
+            rand.calculate_parameters(values, force_distribution=force_distribution)
 
             no_of_times_enabled = element_statistics[el]['no_of_times_enabled']
             no_of_times_activated = element_statistics[el]['no_of_times_activated']
 
             if no_of_times_enabled > 0:
-                R.set_weight(float(no_of_times_activated) / float(no_of_times_enabled))
+                rand.set_weight(float(no_of_times_activated) / float(no_of_times_enabled))
             else:
-                R.set_weight(0.0)
+                rand.set_weight(0.0)
 
-            stochastic_map[el] = R
+            stochastic_map[el] = rand
 
     return stochastic_map
 
-def get_map_exponential_from_aggstatistics_and_net(agg_statistics, net, initial_marking, final_marking, parameters=None):
+
+def get_map_exponential_from_aggstatistics(agg_statistics, parameters=None):
     """
     Get transition stochastic distribution map (exponential variable forced) given the log and the Petri net
 
@@ -87,12 +88,6 @@ def get_map_exponential_from_aggstatistics_and_net(agg_statistics, net, initial_
     -----------
     agg_statistics
         Aggregated statistics calculated on the DFG graph and the Petri net
-    net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
     parameters
         Parameters of the algorithm
 
@@ -105,13 +100,14 @@ def get_map_exponential_from_aggstatistics_and_net(agg_statistics, net, initial_
 
     if parameters is None:
         parameters = {}
+    del parameters
 
     for el in agg_statistics:
         if type(el) is PetriNet.Transition:
-            R = RandomVariable()
-            R.random_variable = Exponential()
-            R.random_variable.scale = agg_statistics[el]["performance"]
+            rand = RandomVariable()
+            rand.random_variable = Exponential()
+            rand.random_variable.scale = agg_statistics[el]["performance"]
 
-            stochastic_map[el] = R
+            stochastic_map[el] = rand
 
     return stochastic_map

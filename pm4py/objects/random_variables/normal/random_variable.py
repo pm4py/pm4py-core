@@ -1,6 +1,8 @@
-from scipy.stats import norm
-import numpy as np
 import sys
+
+import numpy as np
+from scipy.stats import norm
+
 from pm4py.objects.random_variables.basic_structure import BasicStructureRandomVariable
 
 
@@ -8,6 +10,7 @@ class Normal(BasicStructureRandomVariable):
     """
     Describes a normal variable
     """
+
     def __init__(self, mu=0, sigma=1):
         """
         Constructor
@@ -73,10 +76,10 @@ class Normal(BasicStructureRandomVariable):
             Log likelihood that the values follows the distribution
         """
         if len(values) > 1:
-            sum = 0
+            somma = 0
             for value in values:
-                sum = sum + np.log(norm.pdf(value,self.mu,self.sigma))
-            return sum
+                somma = somma + np.log(norm.pdf(value, self.mu, self.sigma))
+            return somma
         return -sys.float_info.max
 
     def calculate_parameters(self, values):

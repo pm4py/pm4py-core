@@ -3,6 +3,7 @@ class BasicStructureRandomVariable(object):
         """
         Constructor
         """
+        self.priority = 0
         self.weight = 0
 
     def get_weight(self):

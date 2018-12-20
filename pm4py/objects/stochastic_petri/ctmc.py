@@ -1,10 +1,11 @@
-import numpy as np
-from scipy.linalg import expm
 from collections import Counter
+
+import numpy as np
 from numpy.linalg import svd
+from scipy.linalg import expm
 
 
-def get_Q_matrix_from_tangible_exponential(tangible_reach_graph, stochastic_info):
+def get_q_matrix_from_tangible_exponential(tangible_reach_graph, stochastic_info):
     """
     Gets Q matrix from tangible reachability graph and stochastic map where the
     distribution type has been forced to be exponential
@@ -18,7 +19,7 @@ def get_Q_matrix_from_tangible_exponential(tangible_reach_graph, stochastic_info
 
     Returns
     -----------
-    Q_matrix
+    q_matrix
         Q-matrix from the tangible reachability graph
     """
     stochastic_info_name = {}
@@ -27,7 +28,7 @@ def get_Q_matrix_from_tangible_exponential(tangible_reach_graph, stochastic_info
 
     states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)
     no_states = len(states)
-    Q_matrix = np.zeros((no_states, no_states))
+    q_matrix = np.zeros((no_states, no_states))
 
     for i in range(no_states):
         sum_lambda = 0.0
@@ -38,13 +39,13 @@ def get_Q_matrix_from_tangible_exponential(tangible_reach_graph, stochastic_info
                 sinfo = stochastic_info_name[trans.name]
                 lambda_value = 1.0 / float(sinfo.random_variable.scale)
                 sum_lambda = sum_lambda + lambda_value
-                Q_matrix[i, target_state_index] = lambda_value
-        Q_matrix[i, i] = -sum_lambda
+                q_matrix[i, target_state_index] = lambda_value
+        q_matrix[i, i] = -sum_lambda
 
-    return Q_matrix
+    return q_matrix
 
 
-def transient_analysis_from_tangible_q_matrix_and_single_state(tangible_reach_graph, Q_matrix, source_state, time_diff):
+def transient_analysis_from_tangible_q_matrix_and_single_state(tangible_reach_graph, q_matrix, source_state, time_diff):
     """
     Do transient analysis from tangible reachability graph, Q matrix and a single state to start from
 
@@ -52,7 +53,7 @@ def transient_analysis_from_tangible_q_matrix_and_single_state(tangible_reach_gr
     -----------
     tangible_reach_graph
         Tangible reachability graph
-    Q_matrix
+    q_matrix
         Q matrix
     source_state
         Source state to consider
@@ -70,10 +71,12 @@ def transient_analysis_from_tangible_q_matrix_and_single_state(tangible_reach_gr
     states_vector = np.zeros((1, len(states)))
     states_vector[0, state_index] = 1
 
-    return transient_analysis_from_tangible_q_matrix_and_states_vector(tangible_reach_graph, Q_matrix, states_vector, time_diff)
+    return transient_analysis_from_tangible_q_matrix_and_states_vector(tangible_reach_graph, q_matrix, states_vector,
+                                                                       time_diff)
 
 
-def transient_analysis_from_tangible_q_matrix_and_states_vector(tangible_reach_graph, Q_matrix, states_vector, time_diff):
+def transient_analysis_from_tangible_q_matrix_and_states_vector(tangible_reach_graph, q_matrix, states_vector,
+                                                                time_diff):
     """
     Do transient analysis from tangible reachability graph, Q matrix and a vector of probability of states
 
@@ -81,7 +84,7 @@ def transient_analysis_from_tangible_q_matrix_and_states_vector(tangible_reach_g
     ------------
     tangible_reach_graph
         Tangible reachability graph
-    Q_matrix
+    q_matrix
         Q matrix
     states_vector
         Vector of states probabilities to start from
@@ -96,9 +99,9 @@ def transient_analysis_from_tangible_q_matrix_and_states_vector(tangible_reach_g
     transient_result = Counter()
     states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)
 
-    Ht = expm(Q_matrix * time_diff)
+    ht_matrix = expm(q_matrix * time_diff)
 
-    res = np.matmul(states_vector, Ht)
+    res = np.matmul(states_vector, ht_matrix)
     # normalize to 1 the vector of probabilities
     res = res / np.sum(res)
 
@@ -107,7 +110,8 @@ def transient_analysis_from_tangible_q_matrix_and_states_vector(tangible_reach_g
 
     return transient_result
 
-def nullspace(A, atol=1e-13, rtol=0):
+
+def nullspace(a_matrix, atol=1e-13, rtol=0):
     """Compute an approximate basis for the nullspace of A.
 
     The algorithm used by this function is based on the singular value
@@ -115,7 +119,7 @@ def nullspace(A, atol=1e-13, rtol=0):
 
     Parameters
     ----------
-    A : ndarray
+    a_matrix : ndarray
         A should be at most 2-D.  A 1-D array with length k will be treated
         as a 2-D with shape (1, k)
     atol : float
@@ -130,7 +134,7 @@ def nullspace(A, atol=1e-13, rtol=0):
         tol = max(atol, rtol * smax)
     Singular values smaller than `tol` are considered to be zero.
 
-    Return value
+    Returns
     ------------
     ns : ndarray
         If `A` is an array with shape (m, k), then `ns` will be an array
@@ -140,14 +144,15 @@ def nullspace(A, atol=1e-13, rtol=0):
         zero.
     """
 
-    A = np.atleast_2d(A)
-    u, s, vh = svd(A)
+    a_matrix = np.atleast_2d(a_matrix)
+    u, s, vh = svd(a_matrix)
     tol = max(atol, rtol * s[0])
     nnz = (s >= tol).sum()
     ns = vh[nnz:].conj().T
     return ns
 
-def steadystate_analysis_from_tangible_q_matrix(tangible_reach_graph, Q_matrix, tol=1e-14):
+
+def steadystate_analysis_from_tangible_q_matrix(tangible_reach_graph, q_matrix, tol=1e-14):
     """
     Do steadystate analysis from tangible reachability graph and Q matrix
 
@@ -155,7 +160,7 @@ def steadystate_analysis_from_tangible_q_matrix(tangible_reach_graph, Q_matrix, 
     ------------
     tangible_reach_graph
         Tangible reachability graph
-    Q_matrix
+    q_matrix
         Q matrix
     tol
         Tolerance in order to admit states in the steady state
@@ -165,11 +170,11 @@ def steadystate_analysis_from_tangible_q_matrix(tangible_reach_graph, Q_matrix, 
     steadystate
         Dictionary of states along with their probability in the long term
     """
-    Q_matrix_trans = np.matrix.transpose(Q_matrix)
-    if nullspace(Q_matrix_trans).shape[1] > 0:
-        kernel = np.matrix.transpose(nullspace(Q_matrix_trans))[0]
+    q_matrix_trans = np.matrix.transpose(q_matrix)
+    if nullspace(q_matrix_trans).shape[1] > 0:
+        kernel = np.matrix.transpose(nullspace(q_matrix_trans))[0]
         # normalize to 1 the vector of probabilities
-        if (np.sum(kernel) < 0):
+        if np.sum(kernel) < 0:
             kernel = -kernel
         kernel = kernel / np.sum(kernel)
         states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)

@@ -1,8 +1,9 @@
+import numpy as np
+
+from pm4py.objects.random_variables.constant0.random_variable import Constant0
+from pm4py.objects.random_variables.exponential.random_variable import Exponential
 from pm4py.objects.random_variables.normal.random_variable import Normal
 from pm4py.objects.random_variables.uniform.random_variable import Uniform
-from pm4py.objects.random_variables.exponential.random_variable import Exponential
-from pm4py.objects.random_variables.constant0.random_variable import Constant0
-import numpy as np
 
 
 class RandomVariable(object):
@@ -108,38 +109,37 @@ class RandomVariable(object):
         if self.random_variable is not None:
             self.random_variable.calculate_parameters(values)
         else:
-            N = Normal()
-            U = Uniform()
-            E = Exponential()
-            C0 = Constant0()
+            norm = Normal()
+            unif = Uniform()
+            expon = Exponential()
+            constant = Constant0()
 
             if not force_distribution or not force_distribution == "EXPONENTIAL":
-                likelihoods = []
-                likelihoods.append([C0, C0.calculate_loglikelihood(values)])
+                likelihoods = list()
+                likelihoods.append([constant, constant.calculate_loglikelihood(values)])
                 if force_distribution == "NORMAL" or force_distribution is None:
-                    N.calculate_parameters(values)
-                    likelihoods.append([N, N.calculate_loglikelihood(values)])
+                    norm.calculate_parameters(values)
+                    likelihoods.append([norm, norm.calculate_loglikelihood(values)])
                 if force_distribution == "UNIFORM" or force_distribution is None:
-                    U.calculate_parameters(values)
-                    likelihoods.append([U, U.calculate_loglikelihood(values)])
+                    unif.calculate_parameters(values)
+                    likelihoods.append([unif, unif.calculate_loglikelihood(values)])
                 if force_distribution == "EXPONENTIAL" or force_distribution is None:
-                    E.calculate_parameters(values)
-                    likelihoods.append([E, E.calculate_loglikelihood(values)])
+                    expon.calculate_parameters(values)
+                    likelihoods.append([expon, expon.calculate_loglikelihood(values)])
                 likelihoods = [x for x in likelihoods if str(x[1]) != 'nan']
                 likelihoods = sorted(likelihoods, key=lambda x: x[1], reverse=True)
 
                 if debug_mode:
-                    print("likelihoods = ",likelihoods)
+                    print("likelihoods = ", likelihoods)
 
                 self.random_variable = likelihoods[0][0]
             else:
                 avg_values = np.average(values)
                 if values and avg_values > 0.00000:
-                    E.scale = avg_values
-                    self.random_variable = E
+                    expon.scale = avg_values
+                    self.random_variable = expon
                 else:
-                    self.random_variable = C0
-
+                    self.random_variable = constant
 
     def get_value(self):
         """

@@ -1,6 +1,8 @@
-from scipy.stats import expon
-import numpy as np
 import sys
+
+import numpy as np
+from scipy.stats import expon
+
 from pm4py.objects.random_variables.basic_structure import BasicStructureRandomVariable
 
 
@@ -8,6 +10,7 @@ class Exponential(BasicStructureRandomVariable):
     """
     Describes a normal variable
     """
+
     def __init__(self, loc=1, scale=1):
         """
         Constructor
@@ -75,10 +78,10 @@ class Exponential(BasicStructureRandomVariable):
             Log likelihood that the values follows the distribution
         """
         if len(values) > 1:
-            sum = 0
+            somma = 0
             for value in values:
-                sum = sum + np.log(expon.pdf(value, self.loc, self.scale))
-            return sum
+                somma = somma + np.log(expon.pdf(value, self.loc, self.scale))
+            return somma
         return -sys.float_info.max
 
     def calculate_parameters(self, values):
