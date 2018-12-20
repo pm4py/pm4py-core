@@ -1,6 +1,8 @@
-from scipy.stats import uniform
-import numpy as np
 import sys
+
+import numpy as np
+from scipy.stats import uniform
+
 from pm4py.objects.random_variables.basic_structure import BasicStructureRandomVariable
 
 
@@ -8,6 +10,7 @@ class Uniform(BasicStructureRandomVariable):
     """
     Describes an uniform variable
     """
+
     def __init__(self, loc=0, scale=1):
         """
         Constructor
@@ -73,10 +76,10 @@ class Uniform(BasicStructureRandomVariable):
             Log likelihood that the values follows the distribution
         """
         if len(values) > 0:
-            sum = 0
+            somma = 0
             for value in values:
-                sum = sum + np.log(uniform.pdf(value,self.loc,self.scale))
-            return sum
+                somma = somma + np.log(uniform.pdf(value, self.loc, self.scale))
+            return somma
         return -sys.float_info.max
 
     def calculate_parameters(self, values):

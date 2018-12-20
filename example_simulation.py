@@ -8,7 +8,6 @@ from pm4py.statistics.traces.tracelog.case_arrival import get_case_arrival_avg
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 
-#log_name = "C:\\roadtraffic.xes"
 log_name = os.path.join("tests", "input_data", "running-example.xes")
 log = xes_importer.apply(log_name, variant="nonstandard")
 print("imported log")
@@ -20,6 +19,7 @@ net, initial_marking, final_marking = simple_extraction_factory.apply(log, class
 print("obtained model")
 # visualize the output Petri net
 gviz = pn_vis_factory.apply(net, initial_marking, final_marking)
+del gviz
 # pn_vis_factory.view(gviz)
 # gets the average time between cases starts
 avg_time_starts = get_case_arrival_avg(log)
