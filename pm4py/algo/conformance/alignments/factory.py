@@ -17,12 +17,12 @@ VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}
 VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost}
 
 
-def apply(object, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
-    if isinstance(object, pm4py.objects.log.log.Trace):
-        return apply_trace(object, petri_net, initial_marking, final_marking, parameters, version)
-    elif isinstance(object, pm4py.objects.log.log.TraceLog):
-        return apply_log(object, petri_net, initial_marking, final_marking, parameters, version)
-    elif isinstance(object, pm4py.objects.log.log.EventLog):
+def apply(objj, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
+    if isinstance(objj, pm4py.objects.log.log.Trace):
+        return apply_trace(objj, petri_net, initial_marking, final_marking, parameters, version)
+    elif isinstance(objj, pm4py.objects.log.log.TraceLog):
+        return apply_log(objj, petri_net, initial_marking, final_marking, parameters, version)
+    elif isinstance(objj, pm4py.objects.log.log.EventLog):
         if log_util.PARAMETER_KEY_CASE_GLUE in parameters:
             glue = parameters[log_util.PARAMETER_KEY_CASE_GLUE]
         else:
@@ -31,7 +31,7 @@ def apply(object, petri_net, initial_marking, final_marking, parameters=None, ve
             case_pref = parameters[log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX]
         else:
             case_pref = log_util.CASE_ATTRIBUTE_PREFIX
-        trace_log = log_transform.transform_event_log_to_trace_log(object, case_glue=glue,
+        trace_log = log_transform.transform_event_log_to_trace_log(objj, case_glue=glue,
                                                                    includes_case_attributes=False,
                                                                    case_attribute_prefix=case_pref)
         return apply_log(trace_log, petri_net, initial_marking, final_marking, parameters, version)
@@ -70,7 +70,8 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     alignment
         :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and
         **traversed_arcs**
-        The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t) representing synchronous/log/model-moves.
+        The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t)
+        representing synchronous/log/model-moves.
     """
     if parameters is None:
         parameters = copy({PARAMETER_CONSTANT_ACTIVITY_KEY: DEFAULT_NAME_KEY})
@@ -113,7 +114,8 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     alignment
         :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and
         **traversed_arcs**
-        The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t) representing synchronous/log/model-moves.
+        The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t)
+        representing synchronous/log/model-moves.
     """
     if parameters is None:
         parameters = dict()

@@ -12,6 +12,7 @@ class Loop(NodeObject):
         node
             Node of the process tree
         """
+        self.node_thread = None
         self.initialize_thread()
         NodeObject.__init__(self, node)
 
