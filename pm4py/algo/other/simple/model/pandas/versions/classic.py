@@ -50,9 +50,9 @@ def apply(df, parameters=None, classic_output=False):
 
     returned_dictionary = {}
 
-    CASEID_GLUE = parameters[PARAMETER_CONSTANT_CASEID_KEY]
-    ACTIVITY_KEY = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY]
-    TIMEST_KEY = parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY]
+    caseid_glue = parameters[PARAMETER_CONSTANT_CASEID_KEY]
+    activity_key = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY]
+    timest_key = parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY]
 
     net = None
     initial_marking = None
@@ -71,7 +71,7 @@ def apply(df, parameters=None, classic_output=False):
     include_filtered_dfg_performance = parameters[
         "include_filtered_dfg_performance"] if "include_filtered_dfg_performance" in parameters else True
 
-    df = attributes_filter.filter_df_keeping_spno_activities(df, activity_key=ACTIVITY_KEY,
+    df = attributes_filter.filter_df_keeping_spno_activities(df, activity_key=activity_key,
                                                              max_no_activities=maximum_number_activities)
 
     filtered_df = None
@@ -85,15 +85,15 @@ def apply(df, parameters=None, classic_output=False):
 
     [dfg_frequency, dfg_performance] = dfg_util.get_dfg_graph(df, measure="both",
                                                               perf_aggregation_key="mean",
-                                                              case_id_glue=CASEID_GLUE,
-                                                              activity_key=ACTIVITY_KEY,
-                                                              timestamp_key=TIMEST_KEY)
+                                                              case_id_glue=caseid_glue,
+                                                              activity_key=activity_key,
+                                                              timestamp_key=timest_key)
 
     [filtered_dfg_frequency, filtered_dfg_performance] = dfg_util.get_dfg_graph(filtered_df, measure="both",
                                                                                 perf_aggregation_key="mean",
-                                                                                case_id_glue=CASEID_GLUE,
-                                                                                activity_key=ACTIVITY_KEY,
-                                                                                timestamp_key=TIMEST_KEY)
+                                                                                case_id_glue=caseid_glue,
+                                                                                activity_key=activity_key,
+                                                                                timestamp_key=timest_key)
 
     if "alpha" in discovery_algorithm:
         net, initial_marking, final_marking = alpha_miner.apply_dfg(filtered_dfg_frequency, parameters=parameters)
