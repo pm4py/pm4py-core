@@ -166,14 +166,16 @@ def steadystate_analysis_from_tangible_q_matrix(tangible_reach_graph, Q_matrix, 
         Dictionary of states along with their probability in the long term
     """
     Q_matrix_trans = np.matrix.transpose(Q_matrix)
-    kernel = np.matrix.transpose(nullspace(Q_matrix_trans))[0]
-    # normalize to 1 the vector of probabilities
-    if (np.sum(kernel) < 0):
-        kernel = -kernel
-    kernel = kernel / np.sum(kernel)
-    states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)
-    steadystate = {}
-    for i in range(len(states)):
-        if kernel[i] > tol:
-            steadystate[states[i]] = kernel[i]
-    return steadystate
+    if nullspace(Q_matrix_trans).shape[1] > 0:
+        kernel = np.matrix.transpose(nullspace(Q_matrix_trans))[0]
+        # normalize to 1 the vector of probabilities
+        if (np.sum(kernel) < 0):
+            kernel = -kernel
+        kernel = kernel / np.sum(kernel)
+        states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)
+        steadystate = {}
+        for i in range(len(states)):
+            if kernel[i] > tol:
+                steadystate[states[i]] = kernel[i]
+        return steadystate
+    return None
