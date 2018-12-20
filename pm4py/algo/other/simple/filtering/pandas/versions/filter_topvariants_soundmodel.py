@@ -47,9 +47,9 @@ def apply(df, parameters=None):
     if PARAMETER_CONSTANT_ATTRIBUTE_KEY not in parameters:
         parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY] = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY]
 
-    CASEID_GLUE = parameters[PARAMETER_CONSTANT_CASEID_KEY]
-    ACTIVITY_KEY = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY]
-    TIMEST_KEY = parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY]
+    caseid_glue = parameters[PARAMETER_CONSTANT_CASEID_KEY]
+    activity_key = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY]
+    timest_key = parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY]
 
     max_no_variants = parameters["max_no_variants"] if "max_no_variants" in parameters else 20
 
@@ -60,7 +60,7 @@ def apply(df, parameters=None):
 
     all_variants_list = []
     for var in variant_stats:
-        all_variants_list.append([var["variant"], var[CASEID_GLUE]])
+        all_variants_list.append([var["variant"], var[caseid_glue]])
 
     all_variants_list = sorted(all_variants_list, key=lambda x: (x[1], x[0]), reverse=True)
 
@@ -77,9 +77,9 @@ def apply(df, parameters=None):
 
         dfg_frequency = dfg_util.get_dfg_graph(filtered_df, measure="frequency",
                                                perf_aggregation_key="median",
-                                               case_id_glue=CASEID_GLUE,
-                                               activity_key=ACTIVITY_KEY,
-                                               timestamp_key=TIMEST_KEY)
+                                               case_id_glue=caseid_glue,
+                                               activity_key=activity_key,
+                                               timestamp_key=timest_key)
 
         net, initial_marking, final_marking = alpha_miner.apply_dfg(dfg_frequency, parameters=parameters)
 
@@ -87,20 +87,21 @@ def apply(df, parameters=None):
         if not is_sound:
             del considered_variants[-1]
         else:
-            traces_of_this_variant = variants_filter.apply(df, [variant], parameters=parameters).groupby(CASEID_GLUE)
+            traces_of_this_variant = variants_filter.apply(df, [variant], parameters=parameters).groupby(caseid_glue)
             traces_of_this_variant_keys = list(traces_of_this_variant.groups.keys())
             trace_of_this_variant = traces_of_this_variant.get_group(traces_of_this_variant_keys[0])
 
             this_trace = transform.transform_event_log_to_trace_log(
-                pandas_df_imp.convert_dataframe_to_event_log(trace_of_this_variant), case_glue=CASEID_GLUE)[0]
-            if not ACTIVITY_KEY == DEFAULT_NAME_KEY:
+                pandas_df_imp.convert_dataframe_to_event_log(trace_of_this_variant), case_glue=caseid_glue)[0]
+            if not activity_key == DEFAULT_NAME_KEY:
                 for j in range(len(this_trace)):
-                    this_trace[j][DEFAULT_NAME_KEY] = this_trace[j][ACTIVITY_KEY]
+                    this_trace[j][DEFAULT_NAME_KEY] = this_trace[j][activity_key]
             considered_traces.append(this_trace)
             filtered_log = TraceLog(considered_traces)
 
             try:
                 alignments = alignment_factory.apply(filtered_log, net, initial_marking, final_marking)
+                del alignments
                 fitness = replay_fitness_factory.apply(filtered_log, net, initial_marking, final_marking,
                                                        parameters=parameters)
                 if fitness["log_fitness"] < 0.99999:

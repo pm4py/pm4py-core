@@ -44,6 +44,9 @@ def apply(log, parameters=None):
         considered_variants.append(variant)
         considered_traces.append(all_variants_dictio[variant][0])
         filtered_log = TraceLog(considered_traces)
+        net = None
+        initial_marking = None
+        final_marking = None
         if discovery_algorithm == "alphaclassic" or discovery_algorithm == "alpha":
             net, initial_marking, final_marking = alpha_miner.apply(filtered_log, parameters=parameters)
         is_sound = check_soundness.check_petri_wfnet_and_soundness(net)
@@ -53,6 +56,7 @@ def apply(log, parameters=None):
         else:
             try:
                 alignments = alignment_factory.apply(filtered_log, net, initial_marking, final_marking)
+                del alignments
                 fitness = replay_fitness_factory.apply(filtered_log, net, initial_marking, final_marking,
                                                        parameters=parameters)
                 if fitness["log_fitness"] < 0.99999:

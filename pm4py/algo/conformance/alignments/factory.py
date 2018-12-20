@@ -17,12 +17,12 @@ VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}
 VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost}
 
 
-def apply(object, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
-    if isinstance(object, pm4py.objects.log.log.Trace):
-        return apply_trace(object, petri_net, initial_marking, final_marking, parameters, version)
-    elif isinstance(object, pm4py.objects.log.log.TraceLog):
-        return apply_log(object, petri_net, initial_marking, final_marking, parameters, version)
-    elif isinstance(object, pm4py.objects.log.log.EventLog):
+def apply(objj, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
+    if isinstance(objj, pm4py.objects.log.log.Trace):
+        return apply_trace(objj, petri_net, initial_marking, final_marking, parameters, version)
+    elif isinstance(objj, pm4py.objects.log.log.TraceLog):
+        return apply_log(objj, petri_net, initial_marking, final_marking, parameters, version)
+    elif isinstance(objj, pm4py.objects.log.log.EventLog):
         if log_util.PARAMETER_KEY_CASE_GLUE in parameters:
             glue = parameters[log_util.PARAMETER_KEY_CASE_GLUE]
         else:
@@ -31,37 +31,48 @@ def apply(object, petri_net, initial_marking, final_marking, parameters=None, ve
             case_pref = parameters[log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX]
         else:
             case_pref = log_util.CASE_ATTRIBUTE_PREFIX
-        trace_log = log_transform.transform_event_log_to_trace_log(object, case_glue=glue,
+        trace_log = log_transform.transform_event_log_to_trace_log(objj, case_glue=glue,
                                                                    includes_case_attributes=False,
                                                                    case_attribute_prefix=case_pref)
-        return apply_log(object, petri_net, initial_marking, final_marking, parameters, version)
+        return apply_log(trace_log, petri_net, initial_marking, final_marking, parameters, version)
 
 
 def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=None,
                 version=VERSION_STATE_EQUATION_A_STAR):
-    '''
+    """
     apply alignments to a trace
 
     Parameters
     -----------
-    trace: :class:`pm4py.log.log.Trace` trace of events
-    petri_net :class:`pm4py.objects.petri.petrinet.PetriNet` the model to use for the alignment
-    initial_marking :class:`pm4py.objects.petri.petrinet.Marking` initial marking of the net
-    final_marking :class:`pm4py.objects.petri.petrinet.Marking` final marking of the net
-    version :class:`str` selected variant of the algorithm, possible values: {\'state_equation_a_star\'}
-    parameters :class:`dict` parameters of the algorithm,
-        for key \'state_equation_a_star\':
+    trace
+        :class:`pm4py.log.log.Trace` trace of events
+    petri_net
+        :class:`pm4py.objects.petri.petrinet.PetriNet` the model to use for the alignment
+    initial_marking
+        :class:`pm4py.objects.petri.petrinet.Marking` initial marking of the net
+    final_marking
+        :class:`pm4py.objects.petri.petrinet.Marking` final marking of the net
+    version
+        :class:`str` selected variant of the algorithm, possible values: {\'state_equation_a_star\'}
+    parameters
+        :class:`dict` parameters of the algorithm, for key \'state_equation_a_star\':
             pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> Attribute in the log that contains the activity
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION -> mapping of each transition in the model to corresponding synchronous costs
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->  mapping of each transition in the model to corresponding model cost
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION -> mapping of each index of the trace to a positive cost value
+            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION ->
+            mapping of each transition in the model to corresponding synchronous costs
+            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->
+            mapping of each transition in the model to corresponding model cost
+            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION ->
+            mapping of each index of the trace to a positive cost value
 
 
     Returns
     -----------
-    alignment :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
-    The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t) representing synchronous/log/model-moves.
-    '''
+    alignment
+        :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and
+        **traversed_arcs**
+        The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t)
+        representing synchronous/log/model-moves.
+    """
     if parameters is None:
         parameters = copy({PARAMETER_CONSTANT_ACTIVITY_KEY: DEFAULT_NAME_KEY})
     if PARAM_TRACE_COST_FUNCTION not in parameters:
@@ -71,29 +82,41 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
 
 
 def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
-    '''
+    """
     apply alignments to a trace
 
     Parameters
     -----------
-    log: object of the form :class:`pm4py.log.log.Trace` trace of events
-    petri_net :class:`pm4py.objects.petri.petrinet.PetriNet` the model to use for the alignment
-    initial_marking :class:`pm4py.objects.petri.petrinet.Marking` initial marking of the net
-    final_marking :class:`pm4py.objects.petri.petrinet.Marking` final marking of the net
-    version :class:`str` selected variant of the algorithm, possible values: {\'state_equation_a_star\'}
-    parameters :class:`dict` parameters of the algorithm,
+    log
+        object of the form :class:`pm4py.log.log.Trace` trace of events
+    petri_net
+        :class:`pm4py.objects.petri.petrinet.PetriNet` the model to use for the alignment
+    initial_marking
+        :class:`pm4py.objects.petri.petrinet.Marking` initial marking of the net
+    final_marking
+        :class:`pm4py.objects.petri.petrinet.Marking` final marking of the net
+    version
+        :class:`str` selected variant of the algorithm, possible values: {\'state_equation_a_star\'}
+    parameters
+        :class:`dict` parameters of the algorithm,
         for key \'state_equation_a_star\':
             pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> Attribute in the log that contains the activity
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION -> mapping of each transition in the model to corresponding synchronous costs
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->  mapping of each transition in the model to corresponding model cost
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION -> mapping of each index of the trace to a positive cost value
+            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION ->
+            mapping of each transition in the model to corresponding synchronous costs
+            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->
+            mapping of each transition in the model to corresponding model cost
+            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION ->
+            mapping of each index of the trace to a positive cost value
 
 
     Returns
     -----------
-    alignment :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
-    The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t) representing synchronous/log/model-moves.
-    '''
+    alignment
+        :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and
+        **traversed_arcs**
+        The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t)
+        representing synchronous/log/model-moves.
+    """
     if parameters is None:
         parameters = dict()
     activity_key = parameters[

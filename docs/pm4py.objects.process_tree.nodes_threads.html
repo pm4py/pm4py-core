@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.objects.process_tree.nodes_threads package &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pm4py.objects.process_tree.nodes_threads package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.process_tree.nodes_threads.exclusive">pm4py.objects.process_tree.nodes_threads.exclusive module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.process_tree.nodes_threads.loop">pm4py.objects.process_tree.nodes_threads.loop module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.process_tree.nodes_threads.nodethread">pm4py.objects.process_tree.nodes_threads.nodethread module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.process_tree.nodes_threads.parallel">pm4py.objects.process_tree.nodes_threads.parallel module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.process_tree.nodes_threads.sequential">pm4py.objects.process_tree.nodes_threads.sequential module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.process_tree.nodes_threads">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pm4py.objects.process_tree.nodes_threads package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pm4py.objects.process_tree.nodes_threads.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pm4py-objects-process-tree-nodes-threads-package">
+<h1>pm4py.objects.process_tree.nodes_threads package<a class="headerlink" href="#pm4py-objects-process-tree-nodes-threads-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.objects.process_tree.nodes_threads.exclusive">
+<span id="pm4py-objects-process-tree-nodes-threads-exclusive-module"></span><h2>pm4py.objects.process_tree.nodes_threads.exclusive module<a class="headerlink" href="#module-pm4py.objects.process_tree.nodes_threads.exclusive" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.objects.process_tree.nodes_threads.exclusive.Exclusive">
+<em class="property">class </em><code class="descclassname">pm4py.objects.process_tree.nodes_threads.exclusive.</code><code class="descname">Exclusive</code><span class="sig-paren">(</span><em>node_object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/nodes_threads/exclusive.html#Exclusive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.exclusive.Exclusive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread" title="pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread</span></code></a></p>
+<dl class="method">
+<dt id="pm4py.objects.process_tree.nodes_threads.exclusive.Exclusive.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/nodes_threads/exclusive.html#Exclusive.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.exclusive.Exclusive.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the current thread (in order to generate the trace)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.process_tree.nodes_threads.loop">
+<span id="pm4py-objects-process-tree-nodes-threads-loop-module"></span><h2>pm4py.objects.process_tree.nodes_threads.loop module<a class="headerlink" href="#module-pm4py.objects.process_tree.nodes_threads.loop" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.objects.process_tree.nodes_threads.loop.Loop">
+<em class="property">class </em><code class="descclassname">pm4py.objects.process_tree.nodes_threads.loop.</code><code class="descname">Loop</code><span class="sig-paren">(</span><em>node_object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/nodes_threads/loop.html#Loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.loop.Loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread" title="pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread</span></code></a></p>
+<dl class="method">
+<dt id="pm4py.objects.process_tree.nodes_threads.loop.Loop.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/nodes_threads/loop.html#Loop.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.loop.Loop.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the current thread (in order to generate the trace)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.process_tree.nodes_threads.loop.exponential">
+<code class="descclassname">pm4py.objects.process_tree.nodes_threads.loop.</code><code class="descname">exponential</code><span class="sig-paren">(</span><em>scale=1.0</em>, <em>size=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.loop.exponential" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw samples from an exponential distribution.</p>
+<p>Its probability density function is</p>
+<div class="math notranslate nohighlight">
+\[f(x; \frac{1}{\beta}) = \frac{1}{\beta} \exp(-\frac{x}{\beta}),\]</div>
+<p>for <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&gt;</span> <span class="pre">0</span></code> and 0 elsewhere. <span class="math notranslate nohighlight">\(\beta\)</span> is the scale parameter,
+which is the inverse of the rate parameter <span class="math notranslate nohighlight">\(\lambda = 1/\beta\)</span>.
+The rate parameter is an alternative, widely used parameterization
+of the exponential distribution <a class="footnote-reference" href="#id6" id="id1">[3]</a>.</p>
+<p>The exponential distribution is a continuous analogue of the
+geometric distribution.  It describes many common situations, such as
+the size of raindrops measured over many rainstorms <a class="footnote-reference" href="#id4" id="id2">[1]</a>, or the time
+between page requests to Wikipedia <a class="footnote-reference" href="#id5" id="id3">[2]</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>scale</strong> (<em>float or array_like of floats</em>) – The scale parameter, <span class="math notranslate nohighlight">\(\beta = 1/\lambda\)</span>.</li>
+<li><strong>size</strong> (<em>int or tuple of ints, optional</em>) – Output shape.  If the given shape is, e.g., <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n,</span> <span class="pre">k)</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">*</span> <span class="pre">n</span> <span class="pre">*</span> <span class="pre">k</span></code> samples are drawn.  If size is <code class="docutils literal notranslate"><span class="pre">None</span></code> (default),
+a single value is returned if <code class="docutils literal notranslate"><span class="pre">scale</span></code> is a scalar.  Otherwise,
+<code class="docutils literal notranslate"><span class="pre">np.array(scale).size</span></code> samples are drawn.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>out</strong> – Drawn samples from the parameterized exponential distribution.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray or scalar</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td>Peyton Z. Peebles Jr., “Probability, Random Variables and
+Random Signal Principles”, 4th ed, 2001, p. 57.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>Wikipedia, “Poisson process”,
+<a class="reference external" href="http://en.wikipedia.org/wiki/Poisson_process">http://en.wikipedia.org/wiki/Poisson_process</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[3]</a></td><td>Wikipedia, “Exponential distribution”,
+<a class="reference external" href="http://en.wikipedia.org/wiki/Exponential_distribution">http://en.wikipedia.org/wiki/Exponential_distribution</a></td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.process_tree.nodes_threads.nodethread">
+<span id="pm4py-objects-process-tree-nodes-threads-nodethread-module"></span><h2>pm4py.objects.process_tree.nodes_threads.nodethread module<a class="headerlink" href="#module-pm4py.objects.process_tree.nodes_threads.nodethread" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread">
+<em class="property">class </em><code class="descclassname">pm4py.objects.process_tree.nodes_threads.nodethread.</code><code class="descname">NodeThread</code><span class="sig-paren">(</span><em>node_object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/nodes_threads/nodethread.html#NodeThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
+<dl class="method">
+<dt id="pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/nodes_threads/nodethread.html#NodeThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the current thread (in order to generate the trace)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread.set_concurrent_trace_obj">
+<code class="descname">set_concurrent_trace_obj</code><span class="sig-paren">(</span><em>conc_trace_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/nodes_threads/nodethread.html#NodeThread.set_concurrent_trace_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread.set_concurrent_trace_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the concurrent trace object in order to append events to it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>conc_trace_obj</strong> – Concurrent trace object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.process_tree.nodes_threads.parallel">
+<span id="pm4py-objects-process-tree-nodes-threads-parallel-module"></span><h2>pm4py.objects.process_tree.nodes_threads.parallel module<a class="headerlink" href="#module-pm4py.objects.process_tree.nodes_threads.parallel" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.objects.process_tree.nodes_threads.parallel.Parallel">
+<em class="property">class </em><code class="descclassname">pm4py.objects.process_tree.nodes_threads.parallel.</code><code class="descname">Parallel</code><span class="sig-paren">(</span><em>node_object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/nodes_threads/parallel.html#Parallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.parallel.Parallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread" title="pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread</span></code></a></p>
+<dl class="method">
+<dt id="pm4py.objects.process_tree.nodes_threads.parallel.Parallel.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/nodes_threads/parallel.html#Parallel.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.parallel.Parallel.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the current thread (in order to generate the trace)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.process_tree.nodes_threads.sequential">
+<span id="pm4py-objects-process-tree-nodes-threads-sequential-module"></span><h2>pm4py.objects.process_tree.nodes_threads.sequential module<a class="headerlink" href="#module-pm4py.objects.process_tree.nodes_threads.sequential" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.objects.process_tree.nodes_threads.sequential.Sequential">
+<em class="property">class </em><code class="descclassname">pm4py.objects.process_tree.nodes_threads.sequential.</code><code class="descname">Sequential</code><span class="sig-paren">(</span><em>node_object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/nodes_threads/sequential.html#Sequential"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.sequential.Sequential" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread" title="pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.process_tree.nodes_threads.nodethread.NodeThread</span></code></a></p>
+<dl class="method">
+<dt id="pm4py.objects.process_tree.nodes_threads.sequential.Sequential.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/nodes_threads/sequential.html#Sequential.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.nodes_threads.sequential.Sequential.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the current thread (in order to generate the trace)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.process_tree.nodes_threads">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.objects.process_tree.nodes_threads" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

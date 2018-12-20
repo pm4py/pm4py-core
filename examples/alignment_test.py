@@ -17,7 +17,8 @@ def align(trace, net, im, fm, model_cost_function, sync_cost_function):
     params[PARAM_MODEL_COST_FUNCTION] = model_cost_function
     params[PARAM_TRACE_COST_FUNCTION] = trace_costs
     params[PARAM_SYNC_COST_FUNCTION] = sync_cost_function
-    return ali.factory.apply_trace(trace, net, im, fm, parameters=params, version=ali.factory.VERSION_STATE_EQUATION_A_STAR)
+    return ali.factory.apply_trace(trace, net, im, fm, parameters=params,
+                                   version=ali.factory.VERSION_STATE_EQUATION_A_STAR)
 
 
 def execute_script():
@@ -40,9 +41,8 @@ def execute_script():
         else:
             model_cost_function[t] = 1
 
-    #print(list(map(lambda trace: align(trace, net, marking, fmarking, model_cost_function, sync_cost_function), log)))
-
     print(ali.factory.apply(log[0], net, marking, fmarking))
+
 
 if __name__ == '__main__':
     execute_script()

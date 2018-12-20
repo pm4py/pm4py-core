@@ -1,5 +1,4 @@
 import unittest
-import os
 
 
 class XES1DocumentationTest(unittest.TestCase):
@@ -9,7 +8,7 @@ class XES1DocumentationTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         import os
         from pm4py.objects.log.importer.xes import factory as xes_importer
-        log = xes_importer.import_log(os.path.join("input_data","running-example.xes"))
+        log = xes_importer.import_log(os.path.join("input_data", "running-example.xes"))
         log_lenth = len(log)
         first_trace_length = len(log[0])
         del log_lenth

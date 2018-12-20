@@ -11,6 +11,7 @@ class NodeThread(Thread):
         node_object
             Object related to the node of the process tree
         """
+        self.conc_trace_obj = None
         self.node_object = node_object
         Thread.__init__(self)
 

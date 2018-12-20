@@ -10,7 +10,7 @@ DEFAULT_PARAMETERS = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: xes_util
 
 
 def apply(log, parameters=None, version=ALPHA_VERSION_CLASSIC):
-    '''
+    """
     Apply the Alpha Miner on top of a trace log
 
     Parameters
@@ -31,7 +31,7 @@ def apply(log, parameters=None, version=ALPHA_VERSION_CLASSIC):
         Initial marking
     final_marking
         Final marking
-    '''
+    """
     if parameters is None:
         parameters = {}
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
@@ -40,7 +40,7 @@ def apply(log, parameters=None, version=ALPHA_VERSION_CLASSIC):
 
 
 def apply_dfg(dfg, parameters=None, version=ALPHA_VERSION_CLASSIC):
-    '''
+    """
     Apply Alpha Miner directly on top of a DFG graph
 
     Parameters
@@ -61,7 +61,7 @@ def apply_dfg(dfg, parameters=None, version=ALPHA_VERSION_CLASSIC):
         Initial marking
     final_marking
         Final marking
-    '''
+    """
     if parameters is None:
         parameters = {}
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:

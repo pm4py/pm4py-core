@@ -86,6 +86,7 @@ def import_net(input_file_path, return_stochastic_information=False):
                 net.places.add(places_dict[place_id])
                 if number > 0:
                     marking[places_dict[place_id]] = number
+                del place_name
 
     if page is not None:
         for child in page:
