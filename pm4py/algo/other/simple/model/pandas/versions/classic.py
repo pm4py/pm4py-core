@@ -1,17 +1,17 @@
+from pm4py.algo.discovery.alpha import factory as alpha_miner
+from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics as dfg_util
 from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
+from pm4py.algo.filtering.pandas.auto_filter import auto_filter
+from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
+from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
+from pm4py.algo.other.simple.filtering.pandas.versions import filter_topvariants_soundmodel
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
-from pm4py.algo.filtering.pandas.auto_filter import auto_filter
-from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
-from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
-from pm4py.algo.other.simple.filtering.pandas.versions import filter_topvariants_soundmodel
-from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics as dfg_util
-from pm4py.algo.discovery.alpha import factory as alpha_miner
 
 
 def apply(df, parameters=None, classic_output=False):
@@ -50,9 +50,9 @@ def apply(df, parameters=None, classic_output=False):
 
     returned_dictionary = {}
 
-    CASEID_GLUE = parameters[PARAMETER_CONSTANT_CASEID_KEY]
-    ACTIVITY_KEY = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY]
-    TIMEST_KEY = parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY]
+    caseid_glue = parameters[PARAMETER_CONSTANT_CASEID_KEY]
+    activity_key = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY]
+    timest_key = parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY]
 
     net = None
     initial_marking = None
@@ -71,27 +71,29 @@ def apply(df, parameters=None, classic_output=False):
     include_filtered_dfg_performance = parameters[
         "include_filtered_dfg_performance"] if "include_filtered_dfg_performance" in parameters else True
 
-    df = attributes_filter.filter_df_keeping_spno_activities(df, activity_key=ACTIVITY_KEY,
-                                                                      max_no_activities=maximum_number_activities)
+    df = attributes_filter.filter_df_keeping_spno_activities(df, activity_key=activity_key,
+                                                             max_no_activities=maximum_number_activities)
+
+    filtered_df = None
 
     if "alpha" in discovery_algorithm:
         filtered_df = start_activities_filter.apply_auto_filter(df, parameters=parameters)
         filtered_df = end_activities_filter.apply_auto_filter(filtered_df, parameters=parameters)
         filtered_df = filter_topvariants_soundmodel.apply(filtered_df, parameters=parameters)
     elif "inductive" in discovery_algorithm:
-        filtered_df = auto_filter.apply(df, parameters=parameters)
+        filtered_df = auto_filter.apply_auto_filter(df, parameters=parameters)
 
     [dfg_frequency, dfg_performance] = dfg_util.get_dfg_graph(df, measure="both",
-                                           perf_aggregation_key="mean",
-                                           case_id_glue=CASEID_GLUE,
-                                           activity_key=ACTIVITY_KEY,
-                                           timestamp_key=TIMEST_KEY)
+                                                              perf_aggregation_key="mean",
+                                                              case_id_glue=caseid_glue,
+                                                              activity_key=activity_key,
+                                                              timestamp_key=timest_key)
 
     [filtered_dfg_frequency, filtered_dfg_performance] = dfg_util.get_dfg_graph(filtered_df, measure="both",
-                                           perf_aggregation_key="mean",
-                                           case_id_glue=CASEID_GLUE,
-                                           activity_key=ACTIVITY_KEY,
-                                           timestamp_key=TIMEST_KEY)
+                                                                                perf_aggregation_key="mean",
+                                                                                case_id_glue=caseid_glue,
+                                                                                activity_key=activity_key,
+                                                                                timestamp_key=timest_key)
 
     if "alpha" in discovery_algorithm:
         net, initial_marking, final_marking = alpha_miner.apply_dfg(filtered_dfg_frequency, parameters=parameters)

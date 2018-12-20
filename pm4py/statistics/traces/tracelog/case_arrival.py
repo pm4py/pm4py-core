@@ -2,6 +2,7 @@ from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 import statistics
 
+
 def get_case_arrival_avg(log, parameters=None):
     """
     Gets the average time interlapsed between case starts

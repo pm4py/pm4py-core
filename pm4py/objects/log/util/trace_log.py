@@ -3,13 +3,13 @@ from pm4py.objects.log import log
 
 
 # TODO: we can do some instance checking and then support both trace level and event level logs..
-def get_event_labels(log, key):
+def get_event_labels(trlog, key):
     """
     Fetches the labels present in a trace log, given a key to use within the events.
 
     Parameters
     ----------
-    :param log: trace log to use
+    :param trlog: trace log to use
     :param key: to use for event identification, can for example  be "concept:name"
 
     Returns
@@ -17,20 +17,20 @@ def get_event_labels(log, key):
     :return: a list of labels
     """
     labels = []
-    for t in log:
+    for t in trlog:
         for e in t:
             if key in e and e[key] not in labels:
                 labels.append(e[key])
     return labels
 
 
-def get_event_labels_counted(log, key):
+def get_event_labels_counted(trlog, key):
     """
     Fetches the labels (and their frequency) present in a trace log, given a key to use within the events.
 
     Parameters
     ----------
-    :param log: trace log to use
+    :param trlog: trace log to use
     :param key: to use for event identification, can for example  be "concept:name"
 
     Returns
@@ -38,7 +38,7 @@ def get_event_labels_counted(log, key):
     :return: a list of labels
     """
     labels = dict()
-    for t in log:
+    for t in trlog:
         for e in t:
             if key in e:
                 if e[key] not in labels:
@@ -47,14 +47,14 @@ def get_event_labels_counted(log, key):
     return labels
 
 
-def get_trace_variants(log, key=xes_util.DEFAULT_NAME_KEY):
+def get_trace_variants(trlog, key=xes_util.DEFAULT_NAME_KEY):
     """
     Returns a pair of a list of (variants, dict[index -> trace]) where the index of a variant maps to all traces
     describing that variant, with that key.
 
     Parameters
     ---------
-    :param log: trace log
+    :param trlog: trace log
     :param key: key to use to identify the label of an event
 
     Returns
@@ -63,7 +63,7 @@ def get_trace_variants(log, key=xes_util.DEFAULT_NAME_KEY):
     """
     variants = []
     variant_map = dict()
-    for t in log:
+    for t in trlog:
         variant = list(map(lambda e: e[key], t))
         new = True
         for i in range(0, len(variants)):
@@ -93,16 +93,16 @@ def project_traces(trace_log, keys=xes_util.DEFAULT_NAME_KEY):
         return list(map(lambda t: list(map(lambda e: {key: e[key] for key in keys}, t)), trace_log))
 
 
-def derive_and_lift_trace_attributes_from_event_attributes(log, ignore=None, retain_on_event_level=False,
+def derive_and_lift_trace_attributes_from_event_attributes(trlog, ignore=None, retain_on_event_level=False,
                                                            verbose=False):
     if ignore is None:
         ignore = set()
-    candidates = set(log[0][0].keys())
+    candidates = set(trlog[0][0].keys())
     for i in ignore:
         candidates.remove(i)
     if verbose:
         print('candidates: %s' % candidates)
-    for t in log:
+    for t in trlog:
         attr = dict(t[0])
         for e in t:
             for k in candidates.copy():
@@ -118,16 +118,16 @@ def derive_and_lift_trace_attributes_from_event_attributes(log, ignore=None, ret
                     candidates.remove(k)
                     continue
             if len(candidates) == 0:
-                return log
+                return trlog
 
-    for t in log:
+    for t in trlog:
         for key in candidates:
             t.attributes[key] = t[0][key]
             if not retain_on_event_level:
                 for e in t:
                     del e[key]
 
-    return log
+    return trlog
 
 
 def add_artficial_start_and_end(trace_log, start='[start>', end='[end]', activity_key=xes_util.DEFAULT_NAME_KEY):

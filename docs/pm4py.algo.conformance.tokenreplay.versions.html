@@ -1,0 +1,584 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.algo.conformance.tokenreplay.versions package &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pm4py.algo.conformance.tokenreplay.versions package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.conformance.tokenreplay.versions.token_replay">pm4py.algo.conformance.tokenreplay.versions.token_replay module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.conformance.tokenreplay.versions">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pm4py.algo.conformance.tokenreplay.versions package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pm4py.algo.conformance.tokenreplay.versions.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pm4py-algo-conformance-tokenreplay-versions-package">
+<h1>pm4py.algo.conformance.tokenreplay.versions package<a class="headerlink" href="#pm4py-algo-conformance-tokenreplay-versions-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.algo.conformance.tokenreplay.versions.token_replay">
+<span id="pm4py-algo-conformance-tokenreplay-versions-token-replay-module"></span><h2>pm4py.algo.conformance.tokenreplay.versions.token_replay module<a class="headerlink" href="#module-pm4py.algo.conformance.tokenreplay.versions.token_replay" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.ApplyTraceTokenReplay">
+<em class="property">class </em><code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">ApplyTraceTokenReplay</code><span class="sig-paren">(</span><em>trace</em>, <em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>trans_map</em>, <em>enable_place_fitness</em>, <em>place_fitness</em>, <em>places_shortest_path_by_hidden</em>, <em>consider_remaining_in_fitness</em>, <em>activity_key='concept:name'</em>, <em>reach_mark_through_hidden=True</em>, <em>stop_immediately_when_unfit=False</em>, <em>walk_through_hidden_trans=True</em>, <em>post_fix_caching=None</em>, <em>marking_to_activity_caching=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#ApplyTraceTokenReplay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.ApplyTraceTokenReplay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
+<dl class="method">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.ApplyTraceTokenReplay.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#ApplyTraceTokenReplay.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.ApplyTraceTokenReplay.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the thread and stores the results</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.MarkingToActivityCaching">
+<em class="property">class </em><code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">MarkingToActivityCaching</code><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#MarkingToActivityCaching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.MarkingToActivityCaching" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Marking to activity caching</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.NoConceptNameException">
+<em class="property">exception </em><code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">NoConceptNameException</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#NoConceptNameException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.NoConceptNameException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.PostFixCaching">
+<em class="property">class </em><code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">PostFixCaching</code><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#PostFixCaching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.PostFixCaching" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Post fix caching object</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.add_missing_tokens">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">add_missing_tokens</code><span class="sig-paren">(</span><em>t</em>, <em>marking</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#add_missing_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.add_missing_tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds missing tokens needed to activate a transition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t</strong> – Transition that should be enabled</li>
+<li><strong>marking</strong> – Current marking</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.apply">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to apply token-based replay</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>log</strong> – Log</li>
+<li><strong>net</strong> – Petri net</li>
+<li><strong>initial_marking</strong> – Initial marking</li>
+<li><strong>final_marking</strong> – Final marking</li>
+<li><strong>parameters</strong> – Parameters of the algorithm</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.apply_hidden_trans">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">apply_hidden_trans</code><span class="sig-paren">(</span><em>t</em>, <em>net</em>, <em>marking</em>, <em>places_shortest_paths_by_hidden</em>, <em>act_tr</em>, <em>rec_depth</em>, <em>visit_trans</em>, <em>vis_mark</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#apply_hidden_trans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.apply_hidden_trans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply hidden transitions in order to enable a given transition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t</strong> – Transition to eventually enable</li>
+<li><strong>net</strong> – Petri net</li>
+<li><strong>marking</strong> – Marking</li>
+<li><strong>places_shortest_paths_by_hidden</strong> – Shortest paths between places connected by hidden transitions</li>
+<li><strong>act_tr</strong> – All activated transitions</li>
+<li><strong>rec_depth</strong> – Current recursion depth</li>
+<li><strong>visit_trans</strong> – All visited transitions by hiddenTrans method</li>
+<li><strong>vis_mark</strong> – All visited markings</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.apply_log">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">apply_log</code><span class="sig-paren">(</span><em>log</em>, <em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>enable_place_fitness=False</em>, <em>consider_remaining_in_fitness=False</em>, <em>activity_key='concept:name'</em>, <em>reach_mark_through_hidden=True</em>, <em>stop_immediately_unfit=False</em>, <em>walk_through_hidden_trans=True</em>, <em>places_shortest_path_by_hidden=None</em>, <em>variants=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#apply_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.apply_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply token-based replay to a log</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>log</strong> – Trace log</li>
+<li><strong>net</strong> – Petri net</li>
+<li><strong>initial_marking</strong> – Initial marking</li>
+<li><strong>final_marking</strong> – Final marking</li>
+<li><strong>enable_place_fitness</strong> – Enable fitness calculation at place level</li>
+<li><strong>consider_remaining_in_fitness</strong> – Boolean value telling if the remaining tokens should be considered in fitness evaluation</li>
+<li><strong>activity_key</strong> – Name of the attribute that contains the activity</li>
+<li><strong>reach_mark_through_hidden</strong> – Boolean value that decides if we shall try to reach the final marking through hidden transitions</li>
+<li><strong>stop_immediately_unfit</strong> – Boolean value that decides if we shall stop immediately when a non-conformance is detected</li>
+<li><strong>walk_through_hidden_trans</strong> – Boolean value that decides if we shall walk through hidden transitions in order to enable visible transitions</li>
+<li><strong>places_shortest_path_by_hidden</strong> – Shortest paths between places by hidden transitions</li>
+<li><strong>variants</strong> – List of variants contained in the event log</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.apply_trace">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">apply_trace</code><span class="sig-paren">(</span><em>trace</em>, <em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>trans_map</em>, <em>enable_place_fitness</em>, <em>place_fitness</em>, <em>places_shortest_path_by_hidden</em>, <em>consider_remaining_in_fitness</em>, <em>activity_key='concept:name'</em>, <em>try_to_reach_final_marking_through_hidden=True</em>, <em>stop_immediately_unfit=False</em>, <em>walk_through_hidden_trans=True</em>, <em>post_fix_caching=None</em>, <em>marking_to_activity_caching=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#apply_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.apply_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the token replaying algorithm to a trace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>trace</strong> – Trace in the event log</li>
+<li><strong>net</strong> – Petri net</li>
+<li><strong>initial_marking</strong> – Initial marking</li>
+<li><strong>final_marking</strong> – Final marking</li>
+<li><strong>trans_map</strong> – Map between transitions labels and transitions</li>
+<li><strong>enable_place_fitness</strong> – Enable fitness calculation at place level</li>
+<li><strong>place_fitness</strong> – Current dictionary of places associated with unfit traces</li>
+<li><strong>places_shortest_path_by_hidden</strong> – Shortest paths between places by hidden transitions</li>
+<li><strong>consider_remaining_in_fitness</strong> – Boolean value telling if the remaining tokens should be considered in fitness evaluation</li>
+<li><strong>activity_key</strong> – Name of the attribute that contains the activity</li>
+<li><strong>try_to_reach_final_marking_through_hidden</strong> – Boolean value that decides if we shall try to reach the final marking through hidden transitions</li>
+<li><strong>stop_immediately_unfit</strong> – Boolean value that decides if we shall stop immediately when a non-conformance is detected</li>
+<li><strong>walk_through_hidden_trans</strong> – Boolean value that decides if we shall walk through hidden transitions in order to enable visible transitions</li>
+<li><strong>post_fix_caching</strong> – Stores the post fix caching object</li>
+<li><strong>marking_to_activity_caching</strong> – Stores the marking-to-activity cache</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.break_condition_final_marking">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">break_condition_final_marking</code><span class="sig-paren">(</span><em>marking</em>, <em>final_marking</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#break_condition_final_marking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.break_condition_final_marking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify break condition for final marking</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>marking</strong> – Current marking</li>
+<li><strong>final_marking</strong> – Target final marking</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.enable_hidden_transitions">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">enable_hidden_transitions</code><span class="sig-paren">(</span><em>net</em>, <em>marking</em>, <em>activated_transitions</em>, <em>visited_transitions</em>, <em>all_visited_markings</em>, <em>hidden_transitions_to_enable</em>, <em>t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#enable_hidden_transitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.enable_hidden_transitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Actually enable hidden transitions on the Petri net</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>net</strong> – Petri net</li>
+<li><strong>marking</strong> – Current marking</li>
+<li><strong>activated_transitions</strong> – All activated transitions during the replay</li>
+<li><strong>visited_transitions</strong> – All visited transitions by the recursion</li>
+<li><strong>all_visited_markings</strong> – All visited markings</li>
+<li><strong>hidden_transitions_to_enable</strong> – List of hidden transition to enable</li>
+<li><strong>t</strong> – Transition against we should check if they are enabled</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.get_consumed_tokens">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">get_consumed_tokens</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#get_consumed_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.get_consumed_tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get tokens consumed firing a transition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>t</strong> – Transition that should be enabled</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.get_hidden_trans_reached_trans">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">get_hidden_trans_reached_trans</code><span class="sig-paren">(</span><em>t</em>, <em>net</em>, <em>rec_depth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#get_hidden_trans_reached_trans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.get_hidden_trans_reached_trans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get visible transitions reachable by enabling a hidden transition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t</strong> – Transition that should be enabled</li>
+<li><strong>net</strong> – Petri net</li>
+<li><strong>rec_depth</strong> – Current recursion depth</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.get_hidden_transitions_to_enable">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">get_hidden_transitions_to_enable</code><span class="sig-paren">(</span><em>marking</em>, <em>places_with_missing</em>, <em>places_shortest_path_by_hidden</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#get_hidden_transitions_to_enable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.get_hidden_transitions_to_enable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate an ordered list of transitions to visit in order to enable a given transition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>marking</strong> – Current marking</li>
+<li><strong>places_with_missing</strong> – List of places with missing tokens</li>
+<li><strong>places_shortest_path_by_hidden</strong> – Minimal connection between places by hidden transitions</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.get_places_shortest_path">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">get_places_shortest_path</code><span class="sig-paren">(</span><em>net</em>, <em>place_to_populate</em>, <em>current_place</em>, <em>places_shortest_path</em>, <em>actual_list</em>, <em>rec_depth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#get_places_shortest_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.get_places_shortest_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get shortest path between places lead by hidden transitions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>net</strong> – Petri net</li>
+<li><strong>place_to_populate</strong> – Place that we are populating the shortest map of</li>
+<li><strong>current_place</strong> – Current visited place (must explore its transitions)</li>
+<li><strong>places_shortest_path</strong> – Current dictionary</li>
+<li><strong>actual_list</strong> – Actual list of transitions to enable</li>
+<li><strong>rec_depth</strong> – Recursion depth</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.get_places_shortest_path_by_hidden">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">get_places_shortest_path_by_hidden</code><span class="sig-paren">(</span><em>net</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#get_places_shortest_path_by_hidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.get_places_shortest_path_by_hidden" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get shortest path between places lead by hidden transitions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>net</strong> – Petri net</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.get_places_with_missing_tokens">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">get_places_with_missing_tokens</code><span class="sig-paren">(</span><em>t</em>, <em>marking</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#get_places_with_missing_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.get_places_with_missing_tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get places with missing tokens</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t</strong> – Transition to enable</li>
+<li><strong>marking</strong> – Current marking</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.get_produced_tokens">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">get_produced_tokens</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#get_produced_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.get_produced_tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get tokens produced firing a transition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>t</strong> – Transition that should be enabled</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.get_req_transitions_for_final_marking">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">get_req_transitions_for_final_marking</code><span class="sig-paren">(</span><em>marking</em>, <em>final_marking</em>, <em>places_shortest_path_by_hidden</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#get_req_transitions_for_final_marking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.get_req_transitions_for_final_marking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets required transitions for final marking</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>marking</strong> – Current marking</li>
+<li><strong>final_marking</strong> – Final marking assigned to the Petri net</li>
+<li><strong>places_shortest_path_by_hidden</strong> – Minimal connection between places by hidden transitions</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.get_visible_transitions_eventually_enabled_by_marking">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">get_visible_transitions_eventually_enabled_by_marking</code><span class="sig-paren">(</span><em>net</em>, <em>marking</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#get_visible_transitions_eventually_enabled_by_marking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.get_visible_transitions_eventually_enabled_by_marking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get visible transitions eventually enabled by marking (passing possibly through hidden transitions)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>net</strong> – Petri net</li>
+<li><strong>marking</strong> – Current marking</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.versions.token_replay.merge_dicts">
+<code class="descclassname">pm4py.algo.conformance.tokenreplay.versions.token_replay.</code><code class="descname">merge_dicts</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/versions/token_replay.html#merge_dicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.versions.token_replay.merge_dicts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge two dictionaries keeping the least value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> – First map (string, integer)</li>
+<li><strong>y</strong> – Second map (string, integer)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.algo.conformance.tokenreplay.versions">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.algo.conformance.tokenreplay.versions" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

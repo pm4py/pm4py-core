@@ -28,6 +28,7 @@ class AlphaMinerTest(unittest.TestCase):
             trace_log = log_transform.transform_event_log_to_trace_log(event_log)
         net, marking, fmarking = alpha_factory.apply(trace_log)
         soundness = check_soundness.check_petri_wfnet_and_soundness(net)
+        del soundness
 
         return trace_log, net, marking, fmarking
 

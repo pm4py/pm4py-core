@@ -11,7 +11,8 @@ PARAM_TIMESTAMP_KEY = pm4py.util.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 PARAMETERS = [PARAM_ACTIVITY_KEY, PARAM_TIMESTAMP_KEY]
 
 
-def get_decorations(log, net, initial_marking, final_marking, parameters=None, measure="frequency", ht_perf_method="last"):
+def get_decorations(log, net, initial_marking, final_marking, parameters=None, measure="frequency",
+                    ht_perf_method="last"):
     """
     Calculate decorations in order to annotate the Petri net
 

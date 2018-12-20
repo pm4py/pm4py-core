@@ -4,7 +4,8 @@ TOPVARIANTS_SOUNDMODEL = "topvariants_soundmodel"
 
 VERSIONS = {TOPVARIANTS_SOUNDMODEL: filter_topvariants_soundmodel.apply}
 
-def apply(log, parameters=None, variant=TOPVARIANTS_SOUNDMODEL):
+
+def apply(df, parameters=None, variant=TOPVARIANTS_SOUNDMODEL):
     """
     Apply a filtering algorithm in a simple way in order to provide
     a simple visualization
@@ -23,4 +24,4 @@ def apply(log, parameters=None, variant=TOPVARIANTS_SOUNDMODEL):
     filtered_df
         Filtered dataframe
     """
-    return VERSIONS[variant](log, parameters=parameters)
+    return VERSIONS[variant](df, parameters=parameters)
