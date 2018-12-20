@@ -1,6 +1,7 @@
-from pm4py.objects.process_tree.nodes_threads.nodethread import NodeThread
-from pm4py.objects.process_tree import process_tree
 from random import shuffle
+
+from pm4py.objects.process_tree import process_tree
+from pm4py.objects.process_tree.nodes_threads.nodethread import NodeThread
 
 
 class Parallel(NodeThread):
@@ -27,6 +28,6 @@ class Parallel(NodeThread):
                 if node.label is not None:
                     self.conc_trace_obj.add_visible_transition(node)
             elif type(node) is process_tree.ProcessTree:
-                threads.append( node.node_object.generate_events_trace(self.conc_trace_obj))
+                threads.append(node.node_object.generate_events_trace(self.conc_trace_obj))
         for thread in threads:
             thread.join()

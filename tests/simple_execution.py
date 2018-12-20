@@ -11,6 +11,10 @@ class SimpleExecutionTest(unittest.TestCase):
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "receipt.xes"))
         output_dictionary = simple_model_factory.apply(log)
         net, initial_marking, final_marking = simple_model_factory.apply(log, classic_output=True)
+        del output_dictionary
+        del net
+        del initial_marking
+        del final_marking
 
 
 if __name__ == "__main__":

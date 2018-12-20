@@ -82,12 +82,14 @@ def apply(log, parameters=None, classic_output=False):
 
     log = attributes_filter.apply(log, activities_keep_list, parameters=parameters)
 
+    filtered_log = None
+
     if "alpha" in discovery_algorithm:
         filtered_log = start_activities_filter.apply_auto_filter(log, parameters=parameters)
         filtered_log = end_activities_filter.apply_auto_filter(filtered_log, parameters=parameters)
         filtered_log = filter_topvariants_soundmodel.apply(filtered_log, parameters=parameters)
     elif "inductive" in discovery_algorithm:
-        filtered_log = auto_filter.apply(log, parameters=parameters)
+        filtered_log = auto_filter.apply_auto_filter(log, parameters=parameters)
 
     if include_dfg_frequency:
         dfg_frequency = dfg_factory.apply(log, parameters=parameters, variant="frequency")
