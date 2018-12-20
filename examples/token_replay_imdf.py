@@ -1,12 +1,13 @@
+import os
+
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.petrinet import factory as pn_vis_factory
-import os
 
 
 def execute_script():
-    log_path = os.path.join("..","tests","input_data","running-example.xes")
+    log_path = os.path.join("..", "tests", "input_data", "running-example.xes")
     log = xes_importer.import_log(log_path)
     print("loaded log")
     net, marking, final_marking = inductive_factory.apply(log)

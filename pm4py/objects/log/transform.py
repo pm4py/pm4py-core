@@ -1,6 +1,7 @@
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log.util import general as log_util
 
+
 def transform_event_log_to_trace_log(log, case_glue=log_util.CASE_ATTRIBUTE_GLUE, includes_case_attributes=True,
                                      case_attribute_prefix=log_util.CASE_ATTRIBUTE_PREFIX):
     """
@@ -43,7 +44,8 @@ def transform_event_log_to_trace_log(log, case_glue=log_util.CASE_ATTRIBUTE_GLUE
                                  omni_present=log.omni_present, extensions=log.extensions)
 
 
-def transform_trace_log_to_event_log(log, include_case_attributes=True, case_attribute_prefix=log_util.CASE_ATTRIBUTE_PREFIX):
+def transform_trace_log_to_event_log(log, include_case_attributes=True,
+                                     case_attribute_prefix=log_util.CASE_ATTRIBUTE_PREFIX):
     """
     Converts the trace log to an event log
 

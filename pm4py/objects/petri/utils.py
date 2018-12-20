@@ -1,6 +1,7 @@
+import networkx as nx
+
 from pm4py.objects import petri
 from pm4py.objects.log.util import xes as xes_util
-import networkx as nx
 from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
 
 
@@ -33,6 +34,7 @@ def remove_transition(net, trans):
             net.arcs.remove(arc)
         net.transitions.remove(trans)
     return net
+
 
 def remove_place(net, place):
     """
@@ -279,4 +281,3 @@ def get_strongly_connected_subnets(net):
             strongly_connected_subnets.append([subnet, imarking, fmarking])
 
     return strongly_connected_subnets
-

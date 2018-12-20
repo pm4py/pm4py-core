@@ -101,6 +101,7 @@ def apply(df, parameters=None):
 
             try:
                 alignments = alignment_factory.apply(filtered_log, net, initial_marking, final_marking)
+                del alignments
                 fitness = replay_fitness_factory.apply(filtered_log, net, initial_marking, final_marking,
                                                        parameters=parameters)
                 if fitness["log_fitness"] < 0.99999:

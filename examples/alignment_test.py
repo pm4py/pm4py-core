@@ -40,9 +40,8 @@ def execute_script():
         else:
             model_cost_function[t] = 1
 
-    #print(list(map(lambda trace: align(trace, net, marking, fmarking, model_cost_function, sync_cost_function), log)))
-
     print(ali.factory.apply(log[0], net, marking, fmarking))
+
 
 if __name__ == '__main__':
     execute_script()
