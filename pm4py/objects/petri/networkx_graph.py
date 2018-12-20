@@ -17,7 +17,7 @@ def create_networkx_undirected_graph(net, unique_source, unique_sink):
 
     Returns
     -------------
-    G
+    graph
         NetworkX graph
     unique_source_corr
         Correspondence in the NetworkX graph of the unique source place
@@ -27,25 +27,25 @@ def create_networkx_undirected_graph(net, unique_source, unique_sink):
         Correspondence between NetworkX nodes and Petri net entities
     """
 
-    G = nx.Graph()
+    graph = nx.Graph()
     dictionary = {}
     inv_dictionary = {}
     for place in net.places:
         value = len(dictionary)
         dictionary[place] = value
         inv_dictionary[value] = place
-        G.add_node(dictionary[place])
+        graph.add_node(dictionary[place])
     for transition in net.transitions:
         value = len(dictionary)
         dictionary[transition] = value
         inv_dictionary[value] = transition
-        G.add_node(dictionary[transition])
+        graph.add_node(dictionary[transition])
     for arc in net.arcs:
-        G.add_edge(dictionary[arc.source], dictionary[arc.target])
+        graph.add_edge(dictionary[arc.source], dictionary[arc.target])
     unique_source_corr = dictionary[unique_source] if unique_source in dictionary else None
     unique_sink_corr = dictionary[unique_sink] if unique_sink in dictionary else None
 
-    return G, unique_source_corr, unique_sink_corr, inv_dictionary
+    return graph, unique_source_corr, unique_sink_corr, inv_dictionary
 
 
 def create_networkx_directed_graph(net):
@@ -59,25 +59,25 @@ def create_networkx_directed_graph(net):
 
     Returns
     --------------
-    G
+    graph
         NetworkX digraph
     inv_dictionary
         Correspondence between NetworkX nodes and Petri net entities
     """
-    G = nx.DiGraph()
+    graph = nx.DiGraph()
     dictionary = {}
     inv_dictionary = {}
     for place in net.places:
         value = len(dictionary)
         dictionary[place] = value
         inv_dictionary[value] = place
-        G.add_node(dictionary[place])
+        graph.add_node(dictionary[place])
     for transition in net.transitions:
         value = len(dictionary)
         dictionary[transition] = value
         inv_dictionary[value] = transition
-        G.add_node(dictionary[transition])
+        graph.add_node(dictionary[transition])
     for arc in net.arcs:
-        G.add_edge(dictionary[arc.source], dictionary[arc.target])
+        graph.add_edge(dictionary[arc.source], dictionary[arc.target])
 
-    return G, inv_dictionary
+    return graph, inv_dictionary

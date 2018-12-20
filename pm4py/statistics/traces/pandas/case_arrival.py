@@ -38,12 +38,12 @@ def get_case_arrival_avg(df, parameters=None):
     if PARAMETER_CONSTANT_ATTRIBUTE_KEY not in parameters:
         parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY] = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY]
 
-    CASEID_GLUE = parameters[PARAMETER_CONSTANT_CASEID_KEY]
-    TIMEST_KEY = parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY]
+    caseid_glue = parameters[PARAMETER_CONSTANT_CASEID_KEY]
+    timest_key = parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY]
 
-    first_df = df.groupby(CASEID_GLUE).first()
+    first_df = df.groupby(caseid_glue).first()
 
-    first_df = first_df.sort_values(TIMEST_KEY)
+    first_df = first_df.sort_values(timest_key)
 
     first_df_shift = first_df.shift(-1)
 
@@ -51,7 +51,7 @@ def get_case_arrival_avg(df, parameters=None):
 
     df_successive_rows = pd.concat([first_df, first_df_shift], axis=1)
     df_successive_rows['interlapsed_time'] = (
-            df_successive_rows[TIMEST_KEY + '_2'] - df_successive_rows[TIMEST_KEY]).astype('timedelta64[s]')
+            df_successive_rows[timest_key + '_2'] - df_successive_rows[timest_key]).astype('timedelta64[s]')
 
     df_successive_rows = df_successive_rows.dropna(subset=['interlapsed_time'])
 

@@ -28,12 +28,6 @@ def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities):
     condition3 = max(start_activities_count, end_activities_count) <= 0 < max_val_act_spec < max_value
     condition = condition1 or condition2 or condition3
 
-    #print("initial_dfg=",initial_dfg)
-    #print("activities=",activities)
-    #print("max_val_act_spec=",max_val_act_spec)
-    #print("start_activities_count=",start_activities_count)
-    #print(condition1, condition2, condition3, condition)
-    #input()
     if condition:
         return True
 

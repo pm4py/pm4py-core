@@ -1,0 +1,474 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.objects.log.util package &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pm4py.objects.log.util package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.compression">pm4py.objects.log.util.compression module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.general">pm4py.objects.log.util.general module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.insert_classifier">pm4py.objects.log.util.insert_classifier module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.string_to_file">pm4py.objects.log.util.string_to_file module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.trace_log">pm4py.objects.log.util.trace_log module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.xes">pm4py.objects.log.util.xes module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pm4py.objects.log.util package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pm4py.objects.log.util.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pm4py-objects-log-util-package">
+<h1>pm4py.objects.log.util package<a class="headerlink" href="#pm4py-objects-log-util-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.objects.log.util.compression">
+<span id="pm4py-objects-log-util-compression-module"></span><h2>pm4py.objects.log.util.compression module<a class="headerlink" href="#module-pm4py.objects.log.util.compression" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.compression.compress">
+<code class="descclassname">pm4py.objects.log.util.compression.</code><code class="descname">compress</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/compression.html#compress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.compression.compress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compress a file in-place adding .gz suffix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> – Uncompressed file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Compressed file path</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">compressed_file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.compression.decompress">
+<code class="descclassname">pm4py.objects.log.util.compression.</code><code class="descname">decompress</code><span class="sig-paren">(</span><em>gzipped_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/compression.html#decompress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.compression.decompress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decompress a gzipped file and returns location of the temp file created</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gzipped_file</strong> – Gzipped file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Decompressed file path</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">decompressedPath</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.util.general">
+<span id="pm4py-objects-log-util-general-module"></span><h2>pm4py.objects.log.util.general module<a class="headerlink" href="#module-pm4py.objects.log.util.general" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.objects.log.util.insert_classifier">
+<span id="pm4py-objects-log-util-insert-classifier-module"></span><h2>pm4py.objects.log.util.insert_classifier module<a class="headerlink" href="#module-pm4py.objects.log.util.insert_classifier" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.insert_classifier.insert_activity_classifier_attribute">
+<code class="descclassname">pm4py.objects.log.util.insert_classifier.</code><code class="descname">insert_activity_classifier_attribute</code><span class="sig-paren">(</span><em>log</em>, <em>classifier</em>, <em>force_activity_transition_insertion=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/insert_classifier.html#insert_activity_classifier_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.insert_classifier.insert_activity_classifier_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert the specified classifier as additional event attribute in the log</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace log</li>
+<li><strong>classifier</strong> – Event classifier</li>
+<li><strong>force_activity_transition_insertion</strong> – Optionally force the activitiy+transition classifier insertion</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>log</em> – Trace log (plus eventually one additional event attribute as the classifier)</li>
+<li><em>classifier_attr_key</em> – Attribute name of the attribute that contains the classifier value</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.insert_classifier.insert_trace_classifier_attribute">
+<code class="descclassname">pm4py.objects.log.util.insert_classifier.</code><code class="descname">insert_trace_classifier_attribute</code><span class="sig-paren">(</span><em>log</em>, <em>classifier</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/insert_classifier.html#insert_trace_classifier_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.insert_classifier.insert_trace_classifier_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert the specified classifier as additional trace attribute in the log</p>
+<dl class="docutils">
+<dt>log</dt>
+<dd>Trace log</dd>
+<dt>classifier</dt>
+<dd>Event classifier</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><em>log</em> – Trace log (plus eventually one additional event attribute as the classifier)</li>
+<li><em>classifier_attr_key</em> – Attribute name of the attribute that contains the classifier value</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.insert_classifier.search_act_class_attr">
+<code class="descclassname">pm4py.objects.log.util.insert_classifier.</code><code class="descname">search_act_class_attr</code><span class="sig-paren">(</span><em>log</em>, <em>force_activity_transition_insertion=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/insert_classifier.html#search_act_class_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.insert_classifier.search_act_class_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search among classifiers expressed in the log one that is good for the process model extraction</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace log</li>
+<li><strong>force_activity_transition_insertion</strong> – Optionally force the activitiy+transition classifier insertion</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Trace log (plus eventually one additional event attribute as the classifier)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">log</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.util.string_to_file">
+<span id="pm4py-objects-log-util-string-to-file-module"></span><h2>pm4py.objects.log.util.string_to_file module<a class="headerlink" href="#module-pm4py.objects.log.util.string_to_file" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.string_to_file.import_string_to_temp_file">
+<code class="descclassname">pm4py.objects.log.util.string_to_file.</code><code class="descname">import_string_to_temp_file</code><span class="sig-paren">(</span><em>stri</em>, <em>extension</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/string_to_file.html#import_string_to_temp_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.string_to_file.import_string_to_temp_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import string to temporary file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>stri</strong> – String</li>
+<li><strong>extension</strong> – Temporary file extension</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Temporary file path</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">path</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.util.trace_log">
+<span id="pm4py-objects-log-util-trace-log-module"></span><h2>pm4py.objects.log.util.trace_log module<a class="headerlink" href="#module-pm4py.objects.log.util.trace_log" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.trace_log.add_artficial_start_and_end">
+<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">add_artficial_start_and_end</code><span class="sig-paren">(</span><em>trace_log</em>, <em>start='[start&gt;'</em>, <em>end='[end]'</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#add_artficial_start_and_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.add_artficial_start_and_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.trace_log.derive_and_lift_trace_attributes_from_event_attributes">
+<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">derive_and_lift_trace_attributes_from_event_attributes</code><span class="sig-paren">(</span><em>trlog</em>, <em>ignore=None</em>, <em>retain_on_event_level=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#derive_and_lift_trace_attributes_from_event_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.derive_and_lift_trace_attributes_from_event_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.trace_log.get_event_labels">
+<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">get_event_labels</code><span class="sig-paren">(</span><em>trlog</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#get_event_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.get_event_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches the labels present in a trace log, given a key to use within the events.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>param trlog: trace log to use</em></li>
+<li><em>param key: to use for event identification, can for example  be “concept:name”</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">return: a list of labels</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.trace_log.get_event_labels_counted">
+<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">get_event_labels_counted</code><span class="sig-paren">(</span><em>trlog</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#get_event_labels_counted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.get_event_labels_counted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches the labels (and their frequency) present in a trace log, given a key to use within the events.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>param trlog: trace log to use</em></li>
+<li><em>param key: to use for event identification, can for example  be “concept:name”</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">return: a list of labels</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.trace_log.get_trace_variants">
+<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">get_trace_variants</code><span class="sig-paren">(</span><em>trlog</em>, <em>key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#get_trace_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.get_trace_variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a pair of a list of (variants, dict[index -&gt; trace]) where the index of a variant maps to all traces
+describing that variant, with that key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>param trlog: trace log</em></li>
+<li><em>param key: key to use to identify the label of an event</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">return:</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.trace_log.project_traces">
+<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">project_traces</code><span class="sig-paren">(</span><em>trace_log</em>, <em>keys='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#project_traces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.project_traces" title="Permalink to this definition">¶</a></dt>
+<dd><p>projects traces on a (set of) event attribute key(s).
+If the key provided is of type string, each trace is converted into a list of strings.
+If the key provided is a collection, each trace is converted into a list of (smaller) dicts of key value pairs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>trace_log</strong> – </li>
+<li><strong>keys</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.util.xes">
+<span id="pm4py-objects-log-util-xes-module"></span><h2>pm4py.objects.log.util.xes module<a class="headerlink" href="#module-pm4py.objects.log.util.xes" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.objects.log.util">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.objects.log.util" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

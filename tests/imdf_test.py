@@ -27,6 +27,7 @@ class InductiveMinerDFTest(unittest.TestCase):
             trace_log = log_transform.transform_event_log_to_trace_log(event_log)
         net, marking, final_marking = inductive_miner.apply(trace_log, None)
         soundness = check_soundness.check_petri_wfnet_and_soundness(net)
+        del soundness
         
         return trace_log, net, marking, final_marking
 

@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.algo.conformance.alignments.versions package &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pm4py.algo.conformance.alignments.versions package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.conformance.alignments.versions.state_equation_a_star">pm4py.algo.conformance.alignments.versions.state_equation_a_star module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.conformance.alignments.versions">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pm4py.algo.conformance.alignments.versions package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pm4py.algo.conformance.alignments.versions.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pm4py-algo-conformance-alignments-versions-package">
+<h1>pm4py.algo.conformance.alignments.versions package<a class="headerlink" href="#pm4py-algo-conformance-alignments-versions-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.algo.conformance.alignments.versions.state_equation_a_star">
+<span id="pm4py-algo-conformance-alignments-versions-state-equation-a-star-module"></span><h2>pm4py.algo.conformance.alignments.versions.state_equation_a_star module<a class="headerlink" href="#module-pm4py.algo.conformance.alignments.versions.state_equation_a_star" title="Permalink to this headline">¶</a></h2>
+<p>This module contains code that allows us to compute alignments on the basis of a regular A* search on the state-space
+of the synchronous product net of a trace and a Petri net.
+The main algorithm follows <a class="footnote-reference" href="#id2" id="id1">[1]</a>.
+When running the log-based variant, the code is running in parallel on a trace based level.
+Furthermore, by default, the code applies heuristic estimation, and prefers those states that have the smallest h-value
+in case the f-value of two states is equal.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Sebastiaan J. van Zelst et al., “Tuning Alignment Computation: An Experimental Evaluation”,
+<a class="reference external" href="mailto:ATAED&#37;&#52;&#48;Petri">ATAED<span>&#64;</span>Petri</a> Nets/ACSD 2017: 6-20. <a href="#id3"><span class="problematic" id="id4">`http://ceur-ws.org/Vol-1847/paper01.pdf`_</span></a>.</td></tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="pm4py.algo.conformance.alignments.versions.state_equation_a_star.SearchTuple">
+<em class="property">class </em><code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">SearchTuple</code><span class="sig-paren">(</span><em>f:float</em>, <em>g:float</em>, <em>h:float</em>, <em>m:pm4py.objects.petri.petrinet.Marking</em>, <em>p:Any</em>, <em>t:pm4py.objects.petri.petrinet.PetriNet.Transition</em>, <em>x:Any</em>, <em>trust:bool</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#SearchTuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.SearchTuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply">
+<code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>trace</em>, <em>petri_net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the basic alignment search, given a trace and a net.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>trace</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> input trace, assumed to be a list of events (i.e. the code will use the activity key)</li>
+<li><strong>to get the attributes)</strong></li>
+<li><strong>petri_net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.PetriNet</span></code> the Petri net to use in the alignment)</li>
+<li><strong>initial_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> initial marking in the Petri net)</li>
+<li><strong>final_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> final marking in the Petri net)</li>
+<li><strong>parameters</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> (optional) dictionary containing one of the following:) – PARAM_TRACE_COST_FUNCTION: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> (parameter) mapping of each index of the trace to a positive cost value
+PARAM_MODEL_COST_FUNCTION: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> (parameter) mapping of each transition in the model to corresponding
+model cost
+PARAM_SYNC_COST_FUNCTION: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> (parameter) mapping of each transition in the model to corresponding
+synchronous costs
+PARAM_ACTIVITY_KEY: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> (parameter) key to use to identify the activity described by the events</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dictionary</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><cite>dict</cite> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong> and <strong>traversed_arcs</strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply_sync_prod">
+<code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">apply_sync_prod</code><span class="sig-paren">(</span><em>sync_prod</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>cost_function</em>, <em>skip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#apply_sync_prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply_sync_prod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the basic alignment search on top of the synchronous product net, given a cost function and skip-symbol</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sync_prod</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.PetriNet</span></code> synchronous product net)</li>
+<li><strong>initial_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> initial marking in the synchronous product net)</li>
+<li><strong>final_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> final marking in the synchronous product net)</li>
+<li><strong>cost_function</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> cost function mapping transitions to the synchronous product net)</li>
+<li><strong>skip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Any</span></code> symbol to use for skips in the alignment)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>dictionary</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong>)</li>
+<li><em>and **traversed_arcs**</em></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.alignments.versions.state_equation_a_star.get_best_worst_cost">
+<code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">get_best_worst_cost</code><span class="sig-paren">(</span><em>petri_net</em>, <em>initial_marking</em>, <em>final_marking</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#get_best_worst_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.get_best_worst_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the best worst cost of an alignment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>petri_net</strong> – Petri net</li>
+<li><strong>initial_marking</strong> – Initial marking</li>
+<li><strong>final_marking</strong> – Final marking</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Best worst cost of alignment</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">best_worst_cost</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.algo.conformance.alignments.versions">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.algo.conformance.alignments.versions" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
