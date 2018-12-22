@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pm4py',
-    version='0.2.3',
+    version='1.0.0',
     packages=['pm4py',
               'pm4py.algo', 'pm4py.algo.other', 'pm4py.algo.other.simple', 'pm4py.algo.other.simple.model',
               'pm4py.algo.other.simple.model.pandas', 'pm4py.algo.other.simple.model.pandas.versions',
