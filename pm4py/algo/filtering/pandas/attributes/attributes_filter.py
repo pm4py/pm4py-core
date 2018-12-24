@@ -225,3 +225,54 @@ def filter_df_keeping_spno_activities(df, activity_key="concept:name", max_no_ac
 
     df = df[df[activity_key].isin(activity_to_keep)]
     return df
+
+
+def get_kde_numeric_attribute(df, attribute, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a numeric attribute values
+
+    Parameters
+    -------------
+    df
+        Pandas dataframe
+    attribute
+        Numeric attribute to analyse
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+
+    Returns
+    --------------
+    x
+        X-axis values to represent
+    y
+        Y-axis values to represent
+    """
+    values = list(df[attribute])
+
+    return attributes_common.get_kde_numeric_attribute(values, parameters=parameters)
+
+def get_kde_numeric_attribute_json(df, attribute, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a numeric attribute values
+    (expressed as JSON)
+
+    Parameters
+    --------------
+    df
+        Pandas dataframe
+    attribute
+        Numeric attribute to analyse
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+    Returns
+    --------------
+    json
+        JSON representing the graph points
+    """
+    values = list(df[attribute])
+
+    return attributes_common.get_kde_numeric_attribute_json(values, parameters=parameters)

@@ -14,7 +14,7 @@ def get_kde_caseduration(duration_values, parameters=None):
         Values of duration
     parameters
         Possible parameters of the algorithm, including:
-            graph_points: number of points to include in the graph
+            graph_points -> number of points to include in the graph
 
     Returns
     --------------
@@ -33,7 +33,7 @@ def get_kde_caseduration(duration_values, parameters=None):
     xs2 = list(np.geomspace(max(min(duration_values), 0.001), max(duration_values), graph_points/2))
     xs = sorted(xs1 + xs2)
 
-    return [xs, density(xs)]
+    return [xs, list(density(xs))]
 
 
 def get_kde_caseduration_json(duration_values, parameters=None):
