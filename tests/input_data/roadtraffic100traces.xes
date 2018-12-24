@@ -1,0 +1,3213 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<log>
+  <trace>
+    <string key="concept:name" value="A12379"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="559"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-05-11T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.0"/>
+      <date key="time:timestamp" value="2007-08-20T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2007-08-29T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Insert Date Appeal to Prefecture"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-10-27T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="74.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-10-28T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Appeal to Prefecture"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="dismissal" value="#"/>
+      <date key="time:timestamp" value="2007-11-30T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A14502"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="564"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-06-01T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="36.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="36.0"/>
+      <date key="time:timestamp" value="2007-06-06T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A16317"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="561"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-07-08T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.0"/>
+      <date key="time:timestamp" value="2007-09-29T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2007-10-12T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="74.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-12-11T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-03-30T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A1635"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="561"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-08-16T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2006-12-14T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2007-01-01T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="71.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-03-02T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-03-30T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A19784"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="557"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-09-15T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.0"/>
+      <date key="time:timestamp" value="2007-12-27T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2008-01-05T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="74.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-03-05T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-03-30T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A21016"/>
+    <event>
+      <float key="amount" value="22.0"/>
+      <string key="org:resource" value="560"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-08-16T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="22.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="22.0"/>
+      <date key="time:timestamp" value="2007-08-24T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A29564"/>
+    <event>
+      <float key="amount" value="22.0"/>
+      <string key="org:resource" value="550"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-09-09T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="22.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="22.0"/>
+      <date key="time:timestamp" value="2008-09-16T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A32443"/>
+    <event>
+      <float key="amount" value="22.0"/>
+      <string key="org:resource" value="562"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-08-17T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2008-11-18T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2008-12-04T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="44.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-02-02T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2010-10-15T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A32583"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="560"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-07-04T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2008-09-11T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2008-10-03T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="74.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-12-02T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2010-10-15T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A32802"/>
+    <event>
+      <float key="amount" value="23.0"/>
+      <string key="org:resource" value="557"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-01-04T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2009-05-12T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A32876"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="559"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-07-13T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2008-09-11T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A32886"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="559"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-07-13T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2008-09-11T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A35505"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="565"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-08-28T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2008-12-10T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2008-12-19T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="74.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-02-17T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="87.5"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="87.5"/>
+      <date key="time:timestamp" value="2009-07-28T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A39577"/>
+    <event>
+      <float key="amount" value="38.0"/>
+      <string key="org:resource" value="538"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-04-05T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="38.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="38.0"/>
+      <date key="time:timestamp" value="2009-04-06T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A46137"/>
+    <event>
+      <float key="amount" value="38.0"/>
+      <string key="org:resource" value="559"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-08-29T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2009-12-18T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2010-01-14T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="77.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2010-03-15T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2012-03-26T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="A946"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="541"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-08-16T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2006-12-14T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2006-12-23T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="71.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-02-21T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-03-30T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="C10592"/>
+    <event>
+      <float key="amount" value="131.2"/>
+      <string key="org:resource" value="21"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-08-12T00:00:00.000"/>
+      <int key="article" value="20"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="6.71"/>
+      <date key="time:timestamp" value="2001-10-17T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2001-11-05T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="262.4"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-01-04T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-01-10T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N100130"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="561"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-06-26T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2006-11-16T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N100305"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="564"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-06-24T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2006-07-01T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N101278"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="557"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-07-22T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2006-12-05T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2006-12-18T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="71.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-02-16T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-03-30T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N102277"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="559"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-07-20T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2006-07-21T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N24336"/>
+    <event>
+      <float key="amount" value="31.3"/>
+      <string key="org:resource" value="538"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-03-11T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="6.46"/>
+      <date key="time:timestamp" value="2000-04-16T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2000-05-02T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="62.59"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-07-01T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-04-10T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N25542"/>
+    <event>
+      <float key="amount" value="18.78"/>
+      <string key="org:resource" value="550"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-04-29T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.41"/>
+      <date key="time:timestamp" value="2000-06-14T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="30.19"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="30.19"/>
+      <date key="time:timestamp" value="2000-07-11T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N26098"/>
+    <event>
+      <float key="amount" value="31.3"/>
+      <string key="org:resource" value="538"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-06-18T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="31.3"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="31.3"/>
+      <date key="time:timestamp" value="2000-06-20T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N29187"/>
+    <event>
+      <float key="amount" value="31.3"/>
+      <string key="org:resource" value="536"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-08-28T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="31.3"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="31.3"/>
+      <date key="time:timestamp" value="2000-09-01T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N35944"/>
+    <event>
+      <float key="amount" value="32.8"/>
+      <string key="org:resource" value="538"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-08-27T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="6.71"/>
+      <date key="time:timestamp" value="2001-11-09T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2001-12-05T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="65.6"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-02-03T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-01-10T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N36479"/>
+    <event>
+      <float key="amount" value="65.6"/>
+      <string key="org:resource" value="550"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-08-02T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.88"/>
+      <date key="time:timestamp" value="2001-11-09T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2001-12-04T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="131.2"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-02-02T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-01-10T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N47901"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="550"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-02-27T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="10.0"/>
+      <date key="time:timestamp" value="2003-05-20T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2003-05-27T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="68.77"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-07-26T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-12-25T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N56355"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="538"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-06-20T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2004-11-10T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2004-11-17T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="68.77"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-01-16T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="33.6"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="33.6"/>
+      <date key="time:timestamp" value="2005-01-17T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="44.6"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="11.0"/>
+      <date key="time:timestamp" value="2005-05-31T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N56567"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="541"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-06-24T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2004-11-10T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2004-11-17T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="68.77"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-01-16T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-02-28T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N58474"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="556"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-07-12T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="16.6"/>
+      <date key="time:timestamp" value="2004-11-23T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2004-12-11T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="44.6"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="44.6"/>
+      <date key="time:timestamp" value="2004-12-16T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="68.77"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-02-09T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-02-28T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N59225"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="553"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-07-19T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="33.6"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="33.6"/>
+      <date key="time:timestamp" value="2004-08-19T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N62734"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="550"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-09-02T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2004-12-24T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2005-01-18T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Insert Date Appeal to Prefecture"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-02-08T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="68.77"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-03-19T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Appeal to Prefecture"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="dismissal" value="#"/>
+      <date key="time:timestamp" value="2005-04-06T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N62735"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="550"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-09-02T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="16.6"/>
+      <date key="time:timestamp" value="2004-12-24T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2005-01-21T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="68.77"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-03-22T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-02-28T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N65066"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="538"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-09-29T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="33.6"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="33.6"/>
+      <date key="time:timestamp" value="2004-09-30T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N69761"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="538"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-01-20T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2005-06-10T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2005-06-23T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="71.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-08-22T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-02-28T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N70218"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="552"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-01-30T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2005-06-10T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N78510"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="537"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-06-09T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2005-06-17T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N78894"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="546"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-07-17T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2005-07-23T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N79958"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="550"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-05-30T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2005-06-03T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N80687"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="541"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-08-27T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2005-09-01T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N81109"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="558"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-08-07T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="14.25"/>
+      <date key="time:timestamp" value="2005-12-09T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2006-01-09T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="71.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-03-10T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-02-28T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N82301"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="546"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-08-28T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2005-09-05T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2005-12-17T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N85877"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="538"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-11-12T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2005-11-16T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N88490"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="561"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-12-06T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2006-03-28T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2006-04-04T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="71.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-06-03T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-03-30T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N93808"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="559"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-03-12T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2006-03-15T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N95472"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="557"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-04-25T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2008-12-03T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="N96194"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="550"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-05-14T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2006-05-22T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S100986"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="49"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-01-27T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="16.6"/>
+      <date key="time:timestamp" value="2005-06-10T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2005-06-27T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="71.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-08-26T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-02-28T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S104228"/>
+    <event>
+      <float key="amount" value="21.0"/>
+      <string key="org:resource" value="36"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-11-15T00:00:00.000"/>
+      <int key="article" value="181"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2007-04-04T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2007-04-13T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="42.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-06-12T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-03-30T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S113307"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="37"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-07-10T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2006-07-11T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S115590"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="26"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-08-27T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="35.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="35.0"/>
+      <date key="time:timestamp" value="2006-09-01T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S117981"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="45"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-02-20T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="36.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="36.0"/>
+      <date key="time:timestamp" value="2007-02-23T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S118656"/>
+    <event>
+      <float key="amount" value="35.0"/>
+      <string key="org:resource" value="40"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-12-22T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.0"/>
+      <date key="time:timestamp" value="2007-04-05T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="46.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="46.0"/>
+      <date key="time:timestamp" value="2007-04-19T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S122661"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="46"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-08-20T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.0"/>
+      <date key="time:timestamp" value="2007-12-27T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2008-01-08T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Insert Date Appeal to Prefecture"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-02-19T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="74.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-03-08T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Appeal to Prefecture"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="dismissal" value="#"/>
+      <date key="time:timestamp" value="2008-03-31T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S124501"/>
+    <event>
+      <float key="amount" value="74.0"/>
+      <string key="org:resource" value="45"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-03-20T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.0"/>
+      <date key="time:timestamp" value="2008-06-04T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2008-06-10T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="148.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-08-09T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2010-10-15T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S128578"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="847"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-08-23T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2008-12-10T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2009-01-02T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="74.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-03-03T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2010-10-15T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S131414"/>
+    <event>
+      <float key="amount" value="36.0"/>
+      <string key="org:resource" value="57"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-10-31T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2009-01-14T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S131704"/>
+    <event>
+      <float key="amount" value="74.0"/>
+      <string key="org:resource" value="40"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-11-11T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2009-04-01T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2009-04-08T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="148.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-06-07T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2010-10-15T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S134985"/>
+    <event>
+      <float key="amount" value="38.0"/>
+      <string key="org:resource" value="49"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-03-21T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2009-06-12T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2009-06-17T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="77.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-08-16T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="51.5"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="51.5"/>
+      <date key="time:timestamp" value="2009-08-18T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S136306"/>
+    <event>
+      <float key="amount" value="38.0"/>
+      <string key="org:resource" value="36"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-07-09T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="38.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="38.0"/>
+      <date key="time:timestamp" value="2009-07-09T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S138370"/>
+    <event>
+      <float key="amount" value="38.0"/>
+      <string key="org:resource" value="11"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-07-04T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2009-09-25T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2009-10-12T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="77.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-12-11T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2012-03-26T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S143415"/>
+    <event>
+      <float key="amount" value="38.0"/>
+      <string key="org:resource" value="850"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-08-17T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="38.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="38.0"/>
+      <date key="time:timestamp" value="2009-08-19T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S155012"/>
+    <event>
+      <float key="amount" value="78.0"/>
+      <string key="org:resource" value="39"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2010-08-15T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="78.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="78.0"/>
+      <date key="time:timestamp" value="2010-08-18T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S159128"/>
+    <event>
+      <float key="amount" value="38.0"/>
+      <string key="org:resource" value="849"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2010-10-25T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="38.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="38.0"/>
+      <date key="time:timestamp" value="2010-11-19T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S162083"/>
+    <event>
+      <float key="amount" value="38.0"/>
+      <string key="org:resource" value="49"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2010-11-08T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2010-12-03T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2011-03-10T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="77.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2011-05-09T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="91.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="91.0"/>
+      <date key="time:timestamp" value="2011-08-19T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S165551"/>
+    <event>
+      <float key="amount" value="24.0"/>
+      <string key="org:resource" value="860"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2011-04-26T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="24.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="24.0"/>
+      <date key="time:timestamp" value="2011-04-26T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S165724"/>
+    <event>
+      <float key="amount" value="39.0"/>
+      <string key="org:resource" value="30"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2011-07-23T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="15.0"/>
+      <date key="time:timestamp" value="2011-09-09T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2011-09-21T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="79.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2011-11-20T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2013-04-24T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S166066"/>
+    <event>
+      <float key="amount" value="24.0"/>
+      <string key="org:resource" value="849"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2011-04-21T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="25.0"/>
+      <date key="time:timestamp" value="2011-07-09T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2011-08-10T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="47.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2011-10-09T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2013-04-24T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S166176"/>
+    <event>
+      <float key="amount" value="39.0"/>
+      <string key="org:resource" value="859"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2011-05-06T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="25.0"/>
+      <date key="time:timestamp" value="2011-08-27T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2011-10-04T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="79.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2011-12-03T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2013-04-24T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S169425"/>
+    <event>
+      <float key="amount" value="80.0"/>
+      <string key="org:resource" value="852"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2011-06-20T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="15.0"/>
+      <date key="time:timestamp" value="2011-07-26T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2011-10-14T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="159.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2011-12-13T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2013-04-24T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S181769"/>
+    <event>
+      <float key="amount" value="80.0"/>
+      <string key="org:resource" value="867"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2012-06-11T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="2"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="15.0"/>
+      <date key="time:timestamp" value="2012-07-12T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S185352"/>
+    <event>
+      <float key="amount" value="39.0"/>
+      <string key="org:resource" value="848"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2012-07-26T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="39.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="39.0"/>
+      <date key="time:timestamp" value="2012-07-30T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S191054"/>
+    <event>
+      <float key="amount" value="39.0"/>
+      <string key="org:resource" value="49"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2012-11-08T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="15.0"/>
+      <date key="time:timestamp" value="2012-12-07T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2012-12-19T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Insert Date Appeal to Prefecture"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2012-12-20T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="79.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2013-02-17T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Appeal to Prefecture"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="dismissal" value="NIL"/>
+      <date key="time:timestamp" value="2013-02-22T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S54029"/>
+    <event>
+      <float key="amount" value="62.59"/>
+      <string key="org:resource" value="823"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-07-14T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.62"/>
+      <date key="time:timestamp" value="2000-10-27T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2000-11-11T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="125.19"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-01-10T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-04-10T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S54197"/>
+    <event>
+      <float key="amount" value="31.3"/>
+      <string key="org:resource" value="29"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-08-06T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.41"/>
+      <date key="time:timestamp" value="2000-09-24T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2000-10-07T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="37.75"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="37.75"/>
+      <date key="time:timestamp" value="2000-11-06T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="62.59"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-12-06T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="42.71"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="4.96"/>
+      <date key="time:timestamp" value="2000-12-21T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S54466"/>
+    <event>
+      <float key="amount" value="31.3"/>
+      <string key="org:resource" value="825"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="M"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-07-16T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="31.3"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="31.3"/>
+      <date key="time:timestamp" value="2000-07-19T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S59023"/>
+    <event>
+      <float key="amount" value="31.3"/>
+      <string key="org:resource" value="829"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-10-25T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="6.71"/>
+      <date key="time:timestamp" value="2000-11-30T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2000-12-29T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="62.59"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-02-27T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-04-10T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S61730"/>
+    <event>
+      <float key="amount" value="65.6"/>
+      <string key="org:resource" value="834"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-06-08T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="6.71"/>
+      <date key="time:timestamp" value="2001-07-19T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2001-07-28T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="131.2"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-09-26T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="72.31"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="72.31"/>
+      <date key="time:timestamp" value="2001-10-30T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="137.91"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="65.6"/>
+      <date key="time:timestamp" value="2002-02-11T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S61738"/>
+    <event>
+      <float key="amount" value="32.8"/>
+      <string key="org:resource" value="834"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-06-16T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="6.71"/>
+      <date key="time:timestamp" value="2001-07-19T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S63481"/>
+    <event>
+      <float key="amount" value="32.8"/>
+      <string key="org:resource" value="11"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-06-22T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="6.71"/>
+      <date key="time:timestamp" value="2001-08-27T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2001-09-07T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="65.6"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-11-06T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-01-10T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S64826"/>
+    <event>
+      <float key="amount" value="32.8"/>
+      <string key="org:resource" value="827"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-07-14T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="32.8"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="32.8"/>
+      <date key="time:timestamp" value="2001-07-18T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S65264"/>
+    <event>
+      <float key="amount" value="32.8"/>
+      <string key="org:resource" value="835"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-07-22T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="32.8"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="32.8"/>
+      <date key="time:timestamp" value="2001-07-27T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S65921"/>
+    <event>
+      <float key="amount" value="65.0"/>
+      <string key="org:resource" value="34"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-04-20T00:00:00.000"/>
+      <int key="article" value="41"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="10.0"/>
+      <date key="time:timestamp" value="2002-06-10T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2002-06-17T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="65.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="65.0"/>
+      <date key="time:timestamp" value="2002-06-17T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="131.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-08-16T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="75.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="10.0"/>
+      <date key="time:timestamp" value="2002-12-27T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S67730"/>
+    <event>
+      <float key="amount" value="32.8"/>
+      <string key="org:resource" value="836"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-08-10T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="32.8"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="32.8"/>
+      <date key="time:timestamp" value="2001-08-15T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S72717"/>
+    <event>
+      <float key="amount" value="32.0"/>
+      <string key="org:resource" value="831"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-05-25T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="32.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="32.0"/>
+      <date key="time:timestamp" value="2002-05-30T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S78401"/>
+    <event>
+      <float key="amount" value="32.0"/>
+      <string key="org:resource" value="816"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-08-27T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="15.16"/>
+      <date key="time:timestamp" value="2002-10-25T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2002-11-08T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="32.0"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="32.0"/>
+      <date key="time:timestamp" value="2002-12-20T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="65.5"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-01-07T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-01-10T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S84304"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="843"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-08-11T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="10.0"/>
+      <date key="time:timestamp" value="2003-11-10T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2003-11-17T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="68.77"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-01-16T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-12-25T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S86137"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="30"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-04-03T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="33.6"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="33.6"/>
+      <date key="time:timestamp" value="2003-04-07T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S87846"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="28"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-08-03T00:00:00.000"/>
+      <int key="article" value="7"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="10.0"/>
+      <date key="time:timestamp" value="2003-11-03T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2003-11-13T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="68.77"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-01-12T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-12-25T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S88683"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="841"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-09-29T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="33.6"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="33.6"/>
+      <date key="time:timestamp" value="2003-10-01T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S89917"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="840"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-11-24T00:00:00.000"/>
+      <int key="article" value="157"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="16.6"/>
+      <date key="time:timestamp" value="2004-04-15T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-05-06T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="68.77"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-07-05T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2006-02-28T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S92648"/>
+    <event>
+      <float key="amount" value="68.25"/>
+      <string key="org:resource" value="57"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-05-05T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="68.25"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="68.25"/>
+      <date key="time:timestamp" value="2004-06-01T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="S99514"/>
+    <event>
+      <float key="amount" value="33.6"/>
+      <string key="org:resource" value="11"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2004-11-12T00:00:00.000"/>
+      <int key="article" value="158"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="16.6"/>
+      <date key="time:timestamp" value="2005-03-22T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2005-04-08T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="68.77"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2005-06-07T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2007-02-28T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="V18002"/>
+    <event>
+      <float key="amount" value="148.0"/>
+      <string key="org:resource" value="29"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="M"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2008-11-06T00:00:00.000"/>
+      <int key="article" value="142"/>
+      <int key="points" value="5"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="13.5"/>
+      <date key="time:timestamp" value="2009-04-01T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="P"/>
+      <date key="time:timestamp" value="2009-04-08T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="org:resource" value="0"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Appeal to Judge"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-05-28T00:00:00.000"/>
+      <int key="matricola" value="0"/>
+    </event>
+    <event>
+      <float key="amount" value="297.0"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2009-06-07T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="171.5"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="171.5"/>
+      <date key="time:timestamp" value="2010-08-20T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="V4125"/>
+    <event>
+      <float key="amount" value="125.19"/>
+      <string key="org:resource" value="31"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-01-19T00:00:00.000"/>
+      <int key="article" value="142"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="6.46"/>
+      <date key="time:timestamp" value="2000-03-23T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2000-04-17T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="250.38"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-06-16T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="131.64"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="131.64"/>
+      <date key="time:timestamp" value="2000-07-08T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="256.83"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="125.19"/>
+      <date key="time:timestamp" value="2000-09-21T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="V6229"/>
+    <event>
+      <float key="amount" value="125.19"/>
+      <string key="org:resource" value="36"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-07-29T00:00:00.000"/>
+      <int key="article" value="142"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="11.41"/>
+      <date key="time:timestamp" value="2000-08-29T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2000-10-07T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="250.38"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2000-12-06T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="136.6"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="136.6"/>
+      <date key="time:timestamp" value="2000-12-06T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="V7194"/>
+    <event>
+      <float key="amount" value="131.2"/>
+      <string key="org:resource" value="36"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-05-02T00:00:00.000"/>
+      <int key="article" value="142"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="6.71"/>
+      <date key="time:timestamp" value="2001-06-07T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="totalPaymentAmount" value="137.91"/>
+      <string key="concept:name" value="Payment"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="paymentAmount" value="137.91"/>
+      <date key="time:timestamp" value="2001-07-09T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="V8099"/>
+    <event>
+      <float key="amount" value="131.2"/>
+      <string key="org:resource" value="30"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2001-09-12T00:00:00.000"/>
+      <int key="article" value="142"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="6.71"/>
+      <date key="time:timestamp" value="2001-11-16T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="notificationType" value="P"/>
+      <string key="concept:name" value="Insert Fine Notification"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="lastSent" value="N"/>
+      <date key="time:timestamp" value="2001-12-24T00:00:00.000"/>
+    </event>
+    <event>
+      <float key="amount" value="262.4"/>
+      <string key="concept:name" value="Add penalty"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-02-22T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send for Credit Collection"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2003-01-10T00:00:00.000"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="V8904"/>
+    <event>
+      <float key="amount" value="131.0"/>
+      <string key="org:resource" value="11"/>
+      <string key="dismissal" value="NIL"/>
+      <string key="concept:name" value="Create Fine"/>
+      <string key="vehicleClass" value="A"/>
+      <float key="totalPaymentAmount" value="0.0"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-05-02T00:00:00.000"/>
+      <int key="article" value="142"/>
+      <int key="points" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Insert Date Appeal to Prefecture"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <date key="time:timestamp" value="2002-07-29T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Fine"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <float key="expense" value="10.0"/>
+      <date key="time:timestamp" value="2002-07-29T00:00:00.000"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Send Appeal to Prefecture"/>
+      <string key="lifecycle:transition" value="complete"/>
+      <string key="dismissal" value="NIL"/>
+      <date key="time:timestamp" value="2002-07-30T00:00:00.000"/>
+    </event>
+  </trace>
+</log>

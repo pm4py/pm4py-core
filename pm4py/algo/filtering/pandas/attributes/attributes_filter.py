@@ -249,7 +249,7 @@ def get_kde_numeric_attribute(df, attribute, parameters=None):
     y
         Y-axis values to represent
     """
-    values = list(df[attribute])
+    values = list(df.dropna(subset=[attribute])[attribute])
 
     return attributes_common.get_kde_numeric_attribute(values, parameters=parameters)
 
@@ -273,6 +273,6 @@ def get_kde_numeric_attribute_json(df, attribute, parameters=None):
     json
         JSON representing the graph points
     """
-    values = list(df[attribute])
+    values = list(df.dropna(subset=[attribute])[attribute])
 
     return attributes_common.get_kde_numeric_attribute_json(values, parameters=parameters)
