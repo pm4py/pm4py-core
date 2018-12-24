@@ -26,6 +26,7 @@ if __name__ == "__main__":
     from tests.filtering_test import LogFilteringTest
     from tests.dataframe_prefilter import DataframePrefilteringTest
     from tests.simple_execution import SimpleExecutionTest
+    from tests.graphs_forming import GraphsForming
 
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
@@ -46,5 +47,6 @@ if __name__ == "__main__":
     filtering_test = LogFilteringTest()
     prefiltering_test = DataframePrefilteringTest()
     simpleex_test = SimpleExecutionTest()
+    graphforming_test = GraphsForming()
 
     unittest.main()
