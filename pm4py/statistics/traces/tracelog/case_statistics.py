@@ -3,6 +3,7 @@ from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TRACEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.statistics.traces.common import case_duration as case_duration_commons
 
 
 def get_variant_statistics(trace_log, parameters=None):
@@ -163,3 +164,55 @@ def get_events(log, case_id, parameters=None):
     for event in indexed_log[case_id]:
         list_eve.append(dict(event))
     return list_eve
+
+
+def get_kde_caseduration(log, parameters=None):
+    """
+    Gets the estimation of KDE density for the case durations calculated on the log
+
+    Parameters
+    --------------
+    log
+        Trace log object
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+            case_id_glue -> Column hosting the Case ID
+
+
+    Returns
+    --------------
+    x
+        X-axis values to represent
+    y
+        Y-axis values to represent
+    """
+    cases = get_cases_description(log, parameters=parameters)
+    duration_values = [x["caseDuration"] for x in cases.values()]
+
+    return case_duration_commons.get_kde_caseduration(duration_values, parameters=parameters)
+
+
+def get_kde_caseduration_json(log, parameters=None):
+    """
+    Gets the estimation of KDE density for the case durations calculated on the log
+    (expressed as JSON)
+
+    Parameters
+    --------------
+    log
+        Trace log object
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+            case_id_glue -> Column hosting the Case ID
+
+    Returns
+    --------------
+    json
+        JSON representing the graph points
+    """
+    cases = get_cases_description(log, parameters=parameters)
+    duration_values = [x["caseDuration"] for x in cases.values()]
+
+    return case_duration_commons.get_kde_caseduration_json(duration_values, parameters=parameters)
