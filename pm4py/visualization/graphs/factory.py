@@ -1,11 +1,11 @@
-from pm4py.visualization.graphs.versions import cases, attributes
-from pm4py.visualization.graphs.util.common import save, view
+from pm4py.visualization.graphs.versions import cases, attributes, dates
 
 CASES = "cases"
 ATTRIBUTES = "attributes"
+DATES = "dates"
 
-VERSIONS_PLOT = {CASES: cases.apply_plot, ATTRIBUTES: attributes.apply_plot}
-VERSIONS_SEMILOGX = {CASES: cases.apply_semilogx, ATTRIBUTES: attributes.apply_semilogx}
+VERSIONS_PLOT = {CASES: cases.apply_plot, ATTRIBUTES: attributes.apply_plot, DATES: dates.apply_plot}
+VERSIONS_SEMILOGX = {CASES: cases.apply_semilogx, ATTRIBUTES: attributes.apply_semilogx, DATES: dates.apply_semilogx}
 
 
 def apply(x, y, parameters=None, variant=CASES):
