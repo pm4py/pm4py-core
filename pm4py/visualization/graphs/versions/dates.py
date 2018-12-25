@@ -4,6 +4,7 @@ from pm4py.visualization.graphs.util import common
 
 TIMESTAMP_LABEL = "Date"
 DENSITY_LABEL = "Density"
+GRAPH_DEFAULT_TITLE = "Events per Time"
 
 
 def apply_plot(x, y, parameters=None):
@@ -29,12 +30,15 @@ def apply_plot(x, y, parameters=None):
         parameters = {}
 
     format = parameters["format"] if "format" in parameters else "png"
+    title = parameters["title"] if "title" in parameters else GRAPH_DEFAULT_TITLE
+
     filename = common.get_temp_file_name(format)
 
     pyplot.clf()
     pyplot.plot(x, y)
     pyplot.xlabel(TIMESTAMP_LABEL)
     pyplot.ylabel(DENSITY_LABEL)
+    pyplot.title(title)
     pyplot.xticks(rotation=90)
     pyplot.savefig(filename, bbox_inches="tight")
     pyplot.clf()
@@ -65,12 +69,15 @@ def apply_semilogx(x, y, parameters=None):
         parameters = {}
 
     format = parameters["format"] if "format" in parameters else "png"
+    title = parameters["title"] if "title" in parameters else GRAPH_DEFAULT_TITLE
+
     filename = common.get_temp_file_name(format)
 
     pyplot.clf()
     pyplot.semilogx(x, y)
     pyplot.xlabel(TIMESTAMP_LABEL)
     pyplot.ylabel(DENSITY_LABEL)
+    pyplot.title(title)
     pyplot.xticks(rotation=90)
     pyplot.savefig(filename, bbox_inches="tight")
     pyplot.clf()
