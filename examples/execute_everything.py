@@ -16,6 +16,7 @@ if __name__ == "__main__":
     from examples import clustering_example
     from examples import big_dataframe_filtering
     from examples import big_dataframe_management
+    from examples import graphs_visualization
 
     print("\n\nbig_log_imdf_decor frequency")
     big_log_imdf_decor.execute_script(variant="frequency")
@@ -41,3 +42,6 @@ if __name__ == "__main__":
     big_dataframe_filtering.execute_script()
     print("\n\nbig_dataframe_management")
     big_dataframe_management.execute_script()
+    print("\n\ngraphs_visualization")
+    graphs_visualization.execute_script()
+

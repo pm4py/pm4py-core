@@ -1,3 +1,11 @@
+import json
+from datetime import datetime
+
+import numpy as np
+import pandas as pd
+from scipy.stats import gaussian_kde
+
+
 def get_sorted_attributes_list(attributes):
     """
     Gets sorted attributes list
@@ -49,3 +57,124 @@ def get_attributes_threshold(alist, decreasing_factor, min_activity_count=1, max
         if i >= max_activity_count:
             break
     return threshold
+
+
+def get_kde_numeric_attribute(values, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a numeric attribute values
+
+    Parameters
+    -------------
+    values
+        Values of the numeric attribute value
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+
+    Returns
+    --------------
+    x
+        X-axis values to represent
+    y
+        Y-axis values to represent
+    """
+    if parameters is None:
+        parameters = {}
+
+    graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
+    values = sorted(values)
+    density = gaussian_kde(values)
+
+    xs1 = list(np.linspace(min(values), max(values), graph_points/2))
+    xs2 = list(np.geomspace(max(min(values), 0.000001), max(values), graph_points/2))
+    xs = sorted(xs1 + xs2)
+
+    return [xs, list(density(xs))]
+
+
+def get_kde_numeric_attribute_json(values, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a numeric attribute values
+    (expressed as JSON)
+
+    Parameters
+    --------------
+    values
+        Values of the numeric attribute value
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points: number of points to include in the graph
+
+    Returns
+    --------------
+    json
+        JSON representing the graph points
+    """
+    x, y = get_kde_numeric_attribute(values, parameters=parameters)
+
+    ret = []
+    for i in range(len(x)):
+        ret.append((x[i], y[i]))
+
+    return json.dumps(ret)
+
+
+def get_kde_date_attribute(values, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a date attribute values
+
+    Parameters
+    -------------
+    values
+        Values of the date attribute value
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+
+    Returns
+    --------------
+    x
+        X-axis values to represent
+    y
+        Y-axis values to represent
+    """
+    if parameters is None:
+        parameters = {}
+
+    graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
+    int_values = sorted([(x - datetime(1970, 1, 1)).total_seconds() for x in values])
+    density = gaussian_kde(int_values)
+
+    xs = np.linspace(min(int_values), max(int_values), graph_points)
+    xs_transf = pd.to_datetime(xs * 10 ** 9)
+
+    return [xs_transf, density(xs)]
+
+
+def get_kde_date_attribute_json(values, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a date attribute values
+    (expressed as JSON)
+
+    Parameters
+    --------------
+    values
+        Values of the date attribute value
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points: number of points to include in the graph
+
+    Returns
+    --------------
+    json
+        JSON representing the graph points
+    """
+    x, y = get_kde_date_attribute(values, parameters=parameters)
+
+    ret = []
+    for i in range(len(x)):
+        ret.append(((x[i] - datetime(1970, 1, 1)).total_seconds(), y[i]))
+
+    return json.dumps(ret)

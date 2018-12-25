@@ -4,6 +4,7 @@ from pm4py.algo.filtering.common.filtering_constants import DECREASING_FACTOR
 from pm4py.algo.filtering.pandas.pd_filtering_constants import MAX_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM
 from pm4py.algo.filtering.pandas.pd_filtering_constants import MIN_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
+from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
@@ -225,3 +226,106 @@ def filter_df_keeping_spno_activities(df, activity_key="concept:name", max_no_ac
 
     df = df[df[activity_key].isin(activity_to_keep)]
     return df
+
+
+def get_kde_numeric_attribute(df, attribute, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a numeric attribute values
+
+    Parameters
+    -------------
+    df
+        Pandas dataframe
+    attribute
+        Numeric attribute to analyse
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+
+    Returns
+    --------------
+    x
+        X-axis values to represent
+    y
+        Y-axis values to represent
+    """
+    values = list(df.dropna(subset=[attribute])[attribute])
+
+    return attributes_common.get_kde_numeric_attribute(values, parameters=parameters)
+
+def get_kde_numeric_attribute_json(df, attribute, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a numeric attribute values
+    (expressed as JSON)
+
+    Parameters
+    --------------
+    df
+        Pandas dataframe
+    attribute
+        Numeric attribute to analyse
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+    Returns
+    --------------
+    json
+        JSON representing the graph points
+    """
+    values = list(df.dropna(subset=[attribute])[attribute])
+
+    return attributes_common.get_kde_numeric_attribute_json(values, parameters=parameters)
+
+
+def get_kde_date_attribute(df, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a date attribute values
+
+    Parameters
+    -------------
+    df
+        Pandas dataframe
+    attribute
+        Date attribute to analyse
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+
+    Returns
+    --------------
+    x
+        X-axis values to represent
+    y
+        Y-axis values to represent
+    """
+    date_values = list(df.dropna(subset=[attribute])[attribute])
+
+    return attributes_common.get_kde_date_attribute(date_values, parameters=parameters)
+
+
+def get_kde_date_attribute_json(df, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a date attribute values
+    (expressed as JSON)
+
+    Parameters
+    --------------
+    df
+        Pandas dataframe
+    attribute
+        Date attribute to analyse
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+    Returns
+    --------------
+    json
+        JSON representing the graph points
+    """
+    values = list(df.dropna(subset=[attribute])[attribute])
+
+    return attributes_common.get_kde_date_attribute_json(values, parameters=parameters)
