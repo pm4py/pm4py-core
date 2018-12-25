@@ -1,8 +1,10 @@
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.attributes import attributes_common
 from pm4py.algo.filtering.tracelog.variants import variants_filter
+from pm4py.objects.log import transform
 from pm4py.objects.log.log import TraceLog, Trace
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
+from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
@@ -205,3 +207,137 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
     filtered_log = filter_log_by_attributes_threshold(trace_log, activities, variants, vc, thresh, attribute_key)
     return filtered_log
+
+
+def get_kde_numeric_attribute(log, attribute, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a numeric attribute values
+
+    Parameters
+    -------------
+    log
+        Event log object (if trace log, is converted)
+    attribute
+        Numeric attribute to analyse
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+
+    Returns
+    --------------
+    x
+        X-axis values to represent
+    y
+        Y-axis values to represent
+    """
+
+    if type(log) is TraceLog:
+        event_log = transform.transform_trace_log_to_event_log(log)
+    else:
+        event_log = log
+
+    values = [event[attribute] for event in event_log if attribute in event]
+
+    return attributes_common.get_kde_numeric_attribute(values, parameters=parameters)
+
+
+def get_kde_numeric_attribute_json(log, attribute, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a numeric attribute values
+    (expressed as JSON)
+
+    Parameters
+    -------------
+    log
+        Event log object (if trace log, is converted)
+    attribute
+        Numeric attribute to analyse
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+
+    Returns
+    --------------
+    x
+        X-axis values to represent
+    y
+        Y-axis values to represent
+    """
+
+    if type(log) is TraceLog:
+        event_log = transform.transform_trace_log_to_event_log(log)
+    else:
+        event_log = log
+
+    values = [event[attribute] for event in event_log if attribute in event]
+
+    return attributes_common.get_kde_numeric_attribute_json(values, parameters=parameters)
+
+
+def get_kde_date_attribute(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a date attribute values
+
+    Parameters
+    -------------
+    log
+        Event log object (if trace log, is converted)
+    attribute
+        Date attribute to analyse
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+
+    Returns
+    --------------
+    x
+        X-axis values to represent
+    y
+        Y-axis values to represent
+    """
+
+    if type(log) is TraceLog:
+        event_log = transform.transform_trace_log_to_event_log(log)
+    else:
+        event_log = log
+
+    values = [event[attribute].replace(tzinfo=None) for event in event_log if attribute in event]
+
+    return attributes_common.get_kde_date_attribute(values, parameters=parameters)
+
+
+def get_kde_date_attribute_json(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None):
+    """
+    Gets the KDE estimation for the distribution of a date attribute values
+    (expressed as JSON)
+
+    Parameters
+    -------------
+    log
+        Event log object (if trace log, is converted)
+    attribute
+        Date attribute to analyse
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+
+
+    Returns
+    --------------
+    x
+        X-axis values to represent
+    y
+        Y-axis values to represent
+    """
+
+    if type(log) is TraceLog:
+        event_log = transform.transform_trace_log_to_event_log(log)
+    else:
+        event_log = log
+
+    values = [event[attribute].replace(tzinfo=None) for event in event_log if attribute in event]
+
+    return attributes_common.get_kde_date_attribute_json(values, parameters=parameters)

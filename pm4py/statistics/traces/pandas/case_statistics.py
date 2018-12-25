@@ -3,6 +3,7 @@ import pandas as pd
 from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.objects.log.util import xes
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
+from pm4py.statistics.traces.common import case_duration as case_duration_commons
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
@@ -156,3 +157,54 @@ def get_events(df, case_id, parameters=None):
     case_id_glue = parameters[
         PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     return df[df[case_id_glue] == case_id].to_dict('records')
+
+
+def get_kde_caseduration(df, parameters=None):
+    """
+    Gets the estimation of KDE density for the case durations calculated on the dataframe
+
+    Parameters
+    --------------
+    df
+        Pandas dataframe
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+            case_id_glue -> Column hosting the Case ID
+
+
+    Returns
+    --------------
+    x
+        X-axis values to represent
+    y
+        Y-axis values to represent
+    """
+    cases = get_cases_description(df, parameters=parameters)
+    duration_values = [x["caseDuration"] for x in cases.values()]
+
+    return case_duration_commons.get_kde_caseduration(duration_values, parameters=parameters)
+
+def get_kde_caseduration_json(df, parameters=None):
+    """
+    Gets the estimation of KDE density for the case durations calculated on the log/dataframe
+    (expressed as JSON)
+
+    Parameters
+    --------------
+    df
+        Pandas dataframe
+    parameters
+        Possible parameters of the algorithm, including:
+            graph_points -> number of points to include in the graph
+            case_id_glue -> Column hosting the Case ID
+
+    Returns
+    --------------
+    json
+        JSON representing the graph points
+    """
+    cases = get_cases_description(df, parameters=parameters)
+    duration_values = [x["caseDuration"] for x in cases.values()]
+
+    return case_duration_commons.get_kde_caseduration_json(duration_values, parameters=parameters)
