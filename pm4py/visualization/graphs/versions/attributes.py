@@ -4,6 +4,7 @@ from pm4py.visualization.graphs.util import common
 
 ATTRIBUTE_LABEL = "Attribute value"
 DENSITY_LABEL = "Density"
+GRAPH_DEFAULT_TITLE = "Attribute Distribution"
 
 def apply_plot(x, y, parameters=None):
     """
@@ -28,6 +29,8 @@ def apply_plot(x, y, parameters=None):
         parameters = {}
 
     format = parameters["format"] if "format" in parameters else "png"
+    title = parameters["title"] if "title" in parameters else GRAPH_DEFAULT_TITLE
+
     filename = common.get_temp_file_name(format)
 
     pyplot.clf()
@@ -35,6 +38,7 @@ def apply_plot(x, y, parameters=None):
     pyplot.xlabel(ATTRIBUTE_LABEL)
     pyplot.ylabel(DENSITY_LABEL)
     pyplot.savefig(filename, bbox_inches="tight")
+    pyplot.title(title)
     pyplot.clf()
 
     return filename
@@ -63,6 +67,8 @@ def apply_semilogx(x, y, parameters=None):
         parameters = {}
 
     format = parameters["format"] if "format" in parameters else "png"
+    title = parameters["title"] if "title" in parameters else GRAPH_DEFAULT_TITLE
+
     filename = common.get_temp_file_name(format)
 
     pyplot.clf()
@@ -70,6 +76,7 @@ def apply_semilogx(x, y, parameters=None):
     pyplot.xlabel(ATTRIBUTE_LABEL)
     pyplot.ylabel(DENSITY_LABEL)
     pyplot.savefig(filename, bbox_inches="tight")
+    pyplot.title(title)
     pyplot.clf()
 
     return filename
