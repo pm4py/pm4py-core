@@ -67,6 +67,34 @@ class GraphsForming(unittest.TestCase):
         graph = graphs_factory.apply_semilogx(x, y, variant="attributes", parameters={"format": "svg"})
         del graph
 
+    def test_dfDateAttribute(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
+
+        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "receipt.csv"))
+        x, y = pd_attributes_filter.get_kde_date_attribute(df)
+        json = pd_attributes_filter.get_kde_date_attribute_json(df)
+        del json
+        graph = graphs_factory.apply_plot(x, y, variant="dates", parameters={"format": "svg"})
+        del graph
+        graph = graphs_factory.apply_semilogx(x, y, variant="dates", parameters={"format": "svg"})
+        del graph
+
+    def test_logDateAttribute(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
+
+        log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
+        x, y = log_attributes_filter.get_kde_date_attribute(log)
+        json = log_attributes_filter.get_kde_date_attribute_json(log)
+        del json
+        graph = graphs_factory.apply_plot(x, y, variant="dates", parameters={"format": "svg"})
+        del graph
+        graph = graphs_factory.apply_semilogx(x, y, variant="dates", parameters={"format": "svg"})
+        del graph
+
 
 if __name__ == "__main__":
     unittest.main()

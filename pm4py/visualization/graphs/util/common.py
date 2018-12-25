@@ -1,8 +1,8 @@
-import tempfile
-import shutil
-import sys
-import subprocess
 import os
+import shutil
+import subprocess
+import sys
+import tempfile
 
 
 def get_temp_file_name(format):

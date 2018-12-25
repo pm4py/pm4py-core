@@ -1,4 +1,5 @@
 from matplotlib import pyplot
+
 from pm4py.visualization.graphs.util import common
 
 ATTRIBUTE_LABEL = "Attribute value"
@@ -29,10 +30,12 @@ def apply_plot(x, y, parameters=None):
     format = parameters["format"] if "format" in parameters else "png"
     filename = common.get_temp_file_name(format)
 
+    pyplot.clf()
     pyplot.plot(x, y)
     pyplot.xlabel(ATTRIBUTE_LABEL)
     pyplot.ylabel(DENSITY_LABEL)
-    pyplot.savefig(filename)
+    pyplot.savefig(filename, bbox_inches="tight")
+    pyplot.clf()
 
     return filename
 
@@ -62,9 +65,11 @@ def apply_semilogx(x, y, parameters=None):
     format = parameters["format"] if "format" in parameters else "png"
     filename = common.get_temp_file_name(format)
 
+    pyplot.clf()
     pyplot.semilogx(x, y)
     pyplot.xlabel(ATTRIBUTE_LABEL)
     pyplot.ylabel(DENSITY_LABEL)
-    pyplot.savefig(filename)
+    pyplot.savefig(filename, bbox_inches="tight")
+    pyplot.clf()
 
     return filename

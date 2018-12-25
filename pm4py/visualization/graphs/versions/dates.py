@@ -2,8 +2,9 @@ from matplotlib import pyplot
 
 from pm4py.visualization.graphs.util import common
 
-CASE_DURATION_LABEL = "Case duration"
+TIMESTAMP_LABEL = "Date"
 DENSITY_LABEL = "Density"
+
 
 def apply_plot(x, y, parameters=None):
     """
@@ -32,8 +33,9 @@ def apply_plot(x, y, parameters=None):
 
     pyplot.clf()
     pyplot.plot(x, y)
-    pyplot.xlabel(CASE_DURATION_LABEL)
+    pyplot.xlabel(TIMESTAMP_LABEL)
     pyplot.ylabel(DENSITY_LABEL)
+    pyplot.xticks(rotation=90)
     pyplot.savefig(filename, bbox_inches="tight")
     pyplot.clf()
 
@@ -67,8 +69,9 @@ def apply_semilogx(x, y, parameters=None):
 
     pyplot.clf()
     pyplot.semilogx(x, y)
-    pyplot.xlabel(CASE_DURATION_LABEL)
+    pyplot.xlabel(TIMESTAMP_LABEL)
     pyplot.ylabel(DENSITY_LABEL)
+    pyplot.xticks(rotation=90)
     pyplot.savefig(filename, bbox_inches="tight")
     pyplot.clf()
 
