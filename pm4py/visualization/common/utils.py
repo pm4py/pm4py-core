@@ -1,3 +1,5 @@
+import base64
+
 MAX_EDGE_PENWIDTH_GRAPHVIZ = 2.6
 MIN_EDGE_PENWIDTH_GRAPHVIZ = 1.0
 
@@ -80,3 +82,40 @@ def get_trans_freq_color(trans_count, min_trans_count, max_trans_count):
     trans_base_color = int(255 - 100 * (trans_count - min_trans_count) / (max_trans_count - min_trans_count + 0.00001))
     trans_base_color_hex = str(hex(trans_base_color))[2:].upper()
     return "#" + trans_base_color_hex + trans_base_color_hex + "FF"
+
+
+def get_base64_from_gviz(gviz):
+    """
+    Get base 64 from string content of the file
+
+    Parameters
+    -----------
+    gviz
+        Graphviz diagram
+
+    Returns
+    -----------
+    base64
+        Base64 string
+    """
+    render = gviz.render(view=False)
+    with open(render, "rb") as f:
+        return base64.b64encode(f.read())
+
+
+def get_base64_from_file(temp_file):
+    """
+    Get base 64 from string content of the file
+
+    Parameters
+    -----------
+    temp_file
+        Temporary file path
+
+    Returns
+    -----------
+    base64
+        Base64 string
+    """
+    with open(temp_file, "rb") as f:
+        return base64.b64encode(f.read())
