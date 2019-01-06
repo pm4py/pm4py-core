@@ -27,3 +27,8 @@ PAR_CUT_CONSTANT = 0
 
 # default noise threshold
 NOISE_THRESHOLD = 0.0
+
+# recursion limit for IMDF
+REC_LIMIT = 100000
+# maximum threads execution time for reduction
+RED_MAX_THR_EX_TIME = 10
