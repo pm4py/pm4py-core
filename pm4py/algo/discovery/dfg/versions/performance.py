@@ -1,5 +1,5 @@
 from collections import Counter
-from statistics import mean, median, stdev
+from Lib.statistics import mean, median, stdev
 
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
