@@ -13,10 +13,7 @@ from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.objects.conversion.tree_to_petri import factory as tree_to_petri
 from pm4py.objects.log.util import xes as xes_util
 
-REC_LIMIT = 100000
-RED_MAX_THR_EX_TIME = 10
-
-sys.setrecursionlimit(100000)
+sys.setrecursionlimit(shared_constants.REC_LIMIT)
 
 
 def apply(trace_log, parameters):
@@ -67,8 +64,10 @@ def apply(trace_log, parameters):
 
     if enable_reduction:
         reduction_parameters = copy(parameters)
-        reduction_parameters["is_reduction"] = True
-        reduction_parameters["thread_maximum_ex_time"] = RED_MAX_THR_EX_TIME
+        if "is_reduction" not in reduction_parameters:
+            reduction_parameters["is_reduction"] = True
+        if "thread_maximum_ex_time" not in reduction_parameters:
+            reduction_parameters["thread_maximum_ex_time"] = shared_constants.RED_MAX_THR_EX_TIME
 
         # do the replay
         aligned_traces = token_replay.apply(trace_log, net, initial_marking, final_marking,
