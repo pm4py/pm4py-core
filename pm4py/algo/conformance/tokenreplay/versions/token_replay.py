@@ -7,13 +7,21 @@ from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.petri import semantics
 from pm4py.util import constants
 
-MAX_REC_DEPTH = 50
-MAX_IT_FINAL = 10
-MAX_REC_DEPTH_HIDTRANSENABL = 5
+MAX_REC_DEPTH = 18
+MAX_IT_FINAL1 = 5
+MAX_IT_FINAL2 = 5
+MAX_REC_DEPTH_HIDTRANSENABL = 2
 MAX_POSTFIX_SUFFIX_LENGTH = 20
 MAX_NO_THREADS = 1000
 ENABLE_POSTFIX_CACHE = False
 ENABLE_MARKTOACT_CACHE = False
+
+
+class DebugConst:
+    REACH_MRD = -1
+    REACH_MRH = -1
+    REACH_ITF1 = -1
+    REACH_ITF2 = -1
 
 
 class NoConceptNameException(Exception):
@@ -107,6 +115,8 @@ def get_hidden_trans_reached_trans(t, net, rec_depth):
     reach_trans = {}
     if rec_depth > MAX_REC_DEPTH:
         return reach_trans
+    #if rec_depth > DebugConst.REACH_MRD:
+    #    DebugConst.REACH_MRD = rec_depth
     for a1 in t.out_arcs:
         place = a1.target
         for a2 in place.out_arcs:
@@ -157,6 +167,8 @@ def get_places_shortest_path(net, place_to_populate, current_place, places_short
     """
     if rec_depth > MAX_REC_DEPTH:
         return places_shortest_path
+    #if rec_depth > DebugConst.REACH_MRD:
+    #    DebugConst.REACH_MRD = rec_depth
     if place_to_populate not in places_shortest_path:
         places_shortest_path[place_to_populate] = {}
     for t in current_place.out_arcs:
@@ -318,6 +330,8 @@ def apply_hidden_trans(t, net, marking, places_shortest_paths_by_hidden, act_tr,
     """
     if rec_depth >= MAX_REC_DEPTH_HIDTRANSENABL or t in visit_trans:
         return [net, marking, act_tr, vis_mark]
+    #if rec_depth > DebugConst.REACH_MRH:
+    #    DebugConst.REACH_MRH = rec_depth
     visit_trans.add(t)
     marking_at_start = copy(marking)
     places_with_missing = get_places_with_missing_tokens(t, marking)
@@ -552,7 +566,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                      ""])
 
     if try_to_reach_final_marking_through_hidden and not used_postfix_cache:
-        for i in range(MAX_IT_FINAL):
+        for i in range(MAX_IT_FINAL1):
             if not break_condition_final_marking(marking, final_marking):
                 hidden_transitions_to_enable = get_req_transitions_for_final_marking(marking, final_marking,
                                                                                      places_shortest_path_by_hidden)
@@ -568,6 +582,9 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             else:
                 break
 
+        #if i > DebugConst.REACH_ITF1:
+        #    DebugConst.REACH_ITF1 = i
+
         # try to reach the final marking in a different fashion, if not already reached
         if not break_condition_final_marking(marking, final_marking):
             if len(final_marking) == 1:
@@ -579,7 +596,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         connections_to_sink.append([place, places_shortest_path_by_hidden[place][sink_place]])
                 connections_to_sink = sorted(connections_to_sink, key=lambda x: len(x[1]))
 
-                for i in range(MAX_IT_FINAL):
+                for i in range(MAX_IT_FINAL2):
                     for j in range(len(connections_to_sink)):
                         for z in range(len(connections_to_sink[j][1])):
                             t = connections_to_sink[j][1][z]
@@ -590,6 +607,9 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                                 continue
                             else:
                                 break
+
+                #if i > DebugConst.REACH_ITF2:
+                #    DebugConst.REACH_ITF2 = i
 
     marking_before_cleaning = copy(marking)
 
