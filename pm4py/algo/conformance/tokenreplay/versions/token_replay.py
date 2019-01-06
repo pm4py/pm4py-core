@@ -12,7 +12,7 @@ MAX_IT_FINAL1 = 5
 MAX_IT_FINAL2 = 5
 MAX_REC_DEPTH_HIDTRANSENABL = 2
 MAX_POSTFIX_SUFFIX_LENGTH = 20
-MAX_NO_THREADS = 1000
+MAX_NO_THREADS = 512
 MAX_DEF_THR_EX_TIME = 10
 ENABLE_POSTFIX_CACHE = False
 ENABLE_MARKTOACT_CACHE = False
@@ -720,6 +720,7 @@ class ApplyTraceTokenReplay(Thread):
         thread_maximum_ex_time
             Alignment threads maximum allowed execution time
         """
+        self.thread_is_alive = True
         self.trace = trace
         self.net = net
         self.initial_marking = initial_marking
@@ -773,6 +774,7 @@ class ApplyTraceTokenReplay(Thread):
                         thread_maximum_ex_time=self.thread_maximum_ex_time,
                         enable_postfix_cache=self.enable_postfix_cache,
                         enable_marktoact_cache=self.enable_marktoact_cache)
+        self.thread_is_alive = False
 
 
 class PostFixCaching:
@@ -793,6 +795,49 @@ class MarkingToActivityCaching:
     def __init__(self):
         self.cache = 0
         self.cache = {}
+
+
+def check_threads(net, threads, threads_results, is_reduction=False):
+    """
+    Check threads aliveness and terminate them accordingly
+
+    Parameters
+    ------------
+    net
+        Petri net
+    threads
+        Current opened threads
+    threads_results
+        Threads execution result (to be returned)
+    is_reduction
+        Is a reduction happening
+
+    Returns
+    ------------
+    threads
+        Current opened threads
+    threads_results
+        Threads execution result
+    """
+    threads_keys = list(threads.keys())
+    terminated_threads_keys = [tk for tk in threads_keys if threads[tk].thread_is_alive is False]
+    for tk in terminated_threads_keys:
+        t = threads[tk]
+        threads_results[tk] = {"trace_is_fit": copy(t.t_fit),
+                               "trace_fitness": copy(t.t_value),
+                               "activated_transitions": copy(t.act_trans),
+                               "reached_marking": copy(t.reached_marking),
+                               "enabled_transitions_in_marking": copy(
+                                   t.enabled_trans_in_mark),
+                               "transitions_with_problems": copy(
+                                   t.trans_probl),
+                               "missing_tokens": t.missing,
+                               "consumed_tokens": t.consumed,
+                               "remaining_tokens": t.remaining,
+                               "produced_tokens": t.produced}
+        del threads_keys[threads_keys.index(tk)]
+        del threads[tk]
+    return threads, threads_results
 
 
 def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=False, consider_remaining_in_fitness=False,
@@ -861,24 +906,12 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                 for i in range(len(vc)):
                     variant = vc[i][0]
                     threads_keys = list(threads.keys())
-                    if len(threads_keys) > MAX_NO_THREADS:
-                        for j in range(len(threads_keys)):
-                            t = threads[threads_keys[j]]
-                            t.join()
-                            threads_results[threads_keys[j]] = {"trace_is_fit": copy(t.t_fit),
-                                                                "trace_fitness": copy(t.t_value),
-                                                                "activated_transitions": copy(t.act_trans),
-                                                                "reached_marking": copy(t.reached_marking),
-                                                                "enabled_transitions_in_marking": copy(
-                                                                    t.enabled_trans_in_mark),
-                                                                "transitions_with_problems": copy(
-                                                                    t.trans_probl),
-                                                                "missing_tokens": t.missing,
-                                                                "consumed_tokens": t.consumed,
-                                                                "remaining_tokens": t.remaining,
-                                                                "produced_tokens": t.produced}
-                            del threads[threads_keys[j]]
-                        del threads_keys
+                    while len(threads_keys) > MAX_NO_THREADS:
+                        threads, threads_results = check_threads(net, threads, threads_results,
+                                                                 is_reduction=is_reduction)
+                        threads_keys = list(threads.keys())
+                    threads, threads_results = check_threads(net, threads, threads_results,
+                                                             is_reduction=is_reduction)
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
                                                              trans_map, enable_place_fitness, place_fitness_per_trace,
                                                              places_shortest_path_by_hidden,
