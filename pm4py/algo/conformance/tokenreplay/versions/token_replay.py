@@ -13,6 +13,7 @@ MAX_IT_FINAL2 = 5
 MAX_REC_DEPTH_HIDTRANSENABL = 2
 MAX_POSTFIX_SUFFIX_LENGTH = 20
 MAX_NO_THREADS = 1000
+MAX_DEF_THR_EX_TIME = 10
 ENABLE_POSTFIX_CACHE = False
 ENABLE_MARKTOACT_CACHE = False
 
@@ -444,7 +445,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
                 try_to_reach_final_marking_through_hidden=True, stop_immediately_unfit=False,
                 walk_through_hidden_trans=True, post_fix_caching=None,
-                marking_to_activity_caching=None):
+                marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
+                enable_postfix_cache=False, enable_marktoact_cache=False):
     """
     Apply the token replaying algorithm to a trace
 
@@ -480,6 +482,14 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         Stores the post fix caching object
     marking_to_activity_caching
         Stores the marking-to-activity cache
+    is_reduction
+        Expresses if the token-based replay is called in a reduction attempt
+    thread_maximum_ex_time
+        Alignment threads maximum allowed execution time
+    enable_postfix_cache
+        Enables postfix cache
+    enable_marktoact_cache
+        Enables marking to activity cache
     """
     trace_activities = [event[activity_key] for event in trace]
     act_trans = []
@@ -494,7 +504,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     consumed = 0
     produced = 0
     for i in range(len(trace)):
-        if ENABLE_POSTFIX_CACHE and (str(trace_activities) in post_fix_caching.cache and
+        if enable_postfix_cache and (str(trace_activities) in post_fix_caching.cache and
                                      hash(marking) in post_fix_caching.cache[str(trace_activities)]):
             trans_to_act = post_fix_caching.cache[str(trace_activities)][hash(marking)]["trans_to_activate"]
             for z in range(len(trans_to_act)):
@@ -505,7 +515,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             break
         else:
             prev_len_activated_transitions = len(act_trans)
-            if ENABLE_MARKTOACT_CACHE and (hash(marking) in marking_to_activity_caching.cache and
+            if enable_marktoact_cache and (hash(marking) in marking_to_activity_caching.cache and
                                            trace[i][activity_key] in marking_to_activity_caching.cache[hash(marking)]
                                            and trace[i - 1][activity_key] ==
                                            marking_to_activity_caching.cache[hash(marking)][trace[i][activity_key]]
@@ -673,9 +683,42 @@ class ApplyTraceTokenReplay(Thread):
                  places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
                  reach_mark_through_hidden=True, stop_immediately_when_unfit=False,
                  walk_through_hidden_trans=True, post_fix_caching=None,
-                 marking_to_activity_caching=None):
+                 marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME):
         """
         Constructor
+
+        net
+            Petri net
+        initial_marking
+            Initial marking
+        final_marking
+            Final marking
+        trans_map
+            Map between transitions labels and transitions
+        enable_place_fitness
+            Enable fitness calculation at place level
+        place_fitness
+            Current dictionary of places associated with unfit traces
+        places_shortest_path_by_hidden
+            Shortest paths between places by hidden transitions
+        consider_remaining_in_fitness
+            Boolean value telling if the remaining tokens should be considered in fitness evaluation
+        activity_key
+            Name of the attribute that contains the activity
+        try_to_reach_final_marking_through_hidden
+            Boolean value that decides if we shall try to reach the final marking through hidden transitions
+        stop_immediately_unfit
+            Boolean value that decides if we shall stop immediately when a non-conformance is detected
+        walk_through_hidden_trans
+            Boolean value that decides if we shall walk through hidden transitions in order to enable visible transitions
+        post_fix_caching
+            Stores the post fix caching object
+        marking_to_activity_caching
+            Stores the marking-to-activity cache
+        is_reduction
+            Expresses if the token-based replay is called in a reduction attempt
+        thread_maximum_ex_time
+            Alignment threads maximum allowed execution time
         """
         self.trace = trace
         self.net = net
@@ -692,6 +735,13 @@ class ApplyTraceTokenReplay(Thread):
         self.walk_through_hidden_trans = walk_through_hidden_trans
         self.post_fix_caching = post_fix_caching
         self.marking_to_activity_caching = marking_to_activity_caching
+        self.is_reduction = is_reduction
+        self.thread_maximum_ex_time = thread_maximum_ex_time
+        self.enable_postfix_cache = ENABLE_POSTFIX_CACHE
+        self.enable_marktoact_cache = ENABLE_MARKTOACT_CACHE
+        if self.is_reduction:
+            self.enable_postfix_cache = True
+            self.enable_marktoact_cache = True
         self.t_fit = None
         self.t_value = None
         self.act_trans = None
@@ -718,7 +768,11 @@ class ApplyTraceTokenReplay(Thread):
                         stop_immediately_unfit=self.stop_immediately_when_unfit,
                         walk_through_hidden_trans=self.walk_through_hidden_trans,
                         post_fix_caching=self.post_fix_caching,
-                        marking_to_activity_caching=self.marking_to_activity_caching)
+                        marking_to_activity_caching=self.marking_to_activity_caching,
+                        is_reduction=self.is_reduction,
+                        thread_maximum_ex_time=self.thread_maximum_ex_time,
+                        enable_postfix_cache=self.enable_postfix_cache,
+                        enable_marktoact_cache=self.enable_marktoact_cache)
 
 
 class PostFixCaching:
@@ -741,42 +795,10 @@ class MarkingToActivityCaching:
         self.cache = {}
 
 
-"""
-    net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    trans_map
-        Map between transitions labels and transitions
-    enable_place_fitness
-        Enable fitness calculation at place level
-    place_fitness
-        Current dictionary of places associated with unfit traces
-    places_shortest_path_by_hidden
-        Shortest paths between places by hidden transitions
-    consider_remaining_in_fitness
-        Boolean value telling if the remaining tokens should be considered in fitness evaluation
-    activity_key
-        Name of the attribute that contains the activity
-    try_to_reach_final_marking_through_hidden
-        Boolean value that decides if we shall try to reach the final marking through hidden transitions
-    stop_immediately_unfit
-        Boolean value that decides if we shall stop immediately when a non-conformance is detected
-    walk_through_hidden_trans
-        Boolean value that decides if we shall walk through hidden transitions in order to enable visible transitions
-    post_fix_caching
-        Stores the post fix caching object
-    marking_to_activity_caching
-        Stores the marking-to-activity cache
-        """
-
-
 def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=False, consider_remaining_in_fitness=False,
               activity_key="concept:name", reach_mark_through_hidden=True, stop_immediately_unfit=False,
               walk_through_hidden_trans=True, places_shortest_path_by_hidden=None,
-              variants=None):
+              variants=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME):
     """
     Apply token-based replay to a log
 
@@ -806,6 +828,10 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
         Shortest paths between places by hidden transitions
     variants
         List of variants contained in the event log
+    is_reduction
+        Expresses if the token-based replay is called in a reduction attempt
+    thread_maximum_ex_time
+        Alignment threads maximum allowed execution time
     """
     post_fix_cache = PostFixCaching()
     marking_to_activity_cache = MarkingToActivityCaching()
@@ -862,7 +888,9 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                                                              stop_immediately_when_unfit=stop_immediately_unfit,
                                                              walk_through_hidden_trans=walk_through_hidden_trans,
                                                              post_fix_caching=post_fix_cache,
-                                                             marking_to_activity_caching=marking_to_activity_cache)
+                                                             marking_to_activity_caching=marking_to_activity_cache,
+                                                             is_reduction=is_reduction,
+                                                             thread_maximum_ex_time=thread_maximum_ex_time)
                     threads[variant].start()
                 threads_keys = list(threads.keys())
                 for j in range(len(threads_keys)):
@@ -881,9 +909,9 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                     del threads[threads_keys[j]]
                 for trace in log:
                     trace_variant = ",".join([x[activity_key] for x in trace])
-                    t = threads_results[trace_variant]
-
-                    aligned_traces.append(t)
+                    if trace_variant in threads_results:
+                        t = threads_results[trace_variant]
+                        aligned_traces.append(t)
             else:
                 raise NoConceptNameException("at least an event is without " + activity_key)
 
@@ -918,6 +946,8 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     try_to_reach_final_marking_through_hidden = True
     stop_immediately_unfit = False
     walk_through_hidden_trans = True
+    is_reduction = False
+    thread_maximum_ex_time = MAX_DEF_THR_EX_TIME
     places_shortest_path_by_hidden = None
     activity_key = xes_util.DEFAULT_NAME_KEY
     variants = None
@@ -933,6 +963,10 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     if "walk_through_hidden_trans" in parameters:
         walk_through_hidden_trans = parameters[
             "walk_through_hidden_trans"]
+    if "is_reduction" in parameters:
+        is_reduction = parameters["is_reduction"]
+    if "thread_maximum_ex_time" in parameters:
+        thread_maximum_ex_time = parameters["thread_maximum_ex_time"]
     if "places_shortest_path_by_hidden" in parameters:
         places_shortest_path_by_hidden = parameters["places_shortest_path_by_hidden"]
     if "variants" in parameters:
@@ -946,4 +980,4 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
                      stop_immediately_unfit=stop_immediately_unfit,
                      walk_through_hidden_trans=walk_through_hidden_trans,
                      places_shortest_path_by_hidden=places_shortest_path_by_hidden, activity_key=activity_key,
-                     variants=variants)
+                     variants=variants, is_reduction=is_reduction, thread_maximum_ex_time=thread_maximum_ex_time)
