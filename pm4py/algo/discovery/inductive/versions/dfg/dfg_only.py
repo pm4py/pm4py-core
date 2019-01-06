@@ -1,5 +1,6 @@
 import sys
 from collections import Counter
+from copy import copy
 
 from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
@@ -12,7 +13,7 @@ from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.objects.conversion.tree_to_petri import factory as tree_to_petri
 from pm4py.objects.log.util import xes as xes_util
 
-sys.setrecursionlimit(100000)
+sys.setrecursionlimit(shared_constants.REC_LIMIT)
 
 
 def apply(trace_log, parameters):
@@ -62,8 +63,15 @@ def apply(trace_log, parameters):
                                                     contains_empty_traces=contains_empty_traces)
 
     if enable_reduction:
+        reduction_parameters = copy(parameters)
+        if "is_reduction" not in reduction_parameters:
+            reduction_parameters["is_reduction"] = True
+        if "thread_maximum_ex_time" not in reduction_parameters:
+            reduction_parameters["thread_maximum_ex_time"] = shared_constants.RED_MAX_THR_EX_TIME
+
         # do the replay
-        aligned_traces = token_replay.apply(trace_log, net, initial_marking, final_marking, parameters=parameters)
+        aligned_traces = token_replay.apply(trace_log, net, initial_marking, final_marking,
+                                            parameters=reduction_parameters)
 
         # apply petri_reduction technique in order to simplify the Petri net
         net = petri_cleaning.petri_reduction_treplay(net, parameters={"aligned_traces": aligned_traces})
