@@ -1,10 +1,15 @@
 from collections import Counter
-from Lib.statistics import mean, median, stdev
 
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
+
+# emergency fix to be refactored
+try:
+    from Lib.statistics import mean, median, stdev
+except:
+    from statistics import mean, median, stdev
 
 
 def apply(trace_log, parameters=None):
