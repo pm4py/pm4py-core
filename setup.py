@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pm4py',
-    version='1.0.1',
+    version='1.0.3',
     packages=['pm4py', 'pm4py.algo', 'pm4py.algo.other', 'pm4py.algo.other.simple', 'pm4py.algo.other.simple.model',
               'pm4py.algo.other.simple.model.pandas', 'pm4py.algo.other.simple.model.pandas.versions',
               'pm4py.algo.other.simple.model.tracelog', 'pm4py.algo.other.simple.model.tracelog.versions',
@@ -70,6 +70,7 @@ setup(
         'graphviz',
         'pandas',
         'networkx==1.11',
-        'scipy'
+        'scipy',
+        'matplotlib'
     ]
 )
