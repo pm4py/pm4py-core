@@ -10,3 +10,4 @@ pandas
 sklearn
 networkx==1.11
 scipy
+matplotlib
