@@ -99,7 +99,7 @@ class RandomVariableTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         const = Constant0()
-        values = [0.0000001, -0.0000001, 0.0000002]
+        values = [0.0000001, 0.0000001, 0.0000002]
         loglikeli = const.calculate_loglikelihood(values)
         if abs(loglikeli) < 10000000:
             raise Exception("problem in managing constant variables")
