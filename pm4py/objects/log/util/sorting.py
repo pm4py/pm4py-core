@@ -170,4 +170,4 @@ def sort_lambda(log, sort_function, reverse=False):
     """
     if type(log) is TraceLog:
         return sort_lambda_tracelog(log, sort_function, reverse=reverse)
-    return sort_lambda_eventlog(log, sort_function)
+    return sort_lambda_eventlog(log, sort_function, reverse=reverse)
