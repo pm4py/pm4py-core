@@ -20,6 +20,8 @@ VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.g
 def apply(obj, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
     if isinstance(obj, pm4py.objects.log.log.Trace):
         return apply_trace(obj, petri_net, initial_marking, final_marking, parameters, version)
+    elif isinstance(obj, pm4py.objects.log.log.TraceLog):
+        return apply_log(obj, petri_net, initial_marking, final_marking, parameters, version)
     elif isinstance(obj, pm4py.objects.log.log.EventLog):
         if log_util.PARAMETER_KEY_CASE_GLUE in parameters:
             glue = parameters[log_util.PARAMETER_KEY_CASE_GLUE]
