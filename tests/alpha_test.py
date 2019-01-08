@@ -43,10 +43,10 @@ class AlphaMinerTest(unittest.TestCase):
             os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughAlphaMiner(
             os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        log1 = sorting.sort(log1)
+        log1 = sorting.sort_timestamp(log1)
         log1 = sampling.sample(log1)
         log1 = index_attribute.insert_trace_index_as_event_attribute(log1)
-        log2 = sorting.sort(log2)
+        log2 = sorting.sort_timestamp(log2)
         log2 = sampling.sample(log2)
         log2 = index_attribute.insert_trace_index_as_event_attribute(log2)
         self.assertEqual(log2, log2)
@@ -72,10 +72,10 @@ class AlphaMinerTest(unittest.TestCase):
             os.path.join(INPUT_DATA_DIR, "running-example.csv"))
         log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughAlphaMiner(
             os.path.join(INPUT_DATA_DIR, "running-example.csv"))
-        log1 = sorting.sort(log1)
+        log1 = sorting.sort_timestamp(log1)
         log1 = sampling.sample(log1)
         log1 = index_attribute.insert_trace_index_as_event_attribute(log1)
-        log2 = sorting.sort(log2)
+        log2 = sorting.sort_timestamp(log2)
         log2 = sampling.sample(log2)
         log2 = index_attribute.insert_trace_index_as_event_attribute(log2)
         petri_exporter.export_net(net1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
@@ -96,7 +96,7 @@ class AlphaMinerTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         log, net, marking, fmarking = self.obtainPetriNetThroughAlphaMiner(
             os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        log = sorting.sort(log)
+        log = sorting.sort_timestamp(log)
         log = sampling.sample(log)
         log = index_attribute.insert_trace_index_as_event_attribute(log)
         petri_exporter.export_net(net, marking, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
