@@ -94,31 +94,6 @@ class EventLog(Sequence):
         """
         self._list.sort(key=lambda x: x[timestamp_key], reverse=reverse_sort)
 
-    def sample(self, no_events=100):
-        """
-        Randomly sample a fixed number of events from the original log
-
-        Parameters
-        -----------
-        no_events
-            Number of events that the sample should have
-
-        Returns
-        -----------
-        newLog
-            Filtered log
-        """
-        new_log = EventLog(attributes=self.attributes, extensions=self.extensions, globals=self._omni,
-                           classifiers=self.classifiers)
-        set_events = set()
-        for i in range(0, min(no_events, len(self._list))):
-            set_events.add(random.randrange(0, len(self._list)))
-        set_events = list(set_events)
-        set_events.sort()
-        for event in set_events:
-            new_log.append(copy(self._list[event]))
-        return new_log
-
     def insert_event_index_as_event_attribute(self, event_index_attr_name="@@eventindex"):
         """
         Insert the current event index as event attribute
@@ -219,31 +194,6 @@ class TraceLog(EventLog):
         for trace in self._list:
             trace.sort(timestamp_key=timestamp_key, reverse_sort=reverse_sort)
         self._list.sort(key=lambda x: x[0][timestamp_key], reverse=reverse_sort)
-
-    def sample(self, no_traces=100):
-        """
-        Randomly sample a fixed number of traces from the original log
-
-        Parameters
-        -----------
-        no_traces
-            Number of traces that the sample should have
-
-        Returns
-        -----------
-        newLog
-            Filtered log
-        """
-        new_log = TraceLog(attributes=self.attributes, extensions=self.extensions, globals=self._omni,
-                           classifiers=self.classifiers)
-        set_traces = set()
-        for i in range(0, min(no_traces, len(self._list))):
-            set_traces.add(random.randrange(0, len(self._list)))
-        set_traces = list(set_traces)
-        set_traces.sort()
-        for trace in set_traces:
-            new_log.append(copy(self._list[trace]))
-        return new_log
 
     def insert_trace_index_as_event_attribute(self, trace_index_attr_name="@@traceindex"):
         """
