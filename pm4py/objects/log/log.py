@@ -79,20 +79,6 @@ class EventLog(Sequence):
     def _get_classifiers(self):
         return self._classifiers
 
-    def insert_event_index_as_event_attribute(self, event_index_attr_name="@@eventindex"):
-        """
-        Insert the current event index as event attribute
-
-        Parameters
-        -----------
-        event_index_attr_name
-            Attribute name given to the event index
-        """
-
-        if not type(self) is TraceLog:
-            for i in range(0, len(self._list)):
-                self._list[i][event_index_attr_name] = i + 1
-
     attributes = property(_get_attributes)
     extensions = property(_get_extensions)
     omni_present = property(_get_omni)
@@ -150,17 +136,3 @@ class Trace(Sequence):
 class TraceLog(EventLog):
     def __init__(self, *args, **kwargs):
         super(TraceLog, self).__init__(*args, **kwargs)
-
-    def insert_trace_index_as_event_attribute(self, trace_index_attr_name="@@traceindex"):
-        """
-        Inserts the current trace index as event attribute
-        (overrides previous values if needed)
-
-        Parameters
-        -----------
-        trace_index_attr_name
-            Attribute name given to the trace index
-        """
-        for i in range(len(self._list)):
-            for j in range(len(self._list[i])):
-                self._list[i][j][trace_index_attr_name] = i + 1
