@@ -55,9 +55,6 @@ def import_log(filename, parameters=None):
     if "max_no_traces_to_import" in parameters:
         max_no_traces_to_import = parameters["max_no_traces_to_import"]
 
-    if filename.endswith("gz"):
-        filename = compression.decompress(filename)
-
     context = etree.iterparse(filename, events=['start', 'end'])
 
     log = None
