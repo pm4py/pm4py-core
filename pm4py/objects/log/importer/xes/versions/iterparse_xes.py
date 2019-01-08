@@ -1,10 +1,11 @@
-import ciso8601
 import logging
 
+import ciso8601
 from lxml import etree
 
 from pm4py.objects import log as log_lib
 from pm4py.objects.log.util import compression
+from pm4py.objects.log.util import sorting
 
 # ITERPARSE EVENTS
 EVENT_END = 'end'
@@ -204,7 +205,7 @@ def import_log(filename, parameters=None):
     del context
 
     if timestamp_sort:
-        log.sort(timestamp_key=timestamp_key, reverse_sort=reverse_sort)
+        log = sorting.sort(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
     if insert_trace_indexes:
         log.insert_trace_index_as_event_attribute()
 

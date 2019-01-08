@@ -26,7 +26,6 @@ def sample_eventlog(event_log, no_events=100):
     for i in range(0, min(no_events, len(event_log._list))):
         set_events.add(random.randrange(0, len(event_log._list)))
     set_events = list(set_events)
-    set_events.sort()
     for event in set_events:
         new_log.append(copy(event_log._list[event]))
     return new_log
@@ -54,7 +53,6 @@ def sample_tracelog(trace_log, no_traces=100):
     for i in range(0, min(no_traces, len(trace_log._list))):
         set_traces.add(random.randrange(0, len(trace_log._list)))
     set_traces = list(set_traces)
-    set_traces.sort()
     for trace in set_traces:
         new_log.append(copy(trace_log._list[trace]))
     return new_log
