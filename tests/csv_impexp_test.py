@@ -16,11 +16,11 @@ class CsvImportExportTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         event_log = csv_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.csv"))
-        event_log = sorting.sort(event_log)
+        event_log = sorting.sort_timestamp(event_log)
         event_log = sampling.sample(event_log)
         event_log = index_attribute.insert_event_index_as_event_attribute(event_log)
         trace_log = log_transform.transform_event_log_to_trace_log(event_log)
-        trace_log = sorting.sort(trace_log)
+        trace_log = sorting.sort_timestamp(trace_log)
         trace_log = sampling.sample(trace_log)
         trace_log = index_attribute.insert_trace_index_as_event_attribute(trace_log)
         xes_exporter.export_log(trace_log, os.path.join(OUTPUT_DATA_DIR, "running-example-exported.xes"))
@@ -34,11 +34,11 @@ class CsvImportExportTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         event_log = csv_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.csv"))
-        event_log = sorting.sort(event_log)
+        event_log = sorting.sort_timestamp(event_log)
         event_log = sampling.sample(event_log)
         event_log = index_attribute.insert_event_index_as_event_attribute(event_log)
         trace_log = log_transform.transform_event_log_to_trace_log(event_log)
-        trace_log = sorting.sort(trace_log)
+        trace_log = sorting.sort_timestamp(trace_log)
         trace_log = sampling.sample(trace_log)
         trace_log = index_attribute.insert_trace_index_as_event_attribute(trace_log)
         event_log_transformed = log_transform.transform_trace_log_to_event_log(trace_log)

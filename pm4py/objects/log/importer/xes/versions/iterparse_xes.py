@@ -205,7 +205,7 @@ def import_log(filename, parameters=None):
     del context
 
     if timestamp_sort:
-        log = sorting.sort(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
+        log = sorting.sort_timestamp(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
     if insert_trace_indexes:
         log.insert_trace_index_as_event_attribute()
 
