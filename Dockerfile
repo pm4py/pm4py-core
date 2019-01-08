@@ -18,6 +18,7 @@ RUN pip install flask
 RUN pip install flask-cors
 RUN pip install matplotlib
 RUN pip install networkx==1.11
+RUN pip install sklearn
 
 COPY . /app
 
