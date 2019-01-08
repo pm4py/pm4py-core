@@ -9,9 +9,10 @@ from pm4py.algo.discovery.inductive import factory as inductive_miner
 from pm4py.objects import petri
 from pm4py.objects.log.importer.csv import factory as csv_importer
 from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.objects.log.util import sampling, sorting, index_attribute
+from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import pnml as petri_exporter
 from pm4py.visualization.petrinet.common import visualize as pn_viz
-from pm4py.objects.petri import check_soundness
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 
 
@@ -28,7 +29,7 @@ class InductiveMinerDFTest(unittest.TestCase):
         net, marking, final_marking = inductive_miner.apply(trace_log, None)
         soundness = check_soundness.check_petri_wfnet_and_soundness(net)
         del soundness
-        
+
         return trace_log, net, marking, final_marking
 
     def test_applyImdfToXES(self):
@@ -41,12 +42,12 @@ class InductiveMinerDFTest(unittest.TestCase):
             os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughImdf(
             os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        log1.sort()
-        log1 = log1.sample()
-        log1.insert_trace_index_as_event_attribute()
-        log2.sort()
-        log2 = log2.sample()
-        log2.insert_trace_index_as_event_attribute()
+        log1 = sorting.sort(log1)
+        log1 = sampling.sample(log1)
+        log1 = index_attribute.insert_trace_index_as_event_attribute(log1)
+        log2 = sorting.sort(log2)
+        log2 = sampling.sample(log2)
+        log2 = index_attribute.insert_trace_index_as_event_attribute(log2)
         petri_exporter.export_net(net1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         self.assertEqual(len(net1.places), len(net2.places))
@@ -67,12 +68,12 @@ class InductiveMinerDFTest(unittest.TestCase):
             os.path.join(INPUT_DATA_DIR, "running-example.csv"))
         log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughImdf(
             os.path.join(INPUT_DATA_DIR, "running-example.csv"))
-        log1.sort()
-        log1 = log1.sample()
-        log1.insert_trace_index_as_event_attribute()
-        log2.sort()
-        log2 = log2.sample()
-        log2.insert_trace_index_as_event_attribute()
+        log1 = sorting.sort(log1)
+        log1 = sampling.sample(log1)
+        log1 = index_attribute.insert_trace_index_as_event_attribute(log1)
+        log2 = sorting.sort(log2)
+        log2 = sampling.sample(log2)
+        log2 = index_attribute.insert_trace_index_as_event_attribute(log2)
         petri_exporter.export_net(net1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         self.assertEqual(len(net1.places), len(net2.places))
@@ -89,9 +90,9 @@ class InductiveMinerDFTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         log, net, marking, fmarking = self.obtainPetriNetThroughImdf(
             os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        log.sort()
-        log = log.sample()
-        log.insert_trace_index_as_event_attribute()
+        log = sorting.sort(log)
+        log = sampling.sample(log)
+        log = index_attribute.insert_trace_index_as_event_attribute(log)
         petri_exporter.export_net(net, marking, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         gviz = pn_viz.graphviz_visualization(net)

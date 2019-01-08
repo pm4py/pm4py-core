@@ -1,13 +1,14 @@
-from pm4py.objects.petri.exporter import pnml as petri_exporter
-from pm4py.objects.petri.importer import pnml as petri_importer
-from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
+import os
+import unittest
+
+from pm4py.algo.conformance.alignments.versions import state_equation_a_star
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.objects import petri
 from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.conformance.alignments.versions import state_equation_a_star
 from pm4py.objects.petri import check_soundness
-import unittest
-import os
+from pm4py.objects.petri.exporter import pnml as petri_exporter
+from pm4py.objects.petri.importer import pnml as petri_importer
+from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 
 
 class PetriImportExportTest(unittest.TestCase):
