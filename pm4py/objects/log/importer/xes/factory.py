@@ -1,5 +1,6 @@
 from pm4py.objects.log.importer.xes.versions import iterparse_xes, python_nonstandard
 from pm4py.objects.log.util import string_to_file
+from pm4py.objects.log.util import compression
 
 ITERPARSE = "iterparse"
 NONSTANDARD = "nonstandard"
@@ -61,6 +62,9 @@ def import_log(path, parameters=None, variant=ITERPARSE):
     log
         Trace log object
     """
+    if path.endswith("gz"):
+        path = compression.decompress(path)
+
     return VERSIONS[variant](path, parameters=parameters)
 
 
