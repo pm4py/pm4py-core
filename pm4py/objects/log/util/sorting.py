@@ -145,7 +145,7 @@ def sort_lambda_eventlog(event_log, sort_function, reverse=False):
         Sorted Event log
     """
     new_event_log = deepcopy(event_log)
-    new_event_log.sort(key=sort_function, reverse=reverse)
+    new_event_log._list.sort(key=sort_function, reverse=reverse)
 
     return new_event_log
 
