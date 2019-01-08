@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.7-stretch
 
 RUN apt-get update
 RUN apt-get -y install nano vim
@@ -9,3 +9,4 @@ RUN apt-get -y install zip unzip
 RUN pip install -U pm4py
 RUN wget https://github.com/pm4py/pm4py-source/archive/master.zip
 RUN unzip master.zip
+
