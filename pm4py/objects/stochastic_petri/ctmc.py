@@ -39,7 +39,7 @@ def get_q_matrix_from_tangible_exponential(tangible_reach_graph, stochastic_info
                 sinfo = stochastic_info_name[trans.name]
                 lambda_value = 1.0 / float(sinfo.random_variable.scale)
                 sum_lambda = sum_lambda + lambda_value
-                q_matrix[i, target_state_index] = lambda_value
+                q_matrix[i, target_state_index] = q_matrix[i, target_state_index] + lambda_value
         q_matrix[i, i] = -sum_lambda
 
     return q_matrix
