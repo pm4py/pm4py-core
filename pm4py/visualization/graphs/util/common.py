@@ -52,7 +52,9 @@ def view(temp_file_name):
 
     if is_ipynb:
         from IPython.display import Image
-        return Image(open(temp_file_name, "rb").read())
+        image = Image(open(temp_file_name, "rb").read())
+        from IPython.display import display
+        return display(image)
     else:
         if sys.platform.startswith('darwin'):
             subprocess.call(('open', temp_file_name))
