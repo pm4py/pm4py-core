@@ -336,3 +336,30 @@ def get_places_shortest_path_by_hidden(net):
     for p in net.places:
         places_shortest_path = get_places_shortest_path(net, p, p, places_shortest_path, [], 0)
     return places_shortest_path
+
+
+def invert_spaths_dictionary(spaths):
+    """
+    Invert the shortest paths (between places) dictionary,
+    from target-source to source-target
+
+    Parameters
+    -------------
+    spaths
+        Shortest paths dictionary
+
+    Returns
+    -------------
+    inv_spaths
+        Inverted shortest paths dictionary
+    """
+    inv_spaths = {}
+    for target_place in spaths:
+        for source_place in spaths[target_place]:
+            if not source_place in inv_spaths:
+                inv_spaths[source_place] = {}
+            if not target_place in inv_spaths[source_place]:
+                inv_spaths[source_place][target_place] = set()
+            inv_spaths[source_place][target_place] = inv_spaths[source_place][target_place].union(
+                spaths[target_place][source_place])
+    return inv_spaths
