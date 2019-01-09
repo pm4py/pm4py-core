@@ -5,6 +5,7 @@ from pm4py import util as pmutil
 from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.petri import semantics
+from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden
 from pm4py.util import constants
 
 MAX_REC_DEPTH = 18
@@ -19,7 +20,6 @@ ENABLE_MARKTOACT_CACHE = False
 
 
 class DebugConst:
-    REACH_MRD = -1
     REACH_MRH = -1
     REACH_ITF1 = -1
     REACH_ITF2 = -1
@@ -116,7 +116,7 @@ def get_hidden_trans_reached_trans(t, net, rec_depth):
     reach_trans = {}
     if rec_depth > MAX_REC_DEPTH:
         return reach_trans
-    #if rec_depth > DebugConst.REACH_MRD:
+    # if rec_depth > DebugConst.REACH_MRD:
     #    DebugConst.REACH_MRD = rec_depth
     for a1 in t.out_arcs:
         place = a1.target
@@ -145,60 +145,6 @@ def get_places_with_missing_tokens(t, marking):
         if marking[a.source] < a.weight:
             places_with_missing.add(a.source)
     return places_with_missing
-
-
-def get_places_shortest_path(net, place_to_populate, current_place, places_shortest_path, actual_list, rec_depth):
-    """
-    Get shortest path between places lead by hidden transitions
-
-    Parameters
-    ----------
-    net
-        Petri net
-    place_to_populate
-        Place that we are populating the shortest map of
-    current_place
-        Current visited place (must explore its transitions)
-    places_shortest_path
-        Current dictionary
-    actual_list
-        Actual list of transitions to enable
-    rec_depth
-        Recursion depth
-    """
-    if rec_depth > MAX_REC_DEPTH:
-        return places_shortest_path
-    #if rec_depth > DebugConst.REACH_MRD:
-    #    DebugConst.REACH_MRD = rec_depth
-    if place_to_populate not in places_shortest_path:
-        places_shortest_path[place_to_populate] = {}
-    for t in current_place.out_arcs:
-        if t.target.label is None:
-            for p2 in t.target.out_arcs:
-                if p2.target not in places_shortest_path[place_to_populate] or len(actual_list) + 1 < len(
-                        places_shortest_path[place_to_populate][p2.target]):
-                    new_actual_list = copy(actual_list)
-                    new_actual_list.append(t.target)
-                    places_shortest_path[place_to_populate][p2.target] = copy(new_actual_list)
-                    places_shortest_path = get_places_shortest_path(net, place_to_populate, p2.target,
-                                                                    places_shortest_path, new_actual_list,
-                                                                    rec_depth + 1)
-    return places_shortest_path
-
-
-def get_places_shortest_path_by_hidden(net):
-    """
-    Get shortest path between places lead by hidden transitions
-
-    Parameters
-    ----------
-    net
-        Petri net
-    """
-    places_shortest_path = {}
-    for p in net.places:
-        places_shortest_path = get_places_shortest_path(net, p, p, places_shortest_path, [], 0)
-    return places_shortest_path
 
 
 def get_hidden_transitions_to_enable(marking, places_with_missing, places_shortest_path_by_hidden):
@@ -331,7 +277,7 @@ def apply_hidden_trans(t, net, marking, places_shortest_paths_by_hidden, act_tr,
     """
     if rec_depth >= MAX_REC_DEPTH_HIDTRANSENABL or t in visit_trans:
         return [net, marking, act_tr, vis_mark]
-    #if rec_depth > DebugConst.REACH_MRH:
+    # if rec_depth > DebugConst.REACH_MRH:
     #    DebugConst.REACH_MRH = rec_depth
     visit_trans.add(t)
     marking_at_start = copy(marking)
@@ -592,7 +538,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             else:
                 break
 
-        #if i > DebugConst.REACH_ITF1:
+        # if i > DebugConst.REACH_ITF1:
         #    DebugConst.REACH_ITF1 = i
 
         # try to reach the final marking in a different fashion, if not already reached
@@ -618,7 +564,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             else:
                                 break
 
-                #if i > DebugConst.REACH_ITF2:
+                # if i > DebugConst.REACH_ITF2:
                 #    DebugConst.REACH_ITF2 = i
 
     marking_before_cleaning = copy(marking)
