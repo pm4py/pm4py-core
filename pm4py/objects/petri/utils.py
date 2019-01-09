@@ -1,3 +1,5 @@
+from copy import copy
+
 import networkx as nx
 
 from pm4py.objects import petri
@@ -281,3 +283,83 @@ def get_strongly_connected_subnets(net):
             strongly_connected_subnets.append([subnet, imarking, fmarking])
 
     return strongly_connected_subnets
+
+
+def get_places_shortest_path(net, place_to_populate, current_place, places_shortest_path, actual_list, rec_depth):
+    """
+    Get shortest path between places lead by hidden transitions
+
+    Parameters
+    ----------
+    net
+        Petri net
+    place_to_populate
+        Place that we are populating the shortest map of
+    current_place
+        Current visited place (must explore its transitions)
+    places_shortest_path
+        Current dictionary
+    actual_list
+        Actual list of transitions to enable
+    rec_depth
+        Recursion depth
+    """
+    MAX_REC_DEPTH = 18
+    if rec_depth > MAX_REC_DEPTH:
+        return places_shortest_path
+    if place_to_populate not in places_shortest_path:
+        places_shortest_path[place_to_populate] = {}
+    for t in current_place.out_arcs:
+        if t.target.label is None:
+            for p2 in t.target.out_arcs:
+                if p2.target not in places_shortest_path[place_to_populate] or len(actual_list) + 1 < len(
+                        places_shortest_path[place_to_populate][p2.target]):
+                    new_actual_list = copy(actual_list)
+                    new_actual_list.append(t.target)
+                    places_shortest_path[place_to_populate][p2.target] = copy(new_actual_list)
+                    places_shortest_path = get_places_shortest_path(net, place_to_populate, p2.target,
+                                                                    places_shortest_path, new_actual_list,
+                                                                    rec_depth + 1)
+    return places_shortest_path
+
+
+def get_places_shortest_path_by_hidden(net):
+    """
+    Get shortest path between places lead by hidden transitions
+
+    Parameters
+    ----------
+    net
+        Petri net
+    """
+    places_shortest_path = {}
+    for p in net.places:
+        places_shortest_path = get_places_shortest_path(net, p, p, places_shortest_path, [], 0)
+    return places_shortest_path
+
+
+def invert_spaths_dictionary(spaths):
+    """
+    Invert the shortest paths (between places) dictionary,
+    from target-source to source-target
+
+    Parameters
+    -------------
+    spaths
+        Shortest paths dictionary
+
+    Returns
+    -------------
+    inv_spaths
+        Inverted shortest paths dictionary
+    """
+    inv_spaths = {}
+    for target_place in spaths:
+        for source_place in spaths[target_place]:
+            if not source_place in inv_spaths:
+                inv_spaths[source_place] = {}
+            if not target_place in inv_spaths[source_place]:
+                inv_spaths[source_place][target_place] = set()
+            inv_spaths[source_place][target_place] = inv_spaths[source_place][target_place].union(
+                spaths[target_place][source_place])
+    return inv_spaths
