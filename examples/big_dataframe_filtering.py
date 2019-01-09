@@ -55,7 +55,7 @@ def calculate_process_schema_from_df(dataframe, path_frequency, path_performance
     [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(dataframe, measure="both",
                                                                    perf_aggregation_key="median",
                                                                    case_id_glue=CASEID_GLUE, activity_key=ACTIVITY_KEY,
-                                                                   timestamp_key=TIMEST_KEY, sort_required=False)
+                                                                   timestamp_key=TIMEST_KEY, sort_caseid_required=False)
     net, initial_marking, final_marking = inductive_factory.apply_dfg(dfg_frequency)
     spaths = vis_trans_shortest_paths.get_shortest_paths(net)
     aggregated_statistics = vis_trans_shortest_paths.get_decorations_from_dfg_spaths_acticount(net, dfg_frequency,
