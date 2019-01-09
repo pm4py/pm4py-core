@@ -5,6 +5,29 @@ from pm4py.objects.petri.petrinet import PetriNet, Marking
 
 
 def project(net0, im0, fm0, allowed_transitions):
+    """
+    Project a Petri Net on a set of transitions provided by the user
+
+    Parameters
+    -------------
+    net0
+        Petri net
+    im0
+        Initial marking
+    fm0
+        Final marking
+    allowed_transitions
+        Sets of allowed transitions
+
+    Returns
+    -------------
+    net
+        Projected net
+    im
+        Projected initial marking
+    fm
+        Projected final marking
+    """
     [net, im1, fm1] = deepcopy([net0, im0, fm0])
 
     # keep only visible transitions that have a label in allowed_transitions
@@ -41,9 +64,10 @@ def project(net0, im0, fm0, allowed_transitions):
 
         for place in places_list:
             all_inputs = [arc.source for arc in place.in_arcs]
-            hid_input = [trans for trans in all_inputs if trans.label is None]
+            hid_input = [trans for trans in all_inputs if trans.label is None and trans.name not in allowed_transitions]
             all_outputs = [arc.target for arc in place.out_arcs]
-            hid_output = [trans for trans in all_outputs if trans.label is None]
+            hid_output = [trans for trans in all_outputs if
+                          trans.label is None and trans.name not in allowed_transitions]
 
             if len(hid_input) == len(all_inputs) and len(hid_output) == len(all_outputs):
                 net = utils.remove_place(net, place)
