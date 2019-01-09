@@ -18,6 +18,8 @@ def view(gviz):
 
     if is_ipynb:
         from IPython.display import Image
-        return Image(open(gviz.render(), "rb").read())
+        image = Image(open(gviz.render(), "rb").read())
+        from IPython.display import display
+        return display(image)
     else:
         return gviz.view()
