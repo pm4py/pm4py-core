@@ -91,6 +91,9 @@ def view(temp_file_name, parameters=None):
     parameters
         Possible parameters of the algorithm
     """
+    if parameters is None:
+        parameters = {}
+
     is_ipynb = False
 
     try:
@@ -126,4 +129,7 @@ def save(temp_file_name, dest_file, parameters=None):
     parameters
         Possible parameters of the algorithm
     """
+    if parameters is None:
+        parameters = {}
+
     shutil.copyfile(temp_file_name, dest_file)
