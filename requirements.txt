@@ -1,3 +1,6 @@
+pyviz
+networkx==1.11
+matplotlib==2.1
 numpy
 ciso8601
 cvxopt
@@ -8,6 +11,4 @@ lxml
 graphviz
 pandas
 sklearn
-networkx==1.11
 scipy
-matplotlib

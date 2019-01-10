@@ -1,8 +1,24 @@
+from os.path import dirname, join
+
 from setuptools import setup
 
+import pm4py
+
+
+def read_file(filename):
+    with open(join(dirname(__file__), filename)) as f:
+        return f.read()
+
+
 setup(
-    name='pm4py',
-    version='1.0.6',
+    name=pm4py.__name__,
+    version=pm4py.__version__,
+    description=pm4py.__doc__.strip(),
+    long_description=read_file('README'),
+    author=pm4py.__author__,
+    author_email=pm4py.__author_email__,
+    py_modules=[pm4py.__name__],
+    include_package_data=True,
     packages=['pm4py', 'pm4py.algo', 'pm4py.algo.other', 'pm4py.algo.other.simple', 'pm4py.algo.other.simple.model',
               'pm4py.algo.other.simple.model.pandas', 'pm4py.algo.other.simple.model.pandas.versions',
               'pm4py.algo.other.simple.model.tracelog', 'pm4py.algo.other.simple.model.tracelog.versions',
@@ -56,10 +72,10 @@ setup(
               'pm4py.visualization.process_tree.versions', 'tests.documentation_tests'],
     url='http://www.pm4py.org',
     license='GPL 3.0',
-    author='PADS',
-    author_email='pm4py@pads.rwth-aachen.de',
-    description='Process Mining for Python',
     install_requires=[
+        'pyviz',
+        'networkx==1.11',
+        'matplotlib==2.1'
         'numpy',
         'ciso8601',
         'cvxopt',
@@ -69,8 +85,11 @@ setup(
         'lxml',
         'graphviz',
         'pandas',
-        'networkx==1.11',
         'scipy',
-        'matplotlib'
-    ]
+    ],
+    project_urls={
+        'Documentation': 'http://pm4py.pads.rwth-aachen.de/documentation/',
+        'Source': 'https://github.com/pm4py/pm4py-source',
+        'Tracker': 'https://github.com/pm4py/pm4py-source/issues',
+    }
 )

@@ -14,6 +14,7 @@ if __name__ == "__main__":
     from tests.imdf_test import InductiveMinerDFTest
     from tests.alignment_test import AlignmentTest
     from tests.petri_imp_exp_test import PetriImportExportTest
+    from tests.random_variables_test import RandomVariableTest
     from tests.documentation_tests.test_doc_alpha1 import AlphaMinerDocumentationTest
     from tests.documentation_tests.test_doc_inductive1 import InductiveMinerDocumentationTest
     from tests.documentation_tests.test_doc_dfgraph1 import DfGraphDocumentationTest
@@ -28,7 +29,9 @@ if __name__ == "__main__":
     from tests.dataframe_prefilter import DataframePrefilteringTest
     from tests.simple_execution import SimpleExecutionTest
     from tests.graphs_forming import GraphsForming
+    from tests.sna_tests import SnaTests
 
+    test_rv = RandomVariableTest()
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
     test3_object = CsvImportExportTest()
@@ -47,6 +50,7 @@ if __name__ == "__main__":
     test20_object = ProcessModelEvaluationTests()
     test21_object = DecisionTreeTest()
     filtering_test = LogFilteringTest()
+    sna_test = SnaTests()
     prefiltering_test = DataframePrefilteringTest()
     simpleex_test = SimpleExecutionTest()
     graphforming_test = GraphsForming()

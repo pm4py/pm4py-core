@@ -69,6 +69,17 @@ class PetriImportExportTest(unittest.TestCase):
             if not is_fit:
                 raise Exception("should be fit")
 
+    def test_importingExportingStochasticNet(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
+        imported_petri1, marking1, fmarking1, stochastic_info1 = petri_importer.import_net(
+            os.path.join(INPUT_DATA_DIR, "stochastic_running_example.pnml"), return_stochastic_information=True)
+        petri_exporter.export_net(imported_petri1, marking1,
+                                  os.path.join(OUTPUT_DATA_DIR, "stochastic_running_example.pnml"),
+                                  final_marking=fmarking1, stochastic_map=stochastic_info1)
+        os.remove(os.path.join(OUTPUT_DATA_DIR, "stochastic_running_example.pnml"))
+
 
 if __name__ == "__main__":
     unittest.main()
