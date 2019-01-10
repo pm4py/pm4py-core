@@ -75,7 +75,7 @@ setup(
     install_requires=[
         'pyviz',
         'networkx==1.11',
-        'matplotlib==2.1'
+        'matplotlib==2.1',
         'numpy',
         'ciso8601',
         'cvxopt',
