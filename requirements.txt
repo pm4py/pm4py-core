@@ -1,4 +1,4 @@
-pyviz
+pyvis
 networkx==1.11
 matplotlib==2.1
 numpy
