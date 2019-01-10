@@ -73,6 +73,9 @@ setup(
     url='http://www.pm4py.org',
     license='GPL 3.0',
     install_requires=[
+        'pyviz',
+        'networkx==1.11',
+        'matplotlib==2.1'
         'numpy',
         'ciso8601',
         'cvxopt',
@@ -82,9 +85,7 @@ setup(
         'lxml',
         'graphviz',
         'pandas',
-        'networkx==1.11',
         'scipy',
-        'matplotlib'
     ],
     project_urls={
         'Documentation': 'http://pm4py.pads.rwth-aachen.de/documentation/',
