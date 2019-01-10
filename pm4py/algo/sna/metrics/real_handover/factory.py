@@ -17,5 +17,10 @@ def apply(mco, parameters=None, variant=CLASSIC):
         Parameters of the algorithm
     variant
         Variant of the algorithm: classic
+
+    Returns
+    ------------
+    rsc_rsc_matrix
+        Resource-Resource Matrix containing the Real Handover of Work metric value
     """
-    return VERSIONS[CLASSIC].apply(mco, parameters=parameters)
+    return VERSIONS[CLASSIC](mco, parameters=parameters)
