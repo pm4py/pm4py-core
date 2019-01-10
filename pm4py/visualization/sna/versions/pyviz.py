@@ -1,16 +1,12 @@
-import numpy as np
-from pyvis.network import Network
-import tempfile
-
 import os
 import shutil
 import subprocess
 import sys
 import tempfile
 
-import networkx as nx
 import numpy as np
-from matplotlib import pyplot
+from pyvis.network import Network
+
 
 def get_temp_file_name(format):
     """
@@ -24,6 +20,7 @@ def get_temp_file_name(format):
     filename = tempfile.NamedTemporaryFile(suffix='.' + format)
 
     return filename.name
+
 
 def apply(mco, rsc_rsc_matrix, parameters=None):
     """
@@ -103,6 +100,7 @@ def apply(mco, rsc_rsc_matrix, parameters=None):
 
     return temp_file_name
 
+
 def view(temp_file_name, parameters=None):
     """
     View the SNA visualization on the screen
@@ -128,7 +126,6 @@ def view(temp_file_name, parameters=None):
     if is_ipynb:
         raise Exception("pyviz visualization not working inside Jupyter notebooks")
         from IPython.display import IFrame
-        from IPython.core.display import HTML
         return IFrame(temp_file_name, width="100%", height="750px")
     else:
         if sys.platform.startswith('darwin'):
