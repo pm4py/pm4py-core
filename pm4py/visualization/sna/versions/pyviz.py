@@ -1,6 +1,29 @@
 import numpy as np
 from pyvis.network import Network
+import tempfile
 
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+
+import networkx as nx
+import numpy as np
+from matplotlib import pyplot
+
+def get_temp_file_name(format):
+    """
+    Gets a temporary file name for the image
+
+    Parameters
+    ------------
+    format
+        Format of the target image
+    """
+    filename = tempfile.NamedTemporaryFile(suffix='.' + format)
+
+    return filename.name
 
 def apply(mco, rsc_rsc_matrix, parameters=None):
     """
@@ -28,6 +51,8 @@ def apply(mco, rsc_rsc_matrix, parameters=None):
 
     weight_threshold = parameters["weight_threshold"] if "weight_threshold" in parameters else 0
     directed = parameters["directed"] if "directed" in parameters else False
+
+    temp_file_name = get_temp_file_name("html")
 
     rows, cols = np.where(rsc_rsc_matrix > weight_threshold)
     weights = list()
@@ -74,6 +99,9 @@ def apply(mco, rsc_rsc_matrix, parameters=None):
 
     got_net.show_buttons(filter_=['nodes', 'edges', 'physics'])
 
+    got_net.write_html(temp_file_name)
+
+    return temp_file_name
 
 def view(temp_file_name, parameters=None):
     """
@@ -88,6 +116,27 @@ def view(temp_file_name, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    is_ipynb = False
+
+    try:
+        get_ipython()
+        is_ipynb = True
+    except NameError:
+        pass
+
+    if is_ipynb:
+        raise Exception("pyviz visualization not working inside Jupyter notebooks")
+        from IPython.display import IFrame
+        from IPython.core.display import HTML
+        return IFrame(temp_file_name, width="100%", height="750px")
+    else:
+        if sys.platform.startswith('darwin'):
+            subprocess.call(('open', temp_file_name))
+        elif os.name == 'nt':  # For Windows
+            os.startfile(temp_file_name)
+        elif os.name == 'posix':  # For Linux, Mac, etc.
+            subprocess.call(('xdg-open', temp_file_name))
 
 
 def save(temp_file_name, dest_file, parameters=None):
@@ -105,3 +154,5 @@ def save(temp_file_name, dest_file, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    shutil.copyfile(temp_file_name, dest_file)
