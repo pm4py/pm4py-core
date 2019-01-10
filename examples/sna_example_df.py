@@ -19,13 +19,13 @@ def execute_script():
     # calculates the Similar Activities matrix
     sim_act_matrix = similar_activities.apply(mco)
     # shows the Handover of Work graph
-    gviz = sna_vis_factory.apply(mco, hw_matrix)
+    gviz = sna_vis_factory.apply(mco, hw_matrix, parameters={"format": "svg"})
     sna_vis_factory.view(gviz)
     # shows the Similar Activities graph
-    gviz = sna_vis_factory.apply(mco, sim_act_matrix, parameters={"threshold": 0.0})
+    gviz = sna_vis_factory.apply(mco, sim_act_matrix, parameters={"format": "svg", "threshold": 0.0})
     sna_vis_factory.view(gviz)
     # calculates the Real Handover of Work matrix
-    real_hw_matrix = real_handover_of_work.apply(mco)
+    real_hw_matrix = real_handover_of_work.apply(mco, parameters={"format": "svg"})
     gviz = sna_vis_factory.apply(mco, real_hw_matrix)
 
 
