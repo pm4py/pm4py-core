@@ -13,8 +13,8 @@ In order to contribute a feature you'll need to go through the following steps:
 -- Working group leads will ask for a design document; create the design document and add a link to it in the GitHub issue. Don't forget to send a note to the working group to let everyone know your document is ready for review.
 -- Depending of the breath of the design and how contentious it is, the working group leads may decide the feature needs to be discussed in one or more working group meetings before being approved.
 -- Once the major technical issues are resolved and agreed upon, post a note to the working group's mailing list with the design decision and the general execution plan.
+- Submit documentation for your feature, including usage examples when possible. Documentation should consist in HTML+pictures and shall be sent to the email address pm4py@pads.rwth-aachen.de.
 - Submit PRs with your code changes.
-- Submit PRs with documentation for your feature, including usage examples when possible. See here to learn how to write docs.
 
 Note that we prefer bite-sized PRs instead of giant monster PRs. It's therefore preferable if you can introduce large features in smaller reviewable changes that build on top of one another.
 
