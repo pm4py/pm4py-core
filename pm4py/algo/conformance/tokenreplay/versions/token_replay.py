@@ -387,7 +387,8 @@ def break_condition_final_marking(marking, final_marking):
     return final_marking_dict_keys.issubset(marking_dict_keys)
 
 
-def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_place_fitness, place_fitness,
+def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pltr_fitness, place_fitness,
+                transition_fitness,
                 places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
                 try_to_reach_final_marking_through_hidden=True, stop_immediately_unfit=False,
                 walk_through_hidden_trans=True, post_fix_caching=None,
@@ -408,10 +409,12 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         Final marking
     trans_map
         Map between transitions labels and transitions
-    enable_place_fitness
-        Enable fitness calculation at place level
+    enable_pltr_fitness
+        Enable fitness calculation at place/transition level
     place_fitness
         Current dictionary of places associated with unfit traces
+    transition_fitness
+        Current dictionary of transitions associated with unfit traces
     places_shortest_path_by_hidden
         Shortest paths between places by hidden transitions
     consider_remaining_in_fitness
@@ -496,10 +499,11 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             break
                         [m, tokens_added] = add_missing_tokens(t, marking)
                         missing = missing + m
-                        if enable_place_fitness:
+                        if enable_pltr_fitness:
                             for place in tokens_added.keys():
                                 if place in place_fitness:
                                     place_fitness[place]["underfed_traces"].add(trace)
+                            transition_fitness[t]["underfed_traces"].add(trace)
                     c = get_consumed_tokens(t)
                     p = get_produced_tokens(t)
                     consumed = consumed + c
@@ -573,11 +577,15 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     for p in marking:
         if p in final_marking:
             marking[p] = max(0, marking[p] - final_marking[p])
-            if enable_place_fitness:
+            if enable_pltr_fitness:
                 if marking[p] > 0:
                     if p in place_fitness:
                         if trace not in place_fitness[p]["underfed_traces"]:
                             place_fitness[p]["overfed_traces"].add(trace)
+                    for out_trans in [x.target for x in p.out_arcs]:
+                        if trace not in transition_fitness[out_trans]["underfed_traces"]:
+                            transition_fitness[out_trans]["overfed_traces"].add(trace)
+
         remaining = remaining + marking[p]
     if consider_remaining_in_fitness:
         is_fit = (missing == 0) and (remaining == 0)
@@ -625,7 +633,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
 
 
 class ApplyTraceTokenReplay(Thread):
-    def __init__(self, trace, net, initial_marking, final_marking, trans_map, enable_place_fitness, place_fitness,
+    def __init__(self, trace, net, initial_marking, final_marking, trans_map, enable_pltr_fitness, place_fitness,
+                 transition_fitness,
                  places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
                  reach_mark_through_hidden=True, stop_immediately_when_unfit=False,
                  walk_through_hidden_trans=True, post_fix_caching=None,
@@ -641,10 +650,12 @@ class ApplyTraceTokenReplay(Thread):
             Final marking
         trans_map
             Map between transitions labels and transitions
-        enable_place_fitness
-            Enable fitness calculation at place level
+        enable_pltr_fitness
+            Enable fitness calculation at place/transition level
         place_fitness
             Current dictionary of places associated with unfit traces
+        transition_fitness
+            Current dictionary of transitions associated with unfit traces
         places_shortest_path_by_hidden
             Shortest paths between places by hidden transitions
         consider_remaining_in_fitness
@@ -672,8 +683,9 @@ class ApplyTraceTokenReplay(Thread):
         self.initial_marking = initial_marking
         self.final_marking = final_marking
         self.trans_map = trans_map
-        self.enable_place_fitness = enable_place_fitness
+        self.enable_pltr_fitness = enable_pltr_fitness
         self.place_fitness = place_fitness
+        self.transition_fitness = transition_fitness
         self.places_shortest_path_by_hidden = places_shortest_path_by_hidden
         self.consider_remaining_in_fitness = consider_remaining_in_fitness
         self.activity_key = activity_key
@@ -708,7 +720,7 @@ class ApplyTraceTokenReplay(Thread):
         """
         self.t_fit, self.t_value, self.act_trans, self.trans_probl, self.reached_marking, self.enabled_trans_in_mark, self.missing, self.consumed, self.remaining, self.produced = \
             apply_trace(self.trace, self.net, self.initial_marking, self.final_marking, self.trans_map,
-                        self.enable_place_fitness, self.place_fitness,
+                        self.enable_pltr_fitness, self.place_fitness, self.transition_fitness,
                         self.places_shortest_path_by_hidden, self.consider_remaining_in_fitness,
                         activity_key=self.activity_key,
                         try_to_reach_final_marking_through_hidden=self.try_to_reach_final_marking_through_hidden,
@@ -795,7 +807,7 @@ def check_threads(net, threads, threads_results, all_activated_transitions, is_r
     return threads, threads_results, all_activated_transitions
 
 
-def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=False, consider_remaining_in_fitness=False,
+def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=False, consider_remaining_in_fitness=False,
               activity_key="concept:name", reach_mark_through_hidden=True, stop_immediately_unfit=False,
               walk_through_hidden_trans=True, places_shortest_path_by_hidden=None,
               variants=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME):
@@ -812,7 +824,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
         Initial marking
     final_marking
         Final marking
-    enable_place_fitness
+    enable_pltr_fitness
         Enable fitness calculation at place level
     consider_remaining_in_fitness
         Boolean value telling if the remaining tokens should be considered in fitness evaluation
@@ -839,12 +851,15 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
         places_shortest_path_by_hidden = get_places_shortest_path_by_hidden(net)
 
     place_fitness_per_trace = {}
+    transition_fitness_per_trace = {}
 
     aligned_traces = []
 
-    if enable_place_fitness:
+    if enable_pltr_fitness:
         for place in net.places:
             place_fitness_per_trace[place] = {"underfed_traces": set(), "overfed_traces": set()}
+        for transition in net.transitions:
+            transition_fitness_per_trace[transition] = {"underfed_traces": set(), "overfed_traces": set()}
     trans_map = {}
     for t in net.transitions:
         trans_map[t.label] = t
@@ -876,7 +891,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
                     if is_reduction and len(all_activated_transitions) == len(net.transitions):
                         break
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
-                                                             trans_map, enable_place_fitness, place_fitness_per_trace,
+                                                             trans_map, enable_pltr_fitness, place_fitness_per_trace,
+                                                             transition_fitness_per_trace,
                                                              places_shortest_path_by_hidden,
                                                              consider_remaining_in_fitness,
                                                              activity_key=activity_key,
@@ -906,8 +922,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_place_fitness=Fal
             else:
                 raise NoConceptNameException("at least an event is without " + activity_key)
 
-    if enable_place_fitness:
-        return aligned_traces, place_fitness_per_trace
+    if enable_pltr_fitness:
+        return aligned_traces, place_fitness_per_trace, transition_fitness_per_trace
     else:
         return aligned_traces
 
@@ -932,7 +948,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     if parameters is None:
         parameters = {}
 
-    enable_place_fitness = False
+    enable_pltr_fitness = False
     consider_remaining_in_fitness = False
     try_to_reach_final_marking_through_hidden = True
     stop_immediately_unfit = False
@@ -944,7 +960,9 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     variants = None
 
     if "enable_place_fitness" in parameters:
-        enable_place_fitness = parameters["enable_place_fitness"]
+        enable_pltr_fitness = parameters["enable_place_fitness"]
+    if "enable_pltr_fitness" in parameters:
+        enable_pltr_fitness = parameters["enable_pltr_fitness"]
     if "consider_remaining_in_fitness" in parameters:
         consider_remaining_in_fitness = parameters["consider_remaining_in_fitness"]
     if "try_to_reach_final_marking_through_hidden" in parameters:
@@ -965,7 +983,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
         activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
-    return apply_log(log, net, initial_marking, final_marking, enable_place_fitness=enable_place_fitness,
+    return apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=enable_pltr_fitness,
                      consider_remaining_in_fitness=consider_remaining_in_fitness,
                      reach_mark_through_hidden=try_to_reach_final_marking_through_hidden,
                      stop_immediately_unfit=stop_immediately_unfit,
