@@ -86,7 +86,7 @@ setup(
     url='http://www.pm4py.org',
     license='GPL 3.0',
     install_requires=[
-        'pyviz',
+        'pyvis',
         'networkx==1.11',
         'matplotlib==2.1',
         'numpy',
