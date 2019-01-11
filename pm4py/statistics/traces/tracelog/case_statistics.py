@@ -35,6 +35,7 @@ def get_variant_statistics(trace_log, parameters=None):
     variants_list = []
     for var in varnt:
         variants_list.append({"variant": var, "count": len(varnt[var])})
+    variants_list = sorted(variants_list, key=lambda x: x["count"], reverse=True)
     if max_variants_to_return:
         variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
     return variants_list
@@ -94,7 +95,7 @@ def get_cases_description(trace_log, parameters=None):
         statistics_list = sorted(statistics_list, key=lambda x: x[sort_by_index], reverse=not sort_ascending)
 
     if max_ret_cases is not None:
-        statistics_list = statistics_list[:max(len(statistics_list), max_ret_cases)]
+        statistics_list = statistics_list[:min(len(statistics_list), max_ret_cases)]
 
     statistics_dict = {}
 
