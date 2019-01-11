@@ -38,16 +38,16 @@ def repr_tree(tree, viz, current_node, rec_depth, parameters):
         (partial) GraphViz object
     """
     for child in tree.children:
-        if type(child) is process_tree.PTTransition:
+        if child.operator is None:
             viz.attr('node', shape='box', fixedsize='true', width=parameters["box_width"],
                      fontsize=parameters["box_font_size"])
             this_trans_id = str(uuid.uuid4())
             if child.label is None:
-                viz.node(this_trans_id, repr(child), style='filled', fillcolor='black')
+                viz.node(this_trans_id, "tau", style='filled', fillcolor='black')
             else:
-                viz.node(this_trans_id, repr(child))
+                viz.node(this_trans_id, str(child))
             viz.edge(current_node, this_trans_id)
-        elif type(child) is process_tree.ProcessTree:
+        else:
             condition_wo_operator = child.operator == tree_constants.EXCLUSIVE_OPERATOR and len(
                 child.children) == 1 and type(
                 child.children[0]) is process_tree.PTTransition
@@ -57,9 +57,9 @@ def repr_tree(tree, viz, current_node, rec_depth, parameters):
                          fontsize=parameters["box_font_size"])
                 this_trans_id = str(uuid.uuid4())
                 if childchild.label is None:
-                    viz.node(this_trans_id, repr(childchild), style='filled', fillcolor='black')
+                    viz.node(this_trans_id, str(childchild), style='filled', fillcolor='black')
                 else:
-                    viz.node(this_trans_id, repr(childchild))
+                    viz.node(this_trans_id, str(childchild))
                 viz.edge(current_node, this_trans_id)
             else:
                 viz.attr('node', shape='circle', fixedsize='true', width=parameters["circle_width"],
@@ -118,7 +118,7 @@ def apply(tree, parameters=None):
         viz.attr('node', shape='circle', fixedsize='true', width=parameters["circle_width"],
                  fontsize=parameters["circle_font_size"])
         op_node_identifier = str(uuid.uuid4())
-        viz.node(op_node_identifier, tree.operator)
+        viz.node(op_node_identifier, str(tree.operator))
 
         viz = repr_tree(tree, viz, op_node_identifier, 0, parameters)
 
