@@ -9,3 +9,4 @@ lxml
 graphviz
 pandas
 scipy
+scikit-learn
