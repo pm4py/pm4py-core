@@ -15,7 +15,8 @@ def apply(log, parameters=None, variant=FULL):
     log
         Trace log
     parameters
-        Parameters of the algorithm
+        Parameters of the algorithm, including:
+            PARAMETER_CONSTANT_RESOURCE_KEY -> attribute key that contains the resource
     variant
         Variant of the algorithm to apply
 
