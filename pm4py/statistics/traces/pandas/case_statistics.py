@@ -9,7 +9,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
-def get_variants_statistics(df, parameters=None):
+def get_variant_statistics(df, parameters=None):
     """
     Get variants from a Pandas dataframe
 
