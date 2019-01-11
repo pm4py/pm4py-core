@@ -31,7 +31,7 @@ def apply_auto_filter(df, parameters=None):
         PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     variants_df = case_statistics.get_variants_df(df, parameters=parameters)
     parameters["variants_df"] = variants_df
-    variants = case_statistics.get_variants_statistics(df, parameters=parameters)
+    variants = case_statistics.get_variant_statistics(df, parameters=parameters)
     decreasing_factor = parameters[
         "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 

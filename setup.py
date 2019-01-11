@@ -93,8 +93,6 @@ setup(
         'ciso8601',
         'cvxopt',
         'dataclasses',
-        'flask',
-        'flask-cors',
         'lxml',
         'graphviz',
         'pandas',
