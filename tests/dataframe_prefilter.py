@@ -44,7 +44,7 @@ class DataframePrefilteringTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         input_log = os.path.join(INPUT_DATA_DIR, "running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(input_log, sep=',')
-        variants = case_statistics.get_variants_statistics(dataframe)
+        variants = case_statistics.get_variant_statistics(dataframe)
         chosen_variants = [variants[0]["variant"]]
         dataframe = variants_filter.apply(dataframe, chosen_variants)
         del dataframe
