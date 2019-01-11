@@ -65,7 +65,7 @@ def repr_tree(tree, viz, current_node, rec_depth, parameters):
                 viz.attr('node', shape='circle', fixedsize='true', width=parameters["circle_width"],
                          fontsize=parameters["circle_font_size"])
                 op_node_identifier = str(uuid.uuid4())
-                viz.node(op_node_identifier, child.operator)
+                viz.node(op_node_identifier, str(child.operator))
                 viz.edge(current_node, op_node_identifier)
                 viz = repr_tree(child, viz, op_node_identifier, rec_depth + 1, parameters)
     return viz
