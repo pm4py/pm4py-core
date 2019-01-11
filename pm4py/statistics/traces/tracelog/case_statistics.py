@@ -35,7 +35,7 @@ def get_variant_statistics(trace_log, parameters=None):
     variants_list = []
     for var in varnt:
         variants_list.append({"variant": var, "count": len(varnt[var])})
-    variants_list = sorted(variants_list, key=lambda x: x["count"])
+    variants_list = sorted(variants_list, key=lambda x: x["count"], reverse=True)
     if max_variants_to_return:
         variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
     return variants_list
