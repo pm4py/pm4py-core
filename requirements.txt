@@ -1,12 +1,12 @@
+pyvis
+networkx>=2.2
+matplotlib==2.2.2
 numpy
 ciso8601
 cvxopt
 dataclasses
-flask
-flask-cors
 lxml
 graphviz
 pandas
-networkx==1.11
 scipy
-matplotlib
+scikit-learn

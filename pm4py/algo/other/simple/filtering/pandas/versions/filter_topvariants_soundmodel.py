@@ -56,7 +56,7 @@ def apply(df, parameters=None):
     variants_df = case_statistics.get_variants_df(df, parameters=parameters)
     parameters["variants_df"] = variants_df
 
-    variant_stats = case_statistics.get_variants_statistics(df, parameters=parameters)
+    variant_stats = case_statistics.get_variant_statistics(df, parameters=parameters)
 
     all_variants_list = []
     for var in variant_stats:

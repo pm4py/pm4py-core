@@ -6,9 +6,10 @@ from lxml import etree
 
 from pm4py.objects import petri
 from pm4py.objects.petri.common import final_marking
+from pm4py.objects.random_variables.random_variable import RandomVariable
 
 
-def import_petri_from_string(petri_string):
+def import_petri_from_string(petri_string, return_stochastic_information=False):
     """
     Import a Petri net from a string
 
@@ -16,17 +17,20 @@ def import_petri_from_string(petri_string):
     ----------
     petri_string
         Petri net expressed as PNML string
+    return_stochastic_information
+        Enables return of stochastic information if found in the PNML
     """
     fp = tempfile.NamedTemporaryFile(suffix='.pnml')
     fp.close()
     with open(fp.name, 'w') as f:
         f.write(petri_string)
-    net, initial_marking, this_final_marking = import_net(fp.name)
+    net, initial_marking, this_final_marking = import_net(fp.name,
+                                                          return_stochastic_information=return_stochastic_information)
     os.remove(fp.name)
     return net, initial_marking, this_final_marking
 
 
-def import_net(input_file_path):
+def import_net(input_file_path, return_stochastic_information=False):
     """
     Import a Petri net from a PNML file
 
@@ -34,6 +38,8 @@ def import_net(input_file_path):
     ----------
     input_file_path
         Input file path
+    return_stochastic_information
+        Enables return of stochastic information if found in the PNML
     """
     tree = etree.parse(input_file_path)
     root = tree.getroot()
@@ -45,6 +51,8 @@ def import_net(input_file_path):
     nett = None
     page = None
     finalmarkings = None
+
+    stochastic_information = {}
 
     for child in root:
         nett = child
@@ -86,6 +94,9 @@ def import_net(input_file_path):
                 trans_name = child.get("id")
                 trans_label = trans_name
                 trans_visible = True
+
+                random_variable = None
+
                 for child2 in child:
                     if child2.tag == "name":
                         for child3 in child2:
@@ -97,10 +108,37 @@ def import_net(input_file_path):
                             activity = child2.get("activity")
                             if "invisible" in activity:
                                 trans_visible = False
+                        elif "StochasticPetriNet" in tool:
+                            distribution_type = None
+                            distribution_parameters = None
+                            priority = None
+                            weight = None
+
+                            for child3 in child2:
+                                key = child3.get("key")
+                                value = child3.text
+
+                                if key == "distributionType":
+                                    distribution_type = value
+                                elif key == "distributionParameters":
+                                    distribution_parameters = value
+                                elif key == "priority":
+                                    priority = int(value)
+                                elif key == "weight":
+                                    weight = float(value)
+
+                            if return_stochastic_information:
+                                random_variable = RandomVariable()
+                                random_variable.read_from_string(distribution_type, distribution_parameters)
+                                random_variable.set_priority(priority)
+                                random_variable.set_weight(weight)
                 if not trans_visible:
                     trans_label = None
                 trans_dict[trans_name] = petri.petrinet.PetriNet.Transition(trans_name, trans_label)
                 net.transitions.add(trans_dict[trans_name])
+
+                if random_variable is not None:
+                    stochastic_information[trans_dict[trans_name]] = random_variable
 
     if page is not None:
         for child in page:
@@ -126,5 +164,8 @@ def import_net(input_file_path):
     # generate the final marking in the case has not been found
     if len(fmarking) == 0:
         fmarking = final_marking.discover_final_marking(net)
+
+    if return_stochastic_information and len(list(stochastic_information.keys())) > 0:
+        return net, marking, fmarking, stochastic_information
 
     return net, marking, fmarking
