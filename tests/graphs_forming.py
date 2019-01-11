@@ -20,10 +20,6 @@ class GraphsForming(unittest.TestCase):
         x, y = pd_case_statistics.get_kde_caseduration(df)
         json = pd_case_statistics.get_kde_caseduration_json(df)
         del json
-        graph = graphs_factory.apply_plot(x, y, variant="cases", parameters={"format": "svg"})
-        del graph
-        graph = graphs_factory.apply_semilogx(x, y, variant="cases", parameters={"format": "svg"})
-        del graph
 
     def test_logCaseDurationPlotSemiLogx(self):
         # to avoid static method warnings in tests,
@@ -34,10 +30,6 @@ class GraphsForming(unittest.TestCase):
         x, y = log_case_statistics.get_kde_caseduration(log)
         json = log_case_statistics.get_kde_caseduration_json(log)
         del json
-        graph = graphs_factory.apply_plot(x, y, variant="cases", parameters={"format": "svg"})
-        del graph
-        graph = graphs_factory.apply_semilogx(x, y, variant="cases", parameters={"format": "svg"})
-        del graph
 
     def test_dfNumericAttribute(self):
         # to avoid static method warnings in tests,
@@ -48,10 +40,6 @@ class GraphsForming(unittest.TestCase):
         x, y = pd_attributes_filter.get_kde_numeric_attribute(df, "amount")
         json = pd_attributes_filter.get_kde_numeric_attribute_json(df, "amount")
         del json
-        graph = graphs_factory.apply_plot(x, y, variant="attributes", parameters={"format": "svg"})
-        del graph
-        graph = graphs_factory.apply_semilogx(x, y, variant="attributes", parameters={"format": "svg"})
-        del graph
 
     def test_logNumericAttribute(self):
         # to avoid static method warnings in tests,
@@ -62,10 +50,6 @@ class GraphsForming(unittest.TestCase):
         x, y = log_attributes_filter.get_kde_numeric_attribute(log, "amount")
         json = log_attributes_filter.get_kde_numeric_attribute_json(log, "amount")
         del json
-        graph = graphs_factory.apply_plot(x, y, variant="attributes", parameters={"format": "svg"})
-        del graph
-        graph = graphs_factory.apply_semilogx(x, y, variant="attributes", parameters={"format": "svg"})
-        del graph
 
     def test_dfDateAttribute(self):
         # to avoid static method warnings in tests,
@@ -76,10 +60,6 @@ class GraphsForming(unittest.TestCase):
         x, y = pd_attributes_filter.get_kde_date_attribute(df)
         json = pd_attributes_filter.get_kde_date_attribute_json(df)
         del json
-        graph = graphs_factory.apply_plot(x, y, variant="dates", parameters={"format": "svg"})
-        del graph
-        graph = graphs_factory.apply_semilogx(x, y, variant="dates", parameters={"format": "svg"})
-        del graph
 
     def test_logDateAttribute(self):
         # to avoid static method warnings in tests,
@@ -90,10 +70,6 @@ class GraphsForming(unittest.TestCase):
         x, y = log_attributes_filter.get_kde_date_attribute(log)
         json = log_attributes_filter.get_kde_date_attribute_json(log)
         del json
-        graph = graphs_factory.apply_plot(x, y, variant="dates", parameters={"format": "svg"})
-        del graph
-        graph = graphs_factory.apply_semilogx(x, y, variant="dates", parameters={"format": "svg"})
-        del graph
 
 
 if __name__ == "__main__":
