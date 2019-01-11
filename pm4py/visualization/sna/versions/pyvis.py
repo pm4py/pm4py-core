@@ -124,7 +124,7 @@ def view(temp_file_name, parameters=None):
         pass
 
     if is_ipynb:
-        raise Exception("pyviz visualization not working inside Jupyter notebooks")
+        raise Exception("pyvis visualization not working inside Jupyter notebooks")
         from IPython.display import IFrame
         return IFrame(temp_file_name, width="100%", height="750px")
     else:

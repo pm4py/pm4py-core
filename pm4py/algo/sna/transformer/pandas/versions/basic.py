@@ -15,7 +15,13 @@ def apply(df, parameters=None):
     df
         Pandas dataframe
     parameters
-        Parameters of the algorithm
+        Parameters of the algorithm:
+            PARAMETER_CONSTANT_RESOURCE_KEY -> attribute key that contains the resource
+            PARAMETER_CONSTANT_CASEID_KEY -> attribute key that contains the case ID
+            PARAMETER_CONSTANT_TIMESTAMP_KEY -> attribute key that contains the timestamp
+            sort_caseid_required -> Specify if a sort on the Case ID is required
+            sort_timestamp_along_case_id -> Specifying if sorting by timestamp along the CaseID is required
+
 
     Returns
     ------------
@@ -29,6 +35,17 @@ def apply(df, parameters=None):
         constants.PARAMETER_CONSTANT_RESOURCE_KEY] if constants.PARAMETER_CONSTANT_RESOURCE_KEY in parameters else xes.DEFAULT_RESOURCE_KEY
     case_id_glue = parameters[
         constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else "case:concept:name"
+    timestamp_key = parameters[
+        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    sort_caseid_required = parameters["sort_caseid_required"] if "sort_caseid_required" in parameters else True
+    sort_timestamp_along_case_id = parameters[
+        "sort_timestamp_along_case_id"] if "sort_timestamp_along_case_id" in parameters else True
+
+    if sort_caseid_required:
+        if sort_timestamp_along_case_id:
+            df = df.sort_values([case_id_glue, timestamp_key])
+        else:
+            df = df.sort_values(case_id_glue)
 
     df_reduced = df[[case_id_glue, resource_key]]
     # shift the dataframe by 1, in order to couple successive rows
