@@ -11,7 +11,7 @@ from pm4py.visualization.sna import factory as sna_vis_factory
 def execute_script():
     # loads the dataframe from the CSV file
     csv_path = os.path.join("..", "tests", "input_data", "running-example.csv")
-    df = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(csv_path)
+    df = csv_import_adapter.import_dataframe_from_path(csv_path)
     # calculates the Matrix Container object
     mco = sna_transformer.apply(df)
     # calculates the Handover of Work matrix

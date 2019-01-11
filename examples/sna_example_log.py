@@ -18,11 +18,11 @@ def execute_script():
     # calculates the Similar Activities matrix
     sim_act_matrix = similar_activities.apply(mco)
     # shows the Handover of Work graph
-    gviz = sna_vis_factory.apply(mco, hw_matrix, variant="pyviz")
-    sna_vis_factory.view(gviz, variant="pyviz")
+    gviz = sna_vis_factory.apply(mco, hw_matrix, variant="pyvis")
+    sna_vis_factory.view(gviz, variant="pyvis")
     # shows the Similar Activities graph
-    gviz = sna_vis_factory.apply(mco, sim_act_matrix, parameters={"threshold": 0.0}, variant="pyviz")
-    sna_vis_factory.view(gviz, variant="pyviz")
+    gviz = sna_vis_factory.apply(mco, sim_act_matrix, parameters={"threshold": 0.0}, variant="pyvis")
+    sna_vis_factory.view(gviz, variant="pyvis")
 
 
 if __name__ == "__main__":
