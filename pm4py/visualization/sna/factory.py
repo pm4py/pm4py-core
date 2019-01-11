@@ -1,11 +1,11 @@
-from pm4py.visualization.sna.versions import networkx, pyviz
+from pm4py.visualization.sna.versions import networkx, pyvis
 
 NETWORKX = "networkx"
-PYVIZ = "pyviz"
+PYVIS = "pyvis"
 
-VERSIONS_APPLY = {NETWORKX: networkx.apply, PYVIZ: pyviz.apply}
-VERSIONS_VIEW = {NETWORKX: networkx.view, PYVIZ: pyviz.view}
-VERSIONS_SAVE = {NETWORKX: networkx.save, PYVIZ: pyviz.save}
+VERSIONS_APPLY = {NETWORKX: networkx.apply, PYVIS: pyvis.apply}
+VERSIONS_VIEW = {NETWORKX: networkx.view, PYVIS: pyvis.view}
+VERSIONS_SAVE = {NETWORKX: networkx.save, PYVIS: pyvis.save}
 
 
 def apply(mco, rsc_rsc_matrix, parameters=None, variant=NETWORKX):

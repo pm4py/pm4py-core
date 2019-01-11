@@ -15,7 +15,9 @@ def apply(log, parameters=None):
     log
         Trace log
     parameters
-        Parameters of the algorithm
+        Parameters of the algorithm, including:
+            PARAMETER_CONSTANT_RESOURCE_KEY -> attribute key that contains the resource
+            PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute key that contains the activity
 
     Returns
     ------------

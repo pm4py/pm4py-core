@@ -1,1 +1,1 @@
-from pm4py.visualization.sna.versions import networkx, pyviz
+from pm4py.visualization.sna.versions import networkx, pyvis
