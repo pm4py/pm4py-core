@@ -87,8 +87,8 @@ setup(
     license='GPL 3.0',
     install_requires=[
         'pyvis',
-        'networkx==1.11',
-        'matplotlib==2.1',
+        'networkx',
+        'matplotlib',
         'numpy',
         'ciso8601',
         'cvxopt',
