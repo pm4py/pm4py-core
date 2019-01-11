@@ -8,5 +8,5 @@ dataclasses
 lxml
 graphviz
 pandas
-sklearn
 scipy
+scikit-learn

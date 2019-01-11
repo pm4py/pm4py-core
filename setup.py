@@ -97,6 +97,7 @@ setup(
         'graphviz',
         'pandas',
         'scipy',
+        'scikit-learn'
     ],
     project_urls={
         'Documentation': 'http://pm4py.pads.rwth-aachen.de/documentation/',
