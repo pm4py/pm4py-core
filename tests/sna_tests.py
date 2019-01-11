@@ -22,13 +22,8 @@ class SnaTests(unittest.TestCase):
         hw_matrix = handover_of_work.apply(mco)
         # calculates the Similar Activities matrix
         sim_act_matrix = similar_activities.apply(mco)
-        # shows the Handover of Work graph
-        gviz = sna_vis_factory.apply(mco, hw_matrix)
-        # shows the Similar Activities graph
-        gviz = sna_vis_factory.apply(mco, sim_act_matrix, parameters={"threshold": 0.0})
         # calculates the Real Handover of Work matrix
         real_hw_matrix = real_handover_of_work.apply(mco)
-        gviz = sna_vis_factory.apply(mco, real_hw_matrix)
 
     def test_sna_log(self):
         # loads the log from XES file
@@ -40,10 +35,6 @@ class SnaTests(unittest.TestCase):
         hw_matrix = handover_of_work.apply(mco)
         # calculates the Similar Activities matrix
         sim_act_matrix = similar_activities.apply(mco)
-        # shows the Handover of Work graph
-        gviz = sna_vis_factory.apply(mco, hw_matrix, variant="pyvis")
-        # shows the Similar Activities graph
-        gviz = sna_vis_factory.apply(mco, sim_act_matrix, parameters={"threshold": 0.0}, variant="pyvis")
 
 
 if __name__ == "__main__":
