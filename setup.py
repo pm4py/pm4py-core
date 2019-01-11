@@ -88,7 +88,7 @@ setup(
     install_requires=[
         'pyvis',
         'networkx',
-        'matplotlib',
+        'matplotlib==2.1',
         'numpy',
         'ciso8601',
         'cvxopt',
