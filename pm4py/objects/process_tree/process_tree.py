@@ -1,12 +1,9 @@
-from pm4py.objects.process_tree import tree_constants
-from pm4py.objects.process_tree.trace_generation.concurrent_trace import ConcurrentTrace
-from pm4py.objects.log.log import TraceLog
 from copy import copy
 
-from pm4py.objects.process_tree import pt_operator as pt_opt
+from pm4py.objects.log.log import TraceLog
 from pm4py.objects.process_tree import semantics as pt_sem
-from pm4py.objects.process_tree import state as pt_st
 from pm4py.objects.process_tree import util as pt_ut
+
 
 class ProcessTree2(object):
 
@@ -54,21 +51,22 @@ class ProcessTree2(object):
     operator = property(_get_operator)
     label = property(_get_label, _set_label)
 
-if __name__=='__main__':
-    #root = ProcessTree2(operator=pt_opt.Operator2.LOOP)
-    #a = ProcessTree2(label='a', parent=root)
-    #root.children.append(a)
-    #b = ProcessTree2(label=None, parent=root)
-    #root.children.append(b)
-    #c = ProcessTree2(label='c', parent=root)
-    #root.children.append(c)
+
+if __name__ == '__main__':
+    # root = ProcessTree2(operator=pt_opt.Operator2.LOOP)
+    # a = ProcessTree2(label='a', parent=root)
+    # root.children.append(a)
+    # b = ProcessTree2(label=None, parent=root)
+    # root.children.append(b)
+    # c = ProcessTree2(label='c', parent=root)
+    # root.children.append(c)
     tree_str = ' ->( X( \'a\',\'b\', tau), + (\'c\',\'d\') )'
     tree = pt_ut.parse(tree_str)
     execution_sequence = pt_sem.execute(tree)
     print(execution_sequence)
     print(pt_ut.project_execution_sequence_to_leafs(execution_sequence))
     print(pt_ut.project_execution_sequence_to_labels(execution_sequence))
-    #print(list(execution_sequence))
+    # print(list(execution_sequence))
 
 
 class ProcessTree(object):

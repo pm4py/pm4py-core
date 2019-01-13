@@ -1,18 +1,21 @@
-from pm4py.objects.process_tree import state as pt_st
-from pm4py.objects.process_tree import pt_operator as pt_op
 from pm4py.objects.process_tree import process_tree as pt
+from pm4py.objects.process_tree import pt_operator as pt_op
+from pm4py.objects.process_tree import state as pt_st
 
 def project_execution_sequence_to_leafs(execution_sequence):
-    return list(map(lambda x: x[0], filter(lambda x: (x[1] is pt_st.State.OPEN and len(x[0].children) == 0), execution_sequence)))
+    return list(map(lambda x: x[0],
+                    filter(lambda x: (x[1] is pt_st.State.OPEN and len(x[0].children) == 0), execution_sequence)))
 
 
 def project_execution_sequence_to_labels(execution_sequence):
-    return list(map(lambda x: x.label, filter(lambda x: x.label is not None, project_execution_sequence_to_leafs(execution_sequence))))
+    return list(map(lambda x: x.label,
+                    filter(lambda x: x.label is not None, project_execution_sequence_to_leafs(execution_sequence))))
+
 
 def parse(string_rep):
     depth_cache = dict()
     depth = 0
-    return parse_recursive(string_rep,depth_cache,depth)
+    return parse_recursive(string_rep, depth_cache, depth)
 
 
 def parse_recursive(string_rep, depth_cache, depth):
@@ -47,9 +50,9 @@ def parse_recursive(string_rep, depth_cache, depth):
             string_rep = string_rep[1:]
             escape_ext = string_rep.find('\'')
             label = string_rep[0:escape_ext]
-            string_rep = string_rep[escape_ext+1:]
+            string_rep = string_rep[escape_ext + 1:]
         else:
-            assert(string_rep.startswith('tau'))
+            assert (string_rep.startswith('tau'))
             string_rep = string_rep[3:]
         parent = None if depth == 0 else depth_cache[depth - 1]
         node = pt.ProcessTree2(operator=operator, parent=parent, label=label)

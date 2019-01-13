@@ -3,7 +3,7 @@ import uuid
 
 from graphviz import Digraph
 
-from pm4py.objects.process_tree import process_tree, tree_constants
+from pm4py.objects.process_tree import process_tree, pt_operator
 
 DEFAULT_CIRCLE_WIDTH = 0.6
 DEFAULT_CIRCLE_FONT_SIZE = 14
@@ -48,7 +48,7 @@ def repr_tree(tree, viz, current_node, rec_depth, parameters):
                 viz.node(this_trans_id, str(child))
             viz.edge(current_node, this_trans_id)
         else:
-            condition_wo_operator = child.operator == tree_constants.EXCLUSIVE_OPERATOR and len(
+            condition_wo_operator = child.operator == pt_operator.Operator2.XOR and len(
                 child.children) == 1 and type(
                 child.children[0]) is process_tree.PTTransition
             if condition_wo_operator:
