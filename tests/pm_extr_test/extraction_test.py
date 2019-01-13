@@ -12,6 +12,7 @@ if __name__ == "__main__":
     from pm4py.objects.log.importer.xes import factory as xes_factory
     from pm4py.algo.discovery.inductive import factory as inductive
     from pm4py.algo.discovery.alpha import factory as alpha
+    from pm4py.objects.process_tree import semantics as pt_semantics
     from pm4py.evaluation.replay_fitness import factory as fitness_factory
     from pm4py.evaluation.precision import factory as precision_factory
     from pm4py.evaluation.simplicity import factory as simplicity_factory
@@ -39,7 +40,7 @@ if __name__ == "__main__":
 
 
     ENABLE_ALIGNMENTS = True
-    logFolder = "..\\compressed_input_data"
+    logFolder = os.path.join("..", "compressed_input_data")
     pnmlFolder = "pnml_folder"
     pngFolder = "png_folder"
     times_tokenreplay_alpha = {}
@@ -155,9 +156,12 @@ if __name__ == "__main__":
             print("time interlapsed for calculating Alpha Model", (t2 - t1))
 
             t1 = time.time()
+            tree = inductive.apply_tree(log, parameters=parameters_discovery)
             inductive_model, inductive_im, inductive_fm = inductive.apply(log, parameters=parameters_discovery)
             pnml_exporter.export_net(inductive_model, inductive_im,
                                      os.path.join(pnmlFolder, logNamePrefix + "_inductive.pnml"))
+            generated_log = pt_semantics.generate_log(tree)
+            print("first trace of log", [x["concept:name"] for x in generated_log[0]])
             t2 = time.time()
             print("time interlapsed for calculating Inductive Model", (t2 - t1))
 
