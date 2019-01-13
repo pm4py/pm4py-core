@@ -1,1 +1,1 @@
-from pm4py.algo.conformance.tokenreplay import versions, factory
+from pm4py.algo.conformance.tokenreplay import versions, diagnostics, factory
