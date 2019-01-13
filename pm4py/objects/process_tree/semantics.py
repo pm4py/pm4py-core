@@ -172,7 +172,7 @@ def process_closed(closed_node, enabled, open, closed, execution_sequence):
                 enable = vertex.children[vertex.children.index(closed_node) + 1]
             elif vertex.operator is pt_opt.Operator.LOOP:
                 enable = vertex.children[random.randint(1, 2)] if vertex.children.index(closed_node) == 0 else \
-                vertex.children[0]
+                    vertex.children[0]
             if enable is not None:
                 enabled.add(enable)
                 execution_sequence.append((enable, pt_st.State.ENABLED))
