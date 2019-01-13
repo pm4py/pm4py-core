@@ -30,17 +30,22 @@ def form_log_from_dictio_couple(first_cases_repr, second_cases_repr):
     """
     log = TraceLog()
 
-    for i in range(len(first_cases_repr)):
-        trace = Trace()
-        event = Event(first_cases_repr[i])
-        trace.append(event)
-        log.append(trace)
+    multiplier_first = int(max(float(len(second_cases_repr)) / float(len(first_cases_repr)), 1))
+    multiplier_second = int(max(float(len(first_cases_repr)) / float(len(second_cases_repr)), 1))
 
-    for i in range(len(second_cases_repr)):
-        trace = Trace()
-        event = Event(second_cases_repr[i])
-        trace.append(event)
-        log.append(trace)
+    for j in range(multiplier_first):
+        for i in range(len(first_cases_repr)):
+            trace = Trace()
+            event = Event(first_cases_repr[i])
+            trace.append(event)
+            log.append(trace)
+
+    for j in range(multiplier_second):
+        for i in range(len(second_cases_repr)):
+            trace = Trace()
+            event = Event(second_cases_repr[i])
+            trace.append(event)
+            log.append(trace)
 
     return log
 
@@ -107,8 +112,6 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
 
     if parameters is None:
         parameters = {}
-
-    from pm4py.algo.other.decisiontree import mine_decision_tree
 
     diagnostics = {}
     string_attributes = parameters["string_attributes"] if "string_attributes" in parameters else []
@@ -182,15 +185,24 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
                                                                              string_attributes, numeric_attributes)
                 target = []
                 classes = []
-                for i in range(len(fit_cases_repr)):
-                    target.append(0)
-                    classes.append("fit")
-                for i in range(len(underfed_cases_repr)):
-                    target.append(1)
-                    classes.append("underfed")
+
+                multiplier_first = int(max(float(len(underfed_cases_repr)) / float(len(fit_cases_repr)), 1))
+                multiplier_second = int(max(float(len(fit_cases_repr)) / float(len(underfed_cases_repr)), 1))
+
+                for j in range(multiplier_first):
+                    for i in range(len(fit_cases_repr)):
+                        target.append(0)
+                classes.append("fit")
+
+                for j in range(multiplier_second):
+                    for i in range(len(underfed_cases_repr)):
+                        target.append(1)
+                classes.append("underfed")
+
                 target = np.asarray(target)
                 clf = mine_decision_tree.mine(data, target)
-                diagn_dict = {"clf": clf, "feature_names": feature_names, "classes": classes}
+                diagn_dict = {"clf": clf, "data": data, "feature_names": feature_names, "target": target,
+                              "classes": classes}
 
                 diagnostics[trans] = diagn_dict
 
