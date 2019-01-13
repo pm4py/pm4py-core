@@ -115,6 +115,12 @@ def get_repr(spec_tree_struct, rec_depth, must_add_skip=False, contains_empty_tr
                                                                             ch.activities))
             child_tree.children.append(child)
             child.parent = child_tree
+        if spec_tree_struct.detected_cut == "loopCut" and len(spec_tree_struct.children)<3:
+            while len(spec_tree_struct.children)<3:
+                child = ProcessTree()
+                child_tree.children.append(child)
+                child.parent = child_tree
+                spec_tree_struct.children.append(None)
     if spec_tree_struct.detected_cut == "parallel":
         m_add_skip = verify_skip_for_parallel_cut(spec_tree_struct.dfg, spec_tree_struct.children)
         for child in spec_tree_struct.children:
