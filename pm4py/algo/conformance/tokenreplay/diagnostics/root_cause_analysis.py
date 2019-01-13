@@ -3,8 +3,6 @@ from copy import deepcopy
 import numpy as np
 
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-from pm4py.algo.other.decisiontree import get_log_representation
-from pm4py.algo.other.decisiontree import mine_decision_tree
 from pm4py.objects.log.log import TraceLog, Trace, Event
 
 try:
@@ -71,6 +69,8 @@ def form_representation_from_dictio_couple(first_cases_repr, second_cases_repr, 
     feature_names
         Array of feature names
     """
+    from pm4py.algo.other.decisiontree import get_log_representation
+
     log = form_log_from_dictio_couple(first_cases_repr, second_cases_repr)
 
     data, feature_names = get_log_representation.get_representation(log, [], string_attributes, [], numeric_attributes)
@@ -107,6 +107,8 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
 
     if parameters is None:
         parameters = {}
+
+    from pm4py.algo.other.decisiontree import mine_decision_tree
 
     diagnostics = {}
     string_attributes = parameters["string_attributes"] if "string_attributes" in parameters else []
@@ -157,6 +159,8 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    from pm4py.algo.other.decisiontree import mine_decision_tree
 
     diagnostics = {}
     string_attributes = parameters["string_attributes"] if "string_attributes" in parameters else []
