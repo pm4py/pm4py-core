@@ -1,7 +1,26 @@
 from pm4py.objects.process_tree import pt_operator as pt_opt
 from pm4py.objects.process_tree import state as pt_st
+from pm4py.objects.log.log import TraceLog, Trace, Event
+from pm4py.objects.process_tree import util as pt_util
+from pm4py.objects.log.util import xes
 import random
 
+def generate_log(pt, no_traces = 100):
+    log = TraceLog()
+
+    for i in range(no_traces):
+        ex_seq = execute(pt)
+        ex_seq_labels = pt_util.project_execution_sequence_to_labels(ex_seq)
+
+        trace = Trace()
+        trace.attributes[xes.DEFAULT_NAME_KEY] = str(i)
+        for label in ex_seq_labels:
+            event = Event()
+            event[xes.DEFAULT_NAME_KEY] = label
+            trace.append(event)
+        log.append(trace)
+
+    return log
 
 def execute(pt):
     enabled, open, closed = set(), set(), set()
