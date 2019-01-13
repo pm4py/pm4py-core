@@ -452,6 +452,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     missing = 0
     consumed = 0
     produced = 0
+    current_event_map = {}
     for i in range(len(trace)):
         if enable_postfix_cache and (str(trace_activities) in post_fix_caching.cache and
                                      hash(marking) in post_fix_caching.cache[str(trace_activities)]):
@@ -480,6 +481,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 marking = copy(this_end_marking)
             else:
                 if trace[i][activity_key] in trans_map:
+                    current_event_map.update(trace[i])
                     t = trans_map[trace[i][activity_key]]
                     if walk_through_hidden_trans and not semantics.is_enabled(t, net,
                                                                               marking):
@@ -503,7 +505,13 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             for place in tokens_added.keys():
                                 if place in place_fitness:
                                     place_fitness[place]["underfed_traces"].add(trace)
-                            transition_fitness[t]["underfed_traces"].add(trace)
+                            if trace not in transition_fitness[t]["underfed_traces"]:
+                                transition_fitness[t]["underfed_traces"][trace] = list()
+                            transition_fitness[t]["underfed_traces"][trace].append(current_event_map)
+                    elif enable_pltr_fitness:
+                        if trace not in transition_fitness[t]["fit_traces"]:
+                            transition_fitness[t]["fit_traces"][trace] = list()
+                        transition_fitness[t]["fit_traces"][trace].append(current_event_map)
                     c = get_consumed_tokens(t)
                     p = get_produced_tokens(t)
                     consumed = consumed + c
@@ -582,9 +590,6 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     if p in place_fitness:
                         if trace not in place_fitness[p]["underfed_traces"]:
                             place_fitness[p]["overfed_traces"].add(trace)
-                    for out_trans in [x.target for x in p.out_arcs]:
-                        if trace not in transition_fitness[out_trans]["underfed_traces"]:
-                            transition_fitness[out_trans]["overfed_traces"].add(trace)
 
         remaining = remaining + marking[p]
     if consider_remaining_in_fitness:
@@ -859,7 +864,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
         for place in net.places:
             place_fitness_per_trace[place] = {"underfed_traces": set(), "overfed_traces": set()}
         for transition in net.transitions:
-            transition_fitness_per_trace[transition] = {"underfed_traces": set(), "overfed_traces": set()}
+            if transition.label:
+                transition_fitness_per_trace[transition] = {"underfed_traces": {}, "fit_traces": {}}
     trans_map = {}
     for t in net.transitions:
         trans_map[t.label] = t
