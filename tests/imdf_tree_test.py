@@ -4,6 +4,7 @@ import unittest
 from pm4py.algo.discovery.inductive import factory as inductive_miner
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.process_tree import factory as pt_vis_factory
+from pm4py.objects.process_tree import semantics as pt_semantics
 from tests.constants import INPUT_DATA_DIR
 
 
@@ -17,7 +18,7 @@ class InductiveMinerDFTest(unittest.TestCase):
         gviz = pt_vis_factory.apply(tree)
         del gviz
         # test log generation
-        log = tree.generate_log()
+        log = pt_semantics.generate_log(tree)
         del log
 
     def test_tree_receipt(self):
@@ -29,7 +30,7 @@ class InductiveMinerDFTest(unittest.TestCase):
         gviz = pt_vis_factory.apply(tree)
         del gviz
         # test log generation
-        log = tree.generate_log()
+        log = pt_semantics.generate_log(tree)
         del log
 
 
