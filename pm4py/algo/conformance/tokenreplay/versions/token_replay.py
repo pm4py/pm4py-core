@@ -524,8 +524,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         vis_mark.append(marking)
                 else:
                     if not trace[i][activity_key] in notexisting_activities_in_model:
-                        notexisting_activities_in_model[trace[i][activity_key]] = []
-                    notexisting_activities_in_model[trace[i][activity_key]].append(trace)
+                        notexisting_activities_in_model[trace[i][activity_key]] = {}
+                    notexisting_activities_in_model[trace[i][activity_key]][trace] = current_event_map
             del trace_activities[0]
             if len(trace_activities) < MAX_POSTFIX_SUFFIX_LENGTH:
                 activating_transition_index[str(trace_activities)] = {"index": len(act_trans),
