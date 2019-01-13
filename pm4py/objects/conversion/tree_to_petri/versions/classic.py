@@ -7,7 +7,136 @@ from pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add import get_ne
 from pm4py.objects import petri
 from pm4py.objects.petri.petrinet import Marking
 from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.objects.process_tree import process_tree, tree_constants
+from pm4py.objects.process_tree.pt_operator import Operator
+
+
+def get_first_terminal_child_transitions(tree):
+    """
+    Gets the list of transitions belonging to the first terminal child node of the current tree
+
+    Parameters
+    ----------
+    tree
+        Process tree
+
+    Returns
+    ---------
+    transitions_list
+        List of transitions belonging to the first terminal child node
+    """
+    if tree.children:
+        if tree.children[0].operator:
+            return get_first_terminal_child_transitions(tree.children[0])
+        else:
+            return tree.children
+    return []
+
+
+def get_last_terminal_child_transitions(tree):
+    """
+    Gets the list of transitions belonging to the last terminal child node of the current tree
+
+    Parameters
+    ----------
+    tree
+        Process tree
+
+    Returns
+    ---------
+    transitions_list
+        List of transitions belonging to the first terminal child node
+    """
+    if tree.children:
+        if tree.children[-1].operator:
+            return get_last_terminal_child_transitions(tree.children[-1])
+        else:
+            return tree.children
+    return []
+
+
+def check_initial_loop(tree):
+    """
+    Check if the tree, on-the-left, starts with a loop
+
+    Parameters
+    ----------
+    tree
+        Process tree
+
+    Returns
+    ----------
+    boolean
+        True if it starts with an initial loop
+    """
+    if tree.children:
+        if tree.children[0].operator:
+            if tree.children[0].operator == Operator.LOOP:
+                return True
+            else:
+                return check_terminal_loop(tree.children[0])
+    return False
+
+
+def check_terminal_loop(tree):
+    """
+    Check if the tree, on-the-right, ends with a loop
+
+    Parameters
+    ----------
+    tree
+        Process tree
+
+    Returns
+    -----------
+    boolean
+        True if it ends with a terminal loop
+    """
+    if tree.children:
+        if tree.children[-1].operator:
+            if tree.children[-1].operator == Operator.LOOP:
+                return True
+            else:
+                return check_terminal_loop(tree.children[-1])
+    return False
+
+
+def check_tau_mandatory_at_initial_marking(tree):
+    """
+    When a conversion to a Petri net is operated, check if is mandatory to add a hidden transition
+    at initial marking
+
+    Parameters
+    ----------
+    tree
+        Process tree
+
+    Returns
+    ----------
+    boolean
+        Boolean that is true if it is mandatory to add a hidden transition connecting the initial marking
+        to the rest of the process
+    """
+    condition1 = check_initial_loop(tree)
+    condition2 = len(get_first_terminal_child_transitions(tree)) > 1
+
+    return condition1 or condition2
+
+
+def check_tau_mandatory_at_final_marking(tree):
+    """
+    When a conversion to a Petri net is operated, check if is mandatory to add a hidden transition
+    at final marking
+
+    Returns
+    ----------
+    boolean
+        Boolean that is true if it is mandatory to add a hidden transition connecting
+        the rest of the process to the final marking
+    """
+    condition1 = check_terminal_loop(tree)
+    condition2 = len(get_last_terminal_child_transitions(tree)) > 1
+
+    return condition1 or condition2
 
 
 def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree, counts, rec_depth,
@@ -54,8 +183,8 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
         net.places.add(final_place)
         if final_entity_subtree is not None and type(final_entity_subtree) is PetriNet.Transition:
             petri.utils.add_arc_from_to(final_place, final_entity_subtree, net)
-    tree_subtrees = [child for child in tree.children if type(child) is process_tree.ProcessTree]
-    tree_transitions = [child for child in tree.children if type(child) is process_tree.PTTransition]
+    tree_subtrees = [child for child in tree.children if child.operator]
+    tree_transitions = [child for child in tree.children if not child.operator]
 
     for trans in tree_transitions:
         if trans.label is None:
@@ -66,11 +195,11 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
         petri.utils.add_arc_from_to(initial_place, petri_trans, net)
         petri.utils.add_arc_from_to(petri_trans, final_place, net)
 
-    if tree.operator == tree_constants.EXCLUSIVE_OPERATOR:
+    if tree.operator == Operator.XOR:
         for subtree in tree_subtrees:
             net, counts, intermediate_place = recursively_add_tree(subtree, net, initial_place, final_place, counts,
                                                                    rec_depth + 1, force_add_skip=force_add_skip)
-    elif tree.operator == tree_constants.PARALLEL_OPERATOR:
+    elif tree.operator == Operator.PARALLEL:
         new_initial_trans = get_new_hidden_trans(counts, type_trans="tauSplit")
         net.transitions.add(new_initial_trans)
         petri.utils.add_arc_from_to(initial_place, new_initial_trans, net)
@@ -82,7 +211,7 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
             net, counts, intermediate_place = recursively_add_tree(subtree, net, new_initial_trans, new_final_trans,
                                                                    counts,
                                                                    rec_depth + 1, force_add_skip=force_add_skip)
-    elif tree.operator == tree_constants.SEQUENTIAL_OPERATOR:
+    elif tree.operator == Operator.SEQUENCE:
         intermediate_place = initial_place
         for i in range(len(tree_subtrees)):
             final_connection_place = None
@@ -91,7 +220,7 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
             net, counts, intermediate_place = recursively_add_tree(tree_subtrees[i], net, intermediate_place,
                                                                    final_connection_place, counts,
                                                                    rec_depth + 1, force_add_skip=force_add_skip)
-    elif tree.operator == tree_constants.LOOP_OPERATOR:
+    elif tree.operator == Operator.LOOP:
         loop_trans = get_new_hidden_trans(counts, type_trans="loop")
         net.transitions.add(loop_trans)
         petri.utils.add_arc_from_to(final_place, loop_trans, net)
@@ -155,8 +284,8 @@ def apply(tree, parameters=None):
     net.places.add(sink)
     initial_marking[source] = 1
     final_marking[sink] = 1
-    initial_mandatory = tree.check_tau_mandatory_at_initial_marking()
-    final_mandatory = tree.check_tau_mandatory_at_final_marking()
+    initial_mandatory = check_tau_mandatory_at_initial_marking(tree)
+    final_mandatory = check_tau_mandatory_at_final_marking(tree)
     if initial_mandatory:
         initial_place = get_new_place(counts)
         net.places.add(initial_place)
