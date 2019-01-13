@@ -13,7 +13,7 @@ if __name__ == "__main__":
     from pm4py.visualization.petrinet import factory as petri_vis_factory
     from pm4py.algo.other.simple.model.tracelog import factory as simple_model_factory
 
-    logFolder = "..\\compressed_input_data"
+    logFolder = os.path.join("..", "compressed_input_data")
     pnmlFolder = "simple_pnml"
     pngFolder = "simple_png"
 
