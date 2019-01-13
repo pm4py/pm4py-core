@@ -42,6 +42,14 @@ class ProcessTree(object):
         return self._label
 
     def __repr__(self):
+        """
+        Returns a string representation of the process tree
+
+        Returns
+        ------------
+        stri
+            String representation of the process tree
+        """
         if self.operator is not None:
             rep = str(self._operator) + '( '
             for i in range(0, len(self._children)):
@@ -52,6 +60,17 @@ class ProcessTree(object):
             return self.label
         else:
             return u'\u03c4'
+
+    def __str__(self):
+        """
+        Returns a string representation of the process tree
+
+        Returns
+        ------------
+        stri
+            String representation of the process tree
+        """
+        return self.__repr__()
 
     parent = property(_get_parent, _set_parent)
     children = property(_get_children)
