@@ -1,10 +1,11 @@
+from copy import deepcopy
+
 import numpy as np
 
+from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.algo.other.decisiontree import get_log_representation
 from pm4py.algo.other.decisiontree import mine_decision_tree
 from pm4py.objects.log.log import TraceLog, Trace, Event
-from pm4py.objects.log.util import xes
-from pm4py.util import constants
 
 try:
     from Lib.statistics import median
@@ -75,6 +76,58 @@ def form_representation_from_dictio_couple(first_cases_repr, second_cases_repr, 
     data, feature_names = get_log_representation.get_representation(log, [], string_attributes, [], numeric_attributes)
 
     return data, feature_names
+
+
+def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, parameters=None):
+    """
+    Perform root cause analysis starting from knowledge about firing of
+    non-existing activities in the model
+
+    Parameters
+    -------------
+    log
+        Trace log object
+    notexisting_activities_in_model
+        Not existing activities in the model
+    parameters
+        Possible parameters of the algorithm, including:
+            string_attributes -> List of string event attributes to consider
+                in building the decision tree
+            numeric_attributes -> List of numeric event attributes to consider
+                in building the decision tree
+
+    Returns
+    -----------
+    diagnostics
+        For each problematic activity:
+            - a decision tree comparing fit and unfit executions
+            - feature names
+            - classes
+    """
+
+    if parameters is None:
+        parameters = {}
+
+    diagnostics = {}
+    string_attributes = parameters["string_attributes"] if "string_attributes" in parameters else []
+    numeric_attributes = parameters["numeric_attributes"] if "numeric_attributes" in parameters else []
+
+    parameters_filtering = deepcopy(parameters)
+    parameters_filtering["positive"] = False
+    values = list(notexisting_activities_in_model.keys())
+
+    filtered_log = attributes_filter.apply(log, values, parameters=parameters_filtering)
+
+    for act in notexisting_activities_in_model:
+        fit_cases = []
+        containing_cases = []
+        for trace in log:
+            if trace in notexisting_activities_in_model[act]:
+                containing_cases.append(trace)
+            elif trace in filtered_log:
+                fit_cases.append(trace)
+
+    return diagnostics
 
 
 def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
