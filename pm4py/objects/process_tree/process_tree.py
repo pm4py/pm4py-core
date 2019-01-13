@@ -1,6 +1,20 @@
 class ProcessTree(object):
 
     def __init__(self, operator=None, parent=None, children=None, label=None):
+        """
+        Constructor
+
+        Parameters
+        ------------
+        operator
+            Operator (of the current node) of the process tree
+        parent
+            Parent node (of the current node)
+        children
+            List of children of the current node
+        label
+            Label (of the current node)
+        """
         self._operator = operator
         self._parent = parent
         self._children = list() if children is None else children

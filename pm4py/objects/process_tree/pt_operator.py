@@ -2,9 +2,13 @@ from enum import Enum
 
 
 class Operator(Enum):
+    # sequence operator
     SEQUENCE = '->'
+    # exclusive choice operator
     XOR = 'X'
+    # parallel operator
     PARALLEL = '+'
+    # loop operator
     LOOP = '*'
 
     '''
