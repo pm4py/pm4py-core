@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Operator2(Enum):
+class Operator(Enum):
     SEQUENCE = '->'
     XOR = 'X'
     PARALLEL = '+'
