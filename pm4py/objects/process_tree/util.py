@@ -2,6 +2,7 @@ from pm4py.objects.process_tree import process_tree as pt
 from pm4py.objects.process_tree import pt_operator as pt_op
 from pm4py.objects.process_tree import state as pt_st
 
+
 def project_execution_sequence_to_leafs(execution_sequence):
     return list(map(lambda x: x[0],
                     filter(lambda x: (x[1] is pt_st.State.OPEN and len(x[0].children) == 0), execution_sequence)))
@@ -22,21 +23,21 @@ def parse_recursive(string_rep, depth_cache, depth):
     string_rep = string_rep.strip()
     node = None
     operator = None
-    if string_rep.startswith(pt_op.Operator2.LOOP.value):
-        operator = pt_op.Operator2.LOOP
+    if string_rep.startswith(pt_op.Operator.LOOP.value):
+        operator = pt_op.Operator.LOOP
         string_rep = string_rep[1:]
-    elif string_rep.startswith(pt_op.Operator2.PARALLEL.value):
-        operator = pt_op.Operator2.PARALLEL
+    elif string_rep.startswith(pt_op.Operator.PARALLEL.value):
+        operator = pt_op.Operator.PARALLEL
         string_rep = string_rep[1:]
-    elif string_rep.startswith(pt_op.Operator2.XOR.value):
-        operator = pt_op.Operator2.XOR
+    elif string_rep.startswith(pt_op.Operator.XOR.value):
+        operator = pt_op.Operator.XOR
         string_rep = string_rep[1:]
-    elif string_rep.startswith(pt_op.Operator2.SEQUENCE.value):
-        operator = pt_op.Operator2.SEQUENCE
+    elif string_rep.startswith(pt_op.Operator.SEQUENCE.value):
+        operator = pt_op.Operator.SEQUENCE
         string_rep = string_rep[2:]
     if operator is not None:
         parent = None if depth == 0 else depth_cache[depth - 1]
-        node = pt.ProcessTree2(operator=operator, parent=parent)
+        node = pt.ProcessTree(operator=operator, parent=parent)
         depth_cache[depth] = node
         if parent is not None:
             parent.children.append(node)
@@ -55,7 +56,7 @@ def parse_recursive(string_rep, depth_cache, depth):
             assert (string_rep.startswith('tau'))
             string_rep = string_rep[3:]
         parent = None if depth == 0 else depth_cache[depth - 1]
-        node = pt.ProcessTree2(operator=operator, parent=parent, label=label)
+        node = pt.ProcessTree(operator=operator, parent=parent, label=label)
         if parent is not None:
             parent.children.append(node)
 

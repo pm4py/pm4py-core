@@ -48,9 +48,8 @@ def repr_tree(tree, viz, current_node, rec_depth, parameters):
                 viz.node(this_trans_id, str(child))
             viz.edge(current_node, this_trans_id)
         else:
-            condition_wo_operator = child.operator == pt_operator.Operator2.XOR and len(
-                child.children) == 1 and type(
-                child.children[0]) is process_tree.PTTransition
+            condition_wo_operator = child.operator == pt_operator.Operator.XOR and len(
+                child.children) == 1 and child.children[0].operator is None
             if condition_wo_operator:
                 childchild = child.children[0]
                 viz.attr('node', shape='box', fixedsize='true', width=parameters["box_width"],
