@@ -388,7 +388,7 @@ def break_condition_final_marking(marking, final_marking):
 
 
 def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pltr_fitness, place_fitness,
-                transition_fitness,
+                transition_fitness, notexisting_activities_in_model,
                 places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
                 try_to_reach_final_marking_through_hidden=True, stop_immediately_unfit=False,
                 walk_through_hidden_trans=True, post_fix_caching=None,
@@ -415,6 +415,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         Current dictionary of places associated with unfit traces
     transition_fitness
         Current dictionary of transitions associated with unfit traces
+    notexisting_activities_in_model
+        Map that stores the notexisting activities in the model
     places_shortest_path_by_hidden
         Shortest paths between places by hidden transitions
     consider_remaining_in_fitness
@@ -452,6 +454,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     missing = 0
     consumed = 0
     produced = 0
+    current_event_map = {}
     for i in range(len(trace)):
         if enable_postfix_cache and (str(trace_activities) in post_fix_caching.cache and
                                      hash(marking) in post_fix_caching.cache[str(trace_activities)]):
@@ -480,6 +483,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 marking = copy(this_end_marking)
             else:
                 if trace[i][activity_key] in trans_map:
+                    current_event_map.update(trace[i])
                     t = trans_map[trace[i][activity_key]]
                     if walk_through_hidden_trans and not semantics.is_enabled(t, net,
                                                                               marking):
@@ -503,7 +507,13 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             for place in tokens_added.keys():
                                 if place in place_fitness:
                                     place_fitness[place]["underfed_traces"].add(trace)
-                            transition_fitness[t]["underfed_traces"].add(trace)
+                            if trace not in transition_fitness[t]["underfed_traces"]:
+                                transition_fitness[t]["underfed_traces"][trace] = list()
+                            transition_fitness[t]["underfed_traces"][trace].append(current_event_map)
+                    elif enable_pltr_fitness:
+                        if trace not in transition_fitness[t]["fit_traces"]:
+                            transition_fitness[t]["fit_traces"][trace] = list()
+                        transition_fitness[t]["fit_traces"][trace].append(current_event_map)
                     c = get_consumed_tokens(t)
                     p = get_produced_tokens(t)
                     consumed = consumed + c
@@ -512,6 +522,10 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         marking = semantics.execute(t, net, marking)
                         act_trans.append(t)
                         vis_mark.append(marking)
+                else:
+                    if not trace[i][activity_key] in notexisting_activities_in_model:
+                        notexisting_activities_in_model[trace[i][activity_key]] = []
+                    notexisting_activities_in_model[trace[i][activity_key]].append(trace)
             del trace_activities[0]
             if len(trace_activities) < MAX_POSTFIX_SUFFIX_LENGTH:
                 activating_transition_index[str(trace_activities)] = {"index": len(act_trans),
@@ -582,9 +596,6 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     if p in place_fitness:
                         if trace not in place_fitness[p]["underfed_traces"]:
                             place_fitness[p]["overfed_traces"].add(trace)
-                    for out_trans in [x.target for x in p.out_arcs]:
-                        if trace not in transition_fitness[out_trans]["underfed_traces"]:
-                            transition_fitness[out_trans]["overfed_traces"].add(trace)
 
         remaining = remaining + marking[p]
     if consider_remaining_in_fitness:
@@ -634,7 +645,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
 
 class ApplyTraceTokenReplay(Thread):
     def __init__(self, trace, net, initial_marking, final_marking, trans_map, enable_pltr_fitness, place_fitness,
-                 transition_fitness,
+                 transition_fitness, notexisting_activities_in_model,
                  places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
                  reach_mark_through_hidden=True, stop_immediately_when_unfit=False,
                  walk_through_hidden_trans=True, post_fix_caching=None,
@@ -656,6 +667,9 @@ class ApplyTraceTokenReplay(Thread):
             Current dictionary of places associated with unfit traces
         transition_fitness
             Current dictionary of transitions associated with unfit traces
+        notexisting_activities_in_model
+            Map that stores the notexisting activities in the model
+            triggered in the log
         places_shortest_path_by_hidden
             Shortest paths between places by hidden transitions
         consider_remaining_in_fitness
@@ -686,6 +700,7 @@ class ApplyTraceTokenReplay(Thread):
         self.enable_pltr_fitness = enable_pltr_fitness
         self.place_fitness = place_fitness
         self.transition_fitness = transition_fitness
+        self.notexisting_activities_in_model = notexisting_activities_in_model
         self.places_shortest_path_by_hidden = places_shortest_path_by_hidden
         self.consider_remaining_in_fitness = consider_remaining_in_fitness
         self.activity_key = activity_key
@@ -721,6 +736,7 @@ class ApplyTraceTokenReplay(Thread):
         self.t_fit, self.t_value, self.act_trans, self.trans_probl, self.reached_marking, self.enabled_trans_in_mark, self.missing, self.consumed, self.remaining, self.produced = \
             apply_trace(self.trace, self.net, self.initial_marking, self.final_marking, self.trans_map,
                         self.enable_pltr_fitness, self.place_fitness, self.transition_fitness,
+                        self.notexisting_activities_in_model,
                         self.places_shortest_path_by_hidden, self.consider_remaining_in_fitness,
                         activity_key=self.activity_key,
                         try_to_reach_final_marking_through_hidden=self.try_to_reach_final_marking_through_hidden,
@@ -859,7 +875,11 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
         for place in net.places:
             place_fitness_per_trace[place] = {"underfed_traces": set(), "overfed_traces": set()}
         for transition in net.transitions:
-            transition_fitness_per_trace[transition] = {"underfed_traces": set(), "overfed_traces": set()}
+            if transition.label:
+                transition_fitness_per_trace[transition] = {"underfed_traces": {}, "fit_traces": {}}
+
+    notexisting_activities_in_model = {}
+
     trans_map = {}
     for t in net.transitions:
         trans_map[t.label] = t
@@ -893,6 +913,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
                                                              trans_map, enable_pltr_fitness, place_fitness_per_trace,
                                                              transition_fitness_per_trace,
+                                                             notexisting_activities_in_model,
                                                              places_shortest_path_by_hidden,
                                                              consider_remaining_in_fitness,
                                                              activity_key=activity_key,
@@ -923,7 +944,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                 raise NoConceptNameException("at least an event is without " + activity_key)
 
     if enable_pltr_fitness:
-        return aligned_traces, place_fitness_per_trace, transition_fitness_per_trace
+        return aligned_traces, place_fitness_per_trace, transition_fitness_per_trace, notexisting_activities_in_model
     else:
         return aligned_traces
 
