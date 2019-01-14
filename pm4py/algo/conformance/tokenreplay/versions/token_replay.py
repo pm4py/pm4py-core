@@ -387,13 +387,57 @@ def break_condition_final_marking(marking, final_marking):
     return final_marking_dict_keys.issubset(marking_dict_keys)
 
 
+def clean_token_flood(net, prev_marking, curr_marking, t, remaining_activities, current_remaining_map):
+    """
+    Cleans the token flood
+
+    Parameters
+    ------------
+    net
+        Petri net
+    prev_marking
+        Previous marking of the Petri net
+    curr_marking
+        Current marking of the Petri net
+    t
+        Transition that is fired with missing problems
+    remaining_activities
+        Remaining activities of the trace
+    current_remaining_map
+        Map of remaining tokens (to avoid losing them)
+
+    Returns
+    ------------
+    curr_marking
+        Cleaned marking
+    current_remaining_map
+        Map of remaining tokens (to avoid losing them)
+    """
+    for place in prev_marking:
+        if place in curr_marking:
+            curr_marking_wo_place = copy(curr_marking)
+            if place in curr_marking_wo_place:
+                del curr_marking_wo_place[place]
+            en_t_in_curr_marking = set([x for x in semantics.enabled_transitions(net, curr_marking) if x.label])
+            en_t_in_curr_m_wo_place = set(
+                [x for x in semantics.enabled_transitions(net, curr_marking_wo_place) if x.label])
+            en_t_in_curr_marking = en_t_in_curr_marking - en_t_in_curr_m_wo_place
+            en_t_in_curr_marking = en_t_in_curr_marking.intersection(remaining_activities)
+            if len(en_t_in_curr_marking) == 0:
+                if place not in current_remaining_map:
+                    current_remaining_map[place] = 0
+                current_remaining_map[place] = current_remaining_map[place] + curr_marking[place]
+                del curr_marking[place]
+    return curr_marking, current_remaining_map
+
+
 def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pltr_fitness, place_fitness,
                 transition_fitness, notexisting_activities_in_model,
                 places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
                 try_to_reach_final_marking_through_hidden=True, stop_immediately_unfit=False,
                 walk_through_hidden_trans=True, post_fix_caching=None,
                 marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
-                enable_postfix_cache=False, enable_marktoact_cache=False):
+                enable_postfix_cache=False, enable_marktoact_cache=False, cleaning_token_flood=False):
     """
     Apply the token replaying algorithm to a trace
 
@@ -441,6 +485,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         Enables postfix cache
     enable_marktoact_cache
         Enables marking to activity cache
+    cleaning_token_flood
+        Decides if a cleaning of the token flood shall be operated
     """
     trace_activities = [event[activity_key] for event in trace]
     act_trans = []
@@ -455,6 +501,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     consumed = 0
     produced = 0
     current_event_map = {}
+    current_remaining_map = {}
     for i in range(len(trace)):
         if enable_postfix_cache and (str(trace_activities) in post_fix_caching.cache and
                                      hash(marking) in post_fix_caching.cache[str(trace_activities)]):
@@ -496,11 +543,14 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                                                                                  0,
                                                                                  visited_transitions,
                                                                                  vis_mark)
+                    is_initially_enabled = True
                     if not semantics.is_enabled(t, net, marking):
+                        is_initially_enabled = False
                         transitions_with_problems.append(t)
                         if stop_immediately_unfit:
                             missing = missing + 1
                             break
+                        prev_marking_missing = copy(marking)
                         [m, tokens_added] = add_missing_tokens(t, marking)
                         missing = missing + m
                         if enable_pltr_fitness:
@@ -522,6 +572,11 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         marking = semantics.execute(t, net, marking)
                         act_trans.append(t)
                         vis_mark.append(marking)
+                    if not is_initially_enabled:
+                        if cleaning_token_flood:
+                            remaining_activities = [trace[jj][activity_key] for jj in range(len(trace)) if jj > i]
+                            marking, current_remaining_map = clean_token_flood(net, prev_marking_missing, marking, t,
+                                                                               remaining_activities, current_remaining_map)
                 else:
                     if not trace[i][activity_key] in notexisting_activities_in_model:
                         notexisting_activities_in_model[trace[i][activity_key]] = {}
@@ -596,8 +651,15 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     if p in place_fitness:
                         if trace not in place_fitness[p]["underfed_traces"]:
                             place_fitness[p]["overfed_traces"].add(trace)
-
         remaining = remaining + marking[p]
+
+    for p in current_remaining_map:
+        if enable_pltr_fitness:
+            if p in place_fitness:
+                if trace not in place_fitness[p]["underfed_traces"] and trace not in place_fitness[p]["overfed_traces"]:
+                    place_fitness[p]["overfed_traces"].add(trace)
+        remaining = remaining + current_remaining_map[p]
+
     if consider_remaining_in_fitness:
         is_fit = (missing == 0) and (remaining == 0)
     else:
@@ -649,7 +711,8 @@ class ApplyTraceTokenReplay(Thread):
                  places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
                  reach_mark_through_hidden=True, stop_immediately_when_unfit=False,
                  walk_through_hidden_trans=True, post_fix_caching=None,
-                 marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME):
+                 marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
+                 cleaning_token_flood=False):
         """
         Constructor
 
@@ -690,6 +753,8 @@ class ApplyTraceTokenReplay(Thread):
             Expresses if the token-based replay is called in a reduction attempt
         thread_maximum_ex_time
             Alignment threads maximum allowed execution time
+        cleaning_token_flood
+            Decides if a cleaning of the token flood shall be operated
         """
         self.thread_is_alive = True
         self.trace = trace
@@ -711,6 +776,7 @@ class ApplyTraceTokenReplay(Thread):
         self.marking_to_activity_caching = marking_to_activity_caching
         self.is_reduction = is_reduction
         self.thread_maximum_ex_time = thread_maximum_ex_time
+        self.cleaning_token_flood = cleaning_token_flood
         self.enable_postfix_cache = ENABLE_POSTFIX_CACHE
         self.enable_marktoact_cache = ENABLE_MARKTOACT_CACHE
         if self.is_reduction:
@@ -747,7 +813,8 @@ class ApplyTraceTokenReplay(Thread):
                         is_reduction=self.is_reduction,
                         thread_maximum_ex_time=self.thread_maximum_ex_time,
                         enable_postfix_cache=self.enable_postfix_cache,
-                        enable_marktoact_cache=self.enable_marktoact_cache)
+                        enable_marktoact_cache=self.enable_marktoact_cache,
+                        cleaning_token_flood=self.cleaning_token_flood)
         self.thread_is_alive = False
 
 
@@ -826,7 +893,8 @@ def check_threads(net, threads, threads_results, all_activated_transitions, is_r
 def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=False, consider_remaining_in_fitness=False,
               activity_key="concept:name", reach_mark_through_hidden=True, stop_immediately_unfit=False,
               walk_through_hidden_trans=True, places_shortest_path_by_hidden=None,
-              variants=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME):
+              variants=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
+              cleaning_token_flood=False):
     """
     Apply token-based replay to a log
 
@@ -860,6 +928,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
         Expresses if the token-based replay is called in a reduction attempt
     thread_maximum_ex_time
         Alignment threads maximum allowed execution time
+    cleaning_token_flood
+        Decides if a cleaning of the token flood shall be operated
     """
     post_fix_cache = PostFixCaching()
     marking_to_activity_cache = MarkingToActivityCaching()
@@ -923,7 +993,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                                                              post_fix_caching=post_fix_cache,
                                                              marking_to_activity_caching=marking_to_activity_cache,
                                                              is_reduction=is_reduction,
-                                                             thread_maximum_ex_time=thread_maximum_ex_time)
+                                                             thread_maximum_ex_time=thread_maximum_ex_time,
+                                                             cleaning_token_flood=cleaning_token_flood)
                     threads[variant].start()
                 while len(threads) > 0:
                     threads_keys = list(threads.keys())
@@ -975,6 +1046,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     stop_immediately_unfit = False
     walk_through_hidden_trans = True
     is_reduction = False
+    cleaning_token_flood = False
     thread_maximum_ex_time = MAX_DEF_THR_EX_TIME
     places_shortest_path_by_hidden = None
     activity_key = xes_util.DEFAULT_NAME_KEY
@@ -995,6 +1067,8 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
             "walk_through_hidden_trans"]
     if "is_reduction" in parameters:
         is_reduction = parameters["is_reduction"]
+    if "cleaning_token_flood" in parameters:
+        cleaning_token_flood = parameters["cleaning_token_flood"]
     if "thread_maximum_ex_time" in parameters:
         thread_maximum_ex_time = parameters["thread_maximum_ex_time"]
     if "places_shortest_path_by_hidden" in parameters:
@@ -1010,4 +1084,5 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
                      stop_immediately_unfit=stop_immediately_unfit,
                      walk_through_hidden_trans=walk_through_hidden_trans,
                      places_shortest_path_by_hidden=places_shortest_path_by_hidden, activity_key=activity_key,
-                     variants=variants, is_reduction=is_reduction, thread_maximum_ex_time=thread_maximum_ex_time)
+                     variants=variants, is_reduction=is_reduction, thread_maximum_ex_time=thread_maximum_ex_time,
+                     cleaning_token_flood=cleaning_token_flood)

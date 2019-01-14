@@ -71,6 +71,9 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     parameters_tr = {PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
                      "consider_remaining_in_fitness": True}
 
+    if "cleaning_token_flood" in parameters:
+        parameters_tr["cleaning_token_flood"] = parameters["cleaning_token_flood"]
+
     aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_tr)
 
     return evaluate(aligned_traces)
