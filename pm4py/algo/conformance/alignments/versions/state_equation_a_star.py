@@ -273,13 +273,7 @@ class SearchTuple:
         elif other.f < self.f:
             return False
         else:
-            if self.trust == other.trust:
-                if self.h < other.h:
-                    return True
-                else:
-                    return False
-            else:
-                return self.trust
+            return self.h < other.h
 
     def __get_firing_sequence(self):
         ret = []
