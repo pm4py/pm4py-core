@@ -131,14 +131,18 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
         constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
     diagnostics = {}
 
+    parameters_filtering = deepcopy(parameters)
+    parameters_filtering["positive"] = True
+
     for trans in trans_fitness:
         if len(trans_fitness[trans]["underfed_traces"]) > 0:
+            filtered_log_act = attributes_filter.apply(log, [trans.label], parameters=parameters_filtering)
             fit_cases = []
             underfed_cases = []
             for trace in log:
                 if trace in trans_fitness[trans]["underfed_traces"]:
                     underfed_cases.append(trace)
-                else:
+                elif trace in filtered_log_act:
                     fit_cases.append(trace)
             if fit_cases and underfed_cases:
                 n_fit = len(fit_cases)
