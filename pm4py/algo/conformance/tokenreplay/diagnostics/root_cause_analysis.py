@@ -155,3 +155,82 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
                 diagnostics[trans] = diagn_dict
 
     return diagnostics
+
+
+def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, parameters=None):
+    """
+    Perform root cause analysis related to activities that are not present in the model
+
+    Parameters
+    -------------
+    log
+        Trace log object
+    notexisting_activities_in_model
+        Not existing activities in the model
+    parameters
+        Possible parameters of the algorithm, including:
+            string_attributes -> List of string event attributes to consider
+                in building the decision tree
+            numeric_attributes -> List of numeric event attributes to consider
+                in building the decision tree
+
+    Returns
+    -----------
+    diagnostics
+        For each problematic transition:
+            - a decision tree comparing fit and unfit executions
+            - feature names
+            - classes
+    """
+    if parameters is None:
+        parameters = {}
+
+    from pm4py.algo.other.decisiontree import mine_decision_tree
+
+    diagnostics = {}
+    string_attributes = parameters["string_attributes"] if "string_attributes" in parameters else []
+    numeric_attributes = parameters["numeric_attributes"] if "numeric_attributes" in parameters else []
+
+    parameters_filtering = deepcopy(parameters)
+    parameters_filtering["positive"] = False
+    values = list(notexisting_activities_in_model.keys())
+
+    filtered_log = attributes_filter.apply(log, values, parameters=parameters_filtering)
+
+    for act in notexisting_activities_in_model:
+        fit_cases_repr = []
+        containing_cases_repr = []
+        for trace in log:
+            if trace in notexisting_activities_in_model[act]:
+                containing_cases_repr.append(notexisting_activities_in_model[act][trace])
+            elif trace in filtered_log:
+                fit_cases_repr.append(dict(trace[-1]))
+
+        if fit_cases_repr and containing_cases_repr:
+            data, feature_names = form_representation_from_dictio_couple(fit_cases_repr, containing_cases_repr,
+                                                                         string_attributes, numeric_attributes)
+
+            target = []
+            classes = []
+
+            multiplier_first = int(max(float(len(containing_cases_repr)) / float(len(fit_cases_repr)), 1))
+            multiplier_second = int(max(float(len(fit_cases_repr)) / float(len(containing_cases_repr)), 1))
+
+            for j in range(multiplier_first):
+                for i in range(len(fit_cases_repr)):
+                    target.append(0)
+            classes.append("fit")
+
+            for j in range(multiplier_second):
+                for i in range(len(containing_cases_repr)):
+                    target.append(1)
+            classes.append("containing")
+
+            target = np.asarray(target)
+            clf = mine_decision_tree.mine(data, target)
+            diagn_dict = {"clf": clf, "data": data, "feature_names": feature_names, "target": target,
+                          "classes": classes}
+
+            diagnostics[act] = diagn_dict
+
+    return diagnostics
