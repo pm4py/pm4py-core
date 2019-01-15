@@ -576,7 +576,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         if cleaning_token_flood:
                             remaining_activities = [trace[jj][activity_key] for jj in range(len(trace)) if jj > i]
                             marking, current_remaining_map = clean_token_flood(net, prev_marking_missing, marking, t,
-                                                                               remaining_activities, current_remaining_map)
+                                                                               remaining_activities,
+                                                                               current_remaining_map)
                 else:
                     if not trace[i][activity_key] in notexisting_activities_in_model:
                         notexisting_activities_in_model[trace[i][activity_key]] = {}
@@ -890,11 +891,62 @@ def check_threads(net, threads, threads_results, all_activated_transitions, is_r
     return threads, threads_results, all_activated_transitions
 
 
+def get_variant_from_trace(trace, activity_key, disable_variants=False):
+    """
+    Gets the variant from the trace (allow disabling)
+
+    Parameters
+    ------------
+    trace
+        Trace
+    activity_key
+        Attribute that is the activity
+    disable_variants
+        Boolean value that disable variants
+
+    Returns
+    -------------
+    variant
+        Variant describing the trace
+    """
+    if disable_variants:
+        return str(hash(trace))
+    return ",".join([x[activity_key] for x in trace])
+
+
+def get_variants_from_log(log, activity_key, disable_variants=False):
+    """
+    Gets the variants from the log (allow disabling by giving each trace a different variant)
+
+    Parameters
+    -------------
+    log
+        Trace log
+    activity_key
+        Attribute that is the activity
+    disable_variants
+        Boolean value that disable variants
+
+    Returns
+    -------------
+    variants
+        Variants contained in the log
+    """
+    if disable_variants:
+        variants = {}
+        for trace in log:
+            variants[str(hash(trace))] = [trace]
+        return variants
+    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
+    variants = variants_module.get_variants(log, parameters=parameters_variants)
+    return variants
+
+
 def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=False, consider_remaining_in_fitness=False,
               activity_key="concept:name", reach_mark_through_hidden=True, stop_immediately_unfit=False,
               walk_through_hidden_trans=True, places_shortest_path_by_hidden=None,
               variants=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
-              cleaning_token_flood=False):
+              cleaning_token_flood=False, disable_variants=False):
     """
     Apply token-based replay to a log
 
@@ -930,6 +982,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
         Alignment threads maximum allowed execution time
     cleaning_token_flood
         Decides if a cleaning of the token flood shall be operated
+    disable_variants
+        Disable variants grouping
     """
     post_fix_cache = PostFixCaching()
     marking_to_activity_cache = MarkingToActivityCaching()
@@ -957,8 +1011,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
         if len(log[0]) > 0:
             if activity_key in log[0][0]:
                 if variants is None:
-                    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
-                    variants = variants_module.get_variants(log, parameters=parameters_variants)
+                    variants = get_variants_from_log(log, activity_key, disable_variants=disable_variants)
                 vc = variants_module.get_variants_sorted_by_count(variants)
                 threads = {}
                 threads_results = {}
@@ -1007,7 +1060,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                         break
 
                 for trace in log:
-                    trace_variant = ",".join([x[activity_key] for x in trace])
+                    # trace_variant = ",".join([x[activity_key] for x in trace])
+                    trace_variant = get_variant_from_trace(trace, activity_key, disable_variants=disable_variants)
                     if trace_variant in threads_results:
                         t = threads_results[trace_variant]
                         aligned_traces.append(t)
@@ -1047,6 +1101,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     walk_through_hidden_trans = True
     is_reduction = False
     cleaning_token_flood = False
+    disable_variants = False
     thread_maximum_ex_time = MAX_DEF_THR_EX_TIME
     places_shortest_path_by_hidden = None
     activity_key = xes_util.DEFAULT_NAME_KEY
@@ -1069,6 +1124,8 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
         is_reduction = parameters["is_reduction"]
     if "cleaning_token_flood" in parameters:
         cleaning_token_flood = parameters["cleaning_token_flood"]
+    if "disable_variants" in parameters:
+        disable_variants = parameters["disable_variants"]
     if "thread_maximum_ex_time" in parameters:
         thread_maximum_ex_time = parameters["thread_maximum_ex_time"]
     if "places_shortest_path_by_hidden" in parameters:
@@ -1085,4 +1142,4 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
                      walk_through_hidden_trans=walk_through_hidden_trans,
                      places_shortest_path_by_hidden=places_shortest_path_by_hidden, activity_key=activity_key,
                      variants=variants, is_reduction=is_reduction, thread_maximum_ex_time=thread_maximum_ex_time,
-                     cleaning_token_flood=cleaning_token_flood)
+                     cleaning_token_flood=cleaning_token_flood, disable_variants=disable_variants)
