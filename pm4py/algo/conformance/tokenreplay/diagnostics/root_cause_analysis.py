@@ -11,7 +11,7 @@ except:
     from statistics import median
 
 
-def form_log_from_dictio_couple(first_cases_repr, second_cases_repr):
+def form_log_from_dictio_couple(first_cases_repr, second_cases_repr, enable_multiplier=False):
     """
     Form a log from a couple of dictionary, to use for
     root cause analysis
@@ -22,6 +22,8 @@ def form_log_from_dictio_couple(first_cases_repr, second_cases_repr):
         First cases representation
     second_cases_repr
         Second cases representation
+    enable_multiplier
+        Enable balancing of classes
 
     Returns
     ------------
@@ -30,8 +32,12 @@ def form_log_from_dictio_couple(first_cases_repr, second_cases_repr):
     """
     log = TraceLog()
 
-    multiplier_first = int(max(float(len(second_cases_repr)) / float(len(first_cases_repr)), 1))
-    multiplier_second = int(max(float(len(first_cases_repr)) / float(len(second_cases_repr)), 1))
+    if enable_multiplier:
+        multiplier_first = int(max(float(len(second_cases_repr)) / float(len(first_cases_repr)), 1))
+        multiplier_second = int(max(float(len(first_cases_repr)) / float(len(second_cases_repr)), 1))
+    else:
+        multiplier_first = 1
+        multiplier_second = 1
 
     for j in range(multiplier_first):
         for i in range(len(first_cases_repr)):
@@ -50,7 +56,8 @@ def form_log_from_dictio_couple(first_cases_repr, second_cases_repr):
     return log
 
 
-def form_representation_from_dictio_couple(first_cases_repr, second_cases_repr, string_attributes, numeric_attributes):
+def form_representation_from_dictio_couple(first_cases_repr, second_cases_repr, string_attributes, numeric_attributes,
+                                           enable_multiplier=False):
     """
     Gets a log representation, useful for training the decision tree,
     from a couple of dictionaries along with the list of string attributes
@@ -66,6 +73,8 @@ def form_representation_from_dictio_couple(first_cases_repr, second_cases_repr, 
         String attributes contained in the log
     numeric_attributes
         Numeric attributes contained in the log
+    enable_multiplier
+        Enable balancing of classes
 
     Returns
     ------------
@@ -76,7 +85,8 @@ def form_representation_from_dictio_couple(first_cases_repr, second_cases_repr, 
     """
     from pm4py.algo.other.decisiontree import get_log_representation
 
-    log = form_log_from_dictio_couple(first_cases_repr, second_cases_repr)
+    log = form_log_from_dictio_couple(first_cases_repr, second_cases_repr,
+                                                                    enable_multiplier=enable_multiplier)
 
     data, feature_names = get_log_representation.get_representation(log, [], string_attributes, [], numeric_attributes)
 
@@ -116,6 +126,7 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
     diagnostics = {}
     string_attributes = parameters["string_attributes"] if "string_attributes" in parameters else []
     numeric_attributes = parameters["numeric_attributes"] if "numeric_attributes" in parameters else []
+    enable_multiplier = parameters["enable_multiplier"] if "enable_multiplier" in parameters else False
 
     for trans in trans_fitness:
         if len(trans_fitness[trans]["underfed_traces"]) > 0:
@@ -130,12 +141,17 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
 
             if fit_cases_repr and underfed_cases_repr:
                 data, feature_names = form_representation_from_dictio_couple(fit_cases_repr, underfed_cases_repr,
-                                                                             string_attributes, numeric_attributes)
+                                                                             string_attributes, numeric_attributes,
+                                                                             enable_multiplier=enable_multiplier)
                 target = []
                 classes = []
 
-                multiplier_first = int(max(float(len(underfed_cases_repr)) / float(len(fit_cases_repr)), 1))
-                multiplier_second = int(max(float(len(fit_cases_repr)) / float(len(underfed_cases_repr)), 1))
+                if enable_multiplier:
+                    multiplier_first = int(max(float(len(underfed_cases_repr)) / float(len(fit_cases_repr)), 1))
+                    multiplier_second = int(max(float(len(fit_cases_repr)) / float(len(underfed_cases_repr)), 1))
+                else:
+                    multiplier_first = 1
+                    multiplier_second = 1
 
                 for j in range(multiplier_first):
                     for i in range(len(fit_cases_repr)):
@@ -190,6 +206,7 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
     diagnostics = {}
     string_attributes = parameters["string_attributes"] if "string_attributes" in parameters else []
     numeric_attributes = parameters["numeric_attributes"] if "numeric_attributes" in parameters else []
+    enable_multiplier = parameters["enable_multiplier"] if "enable_multiplier" in parameters else False
 
     parameters_filtering = deepcopy(parameters)
     parameters_filtering["positive"] = False
@@ -208,13 +225,18 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
 
         if fit_cases_repr and containing_cases_repr:
             data, feature_names = form_representation_from_dictio_couple(fit_cases_repr, containing_cases_repr,
-                                                                         string_attributes, numeric_attributes)
+                                                                         string_attributes, numeric_attributes,
+                                                                         enable_multiplier=enable_multiplier)
 
             target = []
             classes = []
 
-            multiplier_first = int(max(float(len(containing_cases_repr)) / float(len(fit_cases_repr)), 1))
-            multiplier_second = int(max(float(len(fit_cases_repr)) / float(len(containing_cases_repr)), 1))
+            if enable_multiplier:
+                multiplier_first = int(max(float(len(containing_cases_repr)) / float(len(fit_cases_repr)), 1))
+                multiplier_second = int(max(float(len(fit_cases_repr)) / float(len(containing_cases_repr)), 1))
+            else:
+                multiplier_first = 1
+                multiplier_second = 1
 
             for j in range(multiplier_first):
                 for i in range(len(fit_cases_repr)):
