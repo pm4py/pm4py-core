@@ -94,7 +94,8 @@ def get_shortest_paths_from_trans(original_trans, spaths):
                 if target_place not in already_visited_places:
                     already_visited_places.append(target_place)
                     for place_out_arc in target_place.out_arcs:
-                        if place_out_arc not in already_visited_places:
+                        if place_out_arc not in already_visited_arcs:
+                            already_visited_arcs.append(place_out_arc)
                             if place_out_arc not in parent_place_out_arc:
                                 parent_place_out_arc[place_out_arc] = set()
                             parent_place_out_arc[place_out_arc].add(out_arc)
