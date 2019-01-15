@@ -117,7 +117,16 @@ class PetriNet(object):
             return self.__weight
 
         def __repr__(self):
-            return str(self.source.name) + "->" + str(self.target.name)
+            if type(self.source) is PetriNet.Transition:
+                if self.source.label:
+                    return "(t)"+str(self.source.label) + "->" + "(p)"+str(self.target.name)
+                else:
+                    return "(t)"+str(self.source.name) + "->" + "(p)"+str(self.target.name)
+            if type(self.target) is PetriNet.Transition:
+                if self.target.label:
+                    return "(p)"+str(self.source.name) + "->" + "(t)"+str(self.target.label)
+                else:
+                    return "(p)"+str(self.source.name) + "->" + "(t)"+str(self.target.name)
 
         source = property(__get_source)
         target = property(__get_target)
