@@ -3,6 +3,63 @@ from statistics import mean, median, stdev
 from pm4py.visualization.common.utils import *
 
 
+def update_spaths_given_result(spaths, original_trans, target_trans, out_arc, place_out_arc, parent_place_out_arc,
+                               visited_arcs, rec_depth):
+    """
+    Method that updates the shortest paths given the finding of the shortest paths function
+
+    Parameters
+    -------------
+    spaths
+        Arcs that are shortest paths between (visible) transitions
+    original_trans
+        Source transition of the shortest paths research
+    target_trans
+        Found target transition of the shortest paths research
+    out_arc
+        Arc connected to the target transition
+    place_out_arc
+        Arc connected to the immediately preceding place
+    parent_place_out_arc
+        Map of arcs connecting places
+    visited_arcs
+        All the visited arcs by this routine
+    rec_depth
+        Current recursion depth
+
+    Returns
+    --------------
+    spaths
+        Arcs that are shortest paths between (visible) transitions
+    visited_arcs
+        All the visited arcs by this routine
+    """
+    visited_arcs = set()
+    visited_arcs.add(out_arc)
+    visited_arcs.add(place_out_arc)
+    el1 = ((original_trans.name, target_trans.name), 0)
+    if out_arc not in spaths:
+        spaths[out_arc] = set()
+    if el1 not in spaths[out_arc]:
+        spaths[out_arc].add(el1)
+    el2 = ((original_trans.name, target_trans.name), 1)
+    if place_out_arc not in spaths:
+        spaths[place_out_arc] = set()
+    if el2 not in spaths[place_out_arc]:
+        spaths[place_out_arc].add(el2)
+
+    """if out_arc in parent_place_out_arc:
+        ppoa_set = parent_place_out_arc[out_arc]
+        for ppoa in ppoa_set:
+            print(ppoa)
+            if ppoa not in visited_arcs:
+                spaths, visited_arcs = update_spaths_given_result(spaths, original_trans, target_trans, place_out_arc,
+                                                                  ppoa, parent_place_out_arc, visited_arcs,
+                                                                  rec_depth + 1)"""
+
+    return spaths, visited_arcs
+
+
 def get_shortest_paths_from_trans(original_trans, spaths):
     """
     Get arcs that are shortest paths between a given
@@ -24,6 +81,7 @@ def get_shortest_paths_from_trans(original_trans, spaths):
     already_visited_trans = []
     already_visited_places = []
     trans_list = [original_trans]
+    parent_place_out_arc = {}
     for i in range(10000000):
         if not trans_list:
             break
@@ -37,17 +95,22 @@ def get_shortest_paths_from_trans(original_trans, spaths):
                     already_visited_places.append(target_place)
                     for place_out_arc in target_place.out_arcs:
                         if place_out_arc not in already_visited_places:
+                            if place_out_arc not in parent_place_out_arc:
+                                parent_place_out_arc[place_out_arc] = set()
+                            parent_place_out_arc[place_out_arc].add(out_arc)
                             target_trans = place_out_arc.target
                             if target_trans not in already_visited_trans or target_trans == original_trans:
                                 already_visited_trans.append(target_trans)
                                 if target_trans.label:
-                                    if out_arc not in spaths:
-                                        spaths[out_arc] = set()
-                                    if place_out_arc not in spaths:
-                                        spaths[place_out_arc] = set()
-                                    spaths[out_arc].add(((original_trans.name, target_trans.name), 0))
-                                    spaths[place_out_arc].add(((original_trans.name, target_trans.name), 1))
+                                    visited_arcs = set()
+                                    spaths, visited_arcs = update_spaths_given_result(spaths, original_trans,
+                                                                                      target_trans,
+                                                                                      out_arc,
+                                                                                      place_out_arc,
+                                                                                      parent_place_out_arc,
+                                                                                      visited_arcs, 0)
                                 trans_list.append(target_trans)
+
     return spaths
 
 
