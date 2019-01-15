@@ -14,6 +14,7 @@ if __name__ == "__main__":
     from examples import test_evaluation
     from examples import token_replay_alpha
     from examples import token_replay_imdf
+    from examples import example_diagnostics
     from examples import transition_system_test
     from examples import stochastic_petri_nets
     from examples import stochastic_petri_df
@@ -41,6 +42,8 @@ if __name__ == "__main__":
     token_replay_alpha.execute_script()
     print("\n\ntokenReplay_imdf")
     token_replay_imdf.execute_script()
+    print("\n\nexample_diagnostics")
+    example_diagnostics.execute_script()
     print("\n\ntransition_system_test")
     transition_system_test.execute_script()
     print("\n\nstochastic_petri_nets")
@@ -53,4 +56,3 @@ if __name__ == "__main__":
     big_dataframe_management.execute_script()
     print("\n\ngraphs_visualization")
     graphs_visualization.execute_script()
-
