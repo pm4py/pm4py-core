@@ -3,55 +3,84 @@ from statistics import mean, median, stdev
 from pm4py.visualization.common.utils import *
 
 
-def get_shortest_paths_from_trans(original_trans, spaths):
+def get_shortest_paths_from_trans(original_trans, trans, spaths, visited_arcs, visited_transitions, added_elements,
+                                  rec_depth):
     """
-    Get arcs that are shortest paths between a given
-    visible transition and other visible transitions
+    Get shortest paths from a given transition
 
     Parameters
-    -----------
+    --------------
     original_trans
         Original transition
+    trans
+        Current considered transition
     spaths
-        Current dictionary of shortest paths
+        Map of shortest paths
+    visited_arcs
+        Set of visited arcs
+    visited_transitions
+        Set of visited transitions
+    added_elements
+        Elements to add recursively
+    rec_depth
+        Recursion depth
 
     Returns
-    -----------
+    -------------
     spaths
-        Updated shortest paths
+        Map of shortest paths
+    visited_arcs
+        Set of visited arcs
+    added_elements
+        Elements to add recursively
     """
-    already_visited_arcs = []
-    already_visited_trans = []
-    already_visited_places = []
-    trans_list = [original_trans]
-    for i in range(10000000):
-        if not trans_list:
-            break
-        trans = trans_list.pop(0)
-        already_visited_trans.append(trans)
-        for out_arc in trans.out_arcs:
-            if out_arc not in already_visited_arcs:
-                already_visited_arcs.append(out_arc)
-                target_place = out_arc.target
-                if target_place not in already_visited_places:
-                    already_visited_places.append(target_place)
-                    for place_out_arc in target_place.out_arcs:
-                        if place_out_arc not in already_visited_places:
-                            target_trans = place_out_arc.target
-                            if target_trans not in already_visited_trans or target_trans == original_trans:
-                                already_visited_trans.append(target_trans)
-                                if target_trans.label:
+    for out_arc in trans.out_arcs:
+        if out_arc not in visited_arcs:
+            visited_arcs.add(out_arc)
+            target_place = out_arc.target
+            for place_out_arc in target_place.out_arcs:
+                if place_out_arc not in visited_arcs:
+                    visited_arcs.add(place_out_arc)
+                    target_trans = place_out_arc.target
+                    if target_trans not in visited_transitions:
+                        visited_transitions.add(target_trans)
+                        if target_trans.label:
+                            el1 = ((original_trans.name, target_trans.name), 0)
+                            if out_arc not in spaths:
+                                spaths[out_arc] = set()
+                            if el1 not in spaths[out_arc]:
+                                spaths[out_arc].add(el1)
+                            added_elements.add(el1)
+                            el2 = ((original_trans.name, target_trans.name), 1)
+                            if place_out_arc not in spaths:
+                                spaths[place_out_arc] = set()
+                            if el2 not in spaths[place_out_arc]:
+                                spaths[place_out_arc].add(el2)
+                            added_elements.add(el2)
+                        else:
+                            spaths, visited_arcs, visited_transitions, added_elements = get_shortest_paths_from_trans(
+                                original_trans,
+                                target_trans, spaths,
+                                visited_arcs,
+                                visited_transitions,
+                                added_elements,
+                                rec_depth + 1)
+                            for element in added_elements:
+                                new_element = list(element)
+                                if new_element[1] == 0:
+                                    new_element[1] = 2
                                     if out_arc not in spaths:
                                         spaths[out_arc] = set()
+                                    spaths[out_arc].add(tuple(new_element))
+                                if new_element[1] == 1:
+                                    new_element[1] = 3
                                     if place_out_arc not in spaths:
                                         spaths[place_out_arc] = set()
-                                    spaths[out_arc].add(((original_trans.name, target_trans.name), 0))
-                                    spaths[place_out_arc].add(((original_trans.name, target_trans.name), 1))
-                                trans_list.append(target_trans)
-    return spaths
+                                    spaths[place_out_arc].add(tuple(new_element))
+    return spaths, visited_arcs, visited_transitions, added_elements
 
 
-def get_shortest_paths(net):
+def get_shortest_paths(net, enable_extension=True):
     """
     Gets shortest paths between visible transitions in a Petri net
 
@@ -68,7 +97,26 @@ def get_shortest_paths(net):
     spaths = {}
     for trans in net.transitions:
         if trans.label:
-            spaths = get_shortest_paths_from_trans(trans, spaths)
+            visited_arcs = set()
+            visited_transitions = set()
+            added_elements = set()
+            spaths, visited_arcs, visited_transitions, added_elements = get_shortest_paths_from_trans(trans, trans,
+                                                                                                      spaths,
+                                                                                                      visited_arcs,
+                                                                                                      visited_transitions,
+                                                                                                      added_elements, 0)
+
+            spaths_keys = list(spaths.keys())
+            for edge in spaths_keys:
+                list_zeroones = [el for el in spaths[edge] if el[1] == 0 or el[1] == 1]
+
+                if list_zeroones:
+                    spaths[edge] = {x for x in spaths[edge] if x[0] == 0 or x[1] == 1}
+                elif enable_extension and len(spaths[edge]) == 1:
+                    pass
+                else:
+                    del spaths[edge]
+
     return spaths
 
 
