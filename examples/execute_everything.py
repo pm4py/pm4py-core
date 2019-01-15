@@ -16,6 +16,7 @@ if __name__ == "__main__":
     from examples import token_replay_imdf
     from examples import decisiontree_example
     from examples import clustering_example
+    from examples import example_diagnostics
     from examples import transition_system_test
     from examples import stochastic_petri_nets
     from examples import stochastic_petri_df
@@ -47,6 +48,8 @@ if __name__ == "__main__":
     decisiontree_example.execute_script()
     print("\n\nclustering_example")
     clustering_example.execute_script()
+    print("\n\nexample_diagnostics")
+    example_diagnostics.execute_script()
     print("\n\ntransition_system_test")
     transition_system_test.execute_script()
     print("\n\nstochastic_petri_nets")
