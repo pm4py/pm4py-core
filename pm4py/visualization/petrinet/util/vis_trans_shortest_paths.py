@@ -45,17 +45,15 @@ def get_shortest_paths_from_trans(original_trans, trans, spaths, visited_arcs, v
                     if target_trans not in visited_transitions:
                         visited_transitions.add(target_trans)
                         if target_trans.label:
-                            el1 = ((original_trans.name, target_trans.name), 0)
+                            el1 = ((original_trans.name, target_trans.name), 0, rec_depth)
                             if out_arc not in spaths:
                                 spaths[out_arc] = set()
-                            if el1 not in spaths[out_arc]:
-                                spaths[out_arc].add(el1)
+                            spaths[out_arc].add(el1)
                             added_elements.add(el1)
-                            el2 = ((original_trans.name, target_trans.name), 1)
+                            el2 = ((original_trans.name, target_trans.name), 1, rec_depth)
                             if place_out_arc not in spaths:
                                 spaths[place_out_arc] = set()
-                            if el2 not in spaths[place_out_arc]:
-                                spaths[place_out_arc].add(el2)
+                            spaths[place_out_arc].add(el2)
                             added_elements.add(el2)
                         else:
                             spaths, visited_arcs, visited_transitions, added_elements = get_shortest_paths_from_trans(
@@ -80,7 +78,7 @@ def get_shortest_paths_from_trans(original_trans, trans, spaths, visited_arcs, v
     return spaths, visited_arcs, visited_transitions, added_elements
 
 
-def get_shortest_paths(net, enable_extension=True):
+def get_shortest_paths(net, enable_extension=False):
     """
     Gets shortest paths between visible transitions in a Petri net
 
@@ -88,6 +86,8 @@ def get_shortest_paths(net, enable_extension=True):
     -----------
     net
         Petri net
+    enable_extension
+        Enable decoration of more arcs, in a risky way, when needed
 
     Returns
     -----------
@@ -105,15 +105,22 @@ def get_shortest_paths(net, enable_extension=True):
                                                                                                       visited_arcs,
                                                                                                       visited_transitions,
                                                                                                       added_elements, 0)
-
-            spaths_keys = list(spaths.keys())
-            for edge in spaths_keys:
-                list_zeroones = [el for el in spaths[edge] if el[1] == 0 or el[1] == 1]
-
-                if list_zeroones:
-                    spaths[edge] = {x for x in spaths[edge] if x[0] == 0 or x[1] == 1}
-                elif enable_extension and len(spaths[edge]) == 1:
-                    pass
+    spaths_keys = list(spaths.keys())
+    for edge in spaths_keys:
+        list_zeroones = [el for el in spaths[edge] if el[1] == 0 or el[1] == 1]
+        if list_zeroones:
+            spaths[edge] = {x for x in spaths[edge] if x[0] == 0 or x[1] == 1}
+        else:
+            unique_targets = set([x[0] for x in spaths[edge]])
+            if len(unique_targets) == 1:
+                spaths[edge] = {(unique_targets[0], 0, 0)}
+            else:
+                if enable_extension:
+                    min_dist = min([x[2] for x in spaths[edge]])
+                    targets = set([x[0] for x in spaths[edge] if x[2] == min_dist])
+                    spaths[edge] = set()
+                    for target in targets:
+                        spaths[edge].add((target, 0, min_dist))
                 else:
                     del spaths[edge]
 
