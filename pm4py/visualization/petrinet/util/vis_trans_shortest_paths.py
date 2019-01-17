@@ -107,21 +107,34 @@ def get_shortest_paths(net, enable_extension=False):
                                                                                                       added_elements, 0)
     spaths_keys = list(spaths.keys())
     for edge in spaths_keys:
-        list_zeroones = [el for el in spaths[edge] if el[1] == 0 or el[1] == 1]
-        if list_zeroones:
-            spaths[edge] = {x for x in spaths[edge] if x[0] == 0 or x[1] == 1}
+        list_zeros = [el for el in spaths[edge] if el[1] == 0]
+        list_ones = [el for el in spaths[edge] if el[1] == 1]
+        if list_zeros:
+            spaths[edge] = {x for x in spaths[edge] if x[1] == 0}
+            min_dist = min([x[2] for x in spaths[edge]])
+            possible_targets = set([x[0] for x in spaths[edge] if x[2] == min_dist])
+            spaths[edge] = set()
+            for target in possible_targets:
+                spaths[edge].add((target, 0, min_dist))
+        elif list_ones:
+            spaths[edge] = {x for x in spaths[edge] if x[1] == 1}
+            min_dist = min([x[2] for x in spaths[edge]])
+            possible_targets = set([x[0] for x in spaths[edge] if x[2] == min_dist])
+            spaths[edge] = set()
+            for target in possible_targets:
+                spaths[edge].add((target, 1, min_dist))
         else:
             unique_targets = set([x[0] for x in spaths[edge]])
             if len(unique_targets) == 1:
                 spaths[edge] = set()
-                spaths[edge].add((list(unique_targets)[0], 0, 0))
+                spaths[edge].add((list(unique_targets)[0], 2, 0))
             else:
                 if enable_extension:
                     min_dist = min([x[2] for x in spaths[edge]])
-                    targets = set([x[0] for x in spaths[edge] if x[2] == min_dist])
+                    possible_targets = set([x[0] for x in spaths[edge] if x[2] == min_dist])
                     spaths[edge] = set()
-                    for target in targets:
-                        spaths[edge].add((target, 0, min_dist))
+                    for target in possible_targets:
+                        spaths[edge].add((target, 2, min_dist))
                 else:
                     del spaths[edge]
 
