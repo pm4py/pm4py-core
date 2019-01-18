@@ -20,7 +20,6 @@ RUN pip install -U flask-cors
 RUN pip install -U matplotlib
 RUN pip install -U networkx==1.11
 RUN pip install -U sklearn
-RUN pip install -U jupyter
 
 COPY . /app
 
