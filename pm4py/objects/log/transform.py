@@ -1,7 +1,42 @@
+import pm4py
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log.util import general as log_util
 
+import warnings
+import functools
 
+
+def deprecated(func):
+    """This is a decorator which can be used to mark functions
+    as deprecated. It will result in a warning being emitted
+    when the function is used."""
+    @functools.wraps(func)
+    def new_func(*args, **kwargs):
+        warnings.simplefilter('always', DeprecationWarning)  # turn off filter
+        warnings.warn("Call to deprecated function {}.".format(func.__name__),
+                      category=DeprecationWarning,
+                      stacklevel=2)
+        warnings.simplefilter('default', DeprecationWarning)  # reset filter
+        return func(*args, **kwargs)
+    return new_func
+
+@deprecated
+def transform_any_log_to_trace_log(log, parameters=None):
+    if isinstance(log, pm4py.objects.log.log.EventLog) and (not isinstance(log, pm4py.objects.log.log.TraceLog)):
+        parameters = parameters if parameters is not None else dict()
+        if log_util.PARAMETER_KEY_CASE_GLUE in parameters:
+            glue = parameters[log_util.PARAMETER_KEY_CASE_GLUE]
+        else:
+            glue = log_util.CASE_ATTRIBUTE_GLUE
+        if log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX in parameters:
+            case_pref = parameters[log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX]
+        else:
+            case_pref = log_util.CASE_ATTRIBUTE_PREFIX
+        return transform_event_log_to_trace_log(log, case_glue=glue, includes_case_attributes=False,
+                                                case_attribute_prefix=case_pref)
+    return log
+
+@deprecated
 def transform_event_log_to_trace_log(log, case_glue=log_util.CASE_ATTRIBUTE_GLUE, includes_case_attributes=True,
                                      case_attribute_prefix=log_util.CASE_ATTRIBUTE_PREFIX):
     """
