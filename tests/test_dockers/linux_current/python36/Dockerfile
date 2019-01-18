@@ -10,4 +10,4 @@ RUN pip install -U pm4py
 RUN pip install -U jupyter
 RUN wget https://github.com/pm4py/pm4py-source/archive/develop.zip
 RUN unzip develop.zip
-RUN cd pm4py-source-develop && pip install -U -r requirements.txt && python setup.py install
+RUN cd pm4py-source-develop && pip install -U -r requirements.txt && pip install jupyter && python setup.py install
