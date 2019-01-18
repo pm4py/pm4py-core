@@ -7,18 +7,8 @@ RUN apt-get -y install git
 RUN apt-get -y install python3-pydot python-pydot python-pydot-ng graphviz
 RUN apt-get -y install python3-tk
 RUN apt-get -y install zip unzip
-RUN pip install pyvis==0.1.5.0
-RUN pip install networkx==2.2
-RUN pip install matplotlib==2.2.2
-RUN pip install numpy==1.16.0
-RUN pip install ciso8601==2.1.1
-RUN pip install cvxopt==1.2.2
+RUN pip install pyvis==0.1.5.0 networkx==2.2 matplotlib==2.2.2 numpy==1.16.0 ciso8601==2.1.1 cvxopt==1.2.2 lxml==4.3.0 graphviz==0.10.1 pandas==0.23.4 scipy==1.2.0 scikit-learn==0.20.2
 RUN pip install dataclasses==0.6
-RUN pip install lxml==4.3.0
-RUN pip install graphviz==0.10.1
-RUN pip install pandas==0.23.4
-RUN pip install scipy==1.2.0
-RUN pip install scikit-learn==0.20.2
 
 COPY . /app
 
