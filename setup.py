@@ -91,7 +91,6 @@ setup(
         'numpy',
         'ciso8601',
         'cvxopt',
-        'dataclasses',
         'lxml',
         'graphviz',
         'pandas',
