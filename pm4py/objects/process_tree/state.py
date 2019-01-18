@@ -1,10 +1,10 @@
-from enum import Enum, auto
+from enum import Enum
 
 
 class State(Enum):
     # closed state
-    CLOSED = auto()
+    CLOSED = 1
     # enabled state
-    ENABLED = auto()
+    ENABLED = 2
     # open state
-    OPEN = auto()
+    OPEN = 3
