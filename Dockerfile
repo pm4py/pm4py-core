@@ -6,19 +6,8 @@ RUN apt-get -y install nano vim
 RUN apt-get -y install git
 RUN apt-get -y install python3-pydot python-pydot python-pydot-ng graphviz
 RUN apt-get -y install python3-tk
-RUN pip install lxml
-RUN pip install graphviz
-RUN pip install ciso8601
-RUN pip install numpy
-RUN pip install scipy
-RUN pip install pandas
-RUN pip install dataclasses
-RUN pip install cvxopt
-RUN pip install flask
-RUN pip install flask-cors
-RUN pip install matplotlib
-RUN pip install networkx==1.11
-RUN pip install sklearn
+RUN apt-get -y install zip unzip
+RUN pip install pyvis==0.1.5.0 networkx==2.2 matplotlib==2.2.2 numpy==1.16.0 ciso8601==2.1.1 cvxopt==1.2.2 lxml==4.3.0 graphviz==0.10.1 pandas==0.23.4 scipy==1.2.0 scikit-learn==0.20.2
 
 COPY . /app
 
