@@ -256,16 +256,16 @@ def __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function):
     return ini_vec, fini_vec, cost_vec
 
 
-@dataclass
 class SearchTuple:
-    f: float
-    g: float
-    h: float
-    m: petri.petrinet.Marking
-    p: Any
-    t: petri.petrinet.PetriNet.Transition
-    x: Any
-    trust: bool
+    def __init__(self, f, g, h, m, p, t, x, trust):
+        self.f = f
+        self.g = g
+        self.h = h
+        self.m = m
+        self.p = p
+        self.t = t
+        self.x = x
+        self.trust = trust
 
     def __lt__(self, other):
         if self.f < other.f:
