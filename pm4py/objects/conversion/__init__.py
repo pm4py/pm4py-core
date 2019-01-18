@@ -1,1 +1,1 @@
-from pm4py.objects.conversion import tree_to_petri
+from pm4py.objects.conversion import process_tree

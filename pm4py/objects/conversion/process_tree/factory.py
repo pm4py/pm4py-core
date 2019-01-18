@@ -1,11 +1,11 @@
-from pm4py.objects.conversion.tree_to_petri.versions import classic
+from pm4py.objects.conversion.process_tree.versions import to_petri_net
 
-CLASSIC = "classic"
+TO_PETRI_NET = "to_petri_net"
 
-VERSIONS = {CLASSIC: classic.apply}
+VERSIONS = {TO_PETRI_NET: to_petri_net.apply}
 
 
-def apply(tree, parameters=None, variant=CLASSIC):
+def apply(tree, parameters=None, variant=TO_PETRI_NET):
     """
     Factory method for converting from Process Tree to Petri net
 
