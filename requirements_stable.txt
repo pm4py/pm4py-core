@@ -4,7 +4,6 @@ matplotlib==2.2.2
 numpy==1.16.0
 ciso8601==2.1.1
 cvxopt==1.2.2
-dataclasses==0.6
 lxml==4.3.0
 graphviz==0.10.1
 pandas==0.23.4
