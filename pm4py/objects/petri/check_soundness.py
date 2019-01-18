@@ -8,7 +8,7 @@ from pm4py.objects.petri.networkx_graph import create_networkx_undirected_graph
 
 def check_source_and_sink_reachability(net, unique_source, unique_sink):
     """
-    Checks reachability of the source and the sink place from all other nodes (places/transitions)
+    Checks reachability of the source and the sink place from all simulation nodes (places/transitions)
     of the Petri net
 
     Parameters
