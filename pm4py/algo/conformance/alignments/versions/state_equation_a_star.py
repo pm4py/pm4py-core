@@ -13,11 +13,9 @@ References
 
 """
 import heapq
-from typing import Any
 
 import numpy as np
 from cvxopt import matrix, solvers
-from dataclasses import dataclass
 
 import pm4py
 from pm4py import util as pm4pyutil
