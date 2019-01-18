@@ -10,7 +10,7 @@ from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree import Subtree
 from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-from pm4py.objects.conversion.tree_to_petri import factory as tree_to_petri
+from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 from pm4py.objects.log.util import xes as xes_util
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
