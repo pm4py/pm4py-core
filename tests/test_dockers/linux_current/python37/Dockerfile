@@ -8,5 +8,6 @@ RUN apt-get -y install python3-tk
 RUN apt-get -y install zip unzip
 RUN pip install -U pm4py
 RUN pip install -U jupyter
-RUN wget https://github.com/pm4py/pm4py-source/archive/master.zip
-RUN unzip master.zip
+RUN wget https://github.com/pm4py/pm4py-source/archive/develop.zip
+RUN unzip develop.zip
+RUN cd pm4py-source-develop && pip install -U -r requirements.txt && python setup.py install
