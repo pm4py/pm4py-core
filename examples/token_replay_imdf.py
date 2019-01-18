@@ -4,7 +4,6 @@ from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.algo.discovery.inductive import factory as inductive_factory
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.petrinet import factory as pn_vis_factory
-import pm4py
 
 
 def execute_script():
