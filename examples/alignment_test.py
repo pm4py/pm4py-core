@@ -8,6 +8,7 @@ from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PAR
 from pm4py.objects import log as log_lib
 from pm4py.objects import petri as petri
 from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.objects.conversion.log import factory as log_conv
 
 
 def align(trace, net, im, fm, model_cost_function, sync_cost_function):
@@ -29,6 +30,7 @@ def execute_script():
     # pnml_path = 'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32.pnml'
 
     log = xes_importer.import_log(log_path)
+    log = log_conv.apply(log, parameters=None, version=log_conv.TO_EVENT_LOG)
     net, marking, fmarking = petri.importer.pnml.import_net(
         pnml_path)
 
@@ -41,7 +43,7 @@ def execute_script():
         else:
             model_cost_function[t] = 1
 
-    print(ali.factory.apply(log[0], net, marking, fmarking))
+    print(ali.factory.apply(log, net, marking, fmarking))
 
 
 if __name__ == '__main__':

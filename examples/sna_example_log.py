@@ -1,8 +1,8 @@
 import os
 
-from pm4py.algo.sna.metrics.handover import factory as handover_of_work
-from pm4py.algo.sna.metrics.similar_activities import factory as similar_activities
-from pm4py.algo.sna.transformer.tracelog import factory as sna_transformer
+from pm4py.algo.enhancement.sna.metrics.handover import factory as handover_of_work
+from pm4py.algo.enhancement.sna.metrics.similar_activities import factory as similar_activities
+from pm4py.algo.enhancement.sna.transformer.tracelog import factory as sna_transformer
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.sna import factory as sna_vis_factory
 

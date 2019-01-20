@@ -7,8 +7,7 @@ from pm4py.algo.conformance.alignments.utils import STD_MODEL_LOG_MOVE_COST
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_MODEL_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
-from pm4py.objects.log import transform as log_transform
-from pm4py.objects.log.util import general as log_util
+from pm4py.objects.conversion.log import factory as log_converter
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
@@ -17,24 +16,12 @@ VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}
 VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost}
 
 
-def apply(objj, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
-    if isinstance(objj, pm4py.objects.log.log.Trace):
-        return apply_trace(objj, petri_net, initial_marking, final_marking, parameters, version)
-    elif isinstance(objj, pm4py.objects.log.log.TraceLog):
-        return apply_log(objj, petri_net, initial_marking, final_marking, parameters, version)
-    elif isinstance(objj, pm4py.objects.log.log.EventLog):
-        if log_util.PARAMETER_KEY_CASE_GLUE in parameters:
-            glue = parameters[log_util.PARAMETER_KEY_CASE_GLUE]
-        else:
-            glue = log_util.CASE_ATTRIBUTE_GLUE
-        if log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX in parameters:
-            case_pref = parameters[log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX]
-        else:
-            case_pref = log_util.CASE_ATTRIBUTE_PREFIX
-        trace_log = log_transform.transform_event_log_to_trace_log(objj, case_glue=glue,
-                                                                   includes_case_attributes=False,
-                                                                   case_attribute_prefix=case_pref)
-        return apply_log(trace_log, petri_net, initial_marking, final_marking, parameters, version)
+def apply(obj, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
+    if isinstance(obj, pm4py.objects.log.log.Trace):
+        return apply_trace(obj, petri_net, initial_marking, final_marking, parameters, version)
+    else:
+        return apply_log(log_converter.apply(obj, parameters, log_converter.TO_TRACE_LOG), petri_net, initial_marking,
+                         final_marking, parameters, version)
 
 
 def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=None,

@@ -1,4 +1,5 @@
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
+from pm4py.objects.conversion.log import factory as log_converter
 
 TOKEN_REPLAY = "token_replay"
 VERSIONS = {TOKEN_REPLAY: token_replay.apply}
@@ -25,4 +26,5 @@ def apply(log, net, initial_marking, final_marking, parameters=None, variant="to
     variant
         Variant of the algorithm to use
     """
-    return VERSIONS[variant](log, net, initial_marking, final_marking, parameters=parameters)
+    return VERSIONS[variant](log_converter.apply(log, parameters, log_converter.TO_TRACE_LOG), net, initial_marking,
+                             final_marking, parameters=parameters)

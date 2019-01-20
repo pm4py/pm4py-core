@@ -1,11 +1,11 @@
 import os
 import unittest
 
-from pm4py.algo.sna.metrics.handover import factory as handover_of_work
-from pm4py.algo.sna.metrics.real_handover import factory as real_handover_of_work
-from pm4py.algo.sna.metrics.similar_activities import factory as similar_activities
-from pm4py.algo.sna.transformer.pandas import factory as sna_transformer_df
-from pm4py.algo.sna.transformer.tracelog import factory as sna_transformer
+from pm4py.algo.enhancement.sna.metrics.handover import factory as handover_of_work
+from pm4py.algo.enhancement.sna.metrics.real_handover import factory as real_handover_of_work
+from pm4py.algo.enhancement.sna.metrics.similar_activities import factory as similar_activities
+from pm4py.algo.enhancement.sna.transformer.pandas import factory as sna_transformer_df
+from pm4py.algo.enhancement.sna.transformer.tracelog import factory as sna_transformer
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.sna import factory as sna_vis_factory

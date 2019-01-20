@@ -8,7 +8,7 @@ from pm4py.objects.transition_system import utils
 def staterep(name):
     """
     Creates a string representation for a state of a transition system.
-    Necessary because graphviz does not support symbols other than alphanimerics and '_'.
+    Necessary because graphviz does not support symbols simulation than alphanimerics and '_'.
     TODO: find a better representation.
 
     Parameters
