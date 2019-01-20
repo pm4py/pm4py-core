@@ -47,13 +47,13 @@ def get_xes_attr_value(attr_value, attr_type_xes):
 
     """
     if attr_type_xes == xes_util.TAG_DATE:
-        if attr_value.strftime('%z') and len(attr_value.strftime('%z')) > 5:
+        if attr_value.strftime('%z') and len(attr_value.strftime('%z')) >= 5:
             default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + attr_value.strftime('%z')[
                                                                                    0:3] + ":" + attr_value.strftime(
                 '%z')[
                                                                                                 3:5]
         else:
-            default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+            default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + "+00:00"
         return default_date_repr.replace(" ", "T")
     return str(attr_value)
 
@@ -109,6 +109,7 @@ def export_globals(log, root):
     for glob in log.omni_present.keys():
         glob_els = log.omni_present[glob]
         xes_global = etree.SubElement(root, xes_util.TAG_GLOBAL)
+        xes_global.set(xes_util.KEY_SCOPE, glob)
         export_attributes_element(glob_els, xes_global)
 
 

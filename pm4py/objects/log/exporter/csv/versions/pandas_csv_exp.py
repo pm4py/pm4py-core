@@ -69,4 +69,4 @@ def export_log(log, output_file_path, parameters=None):
     del parameters
 
     df = get_dataframe_from_log(log)
-    df.to_csv(output_file_path)
+    df.to_csv(output_file_path, index=False)
