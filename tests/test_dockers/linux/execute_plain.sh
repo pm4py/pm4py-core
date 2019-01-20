@@ -1,3 +1,8 @@
+cd python34
+docker build --no-cache -t testdockerlinuxpython34 .
+docker run testdockerlinuxpython34 bash -c "cd pm4py-source-master/tests && python execute_tests.py"
+docker run testdockerlinuxpython34 bash -c "python -c \"import pm4py ; print(pm4py.__version__)\""
+cd ..
 cd python35
 docker build --no-cache -t testdockerlinuxpython35 .
 docker run testdockerlinuxpython35 bash -c "cd pm4py-source-master/tests && python execute_tests.py"
