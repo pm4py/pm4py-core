@@ -4,10 +4,10 @@
   <extension name="Concept" prefix="concept" uri="http://code.deckfour.org/xes/concept.xesext"/>
   <extension name="Time" prefix="time" uri="http://code.deckfour.org/xes/time.xesext"/>
   <extension name="Organizational" prefix="org" uri="http://code.deckfour.org/xes/org.xesext"/>
-  <global>
+  <global scope="trace">
     <string key="concept:name" value="name"/>
   </global>
-  <global>
+  <global scope="event">
     <string key="concept:name" value="name"/>
     <string key="org:resource" value="resource"/>
     <date key="time:timestamp" value="2011-04-13T14:02:31.199+02:00"/>
