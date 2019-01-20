@@ -1,5 +1,4 @@
-FROM python:3.6
-#FROM tiangolo/uwsgi-nginx-flask:python3.6
+FROM python:3.5
 
 RUN apt-get update
 RUN apt-get -y install nano vim
@@ -10,5 +9,4 @@ RUN apt-get -y install zip unzip
 RUN pip install pyvis==0.1.5.0 networkx==2.2 matplotlib==2.2.2 numpy==1.16.0 ciso8601==2.1.1 cvxopt==1.2.2 lxml==4.3.0 graphviz==0.10.1 pandas==0.23.4 scipy==1.2.0 scikit-learn==0.20.2
 
 COPY . /app
-
-#ENTRYPOINT ["uwsgi", "--http", "0.0.0.0:80", "--module", "main:app", "--processes", "8", "--threads", "8"]
+RUN cd /app && python setup.py install
