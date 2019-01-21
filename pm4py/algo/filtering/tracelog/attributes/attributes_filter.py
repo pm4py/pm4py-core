@@ -226,6 +226,8 @@ def apply_events(trace_log, values, parameters=None):
                 if (positive and attribute_value in values) or (not positive and attribute_value not in values):
                     new_trace.append(trace[j])
         if len(new_trace) > 0:
+            for attr in trace.attributes:
+                new_trace.attributes[attr] = trace.attributes[attr]
             filtered_log.append(new_trace)
     return filtered_log
 
@@ -271,6 +273,9 @@ def apply(trace_log, values, parameters=None):
 
         if (found and positive) or (not found and not positive):
             new_trace = trace
+        else:
+            for attr in trace.attributes:
+                new_trace.attributes[attr] = trace.attributes[attr]
 
         if len(new_trace) > 0:
             filtered_log.append(new_trace)
@@ -381,6 +386,8 @@ def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, thre
                     if attribute_value in fva or attributes[attribute_value] >= threshold:
                         new_trace.append(trace[j])
         if len(new_trace) > 0:
+            for attr in trace.attributes:
+                new_trace.attributes[attr] = trace.attributes[attr]
             filtered_log.append(new_trace)
     return filtered_log
 
