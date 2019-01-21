@@ -1,9 +1,9 @@
 from pm4py.algo.filtering.tracelog.variants import variants_filter
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TRACEID_KEY
+from pm4py.statistics.traces.common import case_duration as case_duration_commons
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
-from pm4py.statistics.traces.common import case_duration as case_duration_commons
 
 
 def get_variant_statistics(trace_log, parameters=None):
@@ -167,6 +167,28 @@ def get_events(log, case_id, parameters=None):
     return list_eve
 
 
+def get_all_casedurations(log, parameters=None):
+    """
+    Gets all the case durations out of the trace log
+
+    Parameters
+    ------------
+    log
+        Trace lob object
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    ------------
+    duration_values
+        List of all duration values
+    """
+    cases = get_cases_description(log, parameters=parameters)
+    duration_values = [x["caseDuration"] for x in cases.values()]
+    
+    return sorted(duration_values)
+
+
 def get_kde_caseduration(log, parameters=None):
     """
     Gets the estimation of KDE density for the case durations calculated on the log
@@ -178,8 +200,6 @@ def get_kde_caseduration(log, parameters=None):
     parameters
         Possible parameters of the algorithm, including:
             graph_points -> number of points to include in the graph
-            case_id_glue -> Column hosting the Case ID
-
 
     Returns
     --------------
@@ -188,10 +208,8 @@ def get_kde_caseduration(log, parameters=None):
     y
         Y-axis values to represent
     """
-    cases = get_cases_description(log, parameters=parameters)
-    duration_values = [x["caseDuration"] for x in cases.values()]
-
-    return case_duration_commons.get_kde_caseduration(duration_values, parameters=parameters)
+    return case_duration_commons.get_kde_caseduration(get_all_casedurations(log, parameters=parameters),
+                                                      parameters=parameters)
 
 
 def get_kde_caseduration_json(log, parameters=None):
