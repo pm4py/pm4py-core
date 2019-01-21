@@ -86,8 +86,8 @@ def get_kde_numeric_attribute(values, parameters=None):
     values = sorted(values)
     density = gaussian_kde(values)
 
-    xs1 = list(np.linspace(min(values), max(values), graph_points/2))
-    xs2 = list(np.geomspace(max(min(values), 0.000001), max(values), graph_points/2))
+    xs1 = list(np.linspace(min(values), max(values), graph_points / 2))
+    xs2 = list(np.geomspace(max(min(values), 0.000001), max(values), graph_points / 2))
     xs = sorted(xs1 + xs2)
 
     return [xs, list(density(xs))]
