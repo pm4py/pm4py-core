@@ -185,8 +185,52 @@ def get_all_casedurations(log, parameters=None):
     """
     cases = get_cases_description(log, parameters=parameters)
     duration_values = [x["caseDuration"] for x in cases.values()]
-    
+
     return sorted(duration_values)
+
+
+def get_first_quartile_caseduration(log, parameters=None):
+    """
+    Gets the first quartile out of the trace log
+
+    Parameters
+    -------------
+    log
+        Trace log
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    -------------
+    value
+        First quartile value
+    """
+    duration_values = get_all_casedurations(log, parameters=parameters)
+    if duration_values:
+        return duration_values[int((len(duration_values)*3)/4)]
+    return 0
+
+
+def get_median_caseduration(log, parameters=None):
+    """
+    Gets the median case duration out of the trace log
+
+    Parameters
+    -------------
+    log
+        Trace log
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    -------------
+    value
+        Median duration value
+    """
+    duration_values = get_all_casedurations(log, parameters=parameters)
+    if duration_values:
+        return duration_values[int(len(duration_values)/2)]
+    return 0
 
 
 def get_kde_caseduration(log, parameters=None):
