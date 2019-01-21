@@ -165,6 +165,8 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key
         if len(trace) > 1 and not jj == len(trace):
             new_trace.append(trace[-1])
         if len(new_trace) > 0:
+            for attr in trace.attributes:
+                new_trace.attributes[attr] = trace.attributes[attr]
             filtered_log.append(new_trace)
     return filtered_log
 
