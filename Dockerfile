@@ -1,4 +1,4 @@
-FROM python:3.5
+FROM python:3.7
 
 RUN apt-get update
 RUN apt-get -y install nano vim
@@ -10,4 +10,4 @@ RUN pip install pyvis==0.1.5.0 networkx==2.2 matplotlib==2.2.2 numpy==1.16.0 cis
 
 COPY . /app
 RUN cd /app && python setup.py install
-#RUN pip install jupyter
+RUN pip install jupyter
