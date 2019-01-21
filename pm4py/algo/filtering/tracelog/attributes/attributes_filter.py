@@ -114,6 +114,8 @@ def select_attributes_from_log_for_tree(trace_log, max_cases_for_attr_selection=
     string_trace_attributes_to_consider = check_event_attributes_presence(trace_log,
                                                                           string_trace_attributes_to_consider)
 
+    return string_trace_attributes_to_consider, string_event_attributes_to_consider, numeric_trace_attributes_to_consider, numeric_event_attributes_to_consider
+
 
 def check_event_attributes_presence(trace_log, attributes_set):
     """
