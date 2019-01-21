@@ -1,4 +1,6 @@
 import numpy as np
+from pm4py.algo.filtering.tracelog.attributes import attributes_filter
+
 
 def get_string_trace_attribute_rep(trace, trace_attribute):
     """
@@ -273,6 +275,27 @@ def get_numeric_event_attribute_value_trace(trace, event_attribute):
     if len(non_zero_values) > 0:
         return non_zero_values[-1]
     raise Exception("at least a trace without any event with event attribute: " + event_attribute)
+
+
+def get_default_representation(log):
+    """
+    Gets the default data representation of an event log (for process tree building)
+
+    Parameters
+    -------------
+    log
+        Trace log
+
+    Returns
+    -------------
+    data
+        Data to provide for decision tree learning
+    feature_names
+        Names of the features, in order
+    """
+    str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr = attributes_filter.select_attributes_from_log_for_tree(log)
+
+    return get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr)
 
 
 def get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, str_evsucc_attr=None):
