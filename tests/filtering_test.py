@@ -48,6 +48,14 @@ class LogFilteringTest(unittest.TestCase):
         del log1
         del log2
 
+    def test_attribute_selection(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
+        input_log = os.path.join(INPUT_DATA_DIR, "running-example.xes")
+        log = xes_importer.import_log(input_log)
+        attributes_filter.select_attributes_from_log_for_tree(log)
+
     def test_filtering_variants(self):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
