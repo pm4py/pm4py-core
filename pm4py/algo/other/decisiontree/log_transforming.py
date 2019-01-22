@@ -17,6 +17,7 @@ def get_log_traces_until_activity(log, activity, parameters=None):
     parameters
         Possible parameters of the algorithm, including:
             PARAMETER_CONSTANT_ACTIVITY_KEY -> activity
+            PARAMETER_CONSTANT_TIMESTAMP_KEY -> timestamp
 
     Returns
     -------------
@@ -28,8 +29,11 @@ def get_log_traces_until_activity(log, activity, parameters=None):
 
     activity_key = parameters[
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    timestamp_key = parameters[
+        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
 
     new_log = TraceLog()
+    traces_interlapsed_time_to_act = []
 
     i = 0
     while i < len(log):
@@ -39,9 +43,12 @@ def get_log_traces_until_activity(log, activity, parameters=None):
             for attr in log[i].attributes:
                 new_trace.attributes[attr] = log[i].attributes[attr]
             new_log.append(new_trace)
+            curr_trace_interlapsed_time_to_act = log[i][ev_in_tr_w_act[0]][timestamp_key].timestamp() - \
+                                                 log[i][ev_in_tr_w_act[0] - 1][timestamp_key].timestamp()
+            traces_interlapsed_time_to_act.append(curr_trace_interlapsed_time_to_act)
         i = i + 1
 
-    return new_log
+    return new_log, traces_interlapsed_time_to_act
 
 
 def get_all_interlapsed_times_in_activity(log, activity, parameters=None):
