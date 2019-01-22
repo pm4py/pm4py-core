@@ -11,6 +11,33 @@ from pm4py.objects.log.log import TraceLog
 DEFAULT_MAX_REC_DEPTH_DEC_MINING = 2
 
 
+def get_decision_mining_rules_given_activities(log, activities, parameters=None):
+    """
+    Performs rules discovery thanks to decision mining from a log and a list of activities
+
+    Parameters
+    -------------
+    log
+        Trace log
+    activities
+        List of activities to consider in decision mining
+    parameters
+        Possible parameters of the algorithm, including:
+            PARAMETER_CONSTANT_ACTIVITY_KEY -> activity
+            PARAMETER_CONSTANT_TIMESTAMP_KEY -> timestamp
+
+    Returns
+    -------------
+    rules
+        Discovered rules leading to activities
+    """
+    clf, feature_names, classes, len_list_logs = perform_decision_mining_given_activities(
+        log, activities, parameters=parameters)
+    rules = get_rules_for_classes(clf, feature_names, classes, len_list_logs)
+
+    return rules
+
+
 def perform_decision_mining_given_activities(log, activities, parameters=None):
     """
     Performs decision mining on the causes the leads to an exclusive choice of the activities
