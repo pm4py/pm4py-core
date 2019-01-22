@@ -207,7 +207,7 @@ def get_first_quartile_caseduration(log, parameters=None):
     """
     duration_values = get_all_casedurations(log, parameters=parameters)
     if duration_values:
-        return duration_values[int((len(duration_values)*3)/4)]
+        return duration_values[int((len(duration_values) * 3) / 4)]
     return 0
 
 
@@ -229,7 +229,7 @@ def get_median_caseduration(log, parameters=None):
     """
     duration_values = get_all_casedurations(log, parameters=parameters)
     if duration_values:
-        return duration_values[int(len(duration_values)/2)]
+        return duration_values[int(len(duration_values) / 2)]
     return 0
 
 
