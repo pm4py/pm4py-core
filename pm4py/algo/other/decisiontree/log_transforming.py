@@ -1,6 +1,57 @@
+from copy import deepcopy
+
+from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.objects.log.log import TraceLog, Trace
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
+
+
+def get_log_traces_to_activities(log, activities, parameters=None):
+    """
+    Get sublogs taking to each one of the specified activities
+
+    Parameters
+    -------------
+    log
+        Trace log object
+    activities
+        List of activities in the log
+    parameters
+        Possible parameters of the algorithm, including:
+            PARAMETER_CONSTANT_ACTIVITY_KEY -> activity
+            PARAMETER_CONSTANT_TIMESTAMP_KEY -> timestamp
+
+    Returns
+    -------------
+    list_logs
+        List of event logs taking to the first occurrence of each activity
+    considered_activities
+        All activities that are effectively have been inserted in the list of logs (in some of them, the resulting log
+        may be empty)
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
+
+    list_logs = []
+    considered_activities = []
+    for act in activities:
+        other_acts = [ac for ac in activities if not ac == act]
+        parameters_filt1 = deepcopy(parameters)
+        parameters_filt2 = deepcopy(parameters)
+        parameters_filt1["positive"] = True
+        parameters_filt2["positive"] = False
+        filtered_log = attributes_filter.apply(log, [act], parameters=parameters_filt1)
+        filtered_log = attributes_filter.apply(filtered_log, other_acts, parameters=parameters_filt2)
+        filtered_log, act_durations = get_log_traces_until_activity(filtered_log, act, parameters=parameters)
+        if filtered_log:
+            list_logs.append(filtered_log)
+            considered_activities.append(act)
+
+    return list_logs, considered_activities
 
 
 def get_log_traces_until_activity(log, activity, parameters=None):
