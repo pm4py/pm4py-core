@@ -1,1 +1,1 @@
-from pm4py.algo.other.decisiontree.applications import root_cause_part_duration
+from pm4py.algo.other.decisiontree.applications import decision_mining_given_activities, root_cause_part_duration
