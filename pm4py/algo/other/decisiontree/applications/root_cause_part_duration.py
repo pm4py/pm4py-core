@@ -4,6 +4,8 @@ from pm4py.algo.other.decisiontree import get_log_representation
 from pm4py.algo.other.decisiontree import log_transforming
 from pm4py.algo.other.decisiontree import mine_decision_tree
 
+DEFAULT_MAX_REC_DEPTH_DEC_MINING = 3
+
 
 def perform_duration_root_cause_analysis(log, activity, parameters=None):
     """
@@ -39,6 +41,6 @@ def perform_duration_root_cause_analysis(log, activity, parameters=None):
         else:
             target.append(1)
     target = np.array(target)
-    clf = mine_decision_tree.mine(data, target)
+    clf = mine_decision_tree.mine(data, target, max_depth=DEFAULT_MAX_REC_DEPTH_DEC_MINING)
 
     return clf, feature_names, classes
