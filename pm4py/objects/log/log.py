@@ -129,10 +129,34 @@ class Trace(Sequence):
 
     attributes = property(_get_attributes)
 
-    def __repr__(self):
-        return str({"attributes": self._attributes, "events": self._list})
+    def __repr__(self, ret_list=False):
+        if len(self._list) == 0:
+            ret = {"attributes": self._attributes, "events": []}
+        elif len(self._list) == 1:
+            ret = {"attributes": self._attributes, "events": [self._list[0]]}
+        else:
+            ret = {"attributes": self._attributes, "events": [self._list[0], "..", self._list[-1]]}
+        if ret_list:
+            return ret
+        return str(ret)
+
+    def __str__(self):
+        return str(self.__repr__())
+
 
 
 class TraceLog(EventLog):
     def __init__(self, *args, **kwargs):
         super(TraceLog, self).__init__(*args, **kwargs)
+
+    def __repr__(self):
+        if len(self._list) == 0:
+            ret = []
+        elif len(self._list) == 1:
+            ret = [self._list[0].__repr__(ret_list=True)]
+        else:
+            ret = [self._list[0].__repr__(ret_list=True), "....", self._list[-1].__repr__(ret_list=True)]
+        return str(ret)
+
+    def __str__(self):
+        return str(self.__repr__())
