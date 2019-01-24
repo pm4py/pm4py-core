@@ -10,6 +10,6 @@ DEEPCOPY = constants.DEEPCOPY
 VERSIONS = {TO_TRACE_LOG: to_trace_log.apply, TO_EVENT_LOG: to_event_log.apply}
 
 
-def apply(log, parameters=None, version=TO_TRACE_LOG):
-    return VERSIONS[version](log, parameters=parameters)
+def apply(log, parameters=None, variant=TO_TRACE_LOG):
+    return VERSIONS[variant](log, parameters=parameters)
 
