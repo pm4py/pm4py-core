@@ -30,7 +30,7 @@ def execute_script():
     # pnml_path = 'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32.pnml'
 
     log = xes_importer.import_log(log_path)
-    log = log_conv.apply(log, parameters=None, version=log_conv.TO_EVENT_LOG)
+    log = log_conv.apply(log, parameters=None, variant=log_conv.TO_EVENT_LOG)
     net, marking, fmarking = petri.importer.pnml.import_net(
         pnml_path)
 
