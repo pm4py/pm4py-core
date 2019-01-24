@@ -4,6 +4,7 @@ import pm4py
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log.util import general as log_util
+from pm4py.objects.log.util import xes
 
 DEEPCOPY = constants.DEEPCOPY
 
@@ -61,6 +62,8 @@ def transform_event_log_to_trace_log(log, case_glue=log_util.CASE_ATTRIBUTE_GLUE
                 for k in event.keys():
                     if k.startswith(case_attribute_prefix):
                         trace_attr[k.replace(case_attribute_prefix, '')] = event[k]
+                if xes.DEFAULT_TRACEID_KEY not in trace_attr:
+                    trace_attr[xes.DEFAULT_TRACEID_KEY] = trace_attr[case_glue]
             traces[glue] = log_instance.Trace(attributes=trace_attr)
 
         if include_case_attributes:
