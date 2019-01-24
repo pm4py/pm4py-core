@@ -13,6 +13,7 @@ if __name__ == "__main__":
     from examples import imdf_example
     from examples import test_evaluation
     from examples import token_replay_alpha
+    from examples import manual_log_generation
     from examples import token_replay_imdf
     from examples import decisiontree_example
     from examples import clustering_example
@@ -44,6 +45,8 @@ if __name__ == "__main__":
     test_evaluation.execute_script()
     print("\n\ntokenReplay_alpha")
     token_replay_alpha.execute_script()
+    print("\n\nmanual_log_generation")
+    manual_log_generation.execute_script()
     print("\n\ntokenReplay_imdf")
     token_replay_imdf.execute_script()
     print("\n\ndecisiontree_example")
