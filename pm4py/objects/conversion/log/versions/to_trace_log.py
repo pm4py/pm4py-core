@@ -21,7 +21,7 @@ def apply(log, parameters=None):
             case_pref = log_util.CASE_ATTRIBUTE_PREFIX
         enable_deepcopy = parameters[DEEPCOPY] if DEEPCOPY in parameters else False
 
-        return transform_event_log_to_trace_log(log, case_glue=glue, include_case_attributes=False,
+        return transform_event_log_to_trace_log(log, case_glue=glue, include_case_attributes=True,
                                                 case_attribute_prefix=case_pref, enable_deepcopy=enable_deepcopy)
     return log
 
