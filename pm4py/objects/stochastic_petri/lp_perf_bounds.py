@@ -1,14 +1,16 @@
-import sys
 from copy import copy
 
 import numpy as np
-from cvxopt import matrix, solvers
 
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import remove_place, remove_transition, add_arc_from_to
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
+from pm4py.util.lp import factory as lp_solver_factory
+from pm4py.util.lp.util import aeq_redundant_fix
 
 DEFAULT_REPLACEMENT_IMMEDIATE = 1000
+
+DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.CVXOPT
 
 
 class LpPerfBounds(object):
@@ -108,26 +110,11 @@ class LpPerfBounds(object):
             c[target_column] = -1.0
         else:
             c[target_column] = 1.0
+        sol = lp_solver_factory.apply(c, self.Aub, self.bub, self.Aeq, self.beq, variant=DEFAULT_LP_SOLVER_VARIANT)
+        parameters_points = {"maximize": maximize, "return_when_none": True, "var_corr": self.var_corr}
 
-        c = matrix(c)
-
-        solvers.options['glpk'] = {}
-        solvers.options['glpk']['LPX_K_MSGLEV'] = 0
-        solvers.options['glpk']['msg_lev'] = 'GLP_MSG_OFF'
-        solvers.options['glpk']['show_progress'] = False
-        solvers.options['msg_lev'] = 'GLP_MSG_OFF'
-        solvers.options['show_progress'] = False
-        solution = solvers.lp(c, self.Aub, self.bub,
-                              A=self.Aeq, b=self.beq)
-
-        # solution = linprog(c, A_ub=self.Aub, b_ub=self.bub, A_eq=self.Aeq, b_eq=self.beq, options={'tol': 8e-9})
-
-        if solution and 'x' in solution and solution['x'] is not None:
-            return list(solution['x'])
-        else:
-            if maximize:
-                return [sys.float_info.max] * len(list(self.var_corr.keys()))
-            return [sys.float_info.min] * len(list(self.var_corr.keys()))
+        return lp_solver_factory.get_points_from_sol(sol, parameters=parameters_points,
+                                                     variant=DEFAULT_LP_SOLVER_VARIANT)
 
     def build_problem(self):
         """
@@ -162,20 +149,12 @@ class LpPerfBounds(object):
         self.bub = np.vstack(
             (bub_1, bub_2, bub_3, bub_4, bub_5, bub_6, bub_18, bub_19, bub_21, bub_22, bub_26, bub_general))
 
-        # remove rendundant rows
-        i = 1
-        while i <= self.Aeq.shape[0]:
-            partial_rank = np.linalg.matrix_rank(self.Aeq[0:i, ])
-            if i > partial_rank:
-                self.Aeq = np.delete(self.Aeq, i - 1, 0)
-                self.beq = np.delete(self.beq, i - 1, 0)
-                continue
-            i = i + 1
+        self.Aeq, self.beq = aeq_redundant_fix.remove_redundant_rows(self.Aeq, self.beq)
 
-        self.Aeq = matrix(np.transpose(self.Aeq.astype(np.float64)).tolist())
-        self.beq = matrix(np.transpose(self.beq.astype(np.float64)).tolist())
-        self.Aub = matrix(np.transpose(self.Aub.astype(np.float64)).tolist())
-        self.bub = matrix(np.transpose(self.bub.astype(np.float64)).tolist())
+        self.Aeq = np.transpose(self.Aeq.astype(np.float64)).tolist()
+        self.beq = np.transpose(self.beq.astype(np.float64)).tolist()
+        self.Aub = np.transpose(self.Aub.astype(np.float64)).tolist()
+        self.bub = np.transpose(self.bub.astype(np.float64)).tolist()
 
     def build_1_throughput(self):
         """
