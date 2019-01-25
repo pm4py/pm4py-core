@@ -5,7 +5,7 @@ TOKEN_REPLAY = "token_replay"
 VERSIONS = {TOKEN_REPLAY: token_replay.apply}
 
 
-def apply(log, net, initial_marking, final_marking, parameters=None, variant="token_replay"):
+def apply(log, net, initial_marking, final_marking, parameters=None, variant=TOKEN_REPLAY):
     """
     Factory method to apply token-based replay
     
