@@ -15,7 +15,6 @@ References
 import heapq
 
 import numpy as np
-from cvxopt import matrix, solvers
 
 import pm4py
 from pm4py import util as pm4pyutil
@@ -26,10 +25,12 @@ from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util.ilp import factory as ilp_solver_factory
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
+DEFAULT_ILP_SOLVER_VARIANT = ilp_solver_factory.CVXOPT
 
 PARAMETERS = [PARAM_TRACE_COST_FUNCTION, PARAM_MODEL_COST_FUNCTION, PARAM_SYNC_COST_FUNCTION,
               pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
@@ -228,14 +229,16 @@ def __compute_exact_heuristic(sync_net, incidence_matrix, marking, cost_vec, fin
     :return: h: heuristic value, x: solution vector
     """
     m_vec = incidence_matrix.encode_marking(marking)
-    g_matrix = matrix(-np.eye(len(sync_net.transitions)))
-    h_cvx = matrix(np.zeros(len(sync_net.transitions)))
-    a_matrix = matrix(incidence_matrix.a_matrix, tc='d')
-    h_obj = solvers.lp(matrix(cost_vec, tc='d'), g_matrix, h_cvx, a_matrix.trans(),
-                       matrix([i - j for i, j in zip(fin_vec, m_vec)], tc='d'), solver='glpk',
-                       options={'glpk': {'msg_lev': 'GLP_MSG_OFF'}})
-    h = h_obj['primal objective']
-    return h, [xi for xi in h_obj['x']]
+    g_matrix = -np.eye(len(sync_net.transitions))
+    h_cvx = np.zeros(len(sync_net.transitions))
+    a_matrix = incidence_matrix.a_matrix
+    b_term = [i - j for i, j in zip(fin_vec, m_vec)]
+
+    sol = ilp_solver_factory.apply(cost_vec, g_matrix, h_cvx, a_matrix, b_term, variant=DEFAULT_ILP_SOLVER_VARIANT)
+    prim_obj = ilp_solver_factory.get_prim_obj_from_sol(sol, variant=DEFAULT_ILP_SOLVER_VARIANT)
+    points = ilp_solver_factory.get_points_from_sol(sol, variant=DEFAULT_ILP_SOLVER_VARIANT)
+
+    return prim_obj, points
 
 
 def __get_tuple_from_queue(marking, queue):
