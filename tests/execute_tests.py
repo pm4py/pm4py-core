@@ -29,7 +29,6 @@ if __name__ == "__main__":
     from tests.dataframe_prefilter import DataframePrefilteringTest
     from tests.simple_execution import SimpleExecutionTest
     from tests.graphs_forming import GraphsForming
-    from tests.sna_tests import SnaTests
 
     test_rv = RandomVariableTest()
     test1_object = Pm4pyImportPackageTest()
@@ -50,7 +49,6 @@ if __name__ == "__main__":
     test17_object = ETCTest()
     test20_object = ProcessModelEvaluationTests()
     filtering_test = LogFilteringTest()
-    sna_test = SnaTests()
     prefiltering_test = DataframePrefilteringTest()
     simpleex_test = SimpleExecutionTest()
     graphforming_test = GraphsForming()
