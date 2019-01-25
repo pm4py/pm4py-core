@@ -1,7 +1,10 @@
 import sys
 import tempfile
+import numpy as np
 
 from pulp import LpProblem, LpMinimize, LpVariable, LpStatus, value
+
+MIN_THRESHOLD = 10 ** -12
 
 
 def apply(c, Aub, bub, Aeq, beq, parameters=None):
@@ -31,6 +34,14 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
     if parameters is None:
         parameters = {}
 
+    Aub = np.asmatrix(Aub)
+    if len(bub) == 1:
+        bub = bub[0]
+    if Aeq is not None:
+        Aeq = np.asmatrix(Aeq)
+    if beq is not None and len(beq) == 1:
+        beq = beq[0]
+
     prob = LpProblem("", LpMinimize)
 
     x_list = []
@@ -40,7 +51,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
     eval_str = ""
     expr_count = 0
     for j in range(len(c)):
-        if abs(c[j]) > 10 ** -8:
+        if abs(c[j]) > MIN_THRESHOLD:
             if expr_count > 0:
                 eval_str = eval_str + " + "
             eval_str = eval_str + str(c[j]) + "*x_list[" + str(j) + "]"
@@ -53,7 +64,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
         eval_str = 0
         eval_str = ""
         for j in range(Aub.shape[1]):
-            if abs(Aub[i, j]) > 10 ** -8:
+            if abs(Aub[i, j]) > MIN_THRESHOLD:
                 if expr_count > 0:
                     eval_str = eval_str + " + "
                 eval_str = eval_str + str(Aub[i, j]) + "*x_list[" + str(j) + "]"
@@ -61,16 +72,24 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
         eval_str = eval_str + "<=" + str(bub[i]) + ", \"vinc_" + str(i) + "\""
         prob += eval(eval_str)
 
+    if Aeq is not None and beq is not None:
+        for i in range(Aeq.shape[0]):
+            expr_count = 0
+            eval_str = 0
+            eval_str = ""
+            for j in range(Aeq.shape[1]):
+                if abs(Aeq[i, j]) > MIN_THRESHOLD:
+                    if expr_count > 0:
+                        eval_str = eval_str + " + "
+                    eval_str = eval_str + str(Aeq[i, j]) + "*x_list[" + str(j) + "]"
+                    expr_count = expr_count + 1
+            if eval_str:
+                eval_str = eval_str + "<=" + str(beq[i]) + ", \"vinceq_" + str(i+1+Aub.shape[0]) + "\""
+                prob += eval(eval_str)
+
     filename = tempfile.NamedTemporaryFile(suffix='.lp').name
     prob.writeLP(filename)
     prob.solve()
-
-    """print("Status:", LpStatus[prob.status])
-
-    print("Total Cost of Ingredients per can = ", value(prob.objective))
-
-    for v in prob.variables():
-        print(v.name, "=", v.varValue)"""
 
     return prob
 
