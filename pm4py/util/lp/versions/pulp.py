@@ -35,11 +35,11 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
         parameters = {}
 
     Aub = np.asmatrix(Aub)
-    if len(bub) == 1:
+    if type(bub) is list and len(bub) == 1:
         bub = bub[0]
     if Aeq is not None:
         Aeq = np.asmatrix(Aeq)
-    if beq is not None and len(beq) == 1:
+    if beq is not None and type(beq) is list and len(beq) == 1:
         beq = beq[0]
 
     prob = LpProblem("", LpMinimize)
