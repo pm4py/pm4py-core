@@ -1,1 +1,1 @@
-from pm4py.util.lp import factory, versions
+from pm4py.util.lp import factory, util, versions

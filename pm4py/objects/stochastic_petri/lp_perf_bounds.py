@@ -6,6 +6,7 @@ from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import remove_place, remove_transition, add_arc_from_to
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
 from pm4py.util.lp import factory as lp_solver_factory
+from pm4py.util.lp.util import aeq_redundant_fix
 
 DEFAULT_REPLACEMENT_IMMEDIATE = 1000
 
@@ -148,15 +149,7 @@ class LpPerfBounds(object):
         self.bub = np.vstack(
             (bub_1, bub_2, bub_3, bub_4, bub_5, bub_6, bub_18, bub_19, bub_21, bub_22, bub_26, bub_general))
 
-        # remove rendundant rows
-        i = 1
-        while i <= self.Aeq.shape[0]:
-            partial_rank = np.linalg.matrix_rank(self.Aeq[0:i, ])
-            if i > partial_rank:
-                self.Aeq = np.delete(self.Aeq, i - 1, 0)
-                self.beq = np.delete(self.beq, i - 1, 0)
-                continue
-            i = i + 1
+        self.Aeq, self.beq = aeq_redundant_fix.remove_redundant_rows(self.Aeq, self.beq)
 
         self.Aeq = np.transpose(self.Aeq.astype(np.float64)).tolist()
         self.beq = np.transpose(self.beq.astype(np.float64)).tolist()
