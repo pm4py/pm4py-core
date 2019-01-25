@@ -1,9 +1,11 @@
 import networkx as nx
 import numpy as np
-from scipy.optimize import linprog
 
 from pm4py.objects.petri import incidence_matrix
 from pm4py.objects.petri.networkx_graph import create_networkx_undirected_graph
+from pm4py.util.lp import factory as lp_solver_factory
+
+DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.CVXOPT
 
 
 def check_source_and_sink_reachability(net, unique_source, unique_sink):
@@ -131,12 +133,14 @@ def check_soundness_wfnet(net):
     while i < matrix.shape[0] + matrix.shape[1]:
         bub[i] = -0.01
         i = i + 1
+
     try:
-        solution = linprog(c, A_ub=vstack_matrix, b_ub=bub)
-        if solution.success:
+        sol = lp_solver_factory.apply(c, vstack_matrix, bub, None, None, variant=DEFAULT_LP_SOLVER_VARIANT)
+        if sol:
             return True
     except:
         return False
+
     return False
 
 
