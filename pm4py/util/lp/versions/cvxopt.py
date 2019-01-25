@@ -33,8 +33,10 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
     c = matrix(c)
     Aub = matrix(Aub)
     bub = matrix(bub)
-    Aeq = matrix(Aeq)
-    beq = matrix(beq)
+    if Aeq is not None:
+        Aeq = matrix(Aeq)
+    if beq is not None:
+        beq = matrix(beq)
 
     solvers.options['glpk'] = {}
     solvers.options['glpk']['LPX_K_MSGLEV'] = 0
