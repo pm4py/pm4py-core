@@ -14,6 +14,9 @@ if __name__ == "__main__":
     from examples import test_evaluation
     from examples import token_replay_alpha
     from examples import manual_log_generation
+    from examples import simple_miner
+    from examples import example_simulation
+    from examples import simulation_df
     from examples import token_replay_imdf
     from examples import decisiontree_example
     from examples import clustering_example
@@ -69,5 +72,11 @@ if __name__ == "__main__":
     big_dataframe_filtering.execute_script()
     print("\n\nbig_dataframe_management")
     big_dataframe_management.execute_script()
+    print("\n\nsimple_miner")
+    simple_miner.execute_script()
+    print("\n\nexample_simulation")
+    example_simulation.execute_script()
+    print("\n\nsimulation_df")
+    simulation_df.execute_script()
     print("\n\ngraphs_visualization")
     graphs_visualization.execute_script()
