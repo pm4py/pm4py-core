@@ -228,16 +228,6 @@ def __compute_exact_heuristic(sync_net, incidence_matrix, marking, cost_vec, fin
     -------
     :return: h: heuristic value, x: solution vector
     """
-    # g_matrix = matrix(-np.eye(len(sync_net.transitions)))
-    # h_cvx = matrix(np.zeros(len(sync_net.transitions)))
-    # a_matrix = matrix(incidence_matrix.a_matrix, tc='d')
-    # m_vec = incidence_matrix.encode_marking(marking)
-    # b_term = [i - j for i, j in zip(fin_vec, m_vec)]
-    # h_obj = solvers.lp(matrix(cost_vec, tc='d'), g_matrix, h_cvx, a_matrix.trans(),
-    #                   matrix(b_term, tc='d'), solver='glpk',
-    #                   options={'glpk': {'msg_lev': 'GLP_MSG_OFF'}})
-    # h = h_obj['primal objective']
-
     m_vec = incidence_matrix.encode_marking(marking)
     g_matrix = -np.eye(len(sync_net.transitions))
     h_cvx = np.zeros(len(sync_net.transitions))
