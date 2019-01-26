@@ -4,7 +4,7 @@ ETCONFORMANCE_TOKEN = "etconformance"
 VERSIONS = {ETCONFORMANCE_TOKEN: etconformance_token.apply}
 
 
-def apply(log, net, marking, final_marking, parameters=None, variant="etconformance"):
+def apply(log, net, marking, final_marking, parameters=None, variant=ETCONFORMANCE_TOKEN):
     """
     Factory method to apply ET Conformance
 

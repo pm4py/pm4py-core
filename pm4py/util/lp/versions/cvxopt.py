@@ -30,6 +30,8 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
     if parameters is None:
         parameters = {}
 
+    solver = parameters["solver"] if "solver" in parameters else None
+
     c = matrix(c)
     Aub = matrix(Aub)
     bub = matrix(bub)
@@ -45,7 +47,10 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
     solvers.options['msg_lev'] = 'GLP_MSG_OFF'
     solvers.options['show_progress'] = False
 
-    sol = solvers.lp(c, Aub, bub, A=Aeq, b=beq)
+    if solver:
+        sol = solvers.lp(c, Aub, bub, A=Aeq, b=beq, solver=solver)
+    else:
+        sol = solvers.lp(c, Aub, bub, A=Aeq, b=beq)
 
     return sol
 

@@ -151,10 +151,11 @@ class LpPerfBounds(object):
 
         self.Aeq, self.beq = aeq_redundant_fix.remove_redundant_rows(self.Aeq, self.beq)
 
-        self.Aeq = np.transpose(self.Aeq.astype(np.float64)).tolist()
-        self.beq = np.transpose(self.beq.astype(np.float64)).tolist()
-        self.Aub = np.transpose(self.Aub.astype(np.float64)).tolist()
-        self.bub = np.transpose(self.bub.astype(np.float64)).tolist()
+        if DEFAULT_LP_SOLVER_VARIANT == "cvxopt":
+            self.Aeq = np.transpose(self.Aeq.astype(np.float64)).tolist()
+            self.beq = np.transpose(self.beq.astype(np.float64)).tolist()
+            self.Aub = np.transpose(self.Aub.astype(np.float64)).tolist()
+            self.bub = np.transpose(self.bub.astype(np.float64)).tolist()
 
     def build_1_throughput(self):
         """

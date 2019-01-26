@@ -1,10 +1,14 @@
 from pm4py.util.lp.versions import cvxopt
+from pm4py.util.lp.versions import pulp
+
 
 CVXOPT = "cvxopt"
+PULP = "pulp"
 
-VERSIONS_APPLY = {CVXOPT: cvxopt.apply}
-VERSIONS_GET_PRIM_OBJ = {CVXOPT: cvxopt.get_prim_obj_from_sol}
-VERSIONS_GET_POINTS_FROM_SOL = {CVXOPT: cvxopt.get_points_from_sol}
+
+VERSIONS_APPLY = {CVXOPT: cvxopt.apply, PULP: pulp.apply}
+VERSIONS_GET_PRIM_OBJ = {CVXOPT: cvxopt.get_prim_obj_from_sol, PULP: pulp.get_prim_obj_from_sol}
+VERSIONS_GET_POINTS_FROM_SOL = {CVXOPT: cvxopt.get_points_from_sol, PULP: pulp.get_points_from_sol}
 
 
 def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=CVXOPT):

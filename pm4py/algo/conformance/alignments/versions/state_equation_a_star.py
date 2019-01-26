@@ -25,12 +25,12 @@ from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.util.ilp import factory as ilp_solver_factory
+from pm4py.util.lp import factory as lp_solver_factory
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
-DEFAULT_ILP_SOLVER_VARIANT = ilp_solver_factory.CVXOPT
+DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.CVXOPT
 
 PARAMETERS = [PARAM_TRACE_COST_FUNCTION, PARAM_MODEL_COST_FUNCTION, PARAM_SYNC_COST_FUNCTION,
               pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
@@ -234,9 +234,17 @@ def __compute_exact_heuristic(sync_net, incidence_matrix, marking, cost_vec, fin
     a_matrix = incidence_matrix.a_matrix
     b_term = [i - j for i, j in zip(fin_vec, m_vec)]
 
-    sol = ilp_solver_factory.apply(cost_vec, g_matrix, h_cvx, a_matrix, b_term, variant=DEFAULT_ILP_SOLVER_VARIANT)
-    prim_obj = ilp_solver_factory.get_prim_obj_from_sol(sol, variant=DEFAULT_ILP_SOLVER_VARIANT)
-    points = ilp_solver_factory.get_points_from_sol(sol, variant=DEFAULT_ILP_SOLVER_VARIANT)
+    cost_vec = [x * 1.0 for x in cost_vec]
+    a_matrix = np.asmatrix(a_matrix).astype(np.float64)
+    h_cvx = np.matrix([x * 1.0 for x in h_cvx]).transpose()
+    b_term = np.matrix([x * 1.0 for x in b_term]).transpose()
+
+    parameters_solving = {"solver": "glpk"}
+
+    sol = lp_solver_factory.apply(cost_vec, g_matrix, h_cvx, a_matrix, b_term, parameters=parameters_solving,
+                                  variant=DEFAULT_LP_SOLVER_VARIANT)
+    prim_obj = lp_solver_factory.get_prim_obj_from_sol(sol, variant=DEFAULT_LP_SOLVER_VARIANT)
+    points = lp_solver_factory.get_points_from_sol(sol, variant=DEFAULT_LP_SOLVER_VARIANT)
 
     return prim_obj, points
 
