@@ -5,7 +5,7 @@ from pm4py.objects.petri import incidence_matrix
 from pm4py.objects.petri.networkx_graph import create_networkx_undirected_graph
 from pm4py.util.lp import factory as lp_solver_factory
 
-DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.CVXOPT
+DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.PULP
 
 
 def check_source_and_sink_reachability(net, unique_source, unique_sink):
