@@ -11,7 +11,7 @@ VERSIONS_DFG = {ALPHA_VERSION_CLASSIC: versions.classic.apply_dfg}
 DEFAULT_PARAMETERS = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: xes_util.DEFAULT_NAME_KEY}
 
 
-def apply(log, parameters=None, version=ALPHA_VERSION_CLASSIC):
+def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     """
     Apply the Alpha Miner on top of a trace log
 
@@ -19,7 +19,7 @@ def apply(log, parameters=None, version=ALPHA_VERSION_CLASSIC):
     -----------
     log
         Trace log
-    version
+    variant
         Variant of the algorithm to use (classic)
     parameters
         Possible parameters of the algorithm, including:
@@ -38,7 +38,7 @@ def apply(log, parameters=None, version=ALPHA_VERSION_CLASSIC):
         parameters = {}
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    return VERSIONS[version](log_conversion.apply(log, parameters, log_conversion.TO_TRACE_LOG), parameters)
+    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_TRACE_LOG), parameters)
 
 
 def apply_dfg(dfg, parameters=None, version=ALPHA_VERSION_CLASSIC):

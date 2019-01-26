@@ -8,11 +8,13 @@ if __name__ == "__main__":
     from examples import big_log_imdf_decor
     from examples import alignment_test
     from examples import dec_treplay_imdf
-    from examples import sna_example_df
-    from examples import sna_example_log
     from examples import imdf_example
     from examples import test_evaluation
     from examples import token_replay_alpha
+    from examples import manual_log_generation
+    from examples import simple_miner
+    from examples import example_simulation
+    from examples import simulation_df
     from examples import token_replay_imdf
     from examples import example_diagnostics
     from examples import transition_system_test
@@ -26,10 +28,6 @@ if __name__ == "__main__":
     big_log_imdf_decor.execute_script(variant="frequency")
     print("\n\nbig_log_imdf_decor performance")
     big_log_imdf_decor.execute_script(variant="performance")
-    print("\n\nsna_example_df")
-    sna_example_df.execute_script()
-    print("\n\nsna_variant_log")
-    sna_example_log.execute_script()
     print("\n\nalignment_test")
     alignment_test.execute_script()
     print("\n\ndec_treplay_imdf")
@@ -40,6 +38,8 @@ if __name__ == "__main__":
     test_evaluation.execute_script()
     print("\n\ntokenReplay_alpha")
     token_replay_alpha.execute_script()
+    print("\n\nmanual_log_generation")
+    manual_log_generation.execute_script()
     print("\n\ntokenReplay_imdf")
     token_replay_imdf.execute_script()
     print("\n\nexample_diagnostics")
@@ -54,5 +54,11 @@ if __name__ == "__main__":
     big_dataframe_filtering.execute_script()
     print("\n\nbig_dataframe_management")
     big_dataframe_management.execute_script()
+    print("\n\nsimple_miner")
+    simple_miner.execute_script()
+    print("\n\nexample_simulation")
+    example_simulation.execute_script()
+    print("\n\nsimulation_df")
+    simulation_df.execute_script()
     print("\n\ngraphs_visualization")
     graphs_visualization.execute_script()
