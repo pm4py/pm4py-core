@@ -1,3 +1,4 @@
 *.pyc
 /.idea
 /venv/
+pm4py.code-workspace
