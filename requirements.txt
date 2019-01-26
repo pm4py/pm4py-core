@@ -9,3 +9,4 @@ graphviz
 pandas
 scipy
 scikit-learn
+pulp

@@ -3,9 +3,190 @@ from pm4py.algo.filtering.common.attributes import attributes_common
 from pm4py.algo.filtering.tracelog.variants import variants_filter
 from pm4py.objects.log import transform
 from pm4py.objects.log.log import TraceLog, Trace
+from pm4py.objects.log.util import sampling
+from pm4py.objects.log.util import xes
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
+
+DEFAULT_MAX_CASES_FOR_ATTR_SELECTION = 50
+
+
+def get_all_trace_attributes_from_log(trace_log):
+    """
+    Get all trace attributes from the log
+
+    Parameters
+    ------------
+    trace_log
+        Trace log
+
+    Returns
+    ------------
+    all_attributes
+        All trace attributes from the trace log
+    """
+    all_attributes = set()
+    for trace in trace_log:
+        all_attributes = all_attributes.union(set(trace.attributes.keys()))
+    if xes.DEFAULT_TRACEID_KEY in all_attributes:
+        all_attributes.remove(xes.DEFAULT_TRACEID_KEY)
+    return all_attributes
+
+
+def get_all_event_attributes_from_log(trace_log):
+    """
+    Get all events attributes from the log
+
+    Parameters
+    -------------
+    trace_log
+        Trace log
+
+    Returns
+    -------------
+    all_attributes
+        All trace attributes from the trace log
+    """
+    all_attributes = set()
+    for trace in trace_log:
+        for event in trace:
+            all_attributes = all_attributes.union(set(event.keys()))
+    if xes.DEFAULT_TRANSITION_KEY in all_attributes:
+        all_attributes.remove(xes.DEFAULT_TRANSITION_KEY)
+    return all_attributes
+
+
+def select_attributes_from_log_for_tree(trace_log, max_cases_for_attr_selection=DEFAULT_MAX_CASES_FOR_ATTR_SELECTION,
+                                        max_diff_occ=DEFAULT_MAX_CASES_FOR_ATTR_SELECTION / 4):
+    """
+    Select attributes from log for tree
+
+    Parameters
+    ------------
+    trace_log
+        Trace log
+    max_cases_for_attr_selection
+        Maximum number of cases to consider for attribute selection
+    max_diff_occ
+        Maximum number of different occurrences
+
+    Returns
+    ------------
+
+    """
+    if len(trace_log) > max_cases_for_attr_selection:
+        filtered_log = sampling.sample(trace_log, max_cases_for_attr_selection)
+    else:
+        filtered_log = trace_log
+    event_attributes = get_all_event_attributes_from_log(filtered_log)
+    trace_attributes = get_all_trace_attributes_from_log(filtered_log)
+    event_attributes_values = {}
+    trace_attributes_values = {}
+    for attr in event_attributes:
+        event_attributes_values[attr] = set(get_attribute_values(trace_log, attr).keys())
+    for attr in trace_attributes:
+        trace_attributes_values[attr] = set(get_trace_attribute_values(trace_log, attr).keys())
+
+    numeric_event_attributes_to_consider = list()
+    string_event_attributes_to_consider = list()
+    numeric_trace_attributes_to_consider = list()
+    string_trace_attributes_to_consider = list()
+
+    for attr in event_attributes_values:
+        if type(list(event_attributes_values[attr])[0]) is int or type(list(event_attributes_values[attr])[0]) is float:
+            numeric_event_attributes_to_consider.append(attr)
+        elif type(list(event_attributes_values[attr])[0]) is str and len(event_attributes_values[attr]) < max_diff_occ:
+            string_event_attributes_to_consider.append(attr)
+
+    for attr in trace_attributes_values:
+        if type(list(trace_attributes_values[attr])[0]) is int or type(list(trace_attributes_values[attr])[0]) is float:
+            numeric_trace_attributes_to_consider.append(attr)
+        elif type(list(trace_attributes_values[attr])[0]) is str and len(trace_attributes_values[attr]) < max_diff_occ:
+            string_trace_attributes_to_consider.append(attr)
+
+    numeric_event_attributes_to_consider = check_event_attributes_presence(trace_log,
+                                                                           numeric_event_attributes_to_consider)
+    string_event_attributes_to_consider = check_event_attributes_presence(trace_log,
+                                                                          string_event_attributes_to_consider)
+    numeric_trace_attributes_to_consider = check_event_attributes_presence(trace_log,
+                                                                           numeric_trace_attributes_to_consider)
+    string_trace_attributes_to_consider = check_event_attributes_presence(trace_log,
+                                                                          string_trace_attributes_to_consider)
+
+    return string_trace_attributes_to_consider, string_event_attributes_to_consider, numeric_trace_attributes_to_consider, numeric_event_attributes_to_consider
+
+
+def check_event_attributes_presence(trace_log, attributes_set):
+    """
+    Check event attributes presence in all the traces of the log
+
+    Parameters
+    ------------
+    trace_log
+        Trace log
+    attributes_set
+        Set of attributes
+
+    Returns
+    ------------
+    filtered_set
+        Filtered set of attributes
+    """
+    keys = list(attributes_set)
+    for attr in keys:
+        if not verify_if_event_attribute_is_in_each_trace(trace_log, attr):
+            attributes_set.remove(attr)
+    return attributes_set
+
+
+def verify_if_event_attribute_is_in_each_trace(trace_log, attribute):
+    """
+    Verify if the event attribute is in each trace
+
+    Parameters
+    ------------
+    trace_log
+        Trace log
+    attribute
+        Attribute
+
+    Returns
+    ------------
+    boolean
+        Boolean value that is aiming to check if the event attribute is in each trace
+    """
+    for trace in trace_log:
+        present = False
+        for event in trace:
+            if attribute in event:
+                present = True
+                break
+        if not present:
+            return False
+    return True
+
+
+def verify_if_trace_attribute_is_in_each_trace(trace_log, attribute):
+    """
+    Verify if the trace attribute is in each trace
+
+    Parameters
+    -------------
+    trace_log
+        Trace log
+    attribute
+        Attribute
+
+    Returns
+    ------------
+    boolean
+        Boolean value that is aiming to check if the trace attribute is in each trace
+    """
+    for trace in trace_log:
+        if attribute not in trace.attributes:
+            return False
+    return True
 
 
 def apply_events(trace_log, values, parameters=None):
@@ -45,6 +226,8 @@ def apply_events(trace_log, values, parameters=None):
                 if (positive and attribute_value in values) or (not positive and attribute_value not in values):
                     new_trace.append(trace[j])
         if len(new_trace) > 0:
+            for attr in trace.attributes:
+                new_trace.attributes[attr] = trace.attributes[attr]
             filtered_log.append(new_trace)
     return filtered_log
 
@@ -90,6 +273,9 @@ def apply(trace_log, values, parameters=None):
 
         if (found and positive) or (not found and not positive):
             new_trace = trace
+        else:
+            for attr in trace.attributes:
+                new_trace.attributes[attr] = trace.attributes[attr]
 
         if len(new_trace) > 0:
             filtered_log.append(new_trace)
@@ -131,6 +317,40 @@ def get_attribute_values(trace_log, attribute_key, parameters=None):
     return attributes
 
 
+def get_trace_attribute_values(trace_log, attribute_key, parameters=None):
+    """
+    Get the attribute values of the log for the specified attribute along with their count
+
+    Parameters
+    ------------
+    trace_log
+        Trace log
+    attribute_key
+        Attribute for which we wish to get the values along with their count
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    ------------
+    attributes
+        Dictionary of attributes associated with their count
+    """
+    if parameters is None:
+        parameters = {}
+    str(parameters)
+
+    attributes = {}
+
+    for trace in trace_log:
+        if attribute_key in trace.attributes:
+            attribute = trace.attributes[attribute_key]
+            if attribute not in attributes:
+                attributes[attribute] = 0
+            attributes[attribute] = attributes[attribute] + 1
+
+    return attributes
+
+
 def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, threshold, attribute_key="concept:name"):
     """
     Keep only attributes which number of occurrences is above the threshold (or they belong to the first variant)
@@ -166,6 +386,8 @@ def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, thre
                     if attribute_value in fva or attributes[attribute_value] >= threshold:
                         new_trace.append(trace[j])
         if len(new_trace) > 0:
+            for attr in trace.attributes:
+                new_trace.attributes[attr] = trace.attributes[attr]
             filtered_log.append(new_trace)
     return filtered_log
 

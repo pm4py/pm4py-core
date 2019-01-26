@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.5
 
 RUN apt-get update
 RUN apt-get -y install nano vim
