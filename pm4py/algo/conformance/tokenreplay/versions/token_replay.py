@@ -499,7 +499,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     vis_mark.append(marking)
     missing = 0
     consumed = 0
-    produced = 0
+    produced = 1
     current_event_map = {}
     current_remaining_map = {}
     for i in range(len(trace)):
@@ -640,6 +640,9 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
 
                 # if i > DebugConst.REACH_ITF2:
                 #    DebugConst.REACH_ITF2 = i
+
+    if break_condition_final_marking(marking, final_marking):
+        consumed = consumed + 1
 
     marking_before_cleaning = copy(marking)
 
