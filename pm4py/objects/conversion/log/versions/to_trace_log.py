@@ -63,7 +63,7 @@ def transform_event_log_to_trace_log(log, case_glue=log_util.CASE_ATTRIBUTE_GLUE
                     if k.startswith(case_attribute_prefix):
                         trace_attr[k.replace(case_attribute_prefix, '')] = event[k]
                 if xes.DEFAULT_TRACEID_KEY not in trace_attr:
-                    trace_attr[xes.DEFAULT_TRACEID_KEY] = trace_attr[case_glue]
+                    trace_attr[xes.DEFAULT_TRACEID_KEY] = glue
             traces[glue] = log_instance.Trace(attributes=trace_attr)
 
         if include_case_attributes:
