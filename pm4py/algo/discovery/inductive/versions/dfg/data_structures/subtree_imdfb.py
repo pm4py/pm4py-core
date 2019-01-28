@@ -1,5 +1,5 @@
-from pm4py.algo.discovery.dfg.utils.dfg_utils import add_to_most_probable_component
 from pm4py.algo.discovery.dfg.utils.dfg_utils import filter_dfg_on_act
+from pm4py.algo.discovery.dfg.utils.dfg_utils import get_connected_components, add_to_most_probable_component
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa import Subtree
 
 
@@ -62,17 +62,18 @@ class SubtreeB(Subtree):
         """
         if self.dfg:
             # print("\n\n")
+            conn_components = get_connected_components(self.ingoing, self.outgoing, self.activities)
+            conc_cut = self.detect_concurrent_cut(conn_components)
+            seq_cut = self.detect_sequential_cut(conn_components)
             par_cut = self.detect_parallel_cut()
-            conc_cut = self.detect_concurrent_cut()
-            seq_cut = self.detect_sequential_cut()
-            loop_cut = self.detect_loop_cut()
+            loop_cut = self.detect_loop_cut(conn_components)
 
             if conc_cut[0]:
                 for comp in conc_cut[1]:
                     new_dfg = filter_dfg_on_act(self.dfg, comp)
                     self.detected_cut = "concurrent"
                     self.children.append(SubtreeB(new_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
-                                                  noise_threshold=self.noise_threshold))
+                                                 noise_threshold=self.noise_threshold))
             else:
                 if seq_cut[0]:
                     self.detected_cut = "sequential"
@@ -80,7 +81,7 @@ class SubtreeB(Subtree):
                         dfg_child = filter_dfg_on_act(self.dfg, child)
                         self.children.append(
                             SubtreeB(dfg_child, self.initial_dfg, child, self.counts, self.rec_depth + 1,
-                                     noise_threshold=self.noise_threshold))
+                                    noise_threshold=self.noise_threshold))
                 else:
                     if par_cut[0]:
                         union_acti_comp = set()
@@ -96,7 +97,7 @@ class SubtreeB(Subtree):
                             self.detected_cut = "parallel"
                             self.children.append(
                                 SubtreeB(new_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
-                                         noise_threshold=self.noise_threshold))
+                                        noise_threshold=self.noise_threshold))
                     else:
                         if loop_cut[0]:
                             self.detected_cut = "loopCut"
@@ -104,7 +105,7 @@ class SubtreeB(Subtree):
                                 dfg_child = filter_dfg_on_act(self.dfg, child)
                                 self.children.append(
                                     SubtreeB(dfg_child, self.initial_dfg, child, self.counts, self.rec_depth + 1,
-                                             noise_threshold=self.noise_threshold))
+                                            noise_threshold=self.noise_threshold))
                         else:
                             if self.noise_threshold > 0:
                                 if not second_iteration:

@@ -10,17 +10,17 @@ VERSIONS_TREE = {INDUCTIVE_ONLY_DFG: imdfa.apply_tree, IMDFA: imdfa.apply_tree, 
 VERSIONS_TREE_DFG = {INDUCTIVE_ONLY_DFG: imdfa.apply_tree_dfg, IMDFA: imdfa.apply_tree_dfg, IMDFB: imdfb.apply_tree_dfg}
 
 
-def apply(log, parameters=None, variant=INDUCTIVE_ONLY_DFG):
+def apply(log, parameters=None, variant=IMDFA):
     return VERSIONS[variant](log, parameters)
 
 
-def apply_dfg(dfg, parameters=None, variant=INDUCTIVE_ONLY_DFG):
+def apply_dfg(dfg, parameters=None, variant=IMDFA):
     return VERSIONS_DFG[variant](dfg, parameters)
 
 
-def apply_tree(log, parameters=None, variant=INDUCTIVE_ONLY_DFG):
+def apply_tree(log, parameters=None, variant=IMDFA):
     return VERSIONS_TREE[variant](log, parameters)
 
 
-def apply_tree_dfg(dfg, parameters=None, variant=INDUCTIVE_ONLY_DFG):
+def apply_tree_dfg(dfg, parameters=None, variant=IMDFA):
     return VERSIONS_TREE_DFG[variant](dfg, parameters)

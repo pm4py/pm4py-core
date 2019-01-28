@@ -140,9 +140,14 @@ class Subtree(object):
 
         return [True, set1, set2]
 
-    def detect_sequential_cut(self):
+    def detect_sequential_cut(self, conn_components):
         """
         Detect sequential cut in DFG graph
+
+        Parameters
+        --------------
+        conn_components
+            Connected components of the graph
         """
         set1 = set()
         set2 = set()
@@ -197,13 +202,16 @@ class Subtree(object):
 
         return False
 
-    def detect_concurrent_cut(self):
+    def detect_concurrent_cut(self, conn_components):
         """
         Detects concurrent cut
+
+        Parameters
+        --------------
+        conn_components
+            Connected components
         """
         if len(self.dfg) > 0:
-            conn_components = get_connected_components(self.ingoing, self.outgoing, self.activities)
-
             if len(conn_components) > 1:
                 return [True, conn_components]
 
@@ -222,9 +230,14 @@ class Subtree(object):
 
         return [False, []]
 
-    def detect_loop_cut(self):
+    def detect_loop_cut(self, conn_components):
         """
         Detect loop cut
+
+        Parameters
+        --------------
+        conn_components
+            Connected components of the graph
         """
 
         if len(self.activities_dir_list) > 1:
@@ -265,10 +278,11 @@ class Subtree(object):
         """
         if self.dfg:
             # print("\n\n")
+            conn_components = get_connected_components(self.ingoing, self.outgoing, self.activities)
+            conc_cut = self.detect_concurrent_cut(conn_components)
+            seq_cut = self.detect_sequential_cut(conn_components)
             par_cut = self.detect_parallel_cut()
-            conc_cut = self.detect_concurrent_cut()
-            seq_cut = self.detect_sequential_cut()
-            loop_cut = self.detect_loop_cut()
+            loop_cut = self.detect_loop_cut(conn_components)
 
             if conc_cut[0]:
                 for comp in conc_cut[1]:
