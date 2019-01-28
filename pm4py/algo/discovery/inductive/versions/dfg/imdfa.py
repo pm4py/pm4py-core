@@ -7,7 +7,7 @@ from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.algo.discovery.inductive.util import petri_cleaning, shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
-from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree import Subtree
+from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa import Subtree
 from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri

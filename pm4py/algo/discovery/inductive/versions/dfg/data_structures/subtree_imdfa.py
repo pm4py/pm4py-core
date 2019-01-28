@@ -167,7 +167,7 @@ class Subtree(object):
 
         if len(set1) > 0 and len(set2) > 0:
             if not set1 == set2:
-                return [True, list(set1), list(set2)]
+                return [True, [list(set1), list(set2)]]
         return [False, [], []]
 
     def check_par_cut(self, conn_components):
@@ -255,7 +255,7 @@ class Subtree(object):
                             set1.add(act)
                 if len(set1) > 0:
                     if not set1 == set2:
-                        return [True, set1, set2]
+                        return [True, [set1, set2]]
 
         return [False, [], []]
 
@@ -270,49 +270,44 @@ class Subtree(object):
             seq_cut = self.detect_sequential_cut()
             loop_cut = self.detect_loop_cut()
 
-            if par_cut[0]:
-                union_acti_comp = set()
-                for comp in par_cut[1]:
-                    union_acti_comp = union_acti_comp.union(comp)
-                diff_acti_comp = set(self.activities).difference(union_acti_comp)
-
-                for act in diff_acti_comp:
-                    par_cut[1] = add_to_most_probable_component(par_cut[1], act, self.ingoing, self.outgoing)
-
-                for comp in par_cut[1]:
+            if conc_cut[0]:
+                for comp in conc_cut[1]:
                     new_dfg = filter_dfg_on_act(self.dfg, comp)
-                    self.detected_cut = "parallel"
+                    self.detected_cut = "concurrent"
                     self.children.append(Subtree(new_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
                                                  noise_threshold=self.noise_threshold))
             else:
-                if conc_cut[0]:
-                    for comp in conc_cut[1]:
-                        new_dfg = filter_dfg_on_act(self.dfg, comp)
-                        self.detected_cut = "concurrent"
-                        self.children.append(Subtree(new_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
-                                                     noise_threshold=self.noise_threshold))
+                if seq_cut[0]:
+                    self.detected_cut = "sequential"
+                    for child in seq_cut[1]:
+                        dfg_child = filter_dfg_on_act(self.dfg, child)
+                        self.children.append(
+                            Subtree(dfg_child, self.initial_dfg, child, self.counts, self.rec_depth + 1,
+                                    noise_threshold=self.noise_threshold))
                 else:
-                    if seq_cut[0]:
-                        dfg1 = filter_dfg_on_act(self.dfg, seq_cut[1])
-                        dfg2 = filter_dfg_on_act(self.dfg, seq_cut[2])
-                        self.detected_cut = "sequential"
-                        self.children.append(
-                            Subtree(dfg1, self.initial_dfg, seq_cut[1], self.counts, self.rec_depth + 1,
-                                    noise_threshold=self.noise_threshold))
-                        self.children.append(
-                            Subtree(dfg2, self.initial_dfg, seq_cut[2], self.counts, self.rec_depth + 1,
-                                    noise_threshold=self.noise_threshold))
+                    if par_cut[0]:
+                        union_acti_comp = set()
+                        for comp in par_cut[1]:
+                            union_acti_comp = union_acti_comp.union(comp)
+                        diff_acti_comp = set(self.activities).difference(union_acti_comp)
+
+                        for act in diff_acti_comp:
+                            par_cut[1] = add_to_most_probable_component(par_cut[1], act, self.ingoing, self.outgoing)
+
+                        for comp in par_cut[1]:
+                            new_dfg = filter_dfg_on_act(self.dfg, comp)
+                            self.detected_cut = "parallel"
+                            self.children.append(
+                                Subtree(new_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
+                                        noise_threshold=self.noise_threshold))
                     else:
                         if loop_cut[0]:
-                            dfg1 = filter_dfg_on_act(self.dfg, loop_cut[1])
-                            dfg2 = filter_dfg_on_act(self.dfg, loop_cut[2])
                             self.detected_cut = "loopCut"
-                            self.children.append(
-                                Subtree(dfg1, self.initial_dfg, loop_cut[1], self.counts, self.rec_depth + 1,
-                                        noise_threshold=self.noise_threshold))
-                            self.children.append(
-                                Subtree(dfg2, self.initial_dfg, loop_cut[2], self.counts, self.rec_depth + 1,
-                                        noise_threshold=self.noise_threshold))
+                            for child in loop_cut[1]:
+                                dfg_child = filter_dfg_on_act(self.dfg, child)
+                                self.children.append(
+                                    Subtree(dfg_child, self.initial_dfg, child, self.counts, self.rec_depth + 1,
+                                            noise_threshold=self.noise_threshold))
                         else:
                             if self.noise_threshold > 0:
                                 if not second_iteration:

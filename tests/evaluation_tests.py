@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pm4py.algo.discovery.inductive.versions.dfg import dfg_only
+from pm4py.algo.discovery.inductive import factory as inductive_miner
 from pm4py.evaluation import factory as evaluation_factory
 from pm4py.evaluation.generalization import factory as generalization_factory
 from pm4py.evaluation.precision import factory as precision_factory
@@ -17,7 +17,7 @@ class ProcessModelEvaluationTests(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        net, marking, final_marking = dfg_only.apply(log, None)
+        net, marking, final_marking = inductive_miner.apply(log)
         fitness = fitness_factory.apply(log, net, marking, final_marking)
         precision = precision_factory.apply(log, net, marking, final_marking)
         generalization = generalization_factory.apply(log, net, marking, final_marking)
@@ -32,7 +32,7 @@ class ProcessModelEvaluationTests(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        net, marking, final_marking = dfg_only.apply(log, None)
+        net, marking, final_marking = inductive_miner.apply(log)
         metrics = evaluation_factory.apply(log, net, marking, final_marking)
         del metrics
 
