@@ -136,7 +136,8 @@ class SubtreeB(Subtree):
             if act not in start_activities and act not in end_activities:
                 input_connected_activities = get_all_activities_connected_as_input_to_activity(self.dfg, act)
                 output_connected_activities = get_all_activities_connected_as_output_to_activity(self.dfg, act)
-                if output_connected_activities.issubset(start_activities):
+                if output_connected_activities.issubset(start_activities) and start_activities.issubset(
+                        output_connected_activities):
                     if len(input_connected_activities.intersection(exit_part)) > 0:
                         dangerous_redo_part.append(act)
                     redo_part.append(act)
@@ -144,7 +145,7 @@ class SubtreeB(Subtree):
                     do_part.append(act)
 
         if len(redo_part) > 0 or len(exit_part) > 0:
-            #print([True, [do_part, redo_part + exit_part, set()], len(end_activities_that_are_also_start) > 0])
+            # print([True, [do_part, redo_part + exit_part, set()], len(end_activities_that_are_also_start) > 0])
             return [True, [do_part, redo_part + exit_part, set()], len(end_activities_that_are_also_start) > 0]
 
         return [False, [], []]
