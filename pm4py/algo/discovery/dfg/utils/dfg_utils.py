@@ -87,6 +87,48 @@ def infer_end_activities(dfg):
     return end_activities
 
 
+def infer_start_activities_from_prev_connections_and_current_dfg(initial_dfg, dfg, activities):
+    """
+    Infer the start activities from the previous connections
+
+    Parameters
+    -----------
+    initial_dfg
+        Initial DFG
+    dfg
+        Directly-follows graph
+    activities
+        List of the activities contained in DFG
+    """
+    start_activities = set()
+    for el in initial_dfg:
+        if el[0][1] in activities and not el[0][0] in activities:
+            start_activities.add(el[0][1])
+    start_activities = start_activities.union(set(infer_start_activities(dfg)))
+    return start_activities
+
+
+def infer_end_activities_from_succ_connections_and_current_dfg(initial_dfg, dfg, activities):
+    """
+    Infer the end activities from the previous connections
+
+    Parameters
+    -----------
+    initial_dfg
+        Initial DFG
+    dfg
+        Directly-follows graph
+    activities
+        List of the activities contained in DFG
+    """
+    end_activities = set()
+    for el in initial_dfg:
+        if el[0][0] in activities and not el[0][1] in activities:
+            end_activities.add(el[0][0])
+    end_activities = end_activities.union(set(infer_end_activities(dfg)))
+    return end_activities
+
+
 def get_activities_from_dfg(dfg):
     """
     Get the list of attributes directly from DFG graph
@@ -538,3 +580,51 @@ def add_to_most_probable_component(comps, act2, ingoing, outgoing):
     comps[idx_max_sum].add(act2)
 
     return comps
+
+
+def get_all_activities_connected_as_output_to_activity(dfg, activity):
+    """
+    Gets all the activities that are connected as output to a given activity
+
+    Parameters
+    -------------
+    dfg
+        Directly-follows graph
+    activity
+        Activity
+
+    Returns
+    -------------
+    all_activities
+        All activities connected as output to a given activity
+    """
+    all_activities = set()
+
+    for el in dfg:
+        if el[0][0] == activity:
+            all_activities.add(el[0][1])
+
+    return all_activities
+
+
+def get_all_activities_connected_as_input_to_activity(dfg, activity):
+    """
+    Gets all the activities that are connected as input to a given activity
+
+    Parameters
+    ------------
+    dfg
+        Directly-follows graph
+    activity
+        Activity
+
+    Returns
+    ------------
+    all_activities
+        All activities connected as input to a given activities
+    """
+    all_activities = set()
+    for el in dfg:
+        if el[0][1] == activity:
+            all_activities.add(el[0][0])
+    return all_activities
