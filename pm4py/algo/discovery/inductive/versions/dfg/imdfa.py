@@ -12,6 +12,7 @@ from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 from pm4py.objects.log.util import xes as xes_util
+from pm4py.objects.petri.utils import remove_place
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
 

@@ -64,26 +64,26 @@ class SubtreeB(Subtree):
             i = i + 1
         return True
 
-    def infer_start_activities_from_prev_connections(self):
+    def infer_start_activities_from_prev_connections_and_current_dfg(self, initial_dfg, dfg, activities):
         """
         Infer the start activities from the previous connections
         """
         start_activities = set()
-        for el in self.initial_dfg:
-            if el[0][1] in self.activities and not el[0][0] in self.activities:
+        for el in initial_dfg:
+            if el[0][1] in self.activities and not el[0][0] in activities:
                 start_activities.add(el[0][1])
-        start_activities = start_activities.union(set(infer_start_activities(self.dfg)))
+        start_activities = start_activities.union(set(infer_start_activities(dfg)))
         return start_activities
 
-    def infer_end_activities_from_succ_connections(self):
+    def infer_end_activities_from_succ_connections_and_current_dfg(self, initial_dfg, dfg, activities):
         """
         Infer the end activities from the previous connections
         """
         end_activities = set()
-        for el in self.initial_dfg:
-            if el[0][0] in self.activities and not el[0][1] in self.activities:
+        for el in initial_dfg:
+            if el[0][0] in activities and not el[0][1] in activities:
                 end_activities.add(el[0][0])
-        end_activities = end_activities.union(set(infer_end_activities(self.dfg)))
+        end_activities = end_activities.union(set(infer_end_activities(dfg)))
         return end_activities
 
     def get_all_activities_connected_as_output_to_activity(self, activity):
@@ -108,6 +108,26 @@ class SubtreeB(Subtree):
 
         return all_activities
 
+    def get_all_activities_connected_as_input_to_activity(self, activity):
+        """
+        Gets all the activities that are connected as input to a given activity
+
+        Parameters
+        ------------
+        activity
+            Activity
+
+        Returns
+        ------------
+        all_activities
+            All activities connected as input to a given activities
+        """
+        all_activities = set()
+        for el in self.dfg:
+            if el[0][1] == activity:
+                all_activities.add(el[0][0])
+        return all_activities
+
     def detect_loop_cut(self, conn_components, this_nx_graph, strongly_connected_components):
         """
         Detect loop cut
@@ -121,13 +141,15 @@ class SubtreeB(Subtree):
         strongly_connected_components
             Strongly connected components
         """
-        start_activities = self.infer_start_activities_from_prev_connections()
-        end_activities = self.infer_end_activities_from_succ_connections()
-        if len(start_activities) == 0 or len(end_activities) == 0 and len(
-                start_activities.intersection(end_activities)) == 0:
-            return [False, [], []]
+        start_activities = self.infer_start_activities_from_prev_connections_and_current_dfg(self.initial_dfg, self.dfg,
+                                                                                             self.activities)
+        end_activities = self.infer_end_activities_from_succ_connections_and_current_dfg(self.initial_dfg, self.dfg,
+                                                                                         self.activities)
+        end_activities = end_activities - start_activities
+
         do_part = []
         redo_part = []
+        dangerous_redo_part = []
         exit_part = []
 
         for sa in start_activities:
@@ -137,13 +159,23 @@ class SubtreeB(Subtree):
 
         for act in self.activities:
             if act not in start_activities and act not in end_activities:
-                connected_activities = self.get_all_activities_connected_as_output_to_activity(act)
-                if connected_activities.issubset(start_activities) and start_activities.issubset(connected_activities):
+                input_connected_activities = self.get_all_activities_connected_as_input_to_activity(act)
+                output_connected_activities = self.get_all_activities_connected_as_output_to_activity(act)
+                if output_connected_activities.issubset(start_activities) and start_activities.issubset(
+                        output_connected_activities):
+                    if len(input_connected_activities.intersection(exit_part)) > 0:
+                        dangerous_redo_part.append(act)
                     redo_part.append(act)
                 else:
                     do_part.append(act)
 
-        return [True, [do_part, redo_part, exit_part]]
+        if len(redo_part) > 0 or len(exit_part) > 0:
+            if dangerous_redo_part:
+                return [True, [do_part, redo_part + exit_part, set()]]
+            else:
+                return [True, [do_part, redo_part, exit_part]]
+
+        return [False, [], []]
 
     def transform_dfg_to_directed_nx_graph(self):
         """
