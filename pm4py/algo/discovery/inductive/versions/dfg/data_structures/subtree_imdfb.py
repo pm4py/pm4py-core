@@ -209,7 +209,7 @@ class SubtreeB(Subtree):
                             strongly_connected_components[i] = strongly_connected_components[j]
                             strongly_connected_components[j] = copyel
                             something_changed = True
-                            continue
+                            break
                         j = j + 1
                     i = i + 1
             ret_connected_components = []
@@ -220,14 +220,23 @@ class SubtreeB(Subtree):
                     idx_i_comp = orig_conn_comp.index(strongly_connected_components[i])
                     comp = copy(strongly_connected_components[i])
                     j = i + 1
+                    is_component_mergeable = True
                     while j < len(strongly_connected_components):
                         idx_j_comp = orig_conn_comp.index(strongly_connected_components[j])
-                        if conn_matrix[idx_i_comp][idx_j_comp] == 0:
-                            comp = comp + strongly_connected_components[j]
-                            ignore_comp.add(j)
-                        else:
+                        if conn_matrix[idx_i_comp][idx_j_comp] < 0 or conn_matrix[idx_i_comp][idx_j_comp] > 0:
+                            is_component_mergeable = False
                             break
                         j = j + 1
+                    if is_component_mergeable:
+                        j = i + 1
+                        while j < len(strongly_connected_components):
+                            idx_j_comp = orig_conn_comp.index(strongly_connected_components[j])
+                            if conn_matrix[idx_i_comp][idx_j_comp] == 0:
+                                comp = comp + strongly_connected_components[j]
+                                ignore_comp.add(j)
+                            else:
+                                break
+                            j = j + 1
                     ret_connected_components.append(comp)
                 i = i + 1
 
