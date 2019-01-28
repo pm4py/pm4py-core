@@ -27,7 +27,7 @@ class SubtreeB(Subtree):
                     return False
         return True
 
-    def check_par_cut(self, conn_components):
+    def check_par_cut(self, conn_components, this_nx_graph, strongly_connected_components):
         """
         Checks if in a parallel cut all relations are present
 
@@ -35,6 +35,10 @@ class SubtreeB(Subtree):
         -----------
         conn_components
             Connected components
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
         """
         i = 0
         while i < len(conn_components):
@@ -63,10 +67,13 @@ class SubtreeB(Subtree):
         if self.dfg:
             # print("\n\n")
             conn_components = get_connected_components(self.ingoing, self.outgoing, self.activities)
-            conc_cut = self.detect_concurrent_cut(conn_components)
-            seq_cut = self.detect_sequential_cut(conn_components)
-            par_cut = self.detect_parallel_cut()
-            loop_cut = self.detect_loop_cut(conn_components)
+            this_nx_graph = None
+            strongly_connected_components = None
+
+            conc_cut = self.detect_concurrent_cut(conn_components, this_nx_graph, strongly_connected_components)
+            seq_cut = self.detect_sequential_cut(conn_components, this_nx_graph, strongly_connected_components)
+            par_cut = self.detect_parallel_cut(conn_components, this_nx_graph, strongly_connected_components)
+            loop_cut = self.detect_loop_cut(conn_components, this_nx_graph, strongly_connected_components)
 
             if conc_cut[0]:
                 for comp in conc_cut[1]:
