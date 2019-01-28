@@ -190,7 +190,7 @@ def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False
         dfg = newdfg
 
     c = Counts()
-    s = Subtree(dfg, dfg, activities, c, 0, noise_threshold=noise_threshold)
+    s = Subtree(dfg, dfg, dfg, activities, c, 0, noise_threshold=noise_threshold)
 
     tree_repr = get_tree_repr.get_repr(s, 0, contains_empty_traces=contains_empty_traces)
 

@@ -1,13 +1,14 @@
+from copy import deepcopy
+
 import networkx as nx
 
 from pm4py.algo.discovery.dfg.utils.dfg_utils import filter_dfg_on_act
-from pm4py.algo.discovery.dfg.utils.dfg_utils import get_connected_components, add_to_most_probable_component
-from pm4py.algo.discovery.dfg.utils.dfg_utils import infer_start_activities_from_prev_connections_and_current_dfg
-from pm4py.algo.discovery.dfg.utils.dfg_utils import infer_end_activities_from_succ_connections_and_current_dfg
-from pm4py.algo.discovery.dfg.utils.dfg_utils import get_all_activities_connected_as_output_to_activity
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_all_activities_connected_as_input_to_activity
+from pm4py.algo.discovery.dfg.utils.dfg_utils import get_all_activities_connected_as_output_to_activity
+from pm4py.algo.discovery.dfg.utils.dfg_utils import get_connected_components, add_to_most_probable_component
+from pm4py.algo.discovery.dfg.utils.dfg_utils import infer_end_activities_from_succ_connections_and_current_dfg
+from pm4py.algo.discovery.dfg.utils.dfg_utils import infer_start_activities_from_prev_connections_and_current_dfg
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa import Subtree
-from copy import deepcopy
 
 
 class SubtreeB(Subtree):
@@ -107,12 +108,19 @@ class SubtreeB(Subtree):
             Strongly connected components
         """
         start_activities = infer_start_activities_from_prev_connections_and_current_dfg(self.initial_dfg, self.dfg,
-                                                                                             self.activities)
+                                                                                        self.activities)
         end_activities = infer_end_activities_from_succ_connections_and_current_dfg(self.initial_dfg, self.dfg,
-                                                                                         self.activities)
+                                                                                    self.activities)
         all_end_activities = deepcopy(end_activities)
         end_activities = end_activities - start_activities
         end_activities_that_are_also_start = all_end_activities - end_activities
+        if len(end_activities) == 0:
+            end_activities = infer_end_activities_from_succ_connections_and_current_dfg(self.initial_dfg, self.dfg,
+                                                                                        self.activities,
+                                                                                        include_self=False)
+            all_end_activities = deepcopy(end_activities)
+            end_activities = end_activities - start_activities
+            end_activities_that_are_also_start = all_end_activities - end_activities
 
         do_part = []
         redo_part = []
@@ -128,8 +136,7 @@ class SubtreeB(Subtree):
             if act not in start_activities and act not in end_activities:
                 input_connected_activities = get_all_activities_connected_as_input_to_activity(self.dfg, act)
                 output_connected_activities = get_all_activities_connected_as_output_to_activity(self.dfg, act)
-                if output_connected_activities.issubset(start_activities) and start_activities.issubset(
-                        output_connected_activities):
+                if output_connected_activities.issubset(start_activities):
                     if len(input_connected_activities.intersection(exit_part)) > 0:
                         dangerous_redo_part.append(act)
                     redo_part.append(act)
@@ -137,7 +144,8 @@ class SubtreeB(Subtree):
                     do_part.append(act)
 
         if len(redo_part) > 0 or len(exit_part) > 0:
-            return [True, [do_part, redo_part + exit_part, set()], len(end_activities_that_are_also_start)>0]
+            #print([True, [do_part, redo_part + exit_part, set()], len(end_activities_that_are_also_start) > 0])
+            return [True, [do_part, redo_part + exit_part, set()], len(end_activities_that_are_also_start) > 0]
 
         return [False, [], []]
 
@@ -177,24 +185,26 @@ class SubtreeB(Subtree):
             loop_cut = self.detect_loop_cut(conn_components, this_nx_graph, strongly_connected_components)
 
             if conc_cut[0]:
-                #print(self.rec_depth, "conc_cut", self.activities)
+                # print(self.rec_depth, "conc_cut", self.activities)
                 for comp in conc_cut[1]:
                     new_dfg = filter_dfg_on_act(self.dfg, comp)
                     self.detected_cut = "concurrent"
-                    self.children.append(SubtreeB(new_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
-                                                  noise_threshold=self.noise_threshold))
+                    self.children.append(
+                        SubtreeB(new_dfg, self.master_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
+                                 noise_threshold=self.noise_threshold))
             else:
                 if seq_cut[0]:
-                    #print(self.rec_depth, "seq_cut", self.activities)
+                    # print(self.rec_depth, "seq_cut", self.activities)
                     self.detected_cut = "sequential"
                     for child in seq_cut[1]:
                         dfg_child = filter_dfg_on_act(self.dfg, child)
                         self.children.append(
-                            SubtreeB(dfg_child, self.initial_dfg, child, self.counts, self.rec_depth + 1,
+                            SubtreeB(dfg_child, self.master_dfg, self.initial_dfg, child, self.counts,
+                                     self.rec_depth + 1,
                                      noise_threshold=self.noise_threshold))
                 else:
                     if par_cut[0]:
-                        #print(self.rec_depth, "par_cut", self.activities, par_cut[1])
+                        # print(self.rec_depth, "par_cut", self.activities, par_cut[1])
                         union_acti_comp = set()
                         for comp in par_cut[1]:
                             union_acti_comp = union_acti_comp.union(comp)
@@ -207,16 +217,18 @@ class SubtreeB(Subtree):
                             new_dfg = filter_dfg_on_act(self.dfg, comp)
                             self.detected_cut = "parallel"
                             self.children.append(
-                                SubtreeB(new_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
+                                SubtreeB(new_dfg, self.master_dfg, new_dfg, comp, self.counts,
+                                         self.rec_depth + 1,
                                          noise_threshold=self.noise_threshold))
                     else:
                         if loop_cut[0]:
-                            #print(self.rec_depth, "loop_cut", self.activities)
+                            # print(self.rec_depth, "loop_cut", self.activities)
                             self.detected_cut = "loopCut"
                             for index_enum, child in enumerate(loop_cut[1]):
                                 dfg_child = filter_dfg_on_act(self.dfg, child)
-                                next_subtree = SubtreeB(dfg_child, self.initial_dfg, child, self.counts, self.rec_depth + 1,
-                                             noise_threshold=self.noise_threshold)
+                                next_subtree = SubtreeB(dfg_child, self.master_dfg, self.initial_dfg, child,
+                                                        self.counts, self.rec_depth + 1,
+                                                        noise_threshold=self.noise_threshold)
                                 if loop_cut[2] and index_enum > 0:
                                     next_subtree.force_loop_hidden = True
                                 self.children.append(next_subtree)
