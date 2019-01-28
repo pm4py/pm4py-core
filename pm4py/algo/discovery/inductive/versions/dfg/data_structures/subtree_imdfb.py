@@ -33,6 +33,34 @@ class SubtreeB(Subtree):
                     return False
         return True
 
+    def merge_connected_components(self, conn_components):
+        """
+        Merge the unconnected connected components
+
+        Parameters
+        -------------
+        conn_components
+            Connected components
+
+        Returns
+        -------------
+        conn_components
+            Merged connected components
+        """
+        i = 0
+        while i < len(conn_components):
+            conn1 = conn_components[i]
+            j = i + 1
+            while j < len(conn_components):
+                conn2 = conn_components[j]
+                if self.check_if_comp_is_completely_unconnected(conn1, conn2):
+                    conn_components[i] = conn_components[i] + conn_components[j]
+                    del conn_components[j]
+                    continue
+                j = j + 1
+            i = i + 1
+        return conn_components
+
     def check_par_cut(self, conn_components, this_nx_graph, strongly_connected_components):
         """
         Checks if in a parallel cut all relations are present
@@ -46,6 +74,7 @@ class SubtreeB(Subtree):
         strongly_connected_components
             Strongly connected components
         """
+        conn_components = self.merge_connected_components(conn_components)
         i = 0
         while i < len(conn_components):
             conn1 = conn_components[i]
@@ -56,12 +85,7 @@ class SubtreeB(Subtree):
                     for act2 in conn2:
                         if not ((act1 in self.outgoing and act2 in self.outgoing[act1]) and (
                                 act1 in self.ingoing and act2 in self.ingoing[act1])):
-                            if self.check_if_comp_is_completely_unconnected(conn1, conn2):
-                                conn_components[i] = list(set(conn_components[i] + conn_components[j]))
-                                del conn_components[j]
-                                continue
-                            else:
-                                return False
+                            return False
                 j = j + 1
             i = i + 1
         return True

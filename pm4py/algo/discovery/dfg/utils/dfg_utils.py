@@ -87,7 +87,7 @@ def infer_end_activities(dfg):
     return end_activities
 
 
-def infer_start_activities_from_prev_connections_and_current_dfg(initial_dfg, dfg, activities):
+def infer_start_activities_from_prev_connections_and_current_dfg(initial_dfg, dfg, activities, include_self=True):
     """
     Infer the start activities from the previous connections
 
@@ -104,11 +104,12 @@ def infer_start_activities_from_prev_connections_and_current_dfg(initial_dfg, df
     for el in initial_dfg:
         if el[0][1] in activities and not el[0][0] in activities:
             start_activities.add(el[0][1])
-    start_activities = start_activities.union(set(infer_start_activities(dfg)))
+    if include_self:
+        start_activities = start_activities.union(set(infer_start_activities(dfg)))
     return start_activities
 
 
-def infer_end_activities_from_succ_connections_and_current_dfg(initial_dfg, dfg, activities):
+def infer_end_activities_from_succ_connections_and_current_dfg(initial_dfg, dfg, activities, include_self=True):
     """
     Infer the end activities from the previous connections
 
@@ -125,8 +126,64 @@ def infer_end_activities_from_succ_connections_and_current_dfg(initial_dfg, dfg,
     for el in initial_dfg:
         if el[0][0] in activities and not el[0][1] in activities:
             end_activities.add(el[0][0])
-    end_activities = end_activities.union(set(infer_end_activities(dfg)))
+    if include_self:
+        end_activities = end_activities.union(set(infer_end_activities(dfg)))
     return end_activities
+
+
+def get_outputs_of_outside_activities_going_to_start_activities(initial_dfg, dfg, activities):
+    """
+    Get outputs of outside activities going to start activities
+
+    Parameters
+    ------------
+    initial_dfg
+        Initial DFG
+    dfg
+        Directly-follows graph
+    activities
+        Activities contained in the DFG
+    """
+    outputs = set()
+    start_activities = infer_start_activities_from_prev_connections_and_current_dfg(initial_dfg, dfg, activities,
+                                                                                    include_self=False)
+    outside_activities_going_to_start_activities = set()
+    for el in initial_dfg:
+        if el[0][0] not in activities and el[0][1] in start_activities:
+            outside_activities_going_to_start_activities.add(el[0][0])
+    for el in initial_dfg:
+        if el[0][0] in outside_activities_going_to_start_activities and not el[0][1] in activities:
+            outputs.add(el[0][1])
+    outputs = outputs - outside_activities_going_to_start_activities
+    return outputs
+
+
+def get_inputs_of_outside_activities_reached_by_end_activities(initial_dfg, dfg, activities):
+    """
+    Get inputs of outside activities going to start activities
+
+    Parameters
+    ------------
+    initial_dfg
+        Initial DFG
+    dfg
+        Directly-follows graph
+    activities
+        Activities contained in the DFG
+    """
+    inputs = set()
+    end_activities = infer_end_activities_from_succ_connections_and_current_dfg(initial_dfg, dfg, activities,
+                                                                                include_self=False)
+    input_activities_reached_by_end_activities = set()
+    for el in initial_dfg:
+        if el[0][1] not in activities and el[0][0] in end_activities:
+            input_activities_reached_by_end_activities.add(el[0][1])
+    for el in initial_dfg:
+        if el[0][1] in input_activities_reached_by_end_activities and not el[0][0] in activities:
+            inputs.add(el[0][0])
+    inputs = inputs - input_activities_reached_by_end_activities
+
+    return inputs
 
 
 def get_activities_from_dfg(dfg):
