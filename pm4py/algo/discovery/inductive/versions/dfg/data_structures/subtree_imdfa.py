@@ -140,7 +140,7 @@ class Subtree(object):
 
         return [True, set1, set2]
 
-    def detect_sequential_cut(self, conn_components):
+    def detect_sequential_cut(self, conn_components, this_nx_graph, strongly_connected_components):
         """
         Detect sequential cut in DFG graph
 
@@ -148,6 +148,10 @@ class Subtree(object):
         --------------
         conn_components
             Connected components of the graph
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
         """
         set1 = set()
         set2 = set()
@@ -175,7 +179,7 @@ class Subtree(object):
                 return [True, [list(set1), list(set2)]]
         return [False, [], []]
 
-    def check_par_cut(self, conn_components):
+    def check_par_cut(self, conn_components,  this_nx_graph, strongly_connected_components):
         """
         Checks if in a parallel cut all relations are present
 
@@ -183,6 +187,10 @@ class Subtree(object):
         -----------
         conn_components
             Connected components
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
         """
         count_tot = 0
         count_neg = 0
@@ -202,7 +210,7 @@ class Subtree(object):
 
         return False
 
-    def detect_concurrent_cut(self, conn_components):
+    def detect_concurrent_cut(self, conn_components, this_nx_graph, strongly_connected_components):
         """
         Detects concurrent cut
 
@@ -210,6 +218,10 @@ class Subtree(object):
         --------------
         conn_components
             Connected components
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
         """
         if len(self.dfg) > 0:
             if len(conn_components) > 1:
@@ -217,20 +229,29 @@ class Subtree(object):
 
         return [False, []]
 
-    def detect_parallel_cut(self):
+    def detect_parallel_cut(self, orig_conn_components, this_nx_graph, strongly_connected_components):
         """
         Detects parallel cut
+
+        Parameters
+        --------------
+        orig_conn_components
+            Connected components of the graph
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
         """
         conn_components = get_connected_components(self.negated_ingoing, self.negated_outgoing, self.activities,
-                                                   force_insert_missing_acti=False)
+                                                        force_insert_missing_acti=False)
 
         if len(conn_components) > 1:
-            if self.check_par_cut(conn_components):
+            if self.check_par_cut(conn_components, this_nx_graph, strongly_connected_components):
                 return [True, conn_components]
 
         return [False, []]
 
-    def detect_loop_cut(self, conn_components):
+    def detect_loop_cut(self, conn_components, this_nx_graph, strongly_connected_components):
         """
         Detect loop cut
 
@@ -238,6 +259,10 @@ class Subtree(object):
         --------------
         conn_components
             Connected components of the graph
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
         """
 
         if len(self.activities_dir_list) > 1:
@@ -279,10 +304,13 @@ class Subtree(object):
         if self.dfg:
             # print("\n\n")
             conn_components = get_connected_components(self.ingoing, self.outgoing, self.activities)
-            conc_cut = self.detect_concurrent_cut(conn_components)
-            seq_cut = self.detect_sequential_cut(conn_components)
-            par_cut = self.detect_parallel_cut()
-            loop_cut = self.detect_loop_cut(conn_components)
+            this_nx_graph = None
+            strongly_connected_components = None
+
+            conc_cut = self.detect_concurrent_cut(conn_components, this_nx_graph, strongly_connected_components)
+            seq_cut = self.detect_sequential_cut(conn_components, this_nx_graph, strongly_connected_components)
+            par_cut = self.detect_parallel_cut(conn_components, this_nx_graph, strongly_connected_components)
+            loop_cut = self.detect_loop_cut(conn_components, this_nx_graph, strongly_connected_components)
 
             if conc_cut[0]:
                 for comp in conc_cut[1]:
