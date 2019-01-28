@@ -1,6 +1,7 @@
-from copy import deepcopy
+from copy import deepcopy, copy
 
 import networkx as nx
+import numpy as np
 
 from pm4py.algo.discovery.dfg.utils.dfg_utils import filter_dfg_on_act
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_all_activities_connected_as_input_to_activity
@@ -150,6 +151,90 @@ class SubtreeB(Subtree):
 
         return [False, [], []]
 
+    def get_connection_matrix(self, strongly_connected_components):
+        """
+        Gets the connection matrix between connected components
+
+        Parameters
+        ------------
+        strongly_connected_components
+            Strongly connected components
+
+        Returns
+        ------------
+        connection_matrix
+            Matrix reporting the connections
+        """
+        act_to_scc = {}
+        for index, comp in enumerate(strongly_connected_components):
+            for act in comp:
+                act_to_scc[act] = index
+        conn_matrix = np.zeros((len(strongly_connected_components), len(strongly_connected_components)))
+        for el in self.dfg:
+            comp_el_0 = act_to_scc[el[0][0]]
+            comp_el_1 = act_to_scc[el[0][1]]
+            if not comp_el_0 == comp_el_1:
+                conn_matrix[comp_el_1][comp_el_0] = 1
+                if conn_matrix[comp_el_0][comp_el_1] == 0:
+                    conn_matrix[comp_el_0][comp_el_1] = -1
+        return conn_matrix
+
+    def detect_sequential_cut(self, conn_components, this_nx_graph, strongly_connected_components):
+        """
+        Detect sequential cut in DFG graph
+
+        Parameters
+        --------------
+        conn_components
+            Connected components of the graph
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
+        """
+        if len(strongly_connected_components) > 1:
+            orig_conn_comp = copy(strongly_connected_components)
+            conn_matrix = self.get_connection_matrix(strongly_connected_components)
+            something_changed = True
+            while something_changed:
+                something_changed = False
+                i = 0
+                while i < len(strongly_connected_components):
+                    idx_i_comp = orig_conn_comp.index(strongly_connected_components[i])
+                    j = i + 1
+                    while j < len(strongly_connected_components):
+                        idx_j_comp = orig_conn_comp.index(strongly_connected_components[j])
+                        if conn_matrix[idx_i_comp][idx_j_comp] > 0:
+                            copyel = copy(strongly_connected_components[i])
+                            strongly_connected_components[i] = strongly_connected_components[j]
+                            strongly_connected_components[j] = copyel
+                            something_changed = True
+                            continue
+                        j = j + 1
+                    i = i + 1
+            ret_connected_components = []
+            ignore_comp = set()
+            i = 0
+            while i < len(strongly_connected_components):
+                if i not in ignore_comp:
+                    idx_i_comp = orig_conn_comp.index(strongly_connected_components[i])
+                    comp = copy(strongly_connected_components[i])
+                    j = i + 1
+                    while j < len(strongly_connected_components):
+                        idx_j_comp = orig_conn_comp.index(strongly_connected_components[j])
+                        if conn_matrix[idx_i_comp][idx_j_comp] == 0:
+                            comp = comp + strongly_connected_components[j]
+                            ignore_comp.add(j)
+                        else:
+                            break
+                        j = j + 1
+                    ret_connected_components.append(comp)
+                i = i + 1
+
+            if len(ret_connected_components) > 1:
+                return [True, ret_connected_components]
+        return [False, [], []]
+
     def transform_dfg_to_directed_nx_graph(self):
         """
         Transform DFG to directed NetworkX graph
@@ -178,7 +263,9 @@ class SubtreeB(Subtree):
             # print("\n\n")
             conn_components = get_connected_components(self.ingoing, self.outgoing, self.activities)
             this_nx_graph = self.transform_dfg_to_directed_nx_graph()
-            strongly_connected_components = list(nx.strongly_connected_components(this_nx_graph))
+            strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
+
+            #print("strongly_connected_components", strongly_connected_components)
 
             conc_cut = self.detect_concurrent_cut(conn_components, this_nx_graph, strongly_connected_components)
             seq_cut = self.detect_sequential_cut(conn_components, this_nx_graph, strongly_connected_components)
