@@ -1,8 +1,10 @@
+from pm4py.algo.discovery.dfg.utils.dfg_utils import get_outputs_of_outside_activities_going_to_start_activities
 from pm4py.algo.discovery.dfg.utils.dfg_utils import max_occ_all_activ, sum_start_activities_count, \
     sum_end_activities_count, sum_activities_count, max_occ_among_specif_activ
+from pm4py.algo.discovery.dfg.utils.dfg_utils import get_inputs_of_outside_activities_reached_by_end_activities
 
 
-def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities):
+def verify_skip_transition_necessity(must_add_skip, initial_dfg, dfg, activities, cond3_valid=True):
     """
     Utility functions that decides if the skip transition is necessary
 
@@ -12,6 +14,8 @@ def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities):
         Boolean value, provided by the parent caller, that tells if the skip is absolutely necessary
     initial_dfg
         Initial DFG
+    dfg
+        Current DFG
     activities
         Provided activities of the DFG
     """
@@ -26,7 +30,11 @@ def verify_skip_transition_necessity(must_add_skip, initial_dfg, activities):
     condition1 = start_activities_count > 0 and max_val_act_spec < start_activities_count
     condition2 = end_activities_count > 0 and max_val_act_spec < end_activities_count
     condition3 = max(start_activities_count, end_activities_count) <= 0 < max_val_act_spec < max_value
-    condition = condition1 or condition2 or condition3
+    if cond3_valid:
+        # avoid this for AND
+        condition = condition1 or condition2 or condition3
+    else:
+        condition = condition1 and condition2
 
     if condition:
         return True
