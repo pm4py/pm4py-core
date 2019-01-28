@@ -243,7 +243,7 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
                 # IMDFB method
                 net, counts, int1 = recursively_add_tree(tree_subtrees[0], net, initial_place,
                                                          None, counts,
-                                                         rec_depth + 1, force_add_skip=force_add_skip)
+                                                         rec_depth + 1, force_add_skip=True)
 
                 if tree_subtrees[2].children and (
                         tree_subtrees[2].children[0].operator is None and tree_subtrees[2].children[0].label is None):
