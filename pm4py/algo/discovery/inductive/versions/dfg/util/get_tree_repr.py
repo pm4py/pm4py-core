@@ -110,9 +110,9 @@ def get_repr(spec_tree_struct, rec_depth, must_add_skip=False, contains_empty_tr
     if spec_tree_struct.detected_cut == "sequential" or spec_tree_struct.detected_cut == "loopCut":
         for ch in spec_tree_struct.children:
             child = get_repr(ch, rec_depth + 1,
-                             must_add_skip=verify_skip_transition_necessity(False,
+                             must_add_skip=(verify_skip_transition_necessity(False,
                                                                             ch.initial_dfg, ch.dfg,
-                                                                            ch.activities))
+                                                                            ch.activities)) or ch.force_loop_hidden)
             child_tree.children.append(child)
             child.parent = child_tree
         if spec_tree_struct.detected_cut == "loopCut" and len(spec_tree_struct.children) < 3:

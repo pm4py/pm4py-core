@@ -9,7 +9,7 @@ from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thre
 
 
 class Subtree(object):
-    def __init__(self, dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0):
+    def __init__(self, dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0, force_loop_hidden=False):
         """
         Constructor
 
@@ -25,6 +25,8 @@ class Subtree(object):
             Shared variable
         rec_depth
             Current recursion depth
+        force_loop_hidden
+            Forces the introduction of a hidden loop transition
         """
 
         self.initial_dfg = copy(initial_dfg)
@@ -48,6 +50,7 @@ class Subtree(object):
         self.negated_ingoing = None
         self.detected_cut = None
         self.children = None
+        self.force_loop_hidden = force_loop_hidden
 
         self.initialize_tree(dfg, initial_dfg, activities)
 
@@ -293,7 +296,7 @@ class Subtree(object):
                             set1.add(act)
                 if len(set1) > 0:
                     if not set1 == set2:
-                        return [True, [set1, set2]]
+                        return [True, [set1, set2], True]
 
         return [False, [], []]
 

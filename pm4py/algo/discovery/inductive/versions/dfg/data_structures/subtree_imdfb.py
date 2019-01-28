@@ -7,6 +7,7 @@ from pm4py.algo.discovery.dfg.utils.dfg_utils import infer_end_activities_from_s
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_all_activities_connected_as_output_to_activity
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_all_activities_connected_as_input_to_activity
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa import Subtree
+from copy import deepcopy
 
 
 class SubtreeB(Subtree):
@@ -107,7 +108,9 @@ class SubtreeB(Subtree):
                                                                                              self.activities)
         end_activities = infer_end_activities_from_succ_connections_and_current_dfg(self.initial_dfg, self.dfg,
                                                                                          self.activities)
+        all_end_activities = deepcopy(end_activities)
         end_activities = end_activities - start_activities
+        end_activities_that_are_also_start = all_end_activities - end_activities
 
         do_part = []
         redo_part = []
@@ -132,10 +135,10 @@ class SubtreeB(Subtree):
                     do_part.append(act)
 
         if len(redo_part) > 0 or len(exit_part) > 0:
-            if dangerous_redo_part:
-                return [True, [do_part, redo_part + exit_part, set()]]
+            if dangerous_redo_part or len(redo_part) == 0:
+                return [True, [do_part, redo_part + exit_part, set()], True]
             else:
-                return [True, [do_part, redo_part, exit_part]]
+                return [True, [do_part, redo_part, exit_part], len(end_activities_that_are_also_start)>0]
 
         return [False, [], []]
 
@@ -207,11 +210,13 @@ class SubtreeB(Subtree):
                     else:
                         if loop_cut[0]:
                             self.detected_cut = "loopCut"
-                            for child in loop_cut[1]:
+                            for index_enum, child in enumerate(loop_cut[1]):
                                 dfg_child = filter_dfg_on_act(self.dfg, child)
-                                self.children.append(
-                                    SubtreeB(dfg_child, self.initial_dfg, child, self.counts, self.rec_depth + 1,
-                                             noise_threshold=self.noise_threshold))
+                                next_subtree = SubtreeB(dfg_child, self.initial_dfg, child, self.counts, self.rec_depth + 1,
+                                             noise_threshold=self.noise_threshold)
+                                if loop_cut[2] and index_enum > 0:
+                                    next_subtree.force_loop_hidden = True
+                                self.children.append(next_subtree)
                         else:
                             if self.noise_threshold > 0:
                                 if not second_iteration:
