@@ -231,6 +231,7 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
             petri.utils.add_arc_from_to(loop_trans, initial_place, net)
         else:
             if len(tree_subtrees) == 2:
+                # IMDFA method
                 net, counts, int1 = recursively_add_tree(tree_subtrees[0], net, initial_place,
                                                          None, counts,
                                                          rec_depth + 1, force_add_skip=True)
@@ -239,15 +240,22 @@ def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree
                                                                        rec_depth + 1, force_add_skip=True)
                 looping_place = final_place
             else:
+                # IMDFB method
                 net, counts, int1 = recursively_add_tree(tree_subtrees[0], net, initial_place,
                                                          None, counts,
                                                          rec_depth + 1, force_add_skip=force_add_skip)
-                net, counts, int2 = recursively_add_tree(tree_subtrees[1], net, int1,
-                                                                        None, counts,
-                                                                       rec_depth + 1, force_add_skip=force_add_skip)
-                net, counts, int3 = recursively_add_tree(tree_subtrees[2], net, int1,
-                                                                       final_place, counts,
-                                                                       rec_depth + 1, force_add_skip=force_add_skip)
+
+                if tree_subtrees[2].children[0].operator is None and tree_subtrees[2].children[0].label is None:
+                    net, counts, int2 = recursively_add_tree(tree_subtrees[1], net, int1,
+                                                                            final_place, counts,
+                                                                           rec_depth + 1, force_add_skip=force_add_skip)
+                else:
+                    net, counts, int2 = recursively_add_tree(tree_subtrees[1], net, int1,
+                                                                            None, counts,
+                                                                           rec_depth + 1, force_add_skip=force_add_skip)
+                    net, counts, int3 = recursively_add_tree(tree_subtrees[2], net, int1,
+                                                                           final_place, counts,
+                                                                           rec_depth + 1, force_add_skip=force_add_skip)
 
                 looping_place = int2
             petri.utils.add_arc_from_to(looping_place, loop_trans, net)
