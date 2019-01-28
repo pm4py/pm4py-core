@@ -363,3 +363,33 @@ def invert_spaths_dictionary(spaths):
             inv_spaths[source_place][target_place] = inv_spaths[source_place][target_place].union(
                 spaths[target_place][source_place])
     return inv_spaths
+
+
+def remove_unconnected_components(net):
+    """
+    Remove unconnected components from a Petri net
+
+    Parameters
+    -----------
+    net
+        Petri net
+
+    Returns
+    -----------
+    net
+        Cleaned Petri net
+    """
+    changed_something = True
+    while changed_something:
+        changed_something = False
+        places = list(net.places)
+        for place in places:
+            if len(place.in_arcs) == 0 and len(place.out_arcs) == 0:
+                net.places.remove(place)
+                changed_something = True
+        transitions = list(net.transitions)
+        for trans in transitions:
+            if len(trans.in_arcs) == 0 and len(trans.out_arcs) == 0:
+                net.transitions.remove(trans)
+                changed_something = True
+    return net
