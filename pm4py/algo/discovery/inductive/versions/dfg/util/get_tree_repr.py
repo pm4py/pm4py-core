@@ -125,7 +125,7 @@ def get_repr(spec_tree_struct, rec_depth, must_add_skip=False, contains_empty_tr
         m_add_skip = verify_skip_for_parallel_cut(spec_tree_struct.dfg, spec_tree_struct.children)
 
         for child in spec_tree_struct.children:
-            m_add_skip_final = verify_skip_transition_necessity(m_add_skip, spec_tree_struct.dfg,
+            m_add_skip_final = verify_skip_transition_necessity(m_add_skip, spec_tree_struct.initial_dfg,
                                                                        spec_tree_struct.dfg,
                                                                        spec_tree_struct.activities)
             child_final = get_repr(child, rec_depth + 1, must_add_skip=m_add_skip_final)
