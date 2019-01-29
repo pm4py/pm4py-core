@@ -8,4 +8,4 @@ RUN apt-get -y install python3-tk
 RUN apt-get -y install zip unzip
 RUN wget https://github.com/pm4py/pm4py-source/archive/master.zip
 RUN unzip master.zip
-RUN cd pm4py-source-master && pip install -r requirements.txt && python setup.py install
+RUN cd pm4py-source-master && pip install -r requirements.txt && cp tests/test_dockers/setups/setup_master.py setup.py  && python setup.py install
