@@ -1,1 +1,1 @@
-from pm4py.algo.simulation import simple, playout
+from pm4py.algo.simulation import simple, tree_generator, playout
