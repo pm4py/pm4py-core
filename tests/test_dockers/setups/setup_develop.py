@@ -48,6 +48,7 @@ setup(
               'pm4py.algo.simulation.simple.filtering.tracelog',
               'pm4py.algo.simulation.simple.filtering.tracelog.versions', 'pm4py.algo.simulation.playout',
               'pm4py.algo.simulation.playout.versions', 'pm4py.algo.simulation.playout.data_structures',
+              'pm4py.algo.simulation.tree_generator', 'pm4py.algo.simulation.tree_generator.versions',
               'pm4py.algo.conformance', 'pm4py.algo.conformance.alignments',
               'pm4py.algo.conformance.alignments.versions', 'pm4py.algo.conformance.tokenreplay',
               'pm4py.algo.conformance.tokenreplay.versions', 'pm4py.algo.conformance.tokenreplay.diagnostics',
