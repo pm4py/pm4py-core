@@ -10,6 +10,8 @@ from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb import SubtreeB
 from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr
 from pm4py.algo.filtering.tracelog.attributes import attributes_filter
+from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
+from pm4py.algo.filtering.tracelog.start_activities import start_activities_filter
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.petri.utils import remove_unconnected_components
@@ -54,6 +56,11 @@ def apply(trace_log, parameters):
     # get the activities in the log
     activities = attributes_filter.get_attribute_values(trace_log, activity_key)
 
+    # gets the start activities from the log
+    start_activities = list(start_activities_filter.get_start_activities(trace_log, parameters=parameters).keys())
+    # gets the end activities from the log
+    end_activities = list(end_activities_filter.get_end_activities(trace_log, parameters=parameters).keys())
+
     # check if the log contains empty traces
     contains_empty_traces = False
     traces_length = [len(trace) for trace in trace_log]
@@ -61,7 +68,8 @@ def apply(trace_log, parameters):
         contains_empty_traces = min([len(trace) for trace in trace_log]) == 0
 
     net, initial_marking, final_marking = apply_dfg(dfg, parameters=parameters, activities=activities,
-                                                    contains_empty_traces=contains_empty_traces)
+                                                    contains_empty_traces=contains_empty_traces,
+                                                    start_activities=start_activities, end_activities=end_activities)
 
     if enable_reduction:
         reduction_parameters = copy(parameters)
@@ -111,6 +119,11 @@ def apply_tree(trace_log, parameters):
     dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
+    # gets the start activities from the log
+    start_activities = start_activities_filter.get_start_activities(trace_log, parameters=parameters)
+    # gets the end activities from the log
+    end_activities = end_activities_filter.get_end_activities(trace_log, parameters=parameters)
+
     # get the activities in the log
     activities = attributes_filter.get_attribute_values(trace_log, activity_key)
 
@@ -120,10 +133,12 @@ def apply_tree(trace_log, parameters):
     if traces_length:
         contains_empty_traces = min([len(trace) for trace in trace_log]) == 0
 
-    return apply_tree_dfg(dfg, parameters, activities=activities, contains_empty_traces=contains_empty_traces)
+    return apply_tree_dfg(dfg, parameters, activities=activities, contains_empty_traces=contains_empty_traces,
+                          start_activities=start_activities, end_activities=end_activities)
 
 
-def apply_dfg(dfg, parameters, activities=None, contains_empty_traces=False):
+def apply_dfg(dfg, parameters, activities=None, contains_empty_traces=False, start_activities=None,
+              end_activities=None):
     """
     Apply the IMDF algorithm to a DFG graph obtaining a Petri net along with an initial and final marking
 
@@ -139,6 +154,10 @@ def apply_dfg(dfg, parameters, activities=None, contains_empty_traces=False):
         Activities of the process (default None)
     contains_empty_traces
         Boolean value that is True if the event log from which the DFG has been extracted contains empty traces
+    start_activities
+        If provided, the start activities of the log
+    end_activities
+        If provided, the end activities of the log
 
     Returns
     -----------
@@ -149,13 +168,15 @@ def apply_dfg(dfg, parameters, activities=None, contains_empty_traces=False):
     final_marking
         Final marking
     """
-    tree = apply_tree_dfg(dfg, parameters, activities=activities, contains_empty_traces=contains_empty_traces)
+    tree = apply_tree_dfg(dfg, parameters, activities=activities, contains_empty_traces=contains_empty_traces,
+                          start_activities=start_activities, end_activities=end_activities)
     net, initial_marking, final_marking = tree_to_petri.apply(tree)
 
     return net, initial_marking, final_marking
 
 
-def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False):
+def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False, start_activities=None,
+                   end_activities=None):
     """
     Apply the IMDF algorithm to a DFG graph obtaining a process tree
 
@@ -171,6 +192,10 @@ def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False
         Activities of the process (default None)
     contains_empty_traces
         Boolean value that is True if the event log from which the DFG has been extracted contains empty traces
+    start_activities
+        If provided, the start activities of the log
+    end_activities
+        If provided, the end activities of the log
 
     Returns
     ----------
@@ -193,7 +218,8 @@ def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False
         dfg = newdfg
 
     c = Counts()
-    s = SubtreeB(dfg, dfg, dfg, activities, c, 0, noise_threshold=noise_threshold)
+    s = SubtreeB(dfg, dfg, dfg, activities, c, 0, noise_threshold=noise_threshold, start_activities=start_activities,
+                 end_activities=end_activities)
 
     tree_repr = get_tree_repr.get_repr(s, 0, contains_empty_traces=contains_empty_traces)
 
