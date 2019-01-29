@@ -1,6 +1,6 @@
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_activities_self_loop
-from pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans import verify_skip_transition_necessity, \
-    verify_skip_for_parallel_cut
+from pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans import verify_skip_for_parallel_cut, \
+    verify_skip_transition_necessity
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.objects.process_tree.pt_operator import Operator
 
@@ -101,7 +101,7 @@ def get_repr(spec_tree_struct, rec_depth, must_add_skip=False, contains_empty_tr
             new_vis_trans = get_transition(act)
             child_tree.children.append(new_vis_trans)
             new_vis_trans.parent = child_tree
-        if verify_skip_transition_necessity(must_add_skip, spec_tree_struct.initial_dfg,
+        if verify_skip_transition_necessity(must_add_skip, spec_tree_struct.initial_dfg, spec_tree_struct.dfg,
                                             spec_tree_struct.activities):
             # add skip transition
             new_hidden_trans = get_new_hidden_trans()
@@ -110,33 +110,35 @@ def get_repr(spec_tree_struct, rec_depth, must_add_skip=False, contains_empty_tr
     if spec_tree_struct.detected_cut == "sequential" or spec_tree_struct.detected_cut == "loopCut":
         for ch in spec_tree_struct.children:
             child = get_repr(ch, rec_depth + 1,
-                             must_add_skip=verify_skip_transition_necessity(False,
-                                                                            ch.initial_dfg,
-                                                                            ch.activities))
+                             must_add_skip=(verify_skip_transition_necessity(False,
+                                                                            ch.initial_dfg, ch.dfg,
+                                                                            ch.activities)) or ch.force_loop_hidden)
             child_tree.children.append(child)
             child.parent = child_tree
-        if spec_tree_struct.detected_cut == "loopCut" and len(spec_tree_struct.children)<3:
-            while len(spec_tree_struct.children)<3:
+        if spec_tree_struct.detected_cut == "loopCut" and len(spec_tree_struct.children) < 3:
+            while len(spec_tree_struct.children) < 3:
                 child = ProcessTree()
                 child_tree.children.append(child)
                 child.parent = child_tree
                 spec_tree_struct.children.append(None)
     if spec_tree_struct.detected_cut == "parallel":
         m_add_skip = verify_skip_for_parallel_cut(spec_tree_struct.dfg, spec_tree_struct.children)
+
         for child in spec_tree_struct.children:
-            m_add_skip_final = verify_skip_transition_necessity(m_add_skip, spec_tree_struct.dfg,
-                                                                spec_tree_struct.activities)
+            m_add_skip_final = verify_skip_transition_necessity(m_add_skip, spec_tree_struct.initial_dfg,
+                                                                       spec_tree_struct.dfg,
+                                                                       spec_tree_struct.activities)
             child_final = get_repr(child, rec_depth + 1, must_add_skip=m_add_skip_final)
             child_tree.children.append(child_final)
             child_final.parent = child_tree
     if spec_tree_struct.detected_cut == "concurrent":
         for child in spec_tree_struct.children:
             m_add_skip_final = verify_skip_transition_necessity(False, spec_tree_struct.dfg,
-                                                                spec_tree_struct.activities)
+                                                                       spec_tree_struct.dfg,
+                                                                       spec_tree_struct.activities)
             child_final = get_repr(child, rec_depth + 1, must_add_skip=m_add_skip_final)
             child_tree.children.append(child_final)
             child_final.parent = child_tree
-
     if contains_empty_traces and rec_depth == 1:
         master_tree_repr = ProcessTree(operator=Operator.XOR)
         master_tree_repr.children.append(final_tree_repr)

@@ -60,10 +60,11 @@ def get_start_activities(trace_log, parameters=None):
 
     for trace in trace_log:
         if len(trace) > 0:
-            activity_first_event = trace[0][attribute_key]
-            if activity_first_event not in start_activities:
-                start_activities[activity_first_event] = 0
-            start_activities[activity_first_event] = start_activities[activity_first_event] + 1
+            if attribute_key in trace[0]:
+                activity_first_event = trace[0][attribute_key]
+                if activity_first_event not in start_activities:
+                    start_activities[activity_first_event] = 0
+                start_activities[activity_first_event] = start_activities[activity_first_event] + 1
 
     return start_activities
 

@@ -9,7 +9,8 @@ from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thre
 
 
 class Subtree(object):
-    def __init__(self, dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0):
+    def __init__(self, dfg, master_dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0,
+                 start_activities=None, end_activities=None):
         """
         Constructor
 
@@ -17,6 +18,8 @@ class Subtree(object):
         -----------
         dfg
             Directly follows graph of this subtree
+        master_dfg
+            Original DFG
         initial_dfg
             Referral directly follows graph that should be taken in account adding hidden/loop transitions
         activities
@@ -26,11 +29,17 @@ class Subtree(object):
         rec_depth
             Current recursion depth
         """
-
+        self.master_dfg = copy(master_dfg)
         self.initial_dfg = copy(initial_dfg)
         self.counts = counts
         self.rec_depth = rec_depth
         self.noise_threshold = noise_threshold
+        self.start_activities = start_activities
+        if self.start_activities is None:
+            self.start_activities = []
+        self.end_activities = end_activities
+        if self.end_activities is None:
+            self.end_activities = []
 
         self.second_iteration = None
         self.activities = None
@@ -48,6 +57,7 @@ class Subtree(object):
         self.negated_ingoing = None
         self.detected_cut = None
         self.children = None
+        self.force_loop_hidden = False
 
         self.initialize_tree(dfg, initial_dfg, activities)
 
@@ -140,9 +150,18 @@ class Subtree(object):
 
         return [True, set1, set2]
 
-    def detect_sequential_cut(self):
+    def detect_sequential_cut(self, conn_components, this_nx_graph, strongly_connected_components):
         """
         Detect sequential cut in DFG graph
+
+        Parameters
+        --------------
+        conn_components
+            Connected components of the graph
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
         """
         set1 = set()
         set2 = set()
@@ -167,10 +186,10 @@ class Subtree(object):
 
         if len(set1) > 0 and len(set2) > 0:
             if not set1 == set2:
-                return [True, list(set1), list(set2)]
+                return [True, [list(set1), list(set2)]]
         return [False, [], []]
 
-    def check_par_cut(self, conn_components):
+    def check_par_cut(self, conn_components, this_nx_graph, strongly_connected_components):
         """
         Checks if in a parallel cut all relations are present
 
@@ -178,6 +197,10 @@ class Subtree(object):
         -----------
         conn_components
             Connected components
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
         """
         count_tot = 0
         count_neg = 0
@@ -197,34 +220,59 @@ class Subtree(object):
 
         return False
 
-    def detect_concurrent_cut(self):
+    def detect_concurrent_cut(self, conn_components, this_nx_graph, strongly_connected_components):
         """
         Detects concurrent cut
+
+        Parameters
+        --------------
+        conn_components
+            Connected components
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
         """
         if len(self.dfg) > 0:
-            conn_components = get_connected_components(self.ingoing, self.outgoing, self.activities)
-
             if len(conn_components) > 1:
                 return [True, conn_components]
 
         return [False, []]
 
-    def detect_parallel_cut(self):
+    def detect_parallel_cut(self, orig_conn_components, this_nx_graph, strongly_connected_components):
         """
         Detects parallel cut
+
+        Parameters
+        --------------
+        orig_conn_components
+            Connected components of the graph
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
         """
         conn_components = get_connected_components(self.negated_ingoing, self.negated_outgoing, self.activities,
                                                    force_insert_missing_acti=False)
 
         if len(conn_components) > 1:
-            if self.check_par_cut(conn_components):
+            if self.check_par_cut(conn_components, this_nx_graph, strongly_connected_components):
                 return [True, conn_components]
 
         return [False, []]
 
-    def detect_loop_cut(self):
+    def detect_loop_cut(self, conn_components, this_nx_graph, strongly_connected_components):
         """
         Detect loop cut
+
+        Parameters
+        --------------
+        conn_components
+            Connected components of the graph
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
         """
 
         if len(self.activities_dir_list) > 1:
@@ -255,7 +303,7 @@ class Subtree(object):
                             set1.add(act)
                 if len(set1) > 0:
                     if not set1 == set2:
-                        return [True, set1, set2]
+                        return [True, [set1, set2], True]
 
         return [False, [], []]
 
@@ -265,54 +313,57 @@ class Subtree(object):
         """
         if self.dfg:
             # print("\n\n")
-            par_cut = self.detect_parallel_cut()
-            conc_cut = self.detect_concurrent_cut()
-            seq_cut = self.detect_sequential_cut()
-            loop_cut = self.detect_loop_cut()
+            conn_components = get_connected_components(self.ingoing, self.outgoing, self.activities)
+            this_nx_graph = None
+            strongly_connected_components = None
 
-            if par_cut[0]:
-                union_acti_comp = set()
-                for comp in par_cut[1]:
-                    union_acti_comp = union_acti_comp.union(comp)
-                diff_acti_comp = set(self.activities).difference(union_acti_comp)
+            conc_cut = self.detect_concurrent_cut(conn_components, this_nx_graph, strongly_connected_components)
+            seq_cut = self.detect_sequential_cut(conn_components, this_nx_graph, strongly_connected_components)
+            par_cut = self.detect_parallel_cut(conn_components, this_nx_graph, strongly_connected_components)
+            loop_cut = self.detect_loop_cut(conn_components, this_nx_graph, strongly_connected_components)
 
-                for act in diff_acti_comp:
-                    par_cut[1] = add_to_most_probable_component(par_cut[1], act, self.ingoing, self.outgoing)
-
-                for comp in par_cut[1]:
+            if conc_cut[0]:
+                for comp in conc_cut[1]:
                     new_dfg = filter_dfg_on_act(self.dfg, comp)
-                    self.detected_cut = "parallel"
-                    self.children.append(Subtree(new_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
-                                                 noise_threshold=self.noise_threshold))
+                    self.detected_cut = "concurrent"
+                    self.children.append(
+                        Subtree(new_dfg, self.master_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
+                                noise_threshold=self.noise_threshold))
             else:
-                if conc_cut[0]:
-                    for comp in conc_cut[1]:
-                        new_dfg = filter_dfg_on_act(self.dfg, comp)
-                        self.detected_cut = "concurrent"
-                        self.children.append(Subtree(new_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
-                                                     noise_threshold=self.noise_threshold))
+                if seq_cut[0]:
+                    self.detected_cut = "sequential"
+                    for child in seq_cut[1]:
+                        dfg_child = filter_dfg_on_act(self.dfg, child)
+                        self.children.append(
+                            Subtree(dfg_child, self.master_dfg, self.initial_dfg, child, self.counts,
+                                    self.rec_depth + 1,
+                                    noise_threshold=self.noise_threshold))
                 else:
-                    if seq_cut[0]:
-                        dfg1 = filter_dfg_on_act(self.dfg, seq_cut[1])
-                        dfg2 = filter_dfg_on_act(self.dfg, seq_cut[2])
-                        self.detected_cut = "sequential"
-                        self.children.append(
-                            Subtree(dfg1, self.initial_dfg, seq_cut[1], self.counts, self.rec_depth + 1,
-                                    noise_threshold=self.noise_threshold))
-                        self.children.append(
-                            Subtree(dfg2, self.initial_dfg, seq_cut[2], self.counts, self.rec_depth + 1,
-                                    noise_threshold=self.noise_threshold))
+                    if par_cut[0]:
+                        union_acti_comp = set()
+                        for comp in par_cut[1]:
+                            union_acti_comp = union_acti_comp.union(comp)
+                        diff_acti_comp = set(self.activities).difference(union_acti_comp)
+
+                        for act in diff_acti_comp:
+                            par_cut[1] = add_to_most_probable_component(par_cut[1], act, self.ingoing, self.outgoing)
+
+                        for comp in par_cut[1]:
+                            new_dfg = filter_dfg_on_act(self.dfg, comp)
+                            self.detected_cut = "parallel"
+                            self.children.append(
+                                Subtree(new_dfg, self.master_dfg, new_dfg, comp, self.counts,
+                                        self.rec_depth + 1,
+                                        noise_threshold=self.noise_threshold))
                     else:
                         if loop_cut[0]:
-                            dfg1 = filter_dfg_on_act(self.dfg, loop_cut[1])
-                            dfg2 = filter_dfg_on_act(self.dfg, loop_cut[2])
                             self.detected_cut = "loopCut"
-                            self.children.append(
-                                Subtree(dfg1, self.initial_dfg, loop_cut[1], self.counts, self.rec_depth + 1,
-                                        noise_threshold=self.noise_threshold))
-                            self.children.append(
-                                Subtree(dfg2, self.initial_dfg, loop_cut[2], self.counts, self.rec_depth + 1,
-                                        noise_threshold=self.noise_threshold))
+                            for child in loop_cut[1]:
+                                dfg_child = filter_dfg_on_act(self.dfg, child)
+                                self.children.append(
+                                    Subtree(dfg_child, self.master_dfg, self.initial_dfg, child, self.counts,
+                                            self.rec_depth + 1,
+                                            noise_threshold=self.noise_threshold))
                         else:
                             if self.noise_threshold > 0:
                                 if not second_iteration:

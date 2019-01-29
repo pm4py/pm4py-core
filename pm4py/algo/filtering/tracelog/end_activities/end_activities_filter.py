@@ -59,10 +59,11 @@ def get_end_activities(trace_log, parameters=None):
 
     for trace in trace_log:
         if len(trace) > 0:
-            activity_last_event = trace[-1][attribute_key]
-            if activity_last_event not in end_activities:
-                end_activities[activity_last_event] = 0
-            end_activities[activity_last_event] = end_activities[activity_last_event] + 1
+            if attribute_key in trace[-1]:
+                activity_last_event = trace[-1][attribute_key]
+                if activity_last_event not in end_activities:
+                    end_activities[activity_last_event] = 0
+                end_activities[activity_last_event] = end_activities[activity_last_event] + 1
 
     return end_activities
 
