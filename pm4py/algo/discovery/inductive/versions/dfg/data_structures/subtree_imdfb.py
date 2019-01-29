@@ -145,7 +145,7 @@ class SubtreeB(Subtree):
                 else:
                     do_part.append(act)
 
-        if len(redo_part) > 0 or len(exit_part) > 0:
+        if len(do_part) > 0 and (len(redo_part) > 0 or len(exit_part)) > 0:
             # print([True, [do_part, redo_part + exit_part, set()], len(end_activities_that_are_also_start) > 0])
             return [True, [do_part, redo_part + exit_part, set()], len(end_activities_that_are_also_start) > 0]
 
@@ -274,7 +274,7 @@ class SubtreeB(Subtree):
             this_nx_graph = self.transform_dfg_to_directed_nx_graph()
             strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
 
-            #print("strongly_connected_components", strongly_connected_components)
+            # print("strongly_connected_components", strongly_connected_components)
 
             conc_cut = self.detect_concurrent_cut(conn_components, this_nx_graph, strongly_connected_components)
             seq_cut = self.detect_sequential_cut(conn_components, this_nx_graph, strongly_connected_components)
@@ -319,7 +319,7 @@ class SubtreeB(Subtree):
                                          noise_threshold=self.noise_threshold))
                     else:
                         if loop_cut[0]:
-                            # print(self.rec_depth, "loop_cut", self.activities)
+                            # print(self.rec_depth, "loop_cut", self.activities, loop_cut)
                             self.detected_cut = "loopCut"
                             for index_enum, child in enumerate(loop_cut[1]):
                                 dfg_child = filter_dfg_on_act(self.dfg, child)
