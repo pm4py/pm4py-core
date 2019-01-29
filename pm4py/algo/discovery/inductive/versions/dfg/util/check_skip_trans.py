@@ -1,7 +1,5 @@
-from pm4py.algo.discovery.dfg.utils.dfg_utils import get_outputs_of_outside_activities_going_to_start_activities
 from pm4py.algo.discovery.dfg.utils.dfg_utils import max_occ_all_activ, sum_start_activities_count, \
     sum_end_activities_count, sum_activities_count, max_occ_among_specif_activ
-from pm4py.algo.discovery.dfg.utils.dfg_utils import get_inputs_of_outside_activities_reached_by_end_activities
 
 
 def verify_skip_transition_necessity(must_add_skip, initial_dfg, dfg, activities):
@@ -22,6 +20,8 @@ def verify_skip_transition_necessity(must_add_skip, initial_dfg, dfg, activities
     if must_add_skip:
         return True
 
+    NOISE_THRESH = 0.05
+
     max_value = max_occ_all_activ(initial_dfg)
     start_activities_count = sum_start_activities_count(initial_dfg)
     end_activities_count = sum_end_activities_count(initial_dfg)
@@ -29,10 +29,15 @@ def verify_skip_transition_necessity(must_add_skip, initial_dfg, dfg, activities
 
     condition1 = start_activities_count > 0 and max_val_act_spec < start_activities_count
     condition2 = end_activities_count > 0 and max_val_act_spec < end_activities_count
-    condition3 = len(dfg) == 0 and max(start_activities_count, end_activities_count) < max_val_act_spec
-    condition4 = max(start_activities_count, end_activities_count) <= 0 < max_val_act_spec < max_value
+    condition3 = len(dfg) == 0 and max(start_activities_count, end_activities_count) < max_val_act_spec < max_value
+    condition4 = max(start_activities_count,
+                     end_activities_count) < max_value * NOISE_THRESH and max(start_activities_count,
+                                                                                     end_activities_count) <= max_val_act_spec < max_value
+    condition5 = max(start_activities_count, end_activities_count) <= 0 < max_val_act_spec < max_value
 
-    condition = condition1 or condition2 or condition3 or condition4
+    print(dfg, activities, max(start_activities_count, end_activities_count), max_val_act_spec, max_value, condition1, condition2, condition3, condition4, condition5)
+
+    condition = condition1 or condition2 or condition3 or condition4 or condition5
 
     if condition:
         return True
