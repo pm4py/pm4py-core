@@ -45,6 +45,9 @@ def apply(trace_log, parameters):
         parameters = {}
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = parameters[
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     # apply the reduction by default only on very small logs
     enable_reduction = parameters["enable_reduction"] if "enable_reduction" in parameters else True
