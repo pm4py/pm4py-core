@@ -359,7 +359,7 @@ def sum_end_activities_count(dfg):
     return sum_values
 
 
-def sum_activities_count(dfg, activities):
+def sum_activities_count(dfg, activities, enable_halving=True):
     """
     Gets the sum of specified attributes count inside a DFG
 
@@ -369,6 +369,8 @@ def sum_activities_count(dfg, activities):
         Directly-Follows graph
     activities
         Activities to sum
+    enable_halving
+        Halves the sum in specific occurrences
 
     Returns
     -------------
@@ -386,8 +388,9 @@ def sum_activities_count(dfg, activities):
         if act in ingoing:
             for act2 in ingoing[act]:
                 sum_values += ingoing[act][act2]
-        if act in ingoing and act in outgoing:
-            sum_values = int(sum_values / 2)
+        if enable_halving:
+            if act in ingoing and act in outgoing:
+                sum_values = int(sum_values / 2)
 
     return sum_values
 
