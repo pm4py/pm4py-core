@@ -9,7 +9,8 @@ from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thre
 
 
 class Subtree(object):
-    def __init__(self, dfg, master_dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0):
+    def __init__(self, dfg, master_dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0,
+                 start_activities=None, end_activities=None):
         """
         Constructor
 
@@ -33,6 +34,12 @@ class Subtree(object):
         self.counts = counts
         self.rec_depth = rec_depth
         self.noise_threshold = noise_threshold
+        self.start_activities = start_activities
+        if self.start_activities is None:
+            self.start_activities = []
+        self.end_activities = end_activities
+        if self.end_activities is None:
+            self.end_activities = []
 
         self.second_iteration = None
         self.activities = None

@@ -108,20 +108,25 @@ class SubtreeB(Subtree):
         strongly_connected_components
             Strongly connected components
         """
-        start_activities = infer_start_activities_from_prev_connections_and_current_dfg(self.initial_dfg, self.dfg,
-                                                                                        self.activities)
-        end_activities = infer_end_activities_from_succ_connections_and_current_dfg(self.initial_dfg, self.dfg,
-                                                                                    self.activities)
-        all_end_activities = deepcopy(end_activities)
-        end_activities = end_activities - start_activities
-        end_activities_that_are_also_start = all_end_activities - end_activities
+        start_activities = self.start_activities
+        if len(start_activities) == 0:
+            start_activities = infer_start_activities_from_prev_connections_and_current_dfg(self.initial_dfg, self.dfg,
+                                                                                            self.activities)
+        end_activities = self.end_activities
+
+        end_activities = list(set(end_activities) - set(start_activities))
+
         if len(end_activities) == 0:
             end_activities = infer_end_activities_from_succ_connections_and_current_dfg(self.initial_dfg, self.dfg,
-                                                                                        self.activities,
-                                                                                        include_self=False)
-            all_end_activities = deepcopy(end_activities)
-            end_activities = end_activities - start_activities
-            end_activities_that_are_also_start = all_end_activities - end_activities
+                                                                                        self.activities)
+            end_activities = list(set(end_activities) - set(start_activities))
+            if len(end_activities) == 0:
+                end_activities = infer_end_activities_from_succ_connections_and_current_dfg(self.initial_dfg, self.dfg,
+                                                                                            self.activities,
+                                                                                            include_self=False)
+        all_end_activities = deepcopy(end_activities)
+        end_activities = list(set(end_activities) - set(start_activities))
+        end_activities_that_are_also_start = list(set(all_end_activities) - set(end_activities))
 
         do_part = []
         redo_part = []
