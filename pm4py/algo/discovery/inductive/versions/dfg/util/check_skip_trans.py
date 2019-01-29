@@ -32,10 +32,8 @@ def verify_skip_transition_necessity(must_add_skip, initial_dfg, dfg, activities
     condition3 = len(dfg) == 0 and max(start_activities_count, end_activities_count) < max_val_act_spec < max_value
     condition4 = max(start_activities_count,
                      end_activities_count) < max_value * NOISE_THRESH and max(start_activities_count,
-                                                                                     end_activities_count) <= max_val_act_spec < max_value
+                                                                              end_activities_count) <= max_val_act_spec < max_value
     condition5 = max(start_activities_count, end_activities_count) <= 0 < max_val_act_spec < max_value
-
-    print(dfg, activities, max(start_activities_count, end_activities_count), max_val_act_spec, max_value, condition1, condition2, condition3, condition4, condition5)
 
     condition = condition1 or condition2 or condition3 or condition4 or condition5
 
@@ -63,12 +61,17 @@ def verify_skip_for_parallel_cut(dfg, children):
     """
     must_add_skip = False
 
-    children_occurrences = []
+    max_children_occurrences = []
+    sum_activities_count_list = []
+
     for child in children:
-        child_occ = max_occ_among_specif_activ(dfg, child.activities)
-        children_occurrences.append(child_occ)
-    if children_occurrences:
-        if not (children_occurrences[0] == children_occurrences[-1]):
+        max_child_occ = max_occ_among_specif_activ(dfg, child.activities)
+        sum_acti_count = sum_activities_count(dfg, child.activities, enable_halving=False)
+        max_children_occurrences.append(max_child_occ)
+        sum_activities_count_list.append(sum_acti_count)
+    if max_children_occurrences:
+        if not max_children_occurrences[0] == max_children_occurrences[-1]:
+            #and not sum_activities_count_list[0] == sum_activities_count_list[-1]:
             must_add_skip = True
 
     return must_add_skip
