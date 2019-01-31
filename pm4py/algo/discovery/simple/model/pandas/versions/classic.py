@@ -5,7 +5,7 @@ from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.algo.filtering.pandas.auto_filter import auto_filter
 from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
 from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
-from pm4py.algo.simulation.simple.filtering.pandas.versions import filter_topvariants_soundmodel
+from pm4py.algo.discovery.simple.filtering.pandas.versions import filter_topvariants_soundmodel
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY

@@ -5,6 +5,9 @@ from pm4py.evaluation.precision.versions import etconformance_token as precision
 from pm4py.evaluation.replay_fitness.versions import token_replay as fitness_token_based
 from pm4py.evaluation.simplicity.versions import arc_degree as simplicity_arc_degree
 from pm4py.objects import log as log_lib
+from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.log.util import general as log_util
+from pm4py.objects.log.util import xes as xes_util
 from pm4py.util import constants
 
 PARAM_ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -24,7 +27,7 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     Parameters
     -----------
     log
-        Trace log
+        Log
     net
         Petri net
     initial_marking
@@ -42,6 +45,14 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     """
     if parameters is None:
         parameters = {}
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
+    log = log_conversion.apply(log, parameters, log_conversion.TO_TRACE_LOG)
+
     activity_key = parameters[
         PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     fitness_weight = parameters[PARAM_FITNESS_WEIGHT] if PARAM_FITNESS_WEIGHT in parameters else 0.25

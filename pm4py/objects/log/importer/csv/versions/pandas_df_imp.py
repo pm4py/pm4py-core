@@ -1,22 +1,5 @@
-from pm4py.objects import log
+from pm4py.objects.conversion.log.versions.from_dataframe import convert_dataframe_to_event_log
 from pm4py.objects.log.adapters.pandas.csv_import_adapter import import_dataframe_from_path
-
-
-def convert_dataframe_to_event_log(df):
-    """
-    Converts a dataframe to an event log
-
-    Parameters
-    ----------
-    df
-        Pandas dataframe
-
-     Returns
-    -------
-    log : :class:`pm4py.log.log.EventLog`
-        An event log
-    """
-    return log.log.EventLog(df.to_dict('records'), attributes={'origin': 'csv'})
 
 
 def import_log(path, parameters=None):
@@ -77,4 +60,3 @@ def import_log(path, parameters=None):
         event_log.insert_event_index_as_event_attribute()
 
     return event_log
-

@@ -4,7 +4,6 @@ import ciso8601
 from lxml import etree
 
 from pm4py.objects import log as log_lib
-from pm4py.objects.log.util import compression
 from pm4py.objects.log.util import sorting
 
 # ITERPARSE EVENTS

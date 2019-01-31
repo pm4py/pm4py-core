@@ -1,18 +1,18 @@
-from pm4py.algo.simulation.simple.model.pandas.versions import classic
+from pm4py.algo.discovery.simple.model.tracelog.versions import classic
 
 CLASSIC = "classic"
 
 VERSIONS = {CLASSIC: classic.apply}
 
 
-def apply(df, parameters=None, variant=CLASSIC, classic_output=False):
+def apply(log, parameters=None, variant=CLASSIC, classic_output=False):
     """
-    Gets a simple model out of a Pandas dataframe
+    Gets a simple model out of a log
 
     Parameters
     -------------
-    df
-        Pandas dataframe
+    log
+        Trace log
     parameters
         Parameters of the algorithm
     variant
@@ -21,4 +21,4 @@ def apply(df, parameters=None, variant=CLASSIC, classic_output=False):
         Determine if the output shall contains directly the objects (e.g. net, initial_marking, final_marking)
         or can return a more detailed dictionary
     """
-    return VERSIONS[variant](df, parameters=parameters, classic_output=classic_output)
+    return VERSIONS[variant](log, parameters=parameters, classic_output=classic_output)
