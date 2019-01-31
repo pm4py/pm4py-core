@@ -1,6 +1,6 @@
 import os
 
-from pm4py.algo.simulation.simple.model.tracelog import factory as simple_miner
+from pm4py.algo.discovery.simple.model.tracelog import factory as simple_miner
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.petri.check_soundness import check_petri_wfnet_and_soundness
 

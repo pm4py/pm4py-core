@@ -1,9 +1,7 @@
-from pm4py.algo.conformance.alignments import factory as alignment_factory
 from pm4py.algo.discovery.alpha import factory as alpha_miner
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics as dfg_util
 from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.algo.filtering.pandas.variants import variants_filter
-from pm4py.evaluation.replay_fitness import factory as replay_fitness_factory
 from pm4py.objects.log import transform
 from pm4py.objects.log.importer.csv.versions import pandas_df_imp
 from pm4py.objects.log.log import TraceLog
@@ -35,6 +33,8 @@ def apply(df, parameters=None):
     filtered_df
         Filtered dataframe
     """
+    from pm4py.evaluation.replay_fitness import factory as replay_fitness_factory
+
     if parameters is None:
         parameters = {}
 
@@ -100,8 +100,6 @@ def apply(df, parameters=None):
             filtered_log = TraceLog(considered_traces)
 
             try:
-                alignments = alignment_factory.apply(filtered_log, net, initial_marking, final_marking)
-                del alignments
                 fitness = replay_fitness_factory.apply(filtered_log, net, initial_marking, final_marking,
                                                        parameters=parameters)
                 if fitness["log_fitness"] < 0.99999:

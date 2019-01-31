@@ -1,6 +1,7 @@
 from copy import copy
 
 import pm4py
+from pm4py import util as pmutil
 from pm4py.algo.conformance import alignments as ali
 from pm4py.algo.conformance.alignments import versions
 from pm4py.algo.conformance.alignments.utils import STD_MODEL_LOG_MOVE_COST
@@ -8,6 +9,8 @@ from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PAR
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
 from pm4py.objects.conversion.log import factory as log_converter
+from pm4py.objects.log.util import general as log_util
+from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
@@ -17,6 +20,14 @@ VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.g
 
 
 def apply(obj, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
+    if parameters is None:
+        parameters = {}
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
     if isinstance(obj, pm4py.objects.log.log.Trace):
         return apply_trace(obj, petri_net, initial_marking, final_marking, parameters, version)
     else:
