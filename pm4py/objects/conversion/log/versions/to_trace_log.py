@@ -1,7 +1,10 @@
 from copy import deepcopy
 
+import pandas
+
 import pm4py
 from pm4py.objects.conversion.log import constants
+from pm4py.objects.conversion.log.versions import from_dataframe
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log.util import general as log_util
 from pm4py.objects.log.util import xes
@@ -10,6 +13,8 @@ DEEPCOPY = constants.DEEPCOPY
 
 
 def apply(log, parameters=None):
+    if isinstance(log, pandas.core.frame.DataFrame):
+        log = from_dataframe.apply(log)
     if isinstance(log, pm4py.objects.log.log.EventLog) and (not isinstance(log, pm4py.objects.log.log.TraceLog)):
         parameters = parameters if parameters is not None else dict()
         if log_util.PARAMETER_KEY_CASE_GLUE in parameters:
