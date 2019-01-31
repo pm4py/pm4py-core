@@ -4,7 +4,7 @@ from pm4py.algo.filtering.tracelog.attributes import attributes_filter
 from pm4py.algo.filtering.tracelog.auto_filter import auto_filter
 from pm4py.algo.filtering.tracelog.start_activities import start_activities_filter
 from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
-from pm4py.algo.simulation.simple.filtering.tracelog.versions import filter_topvariants_soundmodel
+from pm4py.algo.discovery.simple.filtering.tracelog.versions import filter_topvariants_soundmodel
 from pm4py.objects.log.util import insert_classifier
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
