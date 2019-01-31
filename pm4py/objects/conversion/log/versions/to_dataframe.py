@@ -4,6 +4,26 @@ from pm4py.objects.log import log as log_instance
 from pm4py.objects.log import transform as log_transform
 
 
+def apply(log, parameters=None):
+    """
+    Return a Pandas dataframe from a given log
+
+    Parameters
+    -----------
+    log: :class:`pm4py.log.log.EventLog`
+        Event log. Also, can take a trace log and convert it to event log
+
+    Returns
+    -----------
+    df
+        Pandas dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    return get_dataframe_from_log(log)
+
+
 def get_dataframe_from_log(log):
     """
     Return a Pandas dataframe from a given log
