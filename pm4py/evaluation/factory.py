@@ -5,8 +5,9 @@ from pm4py.evaluation.precision.versions import etconformance_token as precision
 from pm4py.evaluation.replay_fitness.versions import token_replay as fitness_token_based
 from pm4py.evaluation.simplicity.versions import arc_degree as simplicity_arc_degree
 from pm4py.objects import log as log_lib
+from pm4py.util import constants
 
-PARAM_ACTIVITY_KEY = 'activity_key'
+PARAM_ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 PARAM_FITNESS_WEIGHT = 'fitness_weight'
 PARAM_PRECISION_WEIGHT = 'precision_weight'
 PARAM_SIMPLICITY_WEIGHT = 'simplicity_weight'
