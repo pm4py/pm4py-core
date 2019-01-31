@@ -387,50 +387,6 @@ def break_condition_final_marking(marking, final_marking):
     return final_marking_dict_keys.issubset(marking_dict_keys)
 
 
-def clean_token_flood(net, prev_marking, curr_marking, t, remaining_activities, current_remaining_map):
-    """
-    Cleans the token flood
-
-    Parameters
-    ------------
-    net
-        Petri net
-    prev_marking
-        Previous marking of the Petri net
-    curr_marking
-        Current marking of the Petri net
-    t
-        Transition that is fired with missing problems
-    remaining_activities
-        Remaining activities of the trace
-    current_remaining_map
-        Map of remaining tokens (to avoid losing them)
-
-    Returns
-    ------------
-    curr_marking
-        Cleaned marking
-    current_remaining_map
-        Map of remaining tokens (to avoid losing them)
-    """
-    for place in prev_marking:
-        if place in curr_marking:
-            curr_marking_wo_place = copy(curr_marking)
-            if place in curr_marking_wo_place:
-                del curr_marking_wo_place[place]
-            en_t_in_curr_marking = set([x for x in semantics.enabled_transitions(net, curr_marking) if x.label])
-            en_t_in_curr_m_wo_place = set(
-                [x for x in semantics.enabled_transitions(net, curr_marking_wo_place) if x.label])
-            en_t_in_curr_marking = en_t_in_curr_marking - en_t_in_curr_m_wo_place
-            en_t_in_curr_marking = en_t_in_curr_marking.intersection(remaining_activities)
-            if len(en_t_in_curr_marking) == 0:
-                if place not in current_remaining_map:
-                    current_remaining_map[place] = 0
-                current_remaining_map[place] = current_remaining_map[place] + curr_marking[place]
-                del curr_marking[place]
-    return curr_marking, current_remaining_map
-
-
 def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pltr_fitness, place_fitness,
                 transition_fitness, notexisting_activities_in_model,
                 places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
@@ -573,11 +529,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         act_trans.append(t)
                         vis_mark.append(marking)
                     if not is_initially_enabled:
-                        if cleaning_token_flood:
-                            remaining_activities = [trace[jj][activity_key] for jj in range(len(trace)) if jj > i]
-                            marking, current_remaining_map = clean_token_flood(net, prev_marking_missing, marking, t,
-                                                                               remaining_activities,
-                                                                               current_remaining_map)
+                        # here, a routine for cleaning token flood shall go
+                        pass
                 else:
                     if not trace[i][activity_key] in notexisting_activities_in_model:
                         notexisting_activities_in_model[trace[i][activity_key]] = {}
