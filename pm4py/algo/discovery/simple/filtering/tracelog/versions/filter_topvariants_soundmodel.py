@@ -1,7 +1,5 @@
-from pm4py.algo.conformance.alignments import factory as alignment_factory
 from pm4py.algo.discovery.alpha import factory as alpha_miner
 from pm4py.algo.filtering.tracelog.variants import variants_filter
-from pm4py.evaluation.replay_fitness import factory as replay_fitness_factory
 from pm4py.objects.log.log import TraceLog
 from pm4py.objects.petri import check_soundness
 
@@ -25,6 +23,8 @@ def apply(log, parameters=None):
     filtered_log
         Filtered trace log
     """
+    from pm4py.evaluation.replay_fitness import factory as replay_fitness_factory
+
     if parameters is None:
         parameters = {}
     discovery_algorithm = parameters["discovery_algorithm"] if "discovery_algorithm" in parameters else "alphaclassic"
@@ -55,8 +55,6 @@ def apply(log, parameters=None):
             del considered_traces[-1]
         else:
             try:
-                #alignments = alignment_factory.apply(filtered_log, net, initial_marking, final_marking)
-                #del alignments
                 fitness = replay_fitness_factory.apply(filtered_log, net, initial_marking, final_marking,
                                                        parameters=parameters)
                 if fitness["log_fitness"] < 0.99999:
