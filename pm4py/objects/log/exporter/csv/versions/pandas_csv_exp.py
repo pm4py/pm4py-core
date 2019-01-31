@@ -1,4 +1,4 @@
-from pm4py.objects.log.util.df_from_log import get_dataframe_from_log
+from pm4py.objects.conversion.log.versions.to_dataframe import get_dataframe_from_log
 
 
 def export_log_as_string(log, parameters=None):
