@@ -157,14 +157,14 @@
 <span id="pm4py-algo-filtering-log-paths-paths-filter-module"></span><h2>pm4py.algo.filtering.log.paths.paths_filter module<a class="headerlink" href="#module-pm4py.algo.filtering.log.paths.paths_filter" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.paths.paths_filter.apply">
-<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>trace_log</em>, <em>paths</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.apply" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>paths</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a filter on traces containing / not containing a path</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>trace_log</strong> – Trace log</p>
+<li><p class="first"><strong>log</strong> – Log</p>
 </li>
 <li><p class="first"><strong>paths</strong> – Paths that we are looking for (expressed as tuple of 2 strings)</p>
 </li>
@@ -179,7 +179,7 @@ positive -&gt; Indicate if events should be kept/removed</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered trace log</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_log</p>
@@ -191,14 +191,14 @@ positive -&gt; Indicate if events should be kept/removed</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.paths.paths_filter.apply_auto_filter">
-<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>trace_log</em>, <em>variants=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>log</em>, <em>variants=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply an attributes filter detecting automatically a percentage</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>trace_log</strong> – Trace log</p>
+<li><p class="first"><strong>log</strong> – Log</p>
 </li>
 <li><p class="first"><strong>variants</strong> – (If specified) Dictionary with variant as the key and the list of traces as the value</p>
 </li>
@@ -226,14 +226,14 @@ attribute_key -&gt; Attribute key (must be specified if different from concept:n
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.paths.paths_filter.filter_log_by_paths">
-<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">filter_log_by_paths</code><span class="sig-paren">(</span><em>trace_log</em>, <em>paths</em>, <em>variants</em>, <em>vc</em>, <em>threshold</em>, <em>attribute_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#filter_log_by_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.filter_log_by_paths" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">filter_log_by_paths</code><span class="sig-paren">(</span><em>log</em>, <em>paths</em>, <em>variants</em>, <em>vc</em>, <em>threshold</em>, <em>attribute_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#filter_log_by_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.filter_log_by_paths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keep only paths which number of occurrences is above the threshold (or they belong to the first variant)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace_log</strong> – Trace log</li>
+<li><strong>log</strong> – Log</li>
 <li><strong>paths</strong> – Dictionary of paths associated with their count</li>
 <li><strong>variants</strong> – (If specified) Dictionary with variant as the key and the list of traces as the value</li>
 <li><strong>vc</strong> – List of variant names along with their count</li>
@@ -254,14 +254,14 @@ attribute_key -&gt; Attribute key (must be specified if different from concept:n
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.paths.paths_filter.get_paths_from_log">
-<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">get_paths_from_log</code><span class="sig-paren">(</span><em>trace_log</em>, <em>attribute_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#get_paths_from_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.get_paths_from_log" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">get_paths_from_log</code><span class="sig-paren">(</span><em>log</em>, <em>attribute_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#get_paths_from_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.get_paths_from_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the paths of the log along with their count</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace_log</strong> – Trace log</li>
+<li><strong>log</strong> – Log</li>
 <li><strong>attribute_key</strong> – Attribute key (must be specified if different from concept:name)</li>
 </ul>
 </td>

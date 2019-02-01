@@ -157,14 +157,14 @@
 <span id="pm4py-algo-filtering-log-variants-variants-filter-module"></span><h2>pm4py.algo.filtering.log.variants.variants_filter module<a class="headerlink" href="#module-pm4py.algo.filtering.log.variants.variants_filter" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.variants.variants_filter.apply">
-<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>trace_log</em>, <em>admitted_variants</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.apply" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>admitted_variants</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter log keeping/removing only provided variants</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><strong>trace_log</strong> – Trace log object</p>
+<li><p class="first"><strong>log</strong> – Log object</p>
 </li>
 <li><p class="first"><strong>admitted_variants</strong> – Admitted variants</p>
 </li>
@@ -185,14 +185,14 @@ positive -&gt; Indicate if events should be kept/removed</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.variants.variants_filter.apply_auto_filter">
-<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>trace_log</em>, <em>variants=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>log</em>, <em>variants=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a variants filter detecting automatically a percentage</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>trace_log</strong> – Trace log</p>
+<li><p class="first"><strong>log</strong> – Log</p>
 </li>
 <li><p class="first"><strong>variants</strong> – Variants contained in the log</p>
 </li>
@@ -244,20 +244,20 @@ this factor in comparison to previous)</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.variants.variants_filter.filter_log_by_variants_percentage">
-<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">filter_log_by_variants_percentage</code><span class="sig-paren">(</span><em>trace_log</em>, <em>variants</em>, <em>variants_percentage=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#filter_log_by_variants_percentage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.filter_log_by_variants_percentage" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">filter_log_by_variants_percentage</code><span class="sig-paren">(</span><em>log</em>, <em>variants</em>, <em>variants_percentage=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#filter_log_by_variants_percentage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.filter_log_by_variants_percentage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the log by variants percentage</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace_log</strong> – Trace log</li>
+<li><strong>log</strong> – Log</li>
 <li><strong>variants</strong> – Dictionary with variant as the key and the list of traces as the value</li>
 <li><strong>variants_percentage</strong> – Percentage of variants that should be kept (the most common variant is always kept)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered trace log</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_log</p>
@@ -269,7 +269,7 @@ this factor in comparison to previous)</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.variants.variants_filter.find_auto_threshold">
-<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">find_auto_threshold</code><span class="sig-paren">(</span><em>trace_log</em>, <em>variants</em>, <em>decreasing_factor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#find_auto_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.find_auto_threshold" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">find_auto_threshold</code><span class="sig-paren">(</span><em>log</em>, <em>variants</em>, <em>decreasing_factor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#find_auto_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.find_auto_threshold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find automatically variants filtering threshold
 based on specified decreasing factor</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -277,7 +277,7 @@ based on specified decreasing factor</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace_log</strong> – Trace log</li>
+<li><strong>log</strong> – Log</li>
 <li><strong>variants</strong> – Dictionary with variant as the key and the list of traces as the value</li>
 <li><strong>decreasing_factor</strong> – Decreasing factor (stops the algorithm when the next variant by occurrence is below this factor
 in comparison to previous)</li>
@@ -296,7 +296,7 @@ in comparison to previous)</li>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.variants.variants_filter.get_variants">
-<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">get_variants</code><span class="sig-paren">(</span><em>trace_log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#get_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.get_variants" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">get_variants</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#get_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.get_variants" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a dictionary whose key is the variant and as value there
 is the list of traces that share the variant</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -304,7 +304,7 @@ is the list of traces that share the variant</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>trace_log</strong> – Trace log</p>
+<li><p class="first"><strong>log</strong> – Trace log</p>
 </li>
 <li><p class="first"><strong>parameters</strong> –</p>
 <dl class="docutils">
@@ -328,7 +328,7 @@ is the list of traces that share the variant</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.variants.variants_filter.get_variants_from_log_trace_idx">
-<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">get_variants_from_log_trace_idx</code><span class="sig-paren">(</span><em>trace_log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#get_variants_from_log_trace_idx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.get_variants_from_log_trace_idx" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="descname">get_variants_from_log_trace_idx</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#get_variants_from_log_trace_idx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.get_variants_from_log_trace_idx" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a dictionary whose key is the variant and as value there
 is the list of traces indexes that share the variant</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -336,7 +336,7 @@ is the list of traces indexes that share the variant</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>trace_log</strong> – Trace log</p>
+<li><p class="first"><strong>log</strong> – Log</p>
 </li>
 <li><p class="first"><strong>parameters</strong> –</p>
 <dl class="docutils">
