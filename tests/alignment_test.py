@@ -14,13 +14,13 @@ class AlignmentTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        net, marking, fmarking = alpha_factory.apply(trace_log)
+        log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        net, marking, fmarking = alpha_factory.apply(log)
         final_marking = petri.petrinet.Marking()
         for p in net.places:
             if not p.out_arcs:
                 final_marking[p] = 1
-        for trace in trace_log:
+        for trace in log:
             cf_result = state_equation_a_star.apply(trace, net, marking, final_marking)['alignment']
             is_fit = True
             for couple in cf_result:
@@ -33,9 +33,9 @@ class AlignmentTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        net, marking, final_marking = inductive_miner.apply(trace_log)
-        for trace in trace_log:
+        log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        net, marking, final_marking = inductive_miner.apply(log)
+        for trace in log:
             cf_result = state_equation_a_star.apply(trace, net, marking, final_marking)['alignment']
             is_fit = True
             for couple in cf_result:

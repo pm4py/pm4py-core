@@ -12,14 +12,14 @@ except:
     from statistics import mean, median, stdev
 
 
-def apply(trace_log, parameters=None):
+def apply(log, parameters=None):
     """
     Measure performance between couples of attributes in the DFG graph
 
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     parameters
         Possible parameters passed to the algorithms:
             aggregationMeasure -> performance aggregation measure (min, max, mean, median)
@@ -43,7 +43,7 @@ def apply(trace_log, parameters=None):
 
     dfgs0 = map((lambda t: [
         ((t[i - 1][activity_key], t[i][activity_key]), (t[i][timestamp_key] - t[i - 1][timestamp_key]).total_seconds())
-        for i in range(1, len(t))]), trace_log)
+        for i in range(1, len(t))]), log)
     ret0 = {}
     for el in dfgs0:
         for couple in el:

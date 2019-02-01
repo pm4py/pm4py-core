@@ -1,10 +1,10 @@
 from copy import deepcopy
 
-from pm4py.objects.log.log import TraceLog, Trace, Event
+from pm4py.objects.log.log import EventLog, Trace, Event
 
 
 def execute_script():
-    L = TraceLog()
+    L = EventLog()
     e1 = Event()
     e1["concept:name"] = "A"
     e2 = Event()

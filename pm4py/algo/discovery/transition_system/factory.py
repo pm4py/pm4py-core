@@ -11,7 +11,7 @@ VERSIONS = {VIEW_BASED: view_based.apply}
 
 def apply(log, parameters=None, variant=VIEW_BASED):
     """
-    Find transition system given trace log
+    Find transition system given log
 
     Parameters
     -----------

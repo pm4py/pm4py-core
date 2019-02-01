@@ -14,7 +14,7 @@ DEEPCOPY = constants.DEEPCOPY
 def apply(log, parameters=None):
     if isinstance(log, pandas.core.frame.DataFrame):
         log = from_dataframe.apply(log)
-    if isinstance(log, pm4py.objects.log.log.TraceLog):
+    if isinstance(log, pm4py.objects.log.log.EventLog):
         parameters = parameters if parameters is not None else dict()
         if log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX in parameters:
             case_pref = parameters[log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX]
@@ -22,19 +22,19 @@ def apply(log, parameters=None):
             case_pref = log_util.CASE_ATTRIBUTE_PREFIX
         enable_deepcopy = parameters[DEEPCOPY] if DEEPCOPY in parameters else False
 
-        return transform_trace_log_to_event_stream(log, include_case_attributes=True,
+        return transform_event_log_to_event_stream(log, include_case_attributes=True,
                                                    case_attribute_prefix=case_pref, enable_deepcopy=enable_deepcopy)
     return log
 
 
-def transform_trace_log_to_event_stream(log, include_case_attributes=True,
+def transform_event_log_to_event_stream(log, include_case_attributes=True,
                                         case_attribute_prefix=log_util.CASE_ATTRIBUTE_PREFIX, enable_deepcopy=False):
     """
     Converts the event log to an event stream
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
+    log: :class:`pm4py.log.log.EventLog`
         An Event log
     include_case_attributes:
         Default is True

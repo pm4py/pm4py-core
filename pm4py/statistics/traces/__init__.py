@@ -1,1 +1,1 @@
-from pm4py.statistics.traces import pandas, tracelog, common
+from pm4py.statistics.traces import pandas, log, common

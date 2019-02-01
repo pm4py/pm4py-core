@@ -7,7 +7,7 @@ from pm4py.objects.log.util import sorting
 
 def import_log(filename, parameters=None):
     """
-    Import a TraceLog object from a XML file
+    Import a log object from a XML file
     containing the traces, the events and the simple attributes of them
 
     Parameters
@@ -57,7 +57,7 @@ def import_log(filename, parameters=None):
     if file_size > max_bytes_to_read:
         skip_bytes = file_size - max_bytes_to_read
 
-    log = log_lib.log.TraceLog()
+    log = log_lib.log.EventLog()
     tracecount = 0
     trace = None
     event = None

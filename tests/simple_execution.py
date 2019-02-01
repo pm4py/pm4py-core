@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pm4py.algo.discovery.simple.model.tracelog import factory as simple_model_factory
+from pm4py.algo.discovery.simple.model.log import factory as simple_model_factory
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from tests.constants import INPUT_DATA_DIR
 

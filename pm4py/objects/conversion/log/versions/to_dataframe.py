@@ -11,7 +11,7 @@ def apply(log, parameters=None):
     Parameters
     -----------
     log: :class:`pm4py.log.log.EventLog`
-        Event log. Also, can take a trace log and convert it to event log
+        Event log. Also, can take a log and convert it to event stream
     parameters
         Parameters of the algorithm
 
@@ -23,25 +23,25 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    return get_dataframe_from_log(log)
+    return get_dataframe_from_event_stream(log)
 
 
-def get_dataframe_from_log(log):
+def get_dataframe_from_event_stream(log):
     """
     Return a Pandas dataframe from a given log
 
     Parameters
     -----------
     log: :class:`pm4py.log.log.EventLog`
-        Event log. Also, can take a trace log and convert it to event log
+        Event log. Also, can take a log and convert it to event stream
 
     Returns
     -----------
     df
         Pandas dataframe
     """
-    if type(log) is log_instance.TraceLog:
-        log = log_transform.transform_trace_log_to_event_log(log)
+    if type(log) is log_instance.EventLog:
+        log = log_transform.transform_event_log_to_event_stream(log)
     transf_log = [dict(x) for x in log]
     df = pd.DataFrame.from_dict(transf_log)
 
