@@ -13,7 +13,7 @@ DEEPCOPY = constants.DEEPCOPY
 
 def apply(log, parameters=None):
     if isinstance(log, pandas.core.frame.DataFrame):
-        log = log.log.EventStream(log.to_dict('records'), attributes={'origin': 'csv'})
+        log = log_instance.EventStream(log.to_dict('records'), attributes={'origin': 'csv'})
     if isinstance(log, pm4py.objects.log.log.EventLog):
         parameters = parameters if parameters is not None else dict()
         if log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX in parameters:
