@@ -171,7 +171,7 @@ in case the f-value of two states is equal.</p>
 </table>
 <dl class="class">
 <dt id="pm4py.algo.conformance.alignments.versions.state_equation_a_star.SearchTuple">
-<em class="property">class </em><code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">SearchTuple</code><span class="sig-paren">(</span><em>f:float</em>, <em>g:float</em>, <em>h:float</em>, <em>m:pm4py.objects.petri.petrinet.Marking</em>, <em>p:Any</em>, <em>t:pm4py.objects.petri.petrinet.PetriNet.Transition</em>, <em>x:Any</em>, <em>trust:bool</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#SearchTuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.SearchTuple" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">SearchTuple</code><span class="sig-paren">(</span><em>f</em>, <em>g</em>, <em>h</em>, <em>m</em>, <em>p</em>, <em>t</em>, <em>x</em>, <em>trust</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#SearchTuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.SearchTuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 
@@ -210,7 +210,7 @@ PARAM_ACTIVITY_KEY: <code class="xref py py-class docutils literal notranslate">
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply_sync_prod">
-<code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">apply_sync_prod</code><span class="sig-paren">(</span><em>sync_prod</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>cost_function</em>, <em>skip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#apply_sync_prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply_sync_prod" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">apply_sync_prod</code><span class="sig-paren">(</span><em>sync_prod</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>cost_function</em>, <em>skip</em>, <em>ret_tuple_as_trans_desc=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#apply_sync_prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply_sync_prod" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs the basic alignment search on top of the synchronous product net, given a cost function and skip-symbol</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -303,7 +303,6 @@ PARAM_ACTIVITY_KEY: <code class="xref py py-class docutils literal notranslate">
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

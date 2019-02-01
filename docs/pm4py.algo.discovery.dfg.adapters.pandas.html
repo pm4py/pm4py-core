@@ -157,7 +157,7 @@
 <span id="pm4py-algo-discovery-dfg-adapters-pandas-df-statistics-module"></span><h2>pm4py.algo.discovery.dfg.adapters.pandas.df_statistics module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.adapters.pandas.df_statistics" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.discovery.dfg.adapters.pandas.df_statistics.get_dfg_graph">
-<code class="descclassname">pm4py.algo.discovery.dfg.adapters.pandas.df_statistics.</code><code class="descname">get_dfg_graph</code><span class="sig-paren">(</span><em>df</em>, <em>measure='frequency'</em>, <em>activity_key='concept:name'</em>, <em>case_id_glue='case:concept:name'</em>, <em>timestamp_key='time:timestamp'</em>, <em>perf_aggregation_key='mean'</em>, <em>sort_required=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/adapters/pandas/df_statistics.html#get_dfg_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.adapters.pandas.df_statistics.get_dfg_graph" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.discovery.dfg.adapters.pandas.df_statistics.</code><code class="descname">get_dfg_graph</code><span class="sig-paren">(</span><em>df</em>, <em>measure='frequency'</em>, <em>activity_key='concept:name'</em>, <em>case_id_glue='case:concept:name'</em>, <em>timestamp_key='time:timestamp'</em>, <em>perf_aggregation_key='mean'</em>, <em>sort_caseid_required=True</em>, <em>sort_timestamp_along_case_id=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/adapters/pandas/df_statistics.html#get_dfg_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.adapters.pandas.df_statistics.get_dfg_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get DFG graph from Pandas dataframe</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -170,7 +170,8 @@
 <li><strong>case_id_glue</strong> – Case ID identifier</li>
 <li><strong>timestamp_key</strong> – Timestamp key</li>
 <li><strong>perf_aggregation_key</strong> – Performance aggregation key (mean, median, min, max)</li>
-<li><strong>sort_required</strong> – Specify if a sort on the Case ID and the timestamp is required</li>
+<li><strong>sort_caseid_required</strong> – Specify if a sort on the Case ID is required</li>
+<li><strong>sort_timestamp_along_case_id</strong> – Specifying if sorting by timestamp along the CaseID is required</li>
 </ul>
 </td>
 </tr>
@@ -226,7 +227,6 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   
