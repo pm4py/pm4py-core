@@ -16,7 +16,7 @@ def apply(trace_log, parameters=None):
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     transition_system = ts.TransitionSystem()
-    control_flow_log = log_util.trace_log.project_traces(trace_log, activity_key)
+    control_flow_log = log_util.log.project_traces(trace_log, activity_key)
     view_sequence = (list(map(lambda t: __compute_view_sequence(t, parameters), control_flow_log)))
     for vs in view_sequence:
         __construct_state_path(vs, transition_system)

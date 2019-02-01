@@ -34,7 +34,7 @@ def transform_event_log_to_event_stream(log, include_case_attributes=True,
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
+    log: :class:`pm4py.log.log.EventLog`
         An Event log
     include_case_attributes:
         Default is True

@@ -64,7 +64,7 @@ def export_attributes(log, root):
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
+    log: :class:`pm4py.log.log.EventLog`
         PM4PY trace log
     root:
         Output XML root element
@@ -75,11 +75,11 @@ def export_attributes(log, root):
 
 def export_extensions(log, root):
     """
-    Export XES extensions from a PM4PY trace log
+    Export XES extensions from a PM4PY log
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
+    log: :class:`pm4py.log.log.EventLog`
         PM4PY trace log
     root:
         Output XML root element
@@ -100,7 +100,7 @@ def export_globals(log, root):
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
+    log: :class:`pm4py.log.log.EventLog`
         PM4PY trace log
     root:
         Output XML root element
@@ -119,7 +119,7 @@ def export_classifiers(log, root):
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
+    log: :class:`pm4py.log.log.EventLog`
         PM4PY trace log
     root:
         Output XML root element
@@ -203,7 +203,7 @@ def export_traces(log, root):
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
+    log: :class:`pm4py.log.log.EventLog`
         PM4PY trace log
     root:
         Output XML root element
@@ -229,7 +229,7 @@ def export_log_tree(log):
     tree
         XML tree
     """
-    # If the log is in log_instance.EventLog, then transform it into log_instance.TraceLog format
+    # If the log is in log_instance.EventStream, then transform it into log_instance.EventLog format
     if type(log) is log_instance.EventStream:
         log = log_transform.transform_event_log_to_trace_log(log)
     root = etree.Element(xes_util.TAG_LOG)
@@ -256,8 +256,8 @@ def export_log_as_string(log, parameters=None):
 
     Parameters
     -----------
-    log: :class:`pm4py.log.log.TraceLog`
-        PM4PY trace log
+    log: :class:`pm4py.log.log.EventLog`
+        PM4PY log
     parameters
         Parameters of the algorithm
 
@@ -282,7 +282,7 @@ def export_log(log, output_file_path, parameters=None):
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
+    log: :class:`pm4py.log.log.EventLog`
         PM4PY trace log
     output_file_path:
         Output file path

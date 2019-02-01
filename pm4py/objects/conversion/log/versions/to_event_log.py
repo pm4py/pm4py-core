@@ -52,7 +52,7 @@ def transform_event_stream_to_event_log(log, case_glue=log_util.CASE_ATTRIBUTE_G
 
     Returns
         -------
-    log : :class:`pm4py.log.log.TraceLog`
+    log : :class:`pm4py.log.log.EventLog`
         An event log
     """
     if enable_deepcopy:

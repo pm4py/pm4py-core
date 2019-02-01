@@ -39,7 +39,7 @@ def import_log_from_string(log_string, parameters=None, variant=ITERPARSE):
 
 def import_log(path, parameters=None, variant=ITERPARSE):
     """
-    Import a XES log into a TraceLog object
+    Import a XES log into a EventLog object
 
     Parameters
     -----------
@@ -70,7 +70,7 @@ def import_log(path, parameters=None, variant=ITERPARSE):
 
 def apply(path, parameters=None, variant=ITERPARSE):
     """
-    Import a XES log into a TraceLog object
+    Import a XES log into a EventLog object
 
     Parameters
     -----------

@@ -7,7 +7,7 @@ from pm4py.objects.log.util import sorting
 
 def import_log(filename, parameters=None):
     """
-    Import a TraceLog object from a XML file
+    Import a log object from a XML file
     containing the traces, the events and the simple attributes of them
 
     Parameters
