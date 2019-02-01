@@ -23,10 +23,10 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    return get_dataframe_from_log(log)
+    return get_dataframe_from_event_stream(log)
 
 
-def get_dataframe_from_log(log):
+def get_dataframe_from_event_stream(log):
     """
     Return a Pandas dataframe from a given log
 

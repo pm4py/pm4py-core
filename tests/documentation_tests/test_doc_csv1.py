@@ -17,7 +17,7 @@ class CSV1DocumentationTest(unittest.TestCase):
         from pm4py.objects.log.importer.csv.versions import pandas_df_imp
         from pm4py.objects.log import transform
         dataframe = pandas_df_imp.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
-        event_log = pandas_df_imp.convert_dataframe_to_event_log(dataframe)
+        event_log = pandas_df_imp.convert_dataframe_to_event_stream(dataframe)
         trace_log = transform.transform_event_log_to_trace_log(event_log, case_glue="case:concept:name")
         from pm4py.objects.log.exporter.csv import factory as csv_exporter
         csv_exporter.export(event_log, "outputFile1.csv")

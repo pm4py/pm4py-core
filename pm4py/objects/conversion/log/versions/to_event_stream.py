@@ -22,12 +22,12 @@ def apply(log, parameters=None):
             case_pref = log_util.CASE_ATTRIBUTE_PREFIX
         enable_deepcopy = parameters[DEEPCOPY] if DEEPCOPY in parameters else False
 
-        return transform_trace_log_to_event_stream(log, include_case_attributes=True,
+        return transform_event_log_to_event_stream(log, include_case_attributes=True,
                                                    case_attribute_prefix=case_pref, enable_deepcopy=enable_deepcopy)
     return log
 
 
-def transform_trace_log_to_event_stream(log, include_case_attributes=True,
+def transform_event_log_to_event_stream(log, include_case_attributes=True,
                                         case_attribute_prefix=log_util.CASE_ATTRIBUTE_PREFIX, enable_deepcopy=False):
     """
     Converts the event log to an event stream

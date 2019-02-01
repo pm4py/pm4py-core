@@ -1,4 +1,4 @@
-from pm4py.objects.conversion.log.versions.to_dataframe import get_dataframe_from_log
+from pm4py.objects.conversion.log.versions.to_dataframe import get_dataframe_from_event_stream
 
 
 def export_log_as_string(log, parameters=None):
@@ -21,7 +21,7 @@ def export_log_as_string(log, parameters=None):
         parameters = {}
     del parameters
 
-    df = get_dataframe_from_log(log)
+    df = get_dataframe_from_event_stream(log)
 
     return df.to_string()
 
@@ -43,7 +43,7 @@ def export(log, output_file_path, parameters=None):
         parameters = {}
     del parameters
 
-    df = get_dataframe_from_log(log)
+    df = get_dataframe_from_event_stream(log)
     df.to_csv(output_file_path, index=False)
 
 
