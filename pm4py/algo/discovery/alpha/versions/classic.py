@@ -61,9 +61,9 @@ def apply(trace_log, parameters=None):
     if pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
     dfg = {k: v for k, v in dfg_inst.apply(trace_log, parameters=parameters).items() if v > 0}
-    start_activities = endpoints.derive_start_activities_from_tracelog(trace_log, parameters[
+    start_activities = endpoints.derive_start_activities_from_log(trace_log, parameters[
         pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
-    end_activities = endpoints.derive_end_activities_from_tracelog(trace_log, parameters[
+    end_activities = endpoints.derive_end_activities_from_log(trace_log, parameters[
         pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
     return apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=parameters)
 
