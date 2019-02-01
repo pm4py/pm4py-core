@@ -3,7 +3,7 @@ from collections import Counter
 from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.objects import log as log_lib
-from pm4py.objects.log.log import TraceLog, Event, Trace
+from pm4py.objects.log.log import EventLog, Event, Trace
 from pm4py.objects.log.util import xes as xes_util
 
 """
@@ -31,7 +31,7 @@ PARAMETERS = [PARAM_ACTIVITY_KEY]
 
 def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
-    Get trace log prefixes
+    Get log prefixes
 
     Parameters
     ----------
@@ -65,7 +65,7 @@ def form_fake_log(prefixes_keys, activity_key=xes_util.DEFAULT_NAME_KEY):
     activity_key
         Activity key (must be provided if different from concept:name)
     """
-    fake_log = TraceLog()
+    fake_log = EventLog()
     for prefix in prefixes_keys:
         trace = Trace()
         prefix_activities = prefix.split(",")
