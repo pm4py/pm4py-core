@@ -2,7 +2,7 @@ import pandas
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.algo.discovery.inductive.versions.dfg import imdfa, imdfb
+from pm4py.algo.discovery.inductive.versions.dfg import imdfa
 from pm4py.objects.log.util import general as log_util
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.conversion.log import factory as log_conversion
@@ -14,10 +14,10 @@ IMDFB = 'imdfb'
 
 DEFAULT_VARIANT = IMDFA
 
-VERSIONS = {INDUCTIVE_ONLY_DFG: imdfa.apply, IMDFA: imdfa.apply, IMDFB: imdfb.apply}
-VERSIONS_DFG = {INDUCTIVE_ONLY_DFG: imdfa.apply_dfg, IMDFA: imdfa.apply_dfg, IMDFB: imdfb.apply_dfg}
-VERSIONS_TREE = {INDUCTIVE_ONLY_DFG: imdfa.apply_tree, IMDFA: imdfa.apply_tree, IMDFB: imdfb.apply_tree}
-VERSIONS_TREE_DFG = {INDUCTIVE_ONLY_DFG: imdfa.apply_tree_dfg, IMDFA: imdfa.apply_tree_dfg, IMDFB: imdfb.apply_tree_dfg}
+VERSIONS = {INDUCTIVE_ONLY_DFG: imdfa.apply, IMDFA: imdfa.apply}
+VERSIONS_DFG = {INDUCTIVE_ONLY_DFG: imdfa.apply_dfg, IMDFA: imdfa.apply_dfg}
+VERSIONS_TREE = {INDUCTIVE_ONLY_DFG: imdfa.apply_tree, IMDFA: imdfa.apply_tree}
+VERSIONS_TREE_DFG = {INDUCTIVE_ONLY_DFG: imdfa.apply_tree_dfg, IMDFA: imdfa.apply_tree_dfg}
 
 
 def apply(log, parameters=None, variant=DEFAULT_VARIANT):
