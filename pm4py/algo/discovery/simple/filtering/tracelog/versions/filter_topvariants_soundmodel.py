@@ -1,5 +1,5 @@
 from pm4py.algo.discovery.alpha import factory as alpha_miner
-from pm4py.algo.filtering.tracelog.variants import variants_filter
+from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log.log import TraceLog
 from pm4py.objects.petri import check_soundness
 

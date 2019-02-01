@@ -1,4 +1,4 @@
-from pm4py.algo.filtering.tracelog.variants import variants_filter
+from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TRACEID_KEY
 from pm4py.statistics.traces.common import case_duration as case_duration_commons

@@ -1,9 +1,9 @@
 from pm4py.algo.discovery.alpha import factory as alpha_miner
 from pm4py.algo.discovery.dfg import factory as dfg_factory
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-from pm4py.algo.filtering.tracelog.auto_filter import auto_filter
-from pm4py.algo.filtering.tracelog.start_activities import start_activities_filter
-from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
+from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.algo.filtering.log.auto_filter import auto_filter
+from pm4py.algo.filtering.log.start_activities import start_activities_filter
+from pm4py.algo.filtering.log.end_activities import end_activities_filter
 from pm4py.algo.discovery.simple.filtering.tracelog.versions import filter_topvariants_soundmodel
 from pm4py.objects.log.util import insert_classifier
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
