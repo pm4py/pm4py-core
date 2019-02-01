@@ -8,7 +8,7 @@ class CSV1DocumentationTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         import os
         from pm4py.objects.log.importer.csv import factory as csv_importer
-        event_log = csv_importer.import_log(os.path.join("input_data", "running-example.csv"))
+        event_log = csv_importer.import_event_stream(os.path.join("input_data", "running-example.csv"))
         event_log_length = len(event_log)
         del event_log_length
         from pm4py.objects.log import transform
@@ -20,10 +20,10 @@ class CSV1DocumentationTest(unittest.TestCase):
         event_log = pandas_df_imp.convert_dataframe_to_event_log(dataframe)
         trace_log = transform.transform_event_log_to_trace_log(event_log, case_glue="case:concept:name")
         from pm4py.objects.log.exporter.csv import factory as csv_exporter
-        csv_exporter.export_log(event_log, "outputFile1.csv")
+        csv_exporter.export(event_log, "outputFile1.csv")
         os.remove("outputFile1.csv")
         from pm4py.objects.log.exporter.csv import factory as csv_exporter
-        csv_exporter.export_log(trace_log, "outputFile2.csv")
+        csv_exporter.export(trace_log, "outputFile2.csv")
         os.remove("outputFile2.csv")
 
 

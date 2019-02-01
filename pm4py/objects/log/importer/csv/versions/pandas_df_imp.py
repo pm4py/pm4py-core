@@ -2,7 +2,7 @@ from pm4py.objects.conversion.log.versions.from_dataframe import convert_datafra
 from pm4py.objects.log.adapters.pandas.csv_import_adapter import import_dataframe_from_path
 
 
-def import_log(path, parameters=None):
+def import_event_stream(path, parameters=None):
     """
     Imports a CSV file from the given path
 
@@ -60,3 +60,6 @@ def import_log(path, parameters=None):
         event_log.insert_event_index_as_event_attribute()
 
     return event_log
+
+def import_log(path, parameters=None):
+    return import_event_stream(path, parameters=parameters)

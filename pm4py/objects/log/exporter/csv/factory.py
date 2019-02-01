@@ -2,7 +2,7 @@ from pm4py.objects.log.exporter.csv.versions import pandas_csv_exp
 
 PANDAS = "pandas"
 VERSIONS_STRING = {PANDAS: pandas_csv_exp.export_log_as_string}
-VERSIONS = {PANDAS: pandas_csv_exp.export_log}
+VERSIONS = {PANDAS: pandas_csv_exp.export}
 
 
 def export_log_as_string(log, variant="pandas", parameters=None):
@@ -26,7 +26,7 @@ def export_log_as_string(log, variant="pandas", parameters=None):
     return VERSIONS_STRING[variant](log, parameters=parameters)
 
 
-def export_log(log, output_file_path, variant="pandas", parameters=None):
+def export(log, output_file_path, variant="pandas", parameters=None):
     """
     Factory method to export a CSV from an event log
 
@@ -59,4 +59,8 @@ def apply(log, output_file_path, variant="pandas", parameters=None):
     parameters
         Parameters of the algorithm
     """
-    export_log(log, output_file_path, variant=variant, parameters=parameters)
+    export(log, output_file_path, variant=variant, parameters=parameters)
+
+
+def export_log(log, output_file_path, variant="pandas", parameters=None):
+    export(log, output_file_path, variant=variant, parameters=parameters)
