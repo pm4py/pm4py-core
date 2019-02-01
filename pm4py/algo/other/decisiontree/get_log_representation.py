@@ -1,5 +1,5 @@
 import numpy as np
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
+from pm4py.algo.filtering.log.attributes import attributes_filter
 
 
 def get_string_trace_attribute_rep(trace, trace_attribute):
@@ -9,7 +9,7 @@ def get_string_trace_attribute_rep(trace, trace_attribute):
     Parameters
     ------------
     trace
-        Trace of the trace log
+        Trace of the log
     trace_attribute
         Attribute of the trace to consider
 
@@ -71,7 +71,7 @@ def get_values_event_attribute_for_trace(trace, event_attribute):
     Parameters
     -------------
     trace
-        Trace of the trace log
+        Trace of the log
     event_attribute
         Event attribute to consider
 
@@ -96,7 +96,7 @@ def get_all_string_event_attribute_values(log, event_attribute):
     Parameters
     ------------
     log
-        Trace of the trace log
+        Trace of the log
     event_attribute
         Event attribute to consider
 
@@ -139,7 +139,7 @@ def get_values_event_attribute_succession_for_trace(trace, event_attribute):
     Parameters
     -------------
     trace
-        Trace of the trace log
+        Trace of the log
     event_attribute
         Event attribute to consider
 
@@ -166,7 +166,7 @@ def get_all_string_event_succession_attribute_values(log, event_attribute):
     Parameters
     ------------
     log
-        Trace of the trace log
+        Trace of the log
     event_attribute
         Event attribute to consider
 
@@ -205,7 +205,7 @@ def get_numeric_trace_attribute_value(trace, trace_attribute):
     Parameters
     ------------
     trace
-        Trace of the trace log
+        Trace of the log
 
     Returns
     ------------
@@ -260,7 +260,7 @@ def get_numeric_event_attribute_value_trace(trace, event_attribute):
     Parameters
     -------------
     trace
-        Trace of the trace log
+        Trace of the log
 
     Returns
     -------------

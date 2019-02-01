@@ -3,7 +3,7 @@ from copy import copy
 from pm4py.algo.other.decisiontree import get_log_representation
 from sklearn.decomposition import PCA
 from sklearn.cluster import DBSCAN
-from pm4py.objects.log.log import TraceLog, Trace
+from pm4py.objects.log.log import EventLog, Trace
 
 
 def apply(log, parameters=None):
@@ -59,7 +59,7 @@ def apply(log, parameters=None):
     for i in range(len(log)):
         if not labels[i] in already_seen:
             already_seen[labels[i]] = len(list(already_seen.keys()))
-            log_list.append(TraceLog())
+            log_list.append(EventLog())
         trace = Trace(log[i])
         log_list[already_seen[labels[i]]].append(trace)
 

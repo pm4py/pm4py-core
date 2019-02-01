@@ -6,7 +6,7 @@ import numpy as np
 from pm4py.algo.other.decisiontree import get_log_representation
 from pm4py.algo.other.decisiontree import log_transforming
 from pm4py.algo.other.decisiontree import mine_decision_tree
-from pm4py.objects.log.log import TraceLog
+from pm4py.objects.log.log import EventLog
 
 DEFAULT_MAX_REC_DEPTH_DEC_MINING = 2
 
@@ -72,7 +72,7 @@ def perform_decision_mining_given_activities(log, activities, parameters=None):
     for i in range(len(list_logs)):
         target = target + [i] * len(list_logs[i])
 
-    transf_log = TraceLog(list(itertools.chain.from_iterable(list_logs)))
+    transf_log = EventLog(list(itertools.chain.from_iterable(list_logs)))
 
     data, feature_names = get_log_representation.get_default_representation(transf_log)
 

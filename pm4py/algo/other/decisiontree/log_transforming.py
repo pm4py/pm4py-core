@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-from pm4py.objects.log.log import TraceLog, Trace
+from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.objects.log.log import EventLog, Trace
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
 
@@ -73,7 +73,7 @@ def get_log_traces_until_activity(log, activity, parameters=None):
     Returns
     -------------
     new_log
-        New trace log
+        New log
     """
     if parameters is None:
         parameters = {}
@@ -83,7 +83,7 @@ def get_log_traces_until_activity(log, activity, parameters=None):
     timestamp_key = parameters[
         constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
 
-    new_log = TraceLog()
+    new_log = EventLog()
     traces_interlapsed_time_to_act = []
 
     i = 0
