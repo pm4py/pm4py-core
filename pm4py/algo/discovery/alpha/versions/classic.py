@@ -1,6 +1,6 @@
 """
 This module implements the \"classic\" alpha miner [1]_.
-It converts the input event log, which should be a trace log, to the (well-known) directly follows abstraction.
+It converts the input event log, which should be a log, to the (well-known) directly follows abstraction.
 For example, when we have a trace of the form (control-flow perspective) <...a,b,...>, we observe the relation a>b, i.e.
 activity a precedes activity b.
 From the directly follows relations, the alpha relations parallelism (||), conflict (x) and causality (->) are deduced.
@@ -27,14 +27,14 @@ from pm4py.objects.petri.petrinet import Marking
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def apply(trace_log, parameters=None):
+def apply(log, parameters=None):
     """
     This method calls the \"classic\" alpha miner [1]_.
 
     Parameters
     ----------
-    trace_log: :class:`pm4py.log.log.TraceLog`
-        Event log to use in the alpha miner, note that it should be a TraceLog!
+    log: :class:`pm4py.log.log.EventLog`
+        Event log to use in the alpha miner
     parameters:
         Parameters of the algorithm, including:
             activity_key : :class:`str`, optional
@@ -60,10 +60,10 @@ def apply(trace_log, parameters=None):
         parameters = {}
     if pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
-    dfg = {k: v for k, v in dfg_inst.apply(trace_log, parameters=parameters).items() if v > 0}
-    start_activities = endpoints.derive_start_activities_from_tracelog(trace_log, parameters[
+    dfg = {k: v for k, v in dfg_inst.apply(log, parameters=parameters).items() if v > 0}
+    start_activities = endpoints.derive_start_activities_from_log(log, parameters[
         pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
-    end_activities = endpoints.derive_end_activities_from_tracelog(trace_log, parameters[
+    end_activities = endpoints.derive_end_activities_from_log(log, parameters[
         pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
     return apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=parameters)
 

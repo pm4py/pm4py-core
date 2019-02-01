@@ -82,9 +82,12 @@
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.compression">pm4py.objects.log.util.compression module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.general">pm4py.objects.log.util.general module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.index_attribute">pm4py.objects.log.util.index_attribute module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.insert_classifier">pm4py.objects.log.util.insert_classifier module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.log">pm4py.objects.log.util.log module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.sampling">pm4py.objects.log.util.sampling module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.sorting">pm4py.objects.log.util.sorting module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.string_to_file">pm4py.objects.log.util.string_to_file module</a></li>
-<li><a class="reference internal" href="#module-pm4py.objects.log.util.trace_log">pm4py.objects.log.util.trace_log module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.xes">pm4py.objects.log.util.xes module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util">Module contents</a></li>
 </ul>
@@ -200,6 +203,46 @@
 <div class="section" id="module-pm4py.objects.log.util.general">
 <span id="pm4py-objects-log-util-general-module"></span><h2>pm4py.objects.log.util.general module<a class="headerlink" href="#module-pm4py.objects.log.util.general" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.objects.log.util.index_attribute">
+<span id="pm4py-objects-log-util-index-attribute-module"></span><h2>pm4py.objects.log.util.index_attribute module<a class="headerlink" href="#module-pm4py.objects.log.util.index_attribute" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.index_attribute.insert_event_index_as_event_attribute">
+<code class="descclassname">pm4py.objects.log.util.index_attribute.</code><code class="descname">insert_event_index_as_event_attribute</code><span class="sig-paren">(</span><em>stream</em>, <em>event_index_attr_name='&#64;&#64;eventindex'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/index_attribute.html#insert_event_index_as_event_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.index_attribute.insert_event_index_as_event_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert the current event index as event attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>stream</strong> – Stream</li>
+<li><strong>event_index_attr_name</strong> – Attribute name given to the event index</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.index_attribute.insert_trace_index_as_event_attribute">
+<code class="descclassname">pm4py.objects.log.util.index_attribute.</code><code class="descname">insert_trace_index_as_event_attribute</code><span class="sig-paren">(</span><em>log</em>, <em>trace_index_attr_name='&#64;&#64;traceindex'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/index_attribute.html#insert_trace_index_as_event_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.index_attribute.insert_trace_index_as_event_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts the current trace index as event attribute
+(overrides previous values if needed)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>log</strong> – Log</li>
+<li><strong>trace_index_attr_name</strong> – Attribute name given to the trace index</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.objects.log.util.insert_classifier">
 <span id="pm4py-objects-log-util-insert-classifier-module"></span><h2>pm4py.objects.log.util.insert_classifier module<a class="headerlink" href="#module-pm4py.objects.log.util.insert_classifier" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -277,6 +320,368 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-pm4py.objects.log.util.log">
+<span id="pm4py-objects-log-util-log-module"></span><h2>pm4py.objects.log.util.log module<a class="headerlink" href="#module-pm4py.objects.log.util.log" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.log.add_artficial_start_and_end">
+<code class="descclassname">pm4py.objects.log.util.log.</code><code class="descname">add_artficial_start_and_end</code><span class="sig-paren">(</span><em>event_log</em>, <em>start='[start&gt;'</em>, <em>end='[end]'</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/log.html#add_artficial_start_and_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.log.add_artficial_start_and_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.log.derive_and_lift_trace_attributes_from_event_attributes">
+<code class="descclassname">pm4py.objects.log.util.log.</code><code class="descname">derive_and_lift_trace_attributes_from_event_attributes</code><span class="sig-paren">(</span><em>trlog</em>, <em>ignore=None</em>, <em>retain_on_event_level=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/log.html#derive_and_lift_trace_attributes_from_event_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.log.derive_and_lift_trace_attributes_from_event_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.log.get_event_labels">
+<code class="descclassname">pm4py.objects.log.util.log.</code><code class="descname">get_event_labels</code><span class="sig-paren">(</span><em>event_log</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/log.html#get_event_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.log.get_event_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches the labels present in a log, given a key to use within the events.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>param event_log: log to use</em></li>
+<li><em>param key: to use for event identification, can for example  be “concept:name”</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">return: a list of labels</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.log.get_event_labels_counted">
+<code class="descclassname">pm4py.objects.log.util.log.</code><code class="descname">get_event_labels_counted</code><span class="sig-paren">(</span><em>event_log</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/log.html#get_event_labels_counted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.log.get_event_labels_counted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches the labels (and their frequency) present in a log, given a key to use within the events.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>param event_log: log to use</em></li>
+<li><em>param key: to use for event identification, can for example  be “concept:name”</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">return: a list of labels</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.log.get_trace_variants">
+<code class="descclassname">pm4py.objects.log.util.log.</code><code class="descname">get_trace_variants</code><span class="sig-paren">(</span><em>event_log</em>, <em>key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/log.html#get_trace_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.log.get_trace_variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a pair of a list of (variants, dict[index -&gt; trace]) where the index of a variant maps to all traces
+describing that variant, with that key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>param event_log: log</em></li>
+<li><em>param key: key to use to identify the label of an event</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">return:</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.log.project_traces">
+<code class="descclassname">pm4py.objects.log.util.log.</code><code class="descname">project_traces</code><span class="sig-paren">(</span><em>event_log</em>, <em>keys='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/log.html#project_traces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.log.project_traces" title="Permalink to this definition">¶</a></dt>
+<dd><p>projects traces on a (set of) event attribute key(s).
+If the key provided is of type string, each trace is converted into a list of strings.
+If the key provided is a collection, each trace is converted into a list of (smaller) dicts of key value pairs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>event_log</strong> – </li>
+<li><strong>keys</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.util.sampling">
+<span id="pm4py-objects-log-util-sampling-module"></span><h2>pm4py.objects.log.util.sampling module<a class="headerlink" href="#module-pm4py.objects.log.util.sampling" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.sampling.sample">
+<code class="descclassname">pm4py.objects.log.util.sampling.</code><code class="descname">sample</code><span class="sig-paren">(</span><em>log</em>, <em>n=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sampling.html#sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sampling.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly sample a fixed number of traces from the original log</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace/event log</li>
+<li><strong>n</strong> – Number of elements that the sample should have</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">newLog</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.sampling.sample_log">
+<code class="descclassname">pm4py.objects.log.util.sampling.</code><code class="descname">sample_log</code><span class="sig-paren">(</span><em>log</em>, <em>no_traces=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sampling.html#sample_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sampling.sample_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly sample a fixed number of traces from the original log</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Log</li>
+<li><strong>no_traces</strong> – Number of traces that the sample should have</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">newLog</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.sampling.sample_stream">
+<code class="descclassname">pm4py.objects.log.util.sampling.</code><code class="descname">sample_stream</code><span class="sig-paren">(</span><em>event_log</em>, <em>no_events=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sampling.html#sample_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sampling.sample_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly sample a fixed number of events from the original event log</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>event_log</strong> – Event log</li>
+<li><strong>no_events</strong> – Number of events that the sample should have</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">newLog</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.util.sorting">
+<span id="pm4py-objects-log-util-sorting-module"></span><h2>pm4py.objects.log.util.sorting module<a class="headerlink" href="#module-pm4py.objects.log.util.sorting" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.sorting.sort_lambda">
+<code class="descclassname">pm4py.objects.log.util.sorting.</code><code class="descname">sort_lambda</code><span class="sig-paren">(</span><em>log</em>, <em>sort_function</em>, <em>reverse=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sorting.html#sort_lambda"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sorting.sort_lambda" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort a log based on lambda expression</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Log</li>
+<li><strong>sort_function</strong> – Sort function</li>
+<li><strong>reverse</strong> – Boolean (sort by reverse order)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">log</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.sorting.sort_lambda_log">
+<code class="descclassname">pm4py.objects.log.util.sorting.</code><code class="descname">sort_lambda_log</code><span class="sig-paren">(</span><em>log</em>, <em>sort_function</em>, <em>reverse=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sorting.html#sort_lambda_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sorting.sort_lambda_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort a log based on a lambda expression</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Log</li>
+<li><strong>sort_function</strong> – Sort function</li>
+<li><strong>reverse</strong> – Boolean (sort by reverse order)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">new_log</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.sorting.sort_lambda_stream">
+<code class="descclassname">pm4py.objects.log.util.sorting.</code><code class="descname">sort_lambda_stream</code><span class="sig-paren">(</span><em>stream</em>, <em>sort_function</em>, <em>reverse=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sorting.html#sort_lambda_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sorting.sort_lambda_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort a stream based on a lambda expression</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>stream</strong> – Stream</li>
+<li><strong>sort_function</strong> – Sort function</li>
+<li><strong>reverse</strong> – Boolean (sort by reverse order)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted stream</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">stream</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.sorting.sort_timestamp">
+<code class="descclassname">pm4py.objects.log.util.sorting.</code><code class="descname">sort_timestamp</code><span class="sig-paren">(</span><em>log</em>, <em>timestamp_key='time:timestamp'</em>, <em>reverse_sort=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sorting.html#sort_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sorting.sort_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort a log based on timestamp key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace/Event log</li>
+<li><strong>timestamp_key</strong> – Timestamp key</li>
+<li><strong>reverse_sort</strong> – If true, reverses the direction in which the sort is done (ascending)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted Trace/Event log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">log</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.sorting.sort_timestamp_log">
+<code class="descclassname">pm4py.objects.log.util.sorting.</code><code class="descname">sort_timestamp_log</code><span class="sig-paren">(</span><em>log</em>, <em>timestamp_key='time:timestamp'</em>, <em>reverse_sort=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sorting.html#sort_timestamp_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sorting.sort_timestamp_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort a log based on timestamp key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Log</li>
+<li><strong>timestamp_key</strong> – Timestamp key</li>
+<li><strong>reverse_sort</strong> – If true, reverses the direction in which the sort is done (ascending)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">log</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.sorting.sort_timestamp_stream">
+<code class="descclassname">pm4py.objects.log.util.sorting.</code><code class="descname">sort_timestamp_stream</code><span class="sig-paren">(</span><em>event_log</em>, <em>timestamp_key='time:timestamp'</em>, <em>reverse_sort=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sorting.html#sort_timestamp_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sorting.sort_timestamp_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort an event log based on timestamp key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>event_log</strong> – Event log</li>
+<li><strong>timestamp_key</strong> – Timestamp key</li>
+<li><strong>reverse_sort</strong> – If true, reverses the direction in which the sort is done (ascending)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted event log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">event_log</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.sorting.sort_timestamp_trace">
+<code class="descclassname">pm4py.objects.log.util.sorting.</code><code class="descname">sort_timestamp_trace</code><span class="sig-paren">(</span><em>trace</em>, <em>timestamp_key='time:timestamp'</em>, <em>reverse_sort=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sorting.html#sort_timestamp_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sorting.sort_timestamp_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort a trace based on timestamp key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>trace</strong> – Trace</li>
+<li><strong>timestamp_key</strong> – Timestamp key</li>
+<li><strong>reverse_sort</strong> – If true, reverses the direction in which the sort is done (ascending)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted trace</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">trace</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.objects.log.util.string_to_file">
 <span id="pm4py-objects-log-util-string-to-file-module"></span><h2>pm4py.objects.log.util.string_to_file module<a class="headerlink" href="#module-pm4py.objects.log.util.string_to_file" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -297,115 +702,6 @@
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">path</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</div>
-<div class="section" id="module-pm4py.objects.log.util.trace_log">
-<span id="pm4py-objects-log-util-trace-log-module"></span><h2>pm4py.objects.log.util.trace_log module<a class="headerlink" href="#module-pm4py.objects.log.util.trace_log" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="pm4py.objects.log.util.trace_log.add_artficial_start_and_end">
-<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">add_artficial_start_and_end</code><span class="sig-paren">(</span><em>trace_log</em>, <em>start='[start&gt;'</em>, <em>end='[end]'</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#add_artficial_start_and_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.add_artficial_start_and_end" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="pm4py.objects.log.util.trace_log.derive_and_lift_trace_attributes_from_event_attributes">
-<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">derive_and_lift_trace_attributes_from_event_attributes</code><span class="sig-paren">(</span><em>trlog</em>, <em>ignore=None</em>, <em>retain_on_event_level=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#derive_and_lift_trace_attributes_from_event_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.derive_and_lift_trace_attributes_from_event_attributes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="pm4py.objects.log.util.trace_log.get_event_labels">
-<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">get_event_labels</code><span class="sig-paren">(</span><em>trlog</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#get_event_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.get_event_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetches the labels present in a trace log, given a key to use within the events.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>param trlog: trace log to use</em></li>
-<li><em>param key: to use for event identification, can for example  be “concept:name”</em></li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">return: a list of labels</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.objects.log.util.trace_log.get_event_labels_counted">
-<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">get_event_labels_counted</code><span class="sig-paren">(</span><em>trlog</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#get_event_labels_counted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.get_event_labels_counted" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetches the labels (and their frequency) present in a trace log, given a key to use within the events.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>param trlog: trace log to use</em></li>
-<li><em>param key: to use for event identification, can for example  be “concept:name”</em></li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">return: a list of labels</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.objects.log.util.trace_log.get_trace_variants">
-<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">get_trace_variants</code><span class="sig-paren">(</span><em>trlog</em>, <em>key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#get_trace_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.get_trace_variants" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a pair of a list of (variants, dict[index -&gt; trace]) where the index of a variant maps to all traces
-describing that variant, with that key.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>param trlog: trace log</em></li>
-<li><em>param key: key to use to identify the label of an event</em></li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">return:</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.objects.log.util.trace_log.project_traces">
-<code class="descclassname">pm4py.objects.log.util.trace_log.</code><code class="descname">project_traces</code><span class="sig-paren">(</span><em>trace_log</em>, <em>keys='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/trace_log.html#project_traces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.trace_log.project_traces" title="Permalink to this definition">¶</a></dt>
-<dd><p>projects traces on a (set of) event attribute key(s).
-If the key provided is of type string, each trace is converted into a list of strings.
-If the key provided is a collection, each trace is converted into a list of (smaller) dicts of key value pairs</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace_log</strong> – </li>
-<li><strong>keys</strong> – </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
 </td>
 </tr>
 </tbody>
@@ -457,7 +753,6 @@ If the key provided is a collection, each trace is converted into a list of (sma
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

@@ -8,8 +8,6 @@ if __name__ == "__main__":
     from examples import big_log_imdf_decor
     from examples import alignment_test
     from examples import dec_treplay_imdf
-    from examples import sna_example_df
-    from examples import sna_example_log
     from examples import imdf_example
     from examples import test_evaluation
     from examples import token_replay_alpha
@@ -30,10 +28,6 @@ if __name__ == "__main__":
     big_log_imdf_decor.execute_script(variant="frequency")
     print("\n\nbig_log_imdf_decor performance")
     big_log_imdf_decor.execute_script(variant="performance")
-    print("\n\nsna_example_df")
-    sna_example_df.execute_script()
-    print("\n\nsna_variant_log")
-    sna_example_log.execute_script()
     print("\n\nalignment_test")
     alignment_test.execute_script()
     print("\n\ndec_treplay_imdf")

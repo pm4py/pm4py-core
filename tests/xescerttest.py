@@ -27,7 +27,7 @@ def execute_script():
         print("\n\n")
         print("log loaded")
         print("Number of traces - ", len(log))
-        event_log = transform.transform_trace_log_to_event_log(log)
+        event_log = transform.transform_event_log_to_event_stream(log)
         print("Number of events - ", len(event_log))
         print("Classifiers ", log.classifiers)
         exp_log_name = "xescert_exportlogs" + "\\" + "exp_" + logName
@@ -63,7 +63,7 @@ def execute_script():
         log = xes_importer.import_log(exp_log_name)
         print("log loaded", exp_log_name)
         print("Number of traces - ", len(log))
-        event_log = transform.transform_trace_log_to_event_log(log)
+        event_log = transform.transform_event_log_to_event_stream(log)
         print("Number of events - ", len(event_log))
         print("Classifiers ", log.classifiers)
 

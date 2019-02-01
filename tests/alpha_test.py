@@ -23,15 +23,15 @@ class AlphaMinerTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
 
         if ".xes" in log_name:
-            trace_log = xes_importer.import_log(log_name)
+            log = xes_importer.import_log(log_name)
         else:
-            event_log = csv_importer.import_log(log_name)
-            trace_log = log_transform.transform_event_log_to_trace_log(event_log)
-        net, marking, fmarking = alpha_factory.apply(trace_log)
+            event_log = csv_importer.import_event_stream(log_name)
+            log = log_transform.transform_event_stream_to_event_log(event_log)
+        net, marking, fmarking = alpha_factory.apply(log)
         soundness = check_soundness.check_petri_wfnet_and_soundness(net)
         del soundness
 
-        return trace_log, net, marking, fmarking
+        return log, net, marking, fmarking
 
     def test_applyAlphaMinerToXES(self):
         # to avoid static method warnings in tests,

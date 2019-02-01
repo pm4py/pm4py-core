@@ -1,5 +1,5 @@
 from pm4py.algo.discovery.dfg import factory as dfg_factory
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
+from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.log.util import xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.visualization.petrinet.common import visualize
@@ -51,7 +51,7 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
     dfg = dfg_factory.apply(log, variant=variant, parameters=parameters)
     # we find shortest paths
     spaths = get_shortest_paths(net)
-    # we find the number of activities occurrences in the trace log
+    # we find the number of activities occurrences in the log
     activities_count = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
     aggregated_statistics = get_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
                                                                       activities_count,
