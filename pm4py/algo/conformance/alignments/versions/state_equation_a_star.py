@@ -83,6 +83,11 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
     -------
     dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
     """
+    if parameters is None:
+        parameters = {}
+
+    ret_tuple_as_trans_desc = parameters[
+        "ret_tuple_as_trans_desc"] if "ret_tuple_as_trans_desc" in parameters else False
     activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
         parameters[
             pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
@@ -111,10 +116,10 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
             trace_net_costs, parameters[PARAM_MODEL_COST_FUNCTION], revised_sync)
 
     return apply_sync_prod(sync_prod, sync_initial_marking, sync_final_marking, cost_function,
-                           alignments.utils.SKIP)
+                           alignments.utils.SKIP, ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
 
 
-def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, skip):
+def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, skip, ret_tuple_as_trans_desc=False):
     """
     Performs the basic alignment search on top of the synchronous product net, given a cost function and skip-symbol
 
@@ -131,10 +136,11 @@ def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, sk
     dictionary : :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states**
     and **traversed_arcs**
     """
-    return __search(sync_prod, initial_marking, final_marking, cost_function, skip)
+    return __search(sync_prod, initial_marking, final_marking, cost_function, skip,
+                    ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
 
 
-def __search(sync_net, ini, fin, cost_function, skip):
+def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=False):
     incidence_matrix = petri.incidence_matrix.construct(sync_net)
     ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
@@ -158,7 +164,8 @@ def __search(sync_net, ini, fin, cost_function, skip):
         current_marking = curr.m
         closed.add(current_marking)
         if current_marking == fin:
-            return __reconstruct_alignment(curr, visited, queued, traversed)
+            return __reconstruct_alignment(curr, visited, queued, traversed,
+                                           ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
         for t in petri.semantics.enabled_transitions(sync_net, current_marking):
             if curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip):
                 continue
@@ -181,12 +188,18 @@ def __search(sync_net, ini, fin, cost_function, skip):
             heapq.heapify(open_set)
 
 
-def __reconstruct_alignment(state, visited, queued, traversed):
+def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_trans_desc=False):
     parent = state.p
-    alignment = [state.t.label]
-    while parent.p is not None:
-        alignment = [parent.t.label] + alignment
-        parent = parent.p
+    if ret_tuple_as_trans_desc:
+        alignment = [(state.t.name, state.t.label)]
+        while parent.p is not None:
+            alignment = [(parent.t.name, parent.t.label)] + alignment
+            parent = parent.p
+    else:
+        alignment = [state.t.label]
+        while parent.p is not None:
+            alignment = [parent.t.label] + alignment
+            parent = parent.p
     return {'alignment': alignment, 'cost': state.g, 'visited_states': visited, 'queued_states': queued,
             'traversed_arcs': traversed}
 
