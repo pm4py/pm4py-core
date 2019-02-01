@@ -1,6 +1,6 @@
 from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
 from pm4py.objects.log import transform
-from pm4py.objects.log.log import TraceLog, EventLog
+from pm4py.objects.log.log import TraceLog, EventStream
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 
@@ -152,7 +152,7 @@ def apply_events(trace_log, dt1, dt2, parameters=None):
     dt2 = get_dt_from_string(dt2)
 
     event_log = transform.transform_trace_log_to_event_log(trace_log)
-    filtered_event_log = EventLog([x for x in event_log if dt1 < x[timestamp_key].replace(tzinfo=None) < dt2])
+    filtered_event_log = EventStream([x for x in event_log if dt1 < x[timestamp_key].replace(tzinfo=None) < dt2])
     filtered_trace_log = transform.transform_event_log_to_trace_log(filtered_event_log)
 
     return filtered_trace_log

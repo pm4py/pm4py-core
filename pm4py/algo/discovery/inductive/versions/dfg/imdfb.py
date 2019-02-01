@@ -89,7 +89,7 @@ def apply(trace_log, parameters):
         net = petri_cleaning.petri_reduction_treplay(net, parameters={"aligned_traces": aligned_traces})
 
         # remove unconnected components
-        net = remove_unconnected_components(net)
+        #net = remove_unconnected_components(net)
 
     return net, initial_marking, final_marking
 

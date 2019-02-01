@@ -40,4 +40,4 @@ def apply(log, parameters=None, variant=VIEW_BASED):
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
 
-    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_TRACE_LOG), parameters=parameters)
+    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters=parameters)

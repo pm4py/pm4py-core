@@ -1,15 +1,16 @@
+import functools
+import warnings
+
 import pm4py
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log.util import general as log_util
-
-import warnings
-import functools
 
 
 def deprecated(func):
     """This is a decorator which can be used to mark functions
     as deprecated. It will result in a warning being emitted
     when the function is used."""
+
     @functools.wraps(func)
     def new_func(*args, **kwargs):
         warnings.simplefilter('always', DeprecationWarning)  # turn off filter
@@ -18,11 +19,13 @@ def deprecated(func):
                       stacklevel=2)
         warnings.simplefilter('default', DeprecationWarning)  # reset filter
         return func(*args, **kwargs)
+
     return new_func
+
 
 @deprecated
 def transform_any_log_to_trace_log(log, parameters=None):
-    if isinstance(log, pm4py.objects.log.log.EventLog) and (not isinstance(log, pm4py.objects.log.log.TraceLog)):
+    if isinstance(log, pm4py.objects.log.log.EventStream) and (not isinstance(log, pm4py.objects.log.log.TraceLog)):
         parameters = parameters if parameters is not None else dict()
         if log_util.PARAMETER_KEY_CASE_GLUE in parameters:
             glue = parameters[log_util.PARAMETER_KEY_CASE_GLUE]
@@ -35,6 +38,7 @@ def transform_any_log_to_trace_log(log, parameters=None):
         return transform_event_log_to_trace_log(log, case_glue=glue, includes_case_attributes=False,
                                                 case_attribute_prefix=case_pref)
     return log
+
 
 @deprecated
 def transform_event_log_to_trace_log(log, case_glue=log_util.CASE_ATTRIBUTE_GLUE, includes_case_attributes=True,
@@ -79,6 +83,7 @@ def transform_event_log_to_trace_log(log, case_glue=log_util.CASE_ATTRIBUTE_GLUE
                                  omni_present=log.omni_present, extensions=log.extensions)
 
 
+@deprecated
 def transform_trace_log_to_event_log(log, include_case_attributes=True,
                                      case_attribute_prefix=log_util.CASE_ATTRIBUTE_PREFIX):
     """
@@ -105,5 +110,5 @@ def transform_trace_log_to_event_log(log, include_case_attributes=True,
                 for key, value in trace.attributes.items():
                     event[case_attribute_prefix + key] = value
             events.append(event)
-    return log_instance.EventLog(events, attributes=log.attributes, classifiers=log.classifiers,
-                                 omni_present=log.omni_present, extensions=log.extensions)
+    return log_instance.EventStream(events, attributes=log.attributes, classifiers=log.classifiers,
+                                    omni_present=log.omni_present, extensions=log.extensions)

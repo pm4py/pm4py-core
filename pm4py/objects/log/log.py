@@ -24,7 +24,7 @@ class Event(Mapping):
         return str(dict(self))
 
 
-class EventLog(Sequence):
+class EventStream(Sequence):
 
     def __init__(self, *args, **kwargs):
         self._attributes = kwargs['attributes'] if 'attributes' in kwargs else {}
@@ -142,7 +142,7 @@ class Trace(Sequence):
 
 
 
-class TraceLog(EventLog):
+class TraceLog(EventStream):
     def __init__(self, *args, **kwargs):
         super(TraceLog, self).__init__(*args, **kwargs)
 

@@ -385,11 +385,11 @@ def remove_unconnected_components(net):
         places = list(net.places)
         for place in places:
             if len(place.in_arcs) == 0 and len(place.out_arcs) == 0:
-                net.places.remove(place)
+                remove_place(net, place)
                 changed_something = True
         transitions = list(net.transitions)
         for trans in transitions:
-            if len(trans.in_arcs) == 0 and len(trans.out_arcs) == 0:
-                net.transitions.remove(trans)
+            if len(trans.in_arcs) == 0 or len(trans.out_arcs) == 0:
+                remove_transition(net, trans)
                 changed_something = True
     return net
