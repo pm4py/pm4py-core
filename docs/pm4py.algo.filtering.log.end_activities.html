@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pm4py.algo.filtering.log.end_activities package &mdash; pm4py  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pm4py
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pm4py.algo.filtering.log.end_activities package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.filtering.log.end_activities.end_activities_filter">pm4py.algo.filtering.log.end_activities.end_activities_filter module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.filtering.log.end_activities">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pm4py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pm4py.algo.filtering.log.end_activities package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pm4py.algo.filtering.log.end_activities.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pm4py-algo-filtering-log-end-activities-package">
+<h1>pm4py.algo.filtering.log.end_activities package<a class="headerlink" href="#pm4py-algo-filtering-log-end-activities-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.algo.filtering.log.end_activities.end_activities_filter">
+<span id="pm4py-algo-filtering-log-end-activities-end-activities-filter-module"></span><h2>pm4py.algo.filtering.log.end_activities.end_activities_filter module<a class="headerlink" href="#module-pm4py.algo.filtering.log.end_activities.end_activities_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.algo.filtering.log.end_activities.end_activities_filter.apply">
+<code class="descclassname">pm4py.algo.filtering.log.end_activities.end_activities_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>admitted_end_activities</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/end_activities/end_activities_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.end_activities.end_activities_filter.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the log on the specified end activities</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Log</li>
+<li><strong>admitted_end_activities</strong> – Admitted end activities</li>
+<li><strong>parameters</strong> – Algorithm parameters</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_log</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.filtering.log.end_activities.end_activities_filter.apply_auto_filter">
+<code class="descclassname">pm4py.algo.filtering.log.end_activities.end_activities_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>log</em>, <em>variants=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/end_activities/end_activities_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.end_activities.end_activities_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply an end attributes filter detecting automatically a percentage</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>log</strong> – Log</p>
+</li>
+<li><p class="first"><strong>variants</strong> – (If specified) Dictionary with variant as the key and the list of traces as the value</p>
+</li>
+<li><p class="first"><strong>parameters</strong> –</p>
+<dl class="docutils">
+<dt>Parameters of the algorithm, including:</dt>
+<dd><p class="first last">decreasingFactor -&gt; Decreasing factor (stops the algorithm when the next activity by occurrence is below
+this factor in comparison to previous)
+attribute_key -&gt; Attribute key (must be specified if different from concept:name)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_log</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.filtering.log.end_activities.end_activities_filter.filter_log_by_end_activities">
+<code class="descclassname">pm4py.algo.filtering.log.end_activities.end_activities_filter.</code><code class="descname">filter_log_by_end_activities</code><span class="sig-paren">(</span><em>end_activities</em>, <em>variants</em>, <em>vc</em>, <em>threshold</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/end_activities/end_activities_filter.html#filter_log_by_end_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.end_activities.end_activities_filter.filter_log_by_end_activities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keep only variants of the log with an end activity which number of occurrences is above the threshold</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>end_activities</strong> – Dictionary of end attributes associated with their count</li>
+<li><strong>variants</strong> – (If specified) Dictionary with variant as the key and the list of traces as the value</li>
+<li><strong>vc</strong> – List of variant names along with their count</li>
+<li><strong>threshold</strong> – Cutting threshold (remove variants having end attributes which number of occurrences is below the threshold</li>
+<li><strong>activity_key</strong> – (If specified) Specify the activity key in the log (default concept:name)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_log</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.filtering.log.end_activities.end_activities_filter.get_end_activities">
+<code class="descclassname">pm4py.algo.filtering.log.end_activities.end_activities_filter.</code><code class="descname">get_end_activities</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/end_activities/end_activities_filter.html#get_end_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.end_activities.end_activities_filter.get_end_activities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the end attributes of the log along with their count</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>log</strong> – Log</p>
+</li>
+<li><p class="first"><strong>parameters</strong> –</p>
+<dl class="docutils">
+<dt>Parameters of the algorithm, including:</dt>
+<dd><p class="first last">attribute_key -&gt; Attribute key (must be specified if different from concept:name)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary of end attributes associated with their count</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">end_activities</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.algo.filtering.log.end_activities">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.algo.filtering.log.end_activities" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

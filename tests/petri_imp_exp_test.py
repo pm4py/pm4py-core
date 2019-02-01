@@ -43,8 +43,8 @@ class PetriImportExportTest(unittest.TestCase):
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
         soundness = check_soundness.check_petri_wfnet_and_soundness(imported_petri1)
         del soundness
-        trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        aligned_traces = token_replay.apply_log(trace_log, imported_petri1, marking1, fmarking1)
+        log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        aligned_traces = token_replay.apply_log(log, imported_petri1, marking1, fmarking1)
         del aligned_traces
 
     def test_importingPetriLogAlignment(self):
@@ -55,12 +55,12 @@ class PetriImportExportTest(unittest.TestCase):
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
         soundness = check_soundness.check_petri_wfnet_and_soundness(imported_petri1)
         del soundness
-        trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         final_marking = petri.petrinet.Marking()
         for p in imported_petri1.places:
             if not p.out_arcs:
                 final_marking[p] = 1
-        for trace in trace_log:
+        for trace in log:
             cf_result = state_equation_a_star.apply(trace, imported_petri1, marking1, final_marking)['alignment']
             is_fit = True
             for couple in cf_result:

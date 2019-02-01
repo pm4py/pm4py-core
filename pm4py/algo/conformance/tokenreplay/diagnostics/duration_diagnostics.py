@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
+from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
 
