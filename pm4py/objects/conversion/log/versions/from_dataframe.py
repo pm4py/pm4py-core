@@ -20,10 +20,10 @@ def apply(df, parameters=None):
     if parameters is None:
         parameters = {}
 
-    return convert_dataframe_to_event_log(df)
+    return convert_dataframe_to_event_stream(df)
 
 
-def convert_dataframe_to_event_log(df):
+def convert_dataframe_to_event_stream(df):
     """
     Converts a dataframe to an event log
 
