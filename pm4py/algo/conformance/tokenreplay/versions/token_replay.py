@@ -2,7 +2,7 @@ from copy import copy
 from threading import Thread
 
 from pm4py import util as pmutil
-from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
+from pm4py.algo.filtering.log.variants import variants_filter as variants_module
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.petri import semantics
 from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden

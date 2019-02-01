@@ -11,7 +11,7 @@ if __name__ == "__main__":
     from pm4py.objects.log.importer.xes import factory as xes_factory
     from pm4py.objects.petri.exporter import pnml as pnml_exporter
     from pm4py.visualization.petrinet import factory as petri_vis_factory
-    from pm4py.algo.discovery.simple.model.tracelog import factory as simple_model_factory
+    from pm4py.algo.discovery.simple.model.log import factory as simple_model_factory
 
     logFolder = os.path.join("..", "compressed_input_data")
     pnmlFolder = "simple_pnml"

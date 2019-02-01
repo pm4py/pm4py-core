@@ -22,15 +22,15 @@ class InductiveMinerDFTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         if ".xes" in log_name:
-            trace_log = xes_importer.import_log(log_name)
+            log = xes_importer.import_log(log_name)
         else:
-            event_log = csv_importer.import_log(log_name)
-            trace_log = log_transform.transform_event_log_to_trace_log(event_log)
-        net, marking, final_marking = inductive_miner.apply(trace_log)
+            event_log = csv_importer.import_event_stream(log_name)
+            log = log_transform.transform_event_stream_to_event_log(event_log)
+        net, marking, final_marking = inductive_miner.apply(log)
         soundness = check_soundness.check_petri_wfnet_and_soundness(net)
         del soundness
 
-        return trace_log, net, marking, final_marking
+        return log, net, marking, final_marking
 
     def test_applyImdfToXES(self):
         # to avoid static method warnings in tests,

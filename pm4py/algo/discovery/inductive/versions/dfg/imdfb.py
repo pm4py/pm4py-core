@@ -9,9 +9,9 @@ from pm4py.algo.discovery.inductive.util import petri_cleaning, shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb import SubtreeB
 from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
-from pm4py.algo.filtering.tracelog.start_activities import start_activities_filter
+from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.algo.filtering.log.end_activities import end_activities_filter
+from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.petri.utils import remove_unconnected_components
@@ -19,14 +19,14 @@ from pm4py.objects.petri.utils import remove_unconnected_components
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
 
 
-def apply(trace_log, parameters):
+def apply(log, parameters):
     """
     Apply the IMDF algorithm to a log obtaining a Petri net along with an initial and final marking
 
     Parameters
     -----------
-    trace_log
-        Trace log
+    log
+        Log
     parameters
         Parameters of the algorithm, including:
             pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
@@ -53,22 +53,22 @@ def apply(trace_log, parameters):
     enable_reduction = parameters["enable_reduction"] if "enable_reduction" in parameters else True
 
     # get the DFG
-    dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={
+    dfg = [(k, v) for k, v in dfg_inst.apply(log, parameters={
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
     # get the activities in the log
-    activities = attributes_filter.get_attribute_values(trace_log, activity_key)
+    activities = attributes_filter.get_attribute_values(log, activity_key)
 
     # gets the start activities from the log
-    start_activities = list(start_activities_filter.get_start_activities(trace_log, parameters=parameters).keys())
+    start_activities = list(start_activities_filter.get_start_activities(log, parameters=parameters).keys())
     # gets the end activities from the log
-    end_activities = list(end_activities_filter.get_end_activities(trace_log, parameters=parameters).keys())
+    end_activities = list(end_activities_filter.get_end_activities(log, parameters=parameters).keys())
 
     # check if the log contains empty traces
     contains_empty_traces = False
-    traces_length = [len(trace) for trace in trace_log]
+    traces_length = [len(trace) for trace in log]
     if traces_length:
-        contains_empty_traces = min([len(trace) for trace in trace_log]) == 0
+        contains_empty_traces = min([len(trace) for trace in log]) == 0
 
     net, initial_marking, final_marking = apply_dfg(dfg, parameters=parameters, activities=activities,
                                                     contains_empty_traces=contains_empty_traces,
@@ -82,7 +82,7 @@ def apply(trace_log, parameters):
             reduction_parameters["thread_maximum_ex_time"] = shared_constants.RED_MAX_THR_EX_TIME
 
         # do the replay
-        aligned_traces = token_replay.apply(trace_log, net, initial_marking, final_marking,
+        aligned_traces = token_replay.apply(log, net, initial_marking, final_marking,
                                             parameters=reduction_parameters)
 
         # apply petri_reduction technique in order to simplify the Petri net
@@ -94,14 +94,14 @@ def apply(trace_log, parameters):
     return net, initial_marking, final_marking
 
 
-def apply_tree(trace_log, parameters):
+def apply_tree(log, parameters):
     """
     Apply the IMDF algorithm to a log obtaining a process tree
 
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     parameters
         Parameters of the algorithm, including:
             pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
@@ -119,22 +119,22 @@ def apply_tree(trace_log, parameters):
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
     # get the DFG
-    dfg = [(k, v) for k, v in dfg_inst.apply(trace_log, parameters={
+    dfg = [(k, v) for k, v in dfg_inst.apply(log, parameters={
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
     # gets the start activities from the log
-    start_activities = start_activities_filter.get_start_activities(trace_log, parameters=parameters)
+    start_activities = start_activities_filter.get_start_activities(log, parameters=parameters)
     # gets the end activities from the log
-    end_activities = end_activities_filter.get_end_activities(trace_log, parameters=parameters)
+    end_activities = end_activities_filter.get_end_activities(log, parameters=parameters)
 
     # get the activities in the log
-    activities = attributes_filter.get_attribute_values(trace_log, activity_key)
+    activities = attributes_filter.get_attribute_values(log, activity_key)
 
     # check if the log contains empty traces
     contains_empty_traces = False
-    traces_length = [len(trace) for trace in trace_log]
+    traces_length = [len(trace) for trace in log]
     if traces_length:
-        contains_empty_traces = min([len(trace) for trace in trace_log]) == 0
+        contains_empty_traces = min([len(trace) for trace in log]) == 0
 
     return apply_tree_dfg(dfg, parameters, activities=activities, contains_empty_traces=contains_empty_traces,
                           start_activities=start_activities, end_activities=end_activities)

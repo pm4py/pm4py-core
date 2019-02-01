@@ -60,12 +60,12 @@ def get_xes_attr_value(attr_value, attr_type_xes):
 
 def export_attributes(log, root):
     """
-    Export XES attributes (at the log level) from a PM4PY trace log
+    Export XES attributes (at the log level) from a PM4PY log
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
-        PM4PY trace log
+    log: :class:`pm4py.log.log.EventLog`
+        PM4PY log
     root:
         Output XML root element
 
@@ -75,12 +75,12 @@ def export_attributes(log, root):
 
 def export_extensions(log, root):
     """
-    Export XES extensions from a PM4PY trace log
+    Export XES extensions from a PM4PY log
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
-        PM4PY trace log
+    log: :class:`pm4py.log.log.EventLog`
+        PM4PY log
     root:
         Output XML root element
 
@@ -96,12 +96,12 @@ def export_extensions(log, root):
 
 def export_globals(log, root):
     """
-    Export XES globals from a PM4PY trace log
+    Export XES globals from a PM4PY log
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
-        PM4PY trace log
+    log: :class:`pm4py.log.log.EventLog`
+        PM4PY log
     root:
         Output XML root element
 
@@ -115,12 +115,12 @@ def export_globals(log, root):
 
 def export_classifiers(log, root):
     """
-    Export XES classifiers from a PM4PY trace log
+    Export XES classifiers from a PM4PY log
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
-        PM4PY trace log
+    log: :class:`pm4py.log.log.EventLog`
+        PM4PY log
     root:
         Output XML root element
 
@@ -143,7 +143,7 @@ def export_attributes_element(log_element, xml_element):
     Parameters
     ----------
     log_element:
-        Element in trace log (event, trace ...)
+        Element in log (event, trace ...)
     xml_element:
         XML element
     """
@@ -199,12 +199,12 @@ def export_traces_events(tr, trace):
 
 def export_traces(log, root):
     """
-    Export XES traces from a PM4PY trace log
+    Export XES traces from a PM4PY log
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
-        PM4PY trace log
+    log: :class:`pm4py.log.log.EventLog`
+        PM4PY log
     root:
         Output XML root element
 
@@ -217,21 +217,21 @@ def export_traces(log, root):
 
 def export_log_tree(log):
     """
-    Get XES log XML tree from a PM4Py trace log
+    Get XES log XML tree from a PM4Py log
 
     Parameters
     -----------
     log
-        PM4Py trace log
+        PM4Py log
 
     Returns
     -----------
     tree
         XML tree
     """
-    # If the log is in log_instance.EventLog, then transform it into log_instance.TraceLog format
+    # If the log is in log_instance.EventStream, then transform it into log_instance.EventLog format
     if type(log) is log_instance.EventStream:
-        log = log_transform.transform_event_log_to_trace_log(log)
+        log = log_transform.transform_event_stream_to_event_log(log)
     root = etree.Element(xes_util.TAG_LOG)
 
     # add attributes at the log level
@@ -252,12 +252,12 @@ def export_log_tree(log):
 
 def export_log_as_string(log, parameters=None):
     """
-    Export a trace log into a string
+    Export a log into a string
 
     Parameters
     -----------
-    log: :class:`pm4py.log.log.TraceLog`
-        PM4PY trace log
+    log: :class:`pm4py.log.log.EventLog`
+        PM4PY log
     parameters
         Parameters of the algorithm
 
@@ -278,12 +278,12 @@ def export_log_as_string(log, parameters=None):
 
 def export_log(log, output_file_path, parameters=None):
     """
-    Export XES log from a PM4PY trace log
+    Export XES log from a PM4PY log
 
     Parameters
     ----------
-    log: :class:`pm4py.log.log.TraceLog`
-        PM4PY trace log
+    log: :class:`pm4py.log.log.EventLog`
+        PM4PY log
     output_file_path:
         Output file path
     parameters

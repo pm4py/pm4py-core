@@ -156,7 +156,7 @@
 <div class="section" id="module-pm4py.algo.discovery.alpha.versions.classic">
 <span id="pm4py-algo-discovery-alpha-versions-classic-module"></span><h2>pm4py.algo.discovery.alpha.versions.classic module<a class="headerlink" href="#module-pm4py.algo.discovery.alpha.versions.classic" title="Permalink to this headline">¶</a></h2>
 <p>This module implements the “classic” alpha miner <a href="#id6"><span class="problematic" id="id1">[1]_</span></a>.
-It converts the input event log, which should be a trace log, to the (well-known) directly follows abstraction.
+It converts the input event log, which should be a log, to the (well-known) directly follows abstraction.
 For example, when we have a trace of the form (control-flow perspective) &lt;…a,b,…&gt;, we observe the relation a&gt;b, i.e.
 activity a precedes activity b.
 From the directly follows relations, the alpha relations parallelism (||), conflict (x) and causality (-&gt;) are deduced.
@@ -175,14 +175,14 @@ IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. <a class="reference external"
 </dl>
 <dl class="function">
 <dt id="pm4py.algo.discovery.alpha.versions.classic.apply">
-<code class="descclassname">pm4py.algo.discovery.alpha.versions.classic.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>trace_log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/classic.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.classic.apply" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.classic.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/classic.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.classic.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method calls the “classic” alpha miner <a href="#id7"><span class="problematic" id="id3">[1]_</span></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>trace_log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.TraceLog</span></code>) – Event log to use in the alpha miner, note that it should be a TraceLog!</p>
+<li><p class="first"><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – Event log to use in the alpha miner</p>
 </li>
 <li><p class="first"><strong>parameters</strong> –</p>
 <dl class="docutils">
@@ -333,7 +333,6 @@ and of the start activities and end activities in the log (possibly inferred fro
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

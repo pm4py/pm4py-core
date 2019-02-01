@@ -4,7 +4,7 @@ from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.algo.filtering.pandas.variants import variants_filter
 from pm4py.objects.log import transform
 from pm4py.objects.log.importer.csv.versions import pandas_df_imp
-from pm4py.objects.log.log import TraceLog
+from pm4py.objects.log.log import EventLog
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.objects.petri import check_soundness
@@ -91,13 +91,13 @@ def apply(df, parameters=None):
             traces_of_this_variant_keys = list(traces_of_this_variant.groups.keys())
             trace_of_this_variant = traces_of_this_variant.get_group(traces_of_this_variant_keys[0])
 
-            this_trace = transform.transform_event_log_to_trace_log(
-                pandas_df_imp.convert_dataframe_to_event_log(trace_of_this_variant), case_glue=caseid_glue)[0]
+            this_trace = transform.transform_event_stream_to_event_log(
+                pandas_df_imp.convert_dataframe_to_event_stream(trace_of_this_variant), case_glue=caseid_glue)[0]
             if not activity_key == DEFAULT_NAME_KEY:
                 for j in range(len(this_trace)):
                     this_trace[j][DEFAULT_NAME_KEY] = this_trace[j][activity_key]
             considered_traces.append(this_trace)
-            filtered_log = TraceLog(considered_traces)
+            filtered_log = EventLog(considered_traces)
 
             try:
                 fitness = replay_fitness_factory.apply(filtered_log, net, initial_marking, final_marking,

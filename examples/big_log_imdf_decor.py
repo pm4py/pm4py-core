@@ -2,7 +2,7 @@ import os
 
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.algo.discovery.inductive import factory as inductive_miner
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
+from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_decorations_from_dfg_spaths_acticount
@@ -26,7 +26,7 @@ def execute_script(variant="frequency"):
         aggregation_measure = "sum"
     # we find the DFG
     dfg = dfg_factory.apply(log, variant=variant)
-    # we find the number of activities occurrences in the trace log
+    # we find the number of activities occurrences in the log
     activities_count = attributes_filter.get_attribute_values(log, "concept:name")
     # we calculate the statistics on the Petri net applying the greedy algorithm
     aggregated_statistics = get_decorations_from_dfg_spaths_acticount(net, dfg, spaths,

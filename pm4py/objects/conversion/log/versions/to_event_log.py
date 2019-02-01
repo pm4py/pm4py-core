@@ -15,7 +15,7 @@ DEEPCOPY = constants.DEEPCOPY
 def apply(log, parameters=None):
     if isinstance(log, pandas.core.frame.DataFrame):
         log = from_dataframe.apply(log)
-    if isinstance(log, pm4py.objects.log.log.EventStream) and (not isinstance(log, pm4py.objects.log.log.TraceLog)):
+    if isinstance(log, pm4py.objects.log.log.EventStream) and (not isinstance(log, pm4py.objects.log.log.EventLog)):
         parameters = parameters if parameters is not None else dict()
         if log_util.PARAMETER_KEY_CASE_GLUE in parameters:
             glue = parameters[log_util.PARAMETER_KEY_CASE_GLUE]
@@ -52,7 +52,7 @@ def transform_event_stream_to_event_log(log, case_glue=log_util.CASE_ATTRIBUTE_G
 
     Returns
         -------
-    log : :class:`pm4py.log.log.TraceLog`
+    log : :class:`pm4py.log.log.EventLog`
         An event log
     """
     if enable_deepcopy:
@@ -77,5 +77,5 @@ def transform_event_stream_to_event_log(log, case_glue=log_util.CASE_ATTRIBUTE_G
                     del event[k]
 
         traces[glue].append(event)
-    return log_instance.TraceLog(traces.values(), attributes=log.attributes, classifiers=log.classifiers,
+    return log_instance.EventLog(traces.values(), attributes=log.attributes, classifiers=log.classifiers,
                                  omni_present=log.omni_present, extensions=log.extensions)
