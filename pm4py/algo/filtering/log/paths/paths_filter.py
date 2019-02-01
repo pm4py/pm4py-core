@@ -1,6 +1,6 @@
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.log.log import TraceLog, Trace
+from pm4py.objects.log.log import EventLog, Trace
 from pm4py.objects.log.util import xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
@@ -31,7 +31,7 @@ def apply(trace_log, paths, parameters=None):
     attribute_key = parameters[
         PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
-    filtered_log = TraceLog()
+    filtered_log = EventLog()
     for trace in trace_log:
         found = False
         for i in range(len(trace) - 1):
@@ -141,7 +141,7 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key
     filtered_log
         Filtered log
     """
-    filtered_log = TraceLog()
+    filtered_log = EventLog()
     fvft = variants[vc[0][0]][0]
     fvp = set()
     for i in range(0, len(fvft) - 1):

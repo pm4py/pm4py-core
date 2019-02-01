@@ -1,7 +1,7 @@
 import random
 from copy import copy
 
-from pm4py.objects.log.log import EventStream, TraceLog
+from pm4py.objects.log.log import EventStream, EventLog
 
 
 def sample_stream(event_log, no_events=100):
@@ -47,7 +47,7 @@ def sample_log(trace_log, no_traces=100):
     newLog
         Filtered log
     """
-    new_log = TraceLog(attributes=trace_log.attributes, extensions=trace_log.extensions, globals=trace_log._omni,
+    new_log = EventLog(attributes=trace_log.attributes, extensions=trace_log.extensions, globals=trace_log._omni,
                        classifiers=trace_log.classifiers)
     set_traces = set()
     for i in range(0, min(no_traces, len(trace_log._list))):
@@ -75,7 +75,7 @@ def sample(log, n=100):
         Filtered log
     """
 
-    if type(log) is TraceLog:
+    if type(log) is EventLog:
         return sample_log(log, no_traces=n)
 
     return sample_stream(log, no_events=n)

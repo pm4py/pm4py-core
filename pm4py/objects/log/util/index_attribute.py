@@ -1,4 +1,4 @@
-from pm4py.objects.log.log import TraceLog
+from pm4py.objects.log.log import EventLog
 
 
 def insert_event_index_as_event_attribute(event_log, event_index_attr_name="@@eventindex"):
@@ -13,7 +13,7 @@ def insert_event_index_as_event_attribute(event_log, event_index_attr_name="@@ev
         Attribute name given to the event index
     """
 
-    if not type(event_log) is TraceLog:
+    if not type(event_log) is EventLog:
         for i in range(0, len(event_log._list)):
             event_log._list[i][event_index_attr_name] = i + 1
 

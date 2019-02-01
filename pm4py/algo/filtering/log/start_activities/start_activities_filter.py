@@ -1,7 +1,7 @@
 from pm4py.algo.filtering.common.filtering_constants import DECREASING_FACTOR
 from pm4py.algo.filtering.common.start_activities import start_activities_common
 from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.log.log import TraceLog
+from pm4py.objects.log.log import EventLog
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util import constants
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -91,7 +91,7 @@ def filter_log_by_start_activities(start_activities, variants, vc, threshold, ac
     filtered_log
         Filtered log
     """
-    filtered_log = TraceLog()
+    filtered_log = EventLog()
     fvsa = variants[vc[0][0]][0][0][activity_key]
     for variant in variants:
         vsa = variants[variant][0][0][activity_key]

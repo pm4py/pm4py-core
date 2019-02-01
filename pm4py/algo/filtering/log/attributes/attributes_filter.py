@@ -2,7 +2,7 @@ from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.attributes import attributes_common
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log import transform
-from pm4py.objects.log.log import TraceLog, Trace
+from pm4py.objects.log.log import EventLog, Trace
 from pm4py.objects.log.util import sampling
 from pm4py.objects.log.util import xes
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
@@ -216,7 +216,7 @@ def apply_events(trace_log, values, parameters=None):
         PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
 
-    filtered_log = TraceLog()
+    filtered_log = EventLog()
     for trace in trace_log:
         new_trace = Trace()
 
@@ -260,7 +260,7 @@ def apply(trace_log, values, parameters=None):
         PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
 
-    filtered_log = TraceLog()
+    filtered_log = EventLog()
     for trace in trace_log:
         new_trace = Trace()
 
@@ -375,7 +375,7 @@ def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, thre
     filtered_log
         Filtered log
     """
-    filtered_log = TraceLog()
+    filtered_log = EventLog()
     fva = [x[attribute_key] for x in variants[vc[0][0]][0] if attribute_key in x]
     for trace in trace_log:
         new_trace = Trace()
@@ -454,7 +454,7 @@ def get_kde_numeric_attribute(log, attribute, parameters=None):
         Y-axis values to represent
     """
 
-    if type(log) is TraceLog:
+    if type(log) is EventLog:
         event_log = transform.transform_trace_log_to_event_log(log)
     else:
         event_log = log
@@ -488,7 +488,7 @@ def get_kde_numeric_attribute_json(log, attribute, parameters=None):
         Y-axis values to represent
     """
 
-    if type(log) is TraceLog:
+    if type(log) is EventLog:
         event_log = transform.transform_trace_log_to_event_log(log)
     else:
         event_log = log
@@ -521,7 +521,7 @@ def get_kde_date_attribute(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None
         Y-axis values to represent
     """
 
-    if type(log) is TraceLog:
+    if type(log) is EventLog:
         event_log = transform.transform_trace_log_to_event_log(log)
     else:
         event_log = log
@@ -555,7 +555,7 @@ def get_kde_date_attribute_json(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters
         Y-axis values to represent
     """
 
-    if type(log) is TraceLog:
+    if type(log) is EventLog:
         event_log = transform.transform_trace_log_to_event_log(log)
     else:
         event_log = log

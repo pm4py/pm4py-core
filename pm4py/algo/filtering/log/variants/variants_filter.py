@@ -1,5 +1,5 @@
 from pm4py.algo.filtering.common import filtering_constants
-from pm4py.objects.log.log import TraceLog
+from pm4py.objects.log.log import EventLog
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
@@ -24,7 +24,7 @@ def apply(trace_log, admitted_variants, parameters=None):
         parameters = {}
     positive = parameters["positive"] if "positive" in parameters else True
     variants = get_variants(trace_log, parameters=parameters)
-    trace_log = TraceLog()
+    trace_log = EventLog()
     for variant in variants:
         if (positive and variant in admitted_variants) or (not positive and variant not in admitted_variants):
             for trace in variants[variant]:
@@ -156,7 +156,7 @@ def filter_log_by_variants_percentage(trace_log, variants, variants_percentage=0
     filtered_log
         Filtered trace log
     """
-    filtered_log = TraceLog()
+    filtered_log = EventLog()
     no_of_traces = len(trace_log)
     variant_count = get_variants_sorted_by_count(variants)
     already_added_sum = 0

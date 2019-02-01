@@ -14,7 +14,7 @@ DEEPCOPY = constants.DEEPCOPY
 def apply(log, parameters=None):
     if isinstance(log, pandas.core.frame.DataFrame):
         log = from_dataframe.apply(log)
-    if isinstance(log, pm4py.objects.log.log.TraceLog):
+    if isinstance(log, pm4py.objects.log.log.EventLog):
         parameters = parameters if parameters is not None else dict()
         if log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX in parameters:
             case_pref = parameters[log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX]
