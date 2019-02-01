@@ -37,5 +37,5 @@ def apply(log, net, initial_marking, final_marking, parameters=None, variant=TOK
         parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
-    return VERSIONS[variant](log_converter.apply(log, parameters, log_converter.TO_TRACE_LOG), net, initial_marking,
+    return VERSIONS[variant](log_converter.apply(log, parameters, log_converter.TO_EVENT_LOG), net, initial_marking,
                              final_marking, parameters=parameters)

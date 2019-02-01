@@ -31,7 +31,7 @@ def apply(obj, petri_net, initial_marking, final_marking, parameters=None, versi
     if isinstance(obj, pm4py.objects.log.log.Trace):
         return apply_trace(obj, petri_net, initial_marking, final_marking, parameters, version)
     else:
-        return apply_log(log_converter.apply(obj, parameters, log_converter.TO_TRACE_LOG), petri_net, initial_marking,
+        return apply_log(log_converter.apply(obj, parameters, log_converter.TO_EVENT_LOG), petri_net, initial_marking,
                          final_marking, parameters, version)
 
 

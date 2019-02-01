@@ -35,7 +35,7 @@ def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_st
         if isinstance(log, pandas.core.frame.DataFrame):
             log = csv_import_adapter.convert_timestamp_columns_in_df(log, timest_columns=[
                 parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY]])
-        log = log_conversion.apply(log, parameters, log_conversion.TO_TRACE_LOG)
+        log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
     return VERSIONS[variant](net, initial_marking, final_marking, log=log, aggregated_statistics=aggregated_statistics,
                              parameters=parameters)
 

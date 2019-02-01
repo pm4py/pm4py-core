@@ -62,4 +62,4 @@ def apply(log, parameters=None, variant=DFG_NATIVE):
             return dfg_frequency
         else:
             return dfg_performance
-    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_TRACE_LOG), parameters=parameters)
+    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters=parameters)
