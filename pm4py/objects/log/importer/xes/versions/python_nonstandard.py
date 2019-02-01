@@ -57,7 +57,7 @@ def import_log(filename, parameters=None):
     if file_size > max_bytes_to_read:
         skip_bytes = file_size - max_bytes_to_read
 
-    log = log_lib.log.TraceLog()
+    log = log_lib.log.EventLog()
     tracecount = 0
     trace = None
     event = None

@@ -1,6 +1,6 @@
 from pm4py.algo.discovery.alpha import factory as alpha_miner
 from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.log.log import TraceLog
+from pm4py.objects.log.log import EventLog
 from pm4py.objects.petri import check_soundness
 
 
@@ -43,7 +43,7 @@ def apply(log, parameters=None):
 
         considered_variants.append(variant)
         considered_traces.append(all_variants_dictio[variant][0])
-        filtered_log = TraceLog(considered_traces)
+        filtered_log = EventLog(considered_traces)
         net = None
         initial_marking = None
         final_marking = None
@@ -65,7 +65,7 @@ def apply(log, parameters=None):
                 del considered_traces[-1]
         i = i + 1
 
-    sound_log = TraceLog()
+    sound_log = EventLog()
     if considered_variants:
         sound_log = variants_filter.apply(log, considered_variants, parameters=parameters)
 

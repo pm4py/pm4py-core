@@ -1,6 +1,6 @@
 from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
 from pm4py.objects.log import transform
-from pm4py.objects.log.log import TraceLog, EventStream
+from pm4py.objects.log.log import EventLog, EventStream
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 
@@ -58,7 +58,7 @@ def filter_traces_contained(log, dt1, dt2, parameters=None):
         PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
-    filtered_log = TraceLog([trace for trace in log if is_contained(trace, dt1, dt2, timestamp_key)])
+    filtered_log = EventLog([trace for trace in log if is_contained(trace, dt1, dt2, timestamp_key)])
     return filtered_log
 
 
@@ -119,7 +119,7 @@ def filter_traces_intersecting(log, dt1, dt2, parameters=None):
         PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
-    filtered_log = TraceLog([trace for trace in log if is_intersecting(trace, dt1, dt2, timestamp_key)])
+    filtered_log = EventLog([trace for trace in log if is_intersecting(trace, dt1, dt2, timestamp_key)])
     return filtered_log
 
 

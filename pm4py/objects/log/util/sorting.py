@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from pm4py.objects.log.log import TraceLog
+from pm4py.objects.log.log import EventLog
 from pm4py.objects.log.util import xes
 
 
@@ -97,7 +97,7 @@ def sort_timestamp(log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=Fa
     log
         Sorted Trace/Event log
     """
-    if type(log) is TraceLog:
+    if type(log) is EventLog:
         return sort_timestamp_log(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
     return sort_timestamp_stream(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
 
@@ -168,6 +168,6 @@ def sort_lambda(log, sort_function, reverse=False):
     log
         Sorted log
     """
-    if type(log) is TraceLog:
+    if type(log) is EventLog:
         return sort_lambda_log(log, sort_function, reverse=reverse)
     return sort_lambda_stream(log, sort_function, reverse=reverse)

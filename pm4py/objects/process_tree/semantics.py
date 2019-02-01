@@ -1,6 +1,6 @@
 import random
 
-from pm4py.objects.log.log import TraceLog, Trace, Event
+from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import xes
 from pm4py.objects.process_tree import pt_operator as pt_opt
 from pm4py.objects.process_tree import state as pt_st
@@ -23,7 +23,7 @@ def generate_log(pt, no_traces=100):
     log
         Trace log object
     """
-    log = TraceLog()
+    log = EventLog()
 
     for i in range(no_traces):
         ex_seq = execute(pt)

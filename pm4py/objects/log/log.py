@@ -141,10 +141,9 @@ class Trace(Sequence):
         return str(self.__repr__())
 
 
-
-class TraceLog(EventStream):
+class EventLog(EventStream):
     def __init__(self, *args, **kwargs):
-        super(TraceLog, self).__init__(*args, **kwargs)
+        super(EventLog, self).__init__(*args, **kwargs)
 
     def __repr__(self):
         if len(self._list) == 0:

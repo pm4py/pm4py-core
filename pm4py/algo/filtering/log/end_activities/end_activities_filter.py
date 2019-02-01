@@ -1,7 +1,7 @@
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.end_activities import end_activities_common
 from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.log.log import TraceLog
+from pm4py.objects.log.log import EventLog
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
@@ -90,7 +90,7 @@ def filter_log_by_end_activities(end_activities, variants, vc, threshold, activi
     filtered_log
         Filtered log
     """
-    filtered_log = TraceLog()
+    filtered_log = EventLog()
     fvea = variants[vc[0][0]][0][-1][activity_key]
     for variant in variants:
         vea = variants[variant][0][-1][activity_key]
