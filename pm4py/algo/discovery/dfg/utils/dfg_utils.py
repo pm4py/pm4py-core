@@ -1,5 +1,7 @@
 from copy import copy
 
+import numpy as np
+
 
 def get_outgoing_edges(dfg):
     """
@@ -688,3 +690,43 @@ def get_all_activities_connected_as_input_to_activity(dfg, activity):
         if el[0][1] == activity:
             all_activities.add(el[0][0])
     return all_activities
+
+
+def get_dfg_np_matrix(dfg):
+    """
+    Gets a Numpy matrix describing the DFG graph, along with a dictionary
+    making correspondence between indexes and activities names
+
+    Parameters
+    -------------
+    dfg
+        Directly-Follows graph
+
+    Returns
+    -------------
+    matrix
+        Matrix describing the DFG
+    index_corresp
+        Dictionary making correspondence between indexes and activities names
+    """
+    activities_in_dfg = get_activities_from_dfg(dfg)
+    matrix = np.zeros((len(activities_in_dfg), len(activities_in_dfg)))
+
+    for el in dfg:
+        if type(el[0]) is str:
+            # manage DFG expressed as dictionary (the key is a tuple)
+            first_el = el[0]
+            second_el = el[1]
+        else:
+            # manage DFG expressed as list of: ((act0, act1), count)
+            first_el = el[0][0]
+            second_el = el[0][1]
+        act_ind_0 = activities_in_dfg.index(first_el)
+        act_ind_1 = activities_in_dfg.index(second_el)
+        matrix[act_ind_0, act_ind_1] = 1
+
+    index_corresp = {}
+    for index, act in enumerate(activities_in_dfg):
+        index_corresp[index] = act
+
+    return matrix, index_corresp
