@@ -1,6 +1,6 @@
 import pm4py
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
-from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
+from pm4py.algo.filtering.log.variants import variants_filter as variants_module
 from pm4py.objects import log as log_lib
 from pm4py.visualization.petrinet.common import visualize
 from pm4py.visualization.petrinet.util import performance_map
@@ -88,7 +88,7 @@ def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_st
     final_marking
         Final marking
     log
-        (Optional) trace log
+        (Optional) log
     aggregated_statistics
         Dictionary containing the frequency statistics
     parameters
@@ -121,7 +121,7 @@ def apply_performance(net, initial_marking, final_marking, log=None, aggregated_
     final_marking
         Final marking
     log
-        (Optional) trace log
+        (Optional) log
     aggregated_statistics
         Dictionary containing the frequency statistics
     parameters

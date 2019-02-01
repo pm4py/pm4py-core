@@ -24,7 +24,7 @@ class Event(Mapping):
         return str(dict(self))
 
 
-class EventLog(Sequence):
+class EventStream(Sequence):
 
     def __init__(self, *args, **kwargs):
         self._attributes = kwargs['attributes'] if 'attributes' in kwargs else {}
@@ -141,10 +141,9 @@ class Trace(Sequence):
         return str(self.__repr__())
 
 
-
-class TraceLog(EventLog):
+class EventLog(EventStream):
     def __init__(self, *args, **kwargs):
-        super(TraceLog, self).__init__(*args, **kwargs)
+        super(EventLog, self).__init__(*args, **kwargs)
 
     def __repr__(self):
         if len(self._list) == 0:

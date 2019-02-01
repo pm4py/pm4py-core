@@ -282,6 +282,54 @@ to 1 (all outgoing edges)</td>
 </dd></dl>
 
 <dl class="function">
+<dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.get_all_activities_connected_as_input_to_activity">
+<code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">get_all_activities_connected_as_input_to_activity</code><span class="sig-paren">(</span><em>dfg</em>, <em>activity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#get_all_activities_connected_as_input_to_activity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.get_all_activities_connected_as_input_to_activity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all the activities that are connected as input to a given activity</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dfg</strong> – Directly-follows graph</li>
+<li><strong>activity</strong> – Activity</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">All activities connected as input to a given activities</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">all_activities</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.get_all_activities_connected_as_output_to_activity">
+<code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">get_all_activities_connected_as_output_to_activity</code><span class="sig-paren">(</span><em>dfg</em>, <em>activity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#get_all_activities_connected_as_output_to_activity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.get_all_activities_connected_as_output_to_activity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all the activities that are connected as output to a given activity</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dfg</strong> – Directly-follows graph</li>
+<li><strong>activity</strong> – Activity</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">All activities connected as output to a given activity</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">all_activities</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.get_connected_components">
 <code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">get_connected_components</code><span class="sig-paren">(</span><em>ingoing</em>, <em>outgoing</em>, <em>activities</em>, <em>force_insert_missing_acti=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#get_connected_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.get_connected_components" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get connected components in the DFG graph</p>
@@ -302,9 +350,49 @@ to 1 (all outgoing edges)</td>
 </dd></dl>
 
 <dl class="function">
+<dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.get_dfg_np_matrix">
+<code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">get_dfg_np_matrix</code><span class="sig-paren">(</span><em>dfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#get_dfg_np_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.get_dfg_np_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a Numpy matrix describing the DFG graph, along with a dictionary
+making correspondence between indexes and activities names</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dfg</strong> – Directly-Follows graph</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><em>matrix</em> – Matrix describing the DFG</li>
+<li><em>index_corresp</em> – Dictionary making correspondence between indexes and activities names</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.get_ingoing_edges">
 <code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">get_ingoing_edges</code><span class="sig-paren">(</span><em>dfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#get_ingoing_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.get_ingoing_edges" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get ingoing edges of the provided DFG graph</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.get_inputs_of_outside_activities_reached_by_end_activities">
+<code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">get_inputs_of_outside_activities_reached_by_end_activities</code><span class="sig-paren">(</span><em>initial_dfg</em>, <em>dfg</em>, <em>activities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#get_inputs_of_outside_activities_reached_by_end_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.get_inputs_of_outside_activities_reached_by_end_activities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get inputs of outside activities going to start activities</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>initial_dfg</strong> – Initial DFG</li>
+<li><strong>dfg</strong> – Directly-follows graph</li>
+<li><strong>activities</strong> – Activities contained in the DFG</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -338,6 +426,25 @@ to 1 (all outgoing edges)</td>
 </dd></dl>
 
 <dl class="function">
+<dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.get_outputs_of_outside_activities_going_to_start_activities">
+<code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">get_outputs_of_outside_activities_going_to_start_activities</code><span class="sig-paren">(</span><em>initial_dfg</em>, <em>dfg</em>, <em>activities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#get_outputs_of_outside_activities_going_to_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.get_outputs_of_outside_activities_going_to_start_activities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get outputs of outside activities going to start activities</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>initial_dfg</strong> – Initial DFG</li>
+<li><strong>dfg</strong> – Directly-follows graph</li>
+<li><strong>activities</strong> – Activities contained in the DFG</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.infer_end_activities">
 <code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">infer_end_activities</code><span class="sig-paren">(</span><em>dfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#infer_end_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.infer_end_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Infer end activities from a Directly-Follows Graph</p>
@@ -356,6 +463,25 @@ to 1 (all outgoing edges)</td>
 </dd></dl>
 
 <dl class="function">
+<dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.infer_end_activities_from_succ_connections_and_current_dfg">
+<code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">infer_end_activities_from_succ_connections_and_current_dfg</code><span class="sig-paren">(</span><em>initial_dfg</em>, <em>dfg</em>, <em>activities</em>, <em>include_self=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#infer_end_activities_from_succ_connections_and_current_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.infer_end_activities_from_succ_connections_and_current_dfg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Infer the end activities from the previous connections</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>initial_dfg</strong> – Initial DFG</li>
+<li><strong>dfg</strong> – Directly-follows graph</li>
+<li><strong>activities</strong> – List of the activities contained in DFG</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.infer_start_activities">
 <code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">infer_start_activities</code><span class="sig-paren">(</span><em>dfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#infer_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.infer_start_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Infer start activities from a Directly-Follows Graph</p>
@@ -368,6 +494,25 @@ to 1 (all outgoing edges)</td>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Start activities in the log</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">start_activities</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.infer_start_activities_from_prev_connections_and_current_dfg">
+<code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">infer_start_activities_from_prev_connections_and_current_dfg</code><span class="sig-paren">(</span><em>initial_dfg</em>, <em>dfg</em>, <em>activities</em>, <em>include_self=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#infer_start_activities_from_prev_connections_and_current_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.infer_start_activities_from_prev_connections_and_current_dfg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Infer the start activities from the previous connections</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>initial_dfg</strong> – Initial DFG</li>
+<li><strong>dfg</strong> – Directly-follows graph</li>
+<li><strong>activities</strong> – List of the activities contained in DFG</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -406,7 +551,7 @@ to 1 (all outgoing edges)</td>
 
 <dl class="function">
 <dt id="pm4py.algo.discovery.dfg.utils.dfg_utils.sum_activities_count">
-<code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">sum_activities_count</code><span class="sig-paren">(</span><em>dfg</em>, <em>activities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#sum_activities_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.sum_activities_count" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.discovery.dfg.utils.dfg_utils.</code><code class="descname">sum_activities_count</code><span class="sig-paren">(</span><em>dfg</em>, <em>activities</em>, <em>enable_halving=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/utils/dfg_utils.html#sum_activities_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.utils.dfg_utils.sum_activities_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the sum of specified attributes count inside a DFG</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -415,6 +560,7 @@ to 1 (all outgoing edges)</td>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dfg</strong> – Directly-Follows graph</li>
 <li><strong>activities</strong> – Activities to sum</li>
+<li><strong>enable_halving</strong> – Halves the sum in specific occurrences</li>
 </ul>
 </td>
 </tr>
@@ -530,7 +676,6 @@ to 1 (all outgoing edges)</td>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

@@ -1,8 +1,8 @@
 import os
 
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
+from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.statistics.traces.tracelog import case_statistics
+from pm4py.statistics.traces.log import case_statistics
 from pm4py.visualization.graphs import factory as graphs_factory
 
 

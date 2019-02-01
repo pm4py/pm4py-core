@@ -3,7 +3,7 @@ import os
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
-from pm4py.algo.simulation.simple.model.pandas import factory as model_factory
+from pm4py.algo.discovery.simple.model.pandas import factory as model_factory
 from pm4py.objects.log.importer.csv.versions import pandas_df_imp
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY

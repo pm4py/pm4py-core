@@ -1,6 +1,6 @@
 import pm4py
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
-from pm4py.algo.filtering.tracelog.variants import variants_filter as variants_module
+from pm4py.algo.filtering.log.variants import variants_filter as variants_module
 from pm4py.objects import log as log_lib
 from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.random_variables.exponential.random_variable import Exponential

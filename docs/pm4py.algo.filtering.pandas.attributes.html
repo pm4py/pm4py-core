@@ -362,6 +362,142 @@ excluding traces (positive=False)</p>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_date_attribute">
+<code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">get_kde_date_attribute</code><span class="sig-paren">(</span><em>df</em>, <em>attribute='time:timestamp'</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#get_kde_date_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_date_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the KDE estimation for the distribution of a date attribute values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
+</li>
+<li><p class="first"><strong>attribute</strong> – Date attribute to analyse</p>
+</li>
+<li><p class="first"><strong>parameters</strong> –</p>
+<dl class="docutils">
+<dt>Possible parameters of the algorithm, including:</dt>
+<dd><p class="first last">graph_points -&gt; number of points to include in the graph</p>
+</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>x</em> – X-axis values to represent</li>
+<li><em>y</em> – Y-axis values to represent</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_date_attribute_json">
+<code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">get_kde_date_attribute_json</code><span class="sig-paren">(</span><em>df</em>, <em>attribute='time:timestamp'</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#get_kde_date_attribute_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_date_attribute_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the KDE estimation for the distribution of a date attribute values
+(expressed as JSON)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
+</li>
+<li><p class="first"><strong>attribute</strong> – Date attribute to analyse</p>
+</li>
+<li><p class="first"><strong>parameters</strong> –</p>
+<dl class="docutils">
+<dt>Possible parameters of the algorithm, including:</dt>
+<dd><p class="first last">graph_points -&gt; number of points to include in the graph</p>
+</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">JSON representing the graph points</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">json</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_numeric_attribute">
+<code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">get_kde_numeric_attribute</code><span class="sig-paren">(</span><em>df</em>, <em>attribute</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#get_kde_numeric_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_numeric_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the KDE estimation for the distribution of a numeric attribute values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
+</li>
+<li><p class="first"><strong>attribute</strong> – Numeric attribute to analyse</p>
+</li>
+<li><p class="first"><strong>parameters</strong> –</p>
+<dl class="docutils">
+<dt>Possible parameters of the algorithm, including:</dt>
+<dd><p class="first last">graph_points -&gt; number of points to include in the graph</p>
+</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>x</em> – X-axis values to represent</li>
+<li><em>y</em> – Y-axis values to represent</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_numeric_attribute_json">
+<code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">get_kde_numeric_attribute_json</code><span class="sig-paren">(</span><em>df</em>, <em>attribute</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#get_kde_numeric_attribute_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_numeric_attribute_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the KDE estimation for the distribution of a numeric attribute values
+(expressed as JSON)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
+</li>
+<li><p class="first"><strong>attribute</strong> – Numeric attribute to analyse</p>
+</li>
+<li><p class="first"><strong>parameters</strong> –</p>
+<dl class="docutils">
+<dt>Possible parameters of the algorithm, including:</dt>
+<dd><p class="first last">graph_points -&gt; number of points to include in the graph</p>
+</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">JSON representing the graph points</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">json</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="module-pm4py.algo.filtering.pandas.attributes">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.algo.filtering.pandas.attributes" title="Permalink to this headline">¶</a></h2>
@@ -404,7 +540,6 @@ excluding traces (positive=False)</p>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   
