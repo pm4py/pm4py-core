@@ -18,5 +18,5 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None, varia
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
 
-    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_TRACE_LOG), petri_net,
+    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), petri_net,
                              initial_marking, final_marking, parameters=parameters)

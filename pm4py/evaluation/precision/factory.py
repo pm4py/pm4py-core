@@ -37,5 +37,5 @@ def apply(log, net, marking, final_marking, parameters=None, variant=ETCONFORMAN
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
 
-    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_TRACE_LOG), net, marking,
+    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), net, marking,
                              final_marking, parameters=parameters)

@@ -230,7 +230,7 @@ def export_log_tree(log):
         XML tree
     """
     # If the log is in log_instance.EventLog, then transform it into log_instance.TraceLog format
-    if type(log) is log_instance.EventLog:
+    if type(log) is log_instance.EventStream:
         log = log_transform.transform_event_log_to_trace_log(log)
     root = etree.Element(xes_util.TAG_LOG)
 
