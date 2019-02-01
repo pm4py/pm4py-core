@@ -2,8 +2,8 @@ from copy import deepcopy
 
 import numpy as np
 
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-from pm4py.objects.log.log import TraceLog, Trace, Event
+from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.objects.log.log import EventLog, Trace, Event
 
 try:
     from Lib.statistics import median
@@ -30,7 +30,7 @@ def form_log_from_dictio_couple(first_cases_repr, second_cases_repr, enable_mult
     log
         Trace log object
     """
-    log = TraceLog()
+    log = EventLog()
 
     if enable_multiplier:
         multiplier_first = int(max(float(len(second_cases_repr)) / float(len(first_cases_repr)), 1))

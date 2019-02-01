@@ -4,9 +4,10 @@ DECISIONTREE = "decisiontree"
 
 VERSIONS = {DECISIONTREE: decisiontree.apply}
 
+
 def apply(log, parameters=None, variant=DECISIONTREE):
     """
-    Factory method to apply a trace log clustering algorithm
+    Factory method to apply a log clustering algorithm
 
     Parameters
     -------------
