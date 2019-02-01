@@ -51,7 +51,7 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
         parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
-    log = log_conversion.apply(log, parameters, log_conversion.TO_TRACE_LOG)
+    log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
 
     activity_key = parameters[
         PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
