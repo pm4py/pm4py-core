@@ -1,10 +1,10 @@
 import os
 
-from pm4py.algo.discovery.simple.model.tracelog import factory as simple_extraction_factory
+from pm4py.algo.discovery.simple.model.log import factory as simple_extraction_factory
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.stochastic_petri import map as stochastic_map
 from pm4py.objects.stochastic_petri.lp_perf_bounds import LpPerfBounds
-from pm4py.statistics.traces.tracelog.case_arrival import get_case_arrival_avg
+from pm4py.statistics.traces.log.case_arrival import get_case_arrival_avg
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 

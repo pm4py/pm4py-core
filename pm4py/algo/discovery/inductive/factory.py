@@ -34,7 +34,7 @@ def apply(log, parameters=None, variant=DEFAULT_VARIANT):
                                           activity_key=parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY],
                                           timestamp_key=parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY])
         return VERSIONS_DFG[variant](dfg, parameters=parameters)
-    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_TRACE_LOG), parameters)
+    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters)
 
 
 def apply_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT):

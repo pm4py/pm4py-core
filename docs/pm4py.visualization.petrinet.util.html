@@ -368,17 +368,23 @@ Aggregation measure could also be specified</p>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.util.vis_trans_shortest_paths.get_shortest_paths">
-<code class="descclassname">pm4py.visualization.petrinet.util.vis_trans_shortest_paths.</code><code class="descname">get_shortest_paths</code><span class="sig-paren">(</span><em>net</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/vis_trans_shortest_paths.html#get_shortest_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.vis_trans_shortest_paths.get_shortest_paths" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.visualization.petrinet.util.vis_trans_shortest_paths.</code><code class="descname">get_shortest_paths</code><span class="sig-paren">(</span><em>net</em>, <em>enable_extension=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/vis_trans_shortest_paths.html#get_shortest_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.vis_trans_shortest_paths.get_shortest_paths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets shortest paths between visible transitions in a Petri net</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>net</strong> – Petri net</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>net</strong> – Petri net</li>
+<li><strong>enable_extension</strong> – Enable decoration of more arcs, in a risky way, when needed</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Shortest paths</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Shortest paths</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">spaths</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">spaths</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -386,23 +392,29 @@ Aggregation measure could also be specified</p>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.util.vis_trans_shortest_paths.get_shortest_paths_from_trans">
-<code class="descclassname">pm4py.visualization.petrinet.util.vis_trans_shortest_paths.</code><code class="descname">get_shortest_paths_from_trans</code><span class="sig-paren">(</span><em>original_trans</em>, <em>spaths</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/vis_trans_shortest_paths.html#get_shortest_paths_from_trans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.vis_trans_shortest_paths.get_shortest_paths_from_trans" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get arcs that are shortest paths between a given
-visible transition and other visible transitions</p>
+<code class="descclassname">pm4py.visualization.petrinet.util.vis_trans_shortest_paths.</code><code class="descname">get_shortest_paths_from_trans</code><span class="sig-paren">(</span><em>original_trans</em>, <em>trans</em>, <em>spaths</em>, <em>visited_arcs</em>, <em>visited_transitions</em>, <em>added_elements</em>, <em>rec_depth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/vis_trans_shortest_paths.html#get_shortest_paths_from_trans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.vis_trans_shortest_paths.get_shortest_paths_from_trans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get shortest paths from a given transition</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>original_trans</strong> – Original transition</li>
-<li><strong>spaths</strong> – Current dictionary of shortest paths</li>
+<li><strong>trans</strong> – Current considered transition</li>
+<li><strong>spaths</strong> – Map of shortest paths</li>
+<li><strong>visited_arcs</strong> – Set of visited arcs</li>
+<li><strong>visited_transitions</strong> – Set of visited transitions</li>
+<li><strong>added_elements</strong> – Elements to add recursively</li>
+<li><strong>rec_depth</strong> – Recursion depth</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Updated shortest paths</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">spaths</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>spaths</em> – Map of shortest paths</li>
+<li><em>visited_arcs</em> – Set of visited arcs</li>
+<li><em>added_elements</em> – Elements to add recursively</li>
+</ul>
+</p>
 </td>
 </tr>
 </tbody>
@@ -451,7 +463,6 @@ visible transition and other visible transitions</p>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

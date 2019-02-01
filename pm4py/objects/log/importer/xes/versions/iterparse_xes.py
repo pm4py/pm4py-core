@@ -30,8 +30,8 @@ def import_log(filename, parameters=None):
 
     Returns
     -------
-    log : :class:`pm4py.log.log.TraceLog`
-        A trace log
+    log : :class:`pm4py.log.log.EventLog`
+        A log
     """
 
     if parameters is None:
@@ -170,7 +170,7 @@ def import_log(filename, parameters=None):
             elif elem.tag.endswith(log_lib.util.xes.TAG_LOG):
                 if log is not None:
                     raise SyntaxError('file contains > 1 <log> tags')
-                log = log_lib.log.TraceLog()
+                log = log_lib.log.EventLog()
                 tree[elem] = log.attributes
                 continue
 

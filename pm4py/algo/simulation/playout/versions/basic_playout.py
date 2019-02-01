@@ -20,7 +20,7 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100):
     max_trace_length
         Maximum number of events per trace (do break)
     """
-    log = log_instance.TraceLog()
+    log = log_instance.EventLog()
     for i in range(no_traces):
         trace = log_instance.Trace()
         trace.attributes["concept:name"] = str(i)
