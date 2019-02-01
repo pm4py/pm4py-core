@@ -3,7 +3,7 @@ import os
 from pm4py.algo.conformance.tokenreplay import factory as token_based_replay
 from pm4py.algo.conformance.tokenreplay.diagnostics import duration_diagnostics
 from pm4py.algo.discovery.inductive import factory as inductive_miner
-from pm4py.algo.filtering.tracelog import auto_filter as auto_filter
+from pm4py.algo.filtering.log import auto_filter as auto_filter
 from pm4py.objects.log.importer.xes import factory as xes_importer
 
 

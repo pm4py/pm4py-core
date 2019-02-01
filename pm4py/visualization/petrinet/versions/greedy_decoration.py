@@ -1,5 +1,5 @@
 from pm4py.algo.discovery.dfg import factory as dfg_factory
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
+from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.log.util import xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.visualization.petrinet.common import visualize

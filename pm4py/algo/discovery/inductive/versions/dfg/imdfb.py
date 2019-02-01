@@ -9,9 +9,9 @@ from pm4py.algo.discovery.inductive.util import petri_cleaning, shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb import SubtreeB
 from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr
-from pm4py.algo.filtering.tracelog.attributes import attributes_filter
-from pm4py.algo.filtering.tracelog.end_activities import end_activities_filter
-from pm4py.algo.filtering.tracelog.start_activities import start_activities_filter
+from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.algo.filtering.log.end_activities import end_activities_filter
+from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.petri.utils import remove_unconnected_components

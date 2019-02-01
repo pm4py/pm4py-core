@@ -1,6 +1,6 @@
 from pm4py.algo.filtering.common.filtering_constants import DECREASING_FACTOR
 from pm4py.algo.filtering.common.start_activities import start_activities_common
-from pm4py.algo.filtering.tracelog.variants import variants_filter
+from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log.log import TraceLog
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util import constants
