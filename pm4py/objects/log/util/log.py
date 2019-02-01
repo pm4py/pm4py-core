@@ -3,13 +3,13 @@ from pm4py.objects.log import log
 
 
 # TODO: we can do some instance checking and then support both trace level and event level logs..
-def get_event_labels(trlog, key):
+def get_event_labels(event_log, key):
     """
-    Fetches the labels present in a trace log, given a key to use within the events.
+    Fetches the labels present in a log, given a key to use within the events.
 
     Parameters
     ----------
-    :param trlog: trace log to use
+    :param event_log: log to use
     :param key: to use for event identification, can for example  be "concept:name"
 
     Returns
@@ -17,20 +17,20 @@ def get_event_labels(trlog, key):
     :return: a list of labels
     """
     labels = []
-    for t in trlog:
+    for t in event_log:
         for e in t:
             if key in e and e[key] not in labels:
                 labels.append(e[key])
     return labels
 
 
-def get_event_labels_counted(trlog, key):
+def get_event_labels_counted(event_log, key):
     """
-    Fetches the labels (and their frequency) present in a trace log, given a key to use within the events.
+    Fetches the labels (and their frequency) present in a log, given a key to use within the events.
 
     Parameters
     ----------
-    :param trlog: trace log to use
+    :param event_log: log to use
     :param key: to use for event identification, can for example  be "concept:name"
 
     Returns
@@ -38,7 +38,7 @@ def get_event_labels_counted(trlog, key):
     :return: a list of labels
     """
     labels = dict()
-    for t in trlog:
+    for t in event_log:
         for e in t:
             if key in e:
                 if e[key] not in labels:
@@ -47,14 +47,14 @@ def get_event_labels_counted(trlog, key):
     return labels
 
 
-def get_trace_variants(trlog, key=xes_util.DEFAULT_NAME_KEY):
+def get_trace_variants(event_log, key=xes_util.DEFAULT_NAME_KEY):
     """
     Returns a pair of a list of (variants, dict[index -> trace]) where the index of a variant maps to all traces
     describing that variant, with that key.
 
     Parameters
     ---------
-    :param trlog: trace log
+    :param event_log: log
     :param key: key to use to identify the label of an event
 
     Returns
@@ -63,7 +63,7 @@ def get_trace_variants(trlog, key=xes_util.DEFAULT_NAME_KEY):
     """
     variants = []
     variant_map = dict()
-    for t in trlog:
+    for t in event_log:
         variant = list(map(lambda e: e[key], t))
         new = True
         for i in range(0, len(variants)):
@@ -77,20 +77,20 @@ def get_trace_variants(trlog, key=xes_util.DEFAULT_NAME_KEY):
     return variants, variant_map
 
 
-def project_traces(trace_log, keys=xes_util.DEFAULT_NAME_KEY):
+def project_traces(event_log, keys=xes_util.DEFAULT_NAME_KEY):
     """
     projects traces on a (set of) event attribute key(s).
     If the key provided is of type string, each trace is converted into a list of strings.
     If the key provided is a collection, each trace is converted into a list of (smaller) dicts of key value pairs
 
-    :param trace_log:
+    :param event_log:
     :param keys:
     :return:
     """
     if isinstance(keys, str):
-        return list(map(lambda t: list(map(lambda e: e[keys], t)), trace_log))
+        return list(map(lambda t: list(map(lambda e: e[keys], t)), event_log))
     else:
-        return list(map(lambda t: list(map(lambda e: {key: e[key] for key in keys}, t)), trace_log))
+        return list(map(lambda t: list(map(lambda e: {key: e[key] for key in keys}, t)), event_log))
 
 
 def derive_and_lift_trace_attributes_from_event_attributes(trlog, ignore=None, retain_on_event_level=False,
@@ -130,9 +130,9 @@ def derive_and_lift_trace_attributes_from_event_attributes(trlog, ignore=None, r
     return trlog
 
 
-def add_artficial_start_and_end(trace_log, start='[start>', end='[end]', activity_key=xes_util.DEFAULT_NAME_KEY):
-    for trace in trace_log:
-        trace.insert(0, log.Event({activity_key: start}))
-        trace.append(log.Event({activity_key: end}))
-    return trace_log
+def add_artficial_start_and_end(event_log, start='[start>', end='[end]', activity_key=xes_util.DEFAULT_NAME_KEY):
+    for trace in event_log:
+        trace.insert(0, event_log.Event({activity_key: start}))
+        trace.append(event_log.Event({activity_key: end}))
+    return event_log
 

@@ -30,8 +30,8 @@ def import_log(filename, parameters=None):
 
     Returns
     -------
-    log : :class:`pm4py.log.log.TraceLog`
-        A trace log
+    log : :class:`pm4py.log.log.EventLog`
+        A log
     """
 
     if parameters is None:

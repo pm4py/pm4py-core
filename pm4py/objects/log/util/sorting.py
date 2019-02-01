@@ -50,14 +50,14 @@ def sort_timestamp_stream(event_log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, re
     return new_event_log
 
 
-def sort_timestamp_log(trace_log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=False):
+def sort_timestamp_log(log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=False):
     """
-    Sort a trace log based on timestamp key
+    Sort a log based on timestamp key
 
     Parameters
     -----------
-    trace_log
-        Trace log
+    log
+        Log
     timestamp_key
         Timestamp key
     reverse_sort
@@ -68,7 +68,7 @@ def sort_timestamp_log(trace_log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, rever
     trace_log
         Sorted Trace log
     """
-    new_trace_log = deepcopy(trace_log)
+    new_trace_log = deepcopy(log)
     new_trace_log._list = [x for x in new_trace_log._list if len(x) > 0]
     for i in range(len(new_trace_log._list)):
         new_trace_log._list[i] = sort_timestamp_trace(new_trace_log._list[i], timestamp_key=timestamp_key,
