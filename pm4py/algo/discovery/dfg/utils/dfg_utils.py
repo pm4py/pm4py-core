@@ -717,13 +717,15 @@ def get_dfg_np_matrix(dfg):
             # manage DFG expressed as dictionary (the key is a tuple)
             first_el = el[0]
             second_el = el[1]
+            n_occ = dfg[el]
         else:
             # manage DFG expressed as list of: ((act0, act1), count)
             first_el = el[0][0]
             second_el = el[0][1]
+            n_occ = el[1]
         act_ind_0 = activities_in_dfg.index(first_el)
         act_ind_1 = activities_in_dfg.index(second_el)
-        matrix[act_ind_0, act_ind_1] = 1
+        matrix[act_ind_0, act_ind_1] = n_occ
 
     index_corresp = {}
     for index, act in enumerate(activities_in_dfg):
