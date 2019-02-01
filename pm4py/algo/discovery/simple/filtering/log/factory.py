@@ -1,4 +1,4 @@
-from pm4py.algo.discovery.simple.filtering.tracelog.versions import filter_topvariants_soundmodel
+from pm4py.algo.discovery.simple.filtering.log.versions import filter_topvariants_soundmodel
 
 TOPVARIANTS_SOUNDMODEL = "topvariants_soundmodel"
 
