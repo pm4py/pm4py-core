@@ -26,7 +26,7 @@ def export_log_as_string(log, parameters=None):
     return df.to_string()
 
 
-def export_log(log, output_file_path, parameters=None):
+def export(log, output_file_path, parameters=None):
     """
     Exports the given log to CSV format
 
@@ -45,3 +45,7 @@ def export_log(log, output_file_path, parameters=None):
 
     df = get_dataframe_from_log(log)
     df.to_csv(output_file_path, index=False)
+
+
+def export_log(log, output_file_path, parameters=None):
+    return export(log, output_file_path, parameters=parameters)

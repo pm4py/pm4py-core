@@ -27,8 +27,8 @@ class XesImportExportTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         trace_log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         event_log = log_transform.transform_trace_log_to_event_log(trace_log)
-        csv_exporter.export_log(event_log, os.path.join(OUTPUT_DATA_DIR, "running-example-exported.csv"))
-        event_log_newimport = csv_importer.import_log(
+        csv_exporter.export(event_log, os.path.join(OUTPUT_DATA_DIR, "running-example-exported.csv"))
+        event_log_newimport = csv_importer.import_event_stream(
             os.path.join(OUTPUT_DATA_DIR, "running-example-exported.csv"))
         trace_log_imported_after_export = log_transform.transform_event_log_to_trace_log(event_log_newimport)
         self.assertEqual(len(trace_log), len(trace_log_imported_after_export))

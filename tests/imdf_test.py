@@ -24,7 +24,7 @@ class InductiveMinerDFTest(unittest.TestCase):
         if ".xes" in log_name:
             trace_log = xes_importer.import_log(log_name)
         else:
-            event_log = csv_importer.import_log(log_name)
+            event_log = csv_importer.import_event_stream(log_name)
             trace_log = log_transform.transform_event_log_to_trace_log(event_log)
         net, marking, final_marking = inductive_miner.apply(trace_log)
         soundness = check_soundness.check_petri_wfnet_and_soundness(net)
