@@ -207,14 +207,14 @@
 <span id="pm4py-objects-log-util-index-attribute-module"></span><h2>pm4py.objects.log.util.index_attribute module<a class="headerlink" href="#module-pm4py.objects.log.util.index_attribute" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.objects.log.util.index_attribute.insert_event_index_as_event_attribute">
-<code class="descclassname">pm4py.objects.log.util.index_attribute.</code><code class="descname">insert_event_index_as_event_attribute</code><span class="sig-paren">(</span><em>event_log</em>, <em>event_index_attr_name='&#64;&#64;eventindex'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/index_attribute.html#insert_event_index_as_event_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.index_attribute.insert_event_index_as_event_attribute" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.objects.log.util.index_attribute.</code><code class="descname">insert_event_index_as_event_attribute</code><span class="sig-paren">(</span><em>stream</em>, <em>event_index_attr_name='&#64;&#64;eventindex'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/index_attribute.html#insert_event_index_as_event_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.index_attribute.insert_event_index_as_event_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Insert the current event index as event attribute</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>event_log</strong> – Event log</li>
+<li><strong>stream</strong> – Stream</li>
 <li><strong>event_index_attr_name</strong> – Attribute name given to the event index</li>
 </ul>
 </td>
@@ -225,7 +225,7 @@
 
 <dl class="function">
 <dt id="pm4py.objects.log.util.index_attribute.insert_trace_index_as_event_attribute">
-<code class="descclassname">pm4py.objects.log.util.index_attribute.</code><code class="descname">insert_trace_index_as_event_attribute</code><span class="sig-paren">(</span><em>trace_log</em>, <em>trace_index_attr_name='&#64;&#64;traceindex'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/index_attribute.html#insert_trace_index_as_event_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.index_attribute.insert_trace_index_as_event_attribute" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.objects.log.util.index_attribute.</code><code class="descname">insert_trace_index_as_event_attribute</code><span class="sig-paren">(</span><em>log</em>, <em>trace_index_attr_name='&#64;&#64;traceindex'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/index_attribute.html#insert_trace_index_as_event_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.index_attribute.insert_trace_index_as_event_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inserts the current trace index as event attribute
 (overrides previous values if needed)</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -233,7 +233,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>trace_log</strong> – Trace log</li>
+<li><strong>log</strong> – Log</li>
 <li><strong>trace_index_attr_name</strong> – Attribute name given to the trace index</li>
 </ul>
 </td>
@@ -457,14 +457,14 @@ If the key provided is a collection, each trace is converted into a list of (sma
 
 <dl class="function">
 <dt id="pm4py.objects.log.util.sampling.sample_log">
-<code class="descclassname">pm4py.objects.log.util.sampling.</code><code class="descname">sample_log</code><span class="sig-paren">(</span><em>trace_log</em>, <em>no_traces=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sampling.html#sample_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sampling.sample_log" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.objects.log.util.sampling.</code><code class="descname">sample_log</code><span class="sig-paren">(</span><em>log</em>, <em>no_traces=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sampling.html#sample_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sampling.sample_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Randomly sample a fixed number of traces from the original log</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace_log</strong> – Trace log</li>
+<li><strong>log</strong> – Log</li>
 <li><strong>no_traces</strong> – Number of traces that the sample should have</li>
 </ul>
 </td>
@@ -533,23 +533,23 @@ If the key provided is a collection, each trace is converted into a list of (sma
 
 <dl class="function">
 <dt id="pm4py.objects.log.util.sorting.sort_lambda_log">
-<code class="descclassname">pm4py.objects.log.util.sorting.</code><code class="descname">sort_lambda_log</code><span class="sig-paren">(</span><em>trace_log</em>, <em>sort_function</em>, <em>reverse=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sorting.html#sort_lambda_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sorting.sort_lambda_log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sort a trace log based on a lambda expression</p>
+<code class="descclassname">pm4py.objects.log.util.sorting.</code><code class="descname">sort_lambda_log</code><span class="sig-paren">(</span><em>log</em>, <em>sort_function</em>, <em>reverse=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sorting.html#sort_lambda_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sorting.sort_lambda_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort a log based on a lambda expression</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace_log</strong> – Trace log</li>
+<li><strong>log</strong> – Log</li>
 <li><strong>sort_function</strong> – Sort function</li>
 <li><strong>reverse</strong> – Boolean (sort by reverse order)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted Trace log</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted log</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">trace_log</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">new_log</p>
 </td>
 </tr>
 </tbody>
@@ -558,23 +558,23 @@ If the key provided is a collection, each trace is converted into a list of (sma
 
 <dl class="function">
 <dt id="pm4py.objects.log.util.sorting.sort_lambda_stream">
-<code class="descclassname">pm4py.objects.log.util.sorting.</code><code class="descname">sort_lambda_stream</code><span class="sig-paren">(</span><em>event_log</em>, <em>sort_function</em>, <em>reverse=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sorting.html#sort_lambda_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sorting.sort_lambda_stream" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sort an event log based on a lambda expression</p>
+<code class="descclassname">pm4py.objects.log.util.sorting.</code><code class="descname">sort_lambda_stream</code><span class="sig-paren">(</span><em>stream</em>, <em>sort_function</em>, <em>reverse=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/sorting.html#sort_lambda_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.sorting.sort_lambda_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort a stream based on a lambda expression</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>event_log</strong> – Event log</li>
+<li><strong>stream</strong> – Stream</li>
 <li><strong>sort_function</strong> – Sort function</li>
 <li><strong>reverse</strong> – Boolean (sort by reverse order)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted Event log</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted stream</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">event_log</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">stream</p>
 </td>
 </tr>
 </tbody>
@@ -621,10 +621,10 @@ If the key provided is a collection, each trace is converted into a list of (sma
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted Trace log</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sorted log</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">trace_log</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">log</p>
 </td>
 </tr>
 </tbody>

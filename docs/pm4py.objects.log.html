@@ -364,13 +364,34 @@ when the function is used.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pm4py.objects.log.transform.transform_any_log_to_trace_log">
-<code class="descclassname">pm4py.objects.log.transform.</code><code class="descname">transform_any_log_to_trace_log</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/transform.html#transform_any_log_to_trace_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.transform.transform_any_log_to_trace_log" title="Permalink to this definition">¶</a></dt>
+<dt id="pm4py.objects.log.transform.transform_any_to_event_log">
+<code class="descclassname">pm4py.objects.log.transform.</code><code class="descname">transform_any_to_event_log</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/transform.html#transform_any_to_event_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.transform.transform_any_to_event_log" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="pm4py.objects.log.transform.transform_event_log_to_trace_log">
-<code class="descclassname">pm4py.objects.log.transform.</code><code class="descname">transform_event_log_to_trace_log</code><span class="sig-paren">(</span><em>log</em>, <em>case_glue='case:concept:name'</em>, <em>includes_case_attributes=True</em>, <em>case_attribute_prefix='case:'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/transform.html#transform_event_log_to_trace_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.transform.transform_event_log_to_trace_log" title="Permalink to this definition">¶</a></dt>
+<dt id="pm4py.objects.log.transform.transform_event_log_to_event_stream">
+<code class="descclassname">pm4py.objects.log.transform.</code><code class="descname">transform_event_log_to_event_stream</code><span class="sig-paren">(</span><em>log</em>, <em>include_case_attributes=True</em>, <em>case_attribute_prefix='case:'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/transform.html#transform_event_log_to_event_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.transform.transform_event_log_to_event_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the log to an event stream</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – A log</li>
+<li><strong>include_case_attributes</strong> – Default is True</li>
+<li><strong>case_attribute_prefix</strong> – Default is ‘case:’</li>
+<li><strong>Returns</strong> – ——-</li>
+<li><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – An Event log</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.transform.transform_event_stream_to_event_log">
+<code class="descclassname">pm4py.objects.log.transform.</code><code class="descname">transform_event_stream_to_event_log</code><span class="sig-paren">(</span><em>log</em>, <em>case_glue='case:concept:name'</em>, <em>includes_case_attributes=True</em>, <em>case_attribute_prefix='case:'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/transform.html#transform_event_stream_to_event_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.transform.transform_event_stream_to_event_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts the event stream to a log</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -383,27 +404,6 @@ when the function is used.</p>
 <li><strong>case_attribute_prefix</strong> – Default is ‘case:’</li>
 <li><strong>Returns</strong> – ——-</li>
 <li><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – A log</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.objects.log.transform.transform_trace_log_to_event_log">
-<code class="descclassname">pm4py.objects.log.transform.</code><code class="descname">transform_trace_log_to_event_log</code><span class="sig-paren">(</span><em>log</em>, <em>include_case_attributes=True</em>, <em>case_attribute_prefix='case:'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/transform.html#transform_trace_log_to_event_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.transform.transform_trace_log_to_event_log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts the log to an event stream</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – A trace Log</li>
-<li><strong>include_case_attributes</strong> – Default is True</li>
-<li><strong>case_attribute_prefix</strong> – Default is ‘case:’</li>
-<li><strong>Returns</strong> – ——-</li>
-<li><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – An Event log</li>
 </ul>
 </td>
 </tr>
