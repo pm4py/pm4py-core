@@ -4,7 +4,7 @@ from copy import copy
 from pm4py.objects.log.log import EventStream, TraceLog
 
 
-def sample_eventlog(event_log, no_events=100):
+def sample_stream(event_log, no_events=100):
     """
     Randomly sample a fixed number of events from the original event log
 
@@ -31,7 +31,7 @@ def sample_eventlog(event_log, no_events=100):
     return new_log
 
 
-def sample_tracelog(trace_log, no_traces=100):
+def sample_log(trace_log, no_traces=100):
     """
     Randomly sample a fixed number of traces from the original log
 
@@ -76,6 +76,6 @@ def sample(log, n=100):
     """
 
     if type(log) is TraceLog:
-        return sample_tracelog(log, no_traces=n)
+        return sample_log(log, no_traces=n)
 
-    return sample_eventlog(log, no_events=n)
+    return sample_stream(log, no_events=n)

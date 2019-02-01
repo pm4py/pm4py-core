@@ -27,7 +27,7 @@ def sort_timestamp_trace(trace, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse
     return new_trace
 
 
-def sort_timestamp_eventlog(event_log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=False):
+def sort_timestamp_stream(event_log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=False):
     """
     Sort an event log based on timestamp key
 
@@ -50,7 +50,7 @@ def sort_timestamp_eventlog(event_log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, 
     return new_event_log
 
 
-def sort_timestamp_tracelog(trace_log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=False):
+def sort_timestamp_log(trace_log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=False):
     """
     Sort a trace log based on timestamp key
 
@@ -98,11 +98,11 @@ def sort_timestamp(log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=Fa
         Sorted Trace/Event log
     """
     if type(log) is TraceLog:
-        return sort_timestamp_tracelog(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
-    return sort_timestamp_eventlog(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
+        return sort_timestamp_log(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
+    return sort_timestamp_stream(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
 
 
-def sort_lambda_tracelog(trace_log, sort_function, reverse=False):
+def sort_lambda_log(trace_log, sort_function, reverse=False):
     """
     Sort a trace log based on a lambda expression
 
@@ -126,7 +126,7 @@ def sort_lambda_tracelog(trace_log, sort_function, reverse=False):
     return new_trace_log
 
 
-def sort_lambda_eventlog(event_log, sort_function, reverse=False):
+def sort_lambda_stream(event_log, sort_function, reverse=False):
     """
     Sort an event log based on a lambda expression
 
@@ -169,5 +169,5 @@ def sort_lambda(log, sort_function, reverse=False):
         Sorted log
     """
     if type(log) is TraceLog:
-        return sort_lambda_tracelog(log, sort_function, reverse=reverse)
-    return sort_lambda_eventlog(log, sort_function, reverse=reverse)
+        return sort_lambda_log(log, sort_function, reverse=reverse)
+    return sort_lambda_stream(log, sort_function, reverse=reverse)

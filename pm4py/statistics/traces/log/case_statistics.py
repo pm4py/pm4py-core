@@ -105,7 +105,7 @@ def get_cases_description(trace_log, parameters=None):
     return statistics_dict
 
 
-def index_tracelog_caseid(log, parameters=None):
+def index_log_caseid(log, parameters=None):
     """
     Index a trace log according to case ID
 
@@ -159,8 +159,8 @@ def get_events(log, case_id, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    indexed_log = parameters["indexed_log"] if "indexed_log" in parameters else index_tracelog_caseid(log,
-                                                                                                      parameters)
+    indexed_log = parameters["indexed_log"] if "indexed_log" in parameters else index_log_caseid(log,
+                                                                                                 parameters)
     list_eve = []
     for event in indexed_log[case_id]:
         list_eve.append(dict(event))
