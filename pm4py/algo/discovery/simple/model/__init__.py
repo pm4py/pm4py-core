@@ -1,1 +1,1 @@
-from pm4py.algo.discovery.simple.model import log, pandas
+from pm4py.algo.discovery.simple.model import log

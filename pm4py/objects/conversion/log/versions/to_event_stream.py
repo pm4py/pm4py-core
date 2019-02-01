@@ -4,16 +4,16 @@ import pandas
 
 import pm4py
 from pm4py.objects.conversion.log import constants
-from pm4py.objects.conversion.log.versions import from_dataframe
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log.util import general as log_util
+
 
 DEEPCOPY = constants.DEEPCOPY
 
 
 def apply(log, parameters=None):
     if isinstance(log, pandas.core.frame.DataFrame):
-        log = from_dataframe.apply(log)
+        log = log_instance.EventStream(log.to_dict('records'), attributes={'origin': 'csv'})
     if isinstance(log, pm4py.objects.log.log.EventLog):
         parameters = parameters if parameters is not None else dict()
         if log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX in parameters:
