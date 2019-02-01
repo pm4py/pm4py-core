@@ -97,7 +97,7 @@ def filter_traces_intersecting(df, dt1, dt2, parameters=None):
 
 def apply_events(df, dt1, dt2, parameters=None):
     """
-    Get a new trace log containing all the events contained in the given interval
+    Get a new log containing all the events contained in the given interval
 
     Parameters
     ----------

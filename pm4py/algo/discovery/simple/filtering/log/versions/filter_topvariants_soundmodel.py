@@ -21,7 +21,7 @@ def apply(log, parameters=None):
     Returns
     ------------
     filtered_log
-        Filtered trace log
+        Filtered log
     """
     from pm4py.evaluation.replay_fitness import factory as replay_fitness_factory
 

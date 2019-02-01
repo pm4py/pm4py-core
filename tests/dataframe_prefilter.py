@@ -26,8 +26,8 @@ class DataframePrefilteringTest(unittest.TestCase):
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
         dataframe = dataframe.sort_values('time:timestamp')
         event_log = pandas_df_imp.convert_dataframe_to_event_stream(dataframe)
-        trace_log = transform.transform_event_log_to_trace_log(event_log)
-        del trace_log
+        log = transform.transform_event_stream_to_event_log(event_log)
+        del log
 
     def test_autofiltering_dataframe(self):
         # to avoid static method warnings in tests,

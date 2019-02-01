@@ -50,7 +50,7 @@ def filter_traces_contained(log, dt1, dt2, parameters=None):
     Returns
     ------------
     filtered_log
-        Filtered trace log
+        Filtered log
     """
     if parameters is None:
         parameters = {}
@@ -111,7 +111,7 @@ def filter_traces_intersecting(log, dt1, dt2, parameters=None):
     Returns
     ------------
     filtered_log
-        Filtered trace log
+        Filtered log
     """
     if parameters is None:
         parameters = {}
@@ -123,14 +123,14 @@ def filter_traces_intersecting(log, dt1, dt2, parameters=None):
     return filtered_log
 
 
-def apply_events(trace_log, dt1, dt2, parameters=None):
+def apply_events(log, dt1, dt2, parameters=None):
     """
-    Get a new trace log containing all the events contained in the given interval
+    Get a new log containing all the events contained in the given interval
 
     Parameters
     -----------
-    trace_log
-        Trace log
+    log
+        Log
     dt1
         Lower bound to the interval
     dt2
@@ -142,7 +142,7 @@ def apply_events(trace_log, dt1, dt2, parameters=None):
     Returns
     ------------
     filtered_log
-        Filtered trace log
+        Filtered log
     """
     if parameters is None:
         parameters = {}
@@ -151,11 +151,11 @@ def apply_events(trace_log, dt1, dt2, parameters=None):
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
 
-    event_log = transform.transform_trace_log_to_event_log(trace_log)
-    filtered_event_log = EventStream([x for x in event_log if dt1 < x[timestamp_key].replace(tzinfo=None) < dt2])
-    filtered_trace_log = transform.transform_event_log_to_trace_log(filtered_event_log)
+    stream = transform.transform_event_log_to_event_stream(log)
+    filtered_stream = EventStream([x for x in stream if dt1 < x[timestamp_key].replace(tzinfo=None) < dt2])
+    filtered_log = transform.transform_event_stream_to_event_log(filtered_stream)
 
-    return filtered_trace_log
+    return filtered_log
 
 
 def apply(df, parameters=None):

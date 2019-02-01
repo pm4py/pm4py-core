@@ -8,7 +8,7 @@ def export_log_as_string(log, parameters=None):
     Parameters
     -----------
     log: :class:`pm4py.log.log.EventLog`
-        Event log. Also, can take a trace log and convert it to event log
+        Event log. Also, can take a log and convert it to event stream
     parameters
         Possible parameters of the algorithm
 
@@ -33,7 +33,7 @@ def export(log, output_file_path, parameters=None):
     Parameters
     ----------
     log: :class:`pm4py.log.log.EventLog`
-        Event log. Also, can take a trace log and convert it to event log
+        Event log. Also, can take a log and convert it to event stream
     output_file_path:
         Output file path
     parameters

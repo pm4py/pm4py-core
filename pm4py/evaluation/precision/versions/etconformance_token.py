@@ -31,7 +31,7 @@ PARAMETERS = [PARAM_ACTIVITY_KEY]
 
 def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
-    Get trace log prefixes
+    Get log prefixes
 
     Parameters
     ----------
