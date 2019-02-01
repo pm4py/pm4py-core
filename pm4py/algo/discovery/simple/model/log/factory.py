@@ -1,4 +1,4 @@
-from pm4py.algo.discovery.simple.model.tracelog.versions import classic
+from pm4py.algo.discovery.simple.model.log.versions import classic
 
 CLASSIC = "classic"
 
