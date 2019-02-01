@@ -20,7 +20,7 @@ VERSIONS = {DFG_NATIVE: native.apply, DFG_FREQUENCY: native.apply, DFG_PERFORMAN
 
 def apply(log, parameters=None, variant=DFG_NATIVE):
     """
-    Calculates DFG graph (frequency or performance) starting from a trace log
+    Calculates DFG graph (frequency or performance) starting from a log
 
     Parameters
     ----------

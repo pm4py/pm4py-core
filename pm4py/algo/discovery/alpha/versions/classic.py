@@ -1,6 +1,6 @@
 """
 This module implements the \"classic\" alpha miner [1]_.
-It converts the input event log, which should be a trace log, to the (well-known) directly follows abstraction.
+It converts the input event log, which should be a log, to the (well-known) directly follows abstraction.
 For example, when we have a trace of the form (control-flow perspective) <...a,b,...>, we observe the relation a>b, i.e.
 activity a precedes activity b.
 From the directly follows relations, the alpha relations parallelism (||), conflict (x) and causality (->) are deduced.

@@ -9,14 +9,14 @@ from pm4py.util import constants
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def apply_auto_filter(trace_log, parameters=None):
+def apply_auto_filter(log, parameters=None):
     """
     Apply some filters in battery to the log in order to get a simplified log
     
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     parameters
         Eventual parameters applied to the algorithms:
             decreasingFactor -> Decreasing factor (provided to all algorithms)
@@ -48,10 +48,10 @@ def apply_auto_filter(trace_log, parameters=None):
 
     parameters_child = {"decreasingFactor": decreasing_factor, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
 
-    variants = variants_module.get_variants(trace_log, parameters=parameters_child)
+    variants = variants_module.get_variants(log, parameters=parameters_child)
 
-    filtered_log1 = attributes_filter.apply_auto_filter(trace_log, variants=variants, parameters=parameters_child)
-    del trace_log
+    filtered_log1 = attributes_filter.apply_auto_filter(log, variants=variants, parameters=parameters_child)
+    del log
     variants = variants_module.get_variants(filtered_log1, parameters=parameters_child)
     filtered_log2 = paths_filter.apply_auto_filter(filtered_log1, variants=variants, parameters=parameters_child)
     del filtered_log1

@@ -31,14 +31,14 @@ def sample_stream(event_log, no_events=100):
     return new_log
 
 
-def sample_log(trace_log, no_traces=100):
+def sample_log(log, no_traces=100):
     """
     Randomly sample a fixed number of traces from the original log
 
     Parameters
     -----------
-    trace_log
-        Trace log
+    log
+        Log
     no_traces
         Number of traces that the sample should have
 
@@ -47,14 +47,14 @@ def sample_log(trace_log, no_traces=100):
     newLog
         Filtered log
     """
-    new_log = EventLog(attributes=trace_log.attributes, extensions=trace_log.extensions, globals=trace_log._omni,
-                       classifiers=trace_log.classifiers)
+    new_log = EventLog(attributes=log.attributes, extensions=log.extensions, globals=log._omni,
+                       classifiers=log.classifiers)
     set_traces = set()
-    for i in range(0, min(no_traces, len(trace_log._list))):
-        set_traces.add(random.randrange(0, len(trace_log._list)))
+    for i in range(0, min(no_traces, len(log._list))):
+        set_traces.add(random.randrange(0, len(log._list)))
     set_traces = list(set_traces)
     for trace in set_traces:
-        new_log.append(copy(trace_log._list[trace]))
+        new_log.append(copy(log._list[trace]))
     return new_log
 
 

@@ -65,18 +65,18 @@ def sort_timestamp_log(log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sor
 
     Returns
     -----------
-    trace_log
-        Sorted Trace log
+    log
+        Sorted log
     """
-    new_trace_log = deepcopy(log)
-    new_trace_log._list = [x for x in new_trace_log._list if len(x) > 0]
-    for i in range(len(new_trace_log._list)):
-        new_trace_log._list[i] = sort_timestamp_trace(new_trace_log._list[i], timestamp_key=timestamp_key,
+    new_log = deepcopy(log)
+    new_log._list = [x for x in new_log._list if len(x) > 0]
+    for i in range(len(new_log._list)):
+        new_log._list[i] = sort_timestamp_trace(new_log._list[i], timestamp_key=timestamp_key,
                                                       reverse_sort=reverse_sort)
 
-    new_trace_log._list.sort(key=lambda x: x[0][timestamp_key], reverse=reverse_sort)
+    new_log._list.sort(key=lambda x: x[0][timestamp_key], reverse=reverse_sort)
 
-    return new_trace_log
+    return new_log
 
 
 def sort_timestamp(log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=False):
@@ -102,14 +102,14 @@ def sort_timestamp(log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=Fa
     return sort_timestamp_stream(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
 
 
-def sort_lambda_log(trace_log, sort_function, reverse=False):
+def sort_lambda_log(log, sort_function, reverse=False):
     """
-    Sort a trace log based on a lambda expression
+    Sort a log based on a lambda expression
 
     Parameters
     ------------
-    trace_log
-        Trace log
+    log
+        Log
     sort_function
         Sort function
     reverse
@@ -117,23 +117,23 @@ def sort_lambda_log(trace_log, sort_function, reverse=False):
 
     Returns
     ------------
-    trace_log
-        Sorted Trace log
+    new_log
+        Sorted log
     """
-    new_trace_log = deepcopy(trace_log)
-    new_trace_log._list.sort(key=sort_function, reverse=reverse)
+    new_log = deepcopy(log)
+    new_log._list.sort(key=sort_function, reverse=reverse)
 
-    return new_trace_log
+    return new_log
 
 
-def sort_lambda_stream(event_log, sort_function, reverse=False):
+def sort_lambda_stream(stream, sort_function, reverse=False):
     """
-    Sort an event log based on a lambda expression
+    Sort a stream based on a lambda expression
 
     Parameters
     ------------
-    event_log
-        Event log
+    stream
+        Stream
     sort_function
         Sort function
     reverse
@@ -141,10 +141,10 @@ def sort_lambda_stream(event_log, sort_function, reverse=False):
 
     Returns
     ------------
-    event_log
-        Sorted Event log
+    stream
+        Sorted stream
     """
-    new_event_log = deepcopy(event_log)
+    new_event_log = deepcopy(stream)
     new_event_log._list.sort(key=sort_function, reverse=reverse)
 
     return new_event_log

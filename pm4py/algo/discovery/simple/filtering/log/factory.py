@@ -22,6 +22,6 @@ def apply(log, parameters=None, variant=TOPVARIANTS_SOUNDMODEL):
     Returns
     -----------
     filtered_log
-        Filtered trace log
+        Filtered log
     """
     return VERSIONS[variant](log, parameters=parameters)

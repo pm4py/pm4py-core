@@ -6,15 +6,15 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
-def get_variant_statistics(trace_log, parameters=None):
+def get_variant_statistics(log, parameters=None):
     """
     Gets a dictionary whose key is the variant and as value there
     is the list of traces that share the variant
 
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     parameters
         Parameters of the algorithm, including:
             activity_key -> Attribute identifying the activity in the log
@@ -30,7 +30,7 @@ def get_variant_statistics(trace_log, parameters=None):
     if parameters is None:
         parameters = {}
     max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
-    varnt = parameters["variants"] if "variants" in parameters else variants_filter.get_variants(trace_log,
+    varnt = parameters["variants"] if "variants" in parameters else variants_filter.get_variants(log,
                                                                                                  parameters=parameters)
     variants_list = []
     for var in varnt:
@@ -41,14 +41,14 @@ def get_variant_statistics(trace_log, parameters=None):
     return variants_list
 
 
-def get_cases_description(trace_log, parameters=None):
+def get_cases_description(log, parameters=None):
     """
-    Get a description of traces present in the trace log
+    Get a description of traces present in the log
 
     Parameters
     -----------
-    trace_log
-        Trace log
+    log
+        Log
     parameters
         Parameters of the algorithm, including:
         case_id_key -> Trace attribute in which the case ID is contained
@@ -83,7 +83,7 @@ def get_cases_description(trace_log, parameters=None):
 
     statistics_list = []
 
-    for trace in trace_log:
+    for trace in log:
         if trace:
             ci = trace.attributes[case_id_key]
             st = trace[0][timestamp_key].timestamp()
@@ -107,12 +107,12 @@ def get_cases_description(trace_log, parameters=None):
 
 def index_log_caseid(log, parameters=None):
     """
-    Index a trace log according to case ID
+    Index a log according to case ID
 
     Parameters
     -----------
     log
-        Trace log object
+        Log object
     parameters
         Possible parameters of the algorithm, including:
             case id key -> Trace attribute in which the Case ID is contained
@@ -144,7 +144,7 @@ def get_events(log, case_id, parameters=None):
     Parameters
     -----------
     log
-        Trace log object
+        Log object
     case_id
         Required case ID
     parameters
@@ -169,12 +169,12 @@ def get_events(log, case_id, parameters=None):
 
 def get_all_casedurations(log, parameters=None):
     """
-    Gets all the case durations out of the trace log
+    Gets all the case durations out of the log
 
     Parameters
     ------------
     log
-        Trace lob object
+        Log object
     parameters
         Possible parameters of the algorithm
 
@@ -191,12 +191,12 @@ def get_all_casedurations(log, parameters=None):
 
 def get_first_quartile_caseduration(log, parameters=None):
     """
-    Gets the first quartile out of the trace log
+    Gets the first quartile out of the log
 
     Parameters
     -------------
     log
-        Trace log
+        Log
     parameters
         Possible parameters of the algorithm
 
@@ -213,12 +213,12 @@ def get_first_quartile_caseduration(log, parameters=None):
 
 def get_median_caseduration(log, parameters=None):
     """
-    Gets the median case duration out of the trace log
+    Gets the median case duration out of the log
 
     Parameters
     -------------
     log
-        Trace log
+        Log
     parameters
         Possible parameters of the algorithm
 
@@ -240,7 +240,7 @@ def get_kde_caseduration(log, parameters=None):
     Parameters
     --------------
     log
-        Trace log object
+        Log object
     parameters
         Possible parameters of the algorithm, including:
             graph_points -> number of points to include in the graph
@@ -264,7 +264,7 @@ def get_kde_caseduration_json(log, parameters=None):
     Parameters
     --------------
     log
-        Trace log object
+        Log object
     parameters
         Possible parameters of the algorithm, including:
             graph_points -> number of points to include in the graph

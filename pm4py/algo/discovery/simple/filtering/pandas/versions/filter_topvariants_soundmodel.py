@@ -91,7 +91,7 @@ def apply(df, parameters=None):
             traces_of_this_variant_keys = list(traces_of_this_variant.groups.keys())
             trace_of_this_variant = traces_of_this_variant.get_group(traces_of_this_variant_keys[0])
 
-            this_trace = transform.transform_event_log_to_trace_log(
+            this_trace = transform.transform_event_stream_to_event_log(
                 pandas_df_imp.convert_dataframe_to_event_stream(trace_of_this_variant), case_glue=caseid_glue)[0]
             if not activity_key == DEFAULT_NAME_KEY:
                 for j in range(len(this_trace)):

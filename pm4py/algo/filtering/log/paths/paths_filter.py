@@ -6,14 +6,14 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 
 
-def apply(trace_log, paths, parameters=None):
+def apply(log, paths, parameters=None):
     """
     Apply a filter on traces containing / not containing a path
 
     Parameters
     -----------
-    trace_log
-        Trace log
+    log
+        Log
     paths
         Paths that we are looking for (expressed as tuple of 2 strings)
     parameters
@@ -24,7 +24,7 @@ def apply(trace_log, paths, parameters=None):
     Returns
     -----------
     filtered_log
-        Filtered trace log
+        Filtered log
     """
     if parameters is None:
         parameters = {}
@@ -32,7 +32,7 @@ def apply(trace_log, paths, parameters=None):
         PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
     filtered_log = EventLog()
-    for trace in trace_log:
+    for trace in log:
         found = False
         for i in range(len(trace) - 1):
             path = (trace[i][attribute_key], trace[i + 1][attribute_key])
@@ -44,14 +44,14 @@ def apply(trace_log, paths, parameters=None):
     return filtered_log
 
 
-def get_paths_from_log(trace_log, attribute_key="concept:name"):
+def get_paths_from_log(log, attribute_key="concept:name"):
     """
     Get the paths of the log along with their count
 
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     attribute_key
         Attribute key (must be specified if different from concept:name)
 
@@ -61,7 +61,7 @@ def get_paths_from_log(trace_log, attribute_key="concept:name"):
         Dictionary of paths associated with their count
     """
     paths = {}
-    for trace in trace_log:
+    for trace in log:
         for i in range(0, len(trace) - 1):
             if attribute_key in trace[i] and attribute_key in trace[i + 1]:
                 path = trace[i][attribute_key] + "," + trace[i + 1][attribute_key]
@@ -117,14 +117,14 @@ def get_paths_threshold(plist, decreasing_factor):
     return threshold
 
 
-def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key="concept:name"):
+def filter_log_by_paths(log, paths, variants, vc, threshold, attribute_key="concept:name"):
     """
     Keep only paths which number of occurrences is above the threshold (or they belong to the first variant)
 
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     paths
         Dictionary of paths associated with their count
     variants
@@ -147,7 +147,7 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key
     for i in range(0, len(fvft) - 1):
         path = fvft[i][attribute_key] + "," + fvft[i + 1][attribute_key]
         fvp.add(path)
-    for trace in trace_log:
+    for trace in log:
         new_trace = Trace()
         jj = 0
         if len(trace) > 0:
@@ -171,14 +171,14 @@ def filter_log_by_paths(trace_log, paths, variants, vc, threshold, attribute_key
     return filtered_log
 
 
-def apply_auto_filter(trace_log, variants=None, parameters=None):
+def apply_auto_filter(log, variants=None, parameters=None):
     """
     Apply an attributes filter detecting automatically a percentage
 
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     variants
         (If specified) Dictionary with variant as the key and the list of traces as the value
     parameters
@@ -201,10 +201,10 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
 
     parameters_variants = {PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:
-        variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
+        variants = variants_filter.get_variants(log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
-    pths = get_paths_from_log(trace_log, attribute_key=attribute_key)
+    pths = get_paths_from_log(log, attribute_key=attribute_key)
     plist = get_sorted_paths_list(pths)
     thresh = get_paths_threshold(plist, decreasing_factor)
-    filtered_log = filter_log_by_paths(trace_log, pths, variants, vc, thresh, attribute_key)
+    filtered_log = filter_log_by_paths(log, pths, variants, vc, thresh, attribute_key)
     return filtered_log

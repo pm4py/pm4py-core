@@ -51,7 +51,7 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
     dfg = dfg_factory.apply(log, variant=variant, parameters=parameters)
     # we find shortest paths
     spaths = get_shortest_paths(net)
-    # we find the number of activities occurrences in the trace log
+    # we find the number of activities occurrences in the log
     activities_count = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
     aggregated_statistics = get_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
                                                                       activities_count,

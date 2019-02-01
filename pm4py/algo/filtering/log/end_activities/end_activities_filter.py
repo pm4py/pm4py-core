@@ -6,14 +6,14 @@ from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def apply(trace_log, admitted_end_activities, parameters=None):
+def apply(log, admitted_end_activities, parameters=None):
     """
-    Filter the trace log on the specified end activities
+    Filter the log on the specified end activities
 
     Parameters
     -----------
-    trace_log
-        Trace log
+    log
+        Log
     admitted_end_activities
         Admitted end activities
     parameters
@@ -22,25 +22,25 @@ def apply(trace_log, admitted_end_activities, parameters=None):
     Returns
     -----------
     filtered_log
-        Filtered trace log
+        Filtered log
     """
     if parameters is None:
         parameters = {}
     attribute_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
 
-    filtered_log = [trace for trace in trace_log if trace and trace[-1][attribute_key] in admitted_end_activities]
+    filtered_log = [trace for trace in log if trace and trace[-1][attribute_key] in admitted_end_activities]
     return filtered_log
 
 
-def get_end_activities(trace_log, parameters=None):
+def get_end_activities(log, parameters=None):
     """
     Get the end attributes of the log along with their count
     
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     parameters
         Parameters of the algorithm, including:
             attribute_key -> Attribute key (must be specified if different from concept:name)
@@ -57,7 +57,7 @@ def get_end_activities(trace_log, parameters=None):
 
     end_activities = {}
 
-    for trace in trace_log:
+    for trace in log:
         if len(trace) > 0:
             if attribute_key in trace[-1]:
                 activity_last_event = trace[-1][attribute_key]
@@ -101,14 +101,14 @@ def filter_log_by_end_activities(end_activities, variants, vc, threshold, activi
     return filtered_log
 
 
-def apply_auto_filter(trace_log, variants=None, parameters=None):
+def apply_auto_filter(log, variants=None, parameters=None):
     """
     Apply an end attributes filter detecting automatically a percentage
     
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     variants
         (If specified) Dictionary with variant as the key and the list of traces as the value
     parameters
@@ -132,9 +132,9 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
 
     parameters_variants = {PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:
-        variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
+        variants = variants_filter.get_variants(log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
-    end_activities = get_end_activities(trace_log, parameters=parameters_variants)
+    end_activities = get_end_activities(log, parameters=parameters_variants)
     ealist = end_activities_common.get_sorted_end_activities_list(end_activities)
     eathreshold = end_activities_common.get_end_activities_threshold(ealist, decreasing_factor)
     filtered_log = filter_log_by_end_activities(end_activities, variants, vc, eathreshold, attribute_key)

@@ -7,14 +7,14 @@ from pm4py.util import constants
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def apply(trace_log, admitted_start_activities, parameters=None):
+def apply(log, admitted_start_activities, parameters=None):
     """
-    Filter the trace log on the specified start activities
+    Filter the log on the specified start activities
 
     Parameters
     -----------
-    trace_log
-        Trace log
+    log
+        log
     admitted_start_activities
         Admitted start activities
     parameters
@@ -23,25 +23,25 @@ def apply(trace_log, admitted_start_activities, parameters=None):
     Returns
     -----------
     filtered_log
-        Filtered trace log
+        Filtered log
     """
     if parameters is None:
         parameters = {}
     attribute_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
 
-    filtered_log = [trace for trace in trace_log if trace and trace[0][attribute_key] in admitted_start_activities]
+    filtered_log = [trace for trace in log if trace and trace[0][attribute_key] in admitted_start_activities]
     return filtered_log
 
 
-def get_start_activities(trace_log, parameters=None):
+def get_start_activities(log, parameters=None):
     """
     Get the start attributes of the log along with their count
     
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     parameters
         Parameters of the algorithm, including:
             attribute_key -> Attribute key (must be specified if different from concept:name)
@@ -58,7 +58,7 @@ def get_start_activities(trace_log, parameters=None):
 
     start_activities = {}
 
-    for trace in trace_log:
+    for trace in log:
         if len(trace) > 0:
             if attribute_key in trace[0]:
                 activity_first_event = trace[0][attribute_key]
@@ -102,14 +102,14 @@ def filter_log_by_start_activities(start_activities, variants, vc, threshold, ac
     return filtered_log
 
 
-def apply_auto_filter(trace_log, variants=None, parameters=None):
+def apply_auto_filter(log, variants=None, parameters=None):
     """
     Apply an end attributes filter detecting automatically a percentage
     
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     variants
         (If specified) Dictionary with variant as the key and the list of traces as the value
     parameters
@@ -134,9 +134,9 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
 
     if variants is None:
-        variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
+        variants = variants_filter.get_variants(log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
-    start_activities = get_start_activities(trace_log, parameters=parameters_variants)
+    start_activities = get_start_activities(log, parameters=parameters_variants)
     salist = start_activities_common.get_sorted_start_activities_list(start_activities)
     sathreshold = start_activities_common.get_start_activities_threshold(salist, decreasing_factor)
     filtered_log = filter_log_by_start_activities(start_activities, variants, vc, sathreshold, attribute_key)

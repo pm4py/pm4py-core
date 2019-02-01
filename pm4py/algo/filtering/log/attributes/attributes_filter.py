@@ -12,44 +12,44 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CON
 DEFAULT_MAX_CASES_FOR_ATTR_SELECTION = 50
 
 
-def get_all_trace_attributes_from_log(trace_log):
+def get_all_trace_attributes_from_log(log):
     """
     Get all trace attributes from the log
 
     Parameters
     ------------
-    trace_log
-        Trace log
+    log
+        Log
 
     Returns
     ------------
     all_attributes
-        All trace attributes from the trace log
+        All trace attributes from the log
     """
     all_attributes = set()
-    for trace in trace_log:
+    for trace in log:
         all_attributes = all_attributes.union(set(trace.attributes.keys()))
     if xes.DEFAULT_TRACEID_KEY in all_attributes:
         all_attributes.remove(xes.DEFAULT_TRACEID_KEY)
     return all_attributes
 
 
-def get_all_event_attributes_from_log(trace_log):
+def get_all_event_attributes_from_log(log):
     """
     Get all events attributes from the log
 
     Parameters
     -------------
-    trace_log
-        Trace log
+    log
+        Log
 
     Returns
     -------------
     all_attributes
-        All trace attributes from the trace log
+        All trace attributes from the log
     """
     all_attributes = set()
-    for trace in trace_log:
+    for trace in log:
         for event in trace:
             all_attributes = all_attributes.union(set(event.keys()))
     if xes.DEFAULT_TRANSITION_KEY in all_attributes:
@@ -57,15 +57,15 @@ def get_all_event_attributes_from_log(trace_log):
     return all_attributes
 
 
-def select_attributes_from_log_for_tree(trace_log, max_cases_for_attr_selection=DEFAULT_MAX_CASES_FOR_ATTR_SELECTION,
+def select_attributes_from_log_for_tree(log, max_cases_for_attr_selection=DEFAULT_MAX_CASES_FOR_ATTR_SELECTION,
                                         max_diff_occ=DEFAULT_MAX_CASES_FOR_ATTR_SELECTION / 4):
     """
     Select attributes from log for tree
 
     Parameters
     ------------
-    trace_log
-        Trace log
+    log
+        Log
     max_cases_for_attr_selection
         Maximum number of cases to consider for attribute selection
     max_diff_occ
@@ -75,18 +75,18 @@ def select_attributes_from_log_for_tree(trace_log, max_cases_for_attr_selection=
     ------------
 
     """
-    if len(trace_log) > max_cases_for_attr_selection:
-        filtered_log = sampling.sample(trace_log, max_cases_for_attr_selection)
+    if len(log) > max_cases_for_attr_selection:
+        filtered_log = sampling.sample(log, max_cases_for_attr_selection)
     else:
-        filtered_log = trace_log
+        filtered_log = log
     event_attributes = get_all_event_attributes_from_log(filtered_log)
     trace_attributes = get_all_trace_attributes_from_log(filtered_log)
     event_attributes_values = {}
     trace_attributes_values = {}
     for attr in event_attributes:
-        event_attributes_values[attr] = set(get_attribute_values(trace_log, attr).keys())
+        event_attributes_values[attr] = set(get_attribute_values(log, attr).keys())
     for attr in trace_attributes:
-        trace_attributes_values[attr] = set(get_trace_attribute_values(trace_log, attr).keys())
+        trace_attributes_values[attr] = set(get_trace_attribute_values(log, attr).keys())
 
     numeric_event_attributes_to_consider = list()
     string_event_attributes_to_consider = list()
@@ -105,26 +105,26 @@ def select_attributes_from_log_for_tree(trace_log, max_cases_for_attr_selection=
         elif type(list(trace_attributes_values[attr])[0]) is str and len(trace_attributes_values[attr]) < max_diff_occ:
             string_trace_attributes_to_consider.append(attr)
 
-    numeric_event_attributes_to_consider = check_event_attributes_presence(trace_log,
+    numeric_event_attributes_to_consider = check_event_attributes_presence(log,
                                                                            numeric_event_attributes_to_consider)
-    string_event_attributes_to_consider = check_event_attributes_presence(trace_log,
+    string_event_attributes_to_consider = check_event_attributes_presence(log,
                                                                           string_event_attributes_to_consider)
-    numeric_trace_attributes_to_consider = check_event_attributes_presence(trace_log,
+    numeric_trace_attributes_to_consider = check_event_attributes_presence(log,
                                                                            numeric_trace_attributes_to_consider)
-    string_trace_attributes_to_consider = check_event_attributes_presence(trace_log,
+    string_trace_attributes_to_consider = check_event_attributes_presence(log,
                                                                           string_trace_attributes_to_consider)
 
     return string_trace_attributes_to_consider, string_event_attributes_to_consider, numeric_trace_attributes_to_consider, numeric_event_attributes_to_consider
 
 
-def check_event_attributes_presence(trace_log, attributes_set):
+def check_event_attributes_presence(log, attributes_set):
     """
     Check event attributes presence in all the traces of the log
 
     Parameters
     ------------
-    trace_log
-        Trace log
+    log
+        Log
     attributes_set
         Set of attributes
 
@@ -135,19 +135,19 @@ def check_event_attributes_presence(trace_log, attributes_set):
     """
     keys = list(attributes_set)
     for attr in keys:
-        if not verify_if_event_attribute_is_in_each_trace(trace_log, attr):
+        if not verify_if_event_attribute_is_in_each_trace(log, attr):
             attributes_set.remove(attr)
     return attributes_set
 
 
-def verify_if_event_attribute_is_in_each_trace(trace_log, attribute):
+def verify_if_event_attribute_is_in_each_trace(log, attribute):
     """
     Verify if the event attribute is in each trace
 
     Parameters
     ------------
-    trace_log
-        Trace log
+    log
+        Log
     attribute
         Attribute
 
@@ -156,7 +156,7 @@ def verify_if_event_attribute_is_in_each_trace(trace_log, attribute):
     boolean
         Boolean value that is aiming to check if the event attribute is in each trace
     """
-    for trace in trace_log:
+    for trace in log:
         present = False
         for event in trace:
             if attribute in event:
@@ -167,14 +167,14 @@ def verify_if_event_attribute_is_in_each_trace(trace_log, attribute):
     return True
 
 
-def verify_if_trace_attribute_is_in_each_trace(trace_log, attribute):
+def verify_if_trace_attribute_is_in_each_trace(log, attribute):
     """
     Verify if the trace attribute is in each trace
 
     Parameters
     -------------
-    trace_log
-        Trace log
+    log
+        Log
     attribute
         Attribute
 
@@ -183,20 +183,20 @@ def verify_if_trace_attribute_is_in_each_trace(trace_log, attribute):
     boolean
         Boolean value that is aiming to check if the trace attribute is in each trace
     """
-    for trace in trace_log:
+    for trace in log:
         if attribute not in trace.attributes:
             return False
     return True
 
 
-def apply_events(trace_log, values, parameters=None):
+def apply_events(log, values, parameters=None):
     """
     Filter log by keeping only events with an attribute value that belongs to the provided values list
 
     Parameters
     -----------
-    trace_log
-        Trace log
+    log
+        log
     values
         Allowed attributes
     parameters
@@ -217,7 +217,7 @@ def apply_events(trace_log, values, parameters=None):
     positive = parameters["positive"] if "positive" in parameters else True
 
     filtered_log = EventLog()
-    for trace in trace_log:
+    for trace in log:
         new_trace = Trace()
 
         for j in range(len(trace)):
@@ -232,14 +232,14 @@ def apply_events(trace_log, values, parameters=None):
     return filtered_log
 
 
-def apply(trace_log, values, parameters=None):
+def apply(log, values, parameters=None):
     """
     Filter log by keeping only traces that has/has not events with an attribute value that belongs to the provided
     values list
 
     Parameters
     -----------
-    trace_log
+    log
         Trace log
     values
         Allowed attributes
@@ -261,7 +261,7 @@ def apply(trace_log, values, parameters=None):
     positive = parameters["positive"] if "positive" in parameters else True
 
     filtered_log = EventLog()
-    for trace in trace_log:
+    for trace in log:
         new_trace = Trace()
 
         found = False
@@ -282,14 +282,14 @@ def apply(trace_log, values, parameters=None):
     return filtered_log
 
 
-def get_attribute_values(trace_log, attribute_key, parameters=None):
+def get_attribute_values(log, attribute_key, parameters=None):
     """
     Get the attribute values of the log for the specified attribute along with their count
 
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     attribute_key
         Attribute for which we would like to know the values along with their count
     parameters
@@ -306,7 +306,7 @@ def get_attribute_values(trace_log, attribute_key, parameters=None):
 
     attributes = {}
 
-    for trace in trace_log:
+    for trace in log:
         for event in trace:
             if attribute_key in event:
                 attribute = event[attribute_key]
@@ -317,14 +317,14 @@ def get_attribute_values(trace_log, attribute_key, parameters=None):
     return attributes
 
 
-def get_trace_attribute_values(trace_log, attribute_key, parameters=None):
+def get_trace_attribute_values(log, attribute_key, parameters=None):
     """
     Get the attribute values of the log for the specified attribute along with their count
 
     Parameters
     ------------
-    trace_log
-        Trace log
+    log
+        Log
     attribute_key
         Attribute for which we wish to get the values along with their count
     parameters
@@ -341,7 +341,7 @@ def get_trace_attribute_values(trace_log, attribute_key, parameters=None):
 
     attributes = {}
 
-    for trace in trace_log:
+    for trace in log:
         if attribute_key in trace.attributes:
             attribute = trace.attributes[attribute_key]
             if attribute not in attributes:
@@ -351,14 +351,14 @@ def get_trace_attribute_values(trace_log, attribute_key, parameters=None):
     return attributes
 
 
-def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, threshold, attribute_key="concept:name"):
+def filter_log_by_attributes_threshold(log, attributes, variants, vc, threshold, attribute_key="concept:name"):
     """
     Keep only attributes which number of occurrences is above the threshold (or they belong to the first variant)
 
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     attributes
         Dictionary of attributes associated with their count
     variants
@@ -377,7 +377,7 @@ def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, thre
     """
     filtered_log = EventLog()
     fva = [x[attribute_key] for x in variants[vc[0][0]][0] if attribute_key in x]
-    for trace in trace_log:
+    for trace in log:
         new_trace = Trace()
         for j in range(len(trace)):
             if attribute_key in trace[j]:
@@ -392,14 +392,14 @@ def filter_log_by_attributes_threshold(trace_log, attributes, variants, vc, thre
     return filtered_log
 
 
-def apply_auto_filter(trace_log, variants=None, parameters=None):
+def apply_auto_filter(log, variants=None, parameters=None):
     """
     Apply an attributes filter detecting automatically a percentage
 
     Parameters
     ----------
-    trace_log
-        Trace log
+    log
+        Log
     variants
         (If specified) Dictionary with variant as the key and the list of traces as the value
     parameters
@@ -422,12 +422,12 @@ def apply_auto_filter(trace_log, variants=None, parameters=None):
 
     parameters_variants = {PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:
-        variants = variants_filter.get_variants(trace_log, parameters=parameters_variants)
+        variants = variants_filter.get_variants(log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
-    activities = get_attribute_values(trace_log, attribute_key, parameters=parameters_variants)
+    activities = get_attribute_values(log, attribute_key, parameters=parameters_variants)
     alist = attributes_common.get_sorted_attributes_list(activities)
     thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
-    filtered_log = filter_log_by_attributes_threshold(trace_log, activities, variants, vc, thresh, attribute_key)
+    filtered_log = filter_log_by_attributes_threshold(log, activities, variants, vc, thresh, attribute_key)
     return filtered_log
 
 
@@ -438,7 +438,7 @@ def get_kde_numeric_attribute(log, attribute, parameters=None):
     Parameters
     -------------
     log
-        Event log object (if trace log, is converted)
+        Event stream object (if log, is converted)
     attribute
         Numeric attribute to analyse
     parameters
@@ -455,7 +455,7 @@ def get_kde_numeric_attribute(log, attribute, parameters=None):
     """
 
     if type(log) is EventLog:
-        event_log = transform.transform_trace_log_to_event_log(log)
+        event_log = transform.transform_event_log_to_event_stream(log)
     else:
         event_log = log
 
@@ -472,7 +472,7 @@ def get_kde_numeric_attribute_json(log, attribute, parameters=None):
     Parameters
     -------------
     log
-        Event log object (if trace log, is converted)
+        Event log object (if log, is converted)
     attribute
         Numeric attribute to analyse
     parameters
@@ -489,7 +489,7 @@ def get_kde_numeric_attribute_json(log, attribute, parameters=None):
     """
 
     if type(log) is EventLog:
-        event_log = transform.transform_trace_log_to_event_log(log)
+        event_log = transform.transform_event_log_to_event_stream(log)
     else:
         event_log = log
 
@@ -505,7 +505,7 @@ def get_kde_date_attribute(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None
     Parameters
     -------------
     log
-        Event log object (if trace log, is converted)
+        Event stream object (if log, is converted)
     attribute
         Date attribute to analyse
     parameters
@@ -522,7 +522,7 @@ def get_kde_date_attribute(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None
     """
 
     if type(log) is EventLog:
-        event_log = transform.transform_trace_log_to_event_log(log)
+        event_log = transform.transform_event_log_to_event_stream(log)
     else:
         event_log = log
 
@@ -539,7 +539,7 @@ def get_kde_date_attribute_json(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters
     Parameters
     -------------
     log
-        Event log object (if trace log, is converted)
+        Event stream object (if log, is converted)
     attribute
         Date attribute to analyse
     parameters
@@ -556,7 +556,7 @@ def get_kde_date_attribute_json(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters
     """
 
     if type(log) is EventLog:
-        event_log = transform.transform_trace_log_to_event_log(log)
+        event_log = transform.transform_event_log_to_event_stream(log)
     else:
         event_log = log
 
