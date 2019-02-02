@@ -17,8 +17,8 @@ def apply(log, parameters=None):
         log = to_event_stream.apply(log)
     if isinstance(log, pm4py.objects.log.log.EventStream) and (not isinstance(log, pm4py.objects.log.log.EventLog)):
         parameters = parameters if parameters is not None else dict()
-        if log_util.PARAMETER_KEY_CASE_GLUE in parameters:
-            glue = parameters[log_util.PARAMETER_KEY_CASE_GLUE]
+        if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY in parameters:
+            glue = parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY]
         else:
             glue = log_util.CASE_ATTRIBUTE_GLUE
         if log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX in parameters:
