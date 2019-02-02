@@ -12,7 +12,7 @@ def read_file(filename):
 
 setup(
     name=pm4py.__name__,
-    version=pm4py.__version__,
+    version=pm4py.__version__+"dev0",
     description=pm4py.__doc__.strip(),
     long_description=read_file('README'),
     author=pm4py.__author__,
