@@ -3,6 +3,7 @@ from copy import deepcopy
 import pandas
 
 import pm4py
+from pm4py import util as pmutil
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log.util import general as log_util
