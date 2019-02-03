@@ -18,8 +18,8 @@ def get_string_trace_attribute_rep(trace, trace_attribute):
     rep
         Representation of the feature name associated to a string trace attribute value
     """
-    if trace_attribute in trace:
-        return "trace:" + str(trace_attribute) + "@" + str(trace[trace_attribute])
+    if trace_attribute in trace.attributes:
+        return "trace:" + str(trace_attribute) + "@" + str(trace.attributes[trace_attribute])
     return "trace:" + str(trace_attribute) + "@UNDEFINED"
 
 
@@ -212,8 +212,8 @@ def get_numeric_trace_attribute_value(trace, trace_attribute):
     value
         Value of the numeric trace attribute for the given trace
     """
-    if trace_attribute in trace:
-        return trace[trace_attribute]
+    if trace_attribute in trace.attributes:
+        return trace.attributes[trace_attribute]
     raise Exception("at least a trace without trace attribute: " + trace_attribute)
 
 

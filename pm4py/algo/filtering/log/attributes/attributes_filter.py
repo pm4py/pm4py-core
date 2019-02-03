@@ -109,12 +109,35 @@ def select_attributes_from_log_for_tree(log, max_cases_for_attr_selection=DEFAUL
                                                                            numeric_event_attributes_to_consider)
     string_event_attributes_to_consider = check_event_attributes_presence(log,
                                                                           string_event_attributes_to_consider)
-    numeric_trace_attributes_to_consider = check_event_attributes_presence(log,
+    numeric_trace_attributes_to_consider = check_trace_attributes_presence(log,
                                                                            numeric_trace_attributes_to_consider)
-    string_trace_attributes_to_consider = check_event_attributes_presence(log,
+    string_trace_attributes_to_consider = check_trace_attributes_presence(log,
                                                                           string_trace_attributes_to_consider)
 
     return string_trace_attributes_to_consider, string_event_attributes_to_consider, numeric_trace_attributes_to_consider, numeric_event_attributes_to_consider
+
+
+def check_trace_attributes_presence(log, attributes_set):
+    """
+    Check trace attributes presence in all the traces of the log
+
+    Parameters
+    ------------
+    log
+        Log
+    attributes_set
+        Set of attributes
+
+    Returns
+    ------------
+    filtered_set
+        Filtered set of attributes
+    """
+    keys = list(attributes_set)
+    for attr in keys:
+        if not verify_if_trace_attribute_is_in_each_trace(log, attr):
+            attributes_set.remove(attr)
+    return attributes_set
 
 
 def check_event_attributes_presence(log, attributes_set):
@@ -137,6 +160,7 @@ def check_event_attributes_presence(log, attributes_set):
     for attr in keys:
         if not verify_if_event_attribute_is_in_each_trace(log, attr):
             attributes_set.remove(attr)
+    print(attributes_set)
     return attributes_set
 
 
