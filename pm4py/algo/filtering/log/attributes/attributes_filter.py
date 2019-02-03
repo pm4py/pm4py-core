@@ -160,7 +160,6 @@ def check_event_attributes_presence(log, attributes_set):
     for attr in keys:
         if not verify_if_event_attribute_is_in_each_trace(log, attr):
             attributes_set.remove(attr)
-    print(attributes_set)
     return attributes_set
 
 
