@@ -16,7 +16,8 @@ def apply(log, parameters=None):
     log
         Log
     parameters
-        Possible parameters of the algorithm
+        Possible parameters of the algorithm:
+            beta -> beta value as described in the Wil SNA paper
     variant
         Variant of the algorithm to apply. Possible values:
             handover
@@ -31,7 +32,7 @@ def apply(log, parameters=None):
 
     resource_key = parameters[
         constants.PARAMETER_CONSTANT_RESOURCE_KEY] if constants.PARAMETER_CONSTANT_RESOURCE_KEY in parameters else xes.DEFAULT_RESOURCE_KEY
-    beta = parameters[BETA] if BETA in parameters else 0.5
+    beta = parameters[BETA] if BETA in parameters else 0
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: resource_key,
                            constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: resource_key}
@@ -53,7 +54,7 @@ def apply(log, parameters=None):
                 res_j = flat_list.index(rv[j])
                 if not res_j in sum_i_to_j[res_i]:
                     sum_i_to_j[res_i][res_j] = 0
-                if beta == 1:
+                if beta == 0:
                     sum_i_to_j[res_i][res_j] += variants_occ[",".join(rv)]
                     break
                 else:
@@ -61,7 +62,7 @@ def apply(log, parameters=None):
 
     dividend = 0
     for rv in resources:
-        if beta == 1:
+        if beta == 0:
             dividend = dividend + variants_occ[",".join(rv)] * (len(rv) - 1)
         else:
             dividend = dividend + variants_occ[",".join(rv)] * (len(rv) - 1)
