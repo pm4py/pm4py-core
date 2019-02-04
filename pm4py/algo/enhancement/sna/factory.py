@@ -1,12 +1,13 @@
-from pm4py.algo.enhancement.sna.versions import handover, working_together, subcontracting
+from pm4py.algo.enhancement.sna.versions import handover, working_together, subcontracting, jointactivities
 from pm4py.objects.conversion.log import factory as conv_factory
 
 HANDOVER = "handover"
 WORKING_TOGETHER = "working_together"
 SUBCONTRACTING = "subcontracting"
+JOINTACTIVITIES = "jointactivities"
 
 VERSIONS_LOG = {HANDOVER: handover.apply, WORKING_TOGETHER: working_together.apply,
-                SUBCONTRACTING: subcontracting.apply}
+                SUBCONTRACTING: subcontracting.apply, JOINTACTIVITIES: jointactivities.apply}
 
 
 def apply(log, parameters=None, variant=HANDOVER):
