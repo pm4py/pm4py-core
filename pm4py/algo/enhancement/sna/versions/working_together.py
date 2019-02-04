@@ -14,13 +14,13 @@ def apply(log, parameters=None):
     log
         Log
     parameters
-        Possible parameters of the algorithm:
-            beta -> beta value as described in the Wil SNA paper
+        Possible parameters of the algorithm
 
     Returns
     -----------
     tuple
-        Tuple containing the metric matrix and the resources list
+        Tuple containing the metric matrix and the resources list. Moreover, last boolean indicates that the metric is
+        not directed.
     """
 
     if parameters is None:
