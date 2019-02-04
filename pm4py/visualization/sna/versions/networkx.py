@@ -35,7 +35,6 @@ def apply(metric_values, parameters=None):
     parameters
         Possible parameters of the algorithm, including:
             weight_threshold: the weight threshold to use in displaying the graph
-            directed: indicates if the graph has to be drawn directed
             format: format of the output image (png, svg ...)
 
     Returns
@@ -47,7 +46,7 @@ def apply(metric_values, parameters=None):
         parameters = {}
 
     weight_threshold = parameters["weight_threshold"] if "weight_threshold" in parameters else 0
-    directed = parameters["directed"] if "directed" in parameters else False
+    directed = metric_values[2]
     format = parameters["format"] if "format" in parameters else "png"
 
     temp_file_name = get_temp_file_name(format)
