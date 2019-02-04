@@ -9,7 +9,7 @@ BETA = "beta"
 
 def apply(log, parameters=None):
     """
-    Calculates a SNA metric
+    Calculates the HW metric
 
     Parameters
     ------------
@@ -18,14 +18,12 @@ def apply(log, parameters=None):
     parameters
         Possible parameters of the algorithm:
             beta -> beta value as described in the Wil SNA paper
-    variant
-        Variant of the algorithm to apply. Possible values:
-            handover
 
     Returns
     -----------
     tuple
-        Tuple containing the metric matrix and the resources list
+        Tuple containing the metric matrix and the resources list. Moreover, last boolean indicates that the metric is
+        directed.
     """
     if parameters is None:
         parameters = {}
@@ -39,7 +37,7 @@ def apply(log, parameters=None):
     variants_occ = {x: len(y) for x, y in variants_filter.get_variants(log, parameters=parameters_variants).items()}
     variants_resources = list(variants_occ.keys())
     resources = [x.split(",") for x in variants_resources]
-    flat_list = list(set([item for sublist in resources for item in sublist]))
+    flat_list = sorted(list(set([item for sublist in resources for item in sublist])))
 
     metric_matrix = numpy.zeros((len(flat_list), len(flat_list)))
 
@@ -71,4 +69,4 @@ def apply(log, parameters=None):
         for key2 in sum_i_to_j[key1]:
             metric_matrix[key1][key2] = sum_i_to_j[key1][key2] / dividend
 
-    return (metric_matrix, flat_list)
+    return (metric_matrix, flat_list, True)
