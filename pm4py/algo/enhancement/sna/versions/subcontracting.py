@@ -4,12 +4,12 @@ from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
 
-BETA = "beta"
+N = "n"
 
 
 def apply(log, parameters=None):
     """
-    Calculates the HW metric
+    Calculates the Subcontracting metric
 
     Parameters
     ------------
@@ -17,20 +17,19 @@ def apply(log, parameters=None):
         Log
     parameters
         Possible parameters of the algorithm:
-            beta -> beta value as described in the Wil SNA paper
+            n -> n of the algorithm proposed in the Wil SNA paper
 
     Returns
     -----------
     tuple
-        Tuple containing the metric matrix and the resources list. Moreover, last boolean indicates that the metric is
-        directed.
+        Tuple containing the metric matrix and the resources list
     """
     if parameters is None:
         parameters = {}
 
     resource_key = parameters[
         constants.PARAMETER_CONSTANT_RESOURCE_KEY] if constants.PARAMETER_CONSTANT_RESOURCE_KEY in parameters else xes.DEFAULT_RESOURCE_KEY
-    beta = parameters[BETA] if BETA in parameters else 0
+    n = parameters[N] if N in parameters else 2
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: resource_key,
                            constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: resource_key}
@@ -44,26 +43,21 @@ def apply(log, parameters=None):
     sum_i_to_j = {}
 
     for rv in resources:
-        for i in range(len(rv) - 1):
+        for i in range(len(rv) - n):
             res_i = flat_list.index(rv[i])
-            if not res_i in sum_i_to_j:
-                sum_i_to_j[res_i] = {}
-            for j in range(i + 1, len(rv)):
-                res_j = flat_list.index(rv[j])
-                if not res_j in sum_i_to_j[res_i]:
-                    sum_i_to_j[res_i][res_j] = 0
-                if beta == 0:
-                    sum_i_to_j[res_i][res_j] += variants_occ[",".join(rv)]
-                    break
-                else:
-                    sum_i_to_j[res_i][res_j] += variants_occ[",".join(rv)] * (beta ** (j - i - 1))
+            res_i_n = flat_list.index(rv[i + n])
+            if res_i == res_i_n:
+                if res_i not in sum_i_to_j:
+                    sum_i_to_j[res_i] = {}
+                    for j in range(i + 1, i + n):
+                        res_j = flat_list.index(rv[j])
+                        if res_j not in sum_i_to_j[res_i]:
+                            sum_i_to_j[res_i][res_j] = 0
+                        sum_i_to_j[res_i][res_j] += variants_occ[",".join(rv)]
 
     dividend = 0
     for rv in resources:
-        if beta == 0:
-            dividend = dividend + variants_occ[",".join(rv)] * (len(rv) - 1)
-        else:
-            dividend = dividend + variants_occ[",".join(rv)] * (len(rv) - 1)
+        dividend = dividend + variants_occ[",".join(rv)] * (len(rv) - 1)
 
     for key1 in sum_i_to_j:
         for key2 in sum_i_to_j[key1]:
