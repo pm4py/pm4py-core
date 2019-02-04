@@ -3,7 +3,10 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
+import pytz
 from scipy.stats import gaussian_kde
+
+from pm4py.util.versions import check_pandas_ge_024
 
 
 def get_sorted_attributes_list(attributes):
@@ -144,7 +147,8 @@ def get_kde_date_attribute(values, parameters=None):
         parameters = {}
 
     graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
-    int_values = sorted([(x - datetime(1970, 1, 1)).total_seconds() for x in values])
+    int_values = sorted(
+        [(x.replace(tzinfo=None) - datetime(1970, 1, 1).replace(tzinfo=None)).total_seconds() for x in values])
     density = gaussian_kde(int_values)
 
     xs = np.linspace(min(int_values), max(int_values), graph_points)
@@ -173,8 +177,15 @@ def get_kde_date_attribute_json(values, parameters=None):
     """
     x, y = get_kde_date_attribute(values, parameters=parameters)
 
+    dt0 = datetime(1970, 1, 1)
+    needs_conversion = check_pandas_ge_024()
+
+    if needs_conversion:
+        dt0 = dt0.replace(tzinfo=pytz.utc)
+        dt0 = pd.to_datetime(dt0, utc=True)
+
     ret = []
     for i in range(len(x)):
-        ret.append(((x[i] - datetime(1970, 1, 1)).total_seconds(), y[i]))
+        ret.append(((x[i].replace(tzinfo=None) - dt0.replace(tzinfo=None)).total_seconds(), y[i]))
 
     return json.dumps(ret)

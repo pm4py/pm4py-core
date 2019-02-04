@@ -13,8 +13,7 @@ class CSV1DocumentationTest(unittest.TestCase):
         event_log = csv_importer.import_event_stream(os.path.join("input_data", "running-example.csv"))
         event_log_length = len(event_log)
         del event_log_length
-        from pm4py.objects.log import transform
-        log = transform.transform_event_stream_to_event_log(event_log, case_glue="case:concept:name")
+        log = log_conv_fact.apply(event_log)
         del log
         from pm4py.objects.log.importer.csv.versions import pandas_df_imp
         dataframe = pandas_df_imp.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))

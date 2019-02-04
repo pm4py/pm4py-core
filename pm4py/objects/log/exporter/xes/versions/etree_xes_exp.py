@@ -1,7 +1,7 @@
 from lxml import etree
 
+from pm4py.objects.conversion.log import factory as log_converter
 from pm4py.objects.log import log as log_instance
-from pm4py.objects.log import transform as log_transform
 from pm4py.objects.log.util import xes as xes_util
 
 # defines correspondence between Python types and XES types
@@ -231,7 +231,7 @@ def export_log_tree(log):
     """
     # If the log is in log_instance.EventStream, then transform it into log_instance.EventLog format
     if type(log) is log_instance.EventStream:
-        log = log_transform.transform_event_stream_to_event_log(log)
+        log = log_converter.apply(log)
     root = etree.Element(xes_util.TAG_LOG)
 
     # add attributes at the log level
