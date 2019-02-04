@@ -72,7 +72,7 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
     aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_tr)
 
     parameters = {
-        "activity_key": activity_key
+        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key
     }
 
     fitness = fitness_token_based.evaluate(aligned_traces)
