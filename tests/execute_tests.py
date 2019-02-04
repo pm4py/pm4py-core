@@ -14,6 +14,7 @@ if __name__ == "__main__":
     from tests.imdf_test import InductiveMinerDFTest
     from tests.imdf_tree_test import InductiveMinerDFTreeTest
     from tests.alignment_test import AlignmentTest
+    from tests.sna_test import SnaTests
     from tests.petri_imp_exp_test import PetriImportExportTest
     from tests.random_variables_test import RandomVariableTest
     from tests.documentation_tests.test_doc_alpha1 import AlphaMinerDocumentationTest
@@ -48,6 +49,7 @@ if __name__ == "__main__":
     test14_object = DocMeasuresDocumentationTest()
     test17_object = ETCTest()
     test20_object = ProcessModelEvaluationTests()
+    sna_tests = SnaTests()
     filtering_test = LogFilteringTest()
     prefiltering_test = DataframePrefilteringTest()
     simpleex_test = SimpleExecutionTest()
