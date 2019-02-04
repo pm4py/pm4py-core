@@ -1,9 +1,11 @@
 import pandas as pd
+import pytz
 
 from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY, PARAMETER_CONSTANT_CASEID_KEY
+from pm4py.util.versions import check_pandas_ge_024
 
 
 def filter_traces_contained(df, dt1, dt2, parameters=None):
@@ -36,6 +38,12 @@ def filter_traces_contained(df, dt1, dt2, parameters=None):
         PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
+    needs_conversion = check_pandas_ge_024()
+    if needs_conversion:
+        dt1 = dt1.replace(tzinfo=pytz.utc)
+        dt2 = dt2.replace(tzinfo=pytz.utc)
+        dt1 = pd.to_datetime(dt1, utc=True)
+        dt2 = pd.to_datetime(dt2, utc=True)
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
     first = grouped_df.first()
     last = grouped_df.last()
@@ -78,6 +86,12 @@ def filter_traces_intersecting(df, dt1, dt2, parameters=None):
         PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
+    needs_conversion = check_pandas_ge_024()
+    if needs_conversion:
+        dt1 = dt1.replace(tzinfo=pytz.utc)
+        dt2 = dt2.replace(tzinfo=pytz.utc)
+        dt1 = pd.to_datetime(dt1, utc=True)
+        dt2 = pd.to_datetime(dt2, utc=True)
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
     first = grouped_df.first()
     last = grouped_df.last()
@@ -123,6 +137,12 @@ def apply_events(df, dt1, dt2, parameters=None):
         PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
+    needs_conversion = check_pandas_ge_024()
+    if needs_conversion:
+        dt1 = dt1.replace(tzinfo=pytz.utc)
+        dt2 = dt2.replace(tzinfo=pytz.utc)
+        dt1 = pd.to_datetime(dt1, utc=True)
+        dt2 = pd.to_datetime(dt2, utc=True)
 
     df = df[df[timestamp_key] > dt1]
     df = df[df[timestamp_key] < dt2]
