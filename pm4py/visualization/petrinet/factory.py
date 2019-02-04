@@ -15,6 +15,8 @@ PERFORMANCE_DECORATION = "performance"
 FREQUENCY_GREEDY = "frequency_greedy"
 PERFORMANCE_GREEDY = "performance_greedy"
 
+RANKDIR_LR = "set_rankdir_lr"
+
 VERSIONS = {WO_DECORATION: wo_decoration.apply, FREQUENCY_DECORATION: token_decoration.apply_frequency,
             PERFORMANCE_DECORATION: token_decoration.apply_performance,
             FREQUENCY_GREEDY: greedy_decoration.apply_frequency,

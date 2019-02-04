@@ -4,6 +4,10 @@ from graphviz import Digraph
 
 from pm4py.objects.petri.petrinet import Marking
 
+FORMAT = "format"
+DEBUG = "debug"
+RANKDIR_LR = "set_rankdir_lr"
+
 
 def apply(net, initial_marking, final_marking, decorations=None, parameters=None):
     """
@@ -32,16 +36,20 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
         parameters = {}
     image_format = "png"
     debug = False
-    if "format" in parameters:
+    set_rankdir_lr = False
+    if FORMAT in parameters:
         image_format = parameters["format"]
-    if "debug" in parameters:
+    if DEBUG in parameters:
         debug = parameters["debug"]
+    if RANKDIR_LR in parameters:
+        set_rankdir_lr = parameters[RANKDIR_LR]
     return graphviz_visualization(net, image_format=image_format, initial_marking=initial_marking,
-                                  final_marking=final_marking, decorations=decorations, debug=debug)
+                                  final_marking=final_marking, decorations=decorations, debug=debug,
+                                  set_rankdir_lr=set_rankdir_lr)
 
 
 def graphviz_visualization(net, image_format="png", initial_marking=None, final_marking=None, decorations=None,
-                           debug=False):
+                           debug=False, set_rankdir_lr=False):
     """
     Provides visualization for the petrinet
 
@@ -59,6 +67,8 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
         Decorations of the Petri net (says how element must be presented)
     debug
         Enables debug mode
+    set_rankdir_lr
+        Sets the rankdir to LR (horizontal layout)
 
     Returns
     -------
@@ -74,6 +84,8 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph(net.name, filename=filename.name, engine='dot')
+    if set_rankdir_lr:
+        viz.graph_attr['rankdir'] = 'LR'
 
     # transitions
     viz.attr('node', shape='box')
