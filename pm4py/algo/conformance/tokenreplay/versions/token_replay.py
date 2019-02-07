@@ -646,7 +646,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         is_fit = (missing == 0)
 
     if consumed > 0 and produced > 0:
-        trace_fitness = (1.0 - float(missing) / float(consumed)) * (1.0 - float(remaining) / float(produced))
+        #trace_fitness = (1.0 - float(missing) / float(consumed)) * (1.0 - float(remaining) / float(produced))
+        trace_fitness = 0.5 * (1.0 - float(missing) / float(consumed)) + 0.5 * (1.0 - float(remaining) / float(produced))
     else:
         trace_fitness = 1.0
 
