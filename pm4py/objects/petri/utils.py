@@ -396,7 +396,8 @@ def remove_unconnected_components(net):
     return net
 
 
-def get_s_components_from_petri(net, im, fm, curr_s_comp=None, visited_places=None, list_s_components=None):
+def get_s_components_from_petri(net, im, fm, rec_depth=0, curr_s_comp=None, visited_places=None,
+                                list_s_components=None):
     """
     Gets the S-components from a Petri net
 
@@ -420,20 +421,20 @@ def get_s_components_from_petri(net, im, fm, curr_s_comp=None, visited_places=No
     s_components
         List of S-components
     """
+    MAX_REC_DEPTH = 6
     if list_s_components is None:
         list_s_components = []
     if len(im) > 1 or len(fm) > 1:
         return list_s_components
     if not check_petri_wfnet_and_soundness(net):
-        return
+        return list_s_components
     source = list(im.keys())[0]
-    sink = list(fm.keys())[0]
     if curr_s_comp is None:
         curr_s_comp = [source]
     if visited_places is None:
         visited_places = []
     something_changed = True
-    while something_changed:
+    while something_changed and rec_depth < MAX_REC_DEPTH:
         something_changed = False
         places_to_visit = sorted(list(set(curr_s_comp[len(visited_places):])), key=lambda x: len(x.out_arcs),
                                  reverse=True)
@@ -442,9 +443,9 @@ def get_s_components_from_petri(net, im, fm, curr_s_comp=None, visited_places=No
             target_trans = sorted(list(set([arc.target for arc in place_to_visit.out_arcs])),
                                   key=lambda x: len(x.out_arcs))
             for trans in target_trans:
-                trans = target_trans[0]
+                visited_places_names = [x.name for x in visited_places]
                 target_trans_target = list(
-                    set([arc.target for arc in trans.out_arcs if arc.target not in visited_places]))
+                    set([arc.target for arc in trans.out_arcs if arc.target.name not in visited_places_names]))
                 if target_trans_target:
                     something_changed = True
                     if len(target_trans_target) == 1:
@@ -454,12 +455,12 @@ def get_s_components_from_petri(net, im, fm, curr_s_comp=None, visited_places=No
                         for new_place in target_trans_target:
                             [new_curr_s_comp, new_visited_places] = deepcopy([curr_s_comp, visited_places])
                             new_curr_s_comp.append(new_place)
-                            list_s_components = get_s_components_from_petri(net, im, fm, curr_s_comp=new_curr_s_comp,
+                            list_s_components = get_s_components_from_petri(net, im, fm, rec_depth=rec_depth + 1,
+                                                                            curr_s_comp=new_curr_s_comp,
                                                                             visited_places=new_visited_places,
                                                                             list_s_components=list_s_components)
-            if place_to_visit == sink:
-                if not set([place.name for place in curr_s_comp]) in list_s_components:
-                    list_s_components.append(set([place.name for place in curr_s_comp]))
-                break
+
+    if not set([place.name for place in curr_s_comp]) in list_s_components:
+        list_s_components.append(set([place.name for place in curr_s_comp]))
 
     return list_s_components
