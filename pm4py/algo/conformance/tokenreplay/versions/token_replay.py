@@ -5,7 +5,7 @@ from pm4py import util as pmutil
 from pm4py.algo.filtering.log.variants import variants_filter as variants_module
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.petri import semantics
-from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden
+from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
 from pm4py.util import constants
 
 MAX_REC_DEPTH = 18
@@ -393,7 +393,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 try_to_reach_final_marking_through_hidden=True, stop_immediately_unfit=False,
                 walk_through_hidden_trans=True, post_fix_caching=None,
                 marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
-                enable_postfix_cache=False, enable_marktoact_cache=False, cleaning_token_flood=False):
+                enable_postfix_cache=False, enable_marktoact_cache=False, cleaning_token_flood=False,
+                s_components=None):
     """
     Apply the token replaying algorithm to a trace
 
@@ -443,6 +444,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         Enables marking to activity cache
     cleaning_token_flood
         Decides if a cleaning of the token flood shall be operated
+    s_components
+        S-components of the Petri net (if workflow net)
     """
     trace_activities = [event[activity_key] for event in trace]
     act_trans = []
@@ -506,13 +509,13 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                                                                                  visited_transitions,
                                                                                  vis_mark)
                     is_initially_enabled = True
+                    old_marking_names = [x.name for x in list(marking.keys())]
                     if not semantics.is_enabled(t, net, marking):
                         is_initially_enabled = False
                         transitions_with_problems.append(t)
                         if stop_immediately_unfit:
                             missing = missing + 1
                             break
-                        prev_marking_missing = copy(marking)
                         [m, tokens_added] = add_missing_tokens(t, marking)
                         missing = missing + m
                         if enable_pltr_fitness:
@@ -534,8 +537,22 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         marking = semantics.execute(t, net, marking)
                         act_trans.append(t)
                         vis_mark.append(marking)
-                    if not is_initially_enabled:
+                    if not is_initially_enabled and cleaning_token_flood:
                         # here, a routine for cleaning token flood shall go
+                        new_marking_names = [x.name for x in list(marking.keys())]
+                        new_marking_names_diff = [x for x in new_marking_names if x not in old_marking_names]
+                        new_marking_names_inte = [x for x in new_marking_names if x in old_marking_names]
+                        for p1 in new_marking_names_inte:
+                            for p2 in new_marking_names_diff:
+                                for comp in s_components:
+                                    if p1 in comp and p2 in comp:
+                                        place_to_delete = [place for place in list(marking.keys()) if place.name == p1]
+                                        if len(place_to_delete) == 1:
+                                            del marking[place_to_delete[0]]
+                                            if not place_to_delete[0] in current_remaining_map:
+                                                current_remaining_map[place_to_delete[0]] = 0
+                                            current_remaining_map[place_to_delete[0]] = current_remaining_map[
+                                                                                            place_to_delete[0]] + 1
                         pass
                 else:
                     if not trace[i][activity_key] in notexisting_activities_in_model:
@@ -675,7 +692,7 @@ class ApplyTraceTokenReplay(Thread):
                  reach_mark_through_hidden=True, stop_immediately_when_unfit=False,
                  walk_through_hidden_trans=True, post_fix_caching=None,
                  marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
-                 cleaning_token_flood=False):
+                 cleaning_token_flood=False, s_components=None):
         """
         Constructor
 
@@ -718,6 +735,8 @@ class ApplyTraceTokenReplay(Thread):
             Alignment threads maximum allowed execution time
         cleaning_token_flood
             Decides if a cleaning of the token flood shall be operated
+        s_components
+            S-components of the Petri net
         """
         self.thread_is_alive = True
         self.trace = trace
@@ -755,6 +774,7 @@ class ApplyTraceTokenReplay(Thread):
         self.consumed = None
         self.remaining = None
         self.produced = None
+        self.s_components = s_components
 
         Thread.__init__(self)
 
@@ -777,7 +797,8 @@ class ApplyTraceTokenReplay(Thread):
                         thread_maximum_ex_time=self.thread_maximum_ex_time,
                         enable_postfix_cache=self.enable_postfix_cache,
                         enable_marktoact_cache=self.enable_marktoact_cache,
-                        cleaning_token_flood=self.cleaning_token_flood)
+                        cleaning_token_flood=self.cleaning_token_flood,
+                        s_components=self.s_components)
         self.thread_is_alive = False
 
 
@@ -964,6 +985,11 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
             if transition.label:
                 transition_fitness_per_trace[transition] = {"underfed_traces": {}, "fit_traces": {}}
 
+    s_components = []
+
+    if cleaning_token_flood:
+        s_components = get_s_components_from_petri(net, initial_marking, final_marking)
+
     notexisting_activities_in_model = {}
 
     trans_map = {}
@@ -1009,7 +1035,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                                                              marking_to_activity_caching=marking_to_activity_cache,
                                                              is_reduction=is_reduction,
                                                              thread_maximum_ex_time=thread_maximum_ex_time,
-                                                             cleaning_token_flood=cleaning_token_flood)
+                                                             cleaning_token_flood=cleaning_token_flood,
+                                                             s_components=s_components)
                     threads[variant].start()
                 while len(threads) > 0:
                     threads_keys = list(threads.keys())
