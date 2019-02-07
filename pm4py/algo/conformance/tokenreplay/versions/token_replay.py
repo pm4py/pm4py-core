@@ -455,7 +455,13 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     vis_mark.append(marking)
     missing = 0
     consumed = 0
-    produced = 1
+    sum_tokens_im = 0
+    for place in initial_marking:
+        sum_tokens_im = sum_tokens_im + initial_marking[place]
+    sum_tokens_fm = 0
+    for place in final_marking:
+        sum_tokens_fm = sum_tokens_fm + final_marking[place]
+    produced = sum_tokens_im
     current_event_map = {}
     current_remaining_map = {}
     for i in range(len(trace)):
@@ -595,7 +601,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 #    DebugConst.REACH_ITF2 = i
 
     if break_condition_final_marking(marking, final_marking):
-        consumed = consumed + 1
+        consumed = consumed + sum_tokens_fm
 
     marking_before_cleaning = copy(marking)
 
