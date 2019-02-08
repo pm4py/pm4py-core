@@ -2,7 +2,7 @@ import logging
 import os
 import unittest
 
-import pm4py.objects.log.transform as log_transform
+from pm4py.objects.conversion.log import factory as log_conv_fact
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNameException
 from pm4py.algo.discovery.alpha import factory as alpha_factory
@@ -26,7 +26,7 @@ class AlphaMinerTest(unittest.TestCase):
             log = xes_importer.import_log(log_name)
         else:
             event_log = csv_importer.import_event_stream(log_name)
-            log = log_transform.transform_event_stream_to_event_log(event_log)
+            log = log_conv_fact.apply(event_log)
         net, marking, fmarking = alpha_factory.apply(log)
         soundness = check_soundness.check_petri_wfnet_and_soundness(net)
         del soundness

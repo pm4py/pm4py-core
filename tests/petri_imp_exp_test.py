@@ -8,6 +8,7 @@ from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import pnml as petri_exporter
 from pm4py.objects.petri.importer import pnml as petri_importer
+from pm4py.algo.discovery.inductive import factory as inductive_miner
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 
 
@@ -79,6 +80,15 @@ class PetriImportExportTest(unittest.TestCase):
                                   os.path.join(OUTPUT_DATA_DIR, "stochastic_running_example.pnml"),
                                   final_marking=fmarking1, stochastic_map=stochastic_info1)
         os.remove(os.path.join(OUTPUT_DATA_DIR, "stochastic_running_example.pnml"))
+
+    def test_s_components(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        self.dummy_variable = "dummy_value"
+        log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        net, im, fm = inductive_miner.apply(log)
+        s_comps = petri.utils.get_s_components_from_petri(net, im, fm)
+        del s_comps
 
 
 if __name__ == "__main__":

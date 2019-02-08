@@ -10,3 +10,4 @@ pandas==0.23.4
 scipy==1.2.0
 scikit-learn==0.20.2
 pulp==1.6.9
+pytz==2018.9

@@ -16,6 +16,7 @@ if __name__ == "__main__":
     from examples import example_simulation
     from examples import token_replay_imdf
     from examples import example_diagnostics
+    from examples import sna_log
     from examples import transition_system_test
     from examples import stochastic_petri_nets
     from examples import stochastic_petri_df
@@ -35,6 +36,8 @@ if __name__ == "__main__":
     imdf_example.execute_script()
     print("\n\ntestEvaluation")
     test_evaluation.execute_script()
+    print("\n\nsna_log")
+    sna_log.execute_script()
     print("\n\ntokenReplay_alpha")
     token_replay_alpha.execute_script()
     print("\n\nmanual_log_generation")
