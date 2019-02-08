@@ -3,6 +3,8 @@ import tempfile
 
 import pandas as pd
 
+from pm4py.util.versions import check_pandas_ge_024
+
 
 def import_dataframe_from_path_wo_timeconversion(path, sep=',', quotechar=None, nrows=None):
     """
@@ -116,14 +118,21 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
         Dataframe with timestamp columns converted
 
     """
+    needs_conversion = check_pandas_ge_024()
     for col in df.columns:
         if timest_columns is None or col in timest_columns:
             if df[col].dtype == 'object':
                 try:
                     if timest_format is None:
-                        df[col] = pd.to_datetime(df[col])
+                        if needs_conversion:
+                            df[col] = pd.to_datetime(df[col], utc=True)
+                        else:
+                            df[col] = pd.to_datetime(df[col])
                     else:
-                        df[col] = pd.to_datetime(df[col], format=timest_format)
+                        if needs_conversion:
+                            df[col] = pd.to_datetime(df[col], utc=True, format=timest_format)
+                        else:
+                            df[col] = pd.to_datetime(df[col])
                 except ValueError:
                     # print("exception converting column: "+str(col))
                     pass

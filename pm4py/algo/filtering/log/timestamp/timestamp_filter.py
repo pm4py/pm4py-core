@@ -1,5 +1,5 @@
 from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
-from pm4py.objects.log import transform
+from pm4py.objects.conversion.log import factory as log_converter
 from pm4py.objects.log.log import EventLog, EventStream
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
@@ -151,9 +151,9 @@ def apply_events(log, dt1, dt2, parameters=None):
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
 
-    stream = transform.transform_event_log_to_event_stream(log)
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
     filtered_stream = EventStream([x for x in stream if dt1 < x[timestamp_key].replace(tzinfo=None) < dt2])
-    filtered_log = transform.transform_event_stream_to_event_log(filtered_stream)
+    filtered_log = log_converter.apply(filtered_stream)
 
     return filtered_log
 

@@ -119,7 +119,10 @@ def import_log(filename, parameters=None):
             elif elem.tag.endswith(log_lib.util.xes.TAG_BOOLEAN):
                 if parent is not None:
                     try:
-                        val = bool(elem.get(log_lib.util.xes.KEY_VALUE))
+                        val0 = elem.get(log_lib.util.xes.KEY_VALUE)
+                        val = False
+                        if str(val0).lower() == "true":
+                            val = True
                         tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), val, tree)
                     except ValueError:
                         logging.info("failed to parse boolean: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))

@@ -3,7 +3,7 @@ import os
 import sys
 
 from pm4py.algo.discovery.dfg import factory as dfg_factory
-from pm4py.objects.log import transform
+from pm4py.objects.conversion.log import factory as log_conv_fact
 from pm4py.objects.log.exporter.xes import factory as xes_exporter
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.log.util import insert_classifier
@@ -27,7 +27,7 @@ def execute_script():
         print("\n\n")
         print("log loaded")
         print("Number of traces - ", len(log))
-        event_log = transform.transform_event_log_to_event_stream(log)
+        event_log = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
         print("Number of events - ", len(event_log))
         print("Classifiers ", log.classifiers)
         exp_log_name = "xescert_exportlogs" + "\\" + "exp_" + logName
@@ -63,7 +63,7 @@ def execute_script():
         log = xes_importer.import_log(exp_log_name)
         print("log loaded", exp_log_name)
         print("Number of traces - ", len(log))
-        event_log = transform.transform_event_log_to_event_stream(log)
+        event_log = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
         print("Number of events - ", len(event_log))
         print("Classifiers ", log.classifiers)
 
