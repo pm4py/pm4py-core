@@ -93,6 +93,7 @@ setup(
         'graphviz',
         'pandas>=0.24.1',
         'scipy',
+        'pyarrow',
         'scikit-learn',
         'pulp',
         'pytz>=2018.9'
