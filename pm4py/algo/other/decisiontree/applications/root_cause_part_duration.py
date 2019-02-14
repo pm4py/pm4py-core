@@ -7,9 +7,9 @@ from pm4py.algo.other.decisiontree import mine_decision_tree
 DEFAULT_MAX_REC_DEPTH_DEC_MINING = 3
 
 
-def perform_duration_root_cause_analysis(log, activity, parameters=None):
+def get_data_classes_root_cause_analysis(log, activity, parameters=None):
     """
-    Perform root cause analysis about the excessive duration of an activity
+    Gets data and classes for root cause analysis about the excessive duration of an activity
 
     Parameters
     -------------
@@ -41,6 +41,35 @@ def perform_duration_root_cause_analysis(log, activity, parameters=None):
         else:
             target.append(1)
     target = np.array(target)
+
+    return data, feature_names, target, classes
+
+
+def perform_duration_root_cause_analysis(log, activity, parameters=None):
+    """
+    Perform root cause analysis about the excessive duration of an activity
+
+    Parameters
+    -------------
+    log
+        Trace log
+    activity
+        Activity
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    -------------
+    clf
+        Decision tree
+    feature_names
+        Feature names
+    classes
+        Classes
+    """
+
+    data, feature_names, target, classes = get_data_classes_root_cause_analysis(log, activity, parameters=parameters)
+
     clf = mine_decision_tree.mine(data, target, max_depth=DEFAULT_MAX_REC_DEPTH_DEC_MINING)
 
     return clf, feature_names, classes
