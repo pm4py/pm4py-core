@@ -22,10 +22,12 @@ def get_data_classes_root_cause_analysis(log, activity, parameters=None):
 
     Returns
     -------------
-    clf
-        Decision tree
+    data
+        Data
     feature_names
         Feature names
+    target
+        Target for each example
     classes
         Classes
     """

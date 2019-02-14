@@ -8,7 +8,7 @@ from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.decisiontree import factory as dt_vis_factory
 from pm4py.algo.other.clustering import factory as clusterer
 from pm4py.algo.other.conceptdrift import factory as conc_drift_detection_factory
-from pm4py.algo.other.conceptdrift.utils import get_decision_tree
+from pm4py.algo.other.conceptdrift.utils import get_representation
 
 
 class DecisionTreeTest(unittest.TestCase):
@@ -53,7 +53,7 @@ class DecisionTreeTest(unittest.TestCase):
         log_path = os.path.join("input_data", "receipt.xes")
         log = xes_importer.import_log(log_path)
         drift_found, logs_list, endpoints, change_date_repr = conc_drift_detection_factory.apply(log)
-        clf, feature_names, classes = get_decision_tree.get_decision_tree(logs_list[0], logs_list[1])
+        clf, feature_names, classes = get_representation.get_decision_tree(logs_list[0], logs_list[1])
         del clf
         del feature_names
         del classes
