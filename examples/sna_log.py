@@ -13,9 +13,9 @@ def execute_script():
     sub_values = sna_factory.apply(log, variant="subcontracting")
     ja_values = sna_factory.apply(log, variant="jointactivities")
 
-    gviz_sub = pn_vis_factory.apply(sub_values, variant="networkx")
+    gviz_sub = pn_vis_factory.apply(sub_values, variant="networkx", parameters={"format": "svg"})
     gviz_hw = pn_vis_factory.apply(hw_values, variant="pyvis")
-    gviz_wt = pn_vis_factory.apply(wt_values, variant="networkx")
+    gviz_wt = pn_vis_factory.apply(wt_values, variant="networkx", parameters={"format": "svg"})
     gviz_ja = pn_vis_factory.apply(ja_values, variant="pyvis")
 
     pn_vis_factory.view(gviz_sub, variant="networkx")
