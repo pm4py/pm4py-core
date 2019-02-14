@@ -19,6 +19,7 @@ if __name__ == "__main__":
     from examples import clustering_example
     from examples import example_diagnostics
     from examples import parquet
+    from examples import concept_drift
     from examples import sna_log
     from examples import transition_system_test
     from examples import tree_dec_mining_wo_replay
@@ -57,6 +58,8 @@ if __name__ == "__main__":
     example_diagnostics.execute_script()
     print("\n\nparquet")
     parquet.execute_script()
+    print("\n\nconcept_drift")
+    concept_drift.execute_script()
     print("\n\ntransition_system_test")
     transition_system_test.execute_script()
     print("\n\ntree_dec_mining_wo_replay")

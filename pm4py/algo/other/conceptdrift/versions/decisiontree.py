@@ -30,6 +30,18 @@ def apply(log, parameters=None):
             max_n_clusters_to_search -> Provides the maximum number of clusters to search by the algorithm
             enable_succattr -> Enables the usage of activity succession order in order to build the log representation
 
+    Returns
+    ------------
+    a list containing:
+        boolean
+            A boolean indicating if the concept drift was correctly detected
+        logs_list
+            List of event logs
+        endpoints
+            Interesting time points of the concept drift between two successive logs (e.g. third quartile of log
+            at index i and first quartile of log at index i+1)
+        change_date_repr
+            A single date representing an estimation of when the concept drift actually happened
     """
     if parameters is None:
         parameters = {}
@@ -84,9 +96,9 @@ def apply(log, parameters=None):
             logs_list[already_seen[labels[i]]].append(trace)
 
         logs_list = [x for x in logs_list if len(x) > min_rel_size_cluster * len(log)]
-        event_streams_list = [EventStream(sorted(conversion_factory.apply(x, variant=conversion_factory.TO_EVENT_STREAM),
+        event_streams_list = [sorted(conversion_factory.apply(x, variant=conversion_factory.TO_EVENT_STREAM),
                                      key=lambda y: (y[timestamp_key].replace(tzinfo=None) - datetime(1970, 1,
-                                                                                                     1)).total_seconds()))
+                                                                                                     1)).total_seconds())
                               for x in logs_list]
         del logs_list
 
@@ -101,7 +113,7 @@ def apply(log, parameters=None):
                         tzinfo=None) - datetime(1970, 1, 1)).total_seconds()
 
             if third_quart_i > first_quart_i1:
-                event_streams_list[i] = EventStream(event_streams_list[i] + event_streams_list[i + 1])
+                event_streams_list[i] = event_streams_list[i] + event_streams_list[i + 1]
                 event_streams_list[i] = sorted(event_streams_list[i], key=lambda y: (
                         y[timestamp_key].replace(tzinfo=None) - datetime(1970, 1, 1)).total_seconds())
                 event_streams_list = sorted(event_streams_list,
@@ -117,6 +129,7 @@ def apply(log, parameters=None):
             endpoints = []
             change_date_repr = []
             i = 0
+
             while i < len(event_streams_list) - 1:
                 third_quart_i = (event_streams_list[i][int(len(event_streams_list[i]) * 0.75)][timestamp_key].replace(
                     tzinfo=None) - datetime(1970, 1, 1)).total_seconds()
@@ -131,9 +144,7 @@ def apply(log, parameters=None):
 
                 i = i + 1
 
-            print(event_streams_list[0][0])
-
-            logs_list = [conversion_factory.apply(x, variant=conversion_factory.TO_EVENT_LOG) for x in event_streams_list]
+            logs_list = [conversion_factory.apply(EventStream(x), variant=conversion_factory.TO_EVENT_LOG) for x in event_streams_list]
 
             possible_outputs.append(([True, logs_list, endpoints, change_date_repr], cluster_size, silh_score))
 
