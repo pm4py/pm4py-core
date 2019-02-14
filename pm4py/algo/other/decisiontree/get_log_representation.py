@@ -277,7 +277,7 @@ def get_numeric_event_attribute_value_trace(trace, event_attribute):
     raise Exception("at least a trace without any event with event attribute: " + event_attribute)
 
 
-def get_default_representation(log, enable_succattr_clustering=False):
+def get_default_representation(log, enable_succattr=False):
     """
     Gets the default data representation of an event log (for process tree building)
 
@@ -285,7 +285,7 @@ def get_default_representation(log, enable_succattr_clustering=False):
     -------------
     log
         Trace log
-    enable_succattr_clustering
+    enable_succattr
         Inserts the succession of the activities in the obtained data
 
     Returns
@@ -298,7 +298,7 @@ def get_default_representation(log, enable_succattr_clustering=False):
     str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr = attributes_filter.select_attributes_from_log_for_tree(log)
     str_evsucc_attr = None
 
-    if enable_succattr_clustering:
+    if enable_succattr:
         str_evsucc_attr = [xes.DEFAULT_NAME_KEY]
 
     return get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, str_evsucc_attr=str_evsucc_attr)

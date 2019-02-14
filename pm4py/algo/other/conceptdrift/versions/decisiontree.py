@@ -7,7 +7,7 @@ from sklearn.metrics import silhouette_score
 
 from pm4py.algo.other.decisiontree import get_log_representation
 from pm4py.objects.conversion.log import factory as conversion_factory
-from pm4py.objects.log.log import EventLog, Trace
+from pm4py.objects.log.log import EventLog, Trace, EventStream
 from pm4py.objects.log.util import sorting
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
@@ -28,6 +28,7 @@ def apply(log, parameters=None):
             min_rel_size_cluster -> Remove clusters that are smaller in size than this amount in comparison to the log
             min_n_clusters_to_search -> Provides the minimum number of clusters to search by the algorithm
             max_n_clusters_to_search -> Provides the maximum number of clusters to search by the algorithm
+            enable_succattr -> Enables the usage of activity succession order in order to build the log representation
 
     """
     if parameters is None:
@@ -37,12 +38,13 @@ def apply(log, parameters=None):
     min_rel_size_cluster = parameters["min_rel_size_cluster"] if "min_rel_size_cluster" in parameters else 0.05
     min_n_clusters_to_search = parameters["min_n_clusters_to_search"] if "min_n_clusters_to_search" in parameters else 2
     max_n_clusters_to_search = parameters["max_n_clusters_to_search"] if "max_n_clusters_to_search" in parameters else 5
+    enable_succattr = parameters["enable_succattr"] if "enable_succattr" in parameters else False
 
     timestamp_key = parameters[
         constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
 
     log = sorting.sort_timestamp(log, timestamp_key=timestamp_key)
-    data, feature_names = get_log_representation.get_default_representation(log, enable_succattr_clustering=False)
+    data, feature_names = get_log_representation.get_default_representation(log, enable_succattr=enable_succattr)
 
     start_end_timestamp = np.zeros((len(log), 2))
 
@@ -82,9 +84,9 @@ def apply(log, parameters=None):
             logs_list[already_seen[labels[i]]].append(trace)
 
         logs_list = [x for x in logs_list if len(x) > min_rel_size_cluster * len(log)]
-        event_streams_list = [sorted(conversion_factory.apply(x, variant=conversion_factory.TO_EVENT_STREAM),
+        event_streams_list = [EventStream(sorted(conversion_factory.apply(x, variant=conversion_factory.TO_EVENT_STREAM),
                                      key=lambda y: (y[timestamp_key].replace(tzinfo=None) - datetime(1970, 1,
-                                                                                                     1)).total_seconds())
+                                                                                                     1)).total_seconds()))
                               for x in logs_list]
         del logs_list
 
@@ -99,7 +101,7 @@ def apply(log, parameters=None):
                         tzinfo=None) - datetime(1970, 1, 1)).total_seconds()
 
             if third_quart_i > first_quart_i1:
-                event_streams_list[i] = event_streams_list[i] + event_streams_list[i + 1]
+                event_streams_list[i] = EventStream(event_streams_list[i] + event_streams_list[i + 1])
                 event_streams_list[i] = sorted(event_streams_list[i], key=lambda y: (
                         y[timestamp_key].replace(tzinfo=None) - datetime(1970, 1, 1)).total_seconds())
                 event_streams_list = sorted(event_streams_list,
@@ -111,9 +113,7 @@ def apply(log, parameters=None):
                 continue
             i = i + 1
 
-        logs_list = [conversion_factory.apply(x) for x in event_streams_list]
-
-        if len(logs_list) > 1:
+        if len(event_streams_list) > 1:
             endpoints = []
             change_date_repr = []
             i = 0
@@ -130,6 +130,10 @@ def apply(log, parameters=None):
                 change_date_repr.append(datetime.utcfromtimestamp(intermediate_point).strftime('%Y-%m-%d %H:%M:%S'))
 
                 i = i + 1
+
+            print(event_streams_list[0][0])
+
+            logs_list = [conversion_factory.apply(x, variant=conversion_factory.TO_EVENT_LOG) for x in event_streams_list]
 
             possible_outputs.append(([True, logs_list, endpoints, change_date_repr], cluster_size, silh_score))
 
