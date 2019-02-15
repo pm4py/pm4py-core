@@ -427,7 +427,9 @@ class SubtreeB(Subtree):
                     self.detected_cut = "concurrent"
                     self.children.append(
                         SubtreeB(new_dfg, self.master_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
-                                 noise_threshold=self.noise_threshold))
+                                 noise_threshold=self.noise_threshold,
+                                 initial_start_activities=self.initial_start_activities,
+                                 initial_end_activities=self.initial_end_activities))
             else:
                 seq_cut = self.detect_sequential_cut(conn_components, this_nx_graph, strongly_connected_components)
                 if seq_cut[0]:
@@ -438,7 +440,9 @@ class SubtreeB(Subtree):
                         self.children.append(
                             SubtreeB(dfg_child, self.master_dfg, self.initial_dfg, child, self.counts,
                                      self.rec_depth + 1,
-                                     noise_threshold=self.noise_threshold))
+                                     noise_threshold=self.noise_threshold,
+                                     initial_start_activities=self.initial_start_activities,
+                                     initial_end_activities=self.initial_end_activities))
                 else:
                     par_cut = self.detect_parallel_cut(conn_components, this_nx_graph, strongly_connected_components)
                     if par_cut[0]:
@@ -448,7 +452,9 @@ class SubtreeB(Subtree):
                             self.children.append(
                                 SubtreeB(new_dfg, self.master_dfg, new_dfg, comp, self.counts,
                                          self.rec_depth + 1,
-                                         noise_threshold=self.noise_threshold))
+                                         noise_threshold=self.noise_threshold,
+                                         initial_start_activities=self.initial_start_activities,
+                                         initial_end_activities=self.initial_end_activities))
                     else:
                         loop_cut = self.detect_loop_cut(conn_components, this_nx_graph, strongly_connected_components)
                         if loop_cut[0]:
@@ -458,7 +464,9 @@ class SubtreeB(Subtree):
                                 dfg_child = filter_dfg_on_act(self.dfg, child)
                                 next_subtree = SubtreeB(dfg_child, self.master_dfg, self.initial_dfg, child,
                                                         self.counts, self.rec_depth + 1,
-                                                        noise_threshold=self.noise_threshold)
+                                                        noise_threshold=self.noise_threshold,
+                                                        initial_start_activities=self.initial_start_activities,
+                                                        initial_end_activities=self.initial_end_activities)
                                 if loop_cut[2] and index_enum > 0:
                                     next_subtree.force_loop_hidden = True
                                 self.children.append(next_subtree)
