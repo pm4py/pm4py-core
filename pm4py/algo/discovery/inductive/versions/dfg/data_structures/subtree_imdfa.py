@@ -3,14 +3,15 @@ from copy import copy
 from pm4py.algo.discovery.dfg.utils.dfg_utils import filter_dfg_on_act, negate, get_activities_dirlist, \
     get_activities_self_loop, get_activities_direction
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg, \
-    get_connected_components, add_to_most_probable_component
+    get_connected_components, add_to_most_probable_component, infer_start_activities, infer_end_activities
 from pm4py.algo.discovery.inductive.util import shared_constants
 from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 
 
 class Subtree(object):
     def __init__(self, dfg, master_dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0,
-                 start_activities=None, end_activities=None):
+                 start_activities=None, end_activities=None, initial_start_activities=None,
+                 initial_end_activities=None):
         """
         Constructor
 
@@ -40,6 +41,12 @@ class Subtree(object):
         self.end_activities = end_activities
         if self.end_activities is None:
             self.end_activities = []
+        self.initial_start_activities = initial_start_activities
+        if self.initial_start_activities is None:
+            self.initial_start_activities = infer_start_activities(master_dfg)
+        self.initial_end_activities = initial_end_activities
+        if self.initial_end_activities is None:
+            self.initial_end_activities = infer_end_activities(master_dfg)
 
         self.second_iteration = None
         self.activities = None
@@ -57,7 +64,7 @@ class Subtree(object):
         self.negated_ingoing = None
         self.detected_cut = None
         self.children = None
-        self.force_loop_hidden = False
+        self.must_insert_skip = False
 
         self.initialize_tree(dfg, initial_dfg, activities)
 
@@ -307,6 +314,12 @@ class Subtree(object):
 
         return [False, [], []]
 
+    def __str__(self):
+        return "subtree rec_depth="+str(self.rec_depth)+" dfg="+str(self.dfg)+" activities="+str(self.activities)
+
+    def __repr__(self):
+        return "subtree rec_depth="+str(self.rec_depth)+" dfg="+str(self.dfg)+" activities="+str(self.activities)
+
     def detect_cut(self, second_iteration=False):
         """
         Detect generally a cut in the graph (applying all the algorithms)
@@ -328,7 +341,9 @@ class Subtree(object):
                     self.detected_cut = "concurrent"
                     self.children.append(
                         Subtree(new_dfg, self.master_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
-                                noise_threshold=self.noise_threshold))
+                                noise_threshold=self.noise_threshold,
+                                initial_start_activities=self.initial_start_activities,
+                                initial_end_activities=self.initial_end_activities))
             else:
                 if seq_cut[0]:
                     self.detected_cut = "sequential"
@@ -337,7 +352,9 @@ class Subtree(object):
                         self.children.append(
                             Subtree(dfg_child, self.master_dfg, self.initial_dfg, child, self.counts,
                                     self.rec_depth + 1,
-                                    noise_threshold=self.noise_threshold))
+                                    noise_threshold=self.noise_threshold,
+                                    initial_start_activities=self.initial_start_activities,
+                                    initial_end_activities=self.initial_end_activities))
                 else:
                     if par_cut[0]:
                         union_acti_comp = set()
@@ -354,7 +371,9 @@ class Subtree(object):
                             self.children.append(
                                 Subtree(new_dfg, self.master_dfg, new_dfg, comp, self.counts,
                                         self.rec_depth + 1,
-                                        noise_threshold=self.noise_threshold))
+                                        noise_threshold=self.noise_threshold,
+                                        initial_start_activities=self.initial_start_activities,
+                                        initial_end_activities=self.initial_end_activities))
                     else:
                         if loop_cut[0]:
                             self.detected_cut = "loopCut"
@@ -363,7 +382,9 @@ class Subtree(object):
                                 self.children.append(
                                     Subtree(dfg_child, self.master_dfg, self.initial_dfg, child, self.counts,
                                             self.rec_depth + 1,
-                                            noise_threshold=self.noise_threshold))
+                                            noise_threshold=self.noise_threshold,
+                                            initial_start_activities=self.initial_start_activities,
+                                            initial_end_activities=self.initial_end_activities))
                         else:
                             if self.noise_threshold > 0:
                                 if not second_iteration:

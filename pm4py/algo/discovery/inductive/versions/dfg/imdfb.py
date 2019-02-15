@@ -1,20 +1,17 @@
 import sys
 from collections import Counter
-from copy import copy
 
 from pm4py import util as pmutil
-from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
-from pm4py.algo.discovery.inductive.util import petri_cleaning, shared_constants
+from pm4py.algo.discovery.inductive.util import shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb import SubtreeB
-from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr
+from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr_imdfb
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.algo.filtering.log.end_activities import end_activities_filter
 from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 from pm4py.objects.log.util import xes as xes_util
-from pm4py.objects.petri.utils import remove_unconnected_components
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
 
@@ -74,7 +71,7 @@ def apply(log, parameters):
                                                     contains_empty_traces=contains_empty_traces,
                                                     start_activities=start_activities, end_activities=end_activities)
 
-    if enable_reduction:
+    """if enable_reduction:
         vis_trans = [x for x in net.transitions if x.label]
         hid_trans = [x for x in net.transitions if x.label is None]
         if vis_trans:
@@ -93,7 +90,7 @@ def apply(log, parameters):
                                                     parameters=reduction_parameters)
 
                 # apply petri_reduction technique in order to simplify the Petri net
-                net = petri_cleaning.petri_reduction_treplay(net, parameters={"aligned_traces": aligned_traces})
+                net = petri_cleaning.petri_reduction_treplay(net, parameters={"aligned_traces": aligned_traces})"""
 
     return net, initial_marking, final_marking
 
@@ -226,8 +223,9 @@ def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False
 
     c = Counts()
     s = SubtreeB(dfg, dfg, dfg, activities, c, 0, noise_threshold=noise_threshold, start_activities=start_activities,
-                 end_activities=end_activities)
+                 end_activities=end_activities, initial_start_activities=start_activities,
+                 initial_end_activities=end_activities)
 
-    tree_repr = get_tree_repr.get_repr(s, 0, contains_empty_traces=contains_empty_traces)
+    tree_repr = get_tree_repr_imdfb.get_repr(s, 0, contains_empty_traces=contains_empty_traces)
 
     return tree_repr

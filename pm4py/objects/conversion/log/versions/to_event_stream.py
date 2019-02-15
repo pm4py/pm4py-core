@@ -57,6 +57,10 @@ def transform_event_log_to_event_stream(log, include_case_attributes=True,
             if include_case_attributes:
                 for key, value in trace.attributes.items():
                     event[case_attribute_prefix + key] = value
+            # fix 14/02/2019: since the XES standard does not force to specify a case ID, when event log->event stream
+            # conversion is done, the possibility to get back the original event log is lost
+            if log_util.CASE_ATTRIBUTE_GLUE not in event:
+                event[log_util.CASE_ATTRIBUTE_GLUE] = str(hash(trace))
             events.append(event)
     return log_instance.EventStream(events, attributes=log.attributes, classifiers=log.classifiers,
                                     omni_present=log.omni_present, extensions=log.extensions)
