@@ -64,7 +64,7 @@ class Subtree(object):
         self.negated_ingoing = None
         self.detected_cut = None
         self.children = None
-        self.force_loop_hidden = False
+        self.must_insert_skip = False
 
         self.initialize_tree(dfg, initial_dfg, activities)
 
@@ -313,6 +313,12 @@ class Subtree(object):
                         return [True, [set1, set2], True]
 
         return [False, [], []]
+
+    def __str__(self):
+        return "subtree rec_depth="+str(self.rec_depth)+" dfg="+str(self.dfg)+" activities="+str(self.activities)
+
+    def __repr__(self):
+        return "subtree rec_depth="+str(self.rec_depth)+" dfg="+str(self.dfg)+" activities="+str(self.activities)
 
     def detect_cut(self, second_iteration=False):
         """

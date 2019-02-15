@@ -6,7 +6,7 @@ from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.algo.discovery.inductive.util import shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb import SubtreeB
-from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr
+from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr_imdfb
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.algo.filtering.log.end_activities import end_activities_filter
 from pm4py.algo.filtering.log.start_activities import start_activities_filter
@@ -226,6 +226,6 @@ def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False
                  end_activities=end_activities, initial_start_activities=start_activities,
                  initial_end_activities=end_activities)
 
-    tree_repr = get_tree_repr.get_repr(s, 0, contains_empty_traces=contains_empty_traces)
+    tree_repr = get_tree_repr_imdfb.get_repr(s, 0, contains_empty_traces=contains_empty_traces)
 
     return tree_repr
