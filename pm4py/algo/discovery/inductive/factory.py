@@ -12,7 +12,7 @@ INDUCTIVE_ONLY_DFG = 'only_dfg'
 IMDFA = 'imdfa'
 IMDFB = 'imdfb'
 
-DEFAULT_VARIANT = IMDFA
+DEFAULT_VARIANT = IMDFB
 
 VERSIONS = {INDUCTIVE_ONLY_DFG: imdfa.apply, IMDFA: imdfa.apply, IMDFB: imdfb.apply}
 VERSIONS_DFG = {INDUCTIVE_ONLY_DFG: imdfa.apply_dfg, IMDFA: imdfa.apply_dfg, IMDFB: imdfb.apply_dfg}

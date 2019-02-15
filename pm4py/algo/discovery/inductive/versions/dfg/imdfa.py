@@ -8,7 +8,7 @@ from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.algo.discovery.inductive.util import petri_cleaning, shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa import Subtree
-from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr
+from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr_imdfa
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 from pm4py.objects.log.util import xes as xes_util
@@ -192,6 +192,6 @@ def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False
     c = Counts()
     s = Subtree(dfg, dfg, dfg, activities, c, 0, noise_threshold=noise_threshold)
 
-    tree_repr = get_tree_repr.get_repr(s, 0, contains_empty_traces=contains_empty_traces)
+    tree_repr = get_tree_repr_imdfa.get_repr(s, 0, contains_empty_traces=contains_empty_traces)
 
     return tree_repr

@@ -85,9 +85,10 @@ def is_intersecting(trace, dt1, dt2, timestamp_key):
     if trace:
         condition1 = dt1 < trace[0][timestamp_key].replace(tzinfo=None) < dt2
         condition2 = dt1 < trace[-1][timestamp_key].replace(tzinfo=None) < dt2
-        condition3 = dt2 < trace[0][timestamp_key].replace(tzinfo=None) < dt1
+        condition3 = trace[0][timestamp_key].replace(tzinfo=None) < dt1 < trace[-1][timestamp_key].replace(tzinfo=None)
+        condition4 = trace[0][timestamp_key].replace(tzinfo=None) < dt2 < trace[-1][timestamp_key].replace(tzinfo=None)
 
-        if condition1 or condition2 or condition3:
+        if condition1 or condition2 or condition3 or condition4:
             return True
     return False
 
