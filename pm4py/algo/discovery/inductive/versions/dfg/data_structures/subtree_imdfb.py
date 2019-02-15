@@ -407,18 +407,44 @@ class SubtreeB(Subtree):
         return G
 
     def put_skips_in_seq_cut(self):
+        """
+        Puts the skips in sequential cut
+        """
         # first, put skips when in some cut there is an ending activity
         in_end_act = set(self.initial_end_activities)
         i = 0
         while i < len(self.children)-1:
             activities_set = set(self.children[i].activities)
             intersection = activities_set.intersection(in_end_act)
-
             if len(intersection) > 0:
                 j = i + 1
                 while j < len(self.children):
                     self.children[j].must_insert_skip = True
                     j = j + 1
+            i = i + 1
+
+        # second, put skips when in some cut you are not sure to pass through
+        i = 0
+        while i < len(self.children)-1:
+            act_i = self.children[i].activities
+            act_i_output_appearences = {}
+            max_value = i
+            for act in act_i:
+                for out_act in self.outgoing[act]:
+                    act_i_output_appearences[out_act] = len(self.children)-1
+            j = i + 1
+            while j < len(self.children):
+                act_children = self.children[j].activities
+                for act in act_children:
+                    if act in act_i_output_appearences and act_i_output_appearences[act] == len(self.children)-1:
+                        act_i_output_appearences[act] = j
+                        if j > max_value:
+                            max_value = j
+                j = j + 1
+            j = i + 1
+            while j < max_value:
+                self.children[j].must_insert_skip = True
+                j = j + 1
             i = i + 1
 
 
