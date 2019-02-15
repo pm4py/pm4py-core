@@ -374,7 +374,7 @@ def get_trace_attribute_values(log, attribute_key, parameters=None):
     return attributes
 
 
-def filter_log_by_attributes_threshold(log, attributes, variants, vc, threshold, attribute_key="concept:name"):
+def filter_log_by_attributes_threshold(log, attributes, variants, vc, threshold, attribute_key=xes.DEFAULT_NAME_KEY):
     """
     Keep only attributes which number of occurrences is above the threshold (or they belong to the first variant)
 
@@ -406,7 +406,8 @@ def filter_log_by_attributes_threshold(log, attributes, variants, vc, threshold,
             if attribute_key in trace[j]:
                 attribute_value = trace[j][attribute_key]
                 if attribute_value in attributes:
-                    if attribute_value in fva or attributes[attribute_value] >= threshold:
+                    if (attribute_value in fva and attribute_key == xes.DEFAULT_NAME_KEY) or attributes[
+                        attribute_value] >= threshold:
                         new_trace.append(trace[j])
         if len(new_trace) > 0:
             for attr in trace.attributes:
@@ -439,18 +440,19 @@ def apply_auto_filter(log, variants=None, parameters=None):
     if parameters is None:
         parameters = {}
     attribute_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
+        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
     decreasing_factor = parameters[
         "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
-    parameters_variants = {PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
+    parameters_variants = {PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
+                           PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:
         variants = variants_filter.get_variants(log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)
-    activities = get_attribute_values(log, attribute_key, parameters=parameters_variants)
-    alist = attributes_common.get_sorted_attributes_list(activities)
+    attributes_values = get_attribute_values(log, attribute_key, parameters=parameters_variants)
+    alist = attributes_common.get_sorted_attributes_list(attributes_values)
     thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
-    filtered_log = filter_log_by_attributes_threshold(log, activities, variants, vc, thresh, attribute_key)
+    filtered_log = filter_log_by_attributes_threshold(log, attributes_values, variants, vc, thresh, attribute_key)
     return filtered_log
 
 

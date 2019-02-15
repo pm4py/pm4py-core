@@ -204,6 +204,8 @@ def find_auto_threshold(log, variants, decreasing_factor):
         percentage_already_added = already_added_sum / no_of_traces
         if already_added_sum == 0 or varcount > decreasing_factor * prev_var_count:
             already_added_sum = already_added_sum + varcount
+        else:
+            break
         prev_var_count = varcount
 
     percentage_already_added = already_added_sum / no_of_traces
