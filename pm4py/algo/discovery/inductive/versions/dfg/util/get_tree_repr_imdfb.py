@@ -1,6 +1,4 @@
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_activities_self_loop
-from pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans import verify_skip_for_parallel_cut, \
-    verify_skip_transition_necessity
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.objects.process_tree.pt_operator import Operator
 
@@ -41,7 +39,7 @@ def check_loop_need(spec_tree_struct):
     return need_loop_on_subtree
 
 
-def get_repr(spec_tree_struct, rec_depth, must_add_skip=False, contains_empty_traces=False):
+def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
     """
     Get the representation of a process tree
 
@@ -51,8 +49,6 @@ def get_repr(spec_tree_struct, rec_depth, must_add_skip=False, contains_empty_tr
         Internal tree structure (after application of Inductive Miner)
     rec_depth
         Current recursion depth
-    must_add_skip
-        Boolean value that indicate if we are forced to add the skip
     contains_empty_traces
         Boolean value that is True if the event log from which the DFG has been extracted contains empty traces
 
@@ -61,13 +57,13 @@ def get_repr(spec_tree_struct, rec_depth, must_add_skip=False, contains_empty_tr
     final_tree_repr
         Representation of the tree (could be printed, transformed, viewed)
     """
+
     need_loop_on_subtree = check_loop_need(spec_tree_struct)
 
     if contains_empty_traces and rec_depth == 0:
         rec_depth = rec_depth + 1
 
-    # TODO
-    child_tree = ProcessTree()
+    child_tree = None
     if spec_tree_struct.detected_cut == "flower" or (
             spec_tree_struct.detected_cut == "base_concurrent" and need_loop_on_subtree):
         final_tree_repr = ProcessTree(operator=Operator.LOOP)
@@ -81,8 +77,11 @@ def get_repr(spec_tree_struct, rec_depth, must_add_skip=False, contains_empty_tr
         child_tree_redo.parent = final_tree_repr
         child_tree_exit.parent = final_tree_repr
     elif spec_tree_struct.detected_cut == "base_concurrent":
-        final_tree_repr = ProcessTree(operator=Operator.XOR)
-        child_tree = final_tree_repr
+        if len(spec_tree_struct.activities) > 1 or spec_tree_struct.must_insert_skip:
+            final_tree_repr = ProcessTree(operator=Operator.XOR)
+            child_tree = final_tree_repr
+        else:
+            final_tree_repr = ProcessTree(operator=None, label=None)
     elif spec_tree_struct.detected_cut == "sequential":
         final_tree_repr = ProcessTree(operator=Operator.SEQUENCE)
         child_tree = final_tree_repr
@@ -98,21 +97,19 @@ def get_repr(spec_tree_struct, rec_depth, must_add_skip=False, contains_empty_tr
 
     if spec_tree_struct.detected_cut == "base_concurrent" or spec_tree_struct.detected_cut == "flower":
         for act in spec_tree_struct.activities:
-            new_vis_trans = get_transition(act)
-            child_tree.children.append(new_vis_trans)
-            new_vis_trans.parent = child_tree
-        if verify_skip_transition_necessity(must_add_skip, spec_tree_struct.initial_dfg, spec_tree_struct.dfg,
-                                            spec_tree_struct.activities):
-            # add skip transition
-            new_hidden_trans = get_new_hidden_trans()
-            child_tree.children.append(new_hidden_trans)
-            new_hidden_trans.parent = child_tree
+            if child_tree is None:
+                new_vis_trans = get_transition(act)
+                child_tree = new_vis_trans
+                final_tree_repr = child_tree
+            else:
+                new_vis_trans = get_transition(act)
+                child_tree.children.append(new_vis_trans)
+                new_vis_trans.parent = child_tree
     if spec_tree_struct.detected_cut == "sequential" or spec_tree_struct.detected_cut == "loopCut":
+        #if spec_tree_struct.detected_cut == "loopCut":
+        #    spec_tree_struct.children[0].must_insert_skip = True
         for ch in spec_tree_struct.children:
-            child = get_repr(ch, rec_depth + 1,
-                             must_add_skip=(verify_skip_transition_necessity(False,
-                                                                            ch.initial_dfg, ch.dfg,
-                                                                            ch.activities)) or ch.force_loop_hidden)
+            child = get_repr(ch, rec_depth + 1)
             child_tree.children.append(child)
             child.parent = child_tree
         if spec_tree_struct.detected_cut == "loopCut" and len(spec_tree_struct.children) < 3:
@@ -121,24 +118,34 @@ def get_repr(spec_tree_struct, rec_depth, must_add_skip=False, contains_empty_tr
                 child_tree.children.append(child)
                 child.parent = child_tree
                 spec_tree_struct.children.append(None)
-    if spec_tree_struct.detected_cut == "parallel":
-        m_add_skip = verify_skip_for_parallel_cut(spec_tree_struct.dfg, spec_tree_struct.children)
 
+    if spec_tree_struct.detected_cut == "parallel":
         for child in spec_tree_struct.children:
-            m_add_skip_final = verify_skip_transition_necessity(m_add_skip, spec_tree_struct.initial_dfg,
-                                                                       spec_tree_struct.dfg,
-                                                                       spec_tree_struct.activities)
-            child_final = get_repr(child, rec_depth + 1, must_add_skip=m_add_skip_final)
+            child_final = get_repr(child, rec_depth + 1)
             child_tree.children.append(child_final)
             child_final.parent = child_tree
+
     if spec_tree_struct.detected_cut == "concurrent":
         for child in spec_tree_struct.children:
-            m_add_skip_final = verify_skip_transition_necessity(False, spec_tree_struct.dfg,
-                                                                       spec_tree_struct.dfg,
-                                                                       spec_tree_struct.activities)
-            child_final = get_repr(child, rec_depth + 1, must_add_skip=m_add_skip_final)
+            child_final = get_repr(child, rec_depth + 1)
             child_tree.children.append(child_final)
             child_final.parent = child_tree
+
+    if spec_tree_struct.must_insert_skip:
+        skip = get_new_hidden_trans()
+        if spec_tree_struct.detected_cut == "base_concurrent":
+            child_tree.children.append(skip)
+            skip.parent = child_tree
+        else:
+            master_tree_repr = ProcessTree(operator=Operator.XOR)
+            master_tree_repr.children.append(final_tree_repr)
+            final_tree_repr.parent = master_tree_repr
+
+            master_tree_repr.children.append(skip)
+            skip.parent = master_tree_repr
+
+            return master_tree_repr
+
     if contains_empty_traces and rec_depth == 1:
         master_tree_repr = ProcessTree(operator=Operator.XOR)
         master_tree_repr.children.append(final_tree_repr)
