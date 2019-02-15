@@ -28,7 +28,10 @@ def get_first_terminal_child_transitions(tree):
         if tree.children[0].operator:
             return get_first_terminal_child_transitions(tree.children[0])
         else:
-            return tree.children
+            if tree.children[0].children:
+                return tree.children[0].children
+            else:
+                return [tree.children[0]]
     return []
 
 
@@ -50,7 +53,10 @@ def get_last_terminal_child_transitions(tree):
         if tree.children[-1].operator:
             return get_last_terminal_child_transitions(tree.children[-1])
         else:
-            return tree.children
+            if tree.children[-1].children:
+                return tree.children[-1].children
+            else:
+                return [tree.children[-1]]
     return []
 
 
@@ -117,7 +123,8 @@ def check_tau_mandatory_at_initial_marking(tree):
         to the rest of the process
     """
     condition1 = check_initial_loop(tree)
-    condition2 = len(get_first_terminal_child_transitions(tree)) > 1
+    terminal_transitions = get_first_terminal_child_transitions(tree)
+    condition2 = len(terminal_transitions) > 1
 
     return condition1 or condition2
 
