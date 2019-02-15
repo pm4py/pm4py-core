@@ -406,6 +406,22 @@ class SubtreeB(Subtree):
             G.add_edge(act1, act2)
         return G
 
+    def put_skips_in_seq_cut(self):
+        # first, put skips when in some cut there is an ending activity
+        in_end_act = set(self.initial_end_activities)
+        i = 0
+        while i < len(self.children)-1:
+            activities_set = set(self.children[i].activities)
+            intersection = activities_set.intersection(in_end_act)
+
+            if len(intersection) > 0:
+                j = i + 1
+                while j < len(self.children):
+                    self.children[j].must_insert_skip = True
+                    j = j + 1
+            i = i + 1
+
+
     def detect_cut(self, second_iteration=False):
         """
         Detect generally a cut in the graph (applying all the algorithms)
@@ -443,6 +459,7 @@ class SubtreeB(Subtree):
                                      noise_threshold=self.noise_threshold,
                                      initial_start_activities=self.initial_start_activities,
                                      initial_end_activities=self.initial_end_activities))
+                    self.put_skips_in_seq_cut()
                 else:
                     par_cut = self.detect_parallel_cut(conn_components, this_nx_graph, strongly_connected_components)
                     if par_cut[0]:

@@ -77,7 +77,7 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
         child_tree_redo.parent = final_tree_repr
         child_tree_exit.parent = final_tree_repr
     elif spec_tree_struct.detected_cut == "base_concurrent":
-        if len(spec_tree_struct.activities) > 1:
+        if len(spec_tree_struct.activities) > 1 or spec_tree_struct.must_insert_skip:
             final_tree_repr = ProcessTree(operator=Operator.XOR)
             child_tree = final_tree_repr
         else:
@@ -106,6 +106,8 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
                 child_tree.children.append(new_vis_trans)
                 new_vis_trans.parent = child_tree
     if spec_tree_struct.detected_cut == "sequential" or spec_tree_struct.detected_cut == "loopCut":
+        #if spec_tree_struct.detected_cut == "loopCut":
+        #    spec_tree_struct.children[0].must_insert_skip = True
         for ch in spec_tree_struct.children:
             child = get_repr(ch, rec_depth + 1)
             child_tree.children.append(child)
@@ -118,7 +120,6 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
                 spec_tree_struct.children.append(None)
 
     if spec_tree_struct.detected_cut == "parallel":
-
         for child in spec_tree_struct.children:
             child_final = get_repr(child, rec_depth + 1)
             child_tree.children.append(child_final)
@@ -129,6 +130,21 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
             child_final = get_repr(child, rec_depth + 1)
             child_tree.children.append(child_final)
             child_final.parent = child_tree
+
+    if spec_tree_struct.must_insert_skip:
+        skip = get_new_hidden_trans()
+        if spec_tree_struct.detected_cut == "base_concurrent":
+            child_tree.children.append(skip)
+            skip.parent = child_tree
+        else:
+            master_tree_repr = ProcessTree(operator=Operator.XOR)
+            master_tree_repr.children.append(final_tree_repr)
+            final_tree_repr.parent = master_tree_repr
+
+            master_tree_repr.children.append(skip)
+            skip.parent = master_tree_repr
+
+            return master_tree_repr
 
     if contains_empty_traces and rec_depth == 1:
         master_tree_repr = ProcessTree(operator=Operator.XOR)
