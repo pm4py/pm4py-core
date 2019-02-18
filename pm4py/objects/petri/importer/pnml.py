@@ -101,7 +101,8 @@ def import_net(input_file_path, return_stochastic_information=False):
                     if child2.tag == "name":
                         for child3 in child2:
                             if child3.text:
-                                trans_label = child3.text
+                                if trans_label == trans_name:
+                                    trans_label = child3.text
                     if "toolspecific" in child2.tag:
                         tool = child2.get("tool")
                         if "ProM" in tool:
@@ -134,6 +135,9 @@ def import_net(input_file_path, return_stochastic_information=False):
                                 random_variable.set_weight(weight)
                 if not trans_visible:
                     trans_label = None
+                #if "INVISIBLE" in trans_label:
+                #    trans_label = None
+
                 trans_dict[trans_name] = petri.petrinet.PetriNet.Transition(trans_name, trans_label)
                 net.transitions.add(trans_dict[trans_name])
 
