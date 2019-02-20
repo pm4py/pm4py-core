@@ -2,6 +2,21 @@
 <pnml>
   <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
     <page id="n0">
+      <place id="({'Repair (Complex)+complete', 'Repair (Simple)+complete'}, {'Test Repair+start'})">
+        <name>
+          <text>({'Repair (Complex)+complete', 'Repair (Simple)+complete'}, {'Test Repair+start'})</text>
+        </name>
+      </place>
+      <place id="({'Analyze Defect+start'}, {'Analyze Defect+complete'})">
+        <name>
+          <text>({'Analyze Defect+start'}, {'Analyze Defect+complete'})</text>
+        </name>
+      </place>
+      <place id="end">
+        <name>
+          <text>end</text>
+        </name>
+      </place>
       <place id="start">
         <name>
           <text>start</text>
@@ -10,34 +25,9 @@
           <text>1</text>
         </initialMarking>
       </place>
-      <place id="({'Analyze Defect+start'}, {'Analyze Defect+complete'})">
-        <name>
-          <text>({'Analyze Defect+start'}, {'Analyze Defect+complete'})</text>
-        </name>
-      </place>
-      <place id="({'Test Repair+start'}, {'Test Repair+complete'})">
-        <name>
-          <text>({'Test Repair+start'}, {'Test Repair+complete'})</text>
-        </name>
-      </place>
-      <place id="({'Test Repair+complete'}, {'Archive Repair+complete', 'Restart Repair+complete'})">
-        <name>
-          <text>({'Test Repair+complete'}, {'Archive Repair+complete', 'Restart Repair+complete'})</text>
-        </name>
-      </place>
       <place id="({'Inform User+complete'}, {'Archive Repair+complete'})">
         <name>
           <text>({'Inform User+complete'}, {'Archive Repair+complete'})</text>
-        </name>
-      </place>
-      <place id="end">
-        <name>
-          <text>end</text>
-        </name>
-      </place>
-      <place id="({'Repair (Simple)+complete', 'Repair (Complex)+complete'}, {'Test Repair+start'})">
-        <name>
-          <text>({'Repair (Simple)+complete', 'Repair (Complex)+complete'}, {'Test Repair+start'})</text>
         </name>
       </place>
       <place id="({'Repair (Complex)+start'}, {'Repair (Complex)+complete'})">
@@ -45,19 +35,9 @@
           <text>({'Repair (Complex)+start'}, {'Repair (Complex)+complete'})</text>
         </name>
       </place>
-      <place id="({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Complex)+start', 'Repair (Simple)+start'})">
+      <place id="({'Test Repair+complete'}, {'Restart Repair+complete', 'Archive Repair+complete'})">
         <name>
-          <text>({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Complex)+start', 'Repair (Simple)+start'})</text>
-        </name>
-      </place>
-      <place id="({'Register+complete'}, {'Analyze Defect+start'})">
-        <name>
-          <text>({'Register+complete'}, {'Analyze Defect+start'})</text>
-        </name>
-      </place>
-      <place id="({'Analyze Defect+complete'}, {'Inform User+complete'})">
-        <name>
-          <text>({'Analyze Defect+complete'}, {'Inform User+complete'})</text>
+          <text>({'Test Repair+complete'}, {'Restart Repair+complete', 'Archive Repair+complete'})</text>
         </name>
       </place>
       <place id="({'Repair (Simple)+start'}, {'Repair (Simple)+complete'})">
@@ -65,9 +45,29 @@
           <text>({'Repair (Simple)+start'}, {'Repair (Simple)+complete'})</text>
         </name>
       </place>
-      <transition id="Repair (Complex)+complete">
+      <place id="({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Simple)+start', 'Repair (Complex)+start'})">
         <name>
-          <text>Repair (Complex)+complete</text>
+          <text>({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Simple)+start', 'Repair (Complex)+start'})</text>
+        </name>
+      </place>
+      <place id="({'Analyze Defect+complete'}, {'Inform User+complete'})">
+        <name>
+          <text>({'Analyze Defect+complete'}, {'Inform User+complete'})</text>
+        </name>
+      </place>
+      <place id="({'Test Repair+start'}, {'Test Repair+complete'})">
+        <name>
+          <text>({'Test Repair+start'}, {'Test Repair+complete'})</text>
+        </name>
+      </place>
+      <place id="({'Register+complete'}, {'Analyze Defect+start'})">
+        <name>
+          <text>({'Register+complete'}, {'Analyze Defect+start'})</text>
+        </name>
+      </place>
+      <transition id="Analyze Defect+complete">
+        <name>
+          <text>Analyze Defect+complete</text>
         </name>
       </transition>
       <transition id="Archive Repair+complete">
@@ -75,9 +75,9 @@
           <text>Archive Repair+complete</text>
         </name>
       </transition>
-      <transition id="Test Repair+complete">
+      <transition id="Repair (Simple)+complete">
         <name>
-          <text>Test Repair+complete</text>
+          <text>Repair (Simple)+complete</text>
         </name>
       </transition>
       <transition id="Repair (Complex)+start">
@@ -85,9 +85,9 @@
           <text>Repair (Complex)+start</text>
         </name>
       </transition>
-      <transition id="Repair (Simple)+complete">
+      <transition id="Test Repair+complete">
         <name>
-          <text>Repair (Simple)+complete</text>
+          <text>Test Repair+complete</text>
         </name>
       </transition>
       <transition id="Inform User+complete">
@@ -95,14 +95,19 @@
           <text>Inform User+complete</text>
         </name>
       </transition>
-      <transition id="Analyze Defect+start">
-        <name>
-          <text>Analyze Defect+start</text>
-        </name>
-      </transition>
       <transition id="Repair (Simple)+start">
         <name>
           <text>Repair (Simple)+start</text>
+        </name>
+      </transition>
+      <transition id="Test Repair+start">
+        <name>
+          <text>Test Repair+start</text>
+        </name>
+      </transition>
+      <transition id="Analyze Defect+start">
+        <name>
+          <text>Analyze Defect+start</text>
         </name>
       </transition>
       <transition id="Register+complete">
@@ -115,42 +120,41 @@
           <text>Restart Repair+complete</text>
         </name>
       </transition>
-      <transition id="Analyze Defect+complete">
+      <transition id="Repair (Complex)+complete">
         <name>
-          <text>Analyze Defect+complete</text>
+          <text>Repair (Complex)+complete</text>
         </name>
       </transition>
-      <transition id="Test Repair+start">
-        <name>
-          <text>Test Repair+start</text>
-        </name>
-      </transition>
-      <arc id="4966179" source="({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Complex)+start', 'Repair (Simple)+start'})" target="Repair (Simple)+start"/>
-      <arc id="4966181" source="({'Test Repair+complete'}, {'Archive Repair+complete', 'Restart Repair+complete'})" target="Archive Repair+complete"/>
-      <arc id="4966183" source="({'Analyze Defect+complete'}, {'Inform User+complete'})" target="Inform User+complete"/>
-      <arc id="4966191" source="({'Test Repair+complete'}, {'Archive Repair+complete', 'Restart Repair+complete'})" target="Restart Repair+complete"/>
-      <arc id="4966197" source="Restart Repair+complete" target="({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Complex)+start', 'Repair (Simple)+start'})"/>
-      <arc id="4966201" source="Repair (Simple)+complete" target="({'Repair (Simple)+complete', 'Repair (Complex)+complete'}, {'Test Repair+start'})"/>
-      <arc id="4966215" source="Analyze Defect+complete" target="({'Analyze Defect+complete'}, {'Inform User+complete'})"/>
-      <arc id="4966343" source="Repair (Complex)+complete" target="({'Repair (Simple)+complete', 'Repair (Complex)+complete'}, {'Test Repair+start'})"/>
-      <arc id="4966345" source="({'Repair (Simple)+start'}, {'Repair (Simple)+complete'})" target="Repair (Simple)+complete"/>
-      <arc id="4966355" source="Register+complete" target="({'Register+complete'}, {'Analyze Defect+start'})"/>
-      <arc id="4966227" source="({'Repair (Simple)+complete', 'Repair (Complex)+complete'}, {'Test Repair+start'})" target="Test Repair+start"/>
-      <arc id="4966363" source="Archive Repair+complete" target="end"/>
-      <arc id="4966365" source="({'Test Repair+start'}, {'Test Repair+complete'})" target="Test Repair+complete"/>
-      <arc id="4966369" source="Analyze Defect+start" target="({'Analyze Defect+start'}, {'Analyze Defect+complete'})"/>
-      <arc id="4966371" source="({'Analyze Defect+start'}, {'Analyze Defect+complete'})" target="Analyze Defect+complete"/>
-      <arc id="4966373" source="Repair (Complex)+start" target="({'Repair (Complex)+start'}, {'Repair (Complex)+complete'})"/>
-      <arc id="4966379" source="Repair (Simple)+start" target="({'Repair (Simple)+start'}, {'Repair (Simple)+complete'})"/>
-      <arc id="4966251" source="Analyze Defect+complete" target="({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Complex)+start', 'Repair (Simple)+start'})"/>
-      <arc id="8769517" source="start" target="Register+complete"/>
-      <arc id="4966381" source="({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Complex)+start', 'Repair (Simple)+start'})" target="Repair (Complex)+start"/>
-      <arc id="4966385" source="Test Repair+start" target="({'Test Repair+start'}, {'Test Repair+complete'})"/>
-      <arc id="4966387" source="({'Inform User+complete'}, {'Archive Repair+complete'})" target="Archive Repair+complete"/>
-      <arc id="4966389" source="({'Repair (Complex)+start'}, {'Repair (Complex)+complete'})" target="Repair (Complex)+complete"/>
-      <arc id="4966391" source="Inform User+complete" target="({'Inform User+complete'}, {'Archive Repair+complete'})"/>
-      <arc id="4966393" source="({'Register+complete'}, {'Analyze Defect+start'})" target="Analyze Defect+start"/>
-      <arc id="4966397" source="Test Repair+complete" target="({'Test Repair+complete'}, {'Archive Repair+complete', 'Restart Repair+complete'})"/>
+      <arc id="-9223371957133828734" source="({'Test Repair+start'}, {'Test Repair+complete'})" target="Test Repair+complete"/>
+      <arc id="-9223371957133828860" source="Repair (Complex)+start" target="({'Repair (Complex)+start'}, {'Repair (Complex)+complete'})"/>
+      <arc id="79720947078" source="Inform User+complete" target="({'Inform User+complete'}, {'Archive Repair+complete'})"/>
+      <arc id="79720947085" source="({'Inform User+complete'}, {'Archive Repair+complete'})" target="Archive Repair+complete"/>
+      <arc id="79720947092" source="Repair (Simple)+start" target="({'Repair (Simple)+start'}, {'Repair (Simple)+complete'})"/>
+      <arc id="-9223371957133828713" source="({'Repair (Simple)+start'}, {'Repair (Simple)+complete'})" target="Repair (Simple)+complete"/>
+      <arc id="-9223371957133828706" source="Analyze Defect+complete" target="({'Analyze Defect+complete'}, {'Inform User+complete'})"/>
+      <arc id="79720947106" source="({'Analyze Defect+complete'}, {'Inform User+complete'})" target="Inform User+complete"/>
+      <arc id="79720947113" source="Repair (Complex)+complete" target="({'Repair (Complex)+complete', 'Repair (Simple)+complete'}, {'Test Repair+start'})"/>
+      <arc id="-9223371957133828692" source="Repair (Simple)+complete" target="({'Repair (Complex)+complete', 'Repair (Simple)+complete'}, {'Test Repair+start'})"/>
+      <arc id="-9223371957261696978" source="start" target="Register+complete"/>
+      <arc id="79720947120" source="({'Repair (Complex)+complete', 'Repair (Simple)+complete'}, {'Test Repair+start'})" target="Test Repair+start"/>
+      <arc id="79720947127" source="Restart Repair+complete" target="({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Simple)+start', 'Repair (Complex)+start'})"/>
+      <arc id="-9223371957133828678" source="Analyze Defect+complete" target="({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Simple)+start', 'Repair (Complex)+start'})"/>
+      <arc id="79720947134" source="({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Simple)+start', 'Repair (Complex)+start'})" target="Repair (Simple)+start"/>
+      <arc id="-9223371957133828671" source="({'Restart Repair+complete', 'Analyze Defect+complete'}, {'Repair (Simple)+start', 'Repair (Complex)+start'})" target="Repair (Complex)+start"/>
+      <arc id="-9223371957133828664" source="Test Repair+complete" target="({'Test Repair+complete'}, {'Restart Repair+complete', 'Archive Repair+complete'})"/>
+      <arc id="-9223371957133828790" source="Repair (Complex)+complete" target="end"/>
+      <arc id="79720947148" source="({'Test Repair+complete'}, {'Restart Repair+complete', 'Archive Repair+complete'})" target="Restart Repair+complete"/>
+      <arc id="79720947022" source="Repair (Complex)+start" target="end"/>
+      <arc id="-9223371957133828657" source="({'Test Repair+complete'}, {'Restart Repair+complete', 'Archive Repair+complete'})" target="Archive Repair+complete"/>
+      <arc id="-9223371957133828783" source="Inform User+complete" target="end"/>
+      <arc id="79720947029" source="Test Repair+complete" target="end"/>
+      <arc id="-9223371957133828776" source="({'Register+complete'}, {'Analyze Defect+start'})" target="Analyze Defect+start"/>
+      <arc id="79720947036" source="Register+complete" target="({'Register+complete'}, {'Analyze Defect+start'})"/>
+      <arc id="79720947043" source="Archive Repair+complete" target="end"/>
+      <arc id="-9223371957133828755" source="({'Analyze Defect+start'}, {'Analyze Defect+complete'})" target="Analyze Defect+complete"/>
+      <arc id="79720947057" source="Analyze Defect+start" target="({'Analyze Defect+start'}, {'Analyze Defect+complete'})"/>
+      <arc id="-9223371957133828748" source="({'Repair (Complex)+start'}, {'Repair (Complex)+complete'})" target="Repair (Complex)+complete"/>
+      <arc id="79720947071" source="Test Repair+start" target="({'Test Repair+start'}, {'Test Repair+complete'})"/>
     </page>
   </net>
 </pnml>
