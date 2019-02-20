@@ -95,6 +95,7 @@ setup(
         'scipy',
         'pyarrow',
         'scikit-learn',
+        'pydotplus',
         'pulp',
         'pytz>=2018.9'
     ],
