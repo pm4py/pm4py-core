@@ -1,6 +1,7 @@
 from pm4py.algo.discovery.dfg.utils import dfg_utils
-from pm4py.objects.heuristics_net.node import Node
 from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
+from pm4py.objects.heuristics_net.node import Node
+
 
 class HeuristicsNet:
     def __init__(self, dfg, activities=None, start_activities=None, end_activities=None, activities_occurrences=None,
@@ -45,7 +46,7 @@ class HeuristicsNet:
                 self.activities_occurrences[act] = dfg_utils.sum_activities_count(dfg, [act])
         self.default_edges_color = default_edges_color
 
-    def calculate(self, dependency_thresh=0.5, min_act_count=0, min_dfg_occurrences=0,
+    def calculate(self, dependency_thresh=0.5, and_measure_thresh=0.75, min_act_count=0, min_dfg_occurrences=0,
                   dfg_pre_cleaning_noise_thresh=0.05):
         """
         Calculate the dependency matrix, populate the nodes
@@ -54,6 +55,8 @@ class HeuristicsNet:
         -------------
         dependency_thresh
             (Optional) dependency threshold
+        and_measure_thresh
+            (Optional) AND measure threshold
         min_act_count
             (Optional) minimum number of occurrences of an activity
         min_dfg_occurrences
@@ -97,15 +100,16 @@ class HeuristicsNet:
                     if n1 not in self.nodes:
                         self.nodes[n1] = Node(self, n1, self.activities_occurrences[n1],
                                               is_start_node=(n1 in self.start_activities),
-                                              is_end_node=(n1 in self.end_activities))
+                                              is_end_node=(n1 in self.end_activities),
+                                              default_edges_color=self.default_edges_color)
                     if n2 not in self.nodes:
                         self.nodes[n2] = Node(self, n2, self.activities_occurrences[n2],
                                               is_start_node=(n2 in self.start_activities),
-                                              is_end_node=(n2 in self.end_activities))
+                                              is_end_node=(n2 in self.end_activities),
+                                              default_edges_color=self.default_edges_color)
                     self.nodes[n1].add_output_connection(self.nodes[n2], self.dependency_matrix[n1][n2],
                                                          self.dfg_matrix[n1][n2])
                     self.nodes[n2].add_input_connection(self.nodes[n1], self.dependency_matrix[n1][n2],
                                                         self.dfg_matrix[n1][n2])
         for node in self.nodes:
-            self.nodes[node].calculate_and_measure()
-        print(self.nodes)
+            self.nodes[node].calculate_and_measure_out(and_measure_thresh=and_measure_thresh)
