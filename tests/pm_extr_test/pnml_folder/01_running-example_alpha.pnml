@@ -2,9 +2,14 @@
 <pnml>
   <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
     <page id="n0">
-      <place id="({'decide'}, {'pay compensation', 'reject request', 'reinitiate request'})">
+      <place id="({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})">
         <name>
-          <text>({'decide'}, {'pay compensation', 'reject request', 'reinitiate request'})</text>
+          <text>({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})</text>
+        </name>
+      </place>
+      <place id="({'reinitiate request', 'register request'}, {'check ticket'})">
+        <name>
+          <text>({'reinitiate request', 'register request'}, {'check ticket'})</text>
         </name>
       </place>
       <place id="start">
@@ -15,9 +20,19 @@
           <text>1</text>
         </initialMarking>
       </place>
+      <place id="({'examine thoroughly', 'examine casually'}, {'decide'})">
+        <name>
+          <text>({'examine thoroughly', 'examine casually'}, {'decide'})</text>
+        </name>
+      </place>
       <place id="end">
         <name>
           <text>end</text>
+        </name>
+      </place>
+      <place id="({'decide'}, {'reinitiate request', 'pay compensation', 'reject request'})">
+        <name>
+          <text>({'decide'}, {'reinitiate request', 'pay compensation', 'reject request'})</text>
         </name>
       </place>
       <place id="({'check ticket'}, {'decide'})">
@@ -25,24 +40,24 @@
           <text>({'check ticket'}, {'decide'})</text>
         </name>
       </place>
-      <place id="({'register request', 'reinitiate request'}, {'check ticket'})">
+      <transition id="examine casually">
         <name>
-          <text>({'register request', 'reinitiate request'}, {'check ticket'})</text>
+          <text>examine casually</text>
         </name>
-      </place>
-      <place id="({'examine thoroughly', 'examine casually'}, {'decide'})">
+      </transition>
+      <transition id="reject request">
         <name>
-          <text>({'examine thoroughly', 'examine casually'}, {'decide'})</text>
+          <text>reject request</text>
         </name>
-      </place>
-      <place id="({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})">
+      </transition>
+      <transition id="examine thoroughly">
         <name>
-          <text>({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})</text>
+          <text>examine thoroughly</text>
         </name>
-      </place>
-      <transition id="register request">
+      </transition>
+      <transition id="decide">
         <name>
-          <text>register request</text>
+          <text>decide</text>
         </name>
       </transition>
       <transition id="check ticket">
@@ -60,45 +75,30 @@
           <text>pay compensation</text>
         </name>
       </transition>
-      <transition id="examine thoroughly">
+      <transition id="register request">
         <name>
-          <text>examine thoroughly</text>
+          <text>register request</text>
         </name>
       </transition>
-      <transition id="examine casually">
-        <name>
-          <text>examine casually</text>
-        </name>
-      </transition>
-      <transition id="reject request">
-        <name>
-          <text>reject request</text>
-        </name>
-      </transition>
-      <transition id="decide">
-        <name>
-          <text>decide</text>
-        </name>
-      </transition>
-      <arc id="4924193" source="({'examine thoroughly', 'examine casually'}, {'decide'})" target="decide"/>
-      <arc id="4924163" source="register request" target="({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})"/>
-      <arc id="4924165" source="({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})" target="examine thoroughly"/>
-      <arc id="4924167" source="({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})" target="examine casually"/>
-      <arc id="4924171" source="decide" target="({'decide'}, {'pay compensation', 'reject request', 'reinitiate request'})"/>
-      <arc id="4924183" source="reinitiate request" target="({'register request', 'reinitiate request'}, {'check ticket'})"/>
-      <arc id="4924173" source="({'decide'}, {'pay compensation', 'reject request', 'reinitiate request'})" target="pay compensation"/>
-      <arc id="4924175" source="({'decide'}, {'pay compensation', 'reject request', 'reinitiate request'})" target="reject request"/>
-      <arc id="4922609" source="start" target="register request"/>
-      <arc id="4924177" source="({'decide'}, {'pay compensation', 'reject request', 'reinitiate request'})" target="reinitiate request"/>
-      <arc id="4924191" source="examine casually" target="({'examine thoroughly', 'examine casually'}, {'decide'})"/>
-      <arc id="4922613" source="pay compensation" target="end"/>
-      <arc id="4924181" source="register request" target="({'register request', 'reinitiate request'}, {'check ticket'})"/>
-      <arc id="4922615" source="reject request" target="end"/>
-      <arc id="4924185" source="({'register request', 'reinitiate request'}, {'check ticket'})" target="check ticket"/>
-      <arc id="4922617" source="check ticket" target="({'check ticket'}, {'decide'})"/>
-      <arc id="4922619" source="({'check ticket'}, {'decide'})" target="decide"/>
-      <arc id="4924189" source="examine thoroughly" target="({'examine thoroughly', 'examine casually'}, {'decide'})"/>
-      <arc id="4922623" source="reinitiate request" target="({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})"/>
+      <arc id="79719136832" source="check ticket" target="({'check ticket'}, {'decide'})"/>
+      <arc id="-9223371957135638910" source="({'examine thoroughly', 'examine casually'}, {'decide'})" target="decide"/>
+      <arc id="-9223371957135638973" source="({'check ticket'}, {'decide'})" target="decide"/>
+      <arc id="79719136867" source="({'decide'}, {'reinitiate request', 'pay compensation', 'reject request'})" target="pay compensation"/>
+      <arc id="-9223371957135638938" source="({'decide'}, {'reinitiate request', 'pay compensation', 'reject request'})" target="reject request"/>
+      <arc id="-9223371957135638966" source="reinitiate request" target="({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})"/>
+      <arc id="-9223371957135638931" source="reinitiate request" target="({'reinitiate request', 'register request'}, {'check ticket'})"/>
+      <arc id="-9223371957135638994" source="start" target="register request"/>
+      <arc id="79719136846" source="register request" target="({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})"/>
+      <arc id="79719136895" source="examine casually" target="({'examine thoroughly', 'examine casually'}, {'decide'})"/>
+      <arc id="-9223371957135638959" source="({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})" target="examine thoroughly"/>
+      <arc id="79719136881" source="register request" target="({'reinitiate request', 'register request'}, {'check ticket'})"/>
+      <arc id="-9223371957135638924" source="({'reinitiate request', 'register request'}, {'check ticket'})" target="check ticket"/>
+      <arc id="-9223371957135638987" source="pay compensation" target="end"/>
+      <arc id="79719136853" source="({'reinitiate request', 'register request'}, {'examine thoroughly', 'examine casually'})" target="examine casually"/>
+      <arc id="79719136825" source="reject request" target="end"/>
+      <arc id="-9223371957135638917" source="examine thoroughly" target="({'examine thoroughly', 'examine casually'}, {'decide'})"/>
+      <arc id="79719136860" source="decide" target="({'decide'}, {'reinitiate request', 'pay compensation', 'reject request'})"/>
+      <arc id="-9223371957135638945" source="({'decide'}, {'reinitiate request', 'pay compensation', 'reject request'})" target="reinitiate request"/>
     </page>
   </net>
 </pnml>
