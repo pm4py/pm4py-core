@@ -2,7 +2,8 @@ from pm4py.objects.heuristics_net.edge import Edge
 
 
 class Node:
-    def __init__(self, heuristics_net, node_name, node_occ, is_start_node=False, is_end_node=False):
+    def __init__(self, heuristics_net, node_name, node_occ, is_start_node=False, is_end_node=False,
+                 default_edges_color="#000000"):
         """
         Constructor
 
@@ -18,6 +19,8 @@ class Node:
             Tells if the node is a start node
         is_end_node
             Tells if the node is a end node
+        default_edges_color
+            Default edges color
         """
         self.heuristics_net = heuristics_net
         self.node_name = node_name
@@ -26,9 +29,11 @@ class Node:
         self.is_end_activity = is_end_node
         self.input_connections = {}
         self.output_connections = {}
+        self.and_measures_out = {}
         self.output_couples_and_measure = []
+        self.default_edges_color = default_edges_color
 
-    def add_output_connection(self, other_node, dependency_value, dfg_value):
+    def add_output_connection(self, other_node, dependency_value, dfg_value, repr_color=None):
         """
         Adds an output connection to another node
 
@@ -40,11 +45,15 @@ class Node:
             Dependency value
         dfg_value
             DFG value
+        repr_color
+            Color associated to the edge
         """
-        edge = Edge(self, other_node, dependency_value, dfg_value)
+        if repr_color is None:
+            repr_color = self.default_edges_color
+        edge = Edge(self, other_node, dependency_value, dfg_value, repr_color=repr_color)
         self.output_connections[other_node] = edge
 
-    def add_input_connection(self, other_node, dependency_value, dfg_value):
+    def add_input_connection(self, other_node, dependency_value, dfg_value, repr_color=None):
         """
         Adds an input connection to another node
 
@@ -56,12 +65,43 @@ class Node:
             Dependency value
         dfg_value
             DFG value
+        repr_color
+            Color associated to the edge
         """
-        edge = Edge(self, other_node, dependency_value, dfg_value)
+        if repr_color is None:
+            repr_color = self.default_edges_color
+        edge = Edge(self, other_node, dependency_value, dfg_value, repr_color=repr_color)
         self.input_connections[other_node] = edge
 
-    def calculate_and_measure(self):
-        pass
+    def calculate_and_measure_out(self, and_measure_thresh=0.75):
+        """
+        Calculate AND measure for output relations (as couples)
+
+        Parameters
+        -------------
+        and_measure_thresh
+            AND measure threshold
+        """
+        out_nodes = list(self.output_connections)
+        i = 0
+        while i < len(out_nodes):
+            n1 = out_nodes[i].node_name
+            j = i + 1
+            while j < len(out_nodes):
+                n2 = out_nodes[j].node_name
+                c1 = self.heuristics_net.dfg_matrix[n1][n2] if n1 in self.heuristics_net.dfg_matrix and n2 in \
+                                                               self.heuristics_net.dfg_matrix[n1] else 0
+                c2 = self.heuristics_net.dfg_matrix[n2][n1] if n2 in self.heuristics_net.dfg_matrix and n1 in \
+                                                               self.heuristics_net.dfg_matrix[n2] else 0
+                c3 = self.heuristics_net.dfg_matrix[self.node_name][n1]
+                c4 = self.heuristics_net.dfg_matrix[self.node_name][n2]
+                value = (c1 + c2) / (c3 + c4 + 1)
+                if value >= and_measure_thresh:
+                    if n1 not in self.and_measures_out:
+                        self.and_measures_out[n1] = {}
+                    self.and_measures_out[n1][n2] = value
+                j = j + 1
+            i = i + 1
 
     def __repr__(self):
         ret = "(node:" + self.node_name + " connections:{"
