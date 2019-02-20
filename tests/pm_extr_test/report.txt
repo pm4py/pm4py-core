@@ -3,51 +3,51 @@
 Fitness on Alpha and Inductive models - measured by token-based replay and alignments
 ----
 log                          	fitness_token_alpha          	times_tokenreplay_alpha      	fitness_token_imdf           	times_tokenreplay_imdf       	fitness_align_imdf           	times_alignments_imdf        
-01_running-example.xes.gz    	100.000                      	0.003                        	100.000                      	0.003                        	100.000                      	0.944                        
-02_teleclaims.xes.gz         	5.552                        	0.061                        	100.000                      	0.063                        	100.000                      	16.527                       
-03_repairExample.xes.gz      	90.580                       	0.091                        	100.000                      	0.065                        	100.000                      	6.819                        
-04_reviewing.xes.gz          	100.000                      	0.101                        	100.000                      	0.110                        	100.000                      	2.767                        
-05_bpic2017.xes.gz           	2.935                        	0.296                        	100.000                      	0.301                        	100.000                      	34.755                       
-06_bpic2013_incidents.xes.gz 	0.000                        	1.539                        	100.000                      	2.015                        	100.000                      	30.775                       
-07_bpic2013_problems.xes.gz  	0.000                        	0.155                        	100.000                      	0.151                        	100.000                      	3.001                        
-08_receipt.xes.gz            	0.000                        	0.126                        	100.000                      	0.114                        	95.886                       	15.072                       
+01_running-example.xes.gz    	100.000                      	0.000                        	100.000                      	0.000                        	100.000                      	4.235                        
+02_teleclaims.xes.gz         	5.552                        	0.125                        	100.000                      	0.078                        	100.000                      	44.612                       
+03_repairExample.xes.gz      	0.000                        	0.156                        	99.819                       	0.125                        	99.819                       	10.783                       
+04_reviewing.xes.gz          	100.000                      	0.203                        	0.000                        	0.297                        	0.000                        	35.217                       
+05_bpic2017.xes.gz           	0.000                        	0.297                        	100.000                      	0.329                        	100.000                      	48.961                       
+06_bpic2013_incidents.xes.gz 	0.013                        	2.808                        	100.000                      	4.203                        	100.000                      	166.349                      
+07_bpic2013_problems.xes.gz  	0.000                        	0.359                        	100.000                      	0.312                        	100.000                      	6.629                        
+08_receipt.xes.gz            	0.000                        	0.328                        	100.000                      	0.156                        	100.000                      	22.207                       
 
 
 Precision measured by ETConformance where activated transitions are retrieved using token replay
 ----
 log                          	precision_alpha              	precision_imdf               
-01_running-example.xes.gz    	0.104                        	0.104                        
-02_teleclaims.xes.gz         	0.000                        	0.000                        
-03_repairExample.xes.gz      	0.037                        	0.037                        
-04_reviewing.xes.gz          	0.062                        	0.062                        
-05_bpic2017.xes.gz           	0.000                        	0.000                        
-06_bpic2013_incidents.xes.gz 	0.534                        	0.534                        
-07_bpic2013_problems.xes.gz  	0.756                        	0.718                        
-08_receipt.xes.gz            	0.105                        	0.041                        
+01_running-example.xes.gz    	0.733                        	0.733                        
+02_teleclaims.xes.gz         	0.327                        	0.173                        
+03_repairExample.xes.gz      	0.983                        	0.246                        
+04_reviewing.xes.gz          	0.738                        	0.680                        
+05_bpic2017.xes.gz           	0.601                        	0.760                        
+06_bpic2013_incidents.xes.gz 	0.000                        	0.399                        
+07_bpic2013_problems.xes.gz  	0.939                        	0.614                        
+08_receipt.xes.gz            	0.430                        	0.155                        
 
 
 Generalization based on token replay transition recall
 ----
 log                          	generalization_alpha         	generalization_imdf          
-01_running-example.xes.gz    	0.526                        	0.499                        
-02_teleclaims.xes.gz         	0.978                        	0.977                        
-03_repairExample.xes.gz      	0.967                        	0.965                        
-04_reviewing.xes.gz          	0.895                        	0.900                        
-05_bpic2017.xes.gz           	0.991                        	0.987                        
-06_bpic2013_incidents.xes.gz 	0.864                        	0.909                        
-07_bpic2013_problems.xes.gz  	0.849                        	0.887                        
-08_receipt.xes.gz            	0.755                        	0.843                        
+01_running-example.xes.gz    	0.526                        	0.546                        
+02_teleclaims.xes.gz         	0.978                        	0.951                        
+03_repairExample.xes.gz      	0.967                        	0.966                        
+04_reviewing.xes.gz          	0.895                        	0.826                        
+05_bpic2017.xes.gz           	0.991                        	0.985                        
+06_bpic2013_incidents.xes.gz 	0.864                        	0.882                        
+07_bpic2013_problems.xes.gz  	0.849                        	0.903                        
+08_receipt.xes.gz            	0.755                        	0.837                        
 
 
 Simplicity based on inverse arc degree
 ----
 log                          	simplicity_alpha             	simplicity_imdf              
-01_running-example.xes.gz    	0.533                        	0.650                        
-02_teleclaims.xes.gz         	0.525                        	0.661                        
-03_repairExample.xes.gz      	0.500                        	0.610                        
-04_reviewing.xes.gz          	0.541                        	0.697                        
-05_bpic2017.xes.gz           	0.571                        	0.609                        
-06_bpic2013_incidents.xes.gz 	0.867                        	0.767                        
-07_bpic2013_problems.xes.gz  	0.700                        	0.700                        
-08_receipt.xes.gz            	0.474                        	0.690                        
+01_running-example.xes.gz    	0.533                        	0.522                        
+02_teleclaims.xes.gz         	0.525                        	0.644                        
+03_repairExample.xes.gz      	0.500                        	0.600                        
+04_reviewing.xes.gz          	0.541                        	0.543                        
+05_bpic2017.xes.gz           	0.533                        	0.632                        
+06_bpic2013_incidents.xes.gz 	0.867                        	0.667                        
+07_bpic2013_problems.xes.gz  	0.700                        	0.667                        
+08_receipt.xes.gz            	0.386                        	0.689                        
 
