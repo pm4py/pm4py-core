@@ -2,10 +2,10 @@ import itertools
 from copy import deepcopy
 
 import numpy as np
+from sklearn import tree
 
-from pm4py.objects.log.util import get_log_representation, get_prefixes
-from pm4py.algo.other.decisiontree import mine_decision_tree
 from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.util import get_log_representation, get_prefixes
 
 DEFAULT_MAX_REC_DEPTH_DEC_MINING = 2
 
@@ -75,7 +75,8 @@ def perform_decision_mining_given_activities(log, activities, parameters=None):
 
     data, feature_names = get_log_representation.get_default_representation(transf_log)
 
-    clf = mine_decision_tree.mine(data, target, max_depth=DEFAULT_MAX_REC_DEPTH_DEC_MINING)
+    clf = tree.DecisionTreeClassifier(max_depth=DEFAULT_MAX_REC_DEPTH_DEC_MINING)
+    clf.fit(data, target)
 
     len_list_logs = [len(x) for x in list_logs]
 

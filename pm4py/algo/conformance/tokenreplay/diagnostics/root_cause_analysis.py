@@ -1,6 +1,7 @@
 from copy import deepcopy
 
 import numpy as np
+from sklearn import tree
 
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.log.log import EventLog, Trace, Event
@@ -86,7 +87,7 @@ def form_representation_from_dictio_couple(first_cases_repr, second_cases_repr, 
     from pm4py.objects.log.util import get_log_representation
 
     log = form_log_from_dictio_couple(first_cases_repr, second_cases_repr,
-                                                                    enable_multiplier=enable_multiplier)
+                                      enable_multiplier=enable_multiplier)
 
     data, feature_names = get_log_representation.get_representation(log, [], string_attributes, [], numeric_attributes)
 
@@ -120,8 +121,6 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
     """
     if parameters is None:
         parameters = {}
-
-    from pm4py.algo.other.decisiontree import mine_decision_tree
 
     diagnostics = {}
     string_attributes = parameters["string_attributes"] if "string_attributes" in parameters else []
@@ -164,7 +163,8 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
                 classes.append("underfed")
 
                 target = np.asarray(target)
-                clf = mine_decision_tree.mine(data, target)
+                clf = tree.DecisionTreeClassifier(max_depth=7)
+                clf.fit(data, target)
                 diagn_dict = {"clf": clf, "data": data, "feature_names": feature_names, "target": target,
                               "classes": classes}
 
@@ -200,8 +200,6 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
     """
     if parameters is None:
         parameters = {}
-
-    from pm4py.algo.other.decisiontree import mine_decision_tree
 
     diagnostics = {}
     string_attributes = parameters["string_attributes"] if "string_attributes" in parameters else []
@@ -249,7 +247,8 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
             classes.append("containing")
 
             target = np.asarray(target)
-            clf = mine_decision_tree.mine(data, target)
+            clf = tree.DecisionTreeClassifier(max_depth=7)
+            clf.fit(data, target)
             diagn_dict = {"clf": clf, "data": data, "feature_names": feature_names, "target": target,
                           "classes": classes}
 

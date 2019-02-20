@@ -1,8 +1,8 @@
 import numpy as np
+from sklearn import tree
 
-from pm4py.objects.log.util import get_log_representation
-from pm4py.algo.other.decisiontree import mine_decision_tree
 from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.util import get_log_representation
 
 DEFAULT_MAX_REC_DEPTH_DEC_MINING = 3
 
@@ -72,6 +72,7 @@ def get_decision_tree(log1, log2, parameters=None):
 
     data, feature_names, target, classes = get_data_classes(log1, log2, parameters=parameters)
 
-    clf = mine_decision_tree.mine(data, target, max_depth=DEFAULT_MAX_REC_DEPTH_DEC_MINING)
+    clf = tree.DecisionTreeClassifier(max_depth=DEFAULT_MAX_REC_DEPTH_DEC_MINING)
+    clf.fit(data, target)
 
     return clf, feature_names, classes
