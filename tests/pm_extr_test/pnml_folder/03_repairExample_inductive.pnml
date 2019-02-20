@@ -2,39 +2,19 @@
 <pnml>
   <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
     <page id="n0">
-      <place id="p_13">
-        <name>
-          <text>p_13</text>
-        </name>
-      </place>
       <place id="p_8">
         <name>
           <text>p_8</text>
         </name>
       </place>
+      <place id="p_12">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
       <place id="p_6">
         <name>
           <text>p_6</text>
-        </name>
-      </place>
-      <place id="p_7">
-        <name>
-          <text>p_7</text>
-        </name>
-      </place>
-      <place id="p_5">
-        <name>
-          <text>p_5</text>
-        </name>
-      </place>
-      <place id="p_10">
-        <name>
-          <text>p_10</text>
-        </name>
-      </place>
-      <place id="p_16">
-        <name>
-          <text>p_16</text>
         </name>
       </place>
       <place id="p_3">
@@ -47,9 +27,9 @@
           <text>p_4</text>
         </name>
       </place>
-      <place id="p_9">
+      <place id="p_10">
         <name>
-          <text>p_9</text>
+          <text>p_10</text>
         </name>
       </place>
       <place id="p_11">
@@ -57,24 +37,19 @@
           <text>p_11</text>
         </name>
       </place>
-      <place id="p_14">
+      <place id="p_7">
         <name>
-          <text>p_14</text>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
         </name>
       </place>
       <place id="sink">
         <name>
           <text>sink</text>
-        </name>
-      </place>
-      <place id="p_15">
-        <name>
-          <text>p_15</text>
-        </name>
-      </place>
-      <place id="p_12">
-        <name>
-          <text>p_12</text>
         </name>
       </place>
       <place id="source">
@@ -85,120 +60,20 @@
           <text>1</text>
         </initialMarking>
       </place>
-      <transition id="skip_19">
+      <place id="p_5">
         <name>
-          <text>skip_19</text>
+          <text>p_5</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="caf6bfbd-1576-4f5e-adbc-abb56a9d8619"/>
-      </transition>
-      <transition id="Test Repair+complete">
+      </place>
+      <transition id="tauJoin_2">
         <name>
-          <text>Test Repair+complete</text>
+          <text>tauJoin_2</text>
         </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="75e62469-3707-4bc2-9d20-81de5214115d"/>
       </transition>
-      <transition id="Archive Repair+complete">
+      <transition id="Repair (Simple)+start">
         <name>
-          <text>Archive Repair+complete</text>
-        </name>
-      </transition>
-      <transition id="Analyze Defect+start">
-        <name>
-          <text>Analyze Defect+start</text>
-        </name>
-      </transition>
-      <transition id="skip_9">
-        <name>
-          <text>skip_9</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="588be372-e458-49b1-91a9-8b2d12eaeb70"/>
-      </transition>
-      <transition id="skip_17">
-        <name>
-          <text>skip_17</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="2ef1aa44-d01a-4138-a597-6dff0eb96ce4"/>
-      </transition>
-      <transition id="Register+complete">
-        <name>
-          <text>Register+complete</text>
-        </name>
-      </transition>
-      <transition id="Analyze Defect+complete">
-        <name>
-          <text>Analyze Defect+complete</text>
-        </name>
-      </transition>
-      <transition id="skip_7">
-        <name>
-          <text>skip_7</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="885a43ba-aa2b-426a-ae70-2082a2484e39"/>
-      </transition>
-      <transition id="Test Repair+start">
-        <name>
-          <text>Test Repair+start</text>
-        </name>
-      </transition>
-      <transition id="tauJoin_14">
-        <name>
-          <text>tauJoin_14</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="ce53a7b9-5975-46d7-bb59-f638aa2f4784"/>
-      </transition>
-      <transition id="tau_1">
-        <name>
-          <text>tau_1</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="2af0fe8e-9285-4737-96df-911b4870dd2b"/>
-      </transition>
-      <transition id="skip_10">
-        <name>
-          <text>skip_10</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="6a1011a0-d9e7-419f-9046-ff99e0268fe6"/>
-      </transition>
-      <transition id="skip_12">
-        <name>
-          <text>skip_12</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="03bf6349-2b9e-49cf-b8a7-102f64cbb1c7"/>
-      </transition>
-      <transition id="Restart Repair+complete">
-        <name>
-          <text>Restart Repair+complete</text>
-        </name>
-      </transition>
-      <transition id="loop_3">
-        <name>
-          <text>loop_3</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="7d2e865a-d0a4-4ace-bc6b-59c4b50cc6c0"/>
-      </transition>
-      <transition id="loop_2">
-        <name>
-          <text>loop_2</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="1db628da-790f-4fac-86e4-95f952394bce"/>
-      </transition>
-      <transition id="Inform User+complete">
-        <name>
-          <text>Inform User+complete</text>
-        </name>
-      </transition>
-      <transition id="Repair (Complex)+start">
-        <name>
-          <text>Repair (Complex)+start</text>
-        </name>
-      </transition>
-      <transition id="tauSplit_13">
-        <name>
-          <text>tauSplit_13</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="bf4d31dd-5f6c-404a-af4b-dc114ad2bab9"/>
-      </transition>
-      <transition id="Repair (Complex)+complete">
-        <name>
-          <text>Repair (Complex)+complete</text>
+          <text>Repair (Simple)+start</text>
         </name>
       </transition>
       <transition id="Repair (Simple)+complete">
@@ -206,75 +81,124 @@
           <text>Repair (Simple)+complete</text>
         </name>
       </transition>
+      <transition id="loop_3">
+        <name>
+          <text>loop_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="e1494f8d-c8c4-41f9-be83-76516ca6ee40"/>
+      </transition>
+      <transition id="skip_6">
+        <name>
+          <text>skip_6</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="b21a6799-f9f5-497a-a2c4-fb396800cda6"/>
+      </transition>
+      <transition id="Repair (Complex)+complete">
+        <name>
+          <text>Repair (Complex)+complete</text>
+        </name>
+      </transition>
+      <transition id="Restart Repair+complete">
+        <name>
+          <text>Restart Repair+complete</text>
+        </name>
+      </transition>
       <transition id="skip_5">
         <name>
           <text>skip_5</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="0f205e34-5c67-4c14-b1a3-ae692d11604a"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="4ea4316a-ed51-483f-89ce-3c980b983064"/>
       </transition>
-      <transition id="skip_15">
+      <transition id="tauSplit_1">
         <name>
-          <text>skip_15</text>
+          <text>tauSplit_1</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="2f2dc2b8-4b73-46bd-9d6d-8d4df44ce027"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="867ff1bb-7cbc-41b7-9a0a-39bdfd10d60f"/>
       </transition>
-      <transition id="Repair (Simple)+start">
+      <transition id="Analyze Defect+start">
         <name>
-          <text>Repair (Simple)+start</text>
+          <text>Analyze Defect+start</text>
         </name>
       </transition>
-      <arc id="4966273" source="p_13" target="Test Repair+complete"/>
-      <arc id="4922499" source="loop_3" target="p_6"/>
-      <arc id="4912133" source="p_5" target="Analyze Defect+complete"/>
-      <arc id="4922503" source="p_7" target="loop_3"/>
-      <arc id="4931337" source="p_10" target="skip_9"/>
-      <arc id="4966283" source="p_7" target="skip_19"/>
-      <arc id="4966285" source="skip_19" target="p_3"/>
-      <arc id="4966263" source="skip_15" target="p_14"/>
-      <arc id="4922513" source="p_3" target="loop_2"/>
-      <arc id="4966289" source="p_14" target="tauJoin_14"/>
-      <arc id="4931349" source="skip_9" target="p_11"/>
-      <arc id="4922391" source="Analyze Defect+complete" target="p_6"/>
-      <arc id="4966295" source="tauSplit_13" target="p_13"/>
-      <arc id="4966169" source="p_15" target="skip_17"/>
-      <arc id="4915099" source="Register+complete" target="p_4"/>
-      <arc id="4915101" source="p_4" target="Analyze Defect+start"/>
-      <arc id="4915103" source="source" target="Register+complete"/>
-      <arc id="4966267" source="Test Repair+complete" target="p_14"/>
-      <arc id="4966309" source="p_7" target="Restart Repair+complete"/>
-      <arc id="4966313" source="Test Repair+start" target="p_8"/>
-      <arc id="4915115" source="Analyze Defect+start" target="p_5"/>
-      <arc id="4966315" source="p_8" target="tauSplit_13"/>
-      <arc id="4966189" source="Repair (Complex)+complete" target="p_12"/>
-      <arc id="4966319" source="tauJoin_14" target="p_7"/>
-      <arc id="4966193" source="p_11" target="Repair (Complex)+complete"/>
-      <arc id="4966321" source="skip_10" target="p_12"/>
-      <arc id="4915125" source="tau_1" target="sink"/>
-      <arc id="4966325" source="p_12" target="skip_12"/>
-      <arc id="4915127" source="p_3" target="tau_1"/>
-      <arc id="4966327" source="Restart Repair+complete" target="p_3"/>
-      <arc id="4966331" source="p_11" target="skip_10"/>
-      <arc id="4966333" source="Archive Repair+complete" target="p_3"/>
-      <arc id="4922431" source="Repair (Complex)+start" target="p_11"/>
-      <arc id="4966335" source="p_7" target="Archive Repair+complete"/>
-      <arc id="4966209" source="Inform User+complete" target="p_16"/>
-      <arc id="4966337" source="skip_17" target="p_16"/>
-      <arc id="4922435" source="p_10" target="Repair (Complex)+start"/>
-      <arc id="4966211" source="p_15" target="Inform User+complete"/>
-      <arc id="4966217" source="p_12" target="Test Repair+start"/>
-      <arc id="4966221" source="skip_12" target="p_8"/>
-      <arc id="4922447" source="skip_7" target="p_10"/>
-      <arc id="4922577" source="loop_2" target="p_6"/>
-      <arc id="4922449" source="p_9" target="skip_7"/>
-      <arc id="4922457" source="Repair (Simple)+complete" target="p_10"/>
-      <arc id="4966233" source="p_16" target="tauJoin_14"/>
-      <arc id="4922459" source="p_9" target="Repair (Simple)+complete"/>
-      <arc id="4922469" source="skip_5" target="p_9"/>
-      <arc id="4922471" source="p_6" target="skip_5"/>
-      <arc id="4966255" source="tauSplit_13" target="p_15"/>
-      <arc id="4922483" source="p_6" target="Repair (Simple)+start"/>
-      <arc id="4922487" source="Repair (Simple)+start" target="p_9"/>
-      <arc id="4966265" source="p_13" target="skip_15"/>
+      <transition id="Test Repair+start">
+        <name>
+          <text>Test Repair+start</text>
+        </name>
+      </transition>
+      <transition id="Register+complete">
+        <name>
+          <text>Register+complete</text>
+        </name>
+      </transition>
+      <transition id="Repair (Complex)+start">
+        <name>
+          <text>Repair (Complex)+start</text>
+        </name>
+      </transition>
+      <transition id="Analyze Defect+complete">
+        <name>
+          <text>Analyze Defect+complete</text>
+        </name>
+      </transition>
+      <transition id="Inform User+complete">
+        <name>
+          <text>Inform User+complete</text>
+        </name>
+      </transition>
+      <transition id="Archive Repair+complete">
+        <name>
+          <text>Archive Repair+complete</text>
+        </name>
+      </transition>
+      <transition id="skip_4">
+        <name>
+          <text>skip_4</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="04a6d4ff-7a07-40c9-b9e6-88a61147c65b"/>
+      </transition>
+      <transition id="Test Repair+complete">
+        <name>
+          <text>Test Repair+complete</text>
+        </name>
+      </transition>
+      <arc id="-9223371957132764030" source="p_6" target="skip_6"/>
+      <arc id="-9223371957135571575" source="Analyze Defect+start" target="p_4"/>
+      <arc id="-9223371957135571701" source="tauSplit_1" target="p_9"/>
+      <arc id="-9223371957132764149" source="p_9" target="Repair (Complex)+complete"/>
+      <arc id="79722011789" source="Archive Repair+complete" target="sink"/>
+      <arc id="79719204111" source="p_7" target="Inform User+complete"/>
+      <arc id="79722011663" source="Repair (Complex)+start" target="p_11"/>
+      <arc id="-9223371957132764016" source="skip_6" target="sink"/>
+      <arc id="-9223371957135571694" source="Inform User+complete" target="p_8"/>
+      <arc id="-9223371957132764142" source="p_9" target="Repair (Complex)+start"/>
+      <arc id="-9223371957132764135" source="Repair (Complex)+complete" target="p_11"/>
+      <arc id="79719204251" source="p_3" target="Analyze Defect+start"/>
+      <arc id="79719204125" source="tauSplit_1" target="p_7"/>
+      <arc id="79722011684" source="Test Repair+complete" target="p_11"/>
+      <arc id="-9223371957132764121" source="p_9" target="Test Repair+complete"/>
+      <arc id="79719204139" source="p_8" target="tauJoin_2"/>
+      <arc id="79722011691" source="p_9" target="Repair (Simple)+start"/>
+      <arc id="79722011698" source="Repair (Simple)+start" target="p_11"/>
+      <arc id="79722011705" source="p_9" target="Test Repair+start"/>
+      <arc id="-9223371957135571652" source="tauJoin_2" target="p_6"/>
+      <arc id="-9223371957132764100" source="Test Repair+start" target="p_11"/>
+      <arc id="-9223371957135571645" source="p_5" target="tauSplit_1"/>
+      <arc id="-9223371957132764093" source="p_9" target="Repair (Simple)+complete"/>
+      <arc id="79722011719" source="Repair (Simple)+complete" target="p_11"/>
+      <arc id="79722011726" source="p_9" target="Restart Repair+complete"/>
+      <arc id="-9223371957132764079" source="Restart Repair+complete" target="p_11"/>
+      <arc id="-9223371957132764065" source="p_11" target="skip_4"/>
+      <arc id="79720947169" source="source" target="Register+complete"/>
+      <arc id="79719204321" source="Register+complete" target="p_3"/>
+      <arc id="79719204195" source="Analyze Defect+complete" target="p_5"/>
+      <arc id="79722011747" source="skip_4" target="p_12"/>
+      <arc id="79719204202" source="p_4" target="Analyze Defect+complete"/>
+      <arc id="-9223371957132764051" source="p_11" target="skip_5"/>
+      <arc id="79722011761" source="skip_5" target="p_10"/>
+      <arc id="-9223371957132764044" source="p_12" target="loop_3"/>
+      <arc id="79719204342" source="p_10" target="tauJoin_2"/>
+      <arc id="79722011768" source="loop_3" target="p_9"/>
+      <arc id="79722011775" source="p_6" target="Archive Repair+complete"/>
     </page>
   </net>
 </pnml>

@@ -2,19 +2,14 @@
 <pnml>
   <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
     <page id="n0">
-      <place id="p_6">
-        <name>
-          <text>p_6</text>
-        </name>
-      </place>
-      <place id="p_8">
-        <name>
-          <text>p_8</text>
-        </name>
-      </place>
       <place id="p_3">
         <name>
           <text>p_3</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
         </name>
       </place>
       <place id="p_4">
@@ -22,14 +17,14 @@
           <text>p_4</text>
         </name>
       </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
       <place id="sink">
         <name>
           <text>sink</text>
-        </name>
-      </place>
-      <place id="p_9">
-        <name>
-          <text>p_9</text>
         </name>
       </place>
       <place id="source">
@@ -45,70 +40,21 @@
           <text>p_5</text>
         </name>
       </place>
-      <place id="p_7">
-        <name>
-          <text>p_7</text>
-        </name>
-      </place>
-      <transition id="O_Refused+complete">
-        <name>
-          <text>O_Refused+complete</text>
-        </name>
-      </transition>
-      <transition id="O_Create Offer+complete">
-        <name>
-          <text>O_Create Offer+complete</text>
-        </name>
-      </transition>
-      <transition id="skip_5">
-        <name>
-          <text>skip_5</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="ef89a18a-caa6-42c4-bf25-3b7d0eaed88d"/>
-      </transition>
-      <transition id="skip_7">
-        <name>
-          <text>skip_7</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="ff4d86c2-6988-46aa-b31b-ec0395566205"/>
-      </transition>
-      <transition id="tau_2">
-        <name>
-          <text>tau_2</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="448df900-6c99-4540-a532-83ea641c8149"/>
-      </transition>
-      <transition id="O_Cancelled+complete">
-        <name>
-          <text>O_Cancelled+complete</text>
-        </name>
-      </transition>
       <transition id="skip_4">
         <name>
           <text>skip_4</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="7641eff0-1bcd-489d-a8ce-40aa0b9d3298"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="230c152b-28ee-41c7-97a0-59ba89cf8ed3"/>
       </transition>
-      <transition id="tau_1">
+      <transition id="skip_2">
         <name>
-          <text>tau_1</text>
+          <text>skip_2</text>
         </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="9556a370-2ea9-43e1-8d06-1b10d9c7a592"/>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="2bfb0fb4-db37-46b3-90ba-21f4d14880cf"/>
       </transition>
-      <transition id="skip_6">
+      <transition id="O_Create Offer+complete">
         <name>
-          <text>skip_6</text>
-        </name>
-        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="fcb9e7bb-156f-43e8-aa99-4e2ab3fb68b8"/>
-      </transition>
-      <transition id="O_Returned+complete">
-        <name>
-          <text>O_Returned+complete</text>
-        </name>
-      </transition>
-      <transition id="O_Created+complete">
-        <name>
-          <text>O_Created+complete</text>
+          <text>O_Create Offer+complete</text>
         </name>
       </transition>
       <transition id="O_Sent (mail and online)+complete">
@@ -116,44 +62,72 @@
           <text>O_Sent (mail and online)+complete</text>
         </name>
       </transition>
-      <transition id="O_Accepted+complete">
-        <name>
-          <text>O_Accepted+complete</text>
-        </name>
-      </transition>
       <transition id="O_Sent (online only)+complete">
         <name>
           <text>O_Sent (online only)+complete</text>
         </name>
       </transition>
-      <arc id="4936333" source="O_Returned+complete" target="p_9"/>
-      <arc id="7418641" source="O_Sent (online only)+complete" target="p_8"/>
-      <arc id="7418643" source="p_7" target="O_Sent (online only)+complete"/>
-      <arc id="7418647" source="source" target="tau_1"/>
-      <arc id="4960411" source="p_8" target="skip_6"/>
-      <arc id="7418781" source="p_6" target="O_Sent (mail and online)+complete"/>
-      <arc id="4960415" source="skip_7" target="p_4"/>
-      <arc id="4960289" source="O_Cancelled+complete" target="p_4"/>
-      <arc id="7418659" source="skip_5" target="p_8"/>
-      <arc id="4960291" source="p_9" target="O_Cancelled+complete"/>
-      <arc id="4960293" source="skip_6" target="p_9"/>
-      <arc id="4960299" source="p_9" target="O_Accepted+complete"/>
-      <arc id="4960305" source="p_9" target="skip_7"/>
-      <arc id="7418675" source="p_4" target="tau_2"/>
-      <arc id="4960445" source="p_9" target="O_Refused+complete"/>
-      <arc id="7418687" source="tau_1" target="p_3"/>
-      <arc id="7418815" source="p_3" target="O_Create Offer+complete"/>
-      <arc id="7418819" source="O_Create Offer+complete" target="p_5"/>
-      <arc id="7418823" source="p_8" target="O_Returned+complete"/>
-      <arc id="7418827" source="skip_4" target="p_7"/>
-      <arc id="7418713" source="p_6" target="skip_4"/>
-      <arc id="7418847" source="O_Created+complete" target="p_6"/>
-      <arc id="4960367" source="O_Accepted+complete" target="p_4"/>
-      <arc id="7418867" source="O_Sent (mail and online)+complete" target="p_7"/>
-      <arc id="4960381" source="O_Refused+complete" target="p_4"/>
-      <arc id="7418743" source="tau_2" target="sink"/>
-      <arc id="7418873" source="p_5" target="O_Created+complete"/>
-      <arc id="7418877" source="p_7" target="skip_5"/>
+      <transition id="O_Accepted+complete">
+        <name>
+          <text>O_Accepted+complete</text>
+        </name>
+      </transition>
+      <transition id="O_Refused+complete">
+        <name>
+          <text>O_Refused+complete</text>
+        </name>
+      </transition>
+      <transition id="O_Created+complete">
+        <name>
+          <text>O_Created+complete</text>
+        </name>
+      </transition>
+      <transition id="skip_3">
+        <name>
+          <text>skip_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="33f75510-1fc3-4508-ae1e-1eb1cb2a26a0"/>
+      </transition>
+      <transition id="skip_1">
+        <name>
+          <text>skip_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="6228268c-0f69-4352-a6a8-34a3541a4237"/>
+      </transition>
+      <transition id="O_Cancelled+complete">
+        <name>
+          <text>O_Cancelled+complete</text>
+        </name>
+      </transition>
+      <transition id="O_Returned+complete">
+        <name>
+          <text>O_Returned+complete</text>
+        </name>
+      </transition>
+      <arc id="79720881160" source="p_7" target="skip_4"/>
+      <arc id="-9223371957133894638" source="skip_4" target="sink"/>
+      <arc id="79720881300" source="O_Sent (online only)+complete" target="p_5"/>
+      <arc id="-9223371957133894498" source="p_4" target="skip_1"/>
+      <arc id="79720881314" source="skip_1" target="p_5"/>
+      <arc id="-9223371957133894491" source="skip_2" target="p_6"/>
+      <arc id="79720881328" source="p_5" target="O_Sent (mail and online)+complete"/>
+      <arc id="-9223371957133894477" source="O_Sent (mail and online)+complete" target="p_6"/>
+      <arc id="-9223371957133894463" source="p_5" target="skip_2"/>
+      <arc id="-9223371957133894582" source="O_Created+complete" target="p_4"/>
+      <arc id="-9223371957133894449" source="O_Cancelled+complete" target="sink"/>
+      <arc id="79720881363" source="O_Returned+complete" target="p_7"/>
+      <arc id="-9223371957133894442" source="p_6" target="O_Returned+complete"/>
+      <arc id="79720881370" source="O_Refused+complete" target="sink"/>
+      <arc id="-9223371957133505827" source="source" target="O_Create Offer+complete"/>
+      <arc id="79720881377" source="p_7" target="O_Accepted+complete"/>
+      <arc id="-9223371957133894428" source="skip_3" target="p_7"/>
+      <arc id="-9223371957133894554" source="p_3" target="O_Created+complete"/>
+      <arc id="79720881384" source="O_Accepted+complete" target="sink"/>
+      <arc id="79720881258" source="p_4" target="O_Sent (online only)+complete"/>
+      <arc id="-9223371957133894421" source="p_6" target="skip_3"/>
+      <arc id="79720881391" source="p_7" target="O_Refused+complete"/>
+      <arc id="79720881265" source="O_Create Offer+complete" target="p_3"/>
+      <arc id="79720881405" source="p_7" target="O_Cancelled+complete"/>
     </page>
   </net>
 </pnml>
