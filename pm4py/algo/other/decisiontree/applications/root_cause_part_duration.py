@@ -1,7 +1,7 @@
 import numpy as np
+from sklearn import tree
 
 from pm4py.objects.log.util import get_log_representation, get_prefixes
-from pm4py.algo.other.decisiontree import mine_decision_tree
 
 DEFAULT_MAX_REC_DEPTH_DEC_MINING = 3
 
@@ -71,6 +71,7 @@ def perform_duration_root_cause_analysis(log, activity, parameters=None):
 
     data, feature_names, target, classes = get_data_classes_root_cause_analysis(log, activity, parameters=parameters)
 
-    clf = mine_decision_tree.mine(data, target, max_depth=DEFAULT_MAX_REC_DEPTH_DEC_MINING)
+    clf = tree.DecisionTreeClassifier(max_depth=DEFAULT_MAX_REC_DEPTH_DEC_MINING)
+    clf.fit(data, target)
 
     return clf, feature_names, classes
