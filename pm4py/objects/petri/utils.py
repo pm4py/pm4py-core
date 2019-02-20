@@ -113,7 +113,7 @@ def construct_trace_net(trace, trace_name_key=xes_util.DEFAULT_NAME_KEY, activit
     place_map = {0: petri.petrinet.PetriNet.Place('p_0')}
     net.places.add(place_map[0])
     for i in range(0, len(trace)):
-        t = petri.petrinet.PetriNet.Transition('t' + str(i), trace[i][activity_key])
+        t = petri.petrinet.PetriNet.Transition('t_' + trace[i][activity_key] + '_' + str(i), trace[i][activity_key])
         net.transitions.add(t)
         place_map[i + 1] = petri.petrinet.PetriNet.Place('p_' + str(i + 1))
         net.places.add(place_map[i + 1])
@@ -145,7 +145,7 @@ def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT
     net.places.add(place_map[0])
     cost_map = dict()
     for i in range(0, len(trace)):
-        t = petri.petrinet.PetriNet.Transition('t' + str(i), trace[i][activity_key])
+        t = petri.petrinet.PetriNet.Transition('t_' + trace[i][activity_key] + '_' + str(i), trace[i][activity_key])
         cost_map[t] = costs[i]
         net.transitions.add(t)
         place_map[i + 1] = petri.petrinet.PetriNet.Place('p_' + str(i + 1))
