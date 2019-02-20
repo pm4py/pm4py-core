@@ -60,6 +60,54 @@ def get_last_terminal_child_transitions(tree):
     return []
 
 
+def check_loop_to_first_operator(tree):
+    """
+    Checks if loop to first operator
+
+    Parameters
+    ------------
+    tree
+        Process tree
+
+    Returns
+    ------------
+    boolean
+        Check if no loop to the first operator
+    """
+    if tree.operator == Operator.LOOP:
+        return True
+    if tree.children:
+        if tree.children[0].operator == Operator.LOOP:
+            return True
+        else:
+            return check_loop_to_first_operator(tree.children[0])
+    return tree.operator == Operator.LOOP
+
+
+def check_loop_to_last_operator(tree):
+    """
+    Checks if loop to last operator
+
+    Parameters
+    -------------
+    tree
+        Process tree
+
+    Returns
+    -------------
+    boolean
+        Check if no loop to the last operator
+    """
+    if tree.operator == Operator.LOOP:
+        return True
+    if tree.children:
+        if tree.children[-1].operator == Operator.LOOP:
+            return True
+        else:
+            return check_loop_to_last_operator(tree.children[-1])
+    return tree.operator == Operator.LOOP
+
+
 def check_initial_loop(tree):
     """
     Check if the tree, on-the-left, starts with a loop
@@ -125,8 +173,9 @@ def check_tau_mandatory_at_initial_marking(tree):
     condition1 = check_initial_loop(tree)
     terminal_transitions = get_first_terminal_child_transitions(tree)
     condition2 = len(terminal_transitions) > 1
+    condition3 = check_loop_to_first_operator(tree)
 
-    return condition1 or condition2
+    return condition1 or condition2 or condition3
 
 
 def check_tau_mandatory_at_final_marking(tree):
@@ -141,9 +190,11 @@ def check_tau_mandatory_at_final_marking(tree):
         the rest of the process to the final marking
     """
     condition1 = check_terminal_loop(tree)
-    condition2 = len(get_last_terminal_child_transitions(tree)) > 1
+    terminal_transitions = get_last_terminal_child_transitions(tree)
+    condition2 = len(terminal_transitions) > 1
+    condition3 = check_loop_to_last_operator(tree)
 
-    return condition1 or condition2
+    return condition1 or condition2 or condition3
 
 
 def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree, counts, rec_depth,
