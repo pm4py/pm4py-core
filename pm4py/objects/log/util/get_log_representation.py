@@ -1,6 +1,8 @@
 import numpy as np
+
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.log.util import xes
+
 
 def get_string_trace_attribute_rep(trace, trace_attribute):
     """
@@ -111,7 +113,7 @@ def get_all_string_event_attribute_values(log, event_attribute):
     return list(sorted(values))
 
 
-def get_string_event_attribute_succession_rep(event1, event2,  event_attribute):
+def get_string_event_attribute_succession_rep(event1, event2, event_attribute):
     """
     Get a representation of the feature name associated to a string event attribute value
 
@@ -129,7 +131,8 @@ def get_string_event_attribute_succession_rep(event1, event2,  event_attribute):
     rep
         Representation of the feature name associated to a string event attribute value
     """
-    return "succession:" + str(event_attribute) + "@" + str(event1[event_attribute]) + "#" + str(event2[event_attribute])
+    return "succession:" + str(event_attribute) + "@" + str(event1[event_attribute]) + "#" + str(
+        event2[event_attribute])
 
 
 def get_values_event_attribute_succession_for_trace(trace, event_attribute):
@@ -149,9 +152,9 @@ def get_values_event_attribute_succession_for_trace(trace, event_attribute):
         All feature names present for the given attribute succession in the given trace
     """
     values_trace = set()
-    for i in range(len(trace)-1):
+    for i in range(len(trace) - 1):
         event1 = trace[i]
-        event2 = trace[i+1]
+        event2 = trace[i + 1]
         if event_attribute in event1 and event_attribute in event2:
             values_trace.add(get_string_event_attribute_succession_rep(event1, event2, event_attribute))
     if not values_trace:
