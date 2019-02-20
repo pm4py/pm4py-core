@@ -9,6 +9,7 @@ graphviz
 pyarrow
 pandas>=0.24.1
 scipy
+pydotplus
 scikit-learn
 pulp
 pytz>=2018.9
