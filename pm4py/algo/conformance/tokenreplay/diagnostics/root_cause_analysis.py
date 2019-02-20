@@ -83,7 +83,7 @@ def form_representation_from_dictio_couple(first_cases_repr, second_cases_repr, 
     feature_names
         Array of feature names
     """
-    from pm4py.algo.other.decisiontree import get_log_representation
+    from pm4py.objects.log.util import get_log_representation
 
     log = form_log_from_dictio_couple(first_cases_repr, second_cases_repr,
                                                                     enable_multiplier=enable_multiplier)

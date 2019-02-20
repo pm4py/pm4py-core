@@ -1,6 +1,6 @@
 from copy import copy
 
-from pm4py.algo.other.decisiontree import get_log_representation
+from pm4py.objects.log.util import get_log_representation
 from sklearn.decomposition import PCA
 from sklearn.cluster import DBSCAN
 from pm4py.objects.log.log import EventLog, Trace

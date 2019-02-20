@@ -3,8 +3,7 @@ from copy import deepcopy
 
 import numpy as np
 
-from pm4py.algo.other.decisiontree import get_log_representation
-from pm4py.algo.other.decisiontree import log_transforming
+from pm4py.objects.log.util import get_log_representation, get_prefixes
 from pm4py.algo.other.decisiontree import mine_decision_tree
 from pm4py.objects.log.log import EventLog
 
@@ -64,8 +63,8 @@ def perform_decision_mining_given_activities(log, activities, parameters=None):
     len_list_logs
         Length of each sublog considered
     """
-    list_logs, considered_activities = log_transforming.get_log_traces_to_activities(log, activities,
-                                                                                     parameters=parameters)
+    list_logs, considered_activities = get_prefixes.get_log_traces_to_activities(log, activities,
+                                                                                 parameters=parameters)
 
     classes = considered_activities
     target = []
