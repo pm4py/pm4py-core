@@ -5,10 +5,9 @@ from sklearn.cluster import Birch
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
 
-from pm4py.algo.other.decisiontree import get_log_representation
 from pm4py.objects.conversion.log import factory as conversion_factory
 from pm4py.objects.log.log import EventLog, Trace, EventStream
-from pm4py.objects.log.util import sorting
+from pm4py.objects.log.util import sorting, get_log_representation
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
 

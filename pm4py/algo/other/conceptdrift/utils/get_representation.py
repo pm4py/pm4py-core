@@ -1,6 +1,6 @@
 import numpy as np
 
-from pm4py.algo.other.decisiontree import get_log_representation
+from pm4py.objects.log.util import get_log_representation
 from pm4py.algo.other.decisiontree import mine_decision_tree
 from pm4py.objects.log.log import EventLog
 
