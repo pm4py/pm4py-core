@@ -31,7 +31,7 @@ class HeuristicsNet:
         net_name
             (If provided) name of the heuristics net
         """
-        self.net_name = net_name
+        self.net_name = [net_name]
 
         self.nodes = {}
         self.dependency_matrix = {}
@@ -161,6 +161,7 @@ class HeuristicsNet:
         copied_self.start_activities = copied_self.start_activities + other_net.start_activities
         copied_self.end_activities = copied_self.end_activities + other_net.end_activities
         copied_self.default_edges_color = copied_self.default_edges_color + other_net.default_edges_color
+        copied_self.net_name = copied_self.net_name + other_net.net_name
 
         return copied_self
 
