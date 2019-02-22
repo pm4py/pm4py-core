@@ -6,7 +6,8 @@ from pm4py.objects.heuristics_net.node import Node
 
 
 class HeuristicsNet:
-    def __init__(self, frequency_dfg, activities=None, start_activities=None, end_activities=None, activities_occurrences=None,
+    def __init__(self, frequency_dfg, activities=None, start_activities=None, end_activities=None,
+                 activities_occurrences=None,
                  default_edges_color="#000000", performance_dfg=None):
         """
         Initialize an Hueristics Net
@@ -54,7 +55,7 @@ class HeuristicsNet:
                 self.activities_occurrences[act] = dfg_utils.sum_activities_count(frequency_dfg, [act])
         self.default_edges_color = [default_edges_color]
 
-    def calculate(self, dependency_thresh=0.5, and_measure_thresh=0.75, min_act_count=0, min_dfg_occurrences=0,
+    def calculate(self, dependency_thresh=0.5, and_measure_thresh=0.75, min_act_count=1, min_dfg_occurrences=1,
                   dfg_pre_cleaning_noise_thresh=0.05):
         """
         Calculate the dependency matrix, populate the nodes
@@ -104,8 +105,8 @@ class HeuristicsNet:
             self.dependency_matrix[act1][act2] = dep
         for n1 in self.dependency_matrix:
             for n2 in self.dependency_matrix[n1]:
-                condition1 = n1 in self.activities_occurrences and self.activities_occurrences[n1] > min_act_count
-                condition2 = n2 in self.activities_occurrences and self.activities_occurrences[n2] > min_act_count
+                condition1 = n1 in self.activities_occurrences and self.activities_occurrences[n1] >= min_act_count
+                condition2 = n2 in self.activities_occurrences and self.activities_occurrences[n2] >= min_act_count
                 condition3 = self.dfg_matrix[n1][n2] >= min_dfg_occurrences
                 condition4 = self.dependency_matrix[n1][n2] >= dependency_thresh
                 condition = condition1 and condition2 and condition3 and condition4
