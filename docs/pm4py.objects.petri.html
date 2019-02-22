@@ -85,6 +85,7 @@
 <li><a class="reference internal" href="#module-pm4py.objects.petri.incidence_matrix">pm4py.objects.petri.incidence_matrix module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.petri.networkx_graph">pm4py.objects.petri.networkx_graph module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.petri.petrinet">pm4py.objects.petri.petrinet module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.petri.projection">pm4py.objects.petri.projection module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.petri.reachability_graph">pm4py.objects.petri.reachability_graph module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.petri.semantics">pm4py.objects.petri.semantics module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.petri.synchronous_product">pm4py.objects.petri.synchronous_product module</a></li>
@@ -497,6 +498,30 @@ source and the unique sink places that were discovered</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-pm4py.objects.petri.projection">
+<span id="pm4py-objects-petri-projection-module"></span><h2>pm4py.objects.petri.projection module<a class="headerlink" href="#module-pm4py.objects.petri.projection" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.petri.projection.project_net_on_place">
+<code class="descclassname">pm4py.objects.petri.projection.</code><code class="descname">project_net_on_place</code><span class="sig-paren">(</span><em>place</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/projection.html#project_net_on_place"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.projection.project_net_on_place" title="Permalink to this definition">¶</a></dt>
+<dd><p>Project a Petri net on a place</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>place</strong> – Place</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><em>net</em> – (Place) net</li>
+<li><em>im</em> – Empty initial marking</li>
+<li><em>fm</em> – Empty final marking</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.objects.petri.reachability_graph">
 <span id="pm4py-objects-petri-reachability-graph-module"></span><h2>pm4py.objects.petri.reachability_graph module<a class="headerlink" href="#module-pm4py.objects.petri.reachability_graph" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -840,6 +865,34 @@ TODO: find a better representation.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>net</strong> – Petri net</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.petri.utils.get_s_components_from_petri">
+<code class="descclassname">pm4py.objects.petri.utils.</code><code class="descname">get_s_components_from_petri</code><span class="sig-paren">(</span><em>net</em>, <em>im</em>, <em>fm</em>, <em>rec_depth=0</em>, <em>curr_s_comp=None</em>, <em>visited_places=None</em>, <em>list_s_components=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/utils.html#get_s_components_from_petri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.utils.get_s_components_from_petri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the S-components from a Petri net</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>net</strong> – Petri net</li>
+<li><strong>im</strong> – Initial marking</li>
+<li><strong>fm</strong> – Final marking</li>
+<li><strong>curr_s_comp</strong> – Current S component</li>
+<li><strong>visited_places</strong> – Visited places</li>
+<li><strong>list_s_components</strong> – List of S-components</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of S-components</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">s_components</p>
+</td>
 </tr>
 </tbody>
 </table>
