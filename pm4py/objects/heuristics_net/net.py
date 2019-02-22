@@ -8,7 +8,7 @@ from pm4py.objects.heuristics_net.node import Node
 class HeuristicsNet:
     def __init__(self, frequency_dfg, activities=None, start_activities=None, end_activities=None,
                  activities_occurrences=None,
-                 default_edges_color="#000000", performance_dfg=None):
+                 default_edges_color="#000000", performance_dfg=None, net_name="Heuristics Net"):
         """
         Initialize an Hueristics Net
 
@@ -28,7 +28,11 @@ class HeuristicsNet:
             (If provided) Default edges color
         performance_dfg
             Performance DFG
+        net_name
+            (If provided) name of the heuristics net
         """
+        self.net_name = net_name
+
         self.nodes = {}
         self.dependency_matrix = {}
         self.dfg_matrix = {}
