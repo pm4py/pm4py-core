@@ -112,7 +112,7 @@ class Node:
         for index, conn in enumerate(self.output_connections.keys()):
             if index > 0:
                 ret = ret + ", "
-            ret = ret + conn.node_name + ":" + str(self.output_connections[conn].dependency_value)
+            ret = ret + conn.node_name + ":" + str([x.dependency_value for x in self.output_connections[conn]])
         ret = ret + "})"
         return ret
 
