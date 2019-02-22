@@ -33,18 +33,20 @@ class HeuristicsNet:
         self.activities = activities
         if self.activities is None:
             self.activities = dfg_utils.get_activities_from_dfg(dfg)
-        self.start_activities = start_activities
-        if self.start_activities is None:
-            self.start_activities = dfg_utils.infer_start_activities(dfg)
-        self.end_activities = end_activities
-        if self.end_activities is None:
-            self.end_activities = dfg_utils.infer_end_activities(dfg)
+        if start_activities is None:
+            self.start_activities = [dfg_utils.infer_start_activities(dfg)]
+        else:
+            self.start_activities = [start_activities]
+        if end_activities is None:
+            self.end_activities = [dfg_utils.infer_end_activities(dfg)]
+        else:
+            self.end_activities = [end_activities]
         self.activities_occurrences = activities_occurrences
         if self.activities_occurrences is None:
             self.activities_occurrences = {}
             for act in self.activities:
                 self.activities_occurrences[act] = dfg_utils.sum_activities_count(dfg, [act])
-        self.default_edges_color = default_edges_color
+        self.default_edges_color = [default_edges_color]
 
     def calculate(self, dependency_thresh=0.5, and_measure_thresh=0.75, min_act_count=0, min_dfg_occurrences=0,
                   dfg_pre_cleaning_noise_thresh=0.05):
@@ -101,12 +103,12 @@ class HeuristicsNet:
                         self.nodes[n1] = Node(self, n1, self.activities_occurrences[n1],
                                               is_start_node=(n1 in self.start_activities),
                                               is_end_node=(n1 in self.end_activities),
-                                              default_edges_color=self.default_edges_color)
+                                              default_edges_color=self.default_edges_color[0])
                     if n2 not in self.nodes:
                         self.nodes[n2] = Node(self, n2, self.activities_occurrences[n2],
                                               is_start_node=(n2 in self.start_activities),
                                               is_end_node=(n2 in self.end_activities),
-                                              default_edges_color=self.default_edges_color)
+                                              default_edges_color=self.default_edges_color[0])
                     self.nodes[n1].add_output_connection(self.nodes[n2], self.dependency_matrix[n1][n2],
                                                          self.dfg_matrix[n1][n2])
                     self.nodes[n2].add_input_connection(self.nodes[n1], self.dependency_matrix[n1][n2],
