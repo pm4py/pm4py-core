@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pm4py.algo.discovery.simple.model.pandas.versions package &mdash; pm4py  documentation</title>
+  <title>pm4py.visualization.decisiontree.versions package &mdash; pm4py  documentation</title>
   
 
   
@@ -78,10 +78,10 @@
             
               <!-- Local TOC -->
               <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">pm4py.algo.discovery.simple.model.pandas.versions package</a><ul>
+<li><a class="reference internal" href="#">pm4py.visualization.decisiontree.versions package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-pm4py.algo.discovery.simple.model.pandas.versions.classic">pm4py.algo.discovery.simple.model.pandas.versions.classic module</a></li>
-<li><a class="reference internal" href="#module-pm4py.algo.discovery.simple.model.pandas.versions">Module contents</a></li>
+<li><a class="reference internal" href="#module-pm4py.visualization.decisiontree.versions.classic">pm4py.visualization.decisiontree.versions.classic module</a></li>
+<li><a class="reference internal" href="#module-pm4py.visualization.decisiontree.versions">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -129,13 +129,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>pm4py.algo.discovery.simple.model.pandas.versions package</li>
+      <li>pm4py.visualization.decisiontree.versions package</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/pm4py.algo.discovery.simple.model.pandas.versions.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/pm4py.visualization.decisiontree.versions.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -148,42 +148,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pm4py-algo-discovery-simple-model-pandas-versions-package">
-<h1>pm4py.algo.discovery.simple.model.pandas.versions package<a class="headerlink" href="#pm4py-algo-discovery-simple-model-pandas-versions-package" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pm4py-visualization-decisiontree-versions-package">
+<h1>pm4py.visualization.decisiontree.versions package<a class="headerlink" href="#pm4py-visualization-decisiontree-versions-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-pm4py.algo.discovery.simple.model.pandas.versions.classic">
-<span id="pm4py-algo-discovery-simple-model-pandas-versions-classic-module"></span><h2>pm4py.algo.discovery.simple.model.pandas.versions.classic module<a class="headerlink" href="#module-pm4py.algo.discovery.simple.model.pandas.versions.classic" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pm4py.visualization.decisiontree.versions.classic">
+<span id="pm4py-visualization-decisiontree-versions-classic-module"></span><h2>pm4py.visualization.decisiontree.versions.classic module<a class="headerlink" href="#module-pm4py.visualization.decisiontree.versions.classic" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="pm4py.algo.discovery.simple.model.pandas.versions.classic.apply">
-<code class="descclassname">pm4py.algo.discovery.simple.model.pandas.versions.classic.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em>, <em>classic_output=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/simple/model/pandas/versions/classic.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.simple.model.pandas.versions.classic.apply" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a simple model out of a Pandas dataframe</p>
+<dt id="pm4py.visualization.decisiontree.versions.classic.apply">
+<code class="descclassname">pm4py.visualization.decisiontree.versions.classic.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>clf</em>, <em>feature_names</em>, <em>classes</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/decisiontree/versions/classic.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.decisiontree.versions.classic.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the visualization of the decision tree</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>clf</strong> – Decision tree</p>
+</li>
+<li><p class="first"><strong>feature_names</strong> – Names of the provided features</p>
+</li>
+<li><p class="first"><strong>classes</strong> – Names of the target classes</p>
 </li>
 <li><p class="first"><strong>parameters</strong> –</p>
 <dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">maximum_number_activities -&gt; Maximum number of activities to keep
-discovery_algorithm -&gt; Discovery algorithm to use (alpha, inductive)
-desidered_output -&gt; Desidered output of the algorithm (default: Petri)
-include_filtered_df -&gt; Include the filtered dataframe in the output
-include_dfg_frequency -&gt; Include the DFG of frequencies in the output
-include_dfg_performance -&gt; Include the DFG of performance in the output
-include_filtered_dfg_frequency -&gt; Include the filtered DFG of frequencies in the output
-include_filtered_dfg_performance -&gt; Include the filtered DFG of performance in the output</p>
+<dt>Possible parameters of the algorithm, including:</dt>
+<dd><p class="first last">format -&gt; Image format (pdf, svg, png …)</p>
 </dd>
 </dl>
 </li>
-<li><p class="first"><strong>classic_output</strong> – Determine if the output shall contains directly the objects (e.g. net, initial_marking, final_marking)
-or can return a more detailed dictionary</p>
-</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">GraphViz object</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">gviz</p>
 </td>
 </tr>
 </tbody>
@@ -191,8 +191,8 @@ or can return a more detailed dictionary</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-pm4py.algo.discovery.simple.model.pandas.versions">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.algo.discovery.simple.model.pandas.versions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pm4py.visualization.decisiontree.versions">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.visualization.decisiontree.versions" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 

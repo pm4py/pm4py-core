@@ -15,6 +15,7 @@ if __name__ == "__main__":
     from examples import simple_miner
     from examples import example_simulation
     from examples import token_replay_imdf
+    from examples import decisiontree_example
     from examples import example_diagnostics
     from examples import parquet
     from examples import sna_log
@@ -45,6 +46,8 @@ if __name__ == "__main__":
     manual_log_generation.execute_script()
     print("\n\ntokenReplay_imdf")
     token_replay_imdf.execute_script()
+    print("\n\ndecisiontree_example")
+    decisiontree_example.execute_script()
     print("\n\nexample_diagnostics")
     example_diagnostics.execute_script()
     print("\n\nparquet")
