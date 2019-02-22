@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from pm4py.algo.discovery.dfg.utils import dfg_utils
 from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.objects.heuristics_net.node import Node
@@ -115,3 +117,27 @@ class HeuristicsNet:
                                                         self.dfg_matrix[n1][n2])
         for node in self.nodes:
             self.nodes[node].calculate_and_measure_out(and_measure_thresh=and_measure_thresh)
+
+    def __add__(self, other_net):
+        copied_self = deepcopy(self)
+        for node_name in copied_self.nodes:
+            if node_name in other_net.nodes:
+                node1 = copied_self.nodes[node_name]
+                node2 = other_net.nodes[node_name]
+                n1n = {x.node_name: x for x in node1.output_connections}
+                n2n = {x.node_name: x for x in node2.output_connections}
+                for out_node1 in node1.output_connections:
+                    if out_node1.node_name in n2n:
+                        node1.output_connections[out_node1] = node1.output_connections[out_node1] + \
+                                                              node2.output_connections[n2n[out_node1.node_name]]
+                for out_node2 in node2.output_connections:
+                    if out_node2.node_name not in n1n:
+                        node1.output_connections[out_node2] = node2.output_connections[out_node2]
+        diffext = [other_net.nodes[node] for node in other_net.nodes if node not in copied_self.nodes]
+        for node in diffext:
+            copied_self.nodes[node.node_name] = node
+        copied_self.start_activities = copied_self.start_activities + other_net.start_activities
+        copied_self.end_activities = copied_self.end_activities + other_net.end_activities
+        copied_self.default_edges_color = copied_self.default_edges_color + other_net.default_edges_color
+
+        return copied_self
