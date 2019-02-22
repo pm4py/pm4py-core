@@ -24,11 +24,11 @@ def apply(heu_net, parameters=None):
     for node_name in heu_net.nodes:
         node = heu_net.nodes[node_name]
         for other_node in node.output_connections:
-            edge = node.output_connections[other_node]
-            if edge.edge_type == "frequency":
-                e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node], label=str(edge.dfg_value),
-                                   color=edge.repr_color)
-            graph.add_edge(e)
+            for edge in node.output_connections[other_node]:
+                if edge.edge_type == "frequency":
+                    e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node], label=str(edge.dfg_value),
+                                       color=edge.repr_color)
+                graph.add_edge(e)
 
     for index, sa_list in enumerate(heu_net.start_activities):
         start_i = pydotplus.Node(name="start_" + str(index), label="", color=heu_net.default_edges_color[index],

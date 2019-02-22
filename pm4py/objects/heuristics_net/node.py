@@ -51,7 +51,9 @@ class Node:
         if repr_color is None:
             repr_color = self.default_edges_color
         edge = Edge(self, other_node, dependency_value, dfg_value, repr_color=repr_color)
-        self.output_connections[other_node] = edge
+        if other_node not in self.output_connections:
+            self.output_connections[other_node] = []
+        self.output_connections[other_node].append(edge)
 
     def add_input_connection(self, other_node, dependency_value, dfg_value, repr_color=None):
         """
@@ -71,7 +73,9 @@ class Node:
         if repr_color is None:
             repr_color = self.default_edges_color
         edge = Edge(self, other_node, dependency_value, dfg_value, repr_color=repr_color)
-        self.input_connections[other_node] = edge
+        if other_node not in self.input_connections:
+            self.input_connections[other_node] = []
+        self.input_connections[other_node].append(edge)
 
     def calculate_and_measure_out(self, and_measure_thresh=0.75):
         """
