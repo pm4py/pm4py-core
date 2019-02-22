@@ -284,6 +284,30 @@ positive -&gt; Indicate if events should be kept/removed</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.check_trace_attributes_presence">
+<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">check_trace_attributes_presence</code><span class="sig-paren">(</span><em>log</em>, <em>attributes_set</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#check_trace_attributes_presence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.check_trace_attributes_presence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check trace attributes presence in all the traces of the log</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Log</li>
+<li><strong>attributes_set</strong> – Set of attributes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered set of attributes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_set</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pm4py.algo.filtering.log.attributes.attributes_filter.filter_log_by_attributes_threshold">
 <code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">filter_log_by_attributes_threshold</code><span class="sig-paren">(</span><em>log</em>, <em>attributes</em>, <em>variants</em>, <em>vc</em>, <em>threshold</em>, <em>attribute_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#filter_log_by_attributes_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.filter_log_by_attributes_threshold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keep only attributes which number of occurrences is above the threshold (or they belong to the first variant)</p>
