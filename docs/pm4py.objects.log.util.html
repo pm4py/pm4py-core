@@ -82,6 +82,9 @@
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.compression">pm4py.objects.log.util.compression module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.general">pm4py.objects.log.util.general module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.get_class_representation">pm4py.objects.log.util.get_class_representation module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.get_log_representation">pm4py.objects.log.util.get_log_representation module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.get_prefixes">pm4py.objects.log.util.get_prefixes module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.index_attribute">pm4py.objects.log.util.index_attribute module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.insert_classifier">pm4py.objects.log.util.insert_classifier module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.log">pm4py.objects.log.util.log module</a></li>
@@ -202,6 +205,502 @@
 </div>
 <div class="section" id="module-pm4py.objects.log.util.general">
 <span id="pm4py-objects-log-util-general-module"></span><h2>pm4py.objects.log.util.general module<a class="headerlink" href="#module-pm4py.objects.log.util.general" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.objects.log.util.get_class_representation">
+<span id="pm4py-objects-log-util-get-class-representation-module"></span><h2>pm4py.objects.log.util.get_class_representation module<a class="headerlink" href="#module-pm4py.objects.log.util.get_class_representation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_class_representation.get_class_representation_by_str_ev_attr_value_presence">
+<code class="descclassname">pm4py.objects.log.util.get_class_representation.</code><code class="descname">get_class_representation_by_str_ev_attr_value_presence</code><span class="sig-paren">(</span><em>log</em>, <em>str_attr_name</em>, <em>str_attr_value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_class_representation.html#get_class_representation_by_str_ev_attr_value_presence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_class_representation.get_class_representation_by_str_ev_attr_value_presence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the representation for the target part of the decision tree learning
+if the focus is on the presence of a given value of a (string) event attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace log</li>
+<li><strong>str_attr_name</strong> – Attribute name to consider</li>
+<li><strong>str_attr_value</strong> – Attribute value to consider</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>target</em> – Target part for decision tree learning</li>
+<li><em>classes</em> – Name of the classes, in order</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_class_representation.get_class_representation_by_str_ev_attr_value_value">
+<code class="descclassname">pm4py.objects.log.util.get_class_representation.</code><code class="descname">get_class_representation_by_str_ev_attr_value_value</code><span class="sig-paren">(</span><em>log</em>, <em>str_attr_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_class_representation.html#get_class_representation_by_str_ev_attr_value_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_class_representation.get_class_representation_by_str_ev_attr_value_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the representation for the target part of the decision tree learning
+if the focus is on all (string) values of an event attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace log</li>
+<li><strong>str_attr_name</strong> – Attribute name to consider</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>target</em> – Target part for decision tree learning</li>
+<li><em>classes</em> – Name of the classes, in order</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_class_representation.get_class_representation_by_trace_duration">
+<code class="descclassname">pm4py.objects.log.util.get_class_representation.</code><code class="descname">get_class_representation_by_trace_duration</code><span class="sig-paren">(</span><em>log</em>, <em>target_trace_duration</em>, <em>timestamp_key='time:timestamp'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_class_representation.html#get_class_representation_by_trace_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_class_representation.get_class_representation_by_trace_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get class representation by splitting traces according to trace duration</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace log</li>
+<li><strong>target_trace_duration</strong> – Target trace duration</li>
+<li><strong>timestamp_key</strong> – Timestamp key</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>target</em> – Target part for decision tree learning</li>
+<li><em>classes</em> – Name of the classes, in order</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.util.get_log_representation">
+<span id="pm4py-objects-log-util-get-log-representation-module"></span><h2>pm4py.objects.log.util.get_log_representation module<a class="headerlink" href="#module-pm4py.objects.log.util.get_log_representation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_all_string_event_attribute_values">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_all_string_event_attribute_values</code><span class="sig-paren">(</span><em>log</em>, <em>event_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_all_string_event_attribute_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_all_string_event_attribute_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all the representations for all the traces of the log associated to a string event attribute values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace of the log</li>
+<li><strong>event_attribute</strong> – Event attribute to consider</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">All feature names present for the given attribute in the given log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_all_string_event_succession_attribute_values">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_all_string_event_succession_attribute_values</code><span class="sig-paren">(</span><em>log</em>, <em>event_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_all_string_event_succession_attribute_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_all_string_event_succession_attribute_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all the representations for all the traces of the log associated to a string event attribute succession values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace of the log</li>
+<li><strong>event_attribute</strong> – Event attribute to consider</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">All feature names present for the given attribute succession in the given log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_all_string_trace_attribute_values">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_all_string_trace_attribute_values</code><span class="sig-paren">(</span><em>log</em>, <em>trace_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_all_string_trace_attribute_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_all_string_trace_attribute_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all string trace attribute values representations for a log</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace log</li>
+<li><strong>trace_attribute</strong> – Attribute of the trace to consider</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List containing for each trace a representation of the feature name associated to the attribute</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_default_representation">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_default_representation</code><span class="sig-paren">(</span><em>log</em>, <em>enable_succattr=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_default_representation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_default_representation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the default data representation of an event log (for process tree building)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace log</li>
+<li><strong>enable_succattr</strong> – Inserts the succession of the activities in the obtained data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>data</em> – Data to provide for decision tree learning</li>
+<li><em>feature_names</em> – Names of the features, in order</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_numeric_event_attribute_rep">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_numeric_event_attribute_rep</code><span class="sig-paren">(</span><em>event_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_numeric_event_attribute_rep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_numeric_event_attribute_rep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the feature name associated to a numeric event attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event_attribute</strong> – Name of the event attribute</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Name of the feature</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">feature_name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_numeric_event_attribute_value">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_numeric_event_attribute_value</code><span class="sig-paren">(</span><em>event</em>, <em>event_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_numeric_event_attribute_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_numeric_event_attribute_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of a numeric event attribute from a given event</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> – Event</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Value of the numeric event attribute for the given event</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_numeric_event_attribute_value_trace">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_numeric_event_attribute_value_trace</code><span class="sig-paren">(</span><em>trace</em>, <em>event_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_numeric_event_attribute_value_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_numeric_event_attribute_value_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of the last occurrence of a numeric event attribute given a trace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>trace</strong> – Trace of the log</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Value of the last occurrence of a numeric trace attribute for the given trace</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_numeric_trace_attribute_rep">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_numeric_trace_attribute_rep</code><span class="sig-paren">(</span><em>trace_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_numeric_trace_attribute_rep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_numeric_trace_attribute_rep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the feature name associated to a numeric trace attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>trace_attribute</strong> – Name of the trace attribute</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Name of the feature</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">feature_name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_numeric_trace_attribute_value">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_numeric_trace_attribute_value</code><span class="sig-paren">(</span><em>trace</em>, <em>trace_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_numeric_trace_attribute_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_numeric_trace_attribute_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of a numeric trace attribute from a given trace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>trace</strong> – Trace of the log</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Value of the numeric trace attribute for the given trace</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_representation">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_representation</code><span class="sig-paren">(</span><em>log</em>, <em>str_tr_attr</em>, <em>str_ev_attr</em>, <em>num_tr_attr</em>, <em>num_ev_attr</em>, <em>str_evsucc_attr=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_representation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_representation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a representation of the event log that is suited for the data part of the decision tree learning</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> – Trace log</li>
+<li><strong>str_tr_attr</strong> – List of string trace attributes to consider in data vector creation</li>
+<li><strong>str_ev_attr</strong> – List of string event attributes to consider in data vector creation</li>
+<li><strong>num_tr_attr</strong> – List of numeric trace attributes to consider in data vector creation</li>
+<li><strong>num_ev_attr</strong> – List of numeric event attributes to consider in data vector creation</li>
+<li><strong>str_evsucc_attr</strong> – List of attributes succession of values to consider in data vector creation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>data</em> – Data to provide for decision tree learning</li>
+<li><em>feature_names</em> – Names of the features, in order</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_string_event_attribute_rep">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_string_event_attribute_rep</code><span class="sig-paren">(</span><em>event</em>, <em>event_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_string_event_attribute_rep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_string_event_attribute_rep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a representation of the feature name associated to a string event attribute value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>event</strong> – Single event of a trace</li>
+<li><strong>event_attribute</strong> – Event attribute to consider</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Representation of the feature name associated to a string event attribute value</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">rep</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_string_event_attribute_succession_rep">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_string_event_attribute_succession_rep</code><span class="sig-paren">(</span><em>event1</em>, <em>event2</em>, <em>event_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_string_event_attribute_succession_rep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_string_event_attribute_succession_rep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a representation of the feature name associated to a string event attribute value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>event1</strong> – First event of the succession</li>
+<li><strong>event2</strong> – Second event of the succession</li>
+<li><strong>event_attribute</strong> – Event attribute to consider</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Representation of the feature name associated to a string event attribute value</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">rep</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_string_trace_attribute_rep">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_string_trace_attribute_rep</code><span class="sig-paren">(</span><em>trace</em>, <em>trace_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_string_trace_attribute_rep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_string_trace_attribute_rep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a representation of the feature name associated to a string trace attribute value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>trace</strong> – Trace of the log</li>
+<li><strong>trace_attribute</strong> – Attribute of the trace to consider</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Representation of the feature name associated to a string trace attribute value</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">rep</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_values_event_attribute_for_trace">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_values_event_attribute_for_trace</code><span class="sig-paren">(</span><em>trace</em>, <em>event_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_values_event_attribute_for_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_values_event_attribute_for_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all the representations for the events of a trace associated to a string event attribute values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>trace</strong> – Trace of the log</li>
+<li><strong>event_attribute</strong> – Event attribute to consider</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">All feature names present for the given attribute in the given trace</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_log_representation.get_values_event_attribute_succession_for_trace">
+<code class="descclassname">pm4py.objects.log.util.get_log_representation.</code><code class="descname">get_values_event_attribute_succession_for_trace</code><span class="sig-paren">(</span><em>trace</em>, <em>event_attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_log_representation.html#get_values_event_attribute_succession_for_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_log_representation.get_values_event_attribute_succession_for_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all the representations for the events of a trace associated to a string event attribute succession values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>trace</strong> – Trace of the log</li>
+<li><strong>event_attribute</strong> – Event attribute to consider</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">All feature names present for the given attribute succession in the given trace</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.util.get_prefixes">
+<span id="pm4py-objects-log-util-get-prefixes-module"></span><h2>pm4py.objects.log.util.get_prefixes module<a class="headerlink" href="#module-pm4py.objects.log.util.get_prefixes" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_prefixes.get_log_traces_to_activities">
+<code class="descclassname">pm4py.objects.log.util.get_prefixes.</code><code class="descname">get_log_traces_to_activities</code><span class="sig-paren">(</span><em>log</em>, <em>activities</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_prefixes.html#get_log_traces_to_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_prefixes.get_log_traces_to_activities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get sublogs taking to each one of the specified activities</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>log</strong> – Trace log object</p>
+</li>
+<li><p class="first"><strong>activities</strong> – List of activities in the log</p>
+</li>
+<li><p class="first"><strong>parameters</strong> –</p>
+<dl class="docutils">
+<dt>Possible parameters of the algorithm, including:</dt>
+<dd><p class="first last">PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; activity
+PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; timestamp</p>
+</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>list_logs</em> – List of event logs taking to the first occurrence of each activity</li>
+<li><em>considered_activities</em> – All activities that are effectively have been inserted in the list of logs (in some of them, the resulting log
+may be empty)</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.get_prefixes.get_log_traces_until_activity">
+<code class="descclassname">pm4py.objects.log.util.get_prefixes.</code><code class="descname">get_log_traces_until_activity</code><span class="sig-paren">(</span><em>log</em>, <em>activity</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/get_prefixes.html#get_log_traces_until_activity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.get_prefixes.get_log_traces_until_activity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a reduced version of the log containing, for each trace, only the events before a
+specified activity</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>log</strong> – Trace log</p>
+</li>
+<li><p class="first"><strong>activity</strong> – Activity to reach</p>
+</li>
+<li><p class="first"><strong>parameters</strong> –</p>
+<dl class="docutils">
+<dt>Possible parameters of the algorithm, including:</dt>
+<dd><p class="first last">PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; activity
+PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; timestamp</p>
+</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New log</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">new_log</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="module-pm4py.objects.log.util.index_attribute">
 <span id="pm4py-objects-log-util-index-attribute-module"></span><h2>pm4py.objects.log.util.index_attribute module<a class="headerlink" href="#module-pm4py.objects.log.util.index_attribute" title="Permalink to this headline">¶</a></h2>
