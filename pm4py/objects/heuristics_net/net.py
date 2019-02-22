@@ -132,7 +132,11 @@ class HeuristicsNet:
                                                               node2.output_connections[n2n[out_node1.node_name]]
                 for out_node2 in node2.output_connections:
                     if out_node2.node_name not in n1n:
-                        node1.output_connections[out_node2] = node2.output_connections[out_node2]
+                        if out_node2.node_name in copied_self.nodes:
+                            nn = copied_self.nodes[out_node2.node_name]
+                            node1.output_connections[nn] = node2.output_connections[out_node2]
+                        else:
+                            node1.output_connections[out_node2] = node2.output_connections[out_node2]
         diffext = [other_net.nodes[node] for node in other_net.nodes if node not in copied_self.nodes]
         for node in diffext:
             copied_self.nodes[node.node_name] = node
@@ -141,3 +145,9 @@ class HeuristicsNet:
         copied_self.default_edges_color = copied_self.default_edges_color + other_net.default_edges_color
 
         return copied_self
+
+    def __repr__(self):
+        return str(self.nodes)
+
+    def __str__(self):
+        return str(self.nodes)
