@@ -6,15 +6,15 @@ from pm4py.objects.heuristics_net.node import Node
 
 
 class HeuristicsNet:
-    def __init__(self, dfg, activities=None, start_activities=None, end_activities=None, activities_occurrences=None,
-                 default_edges_color="#000000"):
+    def __init__(self, frequency_dfg, activities=None, start_activities=None, end_activities=None, activities_occurrences=None,
+                 default_edges_color="#000000", performance_dfg=None):
         """
         Initialize an Hueristics Net
 
         Parameters
         -------------
-        dfg
-            Directly-Follows graph
+        frequency_dfg
+            Directly-Follows graph (frequency)
         activities
             Activities
         start_activities
@@ -25,29 +25,33 @@ class HeuristicsNet:
             Activities occurrences
         default_edges_color
             (If provided) Default edges color
-
+        performance_dfg
+            Performance DFG
         """
         self.nodes = {}
         self.dependency_matrix = {}
         self.dfg_matrix = {}
 
-        self.dfg = dfg
+        self.dfg = frequency_dfg
+        self.performance_dfg = performance_dfg
+        self.node_type = "frequency" if self.performance_dfg is None else "performance"
+
         self.activities = activities
         if self.activities is None:
-            self.activities = dfg_utils.get_activities_from_dfg(dfg)
+            self.activities = dfg_utils.get_activities_from_dfg(frequency_dfg)
         if start_activities is None:
-            self.start_activities = [dfg_utils.infer_start_activities(dfg)]
+            self.start_activities = [dfg_utils.infer_start_activities(frequency_dfg)]
         else:
             self.start_activities = [start_activities]
         if end_activities is None:
-            self.end_activities = [dfg_utils.infer_end_activities(dfg)]
+            self.end_activities = [dfg_utils.infer_end_activities(frequency_dfg)]
         else:
             self.end_activities = [end_activities]
         self.activities_occurrences = activities_occurrences
         if self.activities_occurrences is None:
             self.activities_occurrences = {}
             for act in self.activities:
-                self.activities_occurrences[act] = dfg_utils.sum_activities_count(dfg, [act])
+                self.activities_occurrences[act] = dfg_utils.sum_activities_count(frequency_dfg, [act])
         self.default_edges_color = [default_edges_color]
 
     def calculate(self, dependency_thresh=0.5, and_measure_thresh=0.75, min_act_count=0, min_dfg_occurrences=0,
@@ -72,16 +76,21 @@ class HeuristicsNet:
         self.dependency_matrix = {}
         self.dfg_matrix = None
         self.dfg_matrix = {}
+        self.performance_matrix = None
+        self.performance_matrix = {}
         if dfg_pre_cleaning_noise_thresh > 0.0:
             self.dfg = clean_dfg_based_on_noise_thresh(self.dfg, self.activities, dfg_pre_cleaning_noise_thresh)
         for el in self.dfg:
             act1 = el[0]
             act2 = el[1]
             value = self.dfg[el]
+            perf_value = self.performance_dfg[el] if self.performance_dfg is not None else self.dfg[el]
             if act1 not in self.dependency_matrix:
                 self.dependency_matrix[act1] = {}
                 self.dfg_matrix[act1] = {}
+                self.performance_matrix[act1] = {}
             self.dfg_matrix[act1][act2] = value
+            self.performance_matrix[act1][act2] = perf_value
             if not act1 == act2:
                 inv_couple = (act2, act1)
                 c1 = value
@@ -105,16 +114,20 @@ class HeuristicsNet:
                         self.nodes[n1] = Node(self, n1, self.activities_occurrences[n1],
                                               is_start_node=(n1 in self.start_activities),
                                               is_end_node=(n1 in self.end_activities),
-                                              default_edges_color=self.default_edges_color[0])
+                                              default_edges_color=self.default_edges_color[0],
+                                              node_type=self.node_type)
                     if n2 not in self.nodes:
                         self.nodes[n2] = Node(self, n2, self.activities_occurrences[n2],
                                               is_start_node=(n2 in self.start_activities),
                                               is_end_node=(n2 in self.end_activities),
-                                              default_edges_color=self.default_edges_color[0])
+                                              default_edges_color=self.default_edges_color[0],
+                                              node_type=self.node_type)
+
+                    repr_value = self.performance_matrix[n1][n2]
                     self.nodes[n1].add_output_connection(self.nodes[n2], self.dependency_matrix[n1][n2],
-                                                         self.dfg_matrix[n1][n2])
+                                                         self.dfg_matrix[n1][n2], repr_value=repr_value)
                     self.nodes[n2].add_input_connection(self.nodes[n1], self.dependency_matrix[n1][n2],
-                                                        self.dfg_matrix[n1][n2])
+                                                        self.dfg_matrix[n1][n2], repr_value=repr_value)
         for node in self.nodes:
             self.nodes[node].calculate_and_measure_out(and_measure_thresh=and_measure_thresh)
 
