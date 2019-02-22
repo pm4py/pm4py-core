@@ -26,9 +26,15 @@ def apply(heu_net, parameters=None):
         for other_node in node.output_connections:
             if other_node in corr_nodes:
                 for edge in node.output_connections[other_node]:
-                    e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node], label=str(edge.repr_value),
-                                       color=edge.repr_color,
-                                       fontcolor=edge.repr_color)
+                    repr_value = str(edge.repr_value)
+                    if edge.net_name:
+                        e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node], label=edge.net_name+" ("+repr_value+")",
+                                           color=edge.repr_color,
+                                           fontcolor=edge.repr_color)
+                    else:
+                        e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node], label=repr_value,
+                                           color=edge.repr_color,
+                                           fontcolor=edge.repr_color)
 
                     graph.add_edge(e)
 
