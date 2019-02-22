@@ -26,7 +26,8 @@ def apply(heu_net, parameters=None):
         for other_node in node.output_connections:
             for edge in node.output_connections[other_node]:
                 e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node], label=str(edge.repr_value),
-                                       color=edge.repr_color)
+                                   color=edge.repr_color,
+                                   fontcolor=edge.repr_color)
 
                 graph.add_edge(e)
 
@@ -34,12 +35,12 @@ def apply(heu_net, parameters=None):
         effective_sa_list = [n for n in sa_list if n in corr_nodes_names]
         if effective_sa_list:
             start_i = pydotplus.Node(name="start_" + str(index), label="", color=heu_net.default_edges_color[index],
-                                   fillcolor=heu_net.default_edges_color[index], style="filled")
+                                     fillcolor=heu_net.default_edges_color[index], style="filled")
             graph.add_node(start_i)
             for node_name in effective_sa_list:
-                    sa = corr_nodes_names[node_name]
-                    e = pydotplus.Edge(src=start_i, dst=sa, label="", color=heu_net.default_edges_color[index])
-                    graph.add_edge(e)
+                sa = corr_nodes_names[node_name]
+                e = pydotplus.Edge(src=start_i, dst=sa, label="", color=heu_net.default_edges_color[index])
+                graph.add_edge(e)
 
     for index, ea_list in enumerate(heu_net.end_activities):
         effective_ea_list = [n for n in ea_list if n in corr_nodes_names]
