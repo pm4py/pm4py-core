@@ -1,5 +1,5 @@
 class Edge:
-    def __init__(self, start_node, end_node, dependency_value, dfg_value, label="", repr_color="#000000",
+    def __init__(self, start_node, end_node, dependency_value, dfg_value, repr_value, label="", repr_color="#000000",
                  edge_type="frequency"):
         """
         Constructor
@@ -14,6 +14,8 @@ class Edge:
             Dependency value of the edge
         dfg_value
             DFG value of the edge
+        repr_value
+            Value used in the representation
         label
             (If provided) label of the edge
         repr_color
@@ -25,6 +27,7 @@ class Edge:
         self.end_node = end_node
         self.dependency_value = dependency_value
         self.dfg_value = dfg_value
+        self.repr_value = repr_value
         self.label = label
         self.repr_color = repr_color
         self.edge_type = edge_type
