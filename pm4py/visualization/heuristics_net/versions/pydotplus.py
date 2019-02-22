@@ -46,9 +46,15 @@ def apply(heu_net, parameters=None):
             graph.add_node(start_i)
             for node_name in effective_sa_list:
                 sa = corr_nodes_names[node_name]
-                e = pydotplus.Edge(src=start_i, dst=sa, label=heu_net.net_name[index],
-                                   color=heu_net.default_edges_color[index],
-                                   fontcolor=heu_net.default_edges_color[index])
+                if type(heu_net.start_activities[index]) is dict:
+                    occ = heu_net.start_activities[index][node_name]
+                    e = pydotplus.Edge(src=start_i, dst=sa, label=heu_net.net_name[index]+" ("+str(occ)+")",
+                                       color=heu_net.default_edges_color[index],
+                                       fontcolor=heu_net.default_edges_color[index])
+                else:
+                    e = pydotplus.Edge(src=start_i, dst=sa, label=heu_net.net_name[index],
+                                       color=heu_net.default_edges_color[index],
+                                       fontcolor=heu_net.default_edges_color[index])
                 graph.add_edge(e)
 
     for index, ea_list in enumerate(heu_net.end_activities):
@@ -59,9 +65,15 @@ def apply(heu_net, parameters=None):
             graph.add_node(end_i)
             for node_name in effective_ea_list:
                 ea = corr_nodes_names[node_name]
-                e = pydotplus.Edge(src=ea, dst=end_i, label=heu_net.net_name[index],
-                                   color=heu_net.default_edges_color[index],
-                                   fontcolor=heu_net.default_edges_color[index])
+                if type(heu_net.end_activities[index]) is dict:
+                    occ = heu_net.end_activities[index][node_name]
+                    e = pydotplus.Edge(src=ea, dst=end_i, label=heu_net.net_name[index]+" ("+str(occ)+")",
+                                       color=heu_net.default_edges_color[index],
+                                       fontcolor=heu_net.default_edges_color[index])
+                else:
+                    e = pydotplus.Edge(src=ea, dst=end_i, label=heu_net.net_name[index],
+                                       color=heu_net.default_edges_color[index],
+                                       fontcolor=heu_net.default_edges_color[index])
                 graph.add_edge(e)
 
     file_name = tempfile.NamedTemporaryFile(suffix='.' + image_format)
