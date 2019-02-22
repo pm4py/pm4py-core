@@ -24,12 +24,13 @@ def apply(heu_net, parameters=None):
     for node_name in heu_net.nodes:
         node = heu_net.nodes[node_name]
         for other_node in node.output_connections:
-            for edge in node.output_connections[other_node]:
-                e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node], label=str(edge.repr_value),
-                                   color=edge.repr_color,
-                                   fontcolor=edge.repr_color)
+            if other_node in corr_nodes:
+                for edge in node.output_connections[other_node]:
+                    e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node], label=str(edge.repr_value),
+                                       color=edge.repr_color,
+                                       fontcolor=edge.repr_color)
 
-                graph.add_edge(e)
+                    graph.add_edge(e)
 
     for index, sa_list in enumerate(heu_net.start_activities):
         effective_sa_list = [n for n in sa_list if n in corr_nodes_names]
