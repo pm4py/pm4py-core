@@ -4,11 +4,12 @@ from pm4py.algo.discovery.dfg.utils import dfg_utils
 from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.objects.heuristics_net.node import Node
 
+DEFAULT_NET_NAME = ""
 
 class HeuristicsNet:
     def __init__(self, frequency_dfg, activities=None, start_activities=None, end_activities=None,
                  activities_occurrences=None,
-                 default_edges_color="#000000", performance_dfg=None, net_name="Heuristics Net"):
+                 default_edges_color="#000000", performance_dfg=None, net_name=DEFAULT_NET_NAME):
         """
         Initialize an Hueristics Net
 
@@ -120,13 +121,13 @@ class HeuristicsNet:
                                               is_start_node=(n1 in self.start_activities),
                                               is_end_node=(n1 in self.end_activities),
                                               default_edges_color=self.default_edges_color[0],
-                                              node_type=self.node_type)
+                                              node_type=self.node_type, net_name=self.net_name[0])
                     if n2 not in self.nodes:
                         self.nodes[n2] = Node(self, n2, self.activities_occurrences[n2],
                                               is_start_node=(n2 in self.start_activities),
                                               is_end_node=(n2 in self.end_activities),
                                               default_edges_color=self.default_edges_color[0],
-                                              node_type=self.node_type)
+                                              node_type=self.node_type, net_name=self.net_name[0])
 
                     repr_value = self.performance_matrix[n1][n2]
                     self.nodes[n1].add_output_connection(self.nodes[n2], self.dependency_matrix[n1][n2],

@@ -3,7 +3,7 @@ from pm4py.objects.heuristics_net.edge import Edge
 
 class Node:
     def __init__(self, heuristics_net, node_name, node_occ, is_start_node=False, is_end_node=False,
-                 default_edges_color="#000000", node_type="frequency"):
+                 default_edges_color="#000000", node_type="frequency", net_name=""):
         """
         Constructor
 
@@ -23,6 +23,8 @@ class Node:
             Default edges color
         node_type
             Type of the node (frequency/performance)
+        net_name
+            (If provided) name of the Heuristics Net
         """
         self.heuristics_net = heuristics_net
         self.node_name = node_name
@@ -35,6 +37,7 @@ class Node:
         self.output_couples_and_measure = []
         self.default_edges_color = default_edges_color
         self.node_type = node_type
+        self.net_name = net_name
 
     def add_output_connection(self, other_node, dependency_value, dfg_value, repr_color=None, repr_value=None):
         """
@@ -58,7 +61,7 @@ class Node:
         if repr_value is None:
             repr_value = dfg_value
         edge = Edge(self, other_node, dependency_value, dfg_value, repr_value, repr_color=repr_color,
-                    edge_type=self.node_type)
+                    edge_type=self.node_type, net_name=self.net_name)
         if other_node not in self.output_connections:
             self.output_connections[other_node] = []
         self.output_connections[other_node].append(edge)
@@ -85,7 +88,7 @@ class Node:
         if repr_value is None:
             repr_value = dfg_value
         edge = Edge(self, other_node, dependency_value, dfg_value, repr_value, repr_color=repr_color,
-                    edge_type=self.node_type)
+                    edge_type=self.node_type, net_name=self.net_name)
         if other_node not in self.input_connections:
             self.input_connections[other_node] = []
         self.input_connections[other_node].append(edge)
