@@ -103,7 +103,7 @@ class Node:
         and_measure_thresh
             AND measure threshold
         """
-        out_nodes = list(self.output_connections)
+        out_nodes = sorted(list(self.output_connections), key=lambda x: x.node_name)
         i = 0
         while i < len(out_nodes):
             n1 = out_nodes[i].node_name
@@ -133,7 +133,7 @@ class Node:
         and_measure_thresh
             AND measure threshold
         """
-        in_nodes = list(self.input_connections)
+        in_nodes = sorted(list(self.input_connections), key=lambda x: x.node_name)
         i = 0
         while i < len(in_nodes):
             n1 = in_nodes[i].node_name
