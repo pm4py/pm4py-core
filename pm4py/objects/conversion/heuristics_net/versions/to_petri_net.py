@@ -74,8 +74,8 @@ def apply(heu_net, parameters=None):
     places_entering = {}
     for act1 in who_is_entering:
         places_entering[act1] = {}
-        entering_activities = sorted(list(who_is_entering[act1]), key=lambda x: x[0])
-        entering_activities_wo_source = [x for x in entering_activities if x[0] is not None]
+        entering_activities = list(who_is_entering[act1])
+        entering_activities_wo_source = sorted([x for x in entering_activities if x[0] is not None], key=lambda x: x[0])
         entering_activities_only_source = [x for x in entering_activities if x[0] is None]
         if entering_activities_wo_source:
             master_place = PetriNet.Place("pre_" + act1)
@@ -111,19 +111,19 @@ def apply(heu_net, parameters=None):
                 add_arc_from_to(source_places[el[1]], hid_trans, net)
                 add_arc_from_to(hid_trans, master_place, net)
     for act1 in who_is_exiting:
-        exiting_activities = sorted(list(who_is_exiting[act1]), key=lambda x: x[0])
-        exiting_activities_wo_sink = [x for x in exiting_activities if x[0] is not None]
+        exiting_activities = list(who_is_exiting[act1])
+        exiting_activities_wo_sink = sorted([x for x in exiting_activities if x[0] is not None], key=lambda x: x[0])
         exiting_activities_only_sink = [x for x in exiting_activities if x[0] is None]
         if exiting_activities_wo_sink:
-            if len(exiting_activities) == 1:
-                ex_act = exiting_activities[0]
+            if len(exiting_activities) == 1 and len(exiting_activities_wo_sink) == 1:
+                ex_act = exiting_activities_wo_sink[0]
                 if (act1, None) in places_entering[ex_act[0]]:
                     add_arc_from_to(act_trans[act1], places_entering[ex_act[0]][(act1, None)], net)
             else:
                 int_place = PetriNet.Place("intplace_" + str(act1))
                 net.places.add(int_place)
                 add_arc_from_to(act_trans[act1], int_place, net)
-                for ex_act in exiting_activities:
+                for ex_act in exiting_activities_wo_sink:
                     if (act1, None) in places_entering[ex_act[0]]:
                         hid_trans_count = hid_trans_count + 1
                         hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
