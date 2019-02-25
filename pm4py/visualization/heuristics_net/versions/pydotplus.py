@@ -54,10 +54,10 @@ def transform_to_hex(graycolor):
     left0 = graycolor / 16
     right0 = graycolor % 16
 
-    left = get_corr_hex(left0)
-    right = get_corr_hex(right0)
+    left00 = get_corr_hex(left0)
+    right00 = get_corr_hex(right0)
 
-    return "#" + left + right + left + right + left + right
+    return "#" + left00 + right00 + left00 + right00 + left00 + right00
 
 
 def apply(heu_net, parameters=None):
@@ -101,33 +101,43 @@ def apply(heu_net, parameters=None):
         corr_nodes_names[node_name] = n
         graph.add_node(n)
 
+    # gets max arc value
+    max_arc_value = -1
     for node_name in heu_net.nodes:
         node = heu_net.nodes[node_name]
         for other_node in node.output_connections:
             if other_node in corr_nodes:
                 for edge in node.output_connections[other_node]:
+                    max_arc_value = max(max_arc_value, edge.repr_value)
+
+    for node_name in heu_net.nodes:
+        node = heu_net.nodes[node_name]
+        for other_node in node.output_connections:
+            if other_node in corr_nodes:
+                for edge in node.output_connections[other_node]:
+                    this_pen_width = 1.0 + math.log(1 + edge.repr_value) / 11.0
                     repr_value = str(edge.repr_value)
                     if edge.net_name:
                         if node.node_type == "frequency":
                             e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node],
                                                label=edge.net_name + " (" + repr_value + ")",
                                                color=edge.repr_color,
-                                               fontcolor=edge.repr_color)
+                                               fontcolor=edge.repr_color, penwidth=this_pen_width)
                         else:
                             e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node],
                                                label=edge.net_name + " (" + human_readable_stat(repr_value) + ")",
                                                color=edge.repr_color,
-                                               fontcolor=edge.repr_color)
+                                               fontcolor=edge.repr_color, penwidth=this_pen_width)
                     else:
                         if node.node_type == "frequency":
                             e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node], label=repr_value,
                                                color=edge.repr_color,
-                                               fontcolor=edge.repr_color)
+                                               fontcolor=edge.repr_color, penwidth=this_pen_width)
                         else:
                             e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node],
                                                label=human_readable_stat(repr_value),
                                                color=edge.repr_color,
-                                               fontcolor=edge.repr_color)
+                                               fontcolor=edge.repr_color, penwidth=this_pen_width)
 
                     graph.add_edge(e)
 
@@ -142,9 +152,15 @@ def apply(heu_net, parameters=None):
                 if type(heu_net.start_activities[index]) is dict:
                     if is_frequency:
                         occ = heu_net.start_activities[index][node_name]
-                        e = pydotplus.Edge(src=start_i, dst=sa, label=heu_net.net_name[index] + " (" + str(occ) + ")",
-                                           color=heu_net.default_edges_color[index],
-                                           fontcolor=heu_net.default_edges_color[index])
+                        this_pen_width = 1.0 + math.log(1 + occ) / 11.0
+                        if heu_net.net_name[index]:
+                            e = pydotplus.Edge(src=start_i, dst=sa, label=heu_net.net_name[index] + " (" + str(occ) + ")",
+                                               color=heu_net.default_edges_color[index],
+                                               fontcolor=heu_net.default_edges_color[index], penwidth=this_pen_width)
+                        else:
+                            e = pydotplus.Edge(src=start_i, dst=sa, label=str(occ),
+                                               color=heu_net.default_edges_color[index],
+                                               fontcolor=heu_net.default_edges_color[index], penwidth=this_pen_width)
                     else:
                         e = pydotplus.Edge(src=start_i, dst=sa, label=heu_net.net_name[index],
                                            color=heu_net.default_edges_color[index],
@@ -166,9 +182,15 @@ def apply(heu_net, parameters=None):
                 if type(heu_net.end_activities[index]) is dict:
                     if is_frequency:
                         occ = heu_net.end_activities[index][node_name]
-                        e = pydotplus.Edge(src=ea, dst=end_i, label=heu_net.net_name[index] + " (" + str(occ) + ")",
-                                           color=heu_net.default_edges_color[index],
-                                           fontcolor=heu_net.default_edges_color[index])
+                        this_pen_width = 1.0 + math.log(1 + occ) / 11.0
+                        if heu_net.net_name[index]:
+                            e = pydotplus.Edge(src=ea, dst=end_i, label=heu_net.net_name[index] + " (" + str(occ) + ")",
+                                               color=heu_net.default_edges_color[index],
+                                               fontcolor=heu_net.default_edges_color[index], penwidth=this_pen_width)
+                        else:
+                            e = pydotplus.Edge(src=ea, dst=end_i, label=str(occ),
+                                               color=heu_net.default_edges_color[index],
+                                               fontcolor=heu_net.default_edges_color[index], penwidth=this_pen_width)
                     else:
                         e = pydotplus.Edge(src=ea, dst=end_i, label=heu_net.net_name[index],
                                            color=heu_net.default_edges_color[index],
