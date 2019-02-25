@@ -1,3 +1,5 @@
+import numpy as np
+
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import add_arc_from_to
 
@@ -50,3 +52,54 @@ def project_net_on_place(place):
         add_arc_from_to(new_place, new_trans, place_net)
 
     return place_net, place_net_im, place_net_fm
+
+
+def project_net_on_matrix(net, activities, parameters=None):
+    """
+    Project a Petri net with:
+    - only visible transitions
+    - where each place preset/postset is disjoint
+    - with unique visible transitions
+    on a numeric matrix
+
+    Parameters
+    --------------
+    net
+        Petri net
+    activities
+        List of activities
+    parameters
+        Possible parameters of the algorithm
+    """
+    inv_trans_map = {}
+    for trans in net.transitions:
+        if not trans.label:
+            raise Exception(
+                "the project_net_on_matrix works only with Petri net that do not contain invisible transitions")
+        if trans.label in inv_trans_map:
+            raise Exception(
+                "the project_net_on_matrix works only with Petri net that contains unique visible transitions")
+        inv_trans_map[trans.label] = trans
+    places_matrix = []
+    for place in net.places:
+        place_repr = [0] * len(activities)
+        input_trans_labels = set([arc.source.label for arc in place.in_arcs])
+        output_trans_labels = set([arc.target.label for arc in place.out_arcs])
+        if len(input_trans_labels.intersection(output_trans_labels)) > 0:
+            raise Exception("place has a transition that belongs to both preset and postset")
+        for arc in place.in_arcs:
+            input_trans_label = arc.source.label
+            input_arc_weight = arc.weight
+            if input_trans_label in activities:
+                place_repr[activities.index(input_trans_label)] = -input_arc_weight
+        for arc in place.out_arcs:
+            output_trans_label = arc.target.label
+            output_arc_weight = arc.weight
+            if output_trans_label in activities:
+                place_repr[activities.index(output_trans_label)] = output_arc_weight
+        if min(place_repr) < 0 < max(place_repr):
+            places_matrix.append(place_repr)
+    if len(places_matrix) == 0:
+        raise Exception("no places numeric representation could be found")
+    places_matrix = np.transpose(np.asmatrix(places_matrix))
+    return places_matrix
