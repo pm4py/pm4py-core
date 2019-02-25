@@ -15,6 +15,27 @@ from pm4py.util import constants
 
 
 def apply(log, parameters=None):
+    """
+    Discovers a Petri net using Heuristics Miner
+
+    Parameters
+    ------------
+    log
+        Event log
+    parameters
+        Possible parameters of the algorithm,
+        including: activity_key, case_id_glue, timestamp_key,
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+
+    Returns
+    ------------
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    """
     if parameters is None:
         parameters = {}
 
@@ -25,6 +46,27 @@ def apply(log, parameters=None):
 
 
 def apply_pandas(df, parameters=None):
+    """
+    Discovers a Petri net using Heuristics Miner
+
+    Parameters
+    ------------
+    df
+        Pandas dataframe
+    parameters
+        Possible parameters of the algorithm,
+        including: activity_key, case_id_glue, timestamp_key,
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+
+    Returns
+    ------------
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    """
     if parameters is None:
         parameters = {}
 
@@ -55,6 +97,35 @@ def apply_pandas(df, parameters=None):
 
 def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
               parameters=None):
+    """
+    Discovers a Petri net using Heuristics Miner
+
+    Parameters
+    ------------
+    dfg
+        Directly-Follows Graph
+    activities
+        (If provided) list of activities of the log
+    activities_occurrences
+        (If provided) dictionary of activities occurrences
+    start_activities
+        (If provided) dictionary of start activities occurrences
+    end_activities
+        (If provided) dictionary of end activities occurrences
+    parameters
+        Possible parameters of the algorithm,
+        including: activity_key, case_id_glue, timestamp_key,
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+
+    Returns
+    ------------
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    """
     if parameters is None:
         parameters = {}
 
@@ -66,6 +137,27 @@ def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activitie
 
 
 def apply_heu(log, parameters=None):
+    """
+    Discovers an Heuristics Net using Heuristics Miner
+
+    Parameters
+    ------------
+    log
+        Event log
+    parameters
+        Possible parameters of the algorithm,
+        including: activity_key, case_id_glue, timestamp_key,
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+
+    Returns
+    ------------
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    """
     if parameters is None:
         parameters = {}
 
@@ -85,6 +177,35 @@ def apply_heu(log, parameters=None):
 
 def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
                   parameters=None):
+    """
+    Discovers an Heuristics Net using Heuristics Miner
+
+    Parameters
+    ------------
+    dfg
+        Directly-Follows Graph
+    activities
+        (If provided) list of activities of the log
+    activities_occurrences
+        (If provided) dictionary of activities occurrences
+    start_activities
+        (If provided) dictionary of start activities occurrences
+    end_activities
+        (If provided) dictionary of end activities occurrences
+    parameters
+        Possible parameters of the algorithm,
+        including: activity_key, case_id_glue, timestamp_key,
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+
+    Returns
+    ------------
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    """
     if parameters is None:
         parameters = {}
 
