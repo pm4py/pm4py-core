@@ -18,7 +18,7 @@ def human_readable_stat(c):
     string
         Human readable string
     """
-    c = int(c)
+    c = int(float(c))
     years = c // 31104000
     months = c // 2592000
     days = c // 86400

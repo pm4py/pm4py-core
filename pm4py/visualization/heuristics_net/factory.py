@@ -11,6 +11,21 @@ VERSIONS = {PYDOTPLUS: pydotplus.apply}
 
 
 def apply(heu_net, parameters=None, variant=PYDOTPLUS):
+    """
+    Gets a representation of an Heuristics Net
+
+    Parameters
+    -------------
+    heu_net
+        Heuristics net
+    parameters
+        Possible parameters of the algorithm, including: format
+
+    Returns
+    ------------
+    gviz
+        Representation of the Heuristics Net
+    """
     return VERSIONS[variant](heu_net, parameters=parameters)
 
 
@@ -40,7 +55,9 @@ def view(figure):
 
     if is_ipynb:
         from IPython.display import Image
-        return Image(open(figure, "rb").read())
+        image = Image(open(figure, "rb").read())
+        from IPython.display import display
+        return display(image)
     else:
         if sys.platform.startswith('darwin'):
             subprocess.call(('open', figure))
