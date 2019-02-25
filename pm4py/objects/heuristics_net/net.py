@@ -2,9 +2,11 @@ from copy import deepcopy
 
 from pm4py.algo.discovery.dfg.utils import dfg_utils
 from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
+from pm4py.objects.heuristics_net import defaults
 from pm4py.objects.heuristics_net.node import Node
 
 DEFAULT_NET_NAME = ""
+
 
 class HeuristicsNet:
     def __init__(self, frequency_dfg, activities=None, start_activities=None, end_activities=None,
@@ -60,8 +62,10 @@ class HeuristicsNet:
                 self.activities_occurrences[act] = dfg_utils.sum_activities_count(frequency_dfg, [act])
         self.default_edges_color = [default_edges_color]
 
-    def calculate(self, dependency_thresh=0.5, and_measure_thresh=0.65, min_act_count=1, min_dfg_occurrences=1,
-                  dfg_pre_cleaning_noise_thresh=0.05):
+    def calculate(self, dependency_thresh=defaults.DEFAULT_DEPENDENCY_THRESH,
+                  and_measure_thresh=defaults.DEFAULT_AND_MEASURE_THRESH, min_act_count=defaults.DEFAULT_MIN_ACT_COUNT,
+                  min_dfg_occurrences=defaults.DEFAULT_MIN_DFG_OCCURRENCES,
+                  dfg_pre_cleaning_noise_thresh=defaults.DEFAULT_DFG_PRE_CLEANING_NOISE_THRESH):
         """
         Calculate the dependency matrix, populate the nodes
 
