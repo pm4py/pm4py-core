@@ -33,6 +33,7 @@ class Node:
         self.is_end_activity = is_end_node
         self.input_connections = {}
         self.output_connections = {}
+        self.and_measures_in = {}
         self.and_measures_out = {}
         self.output_couples_and_measure = []
         self.default_edges_color = default_edges_color
@@ -120,6 +121,36 @@ class Node:
                     if n1 not in self.and_measures_out:
                         self.and_measures_out[n1] = {}
                     self.and_measures_out[n1][n2] = value
+                j = j + 1
+            i = i + 1
+
+    def calculate_and_measure_in(self, and_measure_thresh=0.75):
+        """
+        Calculate AND measure for input relations (as couples)
+
+        Parameters
+        --------------
+        and_measure_thresh
+            AND measure threshold
+        """
+        in_nodes = list(self.input_connections)
+        i = 0
+        while i < len(in_nodes):
+            n1 = in_nodes[i].node_name
+            j = i + 1
+            while j < len(in_nodes):
+                n2 = in_nodes[j].node_name
+                c1 = self.heuristics_net.dfg_matrix[n1][n2] if n1 in self.heuristics_net.dfg_matrix and n2 in \
+                                                               self.heuristics_net.dfg_matrix[n1] else 0
+                c2 = self.heuristics_net.dfg_matrix[n2][n1] if n2 in self.heuristics_net.dfg_matrix and n1 in \
+                                                               self.heuristics_net.dfg_matrix[n2] else 0
+                c3 = self.heuristics_net.dfg_matrix[n1][self.node_name]
+                c4 = self.heuristics_net.dfg_matrix[n2][self.node_name]
+                value = (c1 + c2) / (c3 + c4 + 1)
+                if value >= and_measure_thresh:
+                    if n1 not in self.and_measures_in:
+                        self.and_measures_in[n1] = {}
+                    self.and_measures_in[n1][n2] = value
                 j = j + 1
             i = i + 1
 

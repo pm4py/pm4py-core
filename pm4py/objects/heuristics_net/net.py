@@ -60,7 +60,7 @@ class HeuristicsNet:
                 self.activities_occurrences[act] = dfg_utils.sum_activities_count(frequency_dfg, [act])
         self.default_edges_color = [default_edges_color]
 
-    def calculate(self, dependency_thresh=0.5, and_measure_thresh=0.75, min_act_count=1, min_dfg_occurrences=1,
+    def calculate(self, dependency_thresh=0.5, and_measure_thresh=0.65, min_act_count=1, min_dfg_occurrences=1,
                   dfg_pre_cleaning_noise_thresh=0.05):
         """
         Calculate the dependency matrix, populate the nodes
@@ -136,6 +136,7 @@ class HeuristicsNet:
                                                         self.dfg_matrix[n1][n2], repr_value=repr_value)
         for node in self.nodes:
             self.nodes[node].calculate_and_measure_out(and_measure_thresh=and_measure_thresh)
+            self.nodes[node].calculate_and_measure_in(and_measure_thresh=and_measure_thresh)
 
     def __add__(self, other_net):
         copied_self = deepcopy(self)
