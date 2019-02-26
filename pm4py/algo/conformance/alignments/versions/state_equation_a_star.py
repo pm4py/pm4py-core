@@ -26,6 +26,8 @@ from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.lp import factory as lp_solver_factory
+import sys
+
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
@@ -259,6 +261,9 @@ def __compute_exact_heuristic(sync_net, incidence_matrix, marking, cost_vec, fin
                                   variant=DEFAULT_LP_SOLVER_VARIANT)
     prim_obj = lp_solver_factory.get_prim_obj_from_sol(sol, variant=DEFAULT_LP_SOLVER_VARIANT)
     points = lp_solver_factory.get_points_from_sol(sol, variant=DEFAULT_LP_SOLVER_VARIANT)
+
+    prim_obj = prim_obj if prim_obj is not None else sys.maxsize
+    points = points if points is not None else [0.0] * len(sync_net.transitions)
 
     return prim_obj, points
 
