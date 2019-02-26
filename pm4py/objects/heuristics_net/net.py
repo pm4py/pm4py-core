@@ -15,6 +15,15 @@ class HeuristicsNet:
         """
         Initialize an Hueristics Net
 
+        The implementation is based on the original paper on Heuristics Miner, namely:
+
+        Weijters, A. J. M. M., Wil MP van Der Aalst, and AK Alves De Medeiros.
+        "Process mining with the heuristics miner-algorithm."
+        Technische Universiteit Eindhoven, Tech. Rep. WP 166 (2006): 1-34.
+
+        and it manages to calculate the dependency matrix, the loops of length one and two, and
+        the AND measure
+
         Parameters
         -------------
         frequency_dfg
@@ -65,7 +74,8 @@ class HeuristicsNet:
     def calculate(self, dependency_thresh=defaults.DEFAULT_DEPENDENCY_THRESH,
                   and_measure_thresh=defaults.DEFAULT_AND_MEASURE_THRESH, min_act_count=defaults.DEFAULT_MIN_ACT_COUNT,
                   min_dfg_occurrences=defaults.DEFAULT_MIN_DFG_OCCURRENCES,
-                  dfg_pre_cleaning_noise_thresh=defaults.DEFAULT_DFG_PRE_CLEANING_NOISE_THRESH):
+                  dfg_pre_cleaning_noise_thresh=defaults.DEFAULT_DFG_PRE_CLEANING_NOISE_THRESH,
+                  loops_length_two_thresh=defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH):
         """
         Calculate the dependency matrix, populate the nodes
 
@@ -81,6 +91,8 @@ class HeuristicsNet:
             (Optional) minimum dfg occurrences
         dfg_pre_cleaning_noise_thresh
             (Optional) DFG pre cleaning noise threshold
+        loops_length_two_thresh
+            (Optional) loops length two threshold
         """
         self.dependency_matrix = None
         self.dependency_matrix = {}
@@ -141,6 +153,7 @@ class HeuristicsNet:
         for node in self.nodes:
             self.nodes[node].calculate_and_measure_out(and_measure_thresh=and_measure_thresh)
             self.nodes[node].calculate_and_measure_in(and_measure_thresh=and_measure_thresh)
+            self.nodes[node].calculate_loops_length_two(loops_length_two_thresh=loops_length_two_thresh)
 
     def __add__(self, other_net):
         copied_self = deepcopy(self)

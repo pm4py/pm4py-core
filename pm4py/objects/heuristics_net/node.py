@@ -1,3 +1,4 @@
+from pm4py.objects.heuristics_net import defaults
 from pm4py.objects.heuristics_net.edge import Edge
 
 
@@ -35,6 +36,7 @@ class Node:
         self.output_connections = {}
         self.and_measures_in = {}
         self.and_measures_out = {}
+        self.loop_length_two = {}
         self.output_couples_and_measure = []
         self.default_edges_color = default_edges_color
         self.node_type = node_type
@@ -94,7 +96,7 @@ class Node:
             self.input_connections[other_node] = []
         self.input_connections[other_node].append(edge)
 
-    def calculate_and_measure_out(self, and_measure_thresh=0.75):
+    def calculate_and_measure_out(self, and_measure_thresh=defaults.AND_MEASURE_THRESH):
         """
         Calculate AND measure for output relations (as couples)
 
@@ -124,7 +126,7 @@ class Node:
                 j = j + 1
             i = i + 1
 
-    def calculate_and_measure_in(self, and_measure_thresh=0.75):
+    def calculate_and_measure_in(self, and_measure_thresh=defaults.AND_MEASURE_THRESH):
         """
         Calculate AND measure for input relations (as couples)
 
@@ -153,6 +155,27 @@ class Node:
                     self.and_measures_in[n1][n2] = value
                 j = j + 1
             i = i + 1
+
+    def calculate_loops_length_two(self, loops_length_two_thresh=defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH):
+        """
+        Calculates loops of length two
+
+        Parameters
+        -------------
+        loops_length_two_thresh
+            Loops length two threshold
+        """
+        out_nodes = sorted(list(self.output_connections), key=lambda x: x.node_name)
+        for node in out_nodes:
+            c1 = self.heuristics_net.dependency_matrix[self.node_name][node.node_name]
+            c2 = self.heuristics_net.dependency_matrix[node.node_name][
+                self.node_name] if node.node_name in self.heuristics_net.dependency_matrix and self.node_name in \
+                                   self.heuristics_net.dependency_matrix[node.node_name] else 0
+            l2l = (c1 + c2) / (c1 + c2 + 1)
+            if l2l > loops_length_two_thresh:
+                if self.node_name not in self.loop_length_two:
+                    self.loop_length_two[self.node_name] = {}
+                self.loop_length_two[self.node_name][node.node_name] = l2l
 
     def __repr__(self):
         ret = "(node:" + self.node_name + " connections:{"
