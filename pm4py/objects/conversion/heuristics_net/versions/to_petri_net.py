@@ -1,5 +1,41 @@
 from pm4py.objects.petri.petrinet import PetriNet, Marking
-from pm4py.objects.petri.utils import add_arc_from_to
+from pm4py.objects.petri.utils import add_arc_from_to, remove_transition
+
+
+def remove_rendundant_invisible_transitions(net):
+    """
+    Remove redundant transitions from Petri net
+
+    Parameters
+    -----------
+    net
+        Petri net
+
+    Returns
+    -----------
+    net
+        Cleaned net
+    """
+    trans = [x for x in list(net.transitions) if not x.label]
+    i = 0
+    while i < len(trans):
+        if trans[i] in net.transitions:
+            preset_i = set(x.source for x in trans[i].in_arcs)
+            postset_i = set(x.target for x in trans[i].out_arcs)
+            j = 0
+            while j < len(trans):
+                if not j == i:
+                    preset_j = set(x.source for x in trans[j].in_arcs)
+                    postset_j = set(x.target for x in trans[j].out_arcs)
+                    if len(preset_j) == len(preset_i) and len(postset_j) < len(postset_i):
+                        if len(preset_j.intersection(preset_i)) == len(preset_j) and len(
+                                postset_j.intersection(postset_i)) == len(postset_j):
+                            remove_transition(net, trans[j])
+                            del trans[j]
+                            continue
+                j = j + 1
+            i = i + 1
+    return net
 
 
 def apply(heu_net, parameters=None):
@@ -125,11 +161,20 @@ def apply(heu_net, parameters=None):
                 add_arc_from_to(act_trans[act1], int_place, net)
                 for ex_act in exiting_activities_wo_sink:
                     if (act1, None) in places_entering[ex_act[0]]:
-                        hid_trans_count = hid_trans_count + 1
-                        hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
-                        net.transitions.add(hid_trans)
-                        add_arc_from_to(int_place, hid_trans, net)
-                        add_arc_from_to(hid_trans, places_entering[ex_act[0]][(act1, None)], net)
+                        if ex_act[0] in heu_net.nodes[act1].and_measures_out:
+                            for and_act in heu_net.nodes[act1].and_measures_out[ex_act[0]]:
+                                hid_trans_count = hid_trans_count + 1
+                                hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
+                                net.transitions.add(hid_trans)
+                                add_arc_from_to(int_place, hid_trans, net)
+                                add_arc_from_to(hid_trans, places_entering[and_act][(act1, None)], net)
+                                add_arc_from_to(hid_trans, places_entering[ex_act[0]][(act1, None)], net)
+                        else:
+                            hid_trans_count = hid_trans_count + 1
+                            hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
+                            net.transitions.add(hid_trans)
+                            add_arc_from_to(int_place, hid_trans, net)
+                            add_arc_from_to(hid_trans, places_entering[ex_act[0]][(act1, None)], net)
         for el in exiting_activities_only_sink:
             if len(exiting_activities) == 1:
                 add_arc_from_to(act_trans[act1], sink_places[el[1]], net)
@@ -137,4 +182,7 @@ def apply(heu_net, parameters=None):
                 hid_trans_count = hid_trans_count + 1
                 hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
                 net.transitions.add(hid_trans)
+                add_arc_from_to(int_place, hid_trans, net)
+                add_arc_from_to(hid_trans, sink_places[el[1]], net)
+    net = remove_rendundant_invisible_transitions(net)
     return net, im, fm
