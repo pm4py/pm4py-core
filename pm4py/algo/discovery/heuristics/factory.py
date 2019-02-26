@@ -23,7 +23,8 @@ def apply(log, parameters=None, variant=CLASSIC):
     parameters
         Possible parameters of the algorithm,
         including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
+        loops_length_two_thresh
     variant
         Variant of the algorithm (classic)
 
@@ -62,7 +63,8 @@ def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activitie
     parameters
         Possible parameters of the algorithm,
         including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
+        loops_length_two_thresh
     variant
         Variant of the algorithm (classic)
 
@@ -91,7 +93,8 @@ def apply_heu(log, parameters=None, variant=CLASSIC):
     parameters
         Possible parameters of the algorithm,
         including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
+        loops_length_two_thresh
     variant
         Variant of the algorithm (classic)
 
@@ -127,7 +130,8 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
     parameters
         Possible parameters of the algorithm,
         including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
+        loops_length_two_thresh
     variant
         Variant of the algorithm (classic)
 

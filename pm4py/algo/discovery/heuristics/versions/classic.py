@@ -56,7 +56,8 @@ def apply_pandas(df, parameters=None):
     parameters
         Possible parameters of the algorithm,
         including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
+        loops_length_two_thresh
 
     Returns
     ------------
@@ -115,7 +116,8 @@ def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activitie
     parameters
         Possible parameters of the algorithm,
         including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
+        loops_length_two_thresh
 
     Returns
     ------------
@@ -147,7 +149,8 @@ def apply_heu(log, parameters=None):
     parameters
         Possible parameters of the algorithm,
         including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
+        loops_length_two_thresh
 
     Returns
     ------------
@@ -195,7 +198,8 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
     parameters
         Possible parameters of the algorithm,
         including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
+        loops_length_two_thresh
 
     Returns
     ------------
@@ -219,11 +223,13 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
         defaults.MIN_DFG_OCCURRENCES] if defaults.MIN_DFG_OCCURRENCES in parameters else defaults.DEFAULT_MIN_DFG_OCCURRENCES
     dfg_pre_cleaning_noise_thresh = parameters[
         defaults.DFG_PRE_CLEANING_NOISE_THRESH] if defaults.DFG_PRE_CLEANING_NOISE_THRESH in parameters else defaults.DEFAULT_DFG_PRE_CLEANING_NOISE_THRESH
-
+    loops_length_two_thresh = parameters[
+        defaults.LOOP_LENGTH_TWO_THRESH] if defaults.LOOP_LENGTH_TWO_THRESH in parameters else defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH
     heu_net = HeuristicsNet(dfg, activities=activities, activities_occurrences=activities_occurrences,
                             start_activities=start_activities, end_activities=end_activities)
     heu_net.calculate(dependency_thresh=dependency_thresh, and_measure_thresh=and_measure_thresh,
                       min_act_count=min_act_count, min_dfg_occurrences=min_dfg_occurrences,
-                      dfg_pre_cleaning_noise_thresh=dfg_pre_cleaning_noise_thresh)
+                      dfg_pre_cleaning_noise_thresh=dfg_pre_cleaning_noise_thresh,
+                      loops_length_two_thresh=loops_length_two_thresh)
 
     return heu_net
