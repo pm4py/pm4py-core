@@ -483,6 +483,10 @@ def apply(trace_log, parameters=None):
     net, initial_marking, final_marking, pairs = processing(filtered_log, causal, follows, parameters=parameters)
     net, initial_marking, final_marking = postprocessing(net, initial_marking, final_marking, A_filtered, B_filtered,
                                                          pairs, loop_one_list, parameters=parameters)
+
+    net, initial_marking = remove_initial_hidden_if_possible(net, initial_marking)
+    net = remove_final_hidden_if_possible(net, final_marking)
+
     return net, initial_marking, final_marking
 
 
@@ -516,3 +520,81 @@ def add_sink(net, end_activities, label_transition_dict):
     for e in end_activities:
         petri.utils.add_arc_from_to(label_transition_dict[e], end, net)
     return end
+
+
+def remove_initial_hidden_if_possible(net, im):
+    """
+    Remove initial hidden transition if possible
+
+    Parameters
+    ------------
+    net
+        Petri net
+    im
+        Initial marking
+
+    Returns
+    ------------
+    net
+        Petri net
+    im
+        Possibly different initial marking
+    """
+    source = list(im.keys())[0]
+    first_hidden = list(source.out_arcs)[0].target
+    target_places_first_hidden = [x.target for x in first_hidden.out_arcs]
+    if len(target_places_first_hidden) == 1:
+        target_place_first_hidden = target_places_first_hidden[0]
+        if len(target_place_first_hidden.in_arcs) == 1:
+            new_im = Marking()
+            new_im[target_place_first_hidden] = 1
+            petri.utils.remove_place(net, source)
+            petri.utils.remove_transition(net, first_hidden)
+            return net, new_im
+    return net, im
+
+
+def remove_final_hidden_if_possible(net, fm):
+    """
+    Remove final hidden transition if possible
+
+    Parameters
+    -------------
+    net
+        Petri net
+    fm
+        Final marking
+
+    Returns
+    -------------
+    net
+        Petri net
+    """
+    sink = list(fm.keys())[0]
+    last_hidden = list(sink.in_arcs)[0].source
+    source_places_last_hidden = [x.source for x in last_hidden.in_arcs]
+    removal_possible = True
+    for place in source_places_last_hidden:
+        if len(place.out_arcs) > 1:
+            removal_possible = False
+            break
+        else:
+            source_trans = set([x.source for x in place.in_arcs])
+            for trans in source_trans:
+                if len(trans.out_arcs) > 1:
+                    removal_possible = False
+                    break
+    if removal_possible:
+        all_sources = set()
+        petri.utils.remove_transition(net, last_hidden)
+        i = 0
+        while i < len(source_places_last_hidden):
+            place = source_places_last_hidden[i]
+            source_trans = set([x.source for x in place.in_arcs])
+            for trans in source_trans:
+                if trans not in all_sources:
+                    all_sources.add(trans)
+                    petri.utils.add_arc_from_to(trans, sink, net)
+            petri.utils.remove_place(net, place)
+            i = i + 1
+    return net
