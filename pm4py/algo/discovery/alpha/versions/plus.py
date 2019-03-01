@@ -1,19 +1,37 @@
-from pm4py.objects.log.log import EventLog, Trace
-from pm4py.objects.log.util import xes as xes_util
-
-
 import time
 
 from pm4py import util as pmutil
 from pm4py.objects import petri
+from pm4py.objects.log.log import EventLog, Trace
+from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.petri.petrinet import Marking
+
 
 def preprocessing(log, parameters=None):
     """
     Preprocessing step for the Aplha+ algorithm. Removing all transitions from the log with a loop of length one.
-    :param log:
-    :param parameters:
-    :return: the filtered log and a list of the filtered transitions
+
+    Parameters
+    ------------
+    log
+        Event log
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    -------------
+    log
+        filtered log and a list of the filtered transitions
+    loop_one_list
+        Loop one list
+    A_filtered
+        Dictionary: activity before the loop-length-one activity
+    B_filtered
+        Dictionary: activity after the loop-length-one activity
+    loops_in_first_place
+        Loops in source place
+    loops_in_last_place
+        Loops in sink place
     """
     loops_in_first_place = set()
     loops_in_last_place = set()
@@ -25,32 +43,33 @@ def preprocessing(log, parameters=None):
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     # List for values that have a loop of length one
     loop_one_list = []
-    #Log without activities that have a loop of length one
+    # Log without activities that have a loop of length one
     filtered_log = EventLog()
-    #dictionary A: activity before the loop-length-one activity
+    # dictionary A: activity before the loop-length-one activity
     A = {}
     # dictionary B: activity after the loop-length-one activity
     B = {}
     A_filtered = {}
     B_filtered = {}
-    #inserting artificial start and end activity, since it is not allowed to have a loop at the source place (according to paper)
+    # inserting artificial start and end activity, since it is not allowed to have a loop at the source place
+    # (according to paper)
     for trace in log:
-        trace.insert(0, {activity_key:'artificial_start'})
-        trace.append({activity_key:'artificial_end'})
+        trace.insert(0, {activity_key: 'artificial_start'})
+        trace.append({activity_key: 'artificial_end'})
     for trace in log:
         i = 0
-        while i < len(trace)-1:
-            test=trace[1]
+        while i < len(trace) - 1:
+            test = trace[1]
             current = trace[i][activity_key]
             successor = trace[i + 1][activity_key]
             if current == successor:
                 if current not in loop_one_list:
                     loop_one_list.append(current)
-            i+=1
+            i += 1
     for trace in log:
         i = 0
         filtered_trace = Trace()
-        while i < len(trace)-1:
+        while i < len(trace) - 1:
             current = trace[i][activity_key]
             successor = trace[i + 1][activity_key]
             if not current in loop_one_list:
@@ -67,14 +86,14 @@ def preprocessing(log, parameters=None):
                         B[current].append(successor)
                     else:
                         B[current] = [successor]
-            if i==len(trace)-2:
+            if i == len(trace) - 2:
                 if not successor in loop_one_list:
                     filtered_trace.append(successor)
-            i+=1
+            i += 1
         filtered_log.append(filtered_trace)
-    #Making sets instead of lists
+    # Making sets instead of lists
     for key, value in A.items():
-        A_filtered[key]=set(value)
+        A_filtered[key] = set(value)
     # Making sets instead of lists
     for key, value in B.items():
         B_filtered[key] = set(value)
@@ -88,33 +107,47 @@ def preprocessing(log, parameters=None):
 
     return (filtered_log, loop_one_list, A_filtered, B_filtered, loops_in_first_place, loops_in_last_place)
 
+
 def get_relations(log, parameters=None):
     """
     Applying the classic Alpha Algorithm
-    :param log: Filtered log
-    :param parameters:
-    :return:
+
+    Parameters
+    --------------
+    log
+        Filtered log
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    causal
+        Causal relations
+    parallel
+        Parallel relations
+    follows
+        Follows relations
     """
     if parameters is None:
         parameters = {}
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-    #finding loops of length two
-    #ordering relations
+    # finding loops of length two
+    # ordering relations
     triangle = {}
     for trace in log:
         i = 0
         while i < len(trace) - 2:
             current = trace.__getitem__(i)
-            successor = trace.__getitem__(i+1)
-            successor2 = trace.__getitem__(i+2)
+            successor = trace.__getitem__(i + 1)
+            successor2 = trace.__getitem__(i + 2)
             if current == successor2:
                 if current in triangle:
                     triangle[current].append(successor)
                 else:
                     triangle[current] = [successor]
-            i+=1
+            i += 1
     for key, value in triangle.items():
         triangle[key] = set(value)
     square = {}
@@ -122,30 +155,36 @@ def get_relations(log, parameters=None):
         for element in triangle[key]:
             if element in triangle:
                 if key in triangle[element]:
-                    if key in square:
+                    if key in square and element in square:
                         square[key].append(element)
+                        square[element].append(key)
+                    elif key in square and element not in square:
+                        square[key].append(element)
+                        square[element] = [key]
+                    elif key not in square and element in square:
+                        square[key] = [element]
                         square[element].append(key)
                     else:
                         square[key] = [element]
-                        square[element]=[key]
+                        square[element] = [key]
     for key, value in square.items():
-        square[key]=set(value)
-    #ordering relation following
+        square[key] = set(value)
+    # ordering relation following
     follows = {}
     for trace in log:
         i = 0
-        while i < len(trace)-1:
+        while i < len(trace) - 1:
             current = trace.__getitem__(i)
-            successor = trace.__getitem__(i+1)
+            successor = trace.__getitem__(i + 1)
             if current in follows:
                 if successor not in follows[current]:
                     follows[current].append(successor)
             else:
                 follows[current] = [successor]
-            i+=1
-    #transforming list to set
+            i += 1
+    # transforming list to set
     for key, value in follows.items():
-        follows[key]=set(value)
+        follows[key] = set(value)
     # ordering relation causal
     causal = {}
     if len(square) != 0:
@@ -153,22 +192,22 @@ def get_relations(log, parameters=None):
             for element in follows[key]:
                 if element in follows:
                     if key in square:
-                        if (not(key in follows[element])) or (element in square[key]):
+                        if (not (key in follows[element])) or (element in square[key]):
                             if key in causal:
                                 causal[key].append(element)
                             else:
-                                causal[key]= [element]
+                                causal[key] = [element]
                     else:
-                        if (not(key in follows[element])):
+                        if (not (key in follows[element])):
                             if key in causal:
                                 causal[key].append(element)
                             else:
-                                causal[key]= [element]
+                                causal[key] = [element]
                 else:
                     if key in causal:
                         causal[key].append(element)
                     else:
-                        causal[key]= [element]
+                        causal[key] = [element]
     else:
         for key in follows:
             for element in follows[key]:
@@ -185,9 +224,9 @@ def get_relations(log, parameters=None):
                         causal[key] = [element]
 
     for key, value in causal.items():
-        causal[key]=set(value)
+        causal[key] = set(value)
     # ordering relation unrelated if no other ordering is applied
-    #ordering relation parallel
+    # ordering relation parallel
     parallel = {}
     if len(square) != 0:
         for key in follows:
@@ -222,48 +261,63 @@ def get_relations(log, parameters=None):
         parallel[key] = set(value)
     return causal, parallel, follows
 
+
 def processing(log, causal, follows, parameters=None):
     """
     Applying the Alpha Miner with the new relations
-    :param log: Filtered log, i.e. without loops of length one
-    :param causal: Pairs that have a causal relation (->)
-    :param follows: Pairs that have a follow relation (>)
-    :return:
+
+    Parameters
+    -------------
+    log
+        Filtered log
+    causal
+        Pairs that have a causal relation (->)
+    follows
+        Pairs that have a follow relation (>)
+
+    Returns
+    -------------
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
     """
-    #create list of all events
+    # create list of all events
     labels = set()
     start_activities = set()
     end_activities = set()
     for trace in log:
         start_activities.add(trace.__getitem__(0))
-        end_activities.add(trace.__getitem__(len(trace)-1))
+        end_activities.add(trace.__getitem__(len(trace) - 1))
         for events in trace:
             labels.add(events)
     labels = list(labels)
     pairs = []
 
-
     for key, element in causal.items():
         for item in element:
             if get_sharp_relation(follows, key, key):
                 if get_sharp_relation(follows, item, item):
-                    pairs.append(({key},{item}))
+                    pairs.append(({key}, {item}))
 
-
-    #combining pairs
+    # combining pairs
     for i in range(0, len(pairs)):
         t1 = pairs[i]
         for j in range(i, len(pairs)):
             t2 = pairs[j]
             if t1 != t2:
                 if t1[0].issubset(t2[0]) or t1[1].issubset(t2[1]):
-                    if get_sharp_relations_for_sets(follows, t1[0], t2[0]) and get_sharp_relations_for_sets(follows, t1[1], t2[1]):
+                    if get_sharp_relations_for_sets(follows, t1[0], t2[0]) and get_sharp_relations_for_sets(follows,
+                                                                                                            t1[1],
+                                                                                                            t2[1]):
                         new_alpha_pair = (t1[0] | t2[0], t1[1] | t2[1])
                         if new_alpha_pair not in pairs:
                             pairs.append((t1[0] | t2[0], t1[1] | t2[1]))
-    #maximize pairs
+    # maximize pairs
     cleaned_pairs = list(filter(lambda p: __pair_maximizer(pairs, p), pairs))
-    #create transitions
+    # create transitions
     net = petri.petrinet.PetriNet('alpha_plus_net_' + str(time.time()))
     label_transition_dict = {}
     for label in labels:
@@ -273,10 +327,10 @@ def processing(log, causal, follows, parameters=None):
         else:
             label_transition_dict[label] = petri.petrinet.PetriNet.Transition(label, None)
             net.transitions.add(label_transition_dict[label])
-    #and source and sink
+    # and source and sink
     src = add_source(net, start_activities, label_transition_dict)
     sink = add_sink(net, end_activities, label_transition_dict)
-    #create places
+    # create places
     for pair in cleaned_pairs:
         place = petri.petrinet.PetriNet.Place(str(pair))
         net.places.add(place)
@@ -285,16 +339,26 @@ def processing(log, causal, follows, parameters=None):
         for out_arc in pair[1]:
             petri.utils.add_arc_from_to(place, label_transition_dict[out_arc], net)
 
+    return net, Marking({src: 1}), Marking({sink: 1}), cleaned_pairs
 
-    return  net, Marking({src: 1}), Marking({sink: 1}), cleaned_pairs
 
 def get_sharp_relation(follows, instance_one, instance_two):
     """
     Returns true if sharp relations holds
-    :param follows:
-    :param instance_one:
-    :param instance_two:
-    :return: bool
+
+    Parameters
+    -------------
+    follows
+        Follows relations
+    instance_one
+        Instance one
+    instance_two
+        Instance two
+
+    Returns
+    -------------
+    bool
+        Boolean (sharp relation holds?)
     """
     if instance_one in follows:
         if instance_two in follows:
@@ -309,50 +373,103 @@ def get_sharp_relation(follows, instance_one, instance_two):
         if instance_one in follows[instance_two]:
             return False
 
+
 def get_sharp_relations_for_sets(follows, set_1, set_2):
+    """
+    Returns sharp relations for sets
+
+    Parameters
+    ------------
+    follows
+        Follows relations
+    set_1
+        First set to consider
+    set_2
+        Second set to consider
+
+    Returns
+    ------------
+    bool
+        Boolean (sharp relation holds?)
+    """
     for item_1 in set_1:
         for item_2 in set_2:
             if not get_sharp_relation(follows, item_1, item_2):
                 return False
     return True
 
-def postprocessing(net, initial_marking, final_marking, A, B ,pairs, parameters=None):
+
+def postprocessing(net, initial_marking, final_marking, A, B, pairs, loop_one_list, parameters=None):
     """
-    Adding the filtered transition to the petri net
-    :param loop_list: List of looped activities
-    :param classical_alpha_result: Result after applying the classic alpha algorithm to the filtered log
-    :param A: See Paper for definition
-    :param B: See Paper for definition
-    :param parameters:
-    :return: Alpha+ result
+    Adding the filtered transitions to the Petri net
+
+    Parameters
+    ------------
+    loop_list
+        List of looped activities
+    classical_alpha_result
+        Result after applying the classic alpha algorithm to the filtered log
+    A
+        See Paper for definition
+    B
+        See Paper for definition
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    ------------
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
     """
+    label_transition_dict = {}
+    for label in loop_one_list:
+        label_transition_dict[label] = petri.petrinet.PetriNet.Transition(label, label)
+        net.transitions.add(label_transition_dict[label])
     if parameters is None:
         parameters = {}
     if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-    #F L1L
-    #Key is specific loop element
+    # F L1L
+    # Key is specific loop element
     for key, value in A.items():
         if key in B:
-            A_without_B = value-B[key]
-            B_without_A = B[key]-value
+            A_without_B = value - B[key]
+            B_without_A = B[key] - value
             pair = (A_without_B, B_without_A)
             for pair_try in pairs:
                 in_part = pair_try[0]
                 out_part = pair_try[1]
                 if pair[0].issubset(in_part) and pair[1].issubset(out_part):
                     pair_try_place = petri.petrinet.PetriNet.Place(str(pair_try))
-                    petri.utils.add_arc_from_to(petri.petrinet.PetriNet.Transition(key, key), pair_try_place, net)
-                    petri.utils.add_arc_from_to(pair_try_place, petri.petrinet.PetriNet.Transition(key, key), net)
-    return net,initial_marking, final_marking
+                    petri.utils.add_arc_from_to(label_transition_dict[key], pair_try_place, net)
+                    petri.utils.add_arc_from_to(pair_try_place, label_transition_dict[key], net)
+    return net, initial_marking, final_marking
+
 
 def apply(trace_log, parameters=None):
     """
     Apply the Alpha Algorithm to a given log
-    :param trace_log: Log to that the algorithm will apply
-    :param parameters:
-    :return: Net and corresponding source and sink markings
+
+    Parameters
+    ------------
+    trace_log
+        Log
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    ------------
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
     """
     if parameters is None:
         parameters = {}
@@ -360,25 +477,29 @@ def apply(trace_log, parameters=None):
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
-
-    filtered_log, loop_one_list, A_filtered, B_filtered, loops_in_first, loops_in_last = preprocessing(trace_log)
-    causal, parallel, follows = get_relations(filtered_log)
-    net, initial_marking, final_marking, pairs = processing(filtered_log, causal, follows)
-    net, initial_marking, final_marking = postprocessing(net, initial_marking, final_marking, A_filtered, B_filtered, pairs)
+    filtered_log, loop_one_list, A_filtered, B_filtered, loops_in_first, loops_in_last = preprocessing(trace_log,
+                                                                                                       parameters=parameters)
+    causal, parallel, follows = get_relations(filtered_log, parameters=parameters)
+    net, initial_marking, final_marking, pairs = processing(filtered_log, causal, follows, parameters=parameters)
+    net, initial_marking, final_marking = postprocessing(net, initial_marking, final_marking, A_filtered, B_filtered,
+                                                         pairs, loop_one_list, parameters=parameters)
     return net, initial_marking, final_marking
 
 
-
-#Helping methods
-#maximizing pairs
 def __pair_maximizer(alpha_pairs, pair):
+    """
+    Helping method, maximizing pairs
+    """
     for alt in alpha_pairs:
         if pair != alt and pair[0].issubset(alt[0]) and pair[1].issubset(alt[1]):
             return False
     return True
 
-#adding source pe
+
 def add_source(net, start_activities, label_transition_dict):
+    """
+    Adding source pe
+    """
     source = petri.petrinet.PetriNet.Place('start')
     net.places.add(source)
     for s in start_activities:
@@ -387,6 +508,9 @@ def add_source(net, start_activities, label_transition_dict):
 
 
 def add_sink(net, end_activities, label_transition_dict):
+    """
+    Adding sink pe
+    """
     end = petri.petrinet.PetriNet.Place('end')
     net.places.add(end)
     for e in end_activities:
