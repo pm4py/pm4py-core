@@ -6,6 +6,7 @@ from pm4py.objects.log.log import EventLog, Trace
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.petri.petrinet import Marking
 
+REMOVE_UNCONNECTED = "remove_unconnected"
 
 def preprocessing(log, parameters=None):
     """
@@ -473,9 +474,9 @@ def apply(trace_log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+    remove_unconnected = parameters[REMOVE_UNCONNECTED] if REMOVE_UNCONNECTED in parameters else False
 
     filtered_log, loop_one_list, A_filtered, B_filtered, loops_in_first, loops_in_last = preprocessing(trace_log,
                                                                                                        parameters=parameters)
@@ -486,6 +487,8 @@ def apply(trace_log, parameters=None):
 
     net, initial_marking = remove_initial_hidden_if_possible(net, initial_marking)
     net = remove_final_hidden_if_possible(net, final_marking)
+    if remove_unconnected:
+        net = remove_unconnected_transitions(net)
 
     return net, initial_marking, final_marking
 
@@ -573,7 +576,7 @@ def remove_final_hidden_if_possible(net, fm):
     sink = list(fm.keys())[0]
     last_hidden = list(sink.in_arcs)[0].source
     source_places_last_hidden = [x.source for x in last_hidden.in_arcs]
-    removal_possible = True
+    removal_possible = len(source_places_last_hidden) == 1
     for place in source_places_last_hidden:
         if len(place.out_arcs) > 1:
             removal_possible = False
@@ -597,4 +600,27 @@ def remove_final_hidden_if_possible(net, fm):
                     petri.utils.add_arc_from_to(trans, sink, net)
             petri.utils.remove_place(net, place)
             i = i + 1
+    return net
+
+
+def remove_unconnected_transitions(net):
+    """
+    Remove unconnected transitions if any
+
+    Parameters
+    -------------
+    net
+        Petri net
+
+    Returns
+    -------------
+    net
+        Petri net without unconnected transitions
+    """
+    transitions = list(net.transitions)
+    i = 0
+    while i < len(transitions):
+        if len(transitions[i].in_arcs) == 0 and len(transitions[i].out_arcs) == 0:
+            petri.utils.remove_transition(net, transitions[i])
+        i = i + 1
     return net
