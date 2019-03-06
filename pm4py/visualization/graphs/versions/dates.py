@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib import pyplot
 
 from pm4py.visualization.graphs.util import common
