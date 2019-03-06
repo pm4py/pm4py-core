@@ -6,6 +6,8 @@ import tempfile
 
 import networkx as nx
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib import pyplot
 
 
