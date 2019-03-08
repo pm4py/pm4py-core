@@ -302,6 +302,9 @@ def get_default_representation(log, parameters=None):
     feature_names
         Names of the features, in order
     """
+    if parameters is None:
+        parameters = {}
+    
     enable_activity_def_representation = parameters[
         ENABLE_ACTIVITY_DEF_REPRESENTATION] if ENABLE_ACTIVITY_DEF_REPRESENTATION in parameters else False
     enable_succ_def_representation = parameters[
