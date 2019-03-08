@@ -4,6 +4,34 @@ from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.log.log import EventLog, Trace
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
+from copy import copy
+
+
+def get_log_with_log_prefixes(log, parameters=None):
+    """
+    Gets an extended log that contains, in order, all the prefixes for a case of the original log
+
+    Parameters
+    --------------
+    log
+        Original log
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    -------------
+    all_prefixes_log
+        Log with all the prefixes
+    """
+    all_prefixes_log = EventLog()
+
+    for trace in log:
+        cumulative_trace = Trace()
+        for event in trace:
+            cumulative_trace.append(event)
+            all_prefixes_log.append(copy(cumulative_trace))
+    
+    return all_prefixes_log
 
 
 def get_log_traces_to_activities(log, activities, parameters=None):
