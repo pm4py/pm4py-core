@@ -280,7 +280,7 @@ def get_numeric_event_attribute_value_trace(trace, event_attribute):
     raise Exception("at least a trace without any event with event attribute: " + event_attribute)
 
 
-def get_default_representation(log, enable_succattr=False):
+def get_default_representation(log, enable_activity=False, enable_succattr=False):
     """
     Gets the default data representation of an event log (for process tree building)
 
@@ -288,6 +288,8 @@ def get_default_representation(log, enable_succattr=False):
     -------------
     log
         Trace log
+    enable_activity
+        Force the insertion of the activity in string event attributes
     enable_succattr
         Inserts the succession of the activities in the obtained data
 
@@ -303,6 +305,8 @@ def get_default_representation(log, enable_succattr=False):
 
     if enable_succattr:
         str_evsucc_attr = [xes.DEFAULT_NAME_KEY]
+    if enable_activity and xes.DEFAULT_NAME_KEY not in str_ev_attr:
+        str_ev_attr.append(xes.DEFAULT_NAME_KEY)
 
     return get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, str_evsucc_attr=str_evsucc_attr)
 
