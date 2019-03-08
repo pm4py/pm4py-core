@@ -284,7 +284,7 @@ def get_numeric_event_attribute_value_trace(trace, event_attribute):
     raise Exception("at least a trace without any event with event attribute: " + event_attribute)
 
 
-def get_default_representation(log, parameters=None):
+def get_default_representation(log, parameters=None, feature_names=None):
     """
     Gets the default data representation of an event log (for process tree building)
 
@@ -294,6 +294,8 @@ def get_default_representation(log, parameters=None):
         Trace log
     parameters
         Possible parameters of the algorithm
+    feature_names
+        (If provided) Feature to use in the representation of the log
 
     Returns
     -------------
@@ -320,10 +322,12 @@ def get_default_representation(log, parameters=None):
     if enable_activity_def_representation and activity_key not in str_ev_attr:
         str_ev_attr.append(activity_key)
 
-    return get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, str_evsucc_attr=str_evsucc_attr)
+    return get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, str_evsucc_attr=str_evsucc_attr,
+                              feature_names=feature_names)
 
 
-def get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, str_evsucc_attr=None):
+def get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, str_evsucc_attr=None,
+                       feature_names=None):
     """
     Get a representation of the event log that is suited for the data part of the decision tree learning
 
@@ -341,6 +345,8 @@ def get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, 
         List of numeric event attributes to consider in data vector creation
     str_evsucc_attr
         List of attributes succession of values to consider in data vector creation
+    feature_names
+        (If provided) Feature to use in the representation of the log
 
     Returns
     -------------
@@ -350,57 +356,68 @@ def get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, 
         Names of the features, in order
     """
     data = []
-    feature_names = []
-    count = 0
     dictionary = {}
-    for trace_attribute in str_tr_attr:
-        values = get_all_string_trace_attribute_values(log, trace_attribute)
-        for value in values:
-            dictionary[value] = count
-            feature_names.append(value)
-            count = count + 1
-    for event_attribute in str_ev_attr:
-        values = get_all_string_event_attribute_values(log, event_attribute)
-        for value in values:
-            dictionary[value] = count
-            feature_names.append(value)
-            count = count + 1
-    for trace_attribute in num_tr_attr:
-        dictionary[get_numeric_trace_attribute_rep(trace_attribute)] = count
-        feature_names.append(trace_attribute)
-        count = count + 1
-    for event_attribute in num_ev_attr:
-        dictionary[get_numeric_event_attribute_rep(event_attribute)] = count
-        feature_names.append(event_attribute)
-        count = count + 1
-    if str_evsucc_attr:
-        for event_attribute in str_evsucc_attr:
-            values = get_all_string_event_succession_attribute_values(log, event_attribute)
+    count = 0
+    if feature_names is None:
+        feature_names = []
+        for trace_attribute in str_tr_attr:
+            values = get_all_string_trace_attribute_values(log, trace_attribute)
             for value in values:
                 dictionary[value] = count
                 feature_names.append(value)
                 count = count + 1
+        for event_attribute in str_ev_attr:
+            values = get_all_string_event_attribute_values(log, event_attribute)
+            for value in values:
+                dictionary[value] = count
+                feature_names.append(value)
+                count = count + 1
+        for trace_attribute in num_tr_attr:
+            dictionary[get_numeric_trace_attribute_rep(trace_attribute)] = count
+            feature_names.append(trace_attribute)
+            count = count + 1
+        for event_attribute in num_ev_attr:
+            dictionary[get_numeric_event_attribute_rep(event_attribute)] = count
+            feature_names.append(event_attribute)
+            count = count + 1
+        if str_evsucc_attr:
+            for event_attribute in str_evsucc_attr:
+                values = get_all_string_event_succession_attribute_values(log, event_attribute)
+                for value in values:
+                    dictionary[value] = count
+                    feature_names.append(value)
+                    count = count + 1
+    else:
+        count = len(feature_names)
+        for index, value in enumerate(feature_names):
+            dictionary[value] = index
     for trace in log:
         trace_rep = [0] * count
         for trace_attribute in str_tr_attr:
             trace_attr_rep = get_string_trace_attribute_rep(trace, trace_attribute)
-            trace_rep[dictionary[trace_attr_rep]] = 1
+            if trace_attr_rep in dictionary:
+                trace_rep[dictionary[trace_attr_rep]] = 1
         for event_attribute in str_ev_attr:
             values = get_values_event_attribute_for_trace(trace, event_attribute)
             for value in values:
-                trace_rep[dictionary[value]] = 1
+                if value in dictionary:
+                    trace_rep[dictionary[value]] = 1
         for trace_attribute in num_tr_attr:
-            trace_rep[dictionary[get_numeric_trace_attribute_rep(trace_attribute)]] = get_numeric_trace_attribute_value(
-                trace, trace_attribute)
+            this_value = get_numeric_trace_attribute_rep(trace_attribute)
+            if this_value in dictionary:
+                trace_rep[dictionary[this_value]] = get_numeric_trace_attribute_value(
+                    trace, trace_attribute)
         for event_attribute in num_ev_attr:
-            trace_rep[dictionary[
-                get_numeric_event_attribute_rep(event_attribute)]] = get_numeric_event_attribute_value_trace(
-                trace, event_attribute)
+            this_value = get_numeric_event_attribute_rep(event_attribute)
+            if this_value in dictionary:
+                trace_rep[dictionary[this_value]] = get_numeric_event_attribute_value_trace(
+                    trace, event_attribute)
         if str_evsucc_attr:
             for event_attribute in str_evsucc_attr:
                 values = get_values_event_attribute_succession_for_trace(trace, event_attribute)
                 for value in values:
-                    trace_rep[dictionary[value]] = 1
+                    if value in dictionary:
+                        trace_rep[dictionary[value]] = 1
         data.append(trace_rep)
     data = np.asarray(data)
     return data, feature_names
