@@ -2,6 +2,10 @@ import numpy as np
 
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.log.util import xes
+from pm4py.util import constants
+
+ENABLE_ACTIVITY_DEF_REPRESENTATION = "enable_activity_def_representation"
+ENABLE_SUCC_DEF_REPRESENTATION = "enable_succ_def_representation"
 
 
 def get_string_trace_attribute_rep(trace, trace_attribute):
@@ -280,7 +284,7 @@ def get_numeric_event_attribute_value_trace(trace, event_attribute):
     raise Exception("at least a trace without any event with event attribute: " + event_attribute)
 
 
-def get_default_representation(log, enable_activity=False, enable_succattr=False):
+def get_default_representation(log, parameters=None):
     """
     Gets the default data representation of an event log (for process tree building)
 
@@ -288,10 +292,8 @@ def get_default_representation(log, enable_activity=False, enable_succattr=False
     -------------
     log
         Trace log
-    enable_activity
-        Force the insertion of the activity in string event attributes
-    enable_succattr
-        Inserts the succession of the activities in the obtained data
+    parameters
+        Possible parameters of the algorithm
 
     Returns
     -------------
@@ -300,13 +302,20 @@ def get_default_representation(log, enable_activity=False, enable_succattr=False
     feature_names
         Names of the features, in order
     """
+    enable_activity_def_representation = parameters[
+        ENABLE_ACTIVITY_DEF_REPRESENTATION] if ENABLE_ACTIVITY_DEF_REPRESENTATION in parameters else False
+    enable_succ_def_representation = parameters[
+        ENABLE_SUCC_DEF_REPRESENTATION] if ENABLE_SUCC_DEF_REPRESENTATION in parameters else False
+    activity_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+
     str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr = attributes_filter.select_attributes_from_log_for_tree(log)
     str_evsucc_attr = None
 
-    if enable_succattr:
-        str_evsucc_attr = [xes.DEFAULT_NAME_KEY]
-    if enable_activity and xes.DEFAULT_NAME_KEY not in str_ev_attr:
-        str_ev_attr.append(xes.DEFAULT_NAME_KEY)
+    if enable_succ_def_representation:
+        str_evsucc_attr = [activity_key]
+    if enable_activity_def_representation and activity_key not in str_ev_attr:
+        str_ev_attr.append(activity_key)
 
     return get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, str_evsucc_attr=str_evsucc_attr)
 
