@@ -340,6 +340,35 @@ def get_attribute_values(log, attribute_key, parameters=None):
     return attributes
 
 
+def filter_log_on_max_no_activities(log, max_no_activities=25, parameters=None):
+    """
+    Filter a log on a maximum number of activities
+
+    Parameters
+    -------------
+    log
+        Log
+    max_no_activities
+        Maximum number of activities
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    -------------
+    filtered_log
+        Filtered version of the event log
+    """
+    if parameters is None:
+        parameters = {}
+    activity_key = parameters[
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
+    parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
+    activities = sorted([(x,y) for x,y in get_attribute_values(log, activity_key).items()], key=lambda x: x[1], reverse=True)
+    activities = activities[:min(len(activities), max_no_activities)]
+    activities = [x[0] for x in activities]
+    log = apply_events(log, activities, parameters=parameters)
+    return log
+
 def get_trace_attribute_values(log, attribute_key, parameters=None):
     """
     Get the attribute values of the log for the specified attribute along with their count
