@@ -34,10 +34,10 @@ class TransitionSystem(object):
 
     class Transition(object):
 
-        def __init__(self, name, from_state=None, to_state=None, data=None):
+        def __init__(self, name, from_state, to_state, data=None):
             self.__name = name
-            self.__from_state = set() if from_state is None else from_state
-            self.__to_state = set() if to_state is None else to_state
+            self.__from_state = from_state
+            self.__to_state = to_state
             self.__data = dict() if data is None else data
 
         def __get_name(self):
