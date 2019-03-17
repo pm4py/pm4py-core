@@ -153,7 +153,6 @@ class HeuristicsNet:
         for node in self.nodes:
             self.nodes[node].calculate_and_measure_out(and_measure_thresh=and_measure_thresh)
             self.nodes[node].calculate_and_measure_in(and_measure_thresh=and_measure_thresh)
-            self.nodes[node].calculate_loops_length_two(loops_length_two_thresh=loops_length_two_thresh)
 
     def __add__(self, other_net):
         copied_self = deepcopy(self)

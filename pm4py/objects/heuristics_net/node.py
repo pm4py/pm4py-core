@@ -156,15 +156,7 @@ class Node:
                 j = j + 1
             i = i + 1
 
-    def calculate_loops_length_two(self, loops_length_two_thresh=defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH):
-        """
-        Calculates loops of length two
-
-        Parameters
-        -------------
-        loops_length_two_thresh
-            Loops length two threshold
-        """
+    """def calculate_loops_length_two(self, loops_length_two_thresh=defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH):
         out_nodes = sorted(list(self.output_connections), key=lambda x: x.node_name)
         for node in out_nodes:
             c1 = self.heuristics_net.dependency_matrix[self.node_name][node.node_name]
@@ -175,7 +167,7 @@ class Node:
             if l2l > loops_length_two_thresh:
                 if self.node_name not in self.loop_length_two:
                     self.loop_length_two[self.node_name] = {}
-                self.loop_length_two[self.node_name][node.node_name] = l2l
+                self.loop_length_two[self.node_name][node.node_name] = l2l"""
 
     def __repr__(self):
         ret = "(node:" + self.node_name + " connections:{"
