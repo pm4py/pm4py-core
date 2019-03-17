@@ -46,8 +46,14 @@ class TransitionSystem(object):
         def __get_to_state(self):
             return self.__to_state
 
+        def __set_to_state(self, to_state):
+            self.__to_state = to_state
+
         def __get_from_state(self):
             return self.__from_state
+
+        def __set_from_state(self, from_state):
+            self.__from_state = from_state
 
         def __get_data(self):
             return self.__data
@@ -56,8 +62,8 @@ class TransitionSystem(object):
             return str(self.name)
 
         name = property(__get_name)
-        from_state = property(__get_from_state)
-        to_state = property(__get_to_state)
+        from_state = property(__get_from_state, __set_from_state)
+        to_state = property(__get_to_state, __set_to_state)
         data = property(__get_data)
 
     def __init__(self, name=None, states=None, transitions=None):
