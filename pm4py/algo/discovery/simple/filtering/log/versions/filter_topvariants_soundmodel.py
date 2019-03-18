@@ -28,7 +28,7 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
     discovery_algorithm = parameters["discovery_algorithm"] if "discovery_algorithm" in parameters else "alphaclassic"
-    max_no_variants = parameters["max_no_variants"] if "max_no_variants" in parameters else 20
+    max_no_variants = parameters["max_no_variants"] if "max_no_variants" in parameters else 7
     all_variants_list = parameters["variants_list"] if "all_variants_list" in parameters else None
     if all_variants_list is None:
         all_variants_dictio = variants_filter.get_variants(log, parameters=parameters)

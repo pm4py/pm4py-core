@@ -8,7 +8,7 @@ from pm4py.algo.discovery.simple.filtering.log.versions import filter_topvariant
 from pm4py.objects.log.util import insert_classifier
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
-
+from copy import deepcopy
 
 def apply(log, parameters=None, classic_output=False):
     """
@@ -85,6 +85,8 @@ def apply(log, parameters=None, classic_output=False):
     filtered_log = None
 
     if "alpha" in discovery_algorithm:
+        #parameters_sa = deepcopy(parameters)
+        #parameters_sa["decreasingFactor"] = 1.0
         filtered_log = start_activities_filter.apply_auto_filter(log, parameters=parameters)
         filtered_log = end_activities_filter.apply_auto_filter(filtered_log, parameters=parameters)
         filtered_log = filter_topvariants_soundmodel.apply(filtered_log, parameters=parameters)
