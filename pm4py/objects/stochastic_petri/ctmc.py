@@ -129,7 +129,8 @@ def transient_analysis_from_petri_net_and_smap(net, im, s_map, delay, parameters
 
     for state in states_reachable_from_start:
         states_vector[0, states.index(state)] = 1.0 / len(states_reachable_from_start)
-    return transient_analysis_from_tangible_q_matrix_and_states_vector(tang_reach_graph, q_matrix, states_vector, delay)
+    return tang_reach_graph, transient_analysis_from_tangible_q_matrix_and_states_vector(tang_reach_graph, q_matrix,
+                                                                                         states_vector, delay)
 
 
 def get_q_matrix_from_tangible_exponential(tangible_reach_graph, stochastic_info):
