@@ -52,11 +52,11 @@ def apply(log, parameters=None, classic_output=False):
     desidered_output = parameters["desidered_output"] if "desidered_output" in parameters else "petri"
     include_filtered_log = parameters["include_filtered_log"] if "include_filtered_log" in parameters else True
     include_dfg_frequency = parameters["include_dfg_frequency"] if "include_dfg_frequency" in parameters else True
-    include_dfg_performance = parameters["include_dfg_performance"] if "include_dfg_performance" in parameters else True
+    include_dfg_performance = parameters["include_dfg_performance"] if "include_dfg_performance" in parameters else False
     include_filtered_dfg_frequency = parameters[
         "include_filtered_dfg_frequency"] if "include_filtered_dfg_frequency" in parameters else True
     include_filtered_dfg_performance = parameters[
-        "include_filtered_dfg_performance"] if "include_filtered_dfg_performance" in parameters else True
+        "include_filtered_dfg_performance"] if "include_filtered_dfg_performance" in parameters else False
 
     if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters:
         activity_key = parameters[
