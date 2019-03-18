@@ -8,7 +8,7 @@ from pm4py.algo.discovery.simple.filtering.log.versions import filter_topvariant
 from pm4py.objects.log.util import insert_classifier
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
-
+from copy import deepcopy
 
 def apply(log, parameters=None, classic_output=False):
     """
@@ -52,11 +52,11 @@ def apply(log, parameters=None, classic_output=False):
     desidered_output = parameters["desidered_output"] if "desidered_output" in parameters else "petri"
     include_filtered_log = parameters["include_filtered_log"] if "include_filtered_log" in parameters else True
     include_dfg_frequency = parameters["include_dfg_frequency"] if "include_dfg_frequency" in parameters else True
-    include_dfg_performance = parameters["include_dfg_performance"] if "include_dfg_performance" in parameters else True
+    include_dfg_performance = parameters["include_dfg_performance"] if "include_dfg_performance" in parameters else False
     include_filtered_dfg_frequency = parameters[
         "include_filtered_dfg_frequency"] if "include_filtered_dfg_frequency" in parameters else True
     include_filtered_dfg_performance = parameters[
-        "include_filtered_dfg_performance"] if "include_filtered_dfg_performance" in parameters else True
+        "include_filtered_dfg_performance"] if "include_filtered_dfg_performance" in parameters else False
 
     if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters:
         activity_key = parameters[
@@ -85,6 +85,8 @@ def apply(log, parameters=None, classic_output=False):
     filtered_log = None
 
     if "alpha" in discovery_algorithm:
+        #parameters_sa = deepcopy(parameters)
+        #parameters_sa["decreasingFactor"] = 1.0
         filtered_log = start_activities_filter.apply_auto_filter(log, parameters=parameters)
         filtered_log = end_activities_filter.apply_auto_filter(filtered_log, parameters=parameters)
         filtered_log = filter_topvariants_soundmodel.apply(filtered_log, parameters=parameters)
