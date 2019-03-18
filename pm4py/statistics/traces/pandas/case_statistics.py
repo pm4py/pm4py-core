@@ -44,6 +44,42 @@ def get_variant_statistics(df, parameters=None):
     return variants_list
 
 
+def get_variants_df_and_list(df, parameters=None):
+    """
+    (Technical method) Provides variants_df and variants_list out of the box
+
+    Parameters
+    ------------
+    df
+        Dataframe
+    parameters
+        Parameters of the algorithm, including:
+            case_id_glue -> Column that contains the Case ID
+            activity_key -> Column that contains the activity
+
+    Returns
+    ------------
+    variants_df
+        Variants dataframe
+    variants_list
+        List of variants sorted by their count
+    """
+    if parameters is None:
+        parameters = {}
+    case_id_glue = parameters[
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    variants_df = get_variants_df(df, parameters=parameters)
+    parameters["variants_df"] = variants_df
+    variants_stats = get_variant_statistics(df, parameters=parameters)
+    variants_list = []
+    for vd in variants_stats:
+        variant = vd["variant"]
+        count = vd[case_id_glue]
+        variants_list.append([variant, count])
+        variants_list = sorted(variants_list, key=lambda x: (x[1], x[0]), reverse=True)
+    return variants_df, variants_list
+
+
 def get_cases_description(df, parameters=None):
     """
     Get a description of traces present in the Pandas dataframe
