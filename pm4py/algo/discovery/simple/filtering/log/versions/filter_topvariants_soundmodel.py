@@ -17,7 +17,7 @@ def apply(log, parameters=None):
         Possible parameters of the algorithm, including:
             discovery_algorithm -> Discovery algorithm to consider, possible choices: alphaclassic
             max_no_variants -> Maximum number of variants to consider to return a Petri net
-
+            variants_list - > List of variants to use
     Returns
     ------------
     filtered_log
@@ -28,11 +28,13 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
     discovery_algorithm = parameters["discovery_algorithm"] if "discovery_algorithm" in parameters else "alphaclassic"
-    max_no_variants = parameters["max_no_variants"] if "max_no_variants" in parameters else 20
-    all_variants_dictio = variants_filter.get_variants(log, parameters=parameters)
-    all_variants_list = []
-    for var in all_variants_dictio:
-        all_variants_list.append([var, len(all_variants_dictio[var])])
+    max_no_variants = parameters["max_no_variants"] if "max_no_variants" in parameters else 7
+    all_variants_list = parameters["variants_list"] if "all_variants_list" in parameters else None
+    if all_variants_list is None:
+        all_variants_dictio = variants_filter.get_variants(log, parameters=parameters)
+        all_variants_list = []
+        for var in all_variants_dictio:
+            all_variants_list.append([var, len(all_variants_dictio[var])])
     all_variants_list = sorted(all_variants_list, key=lambda x: (x[1], x[0]), reverse=True)
     considered_variants = []
     considered_traces = []

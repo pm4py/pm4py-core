@@ -9,6 +9,9 @@ class TransitionSystem(object):
         def __get_name(self):
             return self.__name
 
+        def __set_name(self, name):
+            self.__name = name
+
         def __get_outgoing(self):
             return self.__outgoing
 
@@ -27,7 +30,7 @@ class TransitionSystem(object):
         def __repr__(self):
             return str(self.name)
 
-        name = property(__get_name)
+        name = property(__get_name, __set_name)
         incoming = property(__get_incoming, __set_incoming)
         outgoing = property(__get_outgoing, __set_outgoing)
         data = property(__get_data)
