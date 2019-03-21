@@ -78,7 +78,7 @@ def get_cases_description(log, parameters=None):
         PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     enable_sort = parameters["enable_sort"] if "enable_sort" in parameters else True
     sort_by_index = parameters["sort_by_index"] if "sort_by_index" in parameters else 0
-    sort_ascending = parameters["sort_ascending"] if "sort_ascending" in parameters else "ascending"
+    sort_ascending = parameters["sort_ascending"] if "sort_ascending" in parameters else True
     max_ret_cases = parameters["max_ret_cases"] if "max_ret_cases" in parameters else None
 
     statistics_list = []
