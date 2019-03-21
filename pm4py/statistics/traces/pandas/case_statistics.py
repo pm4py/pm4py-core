@@ -113,7 +113,7 @@ def get_cases_description(df, parameters=None):
         PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     enable_sort = parameters["enable_sort"] if "enable_sort" in parameters else True
     sort_by_column = parameters["sort_by_column"] if "sort_by_column" in parameters else "startTime"
-    sort_ascending = parameters["sort_ascending"] if "sort_ascending" in parameters else "ascending"
+    sort_ascending = parameters["sort_ascending"] if "sort_ascending" in parameters else True
     max_ret_cases = parameters["max_ret_cases"] if "max_ret_cases" in parameters else None
 
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
