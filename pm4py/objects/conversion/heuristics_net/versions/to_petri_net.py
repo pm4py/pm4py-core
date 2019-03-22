@@ -1,3 +1,5 @@
+import networkx as nx
+
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import add_arc_from_to, remove_transition
 
@@ -36,6 +38,35 @@ def remove_rendundant_invisible_transitions(net):
                 j = j + 1
             i = i + 1
     return net
+
+
+def find_bindings(and_measures):
+    """
+    Find the bindings given the AND measures
+
+    Parameters
+    -------------
+    and_measures
+        AND measures
+
+    Returns
+    -------------
+    bindings
+        Bindings
+    """
+    G = nx.Graph()
+    allocated_nodes = set()
+    for n1 in list(and_measures.keys()):
+        if n1 not in allocated_nodes:
+            allocated_nodes.add(n1)
+            G.add_node(n1)
+        for n2 in list(and_measures[n1].keys()):
+            if n2 not in allocated_nodes:
+                allocated_nodes.add(n2)
+                G.add_node(n1)
+            G.add_edge(n1, n2)
+    ret = list(nx.find_cliques(G))
+    return ret
 
 
 def apply(heu_net, parameters=None):
@@ -109,6 +140,7 @@ def apply(heu_net, parameters=None):
             who_is_exiting[act1_name].add((act2_name, None))
     places_entering = {}
     for act1 in who_is_entering:
+        cliques = find_bindings(heu_net.nodes[act1].and_measures_in)
         places_entering[act1] = {}
         entering_activities = list(who_is_entering[act1])
         entering_activities_wo_source = sorted([x for x in entering_activities if x[0] is not None], key=lambda x: x[0])
@@ -120,23 +152,53 @@ def apply(heu_net, parameters=None):
             if len(entering_activities) == 1:
                 places_entering[act1][entering_activities[0]] = master_place
             else:
-                target_hidden_trans = {}
+                #target_hidden_trans = {}
                 for index, act in enumerate(entering_activities_wo_source):
-                    if act[0] not in target_hidden_trans:
+                    if act[0] in heu_net.nodes[act1].and_measures_in:
+                        print(cliques)
+                        print(act1, act[0])
+                        z = 0
+                        while z < len(cliques):
+                            if act[0] in cliques[z]:
+                                hid_trans_count = hid_trans_count + 1
+                                hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
+                                net.transitions.add(hid_trans)
+                                add_arc_from_to(hid_trans, master_place, net)
+                                for act2 in cliques[z]:
+                                    if act2 not in places_entering[act1]:
+                                        s_place = PetriNet.Place("splace_in_" + act1 + "_" + act2 + "_" + str(index))
+                                        net.places.add(s_place)
+                                        places_entering[act1][act2] = s_place
+                                    add_arc_from_to(places_entering[act1][act2], hid_trans, net)
+                                del cliques[z]
+                                continue
+                            z = z + 1
+                        pass
+                    else:
                         hid_trans_count = hid_trans_count + 1
                         hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
                         net.transitions.add(hid_trans)
-                        target_hidden_trans[act] = hid_trans
                         add_arc_from_to(hid_trans, master_place, net)
-                    else:
-                        hid_trans = target_hidden_trans[act[0]]
-                    s_place = PetriNet.Place("splace_in_" + act1 + "_" + str(index))
-                    net.places.add(s_place)
-                    add_arc_from_to(s_place, hid_trans, net)
-                    places_entering[act1][act] = s_place
-                    if act[0] in heu_net.nodes[act1].and_measures_in:
-                        for and_act in heu_net.nodes[act1].and_measures_in[act[0]]:
-                            target_hidden_trans[and_act] = hid_trans
+                        if act not in places_entering[act1]:
+                            s_place = PetriNet.Place("splace_in_" + act1 + "_" + str(index))
+                            net.places.add(s_place)
+                            places_entering[act1][act] = s_place
+                        add_arc_from_to(places_entering[act1][act], hid_trans, net)
+                    #if act[0] not in target_hidden_trans:
+                    #    hid_trans_count = hid_trans_count + 1
+                    #    hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
+                    #    net.transitions.add(hid_trans)
+                    #    target_hidden_trans[act] = hid_trans
+                    #    add_arc_from_to(hid_trans, master_place, net)
+                    #else:
+                    #    hid_trans = target_hidden_trans[act[0]]
+                    #s_place = PetriNet.Place("splace_in_" + act1 + "_" + str(index))
+                    #net.places.add(s_place)
+                    #add_arc_from_to(s_place, hid_trans, net)
+                    #places_entering[act1][act] = s_place
+                    #if act[0] in heu_net.nodes[act1].and_measures_in:
+                    #    for and_act in heu_net.nodes[act1].and_measures_in[act[0]]:
+                    #        target_hidden_trans[and_act] = hid_trans
         for el in entering_activities_only_source:
             if len(entering_activities) == 1:
                 add_arc_from_to(source_places[el[1]], act_trans[act1], net)
@@ -147,6 +209,7 @@ def apply(heu_net, parameters=None):
                 add_arc_from_to(source_places[el[1]], hid_trans, net)
                 add_arc_from_to(hid_trans, master_place, net)
     for act1 in who_is_exiting:
+        cliques = find_bindings(heu_net.nodes[act1].and_measures_out)
         exiting_activities = list(who_is_exiting[act1])
         exiting_activities_wo_sink = sorted([x for x in exiting_activities if x[0] is not None], key=lambda x: x[0])
         exiting_activities_only_sink = [x for x in exiting_activities if x[0] is None]
@@ -162,13 +225,18 @@ def apply(heu_net, parameters=None):
                 for ex_act in exiting_activities_wo_sink:
                     if (act1, None) in places_entering[ex_act[0]]:
                         if ex_act[0] in heu_net.nodes[act1].and_measures_out:
-                            for and_act in heu_net.nodes[act1].and_measures_out[ex_act[0]]:
-                                hid_trans_count = hid_trans_count + 1
-                                hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
-                                net.transitions.add(hid_trans)
-                                add_arc_from_to(int_place, hid_trans, net)
-                                add_arc_from_to(hid_trans, places_entering[and_act][(act1, None)], net)
-                                add_arc_from_to(hid_trans, places_entering[ex_act[0]][(act1, None)], net)
+                            z = 0
+                            while z < len(cliques):
+                                if ex_act[0] in cliques[z]:
+                                    hid_trans_count = hid_trans_count + 1
+                                    hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
+                                    net.transitions.add(hid_trans)
+                                    add_arc_from_to(int_place, hid_trans, net)
+                                    for act in cliques[z]:
+                                        add_arc_from_to(hid_trans, places_entering[act][(act1, None)], net)
+                                    del cliques[z]
+                                    continue
+                                z = z + 1
                         else:
                             hid_trans_count = hid_trans_count + 1
                             hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
