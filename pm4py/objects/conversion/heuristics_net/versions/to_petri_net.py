@@ -165,11 +165,11 @@ def apply(heu_net, parameters=None):
                                 net.transitions.add(hid_trans)
                                 add_arc_from_to(hid_trans, master_place, net)
                                 for act2 in cliques[z]:
-                                    if act2 not in places_entering[act1]:
+                                    if (act2, None) not in places_entering[act1]:
                                         s_place = PetriNet.Place("splace_in_" + act1 + "_" + act2 + "_" + str(index))
                                         net.places.add(s_place)
-                                        places_entering[act1][act2] = s_place
-                                    add_arc_from_to(places_entering[act1][act2], hid_trans, net)
+                                        places_entering[act1][(act2, None)] = s_place
+                                    add_arc_from_to(places_entering[act1][(act2, None)], hid_trans, net)
                                 del cliques[z]
                                 continue
                             z = z + 1
