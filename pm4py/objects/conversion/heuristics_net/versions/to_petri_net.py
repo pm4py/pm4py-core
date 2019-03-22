@@ -152,11 +152,8 @@ def apply(heu_net, parameters=None):
             if len(entering_activities) == 1:
                 places_entering[act1][entering_activities[0]] = master_place
             else:
-                #target_hidden_trans = {}
                 for index, act in enumerate(entering_activities_wo_source):
                     if act[0] in heu_net.nodes[act1].and_measures_in:
-                        print(cliques)
-                        print(act1, act[0])
                         z = 0
                         while z < len(cliques):
                             if act[0] in cliques[z]:
@@ -174,7 +171,7 @@ def apply(heu_net, parameters=None):
                                 continue
                             z = z + 1
                         pass
-                    else:
+                    elif act not in places_entering[act1]:
                         hid_trans_count = hid_trans_count + 1
                         hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
                         net.transitions.add(hid_trans)
@@ -184,21 +181,6 @@ def apply(heu_net, parameters=None):
                             net.places.add(s_place)
                             places_entering[act1][act] = s_place
                         add_arc_from_to(places_entering[act1][act], hid_trans, net)
-                    #if act[0] not in target_hidden_trans:
-                    #    hid_trans_count = hid_trans_count + 1
-                    #    hid_trans = PetriNet.Transition("hid_" + str(hid_trans_count), None)
-                    #    net.transitions.add(hid_trans)
-                    #    target_hidden_trans[act] = hid_trans
-                    #    add_arc_from_to(hid_trans, master_place, net)
-                    #else:
-                    #    hid_trans = target_hidden_trans[act[0]]
-                    #s_place = PetriNet.Place("splace_in_" + act1 + "_" + str(index))
-                    #net.places.add(s_place)
-                    #add_arc_from_to(s_place, hid_trans, net)
-                    #places_entering[act1][act] = s_place
-                    #if act[0] in heu_net.nodes[act1].and_measures_in:
-                    #    for and_act in heu_net.nodes[act1].and_measures_in[act[0]]:
-                    #        target_hidden_trans[and_act] = hid_trans
         for el in entering_activities_only_source:
             if len(entering_activities) == 1:
                 add_arc_from_to(source_places[el[1]], act_trans[act1], net)
