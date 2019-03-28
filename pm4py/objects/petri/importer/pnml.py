@@ -67,6 +67,9 @@ def import_net(input_file_path, return_stochastic_information=False):
             if "finalmarkings" in child.tag:
                 finalmarkings = child
 
+    if page is None:
+        page = nett
+
     if page is not None:
         for child in page:
             if "place" in child.tag:
