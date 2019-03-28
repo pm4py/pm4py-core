@@ -134,13 +134,12 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
             else:
                 model_cost_function[t] = 1
 
-    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking)
-
     parameters[pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = activity_key
     parameters[
         PARAM_MODEL_COST_FUNCTION] = model_cost_function
     parameters[
         PARAM_SYNC_COST_FUNCTION] = sync_cost_function
+    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters)
     alignments = list(map(
         lambda trace: apply_trace(trace, petri_net, initial_marking, final_marking, parameters=copy(parameters),
                                   version=version),
