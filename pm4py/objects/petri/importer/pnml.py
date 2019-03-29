@@ -20,6 +20,7 @@ def deprecated(func):
 
     return new_func
 
+
 @deprecated
 def import_petri_from_string(petri_string, return_stochastic_information=False):
     """
@@ -36,6 +37,7 @@ def import_petri_from_string(petri_string, return_stochastic_information=False):
     """
     return versions.pnml.import_petri_from_string(petri_string,
                                                   return_stochastic_information=return_stochastic_information)
+
 
 @deprecated
 def import_net(input_file_path, return_stochastic_information=False):
