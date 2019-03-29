@@ -8,7 +8,9 @@ from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.log.util import general as log_util
 
 ALPHA_VERSION_CLASSIC = 'classic'
-VERSIONS = {ALPHA_VERSION_CLASSIC: versions.classic.apply}
+ALPHA_VERSION_PLUS = 'plus'
+
+VERSIONS = {ALPHA_VERSION_CLASSIC: versions.classic.apply, ALPHA_VERSION_PLUS: versions.plus.apply}
 VERSIONS_DFG = {ALPHA_VERSION_CLASSIC: versions.classic.apply_dfg}
 
 DEFAULT_PARAMETERS = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: xes_util.DEFAULT_NAME_KEY}

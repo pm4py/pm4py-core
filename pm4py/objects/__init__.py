@@ -1,1 +1,2 @@
-from pm4py.objects import log, petri, transition_system, conversion, process_tree, random_variables, stochastic_petri
+from pm4py.objects import log, petri, transition_system, conversion, process_tree, heuristics_net, random_variables, \
+    stochastic_petri
