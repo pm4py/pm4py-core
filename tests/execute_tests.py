@@ -31,6 +31,8 @@ if __name__ == "__main__":
     from tests.dataframe_prefilter import DataframePrefilteringTest
     from tests.simple_execution import SimpleExecutionTest
     from tests.graphs_forming import GraphsForming
+    from tests.heuminer_test import HeuMinerTest
+    from tests.matrix_rep_test import MatrixRepTest
 
     test_rv = RandomVariableTest()
     test1_object = Pm4pyImportPackageTest()
@@ -56,5 +58,7 @@ if __name__ == "__main__":
     prefiltering_test = DataframePrefilteringTest()
     simpleex_test = SimpleExecutionTest()
     graphforming_test = GraphsForming()
+    heuminer_test = HeuMinerTest()
+    matrixrep_test = MatrixRepTest()
 
     unittest.main()
