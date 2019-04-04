@@ -1,4 +1,5 @@
 from graphviz import Source
+import tempfile
 
 from pm4py.algo.filtering.log.variants import variants_filter
 
@@ -62,7 +63,9 @@ def apply(log, aligned_traces, parameters=None):
 
     table_alignments = "".join(table_alignments_list)
 
-    gviz = Source(table_alignments)
+    filename = tempfile.NamedTemporaryFile(suffix='.gv')
+
+    gviz = Source(table_alignments, filename=filename.name)
     gviz.format = image_format
 
     return gviz
