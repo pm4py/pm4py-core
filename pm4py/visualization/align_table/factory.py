@@ -8,6 +8,25 @@ VERSIONS = {CLASSIC: classic.apply}
 
 
 def apply(log, aligned_traces, variant=CLASSIC, parameters=None):
+    """
+    Gets the alignment table visualization from the alignments output
+
+    Parameters
+    -------------
+    log
+        Event log
+    aligned_traces
+        Aligned traces
+    variant
+        Variant of the algorithm to apply, possible values: classic
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    -------------
+    gviz
+        Graphviz object
+    """
     return VERSIONS[variant](log, aligned_traces, parameters=parameters)
 
 
