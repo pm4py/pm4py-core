@@ -35,18 +35,6 @@ class SlidingWindowEventStore(EventStore):
         if len(self.event_stream) == self.N:
             del self.event_stream[0]
 
-    def do_push(self, event):
-        """
-        Version-specific function that is executed to push
-        the event in the store
-
-        Parameters
-        -------------
-        event
-            Event
-        """
-        pass
-
     def after_push(self, event):
         """
         Function that is executed after pushing the event
