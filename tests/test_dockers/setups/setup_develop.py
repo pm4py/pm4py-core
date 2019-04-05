@@ -81,6 +81,7 @@ setup(
               'pm4py.visualization.graphs', 'pm4py.visualization.graphs.util', 'pm4py.visualization.graphs.versions',
               'pm4py.visualization.petrinet', 'pm4py.visualization.petrinet.util',
               'pm4py.visualization.petrinet.common', 'pm4py.visualization.petrinet.versions',
+              'pm4py.visualization.align_table', 'pm4py.visualization.align_table.versions',
               'pm4py.visualization.decisiontree', 'pm4py.visualization.decisiontree.versions',
               'pm4py.visualization.process_tree', 'pm4py.visualization.process_tree.versions',
               'pm4py.visualization.heuristics_net', 'pm4py.visualization.heuristics_net.versions',
