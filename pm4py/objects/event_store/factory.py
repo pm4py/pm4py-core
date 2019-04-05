@@ -1,8 +1,10 @@
-from pm4py.objects.event_store.versions import sliding_window
+from pm4py.objects.event_store.versions import sliding_window, reservoir_sampling_event_based
 
 SLIDING_WINDOW = "sliding_window"
+RESERVOIR_SAMPLING_EVENT_BASED = "reservoir_sampling_event_based"
 
-VERSIONS = {SLIDING_WINDOW: sliding_window.SlidingWindowEventStore}
+VERSIONS = {SLIDING_WINDOW: sliding_window.SlidingWindowEventStore,
+            RESERVOIR_SAMPLING_EVENT_BASED: reservoir_sampling_event_based.ReservoirSamplingEventBasedStore}
 
 
 def apply(variant=SLIDING_WINDOW, parameters=None):

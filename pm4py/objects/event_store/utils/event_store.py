@@ -1,3 +1,5 @@
+from threading import Semaphore
+
 from pm4py.objects.log.log import Event
 from pm4py.objects.log.log import EventStream
 
@@ -14,6 +16,7 @@ class EventStore(object):
         """
         self.event_stream = []
         self.observers = []
+        self.store_semaphore = Semaphore(1)
 
     def add_observer(self, observer):
         """
@@ -48,7 +51,22 @@ class EventStore(object):
         stream
             Event stream
         """
-        return EventStream(self.event_stream)
+        self.store_semaphore.acquire()
+        stream = EventStream(self.event_stream)
+        self.store_semaphore.release()
+        return stream
+
+    def shall_be_added(self, event):
+        """
+        Version-specific function that is executed to see if the
+        event should be part of the stream
+
+        Parameters
+        -------------
+        event
+            Event
+        """
+        return True
 
     def before_push(self, event):
         """
@@ -62,6 +80,18 @@ class EventStore(object):
         """
         # version-specific, to be implemented
         pass
+
+    def do_push(self, event):
+        """
+        Version-specific function that is executed to push
+        the event in the store
+
+        Parameters
+        -------------
+        event
+            Event
+        """
+        self.event_stream.append(event)
 
     def after_push(self, event):
         """
@@ -85,11 +115,16 @@ class EventStore(object):
         event
             Event (if it is a dictionary, then it is automatically converted to event)
         """
+        self.store_semaphore.acquire()
         if not type(event) is Event:
             event = Event(event)
 
-        self.before_push(event)
-        self.event_stream.append(event)
-        for observer in self.observers:
-            observer.update(event)
-        self.after_push(event)
+        if self.shall_be_added(event):
+            self.before_push(event)
+            self.do_push(event)
+            for observer in self.observers:
+                observer.acquire()
+                observer.update(event, self)
+                observer.release()
+            self.after_push(event)
+        self.store_semaphore.release()
