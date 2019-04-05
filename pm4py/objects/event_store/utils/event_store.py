@@ -1,3 +1,4 @@
+from pm4py.objects.log.log import Event
 from pm4py.objects.log.log import EventStream
 
 
@@ -11,8 +12,8 @@ class EventStore(object):
         """
         Initialize the event store
         """
-        self.__event_stream = []
-        self.__observers = []
+        self.event_stream = []
+        self.observers = []
 
     def add_observer(self, observer):
         """
@@ -23,7 +24,7 @@ class EventStore(object):
         observer
             Observer
         """
-        self.__observers.append(observer)
+        self.observers.append(observer)
 
     def remove_observer(self, obj):
         """
@@ -35,8 +36,8 @@ class EventStore(object):
             Index or object to remove from observers
         """
         if type(obj) is int:
-            del self.__observers[obj]
-        del self.__observers[self.__observers.index(obj)]
+            del self.observers[obj]
+        del self.observers[self.observers.index(obj)]
 
     def get_stream(self):
         """
@@ -47,7 +48,7 @@ class EventStore(object):
         stream
             Event stream
         """
-        return EventStream(self.__event_stream)
+        return EventStream(self.event_stream)
 
     def before_push(self, event):
         """
@@ -84,7 +85,11 @@ class EventStore(object):
         event
             Event (if it is a dictionary, then it is automatically converted to event)
         """
+        if not type(event) is Event:
+            event = Event(event)
+
         self.before_push(event)
-        self.after_push(event)
-        for observer in self.__observers:
+        self.event_stream.append(event)
+        for observer in self.observers:
             observer.update(event)
+        self.after_push(event)
