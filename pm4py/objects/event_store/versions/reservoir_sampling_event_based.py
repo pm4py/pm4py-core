@@ -40,7 +40,7 @@ class ReservoirSamplingEventBasedStore(EventStore):
         """
         self.internal_count = self.internal_count + 1
         r = random.random()
-        if r * self.internal_count > len(self.event_stream):
+        if r * self.internal_count <= self.N:
             return True
         return False
 
