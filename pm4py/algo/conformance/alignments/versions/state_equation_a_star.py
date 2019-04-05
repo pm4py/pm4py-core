@@ -34,6 +34,9 @@ PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
 DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.CVXOPT
 PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE = 'ret_tuple_as_trans_desc'
 
+TRACE_NET_CONSTR_FUNCTION = "trace_net_constr_function"
+TRACE_NET_COST_AWARE_CONSTR_FUNCTION = "trace_net_cost_aware_constr_function"
+
 PARAMETERS = [PARAM_TRACE_COST_FUNCTION, PARAM_MODEL_COST_FUNCTION, PARAM_SYNC_COST_FUNCTION,
               pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
@@ -97,8 +100,9 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
         parameters[
             pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     if parameters is None or PARAM_TRACE_COST_FUNCTION not in parameters or PARAM_MODEL_COST_FUNCTION not in parameters or PARAM_SYNC_COST_FUNCTION not in parameters:
-
-        trace_net, trace_im, trace_fm = petri.utils.construct_trace_net(trace, activity_key=activity_key)
+        trace_net_constr_function = parameters[
+            TRACE_NET_CONSTR_FUNCTION] if TRACE_NET_CONSTR_FUNCTION in parameters else petri.utils.construct_trace_net
+        trace_net, trace_im, trace_fm = trace_net_constr_function(trace, activity_key=activity_key)
         sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
                                                                                                   trace_fm, petri_net,
                                                                                                   initial_marking,
@@ -106,10 +110,12 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
                                                                                                   alignments.utils.SKIP)
         cost_function = alignments.utils.construct_standard_cost_function(sync_prod, alignments.utils.SKIP)
     else:
-        trace_net, trace_im, trace_fm, trace_net_costs = construct_trace_net_cost_aware(trace,
-                                                                                        parameters[
-                                                                                            PARAM_TRACE_COST_FUNCTION],
-                                                                                        activity_key=activity_key)
+        trace_net_cost_aware_constr_function = parameters[
+            TRACE_NET_COST_AWARE_CONSTR_FUNCTION] if TRACE_NET_COST_AWARE_CONSTR_FUNCTION in parameters else construct_trace_net_cost_aware
+        trace_net, trace_im, trace_fm, trace_net_costs = trace_net_cost_aware_constr_function(trace,
+                                                                                              parameters[
+                                                                                                  PARAM_TRACE_COST_FUNCTION],
+                                                                                              activity_key=activity_key)
         revised_sync = dict()
         for t_trace in trace_net.transitions:
             for t_model in petri_net.transitions:

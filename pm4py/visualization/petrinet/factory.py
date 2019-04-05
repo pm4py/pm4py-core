@@ -7,20 +7,22 @@ from pm4py.objects.log.util import general as log_util
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
-from pm4py.visualization.petrinet.versions import wo_decoration, token_decoration, greedy_decoration
+from pm4py.visualization.petrinet.versions import wo_decoration, token_decoration, greedy_decoration, alignments
 
 WO_DECORATION = "wo_decoration"
 FREQUENCY_DECORATION = "frequency"
 PERFORMANCE_DECORATION = "performance"
 FREQUENCY_GREEDY = "frequency_greedy"
 PERFORMANCE_GREEDY = "performance_greedy"
+ALIGNMENTS = "alignments"
 
 RANKDIR_LR = "set_rankdir_lr"
 
 VERSIONS = {WO_DECORATION: wo_decoration.apply, FREQUENCY_DECORATION: token_decoration.apply_frequency,
             PERFORMANCE_DECORATION: token_decoration.apply_performance,
             FREQUENCY_GREEDY: greedy_decoration.apply_frequency,
-            PERFORMANCE_GREEDY: greedy_decoration.apply_performance}
+            PERFORMANCE_GREEDY: greedy_decoration.apply_performance,
+            ALIGNMENTS: alignments.apply}
 
 
 def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_statistics=None, parameters=None,
