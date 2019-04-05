@@ -1,7 +1,11 @@
 from threading import Semaphore
 
+from pm4py.objects.conversion.log import factory as conv_factory
 from pm4py.objects.log.log import Event
-from pm4py.objects.log.log import EventStream
+from pm4py.objects.log.log import EventStream, EventLog
+from pm4py.objects.log.util import sorting
+from pm4py.objects.log.util import xes
+from pm4py.util import constants
 
 
 class EventStore(object):
@@ -128,3 +132,26 @@ class EventStore(object):
                 observer.release()
             self.after_push(event)
         self.store_semaphore.release()
+
+    def push_log(self, log, parameters=None):
+        """
+        Push a log/stream to the store
+
+        Parameters
+        -------------
+        log
+            Event log
+        parameters
+            Parameters
+        """
+        if type(log) is EventLog:
+            stream = conv_factory.apply(log, variant=conv_factory.TO_EVENT_STREAM)
+        else:
+            stream = log
+        if parameters is None:
+            parameters = {}
+        timestamp_key = parameters[
+            constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+        stream = sorting.sort_timestamp(stream, timestamp_key)
+        for event in stream:
+            self.push(event)
