@@ -19,7 +19,7 @@ class ReservoirSamplingEventBasedStore(EventStore):
             Parameters of the algorithm, including: N
         """
         EventStore.__init__(self)
-        self.internal_count = 1
+        self.internal_count = 0
         if parameters is None:
             parameters = {}
         self.N = parameters[N] if N in parameters else DEFAULT_N
