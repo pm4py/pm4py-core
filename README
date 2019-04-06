@@ -2,7 +2,7 @@ Welcome to Process Mining for Python!
 
 PM4Py is a python library that supports (state-of-the-art) process mining algorithms in python. It is completely open source and intended to be used in both academia and industry projects.
 
-The official website of the library is http://http://pm4py.pads.rwth-aachen.de/
+The official website of the library is http://pm4py.org/
 
 You can always check out (changes to) the source code at the github repo.
 
