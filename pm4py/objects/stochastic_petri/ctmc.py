@@ -17,6 +17,65 @@ from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_decor
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_shortest_paths
 
 
+def get_corr_hex(num):
+    """
+    Gets correspondence between a number
+    and an hexadecimal string
+
+    Parameters
+    -------------
+    num
+        Number
+
+    Returns
+    -------------
+    hex_string
+        Hexadecimal string
+    """
+    if num < 10:
+        return str(int(num))
+    elif num < 11:
+        return "A"
+    elif num < 12:
+        return "B"
+    elif num < 13:
+        return "C"
+    elif num < 14:
+        return "D"
+    elif num < 15:
+        return "E"
+    elif num < 16:
+        return "F"
+
+
+def get_color_from_probabilities(prob_dictionary):
+    """
+    Returns colors from a dictionary of probabilities
+
+    Parameters
+    -------------
+    prob_dictionary
+        Dictionary of probabilities
+
+    Returns
+    -------------
+    color_dictionary
+        Dictionary of colors
+    """
+    color_dictionary = {}
+
+    for state in prob_dictionary:
+        value = prob_dictionary[state]
+        whiteness = int(255.0 * (1.0 - value))
+        w1 = whiteness / 16
+        w2 = whiteness % 16
+        c1 = get_corr_hex(w1)
+        c2 = get_corr_hex(w2)
+        color_dictionary[state] = "#FF" + c1 + c2 + c1 + c2
+
+    return color_dictionary
+
+
 def transient_analysis_from_dataframe(df, delay, parameters=None):
     """
     Gets the transient analysis from a dataframe and a delay
@@ -129,8 +188,13 @@ def transient_analysis_from_petri_net_and_smap(net, im, s_map, delay, parameters
 
     for state in states_reachable_from_start:
         states_vector[0, states.index(state)] = 1.0 / len(states_reachable_from_start)
-    return tang_reach_graph, transient_analysis_from_tangible_q_matrix_and_states_vector(tang_reach_graph, q_matrix,
-                                                                                         states_vector, delay)
+
+    probabilities = transient_analysis_from_tangible_q_matrix_and_states_vector(tang_reach_graph, q_matrix,
+                                                                                states_vector, delay)
+
+    color_dictionary = get_color_from_probabilities(probabilities)
+
+    return tang_reach_graph, probabilities, color_dictionary
 
 
 def get_q_matrix_from_tangible_exponential(tangible_reach_graph, stochastic_info):

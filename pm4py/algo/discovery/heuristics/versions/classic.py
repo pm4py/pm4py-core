@@ -1,5 +1,7 @@
+from copy import deepcopy
+
 from pm4py.algo.discovery.dfg import factory as dfg_factory
-from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
+from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics, freq_triples as get_freq_triples
 from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.algo.filtering.log.attributes import attributes_filter as log_attributes
 from pm4py.algo.filtering.log.end_activities import end_activities_filter as log_ea_filter
@@ -85,12 +87,24 @@ def apply_pandas(df, parameters=None):
     if timestamp_key in df:
         dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
                                           activity_key=activity_key, timestamp_key=timestamp_key)
+        dfg_window_2 = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
+                                                   activity_key=activity_key, timestamp_key=timestamp_key, window=2)
+        frequency_triples = get_freq_triples.get_freq_triples(df, case_id_glue=case_id_glue, activity_key=activity_key,
+                                                              timestamp_key=timestamp_key)
+
     else:
         dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
                                           activity_key=activity_key, sort_timestamp_along_case_id=False)
+        dfg_window_2 = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
+                                                   activity_key=activity_key, sort_timestamp_along_case_id=False,
+                                                   window=2)
+        frequency_triples = get_freq_triples.get_freq_triples(df, case_id_glue=case_id_glue, activity_key=activity_key,
+                                                              timestamp_key=timestamp_key,
+                                                              sort_timestamp_along_case_id=False)
 
     heu_net = apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
-                            start_activities=start_activities, end_activities=end_activities, parameters=parameters)
+                            start_activities=start_activities, end_activities=end_activities, dfg_window_2=dfg_window_2,
+                            freq_triples=frequency_triples, parameters=parameters)
     net, im, fm = hn_conv_factory.apply(heu_net, parameters=parameters)
 
     return net, im, fm
@@ -172,14 +186,19 @@ def apply_heu(log, parameters=None):
     activities_occurrences = log_attributes.get_attribute_values(log, activity_key, parameters=parameters)
     activities = list(activities_occurrences.keys())
     dfg = dfg_factory.apply(log, parameters=parameters)
+    parameters_w2 = deepcopy(parameters)
+    parameters_w2["window"] = 2
+    dfg_window_2 = dfg_factory.apply(log, parameters=parameters_w2)
+    freq_triples = dfg_factory.apply(log, parameters=parameters, variant="freq_triples")
 
     return apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
                          start_activities=start_activities,
-                         end_activities=end_activities, parameters=parameters)
+                         end_activities=end_activities, dfg_window_2=dfg_window_2, freq_triples=freq_triples,
+                         parameters=parameters)
 
 
 def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
-                  parameters=None):
+                  dfg_window_2=None, freq_triples=None, parameters=None):
     """
     Discovers an Heuristics Net using Heuristics Miner
 
@@ -195,6 +214,10 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
         (If provided) dictionary of start activities occurrences
     end_activities
         (If provided) dictionary of end activities occurrences
+    dfg_window_2
+        (If provided) DFG of window 2
+    freq_triples
+        (If provided) Frequency triples
     parameters
         Possible parameters of the algorithm,
         including: activity_key, case_id_glue, timestamp_key,
@@ -226,7 +249,9 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
     loops_length_two_thresh = parameters[
         defaults.LOOP_LENGTH_TWO_THRESH] if defaults.LOOP_LENGTH_TWO_THRESH in parameters else defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH
     heu_net = HeuristicsNet(dfg, activities=activities, activities_occurrences=activities_occurrences,
-                            start_activities=start_activities, end_activities=end_activities)
+                            start_activities=start_activities, end_activities=end_activities,
+                            dfg_window_2=dfg_window_2,
+                            freq_triples=freq_triples)
     heu_net.calculate(dependency_thresh=dependency_thresh, and_measure_thresh=and_measure_thresh,
                       min_act_count=min_act_count, min_dfg_occurrences=min_dfg_occurrences,
                       dfg_pre_cleaning_noise_thresh=dfg_pre_cleaning_noise_thresh,
