@@ -1,8 +1,7 @@
 import tempfile
+from copy import copy
 
 from graphviz import Digraph
-
-from copy import copy
 
 
 def visualize(ts, parameters=None):
@@ -13,6 +12,7 @@ def visualize(ts, parameters=None):
     show_labels = parameters["show_labels"] if "show_labels" in parameters else True
     show_names = parameters["show_names"] if "show_names" in parameters else True
     force_names = parameters["force_names"] if "force_names" in parameters else None
+    fillcolors = parameters["fillcolors"] if "fillcolors" in parameters else {}
 
     if force_names:
         nts = copy(ts)
@@ -27,9 +27,15 @@ def visualize(ts, parameters=None):
     viz.attr('node')
     for s in ts.states:
         if show_names:
-            viz.node(str(s.name))
+            if s in fillcolors:
+                viz.node(str(s.name), style="filled", fillcolor=fillcolors[s])
+            else:
+                viz.node(str(s.name))
         else:
-            viz.node(str(s.name), "")
+            if s in fillcolors:
+                viz.node(str(s.name), "", style="filled", fillcolor=fillcolors[s])
+            else:
+                viz.node(str(s.name), "")
     # arcs
     for t in ts.transitions:
         if show_labels:
