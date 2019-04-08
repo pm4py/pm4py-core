@@ -156,18 +156,31 @@ class Node:
                 j = j + 1
             i = i + 1
 
-    """def calculate_loops_length_two(self, loops_length_two_thresh=defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH):
+    def calculate_loops_length_two(self, dfg_window_2_matrix,
+                                   loops_length_two_thresh=defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH):
+        """
+        Calculate loops of length two
+
+        Parameters
+        --------------
+        dfg_window_2
+            DFG of window 2
+        loops_length_two_thresh
+            Loops length two threshold
+        """
         out_nodes = sorted(list(self.output_connections), key=lambda x: x.node_name)
         for node in out_nodes:
-            c1 = self.heuristics_net.dependency_matrix[self.node_name][node.node_name]
-            c2 = self.heuristics_net.dependency_matrix[node.node_name][
-                self.node_name] if node.node_name in self.heuristics_net.dependency_matrix and self.node_name in \
-                                   self.heuristics_net.dependency_matrix[node.node_name] else 0
-            l2l = (c1 + c2) / (c1 + c2 + 1)
+            n1 = self.node_name
+            n2 = node.node_name
+            c1 = self.heuristics_net.dfg_matrix[n1][n2]
+            c2 = self.heuristics_net.dfg_matrix[n2][n1] if n2 in self.heuristics_net.dfg_matrix and n1 in \
+                                                                  self.heuristics_net.dfg_matrix[n2] else 0
+            u = dfg_window_2_matrix[n2][n2] if n2 in dfg_window_2_matrix and n2 in dfg_window_2_matrix[n2] else 0
+            l2l = -100000
             if l2l > loops_length_two_thresh:
                 if self.node_name not in self.loop_length_two:
                     self.loop_length_two[self.node_name] = {}
-                self.loop_length_two[self.node_name][node.node_name] = l2l"""
+                self.loop_length_two[self.node_name][node.node_name] = l2l
 
     def __repr__(self):
         ret = "(node:" + self.node_name + " connections:{"
