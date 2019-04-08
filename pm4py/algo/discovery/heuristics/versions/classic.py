@@ -183,14 +183,16 @@ def apply_heu(log, parameters=None):
     parameters_w2 = deepcopy(parameters)
     parameters_w2["window"] = 2
     dfg_window_2 = dfg_factory.apply(log, parameters=parameters_w2)
+    freq_triples = dfg_factory.apply(log, parameters=parameters, variant="freq_triples")
 
     return apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
                          start_activities=start_activities,
-                         end_activities=end_activities, dfg_window_2=dfg_window_2, parameters=parameters)
+                         end_activities=end_activities, dfg_window_2=dfg_window_2, freq_triples=freq_triples,
+                         parameters=parameters)
 
 
 def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
-                  dfg_window_2=None, parameters=None):
+                  dfg_window_2=None, freq_triples=None, parameters=None):
     """
     Discovers an Heuristics Net using Heuristics Miner
 
@@ -208,6 +210,8 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
         (If provided) dictionary of end activities occurrences
     dfg_window_2
         (If provided) DFG of window 2
+    freq_triples
+        (If provided) Frequency triples
     parameters
         Possible parameters of the algorithm,
         including: activity_key, case_id_glue, timestamp_key,
@@ -239,7 +243,9 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
     loops_length_two_thresh = parameters[
         defaults.LOOP_LENGTH_TWO_THRESH] if defaults.LOOP_LENGTH_TWO_THRESH in parameters else defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH
     heu_net = HeuristicsNet(dfg, activities=activities, activities_occurrences=activities_occurrences,
-                            start_activities=start_activities, end_activities=end_activities, dfg_window_2=dfg_window_2)
+                            start_activities=start_activities, end_activities=end_activities,
+                            dfg_window_2=dfg_window_2,
+                            freq_triples=freq_triples)
     heu_net.calculate(dependency_thresh=dependency_thresh, and_measure_thresh=and_measure_thresh,
                       min_act_count=min_act_count, min_dfg_occurrences=min_dfg_occurrences,
                       dfg_pre_cleaning_noise_thresh=dfg_pre_cleaning_noise_thresh,

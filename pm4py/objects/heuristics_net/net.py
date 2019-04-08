@@ -11,7 +11,8 @@ DEFAULT_NET_NAME = ""
 class HeuristicsNet:
     def __init__(self, frequency_dfg, activities=None, start_activities=None, end_activities=None,
                  activities_occurrences=None,
-                 default_edges_color="#000000", performance_dfg=None, dfg_window_2=None, net_name=DEFAULT_NET_NAME):
+                 default_edges_color="#000000", performance_dfg=None, dfg_window_2=None, freq_triples=None,
+                 net_name=DEFAULT_NET_NAME):
         """
         Initialize an Hueristics Net
 
@@ -42,6 +43,8 @@ class HeuristicsNet:
             Performance DFG
         dfg_window_2
             DFG window 2
+        freq_triples
+            Frequency triples
         net_name
             (If provided) name of the heuristics net
         """
@@ -74,6 +77,8 @@ class HeuristicsNet:
         self.default_edges_color = [default_edges_color]
         self.dfg_window_2 = dfg_window_2
         self.dfg_window_2_matrix = {}
+        self.freq_triples = freq_triples
+        self.freq_triples_matrix = {}
 
     def calculate(self, dependency_thresh=defaults.DEFAULT_DEPENDENCY_THRESH,
                   and_measure_thresh=defaults.DEFAULT_AND_MEASURE_THRESH, min_act_count=defaults.DEFAULT_MIN_ACT_COUNT,
@@ -106,13 +111,24 @@ class HeuristicsNet:
         self.performance_matrix = {}
         if dfg_pre_cleaning_noise_thresh > 0.0:
             self.dfg = clean_dfg_based_on_noise_thresh(self.dfg, self.activities, dfg_pre_cleaning_noise_thresh)
-        for el in self.dfg_window_2:
-            act1 = el[0]
-            act2 = el[1]
-            value = self.dfg_window_2[el]
-            if act1 not in self.dfg_window_2_matrix:
-                self.dfg_window_2_matrix[act1] = {}
-            self.dfg_window_2_matrix[act1][act2] = value
+        if self.dfg_window_2 is not None:
+            for el in self.dfg_window_2:
+                act1 = el[0]
+                act2 = el[1]
+                value = self.dfg_window_2[el]
+                if act1 not in self.dfg_window_2_matrix:
+                    self.dfg_window_2_matrix[act1] = {}
+                self.dfg_window_2_matrix[act1][act2] = value
+        if self.freq_triples is not None:
+            for el in self.freq_triples:
+                act1 = el[0]
+                act2 = el[1]
+                act3 = el[2]
+                value = self.freq_triples[el]
+                if act1 == act3:
+                    if act1 not in self.freq_triples_matrix:
+                        self.freq_triples_matrix[act1] = {}
+                    self.freq_triples_matrix[act1][act2] = value
         for el in self.dfg:
             act1 = el[0]
             act2 = el[1]
@@ -164,7 +180,7 @@ class HeuristicsNet:
         for node in self.nodes:
             self.nodes[node].calculate_and_measure_out(and_measure_thresh=and_measure_thresh)
             self.nodes[node].calculate_and_measure_in(and_measure_thresh=and_measure_thresh)
-            self.nodes[node].calculate_loops_length_two(self.dfg_window_2_matrix,
+            self.nodes[node].calculate_loops_length_two(self.freq_triples_matrix,
                                                         loops_length_two_thresh=loops_length_two_thresh)
 
     def __add__(self, other_net):
