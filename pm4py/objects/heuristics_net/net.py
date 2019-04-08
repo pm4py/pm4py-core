@@ -11,7 +11,7 @@ DEFAULT_NET_NAME = ""
 class HeuristicsNet:
     def __init__(self, frequency_dfg, activities=None, start_activities=None, end_activities=None,
                  activities_occurrences=None,
-                 default_edges_color="#000000", performance_dfg=None, net_name=DEFAULT_NET_NAME):
+                 default_edges_color="#000000", performance_dfg=None, dfg_window_2=None, net_name=DEFAULT_NET_NAME):
         """
         Initialize an Hueristics Net
 
@@ -40,6 +40,8 @@ class HeuristicsNet:
             (If provided) Default edges color
         performance_dfg
             Performance DFG
+        dfg_window_2
+            DFG window 2
         net_name
             (If provided) name of the heuristics net
         """
@@ -70,6 +72,7 @@ class HeuristicsNet:
             for act in self.activities:
                 self.activities_occurrences[act] = dfg_utils.sum_activities_count(frequency_dfg, [act])
         self.default_edges_color = [default_edges_color]
+        self.dfg_window_2 = dfg_window_2
 
     def calculate(self, dependency_thresh=defaults.DEFAULT_DEPENDENCY_THRESH,
                   and_measure_thresh=defaults.DEFAULT_AND_MEASURE_THRESH, min_act_count=defaults.DEFAULT_MIN_ACT_COUNT,
