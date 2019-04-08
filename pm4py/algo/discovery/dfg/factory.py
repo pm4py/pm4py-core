@@ -2,7 +2,7 @@ import pandas
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.algo.discovery.dfg.versions import native, performance
+from pm4py.algo.discovery.dfg.versions import native, performance, freq_triples
 from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
 from pm4py.objects.log.util import general as log_util
@@ -13,9 +13,11 @@ DFG_FREQUENCY = 'frequency'
 DFG_PERFORMANCE = 'performance'
 DFG_FREQUENCY_GREEDY = 'frequency_greedy'
 DFG_PERFORMANCE_GREEDY = 'performance_greedy'
+FREQ_TRIPLES = 'freq_triples'
 
 VERSIONS = {DFG_NATIVE: native.apply, DFG_FREQUENCY: native.apply, DFG_PERFORMANCE: performance.apply,
-            DFG_FREQUENCY_GREEDY: native.apply, DFG_PERFORMANCE_GREEDY: performance.apply}
+            DFG_FREQUENCY_GREEDY: native.apply, DFG_PERFORMANCE_GREEDY: performance.apply,
+            FREQ_TRIPLES: freq_triples.apply}
 
 
 def apply(log, parameters=None, variant=DFG_NATIVE):
