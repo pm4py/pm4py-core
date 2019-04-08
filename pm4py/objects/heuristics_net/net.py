@@ -164,13 +164,15 @@ class HeuristicsNet:
                                               is_start_node=(n1 in self.start_activities),
                                               is_end_node=(n1 in self.end_activities),
                                               default_edges_color=self.default_edges_color[0],
-                                              node_type=self.node_type, net_name=self.net_name[0])
+                                              node_type=self.node_type, net_name=self.net_name[0],
+                                              nodes_dictionary=self.nodes)
                     if n2 not in self.nodes:
                         self.nodes[n2] = Node(self, n2, self.activities_occurrences[n2],
                                               is_start_node=(n2 in self.start_activities),
                                               is_end_node=(n2 in self.end_activities),
                                               default_edges_color=self.default_edges_color[0],
-                                              node_type=self.node_type, net_name=self.net_name[0])
+                                              node_type=self.node_type, net_name=self.net_name[0],
+                                              nodes_dictionary=self.nodes)
 
                     repr_value = self.performance_matrix[n1][n2]
                     self.nodes[n1].add_output_connection(self.nodes[n2], self.dependency_matrix[n1][n2],
@@ -180,8 +182,27 @@ class HeuristicsNet:
         for node in self.nodes:
             self.nodes[node].calculate_and_measure_out(and_measure_thresh=and_measure_thresh)
             self.nodes[node].calculate_and_measure_in(and_measure_thresh=and_measure_thresh)
-            self.nodes[node].calculate_loops_length_two(self.freq_triples_matrix,
+            self.nodes[node].calculate_loops_length_two(self.dfg_matrix, self.freq_triples_matrix,
                                                         loops_length_two_thresh=loops_length_two_thresh)
+        nodes = list(self.nodes.keys())
+        for n1 in nodes:
+            for n2 in self.nodes[n1].loop_length_two:
+                if n2 not in self.nodes:
+                    self.nodes[n2] = Node(self, n2, self.activities_occurrences[n2],
+                                          is_start_node=(n2 in self.start_activities),
+                                          is_end_node=(n2 in self.end_activities),
+                                          default_edges_color=self.default_edges_color[0],
+                                          node_type=self.node_type, net_name=self.net_name[0],
+                                          nodes_dictionary=self.nodes)
+                self.nodes[n1].add_output_connection(self.nodes[n2], 0,
+                                                     self.dfg_matrix[n1][n2], repr_value=repr_value)
+                self.nodes[n2].add_input_connection(self.nodes[n1], 0,
+                                                    self.dfg_matrix[n1][n2], repr_value=repr_value)
+
+                self.nodes[n2].add_output_connection(self.nodes[n1], 0,
+                                                     self.dfg_matrix[n2][n1], repr_value=repr_value)
+                self.nodes[n1].add_input_connection(self.nodes[n2], 0,
+                                                    self.dfg_matrix[n2][n1], repr_value=repr_value)
 
     def __add__(self, other_net):
         copied_self = deepcopy(self)

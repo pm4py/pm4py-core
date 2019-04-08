@@ -4,7 +4,7 @@ from pm4py.objects.heuristics_net.edge import Edge
 
 class Node:
     def __init__(self, heuristics_net, node_name, node_occ, is_start_node=False, is_end_node=False,
-                 default_edges_color="#000000", node_type="frequency", net_name=""):
+                 default_edges_color="#000000", node_type="frequency", net_name="", nodes_dictionary=None):
         """
         Constructor
 
@@ -41,6 +41,7 @@ class Node:
         self.default_edges_color = default_edges_color
         self.node_type = node_type
         self.net_name = net_name
+        self.nodes_dictionary = nodes_dictionary
 
     def add_output_connection(self, other_node, dependency_value, dfg_value, repr_color=None, repr_value=None):
         """
@@ -156,25 +157,29 @@ class Node:
                 j = j + 1
             i = i + 1
 
-    def calculate_loops_length_two(self, freq_triples_matrix,
+    def calculate_loops_length_two(self, dfg_matrix, freq_triples_matrix,
                                    loops_length_two_thresh=defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH):
         """
         Calculate loops of length two
 
         Parameters
         --------------
+        dfg_matrix
+            DFG matrix
         freq_triples_matrix
             Matrix of triples
         loops_length_two_thresh
             Loops length two threshold
         """
-        if self.node_name in freq_triples_matrix:
+        if self.nodes_dictionary is not None and self.node_name in freq_triples_matrix:
             n1 = self.node_name
             for n2 in freq_triples_matrix[n1]:
+                c1 = dfg_matrix[n1][n2]
                 v1 = freq_triples_matrix[n1][n2]
                 v2 = freq_triples_matrix[n2][n1] if n2 in freq_triples_matrix and n1 in freq_triples_matrix[n2] else 0
                 l2l = (v1 + v2) / (v1 + v2 + 1)
-                print(n1, n2, l2l)
+                if l2l >= loops_length_two_thresh:
+                    self.loop_length_two[n2] = c1
 
     def __repr__(self):
         ret = "(node:" + self.node_name + " connections:{"
