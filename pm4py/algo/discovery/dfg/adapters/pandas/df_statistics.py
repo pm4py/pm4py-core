@@ -3,7 +3,7 @@ import pandas as pd
 
 def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name",
                   timestamp_key="time:timestamp", perf_aggregation_key="mean", sort_caseid_required=True,
-                  sort_timestamp_along_case_id=True):
+                  sort_timestamp_along_case_id=True, window=1):
     """
     Get DFG graph from Pandas dataframe
 
@@ -25,6 +25,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         Specify if a sort on the Case ID is required
     sort_timestamp_along_case_id
         Specifying if sorting by timestamp along the CaseID is required
+    window
+        Window of the DFG (default 1)
 
     Returns
     -----------
@@ -43,7 +45,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     else:
         df_reduced = df[[case_id_glue, activity_key, timestamp_key]]
     # shift the dataframe by 1, in order to couple successive rows
-    df_reduced_shifted = df_reduced.shift(-1)
+    df_reduced_shifted = df_reduced.shift(-window)
     # change column names to shifted dataframe
     df_reduced_shifted.columns = [str(col) + '_2' for col in df_reduced_shifted.columns]
     # concate the two dataframe to get a unique dataframe
