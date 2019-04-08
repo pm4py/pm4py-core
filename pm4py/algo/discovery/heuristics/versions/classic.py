@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 from pm4py.algo.discovery.dfg import factory as dfg_factory
-from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
+from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics, freq_triples as get_freq_triples
 from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.algo.filtering.log.attributes import attributes_filter as log_attributes
 from pm4py.algo.filtering.log.end_activities import end_activities_filter as log_ea_filter
@@ -89,16 +89,22 @@ def apply_pandas(df, parameters=None):
                                           activity_key=activity_key, timestamp_key=timestamp_key)
         dfg_window_2 = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
                                                    activity_key=activity_key, timestamp_key=timestamp_key, window=2)
+        frequency_triples = get_freq_triples.get_freq_triples(df, case_id_glue=case_id_glue, activity_key=activity_key,
+                                                              timestamp_key=timestamp_key)
+
     else:
         dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
                                           activity_key=activity_key, sort_timestamp_along_case_id=False)
         dfg_window_2 = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
                                                    activity_key=activity_key, sort_timestamp_along_case_id=False,
                                                    window=2)
+        frequency_triples = get_freq_triples.get_freq_triples(df, case_id_glue=case_id_glue, activity_key=activity_key,
+                                                              timestamp_key=timestamp_key,
+                                                              sort_timestamp_along_case_id=False)
 
     heu_net = apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
                             start_activities=start_activities, end_activities=end_activities, dfg_window_2=dfg_window_2,
-                            parameters=parameters)
+                            freq_triples=frequency_triples, parameters=parameters)
     net, im, fm = hn_conv_factory.apply(heu_net, parameters=parameters)
 
     return net, im, fm
