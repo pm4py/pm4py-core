@@ -144,31 +144,27 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters)
 
     variants = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
+    one_tr_per_var = []
+    for index_variant, variant in enumerate(variants):
+        one_tr_per_var.append(log[variants[variant][0]])
+    all_alignments = list(map(
+        lambda trace: apply_trace(trace, petri_net, initial_marking, final_marking, parameters=copy(parameters),
+                                  version=version), one_tr_per_var))
+
     al_idx = {}
-    for variant in variants:
-        alignment = None
-        for index, trace_idx in enumerate(variants[variant]):
-            if index == 0:
-                alignment = apply_trace(log[trace_idx], petri_net, initial_marking, final_marking, parameters=copy(parameters),
-                                  version=version)
-                alignment['fitness'] = 1 - (
-                        (alignment['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[trace_idx]) + best_worst_cost))
-            al_idx[trace_idx] = alignment
+    for index_variant, variant in enumerate(variants):
+        for trace_idx in variants[variant]:
+            al_idx[trace_idx] = all_alignments[index_variant]
 
     alignments = []
     for i in range(len(log)):
         alignments.append(al_idx[i])
 
-    """alignments = list(map(
-        lambda trace: apply_trace(trace, petri_net, initial_marking, final_marking, parameters=copy(parameters),
-                                  version=version),
-        log))"""
-
     # assign fitness to traces
-    """for index, align in enumerate(alignments):
+    for index, align in enumerate(alignments):
         # align_cost = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
         # align['fitness'] = 1 - ((align['cost']  // ali.utils.STD_MODEL_LOG_MOVE_COST) / best_worst_cost)
         align['fitness'] = 1 - (
-                (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))"""
+                (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
 
     return alignments
