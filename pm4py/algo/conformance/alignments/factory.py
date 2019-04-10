@@ -13,6 +13,8 @@ from pm4py.objects.log.util import general as log_util
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.algo.filtering.log.variants import variants_filter as variants_module
+
 
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
 VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}
@@ -140,10 +142,25 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     parameters[
         PARAM_SYNC_COST_FUNCTION] = sync_cost_function
     best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters)
-    alignments = list(map(
+
+    variants = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
+    al_idx = {}
+    for variant in variants:
+        alignment = None
+        for index, trace_idx in enumerate(variants[variant]):
+            if index == 0:
+                alignment = apply_trace(log[trace_idx], petri_net, initial_marking, final_marking, parameters=copy(parameters),
+                                  version=version)
+            al_idx[trace_idx] = alignment
+
+    alignments = []
+    for i in range(len(log)):
+        alignments.append(al_idx[i])
+
+    """alignments = list(map(
         lambda trace: apply_trace(trace, petri_net, initial_marking, final_marking, parameters=copy(parameters),
                                   version=version),
-        log))
+        log))"""
 
     # assign fitness to traces
     for index, align in enumerate(alignments):
