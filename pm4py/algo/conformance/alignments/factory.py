@@ -151,6 +151,8 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
             if index == 0:
                 alignment = apply_trace(log[trace_idx], petri_net, initial_marking, final_marking, parameters=copy(parameters),
                                   version=version)
+                alignment['fitness'] = 1 - (
+                        (alignment['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[trace_idx]) + best_worst_cost))
             al_idx[trace_idx] = alignment
 
     alignments = []
@@ -163,10 +165,10 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         log))"""
 
     # assign fitness to traces
-    for index, align in enumerate(alignments):
+    """for index, align in enumerate(alignments):
         # align_cost = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
         # align['fitness'] = 1 - ((align['cost']  // ali.utils.STD_MODEL_LOG_MOVE_COST) / best_worst_cost)
         align['fitness'] = 1 - (
-                (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
+                (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))"""
 
     return alignments
