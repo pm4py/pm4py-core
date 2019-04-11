@@ -16,6 +16,7 @@ import heapq
 import sys
 
 import numpy as np
+from cvxopt import matrix
 
 import pm4py
 from pm4py import util as pm4pyutil
@@ -31,7 +32,7 @@ from pm4py.util.lp import factory as lp_solver_factory
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
-DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.CVXOPT
+DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN
 PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE = 'ret_tuple_as_trans_desc'
 
 TRACE_NET_CONSTR_FUNCTION = "trace_net_constr_function"
@@ -162,7 +163,14 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     h_cvx = np.matrix(np.zeros(len(sync_net.transitions))).transpose()
     cost_vec = [x * 1.0 for x in cost_vec]
 
-    h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini, fin_vec)
+    if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN:
+        a_matrix = matrix(a_matrix)
+        g_matrix = matrix(g_matrix)
+        h_cvx = matrix(h_cvx)
+        cost_vec = matrix(cost_vec)
+
+    h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
+                                                 fin_vec)
     ini_state = SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     visited = 0
@@ -171,7 +179,9 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     while not len(open_set) == 0:
         curr = heapq.heappop(open_set)
         if not curr.trust:
-            h, x = __compute_exact_heuristic(sync_net, incidence_matrix, curr.m, cost_vec, fin_vec)
+            h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
+                                                         incidence_matrix, curr.m,
+                                                         fin_vec)
             tp = SearchTuple(curr.g + h, curr.g, h, curr.m, curr.p, curr.t, x, __trust_solution(x))
             heapq.heappush(open_set, tp)
             heapq.heapify(open_set)
@@ -247,6 +257,9 @@ def __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, c
     m_vec = incidence_matrix.encode_marking(marking)
     b_term = [i - j for i, j in zip(fin_vec, m_vec)]
     b_term = np.matrix([x * 1.0 for x in b_term]).transpose()
+
+    if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN:
+        b_term = matrix(b_term)
 
     parameters_solving = {"solver": "glpk"}
 
