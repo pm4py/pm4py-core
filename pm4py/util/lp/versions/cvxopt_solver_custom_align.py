@@ -1,6 +1,24 @@
 import sys
 
+from cvxopt import blas
+from cvxopt import glpk
 from cvxopt import solvers
+
+this_options = {}
+this_options["LPX_K_MSGLEV"] = 0
+this_options["msg_lev"] = "GLP_MSG_OFF"
+this_options["show_progress"] = False
+
+
+def custom_solve_lp(c, G, h, A, b):
+    status, x, z, y = glpk.lp(c, G, h, A, b, options=this_options)
+
+    if status == 'optimal':
+        pcost = blas.dot(c, x)
+    else:
+        pcost = None
+
+    return {'status': status, 'x': x, 'primal objective': pcost}
 
 
 def apply(c, Aub, bub, Aeq, beq, parameters=None):
@@ -27,22 +45,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
     sol
         Solution of the LP problem by the given algorithm
     """
-    if parameters is None:
-        parameters = {}
-
-    solver = parameters["solver"] if "solver" in parameters else None
-
-    solvers.options['glpk'] = {}
-    solvers.options['glpk']['LPX_K_MSGLEV'] = 0
-    solvers.options['glpk']['msg_lev'] = 'GLP_MSG_OFF'
-    solvers.options['glpk']['show_progress'] = False
-    solvers.options['msg_lev'] = 'GLP_MSG_OFF'
-    solvers.options['show_progress'] = False
-
-    if solver:
-        sol = solvers.lp(c, Aub, bub, A=Aeq, b=beq, solver=solver)
-    else:
-        sol = solvers.lp(c, Aub, bub, A=Aeq, b=beq)
+    sol = custom_solve_lp(c, Aub, bub, Aeq, beq)
 
     return sol
 
@@ -63,9 +66,6 @@ def get_prim_obj_from_sol(sol, parameters=None):
     prim_obj
         Primal objective
     """
-    if parameters is None:
-        parameters = {}
-
     return sol["primal objective"]
 
 
