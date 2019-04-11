@@ -54,12 +54,12 @@ def import_event_stream(path, parameters=None):
 
     df = import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort, sort_field=sort_field,
                                     timest_format=timest_format, timest_columns=timest_columns)
-    event_log = log_conv_fact.apply(df, variant=log_conv_fact.TO_EVENT_STREAM)
+    stream = log_conv_fact.apply(df, variant=log_conv_fact.TO_EVENT_STREAM)
 
     if insert_event_indexes:
-        event_log.insert_event_index_as_event_attribute()
+        stream.insert_event_index_as_event_attribute()
 
-    return event_log
+    return stream
 
 
 def import_log(path, parameters=None):
