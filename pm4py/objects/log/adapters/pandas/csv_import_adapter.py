@@ -3,6 +3,7 @@ import tempfile
 
 import pandas as pd
 
+from pm4py.objects.conversion.log import factory as log_conv_fact
 from pm4py.util.versions import check_pandas_ge_024
 
 
@@ -173,3 +174,27 @@ def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None, sort=F
     if sort and sort_field:
         df = df.sort_values(sort_field)
     return df
+
+
+def convert_dataframe_to_stream(dataframe, insert_event_indexes=False):
+    """
+    Convert a dataframe to an event stream
+
+    Parameters
+    -------------
+    dataframe
+        Dataframe
+    insert_event_indexes
+        Boolean value (keep event indexes)
+
+    Returns
+    -------------
+    stream
+        Event stream
+    """
+    stream = log_conv_fact.apply(dataframe, variant=log_conv_fact.TO_EVENT_STREAM)
+
+    if insert_event_indexes:
+        stream.insert_event_index_as_event_attribute()
+
+    return stream
