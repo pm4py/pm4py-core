@@ -197,7 +197,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             if curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip):
                 continue
             traversed += 1
-            new_marking = petri.semantics.execute(t, sync_net, current_marking)
+            new_marking = petri.semantics.weak_execute(t, current_marking)
             if new_marking in closed:
                 continue
             g = curr.g + cost_function[t]
