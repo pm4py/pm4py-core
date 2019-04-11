@@ -156,7 +156,13 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
     closed = set()
-    h, x = __compute_exact_heuristic(sync_net, incidence_matrix, ini, cost_vec, fin_vec)
+
+    a_matrix = np.asmatrix(incidence_matrix.a_matrix).astype(np.float64)
+    g_matrix = -np.eye(len(sync_net.transitions))
+    h_cvx = np.matrix(np.zeros(len(sync_net.transitions))).transpose()
+    cost_vec = [x * 1.0 for x in cost_vec]
+
+    h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini, fin_vec)
     ini_state = SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     visited = 0
@@ -234,6 +240,25 @@ def __trust_solution(x):
         if v < -0.001:
             return False
     return True
+
+
+def __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix,
+                                          marking, fin_vec):
+    m_vec = incidence_matrix.encode_marking(marking)
+    b_term = [i - j for i, j in zip(fin_vec, m_vec)]
+    b_term = np.matrix([x * 1.0 for x in b_term]).transpose()
+
+    parameters_solving = {"solver": "glpk"}
+
+    sol = lp_solver_factory.apply(cost_vec, g_matrix, h_cvx, a_matrix, b_term, parameters=parameters_solving,
+                                  variant=DEFAULT_LP_SOLVER_VARIANT)
+    prim_obj = lp_solver_factory.get_prim_obj_from_sol(sol, variant=DEFAULT_LP_SOLVER_VARIANT)
+    points = lp_solver_factory.get_points_from_sol(sol, variant=DEFAULT_LP_SOLVER_VARIANT)
+
+    prim_obj = prim_obj if prim_obj is not None else sys.maxsize
+    points = points if points is not None else [0.0] * len(sync_net.transitions)
+
+    return prim_obj, points
 
 
 def __compute_exact_heuristic(sync_net, incidence_matrix, marking, cost_vec, fin_vec):
