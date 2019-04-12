@@ -331,6 +331,8 @@ def get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, 
     """
     Get a representation of the event log that is suited for the data part of the decision tree learning
 
+    NOTE: this function only encodes the last value seen for each attribute
+
     Parameters
     -------------
     log
