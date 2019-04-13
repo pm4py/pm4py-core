@@ -189,8 +189,16 @@ class HeuristicsNet:
         added_loops = set()
         for n1 in nodes:
             for n2 in self.nodes[n1].loop_length_two:
-                if n2 in self.nodes and (n1, n2) not in added_loops:
-                    if n1 in self.dfg_matrix and n2 in self.dfg_matrix[n1] and self.dfg_matrix[n1][n2] >= min_dfg_occurrences:
+                if n1 in self.dfg_matrix and n2 in self.dfg_matrix[n1] and self.dfg_matrix[n1][
+                    n2] >= min_dfg_occurrences and n2 in self.activities_occurrences and self.activities_occurrences[n2] >= min_act_count:
+                    if n2 not in self.nodes:
+                        self.nodes[n2] = Node(self, n2, self.activities_occurrences[n2],
+                                              is_start_node=(n2 in self.start_activities),
+                                              is_end_node=(n2 in self.end_activities),
+                                              default_edges_color=self.default_edges_color[0],
+                                              node_type=self.node_type, net_name=self.net_name[0],
+                                              nodes_dictionary=self.nodes)
+                    if (n1, n2) not in added_loops:
                         added_loops.add((n1, n2))
                         added_loops.add((n2, n1))
                         v_n1_n2 = self.dfg_matrix[n1][n2] if n1 in self.dfg_matrix and n2 in self.dfg_matrix[n1] else 0
