@@ -189,27 +189,31 @@ class HeuristicsNet:
         added_loops = set()
         for n1 in nodes:
             for n2 in self.nodes[n1].loop_length_two:
-                if n2 not in self.nodes:
-                    self.nodes[n2] = Node(self, n2, self.activities_occurrences[n2],
-                                          is_start_node=(n2 in self.start_activities),
-                                          is_end_node=(n2 in self.end_activities),
-                                          default_edges_color=self.default_edges_color[0],
-                                          node_type=self.node_type, net_name=self.net_name[0],
-                                          nodes_dictionary=self.nodes)
-                if (n1, n2) not in added_loops:
-                    added_loops.add((n1, n2))
-                    added_loops.add((n2, n1))
-                    v_n1_n2 = self.dfg_matrix[n1][n2] if n1 in self.dfg_matrix and n2 in self.dfg_matrix[n1] else 0
-                    v_n2_n1 = self.dfg_matrix[n2][n1] if n2 in self.dfg_matrix and n1 in self.dfg_matrix[n2] else 0
-                    self.nodes[n1].add_output_connection(self.nodes[n2], 0,
-                                                         v_n1_n2, repr_value=repr_value)
-                    self.nodes[n2].add_input_connection(self.nodes[n1], 0,
-                                                        v_n2_n1, repr_value=repr_value)
+                if n1 in self.dfg_matrix and n2 in self.dfg_matrix[n1] and self.dfg_matrix[n1][
+                    n2] >= min_dfg_occurrences and n1 in self.activities_occurrences and self.activities_occurrences[n1] >= min_act_count and n2 in self.activities_occurrences and self.activities_occurrences[n2] >= min_act_count:
+                    if not ((n1 in self.dependency_matrix and n2 in self.dependency_matrix[n1] and self.dependency_matrix[n1][n2] >= dependency_thresh) or (n2 in self.dependency_matrix and n1 in self.dependency_matrix[n2] and self.dependency_matrix[n2][n1] >= dependency_thresh)):
+                        if n2 not in self.nodes:
+                            self.nodes[n2] = Node(self, n2, self.activities_occurrences[n2],
+                                                  is_start_node=(n2 in self.start_activities),
+                                                  is_end_node=(n2 in self.end_activities),
+                                                  default_edges_color=self.default_edges_color[0],
+                                                  node_type=self.node_type, net_name=self.net_name[0],
+                                                  nodes_dictionary=self.nodes)
+                        v_n1_n2 = self.dfg_matrix[n1][n2] if n1 in self.dfg_matrix and n2 in self.dfg_matrix[n1] else 0
+                        v_n2_n1 = self.dfg_matrix[n2][n1] if n2 in self.dfg_matrix and n1 in self.dfg_matrix[n2] else 0
+                        if (n1, n2) not in added_loops:
+                            added_loops.add((n1, n2))
+                            self.nodes[n1].add_output_connection(self.nodes[n2], 0,
+                                                                 v_n1_n2, repr_value=repr_value)
+                            self.nodes[n2].add_input_connection(self.nodes[n1], 0,
+                                                                v_n2_n1, repr_value=repr_value)
 
-                    self.nodes[n2].add_output_connection(self.nodes[n1], 0,
-                                                         v_n2_n1, repr_value=repr_value)
-                    self.nodes[n1].add_input_connection(self.nodes[n2], 0,
-                                                        v_n1_n2, repr_value=repr_value)
+                        if (n2, n1) not in added_loops:
+                            added_loops.add((n2, n1))
+                            self.nodes[n2].add_output_connection(self.nodes[n1], 0,
+                                                                 v_n2_n1, repr_value=repr_value)
+                            self.nodes[n1].add_input_connection(self.nodes[n2], 0,
+                                                                v_n1_n2, repr_value=repr_value)
 
     def __add__(self, other_net):
         copied_self = deepcopy(self)
