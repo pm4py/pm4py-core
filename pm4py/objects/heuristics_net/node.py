@@ -113,12 +113,10 @@ class Node:
             j = i + 1
             while j < len(out_nodes):
                 n2 = out_nodes[j].node_name
-                c1 = self.heuristics_net.dfg_matrix[n1][n2] if n1 in self.heuristics_net.dfg_matrix and n2 in \
-                                                               self.heuristics_net.dfg_matrix[n1] else 0
-                c2 = self.heuristics_net.dfg_matrix[n2][n1] if n2 in self.heuristics_net.dfg_matrix and n1 in \
-                                                               self.heuristics_net.dfg_matrix[n2] else 0
-                c3 = self.heuristics_net.dfg_matrix[self.node_name][n1]
-                c4 = self.heuristics_net.dfg_matrix[self.node_name][n2]
+                c1 = self.heuristics_net.dfg_matrix.get((n1, n2), 0)
+                c2 = self.heuristics_net.dfg_matrix.get((n2, n1), 0)
+                c3 = self.heuristics_net.dfg_matrix.get((self.node_name, n1), 0)
+                c4 = self.heuristics_net.dfg_matrix.get((self.node_name, n2), 0)
                 value = (c1 + c2) / (c3 + c4 + 1)
                 if value >= and_measure_thresh:
                     if n1 not in self.and_measures_out:
@@ -143,12 +141,10 @@ class Node:
             j = i + 1
             while j < len(in_nodes):
                 n2 = in_nodes[j].node_name
-                c1 = self.heuristics_net.dfg_matrix[n1][n2] if n1 in self.heuristics_net.dfg_matrix and n2 in \
-                                                               self.heuristics_net.dfg_matrix[n1] else 0
-                c2 = self.heuristics_net.dfg_matrix[n2][n1] if n2 in self.heuristics_net.dfg_matrix and n1 in \
-                                                               self.heuristics_net.dfg_matrix[n2] else 0
-                c3 = self.heuristics_net.dfg_matrix[n1][self.node_name]
-                c4 = self.heuristics_net.dfg_matrix[n2][self.node_name]
+                c1 = self.heuristics_net.dfg_matrix.get((n1, n2), 0)
+                c2 = self.heuristics_net.dfg_matrix.get((n2, n1), 0)
+                c3 = self.heuristics_net.dfg_matrix.get((n1, self.node_name), 0)
+                c4 = self.heuristics_net.dfg_matrix.get((n2, self.node_name), 0)
                 value = (c1 + c2) / (c3 + c4 + 1)
                 if value >= and_measure_thresh:
                     if n1 not in self.and_measures_in:
@@ -174,9 +170,9 @@ class Node:
         if self.nodes_dictionary is not None and self.node_name in freq_triples_matrix:
             n1 = self.node_name
             for n2 in freq_triples_matrix[n1]:
-                c1 = dfg_matrix[n1][n2]
-                v1 = freq_triples_matrix[n1][n2]
-                v2 = freq_triples_matrix[n2][n1] if n2 in freq_triples_matrix and n1 in freq_triples_matrix[n2] else 0
+                c1 = dfg_matrix.get((n1, n2), 0)
+                v1 = freq_triples_matrix.get((n1, n2), 0)
+                v2 = freq_triples_matrix.get((n2, n1), 0)
                 l2l = (v1 + v2) / (v1 + v2 + 1)
                 if l2l >= loops_length_two_thresh:
                     self.loop_length_two[n2] = c1
