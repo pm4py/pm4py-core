@@ -125,7 +125,8 @@ class HeuristicsNet:
                 act2 = el[1]
                 act3 = el[2]
                 value = self.freq_triples[el]
-                if act1 == act3:
+                # avoid to consider self-loops
+                if act1 == act3 and not act1 == act2:
                     if act1 not in self.freq_triples_matrix:
                         self.freq_triples_matrix[act1] = {}
                     self.freq_triples_matrix[act1][act2] = value
@@ -185,6 +186,7 @@ class HeuristicsNet:
             self.nodes[node].calculate_loops_length_two(self.dfg_matrix, self.freq_triples_matrix,
                                                         loops_length_two_thresh=loops_length_two_thresh)
         nodes = list(self.nodes.keys())
+        added_loops = set()
         for n1 in nodes:
             for n2 in self.nodes[n1].loop_length_two:
                 if n2 not in self.nodes:
@@ -194,15 +196,20 @@ class HeuristicsNet:
                                           default_edges_color=self.default_edges_color[0],
                                           node_type=self.node_type, net_name=self.net_name[0],
                                           nodes_dictionary=self.nodes)
-                self.nodes[n1].add_output_connection(self.nodes[n2], 0,
-                                                     self.dfg_matrix[n1][n2], repr_value=repr_value)
-                self.nodes[n2].add_input_connection(self.nodes[n1], 0,
-                                                    self.dfg_matrix[n1][n2], repr_value=repr_value)
+                if (n1, n2) not in added_loops:
+                    added_loops.add((n1, n2))
+                    added_loops.add((n2, n1))
+                    v_n1_n2 = self.dfg_matrix[n1][n2] if n1 in self.dfg_matrix and n2 in self.dfg_matrix[n1] else 0
+                    v_n2_n1 = self.dfg_matrix[n2][n1] if n2 in self.dfg_matrix and n1 in self.dfg_matrix[n2] else 0
+                    self.nodes[n1].add_output_connection(self.nodes[n2], 0,
+                                                         v_n1_n2, repr_value=repr_value)
+                    self.nodes[n2].add_input_connection(self.nodes[n1], 0,
+                                                        v_n2_n1, repr_value=repr_value)
 
-                self.nodes[n2].add_output_connection(self.nodes[n1], 0,
-                                                     self.dfg_matrix[n2][n1], repr_value=repr_value)
-                self.nodes[n1].add_input_connection(self.nodes[n2], 0,
-                                                    self.dfg_matrix[n2][n1], repr_value=repr_value)
+                    self.nodes[n2].add_output_connection(self.nodes[n1], 0,
+                                                         v_n2_n1, repr_value=repr_value)
+                    self.nodes[n1].add_input_connection(self.nodes[n2], 0,
+                                                        v_n1_n2, repr_value=repr_value)
 
     def __add__(self, other_net):
         copied_self = deepcopy(self)
