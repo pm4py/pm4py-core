@@ -1,8 +1,7 @@
 import numpy as np
 
 
-def get_log_encoded(self,
-                    event_log,
+def get_log_encoded(event_log,
                     trace_attributes=[],
                     event_attributes=[],
                     concatenate=False):
