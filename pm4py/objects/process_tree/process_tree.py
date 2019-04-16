@@ -20,7 +20,7 @@ class ProcessTree(object):
         self._children = list() if children is None else children
         self._label = label
 
-    def _set__operator(self, operator):
+    def _set_operator(self, operator):
         self._operator = operator
 
     def _set_parent(self, parent):
@@ -28,6 +28,9 @@ class ProcessTree(object):
 
     def _set_label(self, label):
         self._label = label
+
+    def _set_children(self, children):
+        self.children = children
 
     def _get_children(self):
         return self._children
@@ -73,6 +76,6 @@ class ProcessTree(object):
         return self.__repr__()
 
     parent = property(_get_parent, _set_parent)
-    children = property(_get_children)
-    operator = property(_get_operator)
+    children = property(_get_children, _set_children)
+    operator = property(_get_operator, _set_operator)
     label = property(_get_label, _set_label)
