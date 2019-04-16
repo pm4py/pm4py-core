@@ -13,7 +13,6 @@ References
 
 """
 import heapq
-import sys
 
 import numpy as np
 from cvxopt import matrix
@@ -28,6 +27,8 @@ from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.lp import factory as lp_solver_factory
+import sys
+from copy import copy
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
@@ -41,7 +42,6 @@ TRACE_NET_COST_AWARE_CONSTR_FUNCTION = "trace_net_cost_aware_constr_function"
 PARAMETERS = [PARAM_TRACE_COST_FUNCTION, PARAM_MODEL_COST_FUNCTION, PARAM_SYNC_COST_FUNCTION,
               pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
-
 def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
     """
     Gets the best worst cost of an alignment
@@ -54,19 +54,48 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
         Initial marking
     final_marking
         Final marking
-    parameters
-        Parameters
 
     Returns
     -----------
     best_worst_cost
         Best worst cost of alignment
     """
-    best_worst = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(log_implementation.Trace(),
+    trace = log_implementation.Trace()
+    new_parameters = copy(parameters)
+    if PARAM_TRACE_COST_FUNCTION not in new_parameters or len(new_parameters[PARAM_TRACE_COST_FUNCTION]) < len(trace):
+        new_parameters[PARAM_TRACE_COST_FUNCTION] = list(
+            map(lambda e: alignments.utils.STD_MODEL_LOG_MOVE_COST, trace))
+
+    best_worst = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(trace,
                                                                                         petri_net, initial_marking,
                                                                                         final_marking,
-                                                                                        parameters=parameters)
-    return best_worst['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
+                                                                                        parameters=new_parameters)
+
+    return best_worst['cost']
+
+
+# def get_best_worst_cost(petri_net, initial_marking, final_marking):
+#     """
+#     Gets the best worst cost of an alignment
+#
+#     Parameters
+#     -----------
+#     petri_net
+#         Petri net
+#     initial_marking
+#         Initial marking
+#     final_marking
+#         Final marking
+#
+#     Returns
+#     -----------
+#     best_worst_cost
+#         Best worst cost of alignment
+#     """
+#     best_worst = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(log_implementation.Trace(),
+#                                                                                         petri_net, initial_marking,
+#                                                                                         final_marking)
+#     return best_worst['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
 
 
 def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
