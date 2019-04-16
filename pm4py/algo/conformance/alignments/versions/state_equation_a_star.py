@@ -13,6 +13,8 @@ References
 
 """
 import heapq
+import sys
+from copy import copy
 
 import numpy as np
 from cvxopt import matrix
@@ -27,8 +29,6 @@ from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.lp import factory as lp_solver_factory
-import sys
-from copy import copy
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
@@ -41,6 +41,7 @@ TRACE_NET_COST_AWARE_CONSTR_FUNCTION = "trace_net_cost_aware_constr_function"
 
 PARAMETERS = [PARAM_TRACE_COST_FUNCTION, PARAM_MODEL_COST_FUNCTION, PARAM_SYNC_COST_FUNCTION,
               pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+
 
 def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
     """
@@ -71,7 +72,9 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
                                                                                         final_marking,
                                                                                         parameters=new_parameters)
 
-    return best_worst['cost']
+    if best_worst['cost'] > 0:
+        return best_worst['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
+    return 0
 
 
 # def get_best_worst_cost(petri_net, initial_marking, final_marking):
