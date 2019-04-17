@@ -193,10 +193,10 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     viz.attr('node', shape='box')
     for act in activities_in_dfg:
         if "frequency" in measure:
-            viz.node(act, act + " (" + str(activities_count_int[act]) + ")", style='filled',
+            viz.node(str(hash(act)), act + " (" + str(activities_count_int[act]) + ")", style='filled',
                      fillcolor=activities_color[act])
         else:
-            viz.node(act, act)
+            viz.node(str(hash(act)), act)
 
     # represent edges
     for edge in dfg:
@@ -204,7 +204,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
             label = str(dfg[edge])
         else:
             label = human_readable_stat(dfg[edge])
-        viz.edge(edge[0], edge[1], label=label, penwidth=str(penwidth[edge]))
+        viz.edge(str(hash(edge[0])), str(hash(edge[1])), label=label, penwidth=str(penwidth[edge]))
 
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
