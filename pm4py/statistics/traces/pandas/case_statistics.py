@@ -44,6 +44,43 @@ def get_variant_statistics(df, parameters=None):
     return variants_list
 
 
+def get_variant_statistics_with_case_duration(df, parameters=None):
+    """
+    Get variants from a Pandas dataframe with case duration
+
+    Parameters
+    -----------
+    df
+        Dataframe
+    parameters
+        Parameters of the algorithm, including:
+            case_id_glue -> Column that contains the Case ID
+            activity_key -> Column that contains the activity
+            max_variants_to_return -> Maximum number of variants to return
+            variants_df -> If provided, avoid recalculation of the variants dataframe
+
+    Returns
+    -----------
+    variants_list
+        List of variants inside the Pandas dataframe
+    """
+    if parameters is None:
+        parameters = {}
+    case_id_glue = parameters[
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
+    variants_df = parameters["variants_df"] if "variants_df" in parameters else get_variants_df_with_case_duration(df,
+                                                                                                                   parameters=parameters)
+    variants_df["count"] = 1
+    variants_df = variants_df.reset_index()
+    variants_list = variants_df.groupby("variant").agg({"caseDuration": "mean", "count": "sum"}).reset_index().to_dict(
+        'records')
+    variants_list = sorted(variants_list, key=lambda x: x["count"], reverse=True)
+    if max_variants_to_return:
+        variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
+    return variants_list
+
+
 def get_variants_df_and_list(df, parameters=None):
     """
     (Technical method) Provides variants_df and variants_list out of the box
@@ -169,6 +206,53 @@ def get_variants_df(df, parameters=None):
     return df.groupby(case_id_glue)[activity_key].agg({'variant': lambda col: ','.join(col)})
 
 
+def get_variants_df_with_case_duration(df, parameters=None):
+    """
+    Get variants dataframe from a Pandas dataframe, with case duration that is included
+
+    Parameters
+    -----------
+    df
+        Dataframe
+    parameters
+        Parameters of the algorithm, including:
+            case_id_glue -> Column that contains the Case ID
+            activity_key -> Column that contains the activity
+            timestamp_key -> Column that contains the timestamp
+
+    Returns
+    -----------
+    variants_df
+        Variants dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_glue = parameters[
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    activity_key = parameters[
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    timestamp_key = parameters[
+        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    grouped_df = df[[case_id_glue, timestamp_key, activity_key]].groupby(df[case_id_glue])
+    df1 = grouped_df[activity_key].agg({'variant': lambda col: ','.join(col)})
+    first_eve_df = grouped_df.first()
+    last_eve_df = grouped_df.last()
+    del grouped_df
+    last_eve_df.columns = [str(col) + '_2' for col in first_eve_df.columns]
+    stacked_df = pd.concat([first_eve_df, last_eve_df], axis=1)
+    del first_eve_df
+    del last_eve_df
+    del stacked_df[case_id_glue]
+    del stacked_df[case_id_glue + "_2"]
+    stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
+    stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
+    new_df = pd.concat([df1, stacked_df], axis=1)
+    del df1
+    del stacked_df
+    return new_df
+
+
 def get_events(df, case_id, parameters=None):
     """
     Get events belonging to the specified case
@@ -220,6 +304,7 @@ def get_kde_caseduration(df, parameters=None):
     duration_values = [x["caseDuration"] for x in cases.values()]
 
     return case_duration_commons.get_kde_caseduration(duration_values, parameters=parameters)
+
 
 def get_kde_caseduration_json(df, parameters=None):
     """
