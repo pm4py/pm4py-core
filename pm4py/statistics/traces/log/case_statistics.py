@@ -4,6 +4,7 @@ from pm4py.objects.log.util.xes import DEFAULT_TRACEID_KEY
 from pm4py.statistics.traces.common import case_duration as case_duration_commons
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
+import numpy as np
 
 
 def get_variant_statistics(log, parameters=None):
@@ -32,9 +33,16 @@ def get_variant_statistics(log, parameters=None):
     max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
     varnt = parameters["variants"] if "variants" in parameters else variants_filter.get_variants(log,
                                                                                                  parameters=parameters)
+    var_durations = parameters["var_durations"] if "var_durations" in parameters else None
+    if var_durations is None:
+        var_durations = {}
     variants_list = []
     for var in varnt:
-        variants_list.append({"variant": var, "count": len(varnt[var])})
+        var_el = {"variant": var, "count": len(varnt[var])}
+        if var in var_durations:
+            average = np.mean(var_durations[var])
+            var_el["caseDuration"] = average
+        variants_list.append(var_el)
     variants_list = sorted(variants_list, key=lambda x: x["count"], reverse=True)
     if max_variants_to_return:
         variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
