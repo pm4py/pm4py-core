@@ -2,6 +2,7 @@ from pm4py.util import constants
 from pm4py.objects.log.util import xes
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.util.business_hours import BusinessHours
+from pm4py.objects.log.util import sorting
 
 
 def apply(log, parameters=None):
@@ -79,6 +80,7 @@ def apply(log, parameters=None):
                         new_event["@@approx_bh_duration"] = bh.getseconds()
 
                     new_trace.append(new_event)
+            new_trace = sorting.sort_timestamp_trace(new_trace, start_timestamp_key)
             new_log.append(new_trace)
         return new_log
 
