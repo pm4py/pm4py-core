@@ -95,9 +95,9 @@ def get_cases_description(log, parameters=None):
 
     statistics_list = []
 
-    for trace in log:
+    for index, trace in enumerate(log):
         if trace:
-            ci = trace.attributes[case_id_key]
+            ci = trace.attributes[case_id_key] if case_id_key in trace.attributes else "EMPTY"+str(index)
             st = trace[0][timestamp_key]
             et = trace[-1][timestamp_key]
             if business_hours:
