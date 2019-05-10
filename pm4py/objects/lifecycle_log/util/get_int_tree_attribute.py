@@ -2,6 +2,7 @@ from intervaltree import IntervalTree, Interval
 from pm4py.objects.conversion.lifecycle_log import factory as lifecycle_factory
 from pm4py.util import constants
 from pm4py.objects.log.util import xes
+from pm4py.objects.log.util import sorting
 
 INSERT_AS_ATTRIBUTE = "insert_as_attribute"
 
@@ -37,7 +38,8 @@ def get_int_tree(log, parameters=None):
         constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
     insert_as_attribute = parameters[INSERT_AS_ATTRIBUTE] if INSERT_AS_ATTRIBUTE in parameters else True
 
-    interval_log = lifecycle_factory.apply(log, variant=lifecycle_factory.TO_INTERVAL)
+    interval_log = lifecycle_factory.apply(log, variant=lifecycle_factory.TO_INTERVAL, parameters=parameters)
+    interval_log = sorting.sort_timestamp_log(interval_log, start_timestamp_key)
     attribute_value_tree = {}
 
     for trace in interval_log:
@@ -64,4 +66,5 @@ def get_int_tree(log, parameters=None):
                         val = len(attribute_value_tree[value][middle])
                         event["@@int_tree_count_" + attribute_key] = val
                         event["@@int_tree_count_" + attribute_key + "_" + value] = val
+
     return log, attribute_value_tree
