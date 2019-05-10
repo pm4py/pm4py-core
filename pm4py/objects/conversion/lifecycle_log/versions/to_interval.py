@@ -1,6 +1,7 @@
 from pm4py.util import constants
 from pm4py.objects.log.util import xes
 from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.util.business_hours import BusinessHours
 
 
 def apply(log, parameters=None):
@@ -31,6 +32,9 @@ def apply(log, parameters=None):
         constants.PARAMETER_CONSTANT_TRANSITION_KEY] if constants.PARAMETER_CONSTANT_TRANSITION_KEY in parameters else xes.DEFAULT_TRANSITION_KEY
     activity_key = parameters[
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    business_hours = parameters["business_hours"] if "business_hours" in parameters else False
+    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
+    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
 
     if log is not None and len(log) > 0:
         if "PM4PY_TYPE" in log.attributes and log.attributes["PM4PY_TYPE"] == "interval":
@@ -67,6 +71,12 @@ def apply(log, parameters=None):
                     new_event[start_timestamp_key] = start_timestamp
                     new_event[timestamp_key] = timestamp
                     new_event["@@duration"] = (timestamp - start_timestamp).total_seconds()
+
+                    if business_hours:
+                        bh = BusinessHours(start_timestamp.replace(tzinfo=None), timestamp.replace(tzinfo=None),
+                                           worktiming=worktiming,
+                                           weekends=weekends)
+                        new_event["@@approx_bh_duration"] = bh.getseconds()
 
                     new_trace.append(new_event)
             new_log.append(new_trace)
