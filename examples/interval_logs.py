@@ -16,7 +16,7 @@ def execute_script():
                                              parameters={"business_hours": True})
     # gets some interval trees trees on the intervals where some activities were activated
     # (more than one means at the same time the activity is deployed more than once)
-    activities_trees = get_int_tree_attribute.get_int_tree(interval_log, parameters={
+    log, activities_trees = get_int_tree_attribute.get_int_tree(interval_log, parameters={
         constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: xes.DEFAULT_NAME_KEY})
     print(activities_trees.keys())
     # represents an interval tree related to the activity: W_Nabellen offertes
