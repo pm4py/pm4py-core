@@ -1,1 +1,1 @@
-from pm4py.visualization.intervaltree import factory, versions
+from pm4py.visualization.intervaltree import factory, versions, util
