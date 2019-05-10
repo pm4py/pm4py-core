@@ -4,6 +4,7 @@ from pm4py.objects.log.util.xes import DEFAULT_TRACEID_KEY
 from pm4py.statistics.traces.common import case_duration as case_duration_commons
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.util.business_hours import BusinessHours
 import numpy as np
 
 
@@ -88,15 +89,24 @@ def get_cases_description(log, parameters=None):
     sort_by_index = parameters["sort_by_index"] if "sort_by_index" in parameters else 0
     sort_ascending = parameters["sort_ascending"] if "sort_ascending" in parameters else True
     max_ret_cases = parameters["max_ret_cases"] if "max_ret_cases" in parameters else None
+    business_hours = parameters["business_hours"] if "business_hours" in parameters else False
+    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
+    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
 
     statistics_list = []
 
     for trace in log:
         if trace:
             ci = trace.attributes[case_id_key]
-            st = trace[0][timestamp_key].timestamp()
-            et = trace[-1][timestamp_key].timestamp()
-            diff = et - st
+            st = trace[0][timestamp_key]
+            et = trace[-1][timestamp_key]
+            if business_hours:
+                bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None), worktiming=worktiming, weekends=weekends)
+                diff = bh.getseconds()
+            else:
+                diff = et.timestamp() - st.timestamp()
+            st = st.timestamp()
+            et = et.timestamp()
             statistics_list.append([ci, st, et, diff])
 
     if enable_sort:
