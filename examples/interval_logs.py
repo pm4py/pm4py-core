@@ -11,7 +11,7 @@ from pm4py.objects.lifecycle_log.util import lead_cycle_time_interval_logs
 def execute_script():
     # import the BPI Challenge 2012 log that is a lifecycle log
     log = xes_importer.apply(os.path.join("..", "tests", "input_data", "bpic2012.xes.gz"), variant="nonstandard",
-                             parameters={"max_no_traces_to_import": 1000})
+                             parameters={"max_no_traces_to_import": 500})
     # convert the BPI Challenge 2012 log to an interval log, including the estimated
     # business hours duration (standard hour 7-17, 6th and 7th day are wekeend)
     interval_log = lifecycle_converter.apply(log, variant=lifecycle_converter.TO_INTERVAL,
