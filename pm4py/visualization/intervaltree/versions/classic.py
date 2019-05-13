@@ -5,7 +5,7 @@ matplotlib.use('Agg')
 from matplotlib import pyplot
 
 from intervaltree import IntervalTree
-from pm4py.algo.other.intervaltree import get_distr_points_interval_tree
+from pm4py.algo.other.intervaltree.representation import factory as representation_factory
 from pm4py.visualization.intervaltree.util import common
 from datetime import datetime
 
@@ -35,7 +35,7 @@ def apply(tree_points, parameters=None):
         parameters = {}
 
     if type(tree_points) is IntervalTree:
-        tree_points = get_distr_points_interval_tree.get_distr_points(tree_points)
+        tree_points = representation_factory.apply(tree_points)
 
     format = parameters["format"] if "format" in parameters else "png"
     title = parameters["title"] if "title" in parameters else GRAPH_DEFAULT_TITLE
