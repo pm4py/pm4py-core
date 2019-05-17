@@ -13,7 +13,7 @@ from pm4py.objects.log.util import sampling, sorting, index_attribute
 from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import pnml as petri_exporter
 from pm4py.visualization.petrinet.common import visualize as pn_viz
-from pm4py.algo.discovery.dfg import factory as dfg_mining_factory
+from pm4py.algo.discovery.dfg_mining import factory as dfg_mining_factory
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 
 
