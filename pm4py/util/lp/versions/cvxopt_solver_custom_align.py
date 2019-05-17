@@ -2,7 +2,6 @@ import sys
 
 from cvxopt import blas
 from cvxopt import glpk
-from cvxopt import solvers
 
 this_options = {}
 this_options["LPX_K_MSGLEV"] = 0
