@@ -13,7 +13,6 @@ from pm4py.objects.log.util import sampling, sorting, index_attribute
 from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import pnml as petri_exporter
 from pm4py.visualization.petrinet.common import visualize as pn_viz
-from pm4py.algo.discovery.dfg_mining import factory as dfg_mining_factory
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 
 
@@ -30,11 +29,6 @@ class AlphaMinerTest(unittest.TestCase):
             log = log_conv_fact.apply(event_log)
         net, marking, fmarking = alpha_factory.apply(log)
         soundness = check_soundness.check_petri_wfnet_and_soundness(net)
-        del soundness
-
-        # apply DFG mining
-        net2, marking2, fmarking2 = dfg_mining_factory.apply(log)
-        soundness = check_soundness.check_petri_wfnet_and_soundness(net2)
         del soundness
 
         return log, net, marking, fmarking
