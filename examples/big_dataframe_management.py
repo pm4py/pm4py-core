@@ -13,6 +13,7 @@ from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.visualization.petrinet import factory as pn_vis_factory
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_decorations_from_dfg_spaths_acticount
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_shortest_paths
+from pm4py.algo.discovery.dfg_mining import factory as dfg_mining_factory
 
 SEP = ","
 QUOTECHAR = None
@@ -85,6 +86,14 @@ def execute_script():
     gviz = dfg_vis_factory.apply(dfg_frequency, activities_count=activities_count, parameters={"format": "svg"})
     dfg_vis_factory.view(gviz)
     net, initial_marking, final_marking = inductive_factory.apply_dfg(dfg_frequency)
+    # applies also DFG mining
+    net2, initial_marking2, final_marking2 = dfg_mining_factory.apply(dataframe, parameters={
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ACTIVITY_KEY,
+        constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: ACTIVITY_KEY, constants.PARAMETER_CONSTANT_CASEID_KEY: CASEID_GLUE,
+        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY: TIMEST_KEY})
+    gviz = pn_vis_factory.apply(net2, initial_marking2, final_marking2, parameters={"format": "svg"})
+    pn_vis_factory.view(gviz)
+    print("applied DFG mining")
     # net, initial_marking, final_marking = alpha_factory.apply_dfg(dfg_frequency)
     spaths = get_shortest_paths(net)
     time9 = time.time()
