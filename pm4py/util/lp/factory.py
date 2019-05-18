@@ -1,14 +1,17 @@
 from pm4py.util.lp.versions import cvxopt_solver
+from pm4py.util.lp.versions import cvxopt_solver_custom_align
 from pm4py.util.lp.versions import pulp_solver
-
 
 CVXOPT = "cvxopt"
 PULP = "pulp"
+CVXOPT_SOLVER_CUSTOM_ALIGN = "cvxopt_solver_custom_align"
 
-
-VERSIONS_APPLY = {CVXOPT: cvxopt_solver.apply, PULP: pulp_solver.apply}
-VERSIONS_GET_PRIM_OBJ = {CVXOPT: cvxopt_solver.get_prim_obj_from_sol, PULP: pulp_solver.get_prim_obj_from_sol}
-VERSIONS_GET_POINTS_FROM_SOL = {CVXOPT: cvxopt_solver.get_points_from_sol, PULP: pulp_solver.get_points_from_sol}
+VERSIONS_APPLY = {CVXOPT: cvxopt_solver.apply, PULP: pulp_solver.apply,
+                  CVXOPT_SOLVER_CUSTOM_ALIGN: cvxopt_solver_custom_align.apply}
+VERSIONS_GET_PRIM_OBJ = {CVXOPT: cvxopt_solver.get_prim_obj_from_sol, PULP: pulp_solver.get_prim_obj_from_sol,
+                         CVXOPT_SOLVER_CUSTOM_ALIGN: cvxopt_solver_custom_align.get_prim_obj_from_sol}
+VERSIONS_GET_POINTS_FROM_SOL = {CVXOPT: cvxopt_solver.get_points_from_sol, PULP: pulp_solver.get_points_from_sol,
+                                CVXOPT_SOLVER_CUSTOM_ALIGN: cvxopt_solver_custom_align.get_points_from_sol}
 
 
 def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=CVXOPT):

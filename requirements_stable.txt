@@ -13,3 +13,4 @@ scikit-learn==0.20.2
 pydotplus==2.0.2
 pulp==1.6.9
 pytz==2018.9
+intervaltree

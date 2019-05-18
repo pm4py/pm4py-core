@@ -1,4 +1,5 @@
 import numpy as np
+from pm4py.util.business_hours import BusinessHours
 
 
 def get_class_representation_by_str_ev_attr_value_presence(log, str_attr_name, str_attr_value):
@@ -81,7 +82,8 @@ def get_class_representation_by_str_ev_attr_value_value(log, str_attr_name):
     return target, classes
 
 
-def get_class_representation_by_trace_duration(log, target_trace_duration, timestamp_key="time:timestamp"):
+def get_class_representation_by_trace_duration(log, target_trace_duration, timestamp_key="time:timestamp",
+                                               parameters=None):
     """
     Get class representation by splitting traces according to trace duration
 
@@ -101,6 +103,13 @@ def get_class_representation_by_trace_duration(log, target_trace_duration, times
     classes
         Name of the classes, in order
     """
+    if parameters is None:
+        parameters = {}
+
+    business_hours = parameters["business_hours"] if "business_hours" in parameters else False
+    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
+    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
+
     count = 0
     dictionary = {}
     target = []
@@ -109,7 +118,14 @@ def get_class_representation_by_trace_duration(log, target_trace_duration, times
     for trace in log:
         value = "LESSEQUAL"
         if len(trace) > 0 and timestamp_key in trace[0] and timestamp_key in trace[-1]:
-            diff = (trace[-1][timestamp_key] - trace[0][timestamp_key]).total_seconds()
+            timestamp_st = trace[0][timestamp_key]
+            timestamp_et = trace[-1][timestamp_key]
+            if business_hours:
+                bh = BusinessHours(timestamp_st.replace(tzinfo=None), timestamp_et.replace(tzinfo=None),
+                                   worktiming=worktiming, weekends=weekends)
+                diff = bh.getseconds()
+            else:
+                diff = (timestamp_et - timestamp_st).total_seconds()
             if diff > target_trace_duration:
                 value = "GREATER"
         if not str(value) in dictionary:
