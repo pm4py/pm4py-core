@@ -10,7 +10,6 @@ if __name__ == "__main__":
     from tests.imp_everything import Pm4pyImportPackageTest
     from tests.xes_impexp_test import XesImportExportTest
     from tests.csv_impexp_test import CsvImportExportTest
-    from tests.interval_logs import IntervalLogsTests
     from tests.alpha_test import AlphaMinerTest
     from tests.imdf_test import InductiveMinerDFTest
     from tests.imdf_tree_test import InductiveMinerDFTreeTest
@@ -35,7 +34,6 @@ if __name__ == "__main__":
     from tests.heuminer_test import HeuMinerTest
     from tests.matrix_rep_test import MatrixRepTest
 
-    test_ilogs = IntervalLogsTests()
     test_rv = RandomVariableTest()
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
