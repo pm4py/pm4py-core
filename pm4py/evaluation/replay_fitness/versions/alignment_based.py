@@ -49,19 +49,8 @@ def evaluate(aligned_traces, parameters=None):
 
 
 def apply(log, petri_net, initial_marking, final_marking, parameters=None):
-    if parameters is None:
-        parameters = {}
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    best_worst = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(log_lib.log.Trace(), petri_net,
-                                                                                        initial_marking,
-                                                                                        final_marking)
-    best_worst_costs = best_worst['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
-    with mp.Pool(max(1, mp.cpu_count() - 1)) as pool:
-        alignment_result = pool.starmap(apply_trace, map(
-            lambda tr: (tr, petri_net, initial_marking, final_marking, best_worst_costs, activity_key), log))
-
-        return evaluate(alignment_result)
+    alignment_result = alignments.factory.apply(log, petri_net, initial_marking, final_marking, parameters=parameters)
+    return evaluate(alignment_result)
 
 
 def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, activity_key):

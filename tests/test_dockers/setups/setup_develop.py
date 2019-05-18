@@ -19,7 +19,7 @@ setup(
     author_email=pm4py.__author_email__,
     py_modules=[pm4py.__name__],
     include_package_data=True,
-    packages=['pm4py', 'pm4py.algo', 'pm4py.algo.discovery', 'pm4py.algo.discovery.dfg',
+    packages=['pm4py', 'pm4py.algo', 'pm4py.algo.other', 'pm4py.algo.discovery', 'pm4py.algo.discovery.dfg',
               'pm4py.algo.discovery.dfg.utils', 'pm4py.algo.discovery.dfg.adapters',
               'pm4py.algo.discovery.dfg.adapters.pandas', 'pm4py.algo.discovery.dfg.versions',
               'pm4py.algo.discovery.alpha', 'pm4py.algo.discovery.alpha.utils', 'pm4py.algo.discovery.alpha.versions',
@@ -63,7 +63,8 @@ setup(
               'pm4py.objects.log.importer.parquet', 'pm4py.objects.log.importer.parquet.versions',
               'pm4py.objects.petri', 'pm4py.objects.petri.common', 'pm4py.objects.petri.exporter',
               'pm4py.objects.petri.exporter.versions', 'pm4py.objects.petri.importer',
-              'pm4py.objects.petri.importer.versions', 'pm4py.objects.conversion', 'pm4py.objects.conversion.log',
+              'pm4py.objects.petri.importer.versions', 'pm4py.objects.conversion', 'pm4py.objects.conversion.dfg',
+              'pm4py.objects.conversion.dfg.versions', 'pm4py.objects.conversion.log',
               'pm4py.objects.conversion.log.versions', 'pm4py.objects.conversion.process_tree',
               'pm4py.objects.conversion.process_tree.versions', 'pm4py.objects.conversion.heuristics_net',
               'pm4py.objects.conversion.heuristics_net.versions', 'pm4py.objects.process_tree',
@@ -104,7 +105,8 @@ setup(
         'scikit-learn',
         'pydotplus',
         'pulp',
-        'pytz>=2018.9'
+        'pytz>=2018.9',
+        'intervaltree'
     ],
     project_urls={
         'Documentation': 'http://pm4py.pads.rwth-aachen.de/documentation/',

@@ -28,20 +28,20 @@ def visualize(ts, parameters=None):
     for s in ts.states:
         if show_names:
             if s in fillcolors:
-                viz.node(str(s.name), style="filled", fillcolor=fillcolors[s])
+                viz.node(str(hash(str(s.name))), style="filled", fillcolor=fillcolors[s])
             else:
-                viz.node(str(s.name))
+                viz.node(str(hash(str(s.name))), str(s.name))
         else:
             if s in fillcolors:
-                viz.node(str(s.name), "", style="filled", fillcolor=fillcolors[s])
+                viz.node(str(hash(str(s.name))), "", style="filled", fillcolor=fillcolors[s])
             else:
-                viz.node(str(s.name), "")
+                viz.node(str(hash(str(s.name))), "")
     # arcs
     for t in ts.transitions:
         if show_labels:
-            viz.edge(str(t.from_state.name), str(t.to_state.name), label=t.name)
+            viz.edge(str(hash(str(t.from_state.name))), str(hash(str(t.to_state.name))), label=t.name)
         else:
-            viz.edge(str(t.from_state.name), str(t.to_state.name))
+            viz.edge(str(hash(str(t.from_state.name))), str(hash(str(t.to_state.name))))
 
     viz.attr(overlap='false')
     viz.attr(fontsize='11')

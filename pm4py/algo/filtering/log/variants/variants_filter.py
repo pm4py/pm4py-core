@@ -1,7 +1,9 @@
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.objects.log.log import EventLog
-from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
+
+import numpy as np
 
 
 def apply(log, admitted_variants, parameters=None):
@@ -53,7 +55,47 @@ def get_variants(log, parameters=None):
 
     variants_trace_idx = get_variants_from_log_trace_idx(log, parameters=parameters)
 
-    return convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx)
+    all_var = convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx)
+
+    return all_var
+
+
+def get_variants_along_with_case_durations(log, parameters=None):
+    """
+    Gets a dictionary whose key is the variant and as value there
+    is the list of traces that share the variant
+
+    Parameters
+    ----------
+    log
+        Trace log
+    parameters
+        Parameters of the algorithm, including:
+            activity_key -> Attribute identifying the activity in the log
+
+    Returns
+    ----------
+    variant
+        Dictionary with variant as the key and the list of traces as the value
+    """
+    if parameters is None:
+        parameters = {}
+
+    timestamp_key = parameters[
+        PARAMETER_CONSTANT_TIMESTAMP] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
+
+    variants_trace_idx = get_variants_from_log_trace_idx(log, parameters=parameters)
+    all_var = convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx)
+
+    all_durations = {}
+
+    for var in all_var:
+        all_durations[var] = []
+        for trace in all_var[var]:
+            all_durations[var].append((trace[-1][timestamp_key] - trace[0][timestamp_key]).total_seconds())
+        all_durations[var] = np.array(all_durations[var])
+
+    return all_var, all_durations
 
 
 def get_variants_from_log_trace_idx(log, parameters=None):

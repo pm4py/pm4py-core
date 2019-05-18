@@ -92,36 +92,36 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     for t in net.transitions:
         if t.label is not None:
             if t in decorations and "label" in decorations[t] and "color" in decorations[t]:
-                viz.node(str(t.name), decorations[t]["label"], style='filled', fillcolor=decorations[t]["color"],
+                viz.node(str(hash(t.name)), decorations[t]["label"], style='filled', fillcolor=decorations[t]["color"],
                          border='1')
             else:
-                viz.node(str(t.name), str(t.label))
+                viz.node(str(hash(t.name)), str(t.label))
         else:
             if debug:
-                viz.node(str(t.name), str(t.name))
+                viz.node(str(hash(t.name)), str(t.name))
             else:
-                viz.node(str(t.name), "", style='filled', fillcolor="black")
+                viz.node(str(hash(t.name)), "", style='filled', fillcolor="black")
 
     # places
     viz.attr('node', shape='circle', fixedsize='true', width='0.75')
     for p in net.places:
         if p in initial_marking:
-            viz.node(str(p.name), str(initial_marking[p]), style='filled', fillcolor="green")
+            viz.node(str(hash(p.name)), str(initial_marking[p]), style='filled', fillcolor="green")
         elif p in final_marking:
-            viz.node(str(p.name), "", style='filled', fillcolor="orange")
+            viz.node(str(hash(p.name)), "", style='filled', fillcolor="orange")
         else:
             if debug:
-                viz.node(str(p.name), str(p.name))
+                viz.node(str(hash(p.name)), str(p.name))
             else:
-                viz.node(str(p.name), "")
+                viz.node(str(hash(p.name)), "")
 
     # arcs
     for a in net.arcs:
         if a in decorations:
-            viz.edge(str(a.source.name), str(a.target.name), label=decorations[a]["label"],
+            viz.edge(str(hash(a.source.name)), str(hash(a.target.name)), label=decorations[a]["label"],
                      penwidth=decorations[a]["penwidth"])
         else:
-            viz.edge(str(a.source.name), str(a.target.name))
+            viz.edge(str(hash(a.source.name)), str(hash(a.target.name)))
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
 
