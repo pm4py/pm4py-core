@@ -4,6 +4,7 @@ from copy import copy
 from graphviz import Digraph
 
 from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.algo.discovery.dfg.utils import dfg_utils
 from pm4py.objects.log.util import xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.visualization.common.utils import *
@@ -230,7 +231,11 @@ def apply(dfg, log=None, parameters=None, activities_count=None, measure="freque
         max_no_of_edges_in_diagram = parameters["maxNoOfEdgesInDiagram"]
 
     if activities_count is None:
-        activities_count = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
+        if log is not None:
+            activities_count = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
+        else:
+            activities = dfg_utils.get_activities_from_dfg(dfg)
+            activities_count = {key:1 for key in activities}
 
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure=measure,
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram)
