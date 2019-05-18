@@ -1,9 +1,11 @@
 import os
-from pm4py.objects.log.importer.xes import factory as xes_importer
+
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.objects.conversion.dfg import factory as dfg_conv_factory
+from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.visualization.dfg import factory as dfg_vis_fact
 from pm4py.visualization.petrinet import factory as pn_vis_factory
+
 
 def execute_script():
     log_path = os.path.join("..","tests", "input_data", "running-example.xes")
