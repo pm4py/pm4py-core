@@ -168,12 +168,8 @@ def apply_heu(log, parameters=None):
 
     Returns
     ------------
-    net
-        Petri net
-    im
-        Initial marking
-    fm
-        Final marking
+    heu
+        Heuristics Net
     """
     if parameters is None:
         parameters = {}
@@ -226,12 +222,8 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
 
     Returns
     ------------
-    net
-        Petri net
-    im
-        Initial marking
-    fm
-        Final marking
+    heu
+        Heuristics Net
     """
     if parameters is None:
         parameters = {}
