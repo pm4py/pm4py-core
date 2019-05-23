@@ -174,8 +174,9 @@ def check_tau_mandatory_at_initial_marking(tree):
     terminal_transitions = get_first_terminal_child_transitions(tree)
     condition2 = len(terminal_transitions) > 1
     condition3 = check_loop_to_first_operator(tree)
+    condition4 = tree.operator == Operator.XOR or tree.operator == Operator.PARALLEL
 
-    return condition1 or condition2 or condition3
+    return condition1 or condition2 or condition3 or condition4
 
 
 def check_tau_mandatory_at_final_marking(tree):
@@ -193,8 +194,9 @@ def check_tau_mandatory_at_final_marking(tree):
     terminal_transitions = get_last_terminal_child_transitions(tree)
     condition2 = len(terminal_transitions) > 1
     condition3 = check_loop_to_last_operator(tree)
+    condition4 = tree.operator == Operator.XOR or tree.operator == Operator.PARALLEL
 
-    return condition1 or condition2 or condition3
+    return condition1 or condition2 or condition3 or condition4
 
 
 def recursively_add_tree(tree, net, initial_entity_subtree, final_entity_subtree, counts, rec_depth,
