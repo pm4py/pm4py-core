@@ -385,11 +385,12 @@ class SubtreeB(Subtree):
                                 el[0][1] in comp and el[0][0] not in self.activities):
                             comp_ok = True
                             break
-                    for sa in self.start_activities:
-                        if sa in comp:
-                            comp_ok = True
-                            #print("siii")
-                            break
+                    if self.rec_depth == 0:
+                        for sa in self.start_activities:
+                            if sa in comp:
+                                comp_ok = True
+                                #print("siii")
+                                break
                     if not comp_ok:
                         return [False, conn_components]
                 return [True, conn_components]
