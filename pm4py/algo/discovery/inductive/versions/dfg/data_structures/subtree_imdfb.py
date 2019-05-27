@@ -372,14 +372,23 @@ class SubtreeB(Subtree):
         if len(conn_components) > 1:
             conn_components = self.check_par_cut(conn_components, this_nx_graph, strongly_connected_components)
             if conn_components is not None:
-                # print(conn_components, self.initial_dfg)
+                #print("\n", conn_components, self.initial_dfg)
                 for comp in conn_components:
                     # print(self.rec_depth, comp)
                     comp_ok = False
                     for el in self.initial_dfg:
+                        #print(el[0][0], comp, el[0][0] in comp)
+                        #print(el[0][1], self.activities, el[0][1] not in self.activities)
+                        #print(el[0][1], comp, el[0][1] in comp)
+                        #print(el[0][0], self.activities, el[0][0] not in self.activities)
                         if (el[0][0] in comp and el[0][1] not in self.activities) or (
                                 el[0][1] in comp and el[0][0] not in self.activities):
                             comp_ok = True
+                            break
+                    for sa in self.start_activities:
+                        if sa in comp:
+                            comp_ok = True
+                            #print("siii")
                             break
                     if not comp_ok:
                         return [False, conn_components]
