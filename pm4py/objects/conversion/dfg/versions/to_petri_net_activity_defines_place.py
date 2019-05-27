@@ -44,18 +44,20 @@ def apply(dfg, parameters=None):
         net.places.add(places_corr[act])
 
     for act in start_activities:
-        index = index + 1
-        trans = PetriNet.Transition(act + "_" + str(index), act)
-        net.transitions.add(trans)
-        add_arc_from_to(source, trans, net)
-        add_arc_from_to(trans, places_corr[act], net)
+        if act in places_corr:
+            index = index + 1
+            trans = PetriNet.Transition(act + "_" + str(index), act)
+            net.transitions.add(trans)
+            add_arc_from_to(source, trans, net)
+            add_arc_from_to(trans, places_corr[act], net)
 
     for act in end_activities:
-        index = index + 1
-        inv_trans = PetriNet.Transition(act + "_" + str(index), None)
-        net.transitions.add(inv_trans)
-        add_arc_from_to(places_corr[act], inv_trans, net)
-        add_arc_from_to(inv_trans, sink, net)
+        if act in places_corr:
+            index = index + 1
+            inv_trans = PetriNet.Transition(act + "_" + str(index), None)
+            net.transitions.add(inv_trans)
+            add_arc_from_to(places_corr[act], inv_trans, net)
+            add_arc_from_to(inv_trans, sink, net)
 
     for el in dfg.keys():
         act1 = el[0]
