@@ -34,6 +34,45 @@ def apply(log, admitted_variants, parameters=None):
     return log
 
 
+def filter_by_variants_percentage(log, percentage=0.8, parameters=None):
+    """
+    Filters a log by variants percentage
+
+    Parameters
+    -------------
+    log
+        Event log
+    percentage
+        Percentage
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    -------------
+    filtered_log
+        Filtered log (by variants percentage)
+    """
+    if parameters is None:
+        parameters = {}
+
+    variants = get_variants(log, parameters=parameters)
+    var_with_count = sorted([(x, len(y)) for x, y in variants.items()])
+
+    total_sum = sum(x[1] for x in var_with_count)
+    partial_sum = 0
+
+    variants_to_filter = []
+
+    for i in range(len(var_with_count)):
+        partial_sum = partial_sum + var_with_count[i][1]
+        variants_to_filter.append(var_with_count[i][0])
+
+        if partial_sum >= total_sum * percentage and (i == len(var_with_count)-1 or (i < len(var_with_count)-1 and var_with_count[i+1][1] < var_with_count[i][1])):
+            break
+
+    return apply(log, variants_to_filter, parameters=parameters)
+
+
 def get_variants(log, parameters=None):
     """
     Gets a dictionary whose key is the variant and as value there
