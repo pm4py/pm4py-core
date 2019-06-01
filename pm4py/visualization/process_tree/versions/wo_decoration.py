@@ -110,7 +110,7 @@ def apply(tree, parameters=None):
     image_format = parameters["format"] if "format" in parameters else "png"
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Digraph("pt", filename=filename.name, engine='dot')
+    viz = Digraph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor':'transparent'})
 
     # add first operator
     if tree.operator:
