@@ -28,7 +28,7 @@ def visualize(ts, parameters=None):
         ts = nts
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Digraph(ts.name, filename=filename.name, engine='dot')
+    viz = Digraph(ts.name, filename=filename.name, engine='dot', graph_attr={'bgcolor':'transparent'})
 
     # states
     viz.attr('node')
