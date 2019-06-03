@@ -40,7 +40,7 @@ def apply_plot(x, y, parameters=None):
     pyplot.xlabel(CASE_DURATION_LABEL)
     pyplot.ylabel(DENSITY_LABEL)
     pyplot.title(title)
-    pyplot.savefig(filename, bbox_inches="tight")
+    pyplot.savefig(filename, bbox_inches="tight", transparent=True)
     pyplot.clf()
 
     return filename
@@ -78,7 +78,7 @@ def apply_semilogx(x, y, parameters=None):
     pyplot.xlabel(CASE_DURATION_LABEL)
     pyplot.ylabel(DENSITY_LABEL)
     pyplot.title(title)
-    pyplot.savefig(filename, bbox_inches="tight")
+    pyplot.savefig(filename, bbox_inches="tight", transparent=True)
     pyplot.clf()
 
     return filename
