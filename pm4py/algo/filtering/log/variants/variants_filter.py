@@ -121,7 +121,7 @@ def get_variants_along_with_case_durations(log, parameters=None):
         parameters = {}
 
     timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
+        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
 
     variants_trace_idx = get_variants_from_log_trace_idx(log, parameters=parameters)
     all_var = convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx)
