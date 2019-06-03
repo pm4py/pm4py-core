@@ -1,14 +1,17 @@
 from pm4py.algo.discovery.alpha import factory as alpha_miner
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.algo.filtering.log.attributes import attributes_filter
-from pm4py.algo.filtering.log.auto_filter import auto_filter
 from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.algo.filtering.log.end_activities import end_activities_filter
 from pm4py.algo.discovery.simple.filtering.log.versions import filter_topvariants_soundmodel
 from pm4py.objects.log.util import insert_classifier
+from pm4py.algo.filtering.log.auto_filter import auto_filter
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
-from copy import deepcopy
+from pm4py.objects.conversion.dfg import factory as dfg_conv_factory
+
+from pm4py.visualization.petrinet import factory as pn_vis_factory
+
 
 def apply(log, parameters=None, classic_output=False):
     """
@@ -48,11 +51,12 @@ def apply(log, parameters=None, classic_output=False):
 
     maximum_number_activities = parameters[
         "maximum_number_activities"] if "maximum_number_activities" in parameters else 20
-    discovery_algorithm = parameters["discovery_algorithm"] if "discovery_algorithm" in parameters else "alphaclassic"
+    discovery_algorithm = parameters["discovery_algorithm"] if "discovery_algorithm" in parameters else "alpha"
     desidered_output = parameters["desidered_output"] if "desidered_output" in parameters else "petri"
     include_filtered_log = parameters["include_filtered_log"] if "include_filtered_log" in parameters else True
     include_dfg_frequency = parameters["include_dfg_frequency"] if "include_dfg_frequency" in parameters else True
-    include_dfg_performance = parameters["include_dfg_performance"] if "include_dfg_performance" in parameters else False
+    include_dfg_performance = parameters[
+        "include_dfg_performance"] if "include_dfg_performance" in parameters else False
     include_filtered_dfg_frequency = parameters[
         "include_filtered_dfg_frequency"] if "include_filtered_dfg_frequency" in parameters else True
     include_filtered_dfg_performance = parameters[
@@ -85,15 +89,17 @@ def apply(log, parameters=None, classic_output=False):
     filtered_log = None
 
     if "alpha" in discovery_algorithm:
-        #parameters_sa = deepcopy(parameters)
-        #parameters_sa["decreasingFactor"] = 1.0
+        # parameters_sa = deepcopy(parameters)
+        # parameters_sa["decreasingFactor"] = 1.0
         filtered_log = start_activities_filter.apply_auto_filter(log, parameters=parameters)
         filtered_log = end_activities_filter.apply_auto_filter(filtered_log, parameters=parameters)
         filtered_log = filter_topvariants_soundmodel.apply(filtered_log, parameters=parameters)
-    elif "inductive" in discovery_algorithm:
-        filtered_log = auto_filter.apply_auto_filter(log, parameters=parameters)
+    elif "dfg_mining" in discovery_algorithm:
+        filtered_log = start_activities_filter.apply_auto_filter(log, parameters=parameters)
+        filtered_log = end_activities_filter.apply_auto_filter(filtered_log, parameters=parameters)
+        filtered_log = auto_filter.apply_auto_filter(filtered_log, parameters=parameters)
 
-    if include_dfg_frequency:
+    if include_dfg_frequency or "dfg_mining" in discovery_algorithm:
         dfg_frequency = dfg_factory.apply(log, parameters=parameters, variant="frequency")
     if include_dfg_performance:
         dfg_performance = dfg_factory.apply(log, parameters=parameters, variant="performance")
@@ -104,6 +110,15 @@ def apply(log, parameters=None, classic_output=False):
 
     if "alpha" in discovery_algorithm:
         net, initial_marking, final_marking = alpha_miner.apply(filtered_log, parameters=parameters)
+    elif "dfg_mining" in discovery_algorithm:
+        start_activities = start_activities_filter.get_start_activities(filtered_log, parameters=parameters)
+        end_activities = end_activities_filter.get_end_activities(filtered_log, parameters=parameters)
+
+        parameters_conv = {}
+        parameters_conv["start_activities"] = start_activities
+        parameters_conv["end_activities"] = end_activities
+
+        net, initial_marking, final_marking = dfg_conv_factory.apply(dfg_frequency, parameters=parameters_conv)
 
     if filtered_log is not None and include_filtered_log:
         returned_dictionary["filtered_log"] = filtered_log
