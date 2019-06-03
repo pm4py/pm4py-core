@@ -83,7 +83,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
         decorations = {}
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Digraph(net.name, filename=filename.name, engine='dot')
+    viz = Digraph(net.name, filename=filename.name, engine='dot', graph_attr={'bgcolor':'transparent'})
     if set_rankdir_lr:
         viz.graph_attr['rankdir'] = 'LR'
 
