@@ -41,7 +41,7 @@ def apply(log, parameters=None, variant=HANDOVER):
     if parameters is None:
         parameters = {}
 
-    enable_metric_normalization = parameters[METRIC_NORMALIZATION] if METRIC_NORMALIZATION in parameters else True
+    enable_metric_normalization = parameters[METRIC_NORMALIZATION] if METRIC_NORMALIZATION in parameters else False
 
     if variant in VERSIONS_PANDAS and type(log) is pandas.DataFrame:
         sna = VERSIONS_PANDAS[variant](log, parameters=parameters)
