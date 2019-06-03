@@ -33,7 +33,7 @@ def apply(log, parameters=None):
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     activities = dict(log[activity_key].value_counts())
     resources = dict(log[resource_key].value_counts())
-    activity_resource_couples = dict(log.groupby([resource_key,activity_key]).size())
+    activity_resource_couples = dict(log.groupby([resource_key, activity_key]).size())
     activities_keys = sorted(list(activities.keys()))
     resources_keys = sorted(list(resources.keys()))
     rsc_act_matrix = np.zeros((len(resources_keys), len(activities_keys)))
@@ -49,4 +49,4 @@ def apply(log, parameters=None):
                 vect_j = rsc_act_matrix[j, :]
                 r, p = pearsonr(vect_i, vect_j)
                 metric_matrix[i, j] = r
-    return (metric_matrix, resources_keys, False)
+    return [metric_matrix, resources_keys, False]

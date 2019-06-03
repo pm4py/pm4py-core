@@ -51,4 +51,4 @@ def apply(log, parameters=None):
                 vect_j = rsc_act_matrix[j, :]
                 r, p = pearsonr(vect_i, vect_j)
                 metric_matrix[i, j] = r
-    return (metric_matrix, resources_keys, False)
+    return [metric_matrix, resources_keys, False]

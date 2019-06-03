@@ -64,4 +64,4 @@ def apply(log, parameters=None):
         for key2 in sum_i_to_j[key1]:
             metric_matrix[key1][key2] = sum_i_to_j[key1][key2] / dividend
 
-    return (metric_matrix, flat_list, True)
+    return [metric_matrix, flat_list, True]
