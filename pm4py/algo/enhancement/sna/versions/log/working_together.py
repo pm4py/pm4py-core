@@ -48,4 +48,4 @@ def apply(log, parameters=None):
                 metric_matrix[res_i, res_j] += float(variants_occ[",".join(rv)]) / float(len(log))
                 metric_matrix[res_j, res_i] += float(variants_occ[",".join(rv)]) / float(len(log))
 
-    return (metric_matrix, flat_list, False)
+    return [metric_matrix, flat_list, False]
