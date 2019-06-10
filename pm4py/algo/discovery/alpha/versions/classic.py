@@ -14,7 +14,7 @@ References
 """
 
 import time
-from itertools import zip_longest
+from itertools import product
 
 from pm4py import util as pm_util
 from pm4py.algo.discovery.alpha.data_structures import alpha_classic_abstraction
@@ -210,7 +210,7 @@ def __pair_maximizer(alpha_pairs, pair):
 
 
 def __check_is_unrelated(parallel_relation, causal_relation, item_set_1, item_set_2):
-    for pair in zip_longest(item_set_1, item_set_2):
+    for pair in product(item_set_1, item_set_2):
         if pair in parallel_relation or pair in causal_relation:
             return True
     return False
