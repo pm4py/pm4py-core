@@ -185,8 +185,11 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
                 for trace_idx in variants_idx[variant]:
                     trace = log[trace_idx]
                     for perf_couple in annotations_places_trans[el]["performance"]:
-                        perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][
-                            timestamp_key]).total_seconds()
+                        if timestamp_key in trace[perf_couple[0]] and timestamp_key in trace[perf_couple[1]]:
+                            perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][
+                                timestamp_key]).total_seconds()
+                        else:
+                            perf = 0.0
                         statistics[el]["performance"].append(perf)
         for el in annotations_arcs:
             if el not in statistics:
@@ -195,7 +198,10 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
             for trace_idx in variants_idx[variant]:
                 trace = log[trace_idx]
                 for perf_couple in annotations_arcs[el]["performance"]:
-                    perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][timestamp_key]).total_seconds()
+                    if timestamp_key in trace[perf_couple[0]] and timestamp_key in trace[perf_couple[1]]:
+                        perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][timestamp_key]).total_seconds()
+                    else:
+                        perf = 0.0
                     statistics[el]["performance"].append(perf)
 
     return statistics
