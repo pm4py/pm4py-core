@@ -131,7 +131,10 @@ def get_variants_along_with_case_durations(log, parameters=None):
     for var in all_var:
         all_durations[var] = []
         for trace in all_var[var]:
-            all_durations[var].append((trace[-1][timestamp_key] - trace[0][timestamp_key]).total_seconds())
+            if trace and timestamp_key in trace[-1] and timestamp_key in trace[0]:
+                all_durations[var].append((trace[-1][timestamp_key] - trace[0][timestamp_key]).total_seconds())
+            else:
+                all_durations[var].append(0)
         all_durations[var] = np.array(all_durations[var])
 
     return all_var, all_durations
