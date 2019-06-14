@@ -8,6 +8,7 @@ from pm4py.objects.log.util import xes
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 
 DEFAULT_MAX_CASES_FOR_ATTR_SELECTION = 50
 
@@ -212,9 +213,9 @@ def verify_if_trace_attribute_is_in_each_trace(log, attribute):
     return True
 
 
-def apply_numeric_events(log, int1, int2, parameters=None):
+def apply_numeric(log, int1, int2, parameters=None):
     """
-    Apply a filter on events (numerical filter)
+    Apply a filter on cases (numerical filter)
 
     Parameters
     --------------
@@ -237,13 +238,62 @@ def apply_numeric_events(log, int1, int2, parameters=None):
 
     attribute_key = parameters[
         PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+    case_key = parameters[
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else xes.DEFAULT_TRACEID_KEY
+
     positive = parameters["positive"] if "positive" in parameters else True
 
     stream = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
     if positive:
         stream = EventStream(list(filter(lambda x: attribute_key in x and int1 <= x[attribute_key] <= int2, stream)))
     else:
-        stream = EventStream(list(filter(lambda x: attribute_key in x and (x[attribute_key] < int1 or x[attribute_key] > int2), stream)))
+        stream = EventStream(
+            list(filter(lambda x: attribute_key in x and (x[attribute_key] < int1 or x[attribute_key] > int2), stream)))
+
+    all_cases_ids = set(x["case:"+case_key] for x in stream)
+
+    filtered_log = EventLog()
+
+    for case in log:
+        if case.attributes[case_key] in all_cases_ids:
+            filtered_log.append(case)
+
+    return filtered_log
+
+
+def apply_numeric_events(log, int1, int2, parameters=None):
+    """
+    Apply a filter on events (numerical filter)
+
+    Parameters
+    --------------
+    log
+        Log
+    int1
+        Lower bound of the interval
+    int2
+        Upper bound of the interval
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    --------------
+    filtered_log
+        Filtered log
+    """
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = parameters[
+        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+    positive = parameters["positive"] if "positive" in parameters else True
+
+    stream = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+    if positive:
+        stream = EventStream(list(filter(lambda x: attribute_key in x and int1 <= x[attribute_key] <= int2, stream)))
+    else:
+        stream = EventStream(
+            list(filter(lambda x: attribute_key in x and (x[attribute_key] < int1 or x[attribute_key] > int2), stream)))
 
     filtered_log = log_conv_fact.apply(stream)
 
@@ -285,8 +335,8 @@ def apply_events(log, values, parameters=None):
 
     filtered_log = log_conv_fact.apply(stream)
 
-    #filtered_log = EventLog()
-    #for trace in log:
+    # filtered_log = EventLog()
+    # for trace in log:
     #    new_trace = Trace()
 
     #    for j in range(len(trace)):
@@ -409,11 +459,13 @@ def filter_log_on_max_no_activities(log, max_no_activities=25, parameters=None):
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
-    activities = sorted([(x,y) for x,y in get_attribute_values(log, activity_key).items()], key=lambda x: x[1], reverse=True)
+    activities = sorted([(x, y) for x, y in get_attribute_values(log, activity_key).items()], key=lambda x: x[1],
+                        reverse=True)
     activities = activities[:min(len(activities), max_no_activities)]
     activities = [x[0] for x in activities]
     log = apply_events(log, activities, parameters=parameters)
     return log
+
 
 def get_trace_attribute_values(log, attribute_key, parameters=None):
     """
