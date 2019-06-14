@@ -212,6 +212,44 @@ def verify_if_trace_attribute_is_in_each_trace(log, attribute):
     return True
 
 
+def apply_numeric_events(log, int1, int2, parameters=None):
+    """
+    Apply a filter on events (numerical filter)
+
+    Parameters
+    --------------
+    log
+        Log
+    int1
+        Lower bound of the interval
+    int2
+        Upper bound of the interval
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    --------------
+    filtered_df
+        Filtered dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = parameters[
+        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+    positive = parameters["positive"] if "positive" in parameters else True
+
+    stream = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+    if positive:
+        stream = EventStream(list(filter(lambda x: attribute_key in x and int1 <= x[attribute_key] <= int2, stream)))
+    else:
+        stream = EventStream(list(filter(lambda x: attribute_key in x and (x[attribute_key] < int1 or x[attribute_key] > int2), stream)))
+
+    filtered_log = log_conv_fact.apply(stream)
+
+    return filtered_log
+
+
 def apply_events(log, values, parameters=None):
     """
     Filter log by keeping only events with an attribute value that belongs to the provided values list
