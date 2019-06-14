@@ -2,7 +2,7 @@ from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.attributes import attributes_common
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.conversion.log import factory as log_conv_fact
-from pm4py.objects.log.log import EventLog, Trace
+from pm4py.objects.log.log import EventLog, Trace, EventStream
 from pm4py.objects.log.util import sampling
 from pm4py.objects.log.util import xes
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
@@ -239,19 +239,27 @@ def apply_events(log, values, parameters=None):
         PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
     positive = parameters["positive"] if "positive" in parameters else True
 
-    filtered_log = EventLog()
-    for trace in log:
-        new_trace = Trace()
+    stream = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+    if positive:
+        stream = EventStream(list(filter(lambda x: x[attribute_key] in values, stream)))
+    else:
+        stream = EventStream(list(filter(lambda x: x[attribute_key] not in values, stream)))
 
-        for j in range(len(trace)):
-            if attribute_key in trace[j]:
-                attribute_value = trace[j][attribute_key]
-                if (positive and attribute_value in values) or (not positive and attribute_value not in values):
-                    new_trace.append(trace[j])
-        if len(new_trace) > 0:
-            for attr in trace.attributes:
-                new_trace.attributes[attr] = trace.attributes[attr]
-            filtered_log.append(new_trace)
+    filtered_log = log_conv_fact.apply(stream)
+
+    #filtered_log = EventLog()
+    #for trace in log:
+    #    new_trace = Trace()
+
+    #    for j in range(len(trace)):
+    #        if attribute_key in trace[j]:
+    #            attribute_value = trace[j][attribute_key]
+    #            if (positive and attribute_value in values) or (not positive and attribute_value not in values):
+    #                new_trace.append(trace[j])
+    #    if len(new_trace) > 0:
+    #        for attr in trace.attributes:
+    #            new_trace.attributes[attr] = trace.attributes[attr]
+    #        filtered_log.append(new_trace)
     return filtered_log
 
 
