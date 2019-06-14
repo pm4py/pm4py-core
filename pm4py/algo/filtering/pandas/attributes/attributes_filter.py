@@ -10,9 +10,39 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 
 
+def apply_numeric_events(df, int1, int2, parameters=None):
+    """
+    Apply a filter on events (numerical filter)
+
+    Parameters
+    --------------
+    df
+        Dataframe
+    int1
+        Lower bound of the interval
+    int2
+        Upper bound of the interval
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    --------------
+    filtered_df
+        Filtered dataframe
+    """
+    if parameters is None:
+        parameters = {}
+    attribute_key = parameters[
+        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+    positive = parameters["positive"] if "positive" in parameters else True
+    if positive:
+        return df[(df[attribute_key] >= int1) & (df[attribute_key] <= int2)]
+    else:
+        return df[(df[attribute_key] < int1) | (df[attribute_key] > int2)]
+
 def apply_events(df, values, parameters=None):
     """
-    Filter dataframe on attribute values (filter traces)
+    Filter dataframe on attribute values (filter events)
 
     Parameters
     ----------
