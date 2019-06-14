@@ -23,7 +23,9 @@ def apply_numeric_events(df, int1, int2, parameters=None):
     int2
         Upper bound of the interval
     parameters
-        Possible parameters of the algorithm
+        Possible parameters of the algorithm:
+            PARAMETER_CONSTANT_ATTRIBUTE_KEY => indicates which attribute to filter
+            positive => keep or remove events?
 
     Returns
     --------------
@@ -54,7 +56,9 @@ def apply_numeric(df, int1, int2, parameters=None):
     int2
         Upper bound of the interval
     parameters
-        Possible parameters of the algorithm
+        Possible parameters of the algorithm:
+            PARAMETER_CONSTANT_ATTRIBUTE_KEY => indicates which attribute to filter
+            positive => keep or remove traces with such events?
 
     Returns
     --------------
