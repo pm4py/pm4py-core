@@ -40,6 +40,42 @@ def apply_numeric_events(df, int1, int2, parameters=None):
     else:
         return df[(df[attribute_key] < int1) | (df[attribute_key] > int2)]
 
+
+def apply_numeric(df, int1, int2, parameters=None):
+    """
+    Filter dataframe on attribute values (filter cases)
+
+    Parameters
+    --------------
+    df
+        Dataframe
+    int1
+        Lower bound of the interval
+    int2
+        Upper bound of the interval
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    --------------
+    filtered_df
+        Filtered dataframe
+    """
+    if parameters is None:
+        parameters = {}
+    attribute_key = parameters[
+        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+    case_id_glue = parameters[
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    positive = parameters["positive"] if "positive" in parameters else True
+    filtered_df_by_ev = df[(df[attribute_key] >= int1) & (df[attribute_key] <= int2)]
+    i1 = df.set_index(case_id_glue).index
+    i2 = filtered_df_by_ev.set_index(case_id_glue).index
+    if positive:
+        return df[i1.isin(i2)]
+    return df[~i1.isin(i2)]
+
+
 def apply_events(df, values, parameters=None):
     """
     Filter dataframe on attribute values (filter events)
@@ -283,6 +319,7 @@ def get_kde_numeric_attribute(df, attribute, parameters=None):
     values = list(df.dropna(subset=[attribute])[attribute])
 
     return attributes_common.get_kde_numeric_attribute(values, parameters=parameters)
+
 
 def get_kde_numeric_attribute_json(df, attribute, parameters=None):
     """
