@@ -104,14 +104,30 @@ def transient_analysis_from_dataframe(df, delay, parameters=None):
     timestamp_key = parameters[
         constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
 
+    print("0")
+
     log = log_conv_factory.apply(df, variant=log_conv_factory.DF_TO_EVENT_LOG_1V, parameters=parameters)
+
+    print("1")
+
     # gets the simple Petri net through simple miner
-    net, im, fm = simple_factory.apply(log, parameters=parameters, classic_output=True)
+    new_parameters = {}
+    new_parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = timestamp_key
+    new_parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes.DEFAULT_NAME_KEY
+
+    print(new_parameters)
+
+    net, im, fm = simple_factory.apply(log, parameters=new_parameters, classic_output=True)
+
+    print("2")
 
     activities_count = dict(df.groupby(activity_key).size())
     dfg_performance = df_statistics.get_dfg_graph(df, measure="performance", perf_aggregation_key="mean",
                                                   case_id_glue=case_id_glue, activity_key=activity_key,
                                                   timestamp_key=timestamp_key)
+
+    print("activities_count = ",activities_count)
+    print("dfg_performance=",dfg_performance)
 
     spaths = get_shortest_paths(net)
     aggregated_statistics = get_decorations_from_dfg_spaths_acticount(net, dfg_performance,
@@ -119,8 +135,12 @@ def transient_analysis_from_dataframe(df, delay, parameters=None):
                                                                       activities_count,
                                                                       variant="performance")
 
+    print("aggregated_statistics=",aggregated_statistics)
+
     # gets the stochastic map out of the dataframe and the Petri net
     s_map = smap_builder.get_map_exponential_from_aggstatistics(aggregated_statistics, parameters=parameters)
+
+    print("s_map=",s_map)
 
     return transient_analysis_from_petri_net_and_smap(net, im, s_map, delay, parameters=parameters)
 
