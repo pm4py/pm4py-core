@@ -10,9 +10,79 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 
 
+def apply_numeric_events(df, int1, int2, parameters=None):
+    """
+    Apply a filter on events (numerical filter)
+
+    Parameters
+    --------------
+    df
+        Dataframe
+    int1
+        Lower bound of the interval
+    int2
+        Upper bound of the interval
+    parameters
+        Possible parameters of the algorithm:
+            PARAMETER_CONSTANT_ATTRIBUTE_KEY => indicates which attribute to filter
+            positive => keep or remove events?
+
+    Returns
+    --------------
+    filtered_df
+        Filtered dataframe
+    """
+    if parameters is None:
+        parameters = {}
+    attribute_key = parameters[
+        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+    positive = parameters["positive"] if "positive" in parameters else True
+    if positive:
+        return df[(df[attribute_key] >= int1) & (df[attribute_key] <= int2)]
+    else:
+        return df[(df[attribute_key] < int1) | (df[attribute_key] > int2)]
+
+
+def apply_numeric(df, int1, int2, parameters=None):
+    """
+    Filter dataframe on attribute values (filter cases)
+
+    Parameters
+    --------------
+    df
+        Dataframe
+    int1
+        Lower bound of the interval
+    int2
+        Upper bound of the interval
+    parameters
+        Possible parameters of the algorithm:
+            PARAMETER_CONSTANT_ATTRIBUTE_KEY => indicates which attribute to filter
+            positive => keep or remove traces with such events?
+
+    Returns
+    --------------
+    filtered_df
+        Filtered dataframe
+    """
+    if parameters is None:
+        parameters = {}
+    attribute_key = parameters[
+        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+    case_id_glue = parameters[
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    positive = parameters["positive"] if "positive" in parameters else True
+    filtered_df_by_ev = df[(df[attribute_key] >= int1) & (df[attribute_key] <= int2)]
+    i1 = df.set_index(case_id_glue).index
+    i2 = filtered_df_by_ev.set_index(case_id_glue).index
+    if positive:
+        return df[i1.isin(i2)]
+    return df[~i1.isin(i2)]
+
+
 def apply_events(df, values, parameters=None):
     """
-    Filter dataframe on attribute values (filter traces)
+    Filter dataframe on attribute values (filter events)
 
     Parameters
     ----------
@@ -102,9 +172,7 @@ def apply_auto_filter(df, parameters=None):
 
     activities = get_attribute_values(df, activity_key)
     alist = attributes_common.get_sorted_attributes_list(activities)
-    thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor,
-                                                        min_activity_count=MIN_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM,
-                                                        max_activity_count=MAX_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM)
+    thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
 
     return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count=activities)
 
@@ -253,6 +321,7 @@ def get_kde_numeric_attribute(df, attribute, parameters=None):
     values = list(df.dropna(subset=[attribute])[attribute])
 
     return attributes_common.get_kde_numeric_attribute(values, parameters=parameters)
+
 
 def get_kde_numeric_attribute_json(df, attribute, parameters=None):
     """
