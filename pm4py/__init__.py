@@ -1,6 +1,6 @@
 from pm4py import algo, evaluation, objects, util, visualization, statistics
 
-__version__ = '1.1.15'
+__version__ = '1.1.16'
 __doc__ = "Process Mining for Python"
 __author__ = 'PADS'
 __author_email__ = 'pm4py@pads.rwth-aachen.de'
