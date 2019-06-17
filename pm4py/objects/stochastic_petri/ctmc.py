@@ -105,8 +105,13 @@ def transient_analysis_from_dataframe(df, delay, parameters=None):
         constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
 
     log = log_conv_factory.apply(df, variant=log_conv_factory.DF_TO_EVENT_LOG_1V, parameters=parameters)
+
     # gets the simple Petri net through simple miner
-    net, im, fm = simple_factory.apply(log, parameters=parameters, classic_output=True)
+    new_parameters = {}
+    new_parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = timestamp_key
+    new_parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes.DEFAULT_NAME_KEY
+
+    net, im, fm = simple_factory.apply(log, parameters=new_parameters, classic_output=True)
 
     activities_count = dict(df.groupby(activity_key).size())
     dfg_performance = df_statistics.get_dfg_graph(df, measure="performance", perf_aggregation_key="mean",
