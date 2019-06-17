@@ -172,9 +172,7 @@ def apply_auto_filter(df, parameters=None):
 
     activities = get_attribute_values(df, activity_key)
     alist = attributes_common.get_sorted_attributes_list(activities)
-    thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor,
-                                                        min_activity_count=MIN_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM,
-                                                        max_activity_count=MAX_NO_OF_ACTIVITIES_TO_RETAIN_FOR_DIAGRAM)
+    thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
 
     return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count=activities)
 
