@@ -19,6 +19,8 @@ VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
 VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}
 VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost}
 
+VARIANTS_IDX = 'variants_idx'
+
 
 def apply(obj, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
     if parameters is None:
@@ -136,17 +138,20 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         PARAM_SYNC_COST_FUNCTION] = sync_cost_function
     best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters)
 
-    variants = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
+    variants_idxs = parameters[VARIANTS_IDX] if VARIANTS_IDX in parameters else None
+    if variants_idxs is None:
+        variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
+
     one_tr_per_var = []
-    for index_variant, variant in enumerate(variants):
-        one_tr_per_var.append(log[variants[variant][0]])
+    for index_variant, variant in enumerate(variants_idxs):
+        one_tr_per_var.append(log[variants_idxs[variant][0]])
     all_alignments = list(map(
         lambda trace: apply_trace(trace, petri_net, initial_marking, final_marking, parameters=copy(parameters),
                                   version=version), one_tr_per_var))
 
     al_idx = {}
-    for index_variant, variant in enumerate(variants):
-        for trace_idx in variants[variant]:
+    for index_variant, variant in enumerate(variants_idxs):
+        for trace_idx in variants_idxs[variant]:
             al_idx[trace_idx] = all_alignments[index_variant]
 
     alignments = []
