@@ -47,7 +47,7 @@ def apply(df, parameters=None):
         all_variants_log[vd['variant']] = []
         for i in range(variant_count):
             log.append(trace)
-            all_variants_log[vd['variant']].append(len(log))
+            all_variants_log[vd['variant']].append(len(log)-1)
 
     if return_variants:
         return log, all_variants_log
