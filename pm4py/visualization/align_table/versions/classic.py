@@ -43,8 +43,7 @@ def apply(log, aligned_traces, parameters=None):
         al_tr = aligned_traces[variant[1][0]]
         table_alignments_list.append("<tr>")
         table_alignments_list.append(
-            "<td><font point-size='9'>Variant " + str(index + 1) + " (" + str(len(variant[1])) + " occurrences)<br />" + variant[
-                0] + "</font></td>")
+            "<td><font point-size='9'>Variant " + str(index + 1) + " (" + str(len(variant[1])) + " occurrences)</font></td>")
         table_alignments_list.append("<td><font point-size='6'><table border='0'><tr>")
         for move in al_tr['alignment']:
             move_descr = str(move[1]).replace(">", "&gt;")
