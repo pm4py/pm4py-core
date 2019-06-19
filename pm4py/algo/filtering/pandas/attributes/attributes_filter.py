@@ -261,7 +261,7 @@ def filter_df_keeping_activ_exc_thresh(df, thresh, act_count0=None, activity_key
         act_count0 = get_attribute_values(df, activity_key)
     act_count = [k for k, v in act_count0.items() if v >= thresh]
     if len(act_count) < len(act_count0):
-        df = df[df[activity_key].isin(act_count0)]
+        df = df[df[activity_key].isin(act_count)]
     return df
 
 
