@@ -7,3 +7,4 @@ PARAMETER_CONSTANT_RESOURCE_KEY = 'pm4py:param:resource_key'
 PARAMETER_CONSTANT_TRANSITION_KEY = 'pm4py:param:transition_key'
 
 GROUPED_DATAFRAME = 'grouped_dataframe'
+RETURN_EA_COUNT_DICT_AUTOFILTER = 'return_ea_count_dict_autofilter'
