@@ -184,7 +184,6 @@ def filter_df_on_end_activities_nocc(df, nocc, ea_count0=None, case_id_glue=filt
         ea_count0 = get_end_activities(df, parameters=parameters)
     ea_count = [k for k, v in ea_count0.items() if v >= nocc]
     if len(ea_count) < len(ea_count0):
-        print("SIIIII",len(ea_count),len(ea_count0))
         first_eve_df = first_eve_df[first_eve_df[activity_key].isin(ea_count)]
         i1 = df.set_index(case_id_glue).index
         i2 = first_eve_df.index
