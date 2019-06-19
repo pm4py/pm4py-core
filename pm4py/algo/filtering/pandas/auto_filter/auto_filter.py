@@ -2,6 +2,7 @@ from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
 from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
 from pm4py.algo.filtering.pandas.variants import variants_filter
+from pm4py.util import constants
 
 
 def apply_auto_filter(df, parameters=None):
@@ -42,6 +43,9 @@ def apply_auto_filter(df, parameters=None):
         "enable_start_activities_filter"] if "enable_start_activities_filter" in parameters else False
     enable_end_activities_filter = parameters[
         "enable_end_activities_filter"] if "enable_end_activities_filter" in parameters else True
+    return_dict = parameters[
+        constants.RETURN_EA_COUNT_DICT_AUTOFILTER] if constants.RETURN_EA_COUNT_DICT_AUTOFILTER in parameters else False
+    ea_dict = None
 
     # list of filters that are applied:
     # - activities (if enabled)
@@ -53,8 +57,15 @@ def apply_auto_filter(df, parameters=None):
     if enable_variants_filter:
         df = variants_filter.apply_auto_filter(df, parameters=parameters)
     if enable_end_activities_filter:
-        df = end_activities_filter.apply_auto_filter(df, parameters=parameters)
+        parameters[constants.RETURN_EA_COUNT_DICT_AUTOFILTER] = return_dict
+        if return_dict:
+            df, ea_dict = end_activities_filter.apply_auto_filter(df, parameters=parameters)
+        else:
+            df = end_activities_filter.apply_auto_filter(df, parameters=parameters)
     if enable_start_activities_filter:
         df = start_activities_filter.apply_auto_filter(df, parameters=parameters)
+
+    if return_dict:
+        return df, ea_dict
 
     return df

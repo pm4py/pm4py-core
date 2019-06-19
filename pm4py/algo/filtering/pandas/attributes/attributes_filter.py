@@ -174,7 +174,7 @@ def apply_auto_filter(df, parameters=None):
     alist = attributes_common.get_sorted_attributes_list(activities)
     thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
 
-    return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count=activities)
+    return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count0=activities)
 
 
 def get_attribute_values(df, attribute_key, parameters=None):
@@ -237,7 +237,7 @@ def filter_df_on_attribute_values(df, values, case_id_glue="case:concept:name", 
     return df[~i1.isin(i2)]
 
 
-def filter_df_keeping_activ_exc_thresh(df, thresh, act_count=None, activity_key="concept:name"):
+def filter_df_keeping_activ_exc_thresh(df, thresh, act_count0=None, activity_key="concept:name"):
     """
     Filter a dataframe keeping activities exceeding the threshold
 
@@ -247,7 +247,7 @@ def filter_df_keeping_activ_exc_thresh(df, thresh, act_count=None, activity_key=
         Pandas dataframe
     thresh
         Threshold to use to cut activities
-    act_count
+    act_count0
         (If provided) Dictionary that associates each activity with its count
     activity_key
         Column in which the activity is present
@@ -257,10 +257,11 @@ def filter_df_keeping_activ_exc_thresh(df, thresh, act_count=None, activity_key=
     df
         Filtered dataframe
     """
-    if act_count is None:
-        act_count = get_attribute_values(df, activity_key)
-    act_count = [k for k, v in act_count.items() if v >= thresh]
-    df = df[df[activity_key].isin(act_count)]
+    if act_count0 is None:
+        act_count0 = get_attribute_values(df, activity_key)
+    act_count = [k for k, v in act_count0.items() if v >= thresh]
+    if len(act_count) < len(act_count0):
+        df = df[df[activity_key].isin(act_count)]
     return df
 
 
@@ -292,7 +293,8 @@ def filter_df_keeping_spno_activities(df, activity_key="concept:name", max_no_ac
                                    0:min(len(activity_values_ordered_list), max_no_activities)]
     activity_to_keep = [x[0] for x in activity_values_ordered_list]
 
-    df = df[df[activity_key].isin(activity_to_keep)]
+    if len(activity_to_keep) < len(activity_values_dict):
+        df = df[df[activity_key].isin(activity_to_keep)]
     return df
 
 
