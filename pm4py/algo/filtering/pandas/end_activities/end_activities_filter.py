@@ -107,7 +107,10 @@ def get_end_activities(df, parameters=None):
         PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    grouped_df = parameters[GROUPED_DATAFRAME] if GROUPED_DATAFRAME in parameters else df.groupby(case_id_glue)
+    grouped_df = parameters[GROUPED_DATAFRAME] if GROUPED_DATAFRAME in parameters else None
+
+    if grouped_df is None:
+        grouped_df = df.groupby(case_id_glue)
 
     last_eve_df = grouped_df.last()
     endact_dict = dict(last_eve_df[activity_key].value_counts())
@@ -181,6 +184,7 @@ def filter_df_on_end_activities_nocc(df, nocc, ea_count0=None, case_id_glue=filt
         ea_count0 = get_end_activities(df, parameters=parameters)
     ea_count = [k for k, v in ea_count0.items() if v >= nocc]
     if len(ea_count) < len(ea_count0):
+        print("SIIIII",len(ea_count),len(ea_count0))
         first_eve_df = first_eve_df[first_eve_df[activity_key].isin(ea_count)]
         i1 = df.set_index(case_id_glue).index
         i2 = first_eve_df.index
