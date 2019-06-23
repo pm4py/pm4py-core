@@ -50,6 +50,9 @@ def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold):
                 new_dfg.append(el)
                 pass
 
+    if new_dfg is None:
+        return dfg
+
     return new_dfg
 
 
