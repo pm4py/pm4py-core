@@ -11,6 +11,7 @@ SORT_FIELD = "sort_field"
 TIMEST_FORMAT = "timest_format"
 TIMEST_COLUMNS = "timest_columns"
 INSERT_EVENT_INDEXES = "insert_event_indexes"
+ENCODING = "encoding"
 
 PANDAS = "pandas"
 VERSIONS = {PANDAS: pandas_df_imp.import_event_stream}
@@ -47,11 +48,12 @@ def import_dataframe_from_path(path, parameters=None, variant=PANDAS):
     sort_field = parameters[SORT_FIELD] if SORT_FIELD in parameters else xes.DEFAULT_TIMESTAMP_KEY
     timest_format = parameters[TIMEST_FORMAT] if TIMEST_FORMAT in parameters else None
     timest_columns = parameters[TIMEST_COLUMNS] if TIMEST_COLUMNS in parameters else None
+    encoding = parameters[ENCODING] if ENCODING in parameters else None
 
     return DATAFRAME_MANAGER[variant].import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows,
                                                                  sort=sort,
                                                                  sort_field=sort_field, timest_format=timest_format,
-                                                                 timest_columns=timest_columns)
+                                                                 timest_columns=timest_columns, encoding=encoding)
 
 
 def import_dataframe_from_path_wo_timeconversion(path, parameters=None, variant=PANDAS):
@@ -78,9 +80,10 @@ def import_dataframe_from_path_wo_timeconversion(path, parameters=None, variant=
     sep = parameters[SEP] if SEP in parameters else ','
     quotechar = parameters[QUOTECHAR] if QUOTECHAR in parameters else None
     nrows = parameters[NROWS] if NROWS in parameters else None
+    encoding = parameters[ENCODING] if ENCODING in parameters else None
 
     return DATAFRAME_MANAGER[variant].import_dataframe_from_path_wo_timeconversion(path, sep=sep, quotechar=quotechar,
-                                                                                   nrows=nrows)
+                                                                                   nrows=nrows, encoding=encoding)
 
 
 def import_dataframe_from_csv_string(csv_string, parameters=None, variant=PANDAS):
@@ -112,12 +115,14 @@ def import_dataframe_from_csv_string(csv_string, parameters=None, variant=PANDAS
     sort_field = parameters[SORT_FIELD] if SORT_FIELD in parameters else xes.DEFAULT_TIMESTAMP_KEY
     timest_format = parameters[TIMEST_FORMAT] if TIMEST_FORMAT in parameters else None
     timest_columns = parameters[TIMEST_COLUMNS] if TIMEST_COLUMNS in parameters else None
+    encoding = parameters[ENCODING] if ENCODING in parameters else None
 
     return DATAFRAME_MANAGER[variant].import_dataframe_from_csv_string(csv_string, sep=sep, quotechar=quotechar,
                                                                        nrows=nrows,
                                                                        sort=sort, sort_field=sort_field,
                                                                        timest_format=timest_format,
-                                                                       timest_columns=timest_columns)
+                                                                       timest_columns=timest_columns,
+                                                                       encoding=encoding)
 
 
 def convert_dataframe_to_stream(dataframe, parameters=None, variant=PANDAS):
