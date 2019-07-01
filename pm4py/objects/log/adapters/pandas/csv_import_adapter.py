@@ -7,7 +7,7 @@ from pm4py.objects.conversion.log import factory as log_conv_fact
 from pm4py.util.versions import check_pandas_ge_024
 
 
-def import_dataframe_from_path_wo_timeconversion(path, sep=',', quotechar=None, nrows=None):
+def import_dataframe_from_path_wo_timeconversion(path, sep=',', quotechar=None, nrows=None, encoding=None):
     """
     Imports a dataframe from the given path (without doing the timestamp columns conversion)
 
@@ -21,6 +21,8 @@ def import_dataframe_from_path_wo_timeconversion(path, sep=',', quotechar=None, 
         (if specified) Character that starts/end big strings in CSV
     nrows
         (if specified) Maximum number of rows to read from the CSV
+    encoding
+        Encoding to use
 
      Returns
     -------
@@ -29,20 +31,21 @@ def import_dataframe_from_path_wo_timeconversion(path, sep=',', quotechar=None, 
     """
     if quotechar:
         if nrows:
-            df = pd.read_csv(path, sep=sep, quotechar=quotechar, nrows=nrows)
+            df = pd.read_csv(path, sep=sep, quotechar=quotechar, nrows=nrows, encoding=encoding)
         else:
-            df = pd.read_csv(path, sep=sep, quotechar=quotechar)
+            df = pd.read_csv(path, sep=sep, quotechar=quotechar, encoding=encoding)
     else:
         if nrows:
-            df = pd.read_csv(path, sep=sep, nrows=nrows)
+            df = pd.read_csv(path, sep=sep, nrows=nrows, encoding=encoding)
         else:
-            df = pd.read_csv(path, sep=sep)
+            df = pd.read_csv(path, sep=sep, encoding=encoding)
 
     return df
 
 
 def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=None, sort=False,
-                                     sort_field="time:timestamp", timest_format=None, timest_columns=None):
+                                     sort_field="time:timestamp", timest_format=None, timest_columns=None,
+                                     encoding=None):
     """
     Import dataframe from CSV string
 
@@ -64,6 +67,8 @@ def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=
         (If provided) Format of the timestamp columns in the CSV file
     timest_columns
         Columns of the CSV that shall be converted into timestamp
+    encoding
+        Encoding to use
 
     Returns
     -----------
@@ -75,7 +80,8 @@ def import_dataframe_from_csv_string(csv_string, sep=',', quotechar=None, nrows=
     with open(fp.name, 'w') as f:
         f.write(csv_string)
     df = import_dataframe_from_path(fp.name, sep=sep, quotechar=quotechar, nrows=nrows, sort=sort,
-                                    sort_field=sort_field, timest_format=timest_format, timest_columns=timest_columns)
+                                    sort_field=sort_field, timest_format=timest_format, timest_columns=timest_columns,
+                                    encoding=encoding)
     os.remove(fp.name)
     return df
 
@@ -141,7 +147,7 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
 
 
 def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None, sort=False, sort_field="time:timestamp",
-                               timest_format=None, timest_columns=None):
+                               timest_format=None, timest_columns=None, encoding=None):
     """
     Imports a dataframe from the given path
 
@@ -163,13 +169,16 @@ def import_dataframe_from_path(path, sep=',', quotechar=None, nrows=None, sort=F
         (If provided) Format of the timestamp columns in the CSV file
     timest_columns
         Columns of the CSV that shall be converted into timestamp
+    encoding
+        Encoding to use
 
      Returns
     -------
     pd
         Pandas dataframe
     """
-    df = import_dataframe_from_path_wo_timeconversion(path, sep=sep, quotechar=quotechar, nrows=nrows)
+    df = import_dataframe_from_path_wo_timeconversion(path, sep=sep, quotechar=quotechar, nrows=nrows,
+                                                      encoding=encoding)
     df = convert_timestamp_columns_in_df(df, timest_format=timest_format, timest_columns=timest_columns)
     if sort and sort_field:
         df = df.sort_values(sort_field)

@@ -8,6 +8,18 @@ from pm4py.objects.petri.check_soundness import check_petri_wfnet_and_soundness
 from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
 
 
+def pre_set(elem):
+    pre = set()
+    for a in elem.in_arcs:
+        pre.add(a.source)
+    return pre
+
+def post_set(elem):
+    post = set()
+    for a in elem.out_arcs:
+        post.add(a.target)
+    return post
+
 def remove_transition(net, trans):
     """
     Remove a transition from a Petri net
