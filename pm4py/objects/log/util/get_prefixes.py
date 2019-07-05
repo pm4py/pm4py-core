@@ -29,7 +29,7 @@ def get_log_with_log_prefixes(log, parameters=None):
         cumulative_trace = Trace()
         for event in trace:
             cumulative_trace.append(event)
-            all_prefixes_log.append(copy(cumulative_trace))
+            all_prefixes_log.append(deepcopy(cumulative_trace))
     
     return all_prefixes_log
 
