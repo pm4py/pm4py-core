@@ -1,4 +1,5 @@
 import pyarrow.parquet as pq
+import os
 
 COLUMNS = "columns"
 

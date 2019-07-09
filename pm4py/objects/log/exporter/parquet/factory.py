@@ -3,7 +3,6 @@ import pandas
 from pm4py.objects.conversion.log.versions import to_dataframe
 from pm4py.objects.log.exporter.parquet.versions import pyarrow
 
-
 PYARROW = "pyarrow"
 
 VERSIONS = {PYARROW: pyarrow.apply}
