@@ -6,7 +6,7 @@ ciso8601
 cvxopt
 lxml
 graphviz
-pyarrow
+pyarrow==0.13.0
 pandas>=0.24.1
 scipy
 pydotplus
