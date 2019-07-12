@@ -82,6 +82,8 @@ def apply(heu_net, parameters=None):
     image_format = parameters["format"] if "format" in parameters else "png"
 
     graph = pydotplus.Dot(strict=True)
+    graph.obj_dict['attributes']['bgcolor'] = 'transparent'
+    
     corr_nodes = {}
     corr_nodes_names = {}
     is_frequency = False
