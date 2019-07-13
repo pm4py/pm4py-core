@@ -1,6 +1,7 @@
 import os
-from pm4py.objects.log.importer.xes import factory as xes_importer
+
 from pm4py.algo.filtering.log.ltl import ltl_checker
+from pm4py.objects.log.importer.xes import factory as xes_importer
 
 
 def execute_script():
