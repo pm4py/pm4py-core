@@ -19,7 +19,10 @@ def A_eventually_B(df, A, B, parameters=None):
     B
         B Attribute value
     parameters
-        Parameters of the algorithm, including the attribute key
+        Parameters of the algorithm, including the attribute key and the positive parameter:
+        - If True, returns all the cases containing A and B and in which A was eventually followed by B
+        - If False, returns all the cases not containing A or B, or in which an instance of A was not eventually
+        followed by an instance of B
 
     Returns
     ------------
@@ -68,7 +71,11 @@ def four_eyes_principle(df, A, B, parameters=None):
     B
         B attribute value
     parameters
-        Parameters of the algorithm, including the attribute key
+        Parameters of the algorithm, including the attribute key and the positive parameter:
+        - if True, then filters all the cases containing A and B which have empty intersection between the set
+          of resources doing A and B
+        - if False, then filters all the cases containing A and B which have no empty intersection between the set
+          of resources doing A and B
 
     Returns
     --------------
