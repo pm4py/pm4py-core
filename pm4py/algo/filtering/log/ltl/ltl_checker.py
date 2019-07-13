@@ -98,15 +98,12 @@ def four_eyes_principle(log, A, B, parameters=None):
         occ_B = set([trace[i][resource_key] for i in range(len(trace)) if
                      attribute_key in trace[i] and resource_key in trace[i] and trace[i][attribute_key] == B])
 
-        print(occ_A, occ_B)
         if len(occ_A) > 0 and len(occ_B) > 0:
             inte = occ_A.intersection(occ_B)
 
             if not positive and len(inte) > 0:
-                print("A")
                 new_log.append(trace)
             elif positive and len(inte) == 0:
-                print("B")
                 new_log.append(trace)
 
     return new_log
