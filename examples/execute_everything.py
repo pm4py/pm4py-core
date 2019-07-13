@@ -5,6 +5,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    from examples import ltl_log
+    from examples import ltl_pandas
     from examples import big_log_imdf_decor
     from examples import alignment_test
     from examples import dec_treplay_imdf
@@ -28,6 +30,10 @@ if __name__ == "__main__":
     from examples import big_dataframe_management
     from examples import graphs_visualization
 
+    print("\n\nltl_log")
+    ltl_log.execute_script()
+    print("\n\nltl_pandas")
+    ltl_pandas.execute_script()
     print("\n\nbig_log_imdf_decor frequency")
     big_log_imdf_decor.execute_script(variant="frequency")
     print("\n\nbig_log_imdf_decor performance")
