@@ -7,6 +7,8 @@ if __name__ == "__main__":
     current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     parent_dir = os.path.dirname(current_dir)
     sys.path.insert(0, parent_dir)
+    from tests.ltl_checking_logs import LtlCheckingLogTest
+    from tests.ltl_checking_pandas import LtlCheckingPandasTest
     from tests.imp_everything import Pm4pyImportPackageTest
     from tests.xes_impexp_test import XesImportExportTest
     from tests.csv_impexp_test import CsvImportExportTest
@@ -34,6 +36,8 @@ if __name__ == "__main__":
     from tests.heuminer_test import HeuMinerTest
     from tests.matrix_rep_test import MatrixRepTest
 
+    test_ltl_logs = LtlCheckingLogTest()
+    test_ltl_pandas = LtlCheckingPandasTest()
     test_rv = RandomVariableTest()
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
