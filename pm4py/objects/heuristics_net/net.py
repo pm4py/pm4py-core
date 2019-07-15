@@ -84,7 +84,7 @@ class HeuristicsNet:
                   and_measure_thresh=defaults.DEFAULT_AND_MEASURE_THRESH, min_act_count=defaults.DEFAULT_MIN_ACT_COUNT,
                   min_dfg_occurrences=defaults.DEFAULT_MIN_DFG_OCCURRENCES,
                   dfg_pre_cleaning_noise_thresh=defaults.DEFAULT_DFG_PRE_CLEANING_NOISE_THRESH,
-                  loops_length_two_thresh=defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH):
+                  loops_length_two_thresh=defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH, parameters=None):
         """
         Calculate the dependency matrix, populate the nodes
 
@@ -102,7 +102,11 @@ class HeuristicsNet:
             (Optional) DFG pre cleaning noise threshold
         loops_length_two_thresh
             (Optional) loops length two threshold
+        parameters
+            Other parameters of the algorithm
         """
+        if parameters is None:
+            parameters = {}
         self.dependency_matrix = None
         self.dependency_matrix = {}
         self.dfg_matrix = None
@@ -110,7 +114,8 @@ class HeuristicsNet:
         self.performance_matrix = None
         self.performance_matrix = {}
         if dfg_pre_cleaning_noise_thresh > 0.0:
-            self.dfg = clean_dfg_based_on_noise_thresh(self.dfg, self.activities, dfg_pre_cleaning_noise_thresh)
+            self.dfg = clean_dfg_based_on_noise_thresh(self.dfg, self.activities, dfg_pre_cleaning_noise_thresh,
+                                                       parameters=parameters)
         if self.dfg_window_2 is not None:
             for el in self.dfg_window_2:
                 act1 = el[0]
@@ -190,8 +195,13 @@ class HeuristicsNet:
         for n1 in nodes:
             for n2 in self.nodes[n1].loop_length_two:
                 if n1 in self.dfg_matrix and n2 in self.dfg_matrix[n1] and self.dfg_matrix[n1][
-                    n2] >= min_dfg_occurrences and n1 in self.activities_occurrences and self.activities_occurrences[n1] >= min_act_count and n2 in self.activities_occurrences and self.activities_occurrences[n2] >= min_act_count:
-                    if not ((n1 in self.dependency_matrix and n2 in self.dependency_matrix[n1] and self.dependency_matrix[n1][n2] >= dependency_thresh) or (n2 in self.dependency_matrix and n1 in self.dependency_matrix[n2] and self.dependency_matrix[n2][n1] >= dependency_thresh)):
+                    n2] >= min_dfg_occurrences and n1 in self.activities_occurrences and self.activities_occurrences[
+                    n1] >= min_act_count and n2 in self.activities_occurrences and self.activities_occurrences[
+                    n2] >= min_act_count:
+                    if not ((n1 in self.dependency_matrix and n2 in self.dependency_matrix[n1] and
+                             self.dependency_matrix[n1][n2] >= dependency_thresh) or (
+                                    n2 in self.dependency_matrix and n1 in self.dependency_matrix[n2] and
+                                    self.dependency_matrix[n2][n1] >= dependency_thresh)):
                         if n2 not in self.nodes:
                             self.nodes[n2] = Node(self, n2, self.activities_occurrences[n2],
                                                   is_start_node=(n2 in self.start_activities),
