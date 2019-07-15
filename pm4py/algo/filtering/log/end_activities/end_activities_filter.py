@@ -130,13 +130,16 @@ def apply_auto_filter(log, variants=None, parameters=None):
     decreasing_factor = parameters[
         "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
-    parameters_variants = {PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
-    if variants is None:
-        variants = variants_filter.get_variants(log, parameters=parameters_variants)
-    vc = variants_filter.get_variants_sorted_by_count(variants)
-    end_activities = get_end_activities(log, parameters=parameters_variants)
-    ealist = end_activities_common.get_sorted_end_activities_list(end_activities)
-    eathreshold = end_activities_common.get_end_activities_threshold(ealist, decreasing_factor)
-    filtered_log = filter_log_by_end_activities(end_activities, variants, vc, eathreshold, attribute_key)
+    if len(log) > 0:
+        parameters_variants = {PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
+        if variants is None:
+            variants = variants_filter.get_variants(log, parameters=parameters_variants)
+        vc = variants_filter.get_variants_sorted_by_count(variants)
+        end_activities = get_end_activities(log, parameters=parameters_variants)
+        ealist = end_activities_common.get_sorted_end_activities_list(end_activities)
+        eathreshold = end_activities_common.get_end_activities_threshold(ealist, decreasing_factor)
+        filtered_log = filter_log_by_end_activities(end_activities, variants, vc, eathreshold, attribute_key)
 
-    return filtered_log
+        return filtered_log
+
+    return log

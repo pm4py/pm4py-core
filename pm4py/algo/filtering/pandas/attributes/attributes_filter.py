@@ -177,12 +177,14 @@ def apply_auto_filter(df, parameters=None):
     decreasing_factor = parameters[
         "decreasingFactor"] if "decreasingFactor" in parameters else DECREASING_FACTOR
 
-    activities = get_attribute_values(df, activity_key)
-    alist = attributes_common.get_sorted_attributes_list(activities)
-    thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
+    if len(df) > 0:
+        activities = get_attribute_values(df, activity_key)
+        alist = attributes_common.get_sorted_attributes_list(activities)
+        thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
 
-    return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count0=activities,
-                                              most_common_variant=most_common_variant)
+        return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count0=activities,
+                                                  most_common_variant=most_common_variant)
+    return df
 
 
 def get_attribute_values(df, attribute_key, parameters=None):
