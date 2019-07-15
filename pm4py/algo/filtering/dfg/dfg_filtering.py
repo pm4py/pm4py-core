@@ -40,7 +40,7 @@ def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold):
             act2 = el[0][1]
             val = el[1]
 
-        if val < max(activ_max_count[act1] * noise_threshold, activ_max_count[act2] * noise_threshold):
+        if val < min(activ_max_count[act1] * noise_threshold, activ_max_count[act2] * noise_threshold):
             pass
         else:
             if type(el[0]) is str:
