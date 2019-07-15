@@ -461,11 +461,13 @@ def filter_log_on_max_no_activities(log, max_no_activities=25, parameters=None):
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
-    activities = sorted([(x, y) for x, y in get_attribute_values(log, activity_key).items()], key=lambda x: x[1],
+    all_activities = sorted([(x, y) for x, y in get_attribute_values(log, activity_key).items()], key=lambda x: x[1],
                         reverse=True)
-    activities = activities[:min(len(activities), max_no_activities)]
+    activities = all_activities[:min(len(all_activities), max_no_activities)]
     activities = [x[0] for x in activities]
-    log = apply_events(log, activities, parameters=parameters)
+
+    if len(activities) < len(all_activities):
+        log = apply_events(log, activities, parameters=parameters)
     return log
 
 
