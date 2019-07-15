@@ -7,6 +7,7 @@ from pm4py.statistics.traces.common import case_duration as case_duration_common
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.util.constants import GROUPED_DATAFRAME
 
 
 def get_variant_statistics(df, parameters=None):
@@ -38,7 +39,7 @@ def get_variant_statistics(df, parameters=None):
                                                                                                 parameters=parameters)
     variants_df = variants_df.reset_index()
     variants_list = variants_df.groupby("variant").agg("count").reset_index().to_dict('records')
-    variants_list = sorted(variants_list, key=lambda x: x[case_id_glue], reverse=True)
+    variants_list = sorted(variants_list, key=lambda x: (x[case_id_glue], x["variant"]), reverse=True)
     if max_variants_to_return:
         variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
     return variants_list
@@ -75,7 +76,7 @@ def get_variant_statistics_with_case_duration(df, parameters=None):
     variants_df = variants_df.reset_index()
     variants_list = variants_df.groupby("variant").agg({"caseDuration": "mean", "count": "sum"}).reset_index().to_dict(
         'records')
-    variants_list = sorted(variants_list, key=lambda x: x["count"], reverse=True)
+    variants_list = sorted(variants_list, key=lambda x: (x["count"], x["variant"]), reverse=True)
     if max_variants_to_return:
         variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
     return variants_list
@@ -154,6 +155,7 @@ def get_cases_description(df, parameters=None):
     max_ret_cases = parameters["max_ret_cases"] if "max_ret_cases" in parameters else None
 
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
+    # grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
     first_eve_df = grouped_df.first()
     last_eve_df = grouped_df.last()
     del grouped_df

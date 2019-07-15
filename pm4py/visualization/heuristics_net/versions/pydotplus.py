@@ -83,7 +83,7 @@ def apply(heu_net, parameters=None):
 
     graph = pydotplus.Dot(strict=True)
     graph.obj_dict['attributes']['bgcolor'] = 'transparent'
-    
+
     corr_nodes = {}
     corr_nodes_names = {}
     is_frequency = False
