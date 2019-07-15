@@ -1,8 +1,9 @@
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_max_activity_count, get_activities_from_dfg
 from pm4py.algo.filtering.common import filtering_constants
+from pm4py.util import constants
 
 
-def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold):
+def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold, parameters=None):
     """
     Clean Directly-Follows graph based on noise threshold
 
@@ -20,6 +21,13 @@ def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold):
     newDfg
         Cleaned dfg based on noise threshold
     """
+    if parameters is None:
+        parameters = {}
+
+    most_common_paths = parameters[
+        constants.PARAM_MOST_COMMON_PATHS] if constants.PARAM_MOST_COMMON_PATHS in parameters else None
+    if most_common_paths is None:
+        most_common_paths = []
 
     new_dfg = None
     activ_max_count = {}
@@ -40,7 +48,8 @@ def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold):
             act2 = el[0][1]
             val = el[1]
 
-        if val < max(activ_max_count[act1] * noise_threshold, activ_max_count[act2] * noise_threshold):
+        if not el in most_common_paths and val < min(activ_max_count[act1] * noise_threshold,
+                                                     activ_max_count[act2] * noise_threshold):
             pass
         else:
             if type(el[0]) is str:

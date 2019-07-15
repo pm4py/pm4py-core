@@ -13,4 +13,3 @@ pydotplus
 scikit-learn
 pulp
 pytz>=2018.9
-intervaltree

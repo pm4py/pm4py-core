@@ -8,6 +8,7 @@ from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
+from pm4py.util.constants import PARAM_MOST_COMMON_VARIANT
 
 
 def apply_numeric_events(df, int1, int2, parameters=None):
@@ -165,16 +166,25 @@ def apply_auto_filter(df, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    most_common_variant = parameters[PARAM_MOST_COMMON_VARIANT] if PARAM_MOST_COMMON_VARIANT in parameters else None
+
+    if most_common_variant is None:
+        most_common_variant = []
+
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     decreasing_factor = parameters[
         "decreasingFactor"] if "decreasingFactor" in parameters else DECREASING_FACTOR
 
-    activities = get_attribute_values(df, activity_key)
-    alist = attributes_common.get_sorted_attributes_list(activities)
-    thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
+    if len(df) > 0:
+        activities = get_attribute_values(df, activity_key)
+        alist = attributes_common.get_sorted_attributes_list(activities)
+        thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
 
-    return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count0=activities)
+        return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count0=activities,
+                                                  most_common_variant=most_common_variant)
+    return df
 
 
 def get_attribute_values(df, attribute_key, parameters=None):
@@ -237,7 +247,8 @@ def filter_df_on_attribute_values(df, values, case_id_glue="case:concept:name", 
     return df[~i1.isin(i2)]
 
 
-def filter_df_keeping_activ_exc_thresh(df, thresh, act_count0=None, activity_key="concept:name"):
+def filter_df_keeping_activ_exc_thresh(df, thresh, act_count0=None, activity_key="concept:name",
+                                       most_common_variant=None):
     """
     Filter a dataframe keeping activities exceeding the threshold
 
@@ -257,9 +268,12 @@ def filter_df_keeping_activ_exc_thresh(df, thresh, act_count0=None, activity_key
     df
         Filtered dataframe
     """
+    if most_common_variant is None:
+        most_common_variant = []
+
     if act_count0 is None:
         act_count0 = get_attribute_values(df, activity_key)
-    act_count = [k for k, v in act_count0.items() if v >= thresh]
+    act_count = [k for k, v in act_count0.items() if v >= thresh or k in most_common_variant]
     if len(act_count) < len(act_count0):
         df = df[df[activity_key].isin(act_count)]
     return df
