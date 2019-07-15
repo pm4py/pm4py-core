@@ -183,17 +183,23 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         activities_in_dfg.add(edge[0])
         activities_in_dfg.add(edge[1])
 
-    for act in ackeys:
+    """for act in ackeys:
         if act not in activities_in_dfg:
-            del activities_count_int[act]
+            del activities_count_int[act]"""
 
     # assign attributes color
     activities_color = get_activities_color(activities_count_int)
 
     # represent nodes
     viz.attr('node', shape='box')
-    for act in activities_in_dfg:
-        if "frequency" in measure:
+
+    if len(activities_in_dfg) == 0:
+        activities_to_include = set(activities_count_int)
+    else:
+        activities_to_include = set(activities_in_dfg)
+
+    for act in activities_to_include:
+        if "frequency" in measure and act in activities_count_int:
             viz.node(str(hash(act)), act + " (" + str(activities_count_int[act]) + ")", style='filled',
                      fillcolor=activities_color[act])
         else:
