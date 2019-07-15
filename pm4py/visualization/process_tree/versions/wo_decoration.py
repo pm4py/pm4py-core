@@ -120,6 +120,14 @@ def apply(tree, parameters=None):
         viz.node(op_node_identifier, str(tree.operator))
 
         viz = repr_tree(tree, viz, op_node_identifier, 0, parameters)
+    else:
+        viz.attr('node', shape='box', fixedsize='true', width=parameters["box_width"],
+                 fontsize=parameters["box_font_size"])
+        this_trans_id = str(uuid.uuid4())
+        if tree.label is None:
+            viz.node(this_trans_id, "tau", style='filled', fillcolor='black')
+        else:
+            viz.node(this_trans_id, str(tree))
 
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
