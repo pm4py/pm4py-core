@@ -44,7 +44,7 @@ def get_variant_statistics(log, parameters=None):
             average = np.mean(var_durations[var])
             var_el["caseDuration"] = average
         variants_list.append(var_el)
-    variants_list = sorted(variants_list, key=lambda x: x["count"], reverse=True)
+    variants_list = sorted(variants_list, key=lambda x: (x["count"], x["variant"]), reverse=True)
     if max_variants_to_return:
         variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
     return variants_list
