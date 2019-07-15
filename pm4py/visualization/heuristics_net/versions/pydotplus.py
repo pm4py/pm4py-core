@@ -146,8 +146,9 @@ def apply(heu_net, parameters=None):
     for index, sa_list in enumerate(heu_net.start_activities):
         effective_sa_list = [n for n in sa_list if n in corr_nodes_names]
         if effective_sa_list:
-            start_i = pydotplus.Node(name="start_" + str(index), label="", color=heu_net.default_edges_color[index],
-                                     fillcolor=heu_net.default_edges_color[index], style="filled")
+            start_i = pydotplus.Node(name="start_" + str(index), label="→", color=heu_net.default_edges_color[index],
+                                     fontsize="32", fontcolor="#FFFFFF", fillcolor="#32CD32",
+                                     style="filled")
             graph.add_node(start_i)
             for node_name in effective_sa_list:
                 sa = corr_nodes_names[node_name]
@@ -176,8 +177,9 @@ def apply(heu_net, parameters=None):
     for index, ea_list in enumerate(heu_net.end_activities):
         effective_ea_list = [n for n in ea_list if n in corr_nodes_names]
         if effective_ea_list:
-            end_i = pydotplus.Node(name="end_" + str(index), label="", color=heu_net.default_edges_color[index],
-                                   fillcolor=heu_net.default_edges_color[index], style="filled")
+            end_i = pydotplus.Node(name="end_" + str(index), label="□", color="#",
+                                   fillcolor="#FFA500", fontcolor="#FFFFFF", fontsize="32",
+                                   style="filled")
             graph.add_node(end_i)
             for node_name in effective_ea_list:
                 ea = corr_nodes_names[node_name]
