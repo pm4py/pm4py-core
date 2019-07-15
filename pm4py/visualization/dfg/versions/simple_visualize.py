@@ -226,12 +226,12 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     end_activities_to_include = [act for act in end_activities if act in activities_map]
 
     if start_activities_to_include:
-        viz.node("@@startnode", "S", style='filled', shape='circle', fillcolor="#32CD32")
+        viz.node("@@startnode", "@@S", style='filled', shape='circle', fillcolor="#32CD32", color="#32CD32")
         for act in start_activities_to_include:
             viz.edge("@@startnode", activities_map[act])
 
     if end_activities_to_include:
-        viz.node("@@endnode", "E", style='filled', shape='circle', fillcolor="#FFA500")
+        viz.node("@@endnode", "@@E", style='filled', shape='circle', fillcolor="#FFA500", color="#FFA500")
         for act in end_activities_to_include:
             viz.edge(activities_map[act], "@@endnode")
 
