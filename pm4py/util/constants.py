@@ -8,3 +8,5 @@ PARAMETER_CONSTANT_TRANSITION_KEY = 'pm4py:param:transition_key'
 
 GROUPED_DATAFRAME = 'grouped_dataframe'
 RETURN_EA_COUNT_DICT_AUTOFILTER = 'return_ea_count_dict_autofilter'
+PARAM_MOST_COMMON_VARIANT = "most_common_variant"
+PARAM_MOST_COMMON_PATHS = "most_common_paths"

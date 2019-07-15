@@ -60,6 +60,36 @@ def transform_to_hex(graycolor):
     return "#" + left00 + right00 + left00 + right00 + left00 + right00
 
 
+def transform_to_hex_2(color):
+    """
+    Transform color to hexadecimal representation
+
+    Parameters
+    -------------
+    color
+        Gray color (int from 0 to 255)
+
+    Returns
+    -------------
+    hex_string
+        Hexadecimal color
+    """
+    color = 255 - color
+    color2 = 255 - color
+
+    left0 = color / 16
+    right0 = color % 16
+
+    left1 = color2 / 16
+    right1 = color2 % 16
+
+    left0 = get_corr_hex(left0)
+    right0 = get_corr_hex(right0)
+    left1 = get_corr_hex(left1)
+    right1 = get_corr_hex(right1)
+
+    return "#" + left0 + right0 + left1 + right1 + left1 + right1
+
 def apply(heu_net, parameters=None):
     """
     Gets a representation of an Heuristics Net
@@ -83,7 +113,7 @@ def apply(heu_net, parameters=None):
 
     graph = pydotplus.Dot(strict=True)
     graph.obj_dict['attributes']['bgcolor'] = 'transparent'
-    
+
     corr_nodes = {}
     corr_nodes_names = {}
     is_frequency = False
@@ -91,7 +121,7 @@ def apply(heu_net, parameters=None):
     for node_name in heu_net.nodes:
         node = heu_net.nodes[node_name]
         node_occ = node.node_occ
-        graycolor = transform_to_hex(max(255 - math.log(node_occ) * 9, 0))
+        graycolor = transform_to_hex_2(max(255 - math.log(node_occ) * 9, 0))
         if node.node_type == "frequency":
             is_frequency = True
             n = pydotplus.Node(name=node_name, shape="box", style="filled",
@@ -146,8 +176,9 @@ def apply(heu_net, parameters=None):
     for index, sa_list in enumerate(heu_net.start_activities):
         effective_sa_list = [n for n in sa_list if n in corr_nodes_names]
         if effective_sa_list:
-            start_i = pydotplus.Node(name="start_" + str(index), label="", color=heu_net.default_edges_color[index],
-                                     fillcolor=heu_net.default_edges_color[index], style="filled")
+            start_i = pydotplus.Node(name="start_" + str(index), label="@@S", color=heu_net.default_edges_color[index],
+                                     fontsize="8", fontcolor="#32CD32", fillcolor="#32CD32",
+                                     style="filled")
             graph.add_node(start_i)
             for node_name in effective_sa_list:
                 sa = corr_nodes_names[node_name]
@@ -176,8 +207,9 @@ def apply(heu_net, parameters=None):
     for index, ea_list in enumerate(heu_net.end_activities):
         effective_ea_list = [n for n in ea_list if n in corr_nodes_names]
         if effective_ea_list:
-            end_i = pydotplus.Node(name="end_" + str(index), label="", color=heu_net.default_edges_color[index],
-                                   fillcolor=heu_net.default_edges_color[index], style="filled")
+            end_i = pydotplus.Node(name="end_" + str(index), label="@@E", color="#",
+                                   fillcolor="#FFA500", fontcolor="#FFA500", fontsize="8",
+                                   style="filled")
             graph.add_node(end_i)
             for node_name in effective_ea_list:
                 ea = corr_nodes_names[node_name]
