@@ -136,7 +136,7 @@ def apply_performance(dfg, log=None, activities_count=None, parameters=None):
 
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
-                           max_no_of_edges_in_diagram=170):
+                           max_no_of_edges_in_diagram=170, start_activities=None, end_activities=None):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -158,8 +158,13 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     viz
         Digraph object
     """
+    if start_activities is None:
+        start_activities = []
+    if end_activities is None:
+        end_activities = []
+
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor':'transparent'})
+    viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': 'transparent'})
 
     # first, remove edges in diagram that exceeds the maximum number of edges in the diagram
     dfg_key_value_list = []
@@ -198,12 +203,16 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     else:
         activities_to_include = set(activities_in_dfg)
 
+    activities_map = {}
+
     for act in activities_to_include:
         if "frequency" in measure and act in activities_count_int:
             viz.node(str(hash(act)), act + " (" + str(activities_count_int[act]) + ")", style='filled',
                      fillcolor=activities_color[act])
+            activities_map[act] = str(hash(act))
         else:
             viz.node(str(hash(act)), act)
+            activities_map[act] = str(hash(act))
 
     # represent edges
     for edge in dfg:
@@ -212,6 +221,19 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         else:
             label = human_readable_stat(dfg[edge])
         viz.edge(str(hash(edge[0])), str(hash(edge[1])), label=label, penwidth=str(penwidth[edge]))
+
+    start_activities_to_include = [act for act in start_activities if act in activities_map]
+    end_activities_to_include = [act for act in end_activities if act in activities_map]
+
+    if start_activities_to_include:
+        viz.node("@@startnode", "→", style='filled', shape='circle', fillcolor="#32CD32")
+        for act in start_activities_to_include:
+            viz.edge("@@startnode", activities_map[act])
+
+    if end_activities_to_include:
+        viz.node("@@endnode", "□", style='filled', shape='circle', fillcolor="#FFA500")
+        for act in end_activities_to_include:
+            viz.edge(activities_map[act], "@@endnode")
 
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
@@ -236,12 +258,16 @@ def apply(dfg, log=None, parameters=None, activities_count=None, measure="freque
     if "maxNoOfEdgesInDiagram" in parameters:
         max_no_of_edges_in_diagram = parameters["maxNoOfEdgesInDiagram"]
 
+    start_activities = parameters["start_activities"] if "start_activities" in parameters else []
+    end_activities = parameters["end_activities"] if "end_activities" in parameters else []
+
     if activities_count is None:
         if log is not None:
             activities_count = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
         else:
             activities = dfg_utils.get_activities_from_dfg(dfg)
-            activities_count = {key:1 for key in activities}
+            activities_count = {key: 1 for key in activities}
 
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure=measure,
-                                  max_no_of_edges_in_diagram=max_no_of_edges_in_diagram)
+                                  max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
+                                  start_activities=start_activities, end_activities=end_activities)
