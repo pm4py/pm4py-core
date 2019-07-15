@@ -224,6 +224,14 @@ class HeuristicsNet:
                                                                  v_n2_n1, repr_value=repr_value)
                             self.nodes[n1].add_input_connection(self.nodes[n2], 0,
                                                                 v_n1_n2, repr_value=repr_value)
+        if len(self.nodes) == 0:
+            for act in self.activities:
+                self.nodes[act] = Node(self, act, self.activities_occurrences[act],
+                                      is_start_node=(act in self.start_activities),
+                                      is_end_node=(act in self.end_activities),
+                                      default_edges_color=self.default_edges_color[0],
+                                      node_type=self.node_type, net_name=self.net_name[0],
+                                      nodes_dictionary=self.nodes)
 
     def __add__(self, other_net):
         copied_self = deepcopy(self)
