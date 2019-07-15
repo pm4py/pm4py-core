@@ -136,7 +136,7 @@ def apply_performance(dfg, log=None, activities_count=None, parameters=None):
 
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
-                           max_no_of_edges_in_diagram=75):
+                           max_no_of_edges_in_diagram=170):
     """
     Do GraphViz visualization of a DFG graph
 
