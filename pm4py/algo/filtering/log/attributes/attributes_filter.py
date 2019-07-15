@@ -575,14 +575,16 @@ def apply_auto_filter(log, variants=None, parameters=None):
 
     parameters_variants = {PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
                            PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
-    if variants is None:
-        variants = variants_filter.get_variants(log, parameters=parameters_variants)
-    vc = variants_filter.get_variants_sorted_by_count(variants)
-    attributes_values = get_attribute_values(log, attribute_key, parameters=parameters_variants)
-    alist = attributes_common.get_sorted_attributes_list(attributes_values)
-    thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
-    filtered_log = filter_log_by_attributes_threshold(log, attributes_values, variants, vc, thresh, attribute_key)
-    return filtered_log
+    if len(log) > 0:
+        if variants is None:
+            variants = variants_filter.get_variants(log, parameters=parameters_variants)
+        vc = variants_filter.get_variants_sorted_by_count(variants)
+        attributes_values = get_attribute_values(log, attribute_key, parameters=parameters_variants)
+        alist = attributes_common.get_sorted_attributes_list(attributes_values)
+        thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
+        filtered_log = filter_log_by_attributes_threshold(log, attributes_values, variants, vc, thresh, attribute_key)
+        return filtered_log
+    return log
 
 
 def get_kde_numeric_attribute(log, attribute, parameters=None):
