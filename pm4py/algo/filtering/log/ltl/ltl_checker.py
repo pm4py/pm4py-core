@@ -54,6 +54,57 @@ def A_eventually_B(log, A, B, parameters=None):
     return new_log
 
 
+def A_eventually_B_eventually_C(log, A, B, C, parameters=None):
+    """
+    Applies the A eventually B eventually C rule
+
+    Parameters
+    ------------
+    log
+        Log
+    A
+        A attribute value
+    B
+        B attribute value
+    C
+        C attribute value
+    parameters
+        Parameters of the algorithm, including the attribute key and the positive parameter:
+        - If True, returns all the cases containing A, B and C and in which A was eventually followed by B and B was eventually followed by C
+        - If False, returns all the cases not containing A or B or C, or in which an instance of A was not eventually
+        followed by an instance of B or an instance of B was not eventually followed by C
+
+    Returns
+    ------------
+    filtered_log
+        Filtered log
+    """
+    if parameters is None:
+        parameters = {}
+
+    if not isinstance(log, EventLog):
+        log = log_conv_factory.apply(log, variant=log_conv_factory.TO_EVENT_LOG, parameters=parameters)
+
+    attribute_key = parameters[
+        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+    positive = parameters[POSITIVE] if POSITIVE in parameters else True
+
+    new_log = EventLog()
+
+    for trace in log:
+        occ_A = [i for i in range(len(trace)) if attribute_key in trace[i] and trace[i][attribute_key] == A]
+        occ_B = [i for i in range(len(trace)) if attribute_key in trace[i] and trace[i][attribute_key] == B]
+        occ_C = [i for i in range(len(trace)) if attribute_key in trace[i] and trace[i][attribute_key] == C]
+
+        if len(occ_A) > 0 and len(occ_B) > 0 and len(occ_C) > 0 and occ_A[-1] < occ_B[-1] < occ_C[-1]:
+            if positive:
+                new_log.append(trace)
+        elif not positive:
+            new_log.append(trace)
+
+    return new_log
+
+
 def four_eyes_principle(log, A, B, parameters=None):
     """
     Verifies the Four Eyes Principle given A and B
