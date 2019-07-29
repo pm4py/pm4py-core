@@ -240,17 +240,30 @@ def apply_numeric(log, int1, int2, parameters=None):
         PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
     case_key = parameters[
         PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else xes.DEFAULT_TRACEID_KEY
+    # stream_filter_key is helpful to filter on cases containing an event with an attribute
+    # in the specified value set, but such events shall have an activity in particular.
+    stream_filter_key1 = parameters["stream_filter_key1"] if "stream_filter_key1" in parameters else None
+    stream_filter_value1 = parameters["stream_filter_value1"] if "stream_filter_value1" in parameters else None
+    stream_filter_key2 = parameters["stream_filter_key2"] if "stream_filter_key2" in parameters else None
+    stream_filter_value2 = parameters["stream_filter_value2"] if "stream_filter_value2" in parameters else None
 
     positive = parameters["positive"] if "positive" in parameters else True
 
     stream = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+    if stream_filter_key1 is not None:
+        stream = EventStream(
+            list(filter(lambda x: stream_filter_key1 in x and x[stream_filter_key1] == stream_filter_value1, stream)))
+    if stream_filter_key2 is not None:
+        stream = EventStream(
+            list(filter(lambda x: stream_filter_key2 in x and x[stream_filter_key2] == stream_filter_value2, stream)))
+
     if positive:
         stream = EventStream(list(filter(lambda x: attribute_key in x and int1 <= x[attribute_key] <= int2, stream)))
     else:
         stream = EventStream(
             list(filter(lambda x: attribute_key in x and (x[attribute_key] < int1 or x[attribute_key] > int2), stream)))
 
-    all_cases_ids = set(x["case:"+case_key] for x in stream)
+    all_cases_ids = set(x["case:" + case_key] for x in stream)
 
     filtered_log = EventLog()
 
@@ -462,7 +475,7 @@ def filter_log_on_max_no_activities(log, max_no_activities=25, parameters=None):
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
     all_activities = sorted([(x, y) for x, y in get_attribute_values(log, activity_key).items()], key=lambda x: x[1],
-                        reverse=True)
+                            reverse=True)
     activities = all_activities[:min(len(all_activities), max_no_activities)]
     activities = [x[0] for x in activities]
 
