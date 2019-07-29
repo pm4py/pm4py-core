@@ -73,7 +73,19 @@ def apply_numeric(df, int1, int2, parameters=None):
     case_id_glue = parameters[
         PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
     positive = parameters["positive"] if "positive" in parameters else True
+    # stream_filter_key is helpful to filter on cases containing an event with an attribute
+    # in the specified value set, but such events shall have an activity in particular.
+    stream_filter_key1 = parameters["stream_filter_key1"] if "stream_filter_key1" in parameters else None
+    stream_filter_value1 = parameters["stream_filter_value1"] if "stream_filter_value1" in parameters else None
+    stream_filter_key2 = parameters["stream_filter_key2"] if "stream_filter_key2" in parameters else None
+    stream_filter_value2 = parameters["stream_filter_value2"] if "stream_filter_value2" in parameters else None
+
     filtered_df_by_ev = df[(df[attribute_key] >= int1) & (df[attribute_key] <= int2)]
+    if stream_filter_key1 is not None:
+        filtered_df_by_ev = filtered_df_by_ev[filtered_df_by_ev[stream_filter_key1] == stream_filter_value1]
+    if stream_filter_key2 is not None:
+        filtered_df_by_ev = filtered_df_by_ev[filtered_df_by_ev[stream_filter_key2] == stream_filter_value2]
+
     i1 = df.set_index(case_id_glue).index
     i2 = filtered_df_by_ev.set_index(case_id_glue).index
     if positive:
