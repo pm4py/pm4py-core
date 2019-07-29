@@ -122,8 +122,8 @@ def A_next_B_next_C(log, A, B, C, parameters=None):
     parameters
         Parameters of the algorithm, including the attribute key and the positive parameter:
         - If True, returns all the cases containing A, B and C and in which A was directly followed by B and B was directly followed by C
-        - If False, returns all the cases not containing A or B or C, or in which an instance of A was not directly
-        followed by an instance of B or an instance of B was not directly followed by C
+        - If False, returns all the cases not containing A or B or C, or in which none instance of A was directly
+        followed by an instance of B and B was directly followed by C
 
     Returns
     ------------
