@@ -16,18 +16,19 @@ def apply(log, activity, parameters=None):
 
     Returns
     -------------
-    list_aggr_times
-        List of aggregates times from each preceding activity to the given activity
+    dictio
+        Dictionary containing a 'pre' key with the
+        list of aggregates times from each preceding activity to the given activity
     """
     if parameters is None:
         parameters = {}
 
     dfg = dfg_factory.apply(log, variant="performance", parameters=parameters)
 
-    ret = []
+    pre = []
 
     for entry in dfg.keys():
         if entry[1] == activity:
-            ret.append([entry[0], float(dfg[entry])])
+            pre.append([entry[0], float(dfg[entry])])
 
-    return ret
+    return {"pre": pre}
