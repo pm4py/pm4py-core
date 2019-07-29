@@ -165,11 +165,7 @@ def assign_lead_cycle_time(log, parameters=None):
     log
         Interval log
     parameters
-        Parameters of the algorithm, including: start_timestamp_key, timestamp_key,
-
-    :param log:
-    :param parameters:
-    :return:
+        Parameters of the algorithm, including: start_timestamp_key, timestamp_key, worktiming, weekends
     """
     if parameters is None:
         parameters = {}
