@@ -4,6 +4,9 @@ import pandas as pd
 LOG = 'log'
 PANDAS = 'pandas'
 
+DEFAULT_THRESHOLD = 0.65
+ROLES_THRESHOLD_PARAMETER = "roles_threshold_parameter"
+
 VERSIONS = {LOG: log.apply, PANDAS: pandas.apply}
 
 
@@ -26,6 +29,12 @@ def apply(log, variant=None, parameters=None):
     roles
         List of different roles inside the log
     """
+    if parameters is None:
+        parameters = {}
+
+    if ROLES_THRESHOLD_PARAMETER not in parameters:
+        parameters[ROLES_THRESHOLD_PARAMETER] = DEFAULT_THRESHOLD
+
     if variant is None:
         if type(log) is pd.DataFrame:
             variant = PANDAS

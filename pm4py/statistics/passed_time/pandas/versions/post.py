@@ -34,13 +34,21 @@ def apply(df, activity, parameters=None):
     timestamp_key = parameters[
         PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
 
-    dfg = df_statistics.get_dfg_graph(df, measure="performance", activity_key=activity_key,
+    [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(df, measure="both", activity_key=activity_key,
                                            case_id_glue=case_id_glue, timestamp_key=timestamp_key)
 
     post = []
+    sum_perf_post = 0.0
+    sum_acti_post = 0.0
 
-    for entry in dfg.keys():
+    for entry in dfg_performance.keys():
         if entry[0] == activity:
-            post.append([entry[1], float(dfg[entry])])
+            post.append([entry[1], float(dfg_performance[entry]), int(dfg_frequency[entry])])
+            sum_perf_post = sum_perf_post + float(dfg_performance[entry]) * float(dfg_frequency[entry])
+            sum_acti_post = sum_acti_post + float(dfg_frequency[entry])
 
-    return {"post": post}
+    perf_acti_post = 0.0
+    if sum_acti_post > 0:
+        perf_acti_post = sum_perf_post / sum_acti_post
+
+    return {"post": post, "post_avg_perf": perf_acti_post}
