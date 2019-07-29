@@ -23,12 +23,13 @@ def apply(log, activity, parameters=None):
     if parameters is None:
         parameters = {}
 
-    dfg = dfg_factory.apply(log, variant="performance", parameters=parameters)
+    dfg_frequency = dfg_factory.apply(log, variant="frequency", parameters=parameters)
+    dfg_performance = dfg_factory.apply(log, variant="performance", parameters=parameters)
 
     post = []
 
-    for entry in dfg.keys():
+    for entry in dfg_performance.keys():
         if entry[0] == activity:
-            post.append([entry[1], float(dfg[entry])])
+            post.append([entry[1], float(dfg_performance[entry]), int(dfg_frequency[entry])])
 
     return {"post": post}
