@@ -217,3 +217,49 @@ def four_eyes_principle(log, A, B, parameters=None):
                 new_log.append(trace)
 
     return new_log
+
+
+def attr_value_different_persons(log, A, parameters=None):
+    """
+    Checks whether an attribute value is assumed on events done by different resources
+
+    Parameters
+    ------------
+    log
+        Log
+    A
+        A attribute value
+    parameters
+        Parameters of the algorithm, including the attribute key and the positive parameter:
+            - if True, then filters all the cases containing occurrences of A done by different resources
+            - if False, then filters all the cases not containing occurrences of A done by different resources
+
+    Returns
+    -------------
+    filtered_log
+        Filtered log
+    """
+    if parameters is None:
+        parameters = {}
+
+    if not isinstance(log, EventLog):
+        log = log_conv_factory.apply(log, variant=log_conv_factory.TO_EVENT_LOG, parameters=parameters)
+
+    attribute_key = parameters[
+        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+    resource_key = parameters[
+        PARAMETER_CONSTANT_RESOURCE_KEY] if PARAMETER_CONSTANT_RESOURCE_KEY in parameters else DEFAULT_RESOURCE_KEY
+    positive = parameters[POSITIVE] if POSITIVE in parameters else True
+
+    new_log = EventLog()
+
+    for trace in log:
+        occ_A = set([trace[i][resource_key] for i in range(len(trace)) if
+                     attribute_key in trace[i] and resource_key in trace[i] and trace[i][attribute_key] == A])
+        if len(occ_A) > 1:
+            if positive:
+                new_log.append(trace)
+        elif not positive:
+            new_log.append(trace)
+
+    return new_log
