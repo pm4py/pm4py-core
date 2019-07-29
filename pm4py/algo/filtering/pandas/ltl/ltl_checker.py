@@ -58,6 +58,65 @@ def A_eventually_B(df, A, B, parameters=None):
         return df[~i1.isin(i2)]
 
 
+def A_eventually_B_eventually_C(df, A, B, C, parameters=None):
+    """
+    Applies the A eventually B eventually C rule
+
+    Parameters
+    ------------
+    df
+        Dataframe
+    A
+        A Attribute value
+    B
+        B Attribute value
+    C
+        C Attribute value
+    parameters
+        Parameters of the algorithm, including the attribute key and the positive parameter:
+        - If True, returns all the cases containing A, B and C and in which A was eventually followed by B and B was eventually followed by C
+        - If False, returns all the cases not containing A or B or C, or in which an instance of A was not eventually
+        followed by an instance of B or an instance of B was not eventually followed by C
+
+    Returns
+    ------------
+    filtered_df
+        Filtered dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_glue = parameters[
+        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    attribute_key = parameters[
+        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
+    positive = parameters[POSITIVE] if POSITIVE in parameters else True
+
+    df = df[[case_id_glue, attribute_key]]
+    df["@@index"] = df.index
+    df_A = df[df[attribute_key] == A]
+    df_B = df[df[attribute_key] == B]
+    df_C = df[df[attribute_key] == C]
+    df_B["@@conceptname"] = df_B[case_id_glue]
+    df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
+    df_C["@@conceptname"] = df_C[case_id_glue]
+    df_C = df_C.groupby(case_id_glue).last().set_index("@@conceptname")
+
+    df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna().join(df_C, on=case_id_glue, rsuffix="_3").dropna()
+    df_join["@@diffindex"] = df_join["@@index_2"] - df_join["@@index"]
+    df_join["@@diffindex2"] = df_join["@@index_3"] - df_join["@@index_2"]
+    df_join = df_join[df_join["@@diffindex"] > 0]
+    df_join = df_join[df_join["@@diffindex2"] > 0]
+
+    i1 = df.set_index(case_id_glue).index
+    i2 = df_join.set_index(case_id_glue).index
+
+    if positive:
+        return df[i1.isin(i2)]
+    else:
+        return df[~i1.isin(i2)]
+
+
 def four_eyes_principle(df, A, B, parameters=None):
     """
     Verifies the Four Eyes Principle given A and B
