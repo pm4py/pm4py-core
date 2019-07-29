@@ -27,7 +27,8 @@ def apply(log, variant=None, parameters=None):
     Returns
     ------------
     roles
-        List of different roles inside the log
+        List of different roles inside the log, including:
+        roles_threshold_parameter => threshold to use with the algorithm
     """
     if parameters is None:
         parameters = {}
