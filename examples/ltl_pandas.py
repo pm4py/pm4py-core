@@ -50,6 +50,16 @@ def execute_script():
                                                         parameters={"positive": False})
     print("len(filt_foureyes_neg) = ", len(filt_foureyes_neg.groupby("case:concept:name")))
 
+    # attr_value_different_persons positive: filter the cases of the log in which A was done by two different resources
+    attr_value_different_persons_pos = ltl_checker.attr_value_different_persons(df, "check ticket",
+                                                                                parameters={"positive": True})
+    print("len(attr_value_different_persons_pos) = ", len(attr_value_different_persons_pos.groupby("case:concept:name")))
+    # attr_value_different_persons negative: filter the cases of the log in which A was not there or was not executed
+    # by two different resources
+    attr_value_different_persons_neg = ltl_checker.attr_value_different_persons(df, "check ticket",
+                                                                                parameters={"positive": False})
+    print("len(attr_value_different_persons_neg) = ", len(attr_value_different_persons_neg.groupby("case:concept:name")))
+
     #input()
 
 

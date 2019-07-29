@@ -48,6 +48,16 @@ class LtlCheckingLogTest(unittest.TestCase):
         filt_foureyes_neg = ltl_checker.four_eyes_principle(log, "check ticket", "pay compensation",
                                                             parameters={"positive": False})
 
+    def test_attrValueDifferentPersons_pos(self):
+        log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
+        attr_value_different_persons_pos = ltl_checker.attr_value_different_persons(log, "check ticket",
+                                                                                    parameters={"positive": True})
+
+    def test_attrValueDifferentPersons_neg(self):
+        log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
+        attr_value_different_persons_neg = ltl_checker.attr_value_different_persons(log, "check ticket",
+                                                                                    parameters={"positive": False})
+
 
 if __name__ == "__main__":
     unittest.main()

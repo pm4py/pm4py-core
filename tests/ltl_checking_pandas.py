@@ -48,6 +48,16 @@ class LtlCheckingPandasTest(unittest.TestCase):
         filt_foureyes_neg = ltl_checker.four_eyes_principle(df, "check ticket", "pay compensation",
                                                             parameters={"positive": False})
 
+    def test_attrValueDifferentPersons_pos(self):
+        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
+        attr_value_different_persons_pos = ltl_checker.attr_value_different_persons(df, "check ticket",
+                                                                                    parameters={"positive": True})
+
+    def test_attrValueDifferentPersons_neg(self):
+        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
+        attr_value_different_persons_neg = ltl_checker.attr_value_different_persons(df, "check ticket",
+                                                                                    parameters={"positive": False})
+
 
 if __name__ == "__main__":
     unittest.main()
