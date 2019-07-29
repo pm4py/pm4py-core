@@ -26,3 +26,7 @@ class MatrixRepTest(unittest.TestCase):
         max_product_matrix = np.max(product_matrix)
 
         self.assertGreaterEqual(max_product_matrix, 0)
+
+
+if __name__ == "__main__":
+    unittest.main()
