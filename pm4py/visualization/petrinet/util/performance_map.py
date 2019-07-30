@@ -4,6 +4,10 @@ from statistics import mean, median, stdev
 from pm4py.objects.petri import semantics
 from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.visualization.common.utils import *
+from pm4py.algo.filtering.log.variants import variants_filter as variants_module
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.visualization.petrinet.util import performance_map
+from statistics import median, mean
 
 MAX_NO_THREADS = 1000
 
@@ -173,7 +177,8 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
 
         for el in annotations_places_trans:
             if el not in statistics:
-                statistics[el] = {"count": 0, "performance": [], "no_of_times_enabled": 0, "no_of_times_activated": 0}
+                statistics[el] = {"count": 0, "performance": [], "log_idx": [], "no_of_times_enabled": 0,
+                                  "no_of_times_activated": 0}
             statistics[el]["count"] += annotations_places_trans[el]["count"] * len(variants_idx[variant])
             if "no_of_times_enabled" in annotations_places_trans[el]:
                 statistics[el]["no_of_times_enabled"] += annotations_places_trans[el]["no_of_times_enabled"] * len(
@@ -191,6 +196,7 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
                         else:
                             perf = 0.0
                         statistics[el]["performance"].append(perf)
+                        statistics[el]["log_idx"].append(trace_idx)
         for el in annotations_arcs:
             if el not in statistics:
                 statistics[el] = {"count": 0, "performance": []}
@@ -199,7 +205,8 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
                 trace = log[trace_idx]
                 for perf_couple in annotations_arcs[el]["performance"]:
                     if timestamp_key in trace[perf_couple[0]] and timestamp_key in trace[perf_couple[1]]:
-                        perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][timestamp_key]).total_seconds()
+                        perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][
+                            timestamp_key]).total_seconds()
                     else:
                         perf = 0.0
                     statistics[el]["performance"].append(perf)
@@ -370,3 +377,52 @@ def aggregate_statistics(statistics, measure="frequency", aggregation_measure=No
         elif type(elem) is PetriNet.Place:
             pass
     return aggregated_statistics
+
+
+def get_transition_performance_with_token_replay(log, net, im, fm):
+    """
+    Gets the transition performance through the usage of token-based replay
+
+    Parameters
+    -------------
+    log
+        Event log
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+
+    Returns
+    --------------
+    transition_performance
+        Dictionary where each transition label is associated to performance measures
+    """
+    variants_idx = variants_module.get_variants_from_log_trace_idx(log)
+    aligned_traces = token_replay.apply(log, net, im, fm)
+    element_statistics = performance_map.single_element_statistics(log, net, im,
+                                                                   aligned_traces, variants_idx)
+
+    transition_performance = {}
+    for el in element_statistics:
+        if type(el) is PetriNet.Transition and el.label is not None:
+            if "log_idx" in element_statistics[el] and "performance" in element_statistics[el]:
+                if len(element_statistics[el]["performance"]) > 0:
+                    transition_performance[str(el)] = {"all_values": [], "case_association": {}, "mean": 0.0,
+                                                       "median": 0.0}
+                    for i in range(len(element_statistics[el]["log_idx"])):
+                        if not element_statistics[el]["log_idx"][i] in transition_performance[str(el)][
+                            "case_association"]:
+                            transition_performance[str(el)]["case_association"][
+                                element_statistics[el]["log_idx"][i]] = []
+                        transition_performance[str(el)]["case_association"][
+                            element_statistics[el]["log_idx"][i]].append(
+                            element_statistics[el]["performance"][i])
+                        transition_performance[str(el)]["all_values"].append(element_statistics[el]["performance"][i])
+                    transition_performance[str(el)]["all_values"] = sorted(
+                        transition_performance[str(el)]["all_values"])
+                    if transition_performance[str(el)]["all_values"]:
+                        transition_performance[str(el)]["mean"] = mean(transition_performance[str(el)]["all_values"])
+                        transition_performance[str(el)]["median"] = median(transition_performance[str(el)]["all_values"])
+    return transition_performance
