@@ -71,8 +71,7 @@ def apply(metric_values, parameters=None):
     graph.add_edges_from(edges)
 
     pyplot.clf()
-    nx.draw(graph, with_labels=True, node_color=['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0'], labels=labels,
-            node_size=500, pos=nx.circular_layout(graph))
+    nx.draw(graph, with_labels=True, labels=labels, node_size=500, pos=nx.circular_layout(graph))
     pyplot.savefig(temp_file_name, bbox_inches="tight")
     pyplot.clf()
 
