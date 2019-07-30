@@ -8,6 +8,7 @@ from pm4py.algo.filtering.log.variants import variants_filter as variants_module
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.visualization.petrinet.util import performance_map
 from statistics import median, mean
+from pm4py.objects.log.log import EventLog
 
 MAX_NO_THREADS = 1000
 
@@ -424,5 +425,57 @@ def get_transition_performance_with_token_replay(log, net, im, fm):
                         transition_performance[str(el)]["all_values"])
                     if transition_performance[str(el)]["all_values"]:
                         transition_performance[str(el)]["mean"] = mean(transition_performance[str(el)]["all_values"])
-                        transition_performance[str(el)]["median"] = median(transition_performance[str(el)]["all_values"])
+                        transition_performance[str(el)]["median"] = median(
+                            transition_performance[str(el)]["all_values"])
     return transition_performance
+
+
+def get_idx_exceeding_specified_acti_performance(log, transition_performance, activity, lower_bound):
+    """
+    Get indexes of the cases exceeding the specified activity performance threshold
+
+    Parameters
+    ------------
+    log
+        Event log
+    transition_performance
+        Dictionary where each transition label is associated to performance measures
+    activity
+        Target activity (of the filter)
+    lower_bound
+        Lower bound (filter cases which have a duration of the activity exceeding)
+
+    Returns
+    ------------
+    idx
+        A list of indexes in the log
+    """
+    satisfying_indexes = sorted(list(set(
+        x for x, y in transition_performance[activity]["case_association"].items() if max(y) >= lower_bound)))
+    return satisfying_indexes
+
+
+def filter_cases_exceeding_specified_acti_performance(log, transition_performance, activity, lower_bound):
+    """
+    Filter cases exceeding the specified activity performance threshold
+
+    Parameters
+    ------------
+    log
+        Event log
+    transition_performance
+        Dictionary where each transition label is associated to performance measures
+    activity
+        Target activity (of the filter)
+    lower_bound
+        Lower bound (filter cases which have a duration of the activity exceeding)
+
+    Returns
+    ------------
+    filtered_log
+        Filtered log
+    """
+    satisfying_indexes = get_idx_exceeding_specified_acti_performance(log, transition_performance, activity,
+                                                                      lower_bound)
+    new_log = EventLog(list(log[i] for i in satisfying_indexes))
+    return new_log
