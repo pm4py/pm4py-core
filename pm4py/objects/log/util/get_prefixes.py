@@ -4,7 +4,9 @@ from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.log.log import EventLog, Trace
 from pm4py.objects.log.util import xes
 from pm4py.util import constants
+import logging
 from copy import copy
+import logging
 
 
 def get_log_with_log_prefixes(log, parameters=None):
@@ -22,17 +24,21 @@ def get_log_with_log_prefixes(log, parameters=None):
     -------------
     all_prefixes_log
         Log with all the prefixes
+    change_indexes
+        Indexes of the extended log where there was a change between cases
     """
     all_prefixes_log = EventLog()
+    change_indexes = []
 
     for trace in log:
         cumulative_trace = Trace()
         for event in trace:
             all_prefixes_log.append(deepcopy(cumulative_trace))
             cumulative_trace.append(event)
-        all_prefixes_log.append(deepcopy(cumulative_trace))
-    
-    return all_prefixes_log
+            all_prefixes_log.append(deepcopy(cumulative_trace))
+        change_indexes.append([len(all_prefixes_log) - 1] * len(trace))
+
+    return all_prefixes_log, change_indexes
 
 
 def get_log_traces_to_activities(log, activities, parameters=None):
@@ -74,8 +80,14 @@ def get_log_traces_to_activities(log, activities, parameters=None):
         parameters_filt1["positive"] = True
         parameters_filt2["positive"] = False
         filtered_log = attributes_filter.apply(log, [act], parameters=parameters_filt1)
+        logging.info("get_log_traces_to_activities activities=" + str(activities) + " act=" + str(
+            act) + " 0 len(filtered_log)=" + str(len(filtered_log)))
         filtered_log = attributes_filter.apply(filtered_log, other_acts, parameters=parameters_filt2)
+        logging.info("get_log_traces_to_activities activities=" + str(activities) + " act=" + str(
+            act) + " 1 len(filtered_log)=" + str(len(filtered_log)))
         filtered_log, act_durations = get_log_traces_until_activity(filtered_log, act, parameters=parameters)
+        logging.info("get_log_traces_to_activities activities=" + str(activities) + " act=" + str(
+            act) + " 2 len(filtered_log)=" + str(len(filtered_log)))
         if filtered_log:
             list_logs.append(filtered_log)
             considered_activities.append(act)
@@ -111,6 +123,8 @@ def get_log_traces_until_activity(log, activity, parameters=None):
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     timestamp_key = parameters[
         constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    duration_attribute = parameters["duration"] if "duration" in parameters else None
+    use_future_attributes = parameters["use_future_attributes"] if "use_future_attributes" in parameters else False
 
     new_log = EventLog()
     traces_interlapsed_time_to_act = []
@@ -122,10 +136,28 @@ def get_log_traces_until_activity(log, activity, parameters=None):
             new_trace = Trace(log[i][0:ev_in_tr_w_act[0]])
             for attr in log[i].attributes:
                 new_trace.attributes[attr] = log[i].attributes[attr]
-            new_log.append(new_trace)
-            curr_trace_interlapsed_time_to_act = log[i][ev_in_tr_w_act[0]][timestamp_key].timestamp() - \
-                                                 log[i][ev_in_tr_w_act[0] - 1][timestamp_key].timestamp()
+
+            if duration_attribute is None:
+                try:
+                    curr_trace_interlapsed_time_to_act = log[i][ev_in_tr_w_act[0]][timestamp_key].timestamp() - \
+                                                         log[i][ev_in_tr_w_act[0] - 1][timestamp_key].timestamp()
+                except:
+                    curr_trace_interlapsed_time_to_act = log[i][ev_in_tr_w_act[0]][timestamp_key] - \
+                                                         log[i][ev_in_tr_w_act[0] - 1][timestamp_key]
+                    logging.error("timestamp_key not timestamp")
+            else:
+                curr_trace_interlapsed_time_to_act = log[i][ev_in_tr_w_act[0]][duration_attribute]
+
             traces_interlapsed_time_to_act.append(curr_trace_interlapsed_time_to_act)
+
+            if use_future_attributes:
+                for j in range(ev_in_tr_w_act[0] + 1, len(log[i])):
+                    new_ev = deepcopy(log[i][j])
+                    if activity_key in new_ev:
+                        del new_ev[activity_key]
+                    new_trace.append(new_ev)
+
+            new_log.append(new_trace)
         i = i + 1
 
     return new_log, traces_interlapsed_time_to_act
