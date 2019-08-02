@@ -16,7 +16,6 @@ if __name__ == "__main__":
     from examples import token_replay_alpha
     from examples import manual_log_generation
     from examples import simple_miner
-    from examples import example_simulation
     from examples import token_replay_imdf
     from examples import decisiontree_example
     from examples import example_diagnostics
