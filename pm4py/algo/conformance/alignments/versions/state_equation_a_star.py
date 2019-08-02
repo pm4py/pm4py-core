@@ -33,7 +33,7 @@ from pm4py.util.lp import factory as lp_solver_factory
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
-DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN
+DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.ORTOOLS_SOLVER
 PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE = 'ret_tuple_as_trans_desc'
 
 TRACE_NET_CONSTR_FUNCTION = "trace_net_constr_function"
