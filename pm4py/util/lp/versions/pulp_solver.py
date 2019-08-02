@@ -84,7 +84,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                     eval_str = eval_str + str(Aeq[i, j]) + "*x_list[" + str(j) + "]"
                     expr_count = expr_count + 1
             if eval_str:
-                eval_str = eval_str + "<=" + str(beq[i]) + ", \"vinceq_" + str(i+1+Aub.shape[0]) + "\""
+                eval_str = eval_str + "=" + str(beq[i]) + ", \"vinceq_" + str(i+1+Aub.shape[0]) + "\""
                 prob += eval(eval_str)
 
     filename = tempfile.NamedTemporaryFile(suffix='.lp').name
