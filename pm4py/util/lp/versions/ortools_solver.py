@@ -8,6 +8,29 @@ MIN_THRESHOLD = 10 ** -12
 
 
 def apply(c, Aub, bub, Aeq, beq, parameters=None):
+    """
+    Gets the overall solution of the problem
+
+    Parameters
+    ------------
+    c
+        c parameter of the algorithm
+    Aub
+        A_ub parameter of the algorithm
+    bub
+        b_ub parameter of the algorithm
+    Aeq
+        A_eq parameter of the algorithm
+    beq
+        b_eq parameter of the algorithm
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    -------------
+    sol
+        Solution of the LP problem by the given algorithm
+    """
     if parameters is None:
         parameters = {}
 
@@ -30,7 +53,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
     objective = solver.Objective()
     for j in range(len(c)):
         if abs(c[j]) > MIN_THRESHOLD:
-            objective.SetCoefficient(x[j], c[j])
+            objective.SetCoefficient(x_list[j], c[j])
 
     for i in range(Aub.shape[0]):
         ok = False
@@ -39,10 +62,10 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                 ok = True
                 break
         if ok:
-            constraint = solver.Constraint(-solver.infinity(), bub[i])
+            constraint = solver.Constraint(-solver.infinity(), bub[i].reshape(-1,).tolist()[0][0])
             for j in range(Aub.shape[1]):
                 if abs(Aub[i, j]) > MIN_THRESHOLD:
-                    constraint.SetCoefficient(x_list[j], Aub[i][j])
+                    constraint.SetCoefficient(x_list[j], Aub[i, j])
 
     if Aeq is not None and beq is not None:
         for i in range(Aeq.shape[0]):
@@ -52,38 +75,64 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                     ok = True
                     break
             if ok:
-                constraint = solver.Constraint(-solver.infinity(), beq[i])
+                constraint = solver.Constraint(-solver.infinity(), beq[i].reshape(-1,).tolist()[0][0])
                 for j in range(Aeq.shape[1]):
                     if abs(Aeq[i, j]) > MIN_THRESHOLD:
-                        constraint.SetCoefficient(x_list[j], Aeq[i][j])
+                        constraint.SetCoefficient(x_list[j], Aeq[i, j])
 
     objective.SetMinimization()
 
     solver.Solve()
-
-    return {"c": c, "x_list": x_list}
-
-
-def get_prim_obj_from_sol(sol, parameters=None):
-    if parameters is None:
-        parameters = {}
-
-    c = sol["c"]
-    x_list = sol["x_list"]
 
     sol_value = 0.0
     for j in range(len(c)):
         if abs(c[j]) > MIN_THRESHOLD:
             sol_value = sol_value + c[j] * x_list[j].solution_value()
 
-    return sol_value
+    points = [x.solution_value() for x in x_list]
+
+    return {"c": c, "x_list": x_list, "sol_value": sol_value, "points": points}
 
 
-def get_points_from_sol(sol, parameters=None):
+def get_prim_obj_from_sol(sol, parameters=None):
+    """
+    Gets the primal objective from the solution of the LP problem
+
+    Parameters
+    -------------
+    sol
+        Solution of the ILP problem by the given algorithm
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    -------------
+    prim_obj
+        Primal objective
+    """
     if parameters is None:
         parameters = {}
 
-    c = sol["c"]
-    x_list = sol["x_list"]
+    return sol["sol_value"]
 
-    return [x.solution_value() for x in x_list]
+
+def get_points_from_sol(sol, parameters=None):
+    """
+    Gets the points from the solution
+
+    Parameters
+    -------------
+    sol
+        Solution of the LP problem by the given algorithm
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    -------------
+    points
+        Point of the solution
+    """
+    if parameters is None:
+        parameters = {}
+
+    return sol["points"]
