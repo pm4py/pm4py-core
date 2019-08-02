@@ -3,7 +3,6 @@ networkx==2.2
 matplotlib==2.2.2
 numpy==1.16.0
 ciso8601==2.1.1
-cvxopt==1.2.2
 lxml==4.3.0
 graphviz==0.10.1
 pyarrow==0.13.0
@@ -14,4 +13,3 @@ pydotplus==2.0.2
 pulp==1.6.9
 pytz==2018.9
 ortools
-

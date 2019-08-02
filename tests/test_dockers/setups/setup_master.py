@@ -101,7 +101,6 @@ setup(
         'matplotlib',
         'numpy',
         'ciso8601',
-        'cvxopt',
         'lxml',
         'graphviz',
         'pandas>=0.24.1',
