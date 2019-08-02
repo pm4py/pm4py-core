@@ -295,7 +295,7 @@ def __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, c
     if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN:
         # not available in the latest version of PM4Py
         from cvxopt import matrix
-        
+
         b_term = matrix(b_term)
 
     parameters_solving = {"solver": "glpk"}
