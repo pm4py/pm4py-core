@@ -5,7 +5,6 @@ def get_log_encoded(event_log,
                     trace_attributes=[],
                     event_attributes=[],
                     concatenate=False):
-
     """
     Get event log encoded into matrix.
 
