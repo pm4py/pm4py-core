@@ -10,7 +10,7 @@ from pm4py.util.lp.util import aeq_redundant_fix
 
 DEFAULT_REPLACEMENT_IMMEDIATE = 1000
 
-DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.CVXOPT
+DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.ORTOOLS_SOLVER
 
 
 class LpPerfBounds(object):
@@ -151,7 +151,7 @@ class LpPerfBounds(object):
 
         self.Aeq, self.beq = aeq_redundant_fix.remove_redundant_rows(self.Aeq, self.beq)
 
-        if DEFAULT_LP_SOLVER_VARIANT == "cvxopt":
+        if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT:
             self.Aeq = np.transpose(self.Aeq.astype(np.float64)).tolist()
             self.beq = np.transpose(self.beq.astype(np.float64)).tolist()
             self.Aub = np.transpose(self.Aub.astype(np.float64)).tolist()
