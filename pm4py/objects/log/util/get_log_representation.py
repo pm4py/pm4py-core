@@ -284,6 +284,60 @@ def get_numeric_event_attribute_value_trace(trace, event_attribute):
     raise Exception("at least a trace without any event with event attribute: " + event_attribute)
 
 
+def get_default_representation_with_attribute_names(log, parameters=None, feature_names=None):
+    """
+    Gets the default data representation of an event log (for process tree building)
+    returning also the attribute names
+
+    Parameters
+    -------------
+    log
+        Trace log
+    parameters
+        Possible parameters of the algorithm
+    feature_names
+        (If provided) Feature to use in the representation of the log
+
+    Returns
+    -------------
+    data
+        Data to provide for decision tree learning
+    feature_names
+        Names of the features, in order
+    """
+    if parameters is None:
+        parameters = {}
+
+    enable_activity_def_representation = parameters[
+        ENABLE_ACTIVITY_DEF_REPRESENTATION] if ENABLE_ACTIVITY_DEF_REPRESENTATION in parameters else False
+    enable_succ_def_representation = parameters[
+        ENABLE_SUCC_DEF_REPRESENTATION] if ENABLE_SUCC_DEF_REPRESENTATION in parameters else False
+    activity_key = parameters[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    blacklist = parameters["blacklist"] if "blacklist" in parameters else []
+
+    str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr = attributes_filter.select_attributes_from_log_for_tree(log)
+    str_evsucc_attr = None
+
+    if enable_succ_def_representation:
+        str_evsucc_attr = [activity_key]
+    if enable_activity_def_representation and activity_key not in str_ev_attr:
+        str_ev_attr.append(activity_key)
+
+    str_tr_attr = [x for x in str_tr_attr if x not in blacklist]
+    str_ev_attr = [x for x in str_ev_attr if x not in blacklist]
+    num_tr_attr = [x for x in num_tr_attr if x not in blacklist]
+    num_ev_attr = [x for x in num_ev_attr if x not in blacklist]
+    if str_evsucc_attr is not None:
+        str_evsucc_attr = [x for x in str_evsucc_attr if x not in blacklist]
+
+    data, feature_names = get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr,
+                                             str_evsucc_attr=str_evsucc_attr,
+                                             feature_names=feature_names)
+
+    return data, feature_names, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr
+
+
 def get_default_representation(log, parameters=None, feature_names=None):
     """
     Gets the default data representation of an event log (for process tree building)
@@ -313,6 +367,7 @@ def get_default_representation(log, parameters=None, feature_names=None):
         ENABLE_SUCC_DEF_REPRESENTATION] if ENABLE_SUCC_DEF_REPRESENTATION in parameters else False
     activity_key = parameters[
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    blacklist = parameters["blacklist"] if "blacklist" in parameters else []
 
     str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr = attributes_filter.select_attributes_from_log_for_tree(log)
     str_evsucc_attr = None
@@ -321,6 +376,13 @@ def get_default_representation(log, parameters=None, feature_names=None):
         str_evsucc_attr = [activity_key]
     if enable_activity_def_representation and activity_key not in str_ev_attr:
         str_ev_attr.append(activity_key)
+
+    str_tr_attr = [x for x in str_tr_attr if x not in blacklist]
+    str_ev_attr = [x for x in str_ev_attr if x not in blacklist]
+    num_tr_attr = [x for x in num_tr_attr if x not in blacklist]
+    num_ev_attr = [x for x in num_ev_attr if x not in blacklist]
+    if str_evsucc_attr is not None:
+        str_evsucc_attr = [x for x in str_evsucc_attr if x not in blacklist]
 
     return get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, str_evsucc_attr=str_evsucc_attr,
                               feature_names=feature_names)
@@ -376,11 +438,11 @@ def get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, 
                 count = count + 1
         for trace_attribute in num_tr_attr:
             dictionary[get_numeric_trace_attribute_rep(trace_attribute)] = count
-            feature_names.append(trace_attribute)
+            feature_names.append(get_numeric_trace_attribute_rep(trace_attribute))
             count = count + 1
         for event_attribute in num_ev_attr:
             dictionary[get_numeric_event_attribute_rep(event_attribute)] = count
-            feature_names.append(event_attribute)
+            feature_names.append(get_numeric_event_attribute_rep(event_attribute))
             count = count + 1
         if str_evsucc_attr:
             for event_attribute in str_evsucc_attr:
