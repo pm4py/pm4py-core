@@ -100,7 +100,7 @@ setup(
         'networkx>=2.2',
         'matplotlib',
         'numpy',
-        'ciso8601'
+        'ciso8601',
         'lxml',
         'graphviz',
         'pandas>=0.24.1',
