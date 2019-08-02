@@ -3,7 +3,6 @@ networkx>=2.2
 matplotlib
 numpy
 ciso8601
-cvxopt
 lxml
 graphviz
 pyarrow==0.13.0

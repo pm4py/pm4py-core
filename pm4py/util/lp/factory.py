@@ -1,6 +1,7 @@
 from pm4py.util.lp.versions import pulp_solver
 from pm4py.util.lp.versions import ortools_solver
 
+# not available in the latest version of PM4Py
 CVXOPT = "cvxopt"
 PULP = "pulp"
 # not available in the latest version of PM4Py
@@ -31,7 +32,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=ORTOOLS_SOLVER):
     parameters
         Possible parameters of the algorithm
     variant
-        Variant of the algorithm, possible values: cvxopt
+        Variant of the algorithm, possible values: pulp, ortools
 
     Returns
     -------------
@@ -52,7 +53,7 @@ def get_prim_obj_from_sol(sol, parameters=None, variant=ORTOOLS_SOLVER):
     parameters
         Possible parameters of the algorithm
     variant
-        Variant of the algorithm, possible values: cvxopt
+        Variant of the algorithm, possible values: pulp, ortools
 
     Returns
     -------------
@@ -73,7 +74,7 @@ def get_points_from_sol(sol, parameters=None, variant=ORTOOLS_SOLVER):
     parameters
         Possible parameters of the algorithm
     variant
-        Variant of the algorithm, possible values: cvxopt
+        Variant of the algorithm, possible values: pulp, ortools
 
     Returns
     -------------
