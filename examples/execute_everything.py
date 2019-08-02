@@ -79,7 +79,5 @@ if __name__ == "__main__":
     big_dataframe_management.execute_script()
     print("\n\nsimple_miner")
     simple_miner.execute_script()
-    print("\n\nexample_simulation")
-    example_simulation.execute_script()
     print("\n\ngraphs_visualization")
     graphs_visualization.execute_script()
