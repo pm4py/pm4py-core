@@ -6,7 +6,7 @@ The official website of the library is http://pm4py.org/
 
 You can always check out (changes to) the source code at the github repo.
 
-A very simple example, to whet your apetite:
+A very simple example, to whet your appetite:
 
 from pm4py.algo.discovery.alpha import factory as alpha_miner
 from pm4py.objects.log.importer.xes import factory as xes_importer
