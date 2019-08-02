@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -159,19 +161,14 @@
 <dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.apply">
 <code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>df</em>, <em>values</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter dataframe on attribute values (filter traces)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Dataframe</p>
-</li>
-<li><p class="first"><strong>values</strong> – Values to filter on</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">case_id_glue -&gt; Case ID column in the dataframe
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>values</strong> – Values to filter on</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Case ID column in the dataframe
 attribute_key -&gt; Attribute we want to filter
 positive -&gt; Specifies if the filter should be applied including traces (positive=True) or
 excluding traces (positive=False)</p>
@@ -179,221 +176,239 @@ excluding traces (positive=False)</p>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.apply_auto_filter">
 <code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply auto filter on activity values</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Dataframe</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">activity_key -&gt; Column containing the activity
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>activity_key -&gt; Column containing the activity
 decreasingFactor -&gt; Decreasing factor that should be passed to the algorithm</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.apply_events">
 <code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">apply_events</code><span class="sig-paren">(</span><em>df</em>, <em>values</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#apply_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.apply_events" title="Permalink to this definition">¶</a></dt>
-<dd><p>Filter dataframe on attribute values (filter traces)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Dataframe</p>
-</li>
-<li><p class="first"><strong>values</strong> – Values to filter on</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">attribute_key -&gt; Attribute we want to filter
+<dd><p>Filter dataframe on attribute values (filter events)</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>values</strong> – Values to filter on</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>attribute_key -&gt; Attribute we want to filter
 positive -&gt; Specifies if the filter should be applied including traces (positive=True) or
 excluding traces (positive=False)</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.apply_numeric">
+<code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">apply_numeric</code><span class="sig-paren">(</span><em>df</em>, <em>int1</em>, <em>int2</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#apply_numeric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.apply_numeric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter dataframe on attribute values (filter cases)</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>int1</strong> – Lower bound of the interval</p></li>
+<li><p><strong>int2</strong> – Upper bound of the interval</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm:</dt><dd><p>PARAMETER_CONSTANT_ATTRIBUTE_KEY =&gt; indicates which attribute to filter
+positive =&gt; keep or remove traces with such events?</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>filtered_df</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.apply_numeric_events">
+<code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">apply_numeric_events</code><span class="sig-paren">(</span><em>df</em>, <em>int1</em>, <em>int2</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#apply_numeric_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.apply_numeric_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a filter on events (numerical filter)</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>int1</strong> – Lower bound of the interval</p></li>
+<li><p><strong>int2</strong> – Upper bound of the interval</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm:</dt><dd><p>PARAMETER_CONSTANT_ATTRIBUTE_KEY =&gt; indicates which attribute to filter
+positive =&gt; keep or remove events?</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>filtered_df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.filter_df_keeping_activ_exc_thresh">
-<code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">filter_df_keeping_activ_exc_thresh</code><span class="sig-paren">(</span><em>df</em>, <em>thresh</em>, <em>act_count=None</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#filter_df_keeping_activ_exc_thresh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.filter_df_keeping_activ_exc_thresh" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">filter_df_keeping_activ_exc_thresh</code><span class="sig-paren">(</span><em>df</em>, <em>thresh</em>, <em>act_count0=None</em>, <em>activity_key='concept:name'</em>, <em>most_common_variant=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#filter_df_keeping_activ_exc_thresh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.filter_df_keeping_activ_exc_thresh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter a dataframe keeping activities exceeding the threshold</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>df</strong> – Pandas dataframe</li>
-<li><strong>thresh</strong> – Threshold to use to cut activities</li>
-<li><strong>act_count</strong> – (If provided) Dictionary that associates each activity with its count</li>
-<li><strong>activity_key</strong> – Column in which the activity is present</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>thresh</strong> – Threshold to use to cut activities</p></li>
+<li><p><strong>act_count0</strong> – (If provided) Dictionary that associates each activity with its count</p></li>
+<li><p><strong>activity_key</strong> – Column in which the activity is present</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.filter_df_keeping_spno_activities">
 <code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">filter_df_keeping_spno_activities</code><span class="sig-paren">(</span><em>df</em>, <em>activity_key='concept:name'</em>, <em>max_no_activities=25</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#filter_df_keeping_spno_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.filter_df_keeping_spno_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter a dataframe on the specified number of attributes</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>df</strong> – Dataframe</li>
-<li><strong>activity_key</strong> – Activity key in dataframe (must be specified if different from concept:name)</li>
-<li><strong>max_no_activities</strong> – Maximum allowed number of attributes</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>activity_key</strong> – Activity key in dataframe (must be specified if different from concept:name)</p></li>
+<li><p><strong>max_no_activities</strong> – Maximum allowed number of attributes</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.filter_df_on_attribute_values">
 <code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">filter_df_on_attribute_values</code><span class="sig-paren">(</span><em>df</em>, <em>values</em>, <em>case_id_glue='case:concept:name'</em>, <em>attribute_key='concept:name'</em>, <em>positive=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#filter_df_on_attribute_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.filter_df_on_attribute_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter dataframe on attribute values</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>df</strong> – Dataframe</li>
-<li><strong>values</strong> – Values to filter on</li>
-<li><strong>case_id_glue</strong> – Case ID column in the dataframe</li>
-<li><strong>attribute_key</strong> – Attribute we want to filter</li>
-<li><strong>positive</strong> – Specifies if the filtered should be applied including traces (positive=True) or excluding traces
-(positive=False)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>values</strong> – Values to filter on</p></li>
+<li><p><strong>case_id_glue</strong> – Case ID column in the dataframe</p></li>
+<li><p><strong>attribute_key</strong> – Attribute we want to filter</p></li>
+<li><p><strong>positive</strong> – Specifies if the filtered should be applied including traces (positive=True) or excluding traces
+(positive=False)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.get_attribute_values">
 <code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">get_attribute_values</code><span class="sig-paren">(</span><em>df</em>, <em>attribute_key</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#get_attribute_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.get_attribute_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return list of attribute values contained in the specified column of the CSV</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>df</strong> – Pandas dataframe</li>
-<li><strong>attribute_key</strong> – Attribute for which we want to known the values and the count</li>
-<li><strong>parameters</strong> – Possible parameters of the algorithm</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>attribute_key</strong> – Attribute for which we want to known the values and the count</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Attributes in the specified column, along with their count</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">attributes_values_dict</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Attributes in the specified column, along with their count</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>attributes_values_dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_date_attribute">
 <code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">get_kde_date_attribute</code><span class="sig-paren">(</span><em>df</em>, <em>attribute='time:timestamp'</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#get_kde_date_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_date_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the KDE estimation for the distribution of a date attribute values</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
-</li>
-<li><p class="first"><strong>attribute</strong> – Date attribute to analyse</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">graph_points -&gt; number of points to include in the graph</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>attribute</strong> – Date attribute to analyse</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>x</em> – X-axis values to represent</li>
-<li><em>y</em> – Y-axis values to represent</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>x</em> – X-axis values to represent</p></li>
+<li><p><em>y</em> – Y-axis values to represent</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -401,67 +416,53 @@ excluding traces (positive=False)</p>
 <code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">get_kde_date_attribute_json</code><span class="sig-paren">(</span><em>df</em>, <em>attribute='time:timestamp'</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#get_kde_date_attribute_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_date_attribute_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the KDE estimation for the distribution of a date attribute values
 (expressed as JSON)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
-</li>
-<li><p class="first"><strong>attribute</strong> – Date attribute to analyse</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">graph_points -&gt; number of points to include in the graph</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>attribute</strong> – Date attribute to analyse</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">JSON representing the graph points</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">json</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON representing the graph points</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>json</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_numeric_attribute">
 <code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">get_kde_numeric_attribute</code><span class="sig-paren">(</span><em>df</em>, <em>attribute</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#get_kde_numeric_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_numeric_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the KDE estimation for the distribution of a numeric attribute values</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
-</li>
-<li><p class="first"><strong>attribute</strong> – Numeric attribute to analyse</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">graph_points -&gt; number of points to include in the graph</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>attribute</strong> – Numeric attribute to analyse</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>x</em> – X-axis values to represent</li>
-<li><em>y</em> – Y-axis values to represent</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>x</em> – X-axis values to represent</p></li>
+<li><p><em>y</em> – Y-axis values to represent</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -469,33 +470,26 @@ excluding traces (positive=False)</p>
 <code class="descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="descname">get_kde_numeric_attribute_json</code><span class="sig-paren">(</span><em>df</em>, <em>attribute</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#get_kde_numeric_attribute_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.get_kde_numeric_attribute_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the KDE estimation for the distribution of a numeric attribute values
 (expressed as JSON)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
-</li>
-<li><p class="first"><strong>attribute</strong> – Numeric attribute to analyse</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">graph_points -&gt; number of points to include in the graph</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>attribute</strong> – Numeric attribute to analyse</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">JSON representing the graph points</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">json</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON representing the graph points</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>json</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -532,25 +526,16 @@ excluding traces (positive=False)</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

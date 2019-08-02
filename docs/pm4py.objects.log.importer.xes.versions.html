@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -160,17 +162,13 @@
 <dt id="pm4py.objects.log.importer.xes.versions.iterparse_xes.import_log">
 <code class="descclassname">pm4py.objects.log.importer.xes.versions.iterparse_xes.</code><code class="descname">import_log</code><span class="sig-paren">(</span><em>filename</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/xes/versions/iterparse_xes.html#import_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.xes.versions.iterparse_xes.import_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imports an XES file into a log object</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>filename</strong> – Absolute filename</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including</dt>
-<dd><p class="first last">timestamp_sort -&gt; Specify if we should sort log by timestamp
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>filename</strong> – Absolute filename</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including</dt><dd><p>timestamp_sort -&gt; Specify if we should sort log by timestamp
 timestamp_key -&gt; If sort is enabled, then sort the log by using this key
 reverse_sort -&gt; Specify in which direction the log should be sorted
 index_trace_indexes -&gt; Specify if trace indexes should be added as event attribute for each event
@@ -180,16 +178,14 @@ max_no_traces_to_import -&gt; Specify the maximum number of traces to import fro
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>log</strong> – A log</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>log</strong> – A log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -200,17 +196,13 @@ max_no_traces_to_import -&gt; Specify the maximum number of traces to import fro
 <code class="descclassname">pm4py.objects.log.importer.xes.versions.python_nonstandard.</code><code class="descname">import_log</code><span class="sig-paren">(</span><em>filename</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/xes/versions/python_nonstandard.html#import_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.xes.versions.python_nonstandard.import_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import a log object from a XML file
 containing the traces, the events and the simple attributes of them</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>filename</strong> – XES file to parse</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including</dt>
-<dd><p class="first last">timestamp_sort -&gt; Specify if we should sort log by timestamp
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>filename</strong> – XES file to parse</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including</dt><dd><p>timestamp_sort -&gt; Specify if we should sort log by timestamp
 timestamp_key -&gt; If sort is enabled, then sort the log by using this key
 reverse_sort -&gt; Specify in which direction the log should be sorted
 index_trace_indexes -&gt; Specify if trace indexes should be added as event attribute for each event
@@ -220,16 +212,14 @@ max_no_traces_to_import -&gt; Specify the maximum number of traces to import fro
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">XES file</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">xes</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>XES file</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>xes</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -266,25 +256,16 @@ max_no_traces_to_import -&gt; Specify the maximum number of traces to import fro
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

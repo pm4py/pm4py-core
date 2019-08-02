@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -163,6 +165,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pm4py.visualization.petrinet.util.html">pm4py.visualization.petrinet.util package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.petrinet.util.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.petrinet.util.html#module-pm4py.visualization.petrinet.util.alignments_decoration">pm4py.visualization.petrinet.util.alignments_decoration module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.petrinet.util.html#module-pm4py.visualization.petrinet.util.performance_map">pm4py.visualization.petrinet.util.performance_map module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.petrinet.util.html#module-pm4py.visualization.petrinet.util.vis_trans_shortest_paths">pm4py.visualization.petrinet.util.vis_trans_shortest_paths module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.petrinet.util.html#module-pm4py.visualization.petrinet.util">Module contents</a></li>
@@ -170,6 +173,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pm4py.visualization.petrinet.versions.html">pm4py.visualization.petrinet.versions package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.petrinet.versions.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.petrinet.versions.html#module-pm4py.visualization.petrinet.versions.alignments">pm4py.visualization.petrinet.versions.alignments module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.petrinet.versions.html#module-pm4py.visualization.petrinet.versions.greedy_decoration">pm4py.visualization.petrinet.versions.greedy_decoration module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.petrinet.versions.html#module-pm4py.visualization.petrinet.versions.token_decoration">pm4py.visualization.petrinet.versions.token_decoration module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.petrinet.versions.html#module-pm4py.visualization.petrinet.versions.wo_decoration">pm4py.visualization.petrinet.versions.wo_decoration module</a></li>
@@ -193,32 +197,25 @@
 <dt id="pm4py.visualization.petrinet.factory.save">
 <code class="descclassname">pm4py.visualization.petrinet.factory.</code><code class="descname">save</code><span class="sig-paren">(</span><em>gviz</em>, <em>output_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/factory.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.factory.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the diagram</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>gviz</strong> – GraphViz diagram</li>
-<li><strong>output_file_path</strong> – Path where the GraphViz output should be saved</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gviz</strong> – GraphViz diagram</p></li>
+<li><p><strong>output_file_path</strong> – Path where the GraphViz output should be saved</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.factory.view">
 <code class="descclassname">pm4py.visualization.petrinet.factory.</code><code class="descname">view</code><span class="sig-paren">(</span><em>gviz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/factory.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.factory.view" title="Permalink to this definition">¶</a></dt>
 <dd><p>View the diagram</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gviz</strong> – GraphViz diagram</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>gviz</strong> – GraphViz diagram</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -255,25 +252,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

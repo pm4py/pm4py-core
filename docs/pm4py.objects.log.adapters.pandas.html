@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -159,145 +161,134 @@
 <dt id="pm4py.objects.log.adapters.pandas.csv_import_adapter.convert_caseid_column_to_str">
 <code class="descclassname">pm4py.objects.log.adapters.pandas.csv_import_adapter.</code><code class="descname">convert_caseid_column_to_str</code><span class="sig-paren">(</span><em>df</em>, <em>case_id_glue='case:concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/adapters/pandas/csv_import_adapter.html#convert_caseid_column_to_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.adapters.pandas.csv_import_adapter.convert_caseid_column_to_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert Case ID column to string</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>df</strong> – Pandas dataframe</li>
-<li><strong>case_id_glue</strong> – Case ID glue (that is used to connect the traces)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>case_id_glue</strong> – Case ID glue (that is used to connect the traces)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Pandas dataframe with case ID column as string</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pandas dataframe with case ID column as string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.adapters.pandas.csv_import_adapter.convert_dataframe_to_stream">
+<code class="descclassname">pm4py.objects.log.adapters.pandas.csv_import_adapter.</code><code class="descname">convert_dataframe_to_stream</code><span class="sig-paren">(</span><em>dataframe</em>, <em>insert_event_indexes=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/adapters/pandas/csv_import_adapter.html#convert_dataframe_to_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.adapters.pandas.csv_import_adapter.convert_dataframe_to_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a dataframe to an event stream</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataframe</strong> – Dataframe</p></li>
+<li><p><strong>insert_event_indexes</strong> – Boolean value (keep event indexes)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Event stream</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>stream</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.adapters.pandas.csv_import_adapter.convert_timestamp_columns_in_df">
 <code class="descclassname">pm4py.objects.log.adapters.pandas.csv_import_adapter.</code><code class="descname">convert_timestamp_columns_in_df</code><span class="sig-paren">(</span><em>df</em>, <em>timest_format=None</em>, <em>timest_columns=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/adapters/pandas/csv_import_adapter.html#convert_timestamp_columns_in_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.adapters.pandas.csv_import_adapter.convert_timestamp_columns_in_df" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert all dataframe columns in a dataframe</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>df</strong> – Dataframe</li>
-<li><strong>timest_format</strong> – (If provided) Format of the timestamp columns in the CSV file</li>
-<li><strong>timest_columns</strong> – Columns of the CSV that shall be converted into timestamp</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>timest_format</strong> – (If provided) Format of the timestamp columns in the CSV file</p></li>
+<li><p><strong>timest_columns</strong> – Columns of the CSV that shall be converted into timestamp</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dataframe with timestamp columns converted</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dataframe with timestamp columns converted</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.adapters.pandas.csv_import_adapter.import_dataframe_from_csv_string">
-<code class="descclassname">pm4py.objects.log.adapters.pandas.csv_import_adapter.</code><code class="descname">import_dataframe_from_csv_string</code><span class="sig-paren">(</span><em>csv_string</em>, <em>sep='</em>, <em>'</em>, <em>quotechar=None</em>, <em>nrows=None</em>, <em>sort=False</em>, <em>sort_field='time:timestamp'</em>, <em>timest_format=None</em>, <em>timest_columns=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/adapters/pandas/csv_import_adapter.html#import_dataframe_from_csv_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.adapters.pandas.csv_import_adapter.import_dataframe_from_csv_string" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.objects.log.adapters.pandas.csv_import_adapter.</code><code class="descname">import_dataframe_from_csv_string</code><span class="sig-paren">(</span><em>csv_string</em>, <em>sep='</em>, <em>'</em>, <em>quotechar=None</em>, <em>nrows=None</em>, <em>sort=False</em>, <em>sort_field='time:timestamp'</em>, <em>timest_format=None</em>, <em>timest_columns=None</em>, <em>encoding=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/adapters/pandas/csv_import_adapter.html#import_dataframe_from_csv_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.adapters.pandas.csv_import_adapter.import_dataframe_from_csv_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import dataframe from CSV string</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>csv_string</strong> – CSV string</li>
-<li><strong>sep</strong> – CSV columns delimiter</li>
-<li><strong>quotechar</strong> – (if specified) Character that starts/end big strings in CSV</li>
-<li><strong>nrows</strong> – (if specified) Maximum number of rows to read from the CSV</li>
-<li><strong>sort</strong> – Boolean value that tells if the CSV should be ordered</li>
-<li><strong>sort_field</strong> – If sort option is enabled, then the CSV is automatically sorted by the specified column</li>
-<li><strong>timest_format</strong> – (If provided) Format of the timestamp columns in the CSV file</li>
-<li><strong>timest_columns</strong> – Columns of the CSV that shall be converted into timestamp</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csv_string</strong> – CSV string</p></li>
+<li><p><strong>sep</strong> – CSV columns delimiter</p></li>
+<li><p><strong>quotechar</strong> – (if specified) Character that starts/end big strings in CSV</p></li>
+<li><p><strong>nrows</strong> – (if specified) Maximum number of rows to read from the CSV</p></li>
+<li><p><strong>sort</strong> – Boolean value that tells if the CSV should be ordered</p></li>
+<li><p><strong>sort_field</strong> – If sort option is enabled, then the CSV is automatically sorted by the specified column</p></li>
+<li><p><strong>timest_format</strong> – (If provided) Format of the timestamp columns in the CSV file</p></li>
+<li><p><strong>timest_columns</strong> – Columns of the CSV that shall be converted into timestamp</p></li>
+<li><p><strong>encoding</strong> – Encoding to use</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Pandas dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pandas dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.adapters.pandas.csv_import_adapter.import_dataframe_from_path">
-<code class="descclassname">pm4py.objects.log.adapters.pandas.csv_import_adapter.</code><code class="descname">import_dataframe_from_path</code><span class="sig-paren">(</span><em>path</em>, <em>sep='</em>, <em>'</em>, <em>quotechar=None</em>, <em>nrows=None</em>, <em>sort=False</em>, <em>sort_field='time:timestamp'</em>, <em>timest_format=None</em>, <em>timest_columns=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/adapters/pandas/csv_import_adapter.html#import_dataframe_from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.adapters.pandas.csv_import_adapter.import_dataframe_from_path" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.objects.log.adapters.pandas.csv_import_adapter.</code><code class="descname">import_dataframe_from_path</code><span class="sig-paren">(</span><em>path</em>, <em>sep='</em>, <em>'</em>, <em>quotechar=None</em>, <em>nrows=None</em>, <em>sort=False</em>, <em>sort_field='time:timestamp'</em>, <em>timest_format=None</em>, <em>timest_columns=None</em>, <em>encoding=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/adapters/pandas/csv_import_adapter.html#import_dataframe_from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.adapters.pandas.csv_import_adapter.import_dataframe_from_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imports a dataframe from the given path</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><strong>path</strong> – Input CSV file path</p>
-</li>
-<li><p class="first"><strong>sep</strong> – column separator</p>
-</li>
-<li><p class="first"><strong>quotechar</strong> – (if specified) Character that starts/end big strings in CSV</p>
-</li>
-<li><p class="first"><strong>nrows</strong> – (if specified) Maximum number of rows to read from the CSV</p>
-</li>
-<li><p class="first"><strong>sort</strong> – Boolean value that tells if the CSV should be ordered</p>
-</li>
-<li><p class="first"><strong>sort_field</strong> – If sort option is enabled, then the CSV is automatically sorted by the specified column</p>
-</li>
-<li><p class="first"><strong>timest_format</strong> – (If provided) Format of the timestamp columns in the CSV file</p>
-</li>
-<li><p class="first"><strong>timest_columns</strong> –    Columns of the CSV that shall be converted into timestamp</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path</strong> – Input CSV file path</p></li>
+<li><p><strong>sep</strong> – column separator</p></li>
+<li><p><strong>quotechar</strong> – (if specified) Character that starts/end big strings in CSV</p></li>
+<li><p><strong>nrows</strong> – (if specified) Maximum number of rows to read from the CSV</p></li>
+<li><p><strong>sort</strong> – Boolean value that tells if the CSV should be ordered</p></li>
+<li><p><strong>sort_field</strong> – If sort option is enabled, then the CSV is automatically sorted by the specified column</p></li>
+<li><p><strong>timest_format</strong> – (If provided) Format of the timestamp columns in the CSV file</p></li>
+<li><p><strong>timest_columns</strong> – Columns of the CSV that shall be converted into timestamp</p></li>
+<li><p><strong>encoding</strong> –    Encoding to use</p>
 <p>Returns</p>
 </li>
-<li><p class="first"><strong>——-</strong></p>
-</li>
-<li><p class="first"><strong>pd</strong> – Pandas dataframe</p>
-</li>
+<li><p><strong>——-</strong></p></li>
+<li><p><strong>pd</strong> – Pandas dataframe</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.adapters.pandas.csv_import_adapter.import_dataframe_from_path_wo_timeconversion">
-<code class="descclassname">pm4py.objects.log.adapters.pandas.csv_import_adapter.</code><code class="descname">import_dataframe_from_path_wo_timeconversion</code><span class="sig-paren">(</span><em>path</em>, <em>sep='</em>, <em>'</em>, <em>quotechar=None</em>, <em>nrows=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/adapters/pandas/csv_import_adapter.html#import_dataframe_from_path_wo_timeconversion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.adapters.pandas.csv_import_adapter.import_dataframe_from_path_wo_timeconversion" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.objects.log.adapters.pandas.csv_import_adapter.</code><code class="descname">import_dataframe_from_path_wo_timeconversion</code><span class="sig-paren">(</span><em>path</em>, <em>sep='</em>, <em>'</em>, <em>quotechar=None</em>, <em>nrows=None</em>, <em>encoding=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/adapters/pandas/csv_import_adapter.html#import_dataframe_from_path_wo_timeconversion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.adapters.pandas.csv_import_adapter.import_dataframe_from_path_wo_timeconversion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imports a dataframe from the given path (without doing the timestamp columns conversion)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><strong>path</strong> – Input CSV file path</p>
-</li>
-<li><p class="first"><strong>sep</strong> – column separator</p>
-</li>
-<li><p class="first"><strong>quotechar</strong> – (if specified) Character that starts/end big strings in CSV</p>
-</li>
-<li><p class="first"><strong>nrows</strong> –    (if specified) Maximum number of rows to read from the CSV</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path</strong> – Input CSV file path</p></li>
+<li><p><strong>sep</strong> – column separator</p></li>
+<li><p><strong>quotechar</strong> – (if specified) Character that starts/end big strings in CSV</p></li>
+<li><p><strong>nrows</strong> – (if specified) Maximum number of rows to read from the CSV</p></li>
+<li><p><strong>encoding</strong> –    Encoding to use</p>
 <p>Returns</p>
 </li>
-<li><p class="first"><strong>——-</strong></p>
-</li>
-<li><p class="first"><strong>pd</strong> – Pandas dataframe</p>
-</li>
+<li><p><strong>——-</strong></p></li>
+<li><p><strong>pd</strong> – Pandas dataframe</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -334,25 +325,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

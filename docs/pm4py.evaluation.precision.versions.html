@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -159,67 +161,50 @@
 <dt id="pm4py.evaluation.precision.versions.etconformance_token.apply">
 <code class="descclassname">pm4py.evaluation.precision.versions.etconformance_token.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>net</em>, <em>marking</em>, <em>final_marking</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/versions/etconformance_token.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.versions.etconformance_token.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get ET Conformance precision</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><strong>log</strong> – Trace log</p>
-</li>
-<li><p class="first"><strong>net</strong> – Petri net</p>
-</li>
-<li><p class="first"><strong>marking</strong> – Initial marking</p>
-</li>
-<li><p class="first"><strong>final_marking</strong> – Final marking</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; Activity key</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; Activity key</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.evaluation.precision.versions.etconformance_token.form_fake_log">
 <code class="descclassname">pm4py.evaluation.precision.versions.etconformance_token.</code><code class="descname">form_fake_log</code><span class="sig-paren">(</span><em>prefixes_keys</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/versions/etconformance_token.html#form_fake_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.versions.etconformance_token.form_fake_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Form fake log for replay (putting each prefix as separate trace to align)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>prefixes_keys</strong> – Keys of the prefixes (to form a log with a given order)</li>
-<li><strong>activity_key</strong> – Activity key (must be provided if different from concept:name)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefixes_keys</strong> – Keys of the prefixes (to form a log with a given order)</p></li>
+<li><p><strong>activity_key</strong> – Activity key (must be provided if different from concept:name)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.evaluation.precision.versions.etconformance_token.get_log_prefixes">
 <code class="descclassname">pm4py.evaluation.precision.versions.etconformance_token.</code><code class="descname">get_log_prefixes</code><span class="sig-paren">(</span><em>log</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/versions/etconformance_token.html#get_log_prefixes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.versions.etconformance_token.get_log_prefixes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get log prefixes</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>log</strong> – Trace log</li>
-<li><strong>activity_key</strong> – Activity key (must be provided if different from concept:name)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>activity_key</strong> – Activity key (must be provided if different from concept:name)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -256,25 +241,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

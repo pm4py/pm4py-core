@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -226,128 +228,107 @@ LOOP = u’⟲’</p>
 <dt id="pm4py.objects.process_tree.semantics.close">
 <code class="descclassname">pm4py.objects.process_tree.semantics.</code><code class="descname">close</code><span class="sig-paren">(</span><em>vertex</em>, <em>enabled</em>, <em>open</em>, <em>closed</em>, <em>execution_sequence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/semantics.html#close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.semantics.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close a given vertex of the process tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>vertex</strong> – Vertex to be closed</li>
-<li><strong>enabled</strong> – Set of enabled nodes</li>
-<li><strong>open</strong> – Set of open nodes</li>
-<li><strong>closed</strong> – Set of closed nodes</li>
-<li><strong>execution_sequence</strong> – Execution sequence on the process tree</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vertex</strong> – Vertex to be closed</p></li>
+<li><p><strong>enabled</strong> – Set of enabled nodes</p></li>
+<li><p><strong>open</strong> – Set of open nodes</p></li>
+<li><p><strong>closed</strong> – Set of closed nodes</p></li>
+<li><p><strong>execution_sequence</strong> – Execution sequence on the process tree</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.process_tree.semantics.execute">
 <code class="descclassname">pm4py.objects.process_tree.semantics.</code><code class="descname">execute</code><span class="sig-paren">(</span><em>pt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/semantics.html#execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.semantics.execute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the process tree, returning an execution sequence</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pt</strong> – Process tree</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Execution sequence on the process tree</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">exec_sequence</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pt</strong> – Process tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Execution sequence on the process tree</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>exec_sequence</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.process_tree.semantics.execute_enabled">
 <code class="descclassname">pm4py.objects.process_tree.semantics.</code><code class="descname">execute_enabled</code><span class="sig-paren">(</span><em>enabled</em>, <em>open</em>, <em>closed</em>, <em>execution_sequence=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/semantics.html#execute_enabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.semantics.execute_enabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute an enabled node of the process tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>enabled</strong> – Enabled nodes</li>
-<li><strong>open</strong> – Open nodes</li>
-<li><strong>closed</strong> – Closed nodes</li>
-<li><strong>execution_sequence</strong> – Execution sequence</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>enabled</strong> – Enabled nodes</p></li>
+<li><p><strong>open</strong> – Open nodes</p></li>
+<li><p><strong>closed</strong> – Closed nodes</p></li>
+<li><p><strong>execution_sequence</strong> – Execution sequence</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Execution sequence</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">execution_sequence</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Execution sequence</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>execution_sequence</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.process_tree.semantics.generate_log">
 <code class="descclassname">pm4py.objects.process_tree.semantics.</code><code class="descname">generate_log</code><span class="sig-paren">(</span><em>pt</em>, <em>no_traces=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/semantics.html#generate_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.semantics.generate_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a log out of a process tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pt</strong> – Process tree</li>
-<li><strong>no_traces</strong> – Number of traces contained in the process tree</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pt</strong> – Process tree</p></li>
+<li><p><strong>no_traces</strong> – Number of traces contained in the process tree</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Trace log object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">log</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Trace log object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>log</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.process_tree.semantics.populate_closed">
 <code class="descclassname">pm4py.objects.process_tree.semantics.</code><code class="descname">populate_closed</code><span class="sig-paren">(</span><em>nodes</em>, <em>closed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/semantics.html#populate_closed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.semantics.populate_closed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populate all closed nodes of a process tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>nodes</strong> – Considered nodes of the process tree</li>
-<li><strong>closed</strong> – Closed nodes</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes</strong> – Considered nodes of the process tree</p></li>
+<li><p><strong>closed</strong> – Closed nodes</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.process_tree.semantics.process_closed">
 <code class="descclassname">pm4py.objects.process_tree.semantics.</code><code class="descname">process_closed</code><span class="sig-paren">(</span><em>closed_node</em>, <em>enabled</em>, <em>open</em>, <em>closed</em>, <em>execution_sequence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/semantics.html#process_closed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.semantics.process_closed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process a closed node, deciding further operations</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>closed_node</strong> – Node that shall be closed</li>
-<li><strong>enabled</strong> – Set of enabled nodes</li>
-<li><strong>open</strong> – Set of open nodes</li>
-<li><strong>closed</strong> – Set of closed nodes</li>
-<li><strong>execution_sequence</strong> – Execution sequence on the process tree</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>closed_node</strong> – Node that shall be closed</p></li>
+<li><p><strong>enabled</strong> – Set of enabled nodes</p></li>
+<li><p><strong>open</strong> – Set of open nodes</p></li>
+<li><p><strong>closed</strong> – Set of closed nodes</p></li>
+<li><p><strong>execution_sequence</strong> – Execution sequence on the process tree</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -355,25 +336,21 @@ LOOP = u’⟲’</p>
 <code class="descclassname">pm4py.objects.process_tree.semantics.</code><code class="descname">should_close</code><span class="sig-paren">(</span><em>vertex</em>, <em>closed</em>, <em>child</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/semantics.html#should_close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.semantics.should_close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decides if a parent vertex shall be closed based on
 the processed child</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>vertex</strong> – Vertex of the process tree</li>
-<li><strong>closed</strong> – Set of closed nodes</li>
-<li><strong>child</strong> – Processed child</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vertex</strong> – Vertex of the process tree</p></li>
+<li><p><strong>closed</strong> – Set of closed nodes</p></li>
+<li><p><strong>child</strong> – Processed child</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Boolean value (the vertex shall be closed)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">boolean</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean value (the vertex shall be closed)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -409,18 +386,17 @@ the processed child</p>
 <code class="descclassname">pm4py.objects.process_tree.util.</code><code class="descname">parse</code><span class="sig-paren">(</span><em>string_rep</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/util.html#parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.util.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a string provided by the user to a process tree
 (initialization method)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string_rep</strong> – String representation of the process tree</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Process tree object</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">node</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>string_rep</strong> – String representation of the process tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Process tree object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>node</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -428,43 +404,38 @@ the processed child</p>
 <code class="descclassname">pm4py.objects.process_tree.util.</code><code class="descname">parse_recursive</code><span class="sig-paren">(</span><em>string_rep</em>, <em>depth_cache</em>, <em>depth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/util.html#parse_recursive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.util.parse_recursive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a string provided by the user to a process tree
 (recursive method)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>string_rep</strong> – String representation of the process tree</li>
-<li><strong>depth_cache</strong> – Depth cache of the algorithm</li>
-<li><strong>depth</strong> – Current step depth</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string_rep</strong> – String representation of the process tree</p></li>
+<li><p><strong>depth_cache</strong> – Depth cache of the algorithm</p></li>
+<li><p><strong>depth</strong> – Current step depth</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Process tree object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">node</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Process tree object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>node</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.process_tree.util.project_execution_sequence_to_labels">
 <code class="descclassname">pm4py.objects.process_tree.util.</code><code class="descname">project_execution_sequence_to_labels</code><span class="sig-paren">(</span><em>execution_sequence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/util.html#project_execution_sequence_to_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.util.project_execution_sequence_to_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Project an execution sequence to a set of labels</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>execution_sequence</strong> – Execution sequence on the process tree</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of labels contained in the process tree</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list_labels</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>execution_sequence</strong> – Execution sequence on the process tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of labels contained in the process tree</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list_labels</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -472,18 +443,17 @@ the processed child</p>
 <code class="descclassname">pm4py.objects.process_tree.util.</code><code class="descname">project_execution_sequence_to_leafs</code><span class="sig-paren">(</span><em>execution_sequence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/process_tree/util.html#project_execution_sequence_to_leafs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.process_tree.util.project_execution_sequence_to_leafs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Project an execution sequence to the set of leafs
 of the tree.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>execution_sequence</strong> – Execution sequence on the process tree</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Leafs nodes of the process tree</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list_leafs</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>execution_sequence</strong> – Execution sequence on the process tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Leafs nodes of the process tree</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list_leafs</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -520,25 +490,16 @@ of the tree.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -81,6 +83,7 @@
 <li><a class="reference internal" href="#">pm4py.algo.discovery.alpha.versions package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.alpha.versions.classic">pm4py.algo.discovery.alpha.versions.classic module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.discovery.alpha.versions.plus">pm4py.algo.discovery.alpha.versions.plus module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.alpha.versions">Module contents</a></li>
 </ul>
 </li>
@@ -162,34 +165,27 @@ activity a precedes activity b.
 From the directly follows relations, the alpha relations parallelism (||), conflict (x) and causality (-&gt;) are deduced.
 These relations form the basics for finding the places in the net.
 Finally, a start and end place is added.</p>
-<dl class="docutils">
-<dt>References</dt>
-<dd><table class="first last docutils footnote" frame="void" id="id2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[1]</td><td>Wil M. P. van der Aalst et al., “Workflow Mining: Discovering Process Models from Event Logs”,
-IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. <a class="reference external" href="https://doi.org/10.1109/TKDE.2004.47">DOI</a>.</td></tr>
-</tbody>
-</table>
+<dl>
+<dt>References</dt><dd><dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets">1</span></dt>
+<dd><p>Wil M. P. van der Aalst et al., “Workflow Mining: Discovering Process Models from Event Logs”,
+IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. <a class="reference external" href="https://doi.org/10.1109/TKDE.2004.47">DOI</a>.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <dl class="function">
 <dt id="pm4py.algo.discovery.alpha.versions.classic.apply">
 <code class="descclassname">pm4py.algo.discovery.alpha.versions.classic.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/classic.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.classic.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method calls the “classic” alpha miner <a href="#id7"><span class="problematic" id="id3">[1]_</span></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – Event log to use in the alpha miner</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><dl class="first last docutils">
-<dt>activity_key <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, optional</span></dt>
-<dd><p class="first last">Key to use within events to identify the underlying activity.
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – Event log to use in the alpha miner</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl>
+<dt>Parameters of the algorithm, including:</dt><dd><dl>
+<dt>activity_key<span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, optional</span></dt><dd><p>Key to use within events to identify the underlying activity.
 By deafult, the value ‘concept:name’ is used.</p>
 </dd>
 </dl>
@@ -197,26 +193,23 @@ By deafult, the value ‘concept:name’ is used.</p>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><strong>net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.entities.petri.petrinet.PetriNet</span></code>) – A Petri net describing the event log that is provided as an input</li>
-<li><strong>initial marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the initial marking</li>
-<li><strong>final marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the final marking, not guaranteed that it is actually reachable!</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.entities.petri.petrinet.PetriNet</span></code>) – A Petri net describing the event log that is provided as an input</p></li>
+<li><p><strong>initial marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the initial marking</p></li>
+<li><p><strong>final marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the final marking, not guaranteed that it is actually reachable!</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">References</p>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[1]</td><td>Wil M. P. van der Aalst et al., “Workflow Mining: Discovering Process Models from Event Logs”,
-IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. <a class="reference external" href="https://doi.org/10.1109/TKDE.2004.47">DOI</a>.</td></tr>
-</tbody>
-</table>
+<dl class="footnote brackets">
+<dt class="label" id="id4"><span class="brackets">1</span></dt>
+<dd><p>Wil M. P. van der Aalst et al., “Workflow Mining: Discovering Process Models from Event Logs”,
+IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. <a class="reference external" href="https://doi.org/10.1109/TKDE.2004.47">DOI</a>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -224,33 +217,27 @@ IEEE Trans. Knowl. Data Eng., 16, 1128-1142, 2004. <a class="reference external"
 <code class="descclassname">pm4py.algo.discovery.alpha.versions.classic.</code><code class="descname">apply_dfg</code><span class="sig-paren">(</span><em>dfg</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/classic.html#apply_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.classic.apply_dfg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applying Alpha Miner starting from the knowledge of the Directly Follows graph,
 and of the start activities and end activities in the log inferred from the DFG</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>dfg</strong> – Directly-Follows graph</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm including:</dt>
-<dd><p class="first last">activity key -&gt; name of the attribute that contains the activity</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>dfg</strong> – Directly-Follows graph</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm including:</dt><dd><p>activity key -&gt; name of the attribute that contains the activity</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><strong>net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.entities.petri.petrinet.PetriNet</span></code>) – A Petri net describing the event log that is provided as an input</li>
-<li><strong>initial marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the initial marking</li>
-<li><strong>final marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the final marking, not guaranteed that it is actually reachable!</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.entities.petri.petrinet.PetriNet</span></code>) – A Petri net describing the event log that is provided as an input</p></li>
+<li><p><strong>initial marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the initial marking</p></li>
+<li><p><strong>final marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the final marking, not guaranteed that it is actually reachable!</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -258,37 +245,261 @@ and of the start activities and end activities in the log inferred from the DFG<
 <code class="descclassname">pm4py.algo.discovery.alpha.versions.classic.</code><code class="descname">apply_dfg_sa_ea</code><span class="sig-paren">(</span><em>dfg</em>, <em>start_activities</em>, <em>end_activities</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/classic.html#apply_dfg_sa_ea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.classic.apply_dfg_sa_ea" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applying Alpha Miner starting from the knowledge of the Directly Follows graph,
 and of the start activities and end activities in the log (possibly inferred from the DFG)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>dfg</strong> – Directly-Follows graph</p>
-</li>
-<li><p class="first"><strong>start_activities</strong> – Start activities</p>
-</li>
-<li><p class="first"><strong>end_activities</strong> – End activities</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm including:</dt>
-<dd><p class="first last">activity key -&gt; name of the attribute that contains the activity</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>dfg</strong> – Directly-Follows graph</p></li>
+<li><p><strong>start_activities</strong> – Start activities</p></li>
+<li><p><strong>end_activities</strong> – End activities</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm including:</dt><dd><p>activity key -&gt; name of the attribute that contains the activity</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><strong>net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.entities.petri.petrinet.PetriNet</span></code>) – A Petri net describing the event log that is provided as an input</li>
-<li><strong>initial marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the initial marking</li>
-<li><strong>final marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the final marking, not guaranteed that it is actually reachable!</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.entities.petri.petrinet.PetriNet</span></code>) – A Petri net describing the event log that is provided as an input</p></li>
+<li><p><strong>initial marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the initial marking</p></li>
+<li><p><strong>final marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.models.net.Marking</span></code>) – marking object representing the final marking, not guaranteed that it is actually reachable!</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.algo.discovery.alpha.versions.plus">
+<span id="pm4py-algo-discovery-alpha-versions-plus-module"></span><h2>pm4py.algo.discovery.alpha.versions.plus module<a class="headerlink" href="#module-pm4py.algo.discovery.alpha.versions.plus" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.add_sink">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">add_sink</code><span class="sig-paren">(</span><em>net</em>, <em>end_activities</em>, <em>label_transition_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#add_sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.add_sink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adding sink pe</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.add_source">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">add_source</code><span class="sig-paren">(</span><em>net</em>, <em>start_activities</em>, <em>label_transition_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#add_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.add_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adding source pe</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.apply">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>trace_log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the Alpha Algorithm to a given log</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trace_log</strong> – Log</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>net</em> – Petri net</p></li>
+<li><p><em>im</em> – Initial marking</p></li>
+<li><p><em>fm</em> – Final marking</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.get_relations">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">get_relations</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#get_relations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.get_relations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applying the classic Alpha Algorithm</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Filtered log</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>causal</em> – Causal relations</p></li>
+<li><p><em>parallel</em> – Parallel relations</p></li>
+<li><p><em>follows</em> – Follows relations</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.get_sharp_relation">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">get_sharp_relation</code><span class="sig-paren">(</span><em>follows</em>, <em>instance_one</em>, <em>instance_two</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#get_sharp_relation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.get_sharp_relation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if sharp relations holds</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>follows</strong> – Follows relations</p></li>
+<li><p><strong>instance_one</strong> – Instance one</p></li>
+<li><p><strong>instance_two</strong> – Instance two</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean (sharp relation holds?)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.get_sharp_relations_for_sets">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">get_sharp_relations_for_sets</code><span class="sig-paren">(</span><em>follows</em>, <em>set_1</em>, <em>set_2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#get_sharp_relations_for_sets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.get_sharp_relations_for_sets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns sharp relations for sets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>follows</strong> – Follows relations</p></li>
+<li><p><strong>set_1</strong> – First set to consider</p></li>
+<li><p><strong>set_2</strong> – Second set to consider</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean (sharp relation holds?)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.postprocessing">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">postprocessing</code><span class="sig-paren">(</span><em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>A</em>, <em>B</em>, <em>pairs</em>, <em>loop_one_list</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#postprocessing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.postprocessing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adding the filtered transitions to the Petri net</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loop_list</strong> – List of looped activities</p></li>
+<li><p><strong>classical_alpha_result</strong> – Result after applying the classic alpha algorithm to the filtered log</p></li>
+<li><p><strong>A</strong> – See Paper for definition</p></li>
+<li><p><strong>B</strong> – See Paper for definition</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>net</em> – Petri net</p></li>
+<li><p><em>im</em> – Initial marking</p></li>
+<li><p><em>fm</em> – Final marking</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.preprocessing">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">preprocessing</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#preprocessing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.preprocessing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preprocessing step for the Aplha+ algorithm. Removing all transitions from the log with a loop of length one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Event log</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>log</em> – filtered log and a list of the filtered transitions</p></li>
+<li><p><em>loop_one_list</em> – Loop one list</p></li>
+<li><p><em>A_filtered</em> – Dictionary: activity before the loop-length-one activity</p></li>
+<li><p><em>B_filtered</em> – Dictionary: activity after the loop-length-one activity</p></li>
+<li><p><em>loops_in_first_place</em> – Loops in source place</p></li>
+<li><p><em>loops_in_last_place</em> – Loops in sink place</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.processing">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">processing</code><span class="sig-paren">(</span><em>log</em>, <em>causal</em>, <em>follows</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.processing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applying the Alpha Miner with the new relations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Filtered log</p></li>
+<li><p><strong>causal</strong> – Pairs that have a causal relation (-&gt;)</p></li>
+<li><p><strong>follows</strong> – Pairs that have a follow relation (&gt;)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>net</em> – Petri net</p></li>
+<li><p><em>im</em> – Initial marking</p></li>
+<li><p><em>fm</em> – Final marking</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.remove_final_hidden_if_possible">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">remove_final_hidden_if_possible</code><span class="sig-paren">(</span><em>net</em>, <em>fm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#remove_final_hidden_if_possible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.remove_final_hidden_if_possible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove final hidden transition if possible</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>fm</strong> – Final marking</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Petri net</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>net</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.remove_initial_hidden_if_possible">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">remove_initial_hidden_if_possible</code><span class="sig-paren">(</span><em>net</em>, <em>im</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#remove_initial_hidden_if_possible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.remove_initial_hidden_if_possible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove initial hidden transition if possible</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>im</strong> – Initial marking</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>net</em> – Petri net</p></li>
+<li><p><em>im</em> – Possibly different initial marking</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.remove_unconnected_transitions">
+<code class="descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="descname">remove_unconnected_transitions</code><span class="sig-paren">(</span><em>net</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#remove_unconnected_transitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.remove_unconnected_transitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove unconnected transitions if any</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>net</strong> – Petri net</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Petri net without unconnected transitions</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>net</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -325,25 +536,16 @@ and of the start activities and end activities in the log (possibly inferred fro
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

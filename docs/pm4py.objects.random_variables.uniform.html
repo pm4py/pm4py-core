@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -164,94 +166,81 @@
 <dt id="pm4py.objects.random_variables.uniform.random_variable.Uniform.calculate_loglikelihood">
 <code class="descname">calculate_loglikelihood</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/random_variables/uniform/random_variable.html#Uniform.calculate_loglikelihood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.random_variables.uniform.random_variable.Uniform.calculate_loglikelihood" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate log likelihood</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> – Empirical values to work on</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Log likelihood that the values follows the distribution</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">likelihood</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>values</strong> – Empirical values to work on</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Log likelihood that the values follows the distribution</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>likelihood</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.objects.random_variables.uniform.random_variable.Uniform.calculate_parameters">
 <code class="descname">calculate_parameters</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/random_variables/uniform/random_variable.html#Uniform.calculate_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.random_variables.uniform.random_variable.Uniform.calculate_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate parameters of the current distribution</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> – Empirical values to work on</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>values</strong> – Empirical values to work on</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.objects.random_variables.uniform.random_variable.Uniform.get_distribution_parameters">
 <code class="descname">get_distribution_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/random_variables/uniform/random_variable.html#Uniform.get_distribution_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.random_variables.uniform.random_variable.Uniform.get_distribution_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a string representing distribution parameters</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">String representing distribution parameters</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">distribution_parameters</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>String representing distribution parameters</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>distribution_parameters</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.objects.random_variables.uniform.random_variable.Uniform.get_distribution_type">
 <code class="descname">get_distribution_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/random_variables/uniform/random_variable.html#Uniform.get_distribution_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.random_variables.uniform.random_variable.Uniform.get_distribution_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get current distribution type</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">String representing the distribution type</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">distribution_type</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>String representing the distribution type</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>distribution_type</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.objects.random_variables.uniform.random_variable.Uniform.get_value">
 <code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/random_variables/uniform/random_variable.html#Uniform.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.random_variables.uniform.random_variable.Uniform.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a random value following the distribution</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Value obtained following the distribution</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">value</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Value obtained following the distribution</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>value</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.objects.random_variables.uniform.random_variable.Uniform.read_from_string">
 <code class="descname">read_from_string</code><span class="sig-paren">(</span><em>distribution_parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/random_variables/uniform/random_variable.html#Uniform.read_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.random_variables.uniform.random_variable.Uniform.read_from_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize distribution parameters from string</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>distribution_parameters</strong> – Current distribution parameters as exported on the Petri net</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>distribution_parameters</strong> – Current distribution parameters as exported on the Petri net</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -290,25 +279,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -169,101 +171,85 @@
 <dt id="pm4py.algo.filtering.log.cases.case_filter.filter_on_case_performance">
 <code class="descclassname">pm4py.algo.filtering.log.cases.case_filter.</code><code class="descname">filter_on_case_performance</code><span class="sig-paren">(</span><em>log</em>, <em>inf_perf</em>, <em>sup_perf</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/cases/case_filter.html#filter_on_case_performance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.cases.case_filter.filter_on_case_performance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a filtered log keeping only traces that satisfy the given performance requirements</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>log</strong> – Log</li>
-<li><strong>inf_perf</strong> – Lower bound on the performance</li>
-<li><strong>sup_perf</strong> – Upper bound on the performance</li>
-<li><strong>parameters</strong> – Parameters</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>inf_perf</strong> – Lower bound on the performance</p></li>
+<li><p><strong>sup_perf</strong> – Upper bound on the performance</p></li>
+<li><p><strong>parameters</strong> – Parameters</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_log</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>filtered_log</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.cases.case_filter.filter_on_case_size">
 <code class="descclassname">pm4py.algo.filtering.log.cases.case_filter.</code><code class="descname">filter_on_case_size</code><span class="sig-paren">(</span><em>log</em>, <em>min_case_size=2</em>, <em>max_case_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/cases/case_filter.html#filter_on_case_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.cases.case_filter.filter_on_case_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get only traces in the log with a given size</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>log</strong> – Log</li>
-<li><strong>min_case_size</strong> – Minimum desidered size of traces</li>
-<li><strong>max_case_size</strong> – Maximum desidered size of traces</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>min_case_size</strong> – Minimum desidered size of traces</p></li>
+<li><p><strong>max_case_size</strong> – Maximum desidered size of traces</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_log</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>filtered_log</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.cases.case_filter.filter_on_ncases">
 <code class="descclassname">pm4py.algo.filtering.log.cases.case_filter.</code><code class="descname">filter_on_ncases</code><span class="sig-paren">(</span><em>log</em>, <em>max_no_cases=1000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/cases/case_filter.html#filter_on_ncases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.cases.case_filter.filter_on_ncases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get only a specified number of traces from a log</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>log</strong> – Log</li>
-<li><strong>max_no_cases</strong> – Desidered number of traces from the log</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>max_no_cases</strong> – Desidered number of traces from the log</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_log</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>filtered_log</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.cases.case_filter.satisfy_perf">
 <code class="descclassname">pm4py.algo.filtering.log.cases.case_filter.</code><code class="descname">satisfy_perf</code><span class="sig-paren">(</span><em>trace</em>, <em>inf_perf</em>, <em>sup_perf</em>, <em>timestamp_key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/cases/case_filter.html#satisfy_perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.cases.case_filter.satisfy_perf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the trace satisfy the performance requirements</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> – Trace</li>
-<li><strong>inf_perf</strong> – Lower bound on the performance</li>
-<li><strong>sup_perf</strong> – Upper bound on the performance</li>
-<li><strong>timestamp_key</strong> – Timestamp key</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trace</strong> – Trace</p></li>
+<li><p><strong>inf_perf</strong> – Lower bound on the performance</p></li>
+<li><p><strong>sup_perf</strong> – Upper bound on the performance</p></li>
+<li><p><strong>timestamp_key</strong> – Timestamp key</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Boolean (is True if the trace satisfy the given performance requirements)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">boolean</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean (is True if the trace satisfy the given performance requirements)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -300,25 +286,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

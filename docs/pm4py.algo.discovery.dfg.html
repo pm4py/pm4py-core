@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -161,6 +163,7 @@
 <li class="toctree-l3"><a class="reference internal" href="pm4py.algo.discovery.dfg.adapters.pandas.html">pm4py.algo.discovery.dfg.adapters.pandas package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pm4py.algo.discovery.dfg.adapters.pandas.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pm4py.algo.discovery.dfg.adapters.pandas.html#module-pm4py.algo.discovery.dfg.adapters.pandas.df_statistics">pm4py.algo.discovery.dfg.adapters.pandas.df_statistics module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pm4py.algo.discovery.dfg.adapters.pandas.html#module-pm4py.algo.discovery.dfg.adapters.pandas.freq_triples">pm4py.algo.discovery.dfg.adapters.pandas.freq_triples module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pm4py.algo.discovery.dfg.adapters.pandas.html#module-pm4py.algo.discovery.dfg.adapters.pandas">Module contents</a></li>
 </ul>
 </li>
@@ -177,6 +180,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pm4py.algo.discovery.dfg.versions.html">pm4py.algo.discovery.dfg.versions package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.algo.discovery.dfg.versions.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.algo.discovery.dfg.versions.html#module-pm4py.algo.discovery.dfg.versions.freq_triples">pm4py.algo.discovery.dfg.versions.freq_triples module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.algo.discovery.dfg.versions.html#module-pm4py.algo.discovery.dfg.versions.native">pm4py.algo.discovery.dfg.versions.native module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.algo.discovery.dfg.versions.html#module-pm4py.algo.discovery.dfg.versions.performance">pm4py.algo.discovery.dfg.versions.performance module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.algo.discovery.dfg.versions.html#module-pm4py.algo.discovery.dfg.versions">Module contents</a></li>
@@ -194,40 +198,33 @@
 <dt id="pm4py.algo.discovery.dfg.factory.apply">
 <code class="descclassname">pm4py.algo.discovery.dfg.factory.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em>, <em>variant='native'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.factory.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates DFG graph (frequency or performance) starting from a log</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters passed to the algorithms:</dt>
-<dd><p class="first last">aggregationMeasure -&gt; performance aggregation measure (min, max, mean, median)
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters passed to the algorithms:</dt><dd><p>aggregationMeasure -&gt; performance aggregation measure (min, max, mean, median)
 activity_key -&gt; Attribute to use as activity
 timestamp_key -&gt; Attribute to use as timestamp</p>
 </dd>
 </dl>
 </li>
-<li><p class="first"><strong>variant</strong> –</p>
-<dl class="docutils">
-<dt>Variant of the algorithm to use, possible values:</dt>
-<dd><p class="first last">native, frequency, performance, frequency_greedy, performance_greedy</p>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, possible values:</dt><dd><p>native, frequency, performance, frequency_greedy, performance_greedy</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">DFG graph</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dfg</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DFG graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dfg</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -237,24 +234,20 @@ timestamp_key -&gt; Attribute to use as timestamp</p>
 <dt id="pm4py.algo.discovery.dfg.replacement.replace_values">
 <code class="descclassname">pm4py.algo.discovery.dfg.replacement.</code><code class="descname">replace_values</code><span class="sig-paren">(</span><em>dfg1</em>, <em>dfg2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/replacement.html#replace_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.replacement.replace_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace edge values specified in a DFG by values from a (potentially bigger) DFG</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dfg1</strong> – First specified DFG (where values of edges should be replaces)</li>
-<li><strong>dfg2</strong> – Second specified DFG (from which values should be taken)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dfg1</strong> – First specified DFG (where values of edges should be replaces)</p></li>
+<li><p><strong>dfg2</strong> – Second specified DFG (from which values should be taken)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">First specified DFG with overrided values</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dfg1</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>First specified DFG with overrided values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dfg1</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -291,25 +284,16 @@ timestamp_key -&gt; Attribute to use as timestamp</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

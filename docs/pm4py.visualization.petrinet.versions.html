@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -80,6 +82,7 @@
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">pm4py.visualization.petrinet.versions package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.visualization.petrinet.versions.alignments">pm4py.visualization.petrinet.versions.alignments module</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.petrinet.versions.greedy_decoration">pm4py.visualization.petrinet.versions.greedy_decoration module</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.petrinet.versions.token_decoration">pm4py.visualization.petrinet.versions.token_decoration module</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.petrinet.versions.wo_decoration">pm4py.visualization.petrinet.versions.wo_decoration module</a></li>
@@ -155,90 +158,106 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.visualization.petrinet.versions.alignments">
+<span id="pm4py-visualization-petrinet-versions-alignments-module"></span><h2>pm4py.visualization.petrinet.versions.alignments module<a class="headerlink" href="#module-pm4py.visualization.petrinet.versions.alignments" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.visualization.petrinet.versions.alignments.apply">
+<code class="descclassname">pm4py.visualization.petrinet.versions.alignments.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>log=None</em>, <em>aggregated_statistics=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/versions/alignments.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.versions.alignments.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply method for Petri net visualization (useful for recall from factory; it calls the
+graphviz_visualization method)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>log</strong> – (Optional) log</p></li>
+<li><p><strong>aggregated_statistics</strong> – Dictionary containing the frequency statistics</p></li>
+<li><p><strong>parameters</strong> – Algorithm parameters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Graph object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>viz</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.visualization.petrinet.versions.greedy_decoration">
 <span id="pm4py-visualization-petrinet-versions-greedy-decoration-module"></span><h2>pm4py.visualization.petrinet.versions.greedy_decoration module<a class="headerlink" href="#module-pm4py.visualization.petrinet.versions.greedy_decoration" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.versions.greedy_decoration.apply_frequency">
 <code class="descclassname">pm4py.visualization.petrinet.versions.greedy_decoration.</code><code class="descname">apply_frequency</code><span class="sig-paren">(</span><em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>log=None</em>, <em>aggregated_statistics=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/versions/greedy_decoration.html#apply_frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.versions.greedy_decoration.apply_frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply frequency decoration through greedy algorithm (decorate Petri net based on DFG)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>final_marking</strong> – Final marking</li>
-<li><strong>log</strong> – Log to use to decorate the Petri net</li>
-<li><strong>aggregated_statistics</strong> – Dictionary containing the frequency statistics</li>
-<li><strong>parameters</strong> – Algorithm parameters</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>log</strong> – Log to use to decorate the Petri net</p></li>
+<li><p><strong>aggregated_statistics</strong> – Dictionary containing the frequency statistics</p></li>
+<li><p><strong>parameters</strong> – Algorithm parameters</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">GraphViz object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">gviz</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>GraphViz object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>gviz</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.versions.greedy_decoration.apply_performance">
 <code class="descclassname">pm4py.visualization.petrinet.versions.greedy_decoration.</code><code class="descname">apply_performance</code><span class="sig-paren">(</span><em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>log=None</em>, <em>aggregated_statistics=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/versions/greedy_decoration.html#apply_performance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.versions.greedy_decoration.apply_performance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply performance decoration through greedy algorithm (decorate Petri net based on DFG)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>final_marking</strong> – Final marking</li>
-<li><strong>log</strong> – Log to use to decorate the Petri net</li>
-<li><strong>aggregated_statistics</strong> – Dictionary containing the frequency statistics</li>
-<li><strong>parameters</strong> – Algorithm parameters</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>log</strong> – Log to use to decorate the Petri net</p></li>
+<li><p><strong>aggregated_statistics</strong> – Dictionary containing the frequency statistics</p></li>
+<li><p><strong>parameters</strong> – Algorithm parameters</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">GraphViz object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">gviz</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>GraphViz object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>gviz</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.versions.greedy_decoration.get_decorated_net">
 <code class="descclassname">pm4py.visualization.petrinet.versions.greedy_decoration.</code><code class="descname">get_decorated_net</code><span class="sig-paren">(</span><em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>log</em>, <em>parameters=None</em>, <em>variant='frequency'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/versions/greedy_decoration.html#get_decorated_net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.versions.greedy_decoration.get_decorated_net" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a decorated net according to the specified variant (decorate Petri net based on DFG)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>final_marking</strong> – Final marking</li>
-<li><strong>log</strong> – Log to use to decorate the Petri net</li>
-<li><strong>parameters</strong> – Algorithm parameters</li>
-<li><strong>variant</strong> – Specify if the decoration should take into account the frequency or the performance</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>log</strong> – Log to use to decorate the Petri net</p></li>
+<li><p><strong>parameters</strong> – Algorithm parameters</p></li>
+<li><p><strong>variant</strong> – Specify if the decoration should take into account the frequency or the performance</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">GraphViz object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">gviz</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>GraphViz object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>gviz</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -249,28 +268,24 @@
 <code class="descclassname">pm4py.visualization.petrinet.versions.token_decoration.</code><code class="descname">apply_frequency</code><span class="sig-paren">(</span><em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>log=None</em>, <em>aggregated_statistics=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/versions/token_decoration.html#apply_frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.versions.token_decoration.apply_frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization
 method) adding frequency representation obtained by token replay</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>final_marking</strong> – Final marking</li>
-<li><strong>log</strong> – (Optional) log</li>
-<li><strong>aggregated_statistics</strong> – Dictionary containing the frequency statistics</li>
-<li><strong>parameters</strong> – Algorithm parameters (including the activity key used during the replay, and the timestamp key)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>log</strong> – (Optional) log</p></li>
+<li><p><strong>aggregated_statistics</strong> – Dictionary containing the frequency statistics</p></li>
+<li><p><strong>parameters</strong> – Algorithm parameters (including the activity key used during the replay, and the timestamp key)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Graph object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">viz</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Graph object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>viz</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -278,58 +293,50 @@ method) adding frequency representation obtained by token replay</p>
 <code class="descclassname">pm4py.visualization.petrinet.versions.token_decoration.</code><code class="descname">apply_performance</code><span class="sig-paren">(</span><em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>log=None</em>, <em>aggregated_statistics=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/versions/token_decoration.html#apply_performance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.versions.token_decoration.apply_performance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization
 method) adding performance representation obtained by token replay</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>final_marking</strong> – Final marking</li>
-<li><strong>log</strong> – (Optional) log</li>
-<li><strong>aggregated_statistics</strong> – Dictionary containing the frequency statistics</li>
-<li><strong>parameters</strong> – Algorithm parameters (including the activity key used during the replay, and the timestamp key)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>log</strong> – (Optional) log</p></li>
+<li><p><strong>aggregated_statistics</strong> – Dictionary containing the frequency statistics</p></li>
+<li><p><strong>parameters</strong> – Algorithm parameters (including the activity key used during the replay, and the timestamp key)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Graph object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">viz</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Graph object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>viz</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.versions.token_decoration.get_decorations">
 <code class="descclassname">pm4py.visualization.petrinet.versions.token_decoration.</code><code class="descname">get_decorations</code><span class="sig-paren">(</span><em>log</em>, <em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>parameters=None</em>, <em>measure='frequency'</em>, <em>ht_perf_method='last'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/versions/token_decoration.html#get_decorations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.versions.token_decoration.get_decorations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate decorations in order to annotate the Petri net</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>log</strong> – Trace log</li>
-<li><strong>net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>final_marking</strong> – Final marking</li>
-<li><strong>parameters</strong> – Parameters associated to the algorithm</li>
-<li><strong>measure</strong> – Measure to represent on the process model (frequency/performance)</li>
-<li><strong>ht_perf_method</strong> – Method to use in order to annotate hidden transitions (performance value could be put on the last possible
-point (last) or in the first possible point (first)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>parameters</strong> – Parameters associated to the algorithm</p></li>
+<li><p><strong>measure</strong> – Measure to represent on the process model (frequency/performance)</p></li>
+<li><p><strong>ht_perf_method</strong> – Method to use in order to annotate hidden transitions (performance value could be put on the last possible
+point (last) or in the first possible point (first)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Decorations to put on the process model</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">decorations</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Decorations to put on the process model</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>decorations</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -340,28 +347,24 @@ point (last) or in the first possible point (first)</li>
 <code class="descclassname">pm4py.visualization.petrinet.versions.wo_decoration.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>log=None</em>, <em>aggregated_statistics=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/versions/wo_decoration.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.versions.wo_decoration.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply method for Petri net visualization (useful for recall from factory; it calls the
 graphviz_visualization method)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>final_marking</strong> – Final marking</li>
-<li><strong>log</strong> – (Optional) log</li>
-<li><strong>aggregated_statistics</strong> – Dictionary containing the frequency statistics</li>
-<li><strong>parameters</strong> – Algorithm parameters</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>log</strong> – (Optional) log</p></li>
+<li><p><strong>aggregated_statistics</strong> – Dictionary containing the frequency statistics</p></li>
+<li><p><strong>parameters</strong> – Algorithm parameters</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Graph object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">viz</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Graph object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>viz</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -398,25 +401,16 @@ graphviz_visualization method)</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -159,19 +161,14 @@
 <dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply">
 <code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>df</em>, <em>values</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter dataframe on start activities</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Dataframe</p>
-</li>
-<li><p class="first"><strong>values</strong> – Values to filter on</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">case_id_glue -&gt; Case ID column in the dataframe
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>values</strong> – Values to filter on</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Case ID column in the dataframe
 activity_key -&gt; Column that represents the activity
 positive -&gt; Specifies if the filtered should be applied including traces (positive=True)
 or excluding traces (positive=False)</p>
@@ -179,136 +176,116 @@ or excluding traces (positive=False)</p>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply_auto_filter">
 <code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply auto filter on end activities</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">case_id_glue -&gt; Case ID column in the dataframe
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Case ID column in the dataframe
 activity_key -&gt; Column that represents the activity
 decreasingFactor -&gt; Decreasing factor that should be passed to the algorithm</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities">
-<code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">filter_df_on_start_activities</code><span class="sig-paren">(</span><em>df</em>, <em>values</em>, <em>case_id_glue='case:concept:name'</em>, <em>activity_key='concept:name'</em>, <em>positive=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#filter_df_on_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">filter_df_on_start_activities</code><span class="sig-paren">(</span><em>df</em>, <em>values</em>, <em>case_id_glue='case:concept:name'</em>, <em>activity_key='concept:name'</em>, <em>grouped_df=None</em>, <em>positive=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#filter_df_on_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter dataframe on start activities</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>df</strong> – Dataframe</li>
-<li><strong>values</strong> – Values to filter on</li>
-<li><strong>case_id_glue</strong> – Case ID column in the dataframe</li>
-<li><strong>activity_key</strong> – Column that represent the activity</li>
-<li><strong>positive</strong> – Specifies if the filtered should be applied including traces (positive=True) or excluding traces
-(positive=False)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>values</strong> – Values to filter on</p></li>
+<li><p><strong>case_id_glue</strong> – Case ID column in the dataframe</p></li>
+<li><p><strong>activity_key</strong> – Column that represent the activity</p></li>
+<li><p><strong>grouped_df</strong> – Grouped dataframe</p></li>
+<li><p><strong>positive</strong> – Specifies if the filtered should be applied including traces (positive=True) or excluding traces
+(positive=False)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities_nocc">
-<code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">filter_df_on_start_activities_nocc</code><span class="sig-paren">(</span><em>df</em>, <em>nocc</em>, <em>sa_count=None</em>, <em>case_id_glue='case:concept:name'</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#filter_df_on_start_activities_nocc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities_nocc" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">filter_df_on_start_activities_nocc</code><span class="sig-paren">(</span><em>df</em>, <em>nocc</em>, <em>sa_count0=None</em>, <em>case_id_glue='case:concept:name'</em>, <em>activity_key='concept:name'</em>, <em>grouped_df=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#filter_df_on_start_activities_nocc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities_nocc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter dataframe on start activities number of occurrences</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>df</strong> – Dataframe</li>
-<li><strong>nocc</strong> – Minimum number of occurrences of the start activity</li>
-<li><strong>sa_count</strong> – (if provided) Dictionary that associates each start activity with its count</li>
-<li><strong>case_id_glue</strong> – Column that contains the Case ID</li>
-<li><strong>activity_key</strong> – Column that contains the activity</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>nocc</strong> – Minimum number of occurrences of the start activity</p></li>
+<li><p><strong>sa_count0</strong> – (if provided) Dictionary that associates each start activity with its count</p></li>
+<li><p><strong>case_id_glue</strong> – Column that contains the Case ID</p></li>
+<li><p><strong>activity_key</strong> – Column that contains the activity</p></li>
+<li><p><strong>grouped_df</strong> – Grouped dataframe</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.get_start_activities">
 <code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">get_start_activities</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#get_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.get_start_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get start activities count</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">case_id_glue -&gt; Case ID column in the dataframe
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Case ID column in the dataframe
 activity_key -&gt; Column that represents the activity</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary of start activities along with their count</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">startact_dict</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of start activities along with their count</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>startact_dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -345,25 +322,16 @@ activity_key -&gt; Column that represents the activity</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

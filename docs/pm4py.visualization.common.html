@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -161,14 +163,11 @@
 <dt id="pm4py.visualization.common.gview.view">
 <code class="descclassname">pm4py.visualization.common.gview.</code><code class="descname">view</code><span class="sig-paren">(</span><em>gviz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/common/gview.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.common.gview.view" title="Permalink to this definition">¶</a></dt>
 <dd><p>View the diagram</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gviz</strong> – GraphViz diagram</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>gviz</strong> – GraphViz diagram</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -178,18 +177,14 @@
 <dt id="pm4py.visualization.common.save.save">
 <code class="descclassname">pm4py.visualization.common.save.</code><code class="descname">save</code><span class="sig-paren">(</span><em>gviz</em>, <em>output_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/common/save.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.common.save.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the diagram</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>gviz</strong> – GraphViz diagram</li>
-<li><strong>output_file_path</strong> – Path where the GraphViz output should be saved</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gviz</strong> – GraphViz diagram</p></li>
+<li><p><strong>output_file_path</strong> – Path where the GraphViz output should be saved</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -200,104 +195,93 @@
 <code class="descclassname">pm4py.visualization.common.utils.</code><code class="descname">get_arc_penwidth</code><span class="sig-paren">(</span><em>arc_measure</em>, <em>min_arc_measure</em>, <em>max_arc_measure</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/common/utils.html#get_arc_penwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.common.utils.get_arc_penwidth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate arc width given the current arc measure value, the minimum arc measure value and the
 maximum arc measure value</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>arc_measure</strong> – Current arc measure value</li>
-<li><strong>min_arc_measure</strong> – Minimum measure value among all arcs</li>
-<li><strong>max_arc_measure</strong> – Maximum measure value among all arcs</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arc_measure</strong> – Current arc measure value</p></li>
+<li><p><strong>min_arc_measure</strong> – Minimum measure value among all arcs</p></li>
+<li><p><strong>max_arc_measure</strong> – Maximum measure value among all arcs</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Current arc width in the graph</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">penwidth</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Current arc width in the graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>penwidth</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.common.utils.get_base64_from_file">
 <code class="descclassname">pm4py.visualization.common.utils.</code><code class="descname">get_base64_from_file</code><span class="sig-paren">(</span><em>temp_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/common/utils.html#get_base64_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.common.utils.get_base64_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get base 64 from string content of the file</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>temp_file</strong> – Temporary file path</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Base64 string</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">base64</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>temp_file</strong> – Temporary file path</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Base64 string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>base64</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.common.utils.get_base64_from_gviz">
 <code class="descclassname">pm4py.visualization.common.utils.</code><code class="descname">get_base64_from_gviz</code><span class="sig-paren">(</span><em>gviz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/common/utils.html#get_base64_from_gviz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.common.utils.get_base64_from_gviz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get base 64 from string content of the file</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gviz</strong> – Graphviz diagram</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Base64 string</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">base64</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>gviz</strong> – Graphviz diagram</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Base64 string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>base64</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.common.utils.get_trans_freq_color">
 <code class="descclassname">pm4py.visualization.common.utils.</code><code class="descname">get_trans_freq_color</code><span class="sig-paren">(</span><em>trans_count</em>, <em>min_trans_count</em>, <em>max_trans_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/common/utils.html#get_trans_freq_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.common.utils.get_trans_freq_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets transition frequency color</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trans_count</strong> – Current transition count</li>
-<li><strong>min_trans_count</strong> – Minimum transition count</li>
-<li><strong>max_trans_count</strong> – Maximum transition count</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trans_count</strong> – Current transition count</p></li>
+<li><p><strong>min_trans_count</strong> – Minimum transition count</p></li>
+<li><p><strong>max_trans_count</strong> – Maximum transition count</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Frequency color for visible transition</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">color</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Frequency color for visible transition</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>color</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.common.utils.human_readable_stat">
 <code class="descclassname">pm4py.visualization.common.utils.</code><code class="descname">human_readable_stat</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/common/utils.html#human_readable_stat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.common.utils.human_readable_stat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform a timedelta expressed in seconds into a human readable string</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>c</strong> – Timedelta expressed in seconds</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Human readable string</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>c</strong> – Timedelta expressed in seconds</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Human readable string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -334,25 +318,16 @@ maximum arc measure value</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

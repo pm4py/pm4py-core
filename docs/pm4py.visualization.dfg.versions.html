@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -164,78 +166,68 @@
 <dt id="pm4py.visualization.dfg.versions.simple_visualize.apply_frequency">
 <code class="descclassname">pm4py.visualization.dfg.versions.simple_visualize.</code><code class="descname">apply_frequency</code><span class="sig-paren">(</span><em>dfg</em>, <em>log=None</em>, <em>activities_count=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/dfg/versions/simple_visualize.html#apply_frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.dfg.versions.simple_visualize.apply_frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply method (to be called from the factory method; calls the graphviz_visualization method)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dfg</strong> – DFG graph</li>
-<li><strong>log</strong> – Event log</li>
-<li><strong>activities_count</strong> – (If provided) Dictionary that associates to each activity its count</li>
-<li><strong>parameters</strong> – Parameters passed to the algorithm (may include the format, the replay measure and the maximum number of edges
-in the diagram)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dfg</strong> – DFG graph</p></li>
+<li><p><strong>log</strong> – Event log</p></li>
+<li><p><strong>activities_count</strong> – (If provided) Dictionary that associates to each activity its count</p></li>
+<li><p><strong>parameters</strong> – Parameters passed to the algorithm (may include the format, the replay measure and the maximum number of edges
+in the diagram)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.dfg.versions.simple_visualize.apply_performance">
 <code class="descclassname">pm4py.visualization.dfg.versions.simple_visualize.</code><code class="descname">apply_performance</code><span class="sig-paren">(</span><em>dfg</em>, <em>log=None</em>, <em>activities_count=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/dfg/versions/simple_visualize.html#apply_performance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.dfg.versions.simple_visualize.apply_performance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply method (to be called from the factory method; calls the graphviz_visualization method)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dfg</strong> – DFG graph</li>
-<li><strong>log</strong> – Event log</li>
-<li><strong>activities_count</strong> – (If provided) Dictionary that associates to each activity its count</li>
-<li><strong>parameters</strong> – Parameters passed to the algorithm (may include the format, the replay measure and the maximum number of edges
-in the diagram)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dfg</strong> – DFG graph</p></li>
+<li><p><strong>log</strong> – Event log</p></li>
+<li><p><strong>activities_count</strong> – (If provided) Dictionary that associates to each activity its count</p></li>
+<li><p><strong>parameters</strong> – Parameters passed to the algorithm (may include the format, the replay measure and the maximum number of edges
+in the diagram)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.dfg.versions.simple_visualize.assign_penwidth_edges">
 <code class="descclassname">pm4py.visualization.dfg.versions.simple_visualize.</code><code class="descname">assign_penwidth_edges</code><span class="sig-paren">(</span><em>dfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/dfg/versions/simple_visualize.html#assign_penwidth_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.dfg.versions.simple_visualize.assign_penwidth_edges" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign penwidth to edges in directly-follows graph</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dfg</strong> – Direcly follows graph</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Graph penwidth that edges should have in the direcly follows graph</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">penwidth</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dfg</strong> – Direcly follows graph</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Graph penwidth that edges should have in the direcly follows graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>penwidth</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.dfg.versions.simple_visualize.get_activities_color">
 <code class="descclassname">pm4py.visualization.dfg.versions.simple_visualize.</code><code class="descname">get_activities_color</code><span class="sig-paren">(</span><em>activities_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/dfg/versions/simple_visualize.html#get_activities_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.dfg.versions.simple_visualize.get_activities_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get frequency color for attributes</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>activities_count</strong> – Count of attributes in the log</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Color assigned to attributes in the graph</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">activities_color</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>activities_count</strong> – Count of attributes in the log</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Color assigned to attributes in the graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>activities_color</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -243,47 +235,41 @@ in the diagram)</li>
 <code class="descclassname">pm4py.visualization.dfg.versions.simple_visualize.</code><code class="descname">get_min_max_value</code><span class="sig-paren">(</span><em>dfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/dfg/versions/simple_visualize.html#get_min_max_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.dfg.versions.simple_visualize.get_min_max_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets min and max value assigned to edges
 in DFG graph</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dfg</strong> – Directly follows graph</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><em>min_value</em> – Minimum value in directly follows graph</li>
-<li><em>max_value</em> – Maximum value in directly follows graph</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dfg</strong> – Directly follows graph</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>min_value</em> – Minimum value in directly follows graph</p></li>
+<li><p><em>max_value</em> – Maximum value in directly follows graph</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.dfg.versions.simple_visualize.graphviz_visualization">
-<code class="descclassname">pm4py.visualization.dfg.versions.simple_visualize.</code><code class="descname">graphviz_visualization</code><span class="sig-paren">(</span><em>activities_count</em>, <em>dfg</em>, <em>image_format='png'</em>, <em>measure='frequency'</em>, <em>max_no_of_edges_in_diagram=75</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/dfg/versions/simple_visualize.html#graphviz_visualization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.dfg.versions.simple_visualize.graphviz_visualization" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.visualization.dfg.versions.simple_visualize.</code><code class="descname">graphviz_visualization</code><span class="sig-paren">(</span><em>activities_count</em>, <em>dfg</em>, <em>image_format='png'</em>, <em>measure='frequency'</em>, <em>max_no_of_edges_in_diagram=170</em>, <em>start_activities=None</em>, <em>end_activities=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/dfg/versions/simple_visualize.html#graphviz_visualization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.dfg.versions.simple_visualize.graphviz_visualization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do GraphViz visualization of a DFG graph</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>activities_count</strong> – Count of attributes in the log (may include attributes that are not in the DFG graph)</li>
-<li><strong>dfg</strong> – DFG graph</li>
-<li><strong>image_format</strong> – GraphViz should be represented in this format</li>
-<li><strong>measure</strong> – Describes which measure is assigned to edges in direcly follows graph (frequency/performance)</li>
-<li><strong>max_no_of_edges_in_diagram</strong> – Maximum number of edges in the diagram allowed for visualization</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>activities_count</strong> – Count of attributes in the log (may include attributes that are not in the DFG graph)</p></li>
+<li><p><strong>dfg</strong> – DFG graph</p></li>
+<li><p><strong>image_format</strong> – GraphViz should be represented in this format</p></li>
+<li><p><strong>measure</strong> – Describes which measure is assigned to edges in direcly follows graph (frequency/performance)</p></li>
+<li><p><strong>max_no_of_edges_in_diagram</strong> – Maximum number of edges in the diagram allowed for visualization</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Digraph object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">viz</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Digraph object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>viz</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -320,25 +306,16 @@ in DFG graph</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

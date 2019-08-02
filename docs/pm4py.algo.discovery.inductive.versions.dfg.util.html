@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -162,44 +164,36 @@
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.verify_skip_for_parallel_cut">
 <code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.</code><code class="descname">verify_skip_for_parallel_cut</code><span class="sig-paren">(</span><em>dfg</em>, <em>children</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/check_skip_trans.html#verify_skip_for_parallel_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.verify_skip_for_parallel_cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify skip necessity, specific version for parallel cuts</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dfg</strong> – Directly-follows graph</li>
-<li><strong>children</strong> – Child of the parallel cut</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dfg</strong> – Directly-follows graph</p></li>
+<li><p><strong>children</strong> – Child of the parallel cut</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Boolean value that is true if the skip shall be added</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">must_add_skip</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean value that is true if the skip shall be added</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>must_add_skip</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.verify_skip_transition_necessity">
 <code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.</code><code class="descname">verify_skip_transition_necessity</code><span class="sig-paren">(</span><em>must_add_skip</em>, <em>initial_dfg</em>, <em>dfg</em>, <em>activities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/check_skip_trans.html#verify_skip_transition_necessity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.verify_skip_transition_necessity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Utility functions that decides if the skip transition is necessary</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>must_add_skip</strong> – Boolean value, provided by the parent caller, that tells if the skip is absolutely necessary</li>
-<li><strong>initial_dfg</strong> – Initial DFG</li>
-<li><strong>dfg</strong> – Current DFG</li>
-<li><strong>activities</strong> – Provided activities of the DFG</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>must_add_skip</strong> – Boolean value, provided by the parent caller, that tells if the skip is absolutely necessary</p></li>
+<li><p><strong>initial_dfg</strong> – Initial DFG</p></li>
+<li><p><strong>dfg</strong> – Current DFG</p></li>
+<li><p><strong>activities</strong> – Provided activities of the DFG</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -209,18 +203,17 @@
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.check_loop_need">
 <code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.</code><code class="descname">check_loop_need</code><span class="sig-paren">(</span><em>spec_tree_struct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfa.html#check_loop_need"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.check_loop_need" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a forced loop transitions shall be added</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>spec_tree_struct</strong> – Internal tree structure (after application of Inductive Miner)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Checks if the loop on the subtree is needed</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">need_loop_on_subtree</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spec_tree_struct</strong> – Internal tree structure (after application of Inductive Miner)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Checks if the loop on the subtree is needed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>need_loop_on_subtree</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -233,26 +226,22 @@
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.get_repr">
 <code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.</code><code class="descname">get_repr</code><span class="sig-paren">(</span><em>spec_tree_struct</em>, <em>rec_depth</em>, <em>must_add_skip=False</em>, <em>contains_empty_traces=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfa.html#get_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.get_repr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the representation of a process tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>spec_tree_struct</strong> – Internal tree structure (after application of Inductive Miner)</li>
-<li><strong>rec_depth</strong> – Current recursion depth</li>
-<li><strong>must_add_skip</strong> – Boolean value that indicate if we are forced to add the skip</li>
-<li><strong>contains_empty_traces</strong> – Boolean value that is True if the event log from which the DFG has been extracted contains empty traces</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spec_tree_struct</strong> – Internal tree structure (after application of Inductive Miner)</p></li>
+<li><p><strong>rec_depth</strong> – Current recursion depth</p></li>
+<li><p><strong>must_add_skip</strong> – Boolean value that indicate if we are forced to add the skip</p></li>
+<li><p><strong>contains_empty_traces</strong> – Boolean value that is True if the event log from which the DFG has been extracted contains empty traces</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Representation of the tree (could be printed, transformed, viewed)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">final_tree_repr</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Representation of the tree (could be printed, transformed, viewed)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>final_tree_repr</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -268,18 +257,17 @@
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.check_loop_need">
 <code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.</code><code class="descname">check_loop_need</code><span class="sig-paren">(</span><em>spec_tree_struct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfb.html#check_loop_need"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.check_loop_need" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a forced loop transitions shall be added</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>spec_tree_struct</strong> – Internal tree structure (after application of Inductive Miner)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Checks if the loop on the subtree is needed</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">need_loop_on_subtree</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spec_tree_struct</strong> – Internal tree structure (after application of Inductive Miner)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Checks if the loop on the subtree is needed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>need_loop_on_subtree</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -292,25 +280,21 @@
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.get_repr">
 <code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.</code><code class="descname">get_repr</code><span class="sig-paren">(</span><em>spec_tree_struct</em>, <em>rec_depth</em>, <em>contains_empty_traces=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfb.html#get_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.get_repr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the representation of a process tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>spec_tree_struct</strong> – Internal tree structure (after application of Inductive Miner)</li>
-<li><strong>rec_depth</strong> – Current recursion depth</li>
-<li><strong>contains_empty_traces</strong> – Boolean value that is True if the event log from which the DFG has been extracted contains empty traces</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spec_tree_struct</strong> – Internal tree structure (after application of Inductive Miner)</p></li>
+<li><p><strong>rec_depth</strong> – Current recursion depth</p></li>
+<li><p><strong>contains_empty_traces</strong> – Boolean value that is True if the event log from which the DFG has been extracted contains empty traces</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Representation of the tree (could be printed, transformed, viewed)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">final_tree_repr</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Representation of the tree (could be printed, transformed, viewed)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>final_tree_repr</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -374,25 +358,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

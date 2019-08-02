@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -160,114 +162,92 @@
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.diagnose_from_notexisting_activities">
 <code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="descname">diagnose_from_notexisting_activities</code><span class="sig-paren">(</span><em>log</em>, <em>notexisting_activities_in_model</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#diagnose_from_notexisting_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.diagnose_from_notexisting_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide some conformance diagnostics related to activities that are not present in the model</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Trace log</p>
-</li>
-<li><p class="first"><strong>notexisting_activities_in_model</strong> – Not existing activities in the model</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; attribute of the event containing the timestamp</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>notexisting_activities_in_model</strong> – Not existing activities in the model</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; attribute of the event containing the timestamp</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">For each problematic activity, diagnostics about case duration</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">diagnostics</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>For each problematic activity, diagnostics about case duration</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>diagnostics</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.diagnose_from_trans_fitness">
 <code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="descname">diagnose_from_trans_fitness</code><span class="sig-paren">(</span><em>log</em>, <em>trans_fitness</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#diagnose_from_trans_fitness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.diagnose_from_trans_fitness" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide some conformance diagnostics related to transitions that are executed in a unfit manner</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Trace log</p>
-</li>
-<li><p class="first"><strong>trans_fitness</strong> – For each transition, keeps track of unfit executions</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; attribute of the event containing the timestamp</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>trans_fitness</strong> – For each transition, keeps track of unfit executions</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; attribute of the event containing the timestamp</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">For each problematic transition, diagnostics about case duration</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">diagnostics</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>For each problematic transition, diagnostics about case duration</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>diagnostics</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.get_case_duration">
 <code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="descname">get_case_duration</code><span class="sig-paren">(</span><em>case</em>, <em>timestamp_key='time:timestamp'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#get_case_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.get_case_duration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the duration of a case</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>case</strong> – Case</li>
-<li><strong>timestamp_key</strong> – Attribute of the event to use as timestamp</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>case</strong> – Case</p></li>
+<li><p><strong>timestamp_key</strong> – Attribute of the event to use as timestamp</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Case duration</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">case_duration</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Case duration</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>case_duration</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.get_median_case_duration">
 <code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="descname">get_median_case_duration</code><span class="sig-paren">(</span><em>list_cases</em>, <em>timestamp_key='time:timestamp'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#get_median_case_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.get_median_case_duration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the median case duration of a list of cases</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>list_cases</strong> – List of cases</li>
-<li><strong>timestamp_key</strong> – Attribute of the event to use as timestamp</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_cases</strong> – List of cases</p></li>
+<li><p><strong>timestamp_key</strong> – Attribute of the event to use as timestamp</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Median case duration</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">median_case_duration</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Median case duration</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>median_case_duration</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -277,98 +257,78 @@
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.diagnose_from_notexisting_activities">
 <code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="descname">diagnose_from_notexisting_activities</code><span class="sig-paren">(</span><em>log</em>, <em>notexisting_activities_in_model</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#diagnose_from_notexisting_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.diagnose_from_notexisting_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform root cause analysis related to activities that are not present in the model</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Trace log object</p>
-</li>
-<li><p class="first"><strong>notexisting_activities_in_model</strong> – Not existing activities in the model</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><dl class="first last docutils">
-<dt>string_attributes -&gt; List of string event attributes to consider</dt>
-<dd><p class="first last">in building the decision tree</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log object</p></li>
+<li><p><strong>notexisting_activities_in_model</strong> – Not existing activities in the model</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><dl class="simple">
+<dt>string_attributes -&gt; List of string event attributes to consider</dt><dd><p>in building the decision tree</p>
 </dd>
-<dt>numeric_attributes -&gt; List of numeric event attributes to consider</dt>
-<dd><p class="first last">in building the decision tree</p>
+<dt>numeric_attributes -&gt; List of numeric event attributes to consider</dt><dd><p>in building the decision tree</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
-<dt>For each problematic transition:</dt>
-<dd><ul class="first last simple">
-<li>a decision tree comparing fit and unfit executions</li>
-<li>feature names</li>
-<li>classes</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>For each problematic transition:</dt><dd><ul class="simple">
+<li><p>a decision tree comparing fit and unfit executions</p></li>
+<li><p>feature names</p></li>
+<li><p>classes</p></li>
 </ul>
 </dd>
 </dl>
 </p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">diagnostics</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>diagnostics</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.diagnose_from_trans_fitness">
 <code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="descname">diagnose_from_trans_fitness</code><span class="sig-paren">(</span><em>log</em>, <em>trans_fitness</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#diagnose_from_trans_fitness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.diagnose_from_trans_fitness" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform root cause analysis starting from transition fitness knowledge</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Trace log object</p>
-</li>
-<li><p class="first"><strong>trans_fitness</strong> – Transition fitness object</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><dl class="first last docutils">
-<dt>string_attributes -&gt; List of string event attributes to consider</dt>
-<dd><p class="first last">in building the decision tree</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log object</p></li>
+<li><p><strong>trans_fitness</strong> – Transition fitness object</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><dl class="simple">
+<dt>string_attributes -&gt; List of string event attributes to consider</dt><dd><p>in building the decision tree</p>
 </dd>
-<dt>numeric_attributes -&gt; List of numeric event attributes to consider</dt>
-<dd><p class="first last">in building the decision tree</p>
+<dt>numeric_attributes -&gt; List of numeric event attributes to consider</dt><dd><p>in building the decision tree</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
-<dt>For each problematic transition:</dt>
-<dd><ul class="first last simple">
-<li>a decision tree comparing fit and unfit executions</li>
-<li>feature names</li>
-<li>classes</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>For each problematic transition:</dt><dd><ul class="simple">
+<li><p>a decision tree comparing fit and unfit executions</p></li>
+<li><p>feature names</p></li>
+<li><p>classes</p></li>
 </ul>
 </dd>
 </dl>
 </p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">diagnostics</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>diagnostics</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -376,25 +336,21 @@
 <code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="descname">form_log_from_dictio_couple</code><span class="sig-paren">(</span><em>first_cases_repr</em>, <em>second_cases_repr</em>, <em>enable_multiplier=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#form_log_from_dictio_couple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.form_log_from_dictio_couple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Form a log from a couple of dictionary, to use for
 root cause analysis</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>first_cases_repr</strong> – First cases representation</li>
-<li><strong>second_cases_repr</strong> – Second cases representation</li>
-<li><strong>enable_multiplier</strong> – Enable balancing of classes</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>first_cases_repr</strong> – First cases representation</p></li>
+<li><p><strong>second_cases_repr</strong> – Second cases representation</p></li>
+<li><p><strong>enable_multiplier</strong> – Enable balancing of classes</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Trace log object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">log</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Trace log object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>log</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -403,28 +359,24 @@ root cause analysis</p>
 <dd><p>Gets a log representation, useful for training the decision tree,
 from a couple of dictionaries along with the list of string attributes
 and numeric attributes to consider, to use for root cause analysis</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>first_cases_repr</strong> – First cases representation</li>
-<li><strong>second_cases_repr</strong> – Second cases representation</li>
-<li><strong>string_attributes</strong> – String attributes contained in the log</li>
-<li><strong>numeric_attributes</strong> – Numeric attributes contained in the log</li>
-<li><strong>enable_multiplier</strong> – Enable balancing of classes</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>first_cases_repr</strong> – First cases representation</p></li>
+<li><p><strong>second_cases_repr</strong> – Second cases representation</p></li>
+<li><p><strong>string_attributes</strong> – String attributes contained in the log</p></li>
+<li><p><strong>numeric_attributes</strong> – Numeric attributes contained in the log</p></li>
+<li><p><strong>enable_multiplier</strong> – Enable balancing of classes</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>data</em> – Matrix representation of the event log</li>
-<li><em>feature_names</em> – Array of feature names</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>data</em> – Matrix representation of the event log</p></li>
+<li><p><em>feature_names</em> – Array of feature names</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -461,25 +413,16 @@ and numeric attributes to consider, to use for root cause analysis</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

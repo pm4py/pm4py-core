@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -157,18 +159,17 @@
 <span id="pm4py-algo-conformance-alignments-versions-state-equation-a-star-module"></span><h2>pm4py.algo.conformance.alignments.versions.state_equation_a_star module<a class="headerlink" href="#module-pm4py.algo.conformance.alignments.versions.state_equation_a_star" title="Permalink to this headline">¶</a></h2>
 <p>This module contains code that allows us to compute alignments on the basis of a regular A* search on the state-space
 of the synchronous product net of a trace and a Petri net.
-The main algorithm follows <a class="footnote-reference" href="#id2" id="id1">[1]</a>.
+The main algorithm follows <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.
 When running the log-based variant, the code is running in parallel on a trace based level.
 Furthermore, by default, the code applies heuristic estimation, and prefers those states that have the smallest h-value
 in case the f-value of two states is equal.</p>
 <p class="rubric">References</p>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Sebastiaan J. van Zelst et al., “Tuning Alignment Computation: An Experimental Evaluation”,
-<a class="reference external" href="mailto:ATAED&#37;&#52;&#48;Petri">ATAED<span>&#64;</span>Petri</a> Nets/ACSD 2017: 6-20. <a href="#id3"><span class="problematic" id="id4">`http://ceur-ws.org/Vol-1847/paper01.pdf`_</span></a>.</td></tr>
-</tbody>
-</table>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Sebastiaan J. van Zelst et al., “Tuning Alignment Computation: An Experimental Evaluation”,
+<a class="reference external" href="mailto:ATAED&#37;&#52;&#48;Petri">ATAED<span>&#64;</span>Petri</a> Nets/ACSD 2017: 6-20. <a href="#id3"><span class="problematic" id="id4">`http://ceur-ws.org/Vol-1847/paper01.pdf`_</span></a>.</p>
+</dd>
+</dl>
 <dl class="class">
 <dt id="pm4py.algo.conformance.alignments.versions.state_equation_a_star.SearchTuple">
 <em class="property">class </em><code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">SearchTuple</code><span class="sig-paren">(</span><em>f</em>, <em>g</em>, <em>h</em>, <em>m</em>, <em>p</em>, <em>t</em>, <em>x</em>, <em>trust</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#SearchTuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.SearchTuple" title="Permalink to this definition">¶</a></dt>
@@ -179,86 +180,74 @@ in case the f-value of two states is equal.</p>
 <dt id="pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply">
 <code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>trace</em>, <em>petri_net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs the basic alignment search, given a trace and a net.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> input trace, assumed to be a list of events (i.e. the code will use the activity key)</li>
-<li><strong>to get the attributes)</strong></li>
-<li><strong>petri_net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.PetriNet</span></code> the Petri net to use in the alignment)</li>
-<li><strong>initial_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> initial marking in the Petri net)</li>
-<li><strong>final_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> final marking in the Petri net)</li>
-<li><strong>parameters</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> (optional) dictionary containing one of the following:) – PARAM_TRACE_COST_FUNCTION: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> (parameter) mapping of each index of the trace to a positive cost value
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trace</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> input trace, assumed to be a list of events (i.e. the code will use the activity key)</p></li>
+<li><p><strong>to get the attributes)</strong></p></li>
+<li><p><strong>petri_net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.PetriNet</span></code> the Petri net to use in the alignment)</p></li>
+<li><p><strong>initial_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> initial marking in the Petri net)</p></li>
+<li><p><strong>final_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> final marking in the Petri net)</p></li>
+<li><p><strong>parameters</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> (optional) dictionary containing one of the following:) – PARAM_TRACE_COST_FUNCTION: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> (parameter) mapping of each index of the trace to a positive cost value
 PARAM_MODEL_COST_FUNCTION: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> (parameter) mapping of each transition in the model to corresponding
 model cost
 PARAM_SYNC_COST_FUNCTION: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> (parameter) mapping of each transition in the model to corresponding
 synchronous costs
-PARAM_ACTIVITY_KEY: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> (parameter) key to use to identify the activity described by the events</li>
+PARAM_ACTIVITY_KEY: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> (parameter) key to use to identify the activity described by the events</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dictionary</strong></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><cite>dict</cite> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong> and <strong>traversed_arcs</strong></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dictionary</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>dict</cite> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong> and <strong>traversed_arcs</strong></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply_sync_prod">
 <code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">apply_sync_prod</code><span class="sig-paren">(</span><em>sync_prod</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>cost_function</em>, <em>skip</em>, <em>ret_tuple_as_trans_desc=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#apply_sync_prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply_sync_prod" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs the basic alignment search on top of the synchronous product net, given a cost function and skip-symbol</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>sync_prod</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.PetriNet</span></code> synchronous product net)</li>
-<li><strong>initial_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> initial marking in the synchronous product net)</li>
-<li><strong>final_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> final marking in the synchronous product net)</li>
-<li><strong>cost_function</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> cost function mapping transitions to the synchronous product net)</li>
-<li><strong>skip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Any</span></code> symbol to use for skips in the alignment)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sync_prod</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.PetriNet</span></code> synchronous product net)</p></li>
+<li><p><strong>initial_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> initial marking in the synchronous product net)</p></li>
+<li><p><strong>final_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> final marking in the synchronous product net)</p></li>
+<li><p><strong>cost_function</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> cost function mapping transitions to the synchronous product net)</p></li>
+<li><p><strong>skip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Any</span></code> symbol to use for skips in the alignment)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><strong>dictionary</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong>)</li>
-<li><em>and **traversed_arcs**</em></li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>dictionary</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong>)</p></li>
+<li><p><em>and **traversed_arcs**</em></p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.alignments.versions.state_equation_a_star.get_best_worst_cost">
-<code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">get_best_worst_cost</code><span class="sig-paren">(</span><em>petri_net</em>, <em>initial_marking</em>, <em>final_marking</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#get_best_worst_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.get_best_worst_cost" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.algo.conformance.alignments.versions.state_equation_a_star.</code><code class="descname">get_best_worst_cost</code><span class="sig-paren">(</span><em>petri_net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/versions/state_equation_a_star.html#get_best_worst_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.versions.state_equation_a_star.get_best_worst_cost" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the best worst cost of an alignment</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>petri_net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>final_marking</strong> – Final marking</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>petri_net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Best worst cost of alignment</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">best_worst_cost</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Best worst cost of alignment</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>best_worst_cost</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -295,25 +284,16 @@ PARAM_ACTIVITY_KEY: <code class="xref py py-class docutils literal notranslate">
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

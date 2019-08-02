@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -167,29 +169,25 @@
 <dd><p>Performs the basic alignment search, given a trace, a net and the costs of the “best of the worst”.
 The costs of the best of the worst allows us to deduce the fitness of the trace.
 We compute the fitness by means of 1 - alignment costs / best of worst costs (i.e. costs of 0 =&gt; fitness 1)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> input trace, assumed to be a list of events (i.e. the code will use the activity key to)</li>
-<li><strong>get the attributes)</strong></li>
-<li><strong>petri_net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.PetriNet</span></code> the Petri net to use in the alignment)</li>
-<li><strong>initial_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> initial marking in the Petri net)</li>
-<li><strong>final_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> final marking in the Petri net)</li>
-<li><strong>best_worst</strong> (<em>cost of the best worst alignment of a trace (empty trace aligned to the model)</em>)</li>
-<li><strong>activity_key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> (optional) key to use to identify the activity described by the events)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trace</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> input trace, assumed to be a list of events (i.e. the code will use the activity key to)</p></li>
+<li><p><strong>get the attributes)</strong></p></li>
+<li><p><strong>petri_net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.PetriNet</span></code> the Petri net to use in the alignment)</p></li>
+<li><p><strong>initial_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> initial marking in the Petri net)</p></li>
+<li><p><strong>final_marking</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.net.Marking</span></code> final marking in the Petri net)</p></li>
+<li><p><strong>best_worst</strong> (<em>cost of the best worst alignment of a trace (empty trace aligned to the model)</em>)</p></li>
+<li><p><strong>activity_key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> (optional) key to use to identify the activity described by the events)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dictionary</strong></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><cite>dict</cite> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong> and <strong>traversed_arcs</strong></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dictionary</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>dict</cite> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong> and <strong>traversed_arcs</strong></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -197,24 +195,20 @@ We compute the fitness by means of 1 - alignment costs / best of worst costs (i.
 <code class="descclassname">pm4py.evaluation.replay_fitness.versions.alignment_based.</code><code class="descname">evaluate</code><span class="sig-paren">(</span><em>aligned_traces</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/replay_fitness/versions/alignment_based.html#evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.replay_fitness.versions.alignment_based.evaluate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms the alignment result to a simple dictionary
 including the percentage of fit traces and the average fitness</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>aligned_traces</strong> – Alignments calculated for the traces in the log</li>
-<li><strong>parameters</strong> – Possible parameters of the evaluation</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aligned_traces</strong> – Alignments calculated for the traces in the log</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the evaluation</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Containing two keys (percFitTraces and averageFitness)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dictionary</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Containing two keys (percFitTraces and averageFitness)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dictionary</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -224,27 +218,23 @@ including the percentage of fit traces and the average fitness</p>
 <dt id="pm4py.evaluation.replay_fitness.versions.token_replay.apply">
 <code class="descclassname">pm4py.evaluation.replay_fitness.versions.token_replay.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>petri_net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/replay_fitness/versions/token_replay.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.replay_fitness.versions.token_replay.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply token replay fitness evaluation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>log</strong> – Trace log</li>
-<li><strong>petri_net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>final_marking</strong> – Final marking</li>
-<li><strong>parameters</strong> – Parameters</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>petri_net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>parameters</strong> – Parameters</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Containing two keys (percFitTraces and averageFitness)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dictionary</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Containing two keys (percFitTraces and averageFitness)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dictionary</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -252,24 +242,20 @@ including the percentage of fit traces and the average fitness</p>
 <code class="descclassname">pm4py.evaluation.replay_fitness.versions.token_replay.</code><code class="descname">evaluate</code><span class="sig-paren">(</span><em>aligned_traces</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/replay_fitness/versions/token_replay.html#evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.replay_fitness.versions.token_replay.evaluate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a dictionary expressing fitness in a synthetic way from the list of boolean values
 saying if a trace in the log is fit, and the float values of fitness associated to each trace</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>aligned_traces</strong> – Result of the token-based replayer</li>
-<li><strong>parameters</strong> – Possible parameters of the evaluation</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aligned_traces</strong> – Result of the token-based replayer</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the evaluation</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Containing two keys (percFitTraces and averageFitness)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dictionary</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Containing two keys (percFitTraces and averageFitness)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dictionary</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -306,25 +292,16 @@ saying if a trace in the log is fit, and the float values of fitness associated 
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

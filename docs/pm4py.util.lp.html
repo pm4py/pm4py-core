@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -163,7 +165,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pm4py.util.lp.versions.html">pm4py.util.lp.versions package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.util.lp.versions.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pm4py.util.lp.versions.html#module-pm4py.util.lp.versions.cvxopt_solver">pm4py.util.lp.versions.cvxopt_solver module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.util.lp.versions.html#module-pm4py.util.lp.versions.ortools_solver">pm4py.util.lp.versions.ortools_solver module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.util.lp.versions.html#module-pm4py.util.lp.versions.pulp_solver">pm4py.util.lp.versions.pulp_solver module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.util.lp.versions.html#module-pm4py.util.lp.versions">Module contents</a></li>
 </ul>
@@ -178,81 +180,69 @@
 <span id="pm4py-util-lp-factory-module"></span><h2>pm4py.util.lp.factory module<a class="headerlink" href="#module-pm4py.util.lp.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.util.lp.factory.apply">
-<code class="descclassname">pm4py.util.lp.factory.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>c</em>, <em>Aub</em>, <em>bub</em>, <em>Aeq</em>, <em>beq</em>, <em>parameters=None</em>, <em>variant='cvxopt'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/lp/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.lp.factory.apply" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.util.lp.factory.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>c</em>, <em>Aub</em>, <em>bub</em>, <em>Aeq</em>, <em>beq</em>, <em>parameters=None</em>, <em>variant='ortools_solver'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/lp/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.lp.factory.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the overall solution of the problem</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>c</strong> – c parameter of the algorithm</li>
-<li><strong>Aub</strong> – A_ub parameter of the algorithm</li>
-<li><strong>bub</strong> – b_ub parameter of the algorithm</li>
-<li><strong>Aeq</strong> – A_eq parameter of the algorithm</li>
-<li><strong>beq</strong> – b_eq parameter of the algorithm</li>
-<li><strong>parameters</strong> – Possible parameters of the algorithm</li>
-<li><strong>variant</strong> – Variant of the algorithm, possible values: cvxopt</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c</strong> – c parameter of the algorithm</p></li>
+<li><p><strong>Aub</strong> – A_ub parameter of the algorithm</p></li>
+<li><p><strong>bub</strong> – b_ub parameter of the algorithm</p></li>
+<li><p><strong>Aeq</strong> – A_eq parameter of the algorithm</p></li>
+<li><p><strong>beq</strong> – b_eq parameter of the algorithm</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pulp, ortools</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Solution of the LP problem by the given algorithm</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">sol</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution of the LP problem by the given algorithm</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>sol</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.util.lp.factory.get_points_from_sol">
-<code class="descclassname">pm4py.util.lp.factory.</code><code class="descname">get_points_from_sol</code><span class="sig-paren">(</span><em>sol</em>, <em>parameters=None</em>, <em>variant='cvxopt'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/lp/factory.html#get_points_from_sol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.lp.factory.get_points_from_sol" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.util.lp.factory.</code><code class="descname">get_points_from_sol</code><span class="sig-paren">(</span><em>sol</em>, <em>parameters=None</em>, <em>variant='ortools_solver'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/lp/factory.html#get_points_from_sol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.lp.factory.get_points_from_sol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the points from the solution</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>sol</strong> – Solution of the LP problem by the given algorithm</li>
-<li><strong>parameters</strong> – Possible parameters of the algorithm</li>
-<li><strong>variant</strong> – Variant of the algorithm, possible values: cvxopt</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sol</strong> – Solution of the LP problem by the given algorithm</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pulp, ortools</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Point of the solution</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">points</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Point of the solution</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>points</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.util.lp.factory.get_prim_obj_from_sol">
-<code class="descclassname">pm4py.util.lp.factory.</code><code class="descname">get_prim_obj_from_sol</code><span class="sig-paren">(</span><em>sol</em>, <em>parameters=None</em>, <em>variant='cvxopt'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/lp/factory.html#get_prim_obj_from_sol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.lp.factory.get_prim_obj_from_sol" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.util.lp.factory.</code><code class="descname">get_prim_obj_from_sol</code><span class="sig-paren">(</span><em>sol</em>, <em>parameters=None</em>, <em>variant='ortools_solver'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/lp/factory.html#get_prim_obj_from_sol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.lp.factory.get_prim_obj_from_sol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the primal objective from the solution of the LP problem</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>sol</strong> – Solution of the ILP problem by the given algorithm</li>
-<li><strong>parameters</strong> – Possible parameters of the algorithm</li>
-<li><strong>variant</strong> – Variant of the algorithm, possible values: cvxopt</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sol</strong> – Solution of the ILP problem by the given algorithm</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pulp, ortools</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Primal objective</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">prim_obj</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Primal objective</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>prim_obj</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -289,25 +279,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

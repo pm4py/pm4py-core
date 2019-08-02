@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -174,17 +176,13 @@
 <dt id="pm4py.objects.log.importer.xes.factory.apply">
 <code class="descclassname">pm4py.objects.log.importer.xes.factory.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>path</em>, <em>parameters=None</em>, <em>variant='iterparse'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/xes/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.xes.factory.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import a XES log into a EventLog object</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>path</strong> – Log path</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including</dt>
-<dd><p class="first last">timestamp_sort -&gt; Specify if we should sort log by timestamp
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path</strong> – Log path</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including</dt><dd><p>timestamp_sort -&gt; Specify if we should sort log by timestamp
 timestamp_key -&gt; If sort is enabled, then sort the log by using this key
 reverse_sort -&gt; Specify in which direction the log should be sorted
 index_trace_indexes -&gt; Specify if trace indexes should be added as event attribute for each event
@@ -193,41 +191,34 @@ max_no_traces_to_import -&gt; Specify the maximum number of traces to import fro
 </dd>
 </dl>
 </li>
-<li><p class="first"><strong>variant</strong> –</p>
-<dl class="docutils">
-<dt>Variant of the algorithm to use, including:</dt>
-<dd><p class="first last">iterparse, nonstandard</p>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, including:</dt><dd><p>iterparse, nonstandard</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Trace log object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">log</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Trace log object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>log</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.importer.xes.factory.import_log">
 <code class="descclassname">pm4py.objects.log.importer.xes.factory.</code><code class="descname">import_log</code><span class="sig-paren">(</span><em>path</em>, <em>parameters=None</em>, <em>variant='iterparse'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/xes/factory.html#import_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.xes.factory.import_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import a XES log into a EventLog object</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>path</strong> – Log path</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including</dt>
-<dd><p class="first last">timestamp_sort -&gt; Specify if we should sort log by timestamp
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path</strong> – Log path</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including</dt><dd><p>timestamp_sort -&gt; Specify if we should sort log by timestamp
 timestamp_key -&gt; If sort is enabled, then sort the log by using this key
 reverse_sort -&gt; Specify in which direction the log should be sorted
 index_trace_indexes -&gt; Specify if trace indexes should be added as event attribute for each event
@@ -236,41 +227,34 @@ max_no_traces_to_import -&gt; Specify the maximum number of traces to import fro
 </dd>
 </dl>
 </li>
-<li><p class="first"><strong>variant</strong> –</p>
-<dl class="docutils">
-<dt>Variant of the algorithm to use, including:</dt>
-<dd><p class="first last">iterparse, nonstandard</p>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, including:</dt><dd><p>iterparse, nonstandard</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Trace log object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">log</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Trace log object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>log</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.importer.xes.factory.import_log_from_string">
 <code class="descclassname">pm4py.objects.log.importer.xes.factory.</code><code class="descname">import_log_from_string</code><span class="sig-paren">(</span><em>log_string</em>, <em>parameters=None</em>, <em>variant='iterparse'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/xes/factory.html#import_log_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.xes.factory.import_log_from_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imports a log from a string</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log_string</strong> – String that contains the XES</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including</dt>
-<dd><p class="first last">timestamp_sort -&gt; Specify if we should sort log by timestamp
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log_string</strong> – String that contains the XES</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including</dt><dd><p>timestamp_sort -&gt; Specify if we should sort log by timestamp
 timestamp_key -&gt; If sort is enabled, then sort the log by using this key
 reverse_sort -&gt; Specify in which direction the log should be sorted
 index_trace_indexes -&gt; Specify if trace indexes should be added as event attribute for each event
@@ -279,24 +263,21 @@ max_no_traces_to_import -&gt; Specify the maximum number of traces to import fro
 </dd>
 </dl>
 </li>
-<li><p class="first"><strong>variant</strong> –</p>
-<dl class="docutils">
-<dt>Variant of the algorithm to use, including:</dt>
-<dd><p class="first last">iterparse, nonstandard</p>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, including:</dt><dd><p>iterparse, nonstandard</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Trace log object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">log</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Trace log object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>log</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -333,25 +314,16 @@ max_no_traces_to_import -&gt; Specify the maximum number of traces to import fro
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
