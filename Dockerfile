@@ -10,6 +10,6 @@ RUN apt-get -y install zip unzip
 RUN pip install pyvis networkx==2.2 matplotlib numpy ciso8601 pyarrow==0.13.0 cvxopt lxml graphviz pandas scipy scikit-learn pytz==2018.9
 RUN pip install pydotplus
 
-RUN pip install pulp
+RUN pip install pulp ortools
 COPY . /app
 RUN cd /app && cp tests/test_dockers/setups/setup_master.py setup.py && python setup.py install
