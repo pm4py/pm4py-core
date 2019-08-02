@@ -17,7 +17,6 @@ import sys
 from copy import copy
 
 import numpy as np
-from cvxopt import matrix
 
 import pm4py
 from pm4py import util as pm4pyutil
@@ -33,7 +32,7 @@ from pm4py.util.lp import factory as lp_solver_factory
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
-DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN
+DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.ORTOOLS_SOLVER
 PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE = 'ret_tuple_as_trans_desc'
 
 TRACE_NET_CONSTR_FUNCTION = "trace_net_constr_function"
@@ -196,6 +195,9 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     cost_vec = [x * 1.0 for x in cost_vec]
 
     if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN:
+        # not available in the latest version of PM4Py
+        from cvxopt import matrix
+
         a_matrix = matrix(a_matrix)
         g_matrix = matrix(g_matrix)
         h_cvx = matrix(h_cvx)
