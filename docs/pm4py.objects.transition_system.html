@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -188,7 +190,7 @@
 
 <dl class="class">
 <dt id="pm4py.objects.transition_system.transition_system.TransitionSystem.Transition">
-<em class="property">class </em><code class="descname">Transition</code><span class="sig-paren">(</span><em>name</em>, <em>from_state=None</em>, <em>to_state=None</em>, <em>data=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/transition_system/transition_system.html#TransitionSystem.Transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.transition_system.transition_system.TransitionSystem.Transition" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">Transition</code><span class="sig-paren">(</span><em>name</em>, <em>from_state</em>, <em>to_state</em>, <em>data=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/transition_system/transition_system.html#TransitionSystem.Transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.transition_system.transition_system.TransitionSystem.Transition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="attribute">
 <dt id="pm4py.objects.transition_system.transition_system.TransitionSystem.Transition.data">
@@ -237,27 +239,23 @@
 <code class="descclassname">pm4py.objects.transition_system.utils.</code><code class="descname">add_arc_from_to</code><span class="sig-paren">(</span><em>name</em>, <em>fr</em>, <em>to</em>, <em>ts</em>, <em>data=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/transition_system/utils.html#add_arc_from_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.transition_system.utils.add_arc_from_to" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a transition from a state to another state in some transition system.
 Assumes from and to are in the transition system!</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>name of the transition</em>)</li>
-<li><strong>fr</strong> (<em>state from</em>)</li>
-<li><strong>to</strong> (<em>state to</em>)</li>
-<li><strong>ts</strong> (<em>transition system to use</em>)</li>
-<li><strong>data</strong> (<em>data associated to the Transition System</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>name of the transition</em>)</p></li>
+<li><p><strong>fr</strong> (<em>state from</em>)</p></li>
+<li><p><strong>to</strong> (<em>state to</em>)</p></li>
+<li><p><strong>ts</strong> (<em>transition system to use</em>)</p></li>
+<li><p><strong>data</strong> (<em>data associated to the Transition System</em>)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -265,25 +263,21 @@ Assumes from and to are in the transition system!</p>
 <code class="descclassname">pm4py.objects.transition_system.utils.</code><code class="descname">remove_all_arcs_from_to</code><span class="sig-paren">(</span><em>fr</em>, <em>to</em>, <em>ts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/transition_system/utils.html#remove_all_arcs_from_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.transition_system.utils.remove_all_arcs_from_to" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes all transitions from a state to another state in some transition system.
 Assumes from and to are in the transition system!</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>fr</strong> (<em>state from</em>)</li>
-<li><strong>to</strong> (<em>state to</em>)</li>
-<li><strong>ts</strong> (<em>transition system to use</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fr</strong> (<em>state from</em>)</p></li>
+<li><p><strong>to</strong> (<em>state to</em>)</p></li>
+<li><p><strong>ts</strong> (<em>transition system to use</em>)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -291,26 +285,22 @@ Assumes from and to are in the transition system!</p>
 <code class="descclassname">pm4py.objects.transition_system.utils.</code><code class="descname">remove_arc_from_to</code><span class="sig-paren">(</span><em>name</em>, <em>fr</em>, <em>to</em>, <em>ts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/transition_system/utils.html#remove_arc_from_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.transition_system.utils.remove_arc_from_to" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes a transition with a specific name from a state to another state in some transition system.
 Assumes from and to are in the transition system!</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>name of the transition</em>)</li>
-<li><strong>fr</strong> (<em>state from</em>)</li>
-<li><strong>to</strong> (<em>state to</em>)</li>
-<li><strong>ts</strong> (<em>transition system to use</em>)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>name of the transition</em>)</p></li>
+<li><p><strong>fr</strong> (<em>state from</em>)</p></li>
+<li><p><strong>to</strong> (<em>state to</em>)</p></li>
+<li><p><strong>ts</strong> (<em>transition system to use</em>)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -318,18 +308,17 @@ Assumes from and to are in the transition system!</p>
 <code class="descclassname">pm4py.objects.transition_system.utils.</code><code class="descname">transitive_reduction</code><span class="sig-paren">(</span><em>ts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/transition_system/utils.html#transitive_reduction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.transition_system.utils.transitive_reduction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the transitive reduction of an acyclic transition system.
 Assumes the transition system in input to be acyclic.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ts</strong> (<em>acyclic transition system to use</em>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ts</strong> (<em>acyclic transition system to use</em>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -366,25 +355,16 @@ Assumes the transition system in input to be acyclic.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

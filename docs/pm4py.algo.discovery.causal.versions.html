@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -163,18 +165,17 @@ A causal relation holds between activity a and b, written as a-&gt;b, if dfg(a,b
 <dt id="pm4py.algo.discovery.causal.versions.alpha.apply">
 <code class="descclassname">pm4py.algo.discovery.causal.versions.alpha.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>dfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/causal/versions/alpha.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.causal.versions.alpha.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes a causal graph based on a directly follows graph according to the alpha miner</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dfg</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> directly follows relation, should be a dict of the form (activity,activity) -&gt; num of occ.)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>causal_relation</strong></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing all causal relations as keys (with value 1 indicating that it holds)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dfg</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> directly follows relation, should be a dict of the form (activity,activity) -&gt; num of occ.)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>causal_relation</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> containing all causal relations as keys (with value 1 indicating that it holds)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -184,20 +185,18 @@ A causal relation holds between activity a and b, written as a-&gt;b, if dfg(a,b
 <dt id="pm4py.algo.discovery.causal.versions.heuristic.apply">
 <code class="descclassname">pm4py.algo.discovery.causal.versions.heuristic.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>dfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/causal/versions/heuristic.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.causal.versions.heuristic.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes a causal graph based on a directly follows graph according to the heuristics miner</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dfg</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> directly follows relation, should be a dict of the form (activity,activity) -&gt; num of occ.)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><em>return: dictionary containing all causal relations as keys (with value inbetween -1 and 1 indicating that</em></li>
-<li><em>how strong it holds)</em></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dfg</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> directly follows relation, should be a dict of the form (activity,activity) -&gt; num of occ.)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>return: dictionary containing all causal relations as keys (with value inbetween -1 and 1 indicating that</em></p></li>
+<li><p><em>how strong it holds)</em></p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -234,25 +233,16 @@ A causal relation holds between activity a and b, written as a-&gt;b, if dfg(a,b
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

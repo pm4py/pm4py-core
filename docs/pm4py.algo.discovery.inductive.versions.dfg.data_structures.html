@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -164,38 +166,30 @@
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.check_par_cut">
 <code class="descname">check_par_cut</code><span class="sig-paren">(</span><em>conn_components</em>, <em>this_nx_graph</em>, <em>strongly_connected_components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfa.html#Subtree.check_par_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.check_par_cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if in a parallel cut all relations are present</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>conn_components</strong> – Connected components</li>
-<li><strong>this_nx_graph</strong> – NX graph calculated on the DFG</li>
-<li><strong>strongly_connected_components</strong> – Strongly connected components</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conn_components</strong> – Connected components</p></li>
+<li><p><strong>this_nx_graph</strong> – NX graph calculated on the DFG</p></li>
+<li><p><strong>strongly_connected_components</strong> – Strongly connected components</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.detect_concurrent_cut">
 <code class="descname">detect_concurrent_cut</code><span class="sig-paren">(</span><em>conn_components</em>, <em>this_nx_graph</em>, <em>strongly_connected_components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfa.html#Subtree.detect_concurrent_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.detect_concurrent_cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detects concurrent cut</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>conn_components</strong> – Connected components</li>
-<li><strong>this_nx_graph</strong> – NX graph calculated on the DFG</li>
-<li><strong>strongly_connected_components</strong> – Strongly connected components</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conn_components</strong> – Connected components</p></li>
+<li><p><strong>this_nx_graph</strong> – NX graph calculated on the DFG</p></li>
+<li><p><strong>strongly_connected_components</strong> – Strongly connected components</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -208,97 +202,77 @@
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.detect_loop_cut">
 <code class="descname">detect_loop_cut</code><span class="sig-paren">(</span><em>conn_components</em>, <em>this_nx_graph</em>, <em>strongly_connected_components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfa.html#Subtree.detect_loop_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.detect_loop_cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect loop cut</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>conn_components</strong> – Connected components of the graph</li>
-<li><strong>this_nx_graph</strong> – NX graph calculated on the DFG</li>
-<li><strong>strongly_connected_components</strong> – Strongly connected components</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conn_components</strong> – Connected components of the graph</p></li>
+<li><p><strong>this_nx_graph</strong> – NX graph calculated on the DFG</p></li>
+<li><p><strong>strongly_connected_components</strong> – Strongly connected components</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.detect_parallel_cut">
 <code class="descname">detect_parallel_cut</code><span class="sig-paren">(</span><em>orig_conn_components</em>, <em>this_nx_graph</em>, <em>strongly_connected_components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfa.html#Subtree.detect_parallel_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.detect_parallel_cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detects parallel cut</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>orig_conn_components</strong> – Connected components of the graph</li>
-<li><strong>this_nx_graph</strong> – NX graph calculated on the DFG</li>
-<li><strong>strongly_connected_components</strong> – Strongly connected components</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orig_conn_components</strong> – Connected components of the graph</p></li>
+<li><p><strong>this_nx_graph</strong> – NX graph calculated on the DFG</p></li>
+<li><p><strong>strongly_connected_components</strong> – Strongly connected components</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.detect_sequential_cut">
 <code class="descname">detect_sequential_cut</code><span class="sig-paren">(</span><em>conn_components</em>, <em>this_nx_graph</em>, <em>strongly_connected_components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfa.html#Subtree.detect_sequential_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.detect_sequential_cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect sequential cut in DFG graph</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>conn_components</strong> – Connected components of the graph</li>
-<li><strong>this_nx_graph</strong> – NX graph calculated on the DFG</li>
-<li><strong>strongly_connected_components</strong> – Strongly connected components</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conn_components</strong> – Connected components of the graph</p></li>
+<li><p><strong>this_nx_graph</strong> – NX graph calculated on the DFG</p></li>
+<li><p><strong>strongly_connected_components</strong> – Strongly connected components</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.determine_best_set_sequential">
 <code class="descname">determine_best_set_sequential</code><span class="sig-paren">(</span><em>act</em>, <em>set1</em>, <em>set2</em>, <em>preferred_set1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfa.html#Subtree.determine_best_set_sequential"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.determine_best_set_sequential" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine best set to assign the current activity</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>act</strong> – Activity</li>
-<li><strong>set1</strong> – First set of attributes</li>
-<li><strong>set2</strong> – Second set of attributes</li>
-<li><strong>preferred_set1</strong> – Boolean value that decides if activities goes preferrely in set1 or in set2</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>act</strong> – Activity</p></li>
+<li><p><strong>set1</strong> – First set of attributes</p></li>
+<li><p><strong>set2</strong> – Second set of attributes</p></li>
+<li><p><strong>preferred_set1</strong> – Boolean value that decides if activities goes preferrely in set1 or in set2</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.initialize_tree">
 <code class="descname">initialize_tree</code><span class="sig-paren">(</span><em>dfg</em>, <em>initial_dfg</em>, <em>activities</em>, <em>second_iteration=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfa.html#Subtree.initialize_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa.Subtree.initialize_tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize the tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dfg</strong> – Directly follows graph of this subtree</li>
-<li><strong>initial_dfg</strong> – Referral directly follows graph that should be taken in account adding hidden/loop transitions</li>
-<li><strong>activities</strong> – Activities of this subtree</li>
-<li><strong>second_iteration</strong> – Boolean that indicates if we are executing this method for the second time</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dfg</strong> – Directly follows graph of this subtree</p></li>
+<li><p><strong>initial_dfg</strong> – Referral directly follows graph that should be taken in account adding hidden/loop transitions</p></li>
+<li><p><strong>activities</strong> – Activities of this subtree</p></li>
+<li><p><strong>second_iteration</strong> – Boolean that indicates if we are executing this method for the second time</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -314,43 +288,35 @@
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.check_if_comp_is_completely_unconnected">
 <code class="descname">check_if_comp_is_completely_unconnected</code><span class="sig-paren">(</span><em>conn1</em>, <em>conn2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfb.html#SubtreeB.check_if_comp_is_completely_unconnected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.check_if_comp_is_completely_unconnected" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if two connected components are completely unconnected each other</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>conn1</strong> – First connected component</li>
-<li><strong>conn2</strong> – Second connected component</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conn1</strong> – First connected component</p></li>
+<li><p><strong>conn2</strong> – Second connected component</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Boolean value that tells if the two connected components are completely unconnected</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">boolean</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean value that tells if the two connected components are completely unconnected</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.check_par_cut">
 <code class="descname">check_par_cut</code><span class="sig-paren">(</span><em>conn_components</em>, <em>this_nx_graph</em>, <em>strongly_connected_components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfb.html#SubtreeB.check_par_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.check_par_cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if in a parallel cut all relations are present</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>conn_components</strong> – Connected components</li>
-<li><strong>this_nx_graph</strong> – NX graph calculated on the DFG</li>
-<li><strong>strongly_connected_components</strong> – Strongly connected components</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conn_components</strong> – Connected components</p></li>
+<li><p><strong>this_nx_graph</strong> – NX graph calculated on the DFG</p></li>
+<li><p><strong>strongly_connected_components</strong> – Strongly connected components</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -363,112 +329,94 @@
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.detect_loop_cut">
 <code class="descname">detect_loop_cut</code><span class="sig-paren">(</span><em>conn_components</em>, <em>this_nx_graph</em>, <em>strongly_connected_components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfb.html#SubtreeB.detect_loop_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.detect_loop_cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect loop cut</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>conn_components</strong> – Connected components of the graph</li>
-<li><strong>this_nx_graph</strong> – NX graph calculated on the DFG</li>
-<li><strong>strongly_connected_components</strong> – Strongly connected components</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conn_components</strong> – Connected components of the graph</p></li>
+<li><p><strong>this_nx_graph</strong> – NX graph calculated on the DFG</p></li>
+<li><p><strong>strongly_connected_components</strong> – Strongly connected components</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.detect_parallel_cut">
 <code class="descname">detect_parallel_cut</code><span class="sig-paren">(</span><em>orig_conn_components</em>, <em>this_nx_graph</em>, <em>strongly_connected_components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfb.html#SubtreeB.detect_parallel_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.detect_parallel_cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detects parallel cut</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>orig_conn_components</strong> – Connected components of the graph</li>
-<li><strong>this_nx_graph</strong> – NX graph calculated on the DFG</li>
-<li><strong>strongly_connected_components</strong> – Strongly connected components</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orig_conn_components</strong> – Connected components of the graph</p></li>
+<li><p><strong>this_nx_graph</strong> – NX graph calculated on the DFG</p></li>
+<li><p><strong>strongly_connected_components</strong> – Strongly connected components</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.detect_sequential_cut">
 <code class="descname">detect_sequential_cut</code><span class="sig-paren">(</span><em>conn_components</em>, <em>this_nx_graph</em>, <em>strongly_connected_components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfb.html#SubtreeB.detect_sequential_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.detect_sequential_cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect sequential cut in DFG graph</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>conn_components</strong> – Connected components of the graph</li>
-<li><strong>this_nx_graph</strong> – NX graph calculated on the DFG</li>
-<li><strong>strongly_connected_components</strong> – Strongly connected components</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conn_components</strong> – Connected components of the graph</p></li>
+<li><p><strong>this_nx_graph</strong> – NX graph calculated on the DFG</p></li>
+<li><p><strong>strongly_connected_components</strong> – Strongly connected components</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.get_connected_components">
 <code class="descname">get_connected_components</code><span class="sig-paren">(</span><em>ingoing</em>, <em>outgoing</em>, <em>activities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfb.html#SubtreeB.get_connected_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.get_connected_components" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get connected components in the DFG graph</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ingoing</strong> – Ingoing attributes</li>
-<li><strong>outgoing</strong> – Outgoing attributes</li>
-<li><strong>activities</strong> – Activities to consider</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ingoing</strong> – Ingoing attributes</p></li>
+<li><p><strong>outgoing</strong> – Outgoing attributes</p></li>
+<li><p><strong>activities</strong> – Activities to consider</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.get_connection_matrix">
 <code class="descname">get_connection_matrix</code><span class="sig-paren">(</span><em>strongly_connected_components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfb.html#SubtreeB.get_connection_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.get_connection_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the connection matrix between connected components</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>strongly_connected_components</strong> – Strongly connected components</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Matrix reporting the connections</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">connection_matrix</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>strongly_connected_components</strong> – Strongly connected components</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matrix reporting the connections</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>connection_matrix</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.merge_connected_components">
 <code class="descname">merge_connected_components</code><span class="sig-paren">(</span><em>conn_components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfb.html#SubtreeB.merge_connected_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.merge_connected_components" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merge the unconnected connected components</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>conn_components</strong> – Connected components</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Merged connected components</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">conn_components</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>conn_components</strong> – Connected components</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Merged connected components</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>conn_components</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -487,18 +435,15 @@
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.transform_dfg_to_directed_nx_graph">
 <code class="descname">transform_dfg_to_directed_nx_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/data_structures/subtree_imdfb.html#SubtreeB.transform_dfg_to_directed_nx_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfb.SubtreeB.transform_dfg_to_directed_nx_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform DFG to directed NetworkX graph</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><em>G</em> – NetworkX digraph</li>
-<li><em>nodes_map</em> – Correspondence between digraph nodes and activities</li>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>G</em> – NetworkX digraph</p></li>
+<li><p><em>nodes_map</em> – Correspondence between digraph nodes and activities</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -537,25 +482,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

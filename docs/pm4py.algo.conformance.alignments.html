@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -178,23 +180,15 @@
 <dl class="function">
 <dt id="pm4py.algo.conformance.alignments.factory.apply_log">
 <code class="descclassname">pm4py.algo.conformance.alignments.factory.</code><code class="descname">apply_log</code><span class="sig-paren">(</span><em>log</em>, <em>petri_net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>parameters=None</em>, <em>version='state_equation_a_star'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/factory.html#apply_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.factory.apply_log" title="Permalink to this definition">¶</a></dt>
-<dd><p>apply alignments to a trace</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – object of the form <code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.Trace</span></code> trace of events</p>
-</li>
-<li><p class="first"><strong>petri_net</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.PetriNet" title="pm4py.objects.petri.petrinet.PetriNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.PetriNet</span></code></a> the model to use for the alignment</p>
-</li>
-<li><p class="first"><strong>initial_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> initial marking of the net</p>
-</li>
-<li><p class="first"><strong>final_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> final marking of the net</p>
-</li>
-<li><p class="first"><strong>version</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> selected variant of the algorithm, possible values: {‘state_equation_a_star’}</p>
-</li>
-<li><p class="first"><strong>parameters</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> parameters of the algorithm,
+<dd><p>apply alignments to a trace
+:Parameters: * <strong>log</strong> – object of the form <code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.Trace</span></code> trace of events</p>
+<blockquote>
+<div><ul>
+<li><p><strong>petri_net</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.PetriNet" title="pm4py.objects.petri.petrinet.PetriNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.PetriNet</span></code></a> the model to use for the alignment</p></li>
+<li><p><strong>initial_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> initial marking of the net</p></li>
+<li><p><strong>final_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> final marking of the net</p></li>
+<li><p><strong>version</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> selected variant of the algorithm, possible values: {‘state_equation_a_star’}</p></li>
+<li><p><strong>parameters</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> parameters of the algorithm,
 for key ‘state_equation_a_star’:</p>
 <blockquote>
 <div><p>pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; Attribute in the log that contains the activity
@@ -207,44 +201,34 @@ mapping of each index of the trace to a positive cost value</p>
 </div></blockquote>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong> and
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong> and
 <strong>traversed_arcs</strong>
 The alignment is a sequence of labels of the form (a,t), (a,&gt;&gt;), or (&gt;&gt;,t)
 representing synchronous/log/model-moves.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">alignment</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>alignment</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.alignments.factory.apply_trace">
 <code class="descclassname">pm4py.algo.conformance.alignments.factory.</code><code class="descname">apply_trace</code><span class="sig-paren">(</span><em>trace</em>, <em>petri_net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>parameters=None</em>, <em>version='state_equation_a_star'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/factory.html#apply_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.factory.apply_trace" title="Permalink to this definition">¶</a></dt>
-<dd><p>apply alignments to a trace</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>trace</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.Trace</span></code> trace of events</p>
-</li>
-<li><p class="first"><strong>petri_net</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.PetriNet" title="pm4py.objects.petri.petrinet.PetriNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.PetriNet</span></code></a> the model to use for the alignment</p>
-</li>
-<li><p class="first"><strong>initial_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> initial marking of the net</p>
-</li>
-<li><p class="first"><strong>final_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> final marking of the net</p>
-</li>
-<li><p class="first"><strong>version</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> selected variant of the algorithm, possible values: {‘state_equation_a_star’}</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> parameters of the algorithm, for key ‘state_equation_a_star’:</dt>
-<dd><p class="first last">pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; Attribute in the log that contains the activity
+<dd><p>apply alignments to a trace
+:Parameters: * <strong>trace</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.Trace</span></code> trace of events</p>
+<blockquote>
+<div><ul>
+<li><p><strong>petri_net</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.PetriNet" title="pm4py.objects.petri.petrinet.PetriNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.PetriNet</span></code></a> the model to use for the alignment</p></li>
+<li><p><strong>initial_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> initial marking of the net</p></li>
+<li><p><strong>final_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> final marking of the net</p></li>
+<li><p><strong>version</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> selected variant of the algorithm, possible values: {‘state_equation_a_star’}</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> parameters of the algorithm, for key ‘state_equation_a_star’:</dt><dd><p>pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; Attribute in the log that contains the activity
 pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION -&gt;
 mapping of each transition in the model to corresponding synchronous costs
 pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION -&gt;
@@ -255,19 +239,18 @@ mapping of each index of the trace to a positive cost value</p>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong> and
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with keys <strong>alignment</strong>, <strong>cost</strong>, <strong>visited_states</strong>, <strong>queued_states</strong> and
 <strong>traversed_arcs</strong>
 The alignment is a sequence of labels of the form (a,t), (a,&gt;&gt;), or (&gt;&gt;,t)
 representing synchronous/log/model-moves.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">alignment</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>alignment</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -281,21 +264,17 @@ representing synchronous/log/model-moves.</p>
 * model moves: cost 1000
 * tau moves: cost 1
 * sync moves: cost 0</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>synchronous_product_net</strong> – </li>
-<li><strong>skip</strong> – </li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>synchronous_product_net</strong> – </p></li>
+<li><p><strong>skip</strong> – </p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -332,25 +311,16 @@ representing synchronous/log/model-moves.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

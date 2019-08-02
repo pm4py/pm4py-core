@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -80,6 +82,7 @@
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">pm4py.visualization.petrinet.util package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.visualization.petrinet.util.alignments_decoration">pm4py.visualization.petrinet.util.alignments_decoration module</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.petrinet.util.performance_map">pm4py.visualization.petrinet.util.performance_map module</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.petrinet.util.vis_trans_shortest_paths">pm4py.visualization.petrinet.util.vis_trans_shortest_paths module</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.petrinet.util">Module contents</a></li>
@@ -154,56 +157,113 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.visualization.petrinet.util.alignments_decoration">
+<span id="pm4py-visualization-petrinet-util-alignments-decoration-module"></span><h2>pm4py.visualization.petrinet.util.alignments_decoration module<a class="headerlink" href="#module-pm4py.visualization.petrinet.util.alignments_decoration" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.visualization.petrinet.util.alignments_decoration.get_alignments_decoration">
+<code class="descclassname">pm4py.visualization.petrinet.util.alignments_decoration.</code><code class="descname">get_alignments_decoration</code><span class="sig-paren">(</span><em>net</em>, <em>im</em>, <em>fm</em>, <em>log=None</em>, <em>aligned_traces=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/alignments_decoration.html#get_alignments_decoration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.alignments_decoration.get_alignments_decoration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a decoration for the Petri net based on alignments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>im</strong> – Initial marking</p></li>
+<li><p><strong>fm</strong> – Final marking</p></li>
+<li><p><strong>log</strong> – Event log</p></li>
+<li><p><strong>aligned_traces</strong> – Aligned traces</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Decorations to use</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>decorations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.petrinet.util.alignments_decoration.get_corr_hex">
+<code class="descclassname">pm4py.visualization.petrinet.util.alignments_decoration.</code><code class="descname">get_corr_hex</code><span class="sig-paren">(</span><em>num</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/alignments_decoration.html#get_corr_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.alignments_decoration.get_corr_hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets correspondence between a number
+and an hexadecimal string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>num</strong> – Number</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Hexadecimal string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>hex_string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.petrinet.util.alignments_decoration.get_transitions_color">
+<code class="descclassname">pm4py.visualization.petrinet.util.alignments_decoration.</code><code class="descname">get_transitions_color</code><span class="sig-paren">(</span><em>count_move_on_model</em>, <em>count_fit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/alignments_decoration.html#get_transitions_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.alignments_decoration.get_transitions_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the color associated to the transition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>count_move_on_model</strong> – Number of move on models</p></li>
+<li><p><strong>count_fit</strong> – Number of fit moves</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Color associated to the transition</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>color</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.visualization.petrinet.util.performance_map">
 <span id="pm4py-visualization-petrinet-util-performance-map-module"></span><h2>pm4py.visualization.petrinet.util.performance_map module<a class="headerlink" href="#module-pm4py.visualization.petrinet.util.performance_map" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.util.performance_map.aggregate_statistics">
 <code class="descclassname">pm4py.visualization.petrinet.util.performance_map.</code><code class="descname">aggregate_statistics</code><span class="sig-paren">(</span><em>statistics</em>, <em>measure='frequency'</em>, <em>aggregation_measure=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/performance_map.html#aggregate_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.performance_map.aggregate_statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets aggregated statistics</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>statistics</strong> – Individual element statistics (including unaggregated performances)</li>
-<li><strong>measure</strong> – Desidered view on data (frequency or performance)</li>
-<li><strong>aggregation_measure</strong> – Aggregation measure (e.g. mean, min) to use</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>statistics</strong> – Individual element statistics (including unaggregated performances)</p></li>
+<li><p><strong>measure</strong> – Desidered view on data (frequency or performance)</p></li>
+<li><p><strong>aggregation_measure</strong> – Aggregation measure (e.g. mean, min) to use</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Aggregated statistics for arcs, transitions, places</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">aggregated_statistics</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Aggregated statistics for arcs, transitions, places</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>aggregated_statistics</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.util.performance_map.aggregate_stats">
 <code class="descclassname">pm4py.visualization.petrinet.util.performance_map.</code><code class="descname">aggregate_stats</code><span class="sig-paren">(</span><em>statistics</em>, <em>elem</em>, <em>aggregation_measure</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/performance_map.html#aggregate_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.performance_map.aggregate_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Aggregate the statistics</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>statistics</strong> – Element statistics</li>
-<li><strong>elem</strong> – Current element</li>
-<li><strong>aggregation_measure</strong> – Aggregation measure (e.g. mean, min) to use</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>statistics</strong> – Element statistics</p></li>
+<li><p><strong>elem</strong> – Current element</p></li>
+<li><p><strong>aggregation_measure</strong> – Aggregation measure (e.g. mean, min) to use</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Aggregated statistics</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">aggr_stat</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Aggregated statistics</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>aggr_stat</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -211,125 +271,175 @@
 <code class="descclassname">pm4py.visualization.petrinet.util.performance_map.</code><code class="descname">calculate_annotation_for_trace</code><span class="sig-paren">(</span><em>trace</em>, <em>net</em>, <em>initial_marking</em>, <em>act_trans</em>, <em>activity_key</em>, <em>ht_perf_method='last'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/performance_map.html#calculate_annotation_for_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.performance_map.calculate_annotation_for_trace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate annotation for a trace in the variant, in order to retrieve information
 useful for calculate frequency/performance for all the traces belonging to the variant</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> – Trace</li>
-<li><strong>net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>act_trans</strong> – Activated transitions during token replay of the given trace</li>
-<li><strong>activity_key</strong> – Attribute that identifies the activity (must be specified if different from concept:name)</li>
-<li><strong>ht_perf_method</strong> – Method to use in order to annotate hidden transitions (performance value could be put on the last possible
-point (last) or in the first possible point (first)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trace</strong> – Trace</p></li>
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>act_trans</strong> – Activated transitions during token replay of the given trace</p></li>
+<li><p><strong>activity_key</strong> – Attribute that identifies the activity (must be specified if different from concept:name)</p></li>
+<li><p><strong>ht_perf_method</strong> – Method to use in order to annotate hidden transitions (performance value could be put on the last possible
+point (last) or in the first possible point (first)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Statistics annotation for the given trace</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">annotation</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Statistics annotation for the given trace</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>annotation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.petrinet.util.performance_map.filter_cases_exceeding_specified_acti_performance">
+<code class="descclassname">pm4py.visualization.petrinet.util.performance_map.</code><code class="descname">filter_cases_exceeding_specified_acti_performance</code><span class="sig-paren">(</span><em>log</em>, <em>transition_performance</em>, <em>activity</em>, <em>lower_bound</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/performance_map.html#filter_cases_exceeding_specified_acti_performance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.performance_map.filter_cases_exceeding_specified_acti_performance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter cases exceeding the specified activity performance threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Event log</p></li>
+<li><p><strong>transition_performance</strong> – Dictionary where each transition label is associated to performance measures</p></li>
+<li><p><strong>activity</strong> – Target activity (of the filter)</p></li>
+<li><p><strong>lower_bound</strong> – Lower bound (filter cases which have a duration of the activity exceeding)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>filtered_log</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.util.performance_map.find_min_max_arc_frequency">
 <code class="descclassname">pm4py.visualization.petrinet.util.performance_map.</code><code class="descname">find_min_max_arc_frequency</code><span class="sig-paren">(</span><em>statistics</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/performance_map.html#find_min_max_arc_frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.performance_map.find_min_max_arc_frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find minimum and maximum arc frequency</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>statistics</strong> – Element statistics</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><em>min_frequency</em> – Minimum arc frequency</li>
-<li><em>max_frequency</em> – Maximum arc frequency</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>statistics</strong> – Element statistics</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>min_frequency</em> – Minimum arc frequency</p></li>
+<li><p><em>max_frequency</em> – Maximum arc frequency</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.util.performance_map.find_min_max_arc_performance">
 <code class="descclassname">pm4py.visualization.petrinet.util.performance_map.</code><code class="descname">find_min_max_arc_performance</code><span class="sig-paren">(</span><em>statistics</em>, <em>aggregation_measure</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/performance_map.html#find_min_max_arc_performance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.performance_map.find_min_max_arc_performance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find minimum and maximum arc performance</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>statistics</strong> – Element statistics</li>
-<li><strong>aggregation_measure</strong> – Aggregation measure (e.g. mean, min) to use</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>statistics</strong> – Element statistics</p></li>
+<li><p><strong>aggregation_measure</strong> – Aggregation measure (e.g. mean, min) to use</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>min_performance</em> – Minimum performance</li>
-<li><em>max_performance</em> – Maximum performance</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>min_performance</em> – Minimum performance</p></li>
+<li><p><em>max_performance</em> – Maximum performance</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.util.performance_map.find_min_max_trans_frequency">
 <code class="descclassname">pm4py.visualization.petrinet.util.performance_map.</code><code class="descname">find_min_max_trans_frequency</code><span class="sig-paren">(</span><em>statistics</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/performance_map.html#find_min_max_trans_frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.performance_map.find_min_max_trans_frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find minimum and maximum transition frequency</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>statistics</strong> – Element statistics</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><em>min_frequency</em> – Minimum transition frequency (in the replay)</li>
-<li><em>max_frequency</em> – Maximum transition frequency (in the replay)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>statistics</strong> – Element statistics</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>min_frequency</em> – Minimum transition frequency (in the replay)</p></li>
+<li><p><em>max_frequency</em> – Maximum transition frequency (in the replay)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.petrinet.util.performance_map.get_idx_exceeding_specified_acti_performance">
+<code class="descclassname">pm4py.visualization.petrinet.util.performance_map.</code><code class="descname">get_idx_exceeding_specified_acti_performance</code><span class="sig-paren">(</span><em>log</em>, <em>transition_performance</em>, <em>activity</em>, <em>lower_bound</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/performance_map.html#get_idx_exceeding_specified_acti_performance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.performance_map.get_idx_exceeding_specified_acti_performance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get indexes of the cases exceeding the specified activity performance threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Event log</p></li>
+<li><p><strong>transition_performance</strong> – Dictionary where each transition label is associated to performance measures</p></li>
+<li><p><strong>activity</strong> – Target activity (of the filter)</p></li>
+<li><p><strong>lower_bound</strong> – Lower bound (filter cases which have a duration of the activity exceeding)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of indexes in the log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>idx</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.petrinet.util.performance_map.get_transition_performance_with_token_replay">
+<code class="descclassname">pm4py.visualization.petrinet.util.performance_map.</code><code class="descname">get_transition_performance_with_token_replay</code><span class="sig-paren">(</span><em>log</em>, <em>net</em>, <em>im</em>, <em>fm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/performance_map.html#get_transition_performance_with_token_replay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.performance_map.get_transition_performance_with_token_replay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the transition performance through the usage of token-based replay</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Event log</p></li>
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>im</strong> – Initial marking</p></li>
+<li><p><strong>fm</strong> – Final marking</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary where each transition label is associated to performance measures</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>transition_performance</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.util.performance_map.single_element_statistics">
 <code class="descclassname">pm4py.visualization.petrinet.util.performance_map.</code><code class="descname">single_element_statistics</code><span class="sig-paren">(</span><em>log</em>, <em>net</em>, <em>initial_marking</em>, <em>aligned_traces</em>, <em>variants_idx</em>, <em>activity_key='concept:name'</em>, <em>timestamp_key='time:timestamp'</em>, <em>ht_perf_method='last'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/performance_map.html#single_element_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.performance_map.single_element_statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get single Petrinet element statistics</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>log</strong> – Log</li>
-<li><strong>net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>aligned_traces</strong> – Result of the token-based replay</li>
-<li><strong>variants_idx</strong> – Variants along with indexes of belonging traces</li>
-<li><strong>activity_key</strong> – Activity key (must be specified if different from concept:name)</li>
-<li><strong>timestamp_key</strong> – Timestamp key (must be specified if different from time:timestamp)</li>
-<li><strong>ht_perf_method</strong> – Method to use in order to annotate hidden transitions (performance value could be put on the last possible
-point (last) or in the first possible point (first)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>aligned_traces</strong> – Result of the token-based replay</p></li>
+<li><p><strong>variants_idx</strong> – Variants along with indexes of belonging traces</p></li>
+<li><p><strong>activity_key</strong> – Activity key (must be specified if different from concept:name)</p></li>
+<li><p><strong>timestamp_key</strong> – Timestamp key (must be specified if different from time:timestamp)</p></li>
+<li><p><strong>ht_perf_method</strong> – Method to use in order to annotate hidden transitions (performance value could be put on the last possible
+point (last) or in the first possible point (first)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Petri net element statistics (frequency, unaggregated performance)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">statistics</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Petri net element statistics (frequency, unaggregated performance)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>statistics</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -342,83 +452,71 @@ point (last) or in the first possible point (first)</li>
 but based on DFG measures, shortest paths and activities count.
 The variant could be ‘frequency’ or ‘performance’.
 Aggregation measure could also be specified</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>net</strong> – Petri net</li>
-<li><strong>dfg</strong> – Directly-Follows graph</li>
-<li><strong>spaths</strong> – Shortest paths between visible transitions in the Petri net</li>
-<li><strong>activities_count</strong> – Count of activities in the Petri net</li>
-<li><strong>variant</strong> – Describe how to decorate the Petri net (could be frequency or performance)</li>
-<li><strong>aggregation_measure</strong> – Specifies the aggregation measure</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>dfg</strong> – Directly-Follows graph</p></li>
+<li><p><strong>spaths</strong> – Shortest paths between visible transitions in the Petri net</p></li>
+<li><p><strong>activities_count</strong> – Count of activities in the Petri net</p></li>
+<li><p><strong>variant</strong> – Describe how to decorate the Petri net (could be frequency or performance)</p></li>
+<li><p><strong>aggregation_measure</strong> – Specifies the aggregation measure</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Decorations to use for the Petri net</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">decorations</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Decorations to use for the Petri net</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>decorations</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.util.vis_trans_shortest_paths.get_shortest_paths">
 <code class="descclassname">pm4py.visualization.petrinet.util.vis_trans_shortest_paths.</code><code class="descname">get_shortest_paths</code><span class="sig-paren">(</span><em>net</em>, <em>enable_extension=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/vis_trans_shortest_paths.html#get_shortest_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.vis_trans_shortest_paths.get_shortest_paths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets shortest paths between visible transitions in a Petri net</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>net</strong> – Petri net</li>
-<li><strong>enable_extension</strong> – Enable decoration of more arcs, in a risky way, when needed</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>enable_extension</strong> – Enable decoration of more arcs, in a risky way, when needed</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Shortest paths</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">spaths</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Shortest paths</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>spaths</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.util.vis_trans_shortest_paths.get_shortest_paths_from_trans">
 <code class="descclassname">pm4py.visualization.petrinet.util.vis_trans_shortest_paths.</code><code class="descname">get_shortest_paths_from_trans</code><span class="sig-paren">(</span><em>original_trans</em>, <em>trans</em>, <em>spaths</em>, <em>visited_arcs</em>, <em>visited_transitions</em>, <em>added_elements</em>, <em>rec_depth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/util/vis_trans_shortest_paths.html#get_shortest_paths_from_trans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.util.vis_trans_shortest_paths.get_shortest_paths_from_trans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get shortest paths from a given transition</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>original_trans</strong> – Original transition</li>
-<li><strong>trans</strong> – Current considered transition</li>
-<li><strong>spaths</strong> – Map of shortest paths</li>
-<li><strong>visited_arcs</strong> – Set of visited arcs</li>
-<li><strong>visited_transitions</strong> – Set of visited transitions</li>
-<li><strong>added_elements</strong> – Elements to add recursively</li>
-<li><strong>rec_depth</strong> – Recursion depth</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>original_trans</strong> – Original transition</p></li>
+<li><p><strong>trans</strong> – Current considered transition</p></li>
+<li><p><strong>spaths</strong> – Map of shortest paths</p></li>
+<li><p><strong>visited_arcs</strong> – Set of visited arcs</p></li>
+<li><p><strong>visited_transitions</strong> – Set of visited transitions</p></li>
+<li><p><strong>added_elements</strong> – Elements to add recursively</p></li>
+<li><p><strong>rec_depth</strong> – Recursion depth</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>spaths</em> – Map of shortest paths</li>
-<li><em>visited_arcs</em> – Set of visited arcs</li>
-<li><em>added_elements</em> – Elements to add recursively</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>spaths</em> – Map of shortest paths</p></li>
+<li><p><em>visited_arcs</em> – Set of visited arcs</p></li>
+<li><p><em>added_elements</em> – Elements to add recursively</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -455,25 +553,16 @@ Aggregation measure could also be specified</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

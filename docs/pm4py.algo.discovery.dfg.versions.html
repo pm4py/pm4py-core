@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -80,6 +82,7 @@
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">pm4py.algo.discovery.dfg.versions package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.discovery.dfg.versions.freq_triples">pm4py.algo.discovery.dfg.versions.freq_triples module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.dfg.versions.native">pm4py.algo.discovery.dfg.versions.native module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.dfg.versions.performance">pm4py.algo.discovery.dfg.versions.performance module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.dfg.versions">Module contents</a></li>
@@ -154,37 +157,59 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.algo.discovery.dfg.versions.freq_triples">
+<span id="pm4py-algo-discovery-dfg-versions-freq-triples-module"></span><h2>pm4py.algo.discovery.dfg.versions.freq_triples module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.versions.freq_triples" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.algo.discovery.dfg.versions.freq_triples.apply">
+<code class="descclassname">pm4py.algo.discovery.dfg.versions.freq_triples.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/versions/freq_triples.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.versions.freq_triples.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the number of directly follows occurrences, i.e. of the form &lt;…a,b…&gt;, in an event log.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters passed to the algorithms:</dt><dd><p>activity_key -&gt; Attribute to use as activity</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DFG graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dfg</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.algo.discovery.dfg.versions.native">
 <span id="pm4py-algo-discovery-dfg-versions-native-module"></span><h2>pm4py.algo.discovery.dfg.versions.native module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.versions.native" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.discovery.dfg.versions.native.apply">
 <code class="descclassname">pm4py.algo.discovery.dfg.versions.native.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/versions/native.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.versions.native.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Counts the number of directly follows occurrences, i.e. of the form &lt;…a,b…&gt;, in an event log.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Trace log</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters passed to the algorithms:</dt>
-<dd><p class="first last">activity_key -&gt; Attribute to use as activity</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters passed to the algorithms:</dt><dd><p>activity_key -&gt; Attribute to use as activity</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">DFG graph</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dfg</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DFG graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dfg</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -194,33 +219,27 @@
 <dt id="pm4py.algo.discovery.dfg.versions.performance.apply">
 <code class="descclassname">pm4py.algo.discovery.dfg.versions.performance.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/versions/performance.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.versions.performance.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Measure performance between couples of attributes in the DFG graph</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters passed to the algorithms:</dt>
-<dd><p class="first last">aggregationMeasure -&gt; performance aggregation measure (min, max, mean, median)
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters passed to the algorithms:</dt><dd><p>aggregationMeasure -&gt; performance aggregation measure (min, max, mean, median)
 activity_key -&gt; Attribute to use as activity
 timestamp_key -&gt; Attribute to use as timestamp</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">DFG graph</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dfg</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DFG graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dfg</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -257,25 +276,16 @@ timestamp_key -&gt; Attribute to use as timestamp</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

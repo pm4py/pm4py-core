@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -169,157 +171,125 @@
 <dt id="pm4py.algo.filtering.log.timestamp.timestamp_filter.apply_events">
 <code class="descclassname">pm4py.algo.filtering.log.timestamp.timestamp_filter.</code><code class="descname">apply_events</code><span class="sig-paren">(</span><em>log</em>, <em>dt1</em>, <em>dt2</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/timestamp/timestamp_filter.html#apply_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.timestamp.timestamp_filter.apply_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a new log containing all the events contained in the given interval</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log</p>
-</li>
-<li><p class="first"><strong>dt1</strong> – Lower bound to the interval</p>
-</li>
-<li><p class="first"><strong>dt2</strong> – Upper bound to the interval</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">timestamp_key -&gt; Attribute to use as timestamp</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>dt1</strong> – Lower bound to the interval</p></li>
+<li><p><strong>dt2</strong> – Upper bound to the interval</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>timestamp_key -&gt; Attribute to use as timestamp</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_log</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>filtered_log</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.timestamp.timestamp_filter.filter_traces_contained">
 <code class="descclassname">pm4py.algo.filtering.log.timestamp.timestamp_filter.</code><code class="descname">filter_traces_contained</code><span class="sig-paren">(</span><em>log</em>, <em>dt1</em>, <em>dt2</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/timestamp/timestamp_filter.html#filter_traces_contained"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.timestamp.timestamp_filter.filter_traces_contained" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get traces that are contained in the given interval</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Trace log</p>
-</li>
-<li><p class="first"><strong>dt1</strong> – Lower bound to the interval</p>
-</li>
-<li><p class="first"><strong>dt2</strong> – Upper bound to the interval</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">timestamp_key -&gt; Attribute to use as timestamp</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>dt1</strong> – Lower bound to the interval</p></li>
+<li><p><strong>dt2</strong> – Upper bound to the interval</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>timestamp_key -&gt; Attribute to use as timestamp</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_log</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>filtered_log</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.timestamp.timestamp_filter.filter_traces_intersecting">
 <code class="descclassname">pm4py.algo.filtering.log.timestamp.timestamp_filter.</code><code class="descname">filter_traces_intersecting</code><span class="sig-paren">(</span><em>log</em>, <em>dt1</em>, <em>dt2</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/timestamp/timestamp_filter.html#filter_traces_intersecting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.timestamp.timestamp_filter.filter_traces_intersecting" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter traces intersecting the given interval</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Trace log</p>
-</li>
-<li><p class="first"><strong>dt1</strong> – Lower bound to the interval</p>
-</li>
-<li><p class="first"><strong>dt2</strong> – Upper bound to the interval</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">timestamp_key -&gt; Attribute to use as timestamp</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>dt1</strong> – Lower bound to the interval</p></li>
+<li><p><strong>dt2</strong> – Upper bound to the interval</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>timestamp_key -&gt; Attribute to use as timestamp</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Filtered log</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">filtered_log</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Filtered log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>filtered_log</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.timestamp.timestamp_filter.is_contained">
 <code class="descclassname">pm4py.algo.filtering.log.timestamp.timestamp_filter.</code><code class="descname">is_contained</code><span class="sig-paren">(</span><em>trace</em>, <em>dt1</em>, <em>dt2</em>, <em>timestamp_key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/timestamp/timestamp_filter.html#is_contained"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.timestamp.timestamp_filter.is_contained" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a trace is contained in the given interval</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> – Trace to check</li>
-<li><strong>dt1</strong> – Lower bound to the interval</li>
-<li><strong>dt2</strong> – Upper bound to the interval</li>
-<li><strong>timestamp_key</strong> – Timestamp attribute</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trace</strong> – Trace to check</p></li>
+<li><p><strong>dt1</strong> – Lower bound to the interval</p></li>
+<li><p><strong>dt2</strong> – Upper bound to the interval</p></li>
+<li><p><strong>timestamp_key</strong> – Timestamp attribute</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Is true if the trace is contained</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">boolean</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Is true if the trace is contained</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.timestamp.timestamp_filter.is_intersecting">
 <code class="descclassname">pm4py.algo.filtering.log.timestamp.timestamp_filter.</code><code class="descname">is_intersecting</code><span class="sig-paren">(</span><em>trace</em>, <em>dt1</em>, <em>dt2</em>, <em>timestamp_key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/timestamp/timestamp_filter.html#is_intersecting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.timestamp.timestamp_filter.is_intersecting" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a trace is intersecting in the given interval</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> – Trace to check</li>
-<li><strong>dt1</strong> – Lower bound to the interval</li>
-<li><strong>dt2</strong> – Upper bound to the interval</li>
-<li><strong>timestamp_key</strong> – Timestamp attribute</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trace</strong> – Trace to check</p></li>
+<li><p><strong>dt1</strong> – Lower bound to the interval</p></li>
+<li><p><strong>dt2</strong> – Upper bound to the interval</p></li>
+<li><p><strong>timestamp_key</strong> – Timestamp attribute</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Is true if the trace is contained</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">boolean</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Is true if the trace is contained</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -356,25 +326,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

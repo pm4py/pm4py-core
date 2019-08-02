@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -81,7 +83,9 @@
 <li><a class="reference internal" href="#">pm4py.util package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.util.business_hours">pm4py.util.business_hours module</a></li>
 <li><a class="reference internal" href="#module-pm4py.util.constants">pm4py.util.constants module</a></li>
+<li><a class="reference internal" href="#module-pm4py.util.points_subset">pm4py.util.points_subset module</a></li>
 <li><a class="reference internal" href="#module-pm4py.util.versions">pm4py.util.versions module</a></li>
 <li><a class="reference internal" href="#module-pm4py.util">Module contents</a></li>
 </ul>
@@ -166,7 +170,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pm4py.util.lp.versions.html">pm4py.util.lp.versions package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pm4py.util.lp.versions.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pm4py.util.lp.versions.html#module-pm4py.util.lp.versions.cvxopt_solver">pm4py.util.lp.versions.cvxopt_solver module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pm4py.util.lp.versions.html#module-pm4py.util.lp.versions.ortools_solver">pm4py.util.lp.versions.ortools_solver module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pm4py.util.lp.versions.html#module-pm4py.util.lp.versions.pulp_solver">pm4py.util.lp.versions.pulp_solver module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pm4py.util.lp.versions.html#module-pm4py.util.lp.versions">Module contents</a></li>
 </ul>
@@ -184,8 +188,87 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.util.business_hours">
+<span id="pm4py-util-business-hours-module"></span><h2>pm4py.util.business_hours module<a class="headerlink" href="#module-pm4py.util.business_hours" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.util.business_hours.BusinessHours">
+<em class="property">class </em><code class="descclassname">pm4py.util.business_hours.</code><code class="descname">BusinessHours</code><span class="sig-paren">(</span><em>datetime1, datetime2, worktiming=[7, 17], weekends=[6, 7]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/business_hours.html#BusinessHours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.business_hours.BusinessHours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pm4py.util.business_hours.BusinessHours.getdays">
+<code class="descname">getdays</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/business_hours.html#BusinessHours.getdays"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.business_hours.BusinessHours.getdays" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.util.business_hours.BusinessHours.gethours">
+<code class="descname">gethours</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/business_hours.html#BusinessHours.gethours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.business_hours.BusinessHours.gethours" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.util.business_hours.BusinessHours.getminutes">
+<code class="descname">getminutes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/business_hours.html#BusinessHours.getminutes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.business_hours.BusinessHours.getminutes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the difference in minutes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.util.business_hours.BusinessHours.getseconds">
+<code class="descname">getseconds</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/business_hours.html#BusinessHours.getseconds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.business_hours.BusinessHours.getseconds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.util.business_hours.BusinessHours.is_weekend">
+<code class="descname">is_weekend</code><span class="sig-paren">(</span><em>datetime</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/business_hours.html#BusinessHours.is_weekend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.business_hours.BusinessHours.is_weekend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if datetime lands on a weekend.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.util.constants">
 <span id="pm4py-util-constants-module"></span><h2>pm4py.util.constants module<a class="headerlink" href="#module-pm4py.util.constants" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.util.points_subset">
+<span id="pm4py-util-points-subset-module"></span><h2>pm4py.util.points_subset module<a class="headerlink" href="#module-pm4py.util.points_subset" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.util.points_subset.pick_chosen_points">
+<code class="descclassname">pm4py.util.points_subset.</code><code class="descname">pick_chosen_points</code><span class="sig-paren">(</span><em>m</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/points_subset.html#pick_chosen_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.points_subset.pick_chosen_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pick chosen points in a list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m</strong> – Number of wanted points</p></li>
+<li><p><strong>n</strong> – Number of current points</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Indexes of chosen points</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>indexes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.util.points_subset.pick_chosen_points_list">
+<code class="descclassname">pm4py.util.points_subset.</code><code class="descname">pick_chosen_points_list</code><span class="sig-paren">(</span><em>m</em>, <em>lst</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/points_subset.html#pick_chosen_points_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.points_subset.pick_chosen_points_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pick a chosen number of points from a list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m</strong> – Number of wanted points</p></li>
+<li><p><strong>lst</strong> – List</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Reduced list</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>reduced_lst</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-pm4py.util.versions">
 <span id="pm4py-util-versions-module"></span><h2>pm4py.util.versions module<a class="headerlink" href="#module-pm4py.util.versions" title="Permalink to this headline">¶</a></h2>
@@ -230,25 +313,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

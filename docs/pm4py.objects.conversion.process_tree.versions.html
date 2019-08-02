@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -159,80 +161,73 @@
 <dt id="pm4py.objects.conversion.process_tree.versions.to_petri_net.apply">
 <code class="descclassname">pm4py.objects.conversion.process_tree.versions.to_petri_net.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>tree</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/process_tree/versions/to_petri_net.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.process_tree.versions.to_petri_net.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply from Process Tree to Petri net</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tree</strong> – Process tree</li>
-<li><strong>parameters</strong> – Parameters of the algorithm</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tree</strong> – Process tree</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>net</em> – Petri net</li>
-<li><em>initial_marking</em> – Initial marking</li>
-<li><em>final_marking</em> – Final marking</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>net</em> – Petri net</p></li>
+<li><p><em>initial_marking</em> – Initial marking</p></li>
+<li><p><em>final_marking</em> – Final marking</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.conversion.process_tree.versions.to_petri_net.check_initial_loop">
 <code class="descclassname">pm4py.objects.conversion.process_tree.versions.to_petri_net.</code><code class="descname">check_initial_loop</code><span class="sig-paren">(</span><em>tree</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/process_tree/versions/to_petri_net.html#check_initial_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.process_tree.versions.to_petri_net.check_initial_loop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the tree, on-the-left, starts with a loop</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tree</strong> – Process tree</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if it starts with an initial loop</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tree</strong> – Process tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if it starts with an initial loop</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.conversion.process_tree.versions.to_petri_net.check_loop_to_first_operator">
 <code class="descclassname">pm4py.objects.conversion.process_tree.versions.to_petri_net.</code><code class="descname">check_loop_to_first_operator</code><span class="sig-paren">(</span><em>tree</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/process_tree/versions/to_petri_net.html#check_loop_to_first_operator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.process_tree.versions.to_petri_net.check_loop_to_first_operator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if loop to first operator</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tree</strong> – Process tree</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Check if no loop to the first operator</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tree</strong> – Process tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Check if no loop to the first operator</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.conversion.process_tree.versions.to_petri_net.check_loop_to_last_operator">
 <code class="descclassname">pm4py.objects.conversion.process_tree.versions.to_petri_net.</code><code class="descname">check_loop_to_last_operator</code><span class="sig-paren">(</span><em>tree</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/process_tree/versions/to_petri_net.html#check_loop_to_last_operator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.process_tree.versions.to_petri_net.check_loop_to_last_operator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if loop to last operator</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tree</strong> – Process tree</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Check if no loop to the last operator</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tree</strong> – Process tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Check if no loop to the last operator</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -240,17 +235,15 @@
 <code class="descclassname">pm4py.objects.conversion.process_tree.versions.to_petri_net.</code><code class="descname">check_tau_mandatory_at_final_marking</code><span class="sig-paren">(</span><em>tree</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/process_tree/versions/to_petri_net.html#check_tau_mandatory_at_final_marking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.process_tree.versions.to_petri_net.check_tau_mandatory_at_final_marking" title="Permalink to this definition">¶</a></dt>
 <dd><p>When a conversion to a Petri net is operated, check if is mandatory to add a hidden transition
 at final marking</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean that is true if it is mandatory to add a hidden transition connecting
-the rest of the process to the final marking</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Boolean that is true if it is mandatory to add a hidden transition connecting
+the rest of the process to the final marking</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -258,104 +251,97 @@ the rest of the process to the final marking</td>
 <code class="descclassname">pm4py.objects.conversion.process_tree.versions.to_petri_net.</code><code class="descname">check_tau_mandatory_at_initial_marking</code><span class="sig-paren">(</span><em>tree</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/process_tree/versions/to_petri_net.html#check_tau_mandatory_at_initial_marking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.process_tree.versions.to_petri_net.check_tau_mandatory_at_initial_marking" title="Permalink to this definition">¶</a></dt>
 <dd><p>When a conversion to a Petri net is operated, check if is mandatory to add a hidden transition
 at initial marking</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tree</strong> – Process tree</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Boolean that is true if it is mandatory to add a hidden transition connecting the initial marking
-to the rest of the process</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tree</strong> – Process tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean that is true if it is mandatory to add a hidden transition connecting the initial marking
+to the rest of the process</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.conversion.process_tree.versions.to_petri_net.check_terminal_loop">
 <code class="descclassname">pm4py.objects.conversion.process_tree.versions.to_petri_net.</code><code class="descname">check_terminal_loop</code><span class="sig-paren">(</span><em>tree</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/process_tree/versions/to_petri_net.html#check_terminal_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.process_tree.versions.to_petri_net.check_terminal_loop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the tree, on-the-right, ends with a loop</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tree</strong> – Process tree</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if it ends with a terminal loop</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tree</strong> – Process tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if it ends with a terminal loop</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.conversion.process_tree.versions.to_petri_net.get_first_terminal_child_transitions">
 <code class="descclassname">pm4py.objects.conversion.process_tree.versions.to_petri_net.</code><code class="descname">get_first_terminal_child_transitions</code><span class="sig-paren">(</span><em>tree</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/process_tree/versions/to_petri_net.html#get_first_terminal_child_transitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.process_tree.versions.to_petri_net.get_first_terminal_child_transitions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the list of transitions belonging to the first terminal child node of the current tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tree</strong> – Process tree</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of transitions belonging to the first terminal child node</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">transitions_list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tree</strong> – Process tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of transitions belonging to the first terminal child node</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>transitions_list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.conversion.process_tree.versions.to_petri_net.get_last_terminal_child_transitions">
 <code class="descclassname">pm4py.objects.conversion.process_tree.versions.to_petri_net.</code><code class="descname">get_last_terminal_child_transitions</code><span class="sig-paren">(</span><em>tree</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/process_tree/versions/to_petri_net.html#get_last_terminal_child_transitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.process_tree.versions.to_petri_net.get_last_terminal_child_transitions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the list of transitions belonging to the last terminal child node of the current tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tree</strong> – Process tree</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of transitions belonging to the first terminal child node</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">transitions_list</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tree</strong> – Process tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of transitions belonging to the first terminal child node</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>transitions_list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.conversion.process_tree.versions.to_petri_net.recursively_add_tree">
-<code class="descclassname">pm4py.objects.conversion.process_tree.versions.to_petri_net.</code><code class="descname">recursively_add_tree</code><span class="sig-paren">(</span><em>tree</em>, <em>net</em>, <em>initial_entity_subtree</em>, <em>final_entity_subtree</em>, <em>counts</em>, <em>rec_depth</em>, <em>force_add_skip=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/process_tree/versions/to_petri_net.html#recursively_add_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.process_tree.versions.to_petri_net.recursively_add_tree" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pm4py.objects.conversion.process_tree.versions.to_petri_net.</code><code class="descname">recursively_add_tree</code><span class="sig-paren">(</span><em>parent_tree</em>, <em>tree</em>, <em>net</em>, <em>initial_entity_subtree</em>, <em>final_entity_subtree</em>, <em>counts</em>, <em>rec_depth</em>, <em>force_add_skip=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/process_tree/versions/to_petri_net.html#recursively_add_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.process_tree.versions.to_petri_net.recursively_add_tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recursively add the subtrees to the Petri net</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tree</strong> – Current subtree</li>
-<li><strong>net</strong> – Petri net</li>
-<li><strong>initial_entity_subtree</strong> – Initial entity (place/transition) that should be attached from the subtree</li>
-<li><strong>final_entity_subtree</strong> – Final entity (place/transition) that should be attached from the subtree</li>
-<li><strong>counts</strong> – Counts object (keeps the number of places, transitions and hidden transitions)</li>
-<li><strong>rec_depth</strong> – Recursion depth of the current iteration</li>
-<li><strong>force_add_skip</strong> – Boolean value that tells if the addition of a skip is mandatory</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent_tree</strong> – Parent tree</p></li>
+<li><p><strong>tree</strong> – Current subtree</p></li>
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_entity_subtree</strong> – Initial entity (place/transition) that should be attached from the subtree</p></li>
+<li><p><strong>final_entity_subtree</strong> – Final entity (place/transition) that should be attached from the subtree</p></li>
+<li><p><strong>counts</strong> – Counts object (keeps the number of places, transitions and hidden transitions)</p></li>
+<li><p><strong>rec_depth</strong> – Recursion depth of the current iteration</p></li>
+<li><p><strong>force_add_skip</strong> – Boolean value that tells if the addition of a skip is mandatory</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>net</em> – Updated Petri net</li>
-<li><em>counts</em> – Updated counts object (keeps the number of places, transitions and hidden transitions)</li>
-<li><em>final_place</em> – Last place added in this recursion</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>net</em> – Updated Petri net</p></li>
+<li><p><em>counts</em> – Updated counts object (keeps the number of places, transitions and hidden transitions)</p></li>
+<li><p><em>final_place</em> – Last place added in this recursion</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -392,25 +378,16 @@ to the rest of the process</td>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

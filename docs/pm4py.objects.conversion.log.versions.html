@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -80,6 +82,8 @@
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">pm4py.objects.conversion.log.versions package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.conversion.log.versions.df_to_event_log_1v">pm4py.objects.conversion.log.versions.df_to_event_log_1v module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.conversion.log.versions.df_to_event_log_nv">pm4py.objects.conversion.log.versions.df_to_event_log_nv module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.conversion.log.versions.to_dataframe">pm4py.objects.conversion.log.versions.to_dataframe module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.conversion.log.versions.to_event_log">pm4py.objects.conversion.log.versions.to_event_log module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.conversion.log.versions.to_event_stream">pm4py.objects.conversion.log.versions.to_event_stream module</a></li>
@@ -155,48 +159,91 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.objects.conversion.log.versions.df_to_event_log_1v">
+<span id="pm4py-objects-conversion-log-versions-df-to-event-log-1v-module"></span><h2>pm4py.objects.conversion.log.versions.df_to_event_log_1v module<a class="headerlink" href="#module-pm4py.objects.conversion.log.versions.df_to_event_log_1v" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.conversion.log.versions.df_to_event_log_1v.apply">
+<code class="descclassname">pm4py.objects.conversion.log.versions.df_to_event_log_1v.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/log/versions/df_to_event_log_1v.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.log.versions.df_to_event_log_1v.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a dataframe into a log containing 1 case per variant (only control-flow
+perspective is considered)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Event log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>log</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.conversion.log.versions.df_to_event_log_nv">
+<span id="pm4py-objects-conversion-log-versions-df-to-event-log-nv-module"></span><h2>pm4py.objects.conversion.log.versions.df_to_event_log_nv module<a class="headerlink" href="#module-pm4py.objects.conversion.log.versions.df_to_event_log_nv" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.conversion.log.versions.df_to_event_log_nv.apply">
+<code class="descclassname">pm4py.objects.conversion.log.versions.df_to_event_log_nv.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/log/versions/df_to_event_log_nv.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.log.versions.df_to_event_log_nv.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a dataframe into a log containing N case per variant (only control-flow
+perspective is considered)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Event log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>log</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.objects.conversion.log.versions.to_dataframe">
 <span id="pm4py-objects-conversion-log-versions-to-dataframe-module"></span><h2>pm4py.objects.conversion.log.versions.to_dataframe module<a class="headerlink" href="#module-pm4py.objects.conversion.log.versions.to_dataframe" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.objects.conversion.log.versions.to_dataframe.apply">
 <code class="descclassname">pm4py.objects.conversion.log.versions.to_dataframe.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/log/versions/to_dataframe.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.log.versions.to_dataframe.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a Pandas dataframe from a given log</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – Event log. Also, can take a log and convert it to event stream</li>
-<li><strong>parameters</strong> – Parameters of the algorithm</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – Event log. Also, can take a log and convert it to event stream</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Pandas dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pandas dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.conversion.log.versions.to_dataframe.get_dataframe_from_event_stream">
 <code class="descclassname">pm4py.objects.conversion.log.versions.to_dataframe.</code><code class="descname">get_dataframe_from_event_stream</code><span class="sig-paren">(</span><em>log</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/log/versions/to_dataframe.html#get_dataframe_from_event_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.log.versions.to_dataframe.get_dataframe_from_event_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a Pandas dataframe from a given log</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – Event log. Also, can take a log and convert it to event stream</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas dataframe</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">df</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – Event log. Also, can take a log and convert it to event stream</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pandas dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -211,23 +258,19 @@
 <dt id="pm4py.objects.conversion.log.versions.to_event_log.transform_event_stream_to_event_log">
 <code class="descclassname">pm4py.objects.conversion.log.versions.to_event_log.</code><code class="descname">transform_event_stream_to_event_log</code><span class="sig-paren">(</span><em>log</em>, <em>case_glue='case:concept:name'</em>, <em>include_case_attributes=True</em>, <em>case_attribute_prefix='case:'</em>, <em>enable_deepcopy=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/log/versions/to_event_log.html#transform_event_stream_to_event_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.log.versions.to_event_log.transform_event_stream_to_event_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts the event stream to an event log</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – An event stream</li>
-<li><strong>case_glue</strong> – Case identifier. Default is ‘case:concept:name’</li>
-<li><strong>include_case_attributes</strong> – Default is True</li>
-<li><strong>case_attribute_prefix</strong> – Default is ‘case:’</li>
-<li><strong>enable_deepcopy</strong> – Enables deepcopy (avoid references between input and output objects)</li>
-<li><strong>Returns</strong> – ——-</li>
-<li><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – An event log</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – An event stream</p></li>
+<li><p><strong>case_glue</strong> – Case identifier. Default is ‘case:concept:name’</p></li>
+<li><p><strong>include_case_attributes</strong> – Default is True</p></li>
+<li><p><strong>case_attribute_prefix</strong> – Default is ‘case:’</p></li>
+<li><p><strong>enable_deepcopy</strong> – Enables deepcopy (avoid references between input and output objects)</p></li>
+<li><p><strong>Returns</strong> – ——-</p></li>
+<li><p><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – An event log</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -242,22 +285,18 @@
 <dt id="pm4py.objects.conversion.log.versions.to_event_stream.transform_event_log_to_event_stream">
 <code class="descclassname">pm4py.objects.conversion.log.versions.to_event_stream.</code><code class="descname">transform_event_log_to_event_stream</code><span class="sig-paren">(</span><em>log</em>, <em>include_case_attributes=True</em>, <em>case_attribute_prefix='case:'</em>, <em>enable_deepcopy=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/conversion/log/versions/to_event_stream.html#transform_event_log_to_event_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.conversion.log.versions.to_event_stream.transform_event_log_to_event_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts the event log to an event stream</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – An Event log</li>
-<li><strong>include_case_attributes</strong> – Default is True</li>
-<li><strong>case_attribute_prefix</strong> – Default is ‘case:’</li>
-<li><strong>enable_deepcopy</strong> – Enables deepcopy (avoid references between input and output objects)</li>
-<li><strong>Returns</strong> – ——-</li>
-<li><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – An Event stream</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – An Event log</p></li>
+<li><p><strong>include_case_attributes</strong> – Default is True</p></li>
+<li><p><strong>case_attribute_prefix</strong> – Default is ‘case:’</p></li>
+<li><p><strong>enable_deepcopy</strong> – Enables deepcopy (avoid references between input and output objects)</p></li>
+<li><p><strong>Returns</strong> – ——-</p></li>
+<li><p><strong>log</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code>) – An Event stream</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -294,25 +333,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

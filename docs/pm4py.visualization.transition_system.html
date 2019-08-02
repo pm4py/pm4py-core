@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -179,65 +181,51 @@
 <dt id="pm4py.visualization.transition_system.factory.apply">
 <code class="descclassname">pm4py.visualization.transition_system.factory.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>tsys</em>, <em>parameters=None</em>, <em>variant='view_based'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/transition_system/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.transition_system.factory.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get visualization of a Transition System</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>tsys</strong> – Transition system</p>
-</li>
-<li><p class="first"><strong>parameters</strong> – Optional parameters of the algorithm</p>
-</li>
-<li><p class="first"><strong>variant</strong> –</p>
-<dl class="docutils">
-<dt>Variant of the algorithm to use, including:</dt>
-<dd><p class="first last">view_based</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>tsys</strong> – Transition system</p></li>
+<li><p><strong>parameters</strong> – Optional parameters of the algorithm</p></li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, including:</dt><dd><p>view_based</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Graph visualization</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">gviz</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Graph visualization</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>gviz</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.transition_system.factory.save">
 <code class="descclassname">pm4py.visualization.transition_system.factory.</code><code class="descname">save</code><span class="sig-paren">(</span><em>gviz</em>, <em>output_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/transition_system/factory.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.transition_system.factory.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the diagram</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>gviz</strong> – GraphViz diagram</li>
-<li><strong>output_file_path</strong> – Path where the GraphViz output should be saved</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gviz</strong> – GraphViz diagram</p></li>
+<li><p><strong>output_file_path</strong> – Path where the GraphViz output should be saved</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.transition_system.factory.view">
 <code class="descclassname">pm4py.visualization.transition_system.factory.</code><code class="descname">view</code><span class="sig-paren">(</span><em>gviz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/transition_system/factory.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.transition_system.factory.view" title="Permalink to this definition">¶</a></dt>
 <dd><p>View the diagram</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gviz</strong> – GraphViz diagram</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>gviz</strong> – GraphViz diagram</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -274,25 +262,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

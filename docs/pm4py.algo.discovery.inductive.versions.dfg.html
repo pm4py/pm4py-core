@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -81,7 +83,6 @@
 <li><a class="reference internal" href="#">pm4py.algo.discovery.inductive.versions.dfg package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-pm4py.algo.discovery.inductive.versions.dfg.imdfa">pm4py.algo.discovery.inductive.versions.dfg.imdfa module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.inductive.versions.dfg.imdfb">pm4py.algo.discovery.inductive.versions.dfg.imdfb module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.inductive.versions.dfg">Module contents</a></li>
 </ul>
@@ -178,297 +179,122 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-pm4py.algo.discovery.inductive.versions.dfg.imdfa">
-<span id="pm4py-algo-discovery-inductive-versions-dfg-imdfa-module"></span><h2>pm4py.algo.discovery.inductive.versions.dfg.imdfa module<a class="headerlink" href="#module-pm4py.algo.discovery.inductive.versions.dfg.imdfa" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.imdfa.apply">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.imdfa.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/imdfa.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.imdfa.apply" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply the IMDF algorithm to a log obtaining a Petri net along with an initial and final marking</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
-(default concept:name)</p>
-</dd>
-</dl>
-</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>net</em> – Petri net</li>
-<li><em>initial_marking</em> – Initial marking</li>
-<li><em>final_marking</em> – Final marking</li>
-</ul>
-</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.imdfa.apply_dfg">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.imdfa.</code><code class="descname">apply_dfg</code><span class="sig-paren">(</span><em>dfg</em>, <em>parameters</em>, <em>activities=None</em>, <em>contains_empty_traces=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/imdfa.html#apply_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.imdfa.apply_dfg" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply the IMDF algorithm to a DFG graph obtaining a Petri net along with an initial and final marking</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>dfg</strong> – Directly-Follows graph</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
-(default concept:name)</p>
-</dd>
-</dl>
-</li>
-<li><p class="first"><strong>activities</strong> – Activities of the process (default None)</p>
-</li>
-<li><p class="first"><strong>contains_empty_traces</strong> – Boolean value that is True if the event log from which the DFG has been extracted contains empty traces</p>
-</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>net</em> – Petri net</li>
-<li><em>initial_marking</em> – Initial marking</li>
-<li><em>final_marking</em> – Final marking</li>
-</ul>
-</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.imdfa.apply_tree">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.imdfa.</code><code class="descname">apply_tree</code><span class="sig-paren">(</span><em>log</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/imdfa.html#apply_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.imdfa.apply_tree" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply the IMDF algorithm to a log obtaining a process tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
-(default concept:name)</p>
-</dd>
-</dl>
-</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Process tree</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tree</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.imdfa.apply_tree_dfg">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.imdfa.</code><code class="descname">apply_tree_dfg</code><span class="sig-paren">(</span><em>dfg</em>, <em>parameters</em>, <em>activities=None</em>, <em>contains_empty_traces=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/imdfa.html#apply_tree_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.imdfa.apply_tree_dfg" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply the IMDF algorithm to a DFG graph obtaining a process tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>dfg</strong> – Directly-follows graph</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
-(default concept:name)</p>
-</dd>
-</dl>
-</li>
-<li><p class="first"><strong>activities</strong> – Activities of the process (default None)</p>
-</li>
-<li><p class="first"><strong>contains_empty_traces</strong> – Boolean value that is True if the event log from which the DFG has been extracted contains empty traces</p>
-</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Process tree</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tree</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</div>
 <div class="section" id="module-pm4py.algo.discovery.inductive.versions.dfg.imdfb">
 <span id="pm4py-algo-discovery-inductive-versions-dfg-imdfb-module"></span><h2>pm4py.algo.discovery.inductive.versions.dfg.imdfb module<a class="headerlink" href="#module-pm4py.algo.discovery.inductive.versions.dfg.imdfb" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.imdfb.apply">
 <code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.imdfb.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/imdfb.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.imdfb.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the IMDF algorithm to a log obtaining a Petri net along with an initial and final marking</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
 (default concept:name)</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>net</em> – Petri net</li>
-<li><em>initial_marking</em> – Initial marking</li>
-<li><em>final_marking</em> – Final marking</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>net</em> – Petri net</p></li>
+<li><p><em>initial_marking</em> – Initial marking</p></li>
+<li><p><em>final_marking</em> – Final marking</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.imdfb.apply_dfg">
 <code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.imdfb.</code><code class="descname">apply_dfg</code><span class="sig-paren">(</span><em>dfg</em>, <em>parameters</em>, <em>activities=None</em>, <em>contains_empty_traces=False</em>, <em>start_activities=None</em>, <em>end_activities=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/imdfb.html#apply_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.imdfb.apply_dfg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the IMDF algorithm to a DFG graph obtaining a Petri net along with an initial and final marking</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>dfg</strong> – Directly-Follows graph</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>dfg</strong> – Directly-Follows graph</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
 (default concept:name)</p>
 </dd>
 </dl>
 </li>
-<li><p class="first"><strong>activities</strong> – Activities of the process (default None)</p>
-</li>
-<li><p class="first"><strong>contains_empty_traces</strong> – Boolean value that is True if the event log from which the DFG has been extracted contains empty traces</p>
-</li>
-<li><p class="first"><strong>start_activities</strong> – If provided, the start activities of the log</p>
-</li>
-<li><p class="first"><strong>end_activities</strong> – If provided, the end activities of the log</p>
-</li>
+<li><p><strong>activities</strong> – Activities of the process (default None)</p></li>
+<li><p><strong>contains_empty_traces</strong> – Boolean value that is True if the event log from which the DFG has been extracted contains empty traces</p></li>
+<li><p><strong>start_activities</strong> – If provided, the start activities of the log</p></li>
+<li><p><strong>end_activities</strong> – If provided, the end activities of the log</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>net</em> – Petri net</li>
-<li><em>initial_marking</em> – Initial marking</li>
-<li><em>final_marking</em> – Final marking</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>net</em> – Petri net</p></li>
+<li><p><em>initial_marking</em> – Initial marking</p></li>
+<li><p><em>final_marking</em> – Final marking</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.imdfb.apply_tree">
 <code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.imdfb.</code><code class="descname">apply_tree</code><span class="sig-paren">(</span><em>log</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/imdfb.html#apply_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.imdfb.apply_tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the IMDF algorithm to a log obtaining a process tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
 (default concept:name)</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Process tree</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tree</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Process tree</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tree</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.imdfb.apply_tree_dfg">
 <code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.imdfb.</code><code class="descname">apply_tree_dfg</code><span class="sig-paren">(</span><em>dfg</em>, <em>parameters</em>, <em>activities=None</em>, <em>contains_empty_traces=False</em>, <em>start_activities=None</em>, <em>end_activities=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/imdfb.html#apply_tree_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.imdfb.apply_tree_dfg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the IMDF algorithm to a DFG graph obtaining a process tree</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>dfg</strong> – Directly-follows graph</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>dfg</strong> – Directly-follows graph</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; attribute of the log to use as activity name
 (default concept:name)</p>
 </dd>
 </dl>
 </li>
-<li><p class="first"><strong>activities</strong> – Activities of the process (default None)</p>
-</li>
-<li><p class="first"><strong>contains_empty_traces</strong> – Boolean value that is True if the event log from which the DFG has been extracted contains empty traces</p>
-</li>
-<li><p class="first"><strong>start_activities</strong> – If provided, the start activities of the log</p>
-</li>
-<li><p class="first"><strong>end_activities</strong> – If provided, the end activities of the log</p>
-</li>
+<li><p><strong>activities</strong> – Activities of the process (default None)</p></li>
+<li><p><strong>contains_empty_traces</strong> – Boolean value that is True if the event log from which the DFG has been extracted contains empty traces</p></li>
+<li><p><strong>start_activities</strong> – If provided, the start activities of the log</p></li>
+<li><p><strong>end_activities</strong> – If provided, the end activities of the log</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Process tree</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tree</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Process tree</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tree</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -505,25 +331,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

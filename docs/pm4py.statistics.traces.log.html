@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -160,31 +162,25 @@
 <dt id="pm4py.statistics.traces.log.case_arrival.get_case_arrival_avg">
 <code class="descclassname">pm4py.statistics.traces.log.case_arrival.</code><code class="descname">get_case_arrival_avg</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_arrival.html#get_case_arrival_avg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_arrival.get_case_arrival_avg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the average time interlapsed between case starts</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Trace log</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; attribute of the log to be used as timestamp</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; attribute of the log to be used as timestamp</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Average time interlapsed between case starts</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">case_arrival_avg</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Average time interlapsed between case starts</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>case_arrival_avg</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -194,38 +190,31 @@
 <dt id="pm4py.statistics.traces.log.case_statistics.get_all_casedurations">
 <code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_all_casedurations</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_all_casedurations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_all_casedurations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets all the case durations out of the log</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>log</strong> – Log object</li>
-<li><strong>parameters</strong> – Possible parameters of the algorithm</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Log object</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of all duration values</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">duration_values</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of all duration values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>duration_values</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_cases_description">
 <code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_cases_description</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_cases_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_cases_description" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a description of traces present in the log</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log</p>
-</li>
-<li><p class="first"><strong>parameters</strong> – Parameters of the algorithm, including:
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm, including:
 case_id_key -&gt; Trace attribute in which the case ID is contained
 timestamp_key -&gt; Column that identifies the timestamp
 enable_sort -&gt; Enable sorting of traces
@@ -241,106 +230,87 @@ descending)
 max_ret_cases -&gt; Set the maximum number of returned traces</p>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary of traces associated to their start timestamp, their end timestamp and their duration</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ret</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of traces associated to their start timestamp, their end timestamp and their duration</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ret</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_events">
 <code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_events</code><span class="sig-paren">(</span><em>log</em>, <em>case_id</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get events belonging to the specified case</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log object</p>
-</li>
-<li><p class="first"><strong>case_id</strong> – Required case ID</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">case id key -&gt; Trace attribute in which the case ID is contained
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log object</p></li>
+<li><p><strong>case_id</strong> – Required case ID</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>case id key -&gt; Trace attribute in which the case ID is contained
 indexed_log -&gt; Indexed log (if it has been calculated previously)</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of events belonging to the case</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list_eve</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of events belonging to the case</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list_eve</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_first_quartile_caseduration">
 <code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_first_quartile_caseduration</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_first_quartile_caseduration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_first_quartile_caseduration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the first quartile out of the log</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>log</strong> – Log</li>
-<li><strong>parameters</strong> – Possible parameters of the algorithm</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">First quartile value</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">value</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>First quartile value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>value</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_kde_caseduration">
 <code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_kde_caseduration</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_kde_caseduration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_kde_caseduration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the estimation of KDE density for the case durations calculated on the log</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log object</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">graph_points -&gt; number of points to include in the graph</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log object</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>x</em> – X-axis values to represent</li>
-<li><em>y</em> – Y-axis values to represent</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>x</em> – X-axis values to represent</p></li>
+<li><p><em>y</em> – Y-axis values to represent</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -348,56 +318,46 @@ indexed_log -&gt; Indexed log (if it has been calculated previously)</p>
 <code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_kde_caseduration_json</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_kde_caseduration_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_kde_caseduration_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the estimation of KDE density for the case durations calculated on the log
 (expressed as JSON)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log object</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">graph_points -&gt; number of points to include in the graph
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log object</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph
 case_id_glue -&gt; Column hosting the Case ID</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">JSON representing the graph points</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">json</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON representing the graph points</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>json</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_median_caseduration">
 <code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_median_caseduration</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_median_caseduration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_median_caseduration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the median case duration out of the log</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>log</strong> – Log</li>
-<li><strong>parameters</strong> – Possible parameters of the algorithm</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Median duration value</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">value</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Median duration value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>value</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -405,64 +365,52 @@ case_id_glue -&gt; Column hosting the Case ID</p>
 <code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_variant_statistics</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_variant_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_variant_statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a dictionary whose key is the variant and as value there
 is the list of traces that share the variant</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">activity_key -&gt; Attribute identifying the activity in the log
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>activity_key -&gt; Attribute identifying the activity in the log
 max_variants_to_return -&gt; Maximum number of variants to return
 variants -&gt; If provided, avoid recalculation of the variants</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of variants along the statistics</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">variants_list</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of variants along the statistics</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>variants_list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.index_log_caseid">
 <code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">index_log_caseid</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#index_log_caseid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.index_log_caseid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Index a log according to case ID</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>log</strong> – Log object</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">case id key -&gt; Trace attribute in which the Case ID is contained</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log object</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>case id key -&gt; Trace attribute in which the Case ID is contained</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary that has the case IDs as keys and the corresponding case as value</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary that has the case IDs as keys and the corresponding case as value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -499,25 +447,16 @@ variants -&gt; If provided, avoid recalculation of the variants</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

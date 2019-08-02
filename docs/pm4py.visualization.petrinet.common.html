@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -160,56 +162,48 @@
 <code class="descclassname">pm4py.visualization.petrinet.common.visualize.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>net</em>, <em>initial_marking</em>, <em>final_marking</em>, <em>decorations=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/common/visualize.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.common.visualize.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply method for Petri net visualization (useful for recall from factory; it calls the
 graphviz_visualization method)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>net</strong> – Petri net</li>
-<li><strong>initial_marking</strong> – Initial marking</li>
-<li><strong>final_marking</strong> – Final marking</li>
-<li><strong>decorations</strong> – Decorations for elements in the Petri net</li>
-<li><strong>parameters</strong> – Algorithm parameters</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>decorations</strong> – Decorations for elements in the Petri net</p></li>
+<li><p><strong>parameters</strong> – Algorithm parameters</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Graph object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">viz</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Graph object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>viz</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.common.visualize.graphviz_visualization">
 <code class="descclassname">pm4py.visualization.petrinet.common.visualize.</code><code class="descname">graphviz_visualization</code><span class="sig-paren">(</span><em>net</em>, <em>image_format='png'</em>, <em>initial_marking=None</em>, <em>final_marking=None</em>, <em>decorations=None</em>, <em>debug=False</em>, <em>set_rankdir_lr=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/common/visualize.html#graphviz_visualization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.common.visualize.graphviz_visualization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides visualization for the petrinet</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.entities.petri.petrinet.PetriNet</span></code>) – Petri net</li>
-<li><strong>image_format</strong> – Format that should be associated to the image</li>
-<li><strong>initial_marking</strong> – Initial marking of the Petri net</li>
-<li><strong>final_marking</strong> – Final marking of the Petri net</li>
-<li><strong>decorations</strong> – Decorations of the Petri net (says how element must be presented)</li>
-<li><strong>debug</strong> – Enables debug mode</li>
-<li><strong>set_rankdir_lr</strong> – Sets the rankdir to LR (horizontal layout)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.entities.petri.petrinet.PetriNet</span></code>) – Petri net</p></li>
+<li><p><strong>image_format</strong> – Format that should be associated to the image</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking of the Petri net</p></li>
+<li><p><strong>final_marking</strong> – Final marking of the Petri net</p></li>
+<li><p><strong>decorations</strong> – Decorations of the Petri net (says how element must be presented)</p></li>
+<li><p><strong>debug</strong> – Enables debug mode</p></li>
+<li><p><strong>set_rankdir_lr</strong> – Sets the rankdir to LR (horizontal layout)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Returns a graph object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">viz</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a graph object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>viz</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -246,25 +240,16 @@ graphviz_visualization method)</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

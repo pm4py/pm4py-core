@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -160,31 +162,25 @@
 <dt id="pm4py.statistics.traces.pandas.case_arrival.get_case_arrival_avg">
 <code class="descclassname">pm4py.statistics.traces.pandas.case_arrival.</code><code class="descname">get_case_arrival_avg</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/pandas/case_arrival.html#get_case_arrival_avg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.pandas.case_arrival.get_case_arrival_avg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the average time interlapsed between case starts</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; attribute of the log to be used as timestamp</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; attribute of the log to be used as timestamp</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Average time interlapsed between case starts</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">case_arrival_avg</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Average time interlapsed between case starts</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>case_arrival_avg</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -194,17 +190,13 @@
 <dt id="pm4py.statistics.traces.pandas.case_statistics.get_cases_description">
 <code class="descclassname">pm4py.statistics.traces.pandas.case_statistics.</code><code class="descname">get_cases_description</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/pandas/case_statistics.html#get_cases_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.pandas.case_statistics.get_cases_description" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a description of traces present in the Pandas dataframe</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">case_id_glue -&gt; Column that identifies the case ID
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Column that identifies the case ID
 timestamp_key -&gt; Column that identifies the timestamp
 enable_sort -&gt; Enable sorting of traces
 sort_by_column -&gt; Sort traces inside the dataframe using the specified column.
@@ -216,82 +208,67 @@ max_ret_cases -&gt; Set the maximum number of returned traces</p>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary of traces associated to their start timestamp, their end timestamp and their duration</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ret</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of traces associated to their start timestamp, their end timestamp and their duration</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ret</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.pandas.case_statistics.get_events">
 <code class="descclassname">pm4py.statistics.traces.pandas.case_statistics.</code><code class="descname">get_events</code><span class="sig-paren">(</span><em>df</em>, <em>case_id</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/pandas/case_statistics.html#get_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.pandas.case_statistics.get_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get events belonging to the specified case</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
-</li>
-<li><p class="first"><strong>case_id</strong> – Required case ID</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">case_id_glue -&gt; Column in which the case ID is contained</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>case_id</strong> – Required case ID</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Column in which the case ID is contained</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of events belonging to the case</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list_eve</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of events belonging to the case</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list_eve</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.pandas.case_statistics.get_kde_caseduration">
 <code class="descclassname">pm4py.statistics.traces.pandas.case_statistics.</code><code class="descname">get_kde_caseduration</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/pandas/case_statistics.html#get_kde_caseduration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.pandas.case_statistics.get_kde_caseduration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the estimation of KDE density for the case durations calculated on the dataframe</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">graph_points -&gt; number of points to include in the graph
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph
 case_id_glue -&gt; Column hosting the Case ID</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>x</em> – X-axis values to represent</li>
-<li><em>y</em> – Y-axis values to represent</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>x</em> – X-axis values to represent</p></li>
+<li><p><em>y</em> – Y-axis values to represent</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -299,49 +276,39 @@ case_id_glue -&gt; Column hosting the Case ID</p>
 <code class="descclassname">pm4py.statistics.traces.pandas.case_statistics.</code><code class="descname">get_kde_caseduration_json</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/pandas/case_statistics.html#get_kde_caseduration_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.pandas.case_statistics.get_kde_caseduration_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the estimation of KDE density for the case durations calculated on the log/dataframe
 (expressed as JSON)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Pandas dataframe</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Possible parameters of the algorithm, including:</dt>
-<dd><p class="first last">graph_points -&gt; number of points to include in the graph
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Pandas dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph
 case_id_glue -&gt; Column hosting the Case ID</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">JSON representing the graph points</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">json</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON representing the graph points</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>json</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.pandas.case_statistics.get_variant_statistics">
 <code class="descclassname">pm4py.statistics.traces.pandas.case_statistics.</code><code class="descname">get_variant_statistics</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/pandas/case_statistics.html#get_variant_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.pandas.case_statistics.get_variant_statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get variants from a Pandas dataframe</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Dataframe</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">case_id_glue -&gt; Column that contains the Case ID
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Column that contains the Case ID
 activity_key -&gt; Column that contains the activity
 max_variants_to_return -&gt; Maximum number of variants to return
 variants_df -&gt; If provided, avoid recalculation of the variants dataframe</p>
@@ -349,48 +316,122 @@ variants_df -&gt; If provided, avoid recalculation of the variants dataframe</p>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of variants inside the Pandas dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">variants_list</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of variants inside the Pandas dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>variants_list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.statistics.traces.pandas.case_statistics.get_variant_statistics_with_case_duration">
+<code class="descclassname">pm4py.statistics.traces.pandas.case_statistics.</code><code class="descname">get_variant_statistics_with_case_duration</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/pandas/case_statistics.html#get_variant_statistics_with_case_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.pandas.case_statistics.get_variant_statistics_with_case_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get variants from a Pandas dataframe with case duration</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Column that contains the Case ID
+activity_key -&gt; Column that contains the activity
+max_variants_to_return -&gt; Maximum number of variants to return
+variants_df -&gt; If provided, avoid recalculation of the variants dataframe</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of variants inside the Pandas dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>variants_list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.pandas.case_statistics.get_variants_df">
 <code class="descclassname">pm4py.statistics.traces.pandas.case_statistics.</code><code class="descname">get_variants_df</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/pandas/case_statistics.html#get_variants_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.pandas.case_statistics.get_variants_df" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get variants dataframe from a Pandas dataframe</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>df</strong> – Dataframe</p>
-</li>
-<li><p class="first"><strong>parameters</strong> –</p>
-<dl class="docutils">
-<dt>Parameters of the algorithm, including:</dt>
-<dd><p class="first last">case_id_glue -&gt; Column that contains the Case ID
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Column that contains the Case ID
 activity_key -&gt; Column that contains the activity</p>
 </dd>
 </dl>
 </li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Variants dataframe</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">variants_df</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Variants dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>variants_df</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.statistics.traces.pandas.case_statistics.get_variants_df_and_list">
+<code class="descclassname">pm4py.statistics.traces.pandas.case_statistics.</code><code class="descname">get_variants_df_and_list</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/pandas/case_statistics.html#get_variants_df_and_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.pandas.case_statistics.get_variants_df_and_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>(Technical method) Provides variants_df and variants_list out of the box</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Column that contains the Case ID
+activity_key -&gt; Column that contains the activity</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>variants_df</em> – Variants dataframe</p></li>
+<li><p><em>variants_list</em> – List of variants sorted by their count</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.statistics.traces.pandas.case_statistics.get_variants_df_with_case_duration">
+<code class="descclassname">pm4py.statistics.traces.pandas.case_statistics.</code><code class="descname">get_variants_df_with_case_duration</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/pandas/case_statistics.html#get_variants_df_with_case_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.pandas.case_statistics.get_variants_df_with_case_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get variants dataframe from a Pandas dataframe, with case duration that is included</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Column that contains the Case ID
+activity_key -&gt; Column that contains the activity
+timestamp_key -&gt; Column that contains the timestamp</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Variants dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>variants_df</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -427,25 +468,16 @@ activity_key -&gt; Column that contains the activity</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
