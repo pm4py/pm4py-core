@@ -346,7 +346,15 @@ def get_kde_numeric_attribute(df, attribute, parameters=None):
     y
         Y-axis values to represent
     """
-    values = list(df.dropna(subset=[attribute])[attribute])
+    if parameters is None:
+        parameters = {}
+
+    max_no_of_points_to_sample = parameters[
+        "max_no_of_points_to_sample"] if "max_no_of_points_to_sample" in parameters else 100000
+    red_df = df.dropna(subset=[attribute])
+    if len(red_df) > max_no_of_points_to_sample:
+        red_df = red_df.sample(n=max_no_of_points_to_sample)
+    values = list(red_df[attribute])
 
     return attributes_common.get_kde_numeric_attribute(values, parameters=parameters)
 
@@ -398,8 +406,15 @@ def get_kde_date_attribute(df, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None)
     y
         Y-axis values to represent
     """
-    date_values = list(df.dropna(subset=[attribute])[attribute])
-
+    if parameters is None:
+        parameters = {}
+    
+    max_no_of_points_to_sample = parameters[
+        "max_no_of_points_to_sample"] if "max_no_of_points_to_sample" in parameters else 100000
+    red_df = df.dropna(subset=[attribute])
+    if len(red_df) > max_no_of_points_to_sample:
+        red_df = red_df.sample(n=max_no_of_points_to_sample)
+    date_values = list(red_df[attribute])
     return attributes_common.get_kde_date_attribute(date_values, parameters=parameters)
 
 
