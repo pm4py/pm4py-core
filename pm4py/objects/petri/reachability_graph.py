@@ -41,9 +41,7 @@ def construct_reachability_graph(net, initial_marking):
     visited = []
     re_gr = ts.TransitionSystem()
     re_gr.states.add(ts.TransitionSystem.State(staterep(repr(initial_marking))))
-    for i in range(10000000):
-        if not active:
-            break
+    while active:
         curr_mark = active.pop(0)
         curr_state = next((state for state in re_gr.states if state.name == staterep(repr(curr_mark))), None)
         en_tr = petri.semantics.enabled_transitions(net, curr_mark)
