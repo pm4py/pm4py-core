@@ -186,9 +186,7 @@ def variants(net, initial_marking, final_marking):
     active = [(initial_marking, [])]
     visited = []
     this_variants = []
-    for i in range(10000000):
-        if not active:
-            break
+    while active:
         curr_couple = active.pop(0)
         en_tr = petri.semantics.enabled_transitions(net, curr_couple[0])
         for t in en_tr:
