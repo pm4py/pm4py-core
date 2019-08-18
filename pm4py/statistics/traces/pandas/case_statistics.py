@@ -9,6 +9,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.constants import GROUPED_DATAFRAME
 
+import pandas as pd
 
 def get_variant_statistics(df, parameters=None):
     """
@@ -205,7 +206,7 @@ def get_variants_df(df, parameters=None):
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
-    return df.groupby(case_id_glue)[activity_key].agg({'variant': lambda col: ','.join(col)})
+    return df.groupby(case_id_glue)[activity_key].agg({"variant": lambda col: ",".join(pd.Series.to_list(col))})
 
 
 def get_variants_df_with_case_duration(df, parameters=None):
@@ -237,7 +238,7 @@ def get_variants_df_with_case_duration(df, parameters=None):
     timestamp_key = parameters[
         PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
     grouped_df = df[[case_id_glue, timestamp_key, activity_key]].groupby(df[case_id_glue])
-    df1 = grouped_df[activity_key].agg({'variant': lambda col: ','.join(col)})
+    df1 = grouped_df[activity_key].agg({"variant": lambda col: ",".join(pd.Series.to_list(col))})
     first_eve_df = grouped_df.first()
     last_eve_df = grouped_df.last()
     del grouped_df
