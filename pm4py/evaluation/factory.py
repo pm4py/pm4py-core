@@ -82,12 +82,17 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
 
     metrics_average_weight = fitness_weight * fitness["log_fitness"] + precision_weight * precision \
                              + generalization_weight * generalization + simplicity_weight * simplicity
+
+    fscore = 0.0
+    if (fitness['log_fitness'] + precision) > 0:
+        fscore = (2*fitness['log_fitness']*precision)/(fitness['log_fitness']+precision)
     dictionary = {
         "fitness": fitness,
         "precision": precision,
         "generalization": generalization,
         "simplicity": simplicity,
-        "metricsAverageWeight": metrics_average_weight
+        "metricsAverageWeight": metrics_average_weight,
+        "fscore": fscore
     }
 
     return dictionary
