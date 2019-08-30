@@ -28,7 +28,6 @@ def generate_log(pt, no_traces=100):
     for i in range(no_traces):
         ex_seq = execute(pt)
         ex_seq_labels = pt_util.project_execution_sequence_to_labels(ex_seq)
-
         trace = Trace()
         trace.attributes[xes.DEFAULT_NAME_KEY] = str(i)
         for label in ex_seq_labels:
@@ -56,7 +55,7 @@ def execute(pt):
     """
     enabled, open, closed = set(), set(), set()
     enabled.add(pt)
-    populate_closed(pt.children, closed)
+    #populate_closed(pt.children, closed)
     execution_sequence = list()
     while len(enabled) > 0:
         execute_enabled(enabled, open, closed, execution_sequence)
