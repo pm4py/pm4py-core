@@ -19,7 +19,7 @@ def apply(stream0, parameters=None):
         Parameters of the algorithm, including:
             resource_group_column => The column that is associated to the resource, and is used to firstly
                 group the stream
-            equiv_columns => Columns that shall be equal in order for two successive events to belong to
+            equiv_columns => List of columns that shall be equal in order for two successive events to belong to
                 the same group
             time_Delay => The delay that is considered for grouping two successive events into the
                 same group
