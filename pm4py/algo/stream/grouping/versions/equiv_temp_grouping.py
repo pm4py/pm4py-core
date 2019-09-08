@@ -23,7 +23,7 @@ def apply(stream0, parameters=None):
                 group the stream
             equiv_columns => List of columns that shall be equal in order for two successive events to belong to
                 the same group
-            time_Delay => The delay that is considered for grouping two successive events into the
+            time_delay => The delay that is considered for grouping two successive events into the
                 same group
 
     Returns
