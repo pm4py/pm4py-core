@@ -13,3 +13,7 @@ scikit-learn
 pulp
 pytz>=2018.9
 ortools
+prefixspan
+fasttext
+pybind11
+

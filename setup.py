@@ -110,7 +110,10 @@ setup(
         'pydotplus',
         'pulp',
         'pytz>=2018.9',
-        'ortools'
+        'ortools',
+        'prefixspan',
+        'fasttext',
+        'pybind11'
     ],
     project_urls={
         'Documentation': 'http://pm4py.pads.rwth-aachen.de/documentation/',
