@@ -53,7 +53,7 @@ def apply(grouped_stream, all_labels, parameters=None):
         F2.write(label+"\n")
     F2.close()
 
-    model = fasttext.load_model("prova.ftz")
+    model = fasttext.train_unsupervised(F.name)
     frequents_encodings = []
     for i in range(len(frequents)):
         phrase = [x for x in frequents_label[i].split() if x in model.words]
