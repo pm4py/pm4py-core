@@ -13,3 +13,6 @@ pydotplus==2.0.2
 pulp==1.6.9
 pytz==2018.9
 ortools
+prefixspan
+fasttext
+pybind11
