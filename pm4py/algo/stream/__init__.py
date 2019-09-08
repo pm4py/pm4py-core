@@ -1,1 +1,2 @@
-from pm4py.algo.stream import grouping
+from pm4py.algo.stream import grouping, tasks
+
