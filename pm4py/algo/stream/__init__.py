@@ -1,2 +1,1 @@
-from pm4py.algo.stream import grouping, tasks, sequence_mining, sequence_clustering
-
+from pm4py.algo.stream import grouping, tasks, sequence_mining, sequence_clustering, sequence_scoring
