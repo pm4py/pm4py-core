@@ -1,3 +1,5 @@
+from pm4py.objects.log.log import EventStream
+
 RESOURCE_GROUP_COLUMN = "resource_group_column"
 EQUIV_COLUMNS = "equiv_columns"
 TIME_DELAY = "time_delay"
@@ -56,4 +58,4 @@ def apply(stream0, parameters=None):
                 else:
                     grouped_stream.append([stream[i]])
 
-    return grouped_stream
+    return EventStream(grouped_stream)

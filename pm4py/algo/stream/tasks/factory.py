@@ -23,5 +23,7 @@ def apply(stream, variant=EQUIV_SPATIAL_GROUPING, parameters=None):
     ---------------
     new_grouped_stream
         New grouped stream
+    all_labels
+        All labels indexed
     """
     return VERSIONS[variant](stream, parameters=parameters)

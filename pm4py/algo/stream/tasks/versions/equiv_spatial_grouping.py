@@ -1,5 +1,6 @@
 from sklearn.cluster import DBSCAN
 import os
+from pm4py.objects.log.log import EventStream
 
 
 REMOVE_DUPLICATES = "remove_duplicates"
@@ -63,6 +64,8 @@ def apply(grouped_stream, parameters=None):
     ---------------
     new_grouped_stream
         New grouped stream
+    all_labels
+        All labels indexed
     """
     if parameters is None:
         parameters = {}
@@ -164,4 +167,4 @@ def apply(grouped_stream, parameters=None):
                 continue
             i = i + 1
 
-    return ret_grouped_stream
+    return EventStream(ret_grouped_stream), all_labels
