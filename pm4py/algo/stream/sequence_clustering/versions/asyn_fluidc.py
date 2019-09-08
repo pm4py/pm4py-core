@@ -20,7 +20,10 @@ def apply(frequents_label, frequents_encodings, parameters=None):
     frequents_encodings
         Encodings of the sequences
     parameters
-        Parameters of the algorithm
+        Parameters of the algorithm:
+            nc => numbers of clusters
+            p1 => weight of the first term
+            p2 => weight of the second term
 
     Returns
     ----------------

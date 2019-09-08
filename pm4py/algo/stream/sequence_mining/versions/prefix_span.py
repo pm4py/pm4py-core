@@ -5,6 +5,9 @@ import tempfile
 M = "m"
 DEFAULT_M = 2
 
+FINAL_LABEL_IDX = "final_label_idx"
+DEFAULT_FINAL_LABEL_IDX = "@@label_index"
+
 
 def apply(grouped_stream, all_labels, parameters=None):
     """
@@ -33,9 +36,11 @@ def apply(grouped_stream, all_labels, parameters=None):
     if parameters is None:
         parameters = {}
 
+    final_label_idx = parameters[FINAL_LABEL_IDX] if FINAL_LABEL_IDX in parameters else DEFAULT_FINAL_LABEL_IDX
+
     m = parameters[M] if M in parameters else DEFAULT_M
 
-    data = [[y["@@label_index"] for y in x] for x in grouped_stream]
+    data = [[y[final_label_idx] for y in x] for x in grouped_stream]
     ps = PrefixSpan(data)
 
     frequents = [x[1] for x in ps.frequent(m)]
@@ -64,7 +69,7 @@ def apply(grouped_stream, all_labels, parameters=None):
     for f in frequents:
         frequents_occurrences.append([])
         for g in grouped_stream:
-            d = [x["@@label_index"] for x in g]
+            d = [x[final_label_idx] for x in g]
             for i in range(len(d)-len(f)):
                 if d[i] == f[0] and d[i+len(f)-1] == f[len(f)-1]:
                     if d[i:i+len(f)] == f:
