@@ -54,8 +54,11 @@ def apply(stream, parameters=None):
     for cluster in communities:
         processes.append({})
         for i in cluster:
-            processes[-1][frequents_label[i]] = {}
-            processes[-1][frequents_label[i]]["score"] = sequence_scores[i]
-            processes[-1][frequents_label[i]]["events"] = frequents_occurrences[i]
+            if len(frequents[i]) > 1:
+                label = tuple([all_labels[x] for x in frequents[i]])
+                processes[-1][label] = {}
+                processes[-1][label]["score"] = sequence_scores[i]
+                processes[-1][label]["no_occurrences"] = len(frequents_occurrences[i])
+                processes[-1][label]["events"] = frequents_occurrences[i]
 
     return processes
