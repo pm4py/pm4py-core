@@ -6,9 +6,10 @@ from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PAR
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
 from pm4py.objects import log as log_lib
-from pm4py.objects import petri as petri
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.conversion.log import factory as log_conv
+from pm4py.objects.petri.importer.pnml import import_net
+from pm4py.algo.conformance.alignments.utils import pretty_print_alignments
 
 
 def align(trace, net, im, fm, model_cost_function, sync_cost_function):
@@ -31,8 +32,7 @@ def execute_script():
 
     log = xes_importer.import_log(log_path)
     log = log_conv.apply(log, parameters=None, variant=log_conv.TO_EVENT_STREAM)
-    net, marking, fmarking = petri.importer.pnml.import_net(
-        pnml_path)
+    net, marking, fmarking = import_net(pnml_path)
 
     model_cost_function = dict()
     sync_cost_function = dict()
@@ -43,7 +43,9 @@ def execute_script():
         else:
             model_cost_function[t] = 1
 
-    print(ali.factory.apply(log, net, marking, fmarking))
+    alignments = ali.factory.apply(log, net, marking, fmarking)
+    print(alignments)
+    pretty_print_alignments(alignments)
 
 
 if __name__ == '__main__':
