@@ -26,3 +26,57 @@ def construct_standard_cost_function(synchronous_product_net, skip):
             else:
                 costs[t] = STD_SYNC_COST
     return costs
+
+
+def pretty_print_alignments(alignments):
+    """
+    Takes an alignment and prints it to the console, e.g.:
+     A  | B  | C  | D  |
+    --------------------
+     A  | B  | C  | >> |
+
+    :param alignment: <class 'list'>
+    :return: Nothing
+    """
+    for alignment in alignments:
+        __print_single_alignment(alignment["alignment"])
+
+
+def __print_single_alignment(step_list):
+    trace_steps = []
+    model_steps = []
+    max_label_length = 0
+    for step in step_list:
+        trace_steps.append(" " + str(step[0]) + " ")
+        model_steps.append(" " + str(step[1]) + " ")
+        if len(step[0]) > max_label_length:
+            max_label_length = len(str(step[0]))
+        if len(str(step[1])) > max_label_length:
+            max_label_length = len(str(step[1]))
+    for i in range(len(trace_steps)):
+        if len(str(trace_steps[i])) - 2 < max_label_length:
+            step_length = len(str(trace_steps[i])) - 2
+            spaces_to_add = max_label_length - step_length
+            for j in range(spaces_to_add):
+                if j % 2 == 0:
+                    trace_steps[i] = trace_steps[i] + " "
+                else:
+                    trace_steps[i] = " " + trace_steps[i]
+        print(trace_steps[i], end='|')
+    divider = ""
+    length_divider = len(trace_steps) * (max_label_length + 3)
+    for i in range(length_divider):
+        divider += "-"
+    print('\n' + divider)
+    for i in range(len(model_steps)):
+        if len(model_steps[i]) - 2 < max_label_length:
+            step_length = len(model_steps[i]) - 2
+            spaces_to_add = max_label_length - step_length
+            for j in range(spaces_to_add):
+                if j % 2 == 0:
+                    model_steps[i] = model_steps[i] + " "
+                else:
+                    model_steps[i] = " " + model_steps[i]
+
+        print(model_steps[i], end='|')
+    print('\n\n')
