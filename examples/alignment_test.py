@@ -9,6 +9,7 @@ from pm4py.objects import log as log_lib
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.conversion.log import factory as log_conv
 from pm4py.objects.petri.importer.pnml import import_net
+from pm4py.algo.conformance.alignments.utils import pretty_print_alignments
 
 
 def align(trace, net, im, fm, model_cost_function, sync_cost_function):
@@ -42,7 +43,9 @@ def execute_script():
         else:
             model_cost_function[t] = 1
 
-    print(ali.factory.apply(log, net, marking, fmarking))
+    alignments = ali.factory.apply(log, net, marking, fmarking)
+    print(alignments)
+    pretty_print_alignments(alignments)
 
 
 if __name__ == '__main__':
