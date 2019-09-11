@@ -436,7 +436,6 @@ def get_attribute_values(log, attribute_key, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    str(parameters)
 
     attributes = {}
 
@@ -504,7 +503,6 @@ def get_trace_attribute_values(log, attribute_key, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    str(parameters)
 
     attributes = {}
 
