@@ -38,8 +38,11 @@ def pretty_print_alignments(alignments):
     :param alignment: <class 'list'>
     :return: Nothing
     """
-    for alignment in alignments:
-        __print_single_alignment(alignment["alignment"])
+    if isinstance(alignments, list):
+        for alignment in alignments:
+            __print_single_alignment(alignment["alignment"])
+    else:
+        __print_single_alignment(alignments["alignment"])
 
 
 def __print_single_alignment(step_list):
