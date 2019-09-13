@@ -43,7 +43,7 @@ def create_xes_string(traces):
                 activity_name.attrib['key'] = 'concept:name'
                 activity_name.attrib['value'] = event
             trace_count += 1
-    return etree.tostring(l, pretty_print=False, method='xml').decode('utf-8')
+    return etree.tostring(l, pretty_print=False, method='xml', xml_declaration=True, encoding='UTF-8').decode('utf-8')
 
 
 if __name__ == '__main__':
