@@ -1,4 +1,4 @@
-from pm4py import algo, evaluation, objects, util, visualization, statistics
+from pm4py import algo, evaluation, objects, util, visualization, statistics, streaming
 
 __version__ = '1.1.28'
 __doc__ = "Process Mining for Python"
