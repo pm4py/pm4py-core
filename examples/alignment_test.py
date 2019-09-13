@@ -7,7 +7,6 @@ from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PAR
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
 from pm4py.objects import log as log_lib
 from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.objects.conversion.log import factory as log_conv
 from pm4py.objects.petri.importer.pnml import import_net
 from pm4py.algo.conformance.alignments.utils import pretty_print_alignments
 
@@ -31,7 +30,6 @@ def execute_script():
     # pnml_path = 'C:/Users/bas/Documents/tue/svn/private/logs/a32_logs/a32.pnml'
 
     log = xes_importer.import_log(log_path)
-    log = log_conv.apply(log, parameters=None, variant=log_conv.TO_EVENT_STREAM)
     net, marking, fmarking = import_net(pnml_path)
 
     model_cost_function = dict()
