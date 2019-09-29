@@ -1,8 +1,8 @@
-from pm4py.algo.stream.grouping import factory as grouping_factory
-from pm4py.algo.stream.tasks import factory as task_assignation_factory
-from pm4py.algo.stream.sequence_mining import factory as seq_min_factory
-from pm4py.algo.stream.sequence_clustering import factory as seq_clust_factory
-from pm4py.algo.stream.sequence_scoring import score
+from pm4py.algo.task_mining.grouping import factory as grouping_factory
+from pm4py.algo.task_mining.tasks import factory as task_assignation_factory
+from pm4py.algo.task_mining.sequence_mining import factory as seq_min_factory
+from pm4py.algo.task_mining.sequence_clustering import factory as seq_clust_factory
+from pm4py.algo.task_mining.sequence_scoring import score
 
 
 def apply(stream, parameters=None):
