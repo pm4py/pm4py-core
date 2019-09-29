@@ -1,4 +1,4 @@
-from pm4py.algo.stream.sequence_clustering.versions import asyn_fluidc
+from pm4py.algo.task_mining.sequence_clustering.versions import asyn_fluidc
 
 ASYN_FLUIDC = "asyn_fluidc"
 
