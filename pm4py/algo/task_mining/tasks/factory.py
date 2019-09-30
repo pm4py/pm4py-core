@@ -1,4 +1,4 @@
-from pm4py.algo.stream.tasks.versions import equiv_spatial_grouping
+from pm4py.algo.task_mining.tasks.versions import equiv_spatial_grouping
 
 EQUIV_SPATIAL_GROUPING = "equiv_spatial_grouping"
 

@@ -1,4 +1,4 @@
-from pm4py.algo.stream.task_mining.versions import bpm2019
+from pm4py.algo.task_mining.versions import bpm2019
 
 BPM2019 = "bpm2019"
 
