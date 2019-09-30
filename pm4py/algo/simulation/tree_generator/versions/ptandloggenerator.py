@@ -8,6 +8,32 @@ import random
 import copy
 
 def apply(parameters=None):
+    """
+    Generate a process tree using the PTAndLogGenerator approach
+    (see the paper PTandLogGenerator: A Generator for Artificial Event Data)
+
+    Parameters
+    --------------
+    parameters
+        Parameters of the algorithm, according to the paper:
+        - mode: most frequent number of visible activities
+        - min: minimum number of visible activities
+        - max: maximum number of visible activities
+        - sequence: probability to add a sequence operator to tree
+        - choice: probability to add a choice operator to tree
+        - parallel: probability to add a parallel operator to tree
+        - loop: probability to add a loop operator to tree
+        - or: probability to add an or operator to tree
+        - silent: probability to add silent activity to a choice or loop operator
+        - duplicate: probability to duplicate an activity label
+        - lt_dependency: probability to add a random dependency to the tree
+        - infrequent: probability to make a choice have infrequent paths
+        - no_models: number of trees to generate from model population
+        - unfold: whether or not to unfold loops in order to include choices underneath in dependencies: 0=False, 1=True
+            if lt_dependency <= 0: this should always be 0 (False)
+            if lt_dependency > 0: this can be 1 or 0 (True or False)
+        - max_repeat: maximum number of repetitions of a loop (only used when unfolding is True)
+    """
     if parameters is None:
         parameters = {}
 
