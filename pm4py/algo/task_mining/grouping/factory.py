@@ -1,4 +1,4 @@
-from pm4py.algo.stream.grouping.versions import equiv_temp_grouping
+from pm4py.algo.task_mining.grouping.versions import equiv_temp_grouping
 
 EQUIV_TEMP_GROUPING = "equiv_temp_grouping"
 

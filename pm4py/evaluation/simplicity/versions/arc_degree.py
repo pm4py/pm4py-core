@@ -48,6 +48,6 @@ def apply(petri_net, parameters=None):
 
     mean_degree = mean(all_arc_degrees) if all_arc_degrees else 0.0
 
-    simplicity = 1.0 / (1.0 + (mean_degree - 2))
+    simplicity = 1.0 / (1.0 + max(mean_degree - 2, 0))
 
     return simplicity
