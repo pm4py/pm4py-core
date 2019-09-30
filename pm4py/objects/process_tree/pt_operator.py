@@ -10,6 +10,8 @@ class Operator(Enum):
     PARALLEL = '+'
     # loop operator
     LOOP = '*'
+    # or operator
+    OR = 'O'
 
     '''
     SEQUENCE = u'\u2192'

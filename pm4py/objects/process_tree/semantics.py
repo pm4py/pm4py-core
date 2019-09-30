@@ -111,7 +111,8 @@ def execute_enabled(enabled, open, closed, execution_sequence=None):
         elif vertex.operator is pt_opt.Operator.PARALLEL:
             enabled |= set(vertex.children)
             map(lambda c: execution_sequence.append((c, pt_st.State.ENABLED)), vertex.children)
-        elif vertex.operator is pt_opt.Operator.XOR:
+        # TODO: add proper support to OR (during the log generation, is considered as a XOR)
+        elif vertex.operator is pt_opt.Operator.XOR or vertex.operator is pt_opt.Operator.OR:
             vc = vertex.children
             c = vc[random.randint(0, len(vc) - 1)]
             enabled.add(c)
