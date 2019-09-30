@@ -75,6 +75,39 @@ class ProcessTree(object):
         """
         return self.__repr__()
 
+    def _get_root(self):
+        root = self
+        while root._get_parent() is not None:
+            root = root._get_parent()
+        return root
+
+    def _get_leaves(self):
+        root = self._get_root()
+        leaves = root
+        if root._get_children != list():
+            leaves = root._get_children()
+            change_of_leaves = True
+            while change_of_leaves:
+                leaves_to_replace = list()
+                new_leaves = list()
+                for leaf in leaves:
+                    if leaf._get_children() != list():
+                        leaves_to_replace.append(leaf)
+                    else:
+                        new_leaves.append(leaf)
+                if leaves_to_replace != list():
+                    for leaf in leaves_to_replace:
+                        for el in leaf.children:
+                            new_leaves.append(el)
+                    leaves = new_leaves
+                else:
+                    change_of_leaves = False
+        return leaves
+
+    def _print_tree(self):
+        root = self._get_root()
+        print(root)
+
     parent = property(_get_parent, _set_parent)
     children = property(_get_children, _set_children)
     operator = property(_get_operator, _set_operator)

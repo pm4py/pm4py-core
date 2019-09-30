@@ -1,11 +1,12 @@
-from pm4py.algo.simulation.tree_generator.versions import basic
+from pm4py.algo.simulation.tree_generator.versions import basic, ptandloggenerator
 
 BASIC = "basic"
+PTANDLOGGENERATOR = "ptandloggenerator"
 
-VERSIONS = {BASIC: basic.apply}
+VERSIONS = {BASIC: basic.apply, PTANDLOGGENERATOR: ptandloggenerator.apply}
 
 
-def apply(variant=BASIC, parameters=None):
+def apply(variant=PTANDLOGGENERATOR, parameters=None):
     """
     Generate a process tree
 
