@@ -27,13 +27,16 @@ class TransitionSystem(object):
         def __get_data(self):
             return self.__data
 
+        def __set_data(self, data):
+            self.__data = data
+
         def __repr__(self):
             return str(self.name)
 
         name = property(__get_name, __set_name)
         incoming = property(__get_incoming, __set_incoming)
         outgoing = property(__get_outgoing, __set_outgoing)
-        data = property(__get_data)
+        data = property(__get_data, __set_data)
 
     class Transition(object):
 
@@ -61,13 +64,16 @@ class TransitionSystem(object):
         def __get_data(self):
             return self.__data
 
+        def __set_data(self, data):
+            self.__data = data
+
         def __repr__(self):
             return str(self.name)
 
         name = property(__get_name)
         from_state = property(__get_from_state, __set_from_state)
         to_state = property(__get_to_state, __set_to_state)
-        data = property(__get_data)
+        data = property(__get_data, __set_data)
 
     def __init__(self, name=None, states=None, transitions=None):
         self.__name = "" if name is None else name
