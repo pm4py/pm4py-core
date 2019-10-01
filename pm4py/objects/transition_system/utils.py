@@ -61,9 +61,9 @@ def remove_all_arcs_from_to(fr, to, ts):
     None
     """
     names_transitions_to_delete = [t.name for t in ts.transitions if t in fr.outgoing and t in to.incoming]
-    ts.transitions = [t for t in ts.transitions if t.name not in names_transitions_to_delete]
-    fr.outgoing = [t for t in fr.outgoing if t.name not in names_transitions_to_delete]
-    to.incoming = [t for t in to.incoming if t.name not in names_transitions_to_delete]
+    ts.transitions = set([t for t in ts.transitions if t.name not in names_transitions_to_delete])
+    fr.outgoing = set([t for t in fr.outgoing if t.name not in names_transitions_to_delete])
+    to.incoming = set([t for t in to.incoming if t.name not in names_transitions_to_delete])
 
 
 def transitive_reduction(ts):
