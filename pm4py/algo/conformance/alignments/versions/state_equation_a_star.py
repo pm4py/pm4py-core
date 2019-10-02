@@ -34,6 +34,7 @@ PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
 DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.ORTOOLS_SOLVER
 PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE = 'ret_tuple_as_trans_desc'
+PARAM_TRACE_NET_COSTS = "trace_net_costs"
 
 TRACE_NET_CONSTR_FUNCTION = "trace_net_constr_function"
 TRACE_NET_COST_AWARE_CONSTR_FUNCTION = "trace_net_cost_aware_constr_function"
@@ -126,8 +127,6 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
     if parameters is None:
         parameters = {}
 
-    ret_tuple_as_trans_desc = parameters[
-        PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] if PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE in parameters else False
     activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
         parameters[
             pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
@@ -135,6 +134,46 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
         trace_net_constr_function = parameters[
             TRACE_NET_CONSTR_FUNCTION] if TRACE_NET_CONSTR_FUNCTION in parameters else petri.utils.construct_trace_net
         trace_net, trace_im, trace_fm = trace_net_constr_function(trace, activity_key=activity_key)
+
+    else:
+        trace_net_cost_aware_constr_function = parameters[
+            TRACE_NET_COST_AWARE_CONSTR_FUNCTION] if TRACE_NET_COST_AWARE_CONSTR_FUNCTION in parameters else construct_trace_net_cost_aware
+        trace_net, trace_im, trace_fm, parameters[PARAM_TRACE_NET_COSTS] = trace_net_cost_aware_constr_function(trace,
+                                                                                                                parameters[
+                                                                                                  PARAM_TRACE_COST_FUNCTION],
+                                                                                                                activity_key=activity_key)
+
+    return apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters)
+
+
+def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters=None):
+    """
+        Performs the basic alignment search, given a trace net and a net.
+
+        Parameters
+        ----------
+        trace: :class:`list` input trace, assumed to be a list of events (i.e. the code will use the activity key
+        to get the attributes)
+        petri_net: :class:`pm4py.objects.petri.net.PetriNet` the Petri net to use in the alignment
+        initial_marking: :class:`pm4py.objects.petri.net.Marking` initial marking in the Petri net
+        final_marking: :class:`pm4py.objects.petri.net.Marking` final marking in the Petri net
+        parameters: :class:`dict` (optional) dictionary containing one of the following:
+            PARAM_TRACE_COST_FUNCTION: :class:`list` (parameter) mapping of each index of the trace to a positive cost value
+            PARAM_MODEL_COST_FUNCTION: :class:`dict` (parameter) mapping of each transition in the model to corresponding
+            model cost
+            PARAM_SYNC_COST_FUNCTION: :class:`dict` (parameter) mapping of each transition in the model to corresponding
+            synchronous costs
+            PARAM_ACTIVITY_KEY: :class:`str` (parameter) key to use to identify the activity described by the events
+            PARAM_TRACE_NET_COSTS: :class:`dict` (parameter) mapping between transitions and costs
+
+        Returns
+        -------
+        dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
+        """
+    ret_tuple_as_trans_desc = parameters[
+        PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] if PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE in parameters else False
+
+    if parameters is None or PARAM_TRACE_COST_FUNCTION not in parameters or PARAM_MODEL_COST_FUNCTION not in parameters or PARAM_SYNC_COST_FUNCTION not in parameters:
         sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
                                                                                                   trace_fm, petri_net,
                                                                                                   initial_marking,
@@ -142,12 +181,6 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
                                                                                                   alignments.utils.SKIP)
         cost_function = alignments.utils.construct_standard_cost_function(sync_prod, alignments.utils.SKIP)
     else:
-        trace_net_cost_aware_constr_function = parameters[
-            TRACE_NET_COST_AWARE_CONSTR_FUNCTION] if TRACE_NET_COST_AWARE_CONSTR_FUNCTION in parameters else construct_trace_net_cost_aware
-        trace_net, trace_im, trace_fm, trace_net_costs = trace_net_cost_aware_constr_function(trace,
-                                                                                              parameters[
-                                                                                                  PARAM_TRACE_COST_FUNCTION],
-                                                                                              activity_key=activity_key)
         revised_sync = dict()
         for t_trace in trace_net.transitions:
             for t_model in petri_net.transitions:
@@ -156,7 +189,7 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
 
         sync_prod, sync_initial_marking, sync_final_marking, cost_function = construct_cost_aware(
             trace_net, trace_im, trace_fm, petri_net, initial_marking, final_marking, alignments.utils.SKIP,
-            trace_net_costs, parameters[PARAM_MODEL_COST_FUNCTION], revised_sync)
+            parameters[PARAM_TRACE_NET_COSTS], parameters[PARAM_MODEL_COST_FUNCTION], revised_sync)
 
     return apply_sync_prod(sync_prod, sync_initial_marking, sync_final_marking, cost_function,
                            alignments.utils.SKIP, ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)

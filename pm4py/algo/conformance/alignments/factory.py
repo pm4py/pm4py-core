@@ -81,11 +81,11 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
 
 def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
     """
-    apply alignments to a trace
+    apply alignments to a log
     Parameters
     -----------
     log
-        object of the form :class:`pm4py.log.log.Trace` trace of events
+        object of the form :class:`pm4py.log.log.EventLog` event log
     petri_net
         :class:`pm4py.objects.petri.petrinet.PetriNet` the model to use for the alignment
     initial_marking
@@ -107,7 +107,7 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     Returns
     -----------
     alignment
-        :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and
+        :class:`list` of :class:`dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and
         **traversed_arcs**
         The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t)
         representing synchronous/log/model-moves.
