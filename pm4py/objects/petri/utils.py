@@ -137,7 +137,7 @@ def construct_trace_net(trace, trace_name_key=xes_util.DEFAULT_NAME_KEY, activit
 def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT_NAME_KEY,
                                    activity_key=xes_util.DEFAULT_NAME_KEY):
     """
-    Creates a trace net, i.e. a trace in Petri net form.
+    Creates a trace net, i.e. a trace in Petri net form mapping specific costs to transitions.
 
     Parameters
     ----------
@@ -148,7 +148,8 @@ def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT
 
     Returns
     -------
-    tuple: :class:`tuple` of the net, initial marking and the final marking
+    tuple: :class:`tuple` of the net, initial marking, final marking and map of costs
+
 
     """
     net = petri.petrinet.PetriNet(
