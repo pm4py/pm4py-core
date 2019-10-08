@@ -173,8 +173,10 @@ def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT
 
 def variants(net, initial_marking, final_marking):
     """
-    Given an acyclic workflow net, initial and final marking extracts a set of variants (in form of traces)
+    Given an accepting Petri net, initial and final marking extracts a set of variants (in form of traces)
     replayable on the net.
+    Warning: this function is based on a marking exploration. If the accepting Petri net contains loops, the method
+    traverses the loops only one time.
 
     Parameters
     ----------
