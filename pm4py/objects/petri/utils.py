@@ -197,7 +197,8 @@ def variants(net, initial_marking, final_marking):
         en_tr = petri.semantics.enabled_transitions(net, curr_couple[0])
         for t in en_tr:
             next_activitylist = deepcopy(curr_couple[1])
-            next_activitylist.append(Event({'concept:name': repr(t)}))
+            if t.label is not None:
+                next_activitylist.append(Event({'concept:name': repr(t)}))
             next_couple = (petri.semantics.execute(t, net, curr_couple[0]), next_activitylist)
             if hash(next_couple[0]) == hash(final_marking):
                 variants.append(next_couple[1])
