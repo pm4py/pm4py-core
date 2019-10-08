@@ -480,31 +480,3 @@ def get_s_components_from_petri(net, im, fm, rec_depth=0, curr_s_comp=None, visi
         list_s_components.append(set([place.name for place in curr_s_comp]))
 
     return list_s_components
-
-
-if __name__ == '__main__':
-    from pm4py.objects.petri.importer.factory import pnml as pmnl_importer
-
-    net, initial_marking, _ = pmnl_importer.import_net(r"C:\Users\pegoraro\Google Drive\PADS\uncertainty\net-from-book.pnml")
-    final_marking = petri.petrinet.Marking()
-    for p in net.places:
-        if not p.out_arcs:
-            final_marking[p] = 1
-
-    # from . import pm4py.visualization.petrinet.common import visualize as pn_vis
-    # from pm4py.visualization.petrinet.factory import apply
-
-    # vis = pn_vis.graphviz_visualization(net)
-    # vis.view()
-
-    # from pm4py.visualization.petrinet import factory as pn_vis_factory
-    import pm4py.visualization.petrinet.factory as pn_vis_factory
-
-    gviz = pn_vis_factory.apply(net, initial_marking, final_marking)
-    pn_vis_factory.view(gviz)
-
-    # variantlist = variants(net, initial_marking, final_marking)
-    # for var in variantlist:
-    #     for event in var:
-    #         print(event)
-    #     print('***')
