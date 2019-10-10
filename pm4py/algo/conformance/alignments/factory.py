@@ -221,7 +221,7 @@ def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, pa
     # Define an output queue
     output = mp.Queue()
 
-    processes = [mp.Process(target=VERSIONS_VARIANTS_LIST_MPROCESSING[version](output, x, petri_net_string, parameters=parameters), args=(5, output)) for x in variants_list_split]
+    processes = [mp.Process(target=VERSIONS_VARIANTS_LIST_MPROCESSING[version](output, x, petri_net_string, parameters=parameters)) for x in variants_list_split]
 
     # Run processes
     for p in processes:

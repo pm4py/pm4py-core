@@ -8,6 +8,8 @@ from pm4py.objects.petri import semantics
 from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
 from pm4py.util import constants
 from pm4py.objects.log import log as log_implementation
+from pm4py.objects.petri.importer.versions import pnml as petri_importer
+
 
 PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
 DEFAULT_VARIANT_DELIMITER = ","
@@ -1173,7 +1175,7 @@ def apply_variants_list(variants_list, net, initial_marking, final_marking, para
 
     log = log_implementation.EventLog()
     for var_item in variants_list:
-        variant = var_item.split(variant_delimiter)
+        variant = var_item[0].split(variant_delimiter)
         trace = log_implementation.Trace()
         for activ in variant:
             event = log_implementation.Event({activity_key: activ})
@@ -1189,3 +1191,21 @@ def apply_variants_dictionary(variants, net, initial_marking, final_marking, par
 
     var_list = {x: len(y) for x, y in variants.items()}
     return apply_variants_list(var_list, net, initial_marking, final_marking, parameters=parameters)
+
+
+def apply_variants_list_petri_string(variants_list, petri_string, parameters=None):
+    if parameters is None:
+        parameters = {}
+
+    net, im, fm = petri_importer.import_petri_from_string(petri_string, parameters=parameters)
+
+    return apply_variants_list(variants_list, net, im, fm, parameters=parameters)
+
+
+def apply_variants_list_petri_string_multiprocessing(output, variants_list, petri_string, parameters=None):
+    if parameters is None:
+        parameters = {}
+
+    ret = apply_variants_list_petri_string(variants_list, petri_string, parameters=parameters)
+
+    output.put(ret)
