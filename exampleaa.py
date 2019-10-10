@@ -140,4 +140,9 @@ if __name__ == "__main__":
 
     log = xes_importer.apply("tests/input_data/running-example.xes")
     net, im, fm = inductive_miner.apply(log)
-    apply_log_ray(log, net, im, fm)
+    import time
+    aa = time.time()
+    aligned_traces = apply_log_ray(log, net, im, fm)
+    bb = time.time()
+    print(aligned_traces)
+    print(bb-aa)
