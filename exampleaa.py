@@ -107,8 +107,6 @@ def apply_log_ray(log, petri_net, initial_marking, final_marking, parameters=Non
     variants_list_split = list(chunks(variants_list, n))
 
     results = ray.get([apply_from_variants_list_ray.remote(x, petri_net_string) for x in variants_list_split])
-    print(results)
-    input()
 
     al_idx = {}
     for index, el in enumerate(variants_list_split):
