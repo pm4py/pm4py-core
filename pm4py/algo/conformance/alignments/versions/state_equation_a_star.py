@@ -245,16 +245,12 @@ def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking
     return dictio_alignments
 
 
-def apply_from_variants_list_petri_string(mp_output, no_threads, var_list, petri_net_string, parameters=None):
+def apply_from_variants_list_petri_string(var_list, petri_net_string, parameters=None):
     """
     Apply the alignments from the specification of a list of variants in the log
 
     Parameters
     -------------
-    mp_output
-        Multiprocessing output
-    no_threads
-        Number of threads
     var_list
         List of variants (for each item, the first entry is the variant itself, the second entry may be the number of cases)
     petri_net_string
@@ -270,8 +266,34 @@ def apply_from_variants_list_petri_string(mp_output, no_threads, var_list, petri
 
     petri_net, initial_marking, final_marking = petri_importer.import_petri_from_string(petri_net_string)
 
-    res = apply_from_variants_list(var_list, petri_net, initial_marking, final_marking)
+    res = apply_from_variants_list(var_list, petri_net, initial_marking, final_marking, parameters=parameters)
+    return res
+
+
+def apply_from_variants_list_petri_string_mprocessing(mp_output, var_list, petri_net_string, parameters=None):
+    """
+    Apply the alignments from the specification of a list of variants in the log
+
+    Parameters
+    -------------
+    mp_output
+        Multiprocessing output
+    var_list
+        List of variants (for each item, the first entry is the variant itself, the second entry may be the number of cases)
+    petri_net_string
+        String representing the accepting Petri net
+
+    Returns
+    --------------
+    dictio_alignments
+        Dictionary that assigns to each variant its alignment
+    """
+    if parameters is None:
+        parameters = {}
+
+    res = apply_from_variants_list_petri_string(var_list, petri_net_string, parameters=parameters)
     mp_output.put(res)
+
 
 def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters=None):
     """

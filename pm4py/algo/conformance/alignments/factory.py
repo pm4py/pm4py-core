@@ -21,7 +21,7 @@ import math
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
 VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}
 VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost}
-VERSIONS_VARIANTS_LIST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply_from_variants_list_petri_string}
+VERSIONS_VARIANTS_LIST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply_from_variants_list_petri_string_mprocessing}
 VARIANTS_IDX = 'variants_idx'
 
 
@@ -220,7 +220,7 @@ def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, pa
     # Define an output queue
     output = mp.Queue()
 
-    processes = [mp.Process(target=VERSIONS_VARIANTS_LIST[version](output, len(variants_list_split), x, petri_net_string, parameters=parameters), args=(5, output)) for x in variants_list_split]
+    processes = [mp.Process(target=VERSIONS_VARIANTS_LIST[version](output, x, petri_net_string, parameters=parameters), args=(5, output)) for x in variants_list_split]
 
     # Run processes
     for p in processes:
