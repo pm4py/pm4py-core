@@ -22,6 +22,7 @@ import pm4py
 from pm4py import util as pm4pyutil
 from pm4py.algo.conformance import alignments
 from pm4py.objects import petri
+from pm4py.objects.petri.importer import pnml as petri_importer
 from pm4py.objects.log import log as log_implementation
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.petri.synchronous_product import construct_cost_aware
@@ -242,6 +243,35 @@ def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking
         variant = varitem[0]
         dictio_alignments[variant] = apply_from_variant(variant, petri_net, initial_marking, final_marking, parameters=parameters)
     return dictio_alignments
+
+
+def apply_from_variants_list_petri_string(mp_output, no_threads, var_list, petri_net_string, parameters=None):
+    """
+    Apply the alignments from the specification of a list of variants in the log
+
+    Parameters
+    -------------
+    mp_output
+        Multiprocessing output
+    no_threads
+        Number of threads
+    var_list
+        List of variants (for each item, the first entry is the variant itself, the second entry may be the number of cases)
+    petri_net_string
+        String representing the accepting Petri net
+
+    Returns
+    --------------
+    dictio_alignments
+        Dictionary that assigns to each variant its alignment
+    """
+    if parameters is None:
+        parameters = {}
+
+    petri_net, initial_marking, final_marking = petri_importer.import_petri_from_string(petri_net_string)
+
+    res = apply_from_variants_list(var_list, petri_net, initial_marking, final_marking)
+    mp_output.put(res)
 
 def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters=None):
     """
