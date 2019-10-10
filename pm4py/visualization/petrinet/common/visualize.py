@@ -86,10 +86,8 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     viz = Digraph(net.name, filename=filename.name, engine='dot', graph_attr={'bgcolor':'transparent'})
     if set_rankdir:
         viz.graph_attr['rankdir'] = set_rankdir
-        print('pippo')
     else:
         viz.graph_attr['rankdir'] = 'LR'
-        print('pluto')
 
     # transitions
     viz.attr('node', shape='box')
