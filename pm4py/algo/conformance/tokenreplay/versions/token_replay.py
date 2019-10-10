@@ -7,6 +7,10 @@ from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.petri import semantics
 from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
 from pm4py.util import constants
+from pm4py.objects.log import log as log_implementation
+
+PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+DEFAULT_VARIANT_DELIMITER = ","
 
 MAX_REC_DEPTH = 18
 MAX_IT_FINAL1 = 5
@@ -875,7 +879,8 @@ def check_threads(net, threads, threads_results, all_activated_transitions, is_r
                 "enabled_transitions_in_marking"]]
             threads_results[tk]["transitions_with_problems"] = [x.name for x in
                                                                 threads_results[tk]["transitions_with_problems"]]
-            threads_results[tk]["reached_marking"] = {x.name:y for x,y in threads_results[tk]["reached_marking"].items()}
+            threads_results[tk]["reached_marking"] = {x.name: y for x, y in
+                                                      threads_results[tk]["reached_marking"].items()}
 
         all_activated_transitions.update(set(t.act_trans))
 
@@ -1154,3 +1159,33 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
                      variants=variants, is_reduction=is_reduction, thread_maximum_ex_time=thread_maximum_ex_time,
                      cleaning_token_flood=cleaning_token_flood, disable_variants=disable_variants,
                      return_object_names=return_names)
+
+
+def apply_variants_list(variants_list, net, initial_marking, final_marking, parameters=None):
+    if parameters is None:
+        parameters = {}
+    parameters["return_names"] = True
+
+    activity_key = parameters[
+        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes_util.DEFAULT_NAME_KEY
+    variant_delimiter = parameters[
+        PARAMETER_VARIANT_DELIMITER] if PARAMETER_VARIANT_DELIMITER in parameters else DEFAULT_VARIANT_DELIMITER
+
+    log = log_implementation.EventLog()
+    for var_item in variants_list:
+        variant = var_item.split(variant_delimiter)
+        trace = log_implementation.Trace()
+        for activ in variant:
+            event = log_implementation.Event({activity_key: activ})
+            trace.append(event)
+        log.append(trace)
+
+    return apply(log, net, initial_marking, final_marking, parameters=parameters)
+
+
+def apply_variants_dictionary(variants, net, initial_marking, final_marking, parameters=None):
+    if parameters is None:
+        parameters = {}
+
+    var_list = {x: len(y) for x, y in variants.items()}
+    return apply_variants_list(var_list, net, initial_marking, final_marking, parameters=parameters)
