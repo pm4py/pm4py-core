@@ -159,7 +159,7 @@ def export_petri_as_string(petrinet, marking, final_marking=None, stochastic_map
     tree = export_petri_tree(petrinet, marking, final_marking=final_marking, stochastic_map=stochastic_map,
                              export_prom5=export_prom5)
 
-    return etree.tostring(tree, xml_declaration=True, encoding="utf-8")
+    return etree.tostring(tree, xml_declaration=True, encoding="utf-8").decode('utf-8')
 
 
 def export_net(petrinet, marking, output_filename, final_marking=None, stochastic_map=None, export_prom5=False,
