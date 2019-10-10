@@ -5,7 +5,7 @@ import shutil
 from pm4py.util import constants
 from pm4py.objects.log.util import xes
 from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
-
+from pm4py.objects.log.util import dataframe_utils
 
 def apply(df, path, parameters=None):
     """
@@ -23,16 +23,14 @@ def apply(df, path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_key = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-
     compression = parameters["compression"] if "compression" in parameters else "snappy"
     partition_cols = parameters["partition_cols"] if "partition_cols" in parameters else None
     auto_partitioning = parameters["auto_partitioning"] if "auto_partitioning" in parameters else False
     num_partitions = parameters["num_partitions"] if "num_partitions" in parameters else 128
 
     if partition_cols is None and auto_partitioning:
-        df["@@partitioning"] = df[case_id_key].rank(method='dense', ascending=False).astype(int) % num_partitions
+        #df["@@partitioning"] = df[case_id_key].rank(method='dense', ascending=False).astype(int) % num_partitions
+        df = dataframe_utils.insert_partitioning(df, num_partitions, parameters=parameters)
         partition_cols = ["@@partitioning"]
 
     df.columns = [x.replace(":", "AAA") for x in df.columns]
