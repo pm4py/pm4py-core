@@ -6,7 +6,7 @@ from pm4py.objects.petri.petrinet import Marking
 
 FORMAT = "format"
 DEBUG = "debug"
-RANKDIR_LR = "set_rankdir_lr"
+RANKDIR = "set_rankdir"
 
 
 def apply(net, initial_marking, final_marking, decorations=None, parameters=None):
@@ -36,20 +36,20 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
         parameters = {}
     image_format = "png"
     debug = False
-    set_rankdir_lr = False
+    set_rankdir = None
     if FORMAT in parameters:
         image_format = parameters["format"]
     if DEBUG in parameters:
         debug = parameters["debug"]
-    if RANKDIR_LR in parameters:
-        set_rankdir_lr = parameters[RANKDIR_LR]
+    if RANKDIR in parameters:
+        set_rankdir = parameters[RANKDIR]
     return graphviz_visualization(net, image_format=image_format, initial_marking=initial_marking,
                                   final_marking=final_marking, decorations=decorations, debug=debug,
-                                  set_rankdir_lr=set_rankdir_lr)
+                                  set_rankdir=set_rankdir)
 
 
 def graphviz_visualization(net, image_format="png", initial_marking=None, final_marking=None, decorations=None,
-                           debug=False, set_rankdir_lr=False):
+                           debug=False, set_rankdir=None):
     """
     Provides visualization for the petrinet
 
@@ -67,7 +67,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
         Decorations of the Petri net (says how element must be presented)
     debug
         Enables debug mode
-    set_rankdir_lr
+    set_rankdir
         Sets the rankdir to LR (horizontal layout)
 
     Returns
@@ -84,8 +84,12 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph(net.name, filename=filename.name, engine='dot', graph_attr={'bgcolor':'transparent'})
-    if set_rankdir_lr:
+    if set_rankdir:
+        viz.graph_attr['rankdir'] = set_rankdir
+        print('pippo')
+    else:
         viz.graph_attr['rankdir'] = 'LR'
+        print('pluto')
 
     # transitions
     viz.attr('node', shape='box')
