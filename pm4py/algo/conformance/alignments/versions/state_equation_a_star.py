@@ -179,7 +179,7 @@ def apply_from_variant(variant, petri_net, initial_marking, final_marking, param
     variant_delimiter = parameters[PARAMETER_VARIANT_DELIMITER] if PARAMETER_VARIANT_DELIMITER in parameters else DEFAULT_VARIANT_DELIMITER
     variant_split = variant.split(variant_delimiter) if type(variant) is str else variant
     for i in range(len(variant_split)):
-        trace.append(log_implementation.Event({activity_key: variant_split}))
+        trace.append(log_implementation.Event({activity_key: variant_split[i]}))
     return apply(trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
 
