@@ -14,11 +14,14 @@ from pm4py.objects.log.util import general as log_util
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+import multiprocessing as mp
+from pm4py.objects.petri.exporter.versions import pnml as petri_exporter
+import math
 
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
 VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}
 VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost}
-
+VERSIONS_VARIANTS_LIST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply_from_variants_list_petri_string}
 VARIANTS_IDX = 'variants_idx'
 
 
@@ -169,3 +172,87 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         else:
             align['fitness'] = 0
     return alignments
+
+def chunks(l, n):
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
+
+def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
+    if parameters is None:
+        parameters = dict()
+    activity_key = parameters[
+        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
+    model_cost_function = parameters[
+        PARAM_MODEL_COST_FUNCTION] if PARAM_MODEL_COST_FUNCTION in parameters else None
+    sync_cost_function = parameters[
+        PARAM_SYNC_COST_FUNCTION] if PARAM_SYNC_COST_FUNCTION in parameters else None
+    if model_cost_function is None or sync_cost_function is None:
+        # reset variables value
+        model_cost_function = dict()
+        sync_cost_function = dict()
+        for t in petri_net.transitions:
+            if t.label is not None:
+                model_cost_function[t] = ali.utils.STD_MODEL_LOG_MOVE_COST
+                sync_cost_function[t] = 0
+            else:
+                model_cost_function[t] = 1
+
+    parameters[pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = activity_key
+    parameters[
+        PARAM_MODEL_COST_FUNCTION] = model_cost_function
+    parameters[
+        PARAM_SYNC_COST_FUNCTION] = sync_cost_function
+    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters)
+
+    variants_idxs = parameters[VARIANTS_IDX] if VARIANTS_IDX in parameters else None
+    if variants_idxs is None:
+        variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
+    variants_list = [[x, len(y)] for x, y in variants_idxs.items()]
+
+    no_cores = mp.cpu_count()
+
+    petri_net_string = petri_exporter.export_petri_as_string(petri_net, initial_marking, final_marking)
+
+    n = math.ceil(len(variants_list)/no_cores)
+
+    variants_list_split = list(chunks(variants_list, n))
+
+    # Define an output queue
+    output = mp.Queue()
+
+    processes = [mp.Process(target=VERSIONS_VARIANTS_LIST[version](output, len(variants_list_split), x, petri_net_string, parameters=parameters), args=(5, output)) for x in variants_list_split]
+
+    # Run processes
+    for p in processes:
+        p.start()
+
+    results = []
+    for p in processes:
+        result = output.get()
+        results.append(result)
+
+    al_idx = {}
+    for index, el in enumerate(variants_list_split):
+        for index2, var_item in enumerate(el):
+            variant = var_item[0]
+            for trace_idx in variants_idxs[variant]:
+                al_idx[trace_idx] = results[index][variant]
+
+    alignments = []
+    for i in range(len(log)):
+        alignments.append(al_idx[i])
+
+    # assign fitness to traces
+    for index, align in enumerate(alignments):
+        unfitness_upper_part = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
+        if unfitness_upper_part == 0:
+            align['fitness'] = 1
+        elif (len(log[index]) + best_worst_cost) > 0:
+            align['fitness'] = 1 - (
+                    (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
+        else:
+            align['fitness'] = 0
+
+    return alignments
+
+
