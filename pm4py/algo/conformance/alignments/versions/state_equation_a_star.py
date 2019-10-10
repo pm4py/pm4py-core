@@ -39,6 +39,9 @@ PARAM_TRACE_NET_COSTS = "trace_net_costs"
 TRACE_NET_CONSTR_FUNCTION = "trace_net_constr_function"
 TRACE_NET_COST_AWARE_CONSTR_FUNCTION = "trace_net_cost_aware_constr_function"
 
+PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+DEFAULT_VARIANT_DELIMITER = ","
+
 PARAMETERS = [PARAM_TRACE_COST_FUNCTION, PARAM_MODEL_COST_FUNCTION, PARAM_SYNC_COST_FUNCTION,
               pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
@@ -145,6 +148,100 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
 
     return apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters)
 
+
+def apply_from_variant(variant, petri_net, initial_marking, final_marking, parameters=None):
+    """
+    Apply the alignments from the specification of a single variant
+
+    Parameters
+    -------------
+    variant
+        Variant (as string delimited by the "variant_delimiter" parameter)
+    petri_net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    parameters
+        Parameters of the algorithm (same as 'apply' method, plus 'variant_delimiter' that is , by default)
+
+    Returns
+    ------------
+    dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
+    """
+    if parameters is None:
+        parameters = {}
+    activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
+        parameters[
+            pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+    trace = log_implementation.Trace()
+    variant_delimiter = parameters[PARAMETER_VARIANT_DELIMITER] if PARAMETER_VARIANT_DELIMITER in parameters else DEFAULT_VARIANT_DELIMITER
+    variant_split = variant.split(variant_delimiter) if type(variant) is str else variant
+    for i in range(len(variant_split)):
+        trace.append(log_implementation.Event({activity_key: variant_split}))
+    return apply(trace, petri_net, initial_marking, final_marking, parameters=parameters)
+
+
+def apply_from_variants_dictionary(var_dictio, petri_net, initial_marking, final_marking, parameters=None):
+    """
+    Apply the alignments from the specification of a variants dictionary
+
+    Parameters
+    -------------
+    var_dictio
+        Dictionary of variants (along possibly with their count, or the list of indexes, or the list of involved cases)
+    petri_net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    parameters
+        Parameters of the algorithm (same as 'apply' method, plus 'variant_delimiter' that is , by default)
+
+    Returns
+    --------------
+    dictio_alignments
+        Dictionary that assigns to each variant its alignment
+    """
+    if parameters is None:
+        parameters = {}
+    dictio_alignments = {}
+    for variant in var_dictio:
+        dictio_alignments[variant] = apply_from_variant(variant, petri_net, initial_marking, final_marking, parameters=parameters)
+    return dictio_alignments
+
+
+def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking, parameters=None):
+    """
+    Apply the alignments from the specification of a list of variants in the log
+
+    Parameters
+    -------------
+    var_list
+        List of variants (for each item, the first entry is the variant itself, the second entry may be the number of cases)
+    petri_net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    parameters
+        Parameters of the algorithm (same as 'apply' method, plus 'variant_delimiter' that is , by default)
+
+    Returns
+    --------------
+    dictio_alignments
+        Dictionary that assigns to each variant its alignment
+    """
+    if parameters is None:
+        parameters = {}
+    dictio_alignments = {}
+    for varitem in var_list:
+        variant = varitem[0]
+        dictio_alignments[variant] = apply_from_variant(variant, petri_net, initial_marking, final_marking, parameters=parameters)
+    return dictio_alignments
 
 def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters=None):
     """
