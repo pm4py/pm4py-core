@@ -11,17 +11,12 @@ class Marking(Counter):
         return r
 
     def __eq__(self, other):
-        if not isinstance(other, Marking):
+        #if not isinstance(other, Marking):
+        #    return False
+        if not self.keys() == other.keys():
             return False
         for p in self.keys():
-            if p not in other.keys():
-                return False
             if other.get(p) != self.get(p):
-                return False
-        for p in other.keys():
-            if p not in self.keys():
-                return False
-            if self.get(p) != other.get(p):
                 return False
         return True
 
