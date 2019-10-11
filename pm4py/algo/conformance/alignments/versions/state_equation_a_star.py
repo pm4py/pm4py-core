@@ -389,12 +389,13 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
                                                  fin_vec)
     ini_state = SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
+    heapq.heapify(open_set)
     visited = 0
     queued = 0
     traversed = 0
     while not len(open_set) == 0:
         curr = heapq.heappop(open_set)
-        if not curr.trust:
+        while not curr.trust:
             h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                          incidence_matrix, curr.m,
                                                          fin_vec)
@@ -402,9 +403,15 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
             tp = SearchTuple(curr.g + h, curr.g, h, curr.m, curr.p, curr.t, x, True)
-            heapq.heappush(open_set, tp)
-            heapq.heapify(open_set)
-            continue
+            # 11/10/2019 (optimization ZA) heappushpop is slightly more efficient than pushing
+            # and popping separately
+            curr = heapq.heappushpop(open_set, tp)
+
+            # 11/10/19 (optimization Z) if we force the initial attribution of the open_set to
+            # be an heap, then it is not necessary to heapify each time!!
+
+            #heapq.heapify(open_set)
+            #continue
 
         visited += 1
         current_marking = curr.m
@@ -433,7 +440,11 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             heapq.heappush(open_set, tp)
         # 11/10/19: this is a change to discuss. I don't think it hampers optimality since the pick-up of
         # the item from the open set appears at the start of this cycle.
-        heapq.heapify(open_set)
+
+        # 11/10/19 (optimization Z) if we force the initial attribution of the open_set to
+        # be an heap, then it is not necessary to heapify each time!!
+
+        #heapq.heapify(open_set)
 
 def __get_alt(open_set, new_marking):
     for item in open_set:
