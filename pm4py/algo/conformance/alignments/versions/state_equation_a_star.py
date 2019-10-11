@@ -408,7 +408,12 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
 
         visited += 1
         current_marking = curr.m
-        closed.add(current_marking)
+        # 11/10/2019 (optimization X): set a variable 'already_closed' that tells if the marking
+        # has been already inserted in the 'closed' set. This is useful later to avoid checking
+        # the marking correspondence in the 'alt' section
+        already_closed = current_marking in closed
+        if not already_closed:
+            closed.add(current_marking)
         if current_marking == fin:
             return __reconstruct_alignment(curr, visited, queued, traversed,
                                            ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
@@ -422,11 +427,14 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             g = curr.g + cost_function[t]
 
             #alt = next((enum[1] for enum in enumerate(open_set) if enum[1].m == new_marking), None)
-            alt = __get_alt(open_set, new_marking)
-            if alt is not None:
-                if g >= alt.g:
-                    continue
-                open_set.remove(alt)
+            if already_closed:
+                # 11/10/2019 (optimization X, see above): only is 'already_closed' is true, we search
+                # for the marking
+                alt = __get_alt(open_set, new_marking)
+                if alt is not None:
+                    if g >= alt.g:
+                        continue
+                    open_set.remove(alt)
                 # 11/10/19: since we remove an item from the open set, we don't need to sort it again
                 #heapq.heapify(open_set)
             queued += 1
