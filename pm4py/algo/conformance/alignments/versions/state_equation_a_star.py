@@ -430,6 +430,8 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             if already_closed:
                 # 11/10/2019 (optimization X, see above): only is 'already_closed' is true, we search
                 # for the marking
+
+                # 11/10/2019: another optimization (more efficient __get_alt function)
                 alt = __get_alt(open_set, new_marking)
                 if alt is not None:
                     if g >= alt.g:
