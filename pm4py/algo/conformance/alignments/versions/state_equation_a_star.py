@@ -418,7 +418,8 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
                 continue
             g = curr.g + cost_function[t]
 
-            alt = next((enum[1] for enum in enumerate(open_set) if enum[1].m == new_marking), None)
+            #alt = next((enum[1] for enum in enumerate(open_set) if enum[1].m == new_marking), None)
+            alt = __get_alt(open_set, new_marking)
             if alt is not None:
                 if g >= alt.g:
                     continue
@@ -429,6 +430,11 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             tp = SearchTuple(g + h, g, h, new_marking, curr, t, x, __trust_solution(x))
             heapq.heappush(open_set, tp)
             heapq.heapify(open_set)
+
+def __get_alt(open_set, new_marking):
+    for item in open_set:
+        if item.m == new_marking:
+            return item
 
 
 def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_trans_desc=False):
