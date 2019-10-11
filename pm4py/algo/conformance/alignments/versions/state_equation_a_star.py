@@ -398,7 +398,10 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                          incidence_matrix, curr.m,
                                                          fin_vec)
-            tp = SearchTuple(curr.g + h, curr.g, h, curr.m, curr.p, curr.t, x, __trust_solution(x))
+
+            # 11/10/19: shall not a state for which we compute the exact heuristics be
+            # by nature a trusted solution?
+            tp = SearchTuple(curr.g + h, curr.g, h, curr.m, curr.p, curr.t, x, True)
             heapq.heappush(open_set, tp)
             heapq.heapify(open_set)
             continue
@@ -424,7 +427,8 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
                 if g >= alt.g:
                     continue
                 open_set.remove(alt)
-                heapq.heapify(open_set)
+                # 11/10/19: since we remove an item from the open set, we don't need to sort it again
+                #heapq.heapify(open_set)
             queued += 1
             h, x = __derive_heuristic(incidence_matrix, cost_vec, curr.x, t, curr.h)
             tp = SearchTuple(g + h, g, h, new_marking, curr, t, x, __trust_solution(x))
