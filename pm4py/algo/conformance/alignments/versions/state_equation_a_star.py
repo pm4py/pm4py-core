@@ -433,7 +433,9 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             h, x = __derive_heuristic(incidence_matrix, cost_vec, curr.x, t, curr.h)
             tp = SearchTuple(g + h, g, h, new_marking, curr, t, x, __trust_solution(x))
             heapq.heappush(open_set, tp)
-            heapq.heapify(open_set)
+        # 11/10/19: this is a change to discuss. I don't think it hampers optimality since the pick-up of
+        # the item from the open set appears at the start of this cycle.
+        heapq.heapify(open_set)
 
 def __get_alt(open_set, new_marking):
     for item in open_set:
