@@ -438,14 +438,16 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         closed.add(current_marking)
         visited += 1
 
-        for t in petri.semantics.enabled_transitions(sync_net, current_marking):
-            if curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip):
-                continue
+        # 12/10/2019: refactoring, the list of transitions to visit is contained, along the cost, in
+        # a list
+        trans_to_visit_with_cost = [(t, cost_function[t]) for t in petri.semantics.enabled_transitions(sync_net, current_marking) if not (curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip))]
+
+        for t, cost in trans_to_visit_with_cost:
             traversed += 1
             new_marking = petri.semantics.weak_execute(t, current_marking)
             if new_marking in closed:
                 continue
-            g = curr.g + cost_function[t]
+            g = curr.g + cost
 
             queued += 1
             h, x = __derive_heuristic(incidence_matrix, cost_vec, curr.x, t, curr.h)
