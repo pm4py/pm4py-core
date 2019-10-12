@@ -449,7 +449,15 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
 
             queued += 1
             h, x = __derive_heuristic(incidence_matrix, cost_vec, curr.x, t, curr.h)
-            tp = SearchTuple(g + h, g, h, new_marking, curr, t, x, __trust_solution(x))
+            trustable = __trust_solution(x)
+            new_f = g + h
+
+            # 12/10/2019 optimization ZB: assign to non-trustable solutions
+            # a slightly higher cost (around 20% performance gain!!)
+            if not trustable:
+                new_f = new_f + 0.000001
+
+            tp = SearchTuple(new_f, g, h, new_marking, curr, t, x, trustable)
             heapq.heappush(open_set, tp)
         # 11/10/19: this is a change to discuss. I don't think it hampers optimality since the pick-up of
         # the item from the open set appears at the start of this cycle.
