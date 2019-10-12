@@ -395,6 +395,15 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     traversed = 0
     while not len(open_set) == 0:
         curr = heapq.heappop(open_set)
+
+        current_marking = curr.m
+        # 11/10/2019 (optimization Y, that was optimization X,
+        # but with the good reasons this way): avoid checking markings in the cycle using
+        # the __get_alt function, but check them 'on the road'
+        already_closed = current_marking in closed
+        if already_closed:
+            continue
+
         while not curr.trust:
             h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                          incidence_matrix, curr.m,
@@ -406,6 +415,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             # 11/10/2019 (optimization ZA) heappushpop is slightly more efficient than pushing
             # and popping separately
             curr = heapq.heappushpop(open_set, tp)
+            current_marking = curr.m
 
             # 11/10/19 (optimization Z) if we force the initial attribution of the open_set to
             # be an heap, then it is not necessary to heapify each time!!
@@ -413,18 +423,13 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             #heapq.heapify(open_set)
             #continue
 
-        visited += 1
-        current_marking = curr.m
-        # 11/10/2019 (optimization Y, that was optimization X,
-        # but with the good reasons this way): avoid checking markings in the cycle using
-        # the __get_alt function, but check them 'on the road'
-        already_closed = current_marking in closed
-        if already_closed:
-            continue
-        closed.add(current_marking)
         if current_marking == fin:
             return __reconstruct_alignment(curr, visited, queued, traversed,
                                            ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
+
+        closed.add(current_marking)
+        visited += 1
+
         for t in petri.semantics.enabled_transitions(sync_net, current_marking):
             if curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip):
                 continue
