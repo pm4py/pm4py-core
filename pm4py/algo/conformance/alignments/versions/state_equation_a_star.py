@@ -423,9 +423,17 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             #heapq.heapify(open_set)
             #continue
 
-        if current_marking == fin:
-            return __reconstruct_alignment(curr, visited, queued, traversed,
-                                           ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
+        # 12/10/2019: do it again, since the marking could be changed
+        already_closed = current_marking in closed
+        if already_closed:
+            continue
+
+        # 12/10/2019: the current marking can be equal to the final marking only if the heuristics
+        # (underestimation of the remaining cost) is 0. Low-hanging fruits
+        if curr.h < 0.01:
+            if current_marking == fin:
+                return __reconstruct_alignment(curr, visited, queued, traversed,
+                                               ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
 
         closed.add(current_marking)
         visited += 1
