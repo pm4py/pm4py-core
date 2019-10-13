@@ -2,7 +2,7 @@ from pm4py.util import constants
 from pm4py.objects.log.util import xes
 
 
-def apply(log, list_activities, parameters):
+def apply(log, list_activities, sample_size, parameters):
     """
     Finds the performance spectrum provided a log
     and a list of activities
@@ -13,6 +13,8 @@ def apply(log, list_activities, parameters):
         Log
     list_activities
         List of activities interesting for the performance spectrum (at least two)
+    sample_size
+        Size of the sample
     parameters
         Parameters of the algorithm, including the activity key and the timestamp key
 
