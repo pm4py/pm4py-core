@@ -44,4 +44,6 @@ def apply(log, list_activities, parameters=None):
     else:
         points = VERSIONS[LOG](log_conv_factory.apply(log), list_activities, sample_size, parameters)
 
-    return points
+    ps = {"list_activities": list_activities, "points": points}
+
+    return ps
