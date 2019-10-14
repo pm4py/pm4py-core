@@ -50,22 +50,11 @@ def table_to_log(table, parameters=None):
     if parameters is None:
         parameters = {}
 
-    columns = parameters[COLUMNS] if COLUMNS in parameters else None
-    if columns is not None:
-        columns = [x.replace(":", "AAA") for x in columns]
-
     dict0 = table.to_pydict()
-    N = len(dict0[list(dict0.keys())[0]])
-    keys = columns if columns is not None else dict0.keys()
-
-    stream = EventStream()
-    for i in range(N):
-        stream.append(Event())
+    keys = list(dict0.keys())
     for key in keys:
-        mapped_key = key.replace("AAA", ":")
-        values = dict0[key]
-        for i in range(N):
-            if values[i] is not None:
-                stream[i][mapped_key] = values[i]
+        dict0[key.replace("AAA", ":")] = dict0.pop(key)
+
+    stream = EventStream([dict(zip(dict0, i)) for i in zip(*dict0.values())])
 
     return log_conv_factory.apply(stream, parameters=parameters)
