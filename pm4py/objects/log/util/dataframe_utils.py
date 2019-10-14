@@ -51,7 +51,8 @@ def table_to_log(table, parameters=None):
         parameters = {}
 
     columns = parameters[COLUMNS] if COLUMNS in parameters else None
-    columns = [x.replace(":", "AAA") for x in columns]
+    if columns is not None:
+        columns = [x.replace(":", "AAA") for x in columns]
 
     dict0 = table.to_pydict()
     N = len(dict0[list(dict0.keys())[0]])
