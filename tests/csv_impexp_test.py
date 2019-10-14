@@ -57,9 +57,9 @@ class CsvImportExportTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        df1 = parquet_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.parquet"))
+        df1 = parquet_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.parquet"))
         parquet_exporter.export_log(df1, os.path.join(OUTPUT_DATA_DIR, "running-example.parquet"))
-        df2 = parquet_importer.import_log(os.path.join(OUTPUT_DATA_DIR, "running-example.parquet"))
+        df2 = parquet_importer.apply(os.path.join(OUTPUT_DATA_DIR, "running-example.parquet"))
         self.assertEqual(len(df1), len(df2))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.parquet"))
 
