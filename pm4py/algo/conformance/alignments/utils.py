@@ -4,6 +4,51 @@ STD_TAU_COST = 1
 STD_SYNC_COST = 0
 
 
+def get_sub_marking_transition(net):
+    """
+    Get the marking to subtract when a transition is enabled
+
+    Parameters
+    --------------
+    net
+        Petri net
+
+    Returns
+    --------------
+    ret
+        Dictionary that for each transition associates the subtraction marking
+    """
+    from pm4py.objects.petri.petrinet import Marking
+    ret = {}
+    for trans in net.transitions:
+        ret[trans] = Marking()
+        for arc in trans.in_arcs:
+            ret[trans][arc.source] = arc.weight
+    return ret
+
+
+def get_add_marking_transition(net):
+    """
+    Get the marking to add when a transition is enabled
+
+    Parameters
+    --------------
+    net
+        Petri net
+
+    Returns
+    --------------
+    ret
+        Dictionary that for each transition associates the subtraction marking
+    """
+    from pm4py.objects.petri.petrinet import Marking
+    ret = {}
+    for trans in net.transitions:
+        ret[trans] = Marking()
+        for arc in trans.out_arcs:
+            ret[trans][arc.target] = arc.weight
+    return ret
+
 def construct_standard_cost_function(synchronous_product_net, skip):
     """
     Returns the standard cost function, which is:

@@ -29,6 +29,8 @@ from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.lp import factory as lp_solver_factory
+from pm4py.algo.conformance.alignments.utils import get_add_marking_transition, get_sub_marking_transition
+from pm4py.objects.petri.petrinet import Marking
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
@@ -366,6 +368,9 @@ def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, sk
 
 
 def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=False):
+    sub_markings = get_sub_marking_transition(sync_net)
+    add_markings = get_add_marking_transition(sync_net)
+
     incidence_matrix = petri.incidence_matrix.construct(sync_net)
     ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
@@ -434,11 +439,13 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
 
         # 12/10/2019: refactoring, the list of transitions to visit is contained, along the cost, in
         # a list
-        trans_to_visit_with_cost = [(t, cost_function[t]) for t in petri.semantics.enabled_transitions(sync_net, current_marking) if not (curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip))]
+        enabled_trans = [t for t, v in sub_markings.items() if v <= current_marking]
+        trans_to_visit_with_cost = [(t, cost_function[t]) for t in enabled_trans if not (curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip))]
 
         for t, cost in trans_to_visit_with_cost:
             traversed += 1
             new_marking = petri.semantics.weak_execute(t, current_marking)
+            #new_marking = Marking(current_marking - sub_markings[t] + add_markings[t])
             if new_marking in closed:
                 continue
             g = curr.g + cost
