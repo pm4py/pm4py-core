@@ -417,12 +417,6 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             curr = heapq.heappushpop(open_set, tp)
             current_marking = curr.m
 
-            # 11/10/19 (optimization Z) if we force the initial attribution of the open_set to
-            # be an heap, then it is not necessary to heapify each time!!
-
-            #heapq.heapify(open_set)
-            #continue
-
         # 12/10/2019: do it again, since the marking could be changed
         already_closed = current_marking in closed
         if already_closed:
@@ -454,20 +448,8 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             trustable = __trust_solution(x)
             new_f = g + h
 
-            # 12/10/2019 optimization ZB: assign to non-trustable solutions
-            # a slightly higher cost (around 20% performance gain!!)
-            if not trustable:
-                new_f = new_f + 0.000001
-
             tp = SearchTuple(new_f, g, h, new_marking, curr, t, x, trustable)
             heapq.heappush(open_set, tp)
-        # 11/10/19: this is a change to discuss. I don't think it hampers optimality since the pick-up of
-        # the item from the open set appears at the start of this cycle.
-
-        # 11/10/19 (optimization Z) if we force the initial attribution of the open_set to
-        # be an heap, then it is not necessary to heapify each time!!
-
-        #heapq.heapify(open_set)
 
 def __get_alt(open_set, new_marking):
     for item in open_set:
@@ -609,6 +591,8 @@ class SearchTuple:
             return True
         elif other.f < self.f:
             return False
+        elif self.trust and not other.trust:
+            return True
         else:
             return self.h < other.h
 
