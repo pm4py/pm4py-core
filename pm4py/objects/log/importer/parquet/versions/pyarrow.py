@@ -1,5 +1,6 @@
 import pyarrow.parquet as pq
-import os
+from pm4py.objects.log.util import dataframe_utils
+
 
 COLUMNS = "columns"
 
@@ -34,3 +35,56 @@ def apply(path, parameters=None):
     df.columns = [x.replace("AAA", ":") for x in df.columns]
 
     return df
+
+
+def import_table(path, parameters=None):
+    """
+    Imports a Pyarrow table from a Parquet file
+
+    Parameters
+    ------------
+    path
+        Path to the Parquet file
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ------------
+    table
+        Pyarrow table
+    """
+    if parameters is None:
+        parameters = {}
+
+    columns = parameters[COLUMNS] if COLUMNS in parameters else None
+    if columns:
+        columns = [x.replace(":", "AAA") for x in columns]
+        table = pq.read_table(path, columns=columns)
+    else:
+        table = pq.read_table(path)
+
+    return table
+
+
+def import_log(path, parameters=None):
+    """
+    Imports an event log from a Parquet file
+
+    Parameters
+    --------------
+    path
+        Path to the Parquet file
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    log
+        Event log
+    """
+    if parameters is None:
+        parameters = {}
+
+    table = import_table(path, parameters=parameters)
+
+    return dataframe_utils.table_to_log(table, parameters=parameters)

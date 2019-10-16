@@ -8,6 +8,7 @@ from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 PYARROW = "pyarrow"
 
 VERSIONS = {PYARROW: pyarrow.apply}
+VERSIONS_LOG = {PYARROW: pyarrow.import_log}
 
 COLUMNS = "columns"
 
@@ -71,7 +72,37 @@ def import_log(path, parameters=None, variant=PYARROW):
     df
         Pandas dataframe
     """
-    return apply(path, variant=variant, parameters=parameters)
+    if parameters is None:
+        parameters = {}
+
+    return VERSIONS_LOG[variant](path, parameters=parameters)
+
+
+def import_minimal_log(path, parameters=None, variant=PYARROW):
+    """
+    Import a Parquet file (as a minimal log with only the essential columns)
+
+    Parameters
+    -------------
+    path
+        Path of the file to import
+    parameters
+        Parameters of the algorithm, possible values:
+            columns -> columns to import from the Parquet file
+    variant
+        Variant of the algorithm, possible values: pyarrow
+
+    Returns
+    -------------
+    df
+        Pandas dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    parameters[COLUMNS] = [CASE_CONCEPT_NAME, xes.DEFAULT_NAME_KEY, xes.DEFAULT_TIMESTAMP_KEY]
+
+    return VERSIONS_LOG[variant](path, parameters=parameters)
 
 
 def import_df(path, parameters=None, variant=PYARROW):

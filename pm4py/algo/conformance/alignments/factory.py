@@ -1,6 +1,7 @@
 from copy import copy
 
 import pm4py
+import sys
 from pm4py import util as pmutil
 from pm4py.algo.conformance import alignments as ali
 from pm4py.algo.conformance.alignments import versions
@@ -17,6 +18,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 import multiprocessing as mp
 from pm4py.objects.petri.exporter.versions import pnml as petri_exporter
 import math
+import time
 
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
 VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}
@@ -25,6 +27,10 @@ VERSIONS_VARIANTS_LIST_MPROCESSING = {VERSION_STATE_EQUATION_A_STAR: versions.st
 
 VARIANTS_IDX = 'variants_idx'
 
+PARAM_MAX_ALIGN_TIME_TRACE = "max_align_time_trace"
+DEFAULT_MAX_ALIGN_TIME_TRACE = sys.maxsize
+PARAM_MAX_ALIGN_TIME = "max_align_time"
+DEFAULT_MAX_ALIGN_TIME = sys.maxsize
 
 def apply(obj, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
     if parameters is None:
@@ -118,12 +124,18 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     """
     if parameters is None:
         parameters = dict()
+
+    start_time = time.time()
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     model_cost_function = parameters[
         PARAM_MODEL_COST_FUNCTION] if PARAM_MODEL_COST_FUNCTION in parameters else None
     sync_cost_function = parameters[
         PARAM_SYNC_COST_FUNCTION] if PARAM_SYNC_COST_FUNCTION in parameters else None
+    max_align_time = parameters[PARAM_MAX_ALIGN_TIME] if PARAM_MAX_ALIGN_TIME in parameters else DEFAULT_MAX_ALIGN_TIME
+    max_align_time_case = parameters[
+        PARAM_MAX_ALIGN_TIME_TRACE] if PARAM_MAX_ALIGN_TIME_TRACE in parameters else DEFAULT_MAX_ALIGN_TIME_TRACE
+
     if model_cost_function is None or sync_cost_function is None:
         # reset variables value
         model_cost_function = dict()
@@ -140,18 +152,30 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         PARAM_MODEL_COST_FUNCTION] = model_cost_function
     parameters[
         PARAM_SYNC_COST_FUNCTION] = sync_cost_function
-    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters)
+    parameters_best_worst = copy(parameters)
+    if PARAM_MAX_ALIGN_TIME_TRACE in parameters_best_worst:
+        del parameters_best_worst[PARAM_MAX_ALIGN_TIME_TRACE]
+
+    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters_best_worst)
 
     variants_idxs = parameters[VARIANTS_IDX] if VARIANTS_IDX in parameters else None
     if variants_idxs is None:
         variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
 
     one_tr_per_var = []
+    variants_list = []
     for index_variant, variant in enumerate(variants_idxs):
+        variants_list.append(variant)
+
+    for variant in variants_list:
         one_tr_per_var.append(log[variants_idxs[variant][0]])
-    all_alignments = list(map(
-        lambda trace: apply_trace(trace, petri_net, initial_marking, final_marking, parameters=copy(parameters),
-                                  version=version), one_tr_per_var))
+
+    all_alignments = []
+    for trace in one_tr_per_var:
+        this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time))*0.5)
+        parameters[PARAM_MAX_ALIGN_TIME_TRACE] = this_max_align_time
+        all_alignments.append(apply_trace(trace, petri_net, initial_marking, final_marking, parameters=copy(parameters),
+                    version=version))
 
     al_idx = {}
     for index_variant, variant in enumerate(variants_idxs):
@@ -164,14 +188,15 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
 
     # assign fitness to traces
     for index, align in enumerate(alignments):
-        unfitness_upper_part = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
-        if unfitness_upper_part == 0:
-            align['fitness'] = 1
-        elif (len(log[index]) + best_worst_cost) > 0:
-            align['fitness'] = 1 - (
-                    (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
-        else:
-            align['fitness'] = 0
+        if align is not None:
+            unfitness_upper_part = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
+            if unfitness_upper_part == 0:
+                align['fitness'] = 1
+            elif (len(log[index]) + best_worst_cost) > 0:
+                align['fitness'] = 1 - (
+                        (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
+            else:
+                align['fitness'] = 0
     return alignments
 
 def chunks(l, n):
@@ -203,7 +228,11 @@ def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, pa
         PARAM_MODEL_COST_FUNCTION] = model_cost_function
     parameters[
         PARAM_SYNC_COST_FUNCTION] = sync_cost_function
-    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters)
+    parameters_best_worst = copy(parameters)
+    if PARAM_MAX_ALIGN_TIME_TRACE in parameters_best_worst:
+        del parameters_best_worst[PARAM_MAX_ALIGN_TIME_TRACE]
+
+    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters_best_worst)
 
     variants_idxs = parameters[VARIANTS_IDX] if VARIANTS_IDX in parameters else None
     if variants_idxs is None:
@@ -245,14 +274,15 @@ def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, pa
 
     # assign fitness to traces
     for index, align in enumerate(alignments):
-        unfitness_upper_part = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
-        if unfitness_upper_part == 0:
-            align['fitness'] = 1
-        elif (len(log[index]) + best_worst_cost) > 0:
-            align['fitness'] = 1 - (
-                    (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
-        else:
-            align['fitness'] = 0
+        if align is not None:
+            unfitness_upper_part = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
+            if unfitness_upper_part == 0:
+                align['fitness'] = 1
+            elif (len(log[index]) + best_worst_cost) > 0:
+                align['fitness'] = 1 - (
+                        (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
+            else:
+                align['fitness'] = 0
 
     return alignments
 

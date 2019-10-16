@@ -9,6 +9,7 @@ if __name__ == "__main__":
     sys.path.insert(0, parentdir)
     sys.path.insert(0, parentdir2)
     import time
+    #import pm4pycvxopt
     from pm4py.objects.log.importer.xes import factory as xes_factory
     from pm4py.algo.discovery.inductive import factory as inductive
     from pm4py.algo.discovery.alpha import factory as alpha
