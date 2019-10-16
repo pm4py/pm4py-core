@@ -15,6 +15,7 @@ References
 import heapq
 import sys
 from copy import copy
+import time
 
 import numpy as np
 
@@ -29,6 +30,9 @@ from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.lp import factory as lp_solver_factory
+from pm4py.algo.conformance.alignments.utils import get_add_marking_transition, get_sub_marking_transition, \
+    get_place_dict_from_sub
+from pm4py.objects.petri.petrinet import Marking
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
@@ -39,6 +43,11 @@ PARAM_TRACE_NET_COSTS = "trace_net_costs"
 
 TRACE_NET_CONSTR_FUNCTION = "trace_net_constr_function"
 TRACE_NET_COST_AWARE_CONSTR_FUNCTION = "trace_net_cost_aware_constr_function"
+
+PARAM_MAX_ALIGN_TIME_TRACE = "max_align_time_trace"
+DEFAULT_MAX_ALIGN_TIME_TRACE = sys.maxsize
+PARAM_MAX_ALIGN_TIME = "max_align_time"
+DEFAULT_MAX_ALIGN_TIME = sys.maxsize
 
 PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
 DEFAULT_VARIANT_DELIMITER = ","
@@ -144,7 +153,7 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
             TRACE_NET_COST_AWARE_CONSTR_FUNCTION] if TRACE_NET_COST_AWARE_CONSTR_FUNCTION in parameters else construct_trace_net_cost_aware
         trace_net, trace_im, trace_fm, parameters[PARAM_TRACE_NET_COSTS] = trace_net_cost_aware_constr_function(trace,
                                                                                                                 parameters[
-                                                                                                  PARAM_TRACE_COST_FUNCTION],
+                                                                                                                    PARAM_TRACE_COST_FUNCTION],
                                                                                                                 activity_key=activity_key)
 
     return apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters)
@@ -177,7 +186,8 @@ def apply_from_variant(variant, petri_net, initial_marking, final_marking, param
         parameters[
             pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     trace = log_implementation.Trace()
-    variant_delimiter = parameters[PARAMETER_VARIANT_DELIMITER] if PARAMETER_VARIANT_DELIMITER in parameters else DEFAULT_VARIANT_DELIMITER
+    variant_delimiter = parameters[
+        PARAMETER_VARIANT_DELIMITER] if PARAMETER_VARIANT_DELIMITER in parameters else DEFAULT_VARIANT_DELIMITER
     variant_split = variant.split(variant_delimiter) if type(variant) is str else variant
     for i in range(len(variant_split)):
         trace.append(log_implementation.Event({activity_key: variant_split[i]}))
@@ -210,7 +220,8 @@ def apply_from_variants_dictionary(var_dictio, petri_net, initial_marking, final
         parameters = {}
     dictio_alignments = {}
     for variant in var_dictio:
-        dictio_alignments[variant] = apply_from_variant(variant, petri_net, initial_marking, final_marking, parameters=parameters)
+        dictio_alignments[variant] = apply_from_variant(variant, petri_net, initial_marking, final_marking,
+                                                        parameters=parameters)
     return dictio_alignments
 
 
@@ -238,10 +249,17 @@ def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking
     """
     if parameters is None:
         parameters = {}
+    start_time = time.time()
+    max_align_time = parameters[PARAM_MAX_ALIGN_TIME] if PARAM_MAX_ALIGN_TIME in parameters else DEFAULT_MAX_ALIGN_TIME
+    max_align_time_case = parameters[
+        PARAM_MAX_ALIGN_TIME_TRACE] if PARAM_MAX_ALIGN_TIME_TRACE in parameters else DEFAULT_MAX_ALIGN_TIME_TRACE
     dictio_alignments = {}
     for varitem in var_list:
+        this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time))*0.5)
         variant = varitem[0]
-        dictio_alignments[variant] = apply_from_variant(variant, petri_net, initial_marking, final_marking, parameters=parameters)
+        parameters[PARAM_MAX_ALIGN_TIME_TRACE] = this_max_align_time
+        dictio_alignments[variant] = apply_from_variant(variant, petri_net, initial_marking, final_marking,
+                                                        parameters=parameters)
     return dictio_alignments
 
 
@@ -340,11 +358,16 @@ def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_
             trace_net, trace_im, trace_fm, petri_net, initial_marking, final_marking, alignments.utils.SKIP,
             parameters[PARAM_TRACE_NET_COSTS], parameters[PARAM_MODEL_COST_FUNCTION], revised_sync)
 
+    max_align_time_trace = parameters[
+        PARAM_MAX_ALIGN_TIME_TRACE] if PARAM_MAX_ALIGN_TIME_TRACE in parameters else DEFAULT_MAX_ALIGN_TIME_TRACE
+
     return apply_sync_prod(sync_prod, sync_initial_marking, sync_final_marking, cost_function,
-                           alignments.utils.SKIP, ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
+                           alignments.utils.SKIP, ret_tuple_as_trans_desc=ret_tuple_as_trans_desc,
+                           max_align_time_trace=max_align_time_trace)
 
 
-def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, skip, ret_tuple_as_trans_desc=False):
+def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, skip, ret_tuple_as_trans_desc=False,
+                    max_align_time_trace=DEFAULT_MAX_ALIGN_TIME_TRACE):
     """
     Performs the basic alignment search on top of the synchronous product net, given a cost function and skip-symbol
 
@@ -362,10 +385,17 @@ def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, sk
     and **traversed_arcs**
     """
     return __search(sync_prod, initial_marking, final_marking, cost_function, skip,
-                    ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
+                    ret_tuple_as_trans_desc=ret_tuple_as_trans_desc, max_align_time_trace=max_align_time_trace)
 
 
-def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=False):
+def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=False,
+             max_align_time_trace=DEFAULT_MAX_ALIGN_TIME_TRACE):
+    start_time = time.time()
+    sub_markings = get_sub_marking_transition(sync_net)
+    place_dict = get_place_dict_from_sub(sync_net, sub_markings)
+    add_markings = get_add_marking_transition(sync_net)
+    # min_cost_value_gt_0 = min(v for t, v in cost_function.items() if v > 0)
+
     incidence_matrix = petri.incidence_matrix.construct(sync_net)
     ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
@@ -394,6 +424,9 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     queued = 0
     traversed = 0
     while not len(open_set) == 0:
+        if (time.time() - start_time) > max_align_time_trace:
+            return None
+
         curr = heapq.heappop(open_set)
 
         current_marking = curr.m
@@ -417,12 +450,6 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             curr = heapq.heappushpop(open_set, tp)
             current_marking = curr.m
 
-            # 11/10/19 (optimization Z) if we force the initial attribution of the open_set to
-            # be an heap, then it is not necessary to heapify each time!!
-
-            #heapq.heapify(open_set)
-            #continue
-
         # 12/10/2019: do it again, since the marking could be changed
         already_closed = current_marking in closed
         if already_closed:
@@ -438,13 +465,19 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         closed.add(current_marking)
         visited += 1
 
-        # 12/10/2019: refactoring, the list of transitions to visit is contained, along the cost, in
-        # a list
-        trans_to_visit_with_cost = [(t, cost_function[t]) for t in petri.semantics.enabled_transitions(sync_net, current_marking) if not (curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip))]
+        possible_enabling_transitions = set()
+        for p in current_marking:
+            for t in place_dict[p]:
+                possible_enabling_transitions.add(t)
+
+        enabled_trans = [t for t in possible_enabling_transitions if sub_markings[t] <= current_marking]
+
+        trans_to_visit_with_cost = [(t, cost_function[t]) for t in enabled_trans if not (
+                curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip))]
 
         for t, cost in trans_to_visit_with_cost:
             traversed += 1
-            new_marking = petri.semantics.weak_execute(t, current_marking)
+            new_marking = subtract_add_markings(current_marking, sub_markings[t], add_markings[t])
             if new_marking in closed:
                 continue
             g = curr.g + cost
@@ -454,20 +487,22 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             trustable = __trust_solution(x)
             new_f = g + h
 
-            # 12/10/2019 optimization ZB: assign to non-trustable solutions
-            # a slightly higher cost (around 20% performance gain!!)
-            if not trustable:
-                new_f = new_f + 0.000001
-
             tp = SearchTuple(new_f, g, h, new_marking, curr, t, x, trustable)
             heapq.heappush(open_set, tp)
-        # 11/10/19: this is a change to discuss. I don't think it hampers optimality since the pick-up of
-        # the item from the open set appears at the start of this cycle.
 
-        # 11/10/19 (optimization Z) if we force the initial attribution of the open_set to
-        # be an heap, then it is not necessary to heapify each time!!
 
-        #heapq.heapify(open_set)
+def subtract_add_markings(curr, sub, add):
+    m = Marking()
+    for p in curr.items():
+        m[p[0]] = p[1]
+    for p in add.items():
+        m[p[0]] += p[1]
+    for p in sub.items():
+        m[p[0]] -= p[1]
+        if m[p[0]] == 0:
+            del m[p[0]]
+    return m
+
 
 def __get_alt(open_set, new_marking):
     for item in open_set:
@@ -609,6 +644,8 @@ class SearchTuple:
             return True
         elif other.f < self.f:
             return False
+        elif self.trust and not other.trust:
+            return True
         else:
             return self.h < other.h
 
