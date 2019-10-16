@@ -1,6 +1,5 @@
 from collections import Counter
 
-
 class Marking(Counter):
     pass
 
@@ -11,12 +10,18 @@ class Marking(Counter):
         return r
 
     def __eq__(self, other):
-        #if not isinstance(other, Marking):
-        #    return False
         if not self.keys() == other.keys():
             return False
         for p in self.keys():
             if other.get(p) != self.get(p):
+                return False
+        return True
+
+    def __le__(self, other):
+        if not self.keys() <= other.keys():
+            return False
+        for p in self.keys():
+            if other.get(p) < self.get(p):
                 return False
         return True
 
