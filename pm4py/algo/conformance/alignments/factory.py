@@ -163,7 +163,9 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
 
     one_tr_per_var = []
-    variants_list = sorted(list(variants_idxs.keys()), key=lambda x: len(x))
+    variants_list = []
+    for index_variant, variant in enumerate(variants_idxs):
+        variants_list.append(variant)
 
     for variant in variants_list:
         one_tr_per_var.append(log[variants_idxs[variant][0]])

@@ -253,7 +253,6 @@ def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking
     max_align_time = parameters[PARAM_MAX_ALIGN_TIME] if PARAM_MAX_ALIGN_TIME in parameters else DEFAULT_MAX_ALIGN_TIME
     max_align_time_case = parameters[
         PARAM_MAX_ALIGN_TIME_TRACE] if PARAM_MAX_ALIGN_TIME_TRACE in parameters else DEFAULT_MAX_ALIGN_TIME_TRACE
-    var_list = sorted(var_list, key=lambda x: len(x))
     dictio_alignments = {}
     for varitem in var_list:
         this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time))*0.5)
