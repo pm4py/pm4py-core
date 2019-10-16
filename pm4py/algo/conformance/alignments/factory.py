@@ -25,6 +25,8 @@ VERSIONS_VARIANTS_LIST_MPROCESSING = {VERSION_STATE_EQUATION_A_STAR: versions.st
 
 VARIANTS_IDX = 'variants_idx'
 
+PARAM_MAX_ALIGN_TIME_TRACE = "max_align_time_trace"
+
 
 def apply(obj, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
     if parameters is None:
@@ -140,7 +142,11 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         PARAM_MODEL_COST_FUNCTION] = model_cost_function
     parameters[
         PARAM_SYNC_COST_FUNCTION] = sync_cost_function
-    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters)
+    parameters_best_worst = copy(parameters)
+    if PARAM_MAX_ALIGN_TIME_TRACE in parameters_best_worst:
+        del parameters_best_worst[PARAM_MAX_ALIGN_TIME_TRACE]
+
+    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters_best_worst)
 
     variants_idxs = parameters[VARIANTS_IDX] if VARIANTS_IDX in parameters else None
     if variants_idxs is None:
@@ -164,14 +170,15 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
 
     # assign fitness to traces
     for index, align in enumerate(alignments):
-        unfitness_upper_part = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
-        if unfitness_upper_part == 0:
-            align['fitness'] = 1
-        elif (len(log[index]) + best_worst_cost) > 0:
-            align['fitness'] = 1 - (
-                    (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
-        else:
-            align['fitness'] = 0
+        if align is not None:
+            unfitness_upper_part = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
+            if unfitness_upper_part == 0:
+                align['fitness'] = 1
+            elif (len(log[index]) + best_worst_cost) > 0:
+                align['fitness'] = 1 - (
+                        (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
+            else:
+                align['fitness'] = 0
     return alignments
 
 def chunks(l, n):
