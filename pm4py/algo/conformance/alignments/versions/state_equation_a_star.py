@@ -371,6 +371,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     sub_markings = get_sub_marking_transition(sync_net)
     place_dict = get_place_dict_from_sub(sync_net, sub_markings)
     add_markings = get_add_marking_transition(sync_net)
+    #min_cost_value_gt_0 = min(v for t, v in cost_function.items() if v > 0)
 
     incidence_matrix = petri.incidence_matrix.construct(sync_net)
     ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
