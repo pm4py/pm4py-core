@@ -444,8 +444,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
 
         for t, cost in trans_to_visit_with_cost:
             traversed += 1
-            #new_marking = petri.semantics.weak_execute(t, current_marking)
-            new_marking = current_marking - sub_markings[t] + add_markings[t]
+            new_marking = subtract_add_markings(current_marking, sub_markings[t], add_markings[t])
             if new_marking in closed:
                 continue
             g = curr.g + cost
@@ -457,6 +456,19 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
 
             tp = SearchTuple(new_f, g, h, new_marking, curr, t, x, trustable)
             heapq.heappush(open_set, tp)
+
+
+def subtract_add_markings(curr, sub, add):
+    m = Marking()
+    for p in curr.items():
+        m[p[0]] = p[1]
+    for p in add.items():
+        m[p[0]] += p[1]
+    for p in sub.items():
+        m[p[0]] -= p[1]
+        if m[p[0]] == 0:
+            del m[p[0]]
+    return m
 
 def __get_alt(open_set, new_marking):
     for item in open_set:
