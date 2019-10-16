@@ -444,8 +444,8 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
 
         for t, cost in trans_to_visit_with_cost:
             traversed += 1
-            new_marking = petri.semantics.weak_execute(t, current_marking)
-            #new_marking = Marking(current_marking - sub_markings[t] + add_markings[t])
+            #new_marking = petri.semantics.weak_execute(t, current_marking)
+            new_marking = current_marking - sub_markings[t] + add_markings[t]
             if new_marking in closed:
                 continue
             g = curr.g + cost
