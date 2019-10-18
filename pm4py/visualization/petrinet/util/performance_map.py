@@ -9,6 +9,7 @@ from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.visualization.petrinet.util import performance_map
 from statistics import median, mean
 from pm4py.objects.log.log import EventLog
+from pm4py.util.business_hours import BusinessHours
 
 MAX_NO_THREADS = 1000
 
@@ -137,7 +138,7 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
 
 
 def single_element_statistics(log, net, initial_marking, aligned_traces, variants_idx, activity_key="concept:name",
-                              timestamp_key="time:timestamp", ht_perf_method="last"):
+                              timestamp_key="time:timestamp", ht_perf_method="last", parameters=None):
     """
     Get single Petrinet element statistics
 
@@ -160,12 +161,20 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
     ht_perf_method
         Method to use in order to annotate hidden transitions (performance value could be put on the last possible
         point (last) or in the first possible point (first)
+    parameters
+        Possible parameters of the algorithm
 
     Returns
     ------------
     statistics
         Petri net element statistics (frequency, unaggregated performance)
     """
+    if parameters is None:
+        parameters = {}
+
+    business_hours = parameters["business_hours"] if "business_hours" in parameters else False
+    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
+    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
 
     statistics = {}
 
@@ -192,8 +201,15 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
                     trace = log[trace_idx]
                     for perf_couple in annotations_places_trans[el]["performance"]:
                         if timestamp_key in trace[perf_couple[0]] and timestamp_key in trace[perf_couple[1]]:
-                            perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][
-                                timestamp_key]).total_seconds()
+                            if business_hours:
+                                bh = BusinessHours(trace[perf_couple[1]][timestamp_key].replace(tzinfo=None),
+                                                   trace[perf_couple[0]][timestamp_key].replace(tzinfo=None),
+                                                   worktiming=worktiming,
+                                                   weekends=weekends)
+                                perf = bh.getseconds()
+                            else:
+                                perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][
+                                    timestamp_key]).total_seconds()
                         else:
                             perf = 0.0
                         statistics[el]["performance"].append(perf)
@@ -206,8 +222,14 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
                 trace = log[trace_idx]
                 for perf_couple in annotations_arcs[el]["performance"]:
                     if timestamp_key in trace[perf_couple[0]] and timestamp_key in trace[perf_couple[1]]:
-                        perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][
-                            timestamp_key]).total_seconds()
+                        if business_hours:
+                            bh = BusinessHours(trace[perf_couple[1]][timestamp_key].replace(tzinfo=None),
+                                               trace[perf_couple[0]][timestamp_key].replace(tzinfo=None), worktiming=worktiming,
+                                               weekends=weekends)
+                            perf = bh.getseconds()
+                        else:
+                            perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][
+                                timestamp_key]).total_seconds()
                     else:
                         perf = 0.0
                     statistics[el]["performance"].append(perf)
