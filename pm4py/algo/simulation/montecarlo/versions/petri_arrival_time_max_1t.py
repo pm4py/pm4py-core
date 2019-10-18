@@ -184,9 +184,12 @@ def apply(log, net, im, fm, parameters=None):
         t.join()
 
     log = EventLog(list(list_cases.values()))
+    min_timestamp = log[0][0]['time:timestamp'].timestamp()
+    max_timestamp = max(y['time:timestamp'].timestamp() for x in log for y in x)
 
     transitions_interval_trees = {t.name: y for t, y in transitions_interval_trees.items()}
 
     return log, {"places_interval_trees": places_interval_trees,
                  "transitions_interval_trees": transitions_interval_trees, "cases_ex_time": cases_ex_time,
-                 "median_cases_ex_time": median(cases_ex_time), "input_case_arrival_ratio": case_arrival_ratio}
+                 "median_cases_ex_time": median(cases_ex_time), "input_case_arrival_ratio": case_arrival_ratio,
+                 "total_time": max_timestamp-min_timestamp}
