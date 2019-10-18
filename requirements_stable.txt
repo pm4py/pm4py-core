@@ -16,3 +16,4 @@ ortools
 prefixspan
 fasttext
 pybind11
+intervaltree
