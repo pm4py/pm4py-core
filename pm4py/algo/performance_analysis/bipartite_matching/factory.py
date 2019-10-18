@@ -5,23 +5,23 @@ import pm4py.algo.performance_analysis.bipartite_matching.util.shared_variables 
 
 def apply(log, start, end, classifier = "concept:name"):
     """
-        Measure the duration of a log
+    Measure the duration of a log
 
-        Parameters
-        ------------
-        log
-            Event log
-        start
-            Start activities
-        end
-            End activities
-        classifier
-            Event classifier (activity name by default)
-        Returns
-        ------------
-        result
-            Case ID: (edges selected, statistical result)
-        """
+    Parameters
+    ------------
+    log
+        Event log
+    start
+        Start activities
+    end
+        End activities
+    classifier
+        Event classifier (activity name by default)
+    Returns
+    ------------
+    result
+        Case ID: (edges selected, statistical result)
+    """
     if isinstance(log, EventLog):
         return classic.apply(log, start, end, classifier)
 

@@ -90,9 +90,6 @@ def bipartite_matching_measuring(trace):
 
     except Exception:
         pass
-        # print(trace.attributes["concept:name"])
-        # print("HI")
-        # raise
 
 
 def encode_trace_to_graph(trace):
@@ -109,7 +106,6 @@ def encode_trace_to_graph(trace):
         Bipartite graph
     """
     graph = nx.DiGraph(cid=trace.attributes["concept:name"])
-    # nodes_to_removed = []
 
     "Create a node per event"
     for event in trace:
@@ -125,13 +121,14 @@ def encode_trace_to_graph(trace):
                 graph.add_edge(node_start, node_end, weight=helper.compute_weight(node_start, node_end),
                                duration=graph.node[node_end]["time"] - graph.node[node_start]["time"])
 
-    # "Filter out isolated nodes"
-    # for node in graph.nodes:
-    #     if len(graph.in_edges(node)) == 0 and len(graph.out_edges(node)) == 0:
-    #         nodes_to_removed.append(node)
-    #
-    # for node in nodes_to_removed:
-    #     graph.remove_node(node)
+    "Filter out isolated nodes"
+    nodes_to_removed = []
+    for node in graph.nodes:
+        if len(graph.in_edges(node)) == 0 and len(graph.out_edges(node)) == 0:
+            nodes_to_removed.append(node)
+
+    for node in nodes_to_removed:
+        graph.remove_node(node)
 
     "Select the graph if there exists at least one edge"
     if len(graph.edges) != 0:
