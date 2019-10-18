@@ -171,12 +171,12 @@ def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT
     return net, petri.petrinet.Marking({place_map[0]: 1}), petri.petrinet.Marking({place_map[len(trace)]: 1}), cost_map
 
 
-def variants(net, initial_marking, final_marking):
+def acyclic_net_variants(net, initial_marking, final_marking):
     """
-    Given an accepting Petri net, initial and final marking extracts a set of variants (in form of traces)
+    Given an acyclic accepting Petri net, initial and final marking extracts a set of variants (in form of traces)
     replayable on the net.
     Warning: this function is based on a marking exploration. If the accepting Petri net contains loops, the method
-    traverses the loops only one time.
+    will not work properly as it stops the search if a specific marking has already been encountered.
 
     Parameters
     ----------
