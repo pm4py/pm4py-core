@@ -1,6 +1,7 @@
 from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 import statistics
+from pm4py.util.business_hours import BusinessHours
 
 
 def get_case_arrival_avg(log, parameters=None):
@@ -22,6 +23,9 @@ def get_case_arrival_avg(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
+    business_hours = parameters["business_hours"] if "business_hours" in parameters else False
+    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
+    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
 
     timestamp_key = parameters[
         PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
@@ -31,7 +35,12 @@ def get_case_arrival_avg(log, parameters=None):
 
     case_diff_start_time = []
     for i in range(len(case_start_time)-1):
-        case_diff_start_time.append((case_start_time[i+1]-case_start_time[i]).total_seconds())
+        if business_hours:
+            bh = BusinessHours(case_start_time[i].replace(tzinfo=None), case_start_time[i+1].replace(tzinfo=None), worktiming=worktiming,
+                               weekends=weekends)
+            case_diff_start_time.append(bh.getseconds())
+        else:
+            case_diff_start_time.append((case_start_time[i+1]-case_start_time[i]).total_seconds())
 
     if case_diff_start_time:
         return statistics.mean(case_diff_start_time)
