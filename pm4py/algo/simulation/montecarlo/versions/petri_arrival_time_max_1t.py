@@ -5,11 +5,13 @@ from threading import Thread, Semaphore
 from intervaltree import IntervalTree, Interval
 from statistics import median
 import random
+from pm4py.objects.log.log import EventLog, Trace, Event
+import datetime
 
 
 class SimulationThread(Thread):
     def __init__(self, id, net, im, fm, map, start_time, places_interval_trees, transitions_interval_trees,
-                 cases_ex_time):
+                 cases_ex_time, list_cases):
         self.id = id
         self.net = net
         self.im = im
@@ -21,6 +23,7 @@ class SimulationThread(Thread):
         self.places_interval_trees = places_interval_trees
         self.transitions_interval_trees = transitions_interval_trees
         self.cases_ex_time = cases_ex_time
+        self.list_cases = list_cases
         Thread.__init__(self)
 
     def run(self):
@@ -37,6 +40,7 @@ class SimulationThread(Thread):
         current_marking = im
         et = enabled_transitions(net, current_marking)
 
+        first_event = None
         while not fm <= current_marking or len(et) == 0:
             et = enabled_transitions(net, current_marking)
             ct = random.choice(list(et))
@@ -44,8 +48,6 @@ class SimulationThread(Thread):
             added_value = -1
             while added_value < 0:
                 added_value = map[ct].get_value() if ct in map else 0.0
-            # if ct in map:
-            #    print(map[ct], added_value)
             ex_time = current_time + added_value
             min_ex_time = ex_time
 
@@ -65,6 +67,13 @@ class SimulationThread(Thread):
 
             current_marking = weak_execute(ct, current_marking)
 
+            if ct.label is not None:
+                eve = Event({"concept:name": ct.label, "time:timestamp": datetime.datetime.fromtimestamp(current_time)})
+                last_event = eve
+                if first_event is None:
+                    first_event = last_event
+                self.list_cases[self.id].append(eve)
+
             for arc in ct.in_arcs:
                 place = arc.source
                 p_ex_time = place.assigned_time
@@ -73,10 +82,10 @@ class SimulationThread(Thread):
                 place.assigned_time = current_time
                 place.semaphore.release()
         # sink.semaphore.release()
+        cases_ex_time.append(last_event['time:timestamp'].timestamp() - first_event['time:timestamp'].timestamp())
+
         for place in current_marking:
             place.semaphore.release()
-        print(self.id, "released")
-        cases_ex_time.append(current_time - start_time)
 
 
 def apply(log, net, im, fm, parameters=None):
@@ -84,15 +93,17 @@ def apply(log, net, im, fm, parameters=None):
         parameters = {}
 
     parameters["business_hours"] = True
-    no_simulations = parameters["no_simulations"] if "no_simulations" in parameters else 10
+    no_simulations = parameters["no_simulations"] if "no_simulations" in parameters else 100
+    force_distribution = parameters["force_distribution"] if "force_distribution" in parameters else None
 
     case_arrival_ratio = parameters[
         "case_arrival_ratio"] if "case_arrival_ratio" in parameters else case_arrival.get_case_arrival_avg(log,
-                                                                  parameters=parameters)
+                                                                                                           parameters=parameters)
 
     places_interval_trees = {}
     transitions_interval_trees = {}
     cases_ex_time = []
+    list_cases = {}
 
     for place in net.places:
         place.semaphore = Semaphore(1)
@@ -101,13 +112,18 @@ def apply(log, net, im, fm, parameters=None):
     for trans in net.transitions:
         transitions_interval_trees[trans] = IntervalTree()
 
-    map = mapping.get_map_from_log_and_net(log, net, im, fm, parameters=parameters)
+    if force_distribution is not None:
+        map = mapping.get_map_from_log_and_net(log, net, im, fm, force_distribution=force_distribution,
+                                               parameters=parameters)
+    else:
+        map = mapping.get_map_from_log_and_net(log, net, im, fm, parameters=parameters)
 
-    start_time = 0
+    start_time = 1000000
     threads = []
     for i in range(no_simulations):
+        list_cases[i] = Trace()
         t = SimulationThread(i, net, im, fm, map, start_time, places_interval_trees, transitions_interval_trees,
-                             cases_ex_time)
+                             cases_ex_time, list_cases)
         t.start()
         threads.append(t)
         start_time = start_time + case_arrival_ratio
@@ -115,5 +131,6 @@ def apply(log, net, im, fm, parameters=None):
     for t in threads:
         t.join()
 
-    print(cases_ex_time)
-    print(median(cases_ex_time))
+    log = EventLog(list(list_cases.values()))
+
+    return log
