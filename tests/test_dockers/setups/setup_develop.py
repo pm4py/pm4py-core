@@ -48,6 +48,7 @@ setup(
               'pm4py.algo.filtering.pandas.auto_filter', 'pm4py.algo.filtering.pandas.end_activities',
               'pm4py.algo.filtering.pandas.start_activities', 'pm4py.algo.simulation', 'pm4py.algo.simulation.playout',
               'pm4py.algo.simulation.playout.versions', 'pm4py.algo.simulation.playout.data_structures',
+              'pm4py.algo.simulation.montecarlo', 'pm4py.algo.simulation.montecarlo.versions',
               'pm4py.algo.simulation.tree_generator', 'pm4py.algo.simulation.tree_generator.versions',
               'pm4py.algo.conformance', 'pm4py.algo.conformance.alignments',
               'pm4py.algo.conformance.alignments.versions', 'pm4py.algo.conformance.tokenreplay',
@@ -120,7 +121,8 @@ setup(
         'ortools',
         'prefixspan',
         'fasttext',
-        'pybind11'
+        'pybind11',
+        'intervaltree'
     ],
     project_urls={
         'Documentation': 'http://pm4py.pads.rwth-aachen.de/documentation/',

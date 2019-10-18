@@ -58,7 +58,7 @@ def get_map_from_log_and_net(log, net, initial_marking, final_marking, force_dis
     element_statistics = performance_map.single_element_statistics(log, net, initial_marking,
                                                                    aligned_traces, variants_idx,
                                                                    activity_key=activity_key,
-                                                                   timestamp_key=timestamp_key)
+                                                                   timestamp_key=timestamp_key, parameters={"business_hours": True})
 
     for el in element_statistics:
         if type(el) is PetriNet.Transition and "performance" in element_statistics[el]:
