@@ -12,6 +12,32 @@ import datetime
 class SimulationThread(Thread):
     def __init__(self, id, net, im, fm, map, start_time, places_interval_trees, transitions_interval_trees,
                  cases_ex_time, list_cases):
+        """
+        Instantiates the object of the simulation
+
+        Parameters
+        -------------
+        id
+            Identifier
+        net
+            Petri net
+        im
+            Initial marking
+        fm
+            Final marking
+        start_time
+            Start time
+        end_time
+            End time
+        places_interval_trees
+            Dictionary of the interval trees related to the places
+        transitions_interval_trees
+            Dictionary of the interval trees related to the transitions
+        cases_ex_time
+            Cases execution time
+        list_cases
+            Dictionary of cases for each thread
+        """
         self.id = id
         self.net = net
         self.im = im
@@ -27,6 +53,9 @@ class SimulationThread(Thread):
         Thread.__init__(self)
 
     def run(self):
+        """
+        Runs the thread
+        """
         net, im, fm, map, source, sink, start_time = self.net, self.im, self.fm, self.map, self.source, self.sink, self.start_time
         places_interval_trees = self.places_interval_trees
         transitions_interval_trees = self.transitions_interval_trees
@@ -89,6 +118,29 @@ class SimulationThread(Thread):
 
 
 def apply(log, net, im, fm, parameters=None):
+    """
+    Performs a Monte Carlo simulation of the Petri net
+
+    Parameters
+    -------------
+    log
+        Event log
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ------------
+    simulated_log
+        Simulated event log
+    simulation_result
+        Result of the simulation
+    """
     if parameters is None:
         parameters = {}
 
@@ -133,4 +185,8 @@ def apply(log, net, im, fm, parameters=None):
 
     log = EventLog(list(list_cases.values()))
 
-    return log
+    transitions_interval_trees = {t.name: y for t, y in transitions_interval_trees.items()}
+
+    return log, {"places_interval_trees": places_interval_trees,
+                 "transitions_interval_trees": transitions_interval_trees, "cases_ex_time": cases_ex_time,
+                 "median_cases_ex_time": median(cases_ex_time), "input_case_arrival_ratio": case_arrival_ratio}
