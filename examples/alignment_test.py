@@ -1,5 +1,6 @@
 import os
 
+import pm4py
 from pm4py import util
 from pm4py.algo.conformance import alignments as ali
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_MODEL_COST_FUNCTION
@@ -43,6 +44,7 @@ def execute_script():
 
     alignments = ali.factory.apply(log, net, marking, fmarking)
     print(alignments)
+    print(pm4py.algo.conformance.alignments.versions.state_equation_a_star.DEFAULT_LP_SOLVER_VARIANT)
     pretty_print_alignments(alignments)
 
 
