@@ -37,7 +37,11 @@ from pm4py.objects.petri.petrinet import Marking
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
-DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.ORTOOLS_SOLVER
+try:
+    import pm4py.util.lp.versions.ortools_solver
+    DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.ORTOOLS_SOLVER
+except:
+    DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.PULP
 PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE = 'ret_tuple_as_trans_desc'
 PARAM_TRACE_NET_COSTS = "trace_net_costs"
 

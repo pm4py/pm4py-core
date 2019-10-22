@@ -35,6 +35,7 @@ def apply(log, admitted_start_activities, parameters=None):
     return filtered_log
 
 
+
 def get_start_activities(log, parameters=None):
     """
     Get the start attributes of the log along with their count

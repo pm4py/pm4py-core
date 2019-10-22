@@ -1,19 +1,21 @@
-pyvis==0.1.5.0
-networkx==2.2
-matplotlib==2.2.2
-numpy==1.16.0
-ciso8601==2.1.1
-lxml==4.3.0
-graphviz==0.10.1
-pyarrow==0.13.0
-pandas==0.23.4
-scipy==1.2.0
-scikit-learn==0.20.2
+cython==0.29.13
+pyvis==0.1.7.0
+networkx==2.4
+matplotlib==3.1.1
+numpy==1.17.3
+ciso8601==2.1.2
+lxml==4.4.1
+graphviz==0.13
+pyarrow==0.13.0; python_version < '3.8'
+pyarrow==0.14.0; python_version >= '3.8'
+pandas==0.25.2
+scipy==1.3.1
+scikit-learn==0.21.3
 pydotplus==2.0.2
-pulp==1.6.9
-pytz==2018.9
-ortools
-prefixspan
-fasttext
-pybind11
-intervaltree
+pulp==1.6.10
+pytz==2019.3
+ortools==7.4.7247; python_version < '3.8'
+prefixspan==0.5.2
+fasttext==0.9.1
+pybind11==2.4.3
+intervaltree==3.0.2

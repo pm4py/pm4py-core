@@ -1,17 +1,26 @@
 from pm4py.util.lp.versions import pulp_solver
-from pm4py.util.lp.versions import ortools_solver
 
 # not available in the latest version of PM4Py
 CVXOPT = "cvxopt"
 PULP = "pulp"
-# not available in the latest version of PM4Py
+# not available in the latest version of PM4PyKop
 CVXOPT_SOLVER_CUSTOM_ALIGN = "cvxopt_solver_custom_align"
 ORTOOLS_SOLVER = "ortools_solver"
 
-VERSIONS_APPLY = {PULP: pulp_solver.apply, ORTOOLS_SOLVER: ortools_solver.apply}
-VERSIONS_GET_PRIM_OBJ = {PULP: pulp_solver.get_prim_obj_from_sol, ORTOOLS_SOLVER: ortools_solver.get_prim_obj_from_sol}
-VERSIONS_GET_POINTS_FROM_SOL = {PULP: pulp_solver.get_points_from_sol, ORTOOLS_SOLVER: ortools_solver.get_points_from_sol}
+VERSIONS_APPLY = {PULP: pulp_solver.apply}
+VERSIONS_GET_PRIM_OBJ = {PULP: pulp_solver.get_prim_obj_from_sol}
+VERSIONS_GET_POINTS_FROM_SOL = {PULP: pulp_solver.get_points_from_sol}
 
+try:
+    # in the case ortools is installed, it works
+    from pm4py.util.lp.versions import ortools_solver
+
+    VERSIONS_APPLY[ORTOOLS_SOLVER] = ortools_solver.apply
+    VERSIONS_GET_PRIM_OBJ[ORTOOLS_SOLVER] = ortools_solver.get_prim_obj_from_sol
+    VERSIONS_GET_POINTS_FROM_SOL[ORTOOLS_SOLVER] = ortools_solver.get_points_from_sol
+except:
+    # in this case, ortools is not installed since it is broken
+    pass
 
 def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=ORTOOLS_SOLVER):
     """
