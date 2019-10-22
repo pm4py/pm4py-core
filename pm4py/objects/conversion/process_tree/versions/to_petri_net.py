@@ -8,6 +8,7 @@ from pm4py.objects import petri
 from pm4py.objects.petri.petrinet import Marking
 from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import ProcessTree
 
 
 def get_first_terminal_child_transitions(tree):
@@ -300,37 +301,23 @@ def recursively_add_tree(parent_tree, tree, net, initial_entity_subtree, final_e
             petri.utils.add_arc_from_to(final_place, loop_trans, net)
             petri.utils.add_arc_from_to(loop_trans, initial_place, net)
         else:
-            if len(tree_childs) == 2:
-                # IMDFA method
-                net, counts, int1 = recursively_add_tree(tree, tree_childs[0], net, initial_place,
-                                                         None, counts,
-                                                         rec_depth + 1, force_add_skip=True)
-                net, counts, int2 = recursively_add_tree(tree, tree_childs[1], net, int1,
-                                                         final_place, counts,
-                                                         rec_depth + 1, force_add_skip=True)
-                looping_place = final_place
-            else:
-                # IMDFB method
-                net, counts, int1 = recursively_add_tree(tree, tree_childs[0], net, initial_place,
-                                                         None, counts,
-                                                         rec_depth + 1, force_add_skip=force_add_skip)
+            dummy = ProcessTree()
+            do = tree_childs[0]
+            redo = tree_childs[1]
+            exit = tree_childs[2] if len(tree_childs) > 2 and (tree_childs[2].label is not None or tree_childs[2].children) else dummy
 
-                if tree_childs[2].children and (
-                        tree_childs[2].children[0].operator is None and tree_childs[2].children[0].label is None):
-                    # when REDO and EXIT part are united
-                    net, counts, int2 = recursively_add_tree(tree, tree_childs[1], net, int1,
-                                                             final_place, counts,
-                                                             rec_depth + 1, force_add_skip=force_add_skip)
-                else:
-                    # otherwise
-                    net, counts, int2 = recursively_add_tree(tree, tree_childs[1], net, int1,
-                                                             None, counts,
-                                                             rec_depth + 1, force_add_skip=force_add_skip)
-                    net, counts, int3 = recursively_add_tree(tree, tree_childs[2], net, int1,
-                                                             final_place, counts,
-                                                             rec_depth + 1, force_add_skip=force_add_skip)
+            net, counts, int1 = recursively_add_tree(tree, do, net, initial_place,
+                                                     None, counts,
+                                                     rec_depth + 1, force_add_skip=force_add_skip)
+            net, counts, int2 = recursively_add_tree(tree, redo, net, int1,
+                                                     None, counts,
+                                                     rec_depth + 1, force_add_skip=force_add_skip)
+            net, counts, int3 = recursively_add_tree(tree, exit, net, int1,
+                                                     final_place, counts,
+                                                     rec_depth + 1, force_add_skip=force_add_skip)
 
-                looping_place = int2
+            looping_place = int2
+
             petri.utils.add_arc_from_to(looping_place, loop_trans, net)
             petri.utils.add_arc_from_to(loop_trans, initial_place, net)
     if force_add_skip:
