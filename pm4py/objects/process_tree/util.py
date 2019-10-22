@@ -3,6 +3,26 @@ from pm4py.objects.process_tree import pt_operator as pt_op
 from pm4py.objects.process_tree import state as pt_st
 
 
+
+def compress(pt):
+    if len(pt.children) == 0:
+        return pt
+    else:
+        for c in pt.children:
+            compress(c)
+        if pt.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.XOR, pt_op.Operator.PARALLEL]:
+            rem = list()
+            for c in pt.children:
+                if c.operator == pt.operator:
+                    pt.children.extend(c.children)
+                    for cc in c.children:
+                        cc.parent = pt
+                    rem.append(c)
+            for c in rem:
+                pt.children.remove(c)
+        return pt
+
+
 def project_execution_sequence_to_leafs(execution_sequence):
     """
     Project an execution sequence to the set of leafs
