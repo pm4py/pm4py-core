@@ -30,7 +30,7 @@ def apply(log, admitted_end_activities, parameters=None):
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
 
     filtered_log = [trace for trace in log if trace and trace[-1][attribute_key] in admitted_end_activities]
-    return filtered_log
+    return EventLog(filtered_log)
 
 
 def get_end_activities(log, parameters=None):
