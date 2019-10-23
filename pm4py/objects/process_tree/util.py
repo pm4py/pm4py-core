@@ -3,11 +3,8 @@ from pm4py.objects.process_tree import pt_operator as pt_op
 from pm4py.objects.process_tree import state as pt_st
 
 
-
 def compress(pt):
-    if len(pt.children) == 0:
-        return pt
-    else:
+    if len(pt.children) > 0:
         for c in pt.children:
             compress(c)
         if pt.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.XOR, pt_op.Operator.PARALLEL]:
@@ -20,8 +17,19 @@ def compress(pt):
                     rem.append(c)
             for c in rem:
                 pt.children.remove(c)
-        return pt
+    return pt
 
+def reduce_tau_leafs(pt):
+    if len(pt.children) > 0:
+        for c in pt.children:
+            reduce_tau_leafs(c)
+        if pt.operator in [pt_op.Operator.SEQUENCE]:
+            chlds = [c for c in pt.children]
+            for c in chlds:
+                if (len(c.children) == 0 or c.children is None) and c.label is None and c.operator is None:
+                    c.parent = None
+                    pt.children.remove(c)
+    return pt
 
 def project_execution_sequence_to_leafs(execution_sequence):
     """
