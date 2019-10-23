@@ -9,6 +9,21 @@ from pm4py.objects.petri.check_soundness import check_petri_wfnet_and_soundness
 from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
 
 
+def reduce_silent_transitions(pn):
+    ts = [t for t in pn.transitions]
+    for t in ts:
+        if len(pre_set(t)) == 1 and len(post_set(t)) == 1 and t.label is None:
+            pre = list(pre_set(t))[0]
+            post = list(post_set(t))[0]
+            if len(post_set(pre)) == 1 and len(pre_set(post)) == 1:
+                if len(pre_set(pre)) > 0:
+                    for tt in pre_set(pre):
+                        add_arc_from_to(tt, post, pn)
+                    remove_transition(pn, t)
+                    remove_place(pn, post)
+    return pn
+
+
 def pre_set(elem):
     pre = set()
     for a in elem.in_arcs:
