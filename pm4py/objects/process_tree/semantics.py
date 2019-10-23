@@ -6,7 +6,9 @@ from pm4py.objects.process_tree import pt_operator as pt_opt
 from pm4py.objects.process_tree import state as pt_st
 from pm4py.objects.process_tree import util as pt_util
 from pm4py.objects.process_tree.process_tree import ProcessTree
+
 import datetime
+
 
 def generate_log(pt, no_traces=100):
     """
@@ -32,14 +34,13 @@ def generate_log(pt, no_traces=100):
     for i in range(no_traces):
         ex_seq = execute(pt)
         ex_seq_labels = pt_util.project_execution_sequence_to_labels(ex_seq)
-        print(ex_seq_labels)
         trace = Trace()
         trace.attributes[xes.DEFAULT_NAME_KEY] = str(i)
         for label in ex_seq_labels:
             event = Event()
             event[xes.DEFAULT_NAME_KEY] = label
             event[xes.DEFAULT_TIMESTAMP_KEY] = datetime.datetime.fromtimestamp(curr_timestamp)
-            
+
             trace.append(event)
 
             curr_timestamp = curr_timestamp + 1
@@ -65,7 +66,7 @@ def execute(pt):
     """
     enabled, open, closed = set(), set(), set()
     enabled.add(pt)
-    #populate_closed(pt.children, closed)
+    # populate_closed(pt.children, closed)
     execution_sequence = list()
     while len(enabled) > 0:
         execute_enabled(enabled, open, closed, execution_sequence)
@@ -114,6 +115,9 @@ def execute_enabled(enabled, open, closed, execution_sequence=None):
     open.add(vertex)
     execution_sequence.append((vertex, pt_st.State.OPEN))
     if len(vertex.children) > 0:
+        if vertex.operator is pt_opt.Operator.LOOP:
+            while len(vertex.children) < 3:
+                vertex.children.append(ProcessTree(parent=vertex))
         if vertex.operator is pt_opt.Operator.SEQUENCE or vertex.operator is pt_opt.Operator.LOOP:
             c = vertex.children[0]
             enabled.add(c)
@@ -181,16 +185,7 @@ def process_closed(closed_node, enabled, open, closed, execution_sequence):
             if vertex.operator is pt_opt.Operator.SEQUENCE:
                 enable = vertex.children[vertex.children.index(closed_node) + 1]
             elif vertex.operator is pt_opt.Operator.LOOP:
-                all_children = []
-                all_children.append(vertex.children[1])
-                if len(vertex.children) > 2:
-                    all_children.append(vertex.children[2])
-                else:
-                    all_children.append(ProcessTree())
-                #print(all_children)
-                r = random.randint(0, len(all_children)-1)
-                #print(r)
-                enable = all_children[r] if vertex.children.index(closed_node) == 0 else \
+                enable = vertex.children[random.randint(1, 2)] if vertex.children.index(closed_node) == 0 else \
                     vertex.children[0]
             if enable is not None:
                 enabled.add(enable)
@@ -218,9 +213,7 @@ def should_close(vertex, closed, child):
     """
     if vertex.children is None:
         return True
-    elif vertex.operator is pt_opt.Operator.LOOP:
-        return (len(vertex.children) == 3 and vertex.children.index(child) == len(vertex.children) - 1) or (child.label is None and child.operator is None)
-    elif vertex.operator is pt_opt.Operator.SEQUENCE:
+    elif vertex.operator is pt_opt.Operator.LOOP or vertex.operator is pt_opt.Operator.SEQUENCE:
         return vertex.children.index(child) == len(vertex.children) - 1
     else:
         return set(vertex.children) <= closed
