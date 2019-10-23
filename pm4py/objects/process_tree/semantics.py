@@ -29,7 +29,7 @@ def generate_log(pt, no_traces=100):
     log = EventLog()
 
     # assigns to each event an increased timestamp from 1970
-    curr_timestamp = 0
+    curr_timestamp = 10000000
 
     for i in range(no_traces):
         ex_seq = execute(pt)
