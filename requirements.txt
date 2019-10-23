@@ -6,14 +6,14 @@ numpy
 ciso8601
 lxml
 graphviz
-pyarrow==0.13.0; python_version < '3.8'
+pyarrow==0.13.0; python_version < '3.8' and sys_platform != 'win32'
 pandas>=0.25.2
 scipy
 pydotplus
 scikit-learn
 pulp
 pytz>=2019.3
-ortools; python_version < '3.8'
+ortools; python_version < '3.8' and sys_platform != 'win32'
 prefixspan
 fasttext
 pybind11
