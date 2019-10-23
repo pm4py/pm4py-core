@@ -5,7 +5,7 @@ from pm4py.objects.log.util import xes
 from pm4py.objects.process_tree import pt_operator as pt_opt
 from pm4py.objects.process_tree import state as pt_st
 from pm4py.objects.process_tree import util as pt_util
-
+from pm4py.objects.process_tree.process_tree import ProcessTree
 import datetime
 
 def generate_log(pt, no_traces=100):
@@ -180,7 +180,13 @@ def process_closed(closed_node, enabled, open, closed, execution_sequence):
             if vertex.operator is pt_opt.Operator.SEQUENCE:
                 enable = vertex.children[vertex.children.index(closed_node) + 1]
             elif vertex.operator is pt_opt.Operator.LOOP:
-                enable = vertex.children[random.randint(1, 2)] if vertex.children.index(closed_node) == 0 else \
+                all_children = []
+                all_children.append(vertex.children[1])
+                if len(vertex.children) > 2:
+                    all_children.append(vertex.children[2])
+                else:
+                    all_children.append(ProcessTree())
+                enable = all_children[random.randint(0, len(all_children)-1)] if vertex.children.index(closed_node) == 0 else \
                     vertex.children[0]
             if enable is not None:
                 enabled.add(enable)
