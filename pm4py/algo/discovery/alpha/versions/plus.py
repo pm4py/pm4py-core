@@ -322,7 +322,7 @@ def processing(log, causal, follows, parameters=None):
     net = petri.petrinet.PetriNet('alpha_plus_net_' + str(time.time()))
     label_transition_dict = {}
     for label in labels:
-        if label is not 'artificial_start' and label is not 'artificial_end':
+        if label != 'artificial_start' and label != 'artificial_end':
             label_transition_dict[label] = petri.petrinet.PetriNet.Transition(label, label)
             net.transitions.add(label_transition_dict[label])
         else:
