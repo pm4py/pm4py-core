@@ -284,14 +284,14 @@ def recursively_add_tree(parent_tree, tree, net, initial_entity_subtree, final_e
                                                                    final_connection_place, counts,
                                                                    rec_depth + 1, force_add_skip=force_add_skip)
     elif tree.operator == Operator.LOOP:
-        if not parent_tree.operator == Operator.SEQUENCE:
-            new_initial_place = get_new_place(counts)
-            net.places.add(new_initial_place)
-            init_loop_trans = get_new_hidden_trans(counts, type_trans="init_loop")
-            net.transitions.add(init_loop_trans)
-            petri.utils.add_arc_from_to(initial_place, init_loop_trans, net)
-            petri.utils.add_arc_from_to(init_loop_trans, new_initial_place, net)
-            initial_place = new_initial_place
+        #if not parent_tree.operator == Operator.SEQUENCE:
+        new_initial_place = get_new_place(counts)
+        net.places.add(new_initial_place)
+        init_loop_trans = get_new_hidden_trans(counts, type_trans="init_loop")
+        net.transitions.add(init_loop_trans)
+        petri.utils.add_arc_from_to(initial_place, init_loop_trans, net)
+        petri.utils.add_arc_from_to(init_loop_trans, new_initial_place, net)
+        initial_place = new_initial_place
         loop_trans = get_new_hidden_trans(counts, type_trans="loop")
         net.transitions.add(loop_trans)
         if len(tree_childs) == 1:
