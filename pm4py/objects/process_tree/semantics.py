@@ -32,6 +32,7 @@ def generate_log(pt, no_traces=100):
     for i in range(no_traces):
         ex_seq = execute(pt)
         ex_seq_labels = pt_util.project_execution_sequence_to_labels(ex_seq)
+        print(ex_seq_labels)
         trace = Trace()
         trace.attributes[xes.DEFAULT_NAME_KEY] = str(i)
         for label in ex_seq_labels:
@@ -186,7 +187,10 @@ def process_closed(closed_node, enabled, open, closed, execution_sequence):
                     all_children.append(vertex.children[2])
                 else:
                     all_children.append(ProcessTree())
-                enable = all_children[random.randint(0, len(all_children)-1)] if vertex.children.index(closed_node) == 0 else \
+                #print(all_children)
+                r = random.randint(0, len(all_children)-1)
+                #print(r)
+                enable = all_children[r] if vertex.children.index(closed_node) == 0 else \
                     vertex.children[0]
             if enable is not None:
                 enabled.add(enable)
@@ -214,7 +218,9 @@ def should_close(vertex, closed, child):
     """
     if vertex.children is None:
         return True
-    elif vertex.operator is pt_opt.Operator.LOOP or vertex.operator is pt_opt.Operator.SEQUENCE:
+    elif vertex.operator is pt_opt.Operator.LOOP:
+        return (len(vertex.children) == 3 and vertex.children.index(child) == len(vertex.children) - 1) or (child.label is None and child.operator is None)
+    elif vertex.operator is pt_opt.Operator.SEQUENCE:
         return vertex.children.index(child) == len(vertex.children) - 1
     else:
         return set(vertex.children) <= closed
