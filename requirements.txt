@@ -13,7 +13,7 @@ pydotplus
 scikit-learn
 pulp
 pytz>=2019.3
-ortools; python_version < '3.8'´and sys_platform != 'win32'
+ortools; python_version < '3.8'´ and sys_platform != 'win32'
 prefixspan
 fasttext
 pybind11
