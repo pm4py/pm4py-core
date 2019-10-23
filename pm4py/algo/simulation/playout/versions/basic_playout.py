@@ -23,7 +23,7 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100):
         Maximum number of events per trace (do break)
     """
     # assigns to each event an increased timestamp from 1970
-    curr_timestamp = 0
+    curr_timestamp = 10000000
     log = log_instance.EventLog()
     for i in range(no_traces):
         trace = log_instance.Trace()

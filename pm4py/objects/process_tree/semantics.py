@@ -5,8 +5,10 @@ from pm4py.objects.log.util import xes
 from pm4py.objects.process_tree import pt_operator as pt_opt
 from pm4py.objects.process_tree import state as pt_st
 from pm4py.objects.process_tree import util as pt_util
+from pm4py.objects.process_tree.process_tree import ProcessTree
 
 import datetime
+
 
 def generate_log(pt, no_traces=100):
     """
@@ -27,7 +29,7 @@ def generate_log(pt, no_traces=100):
     log = EventLog()
 
     # assigns to each event an increased timestamp from 1970
-    curr_timestamp = 0
+    curr_timestamp = 10000000
 
     for i in range(no_traces):
         ex_seq = execute(pt)
@@ -38,7 +40,7 @@ def generate_log(pt, no_traces=100):
             event = Event()
             event[xes.DEFAULT_NAME_KEY] = label
             event[xes.DEFAULT_TIMESTAMP_KEY] = datetime.datetime.fromtimestamp(curr_timestamp)
-            
+
             trace.append(event)
 
             curr_timestamp = curr_timestamp + 1
@@ -64,7 +66,7 @@ def execute(pt):
     """
     enabled, open, closed = set(), set(), set()
     enabled.add(pt)
-    #populate_closed(pt.children, closed)
+    # populate_closed(pt.children, closed)
     execution_sequence = list()
     while len(enabled) > 0:
         execute_enabled(enabled, open, closed, execution_sequence)
@@ -113,6 +115,9 @@ def execute_enabled(enabled, open, closed, execution_sequence=None):
     open.add(vertex)
     execution_sequence.append((vertex, pt_st.State.OPEN))
     if len(vertex.children) > 0:
+        if vertex.operator is pt_opt.Operator.LOOP:
+            while len(vertex.children) < 3:
+                vertex.children.append(ProcessTree(parent=vertex))
         if vertex.operator is pt_opt.Operator.SEQUENCE or vertex.operator is pt_opt.Operator.LOOP:
             c = vertex.children[0]
             enabled.add(c)
