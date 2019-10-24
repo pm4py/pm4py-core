@@ -1,11 +1,11 @@
 from copy import copy
 
-from pm4py.algo.discovery.dfg.utils.dfg_utils import filter_dfg_on_act, negate, get_activities_dirlist, \
+from pm4py.objects.dfg.utils.dfg_utils import filter_dfg_on_act, negate, get_activities_dirlist, \
     get_activities_self_loop, get_activities_direction
-from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg, \
+from pm4py.objects.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg, \
     get_connected_components, add_to_most_probable_component, infer_start_activities, infer_end_activities
 from pm4py.algo.discovery.inductive.util import shared_constants
-from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
+from pm4py.objects.dfg.filtering.dfg_filtering import clean_dfg_based_on_noise_thresh
 
 
 class Subtree(object):
