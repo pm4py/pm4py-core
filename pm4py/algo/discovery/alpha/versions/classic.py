@@ -19,7 +19,7 @@ from itertools import product
 from pm4py import util as pm_util
 from pm4py.algo.discovery.alpha.data_structures import alpha_classic_abstraction
 from pm4py.algo.discovery.alpha.utils import endpoints
-from pm4py.algo.discovery.dfg.utils import dfg_utils
+from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.objects import petri
 from pm4py.objects.log import util as log_util
