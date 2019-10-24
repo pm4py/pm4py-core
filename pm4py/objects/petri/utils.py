@@ -1,4 +1,6 @@
 from copy import copy, deepcopy
+import time
+import random
 
 import networkx as nx
 
@@ -52,6 +54,30 @@ def remove_transition(net, trans):
             net.arcs.remove(arc)
         net.transitions.remove(trans)
     return net
+
+
+def add_place(net, name=None):
+    name = name if name is not None else 'p_' + str(len(net.places)) + '_' + str(time.time()) + str(random.randint(0, 10000))
+    p = petri.petrinet.PetriNet.Place(name=name)
+    net.places.add(p)
+    return p
+
+
+def add_transition(net, name=None, label=None):
+    name = name if name is not None else 't_' + str(len(net.transitions)) + '_' + str(time.time()) + str(random.randint(0, 10000))
+    t = petri.petrinet.PetriNet.Transition(name=name, label=label)
+    net.transitions.add(t)
+    return t
+
+
+def merge(trgt=None, nets=None):
+    trgt = trgt if trgt is not None else petri.petrinet.PetriNet()
+    nets = nets if nets is not None else list()
+    for net in nets:
+        trgt.transitions.update(net.transitions)
+        trgt.places.update(net.places)
+        trgt.arcs.update(net.arcs)
+    return trgt
 
 
 def remove_place(net, place):
