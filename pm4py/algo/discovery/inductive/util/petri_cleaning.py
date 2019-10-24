@@ -1,42 +1,5 @@
 from pm4py.objects import petri
 
-
-def clean_duplicate_transitions(net):
-    """
-    Clean duplicate transitions in a Petri net
-
-    Parameters
-    ------------
-    net
-        Petri net
-
-    Returns
-    ------------
-    net
-        Cleaned Petri net
-    """
-    transitions = list(net.transitions)
-    already_visited_combo = set()
-    for i in range(0, len(transitions)):
-        trans = transitions[i]
-        if trans.label is None:
-            in_arcs = trans.in_arcs
-            out_arcs = trans.out_arcs
-            to_delete = False
-            for in_arc in in_arcs:
-                in_place = in_arc.source
-                for out_arc in out_arcs:
-                    out_place = out_arc.target
-                    combo = in_place.name + " " + out_place.name
-                    if combo in already_visited_combo:
-                        to_delete = True
-                        break
-                    already_visited_combo.add(combo)
-            if to_delete:
-                net = petri.utils.remove_transition(net, trans)
-    return net
-
-
 def petri_reduction_treplay(net, parameters=None):
     """
     Apply petri_reduction on the Petrinet removing hidden transitions
