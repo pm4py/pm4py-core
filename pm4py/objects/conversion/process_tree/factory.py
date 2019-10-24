@@ -7,7 +7,7 @@ TO_PETRI_NET_TRANSITION_BORDERED = "to_petri_net_transition_bordered"
 VERSIONS = {TO_PETRI_NET: to_petri_net.apply, TO_PETRI_NET_TRANSITION_BORDERED: to_petri_net_transition_bordered.apply}
 
 
-def apply(tree, parameters=None, variant=TO_PETRI_NET_TRANSITION_BORDERED):
+def apply(tree, parameters=None, variant=TO_PETRI_NET):
     """
     Factory method for converting from Process Tree to Petri net
 
