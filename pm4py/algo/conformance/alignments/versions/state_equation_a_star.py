@@ -39,6 +39,7 @@ PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
 try:
     import pm4py.util.lp.versions.ortools_solver
+
     DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.ORTOOLS_SOLVER
 except:
     DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.PULP
@@ -259,7 +260,7 @@ def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking
         PARAM_MAX_ALIGN_TIME_TRACE] if PARAM_MAX_ALIGN_TIME_TRACE in parameters else DEFAULT_MAX_ALIGN_TIME_TRACE
     dictio_alignments = {}
     for varitem in var_list:
-        this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time))*0.5)
+        this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time)) * 0.5)
         variant = varitem[0]
         parameters[PARAM_MAX_ALIGN_TIME_TRACE] = this_max_align_time
         dictio_alignments[variant] = apply_from_variant(variant, petri_net, initial_marking, final_marking,
@@ -410,7 +411,10 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     h_cvx = np.matrix(np.zeros(len(sync_net.transitions))).transpose()
     cost_vec = [x * 1.0 for x in cost_vec]
 
-    if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN:
+    if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN or DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN_ILP:
+        use_cvxopt = True
+
+    if use_cvxopt:
         # not available in the latest version of PM4Py
         from cvxopt import matrix
 
@@ -420,7 +424,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         cost_vec = matrix(cost_vec)
 
     h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
-                                                 fin_vec)
+                                                 fin_vec, use_cvxopt=use_cvxopt)
     ini_state = SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     heapq.heapify(open_set)
@@ -444,7 +448,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         while not curr.trust:
             h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                          incidence_matrix, curr.m,
-                                                         fin_vec)
+                                                         fin_vec, use_cvxopt=use_cvxopt)
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
@@ -552,12 +556,12 @@ def __trust_solution(x):
 
 
 def __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix,
-                                          marking, fin_vec):
+                                          marking, fin_vec, use_cvxopt=False):
     m_vec = incidence_matrix.encode_marking(marking)
     b_term = [i - j for i, j in zip(fin_vec, m_vec)]
     b_term = np.matrix([x * 1.0 for x in b_term]).transpose()
 
-    if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN:
+    if use_cvxopt:
         # not available in the latest version of PM4Py
         from cvxopt import matrix
 
