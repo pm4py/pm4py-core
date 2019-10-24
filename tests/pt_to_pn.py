@@ -1,5 +1,5 @@
 from pm4py.algo.simulation.tree_generator import factory as pt_gen
-from pm4py.objects.conversion.process_tree.versions import to_petri_net_transition_bordered as pt_conv
+from pm4py.objects.conversion.process_tree import factory as pt_conv
 from pm4py.visualization.petrinet import factory as pn_viz
 from pm4py.visualization.process_tree import factory as pt_viz
 from pm4py.objects.process_tree import util as pt_util

@@ -5,7 +5,7 @@ from pm4py.visualization.petrinet import factory as pn_viz
 import time
 
 
-def apply(tree):
+def apply(tree, parameters=None):
     '''
     Only supports loops with 2 children!
     :param tree:
