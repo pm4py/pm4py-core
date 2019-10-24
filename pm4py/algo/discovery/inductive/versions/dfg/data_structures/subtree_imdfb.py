@@ -3,12 +3,12 @@ from copy import deepcopy, copy
 import networkx as nx
 import numpy as np
 
-from pm4py.algo.discovery.dfg.utils.dfg_utils import filter_dfg_on_act
-from pm4py.algo.discovery.dfg.utils.dfg_utils import get_all_activities_connected_as_input_to_activity
-from pm4py.algo.discovery.dfg.utils.dfg_utils import get_all_activities_connected_as_output_to_activity
-from pm4py.algo.discovery.dfg.utils.dfg_utils import infer_end_activities_from_succ_connections_and_current_dfg
-from pm4py.algo.discovery.dfg.utils.dfg_utils import infer_start_activities
-from pm4py.algo.discovery.dfg.utils.dfg_utils import infer_start_activities_from_prev_connections_and_current_dfg
+from pm4py.objects.dfg.utils.dfg_utils import filter_dfg_on_act
+from pm4py.objects.dfg.utils.dfg_utils import get_all_activities_connected_as_input_to_activity
+from pm4py.objects.dfg.utils.dfg_utils import get_all_activities_connected_as_output_to_activity
+from pm4py.objects.dfg.utils.dfg_utils import infer_end_activities_from_succ_connections_and_current_dfg
+from pm4py.objects.dfg.utils.dfg_utils import infer_start_activities
+from pm4py.objects.dfg.utils.dfg_utils import infer_start_activities_from_prev_connections_and_current_dfg
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa import Subtree
 
 
