@@ -14,7 +14,7 @@ pydotplus==2.0.2
 pulp==1.6.10
 pytz==2019.3
 ortools==7.4.7247; python_version < '3.8' and sys_platform != 'win32'
-prefixspan==0.5.2
-fasttext==0.9.1
-pybind11==2.4.3
+prefixspan==0.5.2; python_version > '3.5'
+fasttext==0.9.1; python_version > '3.5'
+pybind11==2.4.3; python_version > '3.5'
 intervaltree==3.0.2
