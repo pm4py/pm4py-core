@@ -3,21 +3,44 @@ from pm4py.objects.process_tree import pt_operator as pt_op
 from pm4py.objects.process_tree import state as pt_st
 
 
-def compress(pt):
-    if len(pt.children) > 0:
-        for c in pt.children:
+def fold(tree):
+    if len(tree.children) > 0:
+        for c in tree.children:
             compress(c)
-        if pt.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.XOR, pt_op.Operator.PARALLEL]:
-            rem = list()
-            for c in pt.children:
-                if c.operator == pt.operator:
-                    pt.children.extend(c.children)
+        cc = tree.children
+        for c in cc:
+            if c.label is None:
+                if len(c.children) == 0:
+                    tree.children.remove(c)
+                    c.parent = None
+                elif len(c.children) == 1:
+                    i = tree.children.index(c)
+                    tree.children[i:i] = c.children
+                    # tree.children.extend(c.children)
                     for cc in c.children:
-                        cc.parent = pt
-                    rem.append(c)
-            for c in rem:
-                pt.children.remove(c)
-    return pt
+                        cc.parent = tree
+                    tree.children.remove(c)
+                    c.children.clear()
+                    c.parent = None
+        if tree.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.XOR, pt_op.Operator.PARALLEL]:
+            chlds = [c for c in tree.children]
+            for c in chlds:
+                if c.operator == tree.operator:
+                    i = tree.children.index(c)
+                    tree.children[i:i] = c.children
+                    # tree.children.extend(c.children)
+                    for cc in c.children:
+                        cc.parent = tree
+                    tree.children.remove(c)
+                    c.children.clear()
+                    c.parent = None
+    if tree.parent is None and len(tree.children) == 1:
+        root = tree.children[0]
+        root.parent = None
+        tree.children.clear()
+        return root
+    return tree
+
 
 def reduce_tau_leafs(pt):
     if len(pt.children) > 0:
@@ -30,6 +53,7 @@ def reduce_tau_leafs(pt):
                     c.parent = None
                     pt.children.remove(c)
     return pt
+
 
 def project_execution_sequence_to_leafs(execution_sequence):
     """
