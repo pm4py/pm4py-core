@@ -125,12 +125,15 @@ def execute_enabled(enabled, open, closed, execution_sequence=None):
         elif vertex.operator is pt_opt.Operator.PARALLEL:
             enabled |= set(vertex.children)
             map(lambda c: execution_sequence.append((c, pt_st.State.ENABLED)), vertex.children)
-        # TODO: add proper support to OR (during the log generation, is considered as a XOR)
-        elif vertex.operator is pt_opt.Operator.XOR or vertex.operator is pt_opt.Operator.OR:
+        elif vertex.operator is pt_opt.Operator.XOR:
             vc = vertex.children
             c = vc[random.randint(0, len(vc) - 1)]
             enabled.add(c)
             execution_sequence.append((c, pt_st.State.ENABLED))
+        elif vertex.operator is pt_opt.Operator.OR:
+            some_children = [c for c in vertex.children if random.random() < 0.5]
+            enabled |= set(some_children)
+            map(lambda c: execution_sequence.append((c, pt_st.State.ENABLED)), some_children)
     else:
         close(vertex, enabled, open, closed, execution_sequence)
     return execution_sequence
