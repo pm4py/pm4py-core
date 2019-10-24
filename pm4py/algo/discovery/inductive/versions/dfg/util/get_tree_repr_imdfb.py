@@ -112,8 +112,8 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
             child = get_repr(ch, rec_depth + 1)
             child_tree.children.append(child)
             child.parent = child_tree
-        if spec_tree_struct.detected_cut == "loopCut" and len(spec_tree_struct.children) < 3:
-            while len(spec_tree_struct.children) < 3:
+        if spec_tree_struct.detected_cut == "loopCut" and len(spec_tree_struct.children) < 2:
+            while len(spec_tree_struct.children) < 2:
                 child = ProcessTree()
                 child_tree.children.append(child)
                 child.parent = child_tree
