@@ -117,9 +117,9 @@ def encode_trace_to_graph(trace):
     "Add edges"
     for node_start in nodes_start:
         for node_end in nodes_end:
-            if graph.node[node_start]["time"] <= graph.node[node_end]["time"]:
+            if graph.nodes[node_start]["time"] <= graph.nodes[node_end]["time"]:
                 graph.add_edge(node_start, node_end, weight=helper.compute_weight(node_start, node_end),
-                               duration=graph.node[node_end]["time"] - graph.node[node_start]["time"])
+                               duration=graph.nodes[node_end]["time"] - graph.nodes[node_start]["time"])
 
     "Filter out isolated nodes"
     nodes_to_removed = []
