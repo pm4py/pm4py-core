@@ -6,7 +6,7 @@ from pm4py.objects.process_tree import state as pt_st
 def fold(tree):
     if len(tree.children) > 0:
         for c in tree.children:
-            compress(c)
+            fold(c)
         cc = tree.children
         for c in cc:
             if c.label is None:
