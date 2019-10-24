@@ -30,8 +30,7 @@ from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.lp import factory as lp_solver_factory
-from pm4py.algo.conformance.alignments.utils import get_add_marking_transition, get_sub_marking_transition, \
-    get_place_dict_from_sub
+from pm4py.algo.conformance.alignments import utils
 from pm4py.objects.petri.petrinet import Marking
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
@@ -396,10 +395,9 @@ def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, sk
 def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=False,
              max_align_time_trace=DEFAULT_MAX_ALIGN_TIME_TRACE):
     start_time = time.time()
-    sub_markings = get_sub_marking_transition(sync_net)
-    place_dict = get_place_dict_from_sub(sync_net, sub_markings)
-    add_markings = get_add_marking_transition(sync_net)
-    # min_cost_value_gt_0 = min(v for t, v in cost_function.items() if v > 0)
+
+    utils.decorate_transitions(sync_net)
+    utils.decorate_places(sync_net)
 
     incidence_matrix = petri.incidence_matrix.construct(sync_net)
     ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
@@ -475,17 +473,18 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
 
         possible_enabling_transitions = set()
         for p in current_marking:
-            for t in place_dict[p]:
+            for t in p.ass_trans:
                 possible_enabling_transitions.add(t)
 
-        enabled_trans = [t for t in possible_enabling_transitions if sub_markings[t] <= current_marking]
+        enabled_trans = [t for t in possible_enabling_transitions if t.sub_marking <= current_marking]
 
         trans_to_visit_with_cost = [(t, cost_function[t]) for t in enabled_trans if not (
                 curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip))]
 
         for t, cost in trans_to_visit_with_cost:
             traversed += 1
-            new_marking = subtract_add_markings(current_marking, sub_markings[t], add_markings[t])
+            new_marking = add_markings(current_marking, t.add_marking)
+
             if new_marking in closed:
                 continue
             g = curr.g + cost
@@ -499,14 +498,12 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             heapq.heappush(open_set, tp)
 
 
-def subtract_add_markings(curr, sub, add):
+def add_markings(curr, add):
     m = Marking()
     for p in curr.items():
         m[p[0]] = p[1]
     for p in add.items():
         m[p[0]] += p[1]
-    for p in sub.items():
-        m[p[0]] -= p[1]
         if m[p[0]] == 0:
             del m[p[0]]
     return m
