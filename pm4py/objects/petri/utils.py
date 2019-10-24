@@ -1,4 +1,6 @@
 from copy import copy, deepcopy
+import time
+import random
 
 import networkx as nx
 
@@ -7,21 +9,6 @@ from pm4py.objects.log.log import Trace, Event
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.petri.check_soundness import check_petri_wfnet_and_soundness
 from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
-
-
-def reduce_silent_transitions(pn):
-    ts = [t for t in pn.transitions]
-    for t in ts:
-        if len(pre_set(t)) == 1 and len(post_set(t)) == 1 and t.label is None:
-            pre = list(pre_set(t))[0]
-            post = list(post_set(t))[0]
-            if len(post_set(pre)) == 1 and len(pre_set(post)) == 1:
-                if len(pre_set(pre)) > 0:
-                    for tt in pre_set(pre):
-                        add_arc_from_to(tt, post, pn)
-                    remove_transition(pn, t)
-                    remove_place(pn, post)
-    return pn
 
 
 def pre_set(elem):
@@ -67,6 +54,30 @@ def remove_transition(net, trans):
             net.arcs.remove(arc)
         net.transitions.remove(trans)
     return net
+
+
+def add_place(net, name=None):
+    name = name if name is not None else 'p_' + str(len(net.places)) + '_' + str(time.time()) + str(random.randint(0, 10000))
+    p = petri.petrinet.PetriNet.Place(name=name)
+    net.places.add(p)
+    return p
+
+
+def add_transition(net, name=None, label=None):
+    name = name if name is not None else 't_' + str(len(net.transitions)) + '_' + str(time.time()) + str(random.randint(0, 10000))
+    t = petri.petrinet.PetriNet.Transition(name=name, label=label)
+    net.transitions.add(t)
+    return t
+
+
+def merge(trgt=None, nets=None):
+    trgt = trgt if trgt is not None else petri.petrinet.PetriNet()
+    nets = nets if nets is not None else list()
+    for net in nets:
+        trgt.transitions.update(net.transitions)
+        trgt.places.update(net.places)
+        trgt.arcs.update(net.arcs)
+    return trgt
 
 
 def remove_place(net, place):
