@@ -255,9 +255,9 @@ class SubtreeB(Subtree):
 
         if len(do_part) > 0 and (len(redo_part) > 0 or len(exit_part)) > 0:
             if len(redo_part) > 0:
-                return [True, [do_part + exit_part, redo_part, set()], len(end_activities_that_are_also_start) > 0]
+                return [True, [do_part + exit_part, redo_part], len(end_activities_that_are_also_start) > 0]
             else:
-                return [True, [do_part, redo_part + exit_part, set()], len(end_activities_that_are_also_start) > 0]
+                return [True, [do_part, redo_part + exit_part], len(end_activities_that_are_also_start) > 0]
 
         return [False, [], []]
 
