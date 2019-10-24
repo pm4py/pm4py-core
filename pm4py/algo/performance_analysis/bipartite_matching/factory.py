@@ -1,7 +1,7 @@
 from pm4py.algo.performance_analysis.bipartite_matching.versions import classic
 from pm4py.objects.log.log import EventLog
 import pm4py.algo.performance_analysis.bipartite_matching.util.shared_variables as sv
-
+from pm4py.objects.conversion.log import factory as log_conv_factory
 
 def apply(log, start, end, classifier = "concept:name"):
     """
@@ -22,8 +22,7 @@ def apply(log, start, end, classifier = "concept:name"):
     result
         Case ID: (edges selected, statistical result)
     """
-    if isinstance(log, EventLog):
-        return classic.apply(log, start, end, classifier)
+    return classic.apply(log_conv_factory.apply(log), start, end, classifier)
 
 
 def update(start, end):
