@@ -119,6 +119,9 @@ def parse_recursive(string_rep, depth_cache, depth):
     elif string_rep.startswith(pt_op.Operator.XOR.value):
         operator = pt_op.Operator.XOR
         string_rep = string_rep[1:]
+    elif string_rep.startswith(pt_op.Operator.OR.value):
+        operator = pt_op.Operator.OR
+        string_rep = string_rep[1:]
     elif string_rep.startswith(pt_op.Operator.SEQUENCE.value):
         operator = pt_op.Operator.SEQUENCE
         string_rep = string_rep[2:]
