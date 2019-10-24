@@ -409,6 +409,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     h_cvx = np.matrix(np.zeros(len(sync_net.transitions))).transpose()
     cost_vec = [x * 1.0 for x in cost_vec]
 
+    use_cvxopt = False
     if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN or DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN_ILP:
         use_cvxopt = True
 
