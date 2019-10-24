@@ -3,7 +3,7 @@ import time
 
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.algo.discovery.inductive import factory as inductive_factory
-from pm4py.algo.filtering.dfg import dfg_filtering
+from pm4py.objects.dfg.filtering import dfg_filtering
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.algo.filtering.pandas.auto_filter import auto_filter
 from pm4py.algo.filtering.pandas.cases import case_filter

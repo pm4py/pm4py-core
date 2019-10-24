@@ -1,4 +1,4 @@
-from pm4py.algo.discovery.dfg.utils.dfg_utils import get_activities_self_loop
+from pm4py.objects.dfg.utils.dfg_utils import get_activities_self_loop
 from pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans import verify_skip_for_parallel_cut, \
     verify_skip_transition_necessity
 from pm4py.objects.process_tree.process_tree import ProcessTree
