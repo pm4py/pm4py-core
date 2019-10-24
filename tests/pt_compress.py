@@ -14,5 +14,5 @@ if __name__ == "__main__":
     pn, im, fm = pt_conv.apply(pt)
     pn_viz.view(pn_viz.apply(pn, parameters={'format': 'svg'}))
     time.sleep(1)
-    pt = pt_util.compress(pt)
+    pt = pt_util.fold(pt)
     pt_viz.view(pt_viz.apply(pt, parameters={"format": "svg"}))

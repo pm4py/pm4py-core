@@ -13,7 +13,7 @@ if __name__ == '__main__':
     gviz = pt_viz.apply(pt, parameters={'format': 'svg'})
     pt_viz.view(gviz)
     time.sleep(1)
-    pt = pt_util.compress(pt)
+    pt = pt_util.fold(pt)
     gviz = pt_viz.apply(pt, parameters={'format': 'svg'})
     pt_viz.view(gviz)
     time.sleep(1)
