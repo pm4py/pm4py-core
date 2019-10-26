@@ -27,7 +27,7 @@ from pm4py.objects.petri.importer import pnml as petri_importer
 from pm4py.objects.log import log as log_implementation
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.petri.synchronous_product import construct_cost_aware
-from pm4py.objects.petri.utils import construct_trace_net_cost_aware
+from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, decorate_transitions_prepostset
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.lp import factory as lp_solver_factory
 from pm4py.algo.conformance.alignments import utils
@@ -396,8 +396,8 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
              max_align_time_trace=DEFAULT_MAX_ALIGN_TIME_TRACE):
     start_time = time.time()
 
-    utils.decorate_transitions(sync_net)
-    utils.decorate_places(sync_net)
+    decorate_transitions_prepostset(sync_net)
+    decorate_places_preset_trans(sync_net)
 
     incidence_matrix = petri.incidence_matrix.construct(sync_net)
     ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
