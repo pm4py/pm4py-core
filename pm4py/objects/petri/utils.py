@@ -287,6 +287,74 @@ def get_cycles_petri_net_places(net):
     return cycles_places
 
 
+def get_cycles_petri_net_transitions(net):
+    """
+    Get the cycles of a Petri net (returning only list of transitions belonging to the cycle)
+
+    Parameters
+    -------------
+    net
+        Petri net
+
+    Returns
+    -------------
+    cycles
+        Cycles (transitions) of the Petri net
+    """
+    graph, inv_dictionary = create_networkx_directed_graph(net)
+    cycles = nx.simple_cycles(graph)
+    cycles_trans = []
+    for cycle in cycles:
+        cycles_trans.append([])
+        for el in cycle:
+            if el in inv_dictionary and type(inv_dictionary[el]) is petri.petrinet.PetriNet.Transition:
+                cycles_trans[-1].append(inv_dictionary[el])
+    return cycles_trans
+
+
+def decorate_places_preset_trans(net):
+    """
+    Decorate places with information useful for the replay
+
+    Parameters
+    -------------
+    net
+        Petri net
+    """
+    for place in net.places:
+        place.ass_trans = set()
+
+    for trans in net.transitions:
+        for place in trans.sub_marking:
+            place.ass_trans.add(trans)
+
+
+def decorate_transitions_prepostset(net):
+    """
+    Decorate transitions with sub and addition markings
+
+    Parameters
+    -------------
+    net
+        Petri net
+    """
+    from pm4py.objects.petri.petrinet import Marking
+    for trans in net.transitions:
+        sub_marking = Marking()
+        add_marking = Marking()
+
+        for arc in trans.in_arcs:
+            sub_marking[arc.source] = arc.weight
+            add_marking[arc.source] = -arc.weight
+        for arc in trans.out_arcs:
+            if arc.target in add_marking:
+                add_marking[arc.target] = arc.weight + add_marking[arc.target]
+            else:
+                add_marking[arc.target] = arc.weight
+        trans.sub_marking = sub_marking
+        trans.add_marking = add_marking
+
+
 def get_strongly_connected_subnets(net):
     """
     Get the strongly connected components subnets in the Petri net
