@@ -4,74 +4,46 @@ STD_TAU_COST = 1
 STD_SYNC_COST = 0
 
 
-def get_place_dict_from_sub(net, sub_dict):
+def decorate_places(net):
     """
-    Gets a place dictionary from subtraction dictionary
+    Decorate places with information useful for the replay
 
     Parameters
-    --------------
+    -------------
     net
         Petri net
-    sub_dict
-        Subtraction dictionary
-
-    Returns
-    --------------
-    place_dict
-        Place dict
     """
-    ret = {}
     for place in net.places:
-        ret[place] = set()
-    for trans in sub_dict:
-        for place in sub_dict[trans]:
-            ret[place].add(trans)
-    return ret
+        place.ass_trans = set()
 
-def get_sub_marking_transition(net):
+    for trans in net.transitions:
+        for place in trans.sub_marking:
+            place.ass_trans.add(trans)
+
+def decorate_transitions(net):
     """
-    Get the marking to subtract when a transition is enabled
+    Decorate transitions with sub and addition markings
 
     Parameters
-    --------------
+    -------------
     net
         Petri net
-
-    Returns
-    --------------
-    ret
-        Dictionary that for each transition associates the subtraction marking
     """
     from pm4py.objects.petri.petrinet import Marking
-    ret = {}
     for trans in net.transitions:
-        ret[trans] = Marking()
+        sub_marking = Marking()
+        add_marking = Marking()
+
         for arc in trans.in_arcs:
-            ret[trans][arc.source] = arc.weight
-    return ret
-
-
-def get_add_marking_transition(net):
-    """
-    Get the marking to add when a transition is enabled
-
-    Parameters
-    --------------
-    net
-        Petri net
-
-    Returns
-    --------------
-    ret
-        Dictionary that for each transition associates the subtraction marking
-    """
-    from pm4py.objects.petri.petrinet import Marking
-    ret = {}
-    for trans in net.transitions:
-        ret[trans] = Marking()
+            sub_marking[arc.source] = arc.weight
+            add_marking[arc.source] = -arc.weight
         for arc in trans.out_arcs:
-            ret[trans][arc.target] = arc.weight
-    return ret
+            if arc.target in add_marking:
+                add_marking[arc.target] = arc.weight + add_marking[arc.target]
+            else:
+                add_marking[arc.target] = arc.weight
+        trans.sub_marking = sub_marking
+        trans.add_marking = add_marking
 
 def construct_standard_cost_function(synchronous_product_net, skip):
     """
