@@ -229,7 +229,8 @@ def check_petri_wfnet_and_soundness(net):
     if is_wfnet:
         is_stable = check_stability_wfnet(net)
         if is_stable:
-            contains_loops_generating_tokens = check_loops_generating_tokens(net)
-            if not contains_loops_generating_tokens:
-                return True
+            return True
+            #contains_loops_generating_tokens = check_loops_generating_tokens(net)
+            #if not contains_loops_generating_tokens:
+            #    return True
     return False
