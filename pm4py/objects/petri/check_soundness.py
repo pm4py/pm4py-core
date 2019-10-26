@@ -137,6 +137,7 @@ def check_loops_generating_tokens(net0):
         for index, trans in enumerate(loop):
             m = m + trans.add_marking
 
+        visited_couples = set()
         while True:
             changed_something = False
             # if there are no places with positive marking replaying the loop, then we are fine
@@ -145,24 +146,28 @@ def check_loops_generating_tokens(net0):
             for p1 in pos_places:
                 # if there are no places with negative marking replaying the loop, then we are doomed
                 for p2 in neg_places:
-                    # otherwise, do a check if there is a path in the workflow net between the two places
-                    spath = None
-                    try:
-                        spath = nx.algorithms.shortest_paths.generic.shortest_path(graph, dictionary[p1], dictionary[p2])
-                    except:
-                        pass
-                    if spath is not None:
-                        changed_something = True
-                        trans = [inv_dictionary[x] for x in spath if type(inv_dictionary[x]) is petrinet.PetriNet.Transition]
-                        sec_m0 = petrinet.Marking()
-                        for t in trans:
-                            sec_m0 = sec_m0 + t.add_marking
-                        sec_m = petrinet.Marking()
-                        for place in m:
-                            if place in sec_m0:
-                                sec_m[place] = sec_m0[place]
-                        m = m + sec_m
-                        break
+                    if not ((p1, p2)) in visited_couples:
+                        visited_couples.add((p1, p2))
+                        # otherwise, do a check if there is a path in the workflow net between the two places
+                        spath = None
+                        try:
+                            spath = nx.algorithms.shortest_paths.generic.shortest_path(graph, dictionary[p1], dictionary[p2])
+                        except:
+                            pass
+                        if spath is not None:
+                            trans = [inv_dictionary[x] for x in spath if type(inv_dictionary[x]) is petrinet.PetriNet.Transition]
+                            sec_m0 = petrinet.Marking()
+                            for t in trans:
+                                sec_m0 = sec_m0 + t.add_marking
+                            sec_m = petrinet.Marking()
+                            for place in m:
+                                if place in sec_m0:
+                                    sec_m[place] = sec_m0[place]
+                            m1 = m + sec_m
+                            if m1[p1] == 0:
+                                m = m1
+                                changed_something = True
+                                break
                 if not changed_something:
                     break
             if not changed_something:
@@ -229,8 +234,8 @@ def check_petri_wfnet_and_soundness(net):
     if is_wfnet:
         is_stable = check_stability_wfnet(net)
         if is_stable:
-            return True
-            #contains_loops_generating_tokens = check_loops_generating_tokens(net)
-            #if not contains_loops_generating_tokens:
-            #    return True
+            #return True
+            contains_loops_generating_tokens = check_loops_generating_tokens(net)
+            if not contains_loops_generating_tokens:
+                return True
     return False
