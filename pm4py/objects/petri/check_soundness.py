@@ -1,7 +1,11 @@
+from copy import deepcopy
+
 import networkx as nx
 import numpy as np
 
 from pm4py.objects.petri import incidence_matrix
+from pm4py.objects.petri import utils as petri_utils
+from pm4py.objects.petri import petrinet
 from pm4py.objects.petri.networkx_graph import create_networkx_undirected_graph
 from pm4py.util.lp import factory as lp_solver_factory
 
@@ -109,9 +113,70 @@ def check_wfnet(net):
     return (unique_source_place is not None) and (unique_sink_place is not None) and source_sink_reachability
 
 
-def check_soundness_wfnet(net):
+def check_loops_generating_tokens(net0):
     """
-    Check if a workflow net is sound by using the incidence matrix
+    Check if the Petri net contains loops generating tokens
+
+    Parameters
+    ------------
+    net0
+        Petri net
+
+    Returns
+    ------------
+    boolean
+        Boolean value (True if the net has loops generating tokens)
+    """
+    net = deepcopy(net0)
+    petri_utils.decorate_transitions_prepostset(net)
+    graph, inv_dictionary = petri_utils.create_networkx_directed_graph(net)
+    dictionary = {y:x for x,y in inv_dictionary.items()}
+    loops_trans = petri_utils.get_cycles_petri_net_transitions(net)
+    for loop in loops_trans:
+        m = petrinet.Marking()
+        for index, trans in enumerate(loop):
+            m = m + trans.add_marking
+
+        while True:
+            changed_something = False
+            # if there are no places with positive marking replaying the loop, then we are fine
+            neg_places = [p for p in m if m[p] < 0]
+            pos_places = [p for p in m if m[p] > 0]
+            for p1 in pos_places:
+                # if there are no places with negative marking replaying the loop, then we are doomed
+                for p2 in neg_places:
+                    # otherwise, do a check if there is a path in the workflow net between the two places
+                    spath = None
+                    try:
+                        spath = nx.algorithms.shortest_paths.generic.shortest_path(graph, dictionary[p1], dictionary[p2])
+                    except:
+                        pass
+                    if spath is not None:
+                        changed_something = True
+                        trans = [inv_dictionary[x] for x in spath if type(inv_dictionary[x]) is petrinet.PetriNet.Transition]
+                        sec_m0 = petrinet.Marking()
+                        for t in trans:
+                            sec_m0 = sec_m0 + t.add_marking
+                        sec_m = petrinet.Marking()
+                        for place in m:
+                            if place in sec_m0:
+                                sec_m[place] = sec_m0[place]
+                        m = m + sec_m
+                        break
+                if not changed_something:
+                    break
+            if not changed_something:
+                break
+
+        if sum(m[place] for place in m) > 0:
+            return True
+
+    return False
+
+
+def check_stability_wfnet(net):
+    """
+    Check if a workflow net is stable by using the incidence matrix
 
     Parameters
     -------------
@@ -121,7 +186,7 @@ def check_soundness_wfnet(net):
     Returns
     -------------
     boolean
-        Boolean value (True if the WFNet is sound; False if it is not sound)
+        Boolean value (True if the WFNet is stable; False if it is not stable)
     """
     matrix = np.asmatrix(incidence_matrix.construct(net).a_matrix)
     matrix = np.transpose(matrix)
@@ -161,7 +226,10 @@ def check_petri_wfnet_and_soundness(net):
         Boolean value (True if the Petri net is a sound workflow net)
     """
     is_wfnet = check_wfnet(net)
-    # print("is_wfnet = ",is_wfnet)
     if is_wfnet:
-        return check_soundness_wfnet(net)
+        is_stable = check_stability_wfnet(net)
+        if is_stable:
+            contains_loops_generating_tokens = check_loops_generating_tokens(net)
+            if not contains_loops_generating_tokens:
+                return True
     return False
