@@ -9,4 +9,5 @@ RUN apt-get -y install zip unzip
 RUN wget https://github.com/pm4py/pm4py-source/archive/master.zip
 RUN unzip master.zip
 RUN apt-get -y install gcc gfortran python-dev libopenblas-dev liblapack-dev cython
+RUN apt-get -y install libxml2-dev libxslt-dev libfreetype6-dev
 RUN cd pm4py-source-master && pip install -r requirements.txt && cp tests/test_dockers/setups/setup_master.py setup.py  && python setup.py install
