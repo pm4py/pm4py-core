@@ -6,7 +6,6 @@ PULP = "pulp"
 # not available in the latest version of PM4Py
 CVXOPT_SOLVER_CUSTOM_ALIGN = "cvxopt_solver_custom_align"
 CVXOPT_SOLVER_CUSTOM_ALIGN_ILP = "cvxopt_solver_custom_align_ilp"
-
 ORTOOLS_SOLVER = "ortools_solver"
 
 VERSIONS_APPLY = {PULP: pulp_solver.apply}
