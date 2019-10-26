@@ -30,8 +30,7 @@ from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.lp import factory as lp_solver_factory
-from pm4py.algo.conformance.alignments.utils import get_add_marking_transition, get_sub_marking_transition, \
-    get_place_dict_from_sub
+from pm4py.algo.conformance.alignments import utils
 from pm4py.objects.petri.petrinet import Marking
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
@@ -39,6 +38,7 @@ PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
 try:
     import pm4py.util.lp.versions.ortools_solver
+
     DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.ORTOOLS_SOLVER
 except:
     DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.PULP
@@ -259,7 +259,7 @@ def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking
         PARAM_MAX_ALIGN_TIME_TRACE] if PARAM_MAX_ALIGN_TIME_TRACE in parameters else DEFAULT_MAX_ALIGN_TIME_TRACE
     dictio_alignments = {}
     for varitem in var_list:
-        this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time))*0.5)
+        this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time)) * 0.5)
         variant = varitem[0]
         parameters[PARAM_MAX_ALIGN_TIME_TRACE] = this_max_align_time
         dictio_alignments[variant] = apply_from_variant(variant, petri_net, initial_marking, final_marking,
@@ -395,10 +395,9 @@ def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, sk
 def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=False,
              max_align_time_trace=DEFAULT_MAX_ALIGN_TIME_TRACE):
     start_time = time.time()
-    sub_markings = get_sub_marking_transition(sync_net)
-    place_dict = get_place_dict_from_sub(sync_net, sub_markings)
-    add_markings = get_add_marking_transition(sync_net)
-    # min_cost_value_gt_0 = min(v for t, v in cost_function.items() if v > 0)
+
+    utils.decorate_transitions(sync_net)
+    utils.decorate_places(sync_net)
 
     incidence_matrix = petri.incidence_matrix.construct(sync_net)
     ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
@@ -410,7 +409,11 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     h_cvx = np.matrix(np.zeros(len(sync_net.transitions))).transpose()
     cost_vec = [x * 1.0 for x in cost_vec]
 
-    if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN:
+    use_cvxopt = False
+    if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN or DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN_ILP:
+        use_cvxopt = True
+
+    if use_cvxopt:
         # not available in the latest version of PM4Py
         from cvxopt import matrix
 
@@ -420,7 +423,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         cost_vec = matrix(cost_vec)
 
     h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
-                                                 fin_vec)
+                                                 fin_vec, use_cvxopt=use_cvxopt)
     ini_state = SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     heapq.heapify(open_set)
@@ -444,7 +447,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         while not curr.trust:
             h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                          incidence_matrix, curr.m,
-                                                         fin_vec)
+                                                         fin_vec, use_cvxopt=use_cvxopt)
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
@@ -471,17 +474,18 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
 
         possible_enabling_transitions = set()
         for p in current_marking:
-            for t in place_dict[p]:
+            for t in p.ass_trans:
                 possible_enabling_transitions.add(t)
 
-        enabled_trans = [t for t in possible_enabling_transitions if sub_markings[t] <= current_marking]
+        enabled_trans = [t for t in possible_enabling_transitions if t.sub_marking <= current_marking]
 
         trans_to_visit_with_cost = [(t, cost_function[t]) for t in enabled_trans if not (
                 curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip))]
 
         for t, cost in trans_to_visit_with_cost:
             traversed += 1
-            new_marking = subtract_add_markings(current_marking, sub_markings[t], add_markings[t])
+            new_marking = add_markings(current_marking, t.add_marking)
+
             if new_marking in closed:
                 continue
             g = curr.g + cost
@@ -495,14 +499,12 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             heapq.heappush(open_set, tp)
 
 
-def subtract_add_markings(curr, sub, add):
+def add_markings(curr, add):
     m = Marking()
     for p in curr.items():
         m[p[0]] = p[1]
     for p in add.items():
         m[p[0]] += p[1]
-    for p in sub.items():
-        m[p[0]] -= p[1]
         if m[p[0]] == 0:
             del m[p[0]]
     return m
@@ -552,12 +554,12 @@ def __trust_solution(x):
 
 
 def __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix,
-                                          marking, fin_vec):
+                                          marking, fin_vec, use_cvxopt=False):
     m_vec = incidence_matrix.encode_marking(marking)
     b_term = [i - j for i, j in zip(fin_vec, m_vec)]
     b_term = np.matrix([x * 1.0 for x in b_term]).transpose()
 
-    if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN:
+    if use_cvxopt:
         # not available in the latest version of PM4Py
         from cvxopt import matrix
 
