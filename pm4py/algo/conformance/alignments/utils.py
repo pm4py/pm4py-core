@@ -4,47 +4,6 @@ STD_TAU_COST = 1
 STD_SYNC_COST = 0
 
 
-def decorate_places(net):
-    """
-    Decorate places with information useful for the replay
-
-    Parameters
-    -------------
-    net
-        Petri net
-    """
-    for place in net.places:
-        place.ass_trans = set()
-
-    for trans in net.transitions:
-        for place in trans.sub_marking:
-            place.ass_trans.add(trans)
-
-def decorate_transitions(net):
-    """
-    Decorate transitions with sub and addition markings
-
-    Parameters
-    -------------
-    net
-        Petri net
-    """
-    from pm4py.objects.petri.petrinet import Marking
-    for trans in net.transitions:
-        sub_marking = Marking()
-        add_marking = Marking()
-
-        for arc in trans.in_arcs:
-            sub_marking[arc.source] = arc.weight
-            add_marking[arc.source] = -arc.weight
-        for arc in trans.out_arcs:
-            if arc.target in add_marking:
-                add_marking[arc.target] = arc.weight + add_marking[arc.target]
-            else:
-                add_marking[arc.target] = arc.weight
-        trans.sub_marking = sub_marking
-        trans.add_marking = add_marking
-
 def construct_standard_cost_function(synchronous_product_net, skip):
     """
     Returns the standard cost function, which is:

@@ -8,9 +8,9 @@ from pm4py.objects.process_tree import util as pt_util
 from pm4py.objects.process_tree.process_tree import ProcessTree
 
 import datetime
+from copy import deepcopy
 
-
-def generate_log(pt, no_traces=100):
+def generate_log(pt0, no_traces=100):
     """
     Generate a log out of a process tree
 
@@ -26,6 +26,7 @@ def generate_log(pt, no_traces=100):
     log
         Trace log object
     """
+    pt = deepcopy(pt0)
     log = EventLog()
 
     # assigns to each event an increased timestamp from 1970
