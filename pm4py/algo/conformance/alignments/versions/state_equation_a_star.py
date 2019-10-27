@@ -21,7 +21,6 @@ import numpy as np
 
 import pm4py
 from pm4py import util as pm4pyutil
-from pm4py.algo.conformance import alignments
 from pm4py.objects import petri
 from pm4py.objects.petri.importer import pnml as petri_importer
 from pm4py.objects.log import log as log_implementation
@@ -30,8 +29,7 @@ from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, decorate_transitions_prepostset
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.lp import factory as lp_solver_factory
-from pm4py.algo.conformance.alignments import utils
-from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri import align_utils as utils
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
@@ -82,7 +80,7 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
     new_parameters = copy(parameters)
     if PARAM_TRACE_COST_FUNCTION not in new_parameters or len(new_parameters[PARAM_TRACE_COST_FUNCTION]) < len(trace):
         new_parameters[PARAM_TRACE_COST_FUNCTION] = list(
-            map(lambda e: alignments.utils.STD_MODEL_LOG_MOVE_COST, trace))
+            map(lambda e: utils.STD_MODEL_LOG_MOVE_COST, trace))
 
     best_worst = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(trace,
                                                                                         petri_net, initial_marking,
@@ -90,32 +88,8 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
                                                                                         parameters=new_parameters)
 
     if best_worst['cost'] > 0:
-        return best_worst['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
+        return best_worst['cost'] // utils.STD_MODEL_LOG_MOVE_COST
     return 0
-
-
-# def get_best_worst_cost(petri_net, initial_marking, final_marking):
-#     """
-#     Gets the best worst cost of an alignment
-#
-#     Parameters
-#     -----------
-#     petri_net
-#         Petri net
-#     initial_marking
-#         Initial marking
-#     final_marking
-#         Final marking
-#
-#     Returns
-#     -----------
-#     best_worst_cost
-#         Best worst cost of alignment
-#     """
-#     best_worst = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(log_implementation.Trace(),
-#                                                                                         petri_net, initial_marking,
-#                                                                                         final_marking)
-#     return best_worst['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
 
 
 def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
@@ -349,8 +323,8 @@ def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_
                                                                                                   trace_fm, petri_net,
                                                                                                   initial_marking,
                                                                                                   final_marking,
-                                                                                                  alignments.utils.SKIP)
-        cost_function = alignments.utils.construct_standard_cost_function(sync_prod, alignments.utils.SKIP)
+                                                                                                  utils.SKIP)
+        cost_function = utils.construct_standard_cost_function(sync_prod, utils.SKIP)
     else:
         revised_sync = dict()
         for t_trace in trace_net.transitions:
@@ -359,14 +333,14 @@ def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_
                     revised_sync[(t_trace, t_model)] = parameters[PARAM_SYNC_COST_FUNCTION][t_model]
 
         sync_prod, sync_initial_marking, sync_final_marking, cost_function = construct_cost_aware(
-            trace_net, trace_im, trace_fm, petri_net, initial_marking, final_marking, alignments.utils.SKIP,
+            trace_net, trace_im, trace_fm, petri_net, initial_marking, final_marking, utils.SKIP,
             parameters[PARAM_TRACE_NET_COSTS], parameters[PARAM_MODEL_COST_FUNCTION], revised_sync)
 
     max_align_time_trace = parameters[
         PARAM_MAX_ALIGN_TIME_TRACE] if PARAM_MAX_ALIGN_TIME_TRACE in parameters else DEFAULT_MAX_ALIGN_TIME_TRACE
 
     return apply_sync_prod(sync_prod, sync_initial_marking, sync_final_marking, cost_function,
-                           alignments.utils.SKIP, ret_tuple_as_trans_desc=ret_tuple_as_trans_desc,
+                           utils.SKIP, ret_tuple_as_trans_desc=ret_tuple_as_trans_desc,
                            max_align_time_trace=max_align_time_trace)
 
 
@@ -400,7 +374,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     decorate_places_preset_trans(sync_net)
 
     incidence_matrix = petri.incidence_matrix.construct(sync_net)
-    ini_vec, fin_vec, cost_vec = __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
+    ini_vec, fin_vec, cost_vec = utils.__vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
     closed = set()
 
@@ -422,9 +396,9 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         h_cvx = matrix(h_cvx)
         cost_vec = matrix(cost_vec)
 
-    h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
-                                                 fin_vec, use_cvxopt=use_cvxopt)
-    ini_state = SearchTuple(0 + h, 0, h, ini, None, None, x, True)
+    h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
+                                                 fin_vec, DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
+    ini_state = utils.SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     heapq.heapify(open_set)
     visited = 0
@@ -445,13 +419,13 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             continue
 
         while not curr.trust:
-            h, x = __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
+            h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                          incidence_matrix, curr.m,
-                                                         fin_vec, use_cvxopt=use_cvxopt)
+                                                         fin_vec, DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
-            tp = SearchTuple(curr.g + h, curr.g, h, curr.m, curr.p, curr.t, x, True)
+            tp = utils.SearchTuple(curr.g + h, curr.g, h, curr.m, curr.p, curr.t, x, True)
             # 11/10/2019 (optimization ZA) heappushpop is slightly more efficient than pushing
             # and popping separately
             curr = heapq.heappushpop(open_set, tp)
@@ -466,7 +440,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         # (underestimation of the remaining cost) is 0. Low-hanging fruits
         if curr.h < 0.01:
             if current_marking == fin:
-                return __reconstruct_alignment(curr, visited, queued, traversed,
+                return utils.__reconstruct_alignment(curr, visited, queued, traversed,
                                                ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
 
         closed.add(current_marking)
@@ -480,190 +454,20 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         enabled_trans = [t for t in possible_enabling_transitions if t.sub_marking <= current_marking]
 
         trans_to_visit_with_cost = [(t, cost_function[t]) for t in enabled_trans if not (
-                curr.t is not None and __is_log_move(curr.t, skip) and __is_model_move(t, skip))]
+                curr.t is not None and utils.__is_log_move(curr.t, skip) and utils.__is_model_move(t, skip))]
 
         for t, cost in trans_to_visit_with_cost:
             traversed += 1
-            new_marking = add_markings(current_marking, t.add_marking)
+            new_marking = utils.add_markings(current_marking, t.add_marking)
 
             if new_marking in closed:
                 continue
             g = curr.g + cost
 
             queued += 1
-            h, x = __derive_heuristic(incidence_matrix, cost_vec, curr.x, t, curr.h)
-            trustable = __trust_solution(x)
+            h, x = utils.__derive_heuristic(incidence_matrix, cost_vec, curr.x, t, curr.h)
+            trustable = utils.__trust_solution(x)
             new_f = g + h
 
-            tp = SearchTuple(new_f, g, h, new_marking, curr, t, x, trustable)
+            tp = utils.SearchTuple(new_f, g, h, new_marking, curr, t, x, trustable)
             heapq.heappush(open_set, tp)
-
-
-def add_markings(curr, add):
-    m = Marking()
-    for p in curr.items():
-        m[p[0]] = p[1]
-    for p in add.items():
-        m[p[0]] += p[1]
-        if m[p[0]] == 0:
-            del m[p[0]]
-    return m
-
-
-def __get_alt(open_set, new_marking):
-    for item in open_set:
-        if item.m == new_marking:
-            return item
-
-
-def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_trans_desc=False):
-    parent = state.p
-    if ret_tuple_as_trans_desc:
-        alignment = [(state.t.name, state.t.label)]
-        while parent.p is not None:
-            alignment = [(parent.t.name, parent.t.label)] + alignment
-            parent = parent.p
-    else:
-        alignment = [state.t.label]
-        while parent.p is not None:
-            alignment = [parent.t.label] + alignment
-            parent = parent.p
-    return {'alignment': alignment, 'cost': state.g, 'visited_states': visited, 'queued_states': queued,
-            'traversed_arcs': traversed}
-
-
-def __derive_heuristic(incidence_matrix, cost_vec, x, t, h):
-    x_prime = x.copy()
-    x_prime[incidence_matrix.transitions[t]] -= 1
-    return max(0, h - cost_vec[incidence_matrix.transitions[t]]), x_prime
-
-
-def __is_model_move(t, skip):
-    return t.label[0] == skip and t.label[1] != skip
-
-
-def __is_log_move(t, skip):
-    return t.label[0] != skip and t.label[1] == skip
-
-
-def __trust_solution(x):
-    for v in x:
-        if v < -0.001:
-            return False
-    return True
-
-
-def __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix,
-                                          marking, fin_vec, use_cvxopt=False):
-    m_vec = incidence_matrix.encode_marking(marking)
-    b_term = [i - j for i, j in zip(fin_vec, m_vec)]
-    b_term = np.matrix([x * 1.0 for x in b_term]).transpose()
-
-    if use_cvxopt:
-        # not available in the latest version of PM4Py
-        from cvxopt import matrix
-
-        b_term = matrix(b_term)
-
-    parameters_solving = {"solver": "glpk"}
-
-    sol = lp_solver_factory.apply(cost_vec, g_matrix, h_cvx, a_matrix, b_term, parameters=parameters_solving,
-                                  variant=DEFAULT_LP_SOLVER_VARIANT)
-    prim_obj = lp_solver_factory.get_prim_obj_from_sol(sol, variant=DEFAULT_LP_SOLVER_VARIANT)
-    points = lp_solver_factory.get_points_from_sol(sol, variant=DEFAULT_LP_SOLVER_VARIANT)
-
-    prim_obj = prim_obj if prim_obj is not None else sys.maxsize
-    points = points if points is not None else [0.0] * len(sync_net.transitions)
-
-    return prim_obj, points
-
-
-def __compute_exact_heuristic(sync_net, incidence_matrix, marking, cost_vec, fin_vec):
-    """
-    Computes an exact heuristic using an LP based on the marking equation.
-
-    Parameters
-    ----------
-    :param sync_net: synchronous product net
-    :param incidence_matrix: incidence matrix
-    :param marking: marking to start from
-    :param cost_vec: cost vector
-    :param fin_vec: marking to reach
-
-    Returns
-    -------
-    :return: h: heuristic value, x: solution vector
-    """
-    m_vec = incidence_matrix.encode_marking(marking)
-    g_matrix = -np.eye(len(sync_net.transitions))
-    h_cvx = np.zeros(len(sync_net.transitions))
-    a_matrix = incidence_matrix.a_matrix
-    b_term = [i - j for i, j in zip(fin_vec, m_vec)]
-
-    cost_vec = [x * 1.0 for x in cost_vec]
-    a_matrix = np.asmatrix(a_matrix).astype(np.float64)
-    h_cvx = np.matrix([x * 1.0 for x in h_cvx]).transpose()
-    b_term = np.matrix([x * 1.0 for x in b_term]).transpose()
-
-    parameters_solving = {"solver": "glpk"}
-
-    sol = lp_solver_factory.apply(cost_vec, g_matrix, h_cvx, a_matrix, b_term, parameters=parameters_solving,
-                                  variant=DEFAULT_LP_SOLVER_VARIANT)
-    prim_obj = lp_solver_factory.get_prim_obj_from_sol(sol, variant=DEFAULT_LP_SOLVER_VARIANT)
-    points = lp_solver_factory.get_points_from_sol(sol, variant=DEFAULT_LP_SOLVER_VARIANT)
-
-    prim_obj = prim_obj if prim_obj is not None else sys.maxsize
-    points = points if points is not None else [0.0] * len(sync_net.transitions)
-
-    return prim_obj, points
-
-
-def __get_tuple_from_queue(marking, queue):
-    for t in queue:
-        if t.m == marking:
-            return t
-    return None
-
-
-def __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function):
-    ini_vec = incidence_matrix.encode_marking(ini)
-    fini_vec = incidence_matrix.encode_marking(fin)
-    cost_vec = [0] * len(cost_function)
-    for t in cost_function.keys():
-        cost_vec[incidence_matrix.transitions[t]] = cost_function[t]
-    return ini_vec, fini_vec, cost_vec
-
-
-class SearchTuple:
-    def __init__(self, f, g, h, m, p, t, x, trust):
-        self.f = f
-        self.g = g
-        self.h = h
-        self.m = m
-        self.p = p
-        self.t = t
-        self.x = x
-        self.trust = trust
-
-    def __lt__(self, other):
-        if self.f < other.f:
-            return True
-        elif other.f < self.f:
-            return False
-        elif self.trust and not other.trust:
-            return True
-        else:
-            return self.h < other.h
-
-    def __get_firing_sequence(self):
-        ret = []
-        if self.p is not None:
-            ret = ret + self.p.__get_firing_sequence()
-        if self.t is not None:
-            ret.append(self.t)
-        return ret
-
-    def __repr__(self):
-        string_build = ["\nm=" + str(self.m), " f=" + str(self.f), ' g=' + str(self.g), " h=" + str(self.h),
-                        " path=" + str(self.__get_firing_sequence()) + "\n\n"]
-        return " ".join(string_build)
