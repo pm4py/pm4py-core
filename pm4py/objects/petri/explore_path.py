@@ -26,8 +26,21 @@ def __search(net, ini, fin):
     h_cvx = np.matrix(np.zeros(len(net.transitions))).transpose()
     cost_vec = [x * 1.0 for x in cost_vec]
 
+    use_cvxopt = False
+    if lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN or lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN_ILP:
+        use_cvxopt = True
+
+    if use_cvxopt:
+        # not available in the latest version of PM4Py
+        from cvxopt import matrix
+
+        a_matrix = matrix(a_matrix)
+        g_matrix = matrix(g_matrix)
+        h_cvx = matrix(h_cvx)
+        cost_vec = matrix(cost_vec)
+
     h, x = utils.__compute_exact_heuristic_new_version(net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
-                                                       fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT)
+                                                       fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
     ini_state = utils.SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     heapq.heapify(open_set)
@@ -48,7 +61,7 @@ def __search(net, ini, fin):
         while not curr.trust:
             h, x = utils.__compute_exact_heuristic_new_version(net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                                incidence_matrix, curr.m,
-                                                               fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT)
+                                                               fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
