@@ -164,6 +164,7 @@ def check_loops_generating_tokens(net0):
                                 if place in sec_m0:
                                     sec_m[place] = sec_m0[place]
                             m1 = m + sec_m
+                            # the exploration is (in part) successful
                             if m1[p1] == 0:
                                 m = m1
                                 changed_something = True
@@ -173,10 +174,67 @@ def check_loops_generating_tokens(net0):
             if not changed_something:
                 break
 
+        # at this point, we have definitely created one token
         if sum(m[place] for place in m) > 0:
             return True
 
     return False
+
+
+def check_non_blocking(net0):
+    """
+    Checks if a workflow net is non-blocking
+
+    Parameters
+    -------------
+    net
+        Petri net
+
+    Returns
+    -------------
+    boolean
+        Boolean value
+    """
+    net = deepcopy(net0)
+    petri_utils.decorate_transitions_prepostset(net)
+    graph, inv_dictionary = petri_utils.create_networkx_directed_graph(net)
+    dictionary = {y:x for x,y in inv_dictionary.items()}
+    source_place = [place for place in net.places if len(place.in_arcs) == 0][0]
+    for trans in net.transitions:
+        if len(trans.in_arcs) > 1:
+            places = [arc.source for arc in trans.in_arcs]
+            spaths = [[inv_dictionary[y] for y in nx.algorithms.shortest_paths.generic.shortest_path(graph, dictionary[source_place], dictionary[x])] for x in places]
+            spaths = [[y for y in x if type(y) is petrinet.PetriNet.Transition] for x in spaths]
+            trans_dict = {}
+            i = 0
+            while i < len(places):
+                p1 = places[i]
+                spath1 = spaths[i]
+                j = i + 1
+                while j < len(places):
+                    p2 = places[j]
+                    spath2 = spaths[j]
+                    s1, s2 = [x for x in spath1 if x in spath2], [x for x in spath2 if x in spath1]
+                    if len(s1) > 0 and len(s2) > 0 and s1[-1] == s2[-1]:
+                        # there is an intersection
+                        t = s1[-1]
+                        if len(t.out_arcs) <= 1:
+                            return False
+                        else:
+                            if t not in trans_dict:
+                                trans_dict[t] = set()
+                                trans_dict[t].add(p1)
+                                trans_dict[t].add(p2)
+                    else:
+                        return False
+                    j = j + 1
+                i = i + 1
+            # after checking if the intersecting transition has at least one exit,
+            # we check also that the number of outputs of the transition is at least the one expected
+            for t in trans_dict:
+                if len(t.out_arcs) < len(trans_dict[t]):
+                    return False
+    return True
 
 
 def check_stability_wfnet(net):
@@ -214,7 +272,7 @@ def check_stability_wfnet(net):
     return False
 
 
-def check_petri_wfnet_and_soundness(net):
+def check_petri_wfnet_and_soundness(net, debug=False):
     """
     Check if the provided Petri net is a sound workflow net:
     - firstly, it is checked if it is a workflow net
@@ -224,6 +282,8 @@ def check_petri_wfnet_and_soundness(net):
     -------------
     net
         Petri net
+    debug
+        Debug information
 
     Returns
     -------------
@@ -231,11 +291,20 @@ def check_petri_wfnet_and_soundness(net):
         Boolean value (True if the Petri net is a sound workflow net)
     """
     is_wfnet = check_wfnet(net)
+    if debug:
+        print("is_wfnet=",is_wfnet)
     if is_wfnet:
         is_stable = check_stability_wfnet(net)
+        if debug:
+            print("is_stable=",is_stable)
         if is_stable:
-            #return True
-            contains_loops_generating_tokens = check_loops_generating_tokens(net)
-            if not contains_loops_generating_tokens:
-                return True
+            is_non_blocking = check_non_blocking(net)
+            if debug:
+                print("is_non_blocking", is_non_blocking)
+            if is_non_blocking:
+                contains_loops_generating_tokens = check_loops_generating_tokens(net)
+                if debug:
+                    print("contains_loops_generating_tokens",contains_loops_generating_tokens)
+                if not contains_loops_generating_tokens:
+                    return True
     return False
