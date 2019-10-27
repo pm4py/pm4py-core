@@ -111,6 +111,18 @@ def check_wfnet(net):
     unique_sink_place = check_sink_place_presence(net)
     source_sink_reachability = check_source_and_sink_reachability(net, unique_source_place, unique_sink_place)
 
+    # check also that the transitions connected to the source/sink place have unique arcs
+    if unique_source_place is not None:
+        for arc in unique_source_place.out_arcs:
+            trans = arc.target
+            if len(trans.in_arcs) > 1:
+                return False
+    if unique_sink_place is not None:
+        for arc in unique_sink_place.in_arcs:
+            trans = arc.source
+            if len(trans.out_arcs) > 1:
+                return False
+
     return (unique_source_place is not None) and (unique_sink_place is not None) and source_sink_reachability
 
 
