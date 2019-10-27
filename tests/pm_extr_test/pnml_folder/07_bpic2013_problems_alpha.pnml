@@ -10,16 +10,31 @@
           <text>1</text>
         </initialMarking>
       </place>
-      <place id="end">
-        <name>
-          <text>end</text>
-        </name>
-      </place>
       <place id="({'Unmatched+Unmatched'}, {'Completed+Closed'})">
         <name>
           <text>({'Unmatched+Unmatched'}, {'Completed+Closed'})</text>
         </name>
       </place>
+      <place id="end">
+        <name>
+          <text>end</text>
+        </name>
+      </place>
+      <transition id="Accepted+In Progress">
+        <name>
+          <text>Accepted+In Progress</text>
+        </name>
+      </transition>
+      <transition id="Accepted+Assigned">
+        <name>
+          <text>Accepted+Assigned</text>
+        </name>
+      </transition>
+      <transition id="Completed+Closed">
+        <name>
+          <text>Completed+Closed</text>
+        </name>
+      </transition>
       <transition id="Accepted+Wait">
         <name>
           <text>Accepted+Wait</text>
@@ -30,14 +45,9 @@
           <text>Queued+Awaiting Assignment</text>
         </name>
       </transition>
-      <transition id="Completed+Closed">
+      <transition id="Completed+Cancelled">
         <name>
-          <text>Completed+Closed</text>
-        </name>
-      </transition>
-      <transition id="Accepted+Assigned">
-        <name>
-          <text>Accepted+Assigned</text>
+          <text>Completed+Cancelled</text>
         </name>
       </transition>
       <transition id="Unmatched+Unmatched">
@@ -45,25 +55,22 @@
           <text>Unmatched+Unmatched</text>
         </name>
       </transition>
-      <transition id="Completed+Cancelled">
-        <name>
-          <text>Completed+Cancelled</text>
-        </name>
-      </transition>
-      <transition id="Accepted+In Progress">
-        <name>
-          <text>Accepted+In Progress</text>
-        </name>
-      </transition>
-      <arc id="-9223371957234581181" source="({'Unmatched+Unmatched'}, {'Completed+Closed'})" target="Completed+Closed"/>
-      <arc id="-9223371957234581209" source="Completed+Closed" target="end"/>
-      <arc id="79593472264" source="start" target="Accepted+In Progress"/>
-      <arc id="79620194631" source="Unmatched+Unmatched" target="({'Unmatched+Unmatched'}, {'Completed+Closed'})"/>
-      <arc id="-9223371957234581202" source="start" target="Accepted+Wait"/>
-      <arc id="79620194610" source="start" target="Queued+Awaiting Assignment"/>
-      <arc id="-9223371957234581195" source="start" target="Completed+Closed"/>
-      <arc id="79620194617" source="start" target="Accepted+Assigned"/>
-      <arc id="-9223371957234581188" source="start" target="Unmatched+Unmatched"/>
+      <arc id="8784214349348" source="start" target="Accepted+Assigned"/>
+      <arc id="-9223363252640426457" source="start" target="Accepted+In Progress"/>
+      <arc id="8784214349383" source="({'Unmatched+Unmatched'}, {'Completed+Closed'})" target="Completed+Closed"/>
+      <arc id="-9223363252640426422" source="Unmatched+Unmatched" target="({'Unmatched+Unmatched'}, {'Completed+Closed'})"/>
+      <arc id="8784214349355" source="start" target="Accepted+Wait"/>
+      <arc id="8784214349362" source="start" target="Completed+Closed"/>
+      <arc id="-9223363252640426443" source="start" target="Queued+Awaiting Assignment"/>
+      <arc id="8784214349369" source="start" target="Unmatched+Unmatched"/>
+      <arc id="-9223363252640426436" source="Completed+Closed" target="end"/>
     </page>
+    <finalmarkings>
+      <marking>
+        <place idref="end">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
   </net>
 </pnml>
