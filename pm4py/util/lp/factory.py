@@ -12,6 +12,10 @@ VERSIONS_APPLY = {PULP: pulp_solver.apply}
 VERSIONS_GET_PRIM_OBJ = {PULP: pulp_solver.get_prim_obj_from_sol}
 VERSIONS_GET_POINTS_FROM_SOL = {PULP: pulp_solver.get_points_from_sol}
 
+DEFAULT_LP_SOLVER_VARIANT = PULP
+# max allowed heuristics value (27/10/2019, due to the numerical instability of some of our solvers)
+MAX_ALLOWED_HEURISTICS = 10**15
+
 try:
     # in the case ortools is installed, it works
     from pm4py.util.lp.versions import ortools_solver
@@ -19,6 +23,8 @@ try:
     VERSIONS_APPLY[ORTOOLS_SOLVER] = ortools_solver.apply
     VERSIONS_GET_PRIM_OBJ[ORTOOLS_SOLVER] = ortools_solver.get_prim_obj_from_sol
     VERSIONS_GET_POINTS_FROM_SOL[ORTOOLS_SOLVER] = ortools_solver.get_points_from_sol
+
+    DEFAULT_LP_SOLVER_VARIANT = ORTOOLS_SOLVER
 except:
     # in this case, ortools is not installed since it is broken
     pass

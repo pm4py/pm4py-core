@@ -14,6 +14,7 @@ if __name__ == "__main__":
     from pm4py.algo.discovery.inductive import factory as inductive
     from pm4py.algo.discovery.alpha import factory as alpha
     from pm4py.objects.process_tree import semantics as pt_semantics
+    from pm4py.objects.petri import check_soundness
     from pm4py.evaluation.replay_fitness import factory as fitness_factory
     from pm4py.evaluation.precision import factory as precision_factory
     from pm4py.evaluation.simplicity import factory as simplicity_factory
@@ -155,6 +156,7 @@ if __name__ == "__main__":
                                      os.path.join(pnmlFolder, logNamePrefix + "_alpha.pnml"))
             t2 = time.time()
             print("time interlapsed for calculating Alpha Model", (t2 - t1))
+            print("alpha is_sound_wfnet",check_soundness.check_petri_wfnet_and_soundness(alpha_model, debug=True))
 
             t1 = time.time()
             tree = inductive.apply_tree(log, parameters=parameters_discovery)
@@ -165,6 +167,7 @@ if __name__ == "__main__":
             print("first trace of log", [x["concept:name"] for x in generated_log[0]])
             t2 = time.time()
             print("time interlapsed for calculating Inductive Model", (t2 - t1))
+            print("inductive is_sound_wfnet",check_soundness.check_petri_wfnet_and_soundness(inductive_model, debug=True))
 
             parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
                           pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key, "format": "png"}

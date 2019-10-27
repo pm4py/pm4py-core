@@ -8,6 +8,7 @@ from pm4py.objects.petri import utils as petri_utils
 from pm4py.objects.petri import petrinet
 from pm4py.objects.petri.networkx_graph import create_networkx_undirected_graph
 from pm4py.util.lp import factory as lp_solver_factory
+from pm4py.objects.petri import explore_path
 
 DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.PULP
 
@@ -149,6 +150,11 @@ def check_loops_generating_tokens(net0):
                     if not ((p1, p2)) in visited_couples:
                         visited_couples.add((p1, p2))
                         # otherwise, do a check if there is a path in the workflow net between the two places
+
+                        # this exploration is based on heuristics; indeed, since we can enter the cycle multiple times
+                        # it does not really matter if we reach suddenly the optimal path
+                        #
+                        # another option is to use the exploration provided in explore_path (that is based on alignments)
                         spath = None
                         try:
                             spath = nx.algorithms.shortest_paths.generic.shortest_path(graph, dictionary[p1], dictionary[p2])
@@ -164,6 +170,7 @@ def check_loops_generating_tokens(net0):
                                 if place in sec_m0:
                                     sec_m[place] = sec_m0[place]
                             m1 = m + sec_m
+                            # the exploration is (in part) successful
                             if m1[p1] == 0:
                                 m = m1
                                 changed_something = True
@@ -173,10 +180,72 @@ def check_loops_generating_tokens(net0):
             if not changed_something:
                 break
 
+        # at this point, we have definitely created one token
         if sum(m[place] for place in m) > 0:
             return True
 
     return False
+
+
+def check_non_blocking(net0):
+    """
+    Checks if a workflow net is non-blocking
+
+    Parameters
+    -------------
+    net
+        Petri net
+
+    Returns
+    -------------
+    boolean
+        Boolean value
+    """
+    net = deepcopy(net0)
+    petri_utils.decorate_transitions_prepostset(net)
+    graph, inv_dictionary = petri_utils.create_networkx_directed_graph(net)
+    dictionary = {y:x for x,y in inv_dictionary.items()}
+    source_place = [place for place in net.places if len(place.in_arcs) == 0][0]
+    for trans in net.transitions:
+        # transitions with 1 input arcs does not block
+        if len(trans.in_arcs) > 1:
+            places = [arc.source for arc in trans.in_arcs]
+            # search the top-right intersection between a path connecting the initial marking and the input places
+            # of such transition
+            #
+            # this exploration is based on heuristics; another option is to use the exploration provided in explore_path (that is based on alignments)
+            spaths = [[inv_dictionary[y] for y in nx.algorithms.shortest_paths.generic.shortest_path(graph, dictionary[source_place], dictionary[x])] for x in places]
+            spaths = [[y for y in x if type(y) is petrinet.PetriNet.Transition] for x in spaths]
+            trans_dict = {}
+            i = 0
+            while i < len(places):
+                p1 = places[i]
+                spath1 = spaths[i]
+                j = i + 1
+                while j < len(places):
+                    p2 = places[j]
+                    spath2 = spaths[j]
+                    s1, s2 = [x for x in spath1 if x in spath2], [x for x in spath2 if x in spath1]
+                    if len(s1) > 0 and len(s2) > 0 and s1[-1] == s2[-1]:
+                        # there is an intersection
+                        t = s1[-1]
+                        if len(t.out_arcs) <= 1:
+                            return False
+                        else:
+                            if t not in trans_dict:
+                                trans_dict[t] = set()
+                                trans_dict[t].add(p1)
+                                trans_dict[t].add(p2)
+                    else:
+                        return False
+                    j = j + 1
+                i = i + 1
+            # after checking if the intersecting transition has at least one exit,
+            # we check also that the number of outputs of the transition is at least the one expected
+            for t in trans_dict:
+                if len(t.out_arcs) < len(trans_dict[t]):
+                    return False
+    return True
 
 
 def check_stability_wfnet(net):
@@ -214,11 +283,34 @@ def check_stability_wfnet(net):
     return False
 
 
-def check_petri_wfnet_and_soundness(net):
+def check_relaxed_soundness_net_in_fin_marking(net, ini, fin):
     """
-    Check if the provided Petri net is a sound workflow net:
-    - firstly, it is checked if it is a workflow net
-    - secondly, it is checked if it is a sound workflow net
+    Checks the relaxed soundness of a Petri net having the initial and the final marking
+
+    Parameters
+    -------------
+    net
+        Petri net
+    ini
+        Initial marking
+    fin
+        Final marking
+
+    Returns
+    -------------
+    boolean
+        Boolean value
+    """
+    try:
+        alignment = explore_path.__search(net, ini, fin)
+        return True
+    except:
+        return False
+
+
+def check_relaxed_soundness_of_wfnet(net):
+    """
+    Checks the relaxed soundness of a workflow net
 
     Parameters
     -------------
@@ -228,14 +320,54 @@ def check_petri_wfnet_and_soundness(net):
     Returns
     -------------
     boolean
+        Boolean value
+    """
+    source = list(x for x in net.places if len(x.in_arcs) == 0)[0]
+    sink = list(x for x in net.places if len(x.out_arcs) == 0)[0]
+
+    ini = petrinet.Marking({source: 1})
+    fin = petrinet.Marking({sink: 1})
+
+    return check_relaxed_soundness_net_in_fin_marking(net, ini, fin)
+
+
+def check_petri_wfnet_and_soundness(net, debug=False):
+    """
+    Check if the provided Petri net is a sound workflow net:
+    - firstly, it is checked if it is a workflow net
+    - secondly, it is checked if it is a sound workflow net
+
+    Parameters
+    -------------
+    net
+        Petri net
+    debug
+        Debug information
+
+    Returns
+    -------------
+    boolean
         Boolean value (True if the Petri net is a sound workflow net)
     """
     is_wfnet = check_wfnet(net)
+    if debug:
+        print("is_wfnet=",is_wfnet)
     if is_wfnet:
-        is_stable = check_stability_wfnet(net)
-        if is_stable:
-            #return True
-            contains_loops_generating_tokens = check_loops_generating_tokens(net)
-            if not contains_loops_generating_tokens:
-                return True
+        relaxed_soundness = check_relaxed_soundness_of_wfnet(net)
+        if debug:
+            print("relaxed_soundness",relaxed_soundness)
+        if relaxed_soundness:
+            is_stable = check_stability_wfnet(net)
+            if debug:
+                print("is_stable=",is_stable)
+            if is_stable:
+                is_non_blocking = check_non_blocking(net)
+                if debug:
+                    print("is_non_blocking", is_non_blocking)
+                if is_non_blocking:
+                    contains_loops_generating_tokens = check_loops_generating_tokens(net)
+                    if debug:
+                        print("contains_loops_generating_tokens",contains_loops_generating_tokens)
+                    if not contains_loops_generating_tokens:
+                        return True
     return False
