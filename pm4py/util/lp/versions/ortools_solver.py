@@ -44,6 +44,8 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
 
     solver = pywraplp.Solver('LinearProgrammingExample',
                              pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
+    solver.Clear()
+    solver.SuppressOutput()
 
     x_list = []
     for i in range(Aub.shape[1]):
@@ -96,14 +98,17 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
 
     objective.SetMinimization()
 
-    solver.Solve()
+    status = solver.Solve()
 
-    sol_value = 0.0
-    for j in range(len(c)):
-        if abs(c[j]) > MIN_THRESHOLD:
-            sol_value = sol_value + c[j] * x_list[j].solution_value()
-
-    points = [x.solution_value() for x in x_list]
+    if status == 0:
+        sol_value = 0.0
+        for j in range(len(c)):
+            if abs(c[j]) > MIN_THRESHOLD:
+                sol_value = sol_value + c[j] * x_list[j].solution_value()
+        points = [x.solution_value() for x in x_list]
+    else:
+        sol_value = None
+        points = None
 
     return {"c": c, "x_list": x_list, "sol_value": sol_value, "points": points}
 
