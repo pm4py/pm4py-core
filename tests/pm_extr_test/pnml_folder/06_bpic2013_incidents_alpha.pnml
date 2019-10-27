@@ -2,11 +2,6 @@
 <pnml>
   <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
     <page id="n0">
-      <place id="end">
-        <name>
-          <text>end</text>
-        </name>
-      </place>
       <place id="start">
         <name>
           <text>start</text>
@@ -15,39 +10,14 @@
           <text>1</text>
         </initialMarking>
       </place>
-      <transition id="Accepted+Wait - Customer">
+      <place id="end">
         <name>
-          <text>Accepted+Wait - Customer</text>
+          <text>end</text>
         </name>
-      </transition>
-      <transition id="Completed+Closed">
-        <name>
-          <text>Completed+Closed</text>
-        </name>
-      </transition>
-      <transition id="Unmatched+Unmatched">
-        <name>
-          <text>Unmatched+Unmatched</text>
-        </name>
-      </transition>
-      <transition id="Completed+Resolved">
-        <name>
-          <text>Completed+Resolved</text>
-        </name>
-      </transition>
-      <transition id="Completed+Cancelled">
-        <name>
-          <text>Completed+Cancelled</text>
-        </name>
-      </transition>
+      </place>
       <transition id="Accepted+Wait">
         <name>
           <text>Accepted+Wait</text>
-        </name>
-      </transition>
-      <transition id="Completed+In Call">
-        <name>
-          <text>Completed+In Call</text>
         </name>
       </transition>
       <transition id="Accepted+In Progress">
@@ -60,14 +30,24 @@
           <text>Accepted+Wait - Implementation</text>
         </name>
       </transition>
-      <transition id="Accepted+Assigned">
+      <transition id="Completed+Resolved">
         <name>
-          <text>Accepted+Assigned</text>
+          <text>Completed+Resolved</text>
         </name>
       </transition>
-      <transition id="Accepted+Wait - Vendor">
+      <transition id="Completed+Cancelled">
         <name>
-          <text>Accepted+Wait - Vendor</text>
+          <text>Completed+Cancelled</text>
+        </name>
+      </transition>
+      <transition id="Accepted+Wait - Customer">
+        <name>
+          <text>Accepted+Wait - Customer</text>
+        </name>
+      </transition>
+      <transition id="Completed+In Call">
+        <name>
+          <text>Completed+In Call</text>
         </name>
       </transition>
       <transition id="Accepted+Wait - User">
@@ -80,23 +60,50 @@
           <text>Queued+Awaiting Assignment</text>
         </name>
       </transition>
-      <arc id="79612729506" source="Accepted+Assigned" target="end"/>
-      <arc id="79612729443" source="start" target="Accepted+Wait - Vendor"/>
-      <arc id="-9223371957242046397" source="start" target="Accepted+Wait - User"/>
-      <arc id="-9223371957242046327" source="Completed+Closed" target="end"/>
-      <arc id="79612729548" source="start" target="Accepted+Assigned"/>
-      <arc id="79612729422" source="start" target="Accepted+Wait"/>
-      <arc id="-9223371957221942321" source="start" target="Accepted+In Progress"/>
-      <arc id="79612729555" source="start" target="Completed+In Call"/>
-      <arc id="-9223371957242046285" source="Completed+In Call" target="end"/>
-      <arc id="-9223371957242046411" source="start" target="Queued+Awaiting Assignment"/>
-      <arc id="79612729492" source="Accepted+Wait - Implementation" target="end"/>
-      <arc id="-9223371957242046250" source="Completed+Resolved" target="end"/>
-      <arc id="-9223371957242046376" source="start" target="Completed+Resolved"/>
-      <arc id="-9223371957242046215" source="start" target="Accepted+Wait - Implementation"/>
-      <arc id="79612729597" source="Accepted+Wait - User" target="end"/>
-      <arc id="79612729534" source="Completed+Cancelled" target="end"/>
-      <arc id="79612729471" source="Accepted+In Progress" target="end"/>
+      <transition id="Completed+Closed">
+        <name>
+          <text>Completed+Closed</text>
+        </name>
+      </transition>
+      <transition id="Unmatched+Unmatched">
+        <name>
+          <text>Unmatched+Unmatched</text>
+        </name>
+      </transition>
+      <transition id="Accepted+Assigned">
+        <name>
+          <text>Accepted+Assigned</text>
+        </name>
+      </transition>
+      <transition id="Accepted+Wait - Vendor">
+        <name>
+          <text>Accepted+Wait - Vendor</text>
+        </name>
+      </transition>
+      <arc id="-9223363252640538848" source="start" target="Completed+In Call"/>
+      <arc id="8784214236992" source="Accepted+Wait - User" target="end"/>
+      <arc id="-9223363252640538813" source="Accepted+Assigned" target="end"/>
+      <arc id="-9223363252640538876" source="start" target="Accepted+Wait - User"/>
+      <arc id="8784214236999" source="start" target="Accepted+Wait - Implementation"/>
+      <arc id="8784214237034" source="start" target="Accepted+In Progress"/>
+      <arc id="-9223363252640538806" source="start" target="Accepted+Wait - Vendor"/>
+      <arc id="8784214236943" source="Completed+In Call" target="end"/>
+      <arc id="-9223363252640538799" source="start" target="Queued+Awaiting Assignment"/>
+      <arc id="-9223363252640538862" source="start" target="Accepted+Wait"/>
+      <arc id="8784214236978" source="start" target="Completed+Resolved"/>
+      <arc id="8784214237048" source="Accepted+In Progress" target="end"/>
+      <arc id="8784214236950" source="Completed+Closed" target="end"/>
+      <arc id="-9223363252640538792" source="start" target="Accepted+Assigned"/>
+      <arc id="8784214236985" source="Completed+Cancelled" target="end"/>
+      <arc id="8784214236957" source="Completed+Resolved" target="end"/>
+      <arc id="-9223363252640538785" source="Accepted+Wait - Implementation" target="end"/>
     </page>
+    <finalmarkings>
+      <marking>
+        <place idref="end">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
   </net>
 </pnml>
