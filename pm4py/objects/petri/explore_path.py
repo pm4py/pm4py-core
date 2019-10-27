@@ -6,14 +6,6 @@ from pm4py.objects import petri
 import heapq
 
 
-try:
-    import pm4py.util.lp.versions.ortools_solver
-
-    DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.ORTOOLS_SOLVER
-except:
-    DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.PULP
-
-
 def __search(net, ini, fin):
     from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset
 
@@ -35,7 +27,7 @@ def __search(net, ini, fin):
     cost_vec = [x * 1.0 for x in cost_vec]
 
     h, x = utils.__compute_exact_heuristic_new_version(net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
-                                                       fin_vec, DEFAULT_LP_SOLVER_VARIANT)
+                                                       fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT)
     ini_state = utils.SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     heapq.heapify(open_set)
@@ -56,7 +48,7 @@ def __search(net, ini, fin):
         while not curr.trust:
             h, x = utils.__compute_exact_heuristic_new_version(net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                                incidence_matrix, curr.m,
-                                                               fin_vec, DEFAULT_LP_SOLVER_VARIANT)
+                                                               fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT)
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
@@ -65,6 +57,10 @@ def __search(net, ini, fin):
             # and popping separately
             curr = heapq.heappushpop(open_set, tp)
             current_marking = curr.m
+
+        # max allowed heuristics value (27/10/2019, due to the numerical instability of some of our solvers)
+        if curr.h > lp_solver_factory.MAX_ALLOWED_HEURISTICS:
+            continue
 
         # 12/10/2019: do it again, since the marking could be changed
         already_closed = current_marking in closed
