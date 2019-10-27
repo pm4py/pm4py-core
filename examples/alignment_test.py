@@ -9,7 +9,7 @@ from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PAR
 from pm4py.objects import log as log_lib
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.petri.importer.pnml import import_net
-from pm4py.algo.conformance.alignments.utils import pretty_print_alignments
+from pm4py.objects.petri.align_utils import pretty_print_alignments
 
 
 def align(trace, net, im, fm, model_cost_function, sync_cost_function):
@@ -44,7 +44,7 @@ def execute_script():
 
     alignments = ali.factory.apply(log, net, marking, fmarking)
     print(alignments)
-    print(pm4py.algo.conformance.alignments.versions.state_equation_a_star.DEFAULT_LP_SOLVER_VARIANT)
+    print(util.lp.factory.DEFAULT_LP_SOLVER_VARIANT)
     pretty_print_alignments(alignments)
 
 
