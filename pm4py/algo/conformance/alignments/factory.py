@@ -5,7 +5,7 @@ import sys
 from pm4py import util as pmutil
 from pm4py.algo.conformance import alignments as ali
 from pm4py.algo.conformance.alignments import versions
-from pm4py.algo.conformance.alignments.utils import STD_MODEL_LOG_MOVE_COST
+from pm4py.objects.petri import align_utils
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_MODEL_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
@@ -85,7 +85,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
         parameters = copy({PARAMETER_CONSTANT_ACTIVITY_KEY: DEFAULT_NAME_KEY})
     if PARAM_TRACE_COST_FUNCTION not in parameters:
         parameters[PARAM_TRACE_COST_FUNCTION] = list(
-            map(lambda e: STD_MODEL_LOG_MOVE_COST, trace))
+            map(lambda e: align_utils.STD_MODEL_LOG_MOVE_COST, trace))
     return VERSIONS[version](trace, petri_net, initial_marking, final_marking, parameters)
 
 
@@ -142,7 +142,7 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         sync_cost_function = dict()
         for t in petri_net.transitions:
             if t.label is not None:
-                model_cost_function[t] = ali.utils.STD_MODEL_LOG_MOVE_COST
+                model_cost_function[t] = align_utils.STD_MODEL_LOG_MOVE_COST
                 sync_cost_function[t] = 0
             else:
                 model_cost_function[t] = 1
@@ -189,12 +189,12 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     # assign fitness to traces
     for index, align in enumerate(alignments):
         if align is not None:
-            unfitness_upper_part = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
+            unfitness_upper_part = align['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST
             if unfitness_upper_part == 0:
                 align['fitness'] = 1
             elif (len(log[index]) + best_worst_cost) > 0:
                 align['fitness'] = 1 - (
-                        (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
+                        (align['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
             else:
                 align['fitness'] = 0
     return alignments
@@ -218,7 +218,7 @@ def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, pa
         sync_cost_function = dict()
         for t in petri_net.transitions:
             if t.label is not None:
-                model_cost_function[t] = ali.utils.STD_MODEL_LOG_MOVE_COST
+                model_cost_function[t] = align_utils.STD_MODEL_LOG_MOVE_COST
                 sync_cost_function[t] = 0
             else:
                 model_cost_function[t] = 1
@@ -275,12 +275,12 @@ def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, pa
     # assign fitness to traces
     for index, align in enumerate(alignments):
         if align is not None:
-            unfitness_upper_part = align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST
+            unfitness_upper_part = align['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST
             if unfitness_upper_part == 0:
                 align['fitness'] = 1
             elif (len(log[index]) + best_worst_cost) > 0:
                 align['fitness'] = 1 - (
-                        (align['cost'] // ali.utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
+                        (align['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
             else:
                 align['fitness'] = 0
 
