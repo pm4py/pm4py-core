@@ -156,8 +156,7 @@ if __name__ == "__main__":
                                      os.path.join(pnmlFolder, logNamePrefix + "_alpha.pnml"))
             t2 = time.time()
             print("time interlapsed for calculating Alpha Model", (t2 - t1))
-            print("alpha is_wfnet ",check_soundness.check_wfnet(alpha_model))
-            print("alpha is_sound_wfnet",check_soundness.check_petri_wfnet_and_soundness(alpha_model))
+            print("alpha is_sound_wfnet",check_soundness.check_petri_wfnet_and_soundness(alpha_model, debug=True))
 
             t1 = time.time()
             tree = inductive.apply_tree(log, parameters=parameters_discovery)
@@ -168,8 +167,7 @@ if __name__ == "__main__":
             print("first trace of log", [x["concept:name"] for x in generated_log[0]])
             t2 = time.time()
             print("time interlapsed for calculating Inductive Model", (t2 - t1))
-            print("inductive is_wfnet ",check_soundness.check_wfnet(inductive_model))
-            print("inductive is_sound_wfnet",check_soundness.check_petri_wfnet_and_soundness(inductive_model))
+            print("inductive is_sound_wfnet",check_soundness.check_petri_wfnet_and_soundness(inductive_model, debug=True))
 
             parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
                           pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key, "format": "png"}
