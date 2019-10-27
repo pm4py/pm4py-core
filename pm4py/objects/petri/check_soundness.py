@@ -315,7 +315,9 @@ def check_relaxed_soundness_net_in_fin_marking(net, ini, fin):
     """
     try:
         alignment = explore_path.__search(net, ini, fin)
-        return True
+        if alignment is not None:
+            return True
+        return False
     except:
         return False
 
