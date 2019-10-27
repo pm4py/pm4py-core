@@ -34,12 +34,7 @@ from pm4py.objects.petri import align_utils as utils
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
 PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
-try:
-    import pm4py.util.lp.versions.ortools_solver
 
-    DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.ORTOOLS_SOLVER
-except:
-    DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.PULP
 PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE = 'ret_tuple_as_trans_desc'
 PARAM_TRACE_NET_COSTS = "trace_net_costs"
 
@@ -384,7 +379,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     cost_vec = [x * 1.0 for x in cost_vec]
 
     use_cvxopt = False
-    if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN or DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN_ILP:
+    if lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN or lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN_ILP:
         use_cvxopt = True
 
     if use_cvxopt:
@@ -397,7 +392,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         cost_vec = matrix(cost_vec)
 
     h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
-                                                 fin_vec, DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
+                                                 fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
     ini_state = utils.SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     heapq.heapify(open_set)
@@ -421,7 +416,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         while not curr.trust:
             h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                          incidence_matrix, curr.m,
-                                                         fin_vec, DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
+                                                         fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
@@ -430,6 +425,10 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             # and popping separately
             curr = heapq.heappushpop(open_set, tp)
             current_marking = curr.m
+
+        # max allowed heuristics value (27/10/2019, due to the numerical instability of some of our solvers)
+        if curr.h > lp_solver_factory.MAX_ALLOWED_HEURISTICS:
+            continue
 
         # 12/10/2019: do it again, since the marking could be changed
         already_closed = current_marking in closed

@@ -283,6 +283,31 @@ def check_stability_wfnet(net):
     return False
 
 
+def check_relaxed_soundness_net_in_fin_marking(net, ini, fin):
+    """
+    Checks the relaxed soundness of a Petri net having the initial and the final marking
+
+    Parameters
+    -------------
+    net
+        Petri net
+    ini
+        Initial marking
+    fin
+        Final marking
+
+    Returns
+    -------------
+    boolean
+        Boolean value
+    """
+    try:
+        alignment = explore_path.__search(net, ini, fin)
+        return True
+    except:
+        return False
+
+
 def check_relaxed_soundness_of_wfnet(net):
     """
     Checks the relaxed soundness of a workflow net
@@ -303,11 +328,7 @@ def check_relaxed_soundness_of_wfnet(net):
     ini = petrinet.Marking({source: 1})
     fin = petrinet.Marking({sink: 1})
 
-    try:
-        alignment = explore_path.__search(net, ini, fin)
-        return True
-    except:
-        return False
+    return check_relaxed_soundness_net_in_fin_marking(net, ini, fin)
 
 
 def check_petri_wfnet_and_soundness(net, debug=False):
