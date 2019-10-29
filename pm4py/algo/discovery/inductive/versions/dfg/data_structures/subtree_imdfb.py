@@ -347,6 +347,15 @@ class SubtreeB(Subtree):
                             else:
                                 break
                             j = j + 1
+                    else:
+                        j = i + 1
+                        while j < len(strongly_connected_components):
+                            idx_j_comp = orig_conn_comp.index(strongly_connected_components[j])
+                            # two components that have exactly the same inputs/outputs are merged
+                            if np.array_equal(conn_matrix[idx_i_comp], conn_matrix[idx_j_comp]):
+                                comp = comp + strongly_connected_components[j]
+                                ignore_comp.add(j)
+                            j = j + 1
                     ret_connected_components.append(comp)
                 i = i + 1
 
