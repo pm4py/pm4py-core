@@ -29,7 +29,7 @@ except:
     # in this case, ortools is not installed since it is broken
     pass
 
-def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=ORTOOLS_SOLVER):
+def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT):
     """
     Gets the overall solution of the problem
 
@@ -58,7 +58,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=ORTOOLS_SOLVER):
     return VERSIONS_APPLY[variant](c, Aub, bub, Aeq, beq, parameters=parameters)
 
 
-def get_prim_obj_from_sol(sol, parameters=None, variant=ORTOOLS_SOLVER):
+def get_prim_obj_from_sol(sol, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT):
     """
     Gets the primal objective from the solution of the LP problem
 
@@ -79,7 +79,7 @@ def get_prim_obj_from_sol(sol, parameters=None, variant=ORTOOLS_SOLVER):
     return VERSIONS_GET_PRIM_OBJ[variant](sol, parameters=parameters)
 
 
-def get_points_from_sol(sol, parameters=None, variant=ORTOOLS_SOLVER):
+def get_points_from_sol(sol, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT):
     """
     Gets the points from the solution
 
