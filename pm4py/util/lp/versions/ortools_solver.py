@@ -107,8 +107,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                 sol_value = sol_value + c[j] * x_list[j].solution_value()
         points = [x.solution_value() for x in x_list]
     else:
-        sol_value = None
-        points = None
+        return None
 
     return {"c": c, "x_list": x_list, "sol_value": sol_value, "points": points}
 
@@ -132,7 +131,8 @@ def get_prim_obj_from_sol(sol, parameters=None):
     if parameters is None:
         parameters = {}
 
-    return sol["sol_value"]
+    if sol is not None:
+        return sol["sol_value"]
 
 
 def get_points_from_sol(sol, parameters=None):
@@ -154,4 +154,15 @@ def get_points_from_sol(sol, parameters=None):
     if parameters is None:
         parameters = {}
 
-    return sol["points"]
+    maximize = parameters["maximize"] if "maximize" in parameters else False
+    return_when_none = parameters["return_when_none"] if "return_when_none" in parameters else False
+    var_corr = parameters["var_corr"] if "var_corr" in parameters else {}
+
+    if sol is not None:
+        return sol["points"]
+    else:
+        if return_when_none:
+            if maximize:
+                return [sys.float_info.max] * len(list(var_corr.keys()))
+            return [sys.float_info.min] * len(list(var_corr.keys()))
+
