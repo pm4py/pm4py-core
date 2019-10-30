@@ -1,4 +1,3 @@
-import time
 import numpy as np
 from pm4py.util.lp import factory as lp_solver_factory
 from pm4py.objects.petri import align_utils as utils
@@ -10,8 +9,6 @@ def __search(net, ini, fin):
     from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset
 
     cost_function = {t: 1 for t in net.transitions}
-
-    start_time = time.time()
 
     decorate_transitions_prepostset(net)
     decorate_places_preset_trans(net)
