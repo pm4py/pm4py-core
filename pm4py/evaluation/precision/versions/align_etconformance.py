@@ -50,7 +50,7 @@ def apply(log, net, marking, final_marking, parameters=None):
     prefixes, prefix_count = precision_utils.get_log_prefixes(log, activity_key=activity_key)
     prefixes_keys = list(prefixes.keys())
     fake_log = precision_utils.form_fake_log(prefixes_keys, activity_key=activity_key)
-
+    max_trace_length = max(len(x) for x in fake_log)
     for i in range(len(fake_log)):
         trace = fake_log[i]
         sync_net, sync_initial_marking, sync_final_marking = build_sync_net(trace, net, marking, final_marking)
@@ -60,7 +60,7 @@ def apply(log, net, marking, final_marking, parameters=None):
                 stop_marking[pl] = count
         cost_function = utils.construct_standard_cost_function(sync_net, utils.SKIP)
 
-        res = __search(sync_net, sync_initial_marking, sync_final_marking, stop_marking, cost_function, utils.SKIP)
+        res = __search(sync_net, sync_initial_marking, sync_final_marking, stop_marking, cost_function, utils.SKIP, max_trace_length)
         atm = petri.petrinet.Marking()
         for pl, count in res.items():
             if pl.name[0] == utils.SKIP:
@@ -112,7 +112,7 @@ def build_sync_net(trace, petri_net, initial_marking, final_marking, parameters=
     return sync_prod, sync_initial_marking, sync_final_marking
 
 
-def __search(sync_net, ini, fin, stop, cost_function, skip):
+def __search(sync_net, ini, fin, stop, cost_function, skip, max_trace_length):
     from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset
 
     decorate_transitions_prepostset(sync_net)
@@ -145,7 +145,7 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
                                                  fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
     # heuristics need to be adapted for prefix alignments
     # here we make the heuristics way less powerful
-    h = h / 500.0
+    h = h / (max_trace_length + 1.0)
     ini_state = SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     heapq.heapify(open_set)
@@ -169,7 +169,7 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
                                                          fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
             # heuristics need to be adapted for prefix alignments
             # here we make the heuristics way less powerful
-            h = h / 500.0
+            h = h / (max_trace_length + 1.0)
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
@@ -220,7 +220,7 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
             h, x = utils.__derive_heuristic(incidence_matrix, cost_vec, curr.x, t, curr.h)
             # heuristics need to be adapted for prefix alignments
             # here we make the heuristics way less powerful
-            h = h / 500.0
+            h = h / (max_trace_length + 1.0)
 
             trustable = utils.__trust_solution(x)
             new_f = g + h
