@@ -100,8 +100,7 @@ setup(
               'pm4py.visualization.decisiontree.versions', 'pm4py.visualization.process_tree',
               'pm4py.visualization.process_tree.versions', 'pm4py.visualization.heuristics_net',
               'pm4py.visualization.heuristics_net.versions', 'pm4py.visualization.transition_system',
-              'pm4py.visualization.transition_system.util', 'pm4py.visualization.transition_system.versions', 'tests',
-              'tests.documentation_tests'],
+              'pm4py.visualization.transition_system.util', 'pm4py.visualization.transition_system.versions'],
     url='http://www.pm4py.org',
     license='GPL 3.0',
     install_requires=[
