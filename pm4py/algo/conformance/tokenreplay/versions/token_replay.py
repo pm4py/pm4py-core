@@ -9,6 +9,7 @@ from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden, get_s_
 from pm4py.util import constants
 from pm4py.objects.log import log as log_implementation
 from pm4py.objects.petri.importer.versions import pnml as petri_importer
+from pm4py.objects.petri import align_utils
 
 
 PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
@@ -332,48 +333,6 @@ def apply_hidden_trans(t, net, marking, places_shortest_paths_by_hidden, act_tr,
 
     return [net, marking, act_tr, vis_mark]
 
-
-def get_visible_transitions_eventually_enabled_by_marking(net, marking):
-    """
-    Get visible transitions eventually enabled by marking (passing possibly through hidden transitions)
-
-    Parameters
-    ----------
-    net
-        Petri net
-    marking
-        Current marking
-    """
-    all_enabled_transitions = list(semantics.enabled_transitions(net, marking))
-    initial_all_enabled_transitions_marking_dictio = {}
-    all_enabled_transitions_marking_dictio = {}
-    for trans in all_enabled_transitions:
-        all_enabled_transitions_marking_dictio[trans] = marking
-        initial_all_enabled_transitions_marking_dictio[trans] = marking
-    visible_transitions = set()
-    visited_transitions = set()
-
-    i = 0
-    while i < len(all_enabled_transitions):
-        t = all_enabled_transitions[i]
-        marking_copy = copy(all_enabled_transitions_marking_dictio[t])
-
-        if repr([t, marking_copy]) not in visited_transitions:
-            if t.label is not None:
-                visible_transitions.add(t)
-            else:
-                if semantics.is_enabled(t, net, marking_copy):
-                    new_marking = semantics.execute(t, net, marking_copy)
-                    new_enabled_transitions = list(semantics.enabled_transitions(net, new_marking))
-                    for t2 in new_enabled_transitions:
-                        all_enabled_transitions.append(t2)
-                        all_enabled_transitions_marking_dictio[t2] = new_marking
-            visited_transitions.add(repr([t, marking_copy]))
-        i = i + 1
-
-    return visible_transitions
-
-
 def break_condition_final_marking(marking, final_marking):
     """
     Verify break condition for final marking
@@ -689,7 +648,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             "previousActivity": previous_activity}
 
     return [is_fit, trace_fitness, act_trans, transitions_with_problems, marking_before_cleaning,
-            get_visible_transitions_eventually_enabled_by_marking(net, marking_before_cleaning), missing, consumed,
+            align_utils.get_visible_transitions_eventually_enabled_by_marking(net, marking_before_cleaning), missing, consumed,
             remaining, produced]
 
 
