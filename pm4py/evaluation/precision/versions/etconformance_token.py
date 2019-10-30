@@ -49,6 +49,8 @@ def apply(log, net, marking, final_marking, parameters=None):
     if parameters is None:
         parameters = {}
 
+    cleaning_token_flood = parameters["cleaning_token_flood"] if "cleaning_token_flood" in parameters else False
+
     activity_key = parameters[
         PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     precision = 0.0
@@ -60,7 +62,7 @@ def apply(log, net, marking, final_marking, parameters=None):
         "try_to_reach_final_marking_through_hidden": False,
         "stop_immediately_unfit": True,
         "walk_through_hidden_trans": True,
-        "cleaning_token_flood": False,
+        "cleaning_token_flood": cleaning_token_flood,
         PARAM_ACTIVITY_KEY: activity_key
     }
 
