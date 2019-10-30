@@ -143,6 +143,8 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
 
     h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
                                                  fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
+    # heuristics need to be adapted for prefix alignments
+    # here we make the heuristics way less powerful
     h = h / 500.0
     ini_state = SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
@@ -165,6 +167,8 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
             h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                          incidence_matrix, curr.m,
                                                          fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
+            # heuristics need to be adapted for prefix alignments
+            # here we make the heuristics way less powerful
             h = h / 500.0
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
@@ -214,6 +218,8 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
 
             queued += 1
             h, x = utils.__derive_heuristic(incidence_matrix, cost_vec, curr.x, t, curr.h)
+            # heuristics need to be adapted for prefix alignments
+            # here we make the heuristics way less powerful
             h = h / 500.0
 
             trustable = utils.__trust_solution(x)
