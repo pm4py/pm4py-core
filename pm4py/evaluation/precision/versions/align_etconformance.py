@@ -46,13 +46,13 @@ def apply(log, net, marking, final_marking, parameters=None):
                                                                                                             final_marking)):
         raise Exception("trying to apply Align-ETConformance on a Petri net that is not a relaxed sound workflow net!!")
 
+    places_corr = {p.name:p for p in net.places}
     prefixes, prefix_count = precision_utils.get_log_prefixes(log, activity_key=activity_key)
     prefixes_keys = list(prefixes.keys())
     fake_log = precision_utils.form_fake_log(prefixes_keys, activity_key=activity_key)
 
-    aligned_traces = []
-
-    for trace in fake_log:
+    for i in range(len(fake_log)):
+        trace = fake_log[i]
         sync_net, sync_initial_marking, sync_final_marking = build_sync_net(trace, net, marking, final_marking)
         stop_marking = petri.petrinet.Marking()
         for pl, count in sync_final_marking.items():
@@ -61,8 +61,16 @@ def apply(log, net, marking, final_marking, parameters=None):
         cost_function = utils.construct_standard_cost_function(sync_net, utils.SKIP)
 
         res = __search(sync_net, sync_initial_marking, sync_final_marking, stop_marking, cost_function, utils.SKIP)
+        atm = petri.petrinet.Marking()
+        for pl, count in res.items():
+            if pl.name[0] == utils.SKIP:
+                atm[places_corr[pl.name[1]]] = count
 
-        aligned_traces.append(res)
+        log_transitions = set(prefixes[prefixes_keys[i]])
+        activated_transitions_labels = set(x.label for x in utils.get_visible_transitions_eventually_enabled_by_marking(net, atm) if x.label is not None)
+        sum_at += len(activated_transitions_labels) * prefix_count[prefixes_keys[i]]
+        escaping_edges = activated_transitions_labels.difference(log_transitions)
+        sum_ee += len(escaping_edges) * prefix_count[prefixes_keys[i]]
 
     if sum_at > 0:
         precision = 1 - float(sum_ee) / float(sum_at)
@@ -135,7 +143,8 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
 
     h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
                                                  fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
-    ini_state = utils.SearchTuple(0 + h, 0, h, ini, None, None, x, True)
+    h = h / 500.0
+    ini_state = SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     heapq.heapify(open_set)
     visited = 0
@@ -156,10 +165,11 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
             h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                          incidence_matrix, curr.m,
                                                          fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
+            h = h / 500.0
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
-            tp = utils.SearchTuple(curr.g + h, curr.g, h, curr.m, curr.p, curr.t, x, True)
+            tp = SearchTuple(curr.g + h, curr.g, h, curr.m, curr.p, curr.t, x, True)
             # 11/10/2019 (optimization ZA) heappushpop is slightly more efficient than pushing
             # and popping separately
             curr = heapq.heappushpop(open_set, tp)
@@ -176,10 +186,11 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
 
         # 12/10/2019: the current marking can be equal to the final marking only if the heuristics
         # (underestimation of the remaining cost) is 0. Low-hanging fruits
+        enab_trans = [x for x in petri.semantics.enabled_transitions(sync_net, current_marking)]
         if stop <= current_marking:
             #print(utils.__reconstruct_alignment(curr, visited, queued, traversed))
+            enab_trans = [x for x in sync_net.transitions if x.sub_marking <= current_marking]
             return current_marking
-
         closed.add(current_marking)
         visited += 1
 
@@ -203,8 +214,44 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
 
             queued += 1
             h, x = utils.__derive_heuristic(incidence_matrix, cost_vec, curr.x, t, curr.h)
+            h = h / 500.0
+
             trustable = utils.__trust_solution(x)
             new_f = g + h
 
-            tp = utils.SearchTuple(new_f, g, h, new_marking, curr, t, x, trustable)
+            tp = SearchTuple(new_f, g, h, new_marking, curr, t, x, trustable)
             heapq.heappush(open_set, tp)
+
+class SearchTuple:
+    def __init__(self, f, g, h, m, p, t, x, trust):
+        self.f = f
+        self.g = g
+        self.h = h
+        self.m = m
+        self.p = p
+        self.t = t
+        self.x = x
+        self.trust = trust
+
+    def __lt__(self, other):
+        if self.f < other.f:
+            return True
+        elif other.f < self.f:
+            return False
+        elif self.trust and not other.trust:
+            return True
+        else:
+            return self.h < other.h
+
+    def __get_firing_sequence(self):
+        ret = []
+        if self.p is not None:
+            ret = ret + self.p.__get_firing_sequence()
+        if self.t is not None:
+            ret.append(self.t)
+        return ret
+
+    def __repr__(self):
+        string_build = ["\nm=" + str(self.m), " f=" + str(self.f), ' g=' + str(self.g), " h=" + str(self.h),
+                        " path=" + str(self.__get_firing_sequence()) + "\n\n"]
+        return " ".join(string_build)
