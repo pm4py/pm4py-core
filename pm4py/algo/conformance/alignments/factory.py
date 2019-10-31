@@ -17,6 +17,7 @@ from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 import multiprocessing as mp
 from pm4py.objects.petri.exporter.versions import pnml as petri_exporter
+from pm4py.objects.petri import check_soundness
 import math
 import time
 
@@ -125,6 +126,12 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     if parameters is None:
         parameters = dict()
 
+    if not (check_soundness.check_wfnet(petri_net) and check_soundness.check_relaxed_soundness_net_in_fin_marking(petri_net,
+                                                                                                            initial_marking,
+                                                                                                            final_marking)):
+        raise Exception("trying to apply alignments on a Petri net that is not a relaxed sound workflow net!!")
+
+
     start_time = time.time()
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
@@ -206,6 +213,12 @@ def chunks(l, n):
 def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
     if parameters is None:
         parameters = dict()
+
+    if not (check_soundness.check_wfnet(petri_net) and check_soundness.check_relaxed_soundness_net_in_fin_marking(petri_net,
+                                                                                                            initial_marking,
+                                                                                                            final_marking)):
+        raise Exception("trying to apply alignments on a Petri net that is not a relaxed sound workflow net!!")
+
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     model_cost_function = parameters[
