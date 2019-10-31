@@ -1,11 +1,13 @@
 from pm4py import util as pmutil
-from pm4py.evaluation.precision.versions import etconformance_token
+from pm4py.evaluation.precision.versions import etconformance_token, align_etconformance
 from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.log.util import general as log_util
 from pm4py.objects.log.util import xes as xes_util
 
 ETCONFORMANCE_TOKEN = "etconformance"
-VERSIONS = {ETCONFORMANCE_TOKEN: etconformance_token.apply}
+ALIGN_ETCONFORMANCE = "align_etconformance"
+
+VERSIONS = {ETCONFORMANCE_TOKEN: etconformance_token.apply, ALIGN_ETCONFORMANCE: align_etconformance.apply}
 
 
 def apply(log, net, marking, final_marking, parameters=None, variant=ETCONFORMANCE_TOKEN):
