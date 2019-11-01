@@ -1,5 +1,4 @@
 from copy import copy
-from threading import Thread
 
 from pm4py import util as pmutil
 from pm4py.algo.filtering.log.variants import variants_filter as variants_module
@@ -652,7 +651,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             remaining, produced]
 
 
-class ApplyTraceTokenReplay(Thread):
+class ApplyTraceTokenReplay:
     def __init__(self, trace, net, initial_marking, final_marking, trans_map, enable_pltr_fitness, place_fitness,
                  transition_fitness, notexisting_activities_in_model,
                  places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
@@ -743,7 +742,7 @@ class ApplyTraceTokenReplay(Thread):
         self.produced = None
         self.s_components = s_components
 
-        Thread.__init__(self)
+        #Thread.__init__(self)
 
     def run(self):
         """
@@ -988,22 +987,6 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
 
                 for i in range(len(vc)):
                     variant = vc[i][0]
-                    threads_keys = list(threads.keys())
-                    while len(threads_keys) > MAX_NO_THREADS:
-                        threads, threads_results, all_activated_transitions = check_threads(net, threads,
-                                                                                            threads_results,
-                                                                                            all_activated_transitions,
-                                                                                            is_reduction=is_reduction,
-                                                                                            return_object_names=return_object_names)
-                        if is_reduction and len(all_activated_transitions) == len(net.transitions):
-                            break
-                        threads_keys = list(threads.keys())
-                    threads, threads_results, all_activated_transitions = check_threads(net, threads, threads_results,
-                                                                                        all_activated_transitions,
-                                                                                        is_reduction=is_reduction,
-                                                                                        return_object_names=return_object_names)
-                    if is_reduction and len(all_activated_transitions) == len(net.transitions):
-                        break
                     threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
                                                              trans_map, enable_pltr_fitness, place_fitness_per_trace,
                                                              transition_fitness_per_trace,
@@ -1020,20 +1003,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                                                              thread_maximum_ex_time=thread_maximum_ex_time,
                                                              cleaning_token_flood=cleaning_token_flood,
                                                              s_components=s_components)
-                    threads[variant].start()
-                while len(threads) > 0:
-                    threads_keys = list(threads.keys())
-                    t = threads[threads_keys[0]]
-                    t.join()
-                    threads, threads_results, all_activated_transitions = check_threads(net, threads, threads_results,
-                                                                                        all_activated_transitions,
-                                                                                        is_reduction=is_reduction,
-                                                                                        return_object_names=return_object_names)
-                    if is_reduction and len(all_activated_transitions) == len(net.transitions):
-                        break
-
+                    threads[variant].run()
                 for trace in log:
-                    # trace_variant = ",".join([x[activity_key] for x in trace])
                     trace_variant = get_variant_from_trace(trace, activity_key, disable_variants=disable_variants)
                     if trace_variant in threads_results:
                         t = threads_results[trace_variant]
