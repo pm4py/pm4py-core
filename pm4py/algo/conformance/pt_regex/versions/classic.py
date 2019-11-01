@@ -38,7 +38,7 @@ def apply(log, tree, parameters=None):
     reg = re.compile(reg)
 
     all_trace_fitness = []
-    for trace in one_tr_per_var:
+    for index, trace in enumerate(one_tr_per_var):
         all_trace_fitness.append(apply_trace(trace, tree, reg=reg, mapping=mapping, parameters=parameters))
 
     al_idx = {}
