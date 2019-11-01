@@ -34,6 +34,8 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
     """
     Transforms a process tree to a regular expression
 
+    NB: The conversion is not yet working with trees containing an AND and/or an OR operator!
+
     Parameters
     ------------
     tree
@@ -70,20 +72,9 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
             else:
                 stru = "(" + "".join(children_rep) + ")*" + children_rep[0]
         elif tree.operator == pt_operator.Operator.PARALLEL:
-            children_rep = [x for x in children_rep if not x is None]
-            stru_list = ["("]
-
-            permutations = list(itertools.permutations(children_rep))
-            for index, p in enumerate(permutations):
-                if index > 0:
-                    stru_list.append("|")
-                #print(rec_depth, "".join(p))
-                stru_list.append("(" + "".join(p) + ")")
-
-            stru_list.append(")")
-            stru = "".join(stru_list)
+            raise Exception("the conversion is not yet working with trees containing an AND and/or an OR operator!")
         elif tree.operator == pt_operator.Operator.OR:
-            raise Exception("not implemented yet!")
+            raise Exception("the conversion is not yet working with trees containing an AND and/or an OR operator!")
 
     elif tree.label is not None:
         if tree.label not in shared_obj.mapping_dictio:
