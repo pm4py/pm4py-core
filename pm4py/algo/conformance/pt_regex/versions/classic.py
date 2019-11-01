@@ -8,6 +8,8 @@ def apply(log, tree, parameters=None):
     """
     Check the fitness of the log against the process tree
 
+    NB: The conformance check is not yet working with trees containing an AND and/or an OR operator!
+
     Parameters
     ------------
     log
@@ -55,6 +57,8 @@ def apply(log, tree, parameters=None):
 def apply_trace(trace, tree, reg=None, mapping=None, parameters=None):
     """
     Check the fitness of the trace against the process tree
+
+    NB: The conformance check is not yet working with trees containing an AND and/or an OR operator!
 
     Parameters
     ------------

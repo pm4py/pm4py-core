@@ -8,6 +8,8 @@ def apply(log, process_tree, variant=CLASSIC, parameters=None):
     """
     Check the fitness of the log against the process tree
 
+    NB: The conformance check is not yet working with trees containing an AND and/or an OR operator!
+
     Parameters
     ------------
     log
