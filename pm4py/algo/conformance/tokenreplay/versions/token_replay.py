@@ -787,34 +787,9 @@ class MarkingToActivityCaching:
         self.cache = 0
         self.cache = {}
 
-
+"""
 def check_threads(net, threads, threads_results, all_activated_transitions, is_reduction=False,
                   return_object_names=False):
-    """
-    Check threads aliveness and terminate them accordingly
-
-    Parameters
-    ------------
-    net
-        Petri net
-    threads
-        Current opened threads
-    threads_results
-        Threads execution result (to be returned)
-    all_activated_transitions
-        List of activated transitions during the replay (to be returned)
-    is_reduction
-        Is this a reduction replay (boolean)
-
-    Returns
-    ------------
-    threads
-        Current opened threads
-    threads_results
-        Threads execution result
-    all_activated_transitions
-        List of activated transitions during the replay
-    """
     threads_keys = list(threads.keys())
     terminated_threads_keys = [tk for tk in threads_keys if threads[tk].thread_is_alive is False]
     for tk in terminated_threads_keys:
@@ -850,7 +825,7 @@ def check_threads(net, threads, threads_results, all_activated_transitions, is_r
         if is_reduction and len(all_activated_transitions) == len(net.transitions):
             break
     return threads, threads_results, all_activated_transitions
-
+"""
 
 def get_variant_from_trace(trace, activity_key, disable_variants=False):
     """
@@ -1004,6 +979,31 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                                                              cleaning_token_flood=cleaning_token_flood,
                                                              s_components=s_components)
                     threads[variant].run()
+                    t = threads[variant]
+                    threads_results[variant] = {"trace_is_fit": copy(t.t_fit),
+                                           "trace_fitness": float(copy(t.t_value)),
+                                           "activated_transitions": copy(t.act_trans),
+                                           "reached_marking": copy(t.reached_marking),
+                                           "enabled_transitions_in_marking": copy(
+                                               t.enabled_trans_in_mark),
+                                           "transitions_with_problems": copy(
+                                               t.trans_probl),
+                                           "missing_tokens": int(t.missing),
+                                           "consumed_tokens": int(t.consumed),
+                                           "remaining_tokens": int(t.remaining),
+                                           "produced_tokens": int(t.produced)}
+
+                    if return_object_names:
+                        threads_results[variant]["activated_transitions"] = [x.name for x in
+                                                                        threads_results[variant]["activated_transitions"]]
+                        threads_results[variant]["enabled_transitions_in_marking"] = [x.name for x in threads_results[variant][
+                            "enabled_transitions_in_marking"]]
+                        threads_results[variant]["transitions_with_problems"] = [x.name for x in
+                                                                            threads_results[variant][
+                                                                                "transitions_with_problems"]]
+                        threads_results[variant]["reached_marking"] = {x.name: y for x, y in
+                                                                  threads_results[variant]["reached_marking"].items()}
+                    del threads[variant]
                 for trace in log:
                     trace_variant = get_variant_from_trace(trace, activity_key, disable_variants=disable_variants)
                     if trace_variant in threads_results:
