@@ -2,6 +2,7 @@ import re
 from pm4py.objects.process_tree import pt_operator
 import itertools
 
+
 def get_new_char(label, shared_obj):
     """
     Get a new single character describing the activity, for the regex
@@ -13,18 +14,21 @@ def get_new_char(label, shared_obj):
     shared_obj
         Shared object
     """
-    list_to_avoid = ["[", "]", "(", ")", "*", "+", "^", "?", "\r", "\n", " ", "\t"]
+    list_to_avoid = ["[", "]", "(", ")", "*", "+", "^", "?", "\r", "\n", " ", "\t", "$", "\"", "!", "#", "&", "%", "|",
+                     ".", ",", ";", "-", "'", "\\", "/", "{", "}"]
     shared_obj.count_char = shared_obj.count_char + 1
     while chr(shared_obj.count_char) in list_to_avoid:
         shared_obj.count_char = shared_obj.count_char + 1
     shared_obj.mapping_dictio[label] = chr(shared_obj.count_char)
 
+
 class SharedObj:
     def __init__(self):
-        self.mapping_dictio=None
+        self.mapping_dictio = None
         if self.mapping_dictio is None:
             self.mapping_dictio = {}
         self.count_char = 0
+
 
 def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
     """
@@ -49,7 +53,7 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
         contains_tau = len(list(child for child in tree.children if child.operator is None and child.label is None)) > 0
         children_rep = []
         for child in tree.children:
-            rep, shared_obj = pt_to_regex(child, rec_depth=rec_depth+1, shared_obj=shared_obj, parameters=parameters)
+            rep, shared_obj = pt_to_regex(child, rec_depth=rec_depth + 1, shared_obj=shared_obj, parameters=parameters)
             children_rep.append(rep)
         if tree.operator == pt_operator.Operator.SEQUENCE:
             children_rep = [x for x in children_rep if not x is None]
@@ -62,9 +66,9 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
         elif tree.operator == pt_operator.Operator.LOOP:
             children_rep = [x for x in children_rep if not x is None]
             if len(children_rep) == 1:
-                stru = "("+children_rep[0]+")+"
+                stru = "(" + children_rep[0] + ")+"
             else:
-                stru = "("+"".join(children_rep)+")*"+children_rep[0]
+                stru = "(" + "".join(children_rep) + ")*" + children_rep[0]
         elif tree.operator == pt_operator.Operator.PARALLEL:
             children_rep = [x for x in children_rep if not x is None]
             stru_list = ["("]
@@ -73,6 +77,7 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
             for index, p in enumerate(permutations):
                 if index > 0:
                     stru_list.append("|")
+                #print(rec_depth, "".join(p))
                 stru_list.append("(" + "".join(p) + ")")
 
             stru_list.append(")")
@@ -88,6 +93,8 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
         return None, shared_obj
 
     if rec_depth == 0:
-        return "^" + stru + "?", shared_obj.mapping_dictio
+        ret = "^" + stru + "?", shared_obj.mapping_dictio
+        #print(ret)
+        return ret
 
     return stru, shared_obj
