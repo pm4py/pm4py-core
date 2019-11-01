@@ -62,7 +62,7 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
         elif tree.operator == pt_operator.Operator.LOOP:
             children_rep = [x for x in children_rep if not x is None]
             if len(children_rep) == 1:
-                stru = "("+children_rep[0]+")*"
+                stru = "("+children_rep[0]+")+"
             else:
                 stru = "("+"".join(children_rep)+")*"+children_rep[0]
         elif tree.operator == pt_operator.Operator.PARALLEL:
