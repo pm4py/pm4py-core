@@ -111,18 +111,6 @@ def check_wfnet(net):
     unique_sink_place = check_sink_place_presence(net)
     source_sink_reachability = check_source_and_sink_reachability(net, unique_source_place, unique_sink_place)
 
-    # check also that the transitions connected to the source/sink place have unique arcs
-    if unique_source_place is not None:
-        for arc in unique_source_place.out_arcs:
-            trans = arc.target
-            if len(trans.in_arcs) > 1:
-                return False
-    if unique_sink_place is not None:
-        for arc in unique_sink_place.in_arcs:
-            trans = arc.source
-            if len(trans.out_arcs) > 1:
-                return False
-
     return (unique_source_place is not None) and (unique_sink_place is not None) and source_sink_reachability
 
 
@@ -295,6 +283,37 @@ def check_stability_wfnet(net):
     return False
 
 
+def check_source_sink_place_conditions(net):
+    """
+    Check some conditions on the source/sink place important
+    for a sound workflow net
+
+    Parameters
+    --------------
+    net
+        Petri net
+
+    Returns
+    --------------
+    boolean
+        Boolean value (True is good)
+    """
+    # check also that the transitions connected to the source/sink place have unique arcs
+    unique_source_place = check_source_place_presence(net)
+    unique_sink_place = check_sink_place_presence(net)
+    if unique_source_place is not None:
+        for arc in unique_source_place.out_arcs:
+            trans = arc.target
+            if len(trans.in_arcs) > 1:
+                return False
+    if unique_sink_place is not None:
+        for arc in unique_sink_place.in_arcs:
+            trans = arc.source
+            if len(trans.out_arcs) > 1:
+                return False
+    return True
+
+
 def check_relaxed_soundness_net_in_fin_marking(net, ini, fin):
     """
     Checks the relaxed soundness of a Petri net having the initial and the final marking
@@ -367,21 +386,25 @@ def check_petri_wfnet_and_soundness(net, debug=False):
     if debug:
         print("is_wfnet=",is_wfnet)
     if is_wfnet:
-        relaxed_soundness = check_relaxed_soundness_of_wfnet(net)
+        check_conditions_source_sink = check_source_sink_place_conditions(net)
         if debug:
-            print("relaxed_soundness",relaxed_soundness)
-        if relaxed_soundness:
-            is_stable = check_stability_wfnet(net)
+            print("check_conditions_source_sink", check_conditions_source_sink)
+        if check_conditions_source_sink:
+            relaxed_soundness = check_relaxed_soundness_of_wfnet(net)
             if debug:
-                print("is_stable=",is_stable)
-            if is_stable:
-                is_non_blocking = check_non_blocking(net)
+                print("relaxed_soundness",relaxed_soundness)
+            if relaxed_soundness:
+                is_stable = check_stability_wfnet(net)
                 if debug:
-                    print("is_non_blocking", is_non_blocking)
-                if is_non_blocking:
-                    contains_loops_generating_tokens = check_loops_generating_tokens(net)
+                    print("is_stable=",is_stable)
+                if is_stable:
+                    is_non_blocking = check_non_blocking(net)
                     if debug:
-                        print("contains_loops_generating_tokens",contains_loops_generating_tokens)
-                    if not contains_loops_generating_tokens:
-                        return True
+                        print("is_non_blocking", is_non_blocking)
+                    if is_non_blocking:
+                        contains_loops_generating_tokens = check_loops_generating_tokens(net)
+                        if debug:
+                            print("contains_loops_generating_tokens",contains_loops_generating_tokens)
+                        if not contains_loops_generating_tokens:
+                            return True
     return False
