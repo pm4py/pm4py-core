@@ -146,7 +146,7 @@ def __search(sync_net, ini, fin, stop, cost_function, skip, max_trace_length):
     # heuristics need to be adapted for prefix alignments
     # here we make the heuristics way less powerful
     h = h / (max_trace_length + 1.0)
-    ini_state = SearchTuple(0 + h, 0, h, ini, None, None, x, True)
+    ini_state = utils.SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     heapq.heapify(open_set)
     visited = 0
@@ -173,7 +173,7 @@ def __search(sync_net, ini, fin, stop, cost_function, skip, max_trace_length):
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
-            tp = SearchTuple(curr.g + h, curr.g, h, curr.m, curr.p, curr.t, x, True)
+            tp = utils.SearchTuple(curr.g + h, curr.g, h, curr.m, curr.p, curr.t, x, True)
             # 11/10/2019 (optimization ZA) heappushpop is slightly more efficient than pushing
             # and popping separately
             curr = heapq.heappushpop(open_set, tp)
@@ -225,39 +225,5 @@ def __search(sync_net, ini, fin, stop, cost_function, skip, max_trace_length):
             trustable = utils.__trust_solution(x)
             new_f = g + h
 
-            tp = SearchTuple(new_f, g, h, new_marking, curr, t, x, trustable)
+            tp = utils.SearchTuple(new_f, g, h, new_marking, curr, t, x, trustable)
             heapq.heappush(open_set, tp)
-
-class SearchTuple:
-    def __init__(self, f, g, h, m, p, t, x, trust):
-        self.f = f
-        self.g = g
-        self.h = h
-        self.m = m
-        self.p = p
-        self.t = t
-        self.x = x
-        self.trust = trust
-
-    def __lt__(self, other):
-        if self.f < other.f:
-            return True
-        elif other.f < self.f:
-            return False
-        elif self.trust and not other.trust:
-            return True
-        else:
-            return self.h < other.h
-
-    def __get_firing_sequence(self):
-        ret = []
-        if self.p is not None:
-            ret = ret + self.p.__get_firing_sequence()
-        if self.t is not None:
-            ret.append(self.t)
-        return ret
-
-    def __repr__(self):
-        string_build = ["\nm=" + str(self.m), " f=" + str(self.f), ' g=' + str(self.g), " h=" + str(self.h),
-                        " path=" + str(self.__get_firing_sequence()) + "\n\n"]
-        return " ".join(string_build)
