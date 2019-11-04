@@ -14,7 +14,6 @@ from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, decorate_transitions_prepostset
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.util.lp import factory as lp_solver_factory
 from pm4py.objects.petri import align_utils as utils
 import networkx as nx
 from pm4py.objects.petri import networkx_graph
@@ -186,6 +185,7 @@ def get_map_pla_spaths(sync_net, cost_function, fin):
         map_pla_spaths[p1] = min(sum(cost_function[y] for y in x) for x in all_spaths) if all_spaths else sys.maxsize
 
     return map_pla_spaths
+
 
 def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=False,
              max_align_time_trace=DEFAULT_MAX_ALIGN_TIME_TRACE):
