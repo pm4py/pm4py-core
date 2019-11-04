@@ -22,9 +22,11 @@ import math
 import time
 
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
-VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}
-VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost}
-VERSIONS_VARIANTS_LIST_MPROCESSING = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply_from_variants_list_petri_string_mprocessing}
+VERSION_DIJKSTRA_HEU_A_STAR = 'dijkstra_heu_a_star'
+
+VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply, VERSION_DIJKSTRA_HEU_A_STAR: versions.dijkstra_heu_a_star.apply}
+VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost, VERSION_DIJKSTRA_HEU_A_STAR: versions.dijkstra_heu_a_star.get_best_worst_cost}
+VERSIONS_VARIANTS_LIST_MPROCESSING = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply_from_variants_list_petri_string_mprocessing, VERSION_DIJKSTRA_HEU_A_STAR: versions.dijkstra_heu_a_star.apply_from_variants_list_petri_string_mprocessing}
 
 VARIANTS_IDX = 'variants_idx'
 

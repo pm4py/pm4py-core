@@ -1,5 +1,5 @@
 import networkx as nx
-
+from pm4py.objects.petri.petrinet import PetriNet
 
 def create_networkx_undirected_graph(net, unique_source, unique_sink):
     """
@@ -48,7 +48,7 @@ def create_networkx_undirected_graph(net, unique_source, unique_sink):
     return graph, unique_source_corr, unique_sink_corr, inv_dictionary
 
 
-def create_networkx_directed_graph(net):
+def create_networkx_directed_graph(net, weight=None):
     """
     Create a NetworkX directed graph from a Petri net
 
@@ -78,6 +78,12 @@ def create_networkx_directed_graph(net):
         inv_dictionary[value] = transition
         graph.add_node(dictionary[transition])
     for arc in net.arcs:
-        graph.add_edge(dictionary[arc.source], dictionary[arc.target])
-
+        source = dictionary[arc.source]
+        target = dictionary[arc.target]
+        graph.add_edge(source, target)
+        if weight is not None:
+            if type(inv_dictionary[source]) is PetriNet.Transition:
+                graph.edges[source, target]["weight"] = weight[inv_dictionary[source]]
+            else:
+                graph.edges[source, target]["weight"] = weight[inv_dictionary[target]]
     return graph, inv_dictionary
