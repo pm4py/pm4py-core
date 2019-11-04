@@ -174,13 +174,8 @@ def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, sk
     return __search(sync_prod, initial_marking, final_marking, cost_function, skip,
                     ret_tuple_as_trans_desc=ret_tuple_as_trans_desc, max_align_time_trace=max_align_time_trace)
 
-def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=False,
-             max_align_time_trace=DEFAULT_MAX_ALIGN_TIME_TRACE):
-    start_time = time.time()
 
-    decorate_transitions_prepostset(sync_net)
-    decorate_places_preset_trans(sync_net)
-
+def get_map_pla_spaths(sync_net, cost_function, fin):
     G, inv_dictionary = networkx_graph.create_networkx_directed_graph(sync_net, weight=cost_function)
     dictionary = {y:x for x,y in inv_dictionary.items()}
     map_all_spaths = nx.algorithms.shortest_paths.shortest_path(G, weight="weight")
@@ -189,6 +184,17 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         all_spaths = [[inv_dictionary[x] for x in map_all_spaths[dictionary[p1]][dictionary[p2]]] for p2 in fin if dictionary[p2] in map_all_spaths[dictionary[p1]]]
         all_spaths = [[y for y in x if type(y) is petri.petrinet.PetriNet.Transition] for x in all_spaths]
         map_pla_spaths[p1] = min(sum(cost_function[y] for y in x) for x in all_spaths) if all_spaths else sys.maxsize
+
+    return map_pla_spaths
+
+def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=False,
+             max_align_time_trace=DEFAULT_MAX_ALIGN_TIME_TRACE):
+    start_time = time.time()
+
+    decorate_transitions_prepostset(sync_net)
+    decorate_places_preset_trans(sync_net)
+
+    map_pla_spaths = get_map_pla_spaths(sync_net, cost_function, fin)
 
     closed = set()
 
