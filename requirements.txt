@@ -1,7 +1,7 @@
 cython
 pyvis
 networkx>=2.4
-matplotlib
+matplotlib<=3.0
 numpy
 ciso8601
 lxml
