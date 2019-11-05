@@ -181,10 +181,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
 
     closed = set()
 
-    x = None
-    h = 0
-
-    ini_state = utils.SearchTuple(0 + h, 0, h, ini, None, None, x, True)
+    ini_state = utils.DijkstraSearchTuple(0, ini, None, None, 0)
     open_set = [ini_state]
     heapq.heapify(open_set)
     visited = 0
@@ -224,12 +221,9 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
 
             if new_marking in closed:
                 continue
-            g = curr.g + cost
 
             queued += 1
-            h = 0
 
-            new_f = g + h
+            tp = utils.DijkstraSearchTuple(curr.g + cost, new_marking, curr, t, curr.l + 1)
 
-            tp = utils.SearchTuple(new_f, g, h, new_marking, curr, t, x, True)
             heapq.heappush(open_set, tp)
