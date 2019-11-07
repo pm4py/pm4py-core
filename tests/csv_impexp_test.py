@@ -29,6 +29,27 @@ class CsvImportExportTest(unittest.TestCase):
         self.assertEqual(len(log), len(log_imported_after_export))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example-exported.xes"))
 
+    def test_importExportCSVtosublogXES(self):
+        # to avoid static method warnings in tests,
+        # that by construction of the unittest package have to be expressed in such way
+        '''
+        Test to export only a sublog of a log
+        '''
+        self.dummy_variable = "dummy_value"
+        event_log = csv_importer.import_event_stream(os.path.join(INPUT_DATA_DIR, "running-example.csv"))
+        event_log = sorting.sort_timestamp(event_log)
+        event_log = sampling.sample(event_log)
+        event_log = index_attribute.insert_event_index_as_event_attribute(event_log)
+        log = log_conv_fact.apply(event_log)
+        log = sorting.sort_timestamp(log)
+        log = sampling.sample(log)
+        log = index_attribute.insert_trace_index_as_event_attribute(log)
+        xes_exporter.export_log(log, os.path.join(OUTPUT_DATA_DIR, "smaller-running-example-exported.xes"),parameters={"sublog_size":1})
+        log_imported_after_export = xes_importer.import_log(
+            os.path.join(OUTPUT_DATA_DIR, "smaller-running-example-exported.xes"))
+        self.assertEqual(1, len(log_imported_after_export))
+        os.remove(os.path.join(OUTPUT_DATA_DIR, "smaller-running-example-exported.xes"))
+
     def test_importExportCSVtoCSV(self):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way

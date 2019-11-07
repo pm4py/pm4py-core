@@ -49,7 +49,6 @@ def export_log(log, output_file_path, variant="etree", parameters=None):
     if "compress" in parameters and parameters["compress"]:
         compression.compress(output_file_path)
 
-
 def apply(log, output_file_path, variant="etree", parameters=None):
     """
     Factory method to export a XES from a log
@@ -65,5 +64,6 @@ def apply(log, output_file_path, variant="etree", parameters=None):
     parameters
         Parameters of the algorithm:
             compress -> Indicates that the XES file must be compressed
+            sublog_size (int) -> Indicates that the XES will contain only the x first traces
     """
     export_log(log, output_file_path, variant=variant, parameters=parameters)

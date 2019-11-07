@@ -260,6 +260,8 @@ def export_log_as_string(log, parameters=None):
         PM4PY log
     parameters
         Parameters of the algorithm
+            sublog_size (int) -> Indicates that the XES will contain only the x first traces
+            random_sublog (bool) -> When a sublog is chosen, one may want to get random traces, false by default
 
     Returns
     -----------
@@ -268,7 +270,12 @@ def export_log_as_string(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
+    if "sublog_size" in parameters :
+        log.reduceList(parameters["sublog_size"])
+    if "sublog_size" in parameters and "random_sublog" in parameters:
+        log.reduceList(parameters["sublog_size"],parameters["random_sublog"])
     del parameters
+
 
     # Gets the XML tree to export
     tree = export_log_tree(log)
@@ -288,10 +295,15 @@ def export_log(log, output_file_path, parameters=None):
         Output file path
     parameters
         Parameters of the algorithm
-
+            sublog_size (int) -> Indicates that the XES will contain only the x first traces
+            random_sublog (bool) -> When a sublog is chosen, one may want to get random traces, false by default
     """
     if parameters is None:
         parameters = {}
+    if "sublog_size" in parameters :
+        log.reduceList(parameters["sublog_size"])
+    if "sublog_size" in parameters and "random_sublog" in parameters:
+        log.reduceList(parameters["sublog_size"],parameters["random_sublog"])
     del parameters
 
     # Gets the XML tree to export

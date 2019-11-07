@@ -1,5 +1,5 @@
 from collections.abc import Mapping, Sequence
-
+from random import sample
 
 class Event(Mapping):
     def __init__(self, *args, **kw):
@@ -54,6 +54,12 @@ class EventStream(Sequence):
 
     def index(self, x, start: int = ..., end: int = ...):
         return self._list.index(x, start, end)
+
+    def reduceList(self, length, random=False):
+        if random :
+            self._list=sample(self._list,length)
+        else :
+            self._list=self._list[:length]
 
     def count(self, x):
         return self._list.count(x)
