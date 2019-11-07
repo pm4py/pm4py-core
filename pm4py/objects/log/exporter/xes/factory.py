@@ -65,5 +65,6 @@ def apply(log, output_file_path, variant="etree", parameters=None):
         Parameters of the algorithm:
             compress -> Indicates that the XES file must be compressed
             sublog_size (int) -> Indicates that the XES will contain only the x first traces
+            random_sublog (bool) -> When a sublog is chosen, one may want to get random traces, false by default
     """
     export_log(log, output_file_path, variant=variant, parameters=parameters)
