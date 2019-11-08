@@ -223,6 +223,36 @@ class SearchTuple:
         return " ".join(string_build)
 
 
+class DijkstraSearchTuple:
+    def __init__(self, g, m, p, t, l):
+        self.g = g
+        self.m = m
+        self.p = p
+        self.t = t
+        self.l = l
+
+    def __lt__(self, other):
+        if self.g < other.g:
+            return True
+        elif other.g < self.g:
+            return False
+        else:
+            return other.l < self.l
+
+    def __get_firing_sequence(self):
+        ret = []
+        if self.p is not None:
+            ret = ret + self.p.__get_firing_sequence()
+        if self.t is not None:
+            ret.append(self.t)
+        return ret
+
+    def __repr__(self):
+        string_build = ["\nm=" + str(self.m), " g=" + str(self.g),
+                        " path=" + str(self.__get_firing_sequence()) + "\n\n"]
+        return " ".join(string_build)
+
+
 def get_visible_transitions_eventually_enabled_by_marking(net, marking):
     """
     Get visible transitions eventually enabled by marking (passing possibly through hidden transitions)

@@ -994,10 +994,15 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                                            "produced_tokens": int(t.produced)}
 
                     if return_object_names:
+                        threads_results[variant]["activated_transitions_labels"] = [x.label for x in
+                                                                        threads_results[variant]["activated_transitions"]]
                         threads_results[variant]["activated_transitions"] = [x.name for x in
                                                                         threads_results[variant]["activated_transitions"]]
+                        threads_results[variant]["enabled_transitions_in_marking_labels"] = [x.label for x in threads_results[variant][
+                            "enabled_transitions_in_marking"]]
                         threads_results[variant]["enabled_transitions_in_marking"] = [x.name for x in threads_results[variant][
                             "enabled_transitions_in_marking"]]
+
                         threads_results[variant]["transitions_with_problems"] = [x.name for x in
                                                                             threads_results[variant][
                                                                                 "transitions_with_problems"]]
