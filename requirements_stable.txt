@@ -1,7 +1,7 @@
 cython==0.29.13
 pyvis==0.1.7.0
 networkx==2.4
-matplotlib==3.1.1
+matplotlib==3.0.3
 numpy==1.17.3
 ciso8601==2.1.2
 lxml==4.4.1
