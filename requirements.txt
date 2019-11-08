@@ -18,4 +18,5 @@ ortools; python_version < '3.8' and sys_platform != 'win32'
 prefixspan; python_version > '3.5'
 fasttext; python_version > '3.5'
 pybind11; python_version > '3.5'
+sklearn
 intervaltree
