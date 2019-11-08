@@ -19,7 +19,6 @@ def construct_standard_cost_function(synchronous_product_net, skip):
     * model moves: cost 1000
     * tau moves: cost 1
     * sync moves: cost 0
-
     :param synchronous_product_net:
     :param skip:
     :return:
@@ -42,7 +41,6 @@ def pretty_print_alignments(alignments):
      A  | B  | C  | D  |
     --------------------
      A  | B  | C  | >> |
-
     :param alignment: <class 'list'>
     :return: Nothing
     """
@@ -256,7 +254,6 @@ class DijkstraSearchTuple:
 def get_visible_transitions_eventually_enabled_by_marking(net, marking):
     """
     Get visible transitions eventually enabled by marking (passing possibly through hidden transitions)
-
     Parameters
     ----------
     net

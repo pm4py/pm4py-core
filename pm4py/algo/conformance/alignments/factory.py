@@ -22,7 +22,6 @@ import math
 import time
 
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
-VERSION_DIJKSTRA_HEU_A_STAR = 'dijkstra_heu_a_star'
 VERSION_DIJKSTRA_NO_HEURISTICS = 'dijkstra_no_heuristics'
 
 
