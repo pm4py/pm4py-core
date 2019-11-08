@@ -6,7 +6,6 @@ from pm4py.objects.petri import align_utils as utils
 import numpy as np
 from pm4py.util.lp import factory as lp_solver_factory
 import heapq
-from copy import copy
 
 PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
@@ -46,25 +45,15 @@ def apply(log, net, marking, final_marking, parameters=None):
                                                                                                             final_marking)):
         raise Exception("trying to apply Align-ETConformance on a Petri net that is not a relaxed sound workflow net!!")
 
-    places_corr = {p.name:p for p in net.places}
     prefixes, prefix_count = precision_utils.get_log_prefixes(log, activity_key=activity_key)
     prefixes_keys = list(prefixes.keys())
     fake_log = precision_utils.form_fake_log(prefixes_keys, activity_key=activity_key)
-    max_trace_length = max(len(x) for x in fake_log)
-    for i in range(len(fake_log)):
-        trace = fake_log[i]
-        sync_net, sync_initial_marking, sync_final_marking = build_sync_net(trace, net, marking, final_marking)
-        stop_marking = petri.petrinet.Marking()
-        for pl, count in sync_final_marking.items():
-            if pl.name[1] == utils.SKIP:
-                stop_marking[pl] = count
-        cost_function = utils.construct_standard_cost_function(sync_net, utils.SKIP)
 
-        res = __search(sync_net, sync_initial_marking, sync_final_marking, stop_marking, cost_function, utils.SKIP, max_trace_length)
-        atm = petri.petrinet.Marking()
-        for pl, count in res.items():
-            if pl.name[0] == utils.SKIP:
-                atm[places_corr[pl.name[1]]] = count
+    align_stop_marking = align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameters=parameters)
+    all_markings = transform_markings_from_sync_to_original_net(align_stop_marking, net, parameters=parameters)
+
+    for i in range(len(all_markings)):
+        atm = all_markings[i]
 
         log_transitions = set(prefixes[prefixes_keys[i]])
         activated_transitions_labels = set(x.label for x in utils.get_visible_transitions_eventually_enabled_by_marking(net, atm) if x.label is not None)
@@ -77,6 +66,88 @@ def apply(log, net, marking, final_marking, parameters=None):
 
     return precision
 
+
+def transform_markings_from_sync_to_original_net(markings0, net, parameters=None):
+    """
+    Transform the markings of the sync net (in which alignment stops) into markings of the original net
+    (in order to measure the precision)
+
+    Parameters
+    -------------
+    markings0
+        Markings on the sync net (expressed as place name with count)
+    net
+        Petri net
+    parameters
+        Parameters of the Petri net
+
+    Returns
+    -------------
+    markings
+        Markings of the original model (expressed as place with count)
+    """
+    if parameters is None:
+        parameters = {}
+
+    places_corr = {p.name:p for p in net.places}
+
+    markings = []
+
+    for i in range(len(markings0)):
+        res = markings0[i]
+        atm = petri.petrinet.Marking()
+        for pl, count in res.items():
+            if pl[0] == utils.SKIP:
+                atm[places_corr[pl[1]]] = count
+        markings.append(atm)
+
+    return markings
+
+def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameters=None):
+    """
+    Align the 'fake' log with all the prefixes in order to get the markings in which
+    the alignment stops
+
+    Parameters
+    -------------
+    fake_log
+        Fake log
+    net
+        Petri net
+    marking
+        Marking
+    final_marking
+        Final marking
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    -------------
+    alignment
+        For each trace in the log, return the marking in which the alignment stops (expressed as place name with count)
+    """
+    if parameters is None:
+        parameters = {}
+    max_trace_length = max(len(x) for x in fake_log)
+    align_result = []
+    for i in range(len(fake_log)):
+        trace = fake_log[i]
+        sync_net, sync_initial_marking, sync_final_marking = build_sync_net(trace, net, marking, final_marking)
+        stop_marking = petri.petrinet.Marking()
+        for pl, count in sync_final_marking.items():
+            if pl.name[1] == utils.SKIP:
+                stop_marking[pl] = count
+        cost_function = utils.construct_standard_cost_function(sync_net, utils.SKIP)
+
+        res = __search(sync_net, sync_initial_marking, sync_final_marking, stop_marking, cost_function, utils.SKIP, max_trace_length)
+        res2 = {}
+
+        for pl in res:
+            res2[(pl.name[0], pl.name[1])] = res[pl]
+
+        align_result.append(res2)
+
+    return align_result
 
 def build_sync_net(trace, petri_net, initial_marking, final_marking, parameters=None):
     """
@@ -190,10 +261,7 @@ def __search(sync_net, ini, fin, stop, cost_function, skip, max_trace_length):
 
         # 12/10/2019: the current marking can be equal to the final marking only if the heuristics
         # (underestimation of the remaining cost) is 0. Low-hanging fruits
-        enab_trans = [x for x in petri.semantics.enabled_transitions(sync_net, current_marking)]
         if stop <= current_marking:
-            #print(utils.__reconstruct_alignment(curr, visited, queued, traversed))
-            enab_trans = [x for x in sync_net.transitions if x.sub_marking <= current_marking]
             return current_marking
         closed.add(current_marking)
         visited += 1

@@ -22,9 +22,14 @@ import math
 import time
 
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
-VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply}
-VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost}
-VERSIONS_VARIANTS_LIST_MPROCESSING = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply_from_variants_list_petri_string_mprocessing}
+VERSION_DIJKSTRA_NO_HEURISTICS = 'dijkstra_no_heuristics'
+
+
+DEFAULT_VARIANT = VERSION_STATE_EQUATION_A_STAR
+
+VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply, VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.apply}
+VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost, VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.get_best_worst_cost}
+VERSIONS_VARIANTS_LIST_MPROCESSING = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply_from_variants_list_petri_string_mprocessing, VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.apply_from_variants_list_petri_string_mprocessing}
 
 VARIANTS_IDX = 'variants_idx'
 
@@ -33,7 +38,7 @@ DEFAULT_MAX_ALIGN_TIME_TRACE = sys.maxsize
 PARAM_MAX_ALIGN_TIME = "max_align_time"
 DEFAULT_MAX_ALIGN_TIME = sys.maxsize
 
-def apply(obj, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
+def apply(obj, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
     if parameters is None:
         parameters = {}
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
@@ -50,7 +55,7 @@ def apply(obj, petri_net, initial_marking, final_marking, parameters=None, versi
 
 
 def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=None,
-                version=VERSION_STATE_EQUATION_A_STAR):
+                version=DEFAULT_VARIANT):
     """
     apply alignments to a trace
     Parameters
@@ -90,7 +95,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     return VERSIONS[version](trace, petri_net, initial_marking, final_marking, parameters)
 
 
-def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
+def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
     """
     apply alignments to a log
     Parameters
@@ -210,7 +215,7 @@ def chunks(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
-def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, parameters=None, version=VERSION_STATE_EQUATION_A_STAR):
+def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
     if parameters is None:
         parameters = dict()
 
