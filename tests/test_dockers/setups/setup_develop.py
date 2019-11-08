@@ -106,7 +106,8 @@ setup(
     install_requires=[
         'pyvis',
         'networkx>=2.4',
-        'matplotlib',
+        "matplotlib<=3.0.3; python_version < '3.6'",
+        "matplotlib; python_version >= '3.6'",
         'numpy',
         'ciso8601',
         'lxml',
