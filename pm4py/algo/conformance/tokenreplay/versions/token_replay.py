@@ -697,6 +697,12 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             "this_visited_markings": this_visited_markings,
                             "previousActivity": previous_activity}
 
+    if enable_pltr_fitness:
+        for pl in initial_marking:
+            place_fitness[pl]["p"] += 1
+        for pl in final_marking:
+            place_fitness[pl]["c"] += 1
+
     return [is_fit, trace_fitness, act_trans, transitions_with_problems, marking_before_cleaning,
             align_utils.get_visible_transitions_eventually_enabled_by_marking(net, marking_before_cleaning), missing, consumed,
             remaining, produced]
