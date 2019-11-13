@@ -128,7 +128,7 @@ setup(
         "prefixspan; python_version > '3.5'",
         "fasttext; python_version > '3.5'",
         "pybind11; python_version > '3.5'",
-        'sklearn'
+        'sklearn',
         'intervaltree'
     ],
     project_urls={
