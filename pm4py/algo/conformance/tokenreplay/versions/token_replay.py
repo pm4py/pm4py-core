@@ -660,6 +660,14 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     else:
         is_fit = (missing == 0)
 
+    if enable_pltr_fitness:
+        for pl in initial_marking:
+            place_fitness[pl]["p"] += 1
+            produced += 1
+        for pl in final_marking:
+            place_fitness[pl]["c"] += 1
+            consumed += 1
+
     if consumed > 0 and produced > 0:
         # trace_fitness = (1.0 - float(missing) / float(consumed)) * (1.0 - float(remaining) / float(produced))
         trace_fitness = 0.5 * (1.0 - float(missing) / float(consumed)) + 0.5 * (
@@ -696,12 +704,6 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             "this_activated_transitions": this_activated_trans,
                             "this_visited_markings": this_visited_markings,
                             "previousActivity": previous_activity}
-
-    if enable_pltr_fitness:
-        for pl in initial_marking:
-            place_fitness[pl]["p"] += 1
-        for pl in final_marking:
-            place_fitness[pl]["c"] += 1
 
     return [is_fit, trace_fitness, act_trans, transitions_with_problems, marking_before_cleaning,
             align_utils.get_visible_transitions_eventually_enabled_by_marking(net, marking_before_cleaning), missing,
