@@ -20,7 +20,6 @@ if __name__ == "__main__":
     from tests.alignment_test import AlignmentTest
     from tests.sna_test import SnaTests
     from tests.petri_imp_exp_test import PetriImportExportTest
-    from tests.random_variables_test import RandomVariableTest
     from tests.documentation_tests.test_doc_alpha1 import AlphaMinerDocumentationTest
     from tests.documentation_tests.test_doc_inductive1 import InductiveMinerDocumentationTest
     from tests.documentation_tests.test_doc_dfgraph1 import DfGraphDocumentationTest
@@ -33,7 +32,6 @@ if __name__ == "__main__":
     from tests.dec_tree_test import DecisionTreeTest
     from tests.filtering_test import LogFilteringTest
     from tests.dataframe_prefilter import DataframePrefilteringTest
-    from tests.simple_execution import SimpleExecutionTest
     from tests.graphs_forming import GraphsForming
     from tests.heuminer_test import HeuMinerTest
     from tests.matrix_rep_test import MatrixRepTest
@@ -42,7 +40,6 @@ if __name__ == "__main__":
     test_pttime = PassedTimeTest()
     test_ltl_logs = LtlCheckingLogTest()
     test_ltl_pandas = LtlCheckingPandasTest()
-    test_rv = RandomVariableTest()
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
     test3_object = CsvImportExportTest()
@@ -64,7 +61,6 @@ if __name__ == "__main__":
     sna_tests = SnaTests()
     filtering_test = LogFilteringTest()
     prefiltering_test = DataframePrefilteringTest()
-    simpleex_test = SimpleExecutionTest()
     graphforming_test = GraphsForming()
     heuminer_test = HeuMinerTest()
     matrixrep_test = MatrixRepTest()
