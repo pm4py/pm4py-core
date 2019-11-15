@@ -1,33 +1,6 @@
 import re
 from pm4py.objects.process_tree import pt_operator
-import itertools
-
-
-def get_new_char(label, shared_obj):
-    """
-    Get a new single character describing the activity, for the regex
-
-    Parameters
-    ------------
-    label
-        Label of the transition
-    shared_obj
-        Shared object
-    """
-    list_to_avoid = ["[", "]", "(", ")", "*", "+", "^", "?", "\r", "\n", " ", "\t", "$", "\"", "!", "#", "&", "%", "|",
-                     ".", ",", ";", "-", "'", "\\", "/", "{", "}"]
-    shared_obj.count_char = shared_obj.count_char + 1
-    while chr(shared_obj.count_char) in list_to_avoid:
-        shared_obj.count_char = shared_obj.count_char + 1
-    shared_obj.mapping_dictio[label] = chr(shared_obj.count_char)
-
-
-class SharedObj:
-    def __init__(self):
-        self.mapping_dictio = None
-        if self.mapping_dictio is None:
-            self.mapping_dictio = {}
-        self.count_char = 0
+from pm4py.util.regex import SharedObj, get_new_char
 
 
 def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
@@ -85,7 +58,7 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
 
     if rec_depth == 0:
         ret = "^" + stru + "?", shared_obj.mapping_dictio
-        #print(ret)
+        # print(ret)
         return ret
 
     return stru, shared_obj
