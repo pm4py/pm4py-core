@@ -69,13 +69,13 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
         final_tree_repr = ProcessTree(operator=Operator.LOOP)
         child_tree = ProcessTree(operator=Operator.XOR)
         child_tree_redo = ProcessTree(label=None)
-        child_tree_exit = ProcessTree(label=None)
+        #child_tree_exit = ProcessTree(label=None)
         final_tree_repr.children.append(child_tree)
         final_tree_repr.children.append(child_tree_redo)
-        final_tree_repr.children.append(child_tree_exit)
+        #final_tree_repr.children.append(child_tree_exit)
         child_tree.parent = final_tree_repr
         child_tree_redo.parent = final_tree_repr
-        child_tree_exit.parent = final_tree_repr
+        #child_tree_exit.parent = final_tree_repr
     elif spec_tree_struct.detected_cut == "base_concurrent":
         if len(spec_tree_struct.activities) > 1 or spec_tree_struct.must_insert_skip:
             final_tree_repr = ProcessTree(operator=Operator.XOR)
@@ -112,6 +112,7 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
             child = get_repr(ch, rec_depth + 1)
             child_tree.children.append(child)
             child.parent = child_tree
+
         if spec_tree_struct.detected_cut == "loopCut" and len(spec_tree_struct.children) < 2:
             while len(spec_tree_struct.children) < 2:
                 child = ProcessTree()
