@@ -4,6 +4,15 @@ from pm4py.objects.process_tree import state as pt_st
 
 
 def fold(tree):
+    '''
+    This method reduces a process tree by merging nodes of the form N(N(a,b),c) into N(a,b,c), i.e., where
+    N = || or X. For example X(X(a,b),c) == X(a,b,c).
+    Furthermore, meaningless parts, e.g., internal nodes without children, or, operators with one child are removed
+    as well.
+
+    :param tree:
+    :return:
+    '''
     if len(tree.children) > 0:
         for c in tree.children:
             fold(c)
@@ -43,6 +52,14 @@ def fold(tree):
 
 
 def reduce_tau_leafs(pt):
+    '''
+    This method reduces tau leaves that are not meaningful. For example tree ->(a,\tau,b) is reduced to ->(a,b).
+    In some cases this results in constructs such as ->(a), i.e., a sequence with a single child. Such constructs
+    are not further reduced.
+
+    :param pt:
+    :return:
+    '''
     if len(pt.children) > 0:
         for c in pt.children:
             reduce_tau_leafs(c)
