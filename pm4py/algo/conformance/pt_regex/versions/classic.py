@@ -1,7 +1,7 @@
 from pm4py.objects.process_tree import regex
 from pm4py.algo.filtering.log.variants import variants_filter as variants_module
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.objects.log.util import xes
+from pm4py.objects.log.util import log_regex
+from pm4py.util import regex as regex_util
 import re
 
 def apply(log, tree, parameters=None):
@@ -77,26 +77,9 @@ def apply_trace(trace, tree, reg=None, mapping=None, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-
     if reg is None:
         reg, mapping = regex.pt_to_regex(tree)
-        reg = re.compile(reg)
 
-    trace_str = "".join([mapping[x[activity_key]] for x in trace if x[activity_key] in mapping])
+    stru = log_regex.get_encoded_trace(trace, mapping, parameters=parameters)
 
-    match = re.match(reg, trace_str)
-
-    if match is not None:
-        stru = str(match)
-        if "match='" in stru:
-            stru = str(match).split("match='")[1].split("'")[0]
-        elif "match=\"" in stru:
-            stru = str(match).split("match=\"")[1].split("\"")[0]
-        else:
-            raise Exception("match not contained in the match")
-        if len(stru) == 0:
-            return False
-        return True
-    else:
-        return False
+    return regex_util.check_reg_matching(reg, stru)
