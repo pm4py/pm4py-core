@@ -1,4 +1,3 @@
-import re
 from pm4py.objects.process_tree import pt_operator
 from pm4py.util.regex import SharedObj, get_new_char
 
@@ -57,7 +56,7 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
         return None, shared_obj
 
     if rec_depth == 0:
-        ret = "^" + stru + "?", shared_obj.mapping_dictio
+        ret = "^" + stru + "$", shared_obj.mapping_dictio
         # print(ret)
         return ret
 
