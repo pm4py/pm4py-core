@@ -18,7 +18,7 @@ def fold(tree):
             fold(c)
         cc = tree.children
         for c in cc:
-            if c.label is None:
+            if c.operator is not None:
                 if len(c.children) == 0:
                     tree.children.remove(c)
                     c.parent = None
