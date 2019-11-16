@@ -1,6 +1,5 @@
 import collections
 import threading
-import random
 from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
 
