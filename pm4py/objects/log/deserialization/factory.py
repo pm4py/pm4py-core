@@ -22,5 +22,5 @@ def apply(log, variant, parameters=None):
     return VERSIONS_APPLY[variant](log, parameters=parameters)
 
 
-def import_from_file(log, file_path, variant, parameters=None):
-    return VERSIONS_IMPORT_FILE[variant](log, file_path, parameters=parameters)
+def import_from_file(file_path, variant, parameters=None):
+    return VERSIONS_IMPORT_FILE[variant](file_path, parameters=parameters)
