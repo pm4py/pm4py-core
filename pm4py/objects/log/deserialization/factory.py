@@ -18,8 +18,8 @@ VERSIONS_APPLY={PYARROW_EVENT_STREAM: pyarrow_event_stream.apply, PYARROW_EVENT_
 VERSIONS_IMPORT_FILE={PYARROW_EVENT_STREAM: pyarrow_event_stream.import_from_file, PYARROW_EVENT_LOG: pyarrow_event_log.import_from_file, PARQUET_DATAFRAME: parquet_dataframe.import_from_file}
 
 
-def apply(log, variant, parameters=None):
-    return VERSIONS_APPLY[variant](log, parameters=parameters)
+def apply(bytes, variant, parameters=None):
+    return VERSIONS_APPLY[variant](bytes, parameters=parameters)
 
 
 def import_from_file(file_path, variant, parameters=None):
