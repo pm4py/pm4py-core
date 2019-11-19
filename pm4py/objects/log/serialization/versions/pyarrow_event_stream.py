@@ -18,3 +18,7 @@ def apply(log, parameters=None):
 def export_to_file(log, file_path, parameters=None):
     if parameters is None:
         parameters = {}
+
+    F = open(file_path, "wb")
+    F.write(apply(log, parameters=parameters))
+    F.close()
