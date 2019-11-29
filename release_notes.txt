@@ -1,2 +1,4 @@
 ===== PM4PY 1.2.6 =====
 This is a minor release, consisting of the following changes:
+
+- Pyarrow serialization
