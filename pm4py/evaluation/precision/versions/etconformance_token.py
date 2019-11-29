@@ -55,6 +55,7 @@ def apply(log, net, marking, final_marking, parameters=None):
 
     activity_key = parameters[
         PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
+    # default value for precision, when no activated transitions (not even by looking at the initial marking) are found
     precision = 1.0
     sum_ee = 0
     sum_at = 0
