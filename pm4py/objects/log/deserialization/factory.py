@@ -19,8 +19,42 @@ VERSIONS_IMPORT_FILE={PYARROW_EVENT_STREAM: pyarrow_event_stream.import_from_fil
 
 
 def apply(bytes, variant, parameters=None):
+    """
+    Apply the deserialization to the bytes produced by Pyarrow serialization
+
+    Parameters
+    --------------
+    bytes
+        Bytes
+    variant
+        Deserialization variant that MUST be specified (values: pyarrow_event_stream, pyarrow_event_log, parquet_dataframe)
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    deser
+        Deserialized object
+    """
     return VERSIONS_APPLY[variant](bytes, parameters=parameters)
 
 
 def import_from_file(file_path, variant, parameters=None):
+    """
+    Apply the deserialization to a file produced by Pyarrow serialization
+
+    Parameters
+    --------------
+    file_path
+        File path
+    variant
+        Deserialization variant that MUST be specified (values: pyarrow_event_stream, pyarrow_event_log, parquet_dataframe)
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    deser
+        Deserialized object
+    """
     return VERSIONS_IMPORT_FILE[variant](file_path, parameters=parameters)

@@ -2,6 +2,19 @@ import pyarrow
 
 
 def preprocess_stream(stream):
+    """
+    Preprocess the event stream
+
+    Parameters
+    -------------
+    stream
+        Event stream
+
+    Returns
+    -------------
+    transf_stream
+        Transformed stream
+    """
     stream = list(stream)
     for i in range(len(stream)):
         stream[i] = dict(stream[i])
@@ -9,6 +22,21 @@ def preprocess_stream(stream):
 
 
 def apply(log, parameters=None):
+    """
+    Serialize a log object to Pyarrow bytes
+
+    Parameters
+    --------------
+    log
+        Event log
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    --------------
+    serialization
+        Serialized bytes
+    """
     if parameters is None:
         parameters = {}
     log = preprocess_stream(log)
@@ -16,6 +44,23 @@ def apply(log, parameters=None):
 
 
 def export_to_file(log, file_path, parameters=None):
+    """
+    Serialize a log object to the content of a file
+
+    Parameters
+    --------------
+    log
+        Event log
+    file_path
+        File path (if None, then a temp file is targeted)
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    --------------
+    file_path
+        File path
+    """
     if parameters is None:
         parameters = {}
 
