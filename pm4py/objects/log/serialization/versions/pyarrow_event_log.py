@@ -2,6 +2,21 @@ import pyarrow
 
 
 def apply(log, parameters=None):
+    """
+    Serialize a log object to Pyarrow bytes
+
+    Parameters
+    --------------
+    log
+        Event log
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    --------------
+    serialization
+        Serialized bytes
+    """
     if parameters is None:
         parameters = {}
 
@@ -17,6 +32,23 @@ def apply(log, parameters=None):
 
 
 def export_to_file(log, file_path, parameters=None):
+    """
+    Serialize a log object to the content of a file
+
+    Parameters
+    --------------
+    log
+        Event log
+    file_path
+        File path (if None, then a temp file is targeted)
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    --------------
+    file_path
+        File path
+    """
     if parameters is None:
         parameters = {}
 

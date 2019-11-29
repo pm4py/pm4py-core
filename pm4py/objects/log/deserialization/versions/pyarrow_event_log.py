@@ -1,7 +1,23 @@
 import pyarrow
 from pm4py.objects.log.log import EventLog, Trace, Event
 
+
 def apply(bytes, parameters=None):
+    """
+    Apply the deserialization to the bytes produced by Pyarrow serialization
+
+    Parameters
+    --------------
+    bytes
+        Bytes
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    deser
+        Deserialized object
+    """
     if parameters is None:
         parameters = {}
 
@@ -17,6 +33,21 @@ def apply(bytes, parameters=None):
 
 
 def import_from_file(file_path, parameters=None):
+    """
+    Apply the deserialization to a file produced by Pyarrow serialization
+
+    Parameters
+    --------------
+    file_path
+        File path
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    deser
+        Deserialized object
+    """
     if parameters is None:
         parameters = {}
 

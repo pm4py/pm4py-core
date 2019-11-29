@@ -22,6 +22,23 @@ VERSIONS_EXPORT_FILE_DATAFRAME={PARQUET_DATAFRAME: parquet_dataframe.export_to_f
 
 
 def apply(log, variant=None, parameters=None):
+    """
+    Serialize a log object to Pyarrow bytes
+
+    Parameters
+    --------------
+    log
+        Event log
+    variant
+        Variant of the algorithm, possible values: pyarrow_event_stream, pyarrow_event_log, parquet_dataframe
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    --------------
+    serialization
+        Serialized bytes
+    """
     if type(log) is EventLog:
         if variant is None:
             variant=DEFAULT_EVENT_LOG
@@ -37,6 +54,25 @@ def apply(log, variant=None, parameters=None):
 
 
 def export_to_file(log, file_path, variant=None, parameters=None):
+    """
+    Serialize a log object to the content of a file
+
+    Parameters
+    --------------
+    log
+        Event log
+    file_path
+        File path  (if None, then a temp file is targeted)
+    variant
+        Variant of the algorithm, possible values: pyarrow_event_stream, pyarrow_event_log, parquet_dataframe
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    --------------
+    file_path
+        File path
+    """
     if type(log) is EventLog:
         if variant is None:
             variant=DEFAULT_EVENT_LOG
