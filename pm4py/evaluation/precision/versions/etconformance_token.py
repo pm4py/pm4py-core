@@ -2,6 +2,8 @@ from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.objects import log as log_lib
 from pm4py.evaluation.precision import utils as precision_utils
+from pm4py.algo.filtering.log.start_activities import start_activities_filter
+from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
 
 
 """
@@ -53,7 +55,8 @@ def apply(log, net, marking, final_marking, parameters=None):
 
     activity_key = parameters[
         PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
-    precision = 0.0
+    # default value for precision, when no activated transitions (not even by looking at the initial marking) are found
+    precision = 1.0
     sum_ee = 0
     sum_at = 0
 
@@ -71,6 +74,14 @@ def apply(log, net, marking, final_marking, parameters=None):
     fake_log = precision_utils.form_fake_log(prefixes_keys, activity_key=activity_key)
 
     aligned_traces = token_replay.apply(fake_log, net, marking, final_marking, parameters=parameters_tr)
+
+    # fix: also the empty prefix should be counted!
+    start_activities = set(start_activities_filter.get_start_activities(log, parameters=parameters))
+    trans_en_ini_marking = set([x.label for x in get_visible_transitions_eventually_enabled_by_marking(net, marking)])
+    diff = trans_en_ini_marking.difference(start_activities)
+    sum_at += len(log) * len(trans_en_ini_marking)
+    sum_ee += len(log) * len(diff)
+    # end fix
 
     for i in range(len(aligned_traces)):
         if aligned_traces[i]["trace_is_fit"]:
