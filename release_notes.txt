@@ -2,3 +2,4 @@
 This is a minor release, consisting of the following changes:
 
 - Pyarrow serialization
+- bug fix in the 'escaping edges' based precision
