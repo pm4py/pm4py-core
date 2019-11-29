@@ -108,7 +108,7 @@ setup(
         'graphviz',
         'pandas>=0.25.2',
         'scipy',
-        "pyarrow==0.13.0; python_version < '3.8' and sys_platform != 'win32'",
+        "pyarrow==0.15.1; python_version < '3.8' and sys_platform != 'win32'",
         'scikit-learn',
         'pydotplus',
         'pulp',
