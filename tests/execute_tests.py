@@ -32,6 +32,7 @@ if __name__ == "__main__":
     from tests.dec_tree_test import DecisionTreeTest
     from tests.filtering_test import LogFilteringTest
     from tests.dataframe_prefilter import DataframePrefilteringTest
+    from tests.serialization_test import SerializationTest
     from tests.graphs_forming import GraphsForming
     from tests.heuminer_test import HeuMinerTest
     from tests.matrix_rep_test import MatrixRepTest
@@ -61,6 +62,7 @@ if __name__ == "__main__":
     sna_tests = SnaTests()
     filtering_test = LogFilteringTest()
     prefiltering_test = DataframePrefilteringTest()
+    serialization_test = SerializationTest()
     graphforming_test = GraphsForming()
     heuminer_test = HeuMinerTest()
     matrixrep_test = MatrixRepTest()
