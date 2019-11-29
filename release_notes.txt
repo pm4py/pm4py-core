@@ -1,5 +1,9 @@
 ===== PM4PY 1.2.6 =====
 This is a minor release, consisting of the following changes:
 
-- Pyarrow serialization integration (supporting in-memory and to .pkl file serialization)
-- bug fix in the 'escaping edges' based precision
+    - Pyarrow serialization integration (supporting in-memory and to .pkl file serialization)
+    - bug fix in the 'escaping edges' based precision
+
+
+===== PM4PY 1.2.7 =====
+This is a minor release, consisting of the following changes:
