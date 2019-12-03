@@ -9,8 +9,10 @@ ALIGN_ETCONFORMANCE = "align_etconformance"
 
 VERSIONS = {ETCONFORMANCE_TOKEN: etconformance_token.apply, ALIGN_ETCONFORMANCE: align_etconformance.apply}
 
+DEFAULT_VARIANT = ETCONFORMANCE_TOKEN
 
-def apply(log, net, marking, final_marking, parameters=None, variant=ETCONFORMANCE_TOKEN):
+
+def apply(log, net, marking, final_marking, parameters=None, variant=DEFAULT_VARIANT):
     """
     Factory method to apply ET Conformance
 
