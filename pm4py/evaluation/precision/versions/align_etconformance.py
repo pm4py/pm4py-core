@@ -150,7 +150,7 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
     align_result = []
     for i in range(len(fake_log)):
         trace = fake_log[i]
-        sync_net, sync_initial_marking, sync_final_marking = build_sync_net(trace, net, marking, final_marking)
+        sync_net, sync_initial_marking, sync_final_marking = build_sync_net(trace, net, marking, final_marking, parameters=parameters)
         stop_marking = petri.petrinet.Marking()
         for pl, count in sync_final_marking.items():
             if pl.name[1] == utils.SKIP:
