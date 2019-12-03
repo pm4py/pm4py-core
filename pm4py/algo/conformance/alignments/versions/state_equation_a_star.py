@@ -453,7 +453,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         enabled_trans = [t for t in possible_enabling_transitions if t.sub_marking <= current_marking]
 
         trans_to_visit_with_cost = [(t, cost_function[t]) for t in enabled_trans if not (
-                curr.t is not None and utils.__is_log_move(curr.t, skip) and utils.__is_model_move(t, skip))]
+                t is not None and utils.__is_log_move(t, skip) and utils.__is_model_move(t, skip))]
 
         for t, cost in trans_to_visit_with_cost:
             traversed += 1
