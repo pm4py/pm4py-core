@@ -53,16 +53,21 @@ def apply(log, net, marking, final_marking, parameters=None):
     align_stop_marking = align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameters=parameters)
     all_markings = transform_markings_from_sync_to_original_net(align_stop_marking, net, parameters=parameters)
 
-    for i in range(len(all_markings)):
-        atm = all_markings[i]
+    for i in range(len(prefixes)):
+        markings = all_markings[i]
 
-        if atm is not None:
+        if markings is not None:
             log_transitions = set(prefixes[prefixes_keys[i]])
-            activated_transitions_labels = set(
-                x.label for x in utils.get_visible_transitions_eventually_enabled_by_marking(net, atm) if
-                x.label is not None)
-            sum_at += len(activated_transitions_labels) * prefix_count[prefixes_keys[i]]
+            activated_transitions_labels = set()
+            for m in markings:
+                # add to the set of activated transitions in the model the activated transitions
+                # for each prefix
+                activated_transitions_labels = activated_transitions_labels.union(
+                    x.label for x in utils.get_visible_transitions_eventually_enabled_by_marking(net, m) if
+                    x.label is not None)
             escaping_edges = activated_transitions_labels.difference(log_transitions)
+
+            sum_at += len(activated_transitions_labels) * prefix_count[prefixes_keys[i]]
             sum_ee += len(escaping_edges) * prefix_count[prefixes_keys[i]]
 
     # fix: also the empty prefix should be counted!
@@ -106,13 +111,24 @@ def transform_markings_from_sync_to_original_net(markings0, net, parameters=None
     markings = []
 
     for i in range(len(markings0)):
-        res = markings0[i]
-        atm = petri.petrinet.Marking()
-        if res is not None:
-            for pl, count in res.items():
-                if pl[0] == utils.SKIP:
-                    atm[places_corr[pl[1]]] = count
-            markings.append(atm)
+        res_list = markings0[i]
+
+        # res_list shall be a list of markings.
+        # If it is None, then there is no correspondence markings
+        # in the original Petri net
+        if res_list is not None:
+            # saves all the markings reached by the optimal alignment
+            # as markings of the original net
+            markings.append([])
+
+            for j in range(len(res_list)):
+                res = res_list[j]
+
+                atm = petri.petrinet.Marking()
+                for pl, count in res.items():
+                    if pl[0] == utils.SKIP:
+                        atm[places_corr[pl[1]]] = count
+                markings[-1].append(atm)
         else:
             markings.append(None)
 
@@ -155,16 +171,23 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
                 stop_marking[pl] = count
         cost_function = utils.construct_standard_cost_function(sync_net, utils.SKIP)
 
+        # perform the alignment of the prefix
         res = precision_utils.__search(sync_net, sync_initial_marking, sync_final_marking, stop_marking, cost_function,
                                        utils.SKIP)
 
         if res is not None:
-            res2 = {}
-            for pl in res:
-                res2[(pl.name[0], pl.name[1])] = res[pl]
+            align_result.append([])
+            for mark in res:
+                res2 = {}
+                for pl in mark:
+                    # transforms the markings for easier correspondence at the end
+                    # (distributed engine friendly!)
+                    res2[(pl.name[0], pl.name[1])] = mark[pl]
 
-            align_result.append(res2)
+                align_result[-1].append(res2)
         else:
+            # if there is no path from the initial marking
+            # replaying the given prefix, then add None
             align_result.append(None)
 
     return align_result
