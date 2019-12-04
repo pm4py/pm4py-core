@@ -22,19 +22,39 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
     visited = 0
     queued = 0
     traversed = 0
+
+    # return all the prefix markings of the optimal alignments as set
+    ret_markings = None
+    # keep track of the optimal cost of an alignment (to trim search when needed)
+    optimal_cost = None
+
     while not len(open_set) == 0:
         curr = heapq.heappop(open_set)
 
         current_marking = curr.m
 
+        # trim alignments when we already reached an optimal alignment and the
+        # current cost is greater than the optimal cost
+        if optimal_cost is not None and curr.f > optimal_cost:
+            break
+
         already_closed = current_marking in closed
         if already_closed:
             continue
 
-        # 12/10/2019: the current marking can be equal to the final marking only if the heuristics
-        # (underestimation of the remaining cost) is 0. Low-hanging fruits
         if stop <= current_marking:
-            return current_marking
+            # add the current marking to the set
+            # of returned markings
+            if ret_markings is None:
+                ret_markings = set()
+            ret_markings.add(current_marking)
+            # close the marking
+            closed.add(current_marking)
+            # set the optimal cost
+            optimal_cost = curr.f
+
+            continue
+
         closed.add(current_marking)
         visited += 1
 
@@ -62,6 +82,8 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
 
             tp = utils.SearchTuple(new_f, g, 0, new_marking, curr, t, None, True)
             heapq.heappush(open_set, tp)
+
+    return ret_markings
 
 
 def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
