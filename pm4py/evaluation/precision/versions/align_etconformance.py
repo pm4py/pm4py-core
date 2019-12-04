@@ -33,12 +33,15 @@ def apply(log, net, marking, final_marking, parameters=None):
     if parameters is None:
         parameters = {}
 
+    debug_level = parameters["debug_level"] if "debug_level" in parameters else 0
+
     activity_key = parameters[
         PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
     # default value for precision, when no activated transitions (not even by looking at the initial marking) are found
     precision = 1.0
     sum_ee = 0
     sum_at = 0
+    unfit = 0
 
     if not (petri.check_soundness.check_wfnet(net) and petri.check_soundness.check_relaxed_soundness_net_in_fin_marking(
             net,
@@ -69,6 +72,21 @@ def apply(log, net, marking, final_marking, parameters=None):
 
             sum_at += len(activated_transitions_labels) * prefix_count[prefixes_keys[i]]
             sum_ee += len(escaping_edges) * prefix_count[prefixes_keys[i]]
+
+            if debug_level > 1:
+                print("")
+                print("prefix=", prefixes_keys[i])
+                print("log_transitions=", log_transitions)
+                print("activated_transitions=", activated_transitions_labels)
+                print("escaping_edges=", escaping_edges)
+        else:
+            unfit += prefix_count[prefixes_keys[i]]
+
+    if debug_level > 0:
+        print("\n")
+        print("overall unfit", unfit)
+        print("overall activated transitions", sum_at)
+        print("overall escaping edges", sum_ee)
 
     # fix: also the empty prefix should be counted!
     start_activities = set(start_activities_filter.get_start_activities(log, parameters=parameters))
