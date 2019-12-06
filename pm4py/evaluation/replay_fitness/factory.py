@@ -3,6 +3,7 @@ from pm4py.evaluation.replay_fitness.versions import alignment_based, token_repl
 from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.log.util import general as log_util
 from pm4py.objects.log.util import xes as xes_util
+from pm4py.objects import petri
 
 ALIGNMENT_BASED = "alignments"
 TOKEN_BASED = "token_replay"
@@ -46,11 +47,20 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None, varia
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
 
+    # execute the following part of code when the variant is not specified by the user
+    if variant is None:
+        if not (petri.check_soundness.check_wfnet(petri_net) and petri.check_soundness.check_relaxed_soundness_net_in_fin_marking(petri_net, initial_marking, final_marking)):
+            # in the case the net is not a relaxed sound workflow net, we must apply token-based replay
+            variant = TOKEN_BASED
+        else:
+            # otherwise, use the align-etconformance approach (safer, in the case the model contains duplicates)
+            variant = ALIGNMENT_BASED
+
     return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), petri_net,
                              initial_marking, final_marking, parameters=parameters)
 
 
-def evaluate(results, parameters="None", variant="token_replay"):
+def evaluate(results, parameters=None, variant="token_replay"):
     """
     Evaluate replay results when the replay algorithm has already been applied
 
