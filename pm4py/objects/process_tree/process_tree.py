@@ -30,7 +30,7 @@ class ProcessTree(object):
         self._label = label
 
     def _set_children(self, children):
-        self.children = children
+        self._children = children
 
     def _get_children(self):
         return self._children
