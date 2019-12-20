@@ -7,3 +7,17 @@ This is a minor release, consisting of the following changes:
 
 ===== PM4PY 1.2.7 =====
 This is a minor release, consisting of the following changes:
+
+    - Bug fix (programming error) in the alignments code
+    - Changed recursion depth in token-based replay invisibles exploration
+    - Removed copy.copy for parent nodes of childs in log generation from process tree
+    - Fixed "should_close" for XOR node in PT generation
+    - Fixed "execute_enabled" for parallel and OR node in PT generation
+    - Bug fix process tree children setter
+    - Consider only fittin traces in the Align-ETConformance count
+    - Consider ALL the optimal alignments (as described in the paper) and not only the first one
+    - Refactoring: moving of utilities and making the search function using Dijkstra (since we are looking for fit paths) instead of A*
+    - LTL Checker updated:
+        - Making existing filters more performant (A eventually B eventually C)
+        - Introducing A eventually B eventually C eventually D
+        - Introducing time boundaries for each arc of the eventualties
