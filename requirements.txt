@@ -7,13 +7,13 @@ numpy
 ciso8601
 lxml
 graphviz
-pyarrow==0.15.1; python_version < '3.8' and sys_platform != 'win32'
+pyarrow==0.15.1; python_version < '3.8'
 pandas>=0.25.2
 scipy
 pydotplus
 scikit-learn
 pulp
 pytz>=2019.3
-ortools; python_version < '3.8' and sys_platform != 'win32'
+ortools; python_version < '3.8'
 sklearn
 intervaltree
