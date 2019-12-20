@@ -22,3 +22,7 @@ This is a minor release, consisting of the following changes:
         - Introducing A eventually B eventually C eventually D
         - Introducing time boundaries for each arc of the eventualties
     - drop windows platform reuquirement for ortools/pyarrow
+
+
+===== PM4PY 1.2.8 =====
+This is a minor release, consisting of the following changes:
