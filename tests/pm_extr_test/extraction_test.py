@@ -9,8 +9,8 @@ if __name__ == "__main__":
     sys.path.insert(0, parentdir)
     sys.path.insert(0, parentdir2)
     import time
-    #import pm4pyigraph
-    #import pm4pycvxopt
+    # import pm4pyigraph
+    # import pm4pycvxopt
     from pm4py.objects.log.importer.xes import factory as xes_factory
     from pm4py.algo.discovery.inductive import factory as inductive
     from pm4py.algo.discovery.alpha import factory as alpha
@@ -155,29 +155,34 @@ if __name__ == "__main__":
             t1 = time.time()
             alpha_model, alpha_initial_marking, alpha_final_marking = alpha.apply(log, parameters=parameters_discovery)
             pnml_exporter.export_net(alpha_model, alpha_initial_marking,
-                                     os.path.join(pnmlFolder, logNamePrefix + "_alpha.pnml"), final_marking=alpha_final_marking)
+                                     os.path.join(pnmlFolder, logNamePrefix + "_alpha.pnml"),
+                                     final_marking=alpha_final_marking)
             t2 = time.time()
             print("time interlapsed for calculating Alpha Model", (t2 - t1))
-            print("alpha is_sound_wfnet",check_soundness.check_petri_wfnet_and_soundness(alpha_model, debug=True))
+            print("alpha is_sound_wfnet", check_soundness.check_petri_wfnet_and_soundness(alpha_model, debug=True))
 
             t1 = time.time()
-            heu_model, heu_initial_marking, heu_final_marking = heuristics_miner.apply(log, parameters=parameters_discovery)
+            heu_model, heu_initial_marking, heu_final_marking = heuristics_miner.apply(log,
+                                                                                       parameters=parameters_discovery)
             pnml_exporter.export_net(heu_model, heu_initial_marking,
-                                     os.path.join(pnmlFolder, logNamePrefix + "_alpha.pnml"), final_marking=heu_final_marking)
+                                     os.path.join(pnmlFolder, logNamePrefix + "_alpha.pnml"),
+                                     final_marking=heu_final_marking)
             t2 = time.time()
             print("time interlapsed for calculating Heuristics Model", (t2 - t1))
-            print("heuristics is_sound_wfnet",check_soundness.check_petri_wfnet_and_soundness(heu_model, debug=True))
+            print("heuristics is_sound_wfnet", check_soundness.check_petri_wfnet_and_soundness(heu_model, debug=True))
 
             t1 = time.time()
             tree = inductive.apply_tree(log, parameters=parameters_discovery)
             inductive_model, inductive_im, inductive_fm = inductive.apply(log, parameters=parameters_discovery)
             pnml_exporter.export_net(inductive_model, inductive_im,
-                                     os.path.join(pnmlFolder, logNamePrefix + "_inductive.pnml"), final_marking=inductive_fm)
+                                     os.path.join(pnmlFolder, logNamePrefix + "_inductive.pnml"),
+                                     final_marking=inductive_fm)
             generated_log = pt_semantics.generate_log(tree)
             print("first trace of log", [x["concept:name"] for x in generated_log[0]])
             t2 = time.time()
             print("time interlapsed for calculating Inductive Model", (t2 - t1))
-            print("inductive is_sound_wfnet",check_soundness.check_petri_wfnet_and_soundness(inductive_model, debug=True))
+            print("inductive is_sound_wfnet",
+                  check_soundness.check_petri_wfnet_and_soundness(inductive_model, debug=True))
 
             parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
                           pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key, "format": "png"}
@@ -186,7 +191,7 @@ if __name__ == "__main__":
                                                 parameters=parameters, variant="frequency")
             vis_save(alpha_vis, os.path.join(pngFolder, logNamePrefix + "_alpha.png"))
             heuristics_vis = petri_vis_factory.apply(heu_model, heu_initial_marking, heu_final_marking,
-                                                    log=log, parameters=parameters, variant="frequency")
+                                                     log=log, parameters=parameters, variant="frequency")
             vis_save(heuristics_vis, os.path.join(pngFolder, logNamePrefix + "_heuristics.png"))
             inductive_vis = petri_vis_factory.apply(inductive_model, inductive_im, inductive_fm,
                                                     log=log, parameters=parameters, variant="frequency")
@@ -195,14 +200,15 @@ if __name__ == "__main__":
             t1 = time.time()
             fitness_token_alpha[logName] = \
                 fitness_factory.apply(log, alpha_model, alpha_initial_marking, alpha_final_marking,
-                                      parameters=parameters)[
+                                      parameters=parameters, variant="token_replay")[
                     'perc_fit_traces']
             t2 = time.time()
             times_tokenreplay_alpha[logName] = t2 - t1
 
             t1 = time.time()
             fitness_token_imdf[logName] = \
-                fitness_factory.apply(log, inductive_model, inductive_im, inductive_fm, parameters=parameters)[
+                fitness_factory.apply(log, inductive_model, inductive_im, inductive_fm, parameters=parameters,
+                                      variant="token_replay")[
                     'perc_fit_traces']
             t2 = time.time()
             times_tokenreplay_imdf[logName] = t2 - t1

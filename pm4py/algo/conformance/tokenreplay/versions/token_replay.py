@@ -14,7 +14,7 @@ from copy import deepcopy, copy
 PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
 DEFAULT_VARIANT_DELIMITER = ","
 
-MAX_REC_DEPTH = 18
+MAX_REC_DEPTH = 50
 MAX_IT_FINAL1 = 5
 MAX_IT_FINAL2 = 5
 MAX_REC_DEPTH_HIDTRANSENABL = 2
@@ -108,35 +108,6 @@ def merge_dicts(x, y):
         else:
             if y[key] < x[key]:
                 x[key] = y[key]
-
-
-def get_hidden_trans_reached_trans(t, net, rec_depth):
-    """
-    Get visible transitions reachable by enabling a hidden transition
-
-    Parameters
-    ----------
-    t
-        Transition that should be enabled
-    net
-        Petri net
-    rec_depth
-        Current recursion depth
-    """
-    reach_trans = {}
-    if rec_depth > MAX_REC_DEPTH:
-        return reach_trans
-    # if rec_depth > DebugConst.REACH_MRD:
-    #    DebugConst.REACH_MRD = rec_depth
-    for a1 in t.out_arcs:
-        place = a1.target
-        for a2 in place.out_arcs:
-            t2 = a2.target
-            if t2.label is not None:
-                reach_trans[t2.label] = rec_depth
-            if t2.label is None:
-                merge_dicts(reach_trans, get_hidden_trans_reached_trans(t2, net, rec_depth + 1))
-    return reach_trans
 
 
 def get_places_with_missing_tokens(t, marking):
@@ -988,7 +959,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
     post_fix_cache = PostFixCaching()
     marking_to_activity_cache = MarkingToActivityCaching()
     if places_shortest_path_by_hidden is None:
-        places_shortest_path_by_hidden = get_places_shortest_path_by_hidden(net)
+        places_shortest_path_by_hidden = get_places_shortest_path_by_hidden(net, MAX_REC_DEPTH)
 
     place_fitness_per_trace = {}
     transition_fitness_per_trace = {}

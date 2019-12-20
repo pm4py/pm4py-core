@@ -57,14 +57,16 @@ def remove_transition(net, trans):
 
 
 def add_place(net, name=None):
-    name = name if name is not None else 'p_' + str(len(net.places)) + '_' + str(time.time()) + str(random.randint(0, 10000))
+    name = name if name is not None else 'p_' + str(len(net.places)) + '_' + str(time.time()) + str(
+        random.randint(0, 10000))
     p = petri.petrinet.PetriNet.Place(name=name)
     net.places.add(p)
     return p
 
 
 def add_transition(net, name=None, label=None):
-    name = name if name is not None else 't_' + str(len(net.transitions)) + '_' + str(time.time()) + str(random.randint(0, 10000))
+    name = name if name is not None else 't_' + str(len(net.transitions)) + '_' + str(time.time()) + str(
+        random.randint(0, 10000))
     t = petri.petrinet.PetriNet.Transition(name=name, label=label)
     net.transitions.add(t)
     return t
@@ -397,7 +399,8 @@ def get_strongly_connected_subnets(net):
     return strongly_connected_subnets
 
 
-def get_places_shortest_path(net, place_to_populate, current_place, places_shortest_path, actual_list, rec_depth):
+def get_places_shortest_path(net, place_to_populate, current_place, places_shortest_path, actual_list, rec_depth,
+                             max_rec_depth):
     """
     Get shortest path between places lead by hidden transitions
 
@@ -415,9 +418,10 @@ def get_places_shortest_path(net, place_to_populate, current_place, places_short
         Actual list of transitions to enable
     rec_depth
         Recursion depth
+    max_rec_depth
+        Maximum recursion depth
     """
-    MAX_REC_DEPTH = 18
-    if rec_depth > MAX_REC_DEPTH:
+    if rec_depth > max_rec_depth:
         return places_shortest_path
     if place_to_populate not in places_shortest_path:
         places_shortest_path[place_to_populate] = {}
@@ -431,11 +435,11 @@ def get_places_shortest_path(net, place_to_populate, current_place, places_short
                     places_shortest_path[place_to_populate][p2.target] = copy(new_actual_list)
                     places_shortest_path = get_places_shortest_path(net, place_to_populate, p2.target,
                                                                     places_shortest_path, new_actual_list,
-                                                                    rec_depth + 1)
+                                                                    rec_depth + 1, max_rec_depth)
     return places_shortest_path
 
 
-def get_places_shortest_path_by_hidden(net):
+def get_places_shortest_path_by_hidden(net, max_rec_depth):
     """
     Get shortest path between places lead by hidden transitions
 
@@ -443,10 +447,12 @@ def get_places_shortest_path_by_hidden(net):
     ----------
     net
         Petri net
+    max_rec_depth
+        Maximum recursion depth
     """
     places_shortest_path = {}
     for p in net.places:
-        places_shortest_path = get_places_shortest_path(net, p, p, places_shortest_path, [], 0)
+        places_shortest_path = get_places_shortest_path(net, p, p, places_shortest_path, [], 0, max_rec_depth)
     return places_shortest_path
 
 
@@ -508,7 +514,7 @@ def remove_unconnected_components(net):
 
 
 def get_s_components_from_petri(net, im, fm, rec_depth=0, curr_s_comp=None, visited_places=None,
-                                list_s_components=None):
+                                list_s_components=None, max_rec_depth=6):
     """
     Gets the S-components from a Petri net
 
@@ -526,13 +532,14 @@ def get_s_components_from_petri(net, im, fm, rec_depth=0, curr_s_comp=None, visi
         Visited places
     list_s_components
         List of S-components
+    max_rec_depth
+        Maximum recursion depth
 
     Returns
     --------------
     s_components
         List of S-components
     """
-    MAX_REC_DEPTH = 6
     if list_s_components is None:
         list_s_components = []
     if len(im) > 1 or len(fm) > 1:
@@ -545,7 +552,7 @@ def get_s_components_from_petri(net, im, fm, rec_depth=0, curr_s_comp=None, visi
     if visited_places is None:
         visited_places = []
     something_changed = True
-    while something_changed and rec_depth < MAX_REC_DEPTH:
+    while something_changed and rec_depth < max_rec_depth:
         something_changed = False
         places_to_visit = sorted(list(set(curr_s_comp[len(visited_places):])), key=lambda x: len(x.out_arcs),
                                  reverse=True)
@@ -569,7 +576,8 @@ def get_s_components_from_petri(net, im, fm, rec_depth=0, curr_s_comp=None, visi
                             list_s_components = get_s_components_from_petri(net, im, fm, rec_depth=rec_depth + 1,
                                                                             curr_s_comp=new_curr_s_comp,
                                                                             visited_places=new_visited_places,
-                                                                            list_s_components=list_s_components)
+                                                                            list_s_components=list_s_components,
+                                                                            max_rec_depth=max_rec_depth)
 
     if not set([place.name for place in curr_s_comp]) in list_s_components:
         list_s_components.append(set([place.name for place in curr_s_comp]))
