@@ -130,24 +130,24 @@ class GeneratedTree(object):
             root.operator = pt_operator.Operator.SEQUENCE
             root_loop = process_tree.ProcessTree(operator=pt_operator.Operator.LOOP)
             root_loop.parent = root
-            root._children.append(copy.copy(root_loop))
+            root._children.append(root_loop)
             new_node = process_tree.ProcessTree(label=activity)
             new_node.parent = root_loop
-            root_loop._children.append(copy.copy(new_node))
+            root_loop._children.append(new_node)
             activity = self.get_next_activity(activity)
             if silent_activity:
                 new_node = process_tree.ProcessTree(label=None)
                 new_node.parent = root_loop
-                root_loop._children.append(copy.copy(new_node))
+                root_loop._children.append(new_node)
 
             else:
                 new_node = process_tree.ProcessTree(label=activity)
                 new_node.parent = root_loop
-                root_loop._children.append(copy.copy(new_node))
+                root_loop._children.append(new_node)
                 activity = self.get_next_activity(activity)
             new_node = process_tree.ProcessTree(label=activity)
             new_node.parent = root
-            root._children.append(copy.copy(new_node))
+            root._children.append(new_node)
             self.total_activities -= 1
         else:
             if silent_activity and operator == "choice":
@@ -155,25 +155,25 @@ class GeneratedTree(object):
                 if number == 0:
                     new_node = process_tree.ProcessTree(label=None)
                     new_node.parent = root
-                    root._children.append(copy.copy(new_node))
+                    root._children.append(new_node)
                     new_node = process_tree.ProcessTree(label=activity)
                     new_node.parent = root
-                    root._children.append(copy.copy(new_node))
+                    root._children.append(new_node)
                 else:
                     new_node = process_tree.ProcessTree(label=activity)
                     new_node.parent = root
-                    root._children.append(copy.copy(new_node))
+                    root._children.append(new_node)
                     new_node = process_tree.ProcessTree(label=None)
                     new_node.parent = root
-                    root._children.append(copy.copy(new_node))
+                    root._children.append(new_node)
             else:
                 new_node = process_tree.ProcessTree(label=activity)
                 new_node.parent = root
-                root._children.append(copy.copy(new_node))
+                root._children.append(new_node)
                 activity = self.get_next_activity(activity)
                 new_node = process_tree.ProcessTree(label=activity)
                 new_node.parent = root
-                root._children.append(copy.copy(new_node))
+                root._children.append(new_node)
         # always two children are added
         self.total_activities -= 2
         return self.get_next_activity(activity)
@@ -212,23 +212,23 @@ class GeneratedTree(object):
             leaf._set_operator(pt_operator.Operator.SEQUENCE)
             root_loop = process_tree.ProcessTree(pt_operator.Operator.LOOP)
             root_loop.parent = leaf
-            leaf._children.append(copy.copy(root_loop))
+            leaf._children.append(root_loop)
             new_node = process_tree.ProcessTree(label=activity)
             new_node.parent = root_loop
-            root_loop._children.append(copy.copy(new_node))
+            root_loop._children.append(new_node)
             activity = next_activity
             if silent_activity:
                 new_node = process_tree.ProcessTree(label=None)
                 new_node.parent = root_loop
-                root_loop._children.append(copy.copy(new_node))
+                root_loop._children.append(new_node)
             else:
                 new_node = process_tree.ProcessTree(label=activity)
                 new_node.parent = root_loop
-                root_loop._children.append(copy.copy(new_node))
+                root_loop._children.append(new_node)
                 activity = self.get_next_activity(activity)
             new_node = process_tree.ProcessTree(label=activity)
             new_node.parent = leaf
-            leaf._children.append(copy.copy(new_node))
+            leaf._children.append(new_node)
             self.total_activities -= 1
         else:
             if silent_activity and operator == "choice":
@@ -236,25 +236,25 @@ class GeneratedTree(object):
                 if number == 0:
                     new_node = process_tree.ProcessTree(label=None)
                     new_node.parent = leaf
-                    leaf._children.append(copy.copy(new_node))
+                    leaf._children.append(new_node)
                     new_node = process_tree.ProcessTree(label=activity)
                     new_node.parent = leaf
-                    leaf._children.append(copy.copy(new_node))
+                    leaf._children.append(new_node)
                 else:
                     new_node = process_tree.ProcessTree(label=activity)
                     new_node.parent = leaf
-                    leaf._children.append(copy.copy(new_node))
+                    leaf._children.append(new_node)
                     new_node = process_tree.ProcessTree(label=None)
                     new_node.parent = leaf
-                    leaf._children.append(copy.copy(new_node))
+                    leaf._children.append(new_node)
             else:
                 new_node = process_tree.ProcessTree(label=activity)
                 new_node.parent = leaf
-                leaf._children.append(copy.copy(new_node))
+                leaf._children.append(new_node)
                 activity = next_activity
                 new_node = process_tree.ProcessTree(label=activity)
                 new_node.parent = leaf
-                leaf._children.append(copy.copy(new_node))
+                leaf._children.append(new_node)
 
         self.total_activities -= 2
         if silent_activity and operator == "choice":

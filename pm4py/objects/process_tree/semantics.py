@@ -125,6 +125,9 @@ def execute_enabled(enabled, open, closed, execution_sequence=None):
             execution_sequence.append((c, pt_st.State.ENABLED))
         elif vertex.operator is pt_opt.Operator.PARALLEL:
             enabled |= set(vertex.children)
+            for x in vertex.children:
+                if x in closed:
+                    closed.remove(x)
             map(lambda c: execution_sequence.append((c, pt_st.State.ENABLED)), vertex.children)
         elif vertex.operator is pt_opt.Operator.XOR:
             vc = vertex.children
@@ -134,6 +137,9 @@ def execute_enabled(enabled, open, closed, execution_sequence=None):
         elif vertex.operator is pt_opt.Operator.OR:
             some_children = [c for c in vertex.children if random.random() < 0.5]
             enabled |= set(some_children)
+            for x in some_children:
+                if x in closed:
+                    closed.remove(x)
             map(lambda c: execution_sequence.append((c, pt_st.State.ENABLED)), some_children)
     else:
         close(vertex, enabled, open, closed, execution_sequence)
@@ -219,5 +225,7 @@ def should_close(vertex, closed, child):
         return True
     elif vertex.operator is pt_opt.Operator.LOOP or vertex.operator is pt_opt.Operator.SEQUENCE:
         return vertex.children.index(child) == len(vertex.children) - 1
+    elif vertex.operator is pt_opt.Operator.XOR:
+        return True
     else:
         return set(vertex.children) <= closed

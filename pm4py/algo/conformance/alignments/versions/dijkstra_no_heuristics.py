@@ -13,8 +13,6 @@ from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, decorate_transitions_prepostset
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.objects.petri import align_utils as utils
-import networkx as nx
-from pm4py.objects.petri import networkx_graph
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
@@ -213,7 +211,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         enabled_trans = [t for t in possible_enabling_transitions if t.sub_marking <= current_marking]
 
         trans_to_visit_with_cost = [(t, cost_function[t]) for t in enabled_trans if not (
-                curr.t is not None and utils.__is_log_move(curr.t, skip) and utils.__is_model_move(t, skip))]
+                t is not None and utils.__is_log_move(t, skip) and utils.__is_model_move(t, skip))]
 
         for t, cost in trans_to_visit_with_cost:
             traversed += 1
