@@ -8,3 +8,4 @@ DF_TO_EVENT_LOG_1V = 'df_to_event_log_1v'
 DF_TO_EVENT_LOG_NV = 'df_to_event_log_nv'
 
 DEEPCOPY = "deepcopy"
+STREAM_POSTPROCESSING = "stream_postprocessing"
