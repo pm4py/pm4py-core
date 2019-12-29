@@ -6,14 +6,47 @@ import pm4py
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log.util import general as log_util
-
-
+import pandas
+import math
 DEEPCOPY = constants.DEEPCOPY
+STREAM_POSTPROCESSING = constants.STREAM_POSTPROCESSING
 
+
+def postprocess_stream(list_events):
+    """
+    Postprocess the list of events of the stream in order to make sure
+    that there are no NaN/NaT values
+
+    Parameters
+    -------------
+    list_events
+        List of events
+
+    Returns
+    -------------
+    list_events
+        Postprocessed stream
+    """
+    for event in list_events:
+        event_keys = list(event.keys())
+        for k in event_keys:
+            if type(event[k]) is pandas._libs.tslibs.nattype.NaTType:
+                del event[k]
+                continue
+            if (type(event[k]) is float or type(event[k]) is int) and math.isnan(event[k]):
+                del event[k]
+                continue
+    return list_events
 
 def apply(log, parameters=None):
+    if parameters is None:
+        parameters = {}
     if isinstance(log, pandas.core.frame.DataFrame):
-        log = log_instance.EventStream(log.to_dict('records'), attributes={'origin': 'csv'})
+        list_events = log.to_dict('records')
+        enable_postprocessing = parameters[STREAM_POSTPROCESSING] if STREAM_POSTPROCESSING in parameters else False
+        if enable_postprocessing:
+            list_events = postprocess_stream(list_events)
+        log = log_instance.EventStream(list_events, attributes={'origin': 'csv'})
     if isinstance(log, pm4py.objects.log.log.EventLog):
         parameters = parameters if parameters is not None else dict()
         if log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX in parameters:
