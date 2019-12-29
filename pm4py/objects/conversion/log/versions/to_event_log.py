@@ -14,8 +14,10 @@ DEEPCOPY = constants.DEEPCOPY
 
 
 def apply(log, parameters=None):
+    if parameters is None:
+        parameters = {}
     if isinstance(log, pandas.core.frame.DataFrame):
-        log = to_event_stream.apply(log)
+        log = to_event_stream.apply(log, parameters=parameters)
     if isinstance(log, pm4py.objects.log.log.EventStream) and (not isinstance(log, pm4py.objects.log.log.EventLog)):
         parameters = parameters if parameters is not None else dict()
         if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY in parameters:
