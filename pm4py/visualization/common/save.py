@@ -12,5 +12,5 @@ def save(gviz, output_file_path):
     output_file_path
         Path where the GraphViz output should be saved
     """
-    render = gviz.render()
+    render = gviz.render(cleanup=True)
     shutil.copyfile(render, output_file_path)

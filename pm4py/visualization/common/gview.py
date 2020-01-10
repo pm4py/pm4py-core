@@ -22,4 +22,4 @@ def view(gviz):
         from IPython.display import display
         return display(image)
     else:
-        return gviz.view()
+        return gviz.view(cleanup=True)
