@@ -2,20 +2,23 @@ import pandas
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.algo.discovery.inductive.versions.dfg import imdfb
+from pm4py.algo.discovery.inductive.versions.dfg import dfg_based_old, dfg_based
 from pm4py.objects.log.util import general as log_util
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.objects.conversion.log import factory as log_conversion
 
-
 IMDFB = 'imdfb'
+DFG_BASED_OLD_VERSION = 'dfg_based_old_version'
+DFG_BASED = 'dfg_based'
 
-DEFAULT_VARIANT = IMDFB
+DEFAULT_VARIANT = DFG_BASED
 
-VERSIONS = {IMDFB: imdfb.apply}
-VERSIONS_DFG = {IMDFB: imdfb.apply_dfg}
-VERSIONS_TREE = {IMDFB: imdfb.apply_tree}
-VERSIONS_TREE_DFG = {IMDFB: imdfb.apply_tree_dfg}
+VERSIONS = {DFG_BASED: dfg_based.apply, DFG_BASED_OLD_VERSION: dfg_based_old.apply, IMDFB: dfg_based_old.apply}
+VERSIONS_DFG = {DFG_BASED: dfg_based.apply_dfg, DFG_BASED_OLD_VERSION: dfg_based_old.apply_dfg, IMDFB: dfg_based_old.apply_dfg}
+VERSIONS_TREE = {DFG_BASED: dfg_based.apply_tree, DFG_BASED_OLD_VERSION: dfg_based_old.apply_tree,
+                 IMDFB: dfg_based_old.apply_tree}
+VERSIONS_TREE_DFG = {DFG_BASED: dfg_based.apply_tree_dfg, DFG_BASED_OLD_VERSION: dfg_based_old.apply_tree_dfg,
+                     IMDFB: dfg_based_old.apply_tree_dfg}
 
 
 def apply(log, parameters=None, variant=DEFAULT_VARIANT):
