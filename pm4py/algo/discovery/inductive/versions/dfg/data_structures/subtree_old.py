@@ -1,18 +1,127 @@
-from copy import deepcopy, copy
-
 import networkx as nx
 import numpy as np
 
-from pm4py.objects.dfg.utils.dfg_utils import filter_dfg_on_act
+from copy import copy
+
 from pm4py.objects.dfg.utils.dfg_utils import get_all_activities_connected_as_input_to_activity
 from pm4py.objects.dfg.utils.dfg_utils import get_all_activities_connected_as_output_to_activity
-from pm4py.objects.dfg.utils.dfg_utils import infer_end_activities_from_succ_connections_and_current_dfg
-from pm4py.objects.dfg.utils.dfg_utils import infer_start_activities
-from pm4py.objects.dfg.utils.dfg_utils import infer_start_activities_from_prev_connections_and_current_dfg
-from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa import Subtree
+from pm4py.objects.dfg.utils.dfg_utils import filter_dfg_on_act, negate, get_activities_dirlist, \
+    get_activities_self_loop, get_activities_direction
+from pm4py.objects.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg, \
+    infer_start_activities, infer_end_activities
+from pm4py.objects.dfg.filtering.dfg_filtering import clean_dfg_based_on_noise_thresh
+from pm4py.objects.dfg.utils.dfg_utils import infer_start_activities_from_prev_connections_and_current_dfg, \
+    infer_end_activities_from_succ_connections_and_current_dfg
 
 
-class SubtreeB(Subtree):
+class SubtreeDFGBasedOld():
+    def __init__(self, dfg, master_dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0,
+                 start_activities=None, end_activities=None, initial_start_activities=None,
+                 initial_end_activities=None):
+        """
+        Constructor
+
+        Parameters
+        -----------
+        dfg
+            Directly follows graph of this subtree
+        master_dfg
+            Original DFG
+        initial_dfg
+            Referral directly follows graph that should be taken in account adding hidden/loop transitions
+        activities
+            Activities of this subtree
+        counts
+            Shared variable
+        rec_depth
+            Current recursion depth
+        """
+        self.master_dfg = copy(master_dfg)
+        self.initial_dfg = copy(initial_dfg)
+        self.counts = counts
+        self.rec_depth = rec_depth
+        self.noise_threshold = noise_threshold
+        self.start_activities = start_activities
+        if self.start_activities is None:
+            self.start_activities = []
+        self.end_activities = end_activities
+        if self.end_activities is None:
+            self.end_activities = []
+        self.initial_start_activities = initial_start_activities
+        if self.initial_start_activities is None:
+            self.initial_start_activities = infer_start_activities(master_dfg)
+        self.initial_end_activities = initial_end_activities
+        if self.initial_end_activities is None:
+            self.initial_end_activities = infer_end_activities(master_dfg)
+
+        self.second_iteration = None
+        self.activities = None
+        self.dfg = None
+        self.outgoing = None
+        self.ingoing = None
+        self.self_loop_activities = None
+        self.initial_ingoing = None
+        self.initial_outgoing = None
+        self.activities_direction = None
+        self.activities_dir_list = None
+        self.negated_dfg = None
+        self.negated_activities = None
+        self.negated_outgoing = None
+        self.negated_ingoing = None
+        self.detected_cut = None
+        self.children = None
+        self.must_insert_skip = False
+        self.need_loop_on_subtree = False
+
+        self.initialize_tree(dfg, initial_dfg, activities)
+
+    def initialize_tree(self, dfg, initial_dfg, activities, second_iteration=False):
+        """
+        Initialize the tree
+
+
+        Parameters
+        -----------
+        dfg
+            Directly follows graph of this subtree
+        initial_dfg
+            Referral directly follows graph that should be taken in account adding hidden/loop transitions
+        activities
+            Activities of this subtree
+        second_iteration
+            Boolean that indicates if we are executing this method for the second time
+        """
+
+        self.second_iteration = second_iteration
+
+        if activities is None:
+            self.activities = get_activities_from_dfg(dfg)
+        else:
+            self.activities = copy(activities)
+
+        if second_iteration:
+            self.dfg = clean_dfg_based_on_noise_thresh(self.dfg, self.activities, self.noise_threshold)
+        else:
+            self.dfg = copy(dfg)
+
+        self.initial_dfg = initial_dfg
+
+        self.outgoing = get_outgoing_edges(self.dfg)
+        self.ingoing = get_ingoing_edges(self.dfg)
+        self.self_loop_activities = get_activities_self_loop(self.dfg)
+        self.initial_outgoing = get_outgoing_edges(self.initial_dfg)
+        self.initial_ingoing = get_ingoing_edges(self.initial_dfg)
+        self.activities_direction = get_activities_direction(self.dfg, self.activities)
+        self.activities_dir_list = get_activities_dirlist(self.activities_direction)
+        self.negated_dfg = negate(self.dfg)
+        self.negated_activities = get_activities_from_dfg(self.negated_dfg)
+        self.negated_outgoing = get_outgoing_edges(self.negated_dfg)
+        self.negated_ingoing = get_ingoing_edges(self.negated_dfg)
+        self.detected_cut = None
+        self.children = []
+
+        self.detect_cut(second_iteration=second_iteration)
+
     def get_connected_components(self, ingoing, outgoing, activities):
         """
         Get connected components in the DFG graph
@@ -227,7 +336,7 @@ class SubtreeB(Subtree):
                 end_activities = infer_end_activities_from_succ_connections_and_current_dfg(self.initial_dfg, self.dfg,
                                                                                             self.activities,
                                                                                             include_self=False)
-        all_end_activities = deepcopy(end_activities)
+        all_end_activities = copy(end_activities)
         end_activities = list(set(end_activities) - set(start_activities))
         end_activities_that_are_also_start = list(set(all_end_activities) - set(end_activities))
 
@@ -363,6 +472,25 @@ class SubtreeB(Subtree):
                 return [True, ret_connected_components]
         return [False, [], []]
 
+    def detect_xor_cut(self, conn_components, this_nx_graph, strongly_connected_components):
+        """
+        Detects XOR cut
+
+        Parameters
+        --------------
+        conn_components
+            Connected components
+        this_nx_graph
+            NX graph calculated on the DFG
+        strongly_connected_components
+            Strongly connected components
+        """
+        if len(self.dfg) > 0:
+            if len(conn_components) > 1:
+                return [True, conn_components]
+
+        return [False, []]
+
     def detect_parallel_cut(self, orig_conn_components, this_nx_graph, strongly_connected_components):
         """
         Detects parallel cut
@@ -405,6 +533,12 @@ class SubtreeB(Subtree):
                 return [True, conn_components]
 
         return [False, []]
+
+    def __str__(self):
+        return "subtree rec_depth="+str(self.rec_depth)+" dfg="+str(self.dfg)+" activities="+str(self.activities)
+
+    def __repr__(self):
+        return "subtree rec_depth="+str(self.rec_depth)+" dfg="+str(self.dfg)+" activities="+str(self.activities)
 
     def transform_dfg_to_directed_nx_graph(self):
         """
@@ -523,20 +657,17 @@ class SubtreeB(Subtree):
             this_nx_graph = self.transform_dfg_to_directed_nx_graph()
             strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
 
-            # print("strongly_connected_components", strongly_connected_components)
+            xor_cut = self.detect_xor_cut(conn_components, this_nx_graph, strongly_connected_components)
 
-            conc_cut = self.detect_concurrent_cut(conn_components, this_nx_graph, strongly_connected_components)
-
-            if conc_cut[0]:
-                # print(self.rec_depth, "conc_cut", self.activities)
-                for comp in conc_cut[1]:
+            if xor_cut[0]:
+                for comp in xor_cut[1]:
                     new_dfg = filter_dfg_on_act(self.dfg, comp)
-                    self.detected_cut = "concurrent"
+                    self.detected_cut = "xor"
                     self.children.append(
-                        SubtreeB(new_dfg, self.master_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
-                                 noise_threshold=self.noise_threshold,
-                                 initial_start_activities=self.initial_start_activities,
-                                 initial_end_activities=self.initial_end_activities))
+                        SubtreeDFGBasedOld(new_dfg, self.master_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
+                                           noise_threshold=self.noise_threshold,
+                                           initial_start_activities=self.initial_start_activities,
+                                           initial_end_activities=self.initial_end_activities))
             else:
                 seq_cut = self.detect_sequential_cut(conn_components, this_nx_graph, strongly_connected_components)
                 if seq_cut[0]:
@@ -545,11 +676,11 @@ class SubtreeB(Subtree):
                     for child in seq_cut[1]:
                         dfg_child = filter_dfg_on_act(self.dfg, child)
                         self.children.append(
-                            SubtreeB(dfg_child, self.master_dfg, self.initial_dfg, child, self.counts,
-                                     self.rec_depth + 1,
-                                     noise_threshold=self.noise_threshold,
-                                     initial_start_activities=self.initial_start_activities,
-                                     initial_end_activities=self.initial_end_activities))
+                            SubtreeDFGBasedOld(dfg_child, self.master_dfg, self.initial_dfg, child, self.counts,
+                                               self.rec_depth + 1,
+                                               noise_threshold=self.noise_threshold,
+                                               initial_start_activities=self.initial_start_activities,
+                                               initial_end_activities=self.initial_end_activities))
                     self.put_skips_in_seq_cut()
                 else:
                     par_cut = self.detect_parallel_cut(conn_components, this_nx_graph, strongly_connected_components)
@@ -558,11 +689,11 @@ class SubtreeB(Subtree):
                         for comp in par_cut[1]:
                             new_dfg = filter_dfg_on_act(self.dfg, comp)
                             self.children.append(
-                                SubtreeB(new_dfg, self.master_dfg, new_dfg, comp, self.counts,
-                                         self.rec_depth + 1,
-                                         noise_threshold=self.noise_threshold,
-                                         initial_start_activities=self.initial_start_activities,
-                                         initial_end_activities=self.initial_end_activities))
+                                SubtreeDFGBasedOld(new_dfg, self.master_dfg, new_dfg, comp, self.counts,
+                                                   self.rec_depth + 1,
+                                                   noise_threshold=self.noise_threshold,
+                                                   initial_start_activities=self.initial_start_activities,
+                                                   initial_end_activities=self.initial_end_activities))
                     else:
                         loop_cut = self.detect_loop_cut(conn_components, this_nx_graph, strongly_connected_components)
                         if loop_cut[0]:
@@ -570,11 +701,11 @@ class SubtreeB(Subtree):
                             self.detected_cut = "loopCut"
                             for index_enum, child in enumerate(loop_cut[1]):
                                 dfg_child = filter_dfg_on_act(self.dfg, child)
-                                next_subtree = SubtreeB(dfg_child, self.master_dfg, self.initial_dfg, child,
-                                                        self.counts, self.rec_depth + 1,
-                                                        noise_threshold=self.noise_threshold,
-                                                        initial_start_activities=self.initial_start_activities,
-                                                        initial_end_activities=self.initial_end_activities)
+                                next_subtree = SubtreeDFGBasedOld(dfg_child, self.master_dfg, self.initial_dfg, child,
+                                                                  self.counts, self.rec_depth + 1,
+                                                                  noise_threshold=self.noise_threshold,
+                                                                  initial_start_activities=self.initial_start_activities,
+                                                                  initial_end_activities=self.initial_end_activities)
                                 if loop_cut[2] and index_enum > 0:
                                     next_subtree.force_loop_hidden = True
                                 self.children.append(next_subtree)
@@ -587,4 +718,4 @@ class SubtreeB(Subtree):
                                 pass
                             self.detected_cut = "flower"
         else:
-            self.detected_cut = "base_concurrent"
+            self.detected_cut = "base_xor"
