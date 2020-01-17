@@ -1,6 +1,6 @@
 import logging
 
-import ciso8601
+from pm4py.util.dt_parsing import factory as dt_parse_factory
 from lxml import etree
 
 from pm4py.objects import log as log_lib
@@ -36,6 +36,8 @@ def import_log(filename, parameters=None):
 
     if parameters is None:
         parameters = {}
+
+    date_parser = dt_parse_factory.get()
 
     timestamp_sort = False
     timestamp_key = "time:timestamp"
@@ -74,7 +76,7 @@ def import_log(filename, parameters=None):
 
             elif elem.tag.endswith(log_lib.util.xes.TAG_DATE):
                 try:
-                    dt = ciso8601.parse_datetime(elem.get(log_lib.util.xes.KEY_VALUE))
+                    dt = date_parser.apply(elem.get(log_lib.util.xes.KEY_VALUE))
                     tree = __parse_attribute(elem, parent, elem.get(log_lib.util.xes.KEY_KEY), dt, tree)
                 except TypeError:
                     logging.info("failed to parse date: " + str(elem.get(log_lib.util.xes.KEY_VALUE)))
