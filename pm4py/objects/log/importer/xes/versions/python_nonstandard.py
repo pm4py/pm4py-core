@@ -1,4 +1,4 @@
-import ciso8601
+from pm4py.util.dt_parsing import factory as dt_parse_factory
 import os
 
 from pm4py.objects import log as log_lib
@@ -30,6 +30,8 @@ def import_log(filename, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    date_parser = dt_parse_factory.get()
 
     timestamp_sort = False
     timestamp_key = "time:timestamp"
@@ -75,7 +77,7 @@ def import_log(filename, parameters=None):
                         if tag.startswith("string"):
                             event[content[1]] = content[3]
                         elif tag.startswith("date"):
-                            event[content[1]] = ciso8601.parse_datetime(content[3])
+                            event[content[1]] = date_parser.apply(content[3])
                         elif tag.startswith("int"):
                             event[content[1]] = int(content[3])
                         elif tag.startswith("float"):
@@ -91,7 +93,7 @@ def import_log(filename, parameters=None):
                     if tag.startswith("string"):
                         trace.attributes[content[1]] = content[3]
                     elif tag.startswith("date"):
-                        trace.attributes[content[1]] = ciso8601.parse_datetime(content[3])
+                        trace.attributes[content[1]] = date_parser.apply(content[3])
                     elif tag.startswith("int"):
                         trace.attributes[content[1]] = int(content[3])
                     elif tag.startswith("float"):
