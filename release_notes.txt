@@ -31,9 +31,9 @@ This is a minor release, consisting of the following changes:
         - Bug fix for the Inductive Miner implementation, i.e., sequential patterns are now correctly discovered.
     2. commit #881f1fa4e76b9e35c2d80ab7d241183b2d6871c0
      'Best effort fix' for graphviz based visualizations, i.e., trying to reduce the number of
-     
-     
-===== PM4PY 1.2.8 =====
+
+
+===== PM4PY 1.2.9 =====
 This is a minor release, consisting of the following changes:
 
     1. commit ed42182f32eba37df71d9f466ad165036f8d1086
