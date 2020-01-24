@@ -1,6 +1,5 @@
 import matplotlib
-matplotlib.use('Agg')
-from matplotlib import pyplot
+from copy import copy
 
 from pm4py.visualization.graphs.util import common
 
@@ -36,6 +35,10 @@ def apply_plot(x, y, parameters=None):
 
     filename = common.get_temp_file_name(format)
 
+    current_backend = copy(matplotlib.get_backend())
+    matplotlib.use('Agg')
+    from matplotlib import pyplot
+
     pyplot.clf()
     pyplot.plot(x, y)
     pyplot.xlabel(TIMESTAMP_LABEL)
@@ -44,6 +47,8 @@ def apply_plot(x, y, parameters=None):
     pyplot.xticks(rotation=90)
     pyplot.savefig(filename, bbox_inches="tight", transparent=True)
     pyplot.clf()
+
+    matplotlib.use(current_backend)
 
     return filename
 
@@ -75,6 +80,10 @@ def apply_semilogx(x, y, parameters=None):
 
     filename = common.get_temp_file_name(format)
 
+    current_backend = copy(matplotlib.get_backend())
+    matplotlib.use('Agg')
+    from matplotlib import pyplot
+
     pyplot.clf()
     pyplot.semilogx(x, y)
     pyplot.xlabel(TIMESTAMP_LABEL)
@@ -83,5 +92,7 @@ def apply_semilogx(x, y, parameters=None):
     pyplot.xticks(rotation=90)
     pyplot.savefig(filename, bbox_inches="tight", transparent=True)
     pyplot.clf()
+
+    matplotlib.use(current_backend)
 
     return filename
