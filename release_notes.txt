@@ -31,3 +31,14 @@ This is a minor release, consisting of the following changes:
         - Bug fix for the Inductive Miner implementation, i.e., sequential patterns are now correctly discovered.
     2. commit #881f1fa4e76b9e35c2d80ab7d241183b2d6871c0
      'Best effort fix' for graphviz based visualizations, i.e., trying to reduce the number of
+
+
+===== PM4PY 1.2.9 =====
+This is a minor release, consisting of the following changes:
+
+    1. commit ed42182f32eba37df71d9f466ad165036f8d1086
+        - full support for numpy v1.18
+    2. commit d1a418f8fa2513a469149383fe69df9a4e6fea06
+        - full support pandas v1.0
+    3. commit be0a282be033765c9d1d7f1a7ba541a11c046834
+        - fixed matplotlib backend settings
