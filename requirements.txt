@@ -1,19 +1,18 @@
 cython
 pyvis
-networkx>=2.4
-matplotlib<=3.0.3; python_version < '3.6'
-matplotlib; python_version >= '3.6'
+networkx
+matplotlib
 numpy
 ciso8601
 lxml
 graphviz
-pyarrow==0.15.1; python_version < '3.8'
-pandas>=0.25.2
+pyarrow
+pandas
 scipy
 pydotplus
 scikit-learn
 pulp
-pytz>=2019.3
-ortools; python_version < '3.8'
+pytz
+ortools
 sklearn
 intervaltree
