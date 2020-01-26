@@ -206,7 +206,11 @@ def get_variants_df(df, parameters=None):
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
-    return df.groupby(case_id_glue)[activity_key].agg({"variant": lambda col: ",".join(pd.Series.to_list(col))})
+    new_df = df.groupby(case_id_glue)[activity_key].agg(lambda col: ",".join(pd.Series.to_list(col))).to_frame()
+    new_cols = list(new_df.columns)
+    new_df = new_df.rename(columns={new_cols[0]: "variant"})
+
+    return new_df
 
 
 def get_variants_df_with_case_duration(df, parameters=None):
@@ -238,7 +242,11 @@ def get_variants_df_with_case_duration(df, parameters=None):
     timestamp_key = parameters[
         PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
     grouped_df = df[[case_id_glue, timestamp_key, activity_key]].groupby(df[case_id_glue])
-    df1 = grouped_df[activity_key].agg({"variant": lambda col: ",".join(pd.Series.to_list(col))})
+
+    df1 = grouped_df[activity_key].agg(lambda col: ",".join(pd.Series.to_list(col))).to_frame()
+    new_cols = list(df1.columns)
+    df1 = df1.rename(columns={new_cols[0]: "variant"})
+
     first_eve_df = grouped_df.first()
     last_eve_df = grouped_df.last()
     del grouped_df
