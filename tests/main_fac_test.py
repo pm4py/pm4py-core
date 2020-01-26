@@ -15,6 +15,10 @@ from pm4py.evaluation.replay_fitness import factory as rp_fit_factory
 from pm4py.evaluation.precision import factory as precision_factory
 from pm4py.evaluation.generalization import factory as generalization_factory
 from pm4py.evaluation.simplicity import factory as simplicity_factory
+from pm4py.objects.conversion.log import factory as log_conv_factory
+from pm4py.objects.log.exporter.csv import factory as csv_exporter_factory
+from pm4py.objects.log.exporter.xes import factory as xes_exporter_factory
+
 
 class MainFactoriesTest(unittest.TestCase):
     def test_alphaminer_log(self):
@@ -139,6 +143,66 @@ class MainFactoriesTest(unittest.TestCase):
     def test_ts_df(self):
         log = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
         ts = ts_disc_factory.apply(log)
+
+    def test_csvimp_csvexp(self):
+        log0 = csv_importer.apply(os.path.join("input_data", "running-example.csv"))
+        log = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_LOG)
+        stream = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_STREAM)
+        df = log_conv_factory.apply(log0, variant=log_conv_factory.TO_DATAFRAME)
+        csv_exporter_factory.export(log, "ru.csv")
+        csv_exporter_factory.export(stream, "ru.csv")
+        csv_exporter_factory.export(df, "ru.csv")
+        os.remove('ru.csv')
+
+    def test_csvimp_xesexp(self):
+        log0 = csv_importer.apply(os.path.join("input_data", "running-example.csv"))
+        log = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_LOG)
+        stream = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_STREAM)
+        df = log_conv_factory.apply(log0, variant=log_conv_factory.TO_DATAFRAME)
+        xes_exporter_factory.apply(log, "ru.xes")
+        xes_exporter_factory.apply(stream, "ru.xes")
+        xes_exporter_factory.apply(df, "ru.xes")
+        os.remove('ru.xes')
+
+    def test_xesimp_csvexp(self):
+        log0 = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        log = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_LOG)
+        stream = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_STREAM)
+        df = log_conv_factory.apply(log0, variant=log_conv_factory.TO_DATAFRAME)
+        csv_exporter_factory.export(log, "ru.csv")
+        csv_exporter_factory.export(stream, "ru.csv")
+        csv_exporter_factory.export(df, "ru.csv")
+        os.remove('ru.csv')
+
+    def test_xesimp_xesexp(self):
+        log0 = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        log = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_LOG)
+        stream = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_STREAM)
+        df = log_conv_factory.apply(log0, variant=log_conv_factory.TO_DATAFRAME)
+        xes_exporter_factory.apply(log, "ru.xes")
+        xes_exporter_factory.apply(stream, "ru.xes")
+        xes_exporter_factory.apply(df, "ru.xes")
+        os.remove('ru.xes')
+
+    def test_pdimp_csvexp(self):
+        log0 = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
+        log = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_LOG)
+        stream = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_STREAM)
+        df = log_conv_factory.apply(log0, variant=log_conv_factory.TO_DATAFRAME)
+        csv_exporter_factory.export(log, "ru.csv")
+        csv_exporter_factory.export(stream, "ru.csv")
+        csv_exporter_factory.export(df, "ru.csv")
+        os.remove('ru.csv')
+
+    def test_pdimp_xesexp(self):
+        log0 = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
+        log = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_LOG)
+        stream = log_conv_factory.apply(log0, variant=log_conv_factory.TO_EVENT_STREAM)
+        df = log_conv_factory.apply(log0, variant=log_conv_factory.TO_DATAFRAME)
+        xes_exporter_factory.apply(log, "ru.xes")
+        xes_exporter_factory.apply(stream, "ru.xes")
+        xes_exporter_factory.apply(df, "ru.xes")
+        os.remove('ru.xes')
 
 
 if __name__ == "__main__":
