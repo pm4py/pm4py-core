@@ -7,8 +7,7 @@ import tempfile
 import networkx as nx
 import numpy as np
 import matplotlib
-matplotlib.use('Agg')
-from matplotlib import pyplot
+from copy import copy
 
 
 def get_temp_file_name(format):
@@ -70,10 +69,16 @@ def apply(metric_values, parameters=None):
     graph.add_nodes_from(nodes)
     graph.add_edges_from(edges)
 
+    current_backend = copy(matplotlib.get_backend())
+    matplotlib.use('Agg')
+    from matplotlib import pyplot
+
     pyplot.clf()
     nx.draw(graph, with_labels=True, labels=labels, node_size=500, pos=nx.circular_layout(graph))
     pyplot.savefig(temp_file_name, bbox_inches="tight")
     pyplot.clf()
+
+    matplotlib.use(current_backend)
 
     return temp_file_name
 
