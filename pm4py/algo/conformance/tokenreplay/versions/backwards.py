@@ -5,6 +5,23 @@ from pm4py.objects.petri.petrinet import Marking
 
 
 def get_bmap(net, m, bmap):
+    """
+    Updates the B-map with the invisibles enabling marking m
+
+    Parameters
+    --------------
+    net
+        Petri net
+    m
+        Marking
+    bmap
+        B-map
+
+    Returns
+    --------------
+    trans_list
+        List of invisibles that enable m
+    """
     if m not in bmap:
         bmap[m] = []
         for t in net.transitions:
@@ -15,6 +32,21 @@ def get_bmap(net, m, bmap):
 
 
 def diff_mark(m, t):
+    """
+    Subtract from a marking the postset of t and adds the preset
+
+    Parameters
+    ------------
+    m
+        Marking
+    t
+        Transition
+
+    Returns
+    ------------
+    diff_mark
+        Difference marking
+    """
     for a in t.out_arcs:
         p = a.target
         w = a.weight
@@ -30,7 +62,29 @@ def diff_mark(m, t):
         m[p] = m[p] + w
     return m
 
+
 def explore_backwards(re_list, all_vis, net, m, bmap):
+    """
+    Do the backwards state space exploration
+
+    Parameters
+    --------------
+    re_list
+        List of remaining markings to visit using the backwards approach
+    all_vis
+        Set of visited transitions
+    net
+        Petri net
+    m
+        Marking
+    bmap
+        B-map of the net
+
+    Returns
+    ------------
+    list_tr
+        List of transitions to enable in order to enable a marking (otherwise None)
+    """
     i = 0
     while i < len(re_list):
         curr = re_list[i]
@@ -48,7 +102,33 @@ def explore_backwards(re_list, all_vis, net, m, bmap):
         i = i + 1
     return None
 
+
 def tr_vlist(vlist, net, im, tmap, bmap, parameters=None):
+    """
+    Visit a variant using the backwards token basedr eplay
+
+    Parameters
+    ------------
+    vlist
+        Variants list
+    net
+        Petri net
+    im
+        Initial marking
+    tmap
+        Transition map (labels to list of transitions)
+    bmap
+        B-map
+    parameters
+        Possible parameters of the execution
+
+    Returns
+    -------------
+    visited_transitions
+        List of visited transitions during the replay
+    is_fit
+        Indicates if the replay was successful or not
+    """
     if parameters is None:
         parameters = {}
 
