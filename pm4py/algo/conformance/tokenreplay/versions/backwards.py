@@ -34,8 +34,8 @@ def explore_backwards(re_list, all_vis, net, m, bmap):
     i = 0
     while i < len(re_list):
         curr = re_list[i]
-        print("AAAA", curr[1], m)
         if curr[1] <= m:
+            curr[2].reverse()
             return curr[2]
         j = 0
         while j < len(curr[0]):
@@ -64,11 +64,19 @@ def tr_vlist(vlist, net, im, tmap, bmap, parameters=None):
                     visited_transitions.append(t)
                     m = weak_execute(t, m)
                 elif len(tmap[act]) == 1:
-                    print(t.in_marking)
                     back_res = explore_backwards([(get_bmap(net, t.in_marking, bmap), copy(t.in_marking), list())], set(), net, m, bmap)
-                    print("nooo1", back_res)
+                    if back_res is not None:
+                        for t2 in back_res:
+                            m = weak_execute(t2, m)
+                        visited_transitions = visited_transitions + back_res
+                        m = weak_execute(t, m)
+                        visited_transitions.append(t)
+                    else:
+                        is_fit = False
+                        return {"visited_transitions": visited_transitions, "is_fit": is_fit}
                 else:
-                    print("nooo2")
+                    is_fit = False
+                    return {"visited_transitions": visited_transitions, "is_fit": is_fit}
 
     return {"visited_transitions": visited_transitions, "is_fit": is_fit}
 
