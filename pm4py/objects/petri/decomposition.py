@@ -75,26 +75,3 @@ def decompose(net, im, fm):
         net_new.lvis_labels = lvis_labels
         list_nets.append((net_new, im_new, fm_new))
     return list_nets
-
-
-def project_trace(trace, list_nets, parameters=None):
-    if parameters is None:
-        parameters = {}
-
-    activity_key = parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-
-    projections = []
-
-    for net in list_nets:
-        projections.append(list(x for x in trace if x[activity_key] in net[0].lvis_labels))
-
-    return projections
-
-
-def project_var(var, list_nets):
-    projections = []
-
-    for net in list_nets:
-        projections.append(list(x for x in var if x in net[0].lvis_labels))
-
-    return projections
