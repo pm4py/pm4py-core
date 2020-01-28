@@ -32,6 +32,8 @@ DEFAULT_MAX_ALIGN_TIME = sys.maxsize
 PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
 DEFAULT_VARIANT_DELIMITER = ","
 
+ICACHE = "icache"
+
 
 def apply(log, net, im, fm, parameters=None):
     list_nets = decomp_utils.decompose(net, im, fm)
@@ -39,6 +41,10 @@ def apply(log, net, im, fm, parameters=None):
 
 
 def apply_log(log, list_nets, parameters=None):
+    if parameters is None:
+        parameters = {}
+    icache = parameters[ICACHE] if ICACHE in parameters else dict()
+    parameters[ICACHE] = icache
     variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
     one_tr_per_var = []
     variants_list = []
@@ -66,6 +72,7 @@ def apply_trace(trace, list_nets, parameters=None):
     activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
         parameters[
             pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+    icache = parameters[ICACHE] if ICACHE in parameters else dict()
 
     cons_nets = copy(list_nets)
     cons_nets_result = []
@@ -75,7 +82,12 @@ def apply_trace(trace, list_nets, parameters=None):
         net, im, fm = cons_nets[i]
         proj = Trace([x for x in trace if x[activity_key] in net.lvis_labels])
         if len(proj) > 0:
-            cons_nets_result.append(align(proj, net, im, fm, parameters=parameters))
+            acti = tuple(x[activity_key] for x in proj)
+            tup = (cons_nets[i], acti)
+            if tup not in icache:
+                al = align(proj, net, im, fm, parameters=parameters)
+                icache[tup] = al
+            cons_nets_result.append(icache[tup])
         i = i + 1
 
     return {"cost": sum(x["cost"] for x in cons_nets_result), "list_ali": cons_nets_result}
