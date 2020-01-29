@@ -135,3 +135,12 @@ def merge_comp(comp1, comp2):
     net.t_tuple = t_tuple
 
     return (net, im, fm)
+
+
+def merge_sublist_nets(list_nets):
+    while len(list_nets) > 1:
+        list_nets.append(merge_comp(list_nets[0], list_nets[1]))
+        list_nets.pop(0)
+        list_nets.pop(0)
+
+    return list_nets[0]
