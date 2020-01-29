@@ -83,3 +83,55 @@ def decompose(net, im, fm):
 
         list_nets.append((net_new, im_new, fm_new))
     return list_nets
+
+
+def merge_comp(comp1, comp2):
+    net = PetriNet("")
+    im = Marking()
+    fm = Marking()
+    places = {}
+    trans = {}
+
+    for pl in comp1[0].places:
+        places[pl.name] = PetriNet.Place(pl.name)
+        net.places.add(places[pl.name])
+        if pl in comp1[1]:
+            im[places[pl.name]] = comp1[1][pl]
+        if pl in comp1[2]:
+            fm[places[pl.name]] = comp1[2][pl]
+
+    for pl in comp2[0].places:
+        places[pl.name] = PetriNet.Place(pl.name)
+        net.places.add(places[pl.name])
+        if pl in comp2[1]:
+            im[places[pl.name]] = comp2[1][pl]
+        if pl in comp2[2]:
+            fm[places[pl.name]] = comp2[2][pl]
+
+    for tr in comp1[0].transitions:
+        trans[tr.name] = PetriNet.Transition(tr.name, tr.label)
+        net.transitions.add(trans[tr.name])
+
+    for tr in comp2[0].transitions:
+        if not tr.name in trans:
+            trans[tr.name] = PetriNet.Transition(tr.name, tr.label)
+            net.transitions.add(trans[tr.name])
+
+    for arc in comp1[0].arcs:
+        if type(arc.source) is PetriNet.Place:
+            add_arc_from_to(places[arc.source.name], trans[arc.target.name], net)
+        else:
+            add_arc_from_to(trans[arc.source.name], places[arc.target.name], net)
+
+    for arc in comp2[0].arcs:
+        if type(arc.source) is PetriNet.Place:
+            add_arc_from_to(places[arc.source.name], trans[arc.target.name], net)
+        else:
+            add_arc_from_to(trans[arc.source.name], places[arc.target.name], net)
+
+    lvis_labels = sorted([t.label for t in net.transitions if t.label is not None])
+    t_tuple = tuple(sorted(list(int(hashlib.md5(t.name.encode('utf-8')).hexdigest(), 16) for t in net.transitions)))
+    net.lvis_labels = lvis_labels
+    net.t_tuple = t_tuple
+
+    return (net, im, fm)
