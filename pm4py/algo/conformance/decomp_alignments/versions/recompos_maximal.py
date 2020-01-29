@@ -81,7 +81,7 @@ def get_acache(cons_nets):
     return ret
 
 
-def get_alres(al, labels):
+def get_alres(al):
     ret = {}
     for index, el in enumerate(al["alignment"]):
         if el[1][0] is not None and el[1][0] != ">>":
@@ -118,7 +118,7 @@ def apply_trace(trace, list_nets, parameters=None):
             tup = (cons_nets[i], acti)
             if tup not in icache:
                 al = align(proj, net, im, fm, parameters=parameters)
-                alres = get_alres(al, cons_nets[i][0].lvis_labels)
+                alres = get_alres(al)
                 icache[tup] = (al, alres)
             al, alres = icache[tup]
             cons_nets_result.append(al)
