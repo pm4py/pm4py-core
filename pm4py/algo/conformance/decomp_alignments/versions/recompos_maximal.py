@@ -33,6 +33,7 @@ PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
 DEFAULT_VARIANT_DELIMITER = ","
 
 ICACHE = "icache"
+MCACHE = "mcache"
 
 
 def apply(log, net, im, fm, parameters=None):
@@ -44,7 +45,11 @@ def apply_log(log, list_nets, parameters=None):
     if parameters is None:
         parameters = {}
     icache = parameters[ICACHE] if ICACHE in parameters else dict()
+    mcache = parameters[MCACHE] if MCACHE in parameters else dict()
+
     parameters[ICACHE] = icache
+    parameters[MCACHE] = mcache
+
     variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
     one_tr_per_var = []
     variants_list = []
@@ -65,6 +70,31 @@ def apply_log(log, list_nets, parameters=None):
     return alignments
 
 
+def get_acache(cons_nets):
+    ret = {}
+    for index, el in enumerate(cons_nets):
+        for lab in el[0].lvis_labels:
+            if lab not in ret:
+                ret[lab] = []
+            ret[lab].append(index)
+
+    return ret
+
+
+def get_alres(al, labels):
+    ret = {}
+    for index, el in enumerate(al["alignment"]):
+        if el[1][0] is not None and el[1][0] != ">>":
+            if not el[1][0] in ret:
+                ret[el[1][0]] = []
+
+            if el[1][1] is not None and el[1][1] != ">>":
+                ret[el[1][0]].append(0)
+            else:
+                ret[el[1][0]].append(1)
+    return ret
+
+
 def apply_trace(trace, list_nets, parameters=None):
     if parameters is None:
         parameters = {}
@@ -73,10 +103,12 @@ def apply_trace(trace, list_nets, parameters=None):
         parameters[
             pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     icache = parameters[ICACHE] if ICACHE in parameters else dict()
-
+    mcache = parameters[MCACHE] if MCACHE in parameters else dict()
     cons_nets = copy(list_nets)
+    acache = get_acache(cons_nets)
     cons_nets_result = []
-
+    cons_nets_alres = []
+    max_val_alres = 0
     i = 0
     while i < len(cons_nets):
         net, im, fm = cons_nets[i]
@@ -86,11 +118,46 @@ def apply_trace(trace, list_nets, parameters=None):
             tup = (cons_nets[i], acti)
             if tup not in icache:
                 al = align(proj, net, im, fm, parameters=parameters)
-                icache[tup] = al
-            cons_nets_result.append(icache[tup])
+                alres = get_alres(al, cons_nets[i][0].lvis_labels)
+                icache[tup] = (al, alres)
+            al, alres = icache[tup]
+            cons_nets_result.append(al)
+            cons_nets_alres.append(alres)
+            max_val_alres = max(max_val_alres, max(z for y in alres.values() for z in y))
+            if max_val_alres > 0:
+                comp_to_merge = set()
+                for act in [x[activity_key] for x in trace if x[activity_key] in net.lvis_labels]:
+                    for ind in acache[act]:
+                        if ind >= i:
+                            break
+                        if cons_nets_alres[ind][act] != cons_nets_alres[i][act]:
+                            for ind2 in acache[act]:
+                                comp_to_merge.add(ind2)
+                if comp_to_merge:
+                    comp_to_merge = sorted(list(comp_to_merge), reverse=True)
+                    comp_to_merge_ids = tuple(list(cons_nets[j][0].t_tuple for j in comp_to_merge))
+                    if comp_to_merge_ids not in mcache:
+                        mcache[comp_to_merge_ids] = decomp_utils.merge_sublist_nets([cons_nets[i] for i in comp_to_merge])
+                    new_comp = mcache[comp_to_merge_ids]
+                    cons_nets.append(new_comp)
+                    j = 0
+                    while j < len(comp_to_merge):
+                        z = comp_to_merge[j]
+                        if z < i:
+                            i = i - 1
+                        if z <= i:
+                            del cons_nets_result[z]
+                            del cons_nets_alres[z]
+                        del cons_nets[z]
+                        j = j + 1
+                    acache = get_acache(cons_nets)
+                    continue
+        else:
+            cons_nets_result.append(None)
+            cons_nets_alres.append(None)
         i = i + 1
-
-    return {"cost": sum(x["cost"] for x in cons_nets_result), "list_ali": cons_nets_result}
+    res = {"cost": sum(x["cost"] for x in cons_nets_result if x is not None), "list_ali": cons_nets_result}
+    return res
 
 
 def align(trace, petri_net, initial_marking, final_marking, parameters=None):
@@ -114,6 +181,7 @@ def align(trace, petri_net, initial_marking, final_marking, parameters=None):
                                                                                                                 activity_key=activity_key)
 
     return apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters)
+
 
 def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters=None):
     ret_tuple_as_trans_desc = parameters[
@@ -153,6 +221,9 @@ def __search(sync_net, ini, fin, cost_function, skip):
     visited = 0
     queued = 0
     traversed = 0
+
+    trans_empty_preset = set(t for t in sync_net.transitions if len(t.in_arcs) == 0)
+
     while not len(open_set) == 0:
 
         curr = heapq.heappop(open_set)
@@ -169,7 +240,7 @@ def __search(sync_net, ini, fin, cost_function, skip):
         closed.add(current_marking)
         visited += 1
 
-        possible_enabling_transitions = set()
+        possible_enabling_transitions = copy(trans_empty_preset)
         for p in current_marking:
             for t in p.ass_trans:
                 possible_enabling_transitions.add(t)
