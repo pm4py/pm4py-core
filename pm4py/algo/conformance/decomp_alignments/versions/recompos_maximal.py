@@ -143,6 +143,7 @@ def apply_trace(trace, list_nets, parameters=None):
     acache = get_acache(cons_nets)
     cons_nets_result = []
     cons_nets_alres = []
+    cons_nets_costs = []
     max_val_alres = 0
     i = 0
     while i < len(cons_nets):
@@ -152,12 +153,16 @@ def apply_trace(trace, list_nets, parameters=None):
             acti = tuple(x[activity_key] for x in proj)
             tup = (cons_nets[i], acti)
             if tup not in icache:
-                al = align(proj, net, im, fm, parameters=parameters)
+                al, cf = align(proj, net, im, fm, parameters=parameters)
+                cf_new = {}
+                for el in cf:
+                    cf_new[(el.name, el.label)] = cf[el]
                 alres = get_alres(al)
-                icache[tup] = (al, alres)
-            al, alres = icache[tup]
+                icache[tup] = (al, cf_new, alres)
+            al, cf, alres = icache[tup]
             cons_nets_result.append(al)
             cons_nets_alres.append(alres)
+            cons_nets_costs.append(cf)
             max_val_alres = max(max_val_alres, max(z for y in alres.values() for z in y))
             if max_val_alres > 0:
                 comp_to_merge = set()
@@ -183,6 +188,7 @@ def apply_trace(trace, list_nets, parameters=None):
                         if z <= i:
                             del cons_nets_result[z]
                             del cons_nets_alres[z]
+                            del cons_nets_costs[z]
                         del cons_nets[z]
                         j = j + 1
                     acache = get_acache(cons_nets)
@@ -190,9 +196,18 @@ def apply_trace(trace, list_nets, parameters=None):
         else:
             cons_nets_result.append(None)
             cons_nets_alres.append(None)
+            cons_nets_costs.append(None)
         i = i + 1
     alignment = recompose_alignment(trace, activity_key, cons_nets, cons_nets_result)
-    res = {"cost": sum(x["cost"] for x in cons_nets_result if x is not None), "alignment": alignment}
+    overall_cost_dict = {}
+    for cf in cons_nets_costs:
+        if cf is not None:
+            for el in cf:
+                overall_cost_dict[el] = cf[el]
+    cost = 0
+    for el in alignment:
+        cost = cost + overall_cost_dict[el]
+    res = {"cost": cost, "alignment": alignment}
     return res
 
 
@@ -203,46 +218,22 @@ def align(trace, petri_net, initial_marking, final_marking, parameters=None):
     activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
         parameters[
             pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-    if parameters is None or PARAM_TRACE_COST_FUNCTION not in parameters or PARAM_MODEL_COST_FUNCTION not in parameters or PARAM_SYNC_COST_FUNCTION not in parameters:
-        trace_net_constr_function = parameters[
-            TRACE_NET_CONSTR_FUNCTION] if TRACE_NET_CONSTR_FUNCTION in parameters else petri.utils.construct_trace_net
-        trace_net, trace_im, trace_fm = trace_net_constr_function(trace, activity_key=activity_key)
 
-    else:
-        trace_net_cost_aware_constr_function = parameters[
-            TRACE_NET_COST_AWARE_CONSTR_FUNCTION] if TRACE_NET_COST_AWARE_CONSTR_FUNCTION in parameters else construct_trace_net_cost_aware
-        trace_net, trace_im, trace_fm, parameters[PARAM_TRACE_NET_COSTS] = trace_net_cost_aware_constr_function(trace,
-                                                                                                                parameters[
-                                                                                                                    PARAM_TRACE_COST_FUNCTION],
-                                                                                                                activity_key=activity_key)
+    trace_net, trace_im, trace_fm = petri.utils.construct_trace_net(trace, activity_key=activity_key)
 
-    return apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters)
+    return apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm)
 
 
-def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters=None):
-    ret_tuple_as_trans_desc = parameters[
-        PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] if PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE in parameters else False
-
-    if parameters is None or PARAM_TRACE_COST_FUNCTION not in parameters or PARAM_MODEL_COST_FUNCTION not in parameters or PARAM_SYNC_COST_FUNCTION not in parameters:
-        sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
-                                                                                                  trace_fm, petri_net,
-                                                                                                  initial_marking,
-                                                                                                  final_marking,
-                                                                                                  utils.SKIP)
-        cost_function = utils.construct_standard_cost_function(sync_prod, utils.SKIP)
-    else:
-        revised_sync = dict()
-        for t_trace in trace_net.transitions:
-            for t_model in petri_net.transitions:
-                if t_trace.label == t_model.label:
-                    revised_sync[(t_trace, t_model)] = parameters[PARAM_SYNC_COST_FUNCTION][t_model]
-
-        sync_prod, sync_initial_marking, sync_final_marking, cost_function = construct_cost_aware(
-            trace_net, trace_im, trace_fm, petri_net, initial_marking, final_marking, utils.SKIP,
-            parameters[PARAM_TRACE_NET_COSTS], parameters[PARAM_MODEL_COST_FUNCTION], revised_sync)
+def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm):
+    sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
+                                                                                              trace_fm, petri_net,
+                                                                                              initial_marking,
+                                                                                              final_marking,
+                                                                                              utils.SKIP)
+    cost_function = utils.construct_standard_cost_function(sync_prod, utils.SKIP)
 
     return __search(sync_prod, sync_initial_marking, sync_final_marking, cost_function,
-                           utils.SKIP)
+                           utils.SKIP), cost_function
 
 
 def __search(sync_net, ini, fin, cost_function, skip):
