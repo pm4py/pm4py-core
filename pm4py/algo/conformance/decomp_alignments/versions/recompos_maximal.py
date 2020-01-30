@@ -149,6 +149,7 @@ def recompose_alignment(cons_nets, cons_nets_result):
         count = count + 1
     to_visit = [x for x in all_available if x not in visited]
     to_visit = order_nodes_second_round(to_visit, G0)
+    added = set()
     while len(to_visit) > 0:
         curr = to_visit.pop(0)
         output_edges = [e for e in G0.edges if e[0] == curr]
@@ -159,7 +160,9 @@ def recompose_alignment(cons_nets, cons_nets_result):
         else:
             sind = 0
         for y in [x for x in cons_nets_result[curr]["alignment"][sind:]]:
-            overall_ali.append(y)
+            if not y in added:
+                overall_ali.append(y)
+                added.add(y)
         visited.add(curr)
         count = count + 1
     return overall_ali
