@@ -38,11 +38,51 @@ MCACHE = "mcache"
 
 
 def apply(log, net, im, fm, parameters=None):
+    """
+    Apply the recomposition alignment approach
+    to a log and a Petri net performing decomposition
+
+    Parameters
+    --------------
+    log
+        Event log
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    aligned_traces
+        For each trace, return its alignment
+    """
     list_nets = decomp_utils.decompose(net, im, fm)
     return apply_log(log, list_nets, parameters=parameters)
 
 
 def apply_log(log, list_nets, parameters=None):
+    """
+    Apply the recomposition alignment approach
+    to a log and a decomposed Petri net
+
+    Parameters
+    --------------
+    log
+        Log
+    list_nets
+        Decomposition
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    aligned_traces
+        For each trace, return its alignment
+    """
     if parameters is None:
         parameters = {}
     icache = parameters[ICACHE] if ICACHE in parameters else dict()
@@ -72,6 +112,19 @@ def apply_log(log, list_nets, parameters=None):
 
 
 def get_acache(cons_nets):
+    """
+    Calculates the A-Cache of the given decomposition
+
+    Parameters
+    --------------
+    cons_nets
+        List of considered nets
+
+    Returns
+    --------------
+    acache
+        A-Cache
+    """
     ret = {}
     for index, el in enumerate(cons_nets):
         for lab in el[0].lvis_labels:
@@ -83,6 +136,19 @@ def get_acache(cons_nets):
 
 
 def get_alres(al):
+    """
+    Gets a description of the alignment for the border agreement
+
+    Parameters
+    --------------
+    al
+        Alignment
+
+    Returns
+    --------------
+    alres
+        Description of the alignment
+    """
     ret = {}
     for index, el in enumerate(al["alignment"]):
         if el[1][0] is not None and el[1][0] != ">>":
@@ -97,6 +163,21 @@ def get_alres(al):
 
 
 def order_nodes_second_round(to_visit, G0):
+    """
+    Orders the second round of nodes to visit to reconstruct the alignment
+
+    Parameters
+    ---------------
+    to_visit
+        Node to visit
+    G0
+        Recomposition graph
+
+    Returns
+    ---------------
+    to_visit
+        Sorted list of nodes
+    """
     cont_loop = True
     while cont_loop:
         cont_loop = False
@@ -119,6 +200,21 @@ def order_nodes_second_round(to_visit, G0):
 
 
 def recompose_alignment(cons_nets, cons_nets_result):
+    """
+    Alignment recomposition
+
+    Parameters
+    ---------------
+    cons_nets
+        Decomposed Petri net elements
+    cons_nets_result
+        Result of the alignments on such elements
+
+    Returns
+    ---------------
+    alignment
+        Recomposed alignment
+    """
     G0 = nx.DiGraph()
     for i in range(len(cons_nets_result)):
         if cons_nets_result[i] is not None:
@@ -167,7 +263,25 @@ def recompose_alignment(cons_nets, cons_nets_result):
         count = count + 1
     return overall_ali
 
+
 def apply_trace(trace, list_nets, parameters=None):
+    """
+    Align a trace against a decomposition
+
+    Parameters
+    --------------
+    trace
+        Trace
+    list_nets
+        List of Petri nets (decomposed)
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    alignment
+        Alignment of the trace
+    """
     if parameters is None:
         parameters = {}
 
@@ -250,6 +364,27 @@ def apply_trace(trace, list_nets, parameters=None):
 
 
 def align(trace, petri_net, initial_marking, final_marking, parameters=None):
+    """
+    Align a trace against a Petri net
+
+    Parameters
+    -------------
+    trace
+        Trace
+    petri_net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+
+    Returns
+    -------------
+    alignment
+        Alignment
+    cost_function
+        Cost function
+    """
     if parameters is None:
         parameters = {}
 
@@ -263,6 +398,32 @@ def align(trace, petri_net, initial_marking, final_marking, parameters=None):
 
 
 def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm):
+    """
+    Apply the alignment to a Petri net with initial and final marking,
+    providing the trace net
+
+    Parameters
+    -------------
+    petri_net
+        Model
+    initial_marking
+        IM of the model
+    final_marking
+        FM of the model
+    trace_net
+        Trace net
+    trace_im
+        IM of the trace net
+    trace_fm
+        FM of the trace net
+
+    Returns
+    -------------
+    alignment
+        Alignment
+    cost_function
+        Cost function
+    """
     sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
                                                                                               trace_fm, petri_net,
                                                                                               initial_marking,
@@ -275,6 +436,27 @@ def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_
 
 
 def __search(sync_net, ini, fin, cost_function, skip):
+    """
+    Search function for the decomposed/recomposed alignments
+
+    Parameters
+    ------------
+    sync_net
+        Synchronous Petri net
+    ini
+        Initial marking
+    fin
+        Final marking
+    cost_function
+        Cost function
+    skip
+        Skip symbol
+
+    Returns
+    -------------
+    ali
+        Alignment (if not None)
+    """
     decorate_transitions_prepostset(sync_net)
     decorate_places_preset_trans(sync_net)
 
