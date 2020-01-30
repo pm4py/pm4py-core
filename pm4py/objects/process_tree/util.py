@@ -184,7 +184,7 @@ def parse_recursive(string_rep, depth_cache, depth):
             label = string_rep[0:escape_ext]
             string_rep = string_rep[escape_ext + 1:]
         else:
-            assert (string_rep.startswith('tau'))
+            assert (string_rep.startswith('tau') or string_rep.startswith(u'\u03c4'))
             string_rep = string_rep[3:]
         parent = None if depth == 0 else depth_cache[depth - 1]
         node = pt.ProcessTree(operator=operator, parent=parent, label=label)
