@@ -123,12 +123,6 @@ def recompose_alignment(trace, activity_key, cons_nets, cons_nets_result):
         overall_ali = overall_ali + [x for x in cons_nets_result[curr]["alignment"][sind:]]
         count = count + 1
     return overall_ali
-    #import matplotlib
-    #matplotlib.use('TkAgg')
-    #import matplotlib.pyplot as plt
-    #plt.subplot(121)
-    #nx.draw(G0, with_labels=True)
-    #plt.show()
 
 def apply_trace(trace, list_nets, parameters=None):
     if parameters is None:
@@ -207,6 +201,7 @@ def apply_trace(trace, list_nets, parameters=None):
     cost = 0
     for el in alignment:
         cost = cost + overall_cost_dict[el]
+    alignment = [x[1] for x in alignment]
     res = {"cost": cost, "alignment": alignment}
     return res
 
