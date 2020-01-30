@@ -1,8 +1,7 @@
 from pm4py.objects import petri
 from pm4py.objects.log.log import Trace
-from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, \
-    decorate_transitions_prepostset
-from pm4py.objects.petri.synchronous_product import construct_cost_aware
+from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset
+from pm4py.objects.log import log as log_implementation
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 import heapq
 from pm4py.objects.petri import align_utils as utils
@@ -12,29 +11,27 @@ from pm4py.algo.filtering.log.variants import variants_filter as variants_module
 from pm4py import util as pm4pyutil
 from copy import copy
 import networkx as nx
-import sys
 
-
+BEST_WORST_COST = 'best_worst_cost'
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
-PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
-PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
-
-PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE = 'ret_tuple_as_trans_desc'
-PARAM_TRACE_NET_COSTS = "trace_net_costs"
-
-TRACE_NET_CONSTR_FUNCTION = "trace_net_constr_function"
-TRACE_NET_COST_AWARE_CONSTR_FUNCTION = "trace_net_cost_aware_constr_function"
-
-PARAM_MAX_ALIGN_TIME_TRACE = "max_align_time_trace"
-DEFAULT_MAX_ALIGN_TIME_TRACE = sys.maxsize
-PARAM_MAX_ALIGN_TIME = "max_align_time"
-DEFAULT_MAX_ALIGN_TIME = sys.maxsize
-
-PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
-DEFAULT_VARIANT_DELIMITER = ","
 
 ICACHE = "icache"
 MCACHE = "mcache"
+
+
+def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
+    trace = log_implementation.Trace()
+    new_parameters = copy(parameters)
+    new_parameters[PARAM_TRACE_COST_FUNCTION] = list(
+        map(lambda e: utils.STD_MODEL_LOG_MOVE_COST, trace))
+
+    best_worst, cf = align(trace, petri_net, initial_marking, final_marking, parameters=new_parameters)
+
+    cf_new = {}
+    for el in cf:
+        cf_new[(el.name, el.label)] = cf[el]
+    best_worst_cost = sum(cf_new[x] for x in best_worst['alignment']) // utils.STD_MODEL_LOG_MOVE_COST if best_worst['alignment'] else 0
+    return best_worst_cost
 
 
 def apply(log, net, im, fm, parameters=None):
@@ -60,6 +57,12 @@ def apply(log, net, im, fm, parameters=None):
     aligned_traces
         For each trace, return its alignment
     """
+    if parameters is None:
+        parameters = {}
+
+    best_worst_cost = get_best_worst_cost(net, im, fm, parameters=parameters)
+    parameters[BEST_WORST_COST] = best_worst_cost
+
     list_nets = decomp_utils.decompose(net, im, fm)
     return apply_log(log, list_nets, parameters=parameters)
 
@@ -209,6 +212,8 @@ def recompose_alignment(cons_nets, cons_nets_result):
         Decomposed Petri net elements
     cons_nets_result
         Result of the alignments on such elements
+    parameters
+        Parameters of the method
 
     Returns
     ---------------
@@ -349,7 +354,7 @@ def apply_trace(trace, list_nets, parameters=None):
             cons_nets_alres.append(None)
             cons_nets_costs.append(None)
         i = i + 1
-    alignment = recompose_alignment(cons_nets, cons_nets_result)
+    alignment = recompose_alignment(cons_nets, cons_nets_result,)
     overall_cost_dict = {}
     for cf in cons_nets_costs:
         if cf is not None:
@@ -360,6 +365,10 @@ def apply_trace(trace, list_nets, parameters=None):
         cost = cost + overall_cost_dict[el]
     alignment = [x[1] for x in alignment]
     res = {"cost": cost, "alignment": alignment}
+    if BEST_WORST_COST in parameters and len(trace) > 0:
+        cost1 = cost // utils.STD_MODEL_LOG_MOVE_COST
+        fitness = 1.0 - cost1 / (parameters[BEST_WORST_COST] + len(trace))
+        res["fitness"] = fitness
     return res
 
 
