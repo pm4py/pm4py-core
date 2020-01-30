@@ -96,7 +96,29 @@ def get_alres(al):
     return ret
 
 
-def recompose_alignment(trace, activity_key, cons_nets, cons_nets_result):
+def order_nodes_second_round(to_visit, G0):
+    cont_loop = True
+    while cont_loop:
+        cont_loop = False
+        i = 0
+        while i < len(to_visit):
+            j = i + 1
+            must_break = False
+            while j < len(to_visit):
+                edg = [e for e in G0.edges if e[0] == to_visit[j] and e[1] == to_visit[i]]
+                if edg:
+                    to_visit[i], to_visit[j] = to_visit[j], to_visit[i]
+                    must_break = True
+                    break
+                j = j + 1
+            if must_break:
+                cont_loop = True
+                break
+            i = i + 1
+    return to_visit
+
+
+def recompose_alignment(cons_nets, cons_nets_result):
     G0 = nx.DiGraph()
     for i in range(len(cons_nets_result)):
         if cons_nets_result[i] is not None:
@@ -108,7 +130,9 @@ def recompose_alignment(trace, activity_key, cons_nets, cons_nets_result):
                     if i != j:
                         if cons_nets_result[i]["alignment"][-1][1] == cons_nets_result[j]["alignment"][0][1]:
                             G0.add_edge(i, j)
+    all_available = [i for i in range(len(cons_nets_result)) if cons_nets_result[i] is not None]
     to_visit = [i for i in range(len(cons_nets)) if len(list(cons_nets[i][1])) > 0]
+    visited = set()
     overall_ali = []
     count = 0
     while len(to_visit) > 0:
@@ -121,6 +145,22 @@ def recompose_alignment(trace, activity_key, cons_nets, cons_nets_result):
         else:
             sind = 0
         overall_ali = overall_ali + [x for x in cons_nets_result[curr]["alignment"][sind:]]
+        visited.add(curr)
+        count = count + 1
+    to_visit = [x for x in all_available if x not in visited]
+    to_visit = order_nodes_second_round(to_visit, G0)
+    while len(to_visit) > 0:
+        curr = to_visit.pop(0)
+        output_edges = [e for e in G0.edges if e[0] == curr]
+        for edge in output_edges:
+            to_visit.append(edge[1])
+        if count > 0:
+            sind = 1
+        else:
+            sind = 0
+        for y in [x for x in cons_nets_result[curr]["alignment"][sind:]]:
+            overall_ali.append(y)
+        visited.add(curr)
         count = count + 1
     return overall_ali
 
@@ -192,7 +232,7 @@ def apply_trace(trace, list_nets, parameters=None):
             cons_nets_alres.append(None)
             cons_nets_costs.append(None)
         i = i + 1
-    alignment = recompose_alignment(trace, activity_key, cons_nets, cons_nets_result)
+    alignment = recompose_alignment(cons_nets, cons_nets_result)
     overall_cost_dict = {}
     for cf in cons_nets_costs:
         if cf is not None:
