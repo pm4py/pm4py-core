@@ -11,6 +11,7 @@ from pm4py.objects.petri import decomposition as decomp_utils
 from pm4py.algo.filtering.log.variants import variants_filter as variants_module
 from pm4py import util as pm4pyutil
 from copy import copy
+import networkx as nx
 import sys
 
 
@@ -95,6 +96,40 @@ def get_alres(al):
     return ret
 
 
+def recompose_alignment(trace, activity_key, cons_nets, cons_nets_result):
+    G0 = nx.DiGraph()
+    for i in range(len(cons_nets_result)):
+        if cons_nets_result[i] is not None:
+            G0.add_node(i)
+    for i in range(len(cons_nets_result)):
+        if cons_nets_result[i] is not None:
+            for j in range(len(cons_nets_result)):
+                if cons_nets_result[j] is not None:
+                    if i != j:
+                        if cons_nets_result[i]["alignment"][-1][1] == cons_nets_result[j]["alignment"][0][1]:
+                            G0.add_edge(i, j)
+    to_visit = [i for i in range(len(cons_nets)) if len(list(cons_nets[i][1])) > 0]
+    overall_ali = []
+    count = 0
+    while len(to_visit) > 0:
+        curr = to_visit.pop(0)
+        output_edges = [e for e in G0.edges if e[0] == curr]
+        for edge in output_edges:
+            to_visit.append(edge[1])
+        if count > 0:
+            sind = 1
+        else:
+            sind = 0
+        overall_ali = overall_ali + [x for x in cons_nets_result[curr]["alignment"][sind:]]
+        count = count + 1
+    return overall_ali
+    #import matplotlib
+    #matplotlib.use('TkAgg')
+    #import matplotlib.pyplot as plt
+    #plt.subplot(121)
+    #nx.draw(G0, with_labels=True)
+    #plt.show()
+
 def apply_trace(trace, list_nets, parameters=None):
     if parameters is None:
         parameters = {}
@@ -137,7 +172,7 @@ def apply_trace(trace, list_nets, parameters=None):
                     comp_to_merge = sorted(list(comp_to_merge), reverse=True)
                     comp_to_merge_ids = tuple(list(cons_nets[j][0].t_tuple for j in comp_to_merge))
                     if comp_to_merge_ids not in mcache:
-                        mcache[comp_to_merge_ids] = decomp_utils.merge_sublist_nets([cons_nets[i] for i in comp_to_merge])
+                        mcache[comp_to_merge_ids] = decomp_utils.merge_sublist_nets([cons_nets[zz] for zz in comp_to_merge])
                     new_comp = mcache[comp_to_merge_ids]
                     cons_nets.append(new_comp)
                     j = 0
@@ -156,7 +191,8 @@ def apply_trace(trace, list_nets, parameters=None):
             cons_nets_result.append(None)
             cons_nets_alres.append(None)
         i = i + 1
-    res = {"cost": sum(x["cost"] for x in cons_nets_result if x is not None), "list_ali": cons_nets_result}
+    alignment = recompose_alignment(trace, activity_key, cons_nets, cons_nets_result)
+    res = {"cost": sum(x["cost"] for x in cons_nets_result if x is not None), "alignment": alignment}
     return res
 
 
