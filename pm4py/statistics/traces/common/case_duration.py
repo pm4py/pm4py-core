@@ -29,8 +29,8 @@ def get_kde_caseduration(duration_values, parameters=None):
     graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
     duration_values = sorted(duration_values)
     density = gaussian_kde(duration_values)
-    xs1 = list(np.linspace(min(duration_values), max(duration_values), graph_points/2))
-    xs2 = list(np.geomspace(max(min(duration_values), 0.001), max(duration_values), graph_points/2))
+    xs1 = list(np.linspace(min(duration_values), max(duration_values), int(graph_points/2)))
+    xs2 = list(np.geomspace(max(min(duration_values), 0.001), max(duration_values), int(graph_points/2)))
     xs = sorted(xs1 + xs2)
 
     return [xs, list(density(xs))]
