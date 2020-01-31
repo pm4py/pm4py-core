@@ -92,4 +92,8 @@ def enabled_transitions(pn, m):
     -------
     :return: set of enabled transitions
     """
-    return set(a.target for p in m for a in p.out_arcs if is_enabled(a.target, pn, m))
+    enabled = set()
+    for t in pn.transitions:
+        if is_enabled(t, pn, m):
+            enabled.add(t)
+    return enabled

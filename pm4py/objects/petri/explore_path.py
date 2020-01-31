@@ -2,6 +2,7 @@ import numpy as np
 from pm4py.util.lp import factory as lp_solver_factory
 from pm4py.objects.petri import align_utils as utils
 from pm4py.objects import petri
+from copy import copy
 import heapq
 
 
@@ -44,6 +45,9 @@ def __search(net, ini, fin):
     visited = 0
     queued = 0
     traversed = 0
+
+    trans_empty_preset = set(t for t in net.transitions if len(t.in_arcs) == 0)
+
     while not len(open_set) == 0:
         curr = heapq.heappop(open_set)
 
@@ -86,7 +90,7 @@ def __search(net, ini, fin):
         closed.add(current_marking)
         visited += 1
 
-        possible_enabling_transitions = set()
+        possible_enabling_transitions = copy(trans_empty_preset)
         for p in current_marking:
             for t in p.ass_trans:
                 possible_enabling_transitions.add(t)
