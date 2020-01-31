@@ -9,6 +9,8 @@ from pm4py.objects.log import log as log_instance
 from pm4py.objects.log.util import general as log_util
 from pm4py.objects.log.util import xes
 from pm4py.objects.conversion.log.versions import to_event_stream
+from copy import copy
+
 
 DEEPCOPY = constants.DEEPCOPY
 
@@ -62,7 +64,8 @@ def transform_event_stream_to_event_log(log, case_glue=log_util.CASE_ATTRIBUTE_G
         log = deepcopy(log)
 
     traces = {}
-    for event in log:
+    for orig_event in log:
+        event = copy(orig_event)
         glue = event[case_glue]
         if glue not in traces:
             trace_attr = {}
