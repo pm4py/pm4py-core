@@ -1,6 +1,7 @@
 from pm4py.objects.process_tree import process_tree as pt
 from pm4py.objects.process_tree import pt_operator as pt_op
 from pm4py.objects.process_tree import state as pt_st
+import hashlib
 
 
 def fold(tree):
@@ -202,3 +203,26 @@ def parse_recursive(string_rep, depth_cache, depth):
         if len(string_rep.strip()) > 0:
             parse_recursive((string_rep.strip())[1:], depth_cache, depth)
     return node
+
+
+def tree_sort(tree):
+    """
+    Sort a tree in such way that the order of the nodes
+    in AND/XOR children is always the same.
+    This is a recursive function
+
+    Parameters
+    --------------
+    tree
+        Process tree
+    """
+    tree.labels_hash_sum = 0
+    for child in tree.children:
+        tree_sort(child)
+        tree.labels_hash_sum += child.labels_hash_sum
+    if tree.label is not None:
+        # this assures that among different executions, the same string gets always the same hash
+        this_hash = int(hashlib.md5(tree.label.encode('utf-8')).hexdigest(), 16)
+        tree.labels_hash_sum += this_hash
+    if tree.operator is pt_op.Operator.PARALLEL or tree.operator is pt_op.Operator.XOR:
+        tree.children = sorted(tree.children, key=lambda x: x.labels_hash_sum)
