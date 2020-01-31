@@ -399,6 +399,9 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     visited = 0
     queued = 0
     traversed = 0
+
+    trans_empty_preset = set(t for t in sync_net.transitions if len(t.in_arcs) == 0)
+
     while not len(open_set) == 0:
         if (time.time() - start_time) > max_align_time_trace:
             return None
@@ -445,7 +448,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         closed.add(current_marking)
         visited += 1
 
-        possible_enabling_transitions = set()
+        possible_enabling_transitions = copy(trans_empty_preset)
         for p in current_marking:
             for t in p.ass_trans:
                 possible_enabling_transitions.add(t)

@@ -49,7 +49,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None, varia
 
     # execute the following part of code when the variant is not specified by the user
     if variant is None:
-        if not (petri.check_soundness.check_wfnet(petri_net) and petri.check_soundness.check_relaxed_soundness_net_in_fin_marking(petri_net, initial_marking, final_marking)):
+        if not (petri.check_soundness.check_relaxed_soundness_net_in_fin_marking(petri_net, initial_marking, final_marking)):
             # in the case the net is not a relaxed sound workflow net, we must apply token-based replay
             variant = TOKEN_BASED
         else:

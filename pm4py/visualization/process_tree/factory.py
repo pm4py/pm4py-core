@@ -1,6 +1,9 @@
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
 from pm4py.visualization.process_tree.versions import wo_decoration
+from pm4py.objects.process_tree import util
+from copy import deepcopy
+
 
 WO_DECORATION = "wo_decoration"
 FREQUENCY_DECORATION = "frequency"
@@ -13,7 +16,7 @@ VERSIONS = {WO_DECORATION: wo_decoration.apply, FREQUENCY_DECORATION: wo_decorat
             PERFORMANCE_GREEDY: wo_decoration.apply}
 
 
-def apply(tree, parameters=None, variant="wo_decoration"):
+def apply(tree0, parameters=None, variant="wo_decoration"):
     """
     Factory method for Process Tree representation
 
@@ -36,6 +39,10 @@ def apply(tree, parameters=None, variant="wo_decoration"):
     gviz
         GraphViz object
     """
+    # since the process tree object needs to be sorted in the visualization, make a deepcopy of it before
+    # proceeding
+    tree = deepcopy(tree0)
+    util.tree_sort(tree)
     return VERSIONS[variant](tree, parameters=parameters)
 
 
