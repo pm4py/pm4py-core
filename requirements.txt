@@ -3,7 +3,7 @@ pyvis
 networkx
 matplotlib
 numpy
-ciso8601
+ciso8601; python_version < '3.7'
 lxml
 graphviz
 pyarrow
@@ -14,5 +14,4 @@ scikit-learn
 pulp
 pytz
 ortools
-sklearn
 intervaltree
