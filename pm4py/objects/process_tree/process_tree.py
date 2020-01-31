@@ -22,6 +22,9 @@ class ProcessTree(object):
         self._children = list() if children is None else children
         self._label = label
 
+    def __hash__(self):
+        return id(self)
+
     def _set_operator(self, operator):
         self._operator = operator
 
