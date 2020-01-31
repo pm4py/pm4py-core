@@ -1,19 +1,19 @@
 import sys
-
+import pkgutil
 
 CISO8601 = "ciso8601"
 STRPFROMISO = "strpfromiso"
 
 VERSIONS = {}
 
-try:
+if pkgutil.find_loader("ciso8601"):
+    # ciso8601 variant is included only if ciso8601 installed
+    # slowly it will fade out of the default since now Python
+    # in the default package includes an equally performing library
     from pm4py.util.dt_parsing.versions import cs8601
 
     VERSIONS[CISO8601] = cs8601
     DEFAULT_VARIANT = CISO8601
-except:
-    # ciso8601 is not available
-    pass
 
 # this variant is available only for Python 3.7
 if sys.version_info >= (3, 7):
