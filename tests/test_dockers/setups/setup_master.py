@@ -112,7 +112,7 @@ setup(
         'pydotplus',
         'pulp',
         'pytz',
-        "ortools",
+        "ortools==7.4.7247",
         'intervaltree'
     ],
     project_urls={

@@ -13,5 +13,5 @@ pydotplus
 scikit-learn
 pulp
 pytz
-ortools
+ortools==7.4.7247
 intervaltree
