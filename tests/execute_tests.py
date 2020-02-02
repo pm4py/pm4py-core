@@ -36,6 +36,7 @@ if __name__ == "__main__":
     from tests.graphs_forming import GraphsForming
     from tests.heuminer_test import HeuMinerTest
     from tests.matrix_rep_test import MatrixRepTest
+    from tests.main_fac_test import MainFactoriesTest
 
     test_roles = RoleDetectionTest()
     test_pttime = PassedTimeTest()
@@ -66,5 +67,6 @@ if __name__ == "__main__":
     graphforming_test = GraphsForming()
     heuminer_test = HeuMinerTest()
     matrixrep_test = MatrixRepTest()
+    main_factories_test = MainFactoriesTest()
 
     unittest.main()

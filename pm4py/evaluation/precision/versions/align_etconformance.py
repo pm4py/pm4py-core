@@ -43,11 +43,8 @@ def apply(log, net, marking, final_marking, parameters=None):
     sum_at = 0
     unfit = 0
 
-    if not (petri.check_soundness.check_wfnet(net) and petri.check_soundness.check_relaxed_soundness_net_in_fin_marking(
-            net,
-            marking,
-            final_marking)):
-        raise Exception("trying to apply Align-ETConformance on a Petri net that is not a relaxed sound workflow net!!")
+    if not petri.check_soundness.check_relaxed_soundness_net_in_fin_marking(net, marking, final_marking):
+        raise Exception("trying to apply Align-ETConformance on a Petri net that is not a relaxed sound net!!")
 
     prefixes, prefix_count = precision_utils.get_log_prefixes(log, activity_key=activity_key)
     prefixes_keys = list(prefixes.keys())

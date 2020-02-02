@@ -40,6 +40,8 @@ def get_dataframe_from_event_stream(log):
     df
         Pandas dataframe
     """
+    if isinstance(log, pd.core.frame.DataFrame):
+        return log
     if type(log) is log_instance.EventLog:
         log = to_event_stream.transform_event_log_to_event_stream(log)
     transf_log = [dict(x) for x in log]

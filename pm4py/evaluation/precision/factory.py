@@ -44,8 +44,7 @@ def apply(log, net, marking, final_marking, parameters=None, variant=None):
 
     # execute the following part of code when the variant is not specified by the user
     if variant is None:
-        if not (petri.check_soundness.check_wfnet(
-                net) and petri.check_soundness.check_relaxed_soundness_net_in_fin_marking(
+        if not (petri.check_soundness.check_relaxed_soundness_net_in_fin_marking(
                 net,
                 marking,
                 final_marking)):
