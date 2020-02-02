@@ -132,7 +132,7 @@ def derive_and_lift_trace_attributes_from_event_attributes(trlog, ignore=None, r
 
 def add_artficial_start_and_end(event_log, start='[start>', end='[end]', activity_key=xes_util.DEFAULT_NAME_KEY):
     for trace in event_log:
-        trace.insert(0, event_log.Event({activity_key: start}))
-        trace.append(event_log.Event({activity_key: end}))
+        trace.insert(0, log.Event({activity_key: start}))
+        trace.append(log.Event({activity_key: end}))
     return event_log
 

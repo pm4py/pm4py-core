@@ -9,7 +9,7 @@ def check_pandas_ge_024():
     MAJOR = int(pd.__version__.split(".")[0])
     INTERM = int(pd.__version__.split(".")[1])
 
-    if MAJOR >= 0 and INTERM >= 24:
+    if (MAJOR == 0 and INTERM >= 24) or MAJOR == 1:
         return True
 
     return False
