@@ -42,3 +42,23 @@ This is a minor release, consisting of the following changes:
         - full support pandas v1.0
     3. commit be0a282be033765c9d1d7f1a7ba541a11c046834
         - fixed matplotlib backend settings
+
+
+===== PM4PY 1.2.10 =====
+This is a minor release, consisting of the following changes:
+
+    1. commit f571ec65ca544a9322b89cf96299d03da65de5a0
+        - change import DFG to PN
+        - fixed bugs in the process tree parsing
+        - fixed bugs in the process tree parsing
+    4. commit dca5cc602ba8381e5d4e265341dfc5a5292a80c0
+        - fixed a problem with alignments when transitions have empty preset
+    5. commit 945fd64e481c0fbf020da7f71cb1a7974ae9629c
+        -  made visualization deterministic for process trees, Petri nets and DFGs
+    6. commit 15be58abb314c679ddf3b65fa6832c680768c413
+        -  generic parsing dates (not anymore strictly reliant on ciso8601)
+    7. commit 68643cb109503e54787f98eb8f40650e37aa151e
+        - fixed problem with process tree hashing
+    8. commit 9d27f132d40638933be00f9d178e9a1167d36166
+        - fixed some problems in the conversion between the log types
+
