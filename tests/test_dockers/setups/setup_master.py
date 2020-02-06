@@ -113,7 +113,8 @@ setup(
         'pulp',
         'pytz',
         "ortools==7.4.7247",
-        'intervaltree'
+        'intervaltree',
+        'pm4pycvxopt'
     ],
     project_urls={
         'Documentation': 'http://pm4py.pads.rwth-aachen.de/documentation/',
