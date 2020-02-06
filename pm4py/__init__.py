@@ -2,6 +2,8 @@ import time
 
 time.clock = time.process_time
 
+import pm4pycvxopt
+
 from pm4py import algo, evaluation, objects, util, visualization, statistics, streaming
 
 __version__ = '1.2.10'
