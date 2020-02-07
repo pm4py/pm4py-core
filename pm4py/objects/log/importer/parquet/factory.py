@@ -1,4 +1,3 @@
-from pm4py.objects.log.importer.parquet.versions import pyarrow
 import os
 import pandas as pd
 from pm4py.util import constants
@@ -6,14 +5,38 @@ from pm4py.objects.log.util import xes
 from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 
 PYARROW = "pyarrow"
+FASTPARQUET = "fastparquet"
 
-VERSIONS = {PYARROW: pyarrow.apply}
-VERSIONS_LOG = {PYARROW: pyarrow.import_log}
+VERSIONS = {}
+VERSIONS_LOG = {}
+
+DEFAULT_VARIANT = None
+DEFAULT_VARIANT_LOG = None
+
+try:
+    from pm4py.objects.log.importer.parquet.versions import fastparquet
+    VERSIONS[FASTPARQUET] = fastparquet.apply
+
+    DEFAULT_VARIANT = FASTPARQUET
+except:
+    # Fastparquet is not installed
+    pass
+
+try:
+    from pm4py.objects.log.importer.parquet.versions import pyarrow
+    VERSIONS[PYARROW] = pyarrow.apply
+    VERSIONS_LOG[PYARROW] = pyarrow.import_log
+
+    DEFAULT_VARIANT = PYARROW
+    DEFAULT_VARIANT_LOG = PYARROW
+except:
+    # Pyarrow is not installed
+    pass
 
 COLUMNS = "columns"
 
 
-def apply(path, parameters=None, variant=PYARROW):
+def apply(path, parameters=None, variant=DEFAULT_VARIANT):
     """
     Import a Parquet file
 
@@ -53,7 +76,7 @@ def apply(path, parameters=None, variant=PYARROW):
     return df
 
 
-def import_log(path, parameters=None, variant=PYARROW):
+def import_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
     """
     Import a Parquet file
 
@@ -78,7 +101,7 @@ def import_log(path, parameters=None, variant=PYARROW):
     return VERSIONS_LOG[variant](path, parameters=parameters)
 
 
-def import_minimal_log(path, parameters=None, variant=PYARROW):
+def import_minimal_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
     """
     Import a Parquet file (as a minimal log with only the essential columns)
 
@@ -105,7 +128,7 @@ def import_minimal_log(path, parameters=None, variant=PYARROW):
     return VERSIONS_LOG[variant](path, parameters=parameters)
 
 
-def import_df(path, parameters=None, variant=PYARROW):
+def import_df(path, parameters=None, variant=DEFAULT_VARIANT):
     """
     Import a Parquet file
 
