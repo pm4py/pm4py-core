@@ -5,6 +5,9 @@ from pm4py.objects.conversion.log import factory as log_conv_factory
 
 
 COLUMNS = "columns"
+LEGACY_PARQUET_TP_REPLACER = "AAA"
+LEGACY_PARQUET_CASECONCEPTNAME = "caseAAAconceptAAAname"
+
 
 def insert_partitioning(df, num_partitions, parameters=None):
     """
@@ -36,6 +39,27 @@ def insert_partitioning(df, num_partitions, parameters=None):
     return df
 
 
+def legacy_parquet_support(df, parameters=None):
+    """
+    For legacy support, Parquet files columns could not contain
+    a ":" that has been arbitrarily replaced by a replacer string.
+    This string substitutes the replacer to the :
+
+    Parameters
+    ---------------
+    dataframe
+        Dataframe
+    parameters
+        Parameters of the algorithm
+    """
+    if parameters is None:
+        parameters = {}
+
+    df.columns = [x.replace(LEGACY_PARQUET_TP_REPLACER, ":") for x in df.columns]
+
+    return df
+
+
 def table_to_log(table, parameters=None):
     """
     Converts a Pyarrow table to an event log
@@ -52,8 +76,10 @@ def table_to_log(table, parameters=None):
 
     dict0 = table.to_pydict()
     keys = list(dict0.keys())
-    for key in keys:
-        dict0[key.replace("AAA", ":")] = dict0.pop(key)
+    # for legacy format support
+    if LEGACY_PARQUET_CASECONCEPTNAME in keys:
+        for key in keys:
+            dict0[key.replace(LEGACY_PARQUET_TP_REPLACER, ":")] = dict0.pop(key)
 
     stream = EventStream([dict(zip(dict0, i)) for i in zip(*dict0.values())])
 
