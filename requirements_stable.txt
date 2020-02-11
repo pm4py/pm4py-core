@@ -15,4 +15,4 @@ pulp==2.0
 pytz==2019.3
 ortools==7.4.7247
 intervaltree==3.0.2
-pm4pycvxopt==0.0.8
+pm4pycvxopt==0.0.8; python_version < '3.8'

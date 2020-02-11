@@ -114,7 +114,7 @@ setup(
         'pytz',
         "ortools==7.4.7247",
         'intervaltree',
-        'pm4pycvxopt'
+        "pm4pycvxopt; python_version < '3.8'"
     ],
     project_urls={
         'Documentation': 'http://pm4py.pads.rwth-aachen.de/documentation/',

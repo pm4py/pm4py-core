@@ -15,4 +15,4 @@ pulp
 pytz
 ortools==7.4.7247
 intervaltree
-pm4pycvxopt
+pm4pycvxopt; python_version < '3.8'
