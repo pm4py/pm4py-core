@@ -36,6 +36,9 @@ PARAMETERS = [PARAM_TRACE_COST_FUNCTION, PARAM_MODEL_COST_FUNCTION, PARAM_SYNC_C
               pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
 def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
+    if parameters is None:
+        parameters = {}
+
     trace = log_implementation.Trace()
     new_parameters = copy(parameters)
     if PARAM_TRACE_COST_FUNCTION not in new_parameters or len(new_parameters[PARAM_TRACE_COST_FUNCTION]) < len(trace):
@@ -135,6 +138,9 @@ def apply_from_variants_list_petri_string_mprocessing(mp_output, var_list, petri
 
 
 def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters=None):
+    if parameters is None:
+        parameters = {}
+
     ret_tuple_as_trans_desc = parameters[
         PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] if PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE in parameters else False
 
