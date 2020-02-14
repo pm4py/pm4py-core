@@ -255,7 +255,7 @@ def structurally_language_equal(tree1, tree2):
                 for i in range(len(tree1.children)):
                     mm = [m for m in matches]
                     for j in mm:
-                        if structurally_language_equal(tree1.children[i], tree2.children[i]):
+                        if structurally_language_equal(tree1.children[i], tree2.children[j]):
                             matches.remove(j)
                             break
                 return True if len(matches) == 0 else False
