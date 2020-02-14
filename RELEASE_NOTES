@@ -80,5 +80,9 @@ This is a minor release, consisting of the following changes:
     - support importing and exporting of Petri net weights
 7. commit 157fadffd3b953c105e67f4909547f097d77ea0a
     - reduce inernal (cyclic) dependencies within PM4Py
+8. commit f38b6089b7eb6a4518a9c33e9775120874352657
+   commit af1328e2dad82f0a059e00942167a29cb918c85f
+   commit e8e1ab443f2dedb2cd348f35bc49eed412d66e1d
+    - fix the hash and equals function of process trees
 
 
