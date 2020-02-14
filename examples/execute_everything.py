@@ -5,6 +5,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    from examples import log_skeleton
     from examples import roles_detection
     from examples import ltl_log
     from examples import ltl_pandas
@@ -27,6 +28,8 @@ if __name__ == "__main__":
     from examples import big_dataframe_management
     from examples import graphs_visualization
 
+    print("\n\nlog_skeleton")
+    log_skeleton.execute_script()
     print("\n\nroles_detection")
     roles_detection.execute_script()
     print("\n\nltl_log")
