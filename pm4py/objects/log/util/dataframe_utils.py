@@ -1,5 +1,4 @@
 from pm4py.util import constants
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
 from pm4py.objects.log.log import EventStream, Event
 from pm4py.objects.conversion.log import factory as log_conv_factory
 
@@ -31,7 +30,7 @@ def insert_partitioning(df, num_partitions, parameters=None):
         parameters = {}
 
     case_id_key = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else constants.CASE_CONCEPT_NAME
     partition_column = parameters["partition_column"] if "partition_column" in parameters else "@@partitioning"
 
     df[partition_column] = df[case_id_key].rank(method='dense', ascending=False).astype(int) % num_partitions
