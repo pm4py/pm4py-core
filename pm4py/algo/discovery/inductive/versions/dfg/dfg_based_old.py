@@ -7,11 +7,11 @@ from pm4py.algo.discovery.inductive.util import shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_old import SubtreeDFGBasedOld
 from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr_dfg_based
-from pm4py.algo.filtering.log.attributes import attributes_filter
-from pm4py.algo.filtering.log.end_activities import end_activities_filter
-from pm4py.algo.filtering.log.start_activities import start_activities_filter
+from pm4py.statistics.attributes.log import get as attributes_filter
+from pm4py.statistics.end_activities.log import get as end_activities_filter
+from pm4py.statistics.start_activities.log import get as start_activities_filter
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
-from pm4py.objects.log.util import xes as xes_util
+from pm4py.util import xes_constants as xes_util
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
 

@@ -1,8 +1,7 @@
 import os
 import pandas as pd
 from pm4py.util import constants
-from pm4py.objects.log.util import xes
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
+from pm4py.util import xes_constants as xes
 
 PYARROW = "pyarrow"
 FASTPARQUET = "fastparquet"
@@ -61,7 +60,7 @@ def apply(path, parameters=None, variant=DEFAULT_VARIANT):
     timestamp_key = parameters[
         constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
     case_id_key = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else constants.CASE_CONCEPT_NAME
 
     if os.path.isdir(path):
         all_parquets = get_list_parquet(path, parameters=parameters)
@@ -123,7 +122,7 @@ def import_minimal_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
     if parameters is None:
         parameters = {}
 
-    parameters[COLUMNS] = [CASE_CONCEPT_NAME, xes.DEFAULT_NAME_KEY, xes.DEFAULT_TIMESTAMP_KEY]
+    parameters[COLUMNS] = [constants.CASE_CONCEPT_NAME, xes.DEFAULT_NAME_KEY, xes.DEFAULT_TIMESTAMP_KEY]
 
     return VERSIONS_LOG[variant](path, parameters=parameters)
 

@@ -1,8 +1,9 @@
 from pm4py.util import constants
-from pm4py.objects.log.util import xes
 from pm4py.objects.log.util import sorting
-from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.objects.log.util import basic_filter
 from pm4py.util import points_subset
+from pm4py.util import xes_constants as xes
+
 
 def apply(log, list_activities, sample_size, parameters):
     """
@@ -36,7 +37,7 @@ def apply(log, list_activities, sample_size, parameters):
     log = sorting.sort_timestamp_log(log, timestamp_key=timestamp_key)
     parameters[
         constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
-    log = attributes_filter.apply_events(log, list_activities, parameters=parameters)
+    log = basic_filter.filter_log_events_attr(log, list_activities, parameters=parameters)
 
     points = []
 

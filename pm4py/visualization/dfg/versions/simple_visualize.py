@@ -3,9 +3,9 @@ from copy import copy
 
 from graphviz import Digraph
 
-from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.statistics.attributes.log import get as attr_get
 from pm4py.objects.dfg.utils import dfg_utils
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.visualization.common.utils import *
 
@@ -264,7 +264,7 @@ def apply(dfg, log=None, parameters=None, activities_count=None, measure="freque
 
     if activities_count is None:
         if log is not None:
-            activities_count = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
+            activities_count = attr_get.get_attribute_values(log, activity_key, parameters=parameters)
         else:
             activities = dfg_utils.get_activities_from_dfg(dfg)
             activities_count = {key: 1 for key in activities}
