@@ -1,12 +1,12 @@
 import pandas as pd
 
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
-from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
-from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY
+from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.util.constants import CASE_CONCEPT_NAME
 
 
 def get_case_arrival_avg(df, parameters=None):

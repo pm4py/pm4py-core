@@ -3,11 +3,11 @@ from copy import copy
 import numpy as np
 import pandas as pd
 
-from pm4py.algo.filtering.log.attributes import attributes_filter as log_attributes_filter
-from pm4py.algo.filtering.pandas.attributes import attributes_filter as pd_attributes_filter
+from pm4py.statistics.attributes.pandas import get as pd_attributes_filter
+from pm4py.statistics.attributes.log import get as log_attributes_filter
 from pm4py.objects.conversion.log import factory as conversion_factory
 from pm4py.objects.log.log import EventStream
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
 from pm4py.statistics.traces.log import case_statistics as log_case_statistics
 from pm4py.statistics.traces.pandas import case_statistics as pd_case_statistics
 from pm4py.util import constants

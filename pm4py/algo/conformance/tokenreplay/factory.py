@@ -1,10 +1,9 @@
 from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.objects.conversion.log import factory as log_converter
-from pm4py.objects.log.util import general as log_util
-from pm4py.objects.log.util import xes as xes_util
+from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri.exporter.versions import pnml as petri_exporter
-from pm4py.algo.filtering.log.variants import variants_filter as variants_module
+from pm4py.statistics.variants.log import get as variants_module
 import multiprocessing as mp
 import math
 
@@ -42,7 +41,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None, variant=TOK
     if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
+        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
     return VERSIONS[variant](log_converter.apply(log, parameters, log_converter.TO_EVENT_LOG), net, initial_marking,
                              final_marking, parameters=parameters)
 
@@ -58,9 +57,7 @@ def apply_multiprocessing(log, net, initial_marking, final_marking, parameters=N
     if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
-
-    petri_string = petri_exporter.export_petri_as_string(net, initial_marking, final_marking)
+        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
 
     variants_idxs = parameters[VARIANTS_IDX] if VARIANTS_IDX in parameters else None
     if variants_idxs is None:
