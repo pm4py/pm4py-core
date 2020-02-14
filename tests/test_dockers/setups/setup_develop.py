@@ -107,12 +107,12 @@ setup(
         'graphviz',
         'pandas',
         'scipy',
-        "pyarrow",
+        "pyarrow<=0.15.1; python_version < '3.8'",
         'scikit-learn',
         'pydotplus',
         'pulp',
         'pytz',
-        "ortools==7.4.7247",
+        "ortools; python_version < '3.9'",
         'intervaltree'
     ],
     project_urls={
