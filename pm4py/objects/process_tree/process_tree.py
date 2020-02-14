@@ -31,7 +31,7 @@ class ProcessTree(object):
         else:
             h = 1337
             for i in range(len(self.children)):
-                h += 41 * hash(self.children[i])
+                h += 41 * i * hash(self.children[i])
             if self.operator == pt_operator.Operator.SEQUENCE:
                 h = h * 13
             elif self.operator == pt_operator.Operator.XOR:
