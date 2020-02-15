@@ -13,8 +13,8 @@ if __name__ == "__main__":
     from tests.xes_impexp_test import XesImportExportTest
     from tests.csv_impexp_test import CsvImportExportTest
     from tests.alpha_test import AlphaMinerTest
-    from tests.imdf_test import InductiveMinerDFTest
-    from tests.imdf_tree_test import InductiveMinerDFTreeTest
+    from tests.inductive_test import InductiveMinerTest
+    from tests.inductive_tree_test import InductiveMinerTreeTest
     from tests.alignment_test import AlignmentTest
     from tests.sna_test import SnaTests
     from tests.petri_imp_exp_test import PetriImportExportTest
@@ -40,8 +40,8 @@ if __name__ == "__main__":
     test2_object = XesImportExportTest()
     test3_object = CsvImportExportTest()
     test4_object = AlphaMinerTest()
-    test5_object = InductiveMinerDFTest()
-    test55_object = InductiveMinerDFTreeTest()
+    test5_object = InductiveMinerTest()
+    test55_object = InductiveMinerTreeTest()
     test6_object = AlignmentTest()
     test7_object = PetriImportExportTest()
     test8_object = AlphaMinerDocumentationTest()
