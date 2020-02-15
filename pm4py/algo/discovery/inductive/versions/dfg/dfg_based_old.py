@@ -7,9 +7,9 @@ from pm4py.algo.discovery.inductive.util import shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_old import SubtreeDFGBasedOld
 from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr_dfg_based
-from pm4py.statistics.attributes.log import get as attributes_filter
-from pm4py.statistics.end_activities.log import get as end_activities_filter
-from pm4py.statistics.start_activities.log import get as start_activities_filter
+from pm4py.statistics.attributes.log import get as log_attributes_stats
+from pm4py.statistics.end_activities.log import get as log_end_act_stats
+from pm4py.statistics.start_activities.log import get as log_start_act_stats
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.dfg.utils import dfg_utils
@@ -56,12 +56,12 @@ def apply(log, parameters):
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
     # get the activities in the log
-    activities = attributes_filter.get_attribute_values(log, activity_key)
+    activities = log_attributes_stats.get_attribute_values(log, activity_key)
 
     # gets the start activities from the log
-    start_activities = list(start_activities_filter.get_start_activities(log, parameters=parameters).keys())
+    start_activities = list(log_start_act_stats.get_start_activities(log, parameters=parameters).keys())
     # gets the end activities from the log
-    end_activities = list(end_activities_filter.get_end_activities(log, parameters=parameters).keys())
+    end_activities = list(log_end_act_stats.get_end_activities(log, parameters=parameters).keys())
 
     # check if the log contains empty traces
     contains_empty_traces = False
@@ -115,12 +115,12 @@ def apply_tree(log, parameters):
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
     # gets the start activities from the log
-    start_activities = start_activities_filter.get_start_activities(log, parameters=parameters)
+    start_activities = log_start_act_stats.get_start_activities(log, parameters=parameters)
     # gets the end activities from the log
-    end_activities = end_activities_filter.get_end_activities(log, parameters=parameters)
+    end_activities = log_end_act_stats.get_end_activities(log, parameters=parameters)
 
     # get the activities in the log
-    activities = attributes_filter.get_attribute_values(log, activity_key)
+    activities = log_attributes_stats.get_attribute_values(log, activity_key)
 
     # check if the log contains empty traces
     contains_empty_traces = False
