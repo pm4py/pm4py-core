@@ -16,24 +16,162 @@ VERSIONS_TREE_VARIANTS = {DFG_BASED: dfg_based.apply_tree_variants,
 
 
 def apply(log, parameters=None, variant=DEFAULT_VARIANT):
-    return VERSIONS[variant](log, parameters)
+    """
+    Apply the IMDF algorithm to a log obtaining a Petri net along with an initial and final marking
+
+    Parameters
+    -------------
+    log
+        Log
+    variant
+        Variant of the algorithm to apply, possible values:
+        - dfg_based: the latest version of the DFG-based algorithm
+        - dfg_based_old_version: the previous version of the DFG-based algorithm
+    parameters
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
+
+    Returns
+    -----------
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    """
+    return VERSIONS[variant](log, parameters=parameters)
 
 
 def apply_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
-    return VERSIONS_DFG[variant](dfg, parameters)
+    """
+    Apply the IMDF algorithm to a DFG graph obtaining a Petri net along with an initial and final marking
+
+    Parameters
+    -----------
+    dfg
+        Directly-Follows graph
+    variant
+        Variant of the algorithm to apply, possible values:
+        - dfg_based: the latest version of the DFG-based algorithm
+        - dfg_based_old_version: the previous version of the DFG-based algorithm
+    parameters
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
+
+    Returns
+    -----------
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    """
+    return VERSIONS_DFG[variant](dfg, parameters=parameters)
 
 
 def apply_tree(log, parameters=None, variant=DEFAULT_VARIANT):
-    return VERSIONS_TREE[variant](log, parameters)
+    """
+    Apply the IMDF algorithm to a log obtaining a process tree
+
+    Parameters
+    ----------
+    log
+        Log
+    variant
+        Variant of the algorithm to apply, possible values:
+        - dfg_based: the latest version of the DFG-based algorithm
+        - dfg_based_old_version: the previous version of the DFG-based algorithm
+    parameters
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
+
+    Returns
+    ----------
+    tree
+        Process tree
+    """
+    return VERSIONS_TREE[variant](log, parameters=parameters)
 
 
 def apply_tree_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
-    return VERSIONS_TREE_DFG[variant](dfg, parameters)
+    """
+    Apply the IMDF algorithm to a DFG graph obtaining a process tree
+
+    Parameters
+    ----------
+    dfg
+        Directly-follows graph
+    variant
+        Variant of the algorithm to apply, possible values:
+        - dfg_based: the latest version of the DFG-based algorithm
+        - dfg_based_old_version: the previous version of the DFG-based algorithm
+    parameters
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
+
+    Returns
+    ----------
+    tree
+        Process tree
+    """
+    return VERSIONS_TREE_DFG[variant](dfg, parameters=parameters)
 
 
 def apply_variants(variants, parameters=None, variant=DEFAULT_VARIANT):
-    return VERSIONS_VARIANTS[variant](variants, parameters)
+    """
+    Apply the IMDF algorithm to a dictionary/list/set of variants obtaining a Petri net along with an initial and final marking
+
+    Parameters
+    -----------
+    variants
+        Dictionary/list/set of variants in the log
+    parameters
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
+    variant
+        Variant of the algorithm to apply, possible values:
+        - dfg_based: the latest version of the DFG-based algorithm
+        - dfg_based_old_version: the previous version of the DFG-based algorithm
+
+    Returns
+    -----------
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    """
+    return VERSIONS_VARIANTS[variant](variants, parameters=parameters)
 
 
 def apply_tree_variants(variants, parameters=None, variant=DEFAULT_VARIANT):
-    return VERSIONS_TREE_VARIANTS[variant](variants, parameters)
+    """
+    Apply the IMDF algorithm to a dictionary/list/set of variants a log obtaining a process tree
+
+    Parameters
+    ----------
+    variants
+        Dictionary/list/set of variants in the log
+    parameters
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
+    variant
+        Variant of the algorithm to apply, possible values:
+        - dfg_based: the latest version of the DFG-based algorithm
+        - dfg_based_old_version: the previous version of the DFG-based algorithm
+
+    Returns
+    ----------
+    tree
+        Process tree
+    """
+    return VERSIONS_TREE_VARIANTS[variant](variants, parameters=parameters)

@@ -738,6 +738,29 @@ def get_dfg_np_matrix(dfg):
 
 
 def get_dfg_sa_ea_act_from_variants(variants, parameters=None):
+    """
+    Gets the DFG, the start and end activities, and the activities
+    from the dictionary/set/list of variants in the log
+
+    Parameters
+    ---------------
+    variants
+        Dictionary/set/list of variants
+    parameters
+        Parameters of the algorithm, including:
+        - variants_sep: the delimiter splitting activities in a variant
+
+    Returns
+    --------------
+    dfg
+        DFG
+    list_act
+        List of different activities
+    start_activities
+        Start activities
+    end_activities
+        End activities
+    """
     if parameters is None:
         parameters = {}
     variant_sep = parameters[PARAMETER_VARIANT_SEP] if PARAMETER_VARIANT_SEP in parameters else DEFAULT_VARIANT_SEP

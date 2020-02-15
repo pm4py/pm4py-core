@@ -23,7 +23,7 @@ from pm4py.util import xes_constants as xes_util
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
 
 
-def apply(log, parameters):
+def apply(log, parameters=None):
     """
     Apply the IMDF algorithm to a log obtaining a Petri net along with an initial and final marking
 
@@ -67,18 +67,59 @@ def apply(log, parameters):
     return net, initial_marking, final_marking
 
 
-def apply_variants(variants, parameters):
+def apply_variants(variants, parameters=None):
+    """
+    Apply the IMDF algorithm to a dictionary/list/set of variants obtaining a Petri net along with an initial and final marking
+
+    Parameters
+    -----------
+    variants
+        Dictionary/list/set of variants in the log
+    parameters
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
+
+    Returns
+    -----------
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    """
+    if parameters is None:
+        parameters = {}
     dfg, list_act, start_activities, end_activities = dfg_utils.get_dfg_sa_ea_act_from_variants(variants, parameters=parameters)
     return apply_dfg(dfg, parameters=parameters, start_activities=start_activities, end_activities=end_activities, activities=list_act)
 
 
-def apply_tree_variants(variants, parameters):
+def apply_tree_variants(variants, parameters=None):
+    """
+    Apply the IMDF algorithm to a dictionary/list/set of variants a log obtaining a process tree
+
+    Parameters
+    ----------
+    variants
+        Dictionary/list/set of variants in the log
+    parameters
+        Parameters of the algorithm, including:
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
+
+    Returns
+    ----------
+    tree
+        Process tree
+    """
+    if parameters is None:
+        parameters = {}
     dfg, list_act, start_activities, end_activities = dfg_utils.get_dfg_sa_ea_act_from_variants(variants, parameters=parameters)
     return apply_tree_dfg(dfg, parameters=parameters, start_activities=start_activities, end_activities=end_activities, activities=list_act)
 
 
-
-def apply_tree(log, parameters):
+def apply_tree(log, parameters=None):
     """
     Apply the IMDF algorithm to a log obtaining a process tree
 
@@ -120,11 +161,11 @@ def apply_tree(log, parameters):
     if traces_length:
         contains_empty_traces = min([len(trace) for trace in log]) == 0
 
-    return apply_tree_dfg(dfg, parameters, activities=activities, contains_empty_traces=contains_empty_traces,
+    return apply_tree_dfg(dfg, parameters=parameters, activities=activities, contains_empty_traces=contains_empty_traces,
                           start_activities=start_activities, end_activities=end_activities)
 
 
-def apply_dfg(dfg, parameters, activities=None, contains_empty_traces=False, start_activities=None,
+def apply_dfg(dfg, parameters=None, activities=None, contains_empty_traces=False, start_activities=None,
               end_activities=None):
     """
     Apply the IMDF algorithm to a DFG graph obtaining a Petri net along with an initial and final marking
@@ -155,14 +196,17 @@ def apply_dfg(dfg, parameters, activities=None, contains_empty_traces=False, sta
     final_marking
         Final marking
     """
-    tree = apply_tree_dfg(dfg, parameters, activities=activities, contains_empty_traces=contains_empty_traces,
+    if parameters is None:
+        parameters = {}
+
+    tree = apply_tree_dfg(dfg, parameters=parameters, activities=activities, contains_empty_traces=contains_empty_traces,
                           start_activities=start_activities, end_activities=end_activities)
     net, initial_marking, final_marking = tree_to_petri.apply(tree)
 
     return net, initial_marking, final_marking
 
 
-def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False, start_activities=None,
+def apply_tree_dfg(dfg, parameters=None, activities=None, contains_empty_traces=False, start_activities=None,
                    end_activities=None):
     """
     Apply the IMDF algorithm to a DFG graph obtaining a process tree
