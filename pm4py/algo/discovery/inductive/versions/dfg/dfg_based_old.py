@@ -11,6 +11,7 @@ from pm4py.statistics.attributes.log import get as attributes_filter
 from pm4py.statistics.end_activities.log import get as end_activities_filter
 from pm4py.statistics.start_activities.log import get as start_activities_filter
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
+from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.util import xes_constants as xes_util
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
@@ -46,6 +47,8 @@ def apply(log, parameters):
         parameters[pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = parameters[
             pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+
+    log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
 
     # get the DFG
     dfg = [(k, v) for k, v in dfg_inst.apply(log, parameters={

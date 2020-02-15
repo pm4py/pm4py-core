@@ -1,6 +1,8 @@
 import sys
 from collections import Counter
 
+import pandas
+from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.algo.discovery.inductive.util import shared_constants
@@ -11,6 +13,7 @@ from pm4py.statistics.attributes.log import get as attributes_filter
 from pm4py.statistics.end_activities.log import get as end_activities_filter
 from pm4py.statistics.start_activities.log import get as start_activities_filter
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
+from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.util import xes_constants as xes_util
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
@@ -38,11 +41,22 @@ def apply(log, parameters):
     final_marking
         Final marking
     """
-
+    if parameters is None:
+        parameters = {}
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
+    if isinstance(log, pandas.core.frame.DataFrame):
+        dfg = df_statistics.get_dfg_graph(log, case_id_glue=parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY],
+                                          activity_key=parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY],
+                                          timestamp_key=parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY])
+        return apply_dfg(dfg, parameters=parameters)
+    log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
     tree = apply_tree(log, parameters=parameters)
-
     net, initial_marking, final_marking = tree_to_petri.apply(tree)
-
     return net, initial_marking, final_marking
 
 
@@ -87,19 +101,13 @@ def apply_tree(log, parameters):
     traces_length = [len(trace) for trace in log]
     if traces_length:
         contains_empty_traces = min([len(trace) for trace in log]) == 0
-    case_act_occ = Counter()
-    for trace in log:
-        ac = set(x[activity_key] for x in trace if activity_key in x)
-        for act in ac:
-            case_act_occ[act] += 1
 
     return apply_tree_dfg(dfg, parameters, activities=activities, contains_empty_traces=contains_empty_traces,
-                          start_activities=start_activities, end_activities=end_activities, no_cases=len(log),
-                          case_act_occ=case_act_occ)
+                          start_activities=start_activities, end_activities=end_activities)
 
 
 def apply_dfg(dfg, parameters, activities=None, contains_empty_traces=False, start_activities=None,
-              end_activities=None, case_act_occ=None, no_cases=None):
+              end_activities=None):
     """
     Apply the IMDF algorithm to a DFG graph obtaining a Petri net along with an initial and final marking
 
@@ -119,10 +127,6 @@ def apply_dfg(dfg, parameters, activities=None, contains_empty_traces=False, sta
         If provided, the start activities of the log
     end_activities
         If provided, the end activities of the log
-    case_act_occ
-        If provided, the number of cases in which an activity occurs
-    no_cases
-        If provided, the number of cases in the log
 
     Returns
     -----------
@@ -134,15 +138,14 @@ def apply_dfg(dfg, parameters, activities=None, contains_empty_traces=False, sta
         Final marking
     """
     tree = apply_tree_dfg(dfg, parameters, activities=activities, contains_empty_traces=contains_empty_traces,
-                          start_activities=start_activities, end_activities=end_activities, case_act_occ=case_act_occ,
-                          no_cases=no_cases)
+                          start_activities=start_activities, end_activities=end_activities)
     net, initial_marking, final_marking = tree_to_petri.apply(tree)
 
     return net, initial_marking, final_marking
 
 
 def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False, start_activities=None,
-                   end_activities=None, case_act_occ=None, no_cases=None):
+                   end_activities=None):
     """
     Apply the IMDF algorithm to a DFG graph obtaining a process tree
 
@@ -162,10 +165,6 @@ def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False
         If provided, the start activities of the log
     end_activities
         If provided, the end activities of the log
-    case_act_occ
-        If provided, the number of cases in which an activity occurs
-    no_cases
-        If provided, the number of cases in the log
 
     Returns
     ----------
@@ -190,9 +189,7 @@ def apply_tree_dfg(dfg, parameters, activities=None, contains_empty_traces=False
     c = Counts()
     s = SubtreeDFGBased(dfg, dfg, dfg, activities, c, 0, noise_threshold=noise_threshold,
                         initial_start_activities=start_activities,
-                        initial_end_activities=end_activities,
-                        case_act_occ=case_act_occ,
-                        no_cases=no_cases)
+                        initial_end_activities=end_activities)
 
     tree_repr = get_tree_repr_dfg_based.get_repr(s, 0, contains_empty_traces=contains_empty_traces)
 
