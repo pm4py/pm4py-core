@@ -30,8 +30,6 @@ class InductiveMinerDFTreeTest(unittest.TestCase):
         tree = inductive_miner.apply_tree(log)
         gviz = pt_vis_factory.apply(tree)
         del gviz
-        # test log generation
-        log = pt_semantics.generate_log(tree)
         del log
 
     def test_tree_parsing(self):
