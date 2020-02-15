@@ -12,6 +12,7 @@ if __name__ == "__main__":
     from tests.imp_everything import Pm4pyImportPackageTest
     from tests.xes_impexp_test import XesImportExportTest
     from tests.csv_impexp_test import CsvImportExportTest
+    from tests.other_tests import OtherPartsTests
     from tests.alpha_test import AlphaMinerTest
     from tests.imdf_test import InductiveMinerDFTest
     from tests.imdf_tree_test import InductiveMinerDFTreeTest
@@ -39,6 +40,7 @@ if __name__ == "__main__":
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
     test3_object = CsvImportExportTest()
+    other_tests = OtherPartsTests()
     test4_object = AlphaMinerTest()
     test5_object = InductiveMinerDFTest()
     test55_object = InductiveMinerDFTreeTest()
