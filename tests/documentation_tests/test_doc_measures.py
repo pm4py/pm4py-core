@@ -22,7 +22,7 @@ class DocMeasuresDocumentationTest(unittest.TestCase):
         from pm4py.evaluation.precision import factory as precision_factory
         precision_alpha = precision_factory.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking, variant=precision_factory.ETCONFORMANCE_TOKEN)
         precision_inductive = precision_factory.apply(log, inductive_petri, inductive_initial_marking,
-                                                      inductive_final_marking, variant=replay_factory.TOKEN_BASED)
+                                                      inductive_final_marking, variant=precision_factory.ETCONFORMANCE_TOKEN)
         del precision_alpha
         del precision_inductive
         from pm4py.evaluation.generalization import factory as generalization_factory
