@@ -6,11 +6,21 @@ DFG_BASED = 'dfg_based'
 DEFAULT_VARIANT = DFG_BASED
 DEFAULT_VARIANT_DFG = DFG_BASED
 
+# these versions apply on an EventLog object. Specific conversions are done when needed
+# to extract an accepting Petri net
 VERSIONS = {DFG_BASED: dfg_based.apply, DFG_BASED_OLD_VERSION: dfg_based_old.apply}
+# these versions apply on a DFG (dictionary of directly-follows relations along with their count)
+# to extract an accepting Petri net
 VERSIONS_DFG = {DFG_BASED: dfg_based.apply_dfg, DFG_BASED_OLD_VERSION: dfg_based_old.apply_dfg}
+# these versions apply on an EventLog object. Specific conversions are done when needed
+# to extract a process tree
 VERSIONS_TREE = {DFG_BASED: dfg_based.apply_tree, DFG_BASED_OLD_VERSION: dfg_based_old.apply_tree}
+# these versions apply on a DFG (dictionary of directly-follows relations along with their count)
+# to extract a process tree
 VERSIONS_TREE_DFG = {DFG_BASED: dfg_based.apply_tree_dfg, DFG_BASED_OLD_VERSION: dfg_based_old.apply_tree_dfg}
+# these versions apply on a dictionary/list/set of variants to extract an accepting Petri net
 VERSIONS_VARIANTS = {DFG_BASED: dfg_based.apply_variants, DFG_BASED_OLD_VERSION: dfg_based_old.apply_variants}
+# these versions apply on a dictionary/list/set of variants to extract a process tree
 VERSIONS_TREE_VARIANTS = {DFG_BASED: dfg_based.apply_tree_variants,
                           DFG_BASED_OLD_VERSION: dfg_based_old.apply_tree_variants}
 
