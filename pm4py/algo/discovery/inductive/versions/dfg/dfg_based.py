@@ -9,9 +9,12 @@ from pm4py.algo.discovery.inductive.util import shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree import SubtreeDFGBased
 from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr_dfg_based
-from pm4py.statistics.attributes.log import get as attributes_filter
-from pm4py.statistics.end_activities.log import get as end_activities_filter
-from pm4py.statistics.start_activities.log import get as start_activities_filter
+from pm4py.statistics.attributes.log import get as log_attributes_stats
+from pm4py.statistics.end_activities.log import get as log_end_act_stats
+from pm4py.statistics.start_activities.log import get as log_start_act_stats
+from pm4py.statistics.attributes.pandas import get as pd_attributes_stats
+from pm4py.statistics.end_activities.pandas import get as pd_end_act_stats
+from pm4py.statistics.start_activities.pandas import get as pd_start_act_stats
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.dfg.utils import dfg_utils
@@ -54,7 +57,10 @@ def apply(log, parameters):
         dfg = df_statistics.get_dfg_graph(log, case_id_glue=parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY],
                                           activity_key=parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY],
                                           timestamp_key=parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY])
-        return apply_dfg(dfg, parameters=parameters)
+        start_activities = pd_start_act_stats.get_start_activities(log, parameters=parameters)
+        end_activities = pd_end_act_stats.get_end_activities(log, parameters=parameters)
+        activities = pd_attributes_stats.get_attribute_values(log, parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY], parameters=parameters)
+        return apply_dfg(dfg, activities=activities, start_activities=start_activities, end_activities=end_activities, parameters=parameters)
     log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
     tree = apply_tree(log, parameters=parameters)
     net, initial_marking, final_marking = tree_to_petri.apply(tree)
@@ -101,12 +107,12 @@ def apply_tree(log, parameters):
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
     # gets the start activities from the log
-    start_activities = start_activities_filter.get_start_activities(log, parameters=parameters)
+    start_activities = log_start_act_stats.get_start_activities(log, parameters=parameters)
     # gets the end activities from the log
-    end_activities = end_activities_filter.get_end_activities(log, parameters=parameters)
+    end_activities = log_end_act_stats.get_end_activities(log, parameters=parameters)
 
     # get the activities in the log
-    activities = attributes_filter.get_attribute_values(log, activity_key)
+    activities = log_attributes_stats.get_attribute_values(log, activity_key)
 
     # check if the log contains empty traces
     contains_empty_traces = False
