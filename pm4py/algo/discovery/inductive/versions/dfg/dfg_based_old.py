@@ -12,6 +12,7 @@ from pm4py.statistics.end_activities.log import get as end_activities_filter
 from pm4py.statistics.start_activities.log import get as start_activities_filter
 from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import xes_constants as xes_util
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
@@ -73,6 +74,16 @@ def apply(log, parameters):
                                                     start_activities=start_activities, end_activities=end_activities)
 
     return net, initial_marking, final_marking
+
+
+def apply_variants(variants, parameters):
+    dfg, list_act, start_activities, end_activities = dfg_utils.get_dfg_sa_ea_act_from_variants(variants, parameters=parameters)
+    return apply_dfg(dfg, parameters=parameters, start_activities=start_activities, end_activities=end_activities, activities=list_act)
+
+
+def apply_tree_variants(variants, parameters):
+    dfg, list_act, start_activities, end_activities = dfg_utils.get_dfg_sa_ea_act_from_variants(variants, parameters=parameters)
+    return apply_tree_dfg(dfg, parameters=parameters, start_activities=start_activities, end_activities=end_activities, activities=list_act)
 
 
 def apply_tree(log, parameters):
