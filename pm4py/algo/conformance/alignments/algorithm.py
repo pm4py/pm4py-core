@@ -18,8 +18,6 @@ from pm4py.objects.petri.exporter.versions import pnml as petri_exporter
 from pm4py.objects.petri import check_soundness
 import math
 import time
-import deprecation
-import warnings
 
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
 VERSION_DIJKSTRA_NO_HEURISTICS = 'dijkstra_no_heuristics'
@@ -42,10 +40,7 @@ PARAM_MAX_ALIGN_TIME = "max_align_time"
 DEFAULT_MAX_ALIGN_TIME = sys.maxsize
 
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
 def apply(obj, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
-    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = {}
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
@@ -61,8 +56,6 @@ def apply(obj, petri_net, initial_marking, final_marking, parameters=None, versi
                          final_marking, parameters, version)
 
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
 def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=None,
                 version=DEFAULT_VARIANT):
     """
@@ -96,7 +89,6 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
         The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t)
         representing synchronous/log/model-moves.
     """
-    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = copy({PARAMETER_CONSTANT_ACTIVITY_KEY: DEFAULT_NAME_KEY})
     if PARAM_TRACE_COST_FUNCTION not in parameters:
@@ -105,8 +97,6 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     return VERSIONS[version](trace, petri_net, initial_marking, final_marking, parameters)
 
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
 def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
     """
     apply alignments to a log
@@ -140,7 +130,6 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t)
         representing synchronous/log/model-moves.
     """
-    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = dict()
 
@@ -223,18 +212,12 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     return alignments
 
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
 def chunks(l, n):
-    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
 def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
-    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = dict()
 
@@ -288,7 +271,7 @@ def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, pa
 
     processes = [mp.Process(
         target=VERSIONS_VARIANTS_LIST_MPROCESSING[version](output, x, petri_net_string, parameters=parameters)) for x in
-        variants_list_split]
+                 variants_list_split]
 
     # Run processes
     for p in processes:
