@@ -6,7 +6,6 @@ from pm4py.objects.petri.exporter.versions import pnml as petri_exporter
 from pm4py.statistics.variants.log import get as variants_module
 import multiprocessing as mp
 import math
-import deprecation, warnings
 
 TOKEN_REPLAY = "token_replay"
 VERSIONS = {TOKEN_REPLAY: token_replay.apply}
@@ -14,8 +13,6 @@ VERSIONS_MULTIPROCESSING = {TOKEN_REPLAY: token_replay.apply_variants_list_petri
 VARIANTS_IDX = 'variants_idx'
 
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
 def apply(log, net, initial_marking, final_marking, parameters=None, variant=TOKEN_REPLAY):
     """
     Factory method to apply token-based replay
@@ -37,7 +34,6 @@ def apply(log, net, initial_marking, final_marking, parameters=None, variant=TOK
     variant
         Variant of the algorithm to use
     """
-    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = {}
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
@@ -50,18 +46,12 @@ def apply(log, net, initial_marking, final_marking, parameters=None, variant=TOK
                              final_marking, parameters=parameters)
 
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
 def chunks(l, n):
-    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
 def apply_multiprocessing(log, net, initial_marking, final_marking, parameters=None, variant=TOKEN_REPLAY):
-    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = {}
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
