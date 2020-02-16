@@ -15,7 +15,6 @@ VERSIONS_TRACE = {CLASSIC: classic.apply_trace}
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
                         details='Use algorithm entrypoint instead')
 def apply(obj, model, variant=DEFAULT_VARIANT, parameters=None):
-    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     """
     Apply log-skeleton based conformance checking given an event log/trace
     and a log-skeleton model
@@ -41,6 +40,7 @@ def apply(obj, model, variant=DEFAULT_VARIANT, parameters=None):
         - dev_fitness => deviation based fitness (between 0 and 1; the more the trace is near to 1 the more fit is)
         - deviations => list of deviations in the model
     """
+    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = {}
 
