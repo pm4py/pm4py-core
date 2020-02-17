@@ -1,6 +1,8 @@
+from pm4py.statistics.attributes.log import get as attributes_get
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.regex import SharedObj, get_new_char
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
+
 
 def get_encoded_trace(trace, mapping, parameters=None):
     """
@@ -78,11 +80,9 @@ def form_encoding_dictio_from_log(log, parameters=None):
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
-    from pm4py.algo.filtering.log.attributes import attributes_filter
-
     shared_obj = SharedObj()
 
-    activities = attributes_filter.get_attribute_values(log, activity_key, parameters=parameters)
+    activities = attributes_get.get_attribute_values(log, activity_key, parameters=parameters)
 
     mapping = {}
 

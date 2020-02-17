@@ -10,3 +10,10 @@ GROUPED_DATAFRAME = 'grouped_dataframe'
 RETURN_EA_COUNT_DICT_AUTOFILTER = 'return_ea_count_dict_autofilter'
 PARAM_MOST_COMMON_VARIANT = "most_common_variant"
 PARAM_MOST_COMMON_PATHS = "most_common_paths"
+
+CASE_CONCEPT_NAME = "case:concept:name"
+CASE_ATTRIBUTE_GLUE = 'case:concept:name'
+CASE_ATTRIBUTE_PREFIX = 'case:'
+
+PARAMETER_KEY_CASE_GLUE = 'case_id_glue'
+PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX = 'case:'

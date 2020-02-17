@@ -2,7 +2,7 @@ import collections
 
 from pm4py.algo.discovery.transition_system.parameters import *
 from pm4py.objects.log import util as log_util
-from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.transition_system import transition_system as ts
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
