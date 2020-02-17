@@ -2,17 +2,16 @@ from copy import deepcopy
 
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics, freq_triples as get_freq_triples
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
-from pm4py.algo.filtering.log.attributes import attributes_filter as log_attributes
-from pm4py.algo.filtering.log.end_activities import end_activities_filter as log_ea_filter
-from pm4py.algo.filtering.log.start_activities import start_activities_filter as log_sa_filter
-from pm4py.algo.filtering.pandas.attributes import attributes_filter as pd_attributes
-from pm4py.algo.filtering.pandas.end_activities import end_activities_filter as pd_ea_filter
-from pm4py.algo.filtering.pandas.start_activities import start_activities_filter as pd_sa_filter
+from pm4py.statistics.attributes.log import get as log_attributes
+from pm4py.statistics.attributes.pandas import get as pd_attributes
+from pm4py.statistics.start_activities.log import get as log_sa_filter
+from pm4py.statistics.start_activities.pandas import get as pd_sa_filter
+from pm4py.statistics.end_activities.log import get as log_ea_filter
+from pm4py.statistics.end_activities.pandas import get as pd_ea_filter
 from pm4py.objects.conversion.heuristics_net import factory as hn_conv_factory
 from pm4py.objects.heuristics_net import defaults
 from pm4py.objects.heuristics_net.net import HeuristicsNet
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
 from pm4py.util import constants
 
 
@@ -76,7 +75,7 @@ def apply_pandas(df, parameters=None):
     activity_key = parameters[
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else constants.CASE_CONCEPT_NAME
     timestamp_key = parameters[
         constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
 

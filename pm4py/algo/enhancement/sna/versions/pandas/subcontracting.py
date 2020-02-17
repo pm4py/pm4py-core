@@ -1,6 +1,6 @@
 import numpy
 
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
 from pm4py.statistics.traces.pandas.case_statistics import get_variant_statistics
 from pm4py.util import constants
 

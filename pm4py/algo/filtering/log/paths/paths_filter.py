@@ -1,7 +1,7 @@
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log.log import EventLog, Trace
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 

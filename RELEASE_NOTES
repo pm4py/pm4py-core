@@ -1,0 +1,88 @@
+===== PM4PY 1.2.6 =====
+This is a minor release, consisting of the following changes:
+
+- Pyarrow serialization integration (supporting in-memory and to .pkl file serialization)
+- bug fix in the 'escaping edges' based precision
+
+
+===== PM4PY 1.2.7 =====
+This is a minor release, consisting of the following changes:
+
+- Bug fix (programming error) in the alignments code
+- Changed recursion depth in token-based replay invisibles exploration
+- Removed copy.copy for parent nodes of childs in log generation from process tree
+- Fixed "should_close" for XOR node in PT generation
+- Fixed "execute_enabled" for parallel and OR node in PT generation
+- Bug fix process tree children setter
+- Consider only fittin traces in the Align-ETConformance count
+- Consider ALL the optimal alignments (as described in the paper) and not only the first one
+- Refactoring: moving of utilities and making the search function using Dijkstra (since we are looking for fit paths) instead of A*
+- LTL Checker updated:
+    - Making existing filters more performant (A eventually B eventually C)
+    - Introducing A eventually B eventually C eventually D
+    - Introducing time boundaries for each arc of the eventualties
+- drop windows platform reuquirement for ortools/pyarrow
+
+
+===== PM4PY 1.2.8 =====
+This is a minor release, consisting of the following changes:
+
+1. commit #6908a34c73c74c42aac3ddf31b964fcae680919e
+    - Bug fix for the Inductive Miner implementation, i.e., sequential patterns are now correctly discovered.
+2. commit #881f1fa4e76b9e35c2d80ab7d241183b2d6871c0
+ 'Best effort fix' for graphviz based visualizations, i.e., trying to reduce the number of
+
+
+===== PM4PY 1.2.9 =====
+This is a minor release, consisting of the following changes:
+
+1. commit ed42182f32eba37df71d9f466ad165036f8d1086
+    - full support for numpy v1.18
+2. commit d1a418f8fa2513a469149383fe69df9a4e6fea06
+    - full support pandas v1.0
+3. commit be0a282be033765c9d1d7f1a7ba541a11c046834
+    - fixed matplotlib backend settings
+
+
+===== PM4PY 1.2.10 =====
+This is a minor release, consisting of the following changes:
+
+1. commit f571ec65ca544a9322b89cf96299d03da65de5a0
+    - change import DFG to PN
+    - fixed bugs in the process tree parsing
+    - fixed bugs in the process tree parsing
+2. commit dca5cc602ba8381e5d4e265341dfc5a5292a80c0
+    - fixed a problem with alignments when transitions have empty preset
+3. commit 945fd64e481c0fbf020da7f71cb1a7974ae9629c
+    -  made visualization deterministic for process trees, Petri nets and DFGs
+4. commit 15be58abb314c679ddf3b65fa6832c680768c413
+    -  generic parsing dates (not anymore strictly reliant on ciso8601)
+5. commit 68643cb109503e54787f98eb8f40650e37aa151e
+    - fixed problem with process tree hashing
+6. commit 9d27f132d40638933be00f9d178e9a1167d36166
+    - fixed some problems in the conversion between the log types
+
+
+===== PM4PY 1.2.11 =====
+This is a minor release, consisting of the following changes:
+
+1. commit e8b030afd37559c93f79e1dd030fdc540aa62135
+    - provide fast-parquet library as an alternative to read/write parquet files.
+2. commit 557472bc78900d90beb0757279ef29b89aa410b1
+    - integrate LogSkeleton for process discovery and conformance checking
+3. commit 502c5d722d483c567f0e08c16da0bb4c87a94e36
+    - remove the empty performance spectrum visualizer folder
+4. commit 6f320562a836cd949dbbe6ec7751f8f9514b01ec
+    - bug fix in calling alignment code directly (parameter object initialization)
+5. commit 471f414820c7b3f919aa97ccdc684d40cf132b3c
+    - fixed dependency problem with ORTools and PyArrow
+6. commit 90ba7bf1495fdac7ccef3112efa95687c46a5dd1
+    - support importing and exporting of Petri net weights
+7. commit 157fadffd3b953c105e67f4909547f097d77ea0a
+    - reduce inernal (cyclic) dependencies within PM4Py
+8. commit f38b6089b7eb6a4518a9c33e9775120874352657
+   commit af1328e2dad82f0a059e00942167a29cb918c85f
+   commit e8e1ab443f2dedb2cd348f35bc49eed412d66e1d
+    - fix the hash and equals function of process trees
+
+

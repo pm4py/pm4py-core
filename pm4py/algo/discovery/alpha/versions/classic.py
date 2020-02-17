@@ -22,7 +22,6 @@ from pm4py.algo.discovery.alpha.utils import endpoints
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.objects import petri
-from pm4py.objects.log import util as log_util
 from pm4py.objects.petri.petrinet import Marking
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
@@ -59,7 +58,7 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
     if pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
+        parameters[pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = pm_util.xes_constants.DEFAULT_NAME_KEY
     dfg = {k: v for k, v in dfg_inst.apply(log, parameters=parameters).items() if v > 0}
     start_activities = endpoints.derive_start_activities_from_log(log, parameters[
         pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
@@ -123,7 +122,7 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
     if parameters is None:
         parameters = {}
     if pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = log_util.xes.DEFAULT_NAME_KEY
+        parameters[pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = pm_util.xes_constants.xes.DEFAULT_NAME_KEY
 
     if start_activities is None:
         start_activities = dfg_utils.infer_start_activities(dfg)

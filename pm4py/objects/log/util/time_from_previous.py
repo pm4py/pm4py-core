@@ -1,5 +1,5 @@
 from pm4py.util import constants
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
 from pm4py.objects.log.log import EventLog
 from pm4py.objects.conversion.log import factory as log_conv_factory
 from pm4py.objects.log.util import sorting
