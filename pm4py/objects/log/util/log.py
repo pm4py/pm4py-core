@@ -1,5 +1,4 @@
-from pm4py.objects.log.util import xes as xes_util
-from pm4py.objects.log import log
+from pm4py.util import xes_constants as xes_util
 
 
 # TODO: we can do some instance checking and then support both trace level and event level logs..

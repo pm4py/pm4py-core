@@ -226,3 +226,38 @@ def tree_sort(tree):
         tree.labels_hash_sum += this_hash
     if tree.operator is pt_op.Operator.PARALLEL or tree.operator is pt_op.Operator.XOR:
         tree.children = sorted(tree.children, key=lambda x: x.labels_hash_sum)
+
+
+def structurally_language_equal(tree1, tree2):
+    '''
+    this function checks if two given process trees are structurally equal, modulo, shuffling of children (if allowed),
+    i.e., in the parallel, or and xor operators, the order does not matter.
+
+    :param tree1:
+    :param tree2:
+    :return:
+    '''
+    if tree1.label is not None:
+        return True if tree2.label == tree1.label else False
+    elif len(tree1.children) == 0:
+        return tree2.label is None and len(tree2.children) == 0
+    else:
+        if tree1.operator == tree2.operator:
+            if len(tree1.children) != len(tree2.children):
+                return False
+            if tree1.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.LOOP]:
+                for i in range(len(tree1.children)):
+                    if not structurally_language_equal(tree1.children[i], tree2.children[i]):
+                        return False
+                return True
+            elif tree1.operator in [pt_op.Operator.PARALLEL, pt_op.Operator.XOR, pt_op.Operator.OR]:
+                matches = list(range(len(tree1.children)))
+                for i in range(len(tree1.children)):
+                    mm = [m for m in matches]
+                    for j in mm:
+                        if structurally_language_equal(tree1.children[i], tree2.children[j]):
+                            matches.remove(j)
+                            break
+                return True if len(matches) == 0 else False
+        else:
+            return False

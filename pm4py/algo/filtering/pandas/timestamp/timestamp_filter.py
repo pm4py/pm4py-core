@@ -1,9 +1,9 @@
 import pandas as pd
 import pytz
 
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
+from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
-from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
+from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY, PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.versions import check_pandas_ge_024
 

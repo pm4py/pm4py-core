@@ -1,5 +1,5 @@
 from pm4py.statistics.traces.log import case_arrival
-from pm4py.objects.stochastic_petri import map as mapping
+from pm4py.algo.simulation.montecarlo.utils import replay
 from pm4py.objects.petri.semantics import enabled_transitions, weak_execute
 from threading import Thread, Semaphore
 from intervaltree import IntervalTree, Interval
@@ -165,10 +165,10 @@ def apply(log, net, im, fm, parameters=None):
         transitions_interval_trees[trans] = IntervalTree()
 
     if force_distribution is not None:
-        map = mapping.get_map_from_log_and_net(log, net, im, fm, force_distribution=force_distribution,
+        map = replay.get_map_from_log_and_net(log, net, im, fm, force_distribution=force_distribution,
                                                parameters=parameters)
     else:
-        map = mapping.get_map_from_log_and_net(log, net, im, fm, parameters=parameters)
+        map = replay.get_map_from_log_and_net(log, net, im, fm, parameters=parameters)
 
     start_time = 1000000
     threads = []

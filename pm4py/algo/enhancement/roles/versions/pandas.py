@@ -1,5 +1,5 @@
 from pm4py.algo.enhancement.roles.common import algorithm
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
 from pm4py.util import constants
 from collections import Counter
 

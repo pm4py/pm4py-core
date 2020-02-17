@@ -9,8 +9,6 @@ if __name__ == "__main__":
     sys.path.insert(0, parent_dir)
     from tests.role_detection import RoleDetectionTest
     from tests.passed_time import PassedTimeTest
-    from tests.ltl_checking_logs import LtlCheckingLogTest
-    from tests.ltl_checking_pandas import LtlCheckingPandasTest
     from tests.imp_everything import Pm4pyImportPackageTest
     from tests.xes_impexp_test import XesImportExportTest
     from tests.csv_impexp_test import CsvImportExportTest
@@ -30,8 +28,6 @@ if __name__ == "__main__":
     from tests.etc_tests import ETCTest
     from tests.evaluation_tests import ProcessModelEvaluationTests
     from tests.dec_tree_test import DecisionTreeTest
-    from tests.filtering_test import LogFilteringTest
-    from tests.dataframe_prefilter import DataframePrefilteringTest
     from tests.serialization_test import SerializationTest
     from tests.graphs_forming import GraphsForming
     from tests.heuminer_test import HeuMinerTest
@@ -40,8 +36,6 @@ if __name__ == "__main__":
 
     test_roles = RoleDetectionTest()
     test_pttime = PassedTimeTest()
-    test_ltl_logs = LtlCheckingLogTest()
-    test_ltl_pandas = LtlCheckingPandasTest()
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
     test3_object = CsvImportExportTest()
@@ -61,8 +55,6 @@ if __name__ == "__main__":
     test20_object = ProcessModelEvaluationTests()
     test21_object = DecisionTreeTest()
     sna_tests = SnaTests()
-    filtering_test = LogFilteringTest()
-    prefiltering_test = DataframePrefilteringTest()
     serialization_test = SerializationTest()
     graphforming_test = GraphsForming()
     heuminer_test = HeuMinerTest()

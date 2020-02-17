@@ -1,8 +1,8 @@
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY, \
     PARAMETER_CONSTANT_TIMESTAMP_KEY
-from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
-from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
+from pm4py.util.constants import CASE_CONCEPT_NAME
+from pm4py.objects.dfg.retrieval import pandas
 
 
 def apply(df, activity, parameters=None):
@@ -36,7 +36,7 @@ def apply(df, activity, parameters=None):
     timestamp_key = parameters[
         PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
 
-    [dfg_frequency, dfg_performance] = df_statistics.get_dfg_graph(df, measure="both", activity_key=activity_key,
+    [dfg_frequency, dfg_performance] = pandas.get_dfg_graph(df, measure="both", activity_key=activity_key,
                                            case_id_glue=case_id_glue, timestamp_key=timestamp_key)
 
     pre = []
