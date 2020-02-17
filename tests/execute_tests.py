@@ -34,6 +34,8 @@ if __name__ == "__main__":
     from tests.heuminer_test import HeuMinerTest
     from tests.matrix_rep_test import MatrixRepTest
     from tests.main_fac_test import MainFactoriesTest
+    from tests.filtering_log_test import LogFilteringTest
+    from tests.filtering_pandas_test import DataframePrefilteringTest
 
     test_roles = RoleDetectionTest()
     test_pttime = PassedTimeTest()
@@ -62,5 +64,7 @@ if __name__ == "__main__":
     heuminer_test = HeuMinerTest()
     matrixrep_test = MatrixRepTest()
     main_factories_test = MainFactoriesTest()
+    test_filtering_log = LogFilteringTest()
+    filtering_test_dataframe = DataframePrefilteringTest()
 
     unittest.main()
