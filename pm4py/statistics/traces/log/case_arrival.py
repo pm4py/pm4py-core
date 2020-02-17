@@ -1,4 +1,4 @@
-from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
+from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 import statistics
 from pm4py.util.business_hours import BusinessHours

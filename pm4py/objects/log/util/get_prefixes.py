@@ -1,11 +1,9 @@
 from copy import deepcopy
 
-from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.objects.log.log import EventLog, Trace
-from pm4py.objects.log.util import xes
+from pm4py.objects.log.util import basic_filter
+from pm4py.util import xes_constants as xes
 from pm4py.util import constants
-import logging
-from copy import copy
 import logging
 
 
@@ -39,7 +37,6 @@ def get_log_with_log_prefixes(log, parameters=None):
         change_indexes.append([len(all_prefixes_log) - 1] * len(trace))
 
     return all_prefixes_log, change_indexes
-
 
 def get_log_traces_to_activities(log, activities, parameters=None):
     """
@@ -79,10 +76,10 @@ def get_log_traces_to_activities(log, activities, parameters=None):
         parameters_filt2 = deepcopy(parameters)
         parameters_filt1["positive"] = True
         parameters_filt2["positive"] = False
-        filtered_log = attributes_filter.apply(log, [act], parameters=parameters_filt1)
+        filtered_log = basic_filter.filter_log_traces_attr(log, [act], parameters=parameters_filt1)
         logging.info("get_log_traces_to_activities activities=" + str(activities) + " act=" + str(
             act) + " 0 len(filtered_log)=" + str(len(filtered_log)))
-        filtered_log = attributes_filter.apply(filtered_log, other_acts, parameters=parameters_filt2)
+        filtered_log = basic_filter.filter_log_traces_attr(filtered_log, other_acts, parameters=parameters_filt2)
         logging.info("get_log_traces_to_activities activities=" + str(activities) + " act=" + str(
             act) + " 1 len(filtered_log)=" + str(len(filtered_log)))
         filtered_log, act_durations = get_log_traces_until_activity(filtered_log, act, parameters=parameters)

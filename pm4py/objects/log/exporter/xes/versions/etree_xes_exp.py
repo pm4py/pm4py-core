@@ -2,7 +2,7 @@ from lxml import etree
 
 from pm4py.objects.conversion.log import factory as log_converter
 from pm4py.objects.log import log as log_instance
-from pm4py.objects.log.util import xes as xes_util
+from pm4py.util import xes_constants as xes_util
 
 # defines correspondence between Python types and XES types
 TYPE_CORRESPONDENCE = {
