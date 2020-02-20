@@ -6,12 +6,59 @@ from intervaltree import IntervalTree, Interval
 from statistics import median
 import random
 from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.util import constants, xes_constants
 import datetime
+from time import sleep, time
+import logging
+
+PARAM_NUM_SIMULATIONS = "num_simulations"
+PARAM_FORCE_DISTRIBUTION = "force_distribution"
+PARAM_ENABLE_DIAGNOSTICS = "enable_diagnostics"
+PARAM_DIAGN_INTERVAL = "diagn_interval"
+PARAM_CASE_ARRIVAL_RATIO = "case_arrival_ratio"
+DEFAULT_NUM_SIMULATIONS = 100
+DEFAULT_FORCE_DISTRIBUTION = None
+DEFAULT_ENABLE_DIAGNOSTICS = True
+DEFAULT_DIAGN_INTERVAL = 1.0
+DEFAULT_CASE_ARRIVAL_RATIO = None
+
+
+class SimulationDiagnostics(Thread):
+    def __init__(self, sim_thread):
+        """
+        Initializes the diagnostics thread (for logging purposes)
+
+        Parameters
+        -------------
+        sim_thread
+            Simulation thread
+        """
+        self.sim_thread = sim_thread
+        self.diagn_open = True
+        Thread.__init__(self)
+
+    def run(self):
+        """
+        Runs the diagnostics up to the point in which diagn_open becomes False
+        """
+        sleep(self.sim_thread.diagn_interval)
+        logging.basicConfig()
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.DEBUG)
+        while self.diagn_open:
+            pd = {}
+            for place in self.sim_thread.net.places:
+                if not place.semaphore._value == 1:
+                    pd[place] = place.semaphore._value
+            if pd:
+                logger.debug(str(time()) + " diagnostics for thread " + str(
+                    self.sim_thread.id) + ": blocked places by semaphore: " + str(pd))
+            sleep(self.sim_thread.diagn_interval)
 
 
 class SimulationThread(Thread):
     def __init__(self, id, net, im, fm, map, start_time, places_interval_trees, transitions_interval_trees,
-                 cases_ex_time, list_cases):
+                 cases_ex_time, list_cases, enable_diagnostics, diagn_interval):
         """
         Instantiates the object of the simulation
 
@@ -37,6 +84,10 @@ class SimulationThread(Thread):
             Cases execution time
         list_cases
             Dictionary of cases for each thread
+        enable_diagnostics
+            Enable the logging of diagnostics about the current execution
+        diagn_interval
+            Interval in which the diagnostics are printed
         """
         self.id = id
         self.net = net
@@ -50,12 +101,17 @@ class SimulationThread(Thread):
         self.transitions_interval_trees = transitions_interval_trees
         self.cases_ex_time = cases_ex_time
         self.list_cases = list_cases
+        self.enable_diagnostics = enable_diagnostics
+        self.diagn_interval = diagn_interval
         Thread.__init__(self)
 
     def run(self):
         """
         Runs the thread
         """
+        if self.enable_diagnostics:
+            diagnostics = SimulationDiagnostics(self)
+            diagnostics.start()
         net, im, fm, map, source, sink, start_time = self.net, self.im, self.fm, self.map, self.source, self.sink, self.start_time
         places_interval_trees = self.places_interval_trees
         transitions_interval_trees = self.transitions_interval_trees
@@ -116,10 +172,13 @@ class SimulationThread(Thread):
         for place in current_marking:
             place.semaphore.release()
 
+        if self.enable_diagnostics:
+            diagnostics.diagn_open = False
+
 
 def apply(log, net, im, fm, parameters=None):
     """
-    Performs a Monte Carlo simulation of the Petri net
+    Performs a Monte Carlo simulation of a Petri net
 
     Parameters
     -------------
@@ -144,13 +203,22 @@ def apply(log, net, im, fm, parameters=None):
     if parameters is None:
         parameters = {}
 
-    parameters["business_hours"] = True
-    no_simulations = parameters["no_simulations"] if "no_simulations" in parameters else 100
-    force_distribution = parameters["force_distribution"] if "force_distribution" in parameters else None
-
+    timestamp_key = parameters[
+        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes_constants.DEFAULT_TIMESTAMP_KEY
+    no_simulations = parameters[
+        PARAM_NUM_SIMULATIONS] if PARAM_NUM_SIMULATIONS in parameters else DEFAULT_NUM_SIMULATIONS
+    force_distribution = parameters[PARAM_FORCE_DISTRIBUTION] if PARAM_FORCE_DISTRIBUTION in parameters else None
+    enable_diagnostics = parameters[
+        PARAM_ENABLE_DIAGNOSTICS] if PARAM_ENABLE_DIAGNOSTICS in parameters else DEFAULT_ENABLE_DIAGNOSTICS
+    diagn_interval = parameters[PARAM_DIAGN_INTERVAL] if PARAM_DIAGN_INTERVAL in parameters else DEFAULT_DIAGN_INTERVAL
     case_arrival_ratio = parameters[
-        "case_arrival_ratio"] if "case_arrival_ratio" in parameters else case_arrival.get_case_arrival_avg(log,
-                                                                                                           parameters=parameters)
+        PARAM_CASE_ARRIVAL_RATIO] if PARAM_CASE_ARRIVAL_RATIO in parameters else DEFAULT_CASE_ARRIVAL_RATIO
+    if case_arrival_ratio is None:
+        case_arrival_ratio = case_arrival.get_case_arrival_avg(log, parameters=parameters)
+
+    logging.basicConfig()
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
 
     places_interval_trees = {}
     transitions_interval_trees = {}
@@ -164,18 +232,24 @@ def apply(log, net, im, fm, parameters=None):
     for trans in net.transitions:
         transitions_interval_trees[trans] = IntervalTree()
 
+    if enable_diagnostics:
+        logger.info(str(time()) + " started the replay operation.")
+
     if force_distribution is not None:
         map = replay.get_map_from_log_and_net(log, net, im, fm, force_distribution=force_distribution,
-                                               parameters=parameters)
+                                              parameters=parameters)
     else:
         map = replay.get_map_from_log_and_net(log, net, im, fm, parameters=parameters)
+
+    if enable_diagnostics:
+        logger.info(str(time()) + " ended the replay operation.")
 
     start_time = 1000000
     threads = []
     for i in range(no_simulations):
         list_cases[i] = Trace()
         t = SimulationThread(i, net, im, fm, map, start_time, places_interval_trees, transitions_interval_trees,
-                             cases_ex_time, list_cases)
+                             cases_ex_time, list_cases, enable_diagnostics, diagn_interval)
         t.start()
         threads.append(t)
         start_time = start_time + case_arrival_ratio
@@ -183,13 +257,16 @@ def apply(log, net, im, fm, parameters=None):
     for t in threads:
         t.join()
 
+    if enable_diagnostics:
+        logger.info(str(time()) + " ended the Monte carlo simulation.")
+
     log = EventLog(list(list_cases.values()))
-    min_timestamp = log[0][0]['time:timestamp'].timestamp()
-    max_timestamp = max(y['time:timestamp'].timestamp() for x in log for y in x)
+    min_timestamp = log[0][0][timestamp_key].timestamp()
+    max_timestamp = max(y[timestamp_key].timestamp() for x in log for y in x)
 
     transitions_interval_trees = {t.name: y for t, y in transitions_interval_trees.items()}
 
     return log, {"places_interval_trees": places_interval_trees,
                  "transitions_interval_trees": transitions_interval_trees, "cases_ex_time": cases_ex_time,
                  "median_cases_ex_time": median(cases_ex_time), "input_case_arrival_ratio": case_arrival_ratio,
-                 "total_time": max_timestamp-min_timestamp}
+                 "total_time": max_timestamp - min_timestamp}
