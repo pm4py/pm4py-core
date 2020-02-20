@@ -48,7 +48,7 @@ class SimulationDiagnostics(Thread):
         while self.diagn_open:
             pd = {}
             for place in self.sim_thread.net.places:
-                if not place.semaphore._value == 1:
+                if place.semaphore._value == 0:
                     pd[place] = place.semaphore._value
             if pd:
                 logger.debug(str(time()) + " diagnostics for thread " + str(
@@ -120,7 +120,7 @@ class SimulationThread(Thread):
         current_time = start_time
 
         source.semaphore.acquire()
-        source.assigned_time = max(source.assigned_time, current_time)
+        source.assigned_time.append(current_time)
 
         current_marking = im
         et = enabled_transitions(net, current_marking)
@@ -133,22 +133,23 @@ class SimulationThread(Thread):
             added_value = -1
             while added_value < 0:
                 added_value = map[ct].get_value() if ct in map else 0.0
-            ex_time = current_time + added_value
-            min_ex_time = ex_time
+
+            current_time0 = current_time
 
             for arc in ct.out_arcs:
                 place = arc.target
-                ex_time = max(place.assigned_time, ex_time)
                 place.semaphore.acquire()
+                current_time = max(place.assigned_time.pop(), current_time) if place.assigned_time else current_time
 
-            current_time = ex_time
+            if current_time - current_time0 > 0:
+                transitions_interval_trees[ct].add(Interval(current_time0, current_time))
+
+            current_time = current_time + added_value
 
             for arc in ct.out_arcs:
                 place = arc.target
-                place.assigned_time = current_time
-
-            if ex_time - min_ex_time > 0:
-                transitions_interval_trees[ct].add(Interval(min_ex_time, ex_time))
+                place.assigned_time.append(current_time)
+                place.assigned_time = sorted(place.assigned_time)
 
             current_marking = weak_execute(ct, current_marking)
 
@@ -162,10 +163,11 @@ class SimulationThread(Thread):
 
             for arc in ct.in_arcs:
                 place = arc.source
-                p_ex_time = place.assigned_time
+                p_ex_time = place.assigned_time.pop()
                 if current_time - p_ex_time > 0:
                     places_interval_trees[place].add(Interval(p_ex_time, current_time))
-                place.assigned_time = current_time
+                place.assigned_time.append(current_time)
+                place.assigned_time = sorted(place.assigned_time)
                 place.semaphore.release()
         # sink.semaphore.release()
         cases_ex_time.append(last_event[xes_constants.DEFAULT_TIMESTAMP_KEY].timestamp() - first_event[xes_constants.DEFAULT_TIMESTAMP_KEY].timestamp())
@@ -228,7 +230,7 @@ def apply(log, net, im, fm, parameters=None):
 
     for place in net.places:
         place.semaphore = Semaphore(1)
-        place.assigned_time = -1
+        place.assigned_time = []
         places_interval_trees[place] = IntervalTree()
     for trans in net.transitions:
         transitions_interval_trees[trans] = IntervalTree()
