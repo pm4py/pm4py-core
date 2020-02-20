@@ -1,11 +1,13 @@
-from pm4py.algo.simulation.montecarlo.versions import petri_arrival_time_max_1t
+from pm4py.algo.simulation.montecarlo.versions import wfnet_semaph_fifo
 
-PETRI_ARRIVAL_TIME_MAX_1T = 'petri_arrival_time_max_1t'
+WFNET_SEMAPH_FIFO = 'wfnet_semaph_fifo'
 
-VERSIONS = {PETRI_ARRIVAL_TIME_MAX_1T: petri_arrival_time_max_1t.apply}
+DEFAULT_VARIANT = WFNET_SEMAPH_FIFO
+
+VERSIONS = {WFNET_SEMAPH_FIFO: wfnet_semaph_fifo.apply}
 
 
-def apply(log, net, im, fm, variant=PETRI_ARRIVAL_TIME_MAX_1T, parameters=None):
+def apply(log, net, im, fm, variant=WFNET_SEMAPH_FIFO, parameters=None):
     """
     Performs a Monte Carlo simulation of the Petri net
 
