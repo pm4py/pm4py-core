@@ -58,7 +58,7 @@ class SimulationDiagnostics(Thread):
 
 class SimulationThread(Thread):
     def __init__(self, id, net, im, fm, map, start_time, places_interval_trees, transitions_interval_trees,
-                 cases_ex_time, list_cases, enable_diagnostics, diagn_interval):
+                 cases_ex_time, list_cases, enable_diagnostics, diagn_interval, timestamp_key):
         """
         Instantiates the object of the simulation
 
@@ -88,6 +88,8 @@ class SimulationThread(Thread):
             Enable the logging of diagnostics about the current execution
         diagn_interval
             Interval in which the diagnostics are printed
+        timestamp_key
+            Attribute that is the timestamp
         """
         self.id = id
         self.net = net
@@ -103,6 +105,7 @@ class SimulationThread(Thread):
         self.list_cases = list_cases
         self.enable_diagnostics = enable_diagnostics
         self.diagn_interval = diagn_interval
+        self.timestamp_key = timestamp_key
         Thread.__init__(self)
 
     def run(self):
@@ -153,7 +156,8 @@ class SimulationThread(Thread):
             current_marking = weak_execute(ct, current_marking)
 
             if ct.label is not None:
-                eve = Event({"concept:name": ct.label, "time:timestamp": datetime.datetime.fromtimestamp(current_time)})
+                eve = Event({constants.PARAMETER_CONSTANT_ACTIVITY_KEY: ct.label,
+                             constants.PARAMETER_CONSTANT_TIMESTAMP_KEY: datetime.datetime.fromtimestamp(current_time)})
                 last_event = eve
                 if first_event is None:
                     first_event = last_event
@@ -167,7 +171,7 @@ class SimulationThread(Thread):
                 place.assigned_time = current_time
                 place.semaphore.release()
         # sink.semaphore.release()
-        cases_ex_time.append(last_event['time:timestamp'].timestamp() - first_event['time:timestamp'].timestamp())
+        cases_ex_time.append(last_event[self.timestamp_key].timestamp() - first_event[self.timestamp_key].timestamp())
 
         for place in current_marking:
             place.semaphore.release()
