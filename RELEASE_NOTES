@@ -84,5 +84,37 @@ This is a minor release, consisting of the following changes:
    commit af1328e2dad82f0a059e00942167a29cb918c85f
    commit e8e1ab443f2dedb2cd348f35bc49eed412d66e1d
     - fix the hash and equals function of process trees
+9. commit 229bd7ed78ea80aefbb6c7fcfa173edda682c1c7
+    - Refactoring of the Monte Carlo simulation.
+        - extend the simulation to support arc weights that are provided by the replay (e.g. informed transition pickup)
+        - extend the simulation to support more than one resource per place through semaphores
+        - maximum execution time per simulation thread
+        - general refactoring of the code
+        - introduce logging information about the simulation
+        - improving documentation
+        - improving clarity of the code
+10. commit f5132302e06aa49f26ab3264bb3147d0660a11c0
+    - Solved log generation from tree slowness
+      The equality function in process tree class were ok, but for log generation different taus shall give different ids,
+      hence an extension to the process tree class overriding the two methods is provided.
+11. commit 9e64f2635123aa5c3146fb2ad03863cbf93175df
+    - Fix pack for current integration branch (150220)
+    - some pre-release fixes for the current integration branch:
+        - fixed incongruency in variants statistics (was there for log, not for dataframes)
+        - increased coverage of tests, and made some of them more lean
+        - introduced some additional tests on the new functionalities
+        - updated Dockerfile
+        - updated setup with new packages
+        - removed remainings of the SIMPLE algorithm in the tests folder
+12. commit 382162c648fb8e32b0145a6ff9427af8a7fb39fa
+    - Some cleaning interventions and make-it-ready interventions for the future integration of the classic version if the inductive miner
+        - fixed parameters initialization to make it uniform for the rest of the project for all the versions of IMDF
+        - added missing documentation in factory (was there only in the versions)
+        - moved log conversions from factory to specific versions (since they are indeed version specific, if later we include the log version)
+        - removed some useless calculations on the new DFG based versions (were there, but never used!)
+        - introduced two new methods, apply_variants and apply_tree_variants, that are able to apply inductive miner from a list of variants
+        - separated DEFAULT_VARIANT from DEFAULT_VARIANT_DFG (indeed, the first in future versions may become the log)
+        - increased number of tests in the tests/ folder for inductive miner
+
 
 
