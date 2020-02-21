@@ -14,15 +14,15 @@ class DocMeasuresDocumentationTest(unittest.TestCase):
         alpha_petri, alpha_initial_marking, alpha_final_marking = alpha_miner.apply(log)
         inductive_petri, inductive_initial_marking, inductive_final_marking = inductive_miner.apply(log)
         from pm4py.evaluation.replay_fitness import factory as replay_factory
-        fitness_alpha = replay_factory.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking)
+        fitness_alpha = replay_factory.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking, variant=replay_factory.TOKEN_BASED)
         fitness_inductive = replay_factory.apply(log, inductive_petri, inductive_initial_marking,
-                                                 inductive_final_marking)
+                                                 inductive_final_marking, variant=replay_factory.TOKEN_BASED)
         del fitness_alpha
         del fitness_inductive
         from pm4py.evaluation.precision import factory as precision_factory
-        precision_alpha = precision_factory.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking)
+        precision_alpha = precision_factory.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking, variant=precision_factory.ETCONFORMANCE_TOKEN)
         precision_inductive = precision_factory.apply(log, inductive_petri, inductive_initial_marking,
-                                                      inductive_final_marking)
+                                                      inductive_final_marking, variant=precision_factory.ETCONFORMANCE_TOKEN)
         del precision_alpha
         del precision_inductive
         from pm4py.evaluation.generalization import factory as generalization_factory

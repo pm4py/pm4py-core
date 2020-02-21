@@ -16,7 +16,7 @@ from pm4py.objects.dfg.utils.dfg_utils import infer_start_activities_from_prev_c
 
 class SubtreeDFGBased():
     def __init__(self, dfg, master_dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0,
-                 initial_start_activities=None, initial_end_activities=None, case_act_occ=None, no_cases=None):
+                 initial_start_activities=None, initial_end_activities=None):
         """
         Constructor
 
@@ -40,10 +40,6 @@ class SubtreeDFGBased():
             Start activities of the log
         initial_end_activities
             End activities of the log
-        case_act_occ
-            If provided, the number of cases in which an activity occurs
-        no_cases
-            If provided, the number of cases in the log
         """
         self.master_dfg = copy(master_dfg)
         self.initial_dfg = copy(initial_dfg)
@@ -75,9 +71,6 @@ class SubtreeDFGBased():
         self.children = None
         self.must_insert_skip = False
         self.need_loop_on_subtree = False
-
-        self.case_act_occ = case_act_occ
-        self.no_cases = no_cases
 
         self.initialize_tree(dfg, initial_dfg, activities)
 
@@ -684,8 +677,7 @@ class SubtreeDFGBased():
                         SubtreeDFGBased(new_dfg, self.master_dfg, self.initial_dfg, comp, self.counts, self.rec_depth + 1,
                                         noise_threshold=self.noise_threshold,
                                         initial_start_activities=self.initial_start_activities,
-                                        initial_end_activities=self.initial_end_activities, no_cases=self.no_cases,
-                                        case_act_occ=self.case_act_occ))
+                                        initial_end_activities=self.initial_end_activities))
             else:
                 seq_cut = self.detect_sequential_cut(conn_components, this_nx_graph, strongly_connected_components)
                 if seq_cut[0]:
@@ -698,8 +690,7 @@ class SubtreeDFGBased():
                                             self.rec_depth + 1,
                                             noise_threshold=self.noise_threshold,
                                             initial_start_activities=self.initial_start_activities,
-                                            initial_end_activities=self.initial_end_activities, no_cases=self.no_cases,
-                                            case_act_occ=self.case_act_occ))
+                                            initial_end_activities=self.initial_end_activities))
                     self.put_skips_in_seq_cut()
                 else:
                     par_cut = self.detect_parallel_cut(conn_components, this_nx_graph, strongly_connected_components)
@@ -712,8 +703,7 @@ class SubtreeDFGBased():
                                                 self.rec_depth + 1,
                                                 noise_threshold=self.noise_threshold,
                                                 initial_start_activities=self.initial_start_activities,
-                                                initial_end_activities=self.initial_end_activities, no_cases=self.no_cases,
-                                                case_act_occ=self.case_act_occ))
+                                                initial_end_activities=self.initial_end_activities))
                     else:
                         loop_cut = self.detect_loop_cut(conn_components, this_nx_graph, strongly_connected_components)
                         if loop_cut[0]:
@@ -725,9 +715,7 @@ class SubtreeDFGBased():
                                                                    self.counts, self.rec_depth + 1,
                                                                    noise_threshold=self.noise_threshold,
                                                                    initial_start_activities=self.initial_start_activities,
-                                                                   initial_end_activities=self.initial_end_activities,
-                                                                   no_cases=self.no_cases,
-                                                                   case_act_occ=self.case_act_occ)
+                                                                   initial_end_activities=self.initial_end_activities)
                                     if loop_cut[3]:
                                         next_subtree.must_insert_skip = True
                                     self.children.append(next_subtree)
@@ -740,9 +728,7 @@ class SubtreeDFGBased():
                                                                    self.counts, self.rec_depth + 1,
                                                                    noise_threshold=self.noise_threshold,
                                                                    initial_start_activities=self.initial_start_activities,
-                                                                   initial_end_activities=self.initial_end_activities,
-                                                                   no_cases=self.no_cases,
-                                                                   case_act_occ=self.case_act_occ)
+                                                                   initial_end_activities=self.initial_end_activities)
                                     self.children.append(next_subtree)
                                     next_subtree.must_insert_skip = True
                         else:
