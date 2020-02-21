@@ -33,7 +33,7 @@ DEFAULT_DEFAULT_NUM_RESOURCES_PER_PLACES = 1
 # 1 second in the simulation corresponds to 10gg
 DEFAULT_SMALL_SCALE_FACTOR = 864000.0
 # 1 min to finish a thread
-DEFAULT_MAX_THREAD_EXECUTION_TIME = 10.0
+DEFAULT_MAX_THREAD_EXECUTION_TIME = 60.0
 
 
 class SimulationDiagnostics(Thread):
@@ -119,6 +119,7 @@ class SimulationThread(Thread):
         self.small_scale_factor = small_scale_factor
         self.max_thread_exec_time = max_thread_exec_time
         self.internal_thread_start_time = 0
+        self.terminated_correctly = False
         Thread.__init__(self)
 
     def get_rem_time(self):
@@ -239,6 +240,8 @@ class SimulationThread(Thread):
             place.semaphore.release()
 
         rem_time = self.get_rem_time()
+        if rem_time > 0:
+            self.terminated_correctly = True
         if self.enable_diagnostics:
             if rem_time == 0:
                 logger.info(str(time()) + " terminated for timeout thread ID " +str(self.id))
@@ -350,6 +353,15 @@ def apply(log, net, im, fm, parameters=None):
 
     for t in threads:
         t.join()
+
+    i = 0
+    while i < len(threads):
+        if threads[i].terminated_correctly is False:
+            del list_cases[threads[i].id]
+            del threads[i]
+            del cases_ex_time[i]
+            continue
+        i = i + 1
 
     if enable_diagnostics:
         logger.info(str(time()) + " ended the Monte carlo simulation.")
