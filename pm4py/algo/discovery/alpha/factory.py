@@ -4,8 +4,7 @@ from pm4py import util as pmutil
 from pm4py.algo.discovery.alpha import versions
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.objects.conversion.log import factory as log_conversion
-from pm4py.objects.log.util import xes as xes_util
-from pm4py.objects.log.util import general as log_util
+from pm4py.util import xes_constants as xes_util
 
 ALPHA_VERSION_CLASSIC = 'classic'
 ALPHA_VERSION_PLUS = 'plus'
@@ -46,7 +45,7 @@ def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
+        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
     if isinstance(log, pandas.core.frame.DataFrame) and variant == ALPHA_VERSION_CLASSIC:
             dfg = df_statistics.get_dfg_graph(log, case_id_glue=parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY],
                                               activity_key=parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY],

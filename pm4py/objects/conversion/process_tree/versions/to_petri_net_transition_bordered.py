@@ -1,8 +1,6 @@
 from pm4py.objects.petri import petrinet
 from pm4py.objects.petri import utils as pn_util
 from pm4py.objects.process_tree.pt_operator import Operator as pt_opt
-from pm4py.visualization.petrinet import factory as pn_viz
-import time
 
 
 def apply(tree, parameters=None):

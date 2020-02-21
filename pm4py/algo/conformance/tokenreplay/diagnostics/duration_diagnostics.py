@@ -1,13 +1,10 @@
 from copy import deepcopy
 
-from pm4py.algo.filtering.log.attributes import attributes_filter
-from pm4py.objects.log.util import xes
+from pm4py.objects.log.util import basic_filter
+from pm4py.util import xes_constants as xes
 from pm4py.util import constants
 
-try:
-    from Lib.statistics import median
-except:
-    from statistics import median
+from statistics import median
 
 
 def get_case_duration(case, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY):
@@ -81,7 +78,7 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
     parameters_filtering["positive"] = False
     values = list(notexisting_activities_in_model.keys())
 
-    filtered_log = attributes_filter.apply(log, values, parameters=parameters_filtering)
+    filtered_log = basic_filter.filter_log_traces_attr(log, values, parameters=parameters_filtering)
 
     for act in notexisting_activities_in_model:
         fit_cases = []
@@ -136,7 +133,7 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
 
     for trans in trans_fitness:
         if len(trans_fitness[trans]["underfed_traces"]) > 0:
-            filtered_log_act = attributes_filter.apply(log, [trans.label], parameters=parameters_filtering)
+            filtered_log_act = basic_filter.filter_log_traces_attr(log, [trans.label], parameters=parameters_filtering)
             fit_cases = []
             underfed_cases = []
             for trace in log:

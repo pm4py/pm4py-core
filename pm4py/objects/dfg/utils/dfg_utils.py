@@ -1,7 +1,10 @@
 from copy import copy
+from collections import Counter
 
 import numpy as np
 
+PARAMETER_VARIANT_SEP = "variant_sep"
+DEFAULT_VARIANT_SEP = ","
 
 def get_outgoing_edges(dfg):
     """
@@ -732,3 +735,40 @@ def get_dfg_np_matrix(dfg):
         index_corresp[index] = act
 
     return matrix, index_corresp
+
+
+def get_dfg_sa_ea_act_from_variants(variants, parameters=None):
+    """
+    Gets the DFG, the start and end activities, and the activities
+    from the dictionary/set/list of variants in the log
+
+    Parameters
+    ---------------
+    variants
+        Dictionary/set/list of variants
+    parameters
+        Parameters of the algorithm, including:
+        - variants_sep: the delimiter splitting activities in a variant
+
+    Returns
+    --------------
+    dfg
+        DFG
+    list_act
+        List of different activities
+    start_activities
+        Start activities
+    end_activities
+        End activities
+    """
+    if parameters is None:
+        parameters = {}
+    variant_sep = parameters[PARAMETER_VARIANT_SEP] if PARAMETER_VARIANT_SEP in parameters else DEFAULT_VARIANT_SEP
+    if type(variants) is not set:
+        variants = set(variants)
+    variants = [x.split(variant_sep) for x in variants]
+    dfg = dict(Counter(list((x[i], x[i+1]) for x in variants for i in range(len(x)-1))))
+    list_act = list(set(y for x in variants for y in x))
+    start_activities = dict(Counter(x[0] for x in variants if x))
+    end_activities = dict(Counter(x[-1] for x in variants if x))
+    return dfg, list_act, start_activities, end_activities

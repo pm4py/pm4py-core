@@ -1,4 +1,4 @@
-from pm4py.algo.discovery.dfg import factory as dfg_factory
+from pm4py.objects.dfg.retrieval import log as log_retrieval
 
 
 def apply(log, activity, parameters=None):
@@ -23,8 +23,8 @@ def apply(log, activity, parameters=None):
     if parameters is None:
         parameters = {}
 
-    dfg_frequency = dfg_factory.apply(log, variant="frequency", parameters=parameters)
-    dfg_performance = dfg_factory.apply(log, variant="performance", parameters=parameters)
+    dfg_frequency = log_retrieval.native(log, parameters=parameters)
+    dfg_performance = log_retrieval.performance(log, parameters=parameters)
 
     post = []
     sum_perf_post = 0.0
