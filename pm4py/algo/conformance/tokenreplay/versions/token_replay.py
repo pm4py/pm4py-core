@@ -1,8 +1,8 @@
 from copy import copy
 
 from pm4py import util as pmutil
-from pm4py.algo.filtering.log.variants import variants_filter as variants_module
-from pm4py.objects.log.util import xes as xes_util
+from pm4py.statistics.variants.log import get as variants_module
+from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri import semantics
 from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
 from pm4py.util import constants
@@ -351,7 +351,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     trans_map
         Map between transitions labels and transitions
     enable_pltr_fitness
-        Enable fitness calculation at place/transition level
+        Enable fitness retrieval at place/transition level
     place_fitness
         Current dictionary of places associated with unfit traces
     transition_fitness
@@ -702,7 +702,7 @@ class ApplyTraceTokenReplay:
         trans_map
             Map between transitions labels and transitions
         enable_pltr_fitness
-            Enable fitness calculation at place/transition level
+            Enable fitness retrieval at place/transition level
         place_fitness
             Current dictionary of places associated with unfit traces
         transition_fitness
@@ -930,7 +930,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
     final_marking
         Final marking
     enable_pltr_fitness
-        Enable fitness calculation at place level
+        Enable fitness retrieval at place level
     consider_remaining_in_fitness
         Boolean value telling if the remaining tokens should be considered in fitness evaluation
     activity_key

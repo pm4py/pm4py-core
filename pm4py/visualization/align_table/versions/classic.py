@@ -1,7 +1,7 @@
 from graphviz import Source
 import tempfile
 
-from pm4py.algo.filtering.log.variants import variants_filter
+from pm4py.statistics.variants.log import get as variants_get
 
 
 def apply(log, aligned_traces, parameters=None):
@@ -25,7 +25,7 @@ def apply(log, aligned_traces, parameters=None):
     if parameters is None:
         parameters = {}
 
-    variants_idx_dict = variants_filter.get_variants_from_log_trace_idx(log, parameters=parameters)
+    variants_idx_dict = variants_get.get_variants_from_log_trace_idx(log, parameters=parameters)
 
     variants_idx_list = []
     for variant in variants_idx_dict:

@@ -1,1 +1,1 @@
-from pm4py.objects.stochastic_petri import map, tangible_reachability
+from pm4py.objects.stochastic_petri import tangible_reachability, utils
