@@ -1,6 +1,6 @@
 import pm4py
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
-from pm4py.algo.filtering.log.variants import variants_filter as variants_module
+from pm4py.statistics.variants.log import get as variants_get
 from pm4py.objects import log as log_lib
 from pm4py.visualization.petrinet.common import visualize
 from pm4py.visualization.petrinet.util import performance_map
@@ -51,8 +51,8 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     timestamp_key = parameters[PARAM_TIMESTAMP_KEY] if PARAM_TIMESTAMP_KEY in parameters else "time:timestamp"
 
     parameters_variants = {PARAM_ACTIVITY_KEY: activity_key}
-    variants_idx = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters_variants)
-    variants = variants_module.convert_variants_trace_idx_to_trace_obj(log, variants_idx)
+    variants_idx = variants_get.get_variants_from_log_trace_idx(log, parameters=parameters_variants)
+    variants = variants_get.convert_variants_trace_idx_to_trace_obj(log, variants_idx)
 
     parameters_tr = {PARAM_ACTIVITY_KEY: activity_key, "variants": variants}
 

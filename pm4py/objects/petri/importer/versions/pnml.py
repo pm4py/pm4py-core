@@ -162,11 +162,18 @@ def import_net(input_file_path, return_stochastic_information=False, parameters=
             if "arc" in child.tag:
                 arc_source = child.get("source")
                 arc_target = child.get("target")
+                arc_weight = 1
+
+                for arc_child in child:
+                    if "inscription" in arc_child.tag:
+                        for text_arcweight in arc_child:
+                            if "text" in text_arcweight.tag:
+                                arc_weight = int(text_arcweight.text)
 
                 if arc_source in places_dict and arc_target in trans_dict:
-                    petri.utils.add_arc_from_to(places_dict[arc_source], trans_dict[arc_target], net)
+                    petri.utils.add_arc_from_to(places_dict[arc_source], trans_dict[arc_target], net, weight=arc_weight)
                 elif arc_target in places_dict and arc_source in trans_dict:
-                    petri.utils.add_arc_from_to(trans_dict[arc_source], places_dict[arc_target], net)
+                    petri.utils.add_arc_from_to(trans_dict[arc_source], places_dict[arc_target], net, weight=arc_weight)
 
     if finalmarkings is not None:
         for child in finalmarkings:

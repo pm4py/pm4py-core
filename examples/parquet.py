@@ -3,7 +3,8 @@ import time
 import traceback
 
 log_name = "receipt.parquet"
-allowed_columns = ["case:concept:name", "concept:name"]
+# legacy support
+allowed_columns = ["caseAAAconceptAAAname", "conceptAAAname"]
 
 def execute_script():
     try:

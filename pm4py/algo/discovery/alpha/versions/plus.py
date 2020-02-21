@@ -3,7 +3,7 @@ import time
 from pm4py import util as pmutil
 from pm4py.objects import petri
 from pm4py.objects.log.log import EventLog, Trace
-from pm4py.objects.log.util import xes as xes_util
+from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri.petrinet import Marking
 
 REMOVE_UNCONNECTED = "remove_unconnected"

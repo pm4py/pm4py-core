@@ -3,17 +3,15 @@ from copy import copy
 import pm4py
 import sys
 from pm4py import util as pmutil
-from pm4py.algo.conformance import alignments as ali
 from pm4py.algo.conformance.alignments import versions
 from pm4py.objects.petri import align_utils
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_MODEL_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
-from pm4py.algo.filtering.log.variants import variants_filter as variants_module
+from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.conversion.log import factory as log_converter
-from pm4py.objects.log.util import general as log_util
-from pm4py.objects.log.util import xes as xes_util
-from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
+from pm4py.util import xes_constants as xes_util
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 import multiprocessing as mp
 from pm4py.objects.petri.exporter.versions import pnml as petri_exporter
@@ -46,7 +44,7 @@ def apply(obj, petri_net, initial_marking, final_marking, parameters=None, versi
     if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
+        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
     if isinstance(obj, pm4py.objects.log.log.Trace):
         return apply_trace(obj, petri_net, initial_marking, final_marking, parameters, version)
     else:

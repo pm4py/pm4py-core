@@ -1,6 +1,6 @@
-from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
-from pm4py.objects.log.util.xes import DEFAULT_TRACEID_KEY
+from pm4py.statistics.variants.log import get as variants_get
+from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
+from pm4py.util.xes_constants import DEFAULT_TRACEID_KEY
 from pm4py.statistics.traces.common import case_duration as case_duration_commons
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
@@ -32,7 +32,7 @@ def get_variant_statistics(log, parameters=None):
     if parameters is None:
         parameters = {}
     max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
-    varnt = parameters["variants"] if "variants" in parameters else variants_filter.get_variants(log,
+    varnt = parameters["variants"] if "variants" in parameters else variants_get.get_variants(log,
                                                                                                  parameters=parameters)
     var_durations = parameters["var_durations"] if "var_durations" in parameters else None
     if var_durations is None:
