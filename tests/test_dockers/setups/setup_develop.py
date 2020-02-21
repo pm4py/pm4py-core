@@ -120,8 +120,6 @@ setup(
         'pydotplus',
         'pulp',
         'pytz',
-        "ortools==7.4.7247",
-        'intervaltree',
         "ortools; python_version < '3.9'",
         'intervaltree',
         "pm4pycvxopt; python_version < '3.8'"
