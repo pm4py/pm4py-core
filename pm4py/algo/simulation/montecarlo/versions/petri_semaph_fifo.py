@@ -16,11 +16,24 @@ PARAM_FORCE_DISTRIBUTION = "force_distribution"
 PARAM_ENABLE_DIAGNOSTICS = "enable_diagnostics"
 PARAM_DIAGN_INTERVAL = "diagn_interval"
 PARAM_CASE_ARRIVAL_RATIO = "case_arrival_ratio"
+PARAM_PROVIDED_SMAP = "provided_stochastic_map"
+PARAM_MAP_RESOURCES_PER_PLACE = "map_resources_per_place"
+PARAM_DEFAULT_NUM_RESOURCES_PER_PLACE = "default_num_resources_per_place"
+PARAM_SMALL_SCALE_FACTOR = "small_scale_factor"
+PARAM_MAX_THREAD_EXECUTION_TIME = "max_thread_exec_time"
 DEFAULT_NUM_SIMULATIONS = 100
 DEFAULT_FORCE_DISTRIBUTION = None
 DEFAULT_ENABLE_DIAGNOSTICS = True
-DEFAULT_DIAGN_INTERVAL = 1.0
+# 20 seconds between diagnostics prints
+DEFAULT_DIAGN_INTERVAL = 20.0
 DEFAULT_CASE_ARRIVAL_RATIO = None
+DEFAULT_PROVIDED_SMAP = None
+DEFAULT_MAP_RESOURCES_PER_PLACE = None
+DEFAULT_DEFAULT_NUM_RESOURCES_PER_PLACES = 1
+# 1 second in the simulation corresponds to 10gg
+DEFAULT_SMALL_SCALE_FACTOR = 864000.0
+# 1 min to finish a thread
+DEFAULT_MAX_THREAD_EXECUTION_TIME = 10.0
 
 
 class SimulationDiagnostics(Thread):
@@ -51,14 +64,14 @@ class SimulationDiagnostics(Thread):
                 if place.semaphore._value == 0:
                     pd[place] = place.semaphore._value
             if pd:
-                logger.debug(str(time()) + " diagnostics for thread " + str(
+                logger.info(str(time()) + " diagnostics for thread " + str(
                     self.sim_thread.id) + ": blocked places by semaphore: " + str(pd))
             sleep(self.sim_thread.diagn_interval)
 
 
 class SimulationThread(Thread):
     def __init__(self, id, net, im, fm, map, start_time, places_interval_trees, transitions_interval_trees,
-                 cases_ex_time, list_cases, enable_diagnostics, diagn_interval):
+                 cases_ex_time, list_cases, enable_diagnostics, diagn_interval, small_scale_factor, max_thread_exec_time):
         """
         Instantiates the object of the simulation
 
@@ -103,7 +116,13 @@ class SimulationThread(Thread):
         self.list_cases = list_cases
         self.enable_diagnostics = enable_diagnostics
         self.diagn_interval = diagn_interval
+        self.small_scale_factor = small_scale_factor
+        self.max_thread_exec_time = max_thread_exec_time
+        self.internal_thread_start_time = 0
         Thread.__init__(self)
+
+    def get_rem_time(self):
+        return max(0, self.max_thread_exec_time - (time() - self.internal_thread_start_time))
 
     def run(self):
         """
@@ -112,6 +131,11 @@ class SimulationThread(Thread):
         if self.enable_diagnostics:
             diagnostics = SimulationDiagnostics(self)
             diagnostics.start()
+
+        logging.basicConfig()
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.DEBUG)
+
         net, im, fm, map, source, sink, start_time = self.net, self.im, self.fm, self.map, self.source, self.sink, self.start_time
         places_interval_trees = self.places_interval_trees
         transitions_interval_trees = self.transitions_interval_trees
@@ -119,32 +143,64 @@ class SimulationThread(Thread):
 
         current_time = start_time
 
-        source.semaphore.acquire()
+        self.internal_thread_start_time = time()
+        rem_time = self.get_rem_time()
+
+        acquired_places = set()
+        acquired = source.semaphore.acquire(timeout=rem_time)
+        if acquired:
+            acquired_places.add(source)
         source.assigned_time.append(current_time)
 
         current_marking = im
         et = enabled_transitions(net, current_marking)
 
         first_event = None
+        last_event = None
+
         while not fm <= current_marking or len(et) == 0:
             et = enabled_transitions(net, current_marking)
             ct = random.choice(list(et))
 
-            added_value = -1
-            while added_value < 0:
-                added_value = map[ct].get_value() if ct in map else 0.0
+            simulated_execution_plus_waiting_time = -1
+            while simulated_execution_plus_waiting_time < 0:
+                simulated_execution_plus_waiting_time = map[ct].get_value() if ct in map else 0.0
 
-            current_time0 = current_time
-
+            # establish how much time we need to wait before firing the transition
+            # (it depends on the input places tokens)
+            waiting_time = 0
             for arc in ct.out_arcs:
                 place = arc.target
-                place.semaphore.acquire()
-                current_time = max(place.assigned_time.pop(), current_time) if place.assigned_time else current_time
+                sem_value = int(place.semaphore._value)
+                rem_time = self.get_rem_time()
+                acquired = place.semaphore.acquire(timeout=rem_time)
+                if acquired:
+                    acquired_places.add(place)
+                rem_time = self.get_rem_time()
+                if rem_time == 0:
+                    break
+                if sem_value == 0:
+                    # FIFO: we assume that the first worked 'piece' is also the first to finish
+                    waiting_time = max(waiting_time,
+                                       place.assigned_time.pop(
+                                           0) - current_time) if place.assigned_time else waiting_time
 
-            if current_time - current_time0 > 0:
-                transitions_interval_trees[ct].add(Interval(current_time0, current_time))
+            if rem_time == 0:
+                for place in acquired_places:
+                    place.semaphore.release()
+                break
 
-            current_time = current_time + added_value
+            # if the waiting time is greater than 0, add an interval to the interval tree denoting
+            # the waiting times for the given transition
+            if waiting_time > 0:
+                transitions_interval_trees[ct].add(Interval(current_time, current_time + waiting_time))
+
+            # get the actual execution time of the transition as a difference between simulated_execution_plus_waiting_time
+            # and the waiting time
+            execution_time = max(simulated_execution_plus_waiting_time - waiting_time, 0)
+
+            # increase the timing based on the waiting time and the execution time of the transition
+            current_time = current_time + waiting_time + execution_time
 
             for arc in ct.out_arcs:
                 place = arc.target
@@ -163,17 +219,29 @@ class SimulationThread(Thread):
 
             for arc in ct.in_arcs:
                 place = arc.source
-                p_ex_time = place.assigned_time.pop()
+                p_ex_time = place.assigned_time.pop(0)
                 if current_time - p_ex_time > 0:
                     places_interval_trees[place].add(Interval(p_ex_time, current_time))
+                    sleep((current_time - p_ex_time) / self.small_scale_factor)
                 place.assigned_time.append(current_time)
                 place.assigned_time = sorted(place.assigned_time)
                 place.semaphore.release()
-        # sink.semaphore.release()
-        cases_ex_time.append(last_event[xes_constants.DEFAULT_TIMESTAMP_KEY].timestamp() - first_event[xes_constants.DEFAULT_TIMESTAMP_KEY].timestamp())
+
+        if first_event is not None and last_event is not None:
+            cases_ex_time.append(last_event[xes_constants.DEFAULT_TIMESTAMP_KEY].timestamp() - first_event[
+                xes_constants.DEFAULT_TIMESTAMP_KEY].timestamp())
+        else:
+            cases_ex_time.append(0)
 
         for place in current_marking:
+            if place in acquired_places:
+                acquired_places.remove(place)
             place.semaphore.release()
+
+        rem_time = self.get_rem_time()
+        if self.enable_diagnostics:
+            if rem_time == 0:
+                logger.info(str(time()) + " terminated for timeout thread ID " +str(self.id))
 
         if self.enable_diagnostics:
             diagnostics.diagn_open = False
@@ -216,8 +284,20 @@ def apply(log, net, im, fm, parameters=None):
     diagn_interval = parameters[PARAM_DIAGN_INTERVAL] if PARAM_DIAGN_INTERVAL in parameters else DEFAULT_DIAGN_INTERVAL
     case_arrival_ratio = parameters[
         PARAM_CASE_ARRIVAL_RATIO] if PARAM_CASE_ARRIVAL_RATIO in parameters else DEFAULT_CASE_ARRIVAL_RATIO
+    smap = parameters[PARAM_PROVIDED_SMAP] if PARAM_PROVIDED_SMAP in parameters else DEFAULT_PROVIDED_SMAP
+    resources_per_places = parameters[
+        PARAM_MAP_RESOURCES_PER_PLACE] if PARAM_MAP_RESOURCES_PER_PLACE in parameters else DEFAULT_MAP_RESOURCES_PER_PLACE
+    default_num_resources_per_places = parameters[
+        PARAM_DEFAULT_NUM_RESOURCES_PER_PLACE] if PARAM_DEFAULT_NUM_RESOURCES_PER_PLACE in parameters else DEFAULT_DEFAULT_NUM_RESOURCES_PER_PLACES
+    small_scale_factor = parameters[
+        PARAM_SMALL_SCALE_FACTOR] if PARAM_SMALL_SCALE_FACTOR in parameters else DEFAULT_SMALL_SCALE_FACTOR
+    max_thread_exec_time = parameters[
+        PARAM_MAX_THREAD_EXECUTION_TIME] if PARAM_MAX_THREAD_EXECUTION_TIME in parameters else DEFAULT_MAX_THREAD_EXECUTION_TIME
+
     if case_arrival_ratio is None:
         case_arrival_ratio = case_arrival.get_case_arrival_avg(log, parameters=parameters)
+    if resources_per_places is None:
+        resources_per_places = {}
 
     logging.basicConfig()
     logger = logging.getLogger(__name__)
@@ -229,33 +309,44 @@ def apply(log, net, im, fm, parameters=None):
     list_cases = {}
 
     for place in net.places:
-        place.semaphore = Semaphore(1)
+        # assign a semaphore to each place.
+        if place in resources_per_places:
+            place.semaphore = Semaphore(resources_per_places[place])
+        else:
+            # if the user does not specify the number of resources per place,
+            # the default number is used
+            place.semaphore = Semaphore(default_num_resources_per_places)
         place.assigned_time = []
         places_interval_trees[place] = IntervalTree()
     for trans in net.transitions:
         transitions_interval_trees[trans] = IntervalTree()
 
-    if enable_diagnostics:
-        logger.info(str(time()) + " started the replay operation.")
+    # when the user does not specify any map from transitions to random variables,
+    # a replay operation is performed
+    if smap is None:
+        if enable_diagnostics:
+            logger.info(str(time()) + " started the replay operation.")
+        if force_distribution is not None:
+            smap = replay.get_map_from_log_and_net(log, net, im, fm, force_distribution=force_distribution,
+                                                   parameters=parameters)
+        else:
+            smap = replay.get_map_from_log_and_net(log, net, im, fm, parameters=parameters)
+        if enable_diagnostics:
+            logger.info(str(time()) + " ended the replay operation.")
 
-    if force_distribution is not None:
-        map = replay.get_map_from_log_and_net(log, net, im, fm, force_distribution=force_distribution,
-                                              parameters=parameters)
-    else:
-        map = replay.get_map_from_log_and_net(log, net, im, fm, parameters=parameters)
-
-    if enable_diagnostics:
-        logger.info(str(time()) + " ended the replay operation.")
-
+    # the start timestamp is set to 1000000 instead of 0 to avoid problems with 32 bit machines
     start_time = 1000000
     threads = []
     for i in range(no_simulations):
         list_cases[i] = Trace()
-        t = SimulationThread(i, net, im, fm, map, start_time, places_interval_trees, transitions_interval_trees,
-                             cases_ex_time, list_cases, enable_diagnostics, diagn_interval)
+        t = SimulationThread(i, net, im, fm, smap, start_time, places_interval_trees, transitions_interval_trees,
+                             cases_ex_time, list_cases, enable_diagnostics, diagn_interval, small_scale_factor,
+                             max_thread_exec_time)
         t.start()
         threads.append(t)
         start_time = start_time + case_arrival_ratio
+        # wait a factor before opening a thread and the next one
+        sleep(case_arrival_ratio / small_scale_factor)
 
     for t in threads:
         t.join()
