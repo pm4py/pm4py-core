@@ -5,10 +5,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    from examples import log_skeleton
     from examples import roles_detection
-    from examples import ltl_log
-    from examples import ltl_pandas
-    from examples import big_log_imdf_decor
     from examples import alignment_test
     from examples import dec_treplay_imdf
     from examples import imdf_example
@@ -17,26 +15,19 @@ if __name__ == "__main__":
     from examples import manual_log_generation
     from examples import token_replay_imdf
     from examples import decisiontree_example
-    from examples import example_diagnostics
     from examples import parquet
     from examples import sna_log
     from examples import transition_system_test
     from examples import heu_miner_test
     from examples import dfg_min_ex
+    from examples import graphs_visualization
     from examples import big_dataframe_filtering
     from examples import big_dataframe_management
-    from examples import graphs_visualization
 
+    print("\n\nlog_skeleton")
+    log_skeleton.execute_script()
     print("\n\nroles_detection")
     roles_detection.execute_script()
-    print("\n\nltl_log")
-    ltl_log.execute_script()
-    print("\n\nltl_pandas")
-    ltl_pandas.execute_script()
-    print("\n\nbig_log_imdf_decor frequency")
-    big_log_imdf_decor.execute_script(variant="frequency")
-    print("\n\nbig_log_imdf_decor performance")
-    big_log_imdf_decor.execute_script(variant="performance")
     print("\n\nalignment_test")
     alignment_test.execute_script()
     print("\n\ndec_treplay_imdf")
@@ -55,8 +46,6 @@ if __name__ == "__main__":
     token_replay_imdf.execute_script()
     print("\n\ndecisiontree_example")
     decisiontree_example.execute_script()
-    print("\n\nexample_diagnostics")
-    example_diagnostics.execute_script()
     print("\n\ndfg_min_ex")
     dfg_min_ex.execute_script()
     print("\n\nparquet")
@@ -65,9 +54,9 @@ if __name__ == "__main__":
     transition_system_test.execute_script()
     print("\n\nheu_miner_test")
     heu_miner_test.execute_script()
-    print("\n\nbig_dataframe_filtering")
-    big_dataframe_filtering.execute_script()
-    print("\n\nbig_dataframe_management")
-    big_dataframe_management.execute_script()
     print("\n\ngraphs_visualization")
     graphs_visualization.execute_script()
+    print("\n\nbig_dataframe_management")
+    big_dataframe_management.execute_script()
+    print("\n\nbig_dataframe_filtering")
+    big_dataframe_filtering.execute_script()

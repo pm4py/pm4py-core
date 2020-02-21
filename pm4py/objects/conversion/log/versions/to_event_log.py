@@ -6,8 +6,7 @@ import pm4py
 from pm4py import util as pmutil
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.log import log as log_instance
-from pm4py.objects.log.util import general as log_util
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
 from pm4py.objects.conversion.log.versions import to_event_stream
 from copy import copy
 
@@ -25,11 +24,11 @@ def apply(log, parameters=None):
         if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY in parameters:
             glue = parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY]
         else:
-            glue = log_util.CASE_ATTRIBUTE_GLUE
-        if log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX in parameters:
-            case_pref = parameters[log_util.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX]
+            glue = pmutil.constants.CASE_ATTRIBUTE_GLUE
+        if pmutil.constants.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX in parameters:
+            case_pref = parameters[pmutil.constants.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX]
         else:
-            case_pref = log_util.CASE_ATTRIBUTE_PREFIX
+            case_pref = pmutil.constants.CASE_ATTRIBUTE_PREFIX
         enable_deepcopy = parameters[DEEPCOPY] if DEEPCOPY in parameters else False
 
         return transform_event_stream_to_event_log(log, case_glue=glue, include_case_attributes=True,
@@ -37,8 +36,8 @@ def apply(log, parameters=None):
     return log
 
 
-def transform_event_stream_to_event_log(log, case_glue=log_util.CASE_ATTRIBUTE_GLUE, include_case_attributes=True,
-                                        case_attribute_prefix=log_util.CASE_ATTRIBUTE_PREFIX, enable_deepcopy=False):
+def transform_event_stream_to_event_log(log, case_glue=pmutil.constants.CASE_ATTRIBUTE_GLUE, include_case_attributes=True,
+                                        case_attribute_prefix=pmutil.constants.CASE_ATTRIBUTE_PREFIX, enable_deepcopy=False):
     """
     Converts the event stream to an event log
 

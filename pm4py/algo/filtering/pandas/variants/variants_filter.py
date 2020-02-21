@@ -1,5 +1,5 @@
 from pm4py.algo.filtering.common import filtering_constants
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
+from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.statistics.traces.pandas.case_statistics import get_variants_df
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY

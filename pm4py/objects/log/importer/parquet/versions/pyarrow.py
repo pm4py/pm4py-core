@@ -28,13 +28,11 @@ def apply(path, parameters=None):
     columns = parameters[COLUMNS] if COLUMNS in parameters else None
 
     if columns:
-        columns = [x.replace(":", "AAA") for x in columns]
         df = pq.read_pandas(path, columns=columns).to_pandas()
     else:
-        df = pq.read_pandas(path, columns=columns).to_pandas()
-    df.columns = [x.replace("AAA", ":") for x in df.columns]
+        df = pq.read_pandas(path).to_pandas()
 
-    return df
+    return dataframe_utils.legacy_parquet_support(df)
 
 
 def import_table(path, parameters=None):
@@ -58,7 +56,6 @@ def import_table(path, parameters=None):
 
     columns = parameters[COLUMNS] if COLUMNS in parameters else None
     if columns:
-        columns = [x.replace(":", "AAA") for x in columns]
         table = pq.read_table(path, columns=columns)
     else:
         table = pq.read_table(path)

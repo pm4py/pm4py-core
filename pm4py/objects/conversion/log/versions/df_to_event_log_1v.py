@@ -1,6 +1,5 @@
 from pm4py.objects.log.log import EventLog, Trace, Event
-from pm4py.statistics.traces.pandas import case_statistics
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
 
 
 def apply(df, parameters=None):
@@ -20,6 +19,8 @@ def apply(df, parameters=None):
     log
         Event log
     """
+    from pm4py.statistics.traces.pandas import case_statistics
+
     if parameters is None:
         parameters = {}
     variant_stats = case_statistics.get_variant_statistics(df, parameters=parameters)

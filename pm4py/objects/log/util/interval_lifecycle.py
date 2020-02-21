@@ -1,7 +1,7 @@
 from pm4py.util.business_hours import BusinessHours
 from pm4py.objects.log.util import sorting
 from pm4py.util import constants
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
 from pm4py.objects.log.log import EventLog, Trace, Event
 
 

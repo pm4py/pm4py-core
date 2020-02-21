@@ -1,6 +1,6 @@
 from pm4py.util import constants
-from pm4py.objects.log.util import xes
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
+from pm4py.util import xes_constants as xes
+from pm4py.util.constants import CASE_CONCEPT_NAME
 import pandas as pd
 import numpy as np
 
