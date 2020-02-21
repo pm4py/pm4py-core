@@ -2,6 +2,11 @@ import time
 
 time.clock = time.process_time
 
+try:
+    import pm4pycvxopt
+except:
+    pass
+
 from pm4py import algo, evaluation, objects, util, visualization, statistics, streaming
 
 __version__ = '1.2.11'

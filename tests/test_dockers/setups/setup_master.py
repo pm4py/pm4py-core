@@ -120,8 +120,11 @@ setup(
         'pydotplus',
         'pulp',
         'pytz',
+        "ortools==7.4.7247",
+        'intervaltree',
         "ortools; python_version < '3.9'",
-        'intervaltree'
+        'intervaltree',
+        "pm4pycvxopt; python_version < '3.8'"
     ],
     project_urls={
         'Documentation': 'http://www.pm4py.org',
