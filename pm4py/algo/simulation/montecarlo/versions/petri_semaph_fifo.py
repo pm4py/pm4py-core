@@ -4,9 +4,9 @@ from pm4py.objects.petri.semantics import enabled_transitions, weak_execute
 from threading import Thread, Semaphore
 from intervaltree import IntervalTree, Interval
 from statistics import median
-import random
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.util import constants, xes_constants
+from pm4py.objects.stochastic_petri import utils as stochastic_utils
 import datetime
 from time import sleep, time
 import logging
@@ -24,8 +24,8 @@ PARAM_MAX_THREAD_EXECUTION_TIME = "max_thread_exec_time"
 DEFAULT_NUM_SIMULATIONS = 100
 DEFAULT_FORCE_DISTRIBUTION = None
 DEFAULT_ENABLE_DIAGNOSTICS = True
-# 20 seconds between diagnostics prints
-DEFAULT_DIAGN_INTERVAL = 20.0
+# 32 seconds between diagnostics prints
+DEFAULT_DIAGN_INTERVAL = 32.0
 DEFAULT_CASE_ARRIVAL_RATIO = None
 DEFAULT_PROVIDED_SMAP = None
 DEFAULT_MAP_RESOURCES_PER_PLACE = None
@@ -137,7 +137,7 @@ class SimulationThread(Thread):
         logger = logging.getLogger(__name__)
         logger.setLevel(logging.DEBUG)
 
-        net, im, fm, map, source, sink, start_time = self.net, self.im, self.fm, self.map, self.source, self.sink, self.start_time
+        net, im, fm, smap, source, sink, start_time = self.net, self.im, self.fm, self.map, self.source, self.sink, self.start_time
         places_interval_trees = self.places_interval_trees
         transitions_interval_trees = self.transitions_interval_trees
         cases_ex_time = self.cases_ex_time
@@ -160,12 +160,12 @@ class SimulationThread(Thread):
         last_event = None
 
         while not fm <= current_marking or len(et) == 0:
-            et = enabled_transitions(net, current_marking)
-            ct = random.choice(list(et))
+            et = list(enabled_transitions(net, current_marking))
+            ct = stochastic_utils.pick_transition(et, smap)
 
             simulated_execution_plus_waiting_time = -1
             while simulated_execution_plus_waiting_time < 0:
-                simulated_execution_plus_waiting_time = map[ct].get_value() if ct in map else 0.0
+                simulated_execution_plus_waiting_time = smap[ct].get_value() if ct in smap else 0.0
 
             # establish how much time we need to wait before firing the transition
             # (it depends on the input places tokens)
@@ -234,14 +234,16 @@ class SimulationThread(Thread):
         else:
             cases_ex_time.append(0)
 
-        for place in current_marking:
-            if place in acquired_places:
-                acquired_places.remove(place)
+        places_to_free = set(current_marking).union(acquired_places)
+
+        for place in places_to_free:
             place.semaphore.release()
 
         rem_time = self.get_rem_time()
         if rem_time > 0:
             self.terminated_correctly = True
+            logger.info(str(time()) + " terminated successfully thread ID " + str(self.id))
+
         if self.enable_diagnostics:
             if rem_time == 0:
                 logger.info(str(time()) + " terminated for timeout thread ID " +str(self.id))
