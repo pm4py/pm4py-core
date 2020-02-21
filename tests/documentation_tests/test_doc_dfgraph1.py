@@ -11,7 +11,7 @@ class DfGraphDocumentationTest(unittest.TestCase):
         log = xes_importer.import_log(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.dfg import factory as dfg_factory
         dfg = dfg_factory.apply(log)
-        from pm4py.algo.filtering.log.attributes import attributes_filter
+        from pm4py.statistics.attributes.log import get as attributes_filter
         activities_count = attributes_filter.get_attribute_values(log, "concept:name")
 
         from pm4py.visualization.dfg.versions import simple_visualize as dfg_visualize

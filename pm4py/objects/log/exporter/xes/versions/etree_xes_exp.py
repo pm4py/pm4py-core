@@ -2,7 +2,7 @@ from lxml import etree
 
 from pm4py.objects.conversion.log import factory as log_converter
 from pm4py.objects.log import log as log_instance
-from pm4py.objects.log.util import xes as xes_util
+from pm4py.util import xes_constants as xes_util
 
 # defines correspondence between Python types and XES types
 TYPE_CORRESPONDENCE = {
@@ -55,6 +55,8 @@ def get_xes_attr_value(attr_value, attr_type_xes):
         else:
             default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + "+00:00"
         return default_date_repr.replace(" ", "T")
+    elif attr_type_xes == xes_util.TAG_BOOLEAN:
+        return str(attr_value).lower()
     return str(attr_value)
 
 

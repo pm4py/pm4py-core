@@ -1,7 +1,7 @@
 import numpy
 
-from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.log.util import xes
+from pm4py.statistics.variants.log import get as variants_filter
+from pm4py.util import xes_constants as xes
 from pm4py.util import constants
 
 N = "n"

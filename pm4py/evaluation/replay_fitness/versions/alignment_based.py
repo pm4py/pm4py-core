@@ -1,12 +1,9 @@
-import multiprocessing as mp
-
-import pm4py
 from pm4py.algo.conformance import alignments
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import apply as apply_alignments
-from pm4py.objects import log as log_lib
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util import xes_constants
 
-DEFAULT_NAME_KEY = log_lib.util.xes.DEFAULT_NAME_KEY
+DEFAULT_NAME_KEY = xes_constants.DEFAULT_NAME_KEY
 
 
 def evaluate(aligned_traces, parameters=None):

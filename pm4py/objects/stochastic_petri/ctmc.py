@@ -4,17 +4,8 @@ import numpy as np
 from numpy.linalg import svd
 from scipy.linalg import expm
 
-from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.algo.discovery.simple.model.log import factory as simple_factory
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
-from pm4py.objects.conversion.log import factory as log_conv_factory
-from pm4py.objects.log.util import xes
 from pm4py.objects.petri.reachability_graph import construct_reachability_graph
-from pm4py.objects.stochastic_petri import map as smap_builder
 from pm4py.objects.stochastic_petri import tangible_reachability
-from pm4py.util import constants
-from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_decorations_from_dfg_spaths_acticount
-from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_shortest_paths
 
 
 def get_corr_hex(num):
@@ -74,88 +65,6 @@ def get_color_from_probabilities(prob_dictionary):
         color_dictionary[state] = "#FF" + c1 + c2 + c1 + c2
 
     return color_dictionary
-
-
-def transient_analysis_from_dataframe(df, delay, parameters=None):
-    """
-    Gets the transient analysis from a dataframe and a delay
-
-    Parameters
-    -------------
-    df
-        Pandas dataframe
-    delay
-        Time delay
-    parameters
-        Parameters of the algorithm
-
-    Returns
-    -------------
-    transient_result
-        Transient analysis result
-    """
-    if parameters is None:
-        parameters = {}
-
-    activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
-
-    log = log_conv_factory.apply(df, variant=log_conv_factory.DF_TO_EVENT_LOG_1V, parameters=parameters)
-
-    # gets the simple Petri net through simple miner
-    new_parameters = {}
-    new_parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = timestamp_key
-    new_parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes.DEFAULT_NAME_KEY
-
-    net, im, fm = simple_factory.apply(log, parameters=new_parameters, classic_output=True)
-
-    activities_count = dict(df.groupby(activity_key).size())
-    dfg_performance = df_statistics.get_dfg_graph(df, measure="performance", perf_aggregation_key="mean",
-                                                  case_id_glue=case_id_glue, activity_key=activity_key,
-                                                  timestamp_key=timestamp_key)
-
-    spaths = get_shortest_paths(net)
-    aggregated_statistics = get_decorations_from_dfg_spaths_acticount(net, dfg_performance,
-                                                                      spaths,
-                                                                      activities_count,
-                                                                      variant="performance")
-
-    # gets the stochastic map out of the dataframe and the Petri net
-    s_map = smap_builder.get_map_exponential_from_aggstatistics(aggregated_statistics, parameters=parameters)
-
-    return transient_analysis_from_petri_net_and_smap(net, im, s_map, delay, parameters=parameters)
-
-
-def transient_analysis_from_log(log, delay, parameters=None):
-    """
-    Gets the transient analysis from a log and a delay
-
-    Parameters
-    -------------
-    log
-        Event log
-    delay
-        Time delay
-    parameters
-        Parameters of the algorithm
-
-    Returns
-    -------------
-    transient_result
-        Transient analysis result
-    """
-    if parameters is None:
-        parameters = {}
-    # gets the simple Petri net through simple miner
-    net, im, fm = simple_factory.apply(log, parameters=parameters, classic_output=True)
-    # gets the stochastic map out of the log and the Petri net
-    s_map = smap_builder.get_map_from_log_and_net(log, net, im, fm, parameters=parameters,
-                                                  force_distribution="EXPONENTIAL")
-    return transient_analysis_from_petri_net_and_smap(net, im, s_map, delay, parameters=parameters)
 
 
 def transient_analysis_from_petri_net_and_smap(net, im, s_map, delay, parameters=None):
