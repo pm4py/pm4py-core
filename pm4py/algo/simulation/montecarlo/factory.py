@@ -1,13 +1,13 @@
-from pm4py.algo.simulation.montecarlo.versions import wfnet_semaph_fifo
+from pm4py.algo.simulation.montecarlo.versions import petri_semaph_fifo
 
-WFNET_SEMAPH_FIFO = 'wfnet_semaph_fifo'
+PETRI_SEMAPH_FIFO = 'petri_semaph_fifo'
 
-DEFAULT_VARIANT = WFNET_SEMAPH_FIFO
+DEFAULT_VARIANT = PETRI_SEMAPH_FIFO
 
-VERSIONS = {WFNET_SEMAPH_FIFO: wfnet_semaph_fifo.apply}
+VERSIONS = {PETRI_SEMAPH_FIFO: petri_semaph_fifo.apply}
 
 
-def apply(log, net, im, fm, variant=WFNET_SEMAPH_FIFO, parameters=None):
+def apply(log, net, im, fm, variant=PETRI_SEMAPH_FIFO, parameters=None):
     """
     Performs a Monte Carlo simulation of the Petri net
 
