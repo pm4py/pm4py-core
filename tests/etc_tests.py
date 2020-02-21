@@ -14,7 +14,7 @@ class ETCTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, marking, final_marking = inductive_miner.apply(log)
-        precision = etc_factory.apply(log, net, marking, final_marking)
+        precision = etc_factory.apply(log, net, marking, final_marking, variant=etc_factory.ETCONFORMANCE_TOKEN)
         del precision
 
 

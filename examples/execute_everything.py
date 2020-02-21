@@ -21,6 +21,8 @@ if __name__ == "__main__":
     from examples import heu_miner_test
     from examples import dfg_min_ex
     from examples import graphs_visualization
+    from examples import big_dataframe_filtering
+    from examples import big_dataframe_management
 
     print("\n\nlog_skeleton")
     log_skeleton.execute_script()
@@ -54,3 +56,7 @@ if __name__ == "__main__":
     heu_miner_test.execute_script()
     print("\n\ngraphs_visualization")
     graphs_visualization.execute_script()
+    print("\n\nbig_dataframe_management")
+    big_dataframe_management.execute_script()
+    print("\n\nbig_dataframe_filtering")
+    big_dataframe_filtering.execute_script()
