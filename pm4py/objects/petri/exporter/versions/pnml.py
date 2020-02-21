@@ -117,6 +117,11 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
             arc_el.set("source", str(transitions_map[arc.source]))
             arc_el.set("target", str(places_map[arc.target]))
 
+        if arc.weight > 1:
+            inscription = etree.SubElement(arc_el, "inscription")
+            arc_weight = etree.SubElement(inscription, "text")
+            arc_weight.text = str(arc.weight)
+
     if len(final_marking) > 0:
         finalmarkings = etree.SubElement(net, "finalmarkings")
         marking = etree.SubElement(finalmarkings, "marking")

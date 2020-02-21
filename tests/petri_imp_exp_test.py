@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pm4py.algo.conformance.alignments.versions import state_equation_a_star
+from pm4py.algo.conformance.alignments import factory as align_factory
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.objects import petri
 from pm4py.objects.log.importer.xes import factory as xes_importer
@@ -62,7 +62,7 @@ class PetriImportExportTest(unittest.TestCase):
             if not p.out_arcs:
                 final_marking[p] = 1
         for trace in log:
-            cf_result = state_equation_a_star.apply(trace, imported_petri1, marking1, final_marking)['alignment']
+            cf_result = align_factory.apply(trace, imported_petri1, marking1, final_marking, version=align_factory.VERSION_DIJKSTRA_NO_HEURISTICS)['alignment']
             is_fit = True
             for couple in cf_result:
                 if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] is None):

@@ -6,7 +6,7 @@ import networkx as nx
 
 from pm4py.objects import petri
 from pm4py.objects.log.log import Trace, Event
-from pm4py.objects.log.util import xes as xes_util
+from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri.check_soundness import check_petri_wfnet_and_soundness
 from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
 

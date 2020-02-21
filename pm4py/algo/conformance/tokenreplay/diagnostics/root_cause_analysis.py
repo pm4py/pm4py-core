@@ -3,13 +3,8 @@ from copy import deepcopy
 import numpy as np
 from sklearn import tree
 
-from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.objects.log.util import basic_filter
 from pm4py.objects.log.log import EventLog, Trace, Event
-
-try:
-    from Lib.statistics import median
-except:
-    from statistics import median
 
 
 def form_log_from_dictio_couple(first_cases_repr, second_cases_repr, enable_multiplier=False):
@@ -210,7 +205,7 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
     parameters_filtering["positive"] = False
     values = list(notexisting_activities_in_model.keys())
 
-    filtered_log = attributes_filter.apply(log, values, parameters=parameters_filtering)
+    filtered_log = basic_filter.filter_log_traces_attr(log, values, parameters=parameters_filtering)
 
     for act in notexisting_activities_in_model:
         fit_cases_repr = []

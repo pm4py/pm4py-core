@@ -1,7 +1,7 @@
 import numpy as np
 
-from pm4py.algo.filtering.log.attributes import attributes_filter
-from pm4py.objects.log.util import xes
+from pm4py.statistics.attributes.log.select import select_attributes_from_log_for_tree
+from pm4py.util import xes_constants as xes
 from pm4py.util import constants
 
 ENABLE_ACTIVITY_DEF_REPRESENTATION = "enable_activity_def_representation"
@@ -316,7 +316,7 @@ def get_default_representation_with_attribute_names(log, parameters=None, featur
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     blacklist = parameters["blacklist"] if "blacklist" in parameters else []
 
-    str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr = attributes_filter.select_attributes_from_log_for_tree(log)
+    str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr = select_attributes_from_log_for_tree(log)
     str_evsucc_attr = None
 
     if enable_succ_def_representation:
@@ -369,7 +369,7 @@ def get_default_representation(log, parameters=None, feature_names=None):
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     blacklist = parameters["blacklist"] if "blacklist" in parameters else []
 
-    str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr = attributes_filter.select_attributes_from_log_for_tree(log)
+    str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr = select_attributes_from_log_for_tree(log)
     str_evsucc_attr = None
 
     if enable_succ_def_representation:
