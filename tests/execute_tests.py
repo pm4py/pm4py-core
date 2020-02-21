@@ -12,6 +12,7 @@ if __name__ == "__main__":
     from tests.imp_everything import Pm4pyImportPackageTest
     from tests.xes_impexp_test import XesImportExportTest
     from tests.csv_impexp_test import CsvImportExportTest
+    from tests.other_tests import OtherPartsTests
     from tests.alpha_test import AlphaMinerTest
     from tests.imdf_test import InductiveMinerDFTest
     from tests.imdf_tree_test import InductiveMinerDFTreeTest
@@ -33,12 +34,15 @@ if __name__ == "__main__":
     from tests.heuminer_test import HeuMinerTest
     from tests.matrix_rep_test import MatrixRepTest
     from tests.main_fac_test import MainFactoriesTest
+    from tests.filtering_log_test import LogFilteringTest
+    from tests.filtering_pandas_test import DataframePrefilteringTest
 
     test_roles = RoleDetectionTest()
     test_pttime = PassedTimeTest()
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
     test3_object = CsvImportExportTest()
+    other_tests = OtherPartsTests()
     test4_object = AlphaMinerTest()
     test5_object = InductiveMinerDFTest()
     test55_object = InductiveMinerDFTreeTest()
@@ -60,5 +64,7 @@ if __name__ == "__main__":
     heuminer_test = HeuMinerTest()
     matrixrep_test = MatrixRepTest()
     main_factories_test = MainFactoriesTest()
+    test_filtering_log = LogFilteringTest()
+    filtering_test_dataframe = DataframePrefilteringTest()
 
     unittest.main()

@@ -1,1 +1,1 @@
-from pm4py.statistics.variants import log
+from pm4py.statistics.variants import log, pandas
