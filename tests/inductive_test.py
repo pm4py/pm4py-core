@@ -16,8 +16,8 @@ from pm4py.visualization.petrinet.common import visualize as pn_viz
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 
 
-class InductiveMinerDFTest(unittest.TestCase):
-    def obtainPetriNetThroughImdf(self, log_name):
+class InductiveMinerTest(unittest.TestCase):
+    def obtainPetriNetThroughImdf(self, log_name, variant=inductive_miner.DEFAULT_VARIANT):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
@@ -26,7 +26,10 @@ class InductiveMinerDFTest(unittest.TestCase):
         else:
             event_log = csv_importer.import_event_stream(log_name)
             log = log_conv_fact.apply(event_log)
-        net, marking, final_marking = inductive_miner.apply(log)
+        # apply dummily the test to all the available variants
+        net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.DFG_BASED_OLD_VERSION)
+        net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.DFG_BASED)
+        net, marking, final_marking = inductive_miner.apply(log, variant=variant)
         soundness = check_soundness.check_petri_wfnet_and_soundness(net)
         del soundness
 
