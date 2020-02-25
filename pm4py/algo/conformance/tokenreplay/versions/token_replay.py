@@ -1077,7 +1077,8 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
         parameters = {}
 
     enable_pltr_fitness = False
-    consider_remaining_in_fitness = False
+    # changed default to uniform behavior with token-based replay fitness
+    consider_remaining_in_fitness = True
     try_to_reach_final_marking_through_hidden = True
     stop_immediately_unfit = False
     walk_through_hidden_trans = True
