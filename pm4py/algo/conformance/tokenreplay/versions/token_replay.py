@@ -53,8 +53,8 @@ def add_missing_tokens(t, marking):
     for a in t.in_arcs:
         if marking[a.source] < a.weight:
             missing = missing + (a.weight - marking[a.source])
-            marking[a.source] = marking[a.source] + a.weight
             tokens_added[a.source] = a.weight - marking[a.source]
+            marking[a.source] = marking[a.source] + a.weight
     return [missing, tokens_added]
 
 
@@ -625,7 +625,13 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     if p in place_fitness:
                         if trace not in place_fitness[p]["underfed_traces"]:
                             place_fitness[p]["overfed_traces"].add(trace)
-                place_fitness[place]["r"] += marking[p]
+                        place_fitness[p]["r"] += marking[p]
+        # 25/02/2020: added missing part to statistics
+        elif enable_pltr_fitness:
+            if p in place_fitness:
+                if trace not in place_fitness[p]["underfed_traces"]:
+                    place_fitness[p]["overfed_traces"].add(trace)
+                place_fitness[p]["r"] += marking[p]
         remaining = remaining + marking[p]
 
     for p in current_remaining_map:
@@ -633,7 +639,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             if p in place_fitness:
                 if trace not in place_fitness[p]["underfed_traces"] and trace not in place_fitness[p]["overfed_traces"]:
                     place_fitness[p]["overfed_traces"].add(trace)
-            place_fitness[place]["r"] += current_remaining_map[p]
+                place_fitness[p]["r"] += current_remaining_map[p]
         remaining = remaining + current_remaining_map[p]
 
     if consider_remaining_in_fitness:
@@ -652,6 +658,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             place_fitness[pl]["p"] += 1
         for pl in final_marking:
             place_fitness[pl]["c"] += 1
+        for pl in diff_fin_mark_mark:
+            place_fitness[pl]["m"] += 1
 
     if consumed > 0 and produced > 0:
         trace_fitness = 0.5 * (1.0 - float(missing) / float(consumed)) + 0.5 * (
