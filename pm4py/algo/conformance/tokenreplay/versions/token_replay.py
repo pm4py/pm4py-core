@@ -562,9 +562,6 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             else:
                 break
 
-        # if i > DebugConst.REACH_ITF1:
-        #    DebugConst.REACH_ITF1 = i
-
         # try to reach the final marking in a different fashion, if not already reached
         if not break_condition_final_marking(marking, final_marking):
             if len(final_marking) == 1:
@@ -598,12 +595,6 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                                 continue
                             else:
                                 break
-
-                # if i > DebugConst.REACH_ITF2:
-                #    DebugConst.REACH_ITF2 = i
-
-    if break_condition_final_marking(marking, final_marking):
-        consumed = consumed + sum_tokens_fm
 
     marking_before_cleaning = copy(marking)
 
@@ -648,18 +639,19 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
         is_fit = (missing == 0)
 
     # separate global counts from local statistics in the case these are not enabled by the options
-    produced += len(initial_marking)
-    consumed += len(final_marking)
+    for pl in final_marking:
+        consumed += final_marking[pl]
     # 25/02/2020: update the missing tokens count here
-    missing += len(diff_fin_mark_mark)
+    for pl in diff_fin_mark_mark:
+        missing += diff_fin_mark_mark[pl]
 
     if enable_pltr_fitness:
         for pl in initial_marking:
-            place_fitness[pl]["p"] += 1
+            place_fitness[pl]["p"] += initial_marking[pl]
         for pl in final_marking:
-            place_fitness[pl]["c"] += 1
+            place_fitness[pl]["c"] += final_marking[pl]
         for pl in diff_fin_mark_mark:
-            place_fitness[pl]["m"] += 1
+            place_fitness[pl]["m"] += diff_fin_mark_mark[pl]
 
     if consumed > 0 and produced > 0:
         trace_fitness = 0.5 * (1.0 - float(missing) / float(consumed)) + 0.5 * (
