@@ -4,6 +4,7 @@ from pm4py import util as pmutil
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri import semantics
+from pm4py.objects.petri.petrinet import Marking
 from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
 from pm4py.util import constants
 from pm4py.objects.log import log as log_implementation
@@ -606,6 +607,15 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
 
     marking_before_cleaning = copy(marking)
 
+    # 25/02/2020: fix to the missing tokens mark (if the final marking is not reached)
+    # (not inficiating the previous stat)
+    diff_fin_mark_mark = Marking()
+    for p in final_marking:
+        diff = final_marking[p] - marking[p]
+        if diff > 0:
+            diff_fin_mark_mark[p] = diff
+
+    # set up the remaining tokens count
     remaining = 0
     for p in marking:
         if p in final_marking:
@@ -631,16 +641,19 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     else:
         is_fit = (missing == 0)
 
+    # separate global counts from local statistics in the case these are not enabled by the options
+    produced += len(initial_marking)
+    consumed += len(final_marking)
+    # 25/02/2020: update the missing tokens count here
+    missing += len(diff_fin_mark_mark)
+
     if enable_pltr_fitness:
         for pl in initial_marking:
             place_fitness[pl]["p"] += 1
-            produced += 1
         for pl in final_marking:
             place_fitness[pl]["c"] += 1
-            consumed += 1
 
     if consumed > 0 and produced > 0:
-        # trace_fitness = (1.0 - float(missing) / float(consumed)) * (1.0 - float(remaining) / float(produced))
         trace_fitness = 0.5 * (1.0 - float(missing) / float(consumed)) + 0.5 * (
                 1.0 - float(remaining) / float(produced))
     else:
@@ -773,8 +786,6 @@ class ApplyTraceTokenReplay:
         self.produced = None
         self.s_components = s_components
 
-        # Thread.__init__(self)
-
     def run(self):
         """
         Runs the thread and stores the results
@@ -817,47 +828,6 @@ class MarkingToActivityCaching:
     def __init__(self):
         self.cache = 0
         self.cache = {}
-
-
-"""
-def check_threads(net, threads, threads_results, all_activated_transitions, is_reduction=False,
-                  return_object_names=False):
-    threads_keys = list(threads.keys())
-    terminated_threads_keys = [tk for tk in threads_keys if threads[tk].thread_is_alive is False]
-    for tk in terminated_threads_keys:
-        t = threads[tk]
-        threads_results[tk] = {"trace_is_fit": copy(t.t_fit),
-                               "trace_fitness": float(copy(t.t_value)),
-                               "activated_transitions": copy(t.act_trans),
-                               "reached_marking": copy(t.reached_marking),
-                               "enabled_transitions_in_marking": copy(
-                                   t.enabled_trans_in_mark),
-                               "transitions_with_problems": copy(
-                                   t.trans_probl),
-                               "missing_tokens": int(t.missing),
-                               "consumed_tokens": int(t.consumed),
-                               "remaining_tokens": int(t.remaining),
-                               "produced_tokens": int(t.produced)}
-
-        if return_object_names:
-            threads_results[tk]["activated_transitions"] = [x.name for x in
-                                                            threads_results[tk]["activated_transitions"]]
-            threads_results[tk]["enabled_transitions_in_marking"] = [x.name for x in threads_results[tk][
-                "enabled_transitions_in_marking"]]
-            threads_results[tk]["transitions_with_problems"] = [x.name for x in
-                                                                threads_results[tk]["transitions_with_problems"]]
-            threads_results[tk]["reached_marking"] = {x.name: y for x, y in
-                                                      threads_results[tk]["reached_marking"].items()}
-
-        all_activated_transitions.update(set(t.act_trans))
-
-        del threads_keys[threads_keys.index(tk)]
-        del threads[tk]
-
-        if is_reduction and len(all_activated_transitions) == len(net.transitions):
-            break
-    return threads, threads_results, all_activated_transitions
-"""
 
 
 def get_variant_from_trace(trace, activity_key, disable_variants=False):
