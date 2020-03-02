@@ -1,5 +1,6 @@
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.petri.semantics import is_enabled, weak_execute
+from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
 from copy import copy
 from pm4py.objects.petri.petrinet import Marking
 from collections import Counter
@@ -148,6 +149,8 @@ def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
     if parameters is None:
         parameters = {}
 
+    stop_immediately_unfit = parameters["stop_immediately_unfit"] if "stop_immediately_unfit" in parameters else False
+
     m = copy(im)
     tokens_counter = Counter()
     tokens_counter["missing"] = 0
@@ -187,6 +190,11 @@ def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
                         transitions_with_problems.append(t)
                         m, tokens_counter = execute_tr(m, t, tokens_counter)
                         visited_transitions.append(t)
+                        if stop_immediately_unfit:
+                            rep_ok = False
+                            break
+                        else:
+                            rep_ok = True
             if not rep_ok:
                 is_fit = False
                 replay_interrupted = True
@@ -209,13 +217,16 @@ def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
     trace_fitness = 0.5 * (1.0 - float(tokens_counter["missing"]) / float(tokens_counter["consumed"])) + 0.5 * (
                 1.0 - float(tokens_counter["remaining"]) / float(tokens_counter["produced"]))
 
+    enabled_transitions_in_marking = get_visible_transitions_eventually_enabled_by_marking(net, m)
+
     return {"activated_transitions": visited_transitions, "trace_is_fit": is_fit,
             "replay_interrupted": replay_interrupted, "transitions_with_problems": transitions_with_problems,
             "activated_transitions_labels": [x.label for x in visited_transitions],
                             "missing_tokens": tokens_counter["missing"],
                             "consumed_tokens": tokens_counter["consumed"],
                             "produced_tokens": tokens_counter["produced"],
-                            "remaining_tokens": tokens_counter["remaining"], "trace_fitness": trace_fitness}
+                            "remaining_tokens": tokens_counter["remaining"], "trace_fitness": trace_fitness,
+            "enabled_transitions_in_marking": enabled_transitions_in_marking}
 
 
 def apply(log, net, initial_marking, final_marking, parameters=None):
