@@ -98,12 +98,12 @@ def explore_backwards(re_list, all_vis, net, m, bmap):
                 re_list.append((get_bmap(net, new_m, bmap), new_m, curr[2] + [curr[0][j]]))
                 all_vis.add(curr[0][j])
             j = j + 1
-        #print(i, len(re_list), re_list)
+        # print(i, len(re_list), re_list)
         i = i + 1
     return None
 
 
-def tr_vlist(vlist, net, im, tmap, bmap, parameters=None):
+def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
     """
     Visit a variant using the backwards token basedr eplay
 
@@ -135,8 +135,10 @@ def tr_vlist(vlist, net, im, tmap, bmap, parameters=None):
     m = copy(im)
 
     visited_transitions = []
-    is_fit = True
+    transitions_with_problems = []
 
+    is_fit = True
+    replay_interrupted = False
     for act in vlist:
         if act in tmap:
             for t in tmap[act]:
@@ -144,7 +146,8 @@ def tr_vlist(vlist, net, im, tmap, bmap, parameters=None):
                     visited_transitions.append(t)
                     m = weak_execute(t, m)
                 elif len(tmap[act]) == 1:
-                    back_res = explore_backwards([(get_bmap(net, t.in_marking, bmap), copy(t.in_marking), list())], set(), net, m, bmap)
+                    back_res = explore_backwards([(get_bmap(net, t.in_marking, bmap), copy(t.in_marking), list())],
+                                                 set(), net, m, bmap)
                     if back_res is not None:
                         for t2 in back_res:
                             m = weak_execute(t2, m)
@@ -153,12 +156,22 @@ def tr_vlist(vlist, net, im, tmap, bmap, parameters=None):
                         visited_transitions.append(t)
                     else:
                         is_fit = False
-                        return {"visited_transitions": visited_transitions, "is_fit": is_fit}
+                        visited_transitions.append(t)
+                        transitions_with_problems.append(t)
+                        m = weak_execute(t, m)
                 else:
                     is_fit = False
-                    return {"visited_transitions": visited_transitions, "is_fit": is_fit}
+                    replay_interrupted = True
+                    return {"activated_transitions": visited_transitions, "trace_is_fit": is_fit,
+                            "replay_interrupted": replay_interrupted,
+                            "transitions_with_problems": transitions_with_problems,
+                            "activated_transitions_labels": [x.label for x in visited_transitions]}
+    if not m == fm:
+        is_fit = False
+    return {"activated_transitions": visited_transitions, "trace_is_fit": is_fit,
+            "replay_interrupted": replay_interrupted, "transitions_with_problems": transitions_with_problems,
+            "activated_transitions_labels": [x.label for x in visited_transitions]}
 
-    return {"visited_transitions": visited_transitions, "is_fit": is_fit}
 
 def apply(log, net, initial_marking, final_marking, parameters=None):
     """
@@ -207,7 +220,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
 
     for variant in variants_idxs:
         vlist = variant.split(",")
-        result = tr_vlist(vlist, net, initial_marking, tmap, bmap, parameters=parameters)
+        result = tr_vlist(vlist, net, initial_marking, final_marking, tmap, bmap, parameters=parameters)
         results.append(result)
 
     al_idx = {}
