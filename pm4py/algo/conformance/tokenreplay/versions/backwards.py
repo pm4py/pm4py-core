@@ -99,7 +99,6 @@ def explore_backwards(re_list, all_vis, net, m, bmap):
                 re_list.append((get_bmap(net, new_m, bmap), new_m, curr[2] + [curr[0][j]]))
                 all_vis.add(curr[0][j])
             j = j + 1
-        # print(i, len(re_list), re_list)
         i = i + 1
     return None
 
@@ -166,14 +165,18 @@ def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
     replay_interrupted = False
     for act in vlist:
         if act in tmap:
+            rep_ok = False
             for t in tmap[act]:
                 if is_enabled(t, net, m):
                     m, tokens_counter = execute_tr(m, t, tokens_counter)
                     visited_transitions.append(t)
+                    rep_ok = True
+                    continue
                 elif len(tmap[act]) == 1:
                     back_res = explore_backwards([(get_bmap(net, t.in_marking, bmap), copy(t.in_marking), list())],
                                                  set(), net, m, bmap)
                     if back_res is not None:
+                        rep_ok = True
                         for t2 in back_res:
                             m, tokens_counter = execute_tr(m, t2, tokens_counter)
                         visited_transitions = visited_transitions + back_res
@@ -184,19 +187,11 @@ def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
                         transitions_with_problems.append(t)
                         m, tokens_counter = execute_tr(m, t, tokens_counter)
                         visited_transitions.append(t)
-                else:
-                    is_fit = False
-                    replay_interrupted = True
-                    trace_fitness = 0.5 * (1.0 - float(tokens_counter["missing"]) / float(tokens_counter["consumed"])) + 0.5 * (1.0 - float(tokens_counter["remaining"]) / float(tokens_counter["produced"]))
-                    return {"activated_transitions": visited_transitions, "trace_is_fit": is_fit,
-                            "replay_interrupted": replay_interrupted,
-                            "transitions_with_problems": transitions_with_problems,
-                            "activated_transitions_labels": [x.label for x in visited_transitions],
-                            "missing_tokens": tokens_counter["missing"],
-                            "consumed_tokens": tokens_counter["consumed"],
-                            "produced_tokens": tokens_counter["produced"],
-                            "remaining_tokens": tokens_counter["remaining"],
-                            "trace_fitness": trace_fitness}
+            if not rep_ok:
+                is_fit = False
+                replay_interrupted = True
+                break
+
     if not m == fm:
         is_fit = False
         diff1 = m - fm
