@@ -2,6 +2,7 @@ from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.petri.semantics import is_enabled, weak_execute
 from copy import copy
 from pm4py.objects.petri.petrinet import Marking
+from collections import Counter
 
 
 def get_bmap(net, m, bmap):
@@ -103,6 +104,22 @@ def explore_backwards(re_list, all_vis, net, m, bmap):
     return None
 
 
+def execute_tr(m, t, tokens_counter):
+    for a in t.in_arcs:
+        sp = a.source
+        w = a.weight
+        if sp not in m:
+            tokens_counter["missing"] += w
+        elif w > m[sp]:
+            tokens_counter["missing"] += w - m[sp]
+        tokens_counter["consumed"] += w
+    for a in t.out_arcs:
+        tokens_counter["produced"] += a.weight
+    new_m = weak_execute(t, m)
+    m = new_m
+    return m, tokens_counter
+
+
 def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
     """
     Visit a variant using the backwards token basedr eplay
@@ -133,6 +150,14 @@ def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
         parameters = {}
 
     m = copy(im)
+    tokens_counter = Counter()
+    tokens_counter["missing"] = 0
+    tokens_counter["remaining"] = 0
+    tokens_counter["consumed"] = 0
+    tokens_counter["produced"] = 0
+
+    for p in m:
+        tokens_counter["produced"] += m[p]
 
     visited_transitions = []
     transitions_with_problems = []
@@ -143,34 +168,59 @@ def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
         if act in tmap:
             for t in tmap[act]:
                 if is_enabled(t, net, m):
+                    m, tokens_counter = execute_tr(m, t, tokens_counter)
                     visited_transitions.append(t)
-                    m = weak_execute(t, m)
                 elif len(tmap[act]) == 1:
                     back_res = explore_backwards([(get_bmap(net, t.in_marking, bmap), copy(t.in_marking), list())],
                                                  set(), net, m, bmap)
                     if back_res is not None:
                         for t2 in back_res:
-                            m = weak_execute(t2, m)
+                            m, tokens_counter = execute_tr(m, t2, tokens_counter)
                         visited_transitions = visited_transitions + back_res
-                        m = weak_execute(t, m)
+                        m, tokens_counter = execute_tr(m, t, tokens_counter)
                         visited_transitions.append(t)
                     else:
                         is_fit = False
-                        visited_transitions.append(t)
                         transitions_with_problems.append(t)
-                        m = weak_execute(t, m)
+                        m, tokens_counter = execute_tr(m, t, tokens_counter)
+                        visited_transitions.append(t)
                 else:
                     is_fit = False
                     replay_interrupted = True
+                    trace_fitness = 0.5 * (1.0 - float(tokens_counter["missing"]) / float(tokens_counter["consumed"])) + 0.5 * (1.0 - float(tokens_counter["remaining"]) / float(tokens_counter["produced"]))
                     return {"activated_transitions": visited_transitions, "trace_is_fit": is_fit,
                             "replay_interrupted": replay_interrupted,
                             "transitions_with_problems": transitions_with_problems,
-                            "activated_transitions_labels": [x.label for x in visited_transitions]}
+                            "activated_transitions_labels": [x.label for x in visited_transitions],
+                            "missing_tokens": tokens_counter["missing"],
+                            "consumed_tokens": tokens_counter["consumed"],
+                            "produced_tokens": tokens_counter["produced"],
+                            "remaining_tokens": tokens_counter["remaining"],
+                            "trace_fitness": trace_fitness}
     if not m == fm:
         is_fit = False
+        diff1 = m - fm
+        diff2 = fm - m
+        for p in diff1:
+            if diff1[p] > 0:
+                tokens_counter["remaining"] += diff1[p]
+        for p in diff2:
+            if diff2[p] > 0:
+                tokens_counter["missing"] += diff2[p]
+
+    for p in fm:
+        tokens_counter["consumed"] += m[p]
+
+    trace_fitness = 0.5 * (1.0 - float(tokens_counter["missing"]) / float(tokens_counter["consumed"])) + 0.5 * (
+                1.0 - float(tokens_counter["remaining"]) / float(tokens_counter["produced"]))
+
     return {"activated_transitions": visited_transitions, "trace_is_fit": is_fit,
             "replay_interrupted": replay_interrupted, "transitions_with_problems": transitions_with_problems,
-            "activated_transitions_labels": [x.label for x in visited_transitions]}
+            "activated_transitions_labels": [x.label for x in visited_transitions],
+                            "missing_tokens": tokens_counter["missing"],
+                            "consumed_tokens": tokens_counter["consumed"],
+                            "produced_tokens": tokens_counter["produced"],
+                            "remaining_tokens": tokens_counter["remaining"], "trace_fitness": trace_fitness}
 
 
 def apply(log, net, initial_marking, final_marking, parameters=None):
