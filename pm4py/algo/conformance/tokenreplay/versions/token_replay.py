@@ -335,7 +335,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 walk_through_hidden_trans=True, post_fix_caching=None,
                 marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
                 enable_postfix_cache=False, enable_marktoact_cache=False, cleaning_token_flood=False,
-                s_components=None):
+                s_components=None, trace_occurrences=1):
     """
     Apply the token replaying algorithm to a trace
 
@@ -456,10 +456,10 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             if enable_pltr_fitness:
                                 for pl2 in cmap:
                                     if pl2 in place_fitness:
-                                        place_fitness[pl2]["c"] += cmap[pl2]
+                                        place_fitness[pl2]["c"] += cmap[pl2] * trace_occurrences
                                 for pl2 in pmap:
                                     if pl2 in place_fitness:
-                                        place_fitness[pl2]["p"] += pmap[pl2]
+                                        place_fitness[pl2]["p"] += pmap[pl2] * trace_occurrences
                             consumed = consumed + c
                             produced = produced + p
                         marking, act_trans, vis_mark = new_marking, new_act_trans, new_vis_mark
@@ -492,10 +492,10 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     if enable_pltr_fitness:
                         for pl2 in cmap:
                             if pl2 in place_fitness:
-                                place_fitness[pl2]["c"] += cmap[pl2]
+                                place_fitness[pl2]["c"] += cmap[pl2] * trace_occurrences
                         for pl2 in pmap:
                             if pl2 in place_fitness:
-                                place_fitness[pl2]["p"] += pmap[pl2]
+                                place_fitness[pl2]["p"] += pmap[pl2] * trace_occurrences
                     if semantics.is_enabled(t, net, marking):
                         marking = semantics.execute(t, net, marking)
                         act_trans.append(t)
@@ -551,10 +551,10 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             if enable_pltr_fitness:
                                 for pl2 in cmap:
                                     if pl2 in place_fitness:
-                                        place_fitness[pl2]["c"] += cmap[pl2]
+                                        place_fitness[pl2]["c"] += cmap[pl2] * trace_occurrences
                                 for pl2 in pmap:
                                     if pl2 in place_fitness:
-                                        place_fitness[pl2]["p"] += pmap[pl2]
+                                        place_fitness[pl2]["p"] += pmap[pl2] * trace_occurrences
                             consumed = consumed + c
                             produced = produced + p
                     if break_condition_final_marking(marking, final_marking):
@@ -585,10 +585,10 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                                 if enable_pltr_fitness:
                                     for pl2 in cmap:
                                         if pl2 in place_fitness:
-                                            place_fitness[pl2]["c"] += cmap[pl2]
+                                            place_fitness[pl2]["c"] += cmap[pl2] * trace_occurrences
                                     for pl2 in pmap:
                                         if pl2 in place_fitness:
-                                            place_fitness[pl2]["p"] += pmap[pl2]
+                                            place_fitness[pl2]["p"] += pmap[pl2] * trace_occurrences
                                 consumed = consumed + c
                                 produced = produced + p
                                 vis_mark.append(marking)
@@ -616,13 +616,13 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     if p in place_fitness:
                         if trace not in place_fitness[p]["underfed_traces"]:
                             place_fitness[p]["overfed_traces"].add(trace)
-                        place_fitness[p]["r"] += marking[p]
+                        place_fitness[p]["r"] += marking[p] * trace_occurrences
         # 25/02/2020: added missing part to statistics
         elif enable_pltr_fitness:
             if p in place_fitness:
                 if trace not in place_fitness[p]["underfed_traces"]:
                     place_fitness[p]["overfed_traces"].add(trace)
-                place_fitness[p]["r"] += marking[p]
+                place_fitness[p]["r"] += marking[p] * trace_occurrences
         remaining = remaining + marking[p]
 
     for p in current_remaining_map:
@@ -630,7 +630,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             if p in place_fitness:
                 if trace not in place_fitness[p]["underfed_traces"] and trace not in place_fitness[p]["overfed_traces"]:
                     place_fitness[p]["overfed_traces"].add(trace)
-                place_fitness[p]["r"] += current_remaining_map[p]
+                place_fitness[p]["r"] += current_remaining_map[p] * trace_occurrences
         remaining = remaining + current_remaining_map[p]
 
     if consider_remaining_in_fitness:
@@ -647,11 +647,11 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
 
     if enable_pltr_fitness:
         for pl in initial_marking:
-            place_fitness[pl]["p"] += initial_marking[pl]
+            place_fitness[pl]["p"] += initial_marking[pl] * trace_occurrences
         for pl in final_marking:
-            place_fitness[pl]["c"] += final_marking[pl]
+            place_fitness[pl]["c"] += final_marking[pl] * trace_occurrences
         for pl in diff_fin_mark_mark:
-            place_fitness[pl]["m"] += diff_fin_mark_mark[pl]
+            place_fitness[pl]["m"] += diff_fin_mark_mark[pl] * trace_occurrences
 
     if consumed > 0 and produced > 0:
         trace_fitness = 0.5 * (1.0 - float(missing) / float(consumed)) + 0.5 * (
@@ -702,7 +702,7 @@ class ApplyTraceTokenReplay:
                  reach_mark_through_hidden=True, stop_immediately_when_unfit=False,
                  walk_through_hidden_trans=True, post_fix_caching=None,
                  marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
-                 cleaning_token_flood=False, s_components=None):
+                 cleaning_token_flood=False, s_components=None, trace_occurrences=1):
         """
         Constructor
 
@@ -747,6 +747,8 @@ class ApplyTraceTokenReplay:
             Decides if a cleaning of the token flood shall be operated
         s_components
             S-components of the Petri net
+        trace_occurrences
+            Trace weight (number of occurrences)
         """
         self.thread_is_alive = True
         self.trace = trace
@@ -785,6 +787,7 @@ class ApplyTraceTokenReplay:
         self.remaining = None
         self.produced = None
         self.s_components = s_components
+        self.trace_occurrences = trace_occurrences
 
     def run(self):
         """
@@ -806,7 +809,8 @@ class ApplyTraceTokenReplay:
                         enable_postfix_cache=self.enable_postfix_cache,
                         enable_marktoact_cache=self.enable_marktoact_cache,
                         cleaning_token_flood=self.cleaning_token_flood,
-                        s_components=self.s_components)
+                        s_components=self.s_components,
+                        trace_occurrences=self.trace_occurrences)
         self.thread_is_alive = False
 
 
@@ -981,7 +985,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                                                              is_reduction=is_reduction,
                                                              thread_maximum_ex_time=thread_maximum_ex_time,
                                                              cleaning_token_flood=cleaning_token_flood,
-                                                             s_components=s_components)
+                                                             s_components=s_components, trace_occurrences=vc[i][1])
                     threads[variant].run()
                     t = threads[variant]
                     threads_results[variant] = {"trace_is_fit": copy(t.t_fit),
