@@ -258,35 +258,24 @@ def nullspace(a_matrix, atol=1e-13, rtol=0):
     return ns
 
 
-def steadystate_analysis_from_tangible_q_matrix(tangible_reach_graph, q_matrix, tol=1e-14):
+def perform_steadystate(q_matrix, tangible_reach_graph):
     """
-    Do steadystate analysis from tangible reachability graph and Q matrix
-
-    Parameters
-    ------------
-    tangible_reach_graph
-        Tangible reachability graph
-    q_matrix
-        Q matrix
-    tol
-        Tolerance in order to admit states in the steady state
-
-    Returns
-    ------------
-    steadystate
-        Dictionary of states along with their probability in the long term
+    Performs steady state analysis given the
+    :param q_matrix:
+    :return:
     """
+    transient_result = Counter()
+    states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)
     q_matrix_trans = np.matrix.transpose(q_matrix)
     if nullspace(q_matrix_trans).shape[1] > 0:
-        kernel = np.matrix.transpose(nullspace(q_matrix_trans))[0]
-        # normalize to 1 the vector of probabilities
-        if np.sum(kernel) < 0:
-            kernel = -kernel
-        kernel = kernel / np.sum(kernel)
-        states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)
-        steadystate = {}
+        M = np.matrix.transpose(nullspace(q_matrix_trans))
+        vec = np.zeros(M.shape[1])
+        for i in range(M.shape[0]):
+            v = np.matmul(M[i], q_matrix_trans)
+            val = np.sum(v)/np.sum(M[i])
+            vec = vec + val*M[i]
+        vec = vec / np.sum(vec)
         for i in range(len(states)):
-            if kernel[i] > tol:
-                steadystate[states[i]] = kernel[i]
-        return steadystate
-    return None
+            transient_result[states[i]] = vec[i]
+        return vec
+    return transient_result
