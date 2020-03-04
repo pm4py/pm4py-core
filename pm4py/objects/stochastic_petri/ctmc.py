@@ -6,6 +6,8 @@ from scipy.linalg import expm
 
 from pm4py.objects.petri.reachability_graph import construct_reachability_graph
 from pm4py.objects.stochastic_petri import tangible_reachability
+from pm4py.objects.conversion.dfg import factory as dfg_conv_factory
+from pm4py.objects.random_variables import exponential, random_variable
 
 
 def get_corr_hex(num):
@@ -65,6 +67,60 @@ def get_color_from_probabilities(prob_dictionary):
         color_dictionary[state] = "#FF" + c1 + c2 + c1 + c2
 
     return color_dictionary
+
+
+def get_tangible_reachability_and_q_matrix_from_dfg_performance(dfg_performance, invisible_firing_rate=1000.0, parameters=None):
+    """
+    Get the tangible reachability graph and the Q matrix from the performance DFG
+
+    Parameters
+    -------------
+    dfg_performance
+        Performance DFG
+    invisible_firing_rate
+        Firing rate for invisible transitions
+    parameters
+        Parameters
+
+    Returns
+    -------------
+    reachab_graph
+        Reachability graph
+    tangible_reach_graph
+        Tangible reachability graph
+    stochastic_info
+        Stochastic information
+    q_matrix
+        Q-matrix from the tangible reachability graph
+    """
+    if parameters is None:
+        parameters = {}
+    net, im, fm = dfg_conv_factory.apply(dfg_performance)
+    stochastic_map = {}
+    for tr in net.transitions:
+        if tr.label is None:
+            rv = random_variable.RandomVariable()
+            exp = exponential.Exponential()
+            exp.scale = 1/invisible_firing_rate
+            rv.random_variable = exp
+            stochastic_map[tr] = rv
+        else:
+            input_arc = list(tr.in_arcs)[0]
+            output_arc = list(tr.out_arcs)[0]
+            rv = random_variable.RandomVariable()
+            el = (input_arc.source.name, output_arc.target.name)
+            scale = 0
+            if el in dfg_performance:
+                scale = dfg_performance[el]
+            if scale == 0:
+                scale = 1/invisible_firing_rate
+            exp = exponential.Exponential()
+            exp.scale = scale
+            rv.random_variable = exp
+            stochastic_map[tr] = rv
+    tang_reach_graph = construct_reachability_graph(net, im, use_trans_name=True)
+    q_matrix = get_q_matrix_from_tangible_exponential(tang_reach_graph, stochastic_map)
+    return tang_reach_graph, tang_reach_graph, stochastic_map, q_matrix
 
 
 def get_tangible_reachability_and_q_matrix_from_log_net(log, net, im, fm, parameters=None):
