@@ -19,6 +19,8 @@ def get_tangible_reachability_from_log_net_im_fm(log, net, im, fm, parameters=No
 
     Returns
     ------------
+    reachab_graph
+        Reachability graph
     tangible_reach_graph
         Tangible reachability graph
     stochastic_info
@@ -31,7 +33,11 @@ def get_tangible_reachability_from_log_net_im_fm(log, net, im, fm, parameters=No
     stochastic_info = replay.get_map_from_log_and_net(conv_factory.apply(log, parameters=parameters), net, im, fm,
                                                       parameters=parameters)
 
-    return get_tangible_reachability_from_net_im_sinfo(net, im, stochastic_info, parameters=parameters), stochastic_info
+    reachability_graph, tangible_reachability_graph = get_tangible_reachability_from_net_im_sinfo(net, im,
+                                                                                                  stochastic_info,
+                                                                                                  parameters=parameters)
+
+    return reachability_graph, tangible_reachability_graph, stochastic_info
 
 
 def get_tangible_reachability_from_net_im_sinfo(net, im, stochastic_info, parameters=None):
@@ -51,6 +57,8 @@ def get_tangible_reachability_from_net_im_sinfo(net, im, stochastic_info, parame
 
     Returns
     ------------
+    reachab_graph
+        Reachability graph
     tangible_reach_graph
         Tangible reachability graph
     """
@@ -59,7 +67,7 @@ def get_tangible_reachability_from_net_im_sinfo(net, im, stochastic_info, parame
     reachab_graph = construct_reachability_graph(net, im)
     tang_reach_graph = get_tangible_reachability_from_reachability(reachab_graph, stochastic_info)
 
-    return tang_reach_graph
+    return reachab_graph, tang_reach_graph
 
 
 def get_tangible_reachability_from_reachability(reach_graph, stochastic_info):
