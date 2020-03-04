@@ -145,7 +145,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
         if a in decorations and "label" in decorations and "penwidth" in decorations:
             viz.edge(str(id(a.source)), str(id(a.target)), label=decorations[a]["label"],
                      penwidth=decorations[a]["penwidth"])
-        elif a in decorations and "color" in decorations:
+        elif a in decorations and "color" in decorations[a]:
             viz.edge(str(id(a.source)), str(id(a.target)), color=decorations[a]["color"])
         else:
             viz.edge(str(id(a.source)), str(id(a.target)))
