@@ -67,6 +67,41 @@ def get_color_from_probabilities(prob_dictionary):
     return color_dictionary
 
 
+def get_tangible_reachability_and_q_matrix_from_log_net(log, net, im, fm, parameters=None):
+    """
+    Gets the tangible reachability graph from a log and an accepting Petri net
+
+    Parameters
+    ---------------
+    log
+        Event log
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+
+    Returns
+    ------------
+    reachab_graph
+        Reachability graph
+    tangible_reach_graph
+        Tangible reachability graph
+    stochastic_info
+        Stochastic information
+    q_matrix
+        Q-matrix from the tangible reachability graph
+    """
+    if parameters is None:
+        parameters = {}
+    reachability_graph, tangible_reachability_graph, stochastic_info = tangible_reachability.get_tangible_reachability_from_log_net_im_fm(
+        log, net, im, fm, parameters=parameters)
+    # gets the Q matrix assuming exponential distributions
+    q_matrix = get_q_matrix_from_tangible_exponential(tangible_reachability_graph, stochastic_info)
+    return reachability_graph, tangible_reachability_graph, stochastic_info, q_matrix
+
+
 def transient_analysis_from_petri_net_and_smap(net, im, s_map, delay, parameters=None):
     """
     Gets the transient analysis from a Petri net, a stochastic map and a delay
@@ -272,8 +307,8 @@ def perform_steadystate(q_matrix, tangible_reach_graph):
         vec = np.zeros(M.shape[1])
         for i in range(M.shape[0]):
             v = np.matmul(M[i], q_matrix_trans)
-            val = np.sum(v)/np.sum(M[i])
-            vec = vec + val*M[i]
+            val = np.sum(v) / np.sum(M[i])
+            vec = vec + val * M[i]
         vec = vec / np.sum(vec)
         for i in range(len(states)):
             transient_result[states[i]] = vec[i]
