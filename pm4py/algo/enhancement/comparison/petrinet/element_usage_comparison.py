@@ -1,6 +1,34 @@
 from pm4py.algo.conformance.tokenreplay import factory as tr_factory
+from pm4py.util.colors import get_string_from_int_below_255
 from collections import Counter
 from copy import copy
+import matplotlib as mpl
+import matplotlib.cm as cm
+import math
+
+
+def give_color_to_direction_dynamic(dir):
+    """
+    Assigns a color to the direction (dynamic-defined colors)
+
+    Parameters
+    --------------
+    dir
+        Direction
+
+    Returns
+    --------------
+    col
+        Color
+    """
+    norm = mpl.colors.Normalize(vmin=-1, vmax=1)
+    cmap = cm.plasma
+    m = cm.ScalarMappable(norm=norm, cmap=cmap)
+    rgba = m.to_rgba(dir)
+    r = get_string_from_int_below_255(math.ceil(rgba[0] * 255.0))
+    g = get_string_from_int_below_255(math.ceil(rgba[1] * 255.0))
+    b = get_string_from_int_below_255(math.ceil(rgba[2] * 255.0))
+    return "#" + r + g + b
 
 
 def give_color_to_direction_static(dir):
@@ -78,7 +106,7 @@ def compare_element_usage_two_logs(net, im, fm, log1, log2, parameters=None):
         dir = (pl_occ2[place] - pl_occ1[place]) / (pl_occ1[place] + pl_occ2[place]) if (pl_occ1[place] + pl_occ2[
             place]) > 0 else 0
         aggregated_statistics[place]["direction"] = dir
-        aggregated_statistics[place]["color"] = give_color_to_direction_static(dir)
+        aggregated_statistics[place]["color"] = give_color_to_direction_dynamic(dir)
 
     for trans in all_transitions:
         aggregated_statistics[trans] = {"log1_occ": tr_occ1[trans], "log2_occ": tr_occ2[trans],
@@ -92,7 +120,7 @@ def compare_element_usage_two_logs(net, im, fm, log1, log2, parameters=None):
         dir = (tr_occ2[trans] - tr_occ1[trans]) / (tr_occ1[trans] + tr_occ2[trans]) if (tr_occ1[trans] + tr_occ2[
             trans]) > 0 else 0
         aggregated_statistics[trans]["direction"] = dir
-        aggregated_statistics[trans]["color"] = give_color_to_direction_static(dir)
+        aggregated_statistics[trans]["color"] = give_color_to_direction_dynamic(dir)
         for arc in trans.in_arcs:
             aggregated_statistics[arc] = aggregated_statistics[trans]
         for arc in trans.out_arcs:
