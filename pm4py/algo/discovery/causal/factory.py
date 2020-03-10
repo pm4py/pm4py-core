@@ -3,7 +3,7 @@ from pm4py.algo.discovery.causal.versions import alpha, heuristic
 CAUSAL_ALPHA = 'alpha'
 CAUSAL_HEURISTIC = 'heuristic'
 
-versions = {CAUSAL_ALPHA: alpha.apply, CAUSAL_HEURISTIC: heuristic.apply}
+VERSIONS = {CAUSAL_ALPHA: alpha.apply, CAUSAL_HEURISTIC: heuristic.apply}
 
 
 def apply(dfg, variant=CAUSAL_ALPHA):
@@ -22,4 +22,4 @@ def apply(dfg, variant=CAUSAL_ALPHA):
     causal relations
         dict
     """
-    return versions[variant](dfg)
+    return VERSIONS[variant](dfg)

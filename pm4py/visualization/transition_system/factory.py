@@ -13,6 +13,26 @@ VERSIONS = {VIEW_BASED: view_based.apply, WO_DECORATION: view_based.apply, FREQU
             PERFORMANCE_DECORATION: view_based.apply, FREQUENCY_GREEDY: view_based.apply,
             PERFORMANCE_GREEDY: view_based.apply}
 
+def apply(tsys, parameters=None, variant="view_based"):
+    """
+    Get visualization of a Transition System
+
+    Parameters
+    -----------
+    tsys
+        Transition system
+    parameters
+        Optional parameters of the algorithm
+    variant
+        Variant of the algorithm to use, including:
+            view_based
+
+    Returns
+    ----------
+    gviz
+        Graph visualization
+    """
+    return VERSIONS[variant](tsys, parameters=parameters)
 
 def save(gviz, output_file_path):
     """
@@ -38,25 +58,3 @@ def view(gviz):
         GraphViz diagram
     """
     return gview.view(gviz)
-
-
-def apply(tsys, parameters=None, variant="view_based"):
-    """
-    Get visualization of a Transition System
-
-    Parameters
-    -----------
-    tsys
-        Transition system
-    parameters
-        Optional parameters of the algorithm
-    variant
-        Variant of the algorithm to use, including:
-            view_based
-
-    Returns
-    ----------
-    gviz
-        Graph visualization
-    """
-    return VERSIONS[variant](tsys, parameters=parameters)
