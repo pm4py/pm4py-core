@@ -6,12 +6,10 @@ numpy==1.18.1
 ciso8601==2.1.2; python_version < '3.7'
 lxml==4.5.0
 graphviz==0.13.2
-pyarrow==0.15.1; python_version < '3.8'
 pandas==1.0.1
 scipy==1.4.1
 pydotplus==2.0.2
 scikit-learn==0.22.1
 pulp==2.0
 pytz==2019.3
-ortools==7.5.7466; python_version < '3.9'
 intervaltree==3.0.2
