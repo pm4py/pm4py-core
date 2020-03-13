@@ -9,6 +9,7 @@ if __name__ == "__main__":
     from examples import roles_detection
     from examples import alignment_test
     from examples import dec_treplay_imdf
+    from examples import logs_petri_visual_comparison
     from examples import imdf_example
     from examples import test_evaluation
     from examples import token_replay_alpha
@@ -32,6 +33,8 @@ if __name__ == "__main__":
     alignment_test.execute_script()
     print("\n\ndec_treplay_imdf")
     dec_treplay_imdf.execute_script()
+    print("\n\nlogs_petri_visual_comparison")
+    logs_petri_visual_comparison.execute_script()
     print("\n\nimdf_example")
     imdf_example.execute_script()
     print("\n\ntestEvaluation")
