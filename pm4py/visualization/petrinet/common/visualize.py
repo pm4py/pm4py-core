@@ -103,6 +103,9 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
         else:
             if debug:
                 viz.node(str(id(t)), str(t.name))
+            elif t in decorations and "color" in decorations[t] and "label" in decorations[t]:
+                viz.node(str(id(t)), decorations[t]["label"], style='filled', fillcolor=decorations[t]["color"],
+                         fontsize='8')
             else:
                 viz.node(str(id(t)), "", style='filled', fillcolor="black")
 
@@ -130,14 +133,20 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
             if debug:
                 viz.node(str(id(p)), str(p.name))
             else:
-                viz.node(str(id(p)), "")
+                if p in decorations and "color" in decorations[p] and "label" in decorations[p]:
+                    viz.node(str(id(p)), decorations[p]["label"], style='filled', fillcolor=decorations[p]["color"],
+                             fontsize='6')
+                else:
+                    viz.node(str(id(p)), "")
 
     # add arcs, in order by their source and target objects names, to avoid undeterminism in the visualization
     arcs_sort_list = sorted(list(net.arcs), key=lambda x: (x.source.name, x.target.name))
     for a in arcs_sort_list:
-        if a in decorations:
+        if a in decorations and "label" in decorations[a] and "penwidth" in decorations[a]:
             viz.edge(str(id(a.source)), str(id(a.target)), label=decorations[a]["label"],
                      penwidth=decorations[a]["penwidth"])
+        elif a in decorations and "color" in decorations[a]:
+            viz.edge(str(id(a.source)), str(id(a.target)), color=decorations[a]["color"])
         else:
             viz.edge(str(id(a.source)), str(id(a.target)))
     viz.attr(overlap='false')
