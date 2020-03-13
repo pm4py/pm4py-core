@@ -17,6 +17,7 @@ class GenerationTree(ProcessTree):
         i = 0
         while i < len(tree.children):
             tree.children[i] = GenerationTree(tree.children[i])
+            tree.children[i].parent = self
             i = i + 1
         ProcessTree.__init__(self, operator=tree.operator, parent=tree.parent, children=tree.children, label=tree.label)
 
