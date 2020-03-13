@@ -9,6 +9,7 @@ from pm4py.objects.petri import performance_map
 PARAM_ACTIVITY_KEY = pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 PARAM_TIMESTAMP_KEY = pm4py.util.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 
+
 def get_map_from_log_and_net(log, net, initial_marking, final_marking, force_distribution=None, parameters=None):
     """
     Get transition stochastic distribution map given the log and the Petri net
