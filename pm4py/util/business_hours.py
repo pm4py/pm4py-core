@@ -72,12 +72,23 @@ class BusinessHours:
                             pass  # no time on first day
                         else:
                             # starts during the working day
-                            dt_currentday_close = datetime.datetime(
-                                year=dt_start.year,
-                                month=dt_start.month,
-                                day=dt_start.day,
-                                hour=self.worktiming[1],
-                                minute=0)
+                            if self.worktiming[1] < 24:
+                                # if we have a target that is below 24:00:00 (the next day)
+                                # we can use the existing code
+                                dt_currentday_close = datetime.datetime(
+                                    year=dt_start.year,
+                                    month=dt_start.month,
+                                    day=dt_start.day,
+                                    hour=self.worktiming[1],
+                                    minute=0)
+                            else:
+                                # otherwise, make the stop date as 23:59:59
+                                dt_currentday_close = datetime.datetime(
+                                    year=dt_start.year,
+                                    month=dt_start.month,
+                                    day=dt_start.day,
+                                    hour=23,
+                                    minute=59, second=59)
                             worktime_in_seconds += (dt_currentday_close
                                                     - dt_start).total_seconds()
                     else:
