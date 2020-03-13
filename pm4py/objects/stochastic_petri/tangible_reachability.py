@@ -1,3 +1,75 @@
+from pm4py.objects.petri.reachability_graph import construct_reachability_graph
+from pm4py.objects.conversion.log import factory as conv_factory
+
+
+def get_tangible_reachability_from_log_net_im_fm(log, net, im, fm, parameters=None):
+    """
+    Gets the tangible reachability graph from a log and an accepting Petri net
+
+    Parameters
+    ---------------
+    log
+        Event log
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+
+    Returns
+    ------------
+    reachab_graph
+        Reachability graph
+    tangible_reach_graph
+        Tangible reachability graph
+    stochastic_info
+        Stochastic information
+    """
+    if parameters is None:
+        parameters = {}
+
+    from pm4py.algo.simulation.montecarlo.utils import replay
+    stochastic_info = replay.get_map_from_log_and_net(conv_factory.apply(log, parameters=parameters), net, im, fm,
+                                                      parameters=parameters)
+
+    reachability_graph, tangible_reachability_graph = get_tangible_reachability_from_net_im_sinfo(net, im,
+                                                                                                  stochastic_info,
+                                                                                                  parameters=parameters)
+
+    return reachability_graph, tangible_reachability_graph, stochastic_info
+
+
+def get_tangible_reachability_from_net_im_sinfo(net, im, stochastic_info, parameters=None):
+    """
+    Gets the tangible reacahbility graph from a Petri net, an initial marking and a stochastic map
+
+    Parameters
+    -------------
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    stochastic_info
+        Stochastic information
+
+    Returns
+    ------------
+    reachab_graph
+        Reachability graph
+    tangible_reach_graph
+        Tangible reachability graph
+    """
+    if parameters is None:
+        parameters = {}
+    reachab_graph = construct_reachability_graph(net, im)
+    tang_reach_graph = get_tangible_reachability_from_reachability(reachab_graph, stochastic_info)
+
+    return reachab_graph, tang_reach_graph
+
+
 def get_tangible_reachability_from_reachability(reach_graph, stochastic_info):
     """
     Gets the tangible reachability graph from the reachability graph and the stochastic transition map
