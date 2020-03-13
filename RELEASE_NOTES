@@ -117,5 +117,22 @@ This is a minor release, consisting of the following changes:
         - increased number of tests in the tests/ folder for inductive miner
 
 
-===== PM4PY 1.2.11 =====
+===== PM4PY 1.2.12 =====
 This is a minor release, consisting of the following changes:
+1. commit ef3b4b62fd186df46236a8af9aa890358dbcd1bc
+    - Fixing a problem in the generation of logs from process trees
+2. commit 31e1cd29437d6b183357bbc5c103131484d390b3
+    - Removing the problematic dependencies ortools and pyarrow in the project (if installed, can be used, but not anymore installed by default)
+3. commit 548c57a6d2340dcaba7ef11464ebe193f8fb9c5c
+    - Fixed filter by variants percentage
+4. commit c49a9c441feb65a74d5c5da774fdda79295665cc
+    - Fixing some problems of the token-based replay with the count of tokens at global and local level
+5. commit f554aec318717ee1fb7f81c4e0acbd6da7e7bc34
+    - Fixing continuous time Markov Chain steady-state analysis
+    - Converting a performance DFG to a Q-matrix for transient analysis
+6. commit cc766164f2397fe2cb33f8278372469e25cfecd6
+    - Fixing the business hours module to support full-days shifts (e.g. from 0 to 24)
+7. commit cc766164f2397fe2cb33f8278372469e25cfecd6
+    - Introducing another variant of the token-based replay (backwards state space exploration; support duplicate transitions)
+8. commit 1b3c32916fe0ccbc4d3f73a44cc68e2ca83a810e
+    - Visual logs comparison on a Petri net by plasma coloring
