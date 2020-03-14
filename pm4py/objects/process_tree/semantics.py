@@ -1,7 +1,7 @@
 import random
 
 from pm4py.objects.log.log import EventLog, Trace, Event
-from pm4py.objects.log.util import xes
+from pm4py.util import xes_constants as xes
 from pm4py.objects.process_tree import pt_operator as pt_opt
 from pm4py.objects.process_tree import state as pt_st
 from pm4py.objects.process_tree import util as pt_util
@@ -9,6 +9,25 @@ from pm4py.objects.process_tree.process_tree import ProcessTree
 
 import datetime
 from copy import deepcopy
+
+
+class GenerationTree(ProcessTree):
+    # extend the parent class to replace the __eq__ and __hash__ method
+    def __init__(self, tree):
+        i = 0
+        while i < len(tree.children):
+            tree.children[i] = GenerationTree(tree.children[i])
+            tree.children[i].parent = self
+            i = i + 1
+        ProcessTree.__init__(self, operator=tree.operator, parent=tree.parent, children=tree.children, label=tree.label)
+
+    def __eq__(self, other):
+        # method that is different from default one (different taus must give different ID in log generation!!!!)
+        return id(self) == id(other)
+
+    def __hash__(self):
+        return id(self)
+
 
 def generate_log(pt0, no_traces=100):
     """
@@ -27,6 +46,10 @@ def generate_log(pt0, no_traces=100):
         Trace log object
     """
     pt = deepcopy(pt0)
+    # different taus must give different ID in log generation!!!!
+    # so we cannot use the default process tree class
+    # we use this different one!
+    pt = GenerationTree(pt)
     log = EventLog()
 
     # assigns to each event an increased timestamp from 1970

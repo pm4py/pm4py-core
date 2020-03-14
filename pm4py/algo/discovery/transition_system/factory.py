@@ -1,8 +1,7 @@
 from pm4py import util as pmutil
 from pm4py.algo.discovery.transition_system.versions import view_based
 from pm4py.objects.conversion.log import factory as log_conversion
-from pm4py.objects.log.util import general as log_util
-from pm4py.objects.log.util import xes as xes_util
+from pm4py.util import xes_constants as xes_util
 
 VIEW_BASED = "view_based"
 
@@ -38,6 +37,6 @@ def apply(log, parameters=None, variant=VIEW_BASED):
     if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = log_util.CASE_ATTRIBUTE_GLUE
+        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
 
     return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters=parameters)

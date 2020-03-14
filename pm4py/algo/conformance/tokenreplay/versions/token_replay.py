@@ -1,9 +1,10 @@
 from copy import copy
 
 from pm4py import util as pmutil
-from pm4py.algo.filtering.log.variants import variants_filter as variants_module
-from pm4py.objects.log.util import xes as xes_util
+from pm4py.statistics.variants.log import get as variants_module
+from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri import semantics
+from pm4py.objects.petri.petrinet import Marking
 from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
 from pm4py.util import constants
 from pm4py.objects.log import log as log_implementation
@@ -52,8 +53,8 @@ def add_missing_tokens(t, marking):
     for a in t.in_arcs:
         if marking[a.source] < a.weight:
             missing = missing + (a.weight - marking[a.source])
-            marking[a.source] = marking[a.source] + a.weight
             tokens_added[a.source] = a.weight - marking[a.source]
+            marking[a.source] = marking[a.source] + a.weight
     return [missing, tokens_added]
 
 
@@ -334,7 +335,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 walk_through_hidden_trans=True, post_fix_caching=None,
                 marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
                 enable_postfix_cache=False, enable_marktoact_cache=False, cleaning_token_flood=False,
-                s_components=None):
+                s_components=None, trace_occurrences=1):
     """
     Apply the token replaying algorithm to a trace
 
@@ -351,7 +352,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     trans_map
         Map between transitions labels and transitions
     enable_pltr_fitness
-        Enable fitness calculation at place/transition level
+        Enable fitness retrieval at place/transition level
     place_fitness
         Current dictionary of places associated with unfit traces
     transition_fitness
@@ -455,10 +456,10 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             if enable_pltr_fitness:
                                 for pl2 in cmap:
                                     if pl2 in place_fitness:
-                                        place_fitness[pl2]["c"] += cmap[pl2]
+                                        place_fitness[pl2]["c"] += cmap[pl2] * trace_occurrences
                                 for pl2 in pmap:
                                     if pl2 in place_fitness:
-                                        place_fitness[pl2]["p"] += pmap[pl2]
+                                        place_fitness[pl2]["p"] += pmap[pl2] * trace_occurrences
                             consumed = consumed + c
                             produced = produced + p
                         marking, act_trans, vis_mark = new_marking, new_act_trans, new_vis_mark
@@ -491,10 +492,10 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     if enable_pltr_fitness:
                         for pl2 in cmap:
                             if pl2 in place_fitness:
-                                place_fitness[pl2]["c"] += cmap[pl2]
+                                place_fitness[pl2]["c"] += cmap[pl2] * trace_occurrences
                         for pl2 in pmap:
                             if pl2 in place_fitness:
-                                place_fitness[pl2]["p"] += pmap[pl2]
+                                place_fitness[pl2]["p"] += pmap[pl2] * trace_occurrences
                     if semantics.is_enabled(t, net, marking):
                         marking = semantics.execute(t, net, marking)
                         act_trans.append(t)
@@ -550,19 +551,16 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             if enable_pltr_fitness:
                                 for pl2 in cmap:
                                     if pl2 in place_fitness:
-                                        place_fitness[pl2]["c"] += cmap[pl2]
+                                        place_fitness[pl2]["c"] += cmap[pl2] * trace_occurrences
                                 for pl2 in pmap:
                                     if pl2 in place_fitness:
-                                        place_fitness[pl2]["p"] += pmap[pl2]
+                                        place_fitness[pl2]["p"] += pmap[pl2] * trace_occurrences
                             consumed = consumed + c
                             produced = produced + p
                     if break_condition_final_marking(marking, final_marking):
                         break
             else:
                 break
-
-        # if i > DebugConst.REACH_ITF1:
-        #    DebugConst.REACH_ITF1 = i
 
         # try to reach the final marking in a different fashion, if not already reached
         if not break_condition_final_marking(marking, final_marking):
@@ -587,10 +585,10 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                                 if enable_pltr_fitness:
                                     for pl2 in cmap:
                                         if pl2 in place_fitness:
-                                            place_fitness[pl2]["c"] += cmap[pl2]
+                                            place_fitness[pl2]["c"] += cmap[pl2] * trace_occurrences
                                     for pl2 in pmap:
                                         if pl2 in place_fitness:
-                                            place_fitness[pl2]["p"] += pmap[pl2]
+                                            place_fitness[pl2]["p"] += pmap[pl2] * trace_occurrences
                                 consumed = consumed + c
                                 produced = produced + p
                                 vis_mark.append(marking)
@@ -598,14 +596,17 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                             else:
                                 break
 
-                # if i > DebugConst.REACH_ITF2:
-                #    DebugConst.REACH_ITF2 = i
-
-    if break_condition_final_marking(marking, final_marking):
-        consumed = consumed + sum_tokens_fm
-
     marking_before_cleaning = copy(marking)
 
+    # 25/02/2020: fix to the missing tokens mark (if the final marking is not reached)
+    # (not inficiating the previous stat)
+    diff_fin_mark_mark = Marking()
+    for p in final_marking:
+        diff = final_marking[p] - marking[p]
+        if diff > 0:
+            diff_fin_mark_mark[p] = diff
+
+    # set up the remaining tokens count
     remaining = 0
     for p in marking:
         if p in final_marking:
@@ -615,7 +616,13 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                     if p in place_fitness:
                         if trace not in place_fitness[p]["underfed_traces"]:
                             place_fitness[p]["overfed_traces"].add(trace)
-                place_fitness[place]["r"] += marking[p]
+                        place_fitness[p]["r"] += marking[p] * trace_occurrences
+        # 25/02/2020: added missing part to statistics
+        elif enable_pltr_fitness:
+            if p in place_fitness:
+                if trace not in place_fitness[p]["underfed_traces"]:
+                    place_fitness[p]["overfed_traces"].add(trace)
+                place_fitness[p]["r"] += marking[p] * trace_occurrences
         remaining = remaining + marking[p]
 
     for p in current_remaining_map:
@@ -623,7 +630,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             if p in place_fitness:
                 if trace not in place_fitness[p]["underfed_traces"] and trace not in place_fitness[p]["overfed_traces"]:
                     place_fitness[p]["overfed_traces"].add(trace)
-            place_fitness[place]["r"] += current_remaining_map[p]
+                place_fitness[p]["r"] += current_remaining_map[p] * trace_occurrences
         remaining = remaining + current_remaining_map[p]
 
     if consider_remaining_in_fitness:
@@ -631,16 +638,22 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     else:
         is_fit = (missing == 0)
 
+    # separate global counts from local statistics in the case these are not enabled by the options
+    for pl in final_marking:
+        consumed += final_marking[pl]
+    # 25/02/2020: update the missing tokens count here
+    for pl in diff_fin_mark_mark:
+        missing += diff_fin_mark_mark[pl]
+
     if enable_pltr_fitness:
         for pl in initial_marking:
-            place_fitness[pl]["p"] += 1
-            produced += 1
+            place_fitness[pl]["p"] += initial_marking[pl] * trace_occurrences
         for pl in final_marking:
-            place_fitness[pl]["c"] += 1
-            consumed += 1
+            place_fitness[pl]["c"] += final_marking[pl] * trace_occurrences
+        for pl in diff_fin_mark_mark:
+            place_fitness[pl]["m"] += diff_fin_mark_mark[pl] * trace_occurrences
 
     if consumed > 0 and produced > 0:
-        # trace_fitness = (1.0 - float(missing) / float(consumed)) * (1.0 - float(remaining) / float(produced))
         trace_fitness = 0.5 * (1.0 - float(missing) / float(consumed)) + 0.5 * (
                 1.0 - float(remaining) / float(produced))
     else:
@@ -689,7 +702,7 @@ class ApplyTraceTokenReplay:
                  reach_mark_through_hidden=True, stop_immediately_when_unfit=False,
                  walk_through_hidden_trans=True, post_fix_caching=None,
                  marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
-                 cleaning_token_flood=False, s_components=None):
+                 cleaning_token_flood=False, s_components=None, trace_occurrences=1):
         """
         Constructor
 
@@ -702,7 +715,7 @@ class ApplyTraceTokenReplay:
         trans_map
             Map between transitions labels and transitions
         enable_pltr_fitness
-            Enable fitness calculation at place/transition level
+            Enable fitness retrieval at place/transition level
         place_fitness
             Current dictionary of places associated with unfit traces
         transition_fitness
@@ -734,6 +747,8 @@ class ApplyTraceTokenReplay:
             Decides if a cleaning of the token flood shall be operated
         s_components
             S-components of the Petri net
+        trace_occurrences
+            Trace weight (number of occurrences)
         """
         self.thread_is_alive = True
         self.trace = trace
@@ -772,8 +787,7 @@ class ApplyTraceTokenReplay:
         self.remaining = None
         self.produced = None
         self.s_components = s_components
-
-        # Thread.__init__(self)
+        self.trace_occurrences = trace_occurrences
 
     def run(self):
         """
@@ -795,7 +809,8 @@ class ApplyTraceTokenReplay:
                         enable_postfix_cache=self.enable_postfix_cache,
                         enable_marktoact_cache=self.enable_marktoact_cache,
                         cleaning_token_flood=self.cleaning_token_flood,
-                        s_components=self.s_components)
+                        s_components=self.s_components,
+                        trace_occurrences=self.trace_occurrences)
         self.thread_is_alive = False
 
 
@@ -817,47 +832,6 @@ class MarkingToActivityCaching:
     def __init__(self):
         self.cache = 0
         self.cache = {}
-
-
-"""
-def check_threads(net, threads, threads_results, all_activated_transitions, is_reduction=False,
-                  return_object_names=False):
-    threads_keys = list(threads.keys())
-    terminated_threads_keys = [tk for tk in threads_keys if threads[tk].thread_is_alive is False]
-    for tk in terminated_threads_keys:
-        t = threads[tk]
-        threads_results[tk] = {"trace_is_fit": copy(t.t_fit),
-                               "trace_fitness": float(copy(t.t_value)),
-                               "activated_transitions": copy(t.act_trans),
-                               "reached_marking": copy(t.reached_marking),
-                               "enabled_transitions_in_marking": copy(
-                                   t.enabled_trans_in_mark),
-                               "transitions_with_problems": copy(
-                                   t.trans_probl),
-                               "missing_tokens": int(t.missing),
-                               "consumed_tokens": int(t.consumed),
-                               "remaining_tokens": int(t.remaining),
-                               "produced_tokens": int(t.produced)}
-
-        if return_object_names:
-            threads_results[tk]["activated_transitions"] = [x.name for x in
-                                                            threads_results[tk]["activated_transitions"]]
-            threads_results[tk]["enabled_transitions_in_marking"] = [x.name for x in threads_results[tk][
-                "enabled_transitions_in_marking"]]
-            threads_results[tk]["transitions_with_problems"] = [x.name for x in
-                                                                threads_results[tk]["transitions_with_problems"]]
-            threads_results[tk]["reached_marking"] = {x.name: y for x, y in
-                                                      threads_results[tk]["reached_marking"].items()}
-
-        all_activated_transitions.update(set(t.act_trans))
-
-        del threads_keys[threads_keys.index(tk)]
-        del threads[tk]
-
-        if is_reduction and len(all_activated_transitions) == len(net.transitions):
-            break
-    return threads, threads_results, all_activated_transitions
-"""
 
 
 def get_variant_from_trace(trace, activity_key, disable_variants=False):
@@ -930,7 +904,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
     final_marking
         Final marking
     enable_pltr_fitness
-        Enable fitness calculation at place level
+        Enable fitness retrieval at place level
     consider_remaining_in_fitness
         Boolean value telling if the remaining tokens should be considered in fitness evaluation
     activity_key
@@ -1011,7 +985,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                                                              is_reduction=is_reduction,
                                                              thread_maximum_ex_time=thread_maximum_ex_time,
                                                              cleaning_token_flood=cleaning_token_flood,
-                                                             s_components=s_components)
+                                                             s_components=s_components, trace_occurrences=vc[i][1])
                     threads[variant].run()
                     t = threads[variant]
                     threads_results[variant] = {"trace_is_fit": copy(t.t_fit),
@@ -1077,7 +1051,8 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
         parameters = {}
 
     enable_pltr_fitness = False
-    consider_remaining_in_fitness = False
+    # changed default to uniform behavior with token-based replay fitness
+    consider_remaining_in_fitness = True
     try_to_reach_final_marking_through_hidden = True
     stop_immediately_unfit = False
     walk_through_hidden_trans = True

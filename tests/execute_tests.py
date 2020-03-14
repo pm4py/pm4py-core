@@ -9,14 +9,14 @@ if __name__ == "__main__":
     sys.path.insert(0, parent_dir)
     from tests.role_detection import RoleDetectionTest
     from tests.passed_time import PassedTimeTest
-    from tests.ltl_checking_logs import LtlCheckingLogTest
-    from tests.ltl_checking_pandas import LtlCheckingPandasTest
     from tests.imp_everything import Pm4pyImportPackageTest
     from tests.xes_impexp_test import XesImportExportTest
     from tests.csv_impexp_test import CsvImportExportTest
+    from tests.other_tests import OtherPartsTests
     from tests.alpha_test import AlphaMinerTest
-    from tests.imdf_test import InductiveMinerDFTest
-    from tests.imdf_tree_test import InductiveMinerDFTreeTest
+    from tests.inductive_test import InductiveMinerTest
+    from tests.inductive_tree_test import InductiveMinerTreeTest
+    from tests.inductive_other_tests import InductiveMinerOtherTests
     from tests.alignment_test import AlignmentTest
     from tests.sna_test import SnaTests
     from tests.petri_imp_exp_test import PetriImportExportTest
@@ -30,24 +30,24 @@ if __name__ == "__main__":
     from tests.etc_tests import ETCTest
     from tests.evaluation_tests import ProcessModelEvaluationTests
     from tests.dec_tree_test import DecisionTreeTest
-    from tests.filtering_test import LogFilteringTest
-    from tests.dataframe_prefilter import DataframePrefilteringTest
     from tests.serialization_test import SerializationTest
     from tests.graphs_forming import GraphsForming
     from tests.heuminer_test import HeuMinerTest
     from tests.matrix_rep_test import MatrixRepTest
     from tests.main_fac_test import MainFactoriesTest
+    from tests.filtering_log_test import LogFilteringTest
+    from tests.filtering_pandas_test import DataframePrefilteringTest
 
     test_roles = RoleDetectionTest()
     test_pttime = PassedTimeTest()
-    test_ltl_logs = LtlCheckingLogTest()
-    test_ltl_pandas = LtlCheckingPandasTest()
     test1_object = Pm4pyImportPackageTest()
     test2_object = XesImportExportTest()
     test3_object = CsvImportExportTest()
+    other_tests = OtherPartsTests()
     test4_object = AlphaMinerTest()
-    test5_object = InductiveMinerDFTest()
-    test55_object = InductiveMinerDFTreeTest()
+    test5_object = InductiveMinerTest()
+    test55_object = InductiveMinerTreeTest()
+    test56_object = InductiveMinerOtherTests()
     test6_object = AlignmentTest()
     test7_object = PetriImportExportTest()
     test8_object = AlphaMinerDocumentationTest()
@@ -61,12 +61,12 @@ if __name__ == "__main__":
     test20_object = ProcessModelEvaluationTests()
     test21_object = DecisionTreeTest()
     sna_tests = SnaTests()
-    filtering_test = LogFilteringTest()
-    prefiltering_test = DataframePrefilteringTest()
     serialization_test = SerializationTest()
     graphforming_test = GraphsForming()
     heuminer_test = HeuMinerTest()
     matrixrep_test = MatrixRepTest()
     main_factories_test = MainFactoriesTest()
+    test_filtering_log = LogFilteringTest()
+    filtering_test_dataframe = DataframePrefilteringTest()
 
     unittest.main()

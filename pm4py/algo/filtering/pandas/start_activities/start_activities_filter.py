@@ -1,8 +1,9 @@
 from pm4py.algo.filtering.common import filtering_constants
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
-from pm4py.algo.filtering.common.start_activities import start_activities_common
-from pm4py.objects.log.util import xes
-from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
+from pm4py.util.constants import CASE_CONCEPT_NAME
+from pm4py.statistics.start_activities.common import get as start_activities_common
+from pm4py.statistics.start_activities.pandas.get import get_start_activities
+from pm4py.util import xes_constants as xes
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import GROUPED_DATAFRAME
@@ -82,39 +83,7 @@ def apply_auto_filter(df, parameters=None):
                                               activity_key=activity_key, grouped_df=grouped_df)
 
 
-def get_start_activities(df, parameters=None):
-    """
-    Get start activities count
-
-    Parameters
-    -----------
-    df
-        Pandas dataframe
-    parameters
-        Parameters of the algorithm, including:
-            case_id_glue -> Case ID column in the dataframe
-            activity_key -> Column that represents the activity
-
-    Returns
-    -----------
-    startact_dict
-        Dictionary of start activities along with their count
-    """
-    if parameters is None:
-        parameters = {}
-
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    grouped_df = parameters[GROUPED_DATAFRAME] if GROUPED_DATAFRAME in parameters else df.groupby(case_id_glue)
-
-    first_eve_df = grouped_df.first()
-    startact_dict = dict(first_eve_df[activity_key].value_counts())
-    return startact_dict
-
-
-def filter_df_on_start_activities(df, values, case_id_glue=filtering_constants.CASE_CONCEPT_NAME,
+def filter_df_on_start_activities(df, values, case_id_glue=CASE_CONCEPT_NAME,
                                   activity_key=xes.DEFAULT_NAME_KEY, grouped_df=None, positive=True):
     """
     Filter dataframe on start activities

@@ -1,6 +1,7 @@
 from pm4py.objects.dfg.utils.dfg_utils import get_max_activity_count, get_activities_from_dfg
-from pm4py.algo.filtering.common import filtering_constants
 from pm4py.util import constants
+
+DEFAULT_NOISE_THRESH_DF = 0.16
 
 
 def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold, parameters=None):
@@ -85,7 +86,7 @@ def apply(dfg, parameters=None):
     if parameters is None:
         parameters = {}
     noise_threshold = parameters[
-        "noiseThreshold"] if "noiseThreshold" in parameters else filtering_constants.DEFAULT_NOISE_THRESH_DF
+        "noiseThreshold"] if "noiseThreshold" in parameters else DEFAULT_NOISE_THRESH_DF
 
     activities = get_activities_from_dfg(dfg)
 

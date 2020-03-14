@@ -1,6 +1,7 @@
 import inspect
 import os
 import sys
+import traceback
 
 if __name__ == "__main__":
     currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -9,10 +10,9 @@ if __name__ == "__main__":
     sys.path.insert(0, parentdir)
     sys.path.insert(0, parentdir2)
     import time
-    # import pm4pyigraph
-    # import pm4pycvxopt
     from pm4py.objects.log.importer.xes import factory as xes_factory
     from pm4py.algo.discovery.inductive import factory as inductive
+    from pm4py.algo.conformance.alignments import factory as align_factory
     from pm4py.algo.discovery.alpha import factory as alpha
     from pm4py.algo.discovery.heuristics import factory as heuristics_miner
     from pm4py.objects.process_tree import semantics as pt_semantics
@@ -44,6 +44,7 @@ if __name__ == "__main__":
 
 
     ENABLE_ALIGNMENTS = True
+    align_factory.DEFAULT_VARIANT = align_factory.VERSION_DIJKSTRA_NO_HEURISTICS
     logFolder = os.path.join("..", "compressed_input_data")
     pnmlFolder = "pnml_folder"
     pngFolder = "png_folder"
@@ -177,8 +178,10 @@ if __name__ == "__main__":
             pnml_exporter.export_net(inductive_model, inductive_im,
                                      os.path.join(pnmlFolder, logNamePrefix + "_inductive.pnml"),
                                      final_marking=inductive_fm)
+            """
             generated_log = pt_semantics.generate_log(tree)
             print("first trace of log", [x["concept:name"] for x in generated_log[0]])
+            """
             t2 = time.time()
             print("time interlapsed for calculating Inductive Model", (t2 - t1))
             print("inductive is_sound_wfnet",
@@ -187,15 +190,29 @@ if __name__ == "__main__":
             parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
                           pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key, "format": "png"}
 
-            alpha_vis = petri_vis_factory.apply(alpha_model, alpha_initial_marking, alpha_final_marking, log=log,
-                                                parameters=parameters, variant="frequency")
-            vis_save(alpha_vis, os.path.join(pngFolder, logNamePrefix + "_alpha.png"))
-            heuristics_vis = petri_vis_factory.apply(heu_model, heu_initial_marking, heu_final_marking,
-                                                     log=log, parameters=parameters, variant="frequency")
-            vis_save(heuristics_vis, os.path.join(pngFolder, logNamePrefix + "_heuristics.png"))
-            inductive_vis = petri_vis_factory.apply(inductive_model, inductive_im, inductive_fm,
-                                                    log=log, parameters=parameters, variant="frequency")
-            vis_save(inductive_vis, os.path.join(pngFolder, logNamePrefix + "_inductive.png"))
+            try:
+                alpha_vis = petri_vis_factory.apply(alpha_model, alpha_initial_marking, alpha_final_marking, log=log,
+                                                    parameters=parameters, variant="frequency")
+                vis_save(alpha_vis, os.path.join(pngFolder, logNamePrefix + "_alpha.png"))
+            except:
+                print("alpha visualization for "+logName+" failed!")
+                traceback.print_exc()
+            
+            try:
+                heuristics_vis = petri_vis_factory.apply(heu_model, heu_initial_marking, heu_final_marking,
+                                                         log=log, parameters=parameters, variant="frequency")
+                vis_save(heuristics_vis, os.path.join(pngFolder, logNamePrefix + "_heuristics.png"))
+            except:
+                print("heuristics visualization for " + logName + " failed!")
+                traceback.print_exc()
+
+            try:
+                inductive_vis = petri_vis_factory.apply(inductive_model, inductive_im, inductive_fm,
+                                                        log=log, parameters=parameters, variant="frequency")
+                vis_save(inductive_vis, os.path.join(pngFolder, logNamePrefix + "_inductive.png"))
+            except:
+                print("inductive visualization for " + logName + " failed!")
+                traceback.print_exc()
 
             t1 = time.time()
             fitness_token_alpha[logName] = \
