@@ -3,7 +3,7 @@ from pm4py.objects import log as log_lib
 from pm4py.evaluation.precision import utils as precision_utils
 from pm4py.objects import petri
 from pm4py.objects.petri import align_utils as utils
-from pm4py.algo.filtering.log.start_activities import start_activities_filter
+from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
 
 PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -86,7 +86,7 @@ def apply(log, net, marking, final_marking, parameters=None):
         print("overall escaping edges", sum_ee)
 
     # fix: also the empty prefix should be counted!
-    start_activities = set(start_activities_filter.get_start_activities(log, parameters=parameters))
+    start_activities = set(get_start_activities(log, parameters=parameters))
     trans_en_ini_marking = set([x.label for x in get_visible_transitions_eventually_enabled_by_marking(net, marking)])
     diff = trans_en_ini_marking.difference(start_activities)
     sum_at += len(log) * len(trans_en_ini_marking)

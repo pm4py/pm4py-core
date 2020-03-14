@@ -1,13 +1,12 @@
 import pandas as pd
 
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
-from pm4py.objects.log.util import xes
-from pm4py.objects.log.util.xes import DEFAULT_TIMESTAMP_KEY
+from pm4py.util import xes_constants as xes
+from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.statistics.traces.common import case_duration as case_duration_commons
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
-from pm4py.util.constants import GROUPED_DATAFRAME
+from pm4py.util.constants import CASE_CONCEPT_NAME
 
 import pandas as pd
 

@@ -6,12 +6,10 @@ numpy
 ciso8601; python_version < '3.7'
 lxml
 graphviz
-pyarrow
 pandas
 scipy
 pydotplus
 scikit-learn
 pulp
 pytz
-ortools==7.4.7247
 intervaltree

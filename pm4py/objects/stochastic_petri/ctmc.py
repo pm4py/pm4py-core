@@ -4,17 +4,10 @@ import numpy as np
 from numpy.linalg import svd
 from scipy.linalg import expm
 
-from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.algo.discovery.simple.model.log import factory as simple_factory
-from pm4py.algo.filtering.common.filtering_constants import CASE_CONCEPT_NAME
-from pm4py.objects.conversion.log import factory as log_conv_factory
-from pm4py.objects.log.util import xes
 from pm4py.objects.petri.reachability_graph import construct_reachability_graph
-from pm4py.objects.stochastic_petri import map as smap_builder
 from pm4py.objects.stochastic_petri import tangible_reachability
-from pm4py.util import constants
-from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_decorations_from_dfg_spaths_acticount
-from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_shortest_paths
+from pm4py.objects.conversion.dfg import factory as dfg_conv_factory
+from pm4py.objects.random_variables import exponential, random_variable
 
 
 def get_corr_hex(num):
@@ -76,86 +69,93 @@ def get_color_from_probabilities(prob_dictionary):
     return color_dictionary
 
 
-def transient_analysis_from_dataframe(df, delay, parameters=None):
+def get_tangible_reachability_and_q_matrix_from_dfg_performance(dfg_performance, invisible_firing_rate=1000.0, parameters=None):
     """
-    Gets the transient analysis from a dataframe and a delay
+    Get the tangible reachability graph and the Q matrix from the performance DFG
 
     Parameters
     -------------
-    df
-        Pandas dataframe
-    delay
-        Time delay
+    dfg_performance
+        Performance DFG
+    invisible_firing_rate
+        Firing rate for invisible transitions
     parameters
-        Parameters of the algorithm
+        Parameters
 
     Returns
     -------------
-    transient_result
-        Transient analysis result
+    reachab_graph
+        Reachability graph
+    tangible_reach_graph
+        Tangible reachability graph
+    stochastic_info
+        Stochastic information
+    q_matrix
+        Q-matrix from the tangible reachability graph
     """
     if parameters is None:
         parameters = {}
-
-    activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
-
-    log = log_conv_factory.apply(df, variant=log_conv_factory.DF_TO_EVENT_LOG_1V, parameters=parameters)
-
-    # gets the simple Petri net through simple miner
-    new_parameters = {}
-    new_parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = timestamp_key
-    new_parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes.DEFAULT_NAME_KEY
-
-    net, im, fm = simple_factory.apply(log, parameters=new_parameters, classic_output=True)
-
-    activities_count = dict(df.groupby(activity_key).size())
-    dfg_performance = df_statistics.get_dfg_graph(df, measure="performance", perf_aggregation_key="mean",
-                                                  case_id_glue=case_id_glue, activity_key=activity_key,
-                                                  timestamp_key=timestamp_key)
-
-    spaths = get_shortest_paths(net)
-    aggregated_statistics = get_decorations_from_dfg_spaths_acticount(net, dfg_performance,
-                                                                      spaths,
-                                                                      activities_count,
-                                                                      variant="performance")
-
-    # gets the stochastic map out of the dataframe and the Petri net
-    s_map = smap_builder.get_map_exponential_from_aggstatistics(aggregated_statistics, parameters=parameters)
-
-    return transient_analysis_from_petri_net_and_smap(net, im, s_map, delay, parameters=parameters)
+    net, im, fm = dfg_conv_factory.apply(dfg_performance)
+    stochastic_map = {}
+    for tr in net.transitions:
+        if tr.label is None:
+            rv = random_variable.RandomVariable()
+            exp = exponential.Exponential()
+            exp.scale = 1/invisible_firing_rate
+            rv.random_variable = exp
+            stochastic_map[tr] = rv
+        else:
+            input_arc = list(tr.in_arcs)[0]
+            output_arc = list(tr.out_arcs)[0]
+            rv = random_variable.RandomVariable()
+            el = (input_arc.source.name, output_arc.target.name)
+            scale = 0
+            if el in dfg_performance:
+                scale = dfg_performance[el]
+            if scale == 0:
+                scale = 1/invisible_firing_rate
+            exp = exponential.Exponential()
+            exp.scale = scale
+            rv.random_variable = exp
+            stochastic_map[tr] = rv
+    tang_reach_graph = construct_reachability_graph(net, im, use_trans_name=True)
+    q_matrix = get_q_matrix_from_tangible_exponential(tang_reach_graph, stochastic_map)
+    return tang_reach_graph, tang_reach_graph, stochastic_map, q_matrix
 
 
-def transient_analysis_from_log(log, delay, parameters=None):
+def get_tangible_reachability_and_q_matrix_from_log_net(log, net, im, fm, parameters=None):
     """
-    Gets the transient analysis from a log and a delay
+    Gets the tangible reachability graph from a log and an accepting Petri net
 
     Parameters
-    -------------
+    ---------------
     log
         Event log
-    delay
-        Time delay
-    parameters
-        Parameters of the algorithm
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
 
     Returns
-    -------------
-    transient_result
-        Transient analysis result
+    ------------
+    reachab_graph
+        Reachability graph
+    tangible_reach_graph
+        Tangible reachability graph
+    stochastic_info
+        Stochastic information
+    q_matrix
+        Q-matrix from the tangible reachability graph
     """
     if parameters is None:
         parameters = {}
-    # gets the simple Petri net through simple miner
-    net, im, fm = simple_factory.apply(log, parameters=parameters, classic_output=True)
-    # gets the stochastic map out of the log and the Petri net
-    s_map = smap_builder.get_map_from_log_and_net(log, net, im, fm, parameters=parameters,
-                                                  force_distribution="EXPONENTIAL")
-    return transient_analysis_from_petri_net_and_smap(net, im, s_map, delay, parameters=parameters)
+    reachability_graph, tangible_reachability_graph, stochastic_info = tangible_reachability.get_tangible_reachability_from_log_net_im_fm(
+        log, net, im, fm, parameters=parameters)
+    # gets the Q matrix assuming exponential distributions
+    q_matrix = get_q_matrix_from_tangible_exponential(tangible_reachability_graph, stochastic_info)
+    return reachability_graph, tangible_reachability_graph, stochastic_info, q_matrix
 
 
 def transient_analysis_from_petri_net_and_smap(net, im, s_map, delay, parameters=None):
@@ -349,35 +349,24 @@ def nullspace(a_matrix, atol=1e-13, rtol=0):
     return ns
 
 
-def steadystate_analysis_from_tangible_q_matrix(tangible_reach_graph, q_matrix, tol=1e-14):
+def perform_steadystate(q_matrix, tangible_reach_graph):
     """
-    Do steadystate analysis from tangible reachability graph and Q matrix
-
-    Parameters
-    ------------
-    tangible_reach_graph
-        Tangible reachability graph
-    q_matrix
-        Q matrix
-    tol
-        Tolerance in order to admit states in the steady state
-
-    Returns
-    ------------
-    steadystate
-        Dictionary of states along with their probability in the long term
+    Performs steady state analysis given the
+    :param q_matrix:
+    :return:
     """
+    transient_result = Counter()
+    states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)
     q_matrix_trans = np.matrix.transpose(q_matrix)
     if nullspace(q_matrix_trans).shape[1] > 0:
-        kernel = np.matrix.transpose(nullspace(q_matrix_trans))[0]
-        # normalize to 1 the vector of probabilities
-        if np.sum(kernel) < 0:
-            kernel = -kernel
-        kernel = kernel / np.sum(kernel)
-        states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)
-        steadystate = {}
+        M = np.matrix.transpose(nullspace(q_matrix_trans))
+        vec = np.zeros(M.shape[1])
+        for i in range(M.shape[0]):
+            v = np.matmul(M[i], q_matrix_trans)
+            val = np.sum(v) / np.sum(M[i])
+            vec = vec + val * M[i]
+        vec = vec / np.sum(vec)
         for i in range(len(states)):
-            if kernel[i] > tol:
-                steadystate[states[i]] = kernel[i]
-        return steadystate
-    return None
+            transient_result[states[i]] = vec[i]
+        return vec
+    return transient_result
