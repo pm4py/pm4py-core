@@ -24,6 +24,11 @@ if __name__ == "__main__":
     from examples import graphs_visualization
     from examples import big_dataframe_filtering
     from examples import big_dataframe_management
+    from examples import backwards_token_replay
+    from examples import transient_dfg
+    from examples import transient_petri_net
+    from examples import montecarlo_dfg
+    from examples import montecarlo_petri_net
 
     print("\n\nlog_skeleton")
     log_skeleton.execute_script()
@@ -63,3 +68,13 @@ if __name__ == "__main__":
     big_dataframe_management.execute_script()
     print("\n\nbig_dataframe_filtering")
     big_dataframe_filtering.execute_script()
+    print("\n\nbackwards_token_replay")
+    backwards_token_replay.execute_script()
+    print("\n\ntransient_dfg")
+    transient_dfg.execute_script()
+    print("\n\ntransient_petri_net")
+    transient_petri_net.execute_script()
+    print("\n\nmontecarlo_dfg")
+    montecarlo_dfg.execute_script()
+    print("\n\nmontecarlo_petri_net")
+    montecarlo_petri_net.execute_script()
