@@ -86,9 +86,14 @@ def reduce_tau_leafs(tree):
                     rem.parent = None
                     tree.children.remove(rem)
         else:
-            if tree.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.PARALLEL, pt_op.Operator.XOR,
-                                 pt_op.Operator.OR]:
+            # at least one non-tau child
+            if tree.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.PARALLEL]:
                 for rem in silents:
+                    rem.parent = None
+                    tree.children.remove(rem)
+            elif tree.operator in [pt_op.Operator.XOR, pt_op.Operator.OR]:
+                while len(silents) > 1:
+                    rem = silents.pop()
                     rem.parent = None
                     tree.children.remove(rem)
     return tree
