@@ -69,34 +69,59 @@ def reduce_tau_leafs(tree):
     if len(tree.children) > 0:
         for c in tree.children:
             reduce_tau_leafs(c)
-        silents = set()
+        silents = 0
         for c in tree.children:
-            if (len(c.children) == 0 or c.children is None) and c.label is None and c.operator is None:
-                silents.add(c)
-        if len(silents) == len(tree.children):
-            # all children are tau, keep one (might be folded later)
-            if tree.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.PARALLEL, pt_op.Operator.XOR,
-                                 pt_op.Operator.OR]:
-                while len(silents) > 1:
-                    rem = silents.pop()
-                    rem.parent = None
-                    tree.children.remove(rem)
-            elif tree.operator == pt_op.Operator.LOOP and len(tree.children) == 2:
-                for rem in silents:
-                    rem.parent = None
-                    tree.children.remove(rem)
-        else:
-            # at least one non-tau child
-            if tree.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.PARALLEL]:
-                for rem in silents:
-                    rem.parent = None
-                    tree.children.remove(rem)
-            elif tree.operator in [pt_op.Operator.XOR, pt_op.Operator.OR]:
-                while len(silents) > 1:
-                    rem = silents.pop()
-                    rem.parent = None
-                    tree.children.remove(rem)
+            if is_tau_leaf(c):
+                silents += 1
+        if silents > 0:
+            if len(tree.children) == silents:
+                # all children are tau, keep one (might be folded later)
+                if tree.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.PARALLEL, pt_op.Operator.XOR,
+                                     pt_op.Operator.OR]:
+                    # remove all but one, later reductions might need the fact that skipping is possible
+                    while silents > 1:
+                        cc = tree.children
+                        for c in cc:
+                            if is_tau_leaf(c):
+                                c.parent = None
+                                tree.children.remove(c)
+                                silents -= 1
+                                break
+                elif tree.operator == pt_op.Operator.LOOP and len(tree.children) == 2:
+                    # remove all loop is redundant
+                    cc = tree.children
+                    for c in cc:
+                        if is_tau_leaf(c):
+                            c.parent = None
+                            tree.children.remove(c)
+            else:
+                # at least one non-tau child
+                if tree.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.PARALLEL]:
+                    # remove all, they are redundant for these operators
+                    cc = tree.children
+                    for c in cc:
+                        if is_tau_leaf(c):
+                            c.parent = None
+                            tree.children.remove(c)
+                elif tree.operator in [pt_op.Operator.XOR, pt_op.Operator.OR]:
+                    # keep one, we should be able to skip
+                    while silents > 1:
+                        cc = tree.children
+                        for c in cc:
+                            if is_tau_leaf(c):
+                                c.parent = None
+                                tree.children.remove(c)
+                                silents -= 1
+                                break
     return tree
+
+
+def is_tau_leaf(tree):
+    return is_leaf(tree) and tree.label is None
+
+
+def is_leaf(tree):
+    return (tree.children is None or len(tree.children) == 0) and tree.operator is None
 
 
 def project_execution_sequence_to_leafs(execution_sequence):
