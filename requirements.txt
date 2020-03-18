@@ -6,13 +6,11 @@ numpy
 ciso8601; python_version < '3.7'
 lxml
 graphviz
-pyarrow<=0.15.1; python_version < '3.8'
 pandas
 scipy
 pydotplus
 scikit-learn
 pulp
 pytz
-ortools; python_version < '3.9'
 intervaltree
 pm4pycvxopt; python_version < '3.8'
