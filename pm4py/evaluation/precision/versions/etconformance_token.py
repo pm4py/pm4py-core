@@ -4,7 +4,7 @@ from pm4py.objects import log as log_lib
 from pm4py.evaluation.precision import utils as precision_utils
 from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
-
+from pm4py.util.constants import PARAMETER_TOKEN_REPLAY_VARIANT, DEFAULT_TOKEN_REPLAY_VARIANT
 
 """
 Implementation of the approach described in paper
@@ -52,6 +52,8 @@ def apply(log, net, marking, final_marking, parameters=None):
         parameters = {}
 
     cleaning_token_flood = parameters["cleaning_token_flood"] if "cleaning_token_flood" in parameters else False
+    token_replay_variant = parameters[
+        PARAMETER_TOKEN_REPLAY_VARIANT] if PARAMETER_TOKEN_REPLAY_VARIANT in parameters else DEFAULT_TOKEN_REPLAY_VARIANT
 
     activity_key = parameters[
         PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
@@ -73,7 +75,8 @@ def apply(log, net, marking, final_marking, parameters=None):
     prefixes_keys = list(prefixes.keys())
     fake_log = precision_utils.form_fake_log(prefixes_keys, activity_key=activity_key)
 
-    aligned_traces = token_replay.apply(fake_log, net, marking, final_marking, parameters=parameters_tr)
+    aligned_traces = token_replay.apply(fake_log, net, marking, final_marking, variant=token_replay_variant,
+                                        parameters=parameters_tr)
 
     # fix: also the empty prefix should be counted!
     start_activities = set(get_start_activities(log, parameters=parameters))
