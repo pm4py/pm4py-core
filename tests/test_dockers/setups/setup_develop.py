@@ -54,7 +54,8 @@ setup(
               'pm4py.algo.conformance.log_skeleton.versions', 'pm4py.algo.enhancement', 'pm4py.algo.enhancement.sna',
               'pm4py.algo.enhancement.sna.versions', 'pm4py.algo.enhancement.sna.versions.log',
               'pm4py.algo.enhancement.sna.versions.pandas', 'pm4py.algo.enhancement.roles',
-              'pm4py.algo.enhancement.roles.common', 'pm4py.algo.enhancement.roles.versions', 'pm4py.util',
+              'pm4py.algo.enhancement.roles.common', 'pm4py.algo.enhancement.roles.versions',
+              'pm4py.algo.enhancement.comparison', 'pm4py.algo.enhancement.comparison.petrinet', 'pm4py.util',
               'pm4py.util.lp', 'pm4py.util.lp.util', 'pm4py.util.lp.versions', 'pm4py.util.dt_parsing',
               'pm4py.util.dt_parsing.versions', 'pm4py.objects', 'pm4py.objects.dfg', 'pm4py.objects.dfg.utils',
               'pm4py.objects.dfg.filtering', 'pm4py.objects.dfg.retrieval', 'pm4py.objects.log',
@@ -115,14 +116,11 @@ setup(
         'graphviz',
         'pandas',
         'scipy',
-        "pyarrow<=0.15.1; python_version < '3.8'",
         'scikit-learn',
         'pydotplus',
         'pulp',
         'pytz',
-        "ortools; python_version < '3.9'",
-        'intervaltree',
-        "pm4pycvxopt; python_version < '3.8'"
+        'intervaltree'
     ],
     project_urls={
         'Documentation': 'http://www.pm4py.org',
