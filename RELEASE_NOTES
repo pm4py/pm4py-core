@@ -140,3 +140,7 @@ This is a minor release, consisting of the following changes:
     - Completely revise the process tree fold and tau reduce functions
 10. commit c3f66b8cb8667c2f204a1da899a216656386c2fa
     - ignore comments in .pnml files
+
+
+===== PM4PY 1.2.13 =====
+This is a minor release, consisting of the following changes:
