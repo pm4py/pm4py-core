@@ -2,6 +2,8 @@ from scipy.cluster.hierarchy import to_tree, linkage
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.algo.clustering.hierarchical_attribute_based.merge_log import merge_log
 from pm4py.algo.clustering.hierarchical_attribute_based.util import evaluation
+from pm4py.objects.conversion.log import factory as log_conv_factory
+
 
 VARIANT_DMM_LEVEN = "variant_DMM_leven"
 VARIANT_AVG_LEVEN = "variant_avg_leven"
@@ -62,6 +64,8 @@ def apply(log, trace_attribute, variant=VARIANT_DMM_LEVEN, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    log = log_conv_factory.apply(log, parameters=parameters)
 
     percent = 1
     alpha = 0.5
