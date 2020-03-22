@@ -1,11 +1,8 @@
 import pandas as pd
 import numpy as np
-import time
 from pm4py.algo.clustering.hierarchical_attribute_based.variant import act_dist_calc, suc_dist_calc
 from pm4py.algo.clustering.hierarchical_attribute_based.util import filter_subsets
-from pm4py.util import constants
 from scipy.spatial.distance import pdist
-from pm4py.objects.log.importer.xes import factory as xes_importer
 
 
 def inner_prod_calc(df):
@@ -48,8 +45,6 @@ def dist_calc(var_list_1, var_list_2, log1, log2, freq_thres, num, alpha, parame
         var_count_max = filter_subsets.sublog2df(log2, freq_thres, num)['count']
         var_count_min = filter_subsets.sublog2df(log1, freq_thres, num)['count']
 
-    print("list1:", len(max_var))
-    print("list2:", len(min_var))
     # act
     max_per_var_act = np.zeros(max_len)
     max_freq_act = np.zeros(max_len)
@@ -74,14 +69,11 @@ def dist_calc(var_list_1, var_list_2, log1, log2, freq_thres, num, alpha, parame
 
                 df_act = pd.merge(df_1_act, df_2_act, how='outer', on='var').fillna(0)
                 df_suc = pd.merge(df_1_suc, df_2_suc, how='outer', on='direct_suc').fillna(0)
-                # cosine similarity is used to calculate trace similarity
-                # pist defintion is distance, so it is subtracted by 1 already
+
                 dist_vec_act[j] = (pdist(np.array([df_act['freq_x'].values, df_act['freq_y'].values]), 'cosine')[0])
                 dist_vec_suc[j] = (pdist(np.array([df_suc['freq_x'].values, df_suc['freq_y'].values]), 'cosine')[0])
 
                 if (single):
-                    #dist_vec_act[j] = innerprod_act / (sqrt_1_act * sqrt_2_act)
-                    #dist_vec_suc[j] = innerprod_suc / (sqrt_1_suc * sqrt_2_suc)
                     if (abs(dist_vec_act[j]) <= 1e-8) and (abs(dist_vec_suc[j]) <= 1e-6):  # ensure both are 1
                         max_freq_act[i] = var_count_max.iloc[i] * var_count_min.iloc[j]
                         max_freq_suc[i] = max_freq_act[i]
@@ -105,20 +97,11 @@ def dist_calc(var_list_1, var_list_2, log1, log2, freq_thres, num, alpha, parame
         dist_act = np.sum(max_per_var_act) / np.sum(max_freq_act)
         dist_suc = np.sum(max_per_var_suc) / np.sum(max_freq_suc)
         dist = dist_act * alpha + dist_suc * (1 - alpha)
-        # sim = (np.sum(max_per_var_act) * alpha) / np.sum(max_freq_act) + (
-        #           np.sum(max_per_var_suc) * (1 - alpha)) / np.sum(max_freq_suc)
     else:
         vmax_vec = (var_count_max.values).reshape(-1, 1)
         vmin_vec = (var_count_min.values).reshape(1, -1)
         vec_sum = np.sum(np.dot(vmax_vec, vmin_vec))
-        # dist = np.sum(dist_matrix) / vec_sum
-        #dist_act = np.sum(col_sum_act) / vec_sum
-        #dist_suc = np.sum(col_sum_suc) / vec_sum
-        #sim = dist_act * alpha + dist_suc * (1 - alpha)
         dist = (np.sum(col_sum_act) * alpha + np.sum(col_sum_suc) * (1 - alpha)) / vec_sum
 
-    # print(dist_matrix)
-    # print(max_per_var)
-    # print(max_freq)
 
-    return  dist
+    return dist
