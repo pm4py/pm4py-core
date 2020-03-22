@@ -17,7 +17,7 @@ def log2sublog(log, str):
     return tracefilter_log
 
 
-def slice_dist_suc(log_1,log_2,unit):
+def slice_dist_suc(log_1, log_2, unit):
     (log1_list, freq1_list) = filter_subsets.logslice_percent(log_1, unit)
     (log2_list, freq2_list) = filter_subsets.logslice_percent(log_2, unit)
 
@@ -37,14 +37,11 @@ def slice_dist_suc(log_1,log_2,unit):
         var_count_max = freq2_list
         var_count_min = freq1_list
 
-    #print((var_count_max))
-    #print((var_count_min))
     dist_matrix = np.zeros((max_len, min_len))
     max_per_var = np.zeros(max_len)
     max_freq = np.zeros(max_len)
     min_freq = np.zeros(min_len)
     min_per_var = np.zeros(min_len)
-    col_sum = np.zeros(max_len)
     index_rec = set(list(range(min_len)))
 
     if log1_list == log2_list:
@@ -61,39 +58,27 @@ def slice_dist_suc(log_1,log_2,unit):
                 df_dfg = pd.merge(df1_dfg, df2_dfg, how='outer', on='var').fillna(0)
                 dist_vec[j] = pdist(np.array([df_dfg['freq_x'].values, df_dfg['freq_y'].values]), 'cosine')[0]
                 dist_matrix[i][j] = dist_vec[j]
-                # print(dist_vec[j])
                 if j == (min_len - 1):
                     max_loc_col = np.argmin(dist_vec)
-                    # print([i,max_loc_col])
                     if abs(dist_vec[max_loc_col]) <= 1e-8:
-                        # print("skip:", [i, max_loc_col])
                         index_rec.discard(max_loc_col)
                         max_freq[i] = var_count_max[i] * var_count_min[max_loc_col] * 2
                         max_per_var[i] = dist_vec[max_loc_col] * max_freq[i] * 2
                     else:
                         max_freq[i] = var_count_max[i] * var_count_min[max_loc_col]
-                        #print("max", [i, max_loc_col])
                         max_per_var[i] = dist_vec[max_loc_col] * max_freq[i]
-                        #print(dist_vec[max_loc_col])
 
         if (len(index_rec) != 0):
-            # print(index_rec)
             for i in list(index_rec):
                 min_loc_row = np.argmin(dist_matrix[:, i])
                 min_freq[i] = var_count_max[min_loc_row] * var_count_min[i]
                 min_per_var[i] = dist_matrix[min_loc_row, i] * min_freq[i]
-        # print(max_freq, max_per_var)
-        # print(min_freq,min_per_var)
-
         dist = (np.sum(max_per_var) + np.sum(min_per_var)) / (np.sum(max_freq) + np.sum(min_freq))
 
-    #print(dist_matrix)
     return dist
 
 
-def slice_dist_act(log_1,log_2,unit, parameters=None):
-
-
+def slice_dist_act(log_1, log_2, unit, parameters=None):
     (log1_list, freq1_list) = filter_subsets.logslice_percent(log_1, unit)
     (log2_list, freq2_list) = filter_subsets.logslice_percent(log_2, unit)
 
@@ -113,14 +98,11 @@ def slice_dist_act(log_1,log_2,unit, parameters=None):
         var_count_max = freq2_list
         var_count_min = freq1_list
 
-    #print((var_count_max))
-    #print((var_count_min))
     dist_matrix = np.zeros((max_len, min_len))
     max_per_var = np.zeros(max_len)
     max_freq = np.zeros(max_len)
     min_freq = np.zeros(min_len)
     min_per_var = np.zeros(min_len)
-    col_sum = np.zeros(max_len)
     index_rec = set(list(range(min_len)))
 
     if log1_list == log2_list:
@@ -137,31 +119,22 @@ def slice_dist_act(log_1,log_2,unit, parameters=None):
                 df_act = pd.merge(df1_act, df2_act, how='outer', on='var').fillna(0)
                 dist_vec[j] = pdist(np.array([df_act['freq_x'].values, df_act['freq_y'].values]), 'cosine')[0]
                 dist_matrix[i][j] = dist_vec[j]
-                # print(dist_vec[j])
                 if j == (min_len - 1):
                     max_loc_col = np.argmin(dist_vec)
-                    # print([i,max_loc_col])
                     if abs(dist_vec[max_loc_col]) <= 1e-8:
-                        # print("skip:", [i, max_loc_col])
                         index_rec.discard(max_loc_col)
                         max_freq[i] = var_count_max[i] * var_count_min[max_loc_col] * 2
                         max_per_var[i] = dist_vec[max_loc_col] * max_freq[i] * 2
                     else:
                         max_freq[i] = var_count_max[i] * var_count_min[max_loc_col]
-                        #print("max", [i, max_loc_col])
                         max_per_var[i] = dist_vec[max_loc_col] * max_freq[i]
-                        #print(dist_vec[max_loc_col])
 
         if (len(index_rec) != 0):
-            # print(index_rec)
             for i in list(index_rec):
                 min_loc_row = np.argmin(dist_matrix[:, i])
                 min_freq[i] = var_count_max[min_loc_row] * var_count_min[i]
                 min_per_var[i] = dist_matrix[min_loc_row, i] * min_freq[i]
-        # print(max_freq, max_per_var)
-        # print(min_freq,min_per_var)
 
         dist = (np.sum(max_per_var) + np.sum(min_per_var)) / (np.sum(max_freq) + np.sum(min_freq))
 
-    #print(dist_matrix)
     return dist

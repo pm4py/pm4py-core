@@ -9,7 +9,6 @@ VARIANT_DMM_VEC = "variant_DMM_vec"
 VARIANT_AVG_VEC = "variant_avg_vec"
 DFG = 'dfg'
 
-
 VERSION_METHODS = {VARIANT_DMM_LEVEN: evaluation.eval_DMM_leven, VARIANT_AVG_LEVEN: evaluation.eval_avg_leven,
                    VARIANT_DMM_VEC: evaluation.eval_DMM_variant, VARIANT_AVG_VEC: evaluation.eval_avg_variant,
                    DFG: evaluation.dfg_dis}
@@ -33,7 +32,34 @@ def bfs(tree):
     return output
 
 
-def apply(log, variant=VARIANT_DMM_LEVEN, parameters=None):
+def apply(log, trace_attribute, variant=VARIANT_DMM_LEVEN, parameters=None):
+    """
+    Apply the hierarchical clustering to a log starting from a trace attribute.
+
+    MSc Thesis is available at: https://www.pads.rwth-aachen.de/global/show_document.asp?id=aaaaaaaaalpxgft&download=1
+    Defense slides are available at: https://www.pads.rwth-aachen.de/global/show_document.asp?id=aaaaaaaaalpxgqx&download=1
+
+    Parameters
+    ----------------
+    log
+        Log
+    trace_attribute
+        Trace attribute to exploit for the clustering
+    variant
+        Variant of the algorithm to apply, possible values:
+        - variant_DMM_leven (that is the default)
+        - variant_avg_leven
+        - variant_DMM_vec
+        - variant_avg_vec
+        - dfg
+
+    Returns
+    -----------------
+    tree
+        Hierarchical cluster tree
+    leafname
+        Root node
+    """
     if parameters is None:
         parameters = {}
 
@@ -42,14 +68,14 @@ def apply(log, variant=VARIANT_DMM_LEVEN, parameters=None):
 
     list_of_vals = []
     list_log = []
-    list_of_vals_dict = attributes_filter.get_trace_attribute_values(log, 'responsible')
+    list_of_vals_dict = attributes_filter.get_trace_attribute_values(log, trace_attribute)
 
     list_of_vals_keys = list(list_of_vals_dict.keys())
     for i in range(len(list_of_vals_keys)):
         list_of_vals.append(list_of_vals_keys[i])
 
     for i in range(len(list_of_vals)):
-        logsample = merge_log.log2sublog(log, list_of_vals[i],'responsible')
+        logsample = merge_log.log2sublog(log, list_of_vals[i], trace_attribute)
         list_log.append(logsample)
 
     if variant in VERSION_METHODS:
@@ -60,25 +86,21 @@ def apply(log, variant=VARIANT_DMM_LEVEN, parameters=None):
     # Create dictionary for labeling nodes by their IDs
 
     id2name = dict(zip(range(len(list_of_vals)), list_of_vals))
-    # print("id",id2name)
 
     T = to_tree(Z, rd=False)
     d3Dendro = dict(children=[], name="Root1")
     merge_log.add_node(T, d3Dendro)
-    # print("d3", d3Dendro)
 
     leafname = merge_log.label_tree(d3Dendro["children"][0], id2name)
     d3Dendro = d3Dendro["children"][0]
     d3Dendro["name"] = 'root'
-    ret = d3Dendro
-    results = []
+    tree = d3Dendro
 
-    trilist = bfs(ret)
+    trilist = bfs(tree)
     trilist[0][0] = trilist[0][1] + '-' + trilist[0][2]
 
-    rootlist=[]
+    rootlist = []
     for ele in trilist:
         rootlist.append(ele[0])
 
-
-    return ret,leafname
+    return tree, leafname

@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 from collections import Counter
-from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.log.log import EventLog, Trace
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
@@ -78,7 +77,6 @@ def sublog2varlist(log, freq_thres, num):
 
     # union set ensure the ordered union will be satisfied
     filtered_var_list = filtered_var_list_1 + filtered_var_list_2
-    # print(filtered_var_list)
     str_var_list = []
     for str in filtered_var_list:
         str_var_list.extend([str.split(',')])
@@ -99,28 +97,22 @@ def sublog_percent(log, upper_percent, parameters=None):
         "lower_percent"] if "lower_percent" in parameters else 0
 
     variants_count = case_statistics.get_variant_statistics(log)
-    # print("variants_count", variants_count)
     variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
-    # print("variants_count",variants_count)
     df = pd.DataFrame.from_dict(variants_count)
-    # print("df",df)
     # calculate the cumunative sum
     csum = np.array(df['count']).cumsum()
     csum = csum / csum[-1]
-    # print(csum)
     num_list = csum[csum <= upper_percent]
     num_list_lower = csum[csum <= lower_percent]
-    #print(num_list)
-    #print(num_list_lower)
     # stop until the percent is satisfied
     df_w_count = df.iloc[len(num_list_lower):len(num_list), :]
-    #print(len(df_w_count))
     # get correspond var_list
     filtered_var_list = df_w_count['variant'].values.tolist()
     str_var_list = []
     for str in filtered_var_list:
         str_var_list.extend([str.split(',')])
     return df_w_count, str_var_list
+
 
 def sublog_percent2actlist(log, upper_percent, parameters=None):
     '''
@@ -141,20 +133,15 @@ def sublog_percent2actlist(log, upper_percent, parameters=None):
     # calculate the cumunative sum
     csum = np.array(df['count']).cumsum()
     csum = csum / csum[-1]
-    # print(csum)
     num_list = csum[csum <= upper_percent]
     num_list_lower = csum[csum <= lower_percent]
-    #print(num_list)
-    #print(num_list_lower)
     # stop until the percent is satisfied
     df_w_count = df.iloc[len(num_list_lower):len(num_list), :]
-    #print(len(df_w_count))
     # get correspond var_list
     filtered_var_list = df_w_count['variant'].values.tolist()
     str_var_list = []
     for str in filtered_var_list:
         str_var_list.extend(str.split(','))
-    #print(str_var_list)
     return df_w_count, str_var_list
 
 
@@ -177,20 +164,16 @@ def sublog_percent2varlist(log, upper_percent, parameters=None):
     # calculate the cumunative sum
     csum = np.array(df['count']).cumsum()
     csum = csum / csum[-1]
-    # print(csum)
     num_list = csum[csum <= upper_percent]
     num_list_lower = csum[csum <= lower_percent]
-    #print(num_list)
-    #print(num_list_lower)
     # stop until the percent is satisfied
     df_w_count = df.iloc[len(num_list_lower):len(num_list), :]
-    #print(len(df_w_count))
     # get correspond var_list
     filtered_var_list = df_w_count['variant'].values.tolist()
     return df_w_count, filtered_var_list
 
 
-def logslice_percent_act(log,unit):
+def logslice_percent_act(log, unit):
     '''
     slice the actlist per unit percent
     :param log:
@@ -199,23 +182,19 @@ def logslice_percent_act(log,unit):
     '''
     loglist = []
     freq_list = []
-    sup = int(1/unit)
-    num_list = np.array(range(0,sup))*unit
+    sup = int(1 / unit)
+    num_list = np.array(range(0, sup)) * unit
 
-    #print(num_list)
     for i in range(len(num_list)):
-        (df, act_list) = sublog_percent2actlist(log,num_list[i]+unit,parameters={"lower_percent":num_list[i]})
-        #print(df)
-        if len(act_list)!=0:
-            #print([num_list[i],variants_count])
+        (df, act_list) = sublog_percent2actlist(log, num_list[i] + unit, parameters={"lower_percent": num_list[i]})
+        if len(act_list) != 0:
             sum1 = np.array(df['count']).sum()
-            #print([num_list[i],sum1])
             loglist.append(act_list)
             freq_list.append(sum1)
-            #print([sum1, act_list])
-    return loglist,freq_list
+    return loglist, freq_list
 
-def logslice_percent(log,unit):
+
+def logslice_percent(log, unit):
     '''
     slice the log per unit percent
     :param log:
@@ -224,25 +203,18 @@ def logslice_percent(log,unit):
     '''
     loglist = []
     freq_list = []
-    sup = int(1/unit)
-    num_list = np.array(range(0,sup))*unit
+    sup = int(1 / unit)
+    num_list = np.array(range(0, sup)) * unit
 
-    #print(num_list)
     for i in range(len(num_list)):
-        (df, var_list) = sublog_percent2varlist(log,num_list[i]+unit,parameters={"lower_percent":num_list[i]})
-        #print(df)
-        if len(var_list)!=0:
+        (df, var_list) = sublog_percent2varlist(log, num_list[i] + unit, parameters={"lower_percent": num_list[i]})
+        if len(var_list) != 0:
             log1 = variants_filter.apply(log, var_list, parameters={"positive": True})
-            #print([num_list[i],variants_count])
             sum1 = np.array(df['count']).sum()
-            #print([num_list[i],sum1])
             loglist.append(log1)
             freq_list.append(sum1)
 
-    return loglist,freq_list
-
-
-
+    return loglist, freq_list
 
 
 def sublog2df_num(log, num):
