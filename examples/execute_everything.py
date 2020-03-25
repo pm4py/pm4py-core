@@ -15,7 +15,8 @@ if __name__ == "__main__":
     from examples import token_replay_alpha
     from examples import manual_log_generation
     from examples import token_replay_imdf
-    from examples import decisiontree_example
+    from examples import decisiontree_trivial_example
+    from examples import decisiontree_align_example
     from examples import parquet
     from examples import sna_log
     from examples import transition_system_test
@@ -52,8 +53,10 @@ if __name__ == "__main__":
     manual_log_generation.execute_script()
     print("\n\ntokenReplay_imdf")
     token_replay_imdf.execute_script()
-    print("\n\ndecisiontree_example")
-    decisiontree_example.execute_script()
+    print("\n\ndecisiontree_trivial_example")
+    decisiontree_trivial_example.execute_script()
+    print("\n\ndecisiontree_align_example")
+    decisiontree_align_example.execute_script()
     print("\n\ndfg_min_ex")
     dfg_min_ex.execute_script()
     print("\n\nparquet")
