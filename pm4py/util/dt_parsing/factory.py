@@ -27,7 +27,8 @@ if sys.version_info >= (3, 7):
     # (at least we can drop ciso8601 somewhen)
     DEFAULT_VARIANT = STRPFROMISO
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def get(variant=DEFAULT_VARIANT):
     """
     Gets a module with a function 'apply' that is
