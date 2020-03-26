@@ -4,7 +4,8 @@ PANDAS = "pandas"
 VERSIONS_STRING = {PANDAS: pandas_csv_exp.export_log_as_string}
 VERSIONS = {PANDAS: pandas_csv_exp.export}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def export_log_as_string(log, variant="pandas", parameters=None):
     """
     Factory method to export a CSV from an event log as a string
@@ -25,7 +26,8 @@ def export_log_as_string(log, variant="pandas", parameters=None):
     """
     return VERSIONS_STRING[variant](log, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def export(log, output_file_path, variant="pandas", parameters=None):
     """
     Factory method to export a CSV from an event log
@@ -43,7 +45,8 @@ def export(log, output_file_path, variant="pandas", parameters=None):
     """
     VERSIONS[variant](log, output_file_path, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, output_file_path, variant="pandas", parameters=None):
     """
     Factory method to export a CSV from an event log
@@ -61,6 +64,7 @@ def apply(log, output_file_path, variant="pandas", parameters=None):
     """
     export(log, output_file_path, variant=variant, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def export_log(log, output_file_path, variant="pandas", parameters=None):
     export(log, output_file_path, variant=variant, parameters=parameters)
