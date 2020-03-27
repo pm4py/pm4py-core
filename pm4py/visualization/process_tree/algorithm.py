@@ -18,7 +18,7 @@ VERSIONS = {WO_DECORATION: wo_decoration.apply, FREQUENCY_DECORATION: wo_decorat
 
 def apply(tree0, parameters=None, variant="wo_decoration"):
     """
-    Factory method for Process Tree representation
+    Method for Process Tree representation
 
     Parameters
     -----------

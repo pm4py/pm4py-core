@@ -1,6 +1,6 @@
 from pm4py.algo.conformance.log_skeleton.versions import classic
 from pm4py.objects.log.log import Trace
-from pm4py.objects.conversion.log import factory as log_conv_factory
+from pm4py.objects.conversion.log import algorithm as log_conv_factory
 
 CLASSIC = "classic"
 
