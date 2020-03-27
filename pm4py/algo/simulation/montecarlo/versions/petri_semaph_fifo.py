@@ -249,11 +249,13 @@ class SimulationThread(Thread):
         rem_time = self.get_rem_time()
         if rem_time > 0:
             self.terminated_correctly = True
-            logger.info(str(time()) + " terminated successfully thread ID " + str(self.id))
+            if self.enable_diagnostics:
+                logger.info(str(time()) + " terminated successfully thread ID " + str(self.id))
 
         if self.enable_diagnostics:
             if rem_time == 0:
-                logger.info(str(time()) + " terminated for timeout thread ID " +str(self.id))
+                if self.enable_diagnostics:
+                    logger.info(str(time()) + " terminated for timeout thread ID " +str(self.id))
 
         if self.enable_diagnostics:
             diagnostics.diagn_open = False

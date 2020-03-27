@@ -1,5 +1,5 @@
 from pm4py import util as pmutil
-from pm4py.algo.conformance.tokenreplay.versions import token_replay
+from pm4py.algo.conformance.tokenreplay.versions import token_replay, backwards
 from pm4py.objects.conversion.log import factory as log_converter
 from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri.exporter.versions import pnml as petri_exporter
@@ -9,7 +9,9 @@ import math
 import deprecation, warnings
 
 TOKEN_REPLAY = "token_replay"
-VERSIONS = {TOKEN_REPLAY: token_replay.apply}
+BACKWARDS = "backwards"
+
+VERSIONS = {TOKEN_REPLAY: token_replay.apply, BACKWARDS: backwards.apply}
 VERSIONS_MULTIPROCESSING = {TOKEN_REPLAY: token_replay.apply_variants_list_petri_string_multiprocessing}
 VARIANTS_IDX = 'variants_idx'
 

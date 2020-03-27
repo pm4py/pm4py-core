@@ -2,7 +2,7 @@ import os
 import tempfile
 import time
 
-from lxml import etree
+from lxml import etree, objectify
 
 from pm4py.objects import petri
 from pm4py.objects.petri.common import final_marking
@@ -51,7 +51,8 @@ def import_net(input_file_path, return_stochastic_information=False, parameters=
     if parameters is None:
         parameters = {}
 
-    tree = etree.parse(input_file_path)
+    parser = etree.XMLParser(remove_comments=True)
+    tree = objectify.parse(input_file_path, parser=parser)
     root = tree.getroot()
 
     net = petri.petrinet.PetriNet('imported_' + str(time.time()))

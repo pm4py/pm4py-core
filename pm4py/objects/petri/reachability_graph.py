@@ -22,7 +22,7 @@ def staterep(name):
     return re.sub(r'\W+', '', name)
 
 
-def construct_reachability_graph(net, initial_marking):
+def construct_reachability_graph(net, initial_marking, use_trans_name=False):
     """
     Creates a reachability graph of a certain Petri net.
     DO NOT ATTEMPT WITH AN UNBOUNDED PETRI NET, EVER.
@@ -51,7 +51,10 @@ def construct_reachability_graph(net, initial_marking):
             if next_state is None:
                 next_state = ts.TransitionSystem.State(staterep(repr(next_mark)))
                 re_gr.states.add(next_state)
-            utils.add_arc_from_to(repr(t), curr_state, next_state, re_gr)
+            if use_trans_name:
+                utils.add_arc_from_to(t.name, curr_state, next_state, re_gr)
+            else:
+                utils.add_arc_from_to(repr(t), curr_state, next_state, re_gr)
             # If the next marking hash is not in visited, if the next marking itself is not already in active
             # and if the next marking is different from the current one
             if hash(next_mark) not in visited and next((mark for mark in active if hash(mark) == hash(next_mark)),

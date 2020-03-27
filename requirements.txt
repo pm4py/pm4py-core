@@ -7,12 +7,20 @@ lxml
 matplotlib
 networkx
 numpy
-ortools; python_version < '3.9'
 pandas
-pulp
-pyarrow<=0.15.1; python_version < '3.8'
 pydotplus
 pytz
 pyvis
-scikit-learn
 scipy
+scikit-learn
+stringdist
+
+
+
+
+
+
+
+
+
+

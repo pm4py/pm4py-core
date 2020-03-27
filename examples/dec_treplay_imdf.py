@@ -17,6 +17,12 @@ def execute_script():
     gviz = pn_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant,
                                 parameters=parameters_viz)
     pn_vis_factory.view(gviz)
+    # do another visualization with frequency
+    variant = "frequency"
+    parameters_viz = {"format": "svg"}
+    gviz = pn_vis_factory.apply(net, initial_marking, final_marking, log=log, variant=variant,
+                                parameters=parameters_viz)
+    pn_vis_factory.view(gviz)
 
 
 if __name__ == "__main__":
