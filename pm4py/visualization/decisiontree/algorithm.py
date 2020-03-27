@@ -10,7 +10,7 @@ VERSIONS = {CLASSIC: classic.apply}
 
 def apply(clf, feature_names, classes, parameters=None, variant="classic"):
     """
-    Factory method to apply the visualization of the decision tree
+    Method to apply the visualization of the decision tree
 
     Parameters
     ------------

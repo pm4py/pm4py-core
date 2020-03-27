@@ -1,6 +1,6 @@
 from pm4py.algo.discovery.heuristics.versions import classic
 import pandas
-from pm4py.objects.conversion.log import factory as conv_factory
+from pm4py.objects.conversion.log import algorithm as log_conversion
 
 
 CLASSIC = "classic"
@@ -40,7 +40,7 @@ def apply(log, parameters=None, variant=CLASSIC):
     if isinstance(log, pandas.core.frame.DataFrame):
         return VERSIONS_PANDAS[variant](log, parameters=parameters)
 
-    return VERSIONS[variant](conv_factory.apply(log, parameters=parameters), parameters=parameters)
+    return VERSIONS[variant](log_conversion.apply(log, parameters=parameters), parameters=parameters)
 
 
 def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,

@@ -29,7 +29,7 @@ def apply(log, list_activities, parameters=None):
     ps
         Performance spectrum object (dictionary)
     """
-    from pm4py.objects.conversion.log import factory as log_conv_factory
+    from pm4py.objects.conversion.log import algorithm as log_conversion
 
     if parameters is None:
         parameters = {}
@@ -42,7 +42,7 @@ def apply(log, list_activities, parameters=None):
     if type(log) is pd.DataFrame:
         points = VERSIONS[DATAFRAME](log, list_activities, sample_size, parameters)
     else:
-        points = VERSIONS[LOG](log_conv_factory.apply(log), list_activities, sample_size, parameters)
+        points = VERSIONS[LOG](log_conversion.apply(log), list_activities, sample_size, parameters)
 
     ps = {"list_activities": list_activities, "points": points}
 

@@ -12,7 +12,7 @@ VERSIONS_SEMILOGX = {CASES: cases.apply_semilogx, ATTRIBUTES: attributes.apply_s
 
 def apply(x, y, parameters=None, variant=CASES):
     """
-    Factory method to plot (non-logarithmic way) the graph with axis values contained in x and y
+    Method to plot (non-logarithmic way) the graph with axis values contained in x and y
 
     Parameters
     ------------
@@ -36,7 +36,7 @@ def apply(x, y, parameters=None, variant=CASES):
 
 def apply_plot(x, y, parameters=None, variant=CASES):
     """
-    Factory method to plot (non-logarithmic way) the graph with axis values contained in x and y
+    Method to plot (non-logarithmic way) the graph with axis values contained in x and y
 
     Parameters
     ------------
@@ -60,7 +60,7 @@ def apply_plot(x, y, parameters=None, variant=CASES):
 
 def apply_semilogx(x, y, parameters=None, variant=CASES):
     """
-    Factory method to plot (semi-logarithmic way) the graph with axis values contained in x and y
+    Method to plot (semi-logarithmic way) the graph with axis values contained in x and y
 
     Parameters
     ------------
