@@ -1,9 +1,9 @@
+import deprecation
 from scipy.cluster.hierarchy import to_tree, linkage
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.algo.clustering.trace_attribute_driven.merge_log import merge_log
 from pm4py.algo.clustering.trace_attribute_driven.util import evaluation
 from pm4py.objects.conversion.log import factory as log_conv_factory
-
 
 VARIANT_DMM_LEVEN = "variant_DMM_leven"
 VARIANT_AVG_LEVEN = "variant_avg_leven"
@@ -16,6 +16,8 @@ VERSION_METHODS = {VARIANT_DMM_LEVEN: evaluation.eval_DMM_leven, VARIANT_AVG_LEV
                    DFG: evaluation.dfg_dis}
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def bfs(tree):
     queue = []
     output = []
@@ -34,6 +36,8 @@ def bfs(tree):
     return output
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, trace_attribute, variant=VARIANT_DMM_LEVEN, parameters=None):
     """
     Apply the hierarchical clustering to a log starting from a trace attribute.

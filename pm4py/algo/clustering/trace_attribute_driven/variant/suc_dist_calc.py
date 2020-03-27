@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import time
-from pm4py.algo.clustering.hierarchical_attribute_based.util import filter_subsets
+from pm4py.algo.clustering.trace_attribute_driven.util import filter_subsets
 from scipy.spatial.distance import pdist
 from collections import Counter
 from pm4py.objects.log.importer.xes import factory as xes_importer

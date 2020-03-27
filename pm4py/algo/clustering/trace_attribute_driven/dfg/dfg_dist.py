@@ -3,7 +3,7 @@ from scipy.spatial.distance import pdist
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.algo.filtering.log.attributes import attributes_filter
 import pandas as pd
-from pm4py.algo.clustering.hierarchical_attribute_based.variant import act_dist_calc
+from pm4py.algo.clustering.trace_attribute_driven.variant import act_dist_calc
 
 
 def dfg_dist_calc_act(log1, log2):

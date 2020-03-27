@@ -1,1 +1,1 @@
-from pm4py.algo.clustering import hierarchical_attribute_based
+from pm4py.algo.clustering import trace_attribute_driven

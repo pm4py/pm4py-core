@@ -1,1 +1,1 @@
-from pm4py.algo.clustering.hierarchical_attribute_based.linkage_method import linkage_avg
+from pm4py.algo.clustering.trace_attribute_driven.linkage_method import linkage_avg
