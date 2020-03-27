@@ -1,5 +1,7 @@
 import os
 import pandas as pd
+import deprecation
+
 from pm4py.util import constants
 from pm4py.util import xes_constants as xes
 

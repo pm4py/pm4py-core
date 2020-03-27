@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py import util as pmutil
 from pm4py.evaluation.precision.versions import etconformance_token, align_etconformance
 from pm4py.objects.conversion.log import factory as log_conversion

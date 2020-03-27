@@ -2,6 +2,7 @@ import os
 import shutil
 import subprocess
 import sys
+import deprecation
 
 from pm4py.visualization.heuristics_net.versions import pydotplus
 

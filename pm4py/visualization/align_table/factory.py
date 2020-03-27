@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.visualization.align_table.versions import classic
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave

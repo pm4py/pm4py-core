@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.util.lp.versions import pulp_solver
 
 # not available in the latest version of PM4Py

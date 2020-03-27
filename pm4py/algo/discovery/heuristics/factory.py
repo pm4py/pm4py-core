@@ -1,5 +1,7 @@
-from pm4py.algo.discovery.heuristics.versions import classic
 import pandas
+import deprecation
+
+from pm4py.algo.discovery.heuristics.versions import classic
 from pm4py.objects.conversion.log import factory as conv_factory
 
 

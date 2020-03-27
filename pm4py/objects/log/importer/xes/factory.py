@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.objects.log.importer.xes.versions import iterparse_xes, python_nonstandard
 from pm4py.objects.log.util import string_to_file
 from pm4py.objects.log.util import compression

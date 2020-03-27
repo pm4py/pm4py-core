@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.algo.discovery.inductive.versions.dfg import dfg_based_old, dfg_based
 
 DFG_BASED_OLD_VERSION = 'dfg_based_old_version'

@@ -1,4 +1,5 @@
 import pandas
+import deprecation
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics

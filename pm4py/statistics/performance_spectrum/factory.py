@@ -1,5 +1,7 @@
-from pm4py.statistics.performance_spectrum.versions import dataframe, log
+import deprecation
 import pandas as pd
+
+from pm4py.statistics.performance_spectrum.versions import dataframe, log
 
 DATAFRAME = "dataframe"
 LOG = "log"

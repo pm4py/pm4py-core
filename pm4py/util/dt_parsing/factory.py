@@ -1,5 +1,6 @@
 import sys
 import pkgutil
+import deprecation
 
 CISO8601 = "ciso8601"
 STRPFROMISO = "strpfromiso"

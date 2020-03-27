@@ -1,4 +1,5 @@
 import pandas
+import deprecation
 
 from pm4py.objects.conversion.log.versions import to_dataframe
 from pm4py.objects.log.exporter.parquet.versions import pandas as pandas_exporter

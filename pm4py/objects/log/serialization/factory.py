@@ -1,4 +1,6 @@
 import pyarrow
+import deprecation
+
 from pm4py.objects.log.serialization.versions import parquet_dataframe, pyarrow_event_stream, pyarrow_event_log
 from pm4py.objects.log.log import EventLog, EventStream
 import pandas as pd

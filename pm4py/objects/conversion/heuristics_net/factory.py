@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.objects.conversion.heuristics_net.versions import to_petri_net
 
 TO_PETRI_NET = "to_petri_net"

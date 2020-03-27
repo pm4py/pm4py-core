@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.objects.log.exporter.xes.versions import etree_xes_exp
 from pm4py.objects.log.util import compression
 from pm4py.objects.conversion.log import factory as log_conv_factory

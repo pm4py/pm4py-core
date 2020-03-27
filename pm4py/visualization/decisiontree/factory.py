@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.visualization.decisiontree.versions import classic
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
