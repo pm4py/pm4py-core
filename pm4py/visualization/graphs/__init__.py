@@ -1,1 +1,1 @@
-from pm4py.visualization.graphs import algorithm, util, versions
+from pm4py.visualization.graphs import factory, algorithm, util, versions
