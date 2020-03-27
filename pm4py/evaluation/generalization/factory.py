@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py import util as pmutil
 from pm4py.evaluation.generalization.versions import token_based
 from pm4py.objects.conversion.log import factory as log_conversion

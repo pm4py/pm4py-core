@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.evaluation.simplicity.versions import arc_degree
 
 SIMPLICITY_ARC_DEGREE = "arc_degree"

@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.evaluation.generalization.versions import token_based as generalization_token_based

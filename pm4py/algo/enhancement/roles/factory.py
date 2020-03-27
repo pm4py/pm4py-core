@@ -1,5 +1,8 @@
-from pm4py.algo.enhancement.roles.versions import log, pandas
 import pandas as pd
+import deprecation
+
+from pm4py.algo.enhancement.roles.versions import log, pandas
+
 
 LOG = 'log'
 PANDAS = 'pandas'

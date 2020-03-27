@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.objects.log.adapters.pandas import csv_import_adapter as pandas_csv_import_adapter
 from pm4py.objects.log.importer.csv.versions import pandas_df_imp
 from pm4py.objects.log.util import string_to_file

@@ -1,4 +1,5 @@
 from pm4py.algo.discovery.causal.versions import alpha, heuristic
+import deprecation
 
 CAUSAL_ALPHA = 'alpha'
 CAUSAL_HEURISTIC = 'heuristic'
