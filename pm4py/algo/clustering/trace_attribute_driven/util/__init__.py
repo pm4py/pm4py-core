@@ -1,1 +1,1 @@
-from pm4py.algo.clustering.hierarchical_attribute_based.util import evaluation, filter_subsets
+from pm4py.algo.clustering.trace_attribute_driven.util import evaluation, filter_subsets

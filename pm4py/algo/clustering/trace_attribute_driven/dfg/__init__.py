@@ -1,1 +1,1 @@
-from pm4py.algo.clustering.hierarchical_attribute_based.dfg import dfg_dist
+from pm4py.algo.clustering.trace_attribute_driven.dfg import dfg_dist

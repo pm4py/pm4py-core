@@ -1,1 +1,1 @@
-from pm4py.algo.clustering.hierarchical_attribute_based.merge_log import merge_log
+from pm4py.algo.clustering.trace_attribute_driven.merge_log import merge_log

@@ -1,10 +1,10 @@
 import numpy as np
 from scipy.spatial.distance import squareform
-from pm4py.algo.clustering.hierarchical_attribute_based.leven_dist import leven_dist_calc
-from pm4py.algo.clustering.hierarchical_attribute_based.merge_log import merge_log
-from pm4py.algo.clustering.hierarchical_attribute_based.dfg import dfg_dist
-from pm4py.algo.clustering.hierarchical_attribute_based.variant import act_dist_calc
-from pm4py.algo.clustering.hierarchical_attribute_based.variant import suc_dist_calc
+from pm4py.algo.clustering.trace_attribute_driven.leven_dist import leven_dist_calc
+from pm4py.algo.clustering.trace_attribute_driven.merge_log import merge_log
+from pm4py.algo.clustering.trace_attribute_driven.dfg import dfg_dist
+from pm4py.algo.clustering.trace_attribute_driven.variant import act_dist_calc
+from pm4py.algo.clustering.trace_attribute_driven.variant import suc_dist_calc
 
 
 def linkage_dfg_update(loglist, dist_mat, alpha, percent):

@@ -1,4 +1,4 @@
-from pm4py.algo.clustering.hierarchical_attribute_based.util import filter_subsets
+from pm4py.algo.clustering.trace_attribute_driven.util import filter_subsets
 import pandas as pd
 import numpy as np
 from collections import Counter
