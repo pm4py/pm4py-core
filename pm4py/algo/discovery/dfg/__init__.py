@@ -1,1 +1,1 @@
-from pm4py.algo.discovery.dfg import factory, replacement, adapters, versions, utils
+from pm4py.algo.discovery.dfg import algorithm, replacement, adapters, versions, utils

@@ -1,8 +1,8 @@
 import os
 
-from pm4py.objects.log.importer.xes import factory as xes_import
-from pm4py.algo.discovery.alpha import factory as alpha_miner
-from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.objects.log.importer.xes import algorithm as xes_import
+from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+from pm4py.visualization.petrinet import algorithm as pn_vis_factory
 
 
 def execute_script():

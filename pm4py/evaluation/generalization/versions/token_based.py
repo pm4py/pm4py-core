@@ -2,7 +2,7 @@ from collections import Counter
 from math import sqrt
 
 from pm4py import util as pmutil
-from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.objects import log as log_lib
 
 PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY

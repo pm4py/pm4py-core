@@ -1,6 +1,6 @@
 from pm4py.util import constants
 from pm4py.objects.log.log import EventStream, Event
-from pm4py.objects.conversion.log import factory as log_conv_factory
+from pm4py.objects.conversion.log import algorithm as log_conv_factory
 
 
 COLUMNS = "columns"

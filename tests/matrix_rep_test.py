@@ -1,8 +1,8 @@
 import os
 import unittest
 
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.discovery.alpha import factory as alpha_miner
+from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.algo.discovery.alpha import algorithm as alpha_miner
 from pm4py.objects.log.util import prefix_matrix
 from tests.constants import INPUT_DATA_DIR
 from pm4py.objects.petri.projection import project_net_on_matrix

@@ -8,7 +8,7 @@ from pm4py.algo.filtering.pandas.paths import paths_filter
 from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
 from pm4py.algo.filtering.pandas.variants import variants_filter
 from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
-from pm4py.objects.conversion.log import factory as log_conv_fact
+from pm4py.objects.conversion.log import algorithm as log_conversion
 from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.algo.filtering.pandas.ltl import ltl_checker
 from tests.constants import INPUT_DATA_DIR
@@ -25,8 +25,8 @@ class DataframePrefilteringTest(unittest.TestCase):
         dataframe = case_filter.filter_on_ncases(dataframe, case_id_glue="case:concept:name")
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
         dataframe = dataframe.sort_values('time:timestamp')
-        event_log = log_conv_fact.apply(dataframe, variant=log_conv_fact.TO_EVENT_STREAM)
-        log = log_conv_fact.apply(event_log)
+        event_log = log_conversion.apply(dataframe, variant=log_conversion.TO_EVENT_STREAM)
+        log = log_conversion.apply(event_log)
         del log
 
     def test_autofiltering_dataframe(self):

@@ -1,11 +1,11 @@
 import os
 import unittest
 
-from pm4py.algo.discovery.heuristics import factory as heuristics_miner
+from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.visualization.heuristics_net import factory as hn_vis_factory
-from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.visualization.heuristics_net import algorithm as hn_vis
+from pm4py.visualization.petrinet import algorithm as pn_vis
 from tests.constants import INPUT_DATA_DIR
 
 
@@ -16,7 +16,7 @@ class HeuMinerTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         heu_net = heuristics_miner.apply_heu(log)
-        gviz = hn_vis_factory.apply(heu_net)
+        gviz = hn_vis.apply(heu_net)
         del gviz
 
     def test_petrinet_running_example(self):
@@ -25,7 +25,7 @@ class HeuMinerTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, im, fm = heuristics_miner.apply(log)
-        gviz = pn_vis_factory.apply(net, im, fm)
+        gviz = pn_vis.apply(net, im, fm)
         del gviz
 
     def test_petrinet_receipt_df(self):
@@ -34,5 +34,5 @@ class HeuMinerTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         df = csv_import_adapter.import_dataframe_from_path(os.path.join(INPUT_DATA_DIR, "running-example.csv"))
         net, im, fm = heuristics_miner.apply(df)
-        gviz = pn_vis_factory.apply(net, im, fm)
+        gviz = pn_vis.apply(net, im, fm)
         del gviz

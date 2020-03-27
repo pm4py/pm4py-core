@@ -1,6 +1,6 @@
 import os
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.enhancement.roles import factory as roles_factory
+from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.algo.enhancement.roles import algorithm as roles_factory
 
 
 def execute_script():

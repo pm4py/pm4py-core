@@ -1,6 +1,6 @@
 from lxml import etree
 
-from pm4py.objects.conversion.log import factory as log_converter
+from pm4py.objects.conversion.log import algorithm as log_converter
 from pm4py.objects.log import log as log_instance
 from pm4py.util import xes_constants as xes_util
 

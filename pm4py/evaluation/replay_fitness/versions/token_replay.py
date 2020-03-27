@@ -1,4 +1,4 @@
-from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 

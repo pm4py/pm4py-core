@@ -2,9 +2,9 @@ import os
 
 from sklearn import tree
 
-from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.objects.log.importer.xes import algorithm as xes_importer
 from pm4py.objects.log.util import get_log_representation, get_class_representation
-from pm4py.visualization.decisiontree import factory as dt_vis_factory
+from pm4py.visualization.decisiontree import algorithm as dt_vis_factory
 
 
 def execute_script():

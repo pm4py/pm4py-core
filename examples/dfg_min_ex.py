@@ -1,10 +1,10 @@
 import os
 
-from pm4py.algo.discovery.dfg import factory as dfg_factory
-from pm4py.objects.conversion.dfg import factory as dfg_conv_factory
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.visualization.dfg import factory as dfg_vis_fact
-from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.algo.discovery.dfg import algorithm as dfg_factory
+from pm4py.objects.conversion.dfg import algorithm as dfg_conv_factory
+from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.visualization.dfg import algorithm as dfg_vis_fact
+from pm4py.visualization.petrinet import algorithm as pn_vis_factory
 
 
 def execute_script():

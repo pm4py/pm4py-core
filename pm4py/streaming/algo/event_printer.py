@@ -1,5 +1,5 @@
 from pm4py.streaming.algo import interface
-from pm4py.objects.log.importer.xes import factory as xes_imp
+from pm4py.objects.log.importer.xes import algorithm as xes_imp
 import os
 from pm4py.objects.conversion.log.versions import to_live_event_stream
 

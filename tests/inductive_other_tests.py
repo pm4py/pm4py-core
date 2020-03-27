@@ -1,7 +1,7 @@
 import unittest
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.objects.log.importer.csv import factory as csv_importer
-from pm4py.algo.discovery.inductive import factory as inductive_miner
+from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.csv import algorithm as csv_importer
+from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.statistics.variants.log import get as log_variants
 from pm4py.statistics.variants.pandas import get as pd_variants
 import os

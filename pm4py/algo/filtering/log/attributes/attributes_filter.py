@@ -3,7 +3,7 @@ from pm4py.statistics.attributes.common import get as attributes_common
 from pm4py.statistics.attributes.log.get import get_attribute_values, get_all_event_attributes_from_log, get_all_trace_attributes_from_log, get_kde_date_attribute, get_kde_date_attribute_json, get_kde_numeric_attribute, get_kde_numeric_attribute_json, get_trace_attribute_values
 from pm4py.statistics.attributes.log.select import select_attributes_from_log_for_tree
 from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.conversion.log import factory as log_conv_fact
+from pm4py.objects.conversion.log import algorithm as log_conv_fact
 from pm4py.objects.log.log import EventLog, Trace, EventStream
 from pm4py.util import xes_constants as xes
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
