@@ -1,1 +1,1 @@
-from pm4py.visualization.sna import algorithm, versions
+from pm4py.visualization.sna import factory, algorithm, versions

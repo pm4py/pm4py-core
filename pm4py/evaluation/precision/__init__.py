@@ -1,1 +1,1 @@
-from pm4py.evaluation.precision import algorithm, versions
+from pm4py.evaluation.precision import factory, algorithm, versions
