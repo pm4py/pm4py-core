@@ -13,7 +13,7 @@ ALIGN_ETCONFORMANCE = "align_etconformance"
 VERSIONS = {ETCONFORMANCE_TOKEN: etconformance_token.apply, ALIGN_ETCONFORMANCE: align_etconformance.apply}
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use evaluator entrypoint instead')
 def apply(log, net, marking, final_marking, parameters=None, variant=None):
     """
     Factory method to apply ET Conformance

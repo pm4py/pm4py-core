@@ -11,10 +11,10 @@ from pm4py.algo.discovery.transition_system import algorithm as ts_disc
 from pm4py.algo.conformance.alignments import algorithm as align_alg
 from pm4py.algo.conformance.tokenreplay import algorithm as tr_alg
 from pm4py.evaluation import algorithm as eval_alg
-from pm4py.evaluation.replay_fitness import algorithm as rp_fit
-from pm4py.evaluation.precision import algorithm as precision_factory
-from pm4py.evaluation.generalization import algorithm as generalization
-from pm4py.evaluation.simplicity import algorithm as simplicity
+from pm4py.evaluation.replay_fitness import evaluator as rp_fit
+from pm4py.evaluation.precision import evaluator as precision_factory
+from pm4py.evaluation.generalization import evaluator as generalization
+from pm4py.evaluation.simplicity import evaluator as simplicity
 from pm4py.objects.conversion.log import algorithm as log_conversion
 from pm4py.objects.log.exporter.csv import algorithm as csv_exporter
 from pm4py.objects.log.exporter.xes import algorithm as xes_exporter
