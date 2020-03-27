@@ -1,1 +1,1 @@
-from pm4py.evaluation.generalization import algorithm, versions
+from pm4py.evaluation.generalization import factory, algorithm, versions

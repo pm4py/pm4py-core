@@ -1,2 +1,1 @@
-from pm4py.algo.simulation.tree_generator import factory, versions
-
+from pm4py.algo.simulation.tree_generator import factory, algorithm

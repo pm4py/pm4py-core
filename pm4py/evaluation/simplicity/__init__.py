@@ -1,1 +1,1 @@
-from pm4py.evaluation.simplicity import algorithm, versions
+from pm4py.evaluation.simplicity import factory, algorithm, versions
