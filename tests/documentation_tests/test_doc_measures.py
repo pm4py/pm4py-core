@@ -13,26 +13,26 @@ class DocMeasuresDocumentationTest(unittest.TestCase):
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         alpha_petri, alpha_initial_marking, alpha_final_marking = alpha_miner.apply(log)
         inductive_petri, inductive_initial_marking, inductive_final_marking = inductive_miner.apply(log)
-        from pm4py.evaluation.replay_fitness import algorithm as replay_alg
+        from pm4py.evaluation.replay_fitness import evaluator as replay_alg
         fitness_alpha = replay_alg.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking, variant=replay_alg.TOKEN_BASED)
         fitness_inductive = replay_alg.apply(log, inductive_petri, inductive_initial_marking,
                                                  inductive_final_marking, variant=replay_alg.TOKEN_BASED)
         del fitness_alpha
         del fitness_inductive
-        from pm4py.evaluation.precision import algorithm as precision_alg
+        from pm4py.evaluation.precision import evaluator as precision_alg
         precision_alpha = precision_alg.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking, variant=precision_alg.ETCONFORMANCE_TOKEN)
         precision_inductive = precision_alg.apply(log, inductive_petri, inductive_initial_marking,
                                                       inductive_final_marking, variant=precision_alg.ETCONFORMANCE_TOKEN)
         del precision_alpha
         del precision_inductive
-        from pm4py.evaluation.generalization import algorithm as generalization
+        from pm4py.evaluation.generalization import evaluator as generalization
         generalization_alpha = generalization.apply(log, alpha_petri, alpha_initial_marking,
                                                             alpha_final_marking)
         generalization_inductive = generalization.apply(log, inductive_petri, inductive_initial_marking,
                                                                 inductive_final_marking)
         del generalization_alpha
         del generalization_inductive
-        from pm4py.evaluation.simplicity import algorithm as simplicity
+        from pm4py.evaluation.simplicity import evaluator as simplicity
         simplicity_alpha = simplicity.apply(alpha_petri)
         simplicity_inductive = simplicity.apply(inductive_petri)
         del simplicity_alpha

@@ -17,10 +17,10 @@ if __name__ == "__main__":
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     from pm4py.objects.process_tree import semantics as pt_semantics
     from pm4py.objects.petri import check_soundness
-    from pm4py.evaluation.replay_fitness import algorithm as fitness_factory
-    from pm4py.evaluation.precision import algorithm as precision_factory
-    from pm4py.evaluation.simplicity import algorithm as simplicity_factory
-    from pm4py.evaluation.generalization import algorithm as generalization_factory
+    from pm4py.evaluation.replay_fitness import evaluator as fitness_factory
+    from pm4py.evaluation.precision import evaluator as precision_factory
+    from pm4py.evaluation.simplicity import evaluator as simplicity_factory
+    from pm4py.evaluation.generalization import evaluator as generalization_factory
     from pm4py.objects.log.util import insert_classifier
     from pm4py.objects.petri.exporter import pnml as pnml_exporter
     from pm4py.visualization.petrinet import algorithm as petri_vis_factory

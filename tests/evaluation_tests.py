@@ -3,10 +3,10 @@ import unittest
 
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.evaluation import algorithm as evalutation_alg
-from pm4py.evaluation.generalization import algorithm as generalization_factory
-from pm4py.evaluation.precision import algorithm as precision_alg
-from pm4py.evaluation.replay_fitness import algorithm as fitness_alg
-from pm4py.evaluation.simplicity import algorithm as simplicity_alg
+from pm4py.evaluation.generalization import evaluator as generalization_factory
+from pm4py.evaluation.precision import evaluator as precision_alg
+from pm4py.evaluation.replay_fitness import evaluator as fitness_alg
+from pm4py.evaluation.simplicity import evaluator as simplicity_alg
 from pm4py.objects.log.importer.xes import algorithm as xes_importer
 from tests.constants import INPUT_DATA_DIR
 
