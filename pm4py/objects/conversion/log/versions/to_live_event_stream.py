@@ -1,4 +1,4 @@
-from pm4py.objects.conversion.log import factory as log_conv
+from pm4py.objects.conversion.log import algorithm as log_conv
 from pm4py.streaming.stream import stream
 
 def apply(obj, param=None):

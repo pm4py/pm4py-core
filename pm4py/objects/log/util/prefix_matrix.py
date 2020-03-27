@@ -5,7 +5,7 @@ import pandas as pd
 
 from pm4py.statistics.attributes.pandas import get as pd_attributes_filter
 from pm4py.statistics.attributes.log import get as log_attributes_filter
-from pm4py.objects.conversion.log import factory as conversion_factory
+from pm4py.objects.conversion.log import algorithm as log_conversion
 from pm4py.objects.log.log import EventStream
 from pm4py.util import xes_constants as xes
 from pm4py.statistics.traces.log import case_statistics as log_case_statistics
@@ -321,7 +321,7 @@ def get_prefix_matrix(log, parameters=None):
     parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
 
     if type(log) is EventStream:
-        log = conversion_factory.apply(log, parameters=parameters)
+        log = log_conversion.apply(log, parameters=parameters)
     variants_list = get_variants_list(log, parameters=parameters)
     activities = get_activities_list(log, parameters=parameters)
 
@@ -361,7 +361,7 @@ def get_variants_matrix(log, parameters=None):
     parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
 
     if type(log) is EventStream:
-        log = conversion_factory.apply(log, parameters=parameters)
+        log = log_conversion.apply(log, parameters=parameters)
     variants_list = get_variants_list(log, parameters=parameters)
     activities = get_activities_list(log, parameters=parameters)
 
@@ -396,7 +396,7 @@ def get_prefix_variants_matrix(log, parameters=None):
     parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
 
     if type(log) is EventStream:
-        log = conversion_factory.apply(log, parameters=parameters)
+        log = log_conversion.apply(log, parameters=parameters)
     variants_list = get_variants_list(log, parameters=parameters)
     activities = get_activities_list(log, parameters=parameters)
 

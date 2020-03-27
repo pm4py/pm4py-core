@@ -1,5 +1,5 @@
 import numpy as np
-from pm4py.util.lp import factory as lp_solver_factory
+from pm4py.util.lp import algorithm as lp_solver_factory
 from pm4py.objects.petri import align_utils as utils
 from pm4py.objects import petri
 from copy import copy

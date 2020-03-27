@@ -1,6 +1,6 @@
 import logging
 
-from pm4py.util.dt_parsing import factory as dt_parse_factory
+from pm4py.util.dt_parsing import algorithm as dt_parse_factory
 from lxml import etree
 
 from pm4py.objects.log.log import EventLog, Trace, Event

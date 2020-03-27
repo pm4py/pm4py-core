@@ -1,6 +1,6 @@
 from pm4py.algo.conformance.log_skeleton.versions import classic
 from pm4py.objects.log.log import Trace
-from pm4py.objects.conversion.log import algorithm as log_conv_factory
+from pm4py.objects.conversion.log import algorithm as log_conversion
 
 CLASSIC = "classic"
 
@@ -40,6 +40,6 @@ def apply(obj, model, variant=DEFAULT_VARIANT, parameters=None):
         parameters = {}
 
     if type(obj) is Trace:
-        return VERSIONS_TRACE[variant](log_conv_factory.apply(obj, parameters=parameters), model, parameters=parameters)
+        return VERSIONS_TRACE[variant](log_conversion.apply(obj, parameters=parameters), model, parameters=parameters)
     else:
-        return VERSIONS_LOG[variant](log_conv_factory.apply(obj, parameters=parameters), model, parameters=parameters)
+        return VERSIONS_LOG[variant](log_conversion.apply(obj, parameters=parameters), model, parameters=parameters)

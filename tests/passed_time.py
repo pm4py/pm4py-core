@@ -1,10 +1,10 @@
 import os
 import unittest
 
-from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.objects.log.importer.xes import algorithm as xes_importer
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
-from pm4py.statistics.passed_time.log import factory as log_passed_time
-from pm4py.statistics.passed_time.pandas import factory as df_passed_time
+from pm4py.statistics.passed_time.log import algorithm as log_passed_time
+from pm4py.statistics.passed_time.pandas import algorithm as df_passed_time
 
 class PassedTimeTest(unittest.TestCase):
     def test_passedtime_prepost_log(self):

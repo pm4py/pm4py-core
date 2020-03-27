@@ -1,5 +1,5 @@
 from pm4py import util as pmutil
-from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.objects import log as log_lib
 from pm4py.evaluation.precision import utils as precision_utils
 from pm4py.statistics.start_activities.log.get import get_start_activities

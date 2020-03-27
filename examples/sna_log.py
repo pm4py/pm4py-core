@@ -1,8 +1,8 @@
 import os
 
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.enhancement.sna import factory as sna_factory
-from pm4py.visualization.sna import factory as pn_vis_factory
+from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.algo.enhancement.sna import algorithm as sna_factory
+from pm4py.visualization.sna import algorithm as pn_vis_factory
 
 
 def execute_script():

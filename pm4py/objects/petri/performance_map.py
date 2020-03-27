@@ -420,7 +420,7 @@ def get_transition_performance_with_token_replay(log, net, im, fm):
     transition_performance
         Dictionary where each transition label is associated to performance measures
     """
-    from pm4py.algo.conformance.tokenreplay import factory as token_replay
+    from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
     variants_idx = variants_get.get_variants_from_log_trace_idx(log)
     aligned_traces = token_replay.apply(log, net, im, fm)
     element_statistics = single_element_statistics(log, net, im,

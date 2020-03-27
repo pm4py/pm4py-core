@@ -1,1 +1,1 @@
-from pm4py.algo.simulation.playout import factory, data_structures, versions
+from pm4py.algo.simulation.playout import algorithm, data_structures, versions

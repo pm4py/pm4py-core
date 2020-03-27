@@ -1,5 +1,5 @@
 from pm4py.objects.log.adapters.pandas.csv_import_adapter import import_dataframe_from_path
-from pm4py.objects.conversion.log import factory as log_conv_fact
+from pm4py.objects.conversion.log import algorithm as log_conv_fact
 
 
 def import_event_stream(path, parameters=None):

@@ -3,7 +3,7 @@ import tempfile
 
 import pandas as pd
 
-from pm4py.objects.conversion.log import factory as log_conv_fact
+from pm4py.objects.conversion.log import algorithm as log_conversion
 from pm4py.util.versions import check_pandas_ge_024
 
 
@@ -201,7 +201,7 @@ def convert_dataframe_to_stream(dataframe, insert_event_indexes=False):
     stream
         Event stream
     """
-    stream = log_conv_fact.apply(dataframe, variant=log_conv_fact.TO_EVENT_STREAM)
+    stream = log_conversion.apply(dataframe, variant=log_conversion.TO_EVENT_STREAM)
 
     if insert_event_indexes:
         stream.insert_event_index_as_event_attribute()

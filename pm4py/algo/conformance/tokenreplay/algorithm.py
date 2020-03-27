@@ -15,7 +15,7 @@ VARIANTS_IDX = 'variants_idx'
 
 def apply(log, net, initial_marking, final_marking, parameters=None, variant=TOKEN_REPLAY):
     """
-    Factory method to apply token-based replay
+    Method to apply token-based replay
     
     Parameters
     -----------

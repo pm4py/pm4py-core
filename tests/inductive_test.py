@@ -2,13 +2,13 @@ import logging
 import os
 import unittest
 
-from pm4py.objects.conversion.log import factory as log_conv_fact
+from pm4py.objects.conversion.log import algorithm as log_conversion
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNameException
-from pm4py.algo.discovery.inductive import factory as inductive_miner
+from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects import petri
-from pm4py.objects.log.importer.csv import factory as csv_importer
-from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.objects.log.importer.csv import algorithm as csv_importer
+from pm4py.objects.log.importer.xes import algorithm as xes_importer
 from pm4py.objects.log.util import sampling, sorting, index_attribute
 from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import pnml as petri_exporter
@@ -25,7 +25,7 @@ class InductiveMinerTest(unittest.TestCase):
             log = xes_importer.import_log(log_name)
         else:
             event_log = csv_importer.import_event_stream(log_name)
-            log = log_conv_fact.apply(event_log)
+            log = log_conversion.apply(event_log)
         # apply dummily the test to all the available variants
         net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.DFG_BASED_OLD_VERSION)
         net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.DFG_BASED)

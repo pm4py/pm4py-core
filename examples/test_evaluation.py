@@ -1,8 +1,8 @@
 import os
 
-from pm4py.algo.discovery.inductive import factory as inductive_miner
-from pm4py.evaluation import factory as evaluation_factory
-from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+from pm4py.evaluation import algorithm as evaluation_factory
+from pm4py.objects.log.importer.xes import algorithm as xes_importer
 
 
 def execute_script():

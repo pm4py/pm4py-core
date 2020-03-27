@@ -28,7 +28,7 @@ from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, decorate_transitions_prepostset
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.util.lp import factory as lp_solver_factory
+from pm4py.util.lp import algorithm as lp_solver_factory
 from pm4py.objects.petri import align_utils as utils
 
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
