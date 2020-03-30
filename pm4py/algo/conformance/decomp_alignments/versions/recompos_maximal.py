@@ -18,6 +18,9 @@ PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
 ICACHE = "icache"
 MCACHE = "mcache"
 
+PARAM_THRESHOLD_BORDER_AGREEMENT = "thresh_border_agreement"
+DEFAULT_THRESHOLD_BORDER_AGREEMENT = 100000000
+
 
 def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
     trace = log_implementation.Trace()
@@ -30,7 +33,8 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
     cf_new = {}
     for el in cf:
         cf_new[(el.name, el.label)] = cf[el]
-    best_worst_cost = sum(cf_new[x] for x in best_worst['alignment']) // utils.STD_MODEL_LOG_MOVE_COST if best_worst['alignment'] else 0
+    best_worst_cost = sum(cf_new[x] for x in best_worst['alignment']) // utils.STD_MODEL_LOG_MOVE_COST if best_worst[
+        'alignment'] else 0
     return best_worst_cost
 
 
@@ -290,6 +294,8 @@ def apply_trace(trace, list_nets, parameters=None):
     if parameters is None:
         parameters = {}
 
+    threshold_border_agreement = parameters[
+        PARAM_THRESHOLD_BORDER_AGREEMENT] if PARAM_THRESHOLD_BORDER_AGREEMENT in parameters else DEFAULT_THRESHOLD_BORDER_AGREEMENT
     activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
         parameters[
             pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
@@ -320,6 +326,7 @@ def apply_trace(trace, list_nets, parameters=None):
             cons_nets_alres.append(alres)
             cons_nets_costs.append(cf)
             max_val_alres = max(max_val_alres, max(z for y in alres.values() for z in y))
+            border_disagreements = 0
             if max_val_alres > 0:
                 comp_to_merge = set()
                 for act in [x[activity_key] for x in trace if x[activity_key] in net.lvis_labels]:
@@ -329,11 +336,16 @@ def apply_trace(trace, list_nets, parameters=None):
                         if cons_nets_alres[ind][act] != cons_nets_alres[i][act]:
                             for ind2 in acache[act]:
                                 comp_to_merge.add(ind2)
+                # if the number of border disagreements exceed the specified threshold
+                # then stop iterating on the trace
+                if border_disagreements > threshold_border_agreement:
+                    return None
                 if comp_to_merge:
                     comp_to_merge = sorted(list(comp_to_merge), reverse=True)
                     comp_to_merge_ids = tuple(list(cons_nets[j][0].t_tuple for j in comp_to_merge))
                     if comp_to_merge_ids not in mcache:
-                        mcache[comp_to_merge_ids] = decomp_utils.merge_sublist_nets([cons_nets[zz] for zz in comp_to_merge])
+                        mcache[comp_to_merge_ids] = decomp_utils.merge_sublist_nets(
+                            [cons_nets[zz] for zz in comp_to_merge])
                     new_comp = mcache[comp_to_merge_ids]
                     cons_nets.append(new_comp)
                     j = 0
@@ -354,7 +366,7 @@ def apply_trace(trace, list_nets, parameters=None):
             cons_nets_alres.append(None)
             cons_nets_costs.append(None)
         i = i + 1
-    alignment = recompose_alignment(cons_nets, cons_nets_result,)
+    alignment = recompose_alignment(cons_nets, cons_nets_result, )
     overall_cost_dict = {}
     for cf in cons_nets_costs:
         if cf is not None:
@@ -441,7 +453,7 @@ def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_
     cost_function = utils.construct_standard_cost_function(sync_prod, utils.SKIP)
 
     return __search(sync_prod, sync_initial_marking, sync_final_marking, cost_function,
-                           utils.SKIP), cost_function
+                    utils.SKIP), cost_function
 
 
 def __search(sync_net, ini, fin, cost_function, skip):
