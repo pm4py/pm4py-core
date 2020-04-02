@@ -1,5 +1,3 @@
-import deprecation
-
 from pm4py.objects.conversion.process_tree.versions import to_petri_net
 from pm4py.objects.conversion.process_tree.versions import to_petri_net_transition_bordered
 
@@ -8,8 +6,6 @@ TO_PETRI_NET_TRANSITION_BORDERED = "to_petri_net_transition_bordered"
 
 VERSIONS = {TO_PETRI_NET: to_petri_net.apply, TO_PETRI_NET_TRANSITION_BORDERED: to_petri_net_transition_bordered.apply}
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
 def apply(tree, parameters=None, variant=TO_PETRI_NET):
     """
     Factory method for converting from Process Tree to Petri net

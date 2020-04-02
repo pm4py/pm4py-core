@@ -1,5 +1,3 @@
-import deprecation
-
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.conversion.log.versions import to_event_stream, to_event_log, to_dataframe, df_to_event_log_1v, \
     df_to_event_log_nv
@@ -17,7 +15,5 @@ VERSIONS = {TO_TRACE_LOG: to_event_log.apply, TO_EVENT_LOG: to_event_log.apply, 
             TO_DATAFRAME: to_dataframe.apply, DF_TO_EVENT_LOG_1V: df_to_event_log_1v.apply,
             DF_TO_EVENT_LOG_NV: df_to_event_log_nv.apply}
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
 def apply(log, parameters=None, variant=TO_EVENT_LOG):
     return VERSIONS[variant](log, parameters=parameters)
