@@ -10,7 +10,7 @@ NONSTANDARD = "nonstandard"
 VERSIONS = {ITERPARSE: iterparse_xes.import_log, NONSTANDARD: python_nonstandard.import_log}
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def import_log_from_string(log_string, parameters=None, variant=ITERPARSE):
     """
     Imports a log from a string
@@ -40,7 +40,7 @@ def import_log_from_string(log_string, parameters=None, variant=ITERPARSE):
     return import_log(temp_file, parameters=parameters, variant=variant)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def import_log(path, parameters=None, variant=ITERPARSE):
     """
     Import a XES log into a EventLog object
@@ -72,7 +72,7 @@ def import_log(path, parameters=None, variant=ITERPARSE):
     return VERSIONS[variant](path, parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def apply(path, parameters=None, variant=ITERPARSE):
     """
     Import a XES log into a EventLog object
