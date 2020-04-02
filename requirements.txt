@@ -14,13 +14,3 @@ pyvis
 scipy
 scikit-learn
 stringdist
-
-
-
-
-
-
-
-
-
-
