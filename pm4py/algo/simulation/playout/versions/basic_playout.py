@@ -32,7 +32,7 @@ def apply_playout(net, initial_marking, final_marking=None, no_traces=100, max_t
         trace = log_instance.Trace()
         trace.attributes["concept:name"] = str(i)
         marking = copy(initial_marking)
-        for j in range(100000):
+        while True:
             if final_marking is not None and marking == final_marking:
                 break
             if not semantics.enabled_transitions(net, marking):
