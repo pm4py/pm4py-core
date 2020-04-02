@@ -4,7 +4,7 @@ BASIC_PLAYOUT = "basic_playout"
 VERSIONS = {BASIC_PLAYOUT: basic_playout.apply}
 
 
-def apply(net, initial_marking, parameters=None, variant=BASIC_PLAYOUT):
+def apply(net, initial_marking, final_marking=None, parameters=None, variant=BASIC_PLAYOUT):
     """
     Do the playout of a Petrinet generating a log
 
@@ -14,6 +14,8 @@ def apply(net, initial_marking, parameters=None, variant=BASIC_PLAYOUT):
         Petri net to play-out
     initial_marking
         Initial marking of the Petri net
+    final_marking
+        (If provided) Final marking of the Petri net
     parameters
         Parameters of the algorithm:
             noTraces -> Number of traces of the log to generate
@@ -21,4 +23,4 @@ def apply(net, initial_marking, parameters=None, variant=BASIC_PLAYOUT):
     variant
         Variant of the algorithm to use
     """
-    return VERSIONS[variant](net, initial_marking, parameters=parameters)
+    return VERSIONS[variant](net, initial_marking, final_marking=final_marking, parameters=parameters)
