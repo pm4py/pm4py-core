@@ -11,7 +11,7 @@ PYDOTPLUS = "pydotplus"
 VERSIONS = {PYDOTPLUS: pydotplus.apply}
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use visualizer module instead.')
 def apply(heu_net, parameters=None, variant=PYDOTPLUS):
     """
     Gets a representation of an Heuristics Net
@@ -31,7 +31,7 @@ def apply(heu_net, parameters=None, variant=PYDOTPLUS):
     return VERSIONS[variant](heu_net, parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use visualizer module instead.')
 def view(figure):
     """
     View on the screen a figure that has been rendered
@@ -70,7 +70,7 @@ def view(figure):
             subprocess.call(('xdg-open', figure))
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use visualizer module instead.')
 def save(figure, output_file_path):
     """
     Save a figure that has been rendered

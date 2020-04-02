@@ -1,1 +1,1 @@
-from pm4py.visualization.dfg import factory, algorithm, versions
+from pm4py.visualization.dfg import factory, visualizer, versions
