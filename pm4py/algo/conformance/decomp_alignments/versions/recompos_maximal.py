@@ -68,6 +68,8 @@ def apply(log, net, im, fm, parameters=None):
     parameters[BEST_WORST_COST] = best_worst_cost
 
     list_nets = decomp_utils.decompose(net, im, fm)
+    print(len(list_nets))
+
     return apply_log(log, list_nets, parameters=parameters)
 
 
@@ -336,12 +338,13 @@ def apply_trace(trace, list_nets, parameters=None):
                         if cons_nets_alres[ind][act] != cons_nets_alres[i][act]:
                             for ind2 in acache[act]:
                                 comp_to_merge.add(ind2)
-                # if the number of border disagreements exceed the specified threshold
-                # then stop iterating on the trace
-                if border_disagreements > threshold_border_agreement:
-                    return None
                 if comp_to_merge:
                     comp_to_merge = sorted(list(comp_to_merge), reverse=True)
+                    border_disagreements += len(comp_to_merge)
+                    # if the number of border disagreements exceed the specified threshold
+                    # then stop iterating on the trace
+                    if border_disagreements > threshold_border_agreement:
+                        return None
                     comp_to_merge_ids = tuple(list(cons_nets[j][0].t_tuple for j in comp_to_merge))
                     if comp_to_merge_ids not in mcache:
                         mcache[comp_to_merge_ids] = decomp_utils.merge_sublist_nets(

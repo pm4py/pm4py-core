@@ -26,14 +26,15 @@ def evaluate(aligned_traces, parameters=None):
     if parameters is None:
         parameters = {}
     str(parameters)
-    no_traces = len(aligned_traces)
+    no_traces = len([x for x in aligned_traces if x is not None])
     no_fit_traces = 0
     sum_fitness = 0.0
 
     for tr in aligned_traces:
-        if tr["fitness"] == 1.0:
-            no_fit_traces = no_fit_traces + 1
-        sum_fitness = sum_fitness + tr["fitness"]
+        if tr is not None:
+            if tr["fitness"] == 1.0:
+                no_fit_traces = no_fit_traces + 1
+            sum_fitness = sum_fitness + tr["fitness"]
 
     perc_fit_traces = 0.0
     average_fitness = 0.0
