@@ -116,7 +116,6 @@ setup(
     license='GPL 3.0',
     install_requires=[
         'pyvis',
-        'stringdist',
         'networkx',
         "matplotlib",
         'numpy',
