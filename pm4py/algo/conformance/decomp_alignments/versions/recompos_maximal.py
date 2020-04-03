@@ -68,7 +68,6 @@ def apply(log, net, im, fm, parameters=None):
     parameters[BEST_WORST_COST] = best_worst_cost
 
     list_nets = decomp_utils.decompose(net, im, fm)
-    print(len(list_nets))
 
     return apply_log(log, list_nets, parameters=parameters)
 
