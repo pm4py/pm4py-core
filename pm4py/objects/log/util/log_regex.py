@@ -1,4 +1,3 @@
-from pm4py.statistics.attributes.log import get as attributes_get
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.regex import SharedObj, get_new_char
 from pm4py.util import xes_constants as xes
@@ -74,6 +73,8 @@ def form_encoding_dictio_from_log(log, parameters=None):
     encoding_dictio
         Encoding dictionary
     """
+    from pm4py.statistics.attributes.log import get as attributes_get
+
     if parameters is None:
         parameters = {}
 
