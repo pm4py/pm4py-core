@@ -580,7 +580,7 @@ class SubtreeDFGBased():
                 G.add_edge(act1, act2)
             return G
         else:
-            msg = "networkx is not available. graphs cannot be built!"
+            msg = "networkx is not available. inductive miner cannot be used!"
             logging.error(msg)
             raise Exception(msg)
 
