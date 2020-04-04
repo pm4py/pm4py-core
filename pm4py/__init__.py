@@ -2,7 +2,7 @@ import time
 
 time.clock = time.process_time
 
-from pm4py import util, objects, streaming
+from pm4py import util, streaming
 #from pm4py import algo, evaluation, objects, util, visualization, statistics, streaming
 
 __version__ = '1.2.13'
