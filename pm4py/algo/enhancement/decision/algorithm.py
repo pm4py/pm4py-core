@@ -2,12 +2,11 @@ import pm4py.algo.conformance.alignments.factory as ali
 from pm4py.algo.conformance.alignments.versions import state_equation_a_star as star
 import sys
 import pandas as pd
-from sklearn import tree
 from pm4py.algo.filtering.log.variants import variants_filter as variants_module
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from copy import deepcopy, copy
 from pm4py.util import constants, xes_constants
-from pm4py.objects.log.util import get_log_representation
+from pm4py.statistics.attributes.log.select import select_attributes_from_log_for_tree
 from pm4py.objects.conversion.log import factory as log_conv_factory
 
 
@@ -44,6 +43,8 @@ def get_decision_tree(log, net, initial_marking, final_marking, decision_point=N
     classes
         The classes
     """
+    from sklearn import tree
+
     if parameters is None:
         parameters = {}
     log = log_conv_factory.apply(log, parameters=parameters)
@@ -98,8 +99,7 @@ def apply(log, net, initial_marking, final_marking, decision_point=None, attribu
         raise Exception("please provide decision_point as argument of the method. Possible decision points: ",
                         decision_points_names)
     if attributes is None:
-        str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr = get_log_representation.select_attributes_from_log_for_tree(
-            log)
+        str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr = select_attributes_from_log_for_tree(log)
         attributes = list(str_ev_attr) + list(num_ev_attr)
     I, dp = get_decisions_table(log, net, initial_marking, final_marking, attributes=attributes,
                                 pre_decision_points=[decision_point], parameters=parameters)

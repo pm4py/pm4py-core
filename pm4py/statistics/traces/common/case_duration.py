@@ -1,4 +1,3 @@
-from scipy.stats import gaussian_kde
 import numpy as np
 import json
 import math
@@ -23,6 +22,8 @@ def get_kde_caseduration(duration_values, parameters=None):
     y
         Y-axis values to represent
     """
+    from scipy.stats import gaussian_kde
+
     if parameters is None:
         parameters = {}
 
