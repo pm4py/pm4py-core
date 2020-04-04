@@ -2,7 +2,6 @@ import json
 
 import numpy as np
 import pandas as pd
-from scipy.stats import gaussian_kde
 
 from pm4py.util.points_subset import pick_chosen_points_list
 
@@ -80,6 +79,8 @@ def get_kde_numeric_attribute(values, parameters=None):
     y
         Y-axis values to represent
     """
+    from scipy.stats import gaussian_kde
+
     if parameters is None:
         parameters = {}
 
@@ -141,6 +142,8 @@ def get_kde_date_attribute(values, parameters=None):
     y
         Y-axis values to represent
     """
+    from scipy.stats import gaussian_kde
+
     if parameters is None:
         parameters = {}
 

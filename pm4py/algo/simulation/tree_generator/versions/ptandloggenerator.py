@@ -1,11 +1,10 @@
 from pm4py.objects.process_tree import process_tree
 from pm4py.objects.process_tree import pt_operator
-from scipy.stats import triang as triangular
 import string
 import math
 import itertools
 import random
-import copy
+
 
 def apply(parameters=None):
     """
@@ -98,6 +97,8 @@ class GeneratedTree(object):
         :param max: Highest number
         :return: Distribution object
         """
+        from scipy.stats import triang as triangular
+
         c = (mode - min) / (max - min)
         return triangular(c, loc=min, scale=max - min)
 
