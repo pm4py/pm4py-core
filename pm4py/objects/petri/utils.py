@@ -2,8 +2,6 @@ from copy import copy, deepcopy
 import time
 import random
 
-import networkx as nx
-
 from pm4py.objects import petri
 from pm4py.objects.log.log import Trace, Event
 from pm4py.util import xes_constants as xes_util
@@ -278,6 +276,8 @@ def get_cycles_petri_net_places(net):
     cycles
         Cycles (places) of the Petri net
     """
+    import networkx as nx
+
     graph, inv_dictionary = create_networkx_directed_graph(net)
     cycles = nx.simple_cycles(graph)
     cycles_places = []
@@ -303,6 +303,8 @@ def get_cycles_petri_net_transitions(net):
     cycles
         Cycles (transitions) of the Petri net
     """
+    import networkx as nx
+
     graph, inv_dictionary = create_networkx_directed_graph(net)
     cycles = nx.simple_cycles(graph)
     cycles_trans = []
@@ -371,6 +373,8 @@ def get_strongly_connected_subnets(net):
     strongly_connected_transitions
         List of strongly connected transitions of the Petri net
     """
+    import networkx as nx
+
     graph, inv_dictionary = create_networkx_directed_graph(net)
     sccg = nx.strongly_connected_component_subgraphs(graph)
     strongly_connected_subnets = []

@@ -4,7 +4,6 @@ import subprocess
 import sys
 import tempfile
 
-import networkx as nx
 import numpy as np
 import matplotlib
 from copy import copy
@@ -43,6 +42,8 @@ def apply(metric_values, parameters=None):
     temp_file_name
         Name of a temporary file where the visualization is placed
     """
+    import networkx as nx
+
     if parameters is None:
         parameters = {}
 
