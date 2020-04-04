@@ -1,4 +1,4 @@
-import numpy as np
+import numpy as np, pkgutil, logging
 
 from copy import copy
 
@@ -568,16 +568,21 @@ class SubtreeDFGBased():
         nodes_map
             Correspondence between digraph nodes and activities
         """
-        import networkx as nx
+        if pkgutil.find_loader("networkx"):
+            import networkx as nx
 
-        G = nx.DiGraph()
-        for act in self.activities:
-            G.add_node(act)
-        for el in self.dfg:
-            act1 = el[0][0]
-            act2 = el[0][1]
-            G.add_edge(act1, act2)
-        return G
+            G = nx.DiGraph()
+            for act in self.activities:
+                G.add_node(act)
+            for el in self.dfg:
+                act1 = el[0][0]
+                act2 = el[0][1]
+                G.add_edge(act1, act2)
+            return G
+        else:
+            msg = "networkx is not available. graphs cannot be built!"
+            logging.error(msg)
+            raise Exception(msg)
 
     def put_skips_in_seq_cut(self):
         """
@@ -659,7 +664,12 @@ class SubtreeDFGBased():
         """
         Detect generally a cut in the graph (applying all the algorithms)
         """
-        import networkx as nx
+        if pkgutil.find_loader("networkx"):
+            import networkx as nx
+        else:
+            msg = "networkx is not available. inductive miner cannot be used!"
+            logging.error(msg)
+            raise Exception(msg)
 
         if self.dfg:
             # print("\n\n")
