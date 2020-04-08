@@ -9,8 +9,8 @@ from pm4py.algo.filtering.pandas.auto_filter import auto_filter
 from pm4py.algo.filtering.pandas.cases import case_filter
 from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
 from pm4py.util import constants
-from pm4py.visualization.dfg import algorithm as dfg_vis_factory
-from pm4py.visualization.petrinet import algorithm as pn_vis_factory
+from pm4py.visualization.dfg import visualizer as dfg_vis_factory
+from pm4py.visualization.petrinet import visualizer as pn_vis_factory
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_decorations_from_dfg_spaths_acticount
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_shortest_paths
 

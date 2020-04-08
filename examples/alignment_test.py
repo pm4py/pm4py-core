@@ -7,7 +7,7 @@ from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PAR
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
 from pm4py.objects import log as log_lib
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.petri.importer.pnml import import_net
 from pm4py.objects.petri.align_utils import pretty_print_alignments
 
