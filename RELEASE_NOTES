@@ -144,3 +144,9 @@ This is a minor release, consisting of the following changes:
 
 ===== PM4PY 1.2.13 =====
 This is a minor release, consisting of the following changes:
+1. commit e8f250fec6781c088da8204923ad8817f1b5d689
+    - decision point mining with alignments (for any scikit classification approach)
+2. commit 4ff811ab80b5df15e5ec1da082b4f76c72dcf684
+    - trace attribute hierarchical clustering (MSc Thesis Yukun Cao)
+3. commit 4fca12c1608818348bbd51e390140a8f7e79d7f6
+    - alignments decomposition/recomposition

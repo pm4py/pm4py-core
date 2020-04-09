@@ -129,7 +129,7 @@ class PetriNet(object):
             return self.__target
 
         def __set_weight(self, weight):
-            self.__wight = weight
+            self.__weight = weight
 
         def __get_weight(self):
             return self.__weight
