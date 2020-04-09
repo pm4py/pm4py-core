@@ -1,6 +1,6 @@
 import os
 import unittest
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.importer.csv import algorithm as csv_importer
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
 from pm4py.algo.discovery.alpha import algorithm as alpha_miner
@@ -15,7 +15,7 @@ from pm4py.evaluation.replay_fitness import evaluator as rp_fit
 from pm4py.evaluation.precision import evaluator as precision_factory
 from pm4py.evaluation.generalization import evaluator as generalization
 from pm4py.evaluation.simplicity import evaluator as simplicity
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.log.exporter.csv import algorithm as csv_exporter
 from pm4py.objects.log.exporter.xes import algorithm as xes_exporter
 

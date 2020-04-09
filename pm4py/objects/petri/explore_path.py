@@ -1,5 +1,5 @@
 import numpy as np
-from pm4py.util.lp import algorithm as lp_solver_factory
+from pm4py.util.lp import solver as lp_solver
 from pm4py.objects.petri import align_utils as utils
 from pm4py.objects import petri
 from copy import copy
@@ -25,7 +25,7 @@ def __search(net, ini, fin):
     cost_vec = [x * 1.0 for x in cost_vec]
 
     use_cvxopt = False
-    if lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN or lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT_SOLVER_CUSTOM_ALIGN_ILP:
+    if lp_solver.DEFAULT_LP_SOLVER_VARIANT == lp_solver.CVXOPT_SOLVER_CUSTOM_ALIGN or lp_solver.DEFAULT_LP_SOLVER_VARIANT == lp_solver.CVXOPT_SOLVER_CUSTOM_ALIGN_ILP:
         use_cvxopt = True
 
     if use_cvxopt:
@@ -38,7 +38,7 @@ def __search(net, ini, fin):
         cost_vec = matrix(cost_vec)
 
     h, x = utils.__compute_exact_heuristic_new_version(net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
-                                                       fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
+                                                       fin_vec, lp_solver.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
     ini_state = utils.SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     heapq.heapify(open_set)
@@ -62,7 +62,7 @@ def __search(net, ini, fin):
         while not curr.trust:
             h, x = utils.__compute_exact_heuristic_new_version(net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                                incidence_matrix, curr.m,
-                                                               fin_vec, lp_solver_factory.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
+                                                               fin_vec, lp_solver.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
@@ -73,7 +73,7 @@ def __search(net, ini, fin):
             current_marking = curr.m
 
         # max allowed heuristics value (27/10/2019, due to the numerical instability of some of our solvers)
-        if curr.h > lp_solver_factory.MAX_ALLOWED_HEURISTICS:
+        if curr.h > lp_solver.MAX_ALLOWED_HEURISTICS:
             continue
 
         # 12/10/2019: do it again, since the marking could be changed

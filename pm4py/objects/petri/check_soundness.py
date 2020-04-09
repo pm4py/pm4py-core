@@ -7,7 +7,7 @@ from pm4py.objects.petri import incidence_matrix
 from pm4py.objects.petri import utils as petri_utils
 from pm4py.objects.petri import petrinet
 from pm4py.objects.petri.networkx_graph import create_networkx_undirected_graph
-from pm4py.util.lp import algorithm as lp_solver
+from pm4py.util.lp import solver as lp_solver
 from pm4py.objects.petri import explore_path
 
 DEFAULT_LP_SOLVER_VARIANT = lp_solver.PULP

@@ -5,7 +5,7 @@ import pandas as pd
 
 from pm4py.statistics.attributes.pandas import get as pd_attributes_filter
 from pm4py.statistics.attributes.log import get as log_attributes_filter
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.log.log import EventStream
 from pm4py.util import xes_constants as xes
 from pm4py.statistics.traces.log import case_statistics as log_case_statistics

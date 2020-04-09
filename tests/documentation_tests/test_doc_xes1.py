@@ -7,7 +7,7 @@ class XES1DocumentationTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         import os
-        from pm4py.objects.log.importer.xes import algorithm as xes_importer
+        from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.import_log(os.path.join("input_data", "running-example.xes"))
         log_lenth = len(log)
         first_trace_length = len(log[0])

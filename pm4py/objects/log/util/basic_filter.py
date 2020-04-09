@@ -1,7 +1,7 @@
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.log.log import EventLog, Trace, EventStream
-from pm4py.objects.conversion.log import algorithm as log_conv_fact
+from pm4py.objects.conversion.log import factory as log_conv_fact
 
 
 def filter_log_events_attr(log, values, parameters=None):

@@ -1,4 +1,4 @@
-from pm4py.objects.conversion.log import algorithm as log_conv_factory
+from pm4py.objects.conversion.log import factory as log_conv_factory
 from pm4py.objects.log.log import EventLog
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_RESOURCE_KEY, \
