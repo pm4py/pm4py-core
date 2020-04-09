@@ -1,6 +1,6 @@
 from pm4py.algo.discovery.heuristics.versions import classic
 import pandas
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.conversion.log import factory as log_conversion
 
 
 CLASSIC = "classic"

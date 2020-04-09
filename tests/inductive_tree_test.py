@@ -2,7 +2,7 @@ import os
 import unittest
 
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.visualization.process_tree import algorithm as pt_vis
 from pm4py.objects.process_tree import semantics as pt_semantics
 from pm4py.objects.process_tree import util as pt_util

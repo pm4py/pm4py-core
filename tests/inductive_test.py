@@ -2,13 +2,13 @@ import logging
 import os
 import unittest
 
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNameException
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects import petri
 from pm4py.objects.log.importer.csv import algorithm as csv_importer
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import sampling, sorting, index_attribute
 from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import pnml as petri_exporter

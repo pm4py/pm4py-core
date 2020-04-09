@@ -2,7 +2,7 @@ from pm4py.algo.enhancement.sna.versions.log import handover as log_handover, jo
     subcontracting as log_subcontracting, working_together as log_workingtogether
 from pm4py.algo.enhancement.sna.versions.pandas import handover as pd_handover, subcontracting as pd_subcontracting, \
     working_together as pd_workingtogether, jointactivities as pd_jointactivities
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.conversion.log import factory as log_conversion
 import pandas
 import numpy as np
 

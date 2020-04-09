@@ -7,7 +7,7 @@ class DfGraphDocumentationTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        from pm4py.objects.log.importer.xes import algorithm as xes_importer
+        from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.import_log(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.dfg import algorithm as dfg_alg
         dfg = dfg_alg.apply(log)

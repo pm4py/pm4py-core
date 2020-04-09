@@ -1,4 +1,4 @@
-from pm4py.util.dt_parsing import algorithm as dt_parse_factory
+from pm4py.util.dt_parsing import parser as dt_parser
 import os
 
 from pm4py.objects.log.log import EventLog, Trace, Event
@@ -31,7 +31,7 @@ def import_log(filename, parameters=None):
     if parameters is None:
         parameters = {}
 
-    date_parser = dt_parse_factory.get()
+    date_parser = dt_parser.get()
 
     timestamp_sort = False
     timestamp_key = "time:timestamp"

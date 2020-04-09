@@ -9,7 +9,7 @@ class Classifiers1DocumentationTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        from pm4py.objects.log.importer.xes import algorithm as xes_importer
+        from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.import_log(os.path.join("input_data", "receipt.xes"))
         # print(log.classifiers)
         from pm4py.objects.log.util import insert_classifier
@@ -21,7 +21,7 @@ class Classifiers1DocumentationTest(unittest.TestCase):
         del net
         del initial_marking
         del final_marking
-        from pm4py.objects.log.importer.xes import algorithm as xes_importer
+        from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.import_log(os.path.join("input_data", "receipt.xes"))
         for trace in log:
             for event in trace:

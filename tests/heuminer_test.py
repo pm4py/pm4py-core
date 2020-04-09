@@ -3,7 +3,7 @@ import unittest
 
 from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.visualization.heuristics_net import algorithm as hn_vis
 from pm4py.visualization.petrinet import algorithm as pn_vis
 from tests.constants import INPUT_DATA_DIR

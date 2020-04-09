@@ -8,7 +8,7 @@ from pm4py.statistics.start_activities.log import get as log_sa_filter
 from pm4py.statistics.start_activities.pandas import get as pd_sa_filter
 from pm4py.statistics.end_activities.log import get as log_ea_filter
 from pm4py.statistics.end_activities.pandas import get as pd_ea_filter
-from pm4py.objects.conversion.heuristics_net import algorithm as hn_conv_alg
+from pm4py.objects.conversion.heuristics_net import factory as hn_conv_alg
 from pm4py.objects.heuristics_net import defaults
 from pm4py.objects.heuristics_net.net import HeuristicsNet
 from pm4py.util import xes_constants as xes

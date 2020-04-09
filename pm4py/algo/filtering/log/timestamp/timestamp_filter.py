@@ -1,5 +1,5 @@
 from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
-from pm4py.objects.conversion.log import algorithm as log_converter
+from pm4py.objects.conversion.log import factory as log_converter
 from pm4py.objects.log.log import EventLog, EventStream
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY

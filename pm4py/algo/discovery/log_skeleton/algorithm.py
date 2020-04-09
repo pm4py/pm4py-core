@@ -1,4 +1,4 @@
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.algo.discovery.log_skeleton.versions import classic
 
 CLASSIC = "classic"

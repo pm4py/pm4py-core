@@ -14,8 +14,8 @@ from pm4py.statistics.start_activities.log import get as log_start_act_stats
 from pm4py.statistics.attributes.pandas import get as pd_attributes_stats
 from pm4py.statistics.end_activities.pandas import get as pd_end_act_stats
 from pm4py.statistics.start_activities.pandas import get as pd_start_act_stats
-from pm4py.objects.conversion.process_tree import algorithm as tree_to_petri
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.conversion.process_tree import factory as tree_to_petri
+from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import xes_constants as xes_util
 import pandas

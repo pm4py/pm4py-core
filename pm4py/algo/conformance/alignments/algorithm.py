@@ -9,7 +9,7 @@ from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PAR
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
 from pm4py.statistics.variants.log import get as variants_module
-from pm4py.objects.conversion.log import algorithm as log_converter
+from pm4py.objects.conversion.log import factory as log_converter
 from pm4py.util import xes_constants as xes_util
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY

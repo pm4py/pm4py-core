@@ -6,7 +6,7 @@ from sklearn import tree
 #from pm4py.algo.other.clustering import algorithm as clusterer
 #from pm4py.algo.other.conceptdrift import algorithm as conc_drift_detection_factory
 #from pm4py.algo.other.conceptdrift.utils import get_representation
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import get_log_representation, get_class_representation
 from pm4py.visualization.decisiontree import algorithm as dt_vis
 

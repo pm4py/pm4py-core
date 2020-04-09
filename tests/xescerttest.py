@@ -3,9 +3,9 @@ import os
 import sys
 
 from pm4py.algo.discovery.dfg import algorithm as dfg_factory
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.log.exporter.xes import algorithm as xes_exporter
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import insert_classifier
 from pm4py.util import constants
 from pm4py.visualization.dfg import algorithm as dfg_vis

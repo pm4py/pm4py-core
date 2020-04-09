@@ -3,7 +3,7 @@ import unittest
 
 from pm4py.algo.enhancement.sna import algorithm as sna_alg
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 
 
 class SnaTests(unittest.TestCase):

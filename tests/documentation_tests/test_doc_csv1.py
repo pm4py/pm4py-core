@@ -1,6 +1,6 @@
 import unittest
 
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.conversion.log import factory as log_conversion
 
 
 class CSV1DocumentationTest(unittest.TestCase):
