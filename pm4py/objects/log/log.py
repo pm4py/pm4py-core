@@ -23,6 +23,9 @@ class Event(Mapping):
     def __repr__(self):
         return str(dict(self))
 
+    def __hash__(self):
+        return hash(frozenset(dict(self)))
+
 
 class EventStream(Sequence):
 
@@ -33,6 +36,9 @@ class EventStream(Sequence):
             'globals'] if 'globals' in kwargs else {}
         self._classifiers = kwargs['classifiers'] if 'classifiers' in kwargs else {}
         self._list = list(*args)
+
+    def __hash__(self):
+        return hash(tuple(self))
 
     def __getitem__(self, key):
         return self._list[key]
@@ -87,6 +93,9 @@ class Trace(Sequence):
     def __init__(self, *args, **kwargs):
         self._set_attributes(kwargs['attributes'] if 'attributes' in kwargs else {})
         self._list = list(*args)
+
+    def __hash__(self):
+        return hash(tuple(self))
 
     def __getitem__(self, key):
         return self._list[key]
