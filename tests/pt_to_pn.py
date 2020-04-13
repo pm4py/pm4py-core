@@ -1,11 +1,11 @@
-from pm4py.algo.simulation.tree_generator import algorithm as pt_gen
-from pm4py.objects.conversion.process_tree import algorithm as pt_conv
-from pm4py.visualization.petrinet import algorithm as pn_viz
-from pm4py.visualization.process_tree import algorithm as pt_viz
+from pm4py.algo.simulation.tree_generator import factory as pt_gen
+from pm4py.objects.conversion.process_tree import factory as pt_conv
+from pm4py.visualization.petrinet import visualizer as pn_viz
+from pm4py.visualization.process_tree import visualizer as pt_viz
 from pm4py.objects.process_tree import util as pt_util
 from pm4py.objects.petri import utils as pn_util
 import time
-from pm4py.objects.petri.exporter import algorithm as pn_exp
+from pm4py.objects.petri.exporter import exporter as pn_exp
 
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@ from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNameException
 from pm4py.algo.discovery.alpha import algorithm as alpha_alg
 from pm4py.objects import petri
-from pm4py.objects.log.importer.csv import algorithm as csv_importer
+from pm4py.objects.log.importer.csv import importer as csv_importer
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import sampling, sorting, index_attribute
 from pm4py.objects.petri import check_soundness
