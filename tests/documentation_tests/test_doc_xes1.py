@@ -21,7 +21,7 @@ class XES1DocumentationTest(unittest.TestCase):
         first_event_first_trace_concept_name = log[0][0]["concept:name"]
         del first_trace_concept_name
         del first_event_first_trace_concept_name
-        from pm4py.objects.log.exporter.xes import algorithm as xes_exporter
+        from pm4py.objects.log.exporter.xes import exporter as xes_exporter
         xes_exporter.export_log(log, "exportedLog.xes")
         os.remove("exportedLog.xes")
 

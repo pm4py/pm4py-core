@@ -1,7 +1,7 @@
 import os
 import unittest
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.objects.log.importer.csv import algorithm as csv_importer
+from pm4py.objects.log.importer.csv import importer as csv_importer
 from pm4py.algo.discovery.log_skeleton import algorithm as lsk_alg
 from pm4py.algo.conformance.log_skeleton import algorithm as lsk_conf_alg
 from pm4py.statistics.performance_spectrum.versions import log as log_pspectrum

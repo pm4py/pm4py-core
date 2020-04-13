@@ -37,7 +37,7 @@ class DocMeasuresDocumentationTest(unittest.TestCase):
         simplicity_inductive = simplicity.apply(inductive_petri)
         del simplicity_alpha
         del simplicity_inductive
-        from pm4py.evaluation import algorithm as evaluation_alg
+        from pm4py.evaluation import factory as evaluation_alg
         alpha_evaluation_result = evaluation_alg.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking)
         inductive_evaluation_result = evaluation_alg.apply(log, inductive_petri, inductive_initial_marking,
                                                                inductive_final_marking)
