@@ -17,6 +17,7 @@ if __name__ == "__main__":
     from examples import token_replay_imdf
     from examples import decisiontree_trivial_example
     from examples import decisiontree_align_example
+    from examples import align_decomposition_example
     from examples import parquet
     from examples import sna_log
     from examples import transition_system_test
@@ -57,6 +58,8 @@ if __name__ == "__main__":
     decisiontree_trivial_example.execute_script()
     print("\n\ndecisiontree_align_example")
     decisiontree_align_example.execute_script()
+    print("\n\nalign_decomposition_example")
+    align_decomposition_example.execute_script()
     print("\n\ndfg_min_ex")
     dfg_min_ex.execute_script()
     print("\n\nparquet")
