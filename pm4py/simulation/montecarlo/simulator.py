@@ -6,8 +6,6 @@ DEFAULT_VARIANT = PETRI_SEMAPH_FIFO
 
 VERSIONS = {PETRI_SEMAPH_FIFO: petri_semaph_fifo.apply}
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use simulator module instead.')
 def apply(log, net, im, fm, variant=PETRI_SEMAPH_FIFO, parameters=None):
     """
     Performs a Monte Carlo simulation of an accepting Petri net without duplicate transitions and where the preset is always
