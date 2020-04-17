@@ -83,6 +83,7 @@
 <li><a class="reference internal" href="#">pm4py.objects.petri.exporter package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.petri.exporter.exporter">pm4py.objects.petri.exporter.exporter module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.petri.exporter.factory">pm4py.objects.petri.exporter.factory module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.petri.exporter.pnml">pm4py.objects.petri.exporter.pnml module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.petri.exporter">Module contents</a></li>
@@ -170,6 +171,27 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.objects.petri.exporter.exporter">
+<span id="pm4py-objects-petri-exporter-exporter-module"></span><h2>pm4py.objects.petri.exporter.exporter module<a class="headerlink" href="#module-pm4py.objects.petri.exporter.exporter" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.petri.exporter.exporter.apply">
+<code class="sig-prename descclassname">pm4py.objects.petri.exporter.exporter.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">output_filename</em>, <em class="sig-param">final_marking=None</em>, <em class="sig-param">variant='pnml'</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/exporter/exporter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.exporter.exporter.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export a Petri net along with an initial marking (and possibly a final marking) to an output file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>output_filename</strong> – Output filename</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pnml</p></li>
+<li><p><strong>parameters</strong> – Parameters of the exporter</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.objects.petri.exporter.factory">
 <span id="pm4py-objects-petri-exporter-factory-module"></span><h2>pm4py.objects.petri.exporter.factory module<a class="headerlink" href="#module-pm4py.objects.petri.exporter.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -188,6 +210,9 @@
 </ul>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use exproter module instead.</p>
+</div>
 </dd></dl>
 
 </div>

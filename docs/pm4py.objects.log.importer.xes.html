@@ -84,6 +84,7 @@
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.importer.xes.factory">pm4py.objects.log.importer.xes.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.importer.xes.importer">pm4py.objects.log.importer.xes.importer module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.importer.xes">Module contents</a></li>
 </ul>
 </li>
@@ -206,6 +207,9 @@ max_no_traces_to_import -&gt; Specify the maximum number of traces to import fro
 <dd class="field-odd"><p>log</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use importer module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -242,11 +246,128 @@ max_no_traces_to_import -&gt; Specify the maximum number of traces to import fro
 <dd class="field-odd"><p>log</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use importer module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.importer.xes.factory.import_log_from_string">
 <code class="sig-prename descclassname">pm4py.objects.log.importer.xes.factory.</code><code class="sig-name descname">import_log_from_string</code><span class="sig-paren">(</span><em class="sig-param">log_string</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='iterparse'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/xes/factory.html#import_log_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.xes.factory.import_log_from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports a log from a string</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log_string</strong> – String that contains the XES</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including</dt><dd><p>timestamp_sort -&gt; Specify if we should sort log by timestamp
+timestamp_key -&gt; If sort is enabled, then sort the log by using this key
+reverse_sort -&gt; Specify in which direction the log should be sorted
+index_trace_indexes -&gt; Specify if trace indexes should be added as event attribute for each event
+max_no_traces_to_import -&gt; Specify the maximum number of traces to import from the log
+(read in order in the XML file)</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, including:</dt><dd><p>iterparse, nonstandard</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Trace log object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>log</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use importer module instead.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.importer.xes.importer">
+<span id="pm4py-objects-log-importer-xes-importer-module"></span><h2>pm4py.objects.log.importer.xes.importer module<a class="headerlink" href="#module-pm4py.objects.log.importer.xes.importer" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.importer.xes.importer.apply">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.xes.importer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='iterparse'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/xes/importer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.xes.importer.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import a XES log into a EventLog object</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path</strong> – Log path</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including</dt><dd><p>timestamp_sort -&gt; Specify if we should sort log by timestamp
+timestamp_key -&gt; If sort is enabled, then sort the log by using this key
+reverse_sort -&gt; Specify in which direction the log should be sorted
+index_trace_indexes -&gt; Specify if trace indexes should be added as event attribute for each event
+max_no_traces_to_import -&gt; Specify the maximum number of traces to import from the log
+(read in order in the XML file)</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, including:</dt><dd><p>iterparse, nonstandard</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Trace log object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>log</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.importer.xes.importer.import_log">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.xes.importer.</code><code class="sig-name descname">import_log</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='iterparse'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/xes/importer.html#import_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.xes.importer.import_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import a XES log into a EventLog object</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path</strong> – Log path</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including</dt><dd><p>timestamp_sort -&gt; Specify if we should sort log by timestamp
+timestamp_key -&gt; If sort is enabled, then sort the log by using this key
+reverse_sort -&gt; Specify in which direction the log should be sorted
+index_trace_indexes -&gt; Specify if trace indexes should be added as event attribute for each event
+max_no_traces_to_import -&gt; Specify the maximum number of traces to import from the log
+(read in order in the XML file)</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, including:</dt><dd><p>iterparse, nonstandard</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Trace log object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>log</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.importer.xes.importer.import_log_from_string">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.xes.importer.</code><code class="sig-name descname">import_log_from_string</code><span class="sig-paren">(</span><em class="sig-param">log_string</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='iterparse'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/xes/importer.html#import_log_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.xes.importer.import_log_from_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imports a log from a string</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
