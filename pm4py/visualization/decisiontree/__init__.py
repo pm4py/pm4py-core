@@ -1,1 +1,1 @@
-from pm4py.visualization.decisiontree import versions, factory
+from pm4py.visualization.decisiontree import versions, factory, visualizer

@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay import factory as token_replay
 from pm4py.evaluation.generalization.versions import token_based as generalization_token_based
@@ -18,7 +20,8 @@ PARAM_GENERALIZATION_WEIGHT = 'generalization_weight'
 PARAMETERS = [PARAM_ACTIVITY_KEY, PARAM_FITNESS_WEIGHT, PARAM_PRECISION_WEIGHT, PARAM_SIMPLICITY_WEIGHT,
               PARAM_GENERALIZATION_WEIGHT]
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use individual entry point instead')
 def apply_token_replay(log, net, initial_marking, final_marking, parameters=None):
     """
     Calculates all metrics based on token-based replay and returns a unified dictionary
@@ -100,6 +103,7 @@ def apply_token_replay(log, net, initial_marking, final_marking, parameters=None
 TOKEN_BASED = "token_based"
 VERSIONS = {TOKEN_BASED: apply_token_replay}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use individual entry points instead')
 def apply(log, net, initial_marking, final_marking, parameters=None, variant="token_based"):
     return VERSIONS[variant](log, net, initial_marking, final_marking, parameters=parameters)

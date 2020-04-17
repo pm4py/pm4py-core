@@ -2,7 +2,7 @@ import os
 import time
 
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.algo.discovery.inductive import factory as inductive_factory
+from pm4py.algo.discovery.inductive import algorithm as inductive_factory
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.algo.filtering.pandas.cases import case_filter
 from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
@@ -10,7 +10,7 @@ from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
 from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
 from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.util import constants
-from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.visualization.petrinet import visualizer as pn_vis_factory
 from pm4py.visualization.petrinet.util import vis_trans_shortest_paths
 
 MAX_NO_ACTIVITIES = 25

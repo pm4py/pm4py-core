@@ -1,7 +1,7 @@
 import os
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.objects.log.serialization import factory as serialization_factory
-from pm4py.objects.log.deserialization import factory as deserialization_factory
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.objects.log.serialization import serializer as serialization_factory
+from pm4py.objects.log.deserialization import algorithm as deserialization_factory
 from pm4py.objects.conversion.log import factory as log_conf_factory
 
 

@@ -2,15 +2,15 @@ import os
 import time
 
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.algo.discovery.inductive import factory as inductive_factory
+from pm4py.algo.discovery.inductive import algorithm as inductive_factory
 from pm4py.objects.dfg.filtering import dfg_filtering
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
 from pm4py.algo.filtering.pandas.auto_filter import auto_filter
 from pm4py.algo.filtering.pandas.cases import case_filter
 from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
 from pm4py.util import constants
-from pm4py.visualization.dfg import factory as dfg_vis_factory
-from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.visualization.dfg import visualizer as dfg_vis_factory
+from pm4py.visualization.petrinet import visualizer as pn_vis_factory
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_decorations_from_dfg_spaths_acticount
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_shortest_paths
 

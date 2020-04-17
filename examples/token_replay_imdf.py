@@ -1,9 +1,9 @@
 import os
 
-from pm4py.algo.conformance.tokenreplay import factory as token_replay
-from pm4py.algo.discovery.inductive import factory as inductive_factory
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
+from pm4py.algo.discovery.inductive import algorithm as inductive_factory
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.visualization.petrinet import visualizer as pn_vis_factory
 
 
 def execute_script():

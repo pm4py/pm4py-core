@@ -1,11 +1,13 @@
 from pm4py.algo.simulation.tree_generator.versions import basic, ptandloggenerator
+import deprecation
 
 BASIC = "basic"
 PTANDLOGGENERATOR = "ptandloggenerator"
 
 VERSIONS = {BASIC: basic.apply, PTANDLOGGENERATOR: ptandloggenerator.apply}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use simulation entrypoint on root level instead.')
 def apply(variant=PTANDLOGGENERATOR, parameters=None):
     """
     Generate a process tree

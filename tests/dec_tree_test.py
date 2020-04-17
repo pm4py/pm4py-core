@@ -3,12 +3,12 @@ import unittest
 
 from sklearn import tree
 
-#from pm4py.algo.other.clustering import factory as clusterer
-#from pm4py.algo.other.conceptdrift import factory as conc_drift_detection_factory
+#from pm4py.algo.other.clustering import algorithm as clusterer
+#from pm4py.algo.other.conceptdrift import algorithm as conc_drift_detection_factory
 #from pm4py.algo.other.conceptdrift.utils import get_representation
-from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import get_log_representation, get_class_representation
-from pm4py.visualization.decisiontree import factory as dt_vis_factory
+from pm4py.visualization.decisiontree import visualizer as dt_vis
 
 
 class DecisionTreeTest(unittest.TestCase):
@@ -23,7 +23,7 @@ class DecisionTreeTest(unittest.TestCase):
                                                                                                        "concept:name")
         clf = tree.DecisionTreeClassifier(max_depth=7)
         clf.fit(data, target)
-        gviz = dt_vis_factory.apply(clf, feature_names, classes, parameters={"format": "svg"})
+        gviz = dt_vis.apply(clf, feature_names, classes, parameters={"format": "svg"})
         del gviz
 
     def test_decisiontree_traceduration(self):
@@ -36,7 +36,7 @@ class DecisionTreeTest(unittest.TestCase):
         target, classes = get_class_representation.get_class_representation_by_trace_duration(log, 2 * 8640000)
         clf = tree.DecisionTreeClassifier(max_depth=7)
         clf.fit(data, target)
-        gviz = dt_vis_factory.apply(clf, feature_names, classes, parameters={"format": "svg"})
+        gviz = dt_vis.apply(clf, feature_names, classes, parameters={"format": "svg"})
         del gviz
 
 

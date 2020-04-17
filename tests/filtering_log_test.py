@@ -7,7 +7,7 @@ from pm4py.algo.filtering.log.end_activities import end_activities_filter
 from pm4py.algo.filtering.log.paths import paths_filter
 from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.algo.filtering.log.variants import variants_filter as variants_module
-from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.statistics.traces.log import case_statistics
 from pm4py.algo.filtering.log.ltl import ltl_checker
 from tests.constants import INPUT_DATA_DIR

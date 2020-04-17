@@ -1,4 +1,4 @@
-from pm4py.objects.log.importer.xes import factory as xes_import_factory
+from pm4py.objects.log.importer.xes import algorithm as xes_import_factory
 
 import inspect
 import os
