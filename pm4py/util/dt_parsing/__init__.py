@@ -1,1 +1,1 @@
-from pm4py.util.dt_parsing import factory, versions
+from pm4py.util.dt_parsing import factory, parser, versions

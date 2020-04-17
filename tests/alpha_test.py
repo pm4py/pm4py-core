@@ -2,13 +2,13 @@ import logging
 import os
 import unittest
 
-from pm4py.objects.conversion.log import factory as log_conv_fact
+from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNameException
-from pm4py.algo.discovery.alpha import factory as alpha_factory
+from pm4py.algo.discovery.alpha import algorithm as alpha_alg
 from pm4py.objects import petri
-from pm4py.objects.log.importer.csv import factory as csv_importer
-from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.objects.log.importer.csv import importer as csv_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import sampling, sorting, index_attribute
 from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import pnml as petri_exporter
@@ -26,8 +26,8 @@ class AlphaMinerTest(unittest.TestCase):
             log = xes_importer.import_log(log_name)
         else:
             event_log = csv_importer.import_event_stream(log_name)
-            log = log_conv_fact.apply(event_log)
-        net, marking, fmarking = alpha_factory.apply(log)
+            log = log_conversion.apply(event_log)
+        net, marking, fmarking = alpha_alg.apply(log)
         soundness = check_soundness.check_petri_wfnet_and_soundness(net)
         del soundness
 

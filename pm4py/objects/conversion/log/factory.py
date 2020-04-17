@@ -15,6 +15,5 @@ VERSIONS = {TO_TRACE_LOG: to_event_log.apply, TO_EVENT_LOG: to_event_log.apply, 
             TO_DATAFRAME: to_dataframe.apply, DF_TO_EVENT_LOG_1V: df_to_event_log_1v.apply,
             DF_TO_EVENT_LOG_NV: df_to_event_log_nv.apply}
 
-
 def apply(log, parameters=None, variant=TO_EVENT_LOG):
     return VERSIONS[variant](log, parameters=parameters)

@@ -1,14 +1,14 @@
 import os
 import unittest
 
-from pm4py.algo.conformance.alignments import factory as align_factory
+from pm4py.algo.conformance.alignments import algorithm as align_alg
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.objects import petri
-from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import pnml as petri_exporter
 from pm4py.objects.petri.importer import pnml as petri_importer
-from pm4py.algo.discovery.inductive import factory as inductive_miner
+from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 
 
@@ -62,7 +62,7 @@ class PetriImportExportTest(unittest.TestCase):
             if not p.out_arcs:
                 final_marking[p] = 1
         for trace in log:
-            cf_result = align_factory.apply(trace, imported_petri1, marking1, final_marking, version=align_factory.VERSION_DIJKSTRA_NO_HEURISTICS)['alignment']
+            cf_result = align_alg.apply(trace, imported_petri1, marking1, final_marking, version=align_alg.VERSION_DIJKSTRA_NO_HEURISTICS)['alignment']
             is_fit = True
             for couple in cf_result:
                 if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] is None):

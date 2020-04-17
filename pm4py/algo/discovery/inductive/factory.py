@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.algo.discovery.inductive.versions.dfg import dfg_based_old, dfg_based
 
 DFG_BASED_OLD_VERSION = 'dfg_based_old_version'
@@ -24,7 +26,8 @@ VERSIONS_VARIANTS = {DFG_BASED: dfg_based.apply_variants, DFG_BASED_OLD_VERSION:
 VERSIONS_TREE_VARIANTS = {DFG_BASED: dfg_based.apply_tree_variants,
                           DFG_BASED_OLD_VERSION: dfg_based_old.apply_tree_variants}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, parameters=None, variant=DEFAULT_VARIANT):
     """
     Apply the IMDF algorithm to a log obtaining a Petri net along with an initial and final marking
@@ -53,7 +56,8 @@ def apply(log, parameters=None, variant=DEFAULT_VARIANT):
     """
     return VERSIONS[variant](log, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
     """
     Apply the IMDF algorithm to a DFG graph obtaining a Petri net along with an initial and final marking
@@ -82,7 +86,8 @@ def apply_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
     """
     return VERSIONS_DFG[variant](dfg, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply_tree(log, parameters=None, variant=DEFAULT_VARIANT):
     """
     Apply the IMDF algorithm to a log obtaining a process tree
@@ -107,7 +112,8 @@ def apply_tree(log, parameters=None, variant=DEFAULT_VARIANT):
     """
     return VERSIONS_TREE[variant](log, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply_tree_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
     """
     Apply the IMDF algorithm to a DFG graph obtaining a process tree
@@ -132,7 +138,8 @@ def apply_tree_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
     """
     return VERSIONS_TREE_DFG[variant](dfg, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply_variants(variants, parameters=None, variant=DEFAULT_VARIANT):
     """
     Apply the IMDF algorithm to a dictionary/list/set of variants obtaining a Petri net along with an initial and final marking
@@ -161,7 +168,8 @@ def apply_variants(variants, parameters=None, variant=DEFAULT_VARIANT):
     """
     return VERSIONS_VARIANTS[variant](variants, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply_tree_variants(variants, parameters=None, variant=DEFAULT_VARIANT):
     """
     Apply the IMDF algorithm to a dictionary/list/set of variants a log obtaining a process tree

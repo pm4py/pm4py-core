@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py import util as pmutil
 from pm4py.evaluation.replay_fitness.versions import alignment_based, token_replay
 from pm4py.objects.conversion.log import factory as log_conversion
@@ -11,7 +13,8 @@ VERSIONS_EVALUATION = {ALIGNMENT_BASED: alignment_based.evaluate, TOKEN_BASED: t
 
 PARAM_ACTIVITY_KEY = 'activity_key'
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use evaluator entrypoint instead')
 def apply(log, petri_net, initial_marking, final_marking, parameters=None, variant=None):
     """
     Apply fitness evaluation starting from an event log and a marked Petri net,
@@ -58,7 +61,8 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None, varia
     return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), petri_net,
                              initial_marking, final_marking, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use evaluator entrypoint instead')
 def evaluate(results, parameters=None, variant="token_replay"):
     """
     Evaluate replay results when the replay algorithm has already been applied
