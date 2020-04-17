@@ -83,9 +83,7 @@
 <li><a class="reference internal" href="#">pm4py.algo.discovery.inductive.versions.dfg.util package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans">pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans module</a></li>
-<li><a class="reference internal" href="#module-pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa module</a></li>
-<li><a class="reference internal" href="#module-pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb module</a></li>
-<li><a class="reference internal" href="#module-pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add">pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.inductive.versions.dfg.util">Module contents</a></li>
 </ul>
 </li>
@@ -162,7 +160,7 @@
 <span id="pm4py-algo-discovery-inductive-versions-dfg-util-check-skip-trans-module"></span><h2>pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans module<a class="headerlink" href="#module-pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.verify_skip_for_parallel_cut">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.</code><code class="descname">verify_skip_for_parallel_cut</code><span class="sig-paren">(</span><em>dfg</em>, <em>children</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/check_skip_trans.html#verify_skip_for_parallel_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.verify_skip_for_parallel_cut" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.</code><code class="sig-name descname">verify_skip_for_parallel_cut</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">children</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/check_skip_trans.html#verify_skip_for_parallel_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.verify_skip_for_parallel_cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify skip necessity, specific version for parallel cuts</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -182,7 +180,7 @@
 
 <dl class="function">
 <dt id="pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.verify_skip_transition_necessity">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.</code><code class="descname">verify_skip_transition_necessity</code><span class="sig-paren">(</span><em>must_add_skip</em>, <em>initial_dfg</em>, <em>dfg</em>, <em>activities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/check_skip_trans.html#verify_skip_transition_necessity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.verify_skip_transition_necessity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.</code><code class="sig-name descname">verify_skip_transition_necessity</code><span class="sig-paren">(</span><em class="sig-param">must_add_skip</em>, <em class="sig-param">initial_dfg</em>, <em class="sig-param">dfg</em>, <em class="sig-param">activities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/check_skip_trans.html#verify_skip_transition_necessity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.check_skip_trans.verify_skip_transition_necessity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Utility functions that decides if the skip transition is necessary</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -197,11 +195,11 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa">
-<span id="pm4py-algo-discovery-inductive-versions-dfg-util-get-tree-repr-imdfa-module"></span><h2>pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa module<a class="headerlink" href="#module-pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based">
+<span id="pm4py-algo-discovery-inductive-versions-dfg-util-get-tree-repr-dfg-based-module"></span><h2>pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based module<a class="headerlink" href="#module-pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.check_loop_need">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.</code><code class="descname">check_loop_need</code><span class="sig-paren">(</span><em>spec_tree_struct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfa.html#check_loop_need"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.check_loop_need" title="Permalink to this definition">¶</a></dt>
+<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.check_loop_need">
+<code class="sig-prename descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.</code><code class="sig-name descname">check_loop_need</code><span class="sig-paren">(</span><em class="sig-param">spec_tree_struct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_dfg_based.html#check_loop_need"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.check_loop_need" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a forced loop transitions shall be added</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -217,68 +215,14 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.get_new_hidden_trans">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.</code><code class="descname">get_new_hidden_trans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfa.html#get_new_hidden_trans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.get_new_hidden_trans" title="Permalink to this definition">¶</a></dt>
+<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.get_new_hidden_trans">
+<code class="sig-prename descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.</code><code class="sig-name descname">get_new_hidden_trans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_dfg_based.html#get_new_hidden_trans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.get_new_hidden_trans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a hidden node (transition) in the process tree</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.get_repr">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.</code><code class="descname">get_repr</code><span class="sig-paren">(</span><em>spec_tree_struct</em>, <em>rec_depth</em>, <em>must_add_skip=False</em>, <em>contains_empty_traces=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfa.html#get_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.get_repr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the representation of a process tree</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>spec_tree_struct</strong> – Internal tree structure (after application of Inductive Miner)</p></li>
-<li><p><strong>rec_depth</strong> – Current recursion depth</p></li>
-<li><p><strong>must_add_skip</strong> – Boolean value that indicate if we are forced to add the skip</p></li>
-<li><p><strong>contains_empty_traces</strong> – Boolean value that is True if the event log from which the DFG has been extracted contains empty traces</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Representation of the tree (could be printed, transformed, viewed)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>final_tree_repr</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.get_transition">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.</code><code class="descname">get_transition</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfa.html#get_transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfa.get_transition" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a node (transition) with the specified label in the process tree</p>
-</dd></dl>
-
-</div>
-<div class="section" id="module-pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb">
-<span id="pm4py-algo-discovery-inductive-versions-dfg-util-get-tree-repr-imdfb-module"></span><h2>pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb module<a class="headerlink" href="#module-pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.check_loop_need">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.</code><code class="descname">check_loop_need</code><span class="sig-paren">(</span><em>spec_tree_struct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfb.html#check_loop_need"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.check_loop_need" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check whether a forced loop transitions shall be added</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>spec_tree_struct</strong> – Internal tree structure (after application of Inductive Miner)</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Checks if the loop on the subtree is needed</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>need_loop_on_subtree</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.get_new_hidden_trans">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.</code><code class="descname">get_new_hidden_trans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfb.html#get_new_hidden_trans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.get_new_hidden_trans" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a hidden node (transition) in the process tree</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.get_repr">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.</code><code class="descname">get_repr</code><span class="sig-paren">(</span><em>spec_tree_struct</em>, <em>rec_depth</em>, <em>contains_empty_traces=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfb.html#get_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.get_repr" title="Permalink to this definition">¶</a></dt>
+<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.get_repr">
+<code class="sig-prename descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.</code><code class="sig-name descname">get_repr</code><span class="sig-paren">(</span><em class="sig-param">spec_tree_struct</em>, <em class="sig-param">rec_depth</em>, <em class="sig-param">contains_empty_traces=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_dfg_based.html#get_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.get_repr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the representation of a process tree</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -298,30 +242,9 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.get_transition">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.</code><code class="descname">get_transition</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_imdfb.html#get_transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_imdfb.get_transition" title="Permalink to this definition">¶</a></dt>
+<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.get_transition">
+<code class="sig-prename descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.</code><code class="sig-name descname">get_transition</code><span class="sig-paren">(</span><em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/get_tree_repr_dfg_based.html#get_transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.get_tree_repr_dfg_based.get_transition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a node (transition) with the specified label in the process tree</p>
-</dd></dl>
-
-</div>
-<div class="section" id="module-pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add">
-<span id="pm4py-algo-discovery-inductive-versions-dfg-util-petri-el-add-module"></span><h2>pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add module<a class="headerlink" href="#module-pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add.get_new_hidden_trans">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add.</code><code class="descname">get_new_hidden_trans</code><span class="sig-paren">(</span><em>counts</em>, <em>type_trans='unknown'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/petri_el_add.html#get_new_hidden_trans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add.get_new_hidden_trans" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new hidden transition in the Petri net</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add.get_new_place">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add.</code><code class="descname">get_new_place</code><span class="sig-paren">(</span><em>counts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/petri_el_add.html#get_new_place"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add.get_new_place" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new place in the Petri net</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add.get_transition">
-<code class="descclassname">pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add.</code><code class="descname">get_transition</code><span class="sig-paren">(</span><em>counts</em>, <em>label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/versions/dfg/util/petri_el_add.html#get_transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.versions.dfg.util.petri_el_add.get_transition" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a transitions with the specified label in the Petri net</p>
 </dd></dl>
 
 </div>

@@ -177,13 +177,14 @@
 <span id="pm4py-algo-simulation-playout-factory-module"></span><h2>pm4py.algo.simulation.playout.factory module<a class="headerlink" href="#module-pm4py.algo.simulation.playout.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.simulation.playout.factory.apply">
-<code class="descclassname">pm4py.algo.simulation.playout.factory.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>net</em>, <em>initial_marking</em>, <em>parameters=None</em>, <em>variant='basic_playout'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/playout/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.playout.factory.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.simulation.playout.factory.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking=None</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='basic_playout'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/playout/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.playout.factory.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do the playout of a Petrinet generating a log</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
 <li><p><strong>net</strong> – Petri net to play-out</p></li>
 <li><p><strong>initial_marking</strong> – Initial marking of the Petri net</p></li>
+<li><p><strong>final_marking</strong> – (If provided) Final marking of the Petri net</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
 <dt>Parameters of the algorithm:</dt><dd><p>noTraces -&gt; Number of traces of the log to generate
