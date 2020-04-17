@@ -156,3 +156,9 @@ This is a minor release, consisting of the following changes:
     - added the possibility to provide the final marking to the playout factory
 6. commit 4a74ef159d03d3cf3ca43bd7c99f5f97da16baf8
     - fixed some problems in the evaluation of replay fitness of recomposed alignments
+7. commit 9a5a64ea2941d69be07ee0e93b771c80f5820166
+    - introduced hash functions for event log objects
+8. commit 1f40a17dcade522d308b56a9f53b40c5b8a95dfc
+    - cleaning circular dependencies. relaxing some absolutely strict dependencies for some border-line configurations.
+9. commit 52f23361499ca1b850bef4607c25bdfd21001283
+    - updated release notes and documentation
