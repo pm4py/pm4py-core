@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pm4py.algo.discovery.simple.filtering.log.versions package &mdash; pm4py  documentation</title>
+  <title>pm4py.objects.dfg package &mdash; pm4py  documentation</title>
   
 
   
@@ -80,10 +80,9 @@
             
               <!-- Local TOC -->
               <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">pm4py.algo.discovery.simple.filtering.log.versions package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-pm4py.algo.discovery.simple.filtering.log.versions.filter_topvariants_soundmodel">pm4py.algo.discovery.simple.filtering.log.versions.filter_topvariants_soundmodel module</a></li>
-<li><a class="reference internal" href="#module-pm4py.algo.discovery.simple.filtering.log.versions">Module contents</a></li>
+<li><a class="reference internal" href="#">pm4py.objects.dfg package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.dfg">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -131,13 +130,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>pm4py.algo.discovery.simple.filtering.log.versions package</li>
+      <li>pm4py.objects.dfg package</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/pm4py.algo.discovery.simple.filtering.log.versions.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/pm4py.objects.dfg.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -150,44 +149,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pm4py-algo-discovery-simple-filtering-log-versions-package">
-<h1>pm4py.algo.discovery.simple.filtering.log.versions package<a class="headerlink" href="#pm4py-algo-discovery-simple-filtering-log-versions-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-pm4py.algo.discovery.simple.filtering.log.versions.filter_topvariants_soundmodel">
-<span id="pm4py-algo-discovery-simple-filtering-log-versions-filter-topvariants-soundmodel-module"></span><h2>pm4py.algo.discovery.simple.filtering.log.versions.filter_topvariants_soundmodel module<a class="headerlink" href="#module-pm4py.algo.discovery.simple.filtering.log.versions.filter_topvariants_soundmodel" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="pm4py.algo.discovery.simple.filtering.log.versions.filter_topvariants_soundmodel.apply">
-<code class="descclassname">pm4py.algo.discovery.simple.filtering.log.versions.filter_topvariants_soundmodel.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/simple/filtering/log/versions/filter_topvariants_soundmodel.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.simple.filtering.log.versions.filter_topvariants_soundmodel.apply" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a log from which a sound workflow net could be extracted taking into account
-a discovery algorithm returning models only with visible transitions</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul>
-<li><p><strong>log</strong> – Trace log</p></li>
-<li><p><strong>parameters</strong> –</p>
-<dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>discovery_algorithm -&gt; Discovery algorithm to consider, possible choices: alphaclassic
-max_no_variants -&gt; Maximum number of variants to consider to return a Petri net
-variants_list - &gt; List of variants to use</p>
-</dd>
-</dl>
+  <div class="section" id="pm4py-objects-dfg-package">
+<h1>pm4py.objects.dfg package<a class="headerlink" href="#pm4py-objects-dfg-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pm4py.objects.dfg.filtering.html">pm4py.objects.dfg.filtering package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.dfg.filtering.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.dfg.filtering.html#module-pm4py.objects.dfg.filtering.dfg_filtering">pm4py.objects.dfg.filtering.dfg_filtering module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.dfg.filtering.html#module-pm4py.objects.dfg.filtering">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pm4py.objects.dfg.retrieval.html">pm4py.objects.dfg.retrieval package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.dfg.retrieval.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.dfg.retrieval.html#module-pm4py.objects.dfg.retrieval.log">pm4py.objects.dfg.retrieval.log module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.dfg.retrieval.html#module-pm4py.objects.dfg.retrieval.pandas">pm4py.objects.dfg.retrieval.pandas module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.dfg.retrieval.html#module-pm4py.objects.dfg.retrieval">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pm4py.objects.dfg.utils.html">pm4py.objects.dfg.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.dfg.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.dfg.utils.html#module-pm4py.objects.dfg.utils.dfg_utils">pm4py.objects.dfg.utils.dfg_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.dfg.utils.html#module-pm4py.objects.dfg.utils">Module contents</a></li>
+</ul>
 </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Filtered log</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>filtered_log</p>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
-<div class="section" id="module-pm4py.algo.discovery.simple.filtering.log.versions">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.algo.discovery.simple.filtering.log.versions" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.objects.dfg">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.objects.dfg" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 

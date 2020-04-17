@@ -158,60 +158,9 @@
 </div>
 <div class="section" id="module-pm4py.algo.discovery.dfg.adapters.pandas.df_statistics">
 <span id="pm4py-algo-discovery-dfg-adapters-pandas-df-statistics-module"></span><h2>pm4py.algo.discovery.dfg.adapters.pandas.df_statistics module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.adapters.pandas.df_statistics" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="pm4py.algo.discovery.dfg.adapters.pandas.df_statistics.get_dfg_graph">
-<code class="descclassname">pm4py.algo.discovery.dfg.adapters.pandas.df_statistics.</code><code class="descname">get_dfg_graph</code><span class="sig-paren">(</span><em>df</em>, <em>measure='frequency'</em>, <em>activity_key='concept:name'</em>, <em>case_id_glue='case:concept:name'</em>, <em>timestamp_key='time:timestamp'</em>, <em>perf_aggregation_key='mean'</em>, <em>sort_caseid_required=True</em>, <em>sort_timestamp_along_case_id=True</em>, <em>window=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/adapters/pandas/df_statistics.html#get_dfg_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.adapters.pandas.df_statistics.get_dfg_graph" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get DFG graph from Pandas dataframe</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> – Dataframe</p></li>
-<li><p><strong>measure</strong> – Measure to use (frequency/performance/both)</p></li>
-<li><p><strong>activity_key</strong> – Activity key to use in the grouping</p></li>
-<li><p><strong>case_id_glue</strong> – Case ID identifier</p></li>
-<li><p><strong>timestamp_key</strong> – Timestamp key</p></li>
-<li><p><strong>perf_aggregation_key</strong> – Performance aggregation key (mean, median, min, max)</p></li>
-<li><p><strong>sort_caseid_required</strong> – Specify if a sort on the Case ID is required</p></li>
-<li><p><strong>sort_timestamp_along_case_id</strong> – Specifying if sorting by timestamp along the CaseID is required</p></li>
-<li><p><strong>window</strong> – Window of the DFG (default 1)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>DFG in the chosen measure (may be only the frequency, only the performance, or both)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dfg</p>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 <div class="section" id="module-pm4py.algo.discovery.dfg.adapters.pandas.freq_triples">
 <span id="pm4py-algo-discovery-dfg-adapters-pandas-freq-triples-module"></span><h2>pm4py.algo.discovery.dfg.adapters.pandas.freq_triples module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.adapters.pandas.freq_triples" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="pm4py.algo.discovery.dfg.adapters.pandas.freq_triples.get_freq_triples">
-<code class="descclassname">pm4py.algo.discovery.dfg.adapters.pandas.freq_triples.</code><code class="descname">get_freq_triples</code><span class="sig-paren">(</span><em>df</em>, <em>activity_key='concept:name'</em>, <em>case_id_glue='case:concept:name'</em>, <em>timestamp_key='time:timestamp'</em>, <em>sort_caseid_required=True</em>, <em>sort_timestamp_along_case_id=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/adapters/pandas/freq_triples.html#get_freq_triples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.adapters.pandas.freq_triples.get_freq_triples" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the frequency triples out of a dataframe</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> – Dataframe</p></li>
-<li><p><strong>activity_key</strong> – Activity key</p></li>
-<li><p><strong>case_id_glue</strong> – Case ID glue</p></li>
-<li><p><strong>timestamp_key</strong> – Timestamp key</p></li>
-<li><p><strong>sort_caseid_required</strong> – Determine if sort by case ID is required (default: True)</p></li>
-<li><p><strong>sort_timestamp_along_case_id</strong> – Determine if sort by timestamp is required (default: True)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Frequency triples from the dataframe</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>freq_triples</p>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 <div class="section" id="module-pm4py.algo.discovery.dfg.adapters.pandas">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.adapters.pandas" title="Permalink to this headline">¶</a></h2>
