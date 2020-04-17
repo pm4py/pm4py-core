@@ -1,10 +1,11 @@
-import networkx as nx
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import add_arc_from_to
 import hashlib
 
 
 def get_graph_components(places, inv_trans, trans_dup_label, tmap):
+    import networkx as nx
+
     G = nx.Graph()
     for x in places:
         G.add_node(x)

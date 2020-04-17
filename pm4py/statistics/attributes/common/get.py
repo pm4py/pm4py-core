@@ -1,8 +1,7 @@
-import json
+import json, pkgutil, logging
 
 import numpy as np
 import pandas as pd
-from scipy.stats import gaussian_kde
 
 from pm4py.util.points_subset import pick_chosen_points_list
 
@@ -80,18 +79,25 @@ def get_kde_numeric_attribute(values, parameters=None):
     y
         Y-axis values to represent
     """
-    if parameters is None:
-        parameters = {}
+    if pkgutil.find_loader("scipy"):
+        from scipy.stats import gaussian_kde
 
-    graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
-    values = sorted(values)
-    density = gaussian_kde(values)
+        if parameters is None:
+            parameters = {}
 
-    xs1 = list(np.linspace(min(values), max(values), int(graph_points / 2)))
-    xs2 = list(np.geomspace(max(min(values), 0.000001), max(values), int(graph_points / 2)))
-    xs = sorted(xs1 + xs2)
+        graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
+        values = sorted(values)
+        density = gaussian_kde(values)
 
-    return [xs, list(density(xs))]
+        xs1 = list(np.linspace(min(values), max(values), int(graph_points / 2)))
+        xs2 = list(np.geomspace(max(min(values), 0.000001), max(values), int(graph_points / 2)))
+        xs = sorted(xs1 + xs2)
+
+        return [xs, list(density(xs))]
+    else:
+        msg = "scipy is not available. graphs cannot be built!"
+        logging.error(msg)
+        raise Exception(msg)
 
 
 def get_kde_numeric_attribute_json(values, parameters=None):
@@ -141,19 +147,26 @@ def get_kde_date_attribute(values, parameters=None):
     y
         Y-axis values to represent
     """
-    if parameters is None:
-        parameters = {}
+    if pkgutil.find_loader("scipy"):
+        from scipy.stats import gaussian_kde
 
-    graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
-    points_to_sample = parameters["points_to_sample"] if "points_to_sample" in parameters else 400
-    red_values = pick_chosen_points_list(points_to_sample, values)
-    int_values = sorted(
-        [x.replace(tzinfo=None).timestamp() for x in red_values])
-    density = gaussian_kde(int_values)
-    xs = np.linspace(min(int_values), max(int_values), graph_points)
-    xs_transf = pd.to_datetime(xs * 10 ** 9)
+        if parameters is None:
+            parameters = {}
 
-    return [xs_transf, density(xs)]
+        graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
+        points_to_sample = parameters["points_to_sample"] if "points_to_sample" in parameters else 400
+        red_values = pick_chosen_points_list(points_to_sample, values)
+        int_values = sorted(
+            [x.replace(tzinfo=None).timestamp() for x in red_values])
+        density = gaussian_kde(int_values)
+        xs = np.linspace(min(int_values), max(int_values), graph_points)
+        xs_transf = pd.to_datetime(xs * 10 ** 9)
+
+        return [xs_transf, density(xs)]
+    else:
+        msg = "scipy is not available. graphs cannot be built!"
+        logging.error(msg)
+        raise Exception(msg)
 
 
 def get_kde_date_attribute_json(values, parameters=None):

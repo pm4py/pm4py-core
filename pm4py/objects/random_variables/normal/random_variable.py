@@ -1,7 +1,6 @@
 import sys
 
 import numpy as np
-from scipy.stats import norm
 
 from pm4py.objects.random_variables.basic_structure import BasicStructureRandomVariable
 
@@ -75,6 +74,8 @@ class Normal(BasicStructureRandomVariable):
         likelihood
             Log likelihood that the values follows the distribution
         """
+        from scipy.stats import norm
+
         if len(values) > 1:
             somma = 0
             for value in values:
@@ -91,6 +92,8 @@ class Normal(BasicStructureRandomVariable):
         values
             Empirical values to work on
         """
+        from scipy.stats import norm
+
         if len(values) > 1:
             self.mu, self.sigma = norm.fit(values)
 
@@ -103,4 +106,6 @@ class Normal(BasicStructureRandomVariable):
         value
             Value obtained following the distribution
         """
+        from scipy.stats import norm
+
         return norm.rvs(self.mu, self.sigma)
