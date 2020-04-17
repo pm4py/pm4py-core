@@ -1,4 +1,5 @@
-from pm4py.algo.simulation.tree_generator.versions import basic, ptandloggenerator
+from pm4py.simulation.tree_generator.versions import basic, ptandloggenerator
+import deprecation
 
 BASIC = "basic"
 PTANDLOGGENERATOR = "ptandloggenerator"

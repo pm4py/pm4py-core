@@ -1,7 +1,7 @@
 from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.algo.discovery.dfg import factory as dfg_miner
 from pm4py.objects.conversion.dfg import factory as dfg_conv_factory
-from pm4py.algo.simulation.montecarlo import factory as montecarlo_simulation
+from pm4py.simulation.montecarlo import factory as montecarlo_simulation
 import os
 
 
