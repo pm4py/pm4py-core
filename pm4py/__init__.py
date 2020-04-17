@@ -2,7 +2,7 @@ import time, pkgutil, logging
 
 time.clock = time.process_time
 
-from pm4py import util, objects, statistics, algo, visualization, evaluation, streaming
+from pm4py import util, objects, statistics, algo, visualization, evaluation, streaming, simulation
 
 if pkgutil.find_loader("scipy"):
     import scipy
