@@ -1,6 +1,5 @@
 from copy import deepcopy
 
-import networkx as nx
 import numpy as np
 
 from pm4py.objects.petri import incidence_matrix
@@ -32,6 +31,8 @@ def check_source_and_sink_reachability(net, unique_source, unique_sink):
     boolean
         Boolean value that is true if each node is in a path from the source place to the sink place
     """
+    import networkx as nx
+
     graph, unique_source_corr, unique_sink_corr, inv_dictionary = create_networkx_undirected_graph(net, unique_source,
                                                                                                    unique_sink)
     if unique_source_corr is not None and unique_sink_corr is not None:
@@ -128,6 +129,8 @@ def check_loops_generating_tokens(net0):
     boolean
         Boolean value (True if the net has loops generating tokens)
     """
+    import networkx as nx
+
     net = deepcopy(net0)
     petri_utils.decorate_transitions_prepostset(net)
     graph, inv_dictionary = petri_utils.create_networkx_directed_graph(net)
@@ -201,6 +204,8 @@ def check_non_blocking(net0):
     boolean
         Boolean value
     """
+    import networkx as nx
+
     net = deepcopy(net0)
     petri_utils.decorate_transitions_prepostset(net)
     graph, inv_dictionary = petri_utils.create_networkx_directed_graph(net)

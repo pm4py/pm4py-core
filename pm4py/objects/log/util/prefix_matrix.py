@@ -3,13 +3,9 @@ from copy import copy
 import numpy as np
 import pandas as pd
 
-from pm4py.statistics.attributes.pandas import get as pd_attributes_filter
-from pm4py.statistics.attributes.log import get as log_attributes_filter
 from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.log.log import EventStream
 from pm4py.util import xes_constants as xes
-from pm4py.statistics.traces.log import case_statistics as log_case_statistics
-from pm4py.statistics.traces.pandas import case_statistics as pd_case_statistics
 from pm4py.util import constants
 
 KEEP_UNIQUE = "keep_unique"
@@ -250,6 +246,9 @@ def get_variants_list(log, parameters=None):
     variants_list
         List of variants of the log (along with their count)
     """
+    from pm4py.statistics.traces.pandas import case_statistics as pd_case_statistics
+    from pm4py.statistics.traces.log import case_statistics as log_case_statistics
+
     variants_list = []
     if type(log) is pd.DataFrame:
         pd_variants = pd_case_statistics.get_variant_statistics(log, parameters=parameters)
@@ -282,6 +281,9 @@ def get_activities_list(log, parameters=None):
     activities_list
         List of activities sorted by activity name
     """
+    from pm4py.statistics.attributes.pandas import get as pd_attributes_filter
+    from pm4py.statistics.attributes.log import get as log_attributes_filter
+
     if parameters is None:
         parameters = {}
     activity_key = parameters[

@@ -1,7 +1,6 @@
 from copy import deepcopy
 
 import numpy as np
-from sklearn import tree
 
 from pm4py.objects.log.util import basic_filter
 from pm4py.objects.log.log import EventLog, Trace, Event
@@ -114,6 +113,8 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
             - feature names
             - classes
     """
+    from sklearn import tree
+
     if parameters is None:
         parameters = {}
 
@@ -193,6 +194,8 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
             - feature names
             - classes
     """
+    from sklearn import tree
+
     if parameters is None:
         parameters = {}
 

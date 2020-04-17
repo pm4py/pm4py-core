@@ -1,6 +1,5 @@
 import numpy as np
 
-from pm4py.statistics.attributes.log.select import select_attributes_from_log_for_tree
 from pm4py.util import xes_constants as xes
 from pm4py.util import constants
 
@@ -305,6 +304,8 @@ def get_default_representation_with_attribute_names(log, parameters=None, featur
     feature_names
         Names of the features, in order
     """
+    from pm4py.statistics.attributes.log.select import select_attributes_from_log_for_tree
+
     if parameters is None:
         parameters = {}
 
@@ -358,6 +359,8 @@ def get_default_representation(log, parameters=None, feature_names=None):
     feature_names
         Names of the features, in order
     """
+    from pm4py.statistics.attributes.log.select import select_attributes_from_log_for_tree
+
     if parameters is None:
         parameters = {}
 

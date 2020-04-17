@@ -1,7 +1,6 @@
 import sys
 
 import numpy as np
-from scipy.stats import uniform
 
 from pm4py.objects.random_variables.basic_structure import BasicStructureRandomVariable
 
@@ -75,6 +74,8 @@ class Uniform(BasicStructureRandomVariable):
         likelihood
             Log likelihood that the values follows the distribution
         """
+        from scipy.stats import uniform
+
         if len(values) > 0:
             somma = 0
             for value in values:
@@ -91,6 +92,8 @@ class Uniform(BasicStructureRandomVariable):
         values
             Empirical values to work on
         """
+        from scipy.stats import uniform
+
         if len(values) > 0:
             self.loc, self.scale = uniform.fit(values)
 
@@ -103,4 +106,6 @@ class Uniform(BasicStructureRandomVariable):
         value
             Value obtained following the distribution
         """
+        from scipy.stats import uniform
+
         return uniform.rvs(self.loc, self.scale)

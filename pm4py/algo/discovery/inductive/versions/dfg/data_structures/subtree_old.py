@@ -1,4 +1,3 @@
-import networkx as nx
 import numpy as np
 
 from copy import copy
@@ -551,6 +550,8 @@ class SubtreeDFGBasedOld():
         nodes_map
             Correspondence between digraph nodes and activities
         """
+        import networkx as nx
+
         G = nx.DiGraph()
         for act in self.activities:
             G.add_node(act)
@@ -651,6 +652,8 @@ class SubtreeDFGBasedOld():
         """
         Detect generally a cut in the graph (applying all the algorithms)
         """
+        import networkx as nx
+
         if self.dfg:
             # print("\n\n")
             conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
