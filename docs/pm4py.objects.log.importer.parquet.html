@@ -84,6 +84,7 @@
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.importer.parquet.factory">pm4py.objects.log.importer.parquet.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.importer.parquet.importer">pm4py.objects.log.importer.parquet.importer module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.importer.parquet">Module contents</a></li>
 </ul>
 </li>
@@ -196,6 +197,9 @@
 <dd class="field-odd"><p>df</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use importer module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -216,6 +220,9 @@
 <dd class="field-odd"><p>paths</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use importer module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -242,6 +249,9 @@
 <dd class="field-odd"><p>df</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use importer module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -268,11 +278,144 @@
 <dd class="field-odd"><p>df</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use importer module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.importer.parquet.factory.import_minimal_log">
 <code class="sig-prename descclassname">pm4py.objects.log.importer.parquet.factory.</code><code class="sig-name descname">import_minimal_log</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='pyarrow'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/parquet/factory.html#import_minimal_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.parquet.factory.import_minimal_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import a Parquet file (as a minimal log with only the essential columns)</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path</strong> – Path of the file to import</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, possible values:</dt><dd><p>columns -&gt; columns to import from the Parquet file</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pyarrow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pandas dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use importer module instead.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.importer.parquet.importer">
+<span id="pm4py-objects-log-importer-parquet-importer-module"></span><h2>pm4py.objects.log.importer.parquet.importer module<a class="headerlink" href="#module-pm4py.objects.log.importer.parquet.importer" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.importer.parquet.importer.apply">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.parquet.importer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='pyarrow'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/parquet/importer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.parquet.importer.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import a Parquet file</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path</strong> – Path of the file to import</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, possible values:</dt><dd><p>columns -&gt; columns to import from the Parquet file</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pyarrow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pandas dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.importer.parquet.importer.get_list_parquet">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.parquet.importer.</code><code class="sig-name descname">get_list_parquet</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/parquet/importer.html#get_list_parquet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.parquet.importer.get_list_parquet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the list of Parquets contained into a dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – Path where the dataset is</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of paths</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>paths</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.importer.parquet.importer.import_df">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.parquet.importer.</code><code class="sig-name descname">import_df</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='pyarrow'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/parquet/importer.html#import_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.parquet.importer.import_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import a Parquet file</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path</strong> – Path of the file to import</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, possible values:</dt><dd><p>columns -&gt; columns to import from the Parquet file</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pyarrow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pandas dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.importer.parquet.importer.import_log">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.parquet.importer.</code><code class="sig-name descname">import_log</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='pyarrow'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/parquet/importer.html#import_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.parquet.importer.import_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import a Parquet file</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path</strong> – Path of the file to import</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, possible values:</dt><dd><p>columns -&gt; columns to import from the Parquet file</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pyarrow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pandas dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.importer.parquet.importer.import_minimal_log">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.parquet.importer.</code><code class="sig-name descname">import_minimal_log</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='pyarrow'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/parquet/importer.html#import_minimal_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.parquet.importer.import_minimal_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import a Parquet file (as a minimal log with only the essential columns)</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>

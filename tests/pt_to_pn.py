@@ -1,4 +1,4 @@
-from pm4py.algo.simulation.tree_generator import factory as pt_gen
+from pm4py.simulation.tree_generator import factory as pt_gen
 from pm4py.objects.conversion.process_tree import factory as pt_conv
 from pm4py.visualization.petrinet import visualizer as pn_viz
 from pm4py.visualization.process_tree import visualizer as pt_viz

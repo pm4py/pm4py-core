@@ -83,6 +83,7 @@
 <li><a class="reference internal" href="#">pm4py.algo.discovery.alpha package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.discovery.alpha.algorithm">pm4py.algo.discovery.alpha.algorithm module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.alpha.factory">pm4py.algo.discovery.alpha.factory module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.alpha">Module contents</a></li>
 </ul>
@@ -182,6 +183,65 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.algo.discovery.alpha.algorithm">
+<span id="pm4py-algo-discovery-alpha-algorithm-module"></span><h2>pm4py.algo.discovery.alpha.algorithm module<a class="headerlink" href="#module-pm4py.algo.discovery.alpha.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.algorithm.apply">
+<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='classic'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.algorithm.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the Alpha Miner on top of a log</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm to use (classic)</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>activity key -&gt; Name of the attribute that contains the activity</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>net</em> – Petri net</p></li>
+<li><p><em>marking</em> – Initial marking</p></li>
+<li><p><em>final_marking</em> – Final marking</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.alpha.algorithm.apply_dfg">
+<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.algorithm.</code><code class="sig-name descname">apply_dfg</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='classic'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/algorithm.html#apply_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.algorithm.apply_dfg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply Alpha Miner directly on top of a DFG graph</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>dfg</strong> – Directly-Follows graph</p></li>
+<li><p><strong>version</strong> – Variant of the algorithm to use (classic)</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>activity key -&gt; Name of the attribute that contains the activity</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>net</em> – Petri net</p></li>
+<li><p><em>marking</em> – Initial marking</p></li>
+<li><p><em>final_marking</em> – Final marking</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.algo.discovery.alpha.factory">
 <span id="pm4py-algo-discovery-alpha-factory-module"></span><h2>pm4py.algo.discovery.alpha.factory module<a class="headerlink" href="#module-pm4py.algo.discovery.alpha.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -210,11 +270,14 @@
 </p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use algorithm entrypoint instead</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.discovery.alpha.factory.apply_dfg">
-<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.factory.</code><code class="sig-name descname">apply_dfg</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">version='classic'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/factory.html#apply_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.factory.apply_dfg" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.factory.</code><code class="sig-name descname">apply_dfg</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='classic'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/factory.html#apply_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.factory.apply_dfg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply Alpha Miner directly on top of a DFG graph</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -238,6 +301,9 @@
 </p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use algorithm entrypoint instead</p>
+</div>
 </dd></dl>
 
 </div>

@@ -84,6 +84,7 @@
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.serialization.factory">pm4py.objects.log.serialization.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.serialization.serializer">pm4py.objects.log.serialization.serializer module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.serialization">Module contents</a></li>
 </ul>
 </li>
@@ -192,11 +193,63 @@
 <dd class="field-odd"><p>serialization</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use serializer module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.serialization.factory.export_to_file">
 <code class="sig-prename descclassname">pm4py.objects.log.serialization.factory.</code><code class="sig-name descname">export_to_file</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">file_path</em>, <em class="sig-param">variant=None</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/serialization/factory.html#export_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.serialization.factory.export_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize a log object to the content of a file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Event log</p></li>
+<li><p><strong>file_path</strong> – File path  (if None, then a temp file is targeted)</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pyarrow_event_stream, pyarrow_event_log, parquet_dataframe</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>File path</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>file_path</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use serializer module instead.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.serialization.serializer">
+<span id="pm4py-objects-log-serialization-serializer-module"></span><h2>pm4py.objects.log.serialization.serializer module<a class="headerlink" href="#module-pm4py.objects.log.serialization.serializer" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.serialization.serializer.apply">
+<code class="sig-prename descclassname">pm4py.objects.log.serialization.serializer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">variant=None</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/serialization/serializer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.serialization.serializer.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize a log object to Pyarrow bytes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Event log</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pyarrow_event_stream, pyarrow_event_log, parquet_dataframe</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Serialized bytes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>serialization</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.serialization.serializer.export_to_file">
+<code class="sig-prename descclassname">pm4py.objects.log.serialization.serializer.</code><code class="sig-name descname">export_to_file</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">file_path</em>, <em class="sig-param">variant=None</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/serialization/serializer.html#export_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.serialization.serializer.export_to_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Serialize a log object to the content of a file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

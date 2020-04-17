@@ -1,4 +1,4 @@
-from pm4py.algo.simulation.montecarlo.versions import petri_semaph_fifo
+from pm4py.simulation.montecarlo.versions import petri_semaph_fifo
 
 PETRI_SEMAPH_FIFO = 'petri_semaph_fifo'
 

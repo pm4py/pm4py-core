@@ -83,6 +83,7 @@
 <li><a class="reference internal" href="#">pm4py.statistics.performance_spectrum package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.statistics.performance_spectrum.algorithm">pm4py.statistics.performance_spectrum.algorithm module</a></li>
 <li><a class="reference internal" href="#module-pm4py.statistics.performance_spectrum.factory">pm4py.statistics.performance_spectrum.factory module</a></li>
 <li><a class="reference internal" href="#module-pm4py.statistics.performance_spectrum">Module contents</a></li>
 </ul>
@@ -170,6 +171,31 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.statistics.performance_spectrum.algorithm">
+<span id="pm4py-statistics-performance-spectrum-algorithm-module"></span><h2>pm4py.statistics.performance_spectrum.algorithm module<a class="headerlink" href="#module-pm4py.statistics.performance_spectrum.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.statistics.performance_spectrum.algorithm.apply">
+<code class="sig-prename descclassname">pm4py.statistics.performance_spectrum.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">list_activities</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/performance_spectrum/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.performance_spectrum.algorithm.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the performance spectrum provided a log/dataframe
+and a list of activities</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Event log/Dataframe</p></li>
+<li><p><strong>list_activities</strong> – List of activities interesting for the performance spectrum (at least two)</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm, including the activity key and the timestamp key</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Performance spectrum object (dictionary)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ps</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.statistics.performance_spectrum.factory">
 <span id="pm4py-statistics-performance-spectrum-factory-module"></span><h2>pm4py.statistics.performance_spectrum.factory module<a class="headerlink" href="#module-pm4py.statistics.performance_spectrum.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -192,6 +218,9 @@ and a list of activities</p>
 <dd class="field-odd"><p>ps</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use algorithm entrypoint instead</p>
+</div>
 </dd></dl>
 
 </div>
