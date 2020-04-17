@@ -1,1 +1,1 @@
-from pm4py.visualization.sna import factory, versions
+from pm4py.visualization.sna import factory, visualizer, versions

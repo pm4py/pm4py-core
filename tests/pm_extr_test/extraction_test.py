@@ -10,20 +10,20 @@ if __name__ == "__main__":
     sys.path.insert(0, parentdir)
     sys.path.insert(0, parentdir2)
     import time
-    from pm4py.objects.log.importer.xes import factory as xes_factory
-    from pm4py.algo.discovery.inductive import factory as inductive
-    from pm4py.algo.conformance.alignments import factory as align_factory
-    from pm4py.algo.discovery.alpha import factory as alpha
-    from pm4py.algo.discovery.heuristics import factory as heuristics_miner
+    from pm4py.objects.log.importer.xes import algorithm as xes_factory
+    from pm4py.algo.discovery.inductive import algorithm as inductive
+    from pm4py.algo.conformance.alignments import algorithm as align_factory
+    from pm4py.algo.discovery.alpha import algorithm as alpha
+    from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     from pm4py.objects.process_tree import semantics as pt_semantics
     from pm4py.objects.petri import check_soundness
-    from pm4py.evaluation.replay_fitness import factory as fitness_factory
-    from pm4py.evaluation.precision import factory as precision_factory
-    from pm4py.evaluation.simplicity import factory as simplicity_factory
-    from pm4py.evaluation.generalization import factory as generalization_factory
+    from pm4py.evaluation.replay_fitness import evaluator as fitness_factory
+    from pm4py.evaluation.precision import evaluator as precision_factory
+    from pm4py.evaluation.simplicity import evaluator as simplicity_factory
+    from pm4py.evaluation.generalization import evaluator as generalization_factory
     from pm4py.objects.log.util import insert_classifier
     from pm4py.objects.petri.exporter import pnml as pnml_exporter
-    from pm4py.visualization.petrinet import factory as petri_vis_factory
+    from pm4py.visualization.petrinet import algorithm as petri_vis_factory
     from pm4py.visualization.common.save import save as vis_save
     from pm4py import util as pmutil
 

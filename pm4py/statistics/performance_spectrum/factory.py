@@ -1,5 +1,7 @@
-from pm4py.statistics.performance_spectrum.versions import dataframe, log
+import deprecation
 import pandas as pd
+
+from pm4py.statistics.performance_spectrum.versions import dataframe, log
 
 DATAFRAME = "dataframe"
 LOG = "log"
@@ -9,7 +11,8 @@ DEFAULT_SAMPLE_SIZE = 10000
 
 VERSIONS = {DATAFRAME: dataframe.apply, LOG: log.apply}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, list_activities, parameters=None):
     """
     Finds the performance spectrum provided a log/dataframe

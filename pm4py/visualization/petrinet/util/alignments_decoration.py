@@ -28,7 +28,7 @@ def get_alignments_decoration(net, im, fm, log=None, aligned_traces=None, parame
     if parameters is None:
         parameters = {}
     if aligned_traces is None and log is not None:
-        from pm4py.algo.conformance.alignments import factory as alignments_factory
+        from pm4py.algo.conformance.alignments import algorithm as alignments_factory
         aligned_traces = alignments_factory.apply(log, net, im, fm, parameters={"ret_tuple_as_trans_desc": True})
     decorations = {}
     net_transitions = {}

@@ -2,13 +2,13 @@ import inspect
 import os
 import sys
 
-from pm4py.algo.discovery.dfg import factory as dfg_factory
-from pm4py.objects.conversion.log import factory as log_conv_fact
-from pm4py.objects.log.exporter.xes import factory as xes_exporter
-from pm4py.objects.log.importer.xes import factory as xes_importer
+from pm4py.algo.discovery.dfg import algorithm as dfg_factory
+from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.log.exporter.xes import exporter as xes_exporter
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import insert_classifier
 from pm4py.util import constants
-from pm4py.visualization.dfg import factory as dfg_vis_factory
+from pm4py.visualization.dfg import visualizer as dfg_vis
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
@@ -27,7 +27,7 @@ def execute_script():
         print("\n\n")
         print("log loaded")
         print("Number of traces - ", len(log))
-        event_log = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)
         print("Number of events - ", len(event_log))
         print("Classifiers ", log.classifiers)
         exp_log_name = "xescert_exportlogs" + "\\" + "exp_" + logName
@@ -53,17 +53,17 @@ def execute_script():
             parameters = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: classifier_attr_key}
 
             dfg = dfg_factory.apply(log, parameters=parameters)
-            gviz = dfg_vis_factory.apply(dfg, log=log, variant="frequency", parameters=parameters)
-            # dfg_vis_factory.view(gviz)
+            gviz = dfg_vis.apply(dfg, log=log, variant="frequency", parameters=parameters)
+            # dfg_vis.view(gviz)
 
-            dfg_vis_factory.save(gviz, "xescert_images\\" + logName.replace("xes", "png"))
+            dfg_vis.save(gviz, "xescert_images\\" + logName.replace("xes", "png"))
 
         print("Reimporting log file just exported - ", exp_log_name)
 
         log = xes_importer.import_log(exp_log_name)
         print("log loaded", exp_log_name)
         print("Number of traces - ", len(log))
-        event_log = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)
         print("Number of events - ", len(event_log))
         print("Classifiers ", log.classifiers)
 
