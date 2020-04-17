@@ -84,6 +84,7 @@
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.util.lp.factory">pm4py.util.lp.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.util.lp.solver">pm4py.util.lp.solver module</a></li>
 <li><a class="reference internal" href="#module-pm4py.util.lp">Module contents</a></li>
 </ul>
 </li>
@@ -201,6 +202,9 @@
 <dd class="field-odd"><p>sol</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use solver module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -222,11 +226,87 @@
 <dd class="field-odd"><p>points</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use solver module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.util.lp.factory.get_prim_obj_from_sol">
 <code class="sig-prename descclassname">pm4py.util.lp.factory.</code><code class="sig-name descname">get_prim_obj_from_sol</code><span class="sig-paren">(</span><em class="sig-param">sol</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='ortools_solver'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/lp/factory.html#get_prim_obj_from_sol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.lp.factory.get_prim_obj_from_sol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the primal objective from the solution of the LP problem</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sol</strong> – Solution of the ILP problem by the given algorithm</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pulp, ortools</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Primal objective</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>prim_obj</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use solver module instead.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.util.lp.solver">
+<span id="pm4py-util-lp-solver-module"></span><h2>pm4py.util.lp.solver module<a class="headerlink" href="#module-pm4py.util.lp.solver" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.util.lp.solver.apply">
+<code class="sig-prename descclassname">pm4py.util.lp.solver.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">c</em>, <em class="sig-param">Aub</em>, <em class="sig-param">bub</em>, <em class="sig-param">Aeq</em>, <em class="sig-param">beq</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='ortools_solver'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/lp/solver.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.lp.solver.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the overall solution of the problem</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c</strong> – c parameter of the algorithm</p></li>
+<li><p><strong>Aub</strong> – A_ub parameter of the algorithm</p></li>
+<li><p><strong>bub</strong> – b_ub parameter of the algorithm</p></li>
+<li><p><strong>Aeq</strong> – A_eq parameter of the algorithm</p></li>
+<li><p><strong>beq</strong> – b_eq parameter of the algorithm</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pulp, ortools</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution of the LP problem by the given algorithm</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>sol</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.util.lp.solver.get_points_from_sol">
+<code class="sig-prename descclassname">pm4py.util.lp.solver.</code><code class="sig-name descname">get_points_from_sol</code><span class="sig-paren">(</span><em class="sig-param">sol</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='ortools_solver'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/lp/solver.html#get_points_from_sol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.lp.solver.get_points_from_sol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the points from the solution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sol</strong> – Solution of the LP problem by the given algorithm</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values: pulp, ortools</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Point of the solution</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.util.lp.solver.get_prim_obj_from_sol">
+<code class="sig-prename descclassname">pm4py.util.lp.solver.</code><code class="sig-name descname">get_prim_obj_from_sol</code><span class="sig-paren">(</span><em class="sig-param">sol</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='ortools_solver'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/lp/solver.html#get_prim_obj_from_sol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.lp.solver.get_prim_obj_from_sol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the primal objective from the solution of the LP problem</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

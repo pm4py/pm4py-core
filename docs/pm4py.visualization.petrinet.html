@@ -84,6 +84,7 @@
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.petrinet.factory">pm4py.visualization.petrinet.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.visualization.petrinet.visualizer">pm4py.visualization.petrinet.visualizer module</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.petrinet">Module contents</a></li>
 </ul>
 </li>
@@ -191,7 +192,10 @@
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.factory.apply">
 <code class="sig-prename descclassname">pm4py.visualization.petrinet.factory.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking=None</em>, <em class="sig-param">final_marking=None</em>, <em class="sig-param">log=None</em>, <em class="sig-param">aggregated_statistics=None</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='wo_decoration'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.factory.apply" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use visualizer module instead.</p>
+</div>
+</dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.factory.save">
@@ -205,11 +209,50 @@
 </ul>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use visualizer module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.petrinet.factory.view">
 <code class="sig-prename descclassname">pm4py.visualization.petrinet.factory.</code><code class="sig-name descname">view</code><span class="sig-paren">(</span><em class="sig-param">gviz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/factory.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.factory.view" title="Permalink to this definition">¶</a></dt>
+<dd><p>View the diagram</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>gviz</strong> – GraphViz diagram</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use visualizer module instead.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.visualization.petrinet.visualizer">
+<span id="pm4py-visualization-petrinet-visualizer-module"></span><h2>pm4py.visualization.petrinet.visualizer module<a class="headerlink" href="#module-pm4py.visualization.petrinet.visualizer" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.visualization.petrinet.visualizer.apply">
+<code class="sig-prename descclassname">pm4py.visualization.petrinet.visualizer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking=None</em>, <em class="sig-param">final_marking=None</em>, <em class="sig-param">log=None</em>, <em class="sig-param">aggregated_statistics=None</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='wo_decoration'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/visualizer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.visualizer.apply" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.petrinet.visualizer.save">
+<code class="sig-prename descclassname">pm4py.visualization.petrinet.visualizer.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">gviz</em>, <em class="sig-param">output_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/visualizer.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.visualizer.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the diagram</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gviz</strong> – GraphViz diagram</p></li>
+<li><p><strong>output_file_path</strong> – Path where the GraphViz output should be saved</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.petrinet.visualizer.view">
+<code class="sig-prename descclassname">pm4py.visualization.petrinet.visualizer.</code><code class="sig-name descname">view</code><span class="sig-paren">(</span><em class="sig-param">gviz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/petrinet/visualizer.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.petrinet.visualizer.view" title="Permalink to this definition">¶</a></dt>
 <dd><p>View the diagram</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

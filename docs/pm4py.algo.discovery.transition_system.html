@@ -83,6 +83,7 @@
 <li><a class="reference internal" href="#">pm4py.algo.discovery.transition_system package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.discovery.transition_system.algorithm">pm4py.algo.discovery.transition_system.algorithm module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.transition_system.factory">pm4py.algo.discovery.transition_system.factory module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.transition_system.parameters">pm4py.algo.discovery.transition_system.parameters module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.transition_system">Module contents</a></li>
@@ -176,6 +177,42 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.algo.discovery.transition_system.algorithm">
+<span id="pm4py-algo-discovery-transition-system-algorithm-module"></span><h2>pm4py.algo.discovery.transition_system.algorithm module<a class="headerlink" href="#module-pm4py.algo.discovery.transition_system.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.algo.discovery.transition_system.algorithm.apply">
+<code class="sig-prename descclassname">pm4py.algo.discovery.transition_system.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='view_based'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/transition_system/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.transition_system.algorithm.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find transition system given log</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>view
+window
+direction</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, including:</dt><dd><p>view_based</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Transition system</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ts</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.algo.discovery.transition_system.factory">
 <span id="pm4py-algo-discovery-transition-system-factory-module"></span><h2>pm4py.algo.discovery.transition_system.factory module<a class="headerlink" href="#module-pm4py.algo.discovery.transition_system.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -209,6 +246,9 @@ direction</p>
 <dd class="field-odd"><p>ts</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use algorithm entrypoint instead</p>
+</div>
 </dd></dl>
 
 </div>

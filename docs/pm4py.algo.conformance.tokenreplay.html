@@ -83,6 +83,7 @@
 <li><a class="reference internal" href="#">pm4py.algo.conformance.tokenreplay package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.conformance.tokenreplay.algorithm">pm4py.algo.conformance.tokenreplay.algorithm module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.conformance.tokenreplay.factory">pm4py.algo.conformance.tokenreplay.factory module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.conformance.tokenreplay">Module contents</a></li>
 </ul>
@@ -177,6 +178,42 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.algo.conformance.tokenreplay.algorithm">
+<span id="pm4py-algo-conformance-tokenreplay-algorithm-module"></span><h2>pm4py.algo.conformance.tokenreplay.algorithm module<a class="headerlink" href="#module-pm4py.algo.conformance.tokenreplay.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.algorithm.apply">
+<code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='token_replay'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.algorithm.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory method to apply token-based replay</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; Activity key</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> – Variant of the algorithm to use</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.algorithm.apply_multiprocessing">
+<code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.algorithm.</code><code class="sig-name descname">apply_multiprocessing</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='token_replay'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/algorithm.html#apply_multiprocessing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.algorithm.apply_multiprocessing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.conformance.tokenreplay.algorithm.chunks">
+<code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.algorithm.</code><code class="sig-name descname">chunks</code><span class="sig-paren">(</span><em class="sig-param">l</em>, <em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/algorithm.html#chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.algorithm.chunks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.algo.conformance.tokenreplay.factory">
 <span id="pm4py-algo-conformance-tokenreplay-factory-module"></span><h2>pm4py.algo.conformance.tokenreplay.factory module<a class="headerlink" href="#module-pm4py.algo.conformance.tokenreplay.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -200,17 +237,26 @@
 </ul>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use algorithm entrypoint instead</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.factory.apply_multiprocessing">
 <code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.factory.</code><code class="sig-name descname">apply_multiprocessing</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='token_replay'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/factory.html#apply_multiprocessing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.factory.apply_multiprocessing" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use algorithm entrypoint instead</p>
+</div>
+</dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.factory.chunks">
 <code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.factory.</code><code class="sig-name descname">chunks</code><span class="sig-paren">(</span><em class="sig-param">l</em>, <em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/factory.html#chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.factory.chunks" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use algorithm entrypoint instead</p>
+</div>
+</dd></dl>
 
 </div>
 <div class="section" id="module-pm4py.algo.conformance.tokenreplay">

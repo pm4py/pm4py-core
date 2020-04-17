@@ -1,4 +1,4 @@
-from pm4py.algo.simulation.playout.versions import basic_playout
+from pm4py.simulation.playout.versions import basic_playout
 
 BASIC_PLAYOUT = "basic_playout"
 VERSIONS = {BASIC_PLAYOUT: basic_playout.apply}

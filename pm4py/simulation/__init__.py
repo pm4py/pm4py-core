@@ -1,1 +1,1 @@
-from pm4py.algo.simulation import tree_generator, playout, montecarlo
+from pm4py.simulation import tree_generator, playout, montecarlo

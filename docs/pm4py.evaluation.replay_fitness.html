@@ -83,6 +83,7 @@
 <li><a class="reference internal" href="#">pm4py.evaluation.replay_fitness package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.evaluation.replay_fitness.evaluator">pm4py.evaluation.replay_fitness.evaluator module</a></li>
 <li><a class="reference internal" href="#module-pm4py.evaluation.replay_fitness.factory">pm4py.evaluation.replay_fitness.factory module</a></li>
 <li><a class="reference internal" href="#module-pm4py.evaluation.replay_fitness">Module contents</a></li>
 </ul>
@@ -170,6 +171,55 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.evaluation.replay_fitness.evaluator">
+<span id="pm4py-evaluation-replay-fitness-evaluator-module"></span><h2>pm4py.evaluation.replay_fitness.evaluator module<a class="headerlink" href="#module-pm4py.evaluation.replay_fitness.evaluator" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.evaluation.replay_fitness.evaluator.apply">
+<code class="sig-prename descclassname">pm4py.evaluation.replay_fitness.evaluator.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">petri_net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/replay_fitness/evaluator.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.replay_fitness.evaluator.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply fitness evaluation starting from an event log and a marked Petri net,
+by using one of the replay techniques provided by PM4Py</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Trace log object</p></li>
+<li><p><strong>petri_net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>parameters</strong> – Parameters related to the replay algorithm</p></li>
+<li><p><strong>variant</strong> – Chosen variant (alignments or token-based replay)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Fitness evaluation</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>fitness_eval</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.evaluation.replay_fitness.evaluator.evaluate">
+<code class="sig-prename descclassname">pm4py.evaluation.replay_fitness.evaluator.</code><code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param">results</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='token_replay'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/replay_fitness/evaluator.html#evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.replay_fitness.evaluator.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate replay results when the replay algorithm has already been applied</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results</strong> – Results of the replay algorithm</p></li>
+<li><p><strong>parameters</strong> – Possible parameters passed to the evaluation</p></li>
+<li><p><strong>variant</strong> – Indicates which evaluator is called</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Fitness evaluation</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>fitness_eval</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.evaluation.replay_fitness.factory">
 <span id="pm4py-evaluation-replay-fitness-factory-module"></span><h2>pm4py.evaluation.replay_fitness.factory module<a class="headerlink" href="#module-pm4py.evaluation.replay_fitness.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -195,6 +245,9 @@ by using one of the replay techniques provided by PM4Py</p>
 <dd class="field-odd"><p>fitness_eval</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use evaluator entrypoint instead</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -216,6 +269,9 @@ by using one of the replay techniques provided by PM4Py</p>
 <dd class="field-odd"><p>fitness_eval</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use evaluator entrypoint instead</p>
+</div>
 </dd></dl>
 
 </div>
