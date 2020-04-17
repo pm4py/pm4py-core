@@ -83,6 +83,7 @@
 <li><a class="reference internal" href="#">pm4py.algo.simulation.tree_generator.versions package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.simulation.tree_generator.versions.basic">pm4py.algo.simulation.tree_generator.versions.basic module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.simulation.tree_generator.versions.ptandloggenerator">pm4py.algo.simulation.tree_generator.versions.ptandloggenerator module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.simulation.tree_generator.versions">Module contents</a></li>
 </ul>
 </li>
@@ -159,7 +160,7 @@
 <span id="pm4py-algo-simulation-tree-generator-versions-basic-module"></span><h2>pm4py.algo.simulation.tree_generator.versions.basic module<a class="headerlink" href="#module-pm4py.algo.simulation.tree_generator.versions.basic" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.simulation.tree_generator.versions.basic.apply">
-<code class="descclassname">pm4py.algo.simulation.tree_generator.versions.basic.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/basic.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.basic.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.simulation.tree_generator.versions.basic.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/basic.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.basic.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a process tree</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -183,7 +184,7 @@ prob_leaf -&gt; Probability to get a leaf</p>
 
 <dl class="function">
 <dt id="pm4py.algo.simulation.tree_generator.versions.basic.generate_random_string">
-<code class="descclassname">pm4py.algo.simulation.tree_generator.versions.basic.</code><code class="descname">generate_random_string</code><span class="sig-paren">(</span><em>N</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/basic.html#generate_random_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.basic.generate_random_string" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.simulation.tree_generator.versions.basic.</code><code class="sig-name descname">generate_random_string</code><span class="sig-paren">(</span><em class="sig-param">N</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/basic.html#generate_random_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.basic.generate_random_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a random string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -200,7 +201,7 @@ prob_leaf -&gt; Probability to get a leaf</p>
 
 <dl class="function">
 <dt id="pm4py.algo.simulation.tree_generator.versions.basic.get_random_operator">
-<code class="descclassname">pm4py.algo.simulation.tree_generator.versions.basic.</code><code class="descname">get_random_operator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/basic.html#get_random_operator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.basic.get_random_operator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.simulation.tree_generator.versions.basic.</code><code class="sig-name descname">get_random_operator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/basic.html#get_random_operator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.basic.get_random_operator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a random operator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -211,6 +212,116 @@ prob_leaf -&gt; Probability to get a leaf</p>
 </dd>
 </dl>
 </dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.algo.simulation.tree_generator.versions.ptandloggenerator">
+<span id="pm4py-algo-simulation-tree-generator-versions-ptandloggenerator-module"></span><h2>pm4py.algo.simulation.tree_generator.versions.ptandloggenerator module<a class="headerlink" href="#module-pm4py.algo.simulation.tree_generator.versions.ptandloggenerator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.</code><code class="sig-name descname">GeneratedTree</code><span class="sig-paren">(</span><em class="sig-param">parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#GeneratedTree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.add_duplicates">
+<code class="sig-name descname">add_duplicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#GeneratedTree.add_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.add_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces some leaves  to add duplicated labels. Depends on parameter.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.add_node">
+<code class="sig-name descname">add_node</code><span class="sig-paren">(</span><em class="sig-param">next_activity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#GeneratedTree.add_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.add_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add nodes to current tree. The general procedure is as follows:
+Select a random leaf (leaves have label). Next step, and opertor is chosen.
+The chosen operator then replaces the leaf, whereby the old label is then add as a leaf to the manipulated node.
+Then, next activity is added as a second leaf to the new operator node or a silent acticity (tau) is added.
+:return: Next activity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.alphabet">
+<code class="sig-name descname">alphabet</code><em class="property"> = 'abcdefghijklmnopqrstuvwxyz'</em><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.alphabet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.assign_root_opeartor">
+<code class="sig-name descname">assign_root_opeartor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#GeneratedTree.assign_root_opeartor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.assign_root_opeartor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.calculate_activity_distribution">
+<code class="sig-name descname">calculate_activity_distribution</code><span class="sig-paren">(</span><em class="sig-param">mode</em>, <em class="sig-param">min</em>, <em class="sig-param">max</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#GeneratedTree.calculate_activity_distribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.calculate_activity_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Here, the triangular function is used, since the parameters for this function are given in the paramterfile.
+However, this approach can be applied on other distribution functions as well.
+:param mode: Mode of the distribution
+:param min: Smallest number
+:param max: Highest number
+:return: Distribution object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.create_process_tree">
+<code class="sig-name descname">create_process_tree</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#GeneratedTree.create_process_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.create_process_tree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.draw_random_number_from_distribution">
+<code class="sig-name descname">draw_random_number_from_distribution</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#GeneratedTree.draw_random_number_from_distribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.draw_random_number_from_distribution" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.generate">
+<code class="sig-name descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#GeneratedTree.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.generate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.get_next_activity">
+<code class="sig-name descname">get_next_activity</code><span class="sig-paren">(</span><em class="sig-param">activity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#GeneratedTree.get_next_activity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.get_next_activity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.select_operator">
+<code class="sig-name descname">select_operator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#GeneratedTree.select_operator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.GeneratedTree.select_operator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.apply">
+<code class="sig-prename descclassname">pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a process tree using the PTAndLogGenerator approach
+(see the paper PTandLogGenerator: A Generator for Artificial Event Data)</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parameters</strong> – Parameters of the algorithm, according to the paper:
+- mode: most frequent number of visible activities
+- min: minimum number of visible activities
+- max: maximum number of visible activities
+- sequence: probability to add a sequence operator to tree
+- choice: probability to add a choice operator to tree
+- parallel: probability to add a parallel operator to tree
+- loop: probability to add a loop operator to tree
+- or: probability to add an or operator to tree
+- silent: probability to add silent activity to a choice or loop operator
+- duplicate: probability to duplicate an activity label
+- lt_dependency: probability to add a random dependency to the tree
+- infrequent: probability to make a choice have infrequent paths
+- no_models: number of trees to generate from model population
+- unfold: whether or not to unfold loops in order to include choices underneath in dependencies: 0=False, 1=True</p>
+<blockquote>
+<div><p>if lt_dependency &lt;= 0: this should always be 0 (False)
+if lt_dependency &gt; 0: this can be 1 or 0 (True or False)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>max_repeat: maximum number of repetitions of a loop (only used when unfolding is True)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.assign_operator">
+<code class="sig-prename descclassname">pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.</code><code class="sig-name descname">assign_operator</code><span class="sig-paren">(</span><em class="sig-param">operator</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/tree_generator/versions/ptandloggenerator.html#assign_operator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.tree_generator.versions.ptandloggenerator.assign_operator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-pm4py.algo.simulation.tree_generator.versions">

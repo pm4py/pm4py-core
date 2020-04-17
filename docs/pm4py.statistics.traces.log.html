@@ -160,8 +160,33 @@
 <span id="pm4py-statistics-traces-log-case-arrival-module"></span><h2>pm4py.statistics.traces.log.case_arrival module<a class="headerlink" href="#module-pm4py.statistics.traces.log.case_arrival" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_arrival.get_case_arrival_avg">
-<code class="descclassname">pm4py.statistics.traces.log.case_arrival.</code><code class="descname">get_case_arrival_avg</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_arrival.html#get_case_arrival_avg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_arrival.get_case_arrival_avg" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.statistics.traces.log.case_arrival.</code><code class="sig-name descname">get_case_arrival_avg</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_arrival.html#get_case_arrival_avg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_arrival.get_case_arrival_avg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the average time interlapsed between case starts</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; attribute of the log to be used as timestamp</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Average time interlapsed between case starts</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>case_arrival_avg</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.statistics.traces.log.case_arrival.get_case_dispersion_avg">
+<code class="sig-prename descclassname">pm4py.statistics.traces.log.case_arrival.</code><code class="sig-name descname">get_case_dispersion_avg</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_arrival.html#get_case_dispersion_avg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_arrival.get_case_dispersion_avg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the average time interlapsed between case ends</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
@@ -188,7 +213,7 @@
 <span id="pm4py-statistics-traces-log-case-statistics-module"></span><h2>pm4py.statistics.traces.log.case_statistics module<a class="headerlink" href="#module-pm4py.statistics.traces.log.case_statistics" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_all_casedurations">
-<code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_all_casedurations</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_all_casedurations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_all_casedurations" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="sig-name descname">get_all_casedurations</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_all_casedurations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_all_casedurations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets all the case durations out of the log</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -208,7 +233,7 @@
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_cases_description">
-<code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_cases_description</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_cases_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_cases_description" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="sig-name descname">get_cases_description</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_cases_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_cases_description" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a description of traces present in the log</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -242,7 +267,7 @@ max_ret_cases -&gt; Set the maximum number of returned traces</p>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_events">
-<code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_events</code><span class="sig-paren">(</span><em>log</em>, <em>case_id</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_events" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="sig-name descname">get_events</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">case_id</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get events belonging to the specified case</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -269,7 +294,7 @@ indexed_log -&gt; Indexed log (if it has been calculated previously)</p>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_first_quartile_caseduration">
-<code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_first_quartile_caseduration</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_first_quartile_caseduration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_first_quartile_caseduration" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="sig-name descname">get_first_quartile_caseduration</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_first_quartile_caseduration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_first_quartile_caseduration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the first quartile out of the log</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -289,7 +314,7 @@ indexed_log -&gt; Indexed log (if it has been calculated previously)</p>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_kde_caseduration">
-<code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_kde_caseduration</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_kde_caseduration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_kde_caseduration" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="sig-name descname">get_kde_caseduration</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_kde_caseduration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_kde_caseduration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the estimation of KDE density for the case durations calculated on the log</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -315,7 +340,7 @@ indexed_log -&gt; Indexed log (if it has been calculated previously)</p>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_kde_caseduration_json">
-<code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_kde_caseduration_json</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_kde_caseduration_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_kde_caseduration_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="sig-name descname">get_kde_caseduration_json</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_kde_caseduration_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_kde_caseduration_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the estimation of KDE density for the case durations calculated on the log
 (expressed as JSON)</p>
 <dl class="field-list">
@@ -342,7 +367,7 @@ case_id_glue -&gt; Column hosting the Case ID</p>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_median_caseduration">
-<code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_median_caseduration</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_median_caseduration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_median_caseduration" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="sig-name descname">get_median_caseduration</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_median_caseduration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_median_caseduration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the median case duration out of the log</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -362,7 +387,7 @@ case_id_glue -&gt; Column hosting the Case ID</p>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.get_variant_statistics">
-<code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">get_variant_statistics</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_variant_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_variant_statistics" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="sig-name descname">get_variant_statistics</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#get_variant_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.get_variant_statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a dictionary whose key is the variant and as value there
 is the list of traces that share the variant</p>
 <dl class="field-list">
@@ -390,7 +415,7 @@ variants -&gt; If provided, avoid recalculation of the variants</p>
 
 <dl class="function">
 <dt id="pm4py.statistics.traces.log.case_statistics.index_log_caseid">
-<code class="descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="descname">index_log_caseid</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#index_log_caseid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.index_log_caseid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.statistics.traces.log.case_statistics.</code><code class="sig-name descname">index_log_caseid</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/traces/log/case_statistics.html#index_log_caseid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.traces.log.case_statistics.index_log_caseid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Index a log according to case ID</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>

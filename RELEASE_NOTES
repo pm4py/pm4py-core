@@ -150,3 +150,9 @@ This is a minor release, consisting of the following changes:
     - trace attribute hierarchical clustering (MSc Thesis Yukun Cao)
 3. commit 4fca12c1608818348bbd51e390140a8f7e79d7f6
     - alignments decomposition/recomposition
+4. commit 112dc3fc56f0d5e3f3ae0c737a5b0b001be31ba5
+    - fixed typo in Petri net weight
+5. commit f8d52aa69a3d720d45a93b35c79b4241bb8f7691
+    - added the possibility to provide the final marking to the playout factory
+6. commit 4a74ef159d03d3cf3ca43bd7c99f5f97da16baf8
+    - fixed some problems in the evaluation of replay fitness of recomposed alignments
