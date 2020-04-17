@@ -1,8 +1,6 @@
 from collections import Counter
 
 import numpy as np
-from numpy.linalg import svd
-from scipy.linalg import expm
 
 from pm4py.objects.petri.reachability_graph import construct_reachability_graph
 from pm4py.objects.stochastic_petri import tangible_reachability
@@ -293,6 +291,8 @@ def transient_analysis_from_tangible_q_matrix_and_states_vector(tangible_reach_g
     transient_result
         Transient analysis result
     """
+    from scipy.linalg import expm
+
     transient_result = Counter()
     states = sorted(list(tangible_reach_graph.states), key=lambda x: x.name)
 
@@ -340,7 +340,7 @@ def nullspace(a_matrix, atol=1e-13, rtol=0):
         nullspace; each element in numpy.dot(A, ns) will be approximately
         zero.
     """
-
+    from numpy.linalg import svd
     a_matrix = np.atleast_2d(a_matrix)
     u, s, vh = svd(a_matrix)
     tol = max(atol, rtol * s[0])

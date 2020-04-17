@@ -23,7 +23,7 @@ VERSIONS_EXPORT_FILE_EVENT_LOG={PYARROW_EVENT_LOG: pyarrow_event_log.export_to_f
 VERSIONS_EXPORT_FILE_DATAFRAME={PARQUET_DATAFRAME: parquet_dataframe.export_to_file}
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use serializer module instead.')
 def apply(log, variant=None, parameters=None):
     """
     Serialize a log object to Pyarrow bytes
@@ -56,7 +56,7 @@ def apply(log, variant=None, parameters=None):
         return VERSIONS_APPLY_DATAFRAME[variant](log, parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use serializer module instead.')
 def export_to_file(log, file_path, variant=None, parameters=None):
     """
     Serialize a log object to the content of a file

@@ -3,7 +3,7 @@ import pandas
 from pm4py import util as pmutil
 from pm4py.algo.discovery.alpha import versions
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.util import xes_constants as xes_util
 
 ALPHA_VERSION_CLASSIC = 'classic'
@@ -38,7 +38,20 @@ def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     final_marking
         Final marking
     """
-    return VERSIONS[variant](log, parameters=parameters)
+    if parameters is None:
+        parameters = {}
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
+    if isinstance(log, pandas.core.frame.DataFrame) and variant == ALPHA_VERSION_CLASSIC:
+            dfg = df_statistics.get_dfg_graph(log, case_id_glue=parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY],
+                                              activity_key=parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY],
+                                              timestamp_key=parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY])
+            return VERSIONS_DFG[variant](dfg, parameters=parameters)
+    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters)
 
 
 def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
@@ -64,4 +77,8 @@ def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     final_marking
         Final marking
     """
-    return VERSIONS_DFG[variant](dfg, parameters)
+    if parameters is None:
+        parameters = {}
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+    return VERSIONS_DFG[version](dfg, parameters)

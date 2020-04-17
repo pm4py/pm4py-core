@@ -9,7 +9,7 @@ CLASSIC = "classic"
 VERSIONS = {CLASSIC: classic.apply}
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use visualizer module instead.')
 def apply(log, aligned_traces, variant=CLASSIC, parameters=None):
     """
     Gets the alignment table visualization from the alignments output
@@ -33,7 +33,7 @@ def apply(log, aligned_traces, variant=CLASSIC, parameters=None):
     return VERSIONS[variant](log, aligned_traces, parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use visualizer module instead.')
 def save(gviz, output_file_path):
     """
     Save the diagram
@@ -48,7 +48,7 @@ def save(gviz, output_file_path):
     gsave.save(gviz, output_file_path)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use visualizer module instead.')
 def view(gviz):
     """
     View the diagram

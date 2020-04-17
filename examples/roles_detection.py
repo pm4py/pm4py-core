@@ -1,5 +1,5 @@
 import os
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.enhancement.roles import algorithm as roles_factory
 
 

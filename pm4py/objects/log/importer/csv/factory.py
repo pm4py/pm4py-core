@@ -21,7 +21,7 @@ VERSIONS = {PANDAS: pandas_df_imp.import_event_stream}
 DATAFRAME_MANAGER = {PANDAS: pandas_csv_import_adapter}
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def import_dataframe_from_path(path, parameters=None, variant=PANDAS):
     """
     Imports a dataframe from the given path
@@ -59,7 +59,7 @@ def import_dataframe_from_path(path, parameters=None, variant=PANDAS):
                                                                  timest_columns=timest_columns, encoding=encoding)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def import_dataframe_from_path_wo_timeconversion(path, parameters=None, variant=PANDAS):
     """
     Imports a dataframe from the given path (without doing the timestamp columns conversion)
@@ -90,7 +90,7 @@ def import_dataframe_from_path_wo_timeconversion(path, parameters=None, variant=
                                                                                    nrows=nrows, encoding=encoding)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def import_dataframe_from_csv_string(csv_string, parameters=None, variant=PANDAS):
     """
     Import dataframe from CSV string
@@ -130,7 +130,7 @@ def import_dataframe_from_csv_string(csv_string, parameters=None, variant=PANDAS
                                                                        encoding=encoding)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def convert_dataframe_to_stream(dataframe, parameters=None, variant=PANDAS):
     """
     Convert a dataframe to an event stream
@@ -157,7 +157,7 @@ def convert_dataframe_to_stream(dataframe, parameters=None, variant=PANDAS):
     return DATAFRAME_MANAGER[variant].convert_dataframe_to_stream(dataframe, insert_event_indexes=insert_event_indexes)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None, variant=PANDAS):
     """
     Convert all dataframe columns in a dataframe
@@ -183,7 +183,7 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None,
                                                                       timest_columns=timest_columns)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def import_log_from_string(log_string, parameters=None, variant="pandas"):
     """
     Import a CSV log from a string
@@ -212,7 +212,7 @@ def import_log_from_string(log_string, parameters=None, variant="pandas"):
     return import_event_stream(temp_file, parameters=parameters, variant=variant)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def import_event_stream(path, parameters=None, variant="pandas"):
     """
     Import a CSV log into an EventLog object
@@ -240,13 +240,13 @@ def import_event_stream(path, parameters=None, variant="pandas"):
     return VERSIONS[variant](path, parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def import_event_log(path, parameters=None, variant="pandas"):
     # legacy method, to be removed
     return import_event_stream(path, parameters=parameters, variant="pandas")
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use importer module instead.')
 def apply(path, parameters=None, variant="pandas"):
     """
     Import a CSV log into an EventLog object

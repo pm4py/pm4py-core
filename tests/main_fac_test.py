@@ -1,7 +1,7 @@
 import os
 import unittest
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
-from pm4py.objects.log.importer.csv import algorithm as csv_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.objects.log.importer.csv import importer as csv_importer
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
 from pm4py.algo.discovery.alpha import algorithm as alpha_miner
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
@@ -10,14 +10,14 @@ from pm4py.algo.discovery.dfg import algorithm as dfg_mining
 from pm4py.algo.discovery.transition_system import algorithm as ts_disc
 from pm4py.algo.conformance.alignments import algorithm as align_alg
 from pm4py.algo.conformance.tokenreplay import algorithm as tr_alg
-from pm4py.evaluation import algorithm as eval_alg
+from pm4py.evaluation import factory as eval_alg
 from pm4py.evaluation.replay_fitness import evaluator as rp_fit
 from pm4py.evaluation.precision import evaluator as precision_factory
 from pm4py.evaluation.generalization import evaluator as generalization
 from pm4py.evaluation.simplicity import evaluator as simplicity
-from pm4py.objects.conversion.log import algorithm as log_conversion
-from pm4py.objects.log.exporter.csv import algorithm as csv_exporter
-from pm4py.objects.log.exporter.xes import algorithm as xes_exporter
+from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.log.exporter.csv import exporter as csv_exporter
+from pm4py.objects.log.exporter.xes import exporter as xes_exporter
 
 
 class MainFactoriesTest(unittest.TestCase):
@@ -29,8 +29,8 @@ class MainFactoriesTest(unittest.TestCase):
         evaluation = eval_alg.apply(log, net, im, fm)
         fitness = rp_fit.apply(log, net, im, fm)
         precision = precision_factory.apply(log, net, im, fm)
-        generalization = generalization.apply(log, net, im, fm)
-        simplicity = simplicity.apply(net)
+        gen = generalization.apply(log, net, im, fm)
+        sim = simplicity.apply(net)
 
     def test_alphaminer_stream(self):
         stream = csv_importer.apply(os.path.join("input_data", "running-example.csv"))
@@ -40,8 +40,8 @@ class MainFactoriesTest(unittest.TestCase):
         evaluation = eval_alg.apply(stream, net, im, fm)
         fitness = rp_fit.apply(stream, net, im, fm)
         precision = precision_factory.apply(stream, net, im, fm)
-        generalization = generalization.apply(stream, net, im, fm)
-        simplicity = simplicity.apply(net)
+        gen = generalization.apply(stream, net, im, fm)
+        sim = simplicity.apply(net)
 
     def test_alphaminer_df(self):
         log = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
@@ -51,8 +51,8 @@ class MainFactoriesTest(unittest.TestCase):
         evaluation = eval_alg.apply(log, net, im, fm)
         fitness = rp_fit.apply(log, net, im, fm)
         precision = precision_factory.apply(log, net, im, fm)
-        generalization = generalization.apply(log, net, im, fm)
-        simplicity = simplicity.apply(net)
+        gen = generalization.apply(log, net, im, fm)
+        sim = simplicity.apply(net)
 
     def test_inductiveminer_log(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
@@ -62,8 +62,8 @@ class MainFactoriesTest(unittest.TestCase):
         evaluation = eval_alg.apply(log, net, im, fm)
         fitness = rp_fit.apply(log, net, im, fm)
         precision = precision_factory.apply(log, net, im, fm)
-        generalization = generalization.apply(log, net, im, fm)
-        simplicity = simplicity.apply(net)
+        gen = generalization.apply(log, net, im, fm)
+        sim = simplicity.apply(net)
 
     def test_inductiveminer_stream(self):
         stream = csv_importer.apply(os.path.join("input_data", "running-example.csv"))
@@ -73,8 +73,8 @@ class MainFactoriesTest(unittest.TestCase):
         evaluation = eval_alg.apply(stream, net, im, fm)
         fitness = rp_fit.apply(stream, net, im, fm)
         precision = precision_factory.apply(stream, net, im, fm)
-        generalization = generalization.apply(stream, net, im, fm)
-        simplicity = simplicity.apply(net)
+        gen = generalization.apply(stream, net, im, fm)
+        sim = simplicity.apply(net)
 
     def test_inductiveminer_df(self):
         log = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
@@ -84,8 +84,8 @@ class MainFactoriesTest(unittest.TestCase):
         evaluation = eval_alg.apply(log, net, im, fm)
         fitness = rp_fit.apply(log, net, im, fm)
         precision = precision_factory.apply(log, net, im, fm)
-        generalization = generalization.apply(log, net, im, fm)
-        simplicity = simplicity.apply(net)
+        gen = generalization.apply(log, net, im, fm)
+        sim = simplicity.apply(net)
 
     def test_heu_log(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
@@ -95,8 +95,8 @@ class MainFactoriesTest(unittest.TestCase):
         evaluation = eval_alg.apply(log, net, im, fm)
         fitness = rp_fit.apply(log, net, im, fm)
         precision = precision_factory.apply(log, net, im, fm)
-        generalization = generalization.apply(log, net, im, fm)
-        simplicity = simplicity.apply(net)
+        gen = generalization.apply(log, net, im, fm)
+        sim = simplicity.apply(net)
 
     def test_heu_stream(self):
         stream = csv_importer.apply(os.path.join("input_data", "running-example.csv"))
@@ -106,8 +106,8 @@ class MainFactoriesTest(unittest.TestCase):
         evaluation = eval_alg.apply(stream, net, im, fm)
         fitness = rp_fit.apply(stream, net, im, fm)
         precision = precision_factory.apply(stream, net, im, fm)
-        generalization = generalization.apply(stream, net, im, fm)
-        simplicity = simplicity.apply(net)
+        gen = generalization.apply(stream, net, im, fm)
+        sim = simplicity.apply(net)
 
     def test_heu_df(self):
         log = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
@@ -117,8 +117,8 @@ class MainFactoriesTest(unittest.TestCase):
         evaluation = eval_alg.apply(log, net, im, fm)
         fitness = rp_fit.apply(log, net, im, fm)
         precision = precision_factory.apply(log, net, im, fm)
-        generalization = generalization.apply(log, net, im, fm)
-        simplicity = simplicity.apply(net)
+        gen = generalization.apply(log, net, im, fm)
+        sim = simplicity.apply(net)
 
     def test_dfg_log(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))

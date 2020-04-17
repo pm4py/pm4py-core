@@ -1,6 +1,5 @@
-from scipy.stats import gaussian_kde
 import numpy as np
-import json
+import json, pkgutil, logging
 import math
 
 
@@ -23,17 +22,24 @@ def get_kde_caseduration(duration_values, parameters=None):
     y
         Y-axis values to represent
     """
-    if parameters is None:
-        parameters = {}
+    if pkgutil.find_loader("scipy"):
+        from scipy.stats import gaussian_kde
 
-    graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
-    duration_values = sorted(duration_values)
-    density = gaussian_kde(duration_values)
-    xs1 = list(np.linspace(min(duration_values), max(duration_values), int(graph_points/2)))
-    xs2 = list(np.geomspace(max(min(duration_values), 0.001), max(duration_values), int(graph_points/2)))
-    xs = sorted(xs1 + xs2)
+        if parameters is None:
+            parameters = {}
 
-    return [xs, list(density(xs))]
+        graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
+        duration_values = sorted(duration_values)
+        density = gaussian_kde(duration_values)
+        xs1 = list(np.linspace(min(duration_values), max(duration_values), int(graph_points/2)))
+        xs2 = list(np.geomspace(max(min(duration_values), 0.001), max(duration_values), int(graph_points/2)))
+        xs = sorted(xs1 + xs2)
+
+        return [xs, list(density(xs))]
+    else:
+        msg = "scipy is not available. graphs cannot be built!"
+        logging.error(msg)
+        raise Exception(msg)
 
 
 def get_kde_caseduration_json(duration_values, parameters=None):

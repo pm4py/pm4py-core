@@ -1,5 +1,5 @@
 from pm4py.statistics.attributes.common import get as attributes_common
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.log.log import EventLog
 from pm4py.util import xes_constants as xes
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY

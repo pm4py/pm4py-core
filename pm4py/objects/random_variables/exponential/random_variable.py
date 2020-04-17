@@ -1,7 +1,6 @@
 import sys
 
 import numpy as np
-from scipy.stats import expon
 
 from pm4py.objects.random_variables.basic_structure import BasicStructureRandomVariable
 
@@ -77,6 +76,8 @@ class Exponential(BasicStructureRandomVariable):
         likelihood
             Log likelihood that the values follows the distribution
         """
+        from scipy.stats import expon
+
         if len(values) > 1:
             somma = 0
             for value in values:
@@ -93,6 +94,8 @@ class Exponential(BasicStructureRandomVariable):
         values
             Empirical values to work on
         """
+        from scipy.stats import expon
+
         if len(values) > 1:
             self.loc, self.scale = expon.fit(values, floc=0)
 
@@ -105,4 +108,6 @@ class Exponential(BasicStructureRandomVariable):
         value
             Value obtained following the distribution
         """
+        from scipy.stats import expon
+
         return expon.rvs(self.loc, self.scale)

@@ -5,7 +5,6 @@ import sys
 import tempfile
 
 import numpy as np
-from pyvis.network import Network
 
 
 def get_temp_file_name(format):
@@ -40,6 +39,8 @@ def apply(metric_values, parameters=None):
     temp_file_name
         Name of a temporary file where the visualization is placed
     """
+    from pyvis.network import Network
+
     if parameters is None:
         parameters = {}
 

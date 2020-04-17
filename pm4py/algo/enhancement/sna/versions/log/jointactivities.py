@@ -1,9 +1,8 @@
 from collections import Counter
 
 import numpy as np
-from scipy.stats import pearsonr
 
-from pm4py.objects.conversion.log import algorithm as conv_factory
+from pm4py.objects.conversion.log import factory as conv_factory
 from pm4py.util import xes_constants as xes
 from pm4py.util import constants
 
@@ -25,6 +24,8 @@ def apply(log, parameters=None):
         Tuple containing the metric matrix and the resources list. Moreover, last boolean indicates that the metric is
         directed.
     """
+    from scipy.stats import pearsonr
+
     if parameters is None:
         parameters = {}
 

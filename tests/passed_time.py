@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
 from pm4py.statistics.passed_time.log import algorithm as log_passed_time
 from pm4py.statistics.passed_time.pandas import algorithm as df_passed_time

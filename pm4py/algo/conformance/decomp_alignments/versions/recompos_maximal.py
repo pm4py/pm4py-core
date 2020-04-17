@@ -10,7 +10,6 @@ from pm4py.objects.petri import decomposition as decomp_utils
 from pm4py.algo.filtering.log.variants import variants_filter as variants_module
 from pm4py import util as pm4pyutil
 from copy import copy
-import networkx as nx
 
 BEST_WORST_COST = 'best_worst_cost'
 PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
@@ -225,6 +224,8 @@ def recompose_alignment(cons_nets, cons_nets_result):
     alignment
         Recomposed alignment
     """
+    import networkx as nx
+
     G0 = nx.DiGraph()
     for i in range(len(cons_nets_result)):
         if cons_nets_result[i] is not None:

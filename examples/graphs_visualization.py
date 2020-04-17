@@ -1,9 +1,9 @@
 import os
 
 from pm4py.statistics.attributes.log import get as attributes_filter
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.statistics.traces.log import case_statistics
-from pm4py.visualization.graphs import algorithm as graphs_factory
+from pm4py.visualization.graphs import visualizer as graphs_factory
 
 
 def execute_script():

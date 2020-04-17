@@ -4,7 +4,6 @@ from statistics import stdev
 from pm4py.objects.petri import semantics
 from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.util.vis_utils import human_readable_stat, get_arc_penwidth, get_trans_freq_color
-from pm4py.statistics.variants.log import get as variants_get
 from statistics import median, mean
 from pm4py.objects.log.log import EventLog
 from pm4py.util.business_hours import BusinessHours
@@ -421,6 +420,8 @@ def get_transition_performance_with_token_replay(log, net, im, fm):
         Dictionary where each transition label is associated to performance measures
     """
     from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
+    from pm4py.statistics.variants.log import get as variants_get
+
     variants_idx = variants_get.get_variants_from_log_trace_idx(log)
     aligned_traces = token_replay.apply(log, net, im, fm)
     element_statistics = single_element_statistics(log, net, im,
