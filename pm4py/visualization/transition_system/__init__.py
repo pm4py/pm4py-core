@@ -1,1 +1,1 @@
-from pm4py.visualization.transition_system import factory, algorithm, versions, util
+from pm4py.visualization.transition_system import factory, visualizer, versions, util

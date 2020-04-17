@@ -1,4 +1,3 @@
-import networkx as nx
 from pm4py.objects.petri.petrinet import PetriNet
 
 def create_networkx_undirected_graph(net, unique_source, unique_sink):
@@ -26,6 +25,7 @@ def create_networkx_undirected_graph(net, unique_source, unique_sink):
     inv_dictionary
         Correspondence between NetworkX nodes and Petri net entities
     """
+    import networkx as nx
 
     graph = nx.Graph()
     dictionary = {}
@@ -64,6 +64,8 @@ def create_networkx_directed_graph(net, weight=None):
     inv_dictionary
         Correspondence between NetworkX nodes and Petri net entities
     """
+    import networkx as nx
+
     graph = nx.DiGraph()
     dictionary = {}
     inv_dictionary = {}

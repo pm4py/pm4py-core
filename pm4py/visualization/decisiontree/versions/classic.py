@@ -1,4 +1,3 @@
-from sklearn import tree
 import graphviz
 import tempfile
 
@@ -24,6 +23,8 @@ def apply(clf, feature_names, classes, parameters=None):
     gviz
         GraphViz object
     """
+    from sklearn import tree
+
     if parameters is None:
         parameters = {}
 

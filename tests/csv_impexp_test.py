@@ -1,11 +1,11 @@
 import os
 import unittest
 
-from pm4py.objects.conversion.log import algorithm as log_conversion
-from pm4py.objects.log.exporter.csv import algorithm as csv_exporter
-from pm4py.objects.log.exporter.xes import algorithm as xes_exporter
-from pm4py.objects.log.importer.csv import algorithm as csv_importer
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.log.exporter.csv import exporter as csv_exporter
+from pm4py.objects.log.exporter.xes import exporter as xes_exporter
+from pm4py.objects.log.importer.csv import importer as csv_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import sampling, sorting, index_attribute
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 
@@ -54,8 +54,8 @@ class CsvImportExportTest(unittest.TestCase):
     def test_importExportParquet(self):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
-        from pm4py.objects.log.importer.parquet import algorithm as parquet_importer
-        from pm4py.objects.log.exporter.parquet import algorithm as parquet_exporter
+        from pm4py.objects.log.importer.parquet import importer as parquet_importer
+        from pm4py.objects.log.exporter.parquet import exporter as parquet_exporter
         self.dummy_variable = "dummy_value"
         df1 = parquet_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.parquet"))
         parquet_exporter.export_log(df1, os.path.join(OUTPUT_DATA_DIR, "running-example.parquet"))

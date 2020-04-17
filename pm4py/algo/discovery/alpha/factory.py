@@ -40,7 +40,21 @@ def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     final_marking
         Final marking
     """
-    return VERSIONS[variant](log, parameters=parameters)
+    if parameters is None:
+        parameters = {}
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
+    if isinstance(log, pandas.core.frame.DataFrame) and variant == ALPHA_VERSION_CLASSIC:
+            dfg = df_statistics.get_dfg_graph(log, case_id_glue=parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY],
+                                              activity_key=parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY],
+                                              timestamp_key=parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY])
+            return VERSIONS_DFG[variant](dfg, parameters=parameters)
+    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters)
+
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
                         details='Use algorithm entrypoint instead')
@@ -67,4 +81,9 @@ def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     final_marking
         Final marking
     """
-    return VERSIONS_DFG[variant](dfg, parameters)
+    if parameters is None:
+        parameters = {}
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+    return VERSIONS_DFG[version](dfg, parameters)
+

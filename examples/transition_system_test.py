@@ -1,6 +1,6 @@
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.transition_system import algorithm as ts_factory
-from pm4py.visualization.transition_system import algorithm as ts_vis_factory
+from pm4py.visualization.transition_system import visualizer as ts_vis_factory
 from pm4py.algo.discovery.transition_system.parameters import PARAM_KEY_WINDOW
 import os
 

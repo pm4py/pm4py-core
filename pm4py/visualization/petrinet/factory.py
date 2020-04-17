@@ -25,7 +25,7 @@ VERSIONS = {WO_DECORATION: wo_decoration.apply, FREQUENCY_DECORATION: token_deco
             ALIGNMENTS: alignments.apply}
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use visualizer module instead.')
 def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_statistics=None, parameters=None,
           variant="wo_decoration"):
     if parameters is None:
@@ -45,7 +45,7 @@ def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_st
                              parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use visualizer module instead.')
 def save(gviz, output_file_path):
     """
     Save the diagram
@@ -60,7 +60,7 @@ def save(gviz, output_file_path):
     gsave.save(gviz, output_file_path)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use visualizer module instead.')
 def view(gviz):
     """
     View the diagram

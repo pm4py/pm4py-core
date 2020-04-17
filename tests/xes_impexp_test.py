@@ -1,8 +1,8 @@
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
-from pm4py.objects.log.exporter.xes import algorithm as xes_exporter
-from pm4py.objects.log.importer.csv import algorithm as csv_importer
-from pm4py.objects.log.exporter.csv import algorithm as csv_exporter
-from pm4py.objects.conversion.log import algorithm as log_conversion
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.objects.log.exporter.xes import exporter as xes_exporter
+from pm4py.objects.log.importer.csv import importer as csv_importer
+from pm4py.objects.log.exporter.csv import exporter as csv_exporter
+from pm4py.objects.conversion.log import factory as log_conversion
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR, COMPRESSED_INPUT_DATA
 import logging
 import unittest

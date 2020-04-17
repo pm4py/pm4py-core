@@ -21,7 +21,7 @@ except:
     pass
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use exporter module instead.')
 def apply(log, path, parameters=None, variant=DEFAULT_VARIANT):
     """
     Exports a log to a Parquet file
@@ -43,7 +43,7 @@ def apply(log, path, parameters=None, variant=DEFAULT_VARIANT):
     return VERSIONS[variant](log, path, parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use exporter module instead.')
 def export_log(log, path, parameters=None, variant=DEFAULT_VARIANT):
     """
     Exports a log to a Parquet file
@@ -65,7 +65,7 @@ def export_log(log, path, parameters=None, variant=DEFAULT_VARIANT):
     return VERSIONS[variant](log, path, parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use exporter module instead.')
 def export_df(log, path, parameters=None, variant=DEFAULT_VARIANT):
     """
     Exports a log to a Parquet file

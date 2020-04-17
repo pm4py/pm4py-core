@@ -29,7 +29,7 @@ def apply(log, list_activities, parameters=None):
     ps
         Performance spectrum object (dictionary)
     """
-    from pm4py.objects.conversion.log import algorithm as log_conversion
+    from pm4py.objects.conversion.log import factory as log_conversion
 
     if parameters is None:
         parameters = {}

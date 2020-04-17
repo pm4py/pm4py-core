@@ -1,7 +1,7 @@
 import unittest
 import os
 
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
 from pm4py.algo.enhancement.roles import algorithm as role_mining
 

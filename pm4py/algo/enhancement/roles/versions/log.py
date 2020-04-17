@@ -1,5 +1,5 @@
 from pm4py.algo.enhancement.roles.common import algorithm
-from pm4py.objects.conversion.log import algorithm as log_conv_factory
+from pm4py.objects.conversion.log import factory as log_conv_factory
 from pm4py.util import xes_constants as xes
 from pm4py.util import constants
 from collections import Counter

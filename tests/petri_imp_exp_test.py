@@ -4,7 +4,7 @@ import unittest
 from pm4py.algo.conformance.alignments import algorithm as align_alg
 from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.objects import petri
-from pm4py.objects.log.importer.xes import algorithm as xes_importer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import pnml as petri_exporter
 from pm4py.objects.petri.importer import pnml as petri_importer

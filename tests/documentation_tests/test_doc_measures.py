@@ -7,7 +7,7 @@ class DocMeasuresDocumentationTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        from pm4py.objects.log.importer.xes import algorithm as xes_importer
+        from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.import_log(os.path.join("input_data", "receipt.xes"))
         from pm4py.algo.discovery.alpha import algorithm as alpha_miner
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
@@ -37,7 +37,7 @@ class DocMeasuresDocumentationTest(unittest.TestCase):
         simplicity_inductive = simplicity.apply(inductive_petri)
         del simplicity_alpha
         del simplicity_inductive
-        from pm4py.evaluation import algorithm as evaluation_alg
+        from pm4py.evaluation import factory as evaluation_alg
         alpha_evaluation_result = evaluation_alg.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking)
         inductive_evaluation_result = evaluation_alg.apply(log, inductive_petri, inductive_initial_marking,
                                                                inductive_final_marking)
