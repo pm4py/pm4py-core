@@ -1,6 +1,6 @@
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.discovery.log_skeleton import factory as lsk_factory
-from pm4py.algo.conformance.log_skeleton import factory as lsk_conf_factory
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.algo.discovery.log_skeleton import algorithm as lsk_factory
+from pm4py.algo.conformance.log_skeleton import algorithm as lsk_conf_factory
 import os
 
 

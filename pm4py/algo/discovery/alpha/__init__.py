@@ -1,1 +1,1 @@
-from pm4py.algo.discovery.alpha import factory, data_structures, utils, versions
+from pm4py.algo.discovery.alpha import factory, algorithm, data_structures, utils, versions

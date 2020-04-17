@@ -1,5 +1,5 @@
 import numpy as np
-from pm4py.util.lp import factory as lp_solver_factory
+from pm4py.util.lp import solver as lp_solver
 from pm4py.objects.petri.petrinet import Marking
 from pm4py.objects.petri import semantics
 from copy import copy
@@ -159,10 +159,10 @@ def __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, c
 
     parameters_solving = {"solver": "glpk"}
 
-    sol = lp_solver_factory.apply(cost_vec, g_matrix, h_cvx, a_matrix, b_term, parameters=parameters_solving,
+    sol = lp_solver.apply(cost_vec, g_matrix, h_cvx, a_matrix, b_term, parameters=parameters_solving,
                                   variant=variant)
-    prim_obj = lp_solver_factory.get_prim_obj_from_sol(sol, variant=variant)
-    points = lp_solver_factory.get_points_from_sol(sol, variant=variant)
+    prim_obj = lp_solver.get_prim_obj_from_sol(sol, variant=variant)
+    points = lp_solver.get_points_from_sol(sol, variant=variant)
 
     prim_obj = prim_obj if prim_obj is not None else sys.maxsize
     points = points if points is not None else [0.0] * len(sync_net.transitions)

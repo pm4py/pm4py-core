@@ -1,4 +1,6 @@
 import pyarrow
+import deprecation
+
 from pm4py.objects.log.serialization.versions import parquet_dataframe, pyarrow_event_stream, pyarrow_event_log
 from pm4py.objects.log.log import EventLog, EventStream
 import pandas as pd
@@ -20,7 +22,8 @@ VERSIONS_EXPORT_FILE_EVENT_STREAM={PYARROW_EVENT_STREAM: pyarrow_event_stream.ex
 VERSIONS_EXPORT_FILE_EVENT_LOG={PYARROW_EVENT_LOG: pyarrow_event_log.export_to_file}
 VERSIONS_EXPORT_FILE_DATAFRAME={PARQUET_DATAFRAME: parquet_dataframe.export_to_file}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use serializer module instead.')
 def apply(log, variant=None, parameters=None):
     """
     Serialize a log object to Pyarrow bytes
@@ -52,7 +55,8 @@ def apply(log, variant=None, parameters=None):
             variant=DEFAULT_DATAFRAME
         return VERSIONS_APPLY_DATAFRAME[variant](log, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use serializer module instead.')
 def export_to_file(log, file_path, variant=None, parameters=None):
     """
     Serialize a log object to the content of a file

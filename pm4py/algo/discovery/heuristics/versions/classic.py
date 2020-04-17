@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from pm4py.algo.discovery.dfg import factory as dfg_factory
+from pm4py.algo.discovery.dfg import algorithm as dfg_alg
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics, freq_triples as get_freq_triples
 from pm4py.statistics.attributes.log import get as log_attributes
 from pm4py.statistics.attributes.pandas import get as pd_attributes
@@ -8,7 +8,7 @@ from pm4py.statistics.start_activities.log import get as log_sa_filter
 from pm4py.statistics.start_activities.pandas import get as pd_sa_filter
 from pm4py.statistics.end_activities.log import get as log_ea_filter
 from pm4py.statistics.end_activities.pandas import get as pd_ea_filter
-from pm4py.objects.conversion.heuristics_net import factory as hn_conv_factory
+from pm4py.objects.conversion.heuristics_net import factory as hn_conv_alg
 from pm4py.objects.heuristics_net import defaults
 from pm4py.objects.heuristics_net.net import HeuristicsNet
 from pm4py.util import xes_constants as xes
@@ -41,7 +41,7 @@ def apply(log, parameters=None):
         parameters = {}
 
     heu_net = apply_heu(log, parameters=parameters)
-    net, im, fm = hn_conv_factory.apply(heu_net, parameters=parameters)
+    net, im, fm = hn_conv_alg.apply(heu_net, parameters=parameters)
 
     return net, im, fm
 
@@ -104,7 +104,7 @@ def apply_pandas(df, parameters=None):
     heu_net = apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
                             start_activities=start_activities, end_activities=end_activities, dfg_window_2=dfg_window_2,
                             freq_triples=frequency_triples, parameters=parameters)
-    net, im, fm = hn_conv_factory.apply(heu_net, parameters=parameters)
+    net, im, fm = hn_conv_alg.apply(heu_net, parameters=parameters)
 
     return net, im, fm
 
@@ -146,7 +146,7 @@ def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activitie
 
     heu_net = apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
                             start_activities=start_activities, end_activities=end_activities, parameters=parameters)
-    net, im, fm = hn_conv_factory.apply(heu_net, parameters=parameters)
+    net, im, fm = hn_conv_alg.apply(heu_net, parameters=parameters)
 
     return net, im, fm
 
@@ -180,11 +180,11 @@ def apply_heu(log, parameters=None):
     end_activities = log_ea_filter.get_end_activities(log, parameters=parameters)
     activities_occurrences = log_attributes.get_attribute_values(log, activity_key, parameters=parameters)
     activities = list(activities_occurrences.keys())
-    dfg = dfg_factory.apply(log, parameters=parameters)
+    dfg = dfg_alg.apply(log, parameters=parameters)
     parameters_w2 = deepcopy(parameters)
     parameters_w2["window"] = 2
-    dfg_window_2 = dfg_factory.apply(log, parameters=parameters_w2)
-    freq_triples = dfg_factory.apply(log, parameters=parameters, variant="freq_triples")
+    dfg_window_2 = dfg_alg.apply(log, parameters=parameters_w2)
+    freq_triples = dfg_alg.apply(log, parameters=parameters, variant="freq_triples")
 
     return apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
                          start_activities=start_activities,

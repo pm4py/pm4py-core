@@ -7,39 +7,39 @@ class DocMeasuresDocumentationTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        from pm4py.objects.log.importer.xes import factory as xes_importer
+        from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.import_log(os.path.join("input_data", "receipt.xes"))
-        from pm4py.algo.discovery.alpha import factory as alpha_miner
-        from pm4py.algo.discovery.inductive import factory as inductive_miner
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         alpha_petri, alpha_initial_marking, alpha_final_marking = alpha_miner.apply(log)
         inductive_petri, inductive_initial_marking, inductive_final_marking = inductive_miner.apply(log)
-        from pm4py.evaluation.replay_fitness import factory as replay_factory
-        fitness_alpha = replay_factory.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking, variant=replay_factory.TOKEN_BASED)
-        fitness_inductive = replay_factory.apply(log, inductive_petri, inductive_initial_marking,
-                                                 inductive_final_marking, variant=replay_factory.TOKEN_BASED)
+        from pm4py.evaluation.replay_fitness import evaluator as replay_alg
+        fitness_alpha = replay_alg.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking, variant=replay_alg.TOKEN_BASED)
+        fitness_inductive = replay_alg.apply(log, inductive_petri, inductive_initial_marking,
+                                                 inductive_final_marking, variant=replay_alg.TOKEN_BASED)
         del fitness_alpha
         del fitness_inductive
-        from pm4py.evaluation.precision import factory as precision_factory
-        precision_alpha = precision_factory.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking, variant=precision_factory.ETCONFORMANCE_TOKEN)
-        precision_inductive = precision_factory.apply(log, inductive_petri, inductive_initial_marking,
-                                                      inductive_final_marking, variant=precision_factory.ETCONFORMANCE_TOKEN)
+        from pm4py.evaluation.precision import evaluator as precision_alg
+        precision_alpha = precision_alg.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking, variant=precision_alg.ETCONFORMANCE_TOKEN)
+        precision_inductive = precision_alg.apply(log, inductive_petri, inductive_initial_marking,
+                                                      inductive_final_marking, variant=precision_alg.ETCONFORMANCE_TOKEN)
         del precision_alpha
         del precision_inductive
-        from pm4py.evaluation.generalization import factory as generalization_factory
-        generalization_alpha = generalization_factory.apply(log, alpha_petri, alpha_initial_marking,
+        from pm4py.evaluation.generalization import evaluator as generalization
+        generalization_alpha = generalization.apply(log, alpha_petri, alpha_initial_marking,
                                                             alpha_final_marking)
-        generalization_inductive = generalization_factory.apply(log, inductive_petri, inductive_initial_marking,
+        generalization_inductive = generalization.apply(log, inductive_petri, inductive_initial_marking,
                                                                 inductive_final_marking)
         del generalization_alpha
         del generalization_inductive
-        from pm4py.evaluation.simplicity import factory as simplicity_factory
-        simplicity_alpha = simplicity_factory.apply(alpha_petri)
-        simplicity_inductive = simplicity_factory.apply(inductive_petri)
+        from pm4py.evaluation.simplicity import evaluator as simplicity
+        simplicity_alpha = simplicity.apply(alpha_petri)
+        simplicity_inductive = simplicity.apply(inductive_petri)
         del simplicity_alpha
         del simplicity_inductive
-        from pm4py.evaluation import factory as evaluation_factory
-        alpha_evaluation_result = evaluation_factory.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking)
-        inductive_evaluation_result = evaluation_factory.apply(log, inductive_petri, inductive_initial_marking,
+        from pm4py.evaluation import factory as evaluation_alg
+        alpha_evaluation_result = evaluation_alg.apply(log, alpha_petri, alpha_initial_marking, alpha_final_marking)
+        inductive_evaluation_result = evaluation_alg.apply(log, inductive_petri, inductive_initial_marking,
                                                                inductive_final_marking)
         del alpha_evaluation_result
         del inductive_evaluation_result

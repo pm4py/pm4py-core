@@ -1,4 +1,6 @@
 import pyarrow
+import deprecation
+
 from pm4py.objects.log.deserialization.versions import parquet_dataframe, pyarrow_event_log, pyarrow_event_stream
 from pm4py.objects.log.log import EventLog, EventStream
 import pandas as pd
@@ -17,7 +19,8 @@ VERSIONS_APPLY={PYARROW_EVENT_STREAM: pyarrow_event_stream.apply, PYARROW_EVENT_
 
 VERSIONS_IMPORT_FILE={PYARROW_EVENT_STREAM: pyarrow_event_stream.import_from_file, PYARROW_EVENT_LOG: pyarrow_event_log.import_from_file, PARQUET_DATAFRAME: parquet_dataframe.import_from_file}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(bytes, variant, parameters=None):
     """
     Apply the deserialization to the bytes produced by Pyarrow serialization
@@ -38,7 +41,8 @@ def apply(bytes, variant, parameters=None):
     """
     return VERSIONS_APPLY[variant](bytes, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def import_from_file(file_path, variant, parameters=None):
     """
     Apply the deserialization to a file produced by Pyarrow serialization
