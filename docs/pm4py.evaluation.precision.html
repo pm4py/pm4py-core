@@ -84,6 +84,7 @@
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.evaluation.precision.factory">pm4py.evaluation.precision.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.evaluation.precision.utils">pm4py.evaluation.precision.utils module</a></li>
 <li><a class="reference internal" href="#module-pm4py.evaluation.precision">Module contents</a></li>
 </ul>
 </li>
@@ -159,6 +160,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pm4py.evaluation.precision.versions.html">pm4py.evaluation.precision.versions package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.evaluation.precision.versions.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.evaluation.precision.versions.html#module-pm4py.evaluation.precision.versions.align_etconformance">pm4py.evaluation.precision.versions.align_etconformance module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.evaluation.precision.versions.html#module-pm4py.evaluation.precision.versions.etconformance_token">pm4py.evaluation.precision.versions.etconformance_token module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.evaluation.precision.versions.html#module-pm4py.evaluation.precision.versions">Module contents</a></li>
 </ul>
@@ -173,7 +175,7 @@
 <span id="pm4py-evaluation-precision-factory-module"></span><h2>pm4py.evaluation.precision.factory module<a class="headerlink" href="#module-pm4py.evaluation.precision.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.evaluation.precision.factory.apply">
-<code class="descclassname">pm4py.evaluation.precision.factory.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>net</em>, <em>marking</em>, <em>final_marking</em>, <em>parameters=None</em>, <em>variant='etconformance'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.factory.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.evaluation.precision.factory.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">net</em>, <em class="sig-param">marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.factory.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method to apply ET Conformance</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -189,6 +191,37 @@
 </dl>
 </li>
 <li><p><strong>variant</strong> – Variant of the algorithm that should be applied</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.evaluation.precision.utils">
+<span id="pm4py-evaluation-precision-utils-module"></span><h2>pm4py.evaluation.precision.utils module<a class="headerlink" href="#module-pm4py.evaluation.precision.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.evaluation.precision.utils.form_fake_log">
+<code class="sig-prename descclassname">pm4py.evaluation.precision.utils.</code><code class="sig-name descname">form_fake_log</code><span class="sig-paren">(</span><em class="sig-param">prefixes_keys</em>, <em class="sig-param">activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/utils.html#form_fake_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.utils.form_fake_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Form fake log for replay (putting each prefix as separate trace to align)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefixes_keys</strong> – Keys of the prefixes (to form a log with a given order)</p></li>
+<li><p><strong>activity_key</strong> – Activity key (must be provided if different from concept:name)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.evaluation.precision.utils.get_log_prefixes">
+<code class="sig-prename descclassname">pm4py.evaluation.precision.utils.</code><code class="sig-name descname">get_log_prefixes</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/utils.html#get_log_prefixes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.utils.get_log_prefixes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get log prefixes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>activity_key</strong> – Activity key (must be provided if different from concept:name)</p></li>
 </ul>
 </dd>
 </dl>
