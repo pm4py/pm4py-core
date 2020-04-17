@@ -4,7 +4,6 @@ TO_PETRI_NET = "to_petri_net"
 
 VERSIONS = {TO_PETRI_NET: to_petri_net.apply}
 
-
 def apply(heu_net, parameters=None, variant=TO_PETRI_NET):
     """
     Converts an Heuristics Net to a different type of object

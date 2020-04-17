@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.objects.log.exporter.xes.versions import etree_xes_exp
 from pm4py.objects.log.util import compression
 from pm4py.objects.conversion.log import factory as log_conv_factory
@@ -6,7 +8,8 @@ ETREE = "etree"
 VERSIONS_STRING = {ETREE: etree_xes_exp.export_log_as_string}
 VERSIONS = {ETREE: etree_xes_exp.export_log}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def export_log_as_string(log, variant="etree", parameters=None):
     """
     Factory method to export a XES from a log as a string
@@ -27,7 +30,8 @@ def export_log_as_string(log, variant="etree", parameters=None):
     """
     return VERSIONS_STRING[variant](log_conv_factory.apply(log, parameters=parameters), parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def export_log(log, output_file_path, variant="etree", parameters=None):
     """
     Factory method to export a XES from a log
@@ -50,7 +54,8 @@ def export_log(log, output_file_path, variant="etree", parameters=None):
     if "compress" in parameters and parameters["compress"]:
         compression.compress(output_file_path)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, output_file_path, variant="etree", parameters=None):
     """
     Factory method to export a XES from a log

@@ -55,7 +55,7 @@ def export_to_file(log, file_path, parameters=None):
         file_path.close()
         file_path = file_path.name
 
-    from pm4py.objects.log.exporter.parquet import factory as parquet_exporter
+    from pm4py.objects.log.exporter.parquet import algorithm as parquet_exporter
     parquet_exporter.apply(log, file_path, parameters=parameters)
 
     return file_path

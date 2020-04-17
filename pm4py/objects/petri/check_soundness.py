@@ -6,10 +6,10 @@ from pm4py.objects.petri import incidence_matrix
 from pm4py.objects.petri import utils as petri_utils
 from pm4py.objects.petri import petrinet
 from pm4py.objects.petri.networkx_graph import create_networkx_undirected_graph
-from pm4py.util.lp import factory as lp_solver_factory
+from pm4py.util.lp import solver as lp_solver
 from pm4py.objects.petri import explore_path
 
-DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.PULP
+DEFAULT_LP_SOLVER_VARIANT = lp_solver.PULP
 
 
 def check_source_and_sink_reachability(net, unique_source, unique_sink):
@@ -279,7 +279,7 @@ def check_stability_wfnet(net):
         i = i + 1
 
     try:
-        sol = lp_solver_factory.apply(c, vstack_matrix, bub, None, None, variant=DEFAULT_LP_SOLVER_VARIANT)
+        sol = lp_solver.apply(c, vstack_matrix, bub, None, None, variant=DEFAULT_LP_SOLVER_VARIANT)
         if sol:
             return True
     except:

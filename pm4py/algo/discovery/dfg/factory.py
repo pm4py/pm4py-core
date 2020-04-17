@@ -1,4 +1,5 @@
 import pandas
+import deprecation
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
@@ -18,7 +19,8 @@ VERSIONS = {DFG_NATIVE: native.apply, DFG_FREQUENCY: native.apply, DFG_PERFORMAN
             DFG_FREQUENCY_GREEDY: native.apply, DFG_PERFORMANCE_GREEDY: performance.apply,
             FREQ_TRIPLES: freq_triples.apply}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, parameters=None, variant=DFG_NATIVE):
     """
     Calculates DFG graph (frequency or performance) starting from a log

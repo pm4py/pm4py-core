@@ -3,6 +3,7 @@ from pm4py.visualization.common import save as gsave
 from pm4py.visualization.process_tree.versions import wo_decoration
 from pm4py.objects.process_tree import util
 from copy import deepcopy
+import deprecation
 
 
 WO_DECORATION = "wo_decoration"
@@ -15,7 +16,8 @@ VERSIONS = {WO_DECORATION: wo_decoration.apply, FREQUENCY_DECORATION: wo_decorat
             PERFORMANCE_DECORATION: wo_decoration.apply, FREQUENCY_GREEDY: wo_decoration.apply,
             PERFORMANCE_GREEDY: wo_decoration.apply}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use visualizer module instead.')
 def apply(tree0, parameters=None, variant="wo_decoration"):
     """
     Factory method for Process Tree representation
@@ -45,7 +47,8 @@ def apply(tree0, parameters=None, variant="wo_decoration"):
     util.tree_sort(tree)
     return VERSIONS[variant](tree, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use visualizer module instead.')
 def save(gviz, output_file_path):
     """
     Save the diagram
@@ -59,7 +62,8 @@ def save(gviz, output_file_path):
     """
     gsave.save(gviz, output_file_path)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use visualizer module instead.')
 def view(gviz):
     """
     View the diagram

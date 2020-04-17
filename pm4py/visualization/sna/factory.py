@@ -1,3 +1,5 @@
+import deprecation
+
 from pm4py.visualization.sna.versions import networkx, pyvis
 
 NETWORKX = "networkx"
@@ -7,7 +9,8 @@ VERSIONS_APPLY = {NETWORKX: networkx.apply, PYVIS: pyvis.apply}
 VERSIONS_VIEW = {NETWORKX: networkx.view, PYVIS: pyvis.view}
 VERSIONS_SAVE = {NETWORKX: networkx.save, PYVIS: pyvis.save}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use visualizer module instead.')
 def apply(metric_values, parameters=None, variant=NETWORKX):
     """
     Perform SNA visualization starting from the Matrix Container object
@@ -30,7 +33,8 @@ def apply(metric_values, parameters=None, variant=NETWORKX):
     """
     return VERSIONS_APPLY[variant](metric_values, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use visualizer module instead.')
 def view(temp_file_name, parameters=None, variant=NETWORKX):
     """
     View the SNA visualization on the screen
@@ -44,7 +48,8 @@ def view(temp_file_name, parameters=None, variant=NETWORKX):
     """
     return VERSIONS_VIEW[variant](temp_file_name, parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use visualizer module instead.')
 def save(temp_file_name, dest_file, parameters=None, variant=NETWORKX):
     """
     Save the SNA visualization from a temporary file to a well-defined destination file
