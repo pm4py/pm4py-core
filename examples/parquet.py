@@ -8,7 +8,7 @@ allowed_columns = ["caseAAAconceptAAAname", "conceptAAAname"]
 
 def execute_script():
     try:
-        from pm4py.objects.log.importer.parquet import factory as parquet_importer
+        from pm4py.objects.log.importer.parquet import algorithm as parquet_importer
         from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 
         log_path = os.path.join("..", "tests", "input_data", log_name)

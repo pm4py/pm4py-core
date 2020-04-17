@@ -1,4 +1,5 @@
 import pandas
+import deprecation
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.alpha import versions
@@ -14,7 +15,8 @@ VERSIONS_DFG = {ALPHA_VERSION_CLASSIC: versions.classic.apply_dfg}
 
 DEFAULT_PARAMETERS = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: xes_util.DEFAULT_NAME_KEY}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     """
     Apply the Alpha Miner on top of a log
@@ -54,7 +56,9 @@ def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters)
 
 
-def apply_dfg(dfg, parameters=None, version=ALPHA_VERSION_CLASSIC):
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
+def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     """
     Apply Alpha Miner directly on top of a DFG graph
 
@@ -82,3 +86,4 @@ def apply_dfg(dfg, parameters=None, version=ALPHA_VERSION_CLASSIC):
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
     return VERSIONS_DFG[version](dfg, parameters)
+

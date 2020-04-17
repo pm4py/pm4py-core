@@ -1,4 +1,5 @@
 import pandas
+import deprecation
 
 from pm4py import util as pmutil
 from pm4py.objects.conversion.log import factory as log_conversion
@@ -23,7 +24,8 @@ VERSIONS = {WO_DECORATION: wo_decoration.apply, FREQUENCY_DECORATION: token_deco
             PERFORMANCE_GREEDY: greedy_decoration.apply_performance,
             ALIGNMENTS: alignments.apply}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use visualizer module instead.')
 def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_statistics=None, parameters=None,
           variant="wo_decoration"):
     if parameters is None:
@@ -42,7 +44,8 @@ def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_st
     return VERSIONS[variant](net, initial_marking, final_marking, log=log, aggregated_statistics=aggregated_statistics,
                              parameters=parameters)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use visualizer module instead.')
 def save(gviz, output_file_path):
     """
     Save the diagram
@@ -56,7 +59,8 @@ def save(gviz, output_file_path):
     """
     gsave.save(gviz, output_file_path)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use visualizer module instead.')
 def view(gviz):
     """
     View the diagram

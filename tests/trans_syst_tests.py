@@ -1,7 +1,7 @@
 import pm4py
 from tests.constants import INPUT_DATA_DIR
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.discovery.transition_system import factory as ts_factory
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.algo.discovery.transition_system import algorithm as ts_alg
 from pm4py.algo.discovery.transition_system import parameters
 import unittest
 import os
@@ -14,7 +14,7 @@ class TransitionSystemTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         input_log = os.path.join(INPUT_DATA_DIR, "running-example.xes")
         log = xes_importer.import_log(input_log)
-        ts = ts_factory.apply(log, parameters={parameters.PARAM_KEY_VIEW: parameters.VIEW_SEQUENCE,
+        ts = ts_alg.apply(log, parameters={parameters.PARAM_KEY_VIEW: parameters.VIEW_SEQUENCE,
                                                parameters.PARAM_KEY_WINDOW: 3,
                                                parameters.PARAM_KEY_DIRECTION: parameters.DIRECTION_FORWARD})
         viz = pm4py.visualization.transition_system.util.visualize_graphviz.visualize(ts)

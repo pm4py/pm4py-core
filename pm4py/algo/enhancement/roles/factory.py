@@ -1,5 +1,8 @@
-from pm4py.algo.enhancement.roles.versions import log, pandas
 import pandas as pd
+import deprecation
+
+from pm4py.algo.enhancement.roles.versions import log, pandas
+
 
 LOG = 'log'
 PANDAS = 'pandas'
@@ -9,7 +12,8 @@ ROLES_THRESHOLD_PARAMETER = "roles_threshold_parameter"
 
 VERSIONS = {LOG: log.apply, PANDAS: pandas.apply}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, variant=None, parameters=None):
     """
     Gets the roles (group of different activities done by similar resources)

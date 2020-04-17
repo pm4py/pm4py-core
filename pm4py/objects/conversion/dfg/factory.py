@@ -5,7 +5,6 @@ VERSION_TO_PETRI_NET_ACTIVITY_DEFINES_PLACE = 'to_petri_net_activity_defines_pla
 
 VERSIONS = {VERSION_TO_PETRI_NET_ACTIVITY_DEFINES_PLACE: to_petri_net_activity_defines_place.apply}
 
-
 def apply(dfg, parameters=None, variant=VERSION_TO_PETRI_NET_ACTIVITY_DEFINES_PLACE):
     return VERSIONS[variant](dfg, parameters=parameters)
 
