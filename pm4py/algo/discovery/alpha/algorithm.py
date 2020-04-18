@@ -62,7 +62,7 @@ def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     -----------
     dfg
         Directly-Follows graph
-    version
+    variant
         Variant of the algorithm to use (classic)
     parameters
         Possible parameters of the algorithm, including:
