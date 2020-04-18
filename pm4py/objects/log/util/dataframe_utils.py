@@ -1,7 +1,8 @@
 from pm4py.util import constants
-from pm4py.objects.log.log import EventStream, Event
+from pm4py.objects.log.log import EventStream
 from pm4py.objects.conversion.log import factory as log_conv_factory
-
+import pandas as pd
+from pm4py.util.versions import check_pandas_ge_024
 
 COLUMNS = "columns"
 LEGACY_PARQUET_TP_REPLACER = "AAA"
@@ -83,3 +84,43 @@ def table_to_log(table, parameters=None):
     stream = EventStream([dict(zip(dict0, i)) for i in zip(*dict0.values())])
 
     return log_conv_factory.apply(stream, parameters=parameters)
+
+
+def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None):
+    """
+    Convert all dataframe columns in a dataframe
+
+    Parameters
+    -----------
+    df
+        Dataframe
+    timest_format
+        (If provided) Format of the timestamp columns in the CSV file
+    timest_columns
+        Columns of the CSV that shall be converted into timestamp
+
+    Returns
+    ------------
+    df
+        Dataframe with timestamp columns converted
+
+    """
+    needs_conversion = check_pandas_ge_024()
+    for col in df.columns:
+        if timest_columns is None or col in timest_columns:
+            if df[col].dtype == 'object':
+                try:
+                    if timest_format is None:
+                        if needs_conversion:
+                            df[col] = pd.to_datetime(df[col], utc=True)
+                        else:
+                            df[col] = pd.to_datetime(df[col])
+                    else:
+                        if needs_conversion:
+                            df[col] = pd.to_datetime(df[col], utc=True, format=timest_format)
+                        else:
+                            df[col] = pd.to_datetime(df[col])
+                except ValueError:
+                    # print("exception converting column: "+str(col))
+                    pass
+    return df
