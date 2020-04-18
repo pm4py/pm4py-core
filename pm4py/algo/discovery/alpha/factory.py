@@ -66,7 +66,7 @@ def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     -----------
     dfg
         Directly-Follows graph
-    version
+    variant
         Variant of the algorithm to use (classic)
     parameters
         Possible parameters of the algorithm, including:
@@ -85,5 +85,5 @@ def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
         parameters = {}
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    return VERSIONS_DFG[version](dfg, parameters)
+    return VERSIONS_DFG[variant](dfg, parameters)
 
