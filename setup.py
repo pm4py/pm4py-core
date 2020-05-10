@@ -132,7 +132,8 @@ setup(
         'pydotplus',
         'pulp',
         'pytz',
-        'intervaltree'
+        'intervaltree',
+        "deprecation"
     ],
     project_urls={
         'Documentation': 'http://www.pm4py.org',
