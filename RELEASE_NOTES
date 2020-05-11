@@ -144,3 +144,6 @@ This is a minor release, consisting of the following changes:
 
 ===== PM4PY 1.2.13 =====
 This is a minor release, consisting of the following changes:
+1. commit 531b767d85bb4c95996ae0c9644a958f75aad120
+	- fixed utilities of Petri nets (acyclic net variants (M. Pegoraro); strongly connected components by NX graph)
+
