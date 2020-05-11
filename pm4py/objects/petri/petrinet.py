@@ -1,5 +1,6 @@
 from collections import Counter
 
+
 class Marking(Counter):
     pass
 
@@ -52,10 +53,11 @@ class Marking(Counter):
 class PetriNet(object):
     class Place(object):
 
-        def __init__(self, name, in_arcs=None, out_arcs=None):
+        def __init__(self, name, in_arcs=None, out_arcs=None, properties=None):
             self.__name = name
             self.__in_arcs = set() if in_arcs is None else in_arcs
             self.__out_arcs = set() if out_arcs is None else out_arcs
+            self.__properties = dict() if properties is None else properties
 
         def __set_name(self, name):
             self.__name = name
@@ -69,20 +71,25 @@ class PetriNet(object):
         def __get_in_arcs(self):
             return self.__in_arcs
 
+        def __get_properties(self):
+            return self.__properties
+
         def __repr__(self):
             return str(self.name)
 
         name = property(__get_name, __set_name)
         in_arcs = property(__get_in_arcs)
         out_arcs = property(__get_out_arcs)
+        properties = property(__get_properties)
 
     class Transition(object):
 
-        def __init__(self, name, label=None, in_arcs=None, out_arcs=None):
+        def __init__(self, name, label=None, in_arcs=None, out_arcs=None, properties=None):
             self.__name = name
             self.__label = None if label is None else label
             self.__in_arcs = set() if in_arcs is None else in_arcs
             self.__out_arcs = set() if out_arcs is None else out_arcs
+            self.__properties = dict() if properties is None else properties
 
         def __set_name(self, name):
             self.__name = name
@@ -102,6 +109,9 @@ class PetriNet(object):
         def __get_in_arcs(self):
             return self.__in_arcs
 
+        def __get_properties(self):
+            return self.__properties
+
         def __repr__(self):
             if self.label is None:
                 return str(self.name)
@@ -112,15 +122,17 @@ class PetriNet(object):
         label = property(__get_label, __set_label)
         in_arcs = property(__get_in_arcs)
         out_arcs = property(__get_out_arcs)
+        properties = property(__get_properties)
 
     class Arc(object):
 
-        def __init__(self, source, target, weight=1):
+        def __init__(self, source, target, weight=1, properties=None):
             if type(source) is type(target):
                 raise Exception('Petri nets are bipartite graphs!')
             self.__source = source
             self.__target = target
             self.__weight = weight
+            self.__properties = dict() if properties is None else properties
 
         def __get_source(self):
             return self.__source
@@ -134,27 +146,32 @@ class PetriNet(object):
         def __get_weight(self):
             return self.__weight
 
+        def __get_properties(self):
+            return self.__properties
+
         def __repr__(self):
             if type(self.source) is PetriNet.Transition:
                 if self.source.label:
-                    return "(t)"+str(self.source.label) + "->" + "(p)"+str(self.target.name)
+                    return "(t)" + str(self.source.label) + "->" + "(p)" + str(self.target.name)
                 else:
-                    return "(t)"+str(self.source.name) + "->" + "(p)"+str(self.target.name)
+                    return "(t)" + str(self.source.name) + "->" + "(p)" + str(self.target.name)
             if type(self.target) is PetriNet.Transition:
                 if self.target.label:
-                    return "(p)"+str(self.source.name) + "->" + "(t)"+str(self.target.label)
+                    return "(p)" + str(self.source.name) + "->" + "(t)" + str(self.target.label)
                 else:
-                    return "(p)"+str(self.source.name) + "->" + "(t)"+str(self.target.name)
+                    return "(p)" + str(self.source.name) + "->" + "(t)" + str(self.target.name)
 
         source = property(__get_source)
         target = property(__get_target)
         weight = property(__get_weight, __set_weight)
+        properties = property(__get_properties)
 
-    def __init__(self, name=None, places=None, transitions=None, arcs=None):
+    def __init__(self, name=None, places=None, transitions=None, arcs=None, properties=None):
         self.__name = "" if name is None else name
         self.__places = set() if places is None else places
         self.__transitions = set() if transitions is None else transitions
         self.__arcs = set() if arcs is None else arcs
+        self.__properties = dict() if properties is None else properties
 
     def __get_name(self):
         return self.__name
@@ -171,7 +188,11 @@ class PetriNet(object):
     def __get_arcs(self):
         return self.__arcs
 
+    def __get_properties(self):
+        return self.__properties
+
     name = property(__get_name, __set_name)
     places = property(__get_places)
     transitions = property(__get_transitions)
     arcs = property(__get_arcs)
+    properties = property(__get_properties)
