@@ -1,14 +1,18 @@
 from pm4py.visualization.decisiontree.versions import classic
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
+from enum import Enum
+from pm4py.util import exec_utils
 
 
-CLASSIC = "classic"
+class Variants(Enum):
+    CLASSIC = classic
 
-VERSIONS = {CLASSIC: classic.apply}
+
+DEFAULT_VARIANT = Variants.CLASSIC
 
 
-def apply(clf, feature_names, classes, parameters=None, variant="classic"):
+def apply(clf, feature_names, classes, parameters=None, variant=DEFAULT_VARIANT):
     """
     Method to apply the visualization of the decision tree
 
@@ -22,16 +26,17 @@ def apply(clf, feature_names, classes, parameters=None, variant="classic"):
         Names of the target classes
     parameters
         Possible parameters of the algorithm, including:
-            format -> Image format (pdf, svg, png ...)
+            Parameters.FORMAT -> Image format (pdf, svg, png ...)
     variant
-        Variant of the algorithm
+        Variant of the algorithm:
+            - Variants.CLASSIC
 
     Returns
     ------------
     gviz
         GraphViz object
     """
-    return VERSIONS[variant](clf, feature_names, classes, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(clf, feature_names, classes, parameters=parameters)
 
 
 def save(gviz, output_file_path):

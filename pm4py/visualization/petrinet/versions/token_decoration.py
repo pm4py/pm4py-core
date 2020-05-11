@@ -1,14 +1,10 @@
 import pm4py
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.statistics.variants.log import get as variants_get
-from pm4py.objects import log as log_lib
 from pm4py.visualization.petrinet.common import visualize
 from pm4py.visualization.petrinet.util import performance_map
-
-PARAM_ACTIVITY_KEY = pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
-PARAM_TIMESTAMP_KEY = pm4py.util.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
-
-PARAMETERS = [PARAM_ACTIVITY_KEY, PARAM_TIMESTAMP_KEY]
+from pm4py.util import exec_utils, xes_constants
+from pm4py.visualization.petrinet.parameters import Parameters
 
 
 def get_decorations(log, net, initial_marking, final_marking, parameters=None, measure="frequency",
@@ -42,19 +38,16 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     if parameters is None:
         parameters = {}
 
-    aggregation_measure = None
-    if "aggregationMeasure" in parameters:
-        aggregation_measure = parameters["aggregationMeasure"]
+    aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, None)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
 
-    activity_key = parameters[
-        PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
-    timestamp_key = parameters[PARAM_TIMESTAMP_KEY] if PARAM_TIMESTAMP_KEY in parameters else "time:timestamp"
-
-    parameters_variants = {PARAM_ACTIVITY_KEY: activity_key}
-    variants_idx = variants_get.get_variants_from_log_trace_idx(log, parameters=parameters_variants)
+    variants_idx = variants_get.get_variants_from_log_trace_idx(log, parameters=parameters)
     variants = variants_get.convert_variants_trace_idx_to_trace_obj(log, variants_idx)
 
-    parameters_tr = {PARAM_ACTIVITY_KEY: activity_key, "variants": variants}
+    parameters_tr = {token_replay.Variants.TOKEN_REPLAY.value.Parameters.ACTIVITY_KEY: activity_key,
+                     token_replay.Variants.TOKEN_REPLAY.value.Parameters.VARIANTS: variants}
 
     # do the replay
     aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, parameters=parameters_tr)
@@ -76,7 +69,7 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
 
 def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """
-    Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization
+    Apply method for Petri net visualization (it calls the graphviz_visualization
     method) adding frequency representation obtained by token replay
 
     Parameters
@@ -109,7 +102,7 @@ def apply_frequency(net, initial_marking, final_marking, log=None, aggregated_st
 
 def apply_performance(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
     """
-    Apply method for Petri net visualization (useful for recall from factory; it calls the graphviz_visualization
+    Apply method for Petri net visualization (it calls the graphviz_visualization
     method) adding performance representation obtained by token replay
 
     Parameters

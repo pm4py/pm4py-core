@@ -1,7 +1,8 @@
-from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
+from pm4py.algo.conformance.tokenreplay.versions import token_replay
+from pm4py.algo.conformance.tokenreplay import algorithm as executor
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.util.constants import PARAMETER_TOKEN_REPLAY_VARIANT, DEFAULT_TOKEN_REPLAY_VARIANT
+from pm4py.evaluation.replay_fitness.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def evaluate(aligned_traces, parameters=None):
@@ -65,18 +66,16 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
 
     if parameters is None:
         parameters = {}
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    token_replay_variant = parameters[
-        PARAMETER_TOKEN_REPLAY_VARIANT] if PARAMETER_TOKEN_REPLAY_VARIANT in parameters else DEFAULT_TOKEN_REPLAY_VARIANT
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+    token_replay_variant = exec_utils.get_param_value(Parameters.TOKEN_REPLAY_VARIANT, parameters,
+                                                      executor.Variants.TOKEN_REPLAY)
+    cleaning_token_flood = exec_utils.get_param_value(Parameters.CLEANING_TOKEN_FLOOD, parameters, False)
 
-    parameters_tr = {PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
-                     "consider_remaining_in_fitness": True}
+    parameters_tr = {token_replay.Parameters.ACTIVITY_KEY: activity_key,
+                     token_replay.Parameters.CONSIDER_REMAINING_IN_FITNESS: True,
+                     token_replay.Parameters.CLEANING_TOKEN_FLOOD: cleaning_token_flood}
 
-    if "cleaning_token_flood" in parameters:
-        parameters_tr["cleaning_token_flood"] = parameters["cleaning_token_flood"]
-
-    aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, variant=token_replay_variant,
+    aligned_traces = executor.apply(log, petri_net, initial_marking, final_marking, variant=token_replay_variant,
                                         parameters=parameters_tr)
 
     return evaluate(aligned_traces)

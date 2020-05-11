@@ -84,6 +84,7 @@
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.simulation.playout.factory">pm4py.simulation.playout.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.simulation.playout.parameters">pm4py.simulation.playout.parameters module</a></li>
 <li><a class="reference internal" href="#module-pm4py.simulation.playout.simulator">pm4py.simulation.playout.simulator module</a></li>
 <li><a class="reference internal" href="#module-pm4py.simulation.playout">Module contents</a></li>
 </ul>
@@ -158,10 +159,6 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pm4py.simulation.playout.data_structures.html">pm4py.simulation.playout.data_structures package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pm4py.simulation.playout.data_structures.html#module-pm4py.simulation.playout.data_structures">Module contents</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="pm4py.simulation.playout.versions.html">pm4py.simulation.playout.versions package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.simulation.playout.versions.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.simulation.playout.versions.html#module-pm4py.simulation.playout.versions.basic_playout">pm4py.simulation.playout.versions.basic_playout module</a></li>
@@ -202,11 +199,58 @@ maxTraceLength -&gt; Maximum trace length</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-pm4py.simulation.playout.parameters">
+<span id="pm4py-simulation-playout-parameters-module"></span><h2>pm4py.simulation.playout.parameters module<a class="headerlink" href="#module-pm4py.simulation.playout.parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.simulation.playout.parameters.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.simulation.playout.parameters.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/simulation/playout/parameters.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.playout.parameters.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.simulation.playout.parameters.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.simulation.playout.parameters.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.playout.parameters.Parameters.CASE_ID_KEY">
+<code class="sig-name descname">CASE_ID_KEY</code><em class="property"> = 'case_id_glue'</em><a class="headerlink" href="#pm4py.simulation.playout.parameters.Parameters.CASE_ID_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.playout.parameters.Parameters.MAX_TRACE_LENGTH">
+<code class="sig-name descname">MAX_TRACE_LENGTH</code><em class="property"> = 'maxTraceLength'</em><a class="headerlink" href="#pm4py.simulation.playout.parameters.Parameters.MAX_TRACE_LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.playout.parameters.Parameters.NO_TRACES">
+<code class="sig-name descname">NO_TRACES</code><em class="property"> = 'noTraces'</em><a class="headerlink" href="#pm4py.simulation.playout.parameters.Parameters.NO_TRACES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.playout.parameters.Parameters.TIMESTAMP_KEY">
+<code class="sig-name descname">TIMESTAMP_KEY</code><em class="property"> = 'pm4py:param:timestamp_key'</em><a class="headerlink" href="#pm4py.simulation.playout.parameters.Parameters.TIMESTAMP_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.simulation.playout.simulator">
 <span id="pm4py-simulation-playout-simulator-module"></span><h2>pm4py.simulation.playout.simulator module<a class="headerlink" href="#module-pm4py.simulation.playout.simulator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.simulation.playout.simulator.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.simulation.playout.simulator.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/simulation/playout/simulator.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.playout.simulator.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.simulation.playout.simulator.Variants.BASIC_PLAYOUT">
+<code class="sig-name descname">BASIC_PLAYOUT</code><em class="property"> = &lt;module 'pm4py.simulation.playout.versions.basic_playout' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\simulation\\playout\\versions\\basic_playout.py'&gt;</em><a class="headerlink" href="#pm4py.simulation.playout.simulator.Variants.BASIC_PLAYOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.simulation.playout.simulator.apply">
-<code class="sig-prename descclassname">pm4py.simulation.playout.simulator.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='basic_playout'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/simulation/playout/simulator.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.playout.simulator.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.simulation.playout.simulator.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.BASIC_PLAYOUT: &lt;module 'pm4py.simulation.playout.versions.basic_playout' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\simulation\\playout\\versions\\basic_playout.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/simulation/playout/simulator.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.playout.simulator.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do the playout of a Petrinet generating a log</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -215,12 +259,19 @@ maxTraceLength -&gt; Maximum trace length</p>
 <li><p><strong>initial_marking</strong> – Initial marking of the Petri net</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm:</dt><dd><p>noTraces -&gt; Number of traces of the log to generate
-maxTraceLength -&gt; Maximum trace length</p>
+<dt>Parameters of the algorithm:</dt><dd><p>Parameters.NO_TRACES -&gt; Number of traces of the log to generate
+Parameters.MAX_TRACE_LENGTH -&gt; Maximum trace length</p>
 </dd>
 </dl>
 </li>
-<li><p><strong>variant</strong> – Variant of the algorithm to use</p></li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use:</dt><dd><ul class="simple">
+<li><p>Variants.BASIC_PLAYOUT</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </dd>
 </dl>

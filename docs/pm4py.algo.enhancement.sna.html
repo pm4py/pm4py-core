@@ -85,6 +85,7 @@
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.enhancement.sna.algorithm">pm4py.algo.enhancement.sna.algorithm module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.enhancement.sna.factory">pm4py.algo.enhancement.sna.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.enhancement.sna.parameters">pm4py.algo.enhancement.sna.parameters module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.enhancement.sna">Module contents</a></li>
 </ul>
 </li>
@@ -191,9 +192,56 @@
 </div>
 <div class="section" id="module-pm4py.algo.enhancement.sna.algorithm">
 <span id="pm4py-algo-enhancement-sna-algorithm-module"></span><h2>pm4py.algo.enhancement.sna.algorithm module<a class="headerlink" href="#module-pm4py.algo.enhancement.sna.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.enhancement.sna.algorithm.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.enhancement.sna.algorithm.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/algo/enhancement/sna/algorithm.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.sna.algorithm.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.sna.algorithm.Variants.HANDOVER_LOG">
+<code class="sig-name descname">HANDOVER_LOG</code><em class="property"> = &lt;module 'pm4py.algo.enhancement.sna.versions.log.handover' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\enhancement\\sna\\versions\\log\\handover.py'&gt;</em><a class="headerlink" href="#pm4py.algo.enhancement.sna.algorithm.Variants.HANDOVER_LOG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.sna.algorithm.Variants.HANDOVER_PANDAS">
+<code class="sig-name descname">HANDOVER_PANDAS</code><em class="property"> = &lt;module 'pm4py.algo.enhancement.sna.versions.pandas.handover' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\enhancement\\sna\\versions\\pandas\\handover.py'&gt;</em><a class="headerlink" href="#pm4py.algo.enhancement.sna.algorithm.Variants.HANDOVER_PANDAS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.sna.algorithm.Variants.JOINTACTIVITIES_LOG">
+<code class="sig-name descname">JOINTACTIVITIES_LOG</code><em class="property"> = &lt;module 'pm4py.algo.enhancement.sna.versions.log.jointactivities' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\enhancement\\sna\\versions\\log\\jointactivities.py'&gt;</em><a class="headerlink" href="#pm4py.algo.enhancement.sna.algorithm.Variants.JOINTACTIVITIES_LOG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.sna.algorithm.Variants.JOINTACTIVITIES_PANDAS">
+<code class="sig-name descname">JOINTACTIVITIES_PANDAS</code><em class="property"> = &lt;module 'pm4py.algo.enhancement.sna.versions.pandas.jointactivities' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\enhancement\\sna\\versions\\pandas\\jointactivities.py'&gt;</em><a class="headerlink" href="#pm4py.algo.enhancement.sna.algorithm.Variants.JOINTACTIVITIES_PANDAS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.sna.algorithm.Variants.SUBCONTRACTING_LOG">
+<code class="sig-name descname">SUBCONTRACTING_LOG</code><em class="property"> = &lt;module 'pm4py.algo.enhancement.sna.versions.log.subcontracting' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\enhancement\\sna\\versions\\log\\subcontracting.py'&gt;</em><a class="headerlink" href="#pm4py.algo.enhancement.sna.algorithm.Variants.SUBCONTRACTING_LOG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.sna.algorithm.Variants.SUBCONTRACTING_PANDAS">
+<code class="sig-name descname">SUBCONTRACTING_PANDAS</code><em class="property"> = &lt;module 'pm4py.algo.enhancement.sna.versions.pandas.subcontracting' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\enhancement\\sna\\versions\\pandas\\subcontracting.py'&gt;</em><a class="headerlink" href="#pm4py.algo.enhancement.sna.algorithm.Variants.SUBCONTRACTING_PANDAS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.sna.algorithm.Variants.WORKING_TOGETHER_LOG">
+<code class="sig-name descname">WORKING_TOGETHER_LOG</code><em class="property"> = &lt;module 'pm4py.algo.enhancement.sna.versions.log.working_together' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\enhancement\\sna\\versions\\log\\working_together.py'&gt;</em><a class="headerlink" href="#pm4py.algo.enhancement.sna.algorithm.Variants.WORKING_TOGETHER_LOG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.sna.algorithm.Variants.WORKING_TOGETHER_PANDAS">
+<code class="sig-name descname">WORKING_TOGETHER_PANDAS</code><em class="property"> = &lt;module 'pm4py.algo.enhancement.sna.versions.pandas.working_together' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\enhancement\\sna\\versions\\pandas\\working_together.py'&gt;</em><a class="headerlink" href="#pm4py.algo.enhancement.sna.algorithm.Variants.WORKING_TOGETHER_PANDAS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.enhancement.sna.algorithm.apply">
-<code class="sig-prename descclassname">pm4py.algo.enhancement.sna.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='handover'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/sna/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.sna.algorithm.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.enhancement.sna.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.HANDOVER_LOG: &lt;module 'pm4py.algo.enhancement.sna.versions.log.handover' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\enhancement\\sna\\versions\\log\\handover.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/sna/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.sna.algorithm.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates a SNA metric</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -202,7 +250,16 @@
 <li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
 <li><p><strong>variant</strong> –</p>
 <dl class="simple">
-<dt>Variant of the algorithm to apply. Possible values:</dt><dd><p>handover, working_together</p>
+<dt>Variant of the algorithm to apply. Possible values:</dt><dd><ul class="simple">
+<li><p>Variants.HANDOVER_LOG</p></li>
+<li><p>Variants.WORKING_TOGETHER_LOG</p></li>
+<li><p>Variants.SUBCONTRACTING_LOG</p></li>
+<li><p>Variants.JOINTACTIVITIES_LOG</p></li>
+<li><p>Variants.HANDOVER_PANDAS</p></li>
+<li><p>Variants.WORKING_TOGETHER_PANDAS</p></li>
+<li><p>Variants.SUBCONTRACTING_PANDAS</p></li>
+<li><p>Variants.JOINTACTIVITIES_PANDAS</p></li>
+</ul>
 </dd>
 </dl>
 </li>
@@ -247,6 +304,31 @@
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use algorithm entrypoint instead</p>
 </div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.algo.enhancement.sna.parameters">
+<span id="pm4py-algo-enhancement-sna-parameters-module"></span><h2>pm4py.algo.enhancement.sna.parameters module<a class="headerlink" href="#module-pm4py.algo.enhancement.sna.parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.enhancement.sna.parameters.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.enhancement.sna.parameters.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/enhancement/sna/parameters.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.sna.parameters.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.sna.parameters.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.enhancement.sna.parameters.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.sna.parameters.Parameters.METRIC_NORMALIZATION">
+<code class="sig-name descname">METRIC_NORMALIZATION</code><em class="property"> = 'metric_normalization'</em><a class="headerlink" href="#pm4py.algo.enhancement.sna.parameters.Parameters.METRIC_NORMALIZATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.sna.parameters.Parameters.RESOURCE_KEY">
+<code class="sig-name descname">RESOURCE_KEY</code><em class="property"> = 'pm4py:param:resource_key'</em><a class="headerlink" href="#pm4py.algo.enhancement.sna.parameters.Parameters.RESOURCE_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>

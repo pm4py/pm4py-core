@@ -1,21 +1,23 @@
 import logging
 
-from pm4py.util.dt_parsing import parser as dt_parser
+import deprecation
 from lxml import etree
 
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting
 from pm4py.util import xes_constants
+from pm4py.util.dt_parsing import factory as dt_parse_factory
 
 # ITERPARSE EVENTS
 EVENT_END = 'end'
 EVENT_START = 'start'
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='this file/method is deprecated, and replaced by iterparse in the variant package; use the importer entrypoint instead')
 def import_log(filename, parameters=None):
     """
     Imports an XES file into a log object
-
     Parameters
     ----------
     filename:
@@ -28,7 +30,6 @@ def import_log(filename, parameters=None):
             index_trace_indexes -> Specify if trace indexes should be added as event attribute for each event
             max_no_traces_to_import -> Specify the maximum number of traces to import from the log
             (read in order in the XML file)
-
     Returns
     -------
     log : :class:`pm4py.log.log.EventLog`
@@ -38,7 +39,7 @@ def import_log(filename, parameters=None):
     if parameters is None:
         parameters = {}
 
-    date_parser = dt_parser.get()
+    date_parser = dt_parse_factory.get()
 
     timestamp_sort = False
     timestamp_key = "time:timestamp"
@@ -168,7 +169,7 @@ def import_log(filename, parameters=None):
                     classifier_value = elem.get(xes_constants.KEY_KEYS)
                     if "'" in classifier_value:
                         log.classifiers[elem.get(xes_constants.KEY_NAME)] = [x for x in classifier_value.split("'")
-                                                                                if x.strip()]
+                                                                             if x.strip()]
                     else:
                         log.classifiers[elem.get(xes_constants.KEY_NAME)] = classifier_value.split()
                 continue

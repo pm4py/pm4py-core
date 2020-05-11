@@ -2,7 +2,8 @@ import numpy
 
 from pm4py.statistics.variants.log import get as variants_filter
 from pm4py.util import xes_constants as xes
-from pm4py.util import constants
+from pm4py.util import exec_utils
+from pm4py.algo.enhancement.sna.parameters import Parameters
 
 
 def apply(log, parameters=None):
@@ -26,11 +27,10 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    resource_key = parameters[
-        constants.PARAMETER_CONSTANT_RESOURCE_KEY] if constants.PARAMETER_CONSTANT_RESOURCE_KEY in parameters else xes.DEFAULT_RESOURCE_KEY
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY)
 
-    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: resource_key,
-                           constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: resource_key}
+    parameters_variants = {variants_filter.Parameters.ACTIVITY_KEY: resource_key,
+                           variants_filter.Parameters.ATTRIBUTE_KEY: resource_key}
     variants_occ = {x: len(y) for x, y in variants_filter.get_variants(log, parameters=parameters_variants).items()}
     variants_resources = list(variants_occ.keys())
     resources = [x.split(",") for x in variants_resources]

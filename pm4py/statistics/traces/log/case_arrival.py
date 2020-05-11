@@ -1,7 +1,19 @@
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 import statistics
 from pm4py.util.business_hours import BusinessHours
+from pm4py.util import exec_utils, constants
+from enum import Enum
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+
+    BUSINESS_HOURS = "business_hours"
+    WORKTIMING = "worktiming"
+    WEEKENDS = "weekends"
 
 
 def get_case_arrival_avg(log, parameters=None):
@@ -14,7 +26,7 @@ def get_case_arrival_avg(log, parameters=None):
         Trace log
     parameters
         Parameters of the algorithm, including:
-            PARAMETER_CONSTANT_TIMESTAMP_KEY -> attribute of the log to be used as timestamp
+            Parameters.TIMESTAMP_KEY -> attribute of the log to be used as timestamp
 
     Returns
     --------------
@@ -23,12 +35,11 @@ def get_case_arrival_avg(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    business_hours = parameters["business_hours"] if "business_hours" in parameters else False
-    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
-    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
+    business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
 
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
     case_start_time = [trace[0][timestamp_key] for trace in log if trace and timestamp_key in trace[0]]
     case_start_time = sorted(case_start_time)
@@ -58,7 +69,7 @@ def get_case_dispersion_avg(log, parameters=None):
         Trace log
     parameters
         Parameters of the algorithm, including:
-            PARAMETER_CONSTANT_TIMESTAMP_KEY -> attribute of the log to be used as timestamp
+            Parameters.TIMESTAMP_KEY -> attribute of the log to be used as timestamp
 
     Returns
     --------------
@@ -67,12 +78,11 @@ def get_case_dispersion_avg(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    business_hours = parameters["business_hours"] if "business_hours" in parameters else False
-    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
-    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
+    business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
 
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
     case_end_time = [trace[-1][timestamp_key] for trace in log if trace and timestamp_key in trace[0]]
     case_end_time = sorted(case_end_time)

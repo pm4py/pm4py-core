@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 from scipy.spatial.distance import pdist
+from pm4py.util import exec_utils
+from pm4py.algo.clustering.trace_attribute_driven.parameters import Parameters
 
 
 def occu_var_act(var_list):
@@ -33,7 +35,7 @@ def act_sim(var_list_1, var_list_2, log1, log2, freq_thres, num, parameters=None
     if parameters is None:
         parameters = {}
 
-    single = parameters["single"] if "single" in parameters else False
+    single = exec_utils.get_param_value(Parameters.SINGLE, parameters, False)
 
     if len(var_list_1) >= len(var_list_2):
         max_len = len(var_list_1)
@@ -163,7 +165,7 @@ def act_sim_dual(var_list_1, var_list_2, log1, log2, freq_thres, num, parameters
     if parameters is None:
         parameters = {}
 
-    single = parameters["single"] if "single" in parameters else False
+    single = exec_utils.get_param_value(Parameters.SINGLE, parameters, False)
 
     if len(var_list_1) >= len(var_list_2):
         max_len = len(var_list_1)

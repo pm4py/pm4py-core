@@ -1,4 +1,5 @@
 from collections.abc import Mapping, Sequence
+import copy
 
 
 class Event(Mapping):
@@ -25,6 +26,11 @@ class Event(Mapping):
 
     def __hash__(self):
         return hash(frozenset(dict(self)))
+
+    def __copy__(self):
+        event = Event()
+        event._dict = copy.copy(self._dict)
+        return event
 
 
 class EventStream(Sequence):
@@ -81,6 +87,15 @@ class EventStream(Sequence):
 
     def _get_classifiers(self):
         return self._classifiers
+
+    def __copy__(self):
+        event_stream = EventStream()
+        event_stream._attributes = copy.copy(self._attributes)
+        event_stream._extensions = copy.copy(self._extensions)
+        event_stream._omni = copy.copy(self._omni)
+        event_stream._classifiers = copy.copy(self._classifiers)
+        event_stream._list = copy.copy(self._list)
+        return event_stream
 
     attributes = property(_get_attributes)
     extensions = property(_get_extensions)
@@ -149,6 +164,12 @@ class Trace(Sequence):
     def __str__(self):
         return str(self.__repr__())
 
+    def __copy__(self):
+        trace = Trace()
+        trace._attributes = copy.copy(self._attributes)
+        trace._list = copy.copy(self._list)
+        return trace
+
 
 class EventLog(EventStream):
     def __init__(self, *args, **kwargs):
@@ -165,3 +186,12 @@ class EventLog(EventStream):
 
     def __str__(self):
         return str(self.__repr__())
+
+    def __copy__(self):
+        log = EventLog()
+        log._attributes = copy.copy(self._attributes)
+        log._extensions = copy.copy(self._extensions)
+        log._omni = copy.copy(self._omni)
+        log._classifiers = copy.copy(self._classifiers)
+        log._list = copy.copy(self._list)
+        return log

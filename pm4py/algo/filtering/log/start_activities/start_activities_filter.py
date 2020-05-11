@@ -6,6 +6,13 @@ from pm4py.objects.log.log import EventLog
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util import constants
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    DECREASING_FACTOR = "decreasingFactor"
 
 
 def apply(log, admitted_start_activities, parameters=None):
@@ -28,8 +35,7 @@ def apply(log, admitted_start_activities, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
+    attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
 
     filtered_log = EventLog([trace for trace in log if trace and trace[0][attribute_key] in admitted_start_activities])
 
@@ -81,9 +87,9 @@ def apply_auto_filter(log, variants=None, parameters=None):
         (If specified) Dictionary with variant as the key and the list of traces as the value
     parameters
         Parameters of the algorithm, including:
-            decreasingFactor -> Decreasing factor (stops the algorithm when the next activity by occurrence is below
+            Parameters.DECREASING_FACTOR -> Decreasing factor (stops the algorithm when the next activity by occurrence is below
             this factor in comparison to previous)
-            attribute_key -> Attribute key (must be specified if different from concept:name)
+            Parameters.ATTRIBUTE_KEY -> Attribute key (must be specified if different from concept:name)
     
     Returns
     ---------
@@ -93,10 +99,8 @@ def apply_auto_filter(log, variants=None, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    decreasing_factor = parameters[
-        "decreasingFactor"] if "decreasingFactor" in parameters else DECREASING_FACTOR
+    attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters, DECREASING_FACTOR)
 
     parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
 

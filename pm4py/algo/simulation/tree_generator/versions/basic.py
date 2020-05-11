@@ -3,7 +3,7 @@ import string
 
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.objects.process_tree.pt_operator import Operator
-
+import deprecation
 
 def generate_random_string(N):
     """
@@ -41,7 +41,8 @@ def get_random_operator():
     else:
         return Operator.PARALLEL
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='pm4py.algo.simulation is deprecated; use pm4py.simulation entrypoint instead')
 def apply(parameters=None):
     """
     Generate a process tree

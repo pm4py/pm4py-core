@@ -157,6 +157,28 @@
 </div>
 <div class="section" id="module-pm4py.algo.filtering.log.variants.variants_filter">
 <span id="pm4py-algo-filtering-log-variants-variants-filter-module"></span><h2>pm4py.algo.filtering.log.variants.variants_filter module<a class="headerlink" href="#module-pm4py.algo.filtering.log.variants.variants_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.filtering.log.variants.variants_filter.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.variants.variants_filter.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.variants.variants_filter.Parameters.DECREASING_FACTOR">
+<code class="sig-name descname">DECREASING_FACTOR</code><em class="property"> = 'decreasingFactor'</em><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.Parameters.DECREASING_FACTOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.variants.variants_filter.Parameters.POSITIVE">
+<code class="sig-name descname">POSITIVE</code><em class="property"> = 'positive'</em><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.Parameters.POSITIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.variants.variants_filter.apply">
 <code class="sig-prename descclassname">pm4py.algo.filtering.log.variants.variants_filter.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">admitted_variants</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/variants/variants_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.variants.variants_filter.apply" title="Permalink to this definition">¶</a></dt>
@@ -168,8 +190,8 @@
 <li><p><strong>admitted_variants</strong> – Admitted variants</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>activity_key -&gt; Attribute identifying the activity in the log
-positive -&gt; Indicate if events should be kept/removed</p>
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.ACTIVITY_KEY -&gt; Attribute identifying the activity in the log
+Parameters.POSITIVE -&gt; Indicate if events should be kept/removed</p>
 </dd>
 </dl>
 </li>
@@ -189,8 +211,8 @@ positive -&gt; Indicate if events should be kept/removed</p>
 <li><p><strong>variants</strong> – Variants contained in the log</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>activity_key -&gt; Key that identifies the activity
-decreasingFactor -&gt; Decreasing factor (stops the algorithm when the next variant by occurrence is below
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.ACTIVITY_KEY -&gt; Key that identifies the activity
+Parameters.DECREASING_FACTOR -&gt; Decreasing factor (stops the algorithm when the next variant by occurrence is below
 this factor in comparison to previous)</p>
 </dd>
 </dl>

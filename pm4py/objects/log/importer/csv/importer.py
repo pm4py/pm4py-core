@@ -1,24 +1,22 @@
+import deprecation
+
 from pm4py.objects.log.adapters.pandas import csv_import_adapter as pandas_csv_import_adapter
-from pm4py.objects.log.importer.csv.versions import pandas_df_imp
 from pm4py.objects.log.util import string_to_file
-from pm4py.util import xes_constants as xes
-
-SEP = "sep"
-QUOTECHAR = "quotechar"
-NROWS = "nrows"
-SORT = "sort"
-SORT_FIELD = "sort_field"
-TIMEST_FORMAT = "timest_format"
-TIMEST_COLUMNS = "timest_columns"
-INSERT_EVENT_INDEXES = "insert_event_indexes"
-ENCODING = "encoding"
-
-PANDAS = "pandas"
-VERSIONS = {PANDAS: pandas_df_imp.import_event_stream}
-
-DATAFRAME_MANAGER = {PANDAS: pandas_csv_import_adapter}
+from enum import Enum
+from pm4py.util import exec_utils, xes_constants
+from pm4py.objects.log.importer.csv.parameters import Parameters
 
 
+class Variants(Enum):
+    PANDAS = pandas_csv_import_adapter
+
+
+PANDAS = Variants.PANDAS
+VERSIONS = {PANDAS}
+
+
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the csv using pandas, then convert it to an event log, if needed')
 def import_dataframe_from_path(path, parameters=None, variant=PANDAS):
     """
     Imports a dataframe from the given path
@@ -28,9 +26,18 @@ def import_dataframe_from_path(path, parameters=None, variant=PANDAS):
     path:
         Input CSV file path
     parameters
-        Parameters of the importing: sep, quotechar, nrows, sort, sort_field, timest_format, timest_columns
+        Parameters of the importing:
+            - Parameters.SEP
+            - Parameters.QUOTECHAR
+            - Parameters.NROWS
+            - Parameters.SORT
+            - Parameters.SORT_FIELD
+            - Parameters.TIMEST_FORMAT
+            - Parameters.TIMEST_COLUMNS
+            - Parameters.ENCODING
     variant
-        Variant of the dataframe manager (possible values: pandas)
+        Variant of the dataframe manager:
+            - Variants.PANDAS
 
      Returns
     -------
@@ -40,22 +47,24 @@ def import_dataframe_from_path(path, parameters=None, variant=PANDAS):
     if parameters is None:
         parameters = {}
 
-    sep = parameters[SEP] if SEP in parameters else ','
-    quotechar = parameters[QUOTECHAR] if QUOTECHAR in parameters else None
-    nrows = parameters[NROWS] if NROWS in parameters else None
+    sep = exec_utils.get_param_value(Parameters.SEP, parameters, ",")
+    quotechar = exec_utils.get_param_value(Parameters.QUOTECHAR, parameters, None)
+    nrows = exec_utils.get_param_value(Parameters.NROWS, parameters, None)
+    sort = exec_utils.get_param_value(Parameters.SORT, parameters, False)
+    sort_field = exec_utils.get_param_value(Parameters.SORT_FIELD, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    timest_format = exec_utils.get_param_value(Parameters.TIMEST_FORMAT, parameters, None)
+    timest_columns = exec_utils.get_param_value(Parameters.TIMEST_COLUMNS, parameters, None)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
 
-    sort = parameters[SORT] if SORT in parameters else False
-    sort_field = parameters[SORT_FIELD] if SORT_FIELD in parameters else xes.DEFAULT_TIMESTAMP_KEY
-    timest_format = parameters[TIMEST_FORMAT] if TIMEST_FORMAT in parameters else None
-    timest_columns = parameters[TIMEST_COLUMNS] if TIMEST_COLUMNS in parameters else None
-    encoding = parameters[ENCODING] if ENCODING in parameters else None
-
-    return DATAFRAME_MANAGER[variant].import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows,
-                                                                 sort=sort,
-                                                                 sort_field=sort_field, timest_format=timest_format,
-                                                                 timest_columns=timest_columns, encoding=encoding)
+    return exec_utils.get_variant(variant).import_dataframe_from_path(path, sep=sep, quotechar=quotechar, nrows=nrows,
+                                                                      sort=sort,
+                                                                      sort_field=sort_field,
+                                                                      timest_format=timest_format,
+                                                                      timest_columns=timest_columns, encoding=encoding)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the csv using pandas, then convert it to an event log, if needed')
 def import_dataframe_from_path_wo_timeconversion(path, parameters=None, variant=PANDAS):
     """
     Imports a dataframe from the given path (without doing the timestamp columns conversion)
@@ -65,9 +74,14 @@ def import_dataframe_from_path_wo_timeconversion(path, parameters=None, variant=
     path:
         Input CSV file path
     parameters
-        parameters of the importing: sep, quotechar, nrows
+        Parameters of the importing:
+            - Parameters.SEP
+            - Parameters.QUOTECHAR
+            - Parameters.NROWS
+            - Parameters.ENCODING
     variant
-        Variant of the dataframe manager (possible values: pandas)
+        Variant of the dataframe manager:
+            - Variants.PANDAS
 
      Returns
     -------
@@ -77,15 +91,18 @@ def import_dataframe_from_path_wo_timeconversion(path, parameters=None, variant=
     if parameters is None:
         parameters = {}
 
-    sep = parameters[SEP] if SEP in parameters else ','
-    quotechar = parameters[QUOTECHAR] if QUOTECHAR in parameters else None
-    nrows = parameters[NROWS] if NROWS in parameters else None
-    encoding = parameters[ENCODING] if ENCODING in parameters else None
+    sep = exec_utils.get_param_value(Parameters.SEP, parameters, ",")
+    quotechar = exec_utils.get_param_value(Parameters.QUOTECHAR, parameters, None)
+    nrows = exec_utils.get_param_value(Parameters.NROWS, parameters, None)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
 
-    return DATAFRAME_MANAGER[variant].import_dataframe_from_path_wo_timeconversion(path, sep=sep, quotechar=quotechar,
-                                                                                   nrows=nrows, encoding=encoding)
+    return exec_utils.get_variant(variant).import_dataframe_from_path_wo_timeconversion(path, sep=sep,
+                                                                                        quotechar=quotechar,
+                                                                                        nrows=nrows, encoding=encoding)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the csv using pandas, then convert it to an event log, if needed')
 def import_dataframe_from_csv_string(csv_string, parameters=None, variant=PANDAS):
     """
     Import dataframe from CSV string
@@ -95,9 +112,18 @@ def import_dataframe_from_csv_string(csv_string, parameters=None, variant=PANDAS
     csv_string
         CSV string
     parameters
-        Parameters of the importing: sep, quotechar, nrows, sort, sort_field, timest_format, timest_columns
+        Parameters of the importing:
+            - Parameters.SEP
+            - Parameters.QUOTECHAR
+            - Parameters.NROWS
+            - Parameters.SORT
+            - Parameters.SORT_FIELD
+            - Parameters.TIMEST_FORMAT
+            - Parameters.TIMEST_COLUMNS
+            - Parameters.ENCODING
     variant
-        Variant of the dataframe manager (possible values: pandas)
+        Variant of the dataframe manager:
+            - Variants.PANDAS
 
     Returns
     -----------
@@ -107,24 +133,25 @@ def import_dataframe_from_csv_string(csv_string, parameters=None, variant=PANDAS
     if parameters is None:
         parameters = {}
 
-    sep = parameters[SEP] if SEP in parameters else ','
-    quotechar = parameters[QUOTECHAR] if QUOTECHAR in parameters else None
-    nrows = parameters[NROWS] if NROWS in parameters else None
+    sep = exec_utils.get_param_value(Parameters.SEP, parameters, ",")
+    quotechar = exec_utils.get_param_value(Parameters.QUOTECHAR, parameters, None)
+    nrows = exec_utils.get_param_value(Parameters.NROWS, parameters, None)
+    sort = exec_utils.get_param_value(Parameters.SORT, parameters, False)
+    sort_field = exec_utils.get_param_value(Parameters.SORT_FIELD, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    timest_format = exec_utils.get_param_value(Parameters.TIMEST_FORMAT, parameters, None)
+    timest_columns = exec_utils.get_param_value(Parameters.TIMEST_COLUMNS, parameters, None)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
 
-    sort = parameters[SORT] if SORT in parameters else False
-    sort_field = parameters[SORT_FIELD] if SORT_FIELD in parameters else xes.DEFAULT_TIMESTAMP_KEY
-    timest_format = parameters[TIMEST_FORMAT] if TIMEST_FORMAT in parameters else None
-    timest_columns = parameters[TIMEST_COLUMNS] if TIMEST_COLUMNS in parameters else None
-    encoding = parameters[ENCODING] if ENCODING in parameters else None
-
-    return DATAFRAME_MANAGER[variant].import_dataframe_from_csv_string(csv_string, sep=sep, quotechar=quotechar,
-                                                                       nrows=nrows,
-                                                                       sort=sort, sort_field=sort_field,
-                                                                       timest_format=timest_format,
-                                                                       timest_columns=timest_columns,
-                                                                       encoding=encoding)
+    return exec_utils.get_variant(variant).import_dataframe_from_csv_string(csv_string, sep=sep, quotechar=quotechar,
+                                                                            nrows=nrows,
+                                                                            sort=sort, sort_field=sort_field,
+                                                                            timest_format=timest_format,
+                                                                            timest_columns=timest_columns,
+                                                                            encoding=encoding)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the csv using pandas, then convert it to an event log, if needed')
 def convert_dataframe_to_stream(dataframe, parameters=None, variant=PANDAS):
     """
     Convert a dataframe to an event stream
@@ -134,9 +161,11 @@ def convert_dataframe_to_stream(dataframe, parameters=None, variant=PANDAS):
     dataframe
         Dataframe
     parameters
-        Parameters of the conversion: insert_event_indexes
+        Parameters of the importing:
+            - Parameters.INSERT_EVENT_INDEXES
     variant
-        Variant of the dataframe manager (possible values: pandas)
+        Variant of the dataframe manager:
+            - Variants.PANDAS
 
     Returns
     -------------
@@ -145,12 +174,15 @@ def convert_dataframe_to_stream(dataframe, parameters=None, variant=PANDAS):
     """
     if parameters is None:
         parameters = {}
-    
-    insert_event_indexes = parameters[INSERT_EVENT_INDEXES] if INSERT_EVENT_INDEXES in parameters else False
 
-    return DATAFRAME_MANAGER[variant].convert_dataframe_to_stream(dataframe, insert_event_indexes=insert_event_indexes)
+    insert_event_indexes = exec_utils.get_param_value(Parameters.INSERT_EVENT_INDEXES, parameters, False)
+
+    return exec_utils.get_variant(variant).convert_dataframe_to_stream(dataframe,
+                                                                       insert_event_indexes=insert_event_indexes)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the csv using pandas, then convert it to an event log, if needed')
 def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None, variant=PANDAS):
     """
     Convert all dataframe columns in a dataframe
@@ -172,11 +204,13 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None,
         Dataframe with timestamp columns converted
 
     """
-    return DATAFRAME_MANAGER[variant].convert_timestamp_columns_in_df(df, timest_format=timest_format,
-                                                                      timest_columns=timest_columns)
+    return exec_utils.get_variant(variant).convert_timestamp_columns_in_df(df, timest_format=timest_format,
+                                                                           timest_columns=timest_columns)
 
 
-def import_log_from_string(log_string, parameters=None, variant="pandas"):
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the csv using pandas, then convert it to an event log, if needed')
+def import_log_from_string(log_string, parameters=None, variant=PANDAS):
     """
     Import a CSV log from a string
 
@@ -185,15 +219,18 @@ def import_log_from_string(log_string, parameters=None, variant="pandas"):
     log_string
         String that contains the CSV
     parameters
-        Parameters of the algorithm, including
-            sep -> column separator
-            quotechar -> (if specified) Character that starts/end big strings in CSV
-            nrows -> (if specified) Maximum number of rows to read from the CSV
-            sort -> Boolean value that tells if the CSV should be ordered
-            sort_field -> If sort option is enabled, then the CSV is automatically sorted by the specified column
+        Parameters of the importing:
+            - Parameters.SEP
+            - Parameters.QUOTECHAR
+            - Parameters.NROWS
+            - Parameters.SORT
+            - Parameters.SORT_FIELD
+            - Parameters.TIMEST_FORMAT
+            - Parameters.TIMEST_COLUMNS
+            - Parameters.ENCODING
     variant
-        Variant of the algorithm to use, including:
-            pandas
+        Variant of the dataframe manager:
+            - Variants.PANDAS
 
     Returns
     -----------
@@ -204,7 +241,9 @@ def import_log_from_string(log_string, parameters=None, variant="pandas"):
     return import_event_stream(temp_file, parameters=parameters, variant=variant)
 
 
-def import_event_stream(path, parameters=None, variant="pandas"):
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the csv using pandas, then convert it to an event log, if needed')
+def import_event_stream(path, parameters=None, variant=PANDAS):
     """
     Import a CSV log into an EventLog object
 
@@ -213,30 +252,38 @@ def import_event_stream(path, parameters=None, variant="pandas"):
     path
         Log path
     parameters
-        Parameters of the algorithm, including
-            sep -> column separator
-            quotechar -> (if specified) Character that starts/end big strings in CSV
-            nrows -> (if specified) Maximum number of rows to read from the CSV
-            sort -> Boolean value that tells if the CSV should be ordered
-            sort_field -> If sort option is enabled, then the CSV is automatically sorted by the specified column
+        Parameters of the importing:
+            - Parameters.SEP
+            - Parameters.QUOTECHAR
+            - Parameters.NROWS
+            - Parameters.SORT
+            - Parameters.SORT_FIELD
+            - Parameters.TIMEST_FORMAT
+            - Parameters.TIMEST_COLUMNS
+            - Parameters.ENCODING
     variant
-        Variant of the algorithm to use, including:
-            pandas
+        Variant of the dataframe manager:
+            - Variants.PANDAS
 
     Returns
     -----------
     log
         Event log object
     """
-    return VERSIONS[variant](path, parameters=parameters)
+    dataframe = import_dataframe_from_path(path, variant=variant, parameters=parameters)
+    return convert_dataframe_to_stream(dataframe, variant=variant, parameters=parameters)
 
 
-def import_event_log(path, parameters=None, variant="pandas"):
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the csv using pandas, then convert it to an event log, if needed')
+def import_event_log(path, parameters=None, variant=PANDAS):
     # legacy method, to be removed
-    return import_event_stream(path, parameters=parameters, variant="pandas")
+    return import_event_stream(path, parameters=parameters, variant=variant)
 
 
-def apply(path, parameters=None, variant="pandas"):
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the csv using pandas, then convert it to an event log, if needed')
+def apply(path, parameters=None, variant=PANDAS):
     """
     Import a CSV log into an EventLog object
 
@@ -245,15 +292,18 @@ def apply(path, parameters=None, variant="pandas"):
     path
         Log path
     parameters
-        Parameters of the algorithm, including
-            sep -> column separator
-            quotechar -> (if specified) Character that starts/end big strings in CSV
-            nrows -> (if specified) Maximum number of rows to read from the CSV
-            sort -> Boolean value that tells if the CSV should be ordered
-            sort_field -> If sort option is enabled, then the CSV is automatically sorted by the specified column
+        Parameters of the importing:
+            - Parameters.SEP
+            - Parameters.QUOTECHAR
+            - Parameters.NROWS
+            - Parameters.SORT
+            - Parameters.SORT_FIELD
+            - Parameters.TIMEST_FORMAT
+            - Parameters.TIMEST_COLUMNS
+            - Parameters.ENCODING
     variant
-        Variant of the algorithm to use, including:
-            pandas
+        Variant of the dataframe manager:
+            - Variants.PANDAS
 
     Returns
     -----------

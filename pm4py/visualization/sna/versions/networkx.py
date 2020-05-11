@@ -7,6 +7,13 @@ import tempfile
 import numpy as np
 import matplotlib
 from copy import copy
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    WEIGHT_THRESHOLD = "weight_threshold"
+    FORMAT = "format"
 
 
 def get_temp_file_name(format):
@@ -34,8 +41,8 @@ def apply(metric_values, parameters=None):
         Value of the metrics
     parameters
         Possible parameters of the algorithm, including:
-            weight_threshold: the weight threshold to use in displaying the graph
-            format: format of the output image (png, svg ...)
+            - Parameters.WEIGHT_THRESHOLD -> the weight threshold to use in displaying the graph
+            - Parameters.FORMAT -> format of the output image (png, svg ...)
 
     Returns
     -------------
@@ -47,9 +54,10 @@ def apply(metric_values, parameters=None):
     if parameters is None:
         parameters = {}
 
-    weight_threshold = parameters["weight_threshold"] if "weight_threshold" in parameters else 0
+    weight_threshold = exec_utils.get_param_value(Parameters.WEIGHT_THRESHOLD, parameters, 0)
+    format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "svg")
+
     directed = metric_values[2]
-    format = parameters["format"] if "format" in parameters else "png"
 
     temp_file_name = get_temp_file_name(format)
 

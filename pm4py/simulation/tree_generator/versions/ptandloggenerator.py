@@ -5,7 +5,26 @@ import string
 import math
 import itertools
 import random
-import copy
+from enum import Enum
+
+
+class Parameters(Enum):
+    SEQUENCE = "sequence"
+    CHOICE = "choice"
+    PARALLEL = "parallel"
+    LOOP = "loop"
+    OR = "or"
+    MODE = "mode"
+    MIN = "min"
+    MAX = "max"
+    SILENT = "silent"
+    DUPLICATE = "duplicate"
+    LT_DEPENDENCY = "lt_dependency"
+    INFREQUENT = "infrequent"
+    NO_MODELS = "no_models"
+    UNFOLD = "unfold"
+    MAX_REPEAT = "max_repeat"
+
 
 def apply(parameters=None):
     """
@@ -16,23 +35,23 @@ def apply(parameters=None):
     --------------
     parameters
         Parameters of the algorithm, according to the paper:
-        - mode: most frequent number of visible activities
-        - min: minimum number of visible activities
-        - max: maximum number of visible activities
-        - sequence: probability to add a sequence operator to tree
-        - choice: probability to add a choice operator to tree
-        - parallel: probability to add a parallel operator to tree
-        - loop: probability to add a loop operator to tree
-        - or: probability to add an or operator to tree
-        - silent: probability to add silent activity to a choice or loop operator
-        - duplicate: probability to duplicate an activity label
-        - lt_dependency: probability to add a random dependency to the tree
-        - infrequent: probability to make a choice have infrequent paths
-        - no_models: number of trees to generate from model population
-        - unfold: whether or not to unfold loops in order to include choices underneath in dependencies: 0=False, 1=True
+        - Parameters.MODE: most frequent number of visible activities
+        - Parameters.MIN: minimum number of visible activities
+        - Parameters.MAX: maximum number of visible activities
+        - Parameters.SEQUENCE: probability to add a sequence operator to tree
+        - Parameters.CHOICE: probability to add a choice operator to tree
+        - Parameters.PARALLEL: probability to add a parallel operator to tree
+        - Parameters.LOOP: probability to add a loop operator to tree
+        - Parameters.OR: probability to add an or operator to tree
+        - Parameters.SILENT: probability to add silent activity to a choice or loop operator
+        - Parameters.DUPLICATE: probability to duplicate an activity label
+        - Parameters.LT_DEPENDENCY: probability to add a random dependency to the tree
+        - Parameters.INFREQUENT: probability to make a choice have infrequent paths
+        - Parameters.NO_MODELS: number of trees to generate from model population
+        - Parameters.UNFOLD: whether or not to unfold loops in order to include choices underneath in dependencies: 0=False, 1=True
             if lt_dependency <= 0: this should always be 0 (False)
             if lt_dependency > 0: this can be 1 or 0 (True or False)
-        - max_repeat: maximum number of repetitions of a loop (only used when unfolding is True)
+        - Parameters.MAX_REPEAT: maximum number of repetitions of a loop (only used when unfolding is True)
     """
     if parameters is None:
         parameters = {}
@@ -329,7 +348,10 @@ class GeneratedTree(object):
             step += 1
 
     def __init__(self, parameters):
-        self.parameters = parameters
+        self.parameters = {}
+        for param in parameters:
+            p = param if type(param) is str else param.value
+            self.parameters[p] = parameters[param]
         # rescale probabilities of operators if the sum is not equal to one
         if self.parameters["sequence"] + self.parameters["choice"] + self.parameters["parallel"] + self.parameters[
             "loop"] + self.parameters["or"] != 1:

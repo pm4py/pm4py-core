@@ -1,7 +1,7 @@
 from pm4py.util import constants
 from pm4py.util import xes_constants as xes
 from pm4py.objects.log.log import EventLog
-from pm4py.objects.conversion.log import factory as log_conv_factory
+from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.util import sorting
 from pm4py.util.business_hours import BusinessHours
 
@@ -31,7 +31,7 @@ def insert_time_from_previous(log, parameters=None):
     weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
 
     if not type(log) is EventLog:
-        log = log_conv_factory.apply(log)
+        log = log_converter.apply(log)
 
     log = sorting.sort_timestamp_log(log, timestamp_key)
 

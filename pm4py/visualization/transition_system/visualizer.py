@@ -1,19 +1,18 @@
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
 from pm4py.visualization.transition_system.versions import view_based
+from enum import Enum
+from pm4py.util import exec_utils
 
-VIEW_BASED = "view_based"
-WO_DECORATION = "wo_decoration"
-FREQUENCY_DECORATION = "frequency"
-PERFORMANCE_DECORATION = "performance"
-FREQUENCY_GREEDY = "frequency_greedy"
-PERFORMANCE_GREEDY = "performance_greedy"
 
-VERSIONS = {VIEW_BASED: view_based.apply, WO_DECORATION: view_based.apply, FREQUENCY_DECORATION: view_based.apply,
-            PERFORMANCE_DECORATION: view_based.apply, FREQUENCY_GREEDY: view_based.apply,
-            PERFORMANCE_GREEDY: view_based.apply}
+class Variants(Enum):
+    VIEW_BASED = view_based
 
-def apply(tsys, parameters=None, variant="view_based"):
+
+DEFAULT_VARIANT = Variants.VIEW_BASED
+
+
+def apply(tsys, parameters=None, variant=DEFAULT_VARIANT):
     """
     Get visualization of a Transition System
 
@@ -25,14 +24,15 @@ def apply(tsys, parameters=None, variant="view_based"):
         Optional parameters of the algorithm
     variant
         Variant of the algorithm to use, including:
-            view_based
+            - Variants.VIEW_BASED
 
     Returns
     ----------
     gviz
         Graph visualization
     """
-    return VERSIONS[variant](tsys, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(tsys, parameters=parameters)
+
 
 def save(gviz, output_file_path):
     """

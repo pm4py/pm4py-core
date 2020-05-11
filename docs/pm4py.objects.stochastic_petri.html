@@ -83,7 +83,7 @@
 <li><a class="reference internal" href="#">pm4py.objects.stochastic_petri package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.stochastic_petri.ctmc">pm4py.objects.stochastic_petri.ctmc module</a></li>
-<li><a class="reference internal" href="#pm4py-objects-stochastic-petri-lp-perf-bounds-module">pm4py.objects.stochastic_petri.lp_perf_bounds module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.stochastic_petri.lp_perf_bounds">pm4py.objects.stochastic_petri.lp_perf_bounds module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.stochastic_petri.tangible_reachability">pm4py.objects.stochastic_petri.tangible_reachability module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.stochastic_petri.utils">pm4py.objects.stochastic_petri.utils module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.stochastic_petri">Module contents</a></li>
@@ -372,8 +372,151 @@ zero.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="pm4py-objects-stochastic-petri-lp-perf-bounds-module">
-<h2>pm4py.objects.stochastic_petri.lp_perf_bounds module<a class="headerlink" href="#pm4py-objects-stochastic-petri-lp-perf-bounds-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pm4py.objects.stochastic_petri.lp_perf_bounds">
+<span id="pm4py-objects-stochastic-petri-lp-perf-bounds-module"></span><h2>pm4py.objects.stochastic_petri.lp_perf_bounds module<a class="headerlink" href="#module-pm4py.objects.stochastic_petri.lp_perf_bounds" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.objects.stochastic_petri.lp_perf_bounds.</code><code class="sig-name descname">LpPerfBounds</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">smap</em>, <em class="sig-param">avg_time_starts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_18_samplepath">
+<code class="sig-name descname">build_18_samplepath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_18_samplepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_18_samplepath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample path condition</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_19_samplepath">
+<code class="sig-name descname">build_19_samplepath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_19_samplepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_19_samplepath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple path condition</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_1_throughput">
+<code class="sig-name descname">build_1_throughput</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_1_throughput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_1_throughput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Throughput equation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_21_samplepath">
+<code class="sig-name descname">build_21_samplepath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_21_samplepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_21_samplepath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_22_samplepath">
+<code class="sig-name descname">build_22_samplepath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_22_samplepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_22_samplepath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_26_littlelaw">
+<code class="sig-name descname">build_26_littlelaw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_26_littlelaw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_26_littlelaw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Little law equation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_2_flowbalance">
+<code class="sig-name descname">build_2_flowbalance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_2_flowbalance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_2_flowbalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flow-balance equation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_3_secondmoment">
+<code class="sig-name descname">build_3_secondmoment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_3_secondmoment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_3_secondmoment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Second moment equation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_4_populationcovariance">
+<code class="sig-name descname">build_4_populationcovariance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_4_populationcovariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_4_populationcovariance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Population covariance equation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_5_liveness">
+<code class="sig-name descname">build_5_liveness</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_5_liveness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_5_liveness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Liveness equation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_6_liveness">
+<code class="sig-name descname">build_6_liveness</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_6_liveness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_6_liveness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Liveness equation (second part)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_general_cond">
+<code class="sig-name descname">build_general_cond</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_general_cond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_general_cond" title="Permalink to this definition">¶</a></dt>
+<dd><p>General conditions on the non-negativity of the variables</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_preset_postset">
+<code class="sig-name descname">build_preset_postset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_preset_postset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_preset_postset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Memorize the preset and the postset of the places/transitions of the Petri net</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_problem">
+<code class="sig-name descname">build_problem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_problem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_problem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the linear programming problem</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_var_corr">
+<code class="sig-name descname">build_var_corr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.build_var_corr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.build_var_corr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the correspondence between the variables of the model and the columns</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.get_net">
+<code class="sig-name descname">get_net</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.get_net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.get_net" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the transformed Petri net used by the simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>net</em> – Petri net</p></li>
+<li><p><em>initial_marking</em> – Initial marking</p></li>
+<li><p><em>final_marking</em> – Final marking</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.solve_problem">
+<code class="sig-name descname">solve_problem</code><span class="sig-paren">(</span><em class="sig-param">target_variable</em>, <em class="sig-param">maximize=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.solve_problem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.solve_problem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the linear programming problem</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.transform_net">
+<code class="sig-name descname">transform_net</code><span class="sig-paren">(</span><em class="sig-param">net0</em>, <em class="sig-param">initial_marking0</em>, <em class="sig-param">final_marking0</em>, <em class="sig-param">s_map</em>, <em class="sig-param">avg_time_starts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/stochastic_petri/lp_perf_bounds.html#LpPerfBounds.transform_net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.stochastic_petri.lp_perf_bounds.LpPerfBounds.transform_net" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform the source Petri net removing the initial and final marking, and connecting
+to each “initial” place a hidden timed transition mimicking the case start</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net0</strong> – Initial Petri net provided to the object</p></li>
+<li><p><strong>initial_marking0</strong> – Initial marking of the Petri net provided to the object</p></li>
+<li><p><strong>final_marking0</strong> – Final marking of the Petri net provided to the object</p></li>
+<li><p><strong>s_map</strong> – Stochastic map of transitions (EXPONENTIAL distribution since we assume a Markovian process)</p></li>
+<li><p><strong>avg_time_starts</strong> – Average time interlapsed between case starts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>net</em> – Petri net that will be simulated</p></li>
+<li><p><em>initial_marking</em> – Initial marking of the Petri net that will be simulated (empty)</p></li>
+<li><p><em>final_marking</em> – Final marking of the Petri net that will be simulated (empty)</p></li>
+<li><p><em>s_map</em> – Stochastic map of transitions enriched by new hidden case-generator transitions</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-pm4py.objects.stochastic_petri.tangible_reachability">
 <span id="pm4py-objects-stochastic-petri-tangible-reachability-module"></span><h2>pm4py.objects.stochastic_petri.tangible_reachability module<a class="headerlink" href="#module-pm4py.objects.stochastic_petri.tangible_reachability" title="Permalink to this headline">¶</a></h2>

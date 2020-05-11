@@ -1,1 +1,1 @@
-from pm4py.algo.conformance.log_skeleton import versions, factory, algorithm
+from pm4py.algo.conformance.log_skeleton import versions, algorithm, outputs

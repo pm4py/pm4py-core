@@ -1,30 +1,14 @@
-from pm4py.objects.log.exporter.csv.versions import pandas_csv_exp
+from enum import Enum
 
-PANDAS = "pandas"
-VERSIONS_STRING = {PANDAS: pandas_csv_exp.export_log_as_string}
-VERSIONS = {PANDAS: pandas_csv_exp.export}
+from pm4py.objects.log.exporter.csv.variants import pandas_csv_exp
+from pm4py.util import exec_utils
 
-def export_log_as_string(log, variant="pandas", parameters=None):
-    """
-    Factory method to export a CSV from an event log as a string
 
-    Parameters
-    -----------
-    log
-        Event log
-    variant
-        Selected variant of the algorithm
-    parameters
-        Parameters of the algorithm
+class Variants(Enum):
+    PANDAS = pandas_csv_exp
 
-    Returns
-    -----------
-    string
-        String describing the CSV
-    """
-    return VERSIONS_STRING[variant](log, parameters=parameters)
 
-def export(log, output_file_path, variant="pandas", parameters=None):
+def apply(log, output_file_path, variant=Variants.PANDAS, parameters=None):
     """
     Factory method to export a CSV from an event log
 
@@ -35,28 +19,9 @@ def export(log, output_file_path, variant="pandas", parameters=None):
     output_file_path
         Output file path
     variant
-        Selected variant of the algorithm
+        Selected variant of the algorithm.
+            - Variants.PANDAS
     parameters
         Parameters of the algorithm
     """
-    VERSIONS[variant](log, output_file_path, parameters=parameters)
-
-def apply(log, output_file_path, variant="pandas", parameters=None):
-    """
-    Factory method to export a CSV from an event log
-
-    Parameters
-    -----------
-    log
-        Event log
-    output_file_path
-        Output file path
-    variant
-        Selected variant of the algorithm
-    parameters
-        Parameters of the algorithm
-    """
-    export(log, output_file_path, variant=variant, parameters=parameters)
-
-def export_log(log, output_file_path, variant="pandas", parameters=None):
-    export(log, output_file_path, variant=variant, parameters=parameters)
+    exec_utils.get_variant(variant).apply(log, output_file_path, parameters=parameters)

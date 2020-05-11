@@ -1,10 +1,12 @@
 from pm4py.algo.conformance.decomp_alignments.versions import recompos_maximal
+import deprecation
 
 RECOMPOS_MAXIMAL = "recompos_maximal"
 
 VERSIONS = {RECOMPOS_MAXIMAL: recompos_maximal.apply}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, net, im, fm, variant=RECOMPOS_MAXIMAL, parameters=None):
     """
     Apply the recomposition alignment approach

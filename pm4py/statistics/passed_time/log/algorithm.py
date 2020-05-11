@@ -1,13 +1,18 @@
 from pm4py.statistics.passed_time.log.versions import pre, post, prepost
-
-PRE = 'pre'
-POST = 'post'
-PREPOST = 'prepost'
-
-VERSIONS = {PRE: pre.apply, POST: post.apply, PREPOST: prepost.apply}
+from enum import Enum
+from pm4py.util import exec_utils
 
 
-def apply(log, activity, variant=PRE, parameters=None):
+class Variants(Enum):
+    PRE = pre
+    POST = post
+    PREPOST = prepost
+
+
+VERSIONS = {Variants.PRE, Variants.POST, Variants.PREPOST}
+
+
+def apply(log, activity, variant=Variants.PRE, parameters=None):
     """
     Gets statistics on execution times of the paths to/from the activity
 
@@ -18,7 +23,10 @@ def apply(log, activity, variant=PRE, parameters=None):
     activity
         Activity
     variant
-        Variant
+        Variant:
+            - Variants.PRE
+            - Variants.POST
+            - Variants.PREPOST
     parameters
         Possible parameters of the algorithm
 
@@ -27,4 +35,4 @@ def apply(log, activity, variant=PRE, parameters=None):
     dictio
         Dictio containing the times from/to the activity
     """
-    return VERSIONS[variant](log, activity, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(log, activity, parameters=parameters)

@@ -3,6 +3,15 @@ import string
 
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.objects.process_tree.pt_operator import Operator
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    REC_DEPTH = "rec_depth"
+    MIN_REC_DEPTH = "min_rec_depth"
+    MAX_REC_DEPTH = "max_rec_depth"
+    PROB_LEAF = "prob_leaf"
 
 
 def generate_random_string(N):
@@ -50,10 +59,10 @@ def apply(parameters=None):
     ------------
     parameters
         Paramters of the algorithm, including:
-            rec_depth -> current recursion depth
-            min_rec_depth -> minimum recursion depth
-            max_rec_depth -> maximum recursion depth
-            prob_leaf -> Probability to get a leaf
+            Parameters.REC_DEPTH -> current recursion depth
+            Parameters.MIN_REC_DEPTH -> minimum recursion depth
+            Parameters.MAX_REC_DEPTH -> maximum recursion depth
+            Parameters.PROB_LEAF -> Probability to get a leaf
 
     Returns
     ------------
@@ -63,13 +72,14 @@ def apply(parameters=None):
     if parameters is None:
         parameters = {}
 
-    rec_depth = parameters["rec_depth"] if "rec_depth" in parameters else 0
-    min_rec_depth = parameters["min_rec_depth"] if "min_rec_depth" in parameters else 1
-    max_rec_depth = parameters["max_rec_depth"] if "max_rec_depth" in parameters else 3
-    prob_leaf = parameters["prob_leaf"] if "prob_leaf" in parameters else 0.25
+    rec_depth = exec_utils.get_param_value(Parameters.REC_DEPTH, parameters, 0)
+    min_rec_depth = exec_utils.get_param_value(Parameters.MIN_REC_DEPTH, parameters, 1)
+    max_rec_depth = exec_utils.get_param_value(Parameters.MAX_REC_DEPTH, parameters, 3)
+    prob_leaf = exec_utils.get_param_value(Parameters.PROB_LEAF, parameters, 0.25)
 
-    next_parameters = {"rec_depth": rec_depth + 1, "min_rec_depth": min_rec_depth, "max_rec_depth": max_rec_depth,
-                       "prob_leaf": prob_leaf}
+    next_parameters = {Parameters.REC_DEPTH: rec_depth + 1, Parameters.MIN_REC_DEPTH: min_rec_depth,
+                       Parameters.MAX_REC_DEPTH: max_rec_depth,
+                       Parameters.PROB_LEAF: prob_leaf}
 
     is_leaf = False
 

@@ -1,19 +1,27 @@
 from scipy.cluster.hierarchy import to_tree, linkage
-from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.statistics.attributes.log import get as attributes_filter
 from pm4py.algo.clustering.trace_attribute_driven.merge_log import merge_log
 from pm4py.algo.clustering.trace_attribute_driven.util import evaluation
-from pm4py.objects.conversion.log import factory as log_conv_factory
+from pm4py.objects.conversion.log import converter as log_converter
+from enum import Enum
+from pm4py.util import exec_utils
 
 
-VARIANT_DMM_LEVEN = "variant_DMM_leven"
-VARIANT_AVG_LEVEN = "variant_avg_leven"
-VARIANT_DMM_VEC = "variant_DMM_vec"
-VARIANT_AVG_VEC = "variant_avg_vec"
-DFG = 'dfg'
+class Variants(Enum):
+    VARIANT_DMM_LEVEN = evaluation.eval_DMM_leven
+    VARIANT_AVG_LEVEN = evaluation.eval_avg_leven
+    VARIANT_DMM_VEC = evaluation.eval_DMM_variant
+    VARIANT_AVG_VEC = evaluation.eval_avg_variant
+    DFG = evaluation.dfg_dist
 
-VERSION_METHODS = {VARIANT_DMM_LEVEN: evaluation.eval_DMM_leven, VARIANT_AVG_LEVEN: evaluation.eval_avg_leven,
-                   VARIANT_DMM_VEC: evaluation.eval_DMM_variant, VARIANT_AVG_VEC: evaluation.eval_avg_variant,
-                   DFG: evaluation.dfg_dis}
+
+VARIANT_DMM_LEVEN = Variants.VARIANT_DMM_LEVEN
+VARIANT_AVG_LEVEN = Variants.VARIANT_AVG_LEVEN
+VARIANT_DMM_VEC = Variants.VARIANT_DMM_VEC
+VARIANT_AVG_VEC = Variants.VARIANT_AVG_VEC
+DFG = Variants.DFG
+
+VERSIONS = {VARIANT_DMM_LEVEN, VARIANT_AVG_VEC, VARIANT_DMM_VEC, VARIANT_AVG_VEC, DFG}
 
 
 def bfs(tree):
@@ -49,11 +57,11 @@ def apply(log, trace_attribute, variant=VARIANT_DMM_LEVEN, parameters=None):
         Trace attribute to exploit for the clustering
     variant
         Variant of the algorithm to apply, possible values:
-        - variant_DMM_leven (that is the default)
-        - variant_avg_leven
-        - variant_DMM_vec
-        - variant_avg_vec
-        - dfg
+        - Variants.VARIANT_DMM_LEVEN (that is the default)
+        - Variants.VARIANT_AVG_LEVEN
+        - Variants.VARIANT_DMM_VEC
+        - Variants.VARIANT_AVG_VEC
+        - Variants.DFG
 
     Returns
     -----------------
@@ -65,7 +73,7 @@ def apply(log, trace_attribute, variant=VARIANT_DMM_LEVEN, parameters=None):
     if parameters is None:
         parameters = {}
 
-    log = log_conv_factory.apply(log, parameters=parameters)
+    log = log_converter.apply(log, parameters=parameters)
 
     percent = 1
     alpha = 0.5
@@ -82,8 +90,7 @@ def apply(log, trace_attribute, variant=VARIANT_DMM_LEVEN, parameters=None):
         logsample = merge_log.log2sublog(log, list_of_vals[i], trace_attribute)
         list_log.append(logsample)
 
-    if variant in VERSION_METHODS:
-        y = VERSION_METHODS[variant](list_log, percent, alpha)
+    y = exec_utils.get_variant(variant)(list_log, percent, alpha)
 
     Z = linkage(y, method='average')
 

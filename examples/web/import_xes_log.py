@@ -1,4 +1,4 @@
-from pm4py.objects.log.importer.xes import algorithm as xes_import_factory
+from pm4py.objects.log.importer.xes import importer as xes_importer
 
 import inspect
 import os
@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfi
 
 if __name__ == '__main__':
     log_path = os.path.join("..", "..", "tests", "input_data", "running-example.xes")
-    log = xes_import_factory.apply(log_path)
+    log = xes_importer.apply(log_path)
 
     for case_index, case in enumerate(log):
         print("\n case index: %d  case id: %s" % (case_index, case.attributes["concept:name"]))
@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     parameters = {"timestamp_sort": True}
 
-    log = xes_import_factory.apply(log_path, variant="nonstandard", parameters=parameters)
+    log = xes_importer.apply(log_path, variant="nonstandard", parameters=parameters)
 
     for case_index, case in enumerate(log):
         print("\n case index: %d  case id: %s" % (case_index, case.attributes["concept:name"]))

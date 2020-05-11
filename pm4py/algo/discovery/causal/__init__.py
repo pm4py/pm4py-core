@@ -1,1 +1,1 @@
-from pm4py.algo.discovery.causal import factory, algorithm, versions
+from pm4py.algo.discovery.causal import algorithm, versions

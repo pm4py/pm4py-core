@@ -85,6 +85,7 @@
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.basic_filter">pm4py.objects.log.util.basic_filter module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.compression">pm4py.objects.log.util.compression module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.dataframe_utils">pm4py.objects.log.util.dataframe_utils module</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.util.func">pm4py.objects.log.util.func module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.general">pm4py.objects.log.util.general module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.get_class_representation">pm4py.objects.log.util.get_class_representation module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.util.get_log_encoded">pm4py.objects.log.util.get_log_encoded module</a></li>
@@ -175,6 +176,23 @@
 </div>
 <div class="section" id="module-pm4py.objects.log.util.basic_filter">
 <span id="pm4py-objects-log-util-basic-filter-module"></span><h2>pm4py.objects.log.util.basic_filter module<a class="headerlink" href="#module-pm4py.objects.log.util.basic_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.objects.log.util.basic_filter.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.objects.log.util.basic_filter.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/objects/log/util/basic_filter.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.basic_filter.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.objects.log.util.basic_filter.Parameters.ATTRIBUTE_KEY">
+<code class="sig-name descname">ATTRIBUTE_KEY</code><em class="property"> = 'pm4py:param:attribute_key'</em><a class="headerlink" href="#pm4py.objects.log.util.basic_filter.Parameters.ATTRIBUTE_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.objects.log.util.basic_filter.Parameters.POSITIVE">
+<code class="sig-name descname">POSITIVE</code><em class="property"> = 'positive'</em><a class="headerlink" href="#pm4py.objects.log.util.basic_filter.Parameters.POSITIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.objects.log.util.basic_filter.filter_log_events_attr">
 <code class="sig-prename descclassname">pm4py.objects.log.util.basic_filter.</code><code class="sig-name descname">filter_log_events_attr</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">values</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/basic_filter.html#filter_log_events_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.basic_filter.filter_log_events_attr" title="Permalink to this definition">¶</a></dt>
@@ -271,6 +289,27 @@ positive -&gt; Indicate if events should be kept/removed</p>
 <div class="section" id="module-pm4py.objects.log.util.dataframe_utils">
 <span id="pm4py-objects-log-util-dataframe-utils-module"></span><h2>pm4py.objects.log.util.dataframe_utils module<a class="headerlink" href="#module-pm4py.objects.log.util.dataframe_utils" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
+<dt id="pm4py.objects.log.util.dataframe_utils.convert_timestamp_columns_in_df">
+<code class="sig-prename descclassname">pm4py.objects.log.util.dataframe_utils.</code><code class="sig-name descname">convert_timestamp_columns_in_df</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">timest_format=None</em>, <em class="sig-param">timest_columns=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/dataframe_utils.html#convert_timestamp_columns_in_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.dataframe_utils.convert_timestamp_columns_in_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert all dataframe columns in a dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Dataframe</p></li>
+<li><p><strong>timest_format</strong> – (If provided) Format of the timestamp columns in the CSV file</p></li>
+<li><p><strong>timest_columns</strong> – Columns of the CSV that shall be converted into timestamp</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dataframe with timestamp columns converted</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="pm4py.objects.log.util.dataframe_utils.insert_partitioning">
 <code class="sig-prename descclassname">pm4py.objects.log.util.dataframe_utils.</code><code class="sig-name descname">insert_partitioning</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">num_partitions</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/dataframe_utils.html#insert_partitioning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.dataframe_utils.insert_partitioning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Insert the partitioning in the specified dataframe</p>
@@ -320,6 +359,43 @@ This string substitutes the replacer to the :</p>
 </dd>
 </dl>
 </dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.util.func">
+<span id="pm4py-objects-log-util-func-module"></span><h2>pm4py.objects.log.util.func module<a class="headerlink" href="#module-pm4py.objects.log.util.func" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.util.func.filter_">
+<code class="sig-prename descclassname">pm4py.objects.log.util.func.</code><code class="sig-name descname">filter_</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">log</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/func.html#filter_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.func.filter_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters the log according to a given lambda function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong></p></li>
+<li><p><strong>log</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.func.map_">
+<code class="sig-prename descclassname">pm4py.objects.log.util.func.</code><code class="sig-name descname">map_</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">log</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/func.html#map_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.func.map_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps the log according to a given lambda function.
+domain and target of the function need to be of the same type (either trace or event) otherwise, the map behaves unexpected</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong></p></li>
+<li><p><strong>log</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.util.func.sort_">
+<code class="sig-prename descclassname">pm4py.objects.log.util.func.</code><code class="sig-name descname">sort_</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">log</em>, <em class="sig-param">reverse=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/util/func.html#sort_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.util.func.sort_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-pm4py.objects.log.util.general">

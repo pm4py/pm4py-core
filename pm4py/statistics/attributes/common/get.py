@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 
 from pm4py.util.points_subset import pick_chosen_points_list
+from pm4py.statistics.attributes.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def get_sorted_attributes_list(attributes):
@@ -85,7 +87,7 @@ def get_kde_numeric_attribute(values, parameters=None):
         if parameters is None:
             parameters = {}
 
-        graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
+        graph_points = exec_utils.get_param_value(Parameters.GRAPH_POINTS, parameters, 200)
         values = sorted(values)
         density = gaussian_kde(values)
 
@@ -153,8 +155,9 @@ def get_kde_date_attribute(values, parameters=None):
         if parameters is None:
             parameters = {}
 
-        graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
-        points_to_sample = parameters["points_to_sample"] if "points_to_sample" in parameters else 400
+        graph_points = exec_utils.get_param_value(Parameters.GRAPH_POINTS, parameters, 200)
+        points_to_sample = exec_utils.get_param_value(Parameters.POINT_TO_SAMPLE, parameters, 400)
+
         red_values = pick_chosen_points_list(points_to_sample, values)
         int_values = sorted(
             [x.replace(tzinfo=None).timestamp() for x in red_values])

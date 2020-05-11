@@ -1,13 +1,19 @@
-import pm4py.algo.conformance.alignments.factory as ali
+import pm4py.algo.conformance.alignments.algorithm as ali
 from pm4py.algo.conformance.alignments.versions import state_equation_a_star as star
 import sys
 import pandas as pd
-from pm4py.algo.filtering.log.variants import variants_filter as variants_module
-from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.statistics.variants.log import get as variants_module
+from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from copy import deepcopy, copy
 from pm4py.util import constants, xes_constants
 from pm4py.statistics.attributes.log.select import select_attributes_from_log_for_tree
-from pm4py.objects.conversion.log import factory as log_conv_factory
+from pm4py.objects.conversion.log import converter as log_converter
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
 def get_decision_tree(log, net, initial_marking, final_marking, decision_point=None, attributes=None, parameters=None):
@@ -47,7 +53,7 @@ def get_decision_tree(log, net, initial_marking, final_marking, decision_point=N
 
     if parameters is None:
         parameters = {}
-    log = log_conv_factory.apply(log, parameters=parameters)
+    log = log_converter.apply(log, parameters=parameters)
     X, y, targets = apply(log, net, initial_marking, final_marking, decision_point=decision_point,
                           attributes=attributes, parameters=parameters)
     dt = tree.DecisionTreeClassifier()
@@ -91,9 +97,8 @@ def apply(log, net, initial_marking, final_marking, decision_point=None, attribu
     """
     if parameters is None:
         parameters = {}
-    log = log_conv_factory.apply(log, parameters=parameters)
-    activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes_constants.DEFAULT_NAME_KEY
+    log = log_converter.apply(log, parameters=parameters)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     if decision_point is None:
         decision_points_names = get_decision_points(net, labels=True, parameters=parameters)
         raise Exception("please provide decision_point as argument of the method. Possible decision points: ",
@@ -159,7 +164,7 @@ def get_decisions_table(log0, net, initial_marking, final_marking, attributes=No
         parameters = {}
 
     log = deepcopy(log0)
-    log = log_conv_factory.apply(log, parameters=parameters)
+    log = log_converter.apply(log, parameters=parameters)
 
     if pre_decision_points != None:
         if not isinstance(pre_decision_points, list):
@@ -373,7 +378,7 @@ def get_attributes(log, decision_points, attributes, use_trace_attributes, trace
         else:
             example_trace = log[variants_idxs[one_variant[count]][0]]
             align_parameters = copy(parameters)
-            align_parameters[star.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] = True
+            align_parameters[star.Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] = True
             alignment = ali.apply(example_trace, net, initial_marking, final_marking,
                                   parameters=align_parameters)['alignment']
             for trace_index in variants_idxs[one_variant[count]]:

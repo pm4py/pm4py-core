@@ -3,20 +3,18 @@ from pm4py.visualization.common import save as gsave
 from pm4py.visualization.process_tree.versions import wo_decoration
 from pm4py.objects.process_tree import util
 from copy import deepcopy
+from enum import Enum
+from pm4py.util import exec_utils
 
 
-WO_DECORATION = "wo_decoration"
-FREQUENCY_DECORATION = "frequency"
-PERFORMANCE_DECORATION = "performance"
-FREQUENCY_GREEDY = "frequency_greedy"
-PERFORMANCE_GREEDY = "performance_greedy"
-
-VERSIONS = {WO_DECORATION: wo_decoration.apply, FREQUENCY_DECORATION: wo_decoration.apply,
-            PERFORMANCE_DECORATION: wo_decoration.apply, FREQUENCY_GREEDY: wo_decoration.apply,
-            PERFORMANCE_GREEDY: wo_decoration.apply}
+class Variants(Enum):
+    WO_DECORATION = wo_decoration
 
 
-def apply(tree0, parameters=None, variant="wo_decoration"):
+DEFAULT_VARIANT = Variants.WO_DECORATION
+
+
+def apply(tree0, parameters=None, variant=DEFAULT_VARIANT):
     """
     Method for Process Tree representation
 
@@ -26,13 +24,10 @@ def apply(tree0, parameters=None, variant="wo_decoration"):
         Process tree
     parameters
         Possible parameters of the algorithm:
-            circle_width -> Width of the circles containing the operators
-            circle_font_size -> Font size associated to the operators
-            box_width -> Width of the box associated to the transitions
-            box_font_size -> Font size associated to the transitions boxes
-            format -> Format of the image (PDF, PNG, SVG; default PNG)
+            Parameters.FORMAT -> Format of the image (PDF, PNG, SVG; default PNG)
     variant
-        Variant of the algorithm to use
+        Variant of the algorithm to use:
+            - Variants.WO_DECORATION
 
     Returns
     -----------
@@ -43,7 +38,7 @@ def apply(tree0, parameters=None, variant="wo_decoration"):
     # proceeding
     tree = deepcopy(tree0)
     util.tree_sort(tree)
-    return VERSIONS[variant](tree, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(tree, parameters=parameters)
 
 
 def save(gviz, output_file_path):

@@ -3,7 +3,8 @@ from collections import Counter
 import numpy as np
 
 from pm4py.util import xes_constants as xes
-from pm4py.util import constants
+from pm4py.util import exec_utils
+from pm4py.algo.enhancement.sna.parameters import Parameters
 
 
 def apply(log, parameters=None):
@@ -28,10 +29,9 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    resource_key = parameters[
-        constants.PARAMETER_CONSTANT_RESOURCE_KEY] if constants.PARAMETER_CONSTANT_RESOURCE_KEY in parameters else xes.DEFAULT_RESOURCE_KEY
-    activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+
     activities = dict(log[activity_key].value_counts())
     resources = dict(log[resource_key].value_counts())
     activity_resource_couples = dict(log.groupby([resource_key, activity_key]).size())

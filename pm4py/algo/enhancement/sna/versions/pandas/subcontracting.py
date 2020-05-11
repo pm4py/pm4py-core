@@ -1,10 +1,18 @@
 import numpy
 
 from pm4py.util import xes_constants as xes
-from pm4py.statistics.traces.pandas.case_statistics import get_variant_statistics
-from pm4py.util import constants
+from pm4py.statistics.traces.pandas import case_statistics
+from enum import Enum
+from pm4py.util import constants, exec_utils
 
-N = "n"
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    RESOURCE_KEY = constants.PARAMETER_CONSTANT_RESOURCE_KEY
+    N = "n"
+
+
+N = Parameters.N
 
 
 def apply(log, parameters=None):
@@ -17,7 +25,7 @@ def apply(log, parameters=None):
         Log
     parameters
         Possible parameters of the algorithm:
-            n -> n of the algorithm proposed in the Wil SNA paper
+            Parameters.N -> n of the algorithm proposed in the Wil SNA paper
 
     Returns
     -----------
@@ -27,14 +35,13 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    resource_key = parameters[
-        constants.PARAMETER_CONSTANT_RESOURCE_KEY] if constants.PARAMETER_CONSTANT_RESOURCE_KEY in parameters else xes.DEFAULT_RESOURCE_KEY
-    n = parameters[N] if N in parameters else 2
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY)
+    n = exec_utils.get_param_value(Parameters.N, parameters, 2)
 
-    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: resource_key,
-                           constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: resource_key}
+    parameters_variants = {case_statistics.Parameters.ACTIVITY_KEY: resource_key,
+                           case_statistics.Parameters.ATTRIBUTE_KEY: resource_key}
     variants_occ = {x["variant"]: x["case:concept:name"] for x in
-                    get_variant_statistics(log, parameters=parameters_variants)}
+                    case_statistics.get_variant_statistics(log, parameters=parameters_variants)}
     variants_resources = list(variants_occ.keys())
     resources = [x.split(",") for x in variants_resources]
     flat_list = sorted(list(set([item for sublist in resources for item in sublist])))

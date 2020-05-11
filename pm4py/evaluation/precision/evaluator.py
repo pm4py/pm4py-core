@@ -1,14 +1,20 @@
-from pm4py import util as pmutil
 from pm4py.evaluation.precision.versions import etconformance_token, align_etconformance
-from pm4py.objects.conversion.log import factory as log_conversion
-from pm4py.util import xes_constants as xes_util
+from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects import petri
+from enum import Enum
+from pm4py.util import exec_utils
 
 
-ETCONFORMANCE_TOKEN = "etconformance"
-ALIGN_ETCONFORMANCE = "align_etconformance"
+class Variants(Enum):
+    ETCONFORMANCE_TOKEN = etconformance_token
+    ALIGN_ETCONFORMANCE = align_etconformance
 
-VERSIONS = {ETCONFORMANCE_TOKEN: etconformance_token.apply, ALIGN_ETCONFORMANCE: align_etconformance.apply}
+
+ETCONFORMANCE_TOKEN = Variants.ETCONFORMANCE_TOKEN
+ALIGN_ETCONFORMANCE = Variants.ALIGN_ETCONFORMANCE
+
+VERSIONS = {ETCONFORMANCE_TOKEN, ALIGN_ETCONFORMANCE}
+
 
 def apply(log, net, marking, final_marking, parameters=None, variant=None):
     """
@@ -28,16 +34,12 @@ def apply(log, net, marking, final_marking, parameters=None, variant=None):
         Parameters of the algorithm, including:
             pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> Activity key
     variant
-        Variant of the algorithm that should be applied
+        Variant of the algorithm that should be applied:
+            - Variants.ETCONFORMANCE_TOKEN
+            - Variants.ALIGN_ETCONFORMANCE
     """
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
-    if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
 
     log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
 
@@ -53,5 +55,5 @@ def apply(log, net, marking, final_marking, parameters=None, variant=None):
             # otherwise, use the align-etconformance approach (safer, in the case the model contains duplicates)
             variant = ALIGN_ETCONFORMANCE
 
-    return VERSIONS[variant](log, net, marking,
+    return exec_utils.get_variant(variant).apply(log, net, marking,
                              final_marking, parameters=parameters)

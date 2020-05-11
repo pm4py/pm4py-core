@@ -4,7 +4,7 @@ import numpy as np
 
 from pm4py.objects.petri.reachability_graph import construct_reachability_graph
 from pm4py.objects.stochastic_petri import tangible_reachability
-from pm4py.objects.conversion.dfg import factory as dfg_conv_factory
+from pm4py.objects.conversion.dfg import converter as dfg_converter
 from pm4py.objects.random_variables import exponential, random_variable
 
 
@@ -93,7 +93,7 @@ def get_tangible_reachability_and_q_matrix_from_dfg_performance(dfg_performance,
     """
     if parameters is None:
         parameters = {}
-    net, im, fm = dfg_conv_factory.apply(dfg_performance)
+    net, im, fm = dfg_converter.apply(dfg_performance)
     stochastic_map = {}
     for tr in net.transitions:
         if tr.label is None:

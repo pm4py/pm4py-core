@@ -193,15 +193,35 @@
 </div>
 <div class="section" id="module-pm4py.objects.petri.importer.importer">
 <span id="pm4py-objects-petri-importer-importer-module"></span><h2>pm4py.objects.petri.importer.importer module<a class="headerlink" href="#module-pm4py.objects.petri.importer.importer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.objects.petri.importer.importer.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.objects.petri.importer.importer.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/objects/petri/importer/importer.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.importer.importer.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.objects.petri.importer.importer.Variants.PNML">
+<code class="sig-name descname">PNML</code><em class="property"> = &lt;module 'pm4py.objects.petri.importer.versions.pnml' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\objects\\petri\\importer\\versions\\pnml.py'&gt;</em><a class="headerlink" href="#pm4py.objects.petri.importer.importer.Variants.PNML" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.objects.petri.importer.importer.apply">
-<code class="sig-prename descclassname">pm4py.objects.petri.importer.importer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">input_file_path</em>, <em class="sig-param">variant='pnml'</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/importer/importer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.importer.importer.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.objects.petri.importer.importer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">input_file_path</em>, <em class="sig-param">variant=&lt;Variants.PNML: &lt;module 'pm4py.objects.petri.importer.versions.pnml' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\objects\\petri\\importer\\versions\\pnml.py'&gt;&gt;</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/importer/importer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.importer.importer.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import a Petri net from a PNML file</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dd class="field-odd"><ul>
 <li><p><strong>input_file_path</strong> – Input file path</p></li>
 <li><p><strong>parameters</strong> – Other parameters of the importer</p></li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, possible values:</dt><dd><ul class="simple">
+<li><p>Variants.PNML</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </dd>
 </dl>

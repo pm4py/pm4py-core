@@ -158,6 +158,33 @@
 </div>
 <div class="section" id="module-pm4py.simulation.tree_generator.versions.basic">
 <span id="pm4py-simulation-tree-generator-versions-basic-module"></span><h2>pm4py.simulation.tree_generator.versions.basic module<a class="headerlink" href="#module-pm4py.simulation.tree_generator.versions.basic" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.simulation.tree_generator.versions.basic.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.simulation.tree_generator.versions.basic.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/simulation/tree_generator/versions/basic.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.basic.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.basic.Parameters.MAX_REC_DEPTH">
+<code class="sig-name descname">MAX_REC_DEPTH</code><em class="property"> = 'max_rec_depth'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.basic.Parameters.MAX_REC_DEPTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.basic.Parameters.MIN_REC_DEPTH">
+<code class="sig-name descname">MIN_REC_DEPTH</code><em class="property"> = 'min_rec_depth'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.basic.Parameters.MIN_REC_DEPTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.basic.Parameters.PROB_LEAF">
+<code class="sig-name descname">PROB_LEAF</code><em class="property"> = 'prob_leaf'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.basic.Parameters.PROB_LEAF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.basic.Parameters.REC_DEPTH">
+<code class="sig-name descname">REC_DEPTH</code><em class="property"> = 'rec_depth'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.basic.Parameters.REC_DEPTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.simulation.tree_generator.versions.basic.apply">
 <code class="sig-prename descclassname">pm4py.simulation.tree_generator.versions.basic.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/simulation/tree_generator/versions/basic.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.basic.apply" title="Permalink to this definition">¶</a></dt>
@@ -166,10 +193,10 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Paramters of the algorithm, including:</dt><dd><p>rec_depth -&gt; current recursion depth
-min_rec_depth -&gt; minimum recursion depth
-max_rec_depth -&gt; maximum recursion depth
-prob_leaf -&gt; Probability to get a leaf</p>
+<dt>Paramters of the algorithm, including:</dt><dd><p>Parameters.REC_DEPTH -&gt; current recursion depth
+Parameters.MIN_REC_DEPTH -&gt; minimum recursion depth
+Parameters.MAX_REC_DEPTH -&gt; maximum recursion depth
+Parameters.PROB_LEAF -&gt; Probability to get a leaf</p>
 </dd>
 </dl>
 </dd>
@@ -285,6 +312,88 @@ However, this approach can be applied on other distribution functions as well.
 
 </dd></dl>
 
+<dl class="class">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.simulation.tree_generator.versions.ptandloggenerator.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/simulation/tree_generator/versions/ptandloggenerator.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.CHOICE">
+<code class="sig-name descname">CHOICE</code><em class="property"> = 'choice'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.CHOICE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.DUPLICATE">
+<code class="sig-name descname">DUPLICATE</code><em class="property"> = 'duplicate'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.DUPLICATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.INFREQUENT">
+<code class="sig-name descname">INFREQUENT</code><em class="property"> = 'infrequent'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.INFREQUENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.LOOP">
+<code class="sig-name descname">LOOP</code><em class="property"> = 'loop'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.LOOP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.LT_DEPENDENCY">
+<code class="sig-name descname">LT_DEPENDENCY</code><em class="property"> = 'lt_dependency'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.LT_DEPENDENCY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.MAX">
+<code class="sig-name descname">MAX</code><em class="property"> = 'max'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.MAX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.MAX_REPEAT">
+<code class="sig-name descname">MAX_REPEAT</code><em class="property"> = 'max_repeat'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.MAX_REPEAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.MIN">
+<code class="sig-name descname">MIN</code><em class="property"> = 'min'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.MIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.MODE">
+<code class="sig-name descname">MODE</code><em class="property"> = 'mode'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.MODE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.NO_MODELS">
+<code class="sig-name descname">NO_MODELS</code><em class="property"> = 'no_models'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.NO_MODELS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.OR">
+<code class="sig-name descname">OR</code><em class="property"> = 'or'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.OR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.PARALLEL">
+<code class="sig-name descname">PARALLEL</code><em class="property"> = 'parallel'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.PARALLEL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.SEQUENCE">
+<code class="sig-name descname">SEQUENCE</code><em class="property"> = 'sequence'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.SEQUENCE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.SILENT">
+<code class="sig-name descname">SILENT</code><em class="property"> = 'silent'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.SILENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.UNFOLD">
+<code class="sig-name descname">UNFOLD</code><em class="property"> = 'unfold'</em><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.Parameters.UNFOLD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.simulation.tree_generator.versions.ptandloggenerator.apply">
 <code class="sig-prename descclassname">pm4py.simulation.tree_generator.versions.ptandloggenerator.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/simulation/tree_generator/versions/ptandloggenerator.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.tree_generator.versions.ptandloggenerator.apply" title="Permalink to this definition">¶</a></dt>
@@ -293,26 +402,26 @@ However, this approach can be applied on other distribution functions as well.
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>parameters</strong> – Parameters of the algorithm, according to the paper:
-- mode: most frequent number of visible activities
-- min: minimum number of visible activities
-- max: maximum number of visible activities
-- sequence: probability to add a sequence operator to tree
-- choice: probability to add a choice operator to tree
-- parallel: probability to add a parallel operator to tree
-- loop: probability to add a loop operator to tree
-- or: probability to add an or operator to tree
-- silent: probability to add silent activity to a choice or loop operator
-- duplicate: probability to duplicate an activity label
-- lt_dependency: probability to add a random dependency to the tree
-- infrequent: probability to make a choice have infrequent paths
-- no_models: number of trees to generate from model population
-- unfold: whether or not to unfold loops in order to include choices underneath in dependencies: 0=False, 1=True</p>
+- Parameters.MODE: most frequent number of visible activities
+- Parameters.MIN: minimum number of visible activities
+- Parameters.MAX: maximum number of visible activities
+- Parameters.SEQUENCE: probability to add a sequence operator to tree
+- Parameters.CHOICE: probability to add a choice operator to tree
+- Parameters.PARALLEL: probability to add a parallel operator to tree
+- Parameters.LOOP: probability to add a loop operator to tree
+- Parameters.OR: probability to add an or operator to tree
+- Parameters.SILENT: probability to add silent activity to a choice or loop operator
+- Parameters.DUPLICATE: probability to duplicate an activity label
+- Parameters.LT_DEPENDENCY: probability to add a random dependency to the tree
+- Parameters.INFREQUENT: probability to make a choice have infrequent paths
+- Parameters.NO_MODELS: number of trees to generate from model population
+- Parameters.UNFOLD: whether or not to unfold loops in order to include choices underneath in dependencies: 0=False, 1=True</p>
 <blockquote>
 <div><p>if lt_dependency &lt;= 0: this should always be 0 (False)
 if lt_dependency &gt; 0: this can be 1 or 0 (True or False)</p>
 </div></blockquote>
 <ul class="simple">
-<li><p>max_repeat: maximum number of repetitions of a loop (only used when unfolding is True)</p></li>
+<li><p>Parameters.MAX_REPEAT: maximum number of repetitions of a loop (only used when unfolding is True)</p></li>
 </ul>
 </dd>
 </dl>

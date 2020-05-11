@@ -2,15 +2,19 @@ import os
 import shutil
 import subprocess
 import sys
-
 from pm4py.visualization.heuristics_net.versions import pydotplus
-
-PYDOTPLUS = "pydotplus"
-
-VERSIONS = {PYDOTPLUS: pydotplus.apply}
+from enum import Enum
+from pm4py.util import exec_utils
 
 
-def apply(heu_net, parameters=None, variant=PYDOTPLUS):
+class Variants(Enum):
+    PYDOTPLUS = pydotplus
+
+
+DEFAULT_VARIANT = Variants.PYDOTPLUS
+
+
+def apply(heu_net, parameters=None, variant=DEFAULT_VARIANT):
     """
     Gets a representation of an Heuristics Net
 
@@ -19,14 +23,18 @@ def apply(heu_net, parameters=None, variant=PYDOTPLUS):
     heu_net
         Heuristics net
     parameters
-        Possible parameters of the algorithm, including: format
+        Possible parameters of the algorithm, including:
+            - Parameters.FORMAT
+    variant
+        Variant of the algorithm to use:
+             - Variants.PYDOTPLUS
 
     Returns
     ------------
     gviz
         Representation of the Heuristics Net
     """
-    return VERSIONS[variant](heu_net, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(heu_net, parameters=parameters)
 
 
 def view(figure):

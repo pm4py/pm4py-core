@@ -86,6 +86,8 @@
 <li><a class="reference internal" href="#module-pm4py.util.business_hours">pm4py.util.business_hours module</a></li>
 <li><a class="reference internal" href="#module-pm4py.util.colors">pm4py.util.colors module</a></li>
 <li><a class="reference internal" href="#module-pm4py.util.constants">pm4py.util.constants module</a></li>
+<li><a class="reference internal" href="#module-pm4py.util.exec_utils">pm4py.util.exec_utils module</a></li>
+<li><a class="reference internal" href="#module-pm4py.util.parameters">pm4py.util.parameters module</a></li>
 <li><a class="reference internal" href="#module-pm4py.util.points_subset">pm4py.util.points_subset module</a></li>
 <li><a class="reference internal" href="#module-pm4py.util.regex">pm4py.util.regex module</a></li>
 <li><a class="reference internal" href="#module-pm4py.util.string_distance">pm4py.util.string_distance module</a></li>
@@ -307,6 +309,42 @@ and an hexadecimal string</p>
 </div>
 <div class="section" id="module-pm4py.util.constants">
 <span id="pm4py-util-constants-module"></span><h2>pm4py.util.constants module<a class="headerlink" href="#module-pm4py.util.constants" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pm4py.util.exec_utils">
+<span id="pm4py-util-exec-utils-module"></span><h2>pm4py.util.exec_utils module<a class="headerlink" href="#module-pm4py.util.exec_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.util.exec_utils.get_param_value">
+<code class="sig-prename descclassname">pm4py.util.exec_utils.</code><code class="sig-name descname">get_param_value</code><span class="sig-paren">(</span><em class="sig-param">p</em>, <em class="sig-param">parameters</em>, <em class="sig-param">default</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/exec_utils.html#get_param_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.exec_utils.get_param_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pm4py.util.exec_utils.get_variant">
+<code class="sig-prename descclassname">pm4py.util.exec_utils.</code><code class="sig-name descname">get_variant</code><span class="sig-paren">(</span><em class="sig-param">variant</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/exec_utils.html#get_variant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.exec_utils.get_variant" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pm4py.util.exec_utils.unroll">
+<code class="sig-prename descclassname">pm4py.util.exec_utils.</code><code class="sig-name descname">unroll</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/exec_utils.html#unroll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.exec_utils.unroll" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.util.parameters">
+<span id="pm4py-util-parameters-module"></span><h2>pm4py.util.parameters module<a class="headerlink" href="#module-pm4py.util.parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.util.parameters.fetch">
+<code class="sig-prename descclassname">pm4py.util.parameters.</code><code class="sig-name descname">fetch</code><span class="sig-paren">(</span><em class="sig-param">p</em>, <em class="sig-param">params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/util/parameters.html#fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.util.parameters.fetch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assumes a given parameter p (enum) and a collection of (enum) -&gt; value mappings.
+If the param exists, it is returned, if not, the default value is given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong></p></li>
+<li><p><strong>params</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-pm4py.util.points_subset">
 <span id="pm4py-util-points-subset-module"></span><h2>pm4py.util.points_subset module<a class="headerlink" href="#module-pm4py.util.points_subset" title="Permalink to this headline">¶</a></h2>

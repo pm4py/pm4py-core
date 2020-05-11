@@ -1,21 +1,27 @@
 import pandas
 
 from pm4py import util as pmutil
+from pm4py.algo.discovery.parameters import Parameters
 from pm4py.algo.discovery.alpha import versions
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import xes_constants as xes_util
-
-ALPHA_VERSION_CLASSIC = 'classic'
-ALPHA_VERSION_PLUS = 'plus'
-
-VERSIONS = {ALPHA_VERSION_CLASSIC: versions.classic.apply, ALPHA_VERSION_PLUS: versions.plus.apply}
-VERSIONS_DFG = {ALPHA_VERSION_CLASSIC: versions.classic.apply_dfg}
-
-DEFAULT_PARAMETERS = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: xes_util.DEFAULT_NAME_KEY}
+from pm4py.util import exec_utils
+from enum import Enum
 
 
-def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
+class Variants(Enum):
+    ALPHA_VERSION_CLASSIC = versions.classic
+    ALPHA_VERSION_PLUS = versions.plus
+
+
+ALPHA_VERSION_CLASSIC = Variants.ALPHA_VERSION_CLASSIC
+ALPHA_VERSION_PLUS = Variants.ALPHA_VERSION_PLUS
+DEFAULT_VARIANT = ALPHA_VERSION_CLASSIC
+VERSIONS = {Variants.ALPHA_VERSION_CLASSIC, Variants.ALPHA_VERSION_PLUS}
+
+
+def apply(log, parameters=None, variant=DEFAULT_VARIANT):
     """
     Apply the Alpha Miner on top of a log
 
@@ -24,10 +30,12 @@ def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     log
         Log
     variant
-        Variant of the algorithm to use (classic)
+        Variant of the algorithm to use:
+            - Variants.ALPHA_VERSION_CLASSIC
+            - Variants.ALPHA_VERSION_PLUS
     parameters
         Possible parameters of the algorithm, including:
-            activity key -> Name of the attribute that contains the activity
+            Parameters.ACTIVITY_KEY -> Name of the attribute that contains the activity
 
     Returns
     -----------
@@ -40,18 +48,16 @@ def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     """
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
-    if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmutil.constants.CASE_CONCEPT_NAME)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
+
     if isinstance(log, pandas.core.frame.DataFrame) and variant == ALPHA_VERSION_CLASSIC:
-            dfg = df_statistics.get_dfg_graph(log, case_id_glue=parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY],
-                                              activity_key=parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY],
-                                              timestamp_key=parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY])
-            return VERSIONS_DFG[variant](dfg, parameters=parameters)
-    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters)
+        dfg = df_statistics.get_dfg_graph(log, case_id_glue=case_id_glue,
+                                          activity_key=activity_key,
+                                          timestamp_key=timestamp_key)
+        return exec_utils.get_variant(variant).apply_dfg(dfg, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters)
 
 
 def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
@@ -79,6 +85,4 @@ def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     """
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    return VERSIONS_DFG[variant](dfg, parameters)
+    return exec_utils.get_variant(variant).apply_dfg(dfg, parameters)
