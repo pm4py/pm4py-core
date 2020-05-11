@@ -197,7 +197,7 @@ def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT
     return net, petri.petrinet.Marking({place_map[0]: 1}), petri.petrinet.Marking({place_map[len(trace)]: 1}), cost_map
 
 
-def acyclic_net_variants(net, initial_marking, final_marking):
+def acyclic_net_variants(net, initial_marking, final_marking, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
     Given an acyclic accepting Petri net, initial and final marking extracts a set of variants (in form of traces)
     replayable on the net.
@@ -206,38 +206,45 @@ def acyclic_net_variants(net, initial_marking, final_marking):
 
     Parameters
     ----------
-    net: An acyclic workflow net
-    initial_marking: The initial marking of the net.
-    final_marking: The final marking of the net.
+    :param net: An acyclic workflow net
+    :param initial_marking: The initial marking of the net.
+    :param final_marking: The final marking of the net.
+    :param activity_key: activity key to use
 
     Returns
     -------
-    variants: :class:`list` List of variants - in the form of Trace objects - obtainable executing the net
+    :return: variants: :class:`list` Set of variants - in the form of Trace objects - obtainable executing the net
 
     """
-    active = [(initial_marking, Trace())]
-    visited = []
-    variants = []
+    active = {(initial_marking, ())}
+    visited = set()
+    variants = set()
     while active:
-        curr_couple = active.pop(0)
-        en_tr = petri.semantics.enabled_transitions(net, curr_couple[0])
-        for t in en_tr:
-            next_activitylist = deepcopy(curr_couple[1])
-            if t.label is not None:
-                next_activitylist.append(Event({'concept:name': repr(t)}))
-            next_couple = (petri.semantics.execute(t, net, curr_couple[0]), next_activitylist)
-            if hash(next_couple[0]) == hash(final_marking):
-                variants.append(next_couple[1])
+        curr_marking, curr_partial_trace = active.pop()
+        curr_pair = (curr_marking, curr_partial_trace)
+        enabled_transitions = petri.semantics.enabled_transitions(net, curr_marking)
+        for transition in enabled_transitions:
+            if transition.label is not None:
+                next_partial_trace = curr_partial_trace + (transition.label,)
             else:
-                # If the next marking hash is not in visited, if the next marking+partial trace itself is
-                # not already in active and if the next marking+partial trace is different from the
-                # current one+partial trace
-                if hash(next_couple[0]) not in visited and next((mark for mark in active if hash(mark[0]) == hash(
-                        next_couple[0] and mark[1] == next_couple[1])), None) is None and (
-                        hash(curr_couple[0]) != hash(next_couple[0]) or curr_couple[1] != next_couple[1]):
-                    active.append(next_couple)
-        visited.append(hash(curr_couple[0]))
-    return variants
+                next_partial_trace = curr_partial_trace
+            next_marking = petri.semantics.execute(transition, net, curr_marking)
+            next_pair = (next_marking, next_partial_trace)
+
+            if next_marking == final_marking:
+                variants.add(next_partial_trace)
+            else:
+                # If the next marking is not in visited, if the next marking+partial trace is different from the current one+partial trace
+                if next_pair not in visited and curr_pair != next_pair:
+                    active.add(next_pair)
+        visited.add(curr_pair)
+    trace_variants = []
+    for variant in variants:
+        trace = Trace()
+        for activity_label in variant:
+            trace.append(Event({activity_key: activity_label}))
+        trace_variants.append(trace)
+    return trace_variants
 
 
 def get_transition_by_name(net, transition_name):
@@ -376,15 +383,15 @@ def get_strongly_connected_subnets(net):
     import networkx as nx
 
     graph, inv_dictionary = create_networkx_directed_graph(net)
-    sccg = nx.strongly_connected_component_subgraphs(graph)
+    sccg = list(nx.strongly_connected_components(graph))
     strongly_connected_subnets = []
     for sg in list(sccg):
-        if len(sg.nodes()) > 1:
+        if len(sg) > 1:
             subnet = petri.petrinet.PetriNet()
             imarking = petri.petrinet.Marking()
             fmarking = petri.petrinet.Marking()
             corr = {}
-            for node in sg.nodes():
+            for node in sg:
                 if node in inv_dictionary:
                     if type(inv_dictionary[node]) is petri.petrinet.PetriNet.Transition:
                         prev_trans = inv_dictionary[node]
@@ -396,8 +403,9 @@ def get_strongly_connected_subnets(net):
                         new_place = petri.petrinet.PetriNet.Place(prev_place.name)
                         corr[node] = new_place
                         subnet.places.add(new_place)
-            for edge in sg.edges():
-                add_arc_from_to(corr[edge[0]], corr[edge[1]], subnet)
+            for edge in graph.edges:
+                if edge[0] in sg and edge[1] in sg:
+                    add_arc_from_to(corr[edge[0]], corr[edge[1]], subnet)
             strongly_connected_subnets.append([subnet, imarking, fmarking])
 
     return strongly_connected_subnets
