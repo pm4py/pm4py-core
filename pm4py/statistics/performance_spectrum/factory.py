@@ -1,5 +1,7 @@
-from pm4py.statistics.performance_spectrum.versions import dataframe, log
+import deprecation
 import pandas as pd
+
+from pm4py.statistics.performance_spectrum.versions import dataframe, log
 
 DATAFRAME = "dataframe"
 LOG = "log"
@@ -9,7 +11,8 @@ DEFAULT_SAMPLE_SIZE = 10000
 
 VERSIONS = {DATAFRAME: dataframe.apply, LOG: log.apply}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, list_activities, parameters=None):
     """
     Finds the performance spectrum provided a log/dataframe
@@ -29,7 +32,7 @@ def apply(log, list_activities, parameters=None):
     ps
         Performance spectrum object (dictionary)
     """
-    from pm4py.objects.conversion.log import factory as log_conv_factory
+    from pm4py.objects.conversion.log import converter as log_conversion
 
     if parameters is None:
         parameters = {}
@@ -42,7 +45,7 @@ def apply(log, list_activities, parameters=None):
     if type(log) is pd.DataFrame:
         points = VERSIONS[DATAFRAME](log, list_activities, sample_size, parameters)
     else:
-        points = VERSIONS[LOG](log_conv_factory.apply(log), list_activities, sample_size, parameters)
+        points = VERSIONS[LOG](log_conversion.apply(log), list_activities, sample_size, parameters)
 
     ps = {"list_activities": list_activities, "points": points}
 

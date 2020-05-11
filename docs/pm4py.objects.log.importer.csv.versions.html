@@ -159,7 +159,7 @@
 <span id="pm4py-objects-log-importer-csv-versions-pandas-df-imp-module"></span><h2>pm4py.objects.log.importer.csv.versions.pandas_df_imp module<a class="headerlink" href="#module-pm4py.objects.log.importer.csv.versions.pandas_df_imp" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.objects.log.importer.csv.versions.pandas_df_imp.import_event_stream">
-<code class="descclassname">pm4py.objects.log.importer.csv.versions.pandas_df_imp.</code><code class="descname">import_event_stream</code><span class="sig-paren">(</span><em>path</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/csv/versions/pandas_df_imp.html#import_event_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.csv.versions.pandas_df_imp.import_event_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.objects.log.importer.csv.versions.pandas_df_imp.</code><code class="sig-name descname">import_event_stream</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/csv/versions/pandas_df_imp.html#import_event_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.csv.versions.pandas_df_imp.import_event_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imports a CSV file from the given path</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -168,11 +168,15 @@
 <li><p><strong>parameters</strong> –</p>
 <blockquote>
 <div><dl class="simple">
-<dt>Parameters of the algorithm, including</dt><dd><p>sep -&gt; column separator
-quotechar -&gt; (if specified) Character that starts/end big strings in CSV
-nrows -&gt; (if specified) Maximum number of rows to read from the CSV
-sort -&gt; Boolean value that tells if the CSV should be ordered
-sort_field -&gt; If sort option is enabled, then the CSV is automatically sorted by the specified column</p>
+<dt>Parameters of the algorithm, including</dt><dd><p>Parameters.SEPARATOR -&gt; column separator
+Parameters.QUOTECHAR -&gt; (if specified) Character that starts/end big strings in CSV
+Parameters.NUM_ROWS -&gt; (if specified) Maximum number of rows to read from the CSV
+Parameters.SORT -&gt; Boolean value that tells if the CSV should be ordered
+Parameters.SORT_FIELD -&gt; If sort option is enabled, then the CSV is automatically sorted by the specified column
+Parameters.INSERT_EVENT_INDICES -&gt; Events get their index as an additional payload
+Parameters.TIME_STAMP_FORMAT -&gt; Specify the timestamp format, if not specified, auto detection is applied
+Parameters.TIME_STAMP_COLUMNS -&gt; Column names of data attributes that contain time stamps
+Parameters.ENCODING -&gt; File Encoding</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -183,12 +187,18 @@ sort_field -&gt; If sort option is enabled, then the CSV is automatically sorted
 </ul>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Please import the csv using pandas, then convert it to an event log, if needed</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.importer.csv.versions.pandas_df_imp.import_log">
-<code class="descclassname">pm4py.objects.log.importer.csv.versions.pandas_df_imp.</code><code class="descname">import_log</code><span class="sig-paren">(</span><em>path</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/csv/versions/pandas_df_imp.html#import_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.csv.versions.pandas_df_imp.import_log" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">pm4py.objects.log.importer.csv.versions.pandas_df_imp.</code><code class="sig-name descname">import_log</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/csv/versions/pandas_df_imp.html#import_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.csv.versions.pandas_df_imp.import_log" title="Permalink to this definition">¶</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Please import the csv using pandas, then convert it to an event log, if needed</p>
+</div>
+</dd></dl>
 
 </div>
 <div class="section" id="module-pm4py.objects.log.importer.csv.versions">

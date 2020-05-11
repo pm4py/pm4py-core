@@ -1,6 +1,6 @@
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.discovery.inductive import factory as inductive_miner
-from pm4py.algo.simulation.montecarlo import factory as montecarlo_simulation
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+from pm4py.simulation.montecarlo import simulator as montecarlo_simulation
 import os
 
 
@@ -8,12 +8,16 @@ def execute_script():
     log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
     net, im, fm = inductive_miner.apply(log)
     # perform the Montecarlo simulation with the arrival rate inferred by the log (the simulation lasts 5 secs)
-    log, res = montecarlo_simulation.apply(log, net, im, fm, parameters={"enable_diagnostics": False, "max_thread_exec_time": 5})
+    parameters = {}
+    parameters[montecarlo_simulation.Variants.PETRI_SEMAPH_FIFO.value.Parameters.PARAM_ENABLE_DIAGNOSTICS] = False
+    parameters[montecarlo_simulation.Variants.PETRI_SEMAPH_FIFO.value.Parameters.PARAM_MAX_THREAD_EXECUTION_TIME] = 5
+    log, res = montecarlo_simulation.apply(log, net, im, fm, parameters=parameters)
     print("\n(Montecarlo - Petri net) case arrival ratio inferred from the log")
     print(res["median_cases_ex_time"])
     print(res["total_cases_time"])
     # perform the Montecarlo simulation with the arrival rate specified (the simulation lasts 5 secs)
-    log, res = montecarlo_simulation.apply(log, net, im, fm, parameters={"enable_diagnostics": False, "max_thread_exec_time": 5, "case_arrival_ratio": 60})
+    parameters[montecarlo_simulation.Variants.PETRI_SEMAPH_FIFO.value.Parameters.PARAM_CASE_ARRIVAL_RATIO] = 60
+    log, res = montecarlo_simulation.apply(log, net, im, fm, parameters=parameters)
     print("\n(Montecarlo - Petri net) case arrival ratio specified by the user")
     print(res["median_cases_ex_time"])
     print(res["total_cases_time"])

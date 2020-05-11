@@ -157,9 +157,61 @@
 </div>
 <div class="section" id="module-pm4py.algo.filtering.log.attributes.attributes_filter">
 <span id="pm4py-algo-filtering-log-attributes-attributes-filter-module"></span><h2>pm4py.algo.filtering.log.attributes.attributes_filter module<a class="headerlink" href="#module-pm4py.algo.filtering.log.attributes.attributes_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.ATTRIBUTE_KEY">
+<code class="sig-name descname">ATTRIBUTE_KEY</code><em class="property"> = 'pm4py:param:attribute_key'</em><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.ATTRIBUTE_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.CASE_ID_KEY">
+<code class="sig-name descname">CASE_ID_KEY</code><em class="property"> = 'case_id_glue'</em><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.CASE_ID_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.DECREASING_FACTOR">
+<code class="sig-name descname">DECREASING_FACTOR</code><em class="property"> = 'decreasingFactor'</em><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.DECREASING_FACTOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.POSITIVE">
+<code class="sig-name descname">POSITIVE</code><em class="property"> = 'positive'</em><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.POSITIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.STREAM_FILTER_KEY1">
+<code class="sig-name descname">STREAM_FILTER_KEY1</code><em class="property"> = 'stream_filter_key1'</em><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.STREAM_FILTER_KEY1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.STREAM_FILTER_KEY2">
+<code class="sig-name descname">STREAM_FILTER_KEY2</code><em class="property"> = 'stream_filter_key2'</em><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.STREAM_FILTER_KEY2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.STREAM_FILTER_VALUE1">
+<code class="sig-name descname">STREAM_FILTER_VALUE1</code><em class="property"> = 'stream_filter_value1'</em><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.STREAM_FILTER_VALUE1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.STREAM_FILTER_VALUE2">
+<code class="sig-name descname">STREAM_FILTER_VALUE2</code><em class="property"> = 'stream_filter_value2'</em><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.Parameters.STREAM_FILTER_VALUE2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.attributes.attributes_filter.apply">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>values</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">values</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter log by keeping only traces that has/has not events with an attribute value that belongs to the provided
 values list</p>
 <dl class="field-list">
@@ -169,8 +221,8 @@ values list</p>
 <li><p><strong>values</strong> – Allowed attributes</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>activity_key -&gt; Attribute identifying the activity in the log
-positive -&gt; Indicate if events should be kept/removed</p>
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.ACTIVITY_KEY -&gt; Attribute identifying the activity in the log
+Parameters.POSITIVE -&gt; Indicate if events should be kept/removed</p>
 </dd>
 </dl>
 </li>
@@ -187,7 +239,7 @@ positive -&gt; Indicate if events should be kept/removed</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.attributes.attributes_filter.apply_auto_filter">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>log</em>, <em>variants=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="sig-name descname">apply_auto_filter</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">variants=None</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply an attributes filter detecting automatically a percentage</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -196,9 +248,9 @@ positive -&gt; Indicate if events should be kept/removed</p>
 <li><p><strong>variants</strong> – (If specified) Dictionary with variant as the key and the list of traces as the value</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>decreasingFactor -&gt; Decreasing factor (stops the algorithm when the next activity by occurrence is
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.DECREASING_FACTOR -&gt; Decreasing factor (stops the algorithm when the next activity by occurrence is
 below this factor in comparison to previous)
-attribute_key -&gt; Attribute key (must be specified if different from concept:name)</p>
+Parameters.ATTRIBUTE_KEY -&gt; Attribute key (must be specified if different from concept:name)</p>
 </dd>
 </dl>
 </li>
@@ -215,7 +267,7 @@ attribute_key -&gt; Attribute key (must be specified if different from concept:n
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.attributes.attributes_filter.apply_events">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">apply_events</code><span class="sig-paren">(</span><em>log</em>, <em>values</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#apply_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.apply_events" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="sig-name descname">apply_events</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">values</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#apply_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.apply_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter log by keeping only events with an attribute value that belongs to the provided values list</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -224,8 +276,8 @@ attribute_key -&gt; Attribute key (must be specified if different from concept:n
 <li><p><strong>values</strong> – Allowed attributes</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>activity_key -&gt; Attribute identifying the activity in the log
-positive -&gt; Indicate if events should be kept/removed</p>
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.ACTIVITY_KEY -&gt; Attribute identifying the activity in the log
+Parameters.POSITIVE -&gt; Indicate if events should be kept/removed</p>
 </dd>
 </dl>
 </li>
@@ -242,7 +294,7 @@ positive -&gt; Indicate if events should be kept/removed</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.attributes.attributes_filter.apply_numeric">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">apply_numeric</code><span class="sig-paren">(</span><em>log</em>, <em>int1</em>, <em>int2</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#apply_numeric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.apply_numeric" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="sig-name descname">apply_numeric</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">int1</em>, <em class="sig-param">int2</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#apply_numeric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.apply_numeric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a filter on cases (numerical filter)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -264,7 +316,7 @@ positive -&gt; Indicate if events should be kept/removed</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.attributes.attributes_filter.apply_numeric_events">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">apply_numeric_events</code><span class="sig-paren">(</span><em>log</em>, <em>int1</em>, <em>int2</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#apply_numeric_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.apply_numeric_events" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="sig-name descname">apply_numeric_events</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">int1</em>, <em class="sig-param">int2</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#apply_numeric_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.apply_numeric_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a filter on events (numerical filter)</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -274,8 +326,8 @@ positive -&gt; Indicate if events should be kept/removed</p>
 <li><p><strong>int2</strong> – Upper bound of the interval</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm:</dt><dd><p>PARAMETER_CONSTANT_ATTRIBUTE_KEY =&gt; indicates which attribute to filter
-positive =&gt; keep or remove traces with such events?</p>
+<dt>Possible parameters of the algorithm:</dt><dd><p>Parameters.ATTRIBUTE_KEY =&gt; indicates which attribute to filter
+Parameters.POSITIVE =&gt; keep or remove traces with such events?</p>
 </dd>
 </dl>
 </li>
@@ -291,48 +343,8 @@ positive =&gt; keep or remove traces with such events?</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.check_event_attributes_presence">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">check_event_attributes_presence</code><span class="sig-paren">(</span><em>log</em>, <em>attributes_set</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#check_event_attributes_presence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.check_event_attributes_presence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check event attributes presence in all the traces of the log</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> – Log</p></li>
-<li><p><strong>attributes_set</strong> – Set of attributes</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Filtered set of attributes</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>filtered_set</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.check_trace_attributes_presence">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">check_trace_attributes_presence</code><span class="sig-paren">(</span><em>log</em>, <em>attributes_set</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#check_trace_attributes_presence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.check_trace_attributes_presence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check trace attributes presence in all the traces of the log</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> – Log</p></li>
-<li><p><strong>attributes_set</strong> – Set of attributes</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Filtered set of attributes</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>filtered_set</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
 <dt id="pm4py.algo.filtering.log.attributes.attributes_filter.filter_log_by_attributes_threshold">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">filter_log_by_attributes_threshold</code><span class="sig-paren">(</span><em>log</em>, <em>attributes</em>, <em>variants</em>, <em>vc</em>, <em>threshold</em>, <em>attribute_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#filter_log_by_attributes_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.filter_log_by_attributes_threshold" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="sig-name descname">filter_log_by_attributes_threshold</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">attributes</em>, <em class="sig-param">variants</em>, <em class="sig-param">vc</em>, <em class="sig-param">threshold</em>, <em class="sig-param">attribute_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#filter_log_by_attributes_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.filter_log_by_attributes_threshold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keep only attributes which number of occurrences is above the threshold (or they belong to the first variant)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -356,7 +368,7 @@ positive =&gt; keep or remove traces with such events?</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.attributes.attributes_filter.filter_log_on_max_no_activities">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">filter_log_on_max_no_activities</code><span class="sig-paren">(</span><em>log</em>, <em>max_no_activities=25</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#filter_log_on_max_no_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.filter_log_on_max_no_activities" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="sig-name descname">filter_log_on_max_no_activities</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">max_no_activities=25</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#filter_log_on_max_no_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.filter_log_on_max_no_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter a log on a maximum number of activities</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -371,247 +383,6 @@ positive =&gt; keep or remove traces with such events?</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>filtered_log</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.get_all_event_attributes_from_log">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">get_all_event_attributes_from_log</code><span class="sig-paren">(</span><em>log</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#get_all_event_attributes_from_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.get_all_event_attributes_from_log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all events attributes from the log</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>log</strong> – Log</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>All trace attributes from the log</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>all_attributes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.get_all_trace_attributes_from_log">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">get_all_trace_attributes_from_log</code><span class="sig-paren">(</span><em>log</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#get_all_trace_attributes_from_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.get_all_trace_attributes_from_log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all trace attributes from the log</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>log</strong> – Log</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>All trace attributes from the log</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>all_attributes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.get_attribute_values">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">get_attribute_values</code><span class="sig-paren">(</span><em>log</em>, <em>attribute_key</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#get_attribute_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.get_attribute_values" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the attribute values of the log for the specified attribute along with their count</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> – Log</p></li>
-<li><p><strong>attribute_key</strong> – Attribute for which we would like to know the values along with their count</p></li>
-<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dictionary of attributes associated with their count</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>attributes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.get_kde_date_attribute">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">get_kde_date_attribute</code><span class="sig-paren">(</span><em>log</em>, <em>attribute='time:timestamp'</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#get_kde_date_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.get_kde_date_attribute" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the KDE estimation for the distribution of a date attribute values</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul>
-<li><p><strong>log</strong> – Event stream object (if log, is converted)</p></li>
-<li><p><strong>attribute</strong> – Date attribute to analyse</p></li>
-<li><p><strong>parameters</strong> –</p>
-<dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph</p>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><em>x</em> – X-axis values to represent</p></li>
-<li><p><em>y</em> – Y-axis values to represent</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.get_kde_date_attribute_json">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">get_kde_date_attribute_json</code><span class="sig-paren">(</span><em>log</em>, <em>attribute='time:timestamp'</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#get_kde_date_attribute_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.get_kde_date_attribute_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the KDE estimation for the distribution of a date attribute values
-(expressed as JSON)</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul>
-<li><p><strong>log</strong> – Event stream object (if log, is converted)</p></li>
-<li><p><strong>attribute</strong> – Date attribute to analyse</p></li>
-<li><p><strong>parameters</strong> –</p>
-<dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph</p>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><em>x</em> – X-axis values to represent</p></li>
-<li><p><em>y</em> – Y-axis values to represent</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.get_kde_numeric_attribute">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">get_kde_numeric_attribute</code><span class="sig-paren">(</span><em>log</em>, <em>attribute</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#get_kde_numeric_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.get_kde_numeric_attribute" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the KDE estimation for the distribution of a numeric attribute values</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul>
-<li><p><strong>log</strong> – Event stream object (if log, is converted)</p></li>
-<li><p><strong>attribute</strong> – Numeric attribute to analyse</p></li>
-<li><p><strong>parameters</strong> –</p>
-<dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph</p>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><em>x</em> – X-axis values to represent</p></li>
-<li><p><em>y</em> – Y-axis values to represent</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.get_kde_numeric_attribute_json">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">get_kde_numeric_attribute_json</code><span class="sig-paren">(</span><em>log</em>, <em>attribute</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#get_kde_numeric_attribute_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.get_kde_numeric_attribute_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the KDE estimation for the distribution of a numeric attribute values
-(expressed as JSON)</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul>
-<li><p><strong>log</strong> – Event log object (if log, is converted)</p></li>
-<li><p><strong>attribute</strong> – Numeric attribute to analyse</p></li>
-<li><p><strong>parameters</strong> –</p>
-<dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>graph_points -&gt; number of points to include in the graph</p>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><em>x</em> – X-axis values to represent</p></li>
-<li><p><em>y</em> – Y-axis values to represent</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.get_trace_attribute_values">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">get_trace_attribute_values</code><span class="sig-paren">(</span><em>log</em>, <em>attribute_key</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#get_trace_attribute_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.get_trace_attribute_values" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the attribute values of the log for the specified attribute along with their count</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> – Log</p></li>
-<li><p><strong>attribute_key</strong> – Attribute for which we wish to get the values along with their count</p></li>
-<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dictionary of attributes associated with their count</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>attributes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.select_attributes_from_log_for_tree">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">select_attributes_from_log_for_tree</code><span class="sig-paren">(</span><em>log</em>, <em>max_cases_for_attr_selection=50</em>, <em>max_diff_occ=12.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#select_attributes_from_log_for_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.select_attributes_from_log_for_tree" title="Permalink to this definition">¶</a></dt>
-<dd><p>Select attributes from log for tree</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> – Log</p></li>
-<li><p><strong>max_cases_for_attr_selection</strong> – Maximum number of cases to consider for attribute selection</p></li>
-<li><p><strong>max_diff_occ</strong> – Maximum number of different occurrences</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.verify_if_event_attribute_is_in_each_trace">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">verify_if_event_attribute_is_in_each_trace</code><span class="sig-paren">(</span><em>log</em>, <em>attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#verify_if_event_attribute_is_in_each_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.verify_if_event_attribute_is_in_each_trace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Verify if the event attribute is in each trace</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> – Log</p></li>
-<li><p><strong>attribute</strong> – Attribute</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Boolean value that is aiming to check if the event attribute is in each trace</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>boolean</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.attributes.attributes_filter.verify_if_trace_attribute_is_in_each_trace">
-<code class="descclassname">pm4py.algo.filtering.log.attributes.attributes_filter.</code><code class="descname">verify_if_trace_attribute_is_in_each_trace</code><span class="sig-paren">(</span><em>log</em>, <em>attribute</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/attributes/attributes_filter.html#verify_if_trace_attribute_is_in_each_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.attributes.attributes_filter.verify_if_trace_attribute_is_in_each_trace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Verify if the trace attribute is in each trace</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> – Log</p></li>
-<li><p><strong>attribute</strong> – Attribute</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Boolean value that is aiming to check if the trace attribute is in each trace</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>boolean</p>
 </dd>
 </dl>
 </dd></dl>

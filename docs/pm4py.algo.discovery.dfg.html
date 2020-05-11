@@ -83,7 +83,9 @@
 <li><a class="reference internal" href="#">pm4py.algo.discovery.dfg package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.discovery.dfg.algorithm">pm4py.algo.discovery.dfg.algorithm module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.dfg.factory">pm4py.algo.discovery.dfg.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.discovery.dfg.parameters">pm4py.algo.discovery.dfg.parameters module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.dfg.replacement">pm4py.algo.discovery.dfg.replacement module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.dfg">Module contents</a></li>
 </ul>
@@ -192,11 +194,91 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.algo.discovery.dfg.algorithm">
+<span id="pm4py-algo-discovery-dfg-algorithm-module"></span><h2>pm4py.algo.discovery.dfg.algorithm module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.discovery.dfg.algorithm.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.discovery.dfg.algorithm.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/algorithm.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.algorithm.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.dfg.algorithm.Variants.FREQUENCY">
+<code class="sig-name descname">FREQUENCY</code><em class="property"> = &lt;module 'pm4py.algo.discovery.dfg.versions.native' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\dfg\\versions\\native.py'&gt;</em><a class="headerlink" href="#pm4py.algo.discovery.dfg.algorithm.Variants.FREQUENCY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.dfg.algorithm.Variants.FREQUENCY_GREEDY">
+<code class="sig-name descname">FREQUENCY_GREEDY</code><em class="property"> = &lt;module 'pm4py.algo.discovery.dfg.versions.native' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\dfg\\versions\\native.py'&gt;</em><a class="headerlink" href="#pm4py.algo.discovery.dfg.algorithm.Variants.FREQUENCY_GREEDY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.dfg.algorithm.Variants.FREQ_TRIPLES">
+<code class="sig-name descname">FREQ_TRIPLES</code><em class="property"> = &lt;module 'pm4py.algo.discovery.dfg.versions.freq_triples' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\dfg\\versions\\freq_triples.py'&gt;</em><a class="headerlink" href="#pm4py.algo.discovery.dfg.algorithm.Variants.FREQ_TRIPLES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.dfg.algorithm.Variants.NATIVE">
+<code class="sig-name descname">NATIVE</code><em class="property"> = &lt;module 'pm4py.algo.discovery.dfg.versions.native' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\dfg\\versions\\native.py'&gt;</em><a class="headerlink" href="#pm4py.algo.discovery.dfg.algorithm.Variants.NATIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.dfg.algorithm.Variants.PERFORMANCE">
+<code class="sig-name descname">PERFORMANCE</code><em class="property"> = &lt;module 'pm4py.algo.discovery.dfg.versions.performance' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\dfg\\versions\\performance.py'&gt;</em><a class="headerlink" href="#pm4py.algo.discovery.dfg.algorithm.Variants.PERFORMANCE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.dfg.algorithm.Variants.PERFORMANCE_GREEDY">
+<code class="sig-name descname">PERFORMANCE_GREEDY</code><em class="property"> = &lt;module 'pm4py.algo.discovery.dfg.versions.performance' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\dfg\\versions\\performance.py'&gt;</em><a class="headerlink" href="#pm4py.algo.discovery.dfg.algorithm.Variants.PERFORMANCE_GREEDY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.algo.discovery.dfg.algorithm.apply">
+<code class="sig-prename descclassname">pm4py.algo.discovery.dfg.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.NATIVE: &lt;module 'pm4py.algo.discovery.dfg.versions.native' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\dfg\\versions\\native.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.algorithm.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates DFG graph (frequency or performance) starting from a log</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters passed to the algorithms:</dt><dd><p>Parameters.AGGREGATION_MEASURE -&gt; performance aggregation measure (min, max, mean, median)
+Parameters.ACTIVITY_KEY -&gt; Attribute to use as activity
+Parameters.TIMESTAMP_KEY -&gt; Attribute to use as timestamp</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, possible values:</dt><dd><ul class="simple">
+<li><p>Variants.NATIVE</p></li>
+<li><p>Variants.FREQUENCY</p></li>
+<li><p>Variants.FREQUENCY_GREEDY</p></li>
+<li><p>Variants.PERFORMANCE</p></li>
+<li><p>Variants.PERFORMANCE_GREEDY</p></li>
+<li><p>Variants.FREQ_TRIPLES</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DFG graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dfg</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.algo.discovery.dfg.factory">
 <span id="pm4py-algo-discovery-dfg-factory-module"></span><h2>pm4py.algo.discovery.dfg.factory module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.discovery.dfg.factory.apply">
-<code class="descclassname">pm4py.algo.discovery.dfg.factory.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em>, <em>variant='native'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.factory.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.dfg.factory.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='native'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.factory.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates DFG graph (frequency or performance) starting from a log</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -225,6 +307,44 @@ timestamp_key -&gt; Attribute to use as timestamp</p>
 <dd class="field-odd"><p>dfg</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use algorithm entrypoint instead</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.algo.discovery.dfg.parameters">
+<span id="pm4py-algo-discovery-dfg-parameters-module"></span><h2>pm4py.algo.discovery.dfg.parameters module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.discovery.dfg.parameters.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.discovery.dfg.parameters.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/parameters.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.parameters.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.dfg.parameters.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.discovery.dfg.parameters.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.dfg.parameters.Parameters.AGGREGATION_MEASURE">
+<code class="sig-name descname">AGGREGATION_MEASURE</code><em class="property"> = 'aggregationMeasure'</em><a class="headerlink" href="#pm4py.algo.discovery.dfg.parameters.Parameters.AGGREGATION_MEASURE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.dfg.parameters.Parameters.CASE_ID_KEY">
+<code class="sig-name descname">CASE_ID_KEY</code><em class="property"> = 'case_id_glue'</em><a class="headerlink" href="#pm4py.algo.discovery.dfg.parameters.Parameters.CASE_ID_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.dfg.parameters.Parameters.TIMESTAMP_KEY">
+<code class="sig-name descname">TIMESTAMP_KEY</code><em class="property"> = 'pm4py:param:timestamp_key'</em><a class="headerlink" href="#pm4py.algo.discovery.dfg.parameters.Parameters.TIMESTAMP_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.dfg.parameters.Parameters.WINDOW">
+<code class="sig-name descname">WINDOW</code><em class="property"> = 'window'</em><a class="headerlink" href="#pm4py.algo.discovery.dfg.parameters.Parameters.WINDOW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -232,7 +352,7 @@ timestamp_key -&gt; Attribute to use as timestamp</p>
 <span id="pm4py-algo-discovery-dfg-replacement-module"></span><h2>pm4py.algo.discovery.dfg.replacement module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.replacement" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.discovery.dfg.replacement.replace_values">
-<code class="descclassname">pm4py.algo.discovery.dfg.replacement.</code><code class="descname">replace_values</code><span class="sig-paren">(</span><em>dfg1</em>, <em>dfg2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/replacement.html#replace_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.replacement.replace_values" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.dfg.replacement.</code><code class="sig-name descname">replace_values</code><span class="sig-paren">(</span><em class="sig-param">dfg1</em>, <em class="sig-param">dfg2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/replacement.html#replace_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.replacement.replace_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace edge values specified in a DFG by values from a (potentially bigger) DFG</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

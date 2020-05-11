@@ -1,14 +1,30 @@
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.statistics.attributes.common import get as attributes_common
-from pm4py.statistics.attributes.log.get import get_attribute_values, get_all_event_attributes_from_log, get_all_trace_attributes_from_log, get_kde_date_attribute, get_kde_date_attribute_json, get_kde_numeric_attribute, get_kde_numeric_attribute_json, get_trace_attribute_values
+from pm4py.statistics.attributes.log.get import get_attribute_values, get_all_event_attributes_from_log, \
+    get_all_trace_attributes_from_log, get_kde_date_attribute, get_kde_date_attribute_json, get_kde_numeric_attribute, \
+    get_kde_numeric_attribute_json, get_trace_attribute_values
 from pm4py.statistics.attributes.log.select import select_attributes_from_log_for_tree
 from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.conversion.log import factory as log_conv_fact
+from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.log import EventLog, Trace, EventStream
 from pm4py.util import xes_constants as xes
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
+    DECREASING_FACTOR = "decreasingFactor"
+    POSITIVE = "positive"
+    STREAM_FILTER_KEY1 = "stream_filter_key1"
+    STREAM_FILTER_VALUE1 = "stream_filter_value1"
+    STREAM_FILTER_KEY2 = "stream_filter_key2"
+    STREAM_FILTER_VALUE2 = "stream_filter_value2"
 
 
 def apply_numeric(log, int1, int2, parameters=None):
@@ -34,20 +50,18 @@ def apply_numeric(log, int1, int2, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    case_key = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else xes.DEFAULT_TRACEID_KEY
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    case_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes.DEFAULT_TRACEID_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     # stream_filter_key is helpful to filter on cases containing an event with an attribute
     # in the specified value set, but such events shall have an activity in particular.
-    stream_filter_key1 = parameters["stream_filter_key1"] if "stream_filter_key1" in parameters else None
-    stream_filter_value1 = parameters["stream_filter_value1"] if "stream_filter_value1" in parameters else None
-    stream_filter_key2 = parameters["stream_filter_key2"] if "stream_filter_key2" in parameters else None
-    stream_filter_value2 = parameters["stream_filter_value2"] if "stream_filter_value2" in parameters else None
 
-    positive = parameters["positive"] if "positive" in parameters else True
+    stream_filter_key1 = exec_utils.get_param_value(Parameters.STREAM_FILTER_KEY1, parameters, None)
+    stream_filter_value1 = exec_utils.get_param_value(Parameters.STREAM_FILTER_VALUE1, parameters, None)
+    stream_filter_key2 = exec_utils.get_param_value(Parameters.STREAM_FILTER_KEY2, parameters, None)
+    stream_filter_value2 = exec_utils.get_param_value(Parameters.STREAM_FILTER_VALUE2, parameters, None)
 
-    stream = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
     if stream_filter_key1 is not None:
         stream = EventStream(
             list(filter(lambda x: stream_filter_key1 in x and x[stream_filter_key1] == stream_filter_value1, stream)))
@@ -86,8 +100,8 @@ def apply_numeric_events(log, int1, int2, parameters=None):
         Upper bound of the interval
     parameters
         Possible parameters of the algorithm:
-            PARAMETER_CONSTANT_ATTRIBUTE_KEY => indicates which attribute to filter
-            positive => keep or remove traces with such events?
+            Parameters.ATTRIBUTE_KEY => indicates which attribute to filter
+            Parameters.POSITIVE => keep or remove traces with such events?
 
     Returns
     --------------
@@ -97,18 +111,17 @@ def apply_numeric_events(log, int1, int2, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    positive = parameters["positive"] if "positive" in parameters else True
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
-    stream = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
     if positive:
         stream = EventStream(list(filter(lambda x: attribute_key in x and int1 <= x[attribute_key] <= int2, stream)))
     else:
         stream = EventStream(
             list(filter(lambda x: attribute_key in x and (x[attribute_key] < int1 or x[attribute_key] > int2), stream)))
 
-    filtered_log = log_conv_fact.apply(stream)
+    filtered_log = log_converter.apply(stream)
 
     return filtered_log
 
@@ -125,8 +138,8 @@ def apply_events(log, values, parameters=None):
         Allowed attributes
     parameters
         Parameters of the algorithm, including:
-            activity_key -> Attribute identifying the activity in the log
-            positive -> Indicate if events should be kept/removed
+            Parameters.ACTIVITY_KEY -> Attribute identifying the activity in the log
+            Parameters.POSITIVE -> Indicate if events should be kept/removed
 
     Returns
     -----------
@@ -136,17 +149,16 @@ def apply_events(log, values, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    positive = parameters["positive"] if "positive" in parameters else True
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
-    stream = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
     if positive:
         stream = EventStream(list(filter(lambda x: x[attribute_key] in values, stream)))
     else:
         stream = EventStream(list(filter(lambda x: x[attribute_key] not in values, stream)))
 
-    filtered_log = log_conv_fact.apply(stream)
+    filtered_log = log_converter.apply(stream)
 
     return filtered_log
 
@@ -164,8 +176,8 @@ def apply(log, values, parameters=None):
         Allowed attributes
     parameters
         Parameters of the algorithm, including:
-            activity_key -> Attribute identifying the activity in the log
-            positive -> Indicate if events should be kept/removed
+            Parameters.ACTIVITY_KEY -> Attribute identifying the activity in the log
+            Parameters.POSITIVE -> Indicate if events should be kept/removed
 
     Returns
     -----------
@@ -175,9 +187,8 @@ def apply(log, values, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    positive = parameters["positive"] if "positive" in parameters else True
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     filtered_log = EventLog()
     for trace in log:
@@ -288,9 +299,9 @@ def apply_auto_filter(log, variants=None, parameters=None):
         (If specified) Dictionary with variant as the key and the list of traces as the value
     parameters
         Parameters of the algorithm, including:
-            decreasingFactor -> Decreasing factor (stops the algorithm when the next activity by occurrence is
+            Parameters.DECREASING_FACTOR -> Decreasing factor (stops the algorithm when the next activity by occurrence is
             below this factor in comparison to previous)
-            attribute_key -> Attribute key (must be specified if different from concept:name)
+            Parameters.ATTRIBUTE_KEY -> Attribute key (must be specified if different from concept:name)
 
     Returns
     ---------
@@ -299,10 +310,10 @@ def apply_auto_filter(log, variants=None, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    decreasing_factor = parameters[
-        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters,
+                                                   filtering_constants.DECREASING_FACTOR)
 
     parameters_variants = {PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
                            PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}

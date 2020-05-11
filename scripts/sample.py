@@ -1,14 +1,14 @@
-from pm4py.objects.process_tree import pt_util
-
-'''
-Use the scripts folder to write custom scripts for your (research) project, when using PM4Py directly from source.  
-'''
+from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+from pm4py.objects.log.importer.xes import importer
+from pm4py.visualization.petrinet import visualizer
 
 
-def pm4py_demo_script():
-    pt1 = pt_util.parse('X(\'a\',\'b\')')
-    print(pt1)
+def sample():
+    log = importer.apply('../tests/input_data/running-example.xes')
+    net, initial_marking, final_marking = alpha_miner.apply(log)
+    gviz = visualizer.apply(net, initial_marking, final_marking)
+    visualizer.view(gviz)
 
 
 if __name__ == '__main__':
-    pm4py_demo_script()
+    sample()

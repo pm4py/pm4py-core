@@ -1,5 +1,7 @@
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.statistics.parameters import Parameters
+from pm4py.util import exec_utils
+
 
 import numpy as np
 
@@ -15,7 +17,7 @@ def get_variants(log, parameters=None):
         Trace log
     parameters
         Parameters of the algorithm, including:
-            activity_key -> Attribute identifying the activity in the log
+            Parameters.ACTIVITY_KEY -> Attribute identifying the activity in the log
 
     Returns
     ----------
@@ -41,7 +43,7 @@ def get_variants_along_with_case_durations(log, parameters=None):
         Trace log
     parameters
         Parameters of the algorithm, including:
-            activity_key -> Attribute identifying the activity in the log
+            Parameters.ACTIVITY_KEY -> Attribute identifying the activity in the log
 
     Returns
     ----------
@@ -51,8 +53,7 @@ def get_variants_along_with_case_durations(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
     variants_trace_idx = get_variants_from_log_trace_idx(log, parameters=parameters)
     all_var = convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx)
@@ -82,7 +83,7 @@ def get_variants_from_log_trace_idx(log, parameters=None):
         Log
     parameters
         Parameters of the algorithm, including:
-            activity_key -> Attribute identifying the activity in the log
+            Parameters.ACTIVITY_KEY -> Attribute identifying the activity in the log
 
     Returns
     ----------
@@ -92,8 +93,7 @@ def get_variants_from_log_trace_idx(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
+    attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
 
     variants = {}
     for trace_idx, trace in enumerate(log):

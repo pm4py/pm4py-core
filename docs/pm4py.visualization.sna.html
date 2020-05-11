@@ -84,6 +84,7 @@
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.sna.factory">pm4py.visualization.sna.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.visualization.sna.visualizer">pm4py.visualization.sna.visualizer module</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.sna">Module contents</a></li>
 </ul>
 </li>
@@ -174,7 +175,7 @@
 <span id="pm4py-visualization-sna-factory-module"></span><h2>pm4py.visualization.sna.factory module<a class="headerlink" href="#module-pm4py.visualization.sna.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.visualization.sna.factory.apply">
-<code class="descclassname">pm4py.visualization.sna.factory.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>metric_values</em>, <em>parameters=None</em>, <em>variant='networkx'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.factory.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.sna.factory.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">metric_values</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='networkx'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.factory.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform SNA visualization starting from the Matrix Container object
 and the Resource-Resource matrix</p>
 <dl class="field-list">
@@ -198,11 +199,99 @@ format: format of the output image (png, svg …)</p>
 <dd class="field-odd"><p>temp_file_name</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use visualizer module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.sna.factory.save">
-<code class="descclassname">pm4py.visualization.sna.factory.</code><code class="descname">save</code><span class="sig-paren">(</span><em>temp_file_name</em>, <em>dest_file</em>, <em>parameters=None</em>, <em>variant='networkx'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/factory.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.factory.save" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.sna.factory.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">temp_file_name</em>, <em class="sig-param">dest_file</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='networkx'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/factory.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.factory.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the SNA visualization from a temporary file to a well-defined destination file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temp_file_name</strong> – Temporary file name</p></li>
+<li><p><strong>dest_file</strong> – Destination file</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+</ul>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use visualizer module instead.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.sna.factory.view">
+<code class="sig-prename descclassname">pm4py.visualization.sna.factory.</code><code class="sig-name descname">view</code><span class="sig-paren">(</span><em class="sig-param">temp_file_name</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='networkx'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/factory.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.factory.view" title="Permalink to this definition">¶</a></dt>
+<dd><p>View the SNA visualization on the screen</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temp_file_name</strong> – Temporary file name</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+</ul>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use visualizer module instead.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.visualization.sna.visualizer">
+<span id="pm4py-visualization-sna-visualizer-module"></span><h2>pm4py.visualization.sna.visualizer module<a class="headerlink" href="#module-pm4py.visualization.sna.visualizer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.visualization.sna.visualizer.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.visualization.sna.visualizer.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/visualization/sna/visualizer.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.visualizer.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.visualization.sna.visualizer.Variants.NETWORKX">
+<code class="sig-name descname">NETWORKX</code><em class="property"> = &lt;module 'pm4py.visualization.sna.versions.networkx' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\sna\\versions\\networkx.py'&gt;</em><a class="headerlink" href="#pm4py.visualization.sna.visualizer.Variants.NETWORKX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.visualization.sna.visualizer.Variants.PYVIS">
+<code class="sig-name descname">PYVIS</code><em class="property"> = &lt;module 'pm4py.visualization.sna.versions.pyvis' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\sna\\versions\\pyvis.py'&gt;</em><a class="headerlink" href="#pm4py.visualization.sna.visualizer.Variants.PYVIS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.sna.visualizer.apply">
+<code class="sig-prename descclassname">pm4py.visualization.sna.visualizer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">metric_values</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.NETWORKX: &lt;module 'pm4py.visualization.sna.versions.networkx' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\sna\\versions\\networkx.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/visualizer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.visualizer.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform SNA visualization starting from the Matrix Container object
+and the Resource-Resource matrix</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>metric_values</strong> – Value of the metrics</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use, possible values:</dt><dd><ul class="simple">
+<li><p>Variants.NETWORKX</p></li>
+<li><p>Variants.PYVIS</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Name of a temporary file where the visualization is placed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>temp_file_name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.sna.visualizer.save">
+<code class="sig-prename descclassname">pm4py.visualization.sna.visualizer.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">temp_file_name</em>, <em class="sig-param">dest_file</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.NETWORKX: &lt;module 'pm4py.visualization.sna.versions.networkx' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\sna\\versions\\networkx.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/visualizer.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.visualizer.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the SNA visualization from a temporary file to a well-defined destination file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -216,8 +305,8 @@ format: format of the output image (png, svg …)</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pm4py.visualization.sna.factory.view">
-<code class="descclassname">pm4py.visualization.sna.factory.</code><code class="descname">view</code><span class="sig-paren">(</span><em>temp_file_name</em>, <em>parameters=None</em>, <em>variant='networkx'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/factory.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.factory.view" title="Permalink to this definition">¶</a></dt>
+<dt id="pm4py.visualization.sna.visualizer.view">
+<code class="sig-prename descclassname">pm4py.visualization.sna.visualizer.</code><code class="sig-name descname">view</code><span class="sig-paren">(</span><em class="sig-param">temp_file_name</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.NETWORKX: &lt;module 'pm4py.visualization.sna.versions.networkx' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\sna\\versions\\networkx.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/visualizer.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.visualizer.view" title="Permalink to this definition">¶</a></dt>
 <dd><p>View the SNA visualization on the screen</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

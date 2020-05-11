@@ -1,8 +1,8 @@
 import os
 
-from pm4py.objects.log.importer.xes import factory as xes_import
-from pm4py.algo.discovery.alpha import factory as alpha_miner
-from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.objects.log.importer.xes import importer as xes_import
+from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+from pm4py.visualization.petrinet import visualizer as pn_vis
 
 
 def execute_script():
@@ -11,8 +11,10 @@ def execute_script():
 
     net, i_m, f_m = alpha_miner.apply(log)
 
-    gviz = pn_vis_factory.apply(net, i_m, f_m, parameters={"format": "svg", "debug": True})
-    pn_vis_factory.view(gviz)
+    gviz = pn_vis.apply(net, i_m, f_m,
+                        parameters={pn_vis.Variants.WO_DECORATION.value.Parameters.FORMAT: "svg",
+                                    pn_vis.Variants.WO_DECORATION.value.Parameters.DEBUG: False})
+    pn_vis.view(gviz)
 
 
 if __name__ == "__main__":

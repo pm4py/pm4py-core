@@ -82,6 +82,7 @@
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">pm4py.objects.log.importer.parquet.versions package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.importer.parquet.versions.fastparquet">pm4py.objects.log.importer.parquet.versions.fastparquet module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.importer.parquet.versions.pyarrow">pm4py.objects.log.importer.parquet.versions.pyarrow module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.importer.parquet.versions">Module contents</a></li>
 </ul>
@@ -155,11 +156,11 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-pm4py.objects.log.importer.parquet.versions.pyarrow">
-<span id="pm4py-objects-log-importer-parquet-versions-pyarrow-module"></span><h2>pm4py.objects.log.importer.parquet.versions.pyarrow module<a class="headerlink" href="#module-pm4py.objects.log.importer.parquet.versions.pyarrow" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pm4py.objects.log.importer.parquet.versions.fastparquet">
+<span id="pm4py-objects-log-importer-parquet-versions-fastparquet-module"></span><h2>pm4py.objects.log.importer.parquet.versions.fastparquet module<a class="headerlink" href="#module-pm4py.objects.log.importer.parquet.versions.fastparquet" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="pm4py.objects.log.importer.parquet.versions.pyarrow.apply">
-<code class="descclassname">pm4py.objects.log.importer.parquet.versions.pyarrow.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>path</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/parquet/versions/pyarrow.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.parquet.versions.pyarrow.apply" title="Permalink to this definition">¶</a></dt>
+<dt id="pm4py.objects.log.importer.parquet.versions.fastparquet.apply">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.parquet.versions.fastparquet.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/parquet/versions/fastparquet.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.parquet.versions.fastparquet.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import a Parquet file</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -167,7 +168,7 @@
 <li><p><strong>path</strong> – Path of the file to import</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, possible values:</dt><dd><p>columns -&gt; columns to import from the Parquet file</p>
+<dt>Parameters of the algorithm, possible values:</dt><dd><p>Parameters.COLUMNS -&gt; columns to import from the Parquet file</p>
 </dd>
 </dl>
 </li>
@@ -180,6 +181,86 @@
 <dd class="field-odd"><p>df</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Please import the parquet to a pandas df, then convert it to an event log, if needed</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.objects.log.importer.parquet.versions.pyarrow">
+<span id="pm4py-objects-log-importer-parquet-versions-pyarrow-module"></span><h2>pm4py.objects.log.importer.parquet.versions.pyarrow module<a class="headerlink" href="#module-pm4py.objects.log.importer.parquet.versions.pyarrow" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.objects.log.importer.parquet.versions.pyarrow.apply">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.parquet.versions.pyarrow.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/parquet/versions/pyarrow.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.parquet.versions.pyarrow.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import a Parquet file</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path</strong> – Path of the file to import</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, possible values:</dt><dd><p>Parameters.COLUMNS -&gt; columns to import from the Parquet file</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pandas dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Please import the parquet to a pandas df, then convert it to an event log, if needed</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.importer.parquet.versions.pyarrow.import_log">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.parquet.versions.pyarrow.</code><code class="sig-name descname">import_log</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/parquet/versions/pyarrow.html#import_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.parquet.versions.pyarrow.import_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports an event log from a Parquet file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – Path to the Parquet file</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Event log</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>log</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Please import the parquet to a pandas df, then convert it to an event log, if needed</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.importer.parquet.versions.pyarrow.import_table">
+<code class="sig-prename descclassname">pm4py.objects.log.importer.parquet.versions.pyarrow.</code><code class="sig-name descname">import_table</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/importer/parquet/versions/pyarrow.html#import_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.importer.parquet.versions.pyarrow.import_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports a Pyarrow table from a Parquet file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – Path to the Parquet file</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pyarrow table</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Please import the parquet to a pandas df, then convert it to an event log, if needed</p>
+</div>
 </dd></dl>
 
 </div>

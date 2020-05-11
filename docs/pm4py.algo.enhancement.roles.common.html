@@ -157,9 +157,31 @@
 </div>
 <div class="section" id="module-pm4py.algo.enhancement.roles.common.algorithm">
 <span id="pm4py-algo-enhancement-roles-common-algorithm-module"></span><h2>pm4py.algo.enhancement.roles.common.algorithm module<a class="headerlink" href="#module-pm4py.algo.enhancement.roles.common.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.enhancement.roles.common.algorithm.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.roles.common.algorithm.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.roles.common.algorithm.Parameters.RESOURCE_KEY">
+<code class="sig-name descname">RESOURCE_KEY</code><em class="property"> = 'pm4py:param:resource_key'</em><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.Parameters.RESOURCE_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.roles.common.algorithm.Parameters.ROLES_THRESHOLD_PARAMETER">
+<code class="sig-name descname">ROLES_THRESHOLD_PARAMETER</code><em class="property"> = 'roles_threshold_parameter'</em><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.Parameters.ROLES_THRESHOLD_PARAMETER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.enhancement.roles.common.algorithm.aggregate_roles_algorithm">
-<code class="descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="descname">aggregate_roles_algorithm</code><span class="sig-paren">(</span><em>roles</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#aggregate_roles_algorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.aggregate_roles_algorithm" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="sig-name descname">aggregate_roles_algorithm</code><span class="sig-paren">(</span><em class="sig-param">roles</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#aggregate_roles_algorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.aggregate_roles_algorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Algorithm to aggregate similar roles</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -179,7 +201,7 @@
 
 <dl class="function">
 <dt id="pm4py.algo.enhancement.roles.common.algorithm.aggregate_roles_iteration">
-<code class="descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="descname">aggregate_roles_iteration</code><span class="sig-paren">(</span><em>roles</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#aggregate_roles_iteration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.aggregate_roles_iteration" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="sig-name descname">aggregate_roles_iteration</code><span class="sig-paren">(</span><em class="sig-param">roles</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#aggregate_roles_iteration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.aggregate_roles_iteration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Single iteration of the roles aggregation algorithm</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -199,7 +221,7 @@
 
 <dl class="function">
 <dt id="pm4py.algo.enhancement.roles.common.algorithm.apply">
-<code class="descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>res_act_couples</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">res_act_couples</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the roles detection, introduced by
 Burattin, Andrea, Alessandro Sperduti, and Marco Veluscek. “Business models enhancement through discovery of roles.” 2013 IEEE Symposium on Computational Intelligence and Data Mining (CIDM). IEEE, 2013.</p>
 <dl class="field-list simple">
@@ -220,7 +242,7 @@ Burattin, Andrea, Alessandro Sperduti, and Marco Veluscek. “Business models en
 
 <dl class="function">
 <dt id="pm4py.algo.enhancement.roles.common.algorithm.find_multiset_intersection">
-<code class="descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="descname">find_multiset_intersection</code><span class="sig-paren">(</span><em>role1</em>, <em>role2</em>, <em>normalize=False</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#find_multiset_intersection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.find_multiset_intersection" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="sig-name descname">find_multiset_intersection</code><span class="sig-paren">(</span><em class="sig-param">role1</em>, <em class="sig-param">role2</em>, <em class="sig-param">normalize=False</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#find_multiset_intersection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.find_multiset_intersection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the intersection of a multiset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -242,7 +264,7 @@ Burattin, Andrea, Alessandro Sperduti, and Marco Veluscek. “Business models en
 
 <dl class="function">
 <dt id="pm4py.algo.enhancement.roles.common.algorithm.find_multiset_union">
-<code class="descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="descname">find_multiset_union</code><span class="sig-paren">(</span><em>role1</em>, <em>role2</em>, <em>normalize=False</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#find_multiset_union"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.find_multiset_union" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="sig-name descname">find_multiset_union</code><span class="sig-paren">(</span><em class="sig-param">role1</em>, <em class="sig-param">role2</em>, <em class="sig-param">normalize=False</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#find_multiset_union"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.find_multiset_union" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the union of a multiset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -264,7 +286,7 @@ Burattin, Andrea, Alessandro Sperduti, and Marco Veluscek. “Business models en
 
 <dl class="function">
 <dt id="pm4py.algo.enhancement.roles.common.algorithm.find_role_similarity">
-<code class="descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="descname">find_role_similarity</code><span class="sig-paren">(</span><em>roles</em>, <em>i</em>, <em>j</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#find_role_similarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.find_role_similarity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="sig-name descname">find_role_similarity</code><span class="sig-paren">(</span><em class="sig-param">roles</em>, <em class="sig-param">i</em>, <em class="sig-param">j</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#find_role_similarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.find_role_similarity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a number of similarity between different roles</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -286,7 +308,7 @@ Burattin, Andrea, Alessandro Sperduti, and Marco Veluscek. “Business models en
 
 <dl class="function">
 <dt id="pm4py.algo.enhancement.roles.common.algorithm.get_initial_roles">
-<code class="descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="descname">get_initial_roles</code><span class="sig-paren">(</span><em>res_act_couples</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#get_initial_roles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.get_initial_roles" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="sig-name descname">get_initial_roles</code><span class="sig-paren">(</span><em class="sig-param">res_act_couples</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#get_initial_roles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.get_initial_roles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the initial list of roles (each activity is a stand-alone role)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -306,7 +328,7 @@ Burattin, Andrea, Alessandro Sperduti, and Marco Veluscek. “Business models en
 
 <dl class="function">
 <dt id="pm4py.algo.enhancement.roles.common.algorithm.get_sum_from_dictio_values">
-<code class="descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="descname">get_sum_from_dictio_values</code><span class="sig-paren">(</span><em>dictio</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#get_sum_from_dictio_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.get_sum_from_dictio_values" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="sig-name descname">get_sum_from_dictio_values</code><span class="sig-paren">(</span><em class="sig-param">dictio</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#get_sum_from_dictio_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.get_sum_from_dictio_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the sum of a dictionary values</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -326,7 +348,7 @@ Burattin, Andrea, Alessandro Sperduti, and Marco Veluscek. “Business models en
 
 <dl class="function">
 <dt id="pm4py.algo.enhancement.roles.common.algorithm.normalize_role">
-<code class="descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="descname">normalize_role</code><span class="sig-paren">(</span><em>role</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#normalize_role"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.normalize_role" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.enhancement.roles.common.algorithm.</code><code class="sig-name descname">normalize_role</code><span class="sig-paren">(</span><em class="sig-param">role</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/common/algorithm.html#normalize_role"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.common.algorithm.normalize_role" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize a role</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

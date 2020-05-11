@@ -82,6 +82,7 @@
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">pm4py.evaluation.precision.versions package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.evaluation.precision.versions.align_etconformance">pm4py.evaluation.precision.versions.align_etconformance module</a></li>
 <li><a class="reference internal" href="#module-pm4py.evaluation.precision.versions.etconformance_token">pm4py.evaluation.precision.versions.etconformance_token module</a></li>
 <li><a class="reference internal" href="#module-pm4py.evaluation.precision.versions">Module contents</a></li>
 </ul>
@@ -155,11 +156,99 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.evaluation.precision.versions.align_etconformance">
+<span id="pm4py-evaluation-precision-versions-align-etconformance-module"></span><h2>pm4py.evaluation.precision.versions.align_etconformance module<a class="headerlink" href="#module-pm4py.evaluation.precision.versions.align_etconformance" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pm4py.evaluation.precision.versions.align_etconformance.align_fake_log_stop_marking">
+<code class="sig-prename descclassname">pm4py.evaluation.precision.versions.align_etconformance.</code><code class="sig-name descname">align_fake_log_stop_marking</code><span class="sig-paren">(</span><em class="sig-param">fake_log</em>, <em class="sig-param">net</em>, <em class="sig-param">marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/versions/align_etconformance.html#align_fake_log_stop_marking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.versions.align_etconformance.align_fake_log_stop_marking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Align the ‘fake’ log with all the prefixes in order to get the markings in which
+the alignment stops</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fake_log</strong> – Fake log</p></li>
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>marking</strong> – Marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>For each trace in the log, return the marking in which the alignment stops (expressed as place name with count)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>alignment</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.evaluation.precision.versions.align_etconformance.apply">
+<code class="sig-prename descclassname">pm4py.evaluation.precision.versions.align_etconformance.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">net</em>, <em class="sig-param">marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/versions/align_etconformance.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.versions.align_etconformance.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Align-ET Conformance precision</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Trace log</p></li>
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.ACTIVITY_KEY -&gt; Activity key</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.evaluation.precision.versions.align_etconformance.build_sync_net">
+<code class="sig-prename descclassname">pm4py.evaluation.precision.versions.align_etconformance.</code><code class="sig-name descname">build_sync_net</code><span class="sig-paren">(</span><em class="sig-param">trace</em>, <em class="sig-param">petri_net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/versions/align_etconformance.html#build_sync_net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.versions.align_etconformance.build_sync_net" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the sync product net between the Petri net and the trace prefix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trace</strong> – Trace prefix</p></li>
+<li><p><strong>petri_net</strong> – Petri net</p></li>
+<li><p><strong>initial_marking</strong> – Initial marking</p></li>
+<li><p><strong>final_marking</strong> – Final marking</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.evaluation.precision.versions.align_etconformance.transform_markings_from_sync_to_original_net">
+<code class="sig-prename descclassname">pm4py.evaluation.precision.versions.align_etconformance.</code><code class="sig-name descname">transform_markings_from_sync_to_original_net</code><span class="sig-paren">(</span><em class="sig-param">markings0</em>, <em class="sig-param">net</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/versions/align_etconformance.html#transform_markings_from_sync_to_original_net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.versions.align_etconformance.transform_markings_from_sync_to_original_net" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform the markings of the sync net (in which alignment stops) into markings of the original net
+(in order to measure the precision)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>markings0</strong> – Markings on the sync net (expressed as place name with count)</p></li>
+<li><p><strong>net</strong> – Petri net</p></li>
+<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Markings of the original model (expressed as place with count)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>markings</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.evaluation.precision.versions.etconformance_token">
 <span id="pm4py-evaluation-precision-versions-etconformance-token-module"></span><h2>pm4py.evaluation.precision.versions.etconformance_token module<a class="headerlink" href="#module-pm4py.evaluation.precision.versions.etconformance_token" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.evaluation.precision.versions.etconformance_token.apply">
-<code class="descclassname">pm4py.evaluation.precision.versions.etconformance_token.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>net</em>, <em>marking</em>, <em>final_marking</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/versions/etconformance_token.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.versions.etconformance_token.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.evaluation.precision.versions.etconformance_token.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">net</em>, <em class="sig-param">marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/versions/etconformance_token.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.versions.etconformance_token.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get ET Conformance precision</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -170,38 +259,10 @@
 <li><p><strong>final_marking</strong> – Final marking</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; Activity key</p>
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.ACTIVITY_KEY -&gt; Activity key</p>
 </dd>
 </dl>
 </li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.evaluation.precision.versions.etconformance_token.form_fake_log">
-<code class="descclassname">pm4py.evaluation.precision.versions.etconformance_token.</code><code class="descname">form_fake_log</code><span class="sig-paren">(</span><em>prefixes_keys</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/versions/etconformance_token.html#form_fake_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.versions.etconformance_token.form_fake_log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Form fake log for replay (putting each prefix as separate trace to align)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>prefixes_keys</strong> – Keys of the prefixes (to form a log with a given order)</p></li>
-<li><p><strong>activity_key</strong> – Activity key (must be provided if different from concept:name)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.evaluation.precision.versions.etconformance_token.get_log_prefixes">
-<code class="descclassname">pm4py.evaluation.precision.versions.etconformance_token.</code><code class="descname">get_log_prefixes</code><span class="sig-paren">(</span><em>log</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/evaluation/precision/versions/etconformance_token.html#get_log_prefixes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.evaluation.precision.versions.etconformance_token.get_log_prefixes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get log prefixes</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> – Trace log</p></li>
-<li><p><strong>activity_key</strong> – Activity key (must be provided if different from concept:name)</p></li>
 </ul>
 </dd>
 </dl>

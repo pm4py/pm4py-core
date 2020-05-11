@@ -1,6 +1,7 @@
-from sklearn import tree
 import graphviz
 import tempfile
+from pm4py.visualization.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def apply(clf, feature_names, classes, parameters=None):
@@ -17,17 +18,19 @@ def apply(clf, feature_names, classes, parameters=None):
         Names of the target classes
     parameters
         Possible parameters of the algorithm, including:
-            format -> Image format (pdf, svg, png ...)
+            Parameters.FORMAT -> Image format (pdf, svg, png ...)
 
     Returns
     ------------
     gviz
         GraphViz object
     """
+    from sklearn import tree
+
     if parameters is None:
         parameters = {}
 
-    format = parameters["format"] if "format" in parameters else "png"
+    format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
 
     dot_data = tree.export_graphviz(clf, out_file=None,

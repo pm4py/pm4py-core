@@ -1,7 +1,14 @@
 from collections import Counter
 import numpy as np
+from pm4py.util import exec_utils
+from enum import Enum
+from pm4py.util import constants
 
-ROLES_THRESHOLD_PARAMETER = "roles_threshold_parameter"
+
+class Parameters(Enum):
+    ROLES_THRESHOLD_PARAMETER = "roles_threshold_parameter"
+    RESOURCE_KEY = constants.PARAMETER_CONSTANT_RESOURCE_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
 def get_sum_from_dictio_values(dictio, parameters=None):
@@ -166,7 +173,7 @@ def aggregate_roles_iteration(roles, parameters=None):
     agg_roles
         (Partially aggregated) roles
     """
-    threshold = parameters[ROLES_THRESHOLD_PARAMETER]
+    threshold = exec_utils.get_param_value(Parameters.ROLES_THRESHOLD_PARAMETER, parameters, 0.65)
 
     sim = []
 

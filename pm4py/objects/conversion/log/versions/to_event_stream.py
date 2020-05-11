@@ -5,6 +5,8 @@ from pm4py.util import constants as pmutil
 from pm4py.objects.log.log import EventLog
 import pandas
 import math
+import deprecation
+
 DEEPCOPY = constants.DEEPCOPY
 STREAM_POSTPROCESSING = constants.STREAM_POSTPROCESSING
 
@@ -35,6 +37,8 @@ def postprocess_stream(list_events):
                 continue
     return list_events
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='conversion versions are deprecated; use conversion variants instead')
 def apply(log, parameters=None):
     if parameters is None:
         parameters = {}

@@ -1,15 +1,17 @@
 from collections import Counter
 
-from pm4py import util as pmutil
 from pm4py.util import xes_constants as xes_util
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from statistics import mean, median, stdev
+from pm4py.util import constants, exec_utils
+from enum import Enum
 
-WINDOW = "window"
-DEFAULT_WINDOW = 1
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    WINDOW = "window"
+    AGGREGATION_MEASURE = "aggregationMeasure"
 
 
 def freq_triples(log, parameters=None):
@@ -31,11 +33,10 @@ def freq_triples(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-
-    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-    dfgs = map((lambda t: [(t[i - 2][activity_key], t[i - 1][activity_key], t[i][activity_key]) for i in range(2, len(t))]), log)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+    dfgs = map(
+        (lambda t: [(t[i - 2][activity_key], t[i - 1][activity_key], t[i][activity_key]) for i in range(2, len(t))]),
+        log)
     return Counter([dfg for lista in dfgs for dfg in lista])
 
 
@@ -58,11 +59,8 @@ def native(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-
-    window = parameters[WINDOW] if WINDOW in parameters else DEFAULT_WINDOW
-    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+    window = exec_utils.get_param_value(Parameters.WINDOW, parameters, 1)
     dfgs = map((lambda t: [(t[i - window][activity_key], t[i][activity_key]) for i in range(window, len(t))]), log)
     return Counter([dfg for lista in dfgs for dfg in lista])
 
@@ -90,11 +88,9 @@ def performance(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
-    aggregation_measure = parameters["aggregationMeasure"] if "aggregationMeasure" in parameters else "mean"
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
+    aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
 
     dfgs0 = map((lambda t: [
         ((t[i - 1][activity_key], t[i][activity_key]), (t[i][timestamp_key] - t[i - 1][timestamp_key]).total_seconds())

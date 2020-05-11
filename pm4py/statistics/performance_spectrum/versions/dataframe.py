@@ -1,8 +1,10 @@
-from pm4py.util import constants
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import CASE_CONCEPT_NAME
 import pandas as pd
 import numpy as np
+from pm4py.statistics.performance_spectrum.parameters import Parameters
+from pm4py.util import exec_utils
+
 
 def apply(dataframe, list_activities, sample_size, parameters):
     """
@@ -18,7 +20,10 @@ def apply(dataframe, list_activities, sample_size, parameters):
     sample_size
         Size of the sample
     parameters
-        Parameters of the algorithm, including the activity key and the timestamp key
+        Parameters of the algorithm,  including:
+            - Parameters.ACTIVITY_KEY
+            - Parameters.TIMESTAMP_KEY
+            - Parameters.CASE_ID_KEY
 
     Returns
     -------------
@@ -28,16 +33,14 @@ def apply(dataframe, list_activities, sample_size, parameters):
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
-    case_id_key = parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
 
-    dataframe = dataframe[[case_id_key, activity_key, timestamp_key]]
+    dataframe = dataframe[[case_id_glue, activity_key, timestamp_key]]
     dataframe = dataframe[dataframe[activity_key].isin(list_activities)]
     dataframe["@@event_index"] = dataframe.index
-    dataframe = dataframe.sort_values([case_id_key, timestamp_key, "@@event_index"])
+    dataframe = dataframe.sort_values([case_id_glue, timestamp_key, "@@event_index"])
     dataframe[timestamp_key] = dataframe[timestamp_key].astype(np.int64) / 10**9
     list_replicas = []
     activity_names = []
@@ -54,7 +57,7 @@ def apply(dataframe, list_activities, sample_size, parameters):
 
     dataframe = pd.concat(list_replicas, axis=1)
     for i in range(len(list_activities)-1):
-        dataframe = dataframe[dataframe[case_id_key+"_"+str(i)] == dataframe[case_id_key+"_"+str(i+1)]]
+        dataframe = dataframe[dataframe[case_id_glue+"_"+str(i)] == dataframe[case_id_glue+"_"+str(i+1)]]
     dataframe["@@merged_activity"] = eval("".join(activity_names))
     desidered_act = "@@".join(list_activities)
     dataframe = dataframe[dataframe["@@merged_activity"] == desidered_act]

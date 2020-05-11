@@ -1,5 +1,5 @@
-from pm4py.algo.discovery.causal import factory as causal_factory
-from pm4py.algo.discovery.causal.factory import CAUSAL_ALPHA
+from pm4py.algo.discovery.causal import algorithm as causal_algorithm
+from pm4py.algo.discovery.causal.algorithm import CAUSAL_ALPHA
 
 
 class ClassicAlphaAbstraction:
@@ -14,7 +14,7 @@ class ClassicAlphaAbstraction:
         self.__start_activities = start_activities
         self.__end_activities = end_activities
         self.__dfg = dfg
-        self.__causal_relations = {k: v for k, v in causal_factory.apply(self.dfg, variant=CAUSAL_ALPHA).items() if
+        self.__causal_relations = {k: v for k, v in causal_algorithm.apply(self.dfg, variant=CAUSAL_ALPHA).items() if
                                    v > 0}.keys()
         self.__parallel = {(f, t) for (f, t) in self.dfg if (t, f) in self.dfg}
 

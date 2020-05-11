@@ -1,14 +1,12 @@
 import pm4py
-from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.algo.conformance.tokenreplay import algorithm as executor
+from pm4py.algo.conformance.tokenreplay.versions import token_replay
 from pm4py.statistics.variants.log import get as variants_module
-from pm4py.objects import log as log_lib
 from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.objects.petri import performance_map
-from pm4py.util.constants import PARAMETER_TOKEN_REPLAY_VARIANT, DEFAULT_TOKEN_REPLAY_VARIANT
-
-PARAM_ACTIVITY_KEY = pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
-PARAM_TIMESTAMP_KEY = pm4py.util.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.simulation.montecarlo.parameters import Parameters
+from pm4py.util import exec_utils, constants, xes_constants
 
 
 def get_map_from_log_and_net(log, net, initial_marking, final_marking, force_distribution=None, parameters=None):
@@ -42,22 +40,20 @@ def get_map_from_log_and_net(log, net, initial_marking, final_marking, force_dis
     if parameters is None:
         parameters = {}
 
-    token_replay_variant = parameters[
-        PARAMETER_TOKEN_REPLAY_VARIANT] if PARAMETER_TOKEN_REPLAY_VARIANT in parameters else DEFAULT_TOKEN_REPLAY_VARIANT
+    token_replay_variant = exec_utils.get_param_value(Parameters.TOKEN_REPLAY_VARIANT, parameters,
+                                                      Parameters.DEFAULT_TOKEN_REPLAY_VARIANT.value)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
 
-    activity_key = parameters[
-        PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
-    timestamp_key = parameters[PARAM_TIMESTAMP_KEY] if PARAM_TIMESTAMP_KEY in parameters else "time:timestamp"
-
-    parameters_variants = {PARAM_ACTIVITY_KEY: activity_key}
+    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
     variants_idx = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters_variants)
     variants = variants_module.convert_variants_trace_idx_to_trace_obj(log, variants_idx)
 
-    parameters_tr = {PARAM_ACTIVITY_KEY: activity_key, "variants": variants}
+    parameters_tr = {token_replay.Parameters.ACTIVITY_KEY: activity_key, token_replay.Parameters.VARIANTS: variants}
 
     # do the replay
-    aligned_traces = token_replay.apply(log, net, initial_marking, final_marking, variant=token_replay_variant,
-                                        parameters=parameters_tr)
+    aligned_traces = executor.apply(log, net, initial_marking, final_marking, variant=token_replay_variant,
+                                    parameters=parameters_tr)
 
     element_statistics = performance_map.single_element_statistics(log, net, initial_marking,
                                                                    aligned_traces, variants_idx,

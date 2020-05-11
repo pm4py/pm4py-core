@@ -1,7 +1,15 @@
 import pandas as pd
+from pm4py.util import constants, xes_constants
+from enum import Enum
+from pm4py.util import exec_utils
 
 
-def filter_on_ncases(df, case_id_glue="case:concept:name", max_no_cases=1000):
+class Parameters(Enum):
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+
+
+def filter_on_ncases(df, case_id_glue=constants.CASE_CONCEPT_NAME, max_no_cases=1000):
     """
     Filter a dataframe keeping only the specified maximum number of traces
 
@@ -54,7 +62,8 @@ def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, m
     return df[element_group_size >= min_case_size]
 
 
-def filter_on_case_performance(df, case_id_glue="case:concept:name", timestamp_key="time:timestamp",
+def filter_on_case_performance(df, case_id_glue=constants.CASE_CONCEPT_NAME,
+                               timestamp_key=xes_constants.DEFAULT_TIMESTAMP_KEY,
                                min_case_performance=0, max_case_performance=10000000000):
     """
     Filter a dataframe on case performance
@@ -91,10 +100,21 @@ def filter_on_case_performance(df, case_id_glue="case:concept:name", timestamp_k
     return df[i1.isin(i2)]
 
 
+def filter_case_performance(df, min_case_performance=0, max_case_performance=10000000000, parameters=None):
+    if parameters is None:
+        parameters = {}
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    case_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    return filter_on_case_performance(df, min_case_performance=min_case_performance,
+                                      max_case_performance=max_case_performance, timestamp_key=timestamp_key,
+                                      case_id_glue=case_glue)
+
+
 def apply(df, parameters=None):
     del df
     del parameters
-    raise Exception("apply method not available for case filter")
+    raise NotImplementedError("apply method not available for case filter")
 
 
 def apply_auto_filter(df, parameters=None):

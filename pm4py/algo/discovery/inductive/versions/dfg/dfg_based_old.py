@@ -1,5 +1,6 @@
 import sys
 from collections import Counter
+import deprecation
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
@@ -14,8 +15,8 @@ from pm4py.statistics.start_activities.log import get as log_start_act_stats
 from pm4py.statistics.attributes.pandas import get as pd_attributes_stats
 from pm4py.statistics.end_activities.pandas import get as pd_end_act_stats
 from pm4py.statistics.start_activities.pandas import get as pd_start_act_stats
-from pm4py.objects.conversion.process_tree import factory as tree_to_petri
-from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.conversion.process_tree import converter as tree_to_petri
+from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import xes_constants as xes_util
 import pandas
@@ -23,7 +24,8 @@ import pandas
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details="deprecated; please use the new version")
 def apply(log, parameters=None):
     """
     Apply the IMDF algorithm to a log obtaining a Petri net along with an initial and final marking
@@ -34,7 +36,7 @@ def apply(log, parameters=None):
         Log
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -68,6 +70,8 @@ def apply(log, parameters=None):
     return net, initial_marking, final_marking
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details="deprecated; please use the new version")
 def apply_variants(variants, parameters=None):
     """
     Apply the IMDF algorithm to a dictionary/list/set of variants obtaining a Petri net along with an initial and final marking
@@ -78,7 +82,7 @@ def apply_variants(variants, parameters=None):
         Dictionary/list/set of variants in the log
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -96,6 +100,8 @@ def apply_variants(variants, parameters=None):
     return apply_dfg(dfg, parameters=parameters, start_activities=start_activities, end_activities=end_activities, activities=list_act)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details="deprecated; please use the new version")
 def apply_tree_variants(variants, parameters=None):
     """
     Apply the IMDF algorithm to a dictionary/list/set of variants a log obtaining a process tree
@@ -106,7 +112,7 @@ def apply_tree_variants(variants, parameters=None):
         Dictionary/list/set of variants in the log
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -120,6 +126,8 @@ def apply_tree_variants(variants, parameters=None):
     return apply_tree_dfg(dfg, parameters=parameters, start_activities=start_activities, end_activities=end_activities, activities=list_act)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details="deprecated; please use the new version")
 def apply_tree(log, parameters=None):
     """
     Apply the IMDF algorithm to a log obtaining a process tree
@@ -130,7 +138,7 @@ def apply_tree(log, parameters=None):
         Log
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -166,6 +174,8 @@ def apply_tree(log, parameters=None):
                           start_activities=start_activities, end_activities=end_activities)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details="deprecated; please use the new version")
 def apply_dfg(dfg, parameters=None, activities=None, contains_empty_traces=False, start_activities=None,
               end_activities=None):
     """
@@ -177,7 +187,7 @@ def apply_dfg(dfg, parameters=None, activities=None, contains_empty_traces=False
         Directly-Follows graph
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
     activities
         Activities of the process (default None)
@@ -206,6 +216,8 @@ def apply_dfg(dfg, parameters=None, activities=None, contains_empty_traces=False
     return net, initial_marking, final_marking
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details="deprecated; please use the new version")
 def apply_tree_dfg(dfg, parameters=None, activities=None, contains_empty_traces=False, start_activities=None,
                    end_activities=None):
     """
@@ -217,7 +229,7 @@ def apply_tree_dfg(dfg, parameters=None, activities=None, contains_empty_traces=
         Directly-follows graph
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
     activities
         Activities of the process (default None)
