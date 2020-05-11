@@ -161,7 +161,6 @@ This is *major* release, consisting of the following major changes:
 4. commit 4fca12c1608818348bbd51e390140a8f7e79d7f6
     - alignments decomposition/recomposition is now integrated
 
-
 Minor changes included in this release:
 1. commit 112dc3fc56f0d5e3f3ae0c737a5b0b001be31ba5
     - fixed typo in Petri net weight (authorship PR: dominiquesommers)
