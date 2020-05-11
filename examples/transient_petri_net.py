@@ -1,5 +1,5 @@
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.discovery.alpha import factory as alpha_miner
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.algo.discovery.alpha import algorithm as alpha_miner
 from pm4py.objects.stochastic_petri import ctmc
 import os
 

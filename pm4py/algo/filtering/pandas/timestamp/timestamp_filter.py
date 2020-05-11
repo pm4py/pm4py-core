@@ -6,6 +6,13 @@ from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_s
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY, PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.versions import check_pandas_ge_024
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
 
 
 def filter_traces_contained(df, dt1, dt2, parameters=None):
@@ -22,8 +29,8 @@ def filter_traces_contained(df, dt1, dt2, parameters=None):
         Upper bound to the interval (possibly expressed as string, but automatically converted)
     parameters
         Possible parameters of the algorithm, including:
-            timestamp_key -> Attribute to use as timestamp
-            case_id_glue -> Column that contains the timestamp
+            Parameters.TIMESTAMP_KEY -> Attribute to use as timestamp
+            Parameters.CASE_ID_KEY -> Column that contains the timestamp
 
     Returns
     ----------
@@ -32,10 +39,8 @@ def filter_traces_contained(df, dt1, dt2, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
     needs_conversion = check_pandas_ge_024()
@@ -70,8 +75,8 @@ def filter_traces_intersecting(df, dt1, dt2, parameters=None):
         Upper bound to the interval (possibly expressed as string, but automatically converted)
     parameters
         Possible parameters of the algorithm, including:
-            timestamp_key -> Attribute to use as timestamp
-            case_id_glue -> Column that contains the timestamp
+            Parameters.TIMESTAMP_KEY -> Attribute to use as timestamp
+            Parameters.CASE_ID_KEY -> Column that contains the timestamp
 
     Returns
     ----------
@@ -80,10 +85,8 @@ def filter_traces_intersecting(df, dt1, dt2, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
     needs_conversion = check_pandas_ge_024()
@@ -123,7 +126,7 @@ def apply_events(df, dt1, dt2, parameters=None):
         Upper bound to the interval (possibly expressed as string, but automatically converted)
     parameters
         Possible parameters of the algorithm, including:
-            timestamp_key -> Attribute to use as timestamp
+            Parameters.TIMESTAMP_KEY -> Attribute to use as timestamp
 
     Returns
     ----------
@@ -133,8 +136,7 @@ def apply_events(df, dt1, dt2, parameters=None):
     if parameters is None:
         parameters = {}
 
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
     needs_conversion = check_pandas_ge_024()

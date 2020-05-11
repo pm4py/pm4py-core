@@ -1,9 +1,9 @@
 import deprecation
 from scipy.cluster.hierarchy import to_tree, linkage
-from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.statistics.attributes.log import get as attributes_filter
 from pm4py.algo.clustering.trace_attribute_driven.merge_log import merge_log
 from pm4py.algo.clustering.trace_attribute_driven.util import evaluation
-from pm4py.objects.conversion.log import factory as log_conv_factory
+from pm4py.objects.conversion.log import converter as log_converter
 
 VARIANT_DMM_LEVEN = "variant_DMM_leven"
 VARIANT_AVG_LEVEN = "variant_avg_leven"
@@ -69,7 +69,7 @@ def apply(log, trace_attribute, variant=VARIANT_DMM_LEVEN, parameters=None):
     if parameters is None:
         parameters = {}
 
-    log = log_conv_factory.apply(log, parameters=parameters)
+    log = log_converter.apply(log, parameters=parameters)
 
     percent = 1
     alpha = 0.5

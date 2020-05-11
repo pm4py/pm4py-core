@@ -2,8 +2,8 @@ import inspect
 import os
 import sys
 
-from pm4py.algo.discovery.dfg import algorithm as dfg_factory
-from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.algo.discovery.dfg import algorithm as dfg_algorithm
+from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.log.exporter.xes import exporter as xes_exporter
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import insert_classifier
@@ -23,7 +23,7 @@ def execute_script():
     for logName in all_logs_names:
         # logPath = os.path.join("..", "tests", "inputData", logName)
         log_path = log_input_directory + "\\" + logName
-        log = xes_importer.import_log(log_path)
+        log = xes_importer.apply(log_path)
         print("\n\n")
         print("log loaded")
         print("Number of traces - ", len(log))
@@ -32,7 +32,7 @@ def execute_script():
         print("Classifiers ", log.classifiers)
         exp_log_name = "xescert_exportlogs" + "\\" + "exp_" + logName
         print("exporting log", exp_log_name)
-        xes_exporter.export_log(log, exp_log_name)
+        xes_exporter.apply(log, exp_log_name)
         print("exported log", exp_log_name)
 
         log, classifier_attr_key = insert_classifier.search_act_class_attr(log)
@@ -52,7 +52,7 @@ def execute_script():
         if len(event_log) > 0 and classifier_attr_key in event_log[0]:
             parameters = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: classifier_attr_key}
 
-            dfg = dfg_factory.apply(log, parameters=parameters)
+            dfg = dfg_algorithm.apply(log, parameters=parameters)
             gviz = dfg_vis.apply(dfg, log=log, variant="frequency", parameters=parameters)
             # dfg_vis.view(gviz)
 
@@ -60,7 +60,7 @@ def execute_script():
 
         print("Reimporting log file just exported - ", exp_log_name)
 
-        log = xes_importer.import_log(exp_log_name)
+        log = xes_importer.apply(exp_log_name)
         print("log loaded", exp_log_name)
         print("Number of traces - ", len(log))
         event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)

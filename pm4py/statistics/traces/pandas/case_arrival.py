@@ -1,12 +1,9 @@
 import pandas as pd
 
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.constants import CASE_CONCEPT_NAME
+from pm4py.statistics.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def get_case_arrival_avg(df, parameters=None):
@@ -19,7 +16,7 @@ def get_case_arrival_avg(df, parameters=None):
         Pandas dataframe
     parameters
         Parameters of the algorithm, including:
-            PARAMETER_CONSTANT_TIMESTAMP_KEY -> attribute of the log to be used as timestamp
+            Parameters.TIMESTAMP_KEY -> attribute of the log to be used as timestamp
 
     Returns
     --------------
@@ -29,17 +26,8 @@ def get_case_arrival_avg(df, parameters=None):
     if parameters is None:
         parameters = {}
 
-    if PARAMETER_CONSTANT_CASEID_KEY not in parameters:
-        parameters[PARAMETER_CONSTANT_CASEID_KEY] = CASE_CONCEPT_NAME
-    if PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[PARAMETER_CONSTANT_ACTIVITY_KEY] = DEFAULT_NAME_KEY
-    if PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
-        parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY] = DEFAULT_TIMESTAMP_KEY
-    if PARAMETER_CONSTANT_ATTRIBUTE_KEY not in parameters:
-        parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY] = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY]
-
-    caseid_glue = parameters[PARAMETER_CONSTANT_CASEID_KEY]
-    timest_key = parameters[PARAMETER_CONSTANT_TIMESTAMP_KEY]
+    caseid_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    timest_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
     first_df = df.groupby(caseid_glue).first()
 

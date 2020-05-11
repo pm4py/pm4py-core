@@ -1,14 +1,25 @@
-import pandas as pd
-
 from pm4py.util import xes_constants as xes
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.statistics.traces.common import case_duration as case_duration_commons
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.constants import CASE_CONCEPT_NAME
-
+from pm4py.util import exec_utils, constants
+from enum import Enum
 import pandas as pd
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+
+    MAX_VARIANTS_TO_RETURN = "max_variants_to_return"
+    VARIANTS_DF = "variants_df"
+    ENABLE_SORT = "enable_sort"
+    SORT_BY_COLUMN = "sort_by_column"
+    SORT_ASCENDING = "sort_ascending"
+    MAX_RET_CASES = "max_ret_cases"
+
 
 def get_variant_statistics(df, parameters=None):
     """
@@ -20,9 +31,9 @@ def get_variant_statistics(df, parameters=None):
         Dataframe
     parameters
         Parameters of the algorithm, including:
-            case_id_glue -> Column that contains the Case ID
-            activity_key -> Column that contains the activity
-            max_variants_to_return -> Maximum number of variants to return
+            Parameters.CASE_ID_KEY -> Column that contains the Case ID
+            Parameters.ACTIVITY_KEY -> Column that contains the activity
+            Parameters.MAX_VARIANTS_TO_RETURN -> Maximum number of variants to return
             variants_df -> If provided, avoid recalculation of the variants dataframe
 
     Returns
@@ -32,11 +43,12 @@ def get_variant_statistics(df, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
-    variants_df = parameters["variants_df"] if "variants_df" in parameters else get_variants_df(df,
-                                                                                                parameters=parameters)
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+
+    max_variants_to_return = exec_utils.get_param_value(Parameters.MAX_VARIANTS_TO_RETURN, parameters, None)
+    variants_df = exec_utils.get_param_value(Parameters.VARIANTS_DF, parameters, get_variants_df(df,
+                                                                                                parameters=parameters))
+
     variants_df = variants_df.reset_index()
     variants_list = variants_df.groupby("variant").agg("count").reset_index().to_dict('records')
     variants_list = sorted(variants_list, key=lambda x: (x[case_id_glue], x["variant"]), reverse=True)
@@ -55,9 +67,9 @@ def get_variant_statistics_with_case_duration(df, parameters=None):
         Dataframe
     parameters
         Parameters of the algorithm, including:
-            case_id_glue -> Column that contains the Case ID
-            activity_key -> Column that contains the activity
-            max_variants_to_return -> Maximum number of variants to return
+            Parameters.CASE_ID_KEY -> Column that contains the Case ID
+            Parameters.ACTIVITY_KEY -> Column that contains the activity
+            Parameters.MAX_VARIANTS_TO_RETURN -> Maximum number of variants to return
             variants_df -> If provided, avoid recalculation of the variants dataframe
 
     Returns
@@ -67,11 +79,10 @@ def get_variant_statistics_with_case_duration(df, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
-    variants_df = parameters["variants_df"] if "variants_df" in parameters else get_variants_df_with_case_duration(df,
-                                                                                                                   parameters=parameters)
+
+    max_variants_to_return = exec_utils.get_param_value(Parameters.MAX_VARIANTS_TO_RETURN, parameters, None)
+    variants_df = exec_utils.get_param_value(Parameters.VARIANTS_DF, parameters, get_variants_df(df,
+                                                                                                parameters=parameters))
     variants_df["count"] = 1
     variants_df = variants_df.reset_index()
     variants_list = variants_df.groupby("variant").agg({"caseDuration": "mean", "count": "sum"}).reset_index().to_dict(
@@ -92,8 +103,8 @@ def get_variants_df_and_list(df, parameters=None):
         Dataframe
     parameters
         Parameters of the algorithm, including:
-            case_id_glue -> Column that contains the Case ID
-            activity_key -> Column that contains the activity
+            Parameters.CASE_ID_KEY -> Column that contains the Case ID
+            Parameters.ACTIVITY_KEY -> Column that contains the activity
 
     Returns
     ------------
@@ -104,10 +115,9 @@ def get_variants_df_and_list(df, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+
     variants_df = get_variants_df(df, parameters=parameters)
-    parameters["variants_df"] = variants_df
     variants_stats = get_variant_statistics(df, parameters=parameters)
     variants_list = []
     for vd in variants_stats:
@@ -128,14 +138,14 @@ def get_cases_description(df, parameters=None):
         Pandas dataframe
     parameters
         Parameters of the algorithm, including:
-            case_id_glue -> Column that identifies the case ID
-            timestamp_key -> Column that identifies the timestamp
+            Parameters.CASE_ID_KEY -> Column that identifies the case ID
+            Parameters.TIMESTAMP_KEY -> Column that identifies the timestamp
             enable_sort -> Enable sorting of traces
-            sort_by_column -> Sort traces inside the dataframe using the specified column.
+            Parameters.SORT_BY_COLUMN -> Sort traces inside the dataframe using the specified column.
             Admitted values: startTime, endTime, caseDuration
-            sort_ascending -> Set sort direction (boolean; it true then the sort direction is ascending,
+            Parameters.SORT_ASCENDING -> Set sort direction (boolean; it true then the sort direction is ascending,
             otherwise descending)
-            max_ret_cases -> Set the maximum number of returned traces
+            Parameters.MAX_RET_CASES -> Set the maximum number of returned traces
 
     Returns
     -----------
@@ -145,14 +155,13 @@ def get_cases_description(df, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
-    enable_sort = parameters["enable_sort"] if "enable_sort" in parameters else True
-    sort_by_column = parameters["sort_by_column"] if "sort_by_column" in parameters else "startTime"
-    sort_ascending = parameters["sort_ascending"] if "sort_ascending" in parameters else True
-    max_ret_cases = parameters["max_ret_cases"] if "max_ret_cases" in parameters else None
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+
+    enable_sort = exec_utils.get_param_value(Parameters.ENABLE_SORT, parameters, True)
+    sort_by_column = exec_utils.get_param_value(Parameters.SORT_BY_COLUMN, parameters, "startTime")
+    sort_ascending = exec_utils.get_param_value(Parameters.SORT_ASCENDING, parameters, True)
+    max_ret_cases = exec_utils.get_param_value(Parameters.MAX_RET_CASES, parameters, None)
 
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
     # grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
@@ -189,8 +198,8 @@ def get_variants_df(df, parameters=None):
         Dataframe
     parameters
         Parameters of the algorithm, including:
-            case_id_glue -> Column that contains the Case ID
-            activity_key -> Column that contains the activity
+            Parameters.CASE_ID_KEY -> Column that contains the Case ID
+            Parameters.ACTIVITY_KEY -> Column that contains the activity
 
     Returns
     -----------
@@ -200,10 +209,8 @@ def get_variants_df(df, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
     new_df = df.groupby(case_id_glue)[activity_key].agg(lambda col: ",".join(pd.Series.to_list(col))).to_frame()
     new_cols = list(new_df.columns)
@@ -222,9 +229,9 @@ def get_variants_df_with_case_duration(df, parameters=None):
         Dataframe
     parameters
         Parameters of the algorithm, including:
-            case_id_glue -> Column that contains the Case ID
-            activity_key -> Column that contains the activity
-            timestamp_key -> Column that contains the timestamp
+            Parameters.CASE_ID_KEY -> Column that contains the Case ID
+            Parameters.ACTIVITY_KEY -> Column that contains the activity
+            Parameters.TIMESTAMP_KEY -> Column that contains the timestamp
 
     Returns
     -----------
@@ -234,12 +241,10 @@ def get_variants_df_with_case_duration(df, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+
     grouped_df = df[[case_id_glue, timestamp_key, activity_key]].groupby(df[case_id_glue])
 
     df1 = grouped_df[activity_key].agg(lambda col: ",".join(pd.Series.to_list(col))).to_frame()
@@ -275,7 +280,7 @@ def get_events(df, case_id, parameters=None):
         Required case ID
     parameters
         Possible parameters of the algorithm, including:
-            case_id_glue -> Column in which the case ID is contained
+            Parameters.CASE_ID_KEY -> Column in which the case ID is contained
 
     Returns
     ----------
@@ -284,8 +289,8 @@ def get_events(df, case_id, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+
     return df[df[case_id_glue] == case_id].to_dict('records')
 
 
@@ -299,8 +304,8 @@ def get_kde_caseduration(df, parameters=None):
         Pandas dataframe
     parameters
         Possible parameters of the algorithm, including:
-            graph_points -> number of points to include in the graph
-            case_id_glue -> Column hosting the Case ID
+            Parameters.GRAPH_POINTS -> number of points to include in the graph
+            Parameters.CASE_ID_KEY -> Column hosting the Case ID
 
 
     Returns
@@ -327,8 +332,8 @@ def get_kde_caseduration_json(df, parameters=None):
         Pandas dataframe
     parameters
         Possible parameters of the algorithm, including:
-            graph_points -> number of points to include in the graph
-            case_id_glue -> Column hosting the Case ID
+            Parameters.GRAPH_POINTS -> number of points to include in the graph
+            Parameters.CASE_ID_KEY -> Column hosting the Case ID
 
     Returns
     --------------

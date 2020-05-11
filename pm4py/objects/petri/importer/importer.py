@@ -1,8 +1,13 @@
 from pm4py.objects.petri.importer.versions import pnml
+from pm4py.util import exec_utils
+from enum import Enum
 
-PNML = "pnml"
 
-VERSIONS = {PNML: pnml.import_net}
+class Variants(Enum):
+    PNML = pnml
+
+
+PNML = Variants.PNML
 
 
 def apply(input_file_path, variant=PNML, parameters=None):
@@ -15,5 +20,8 @@ def apply(input_file_path, variant=PNML, parameters=None):
         Input file path
     parameters
         Other parameters of the importer
+    variant
+        Variant of the algorithm to use, possible values:
+            - Variants.PNML
     """
-    return VERSIONS[variant](input_file_path, parameters=parameters)
+    return exec_utils.get_variant(variant).import_net(input_file_path, parameters=parameters)

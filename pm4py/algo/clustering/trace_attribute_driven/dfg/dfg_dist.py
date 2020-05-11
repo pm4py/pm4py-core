@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.spatial.distance import pdist
-from pm4py.algo.discovery.dfg import factory as dfg_factory
-from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.algo.discovery.dfg import algorithm as dfg_algorithm
+from pm4py.statistics.attributes.log import get as attributes_filter
 import pandas as pd
 from pm4py.algo.clustering.trace_attribute_driven.variant import act_dist_calc
 
@@ -17,8 +17,8 @@ def dfg_dist_calc_act(log1, log2):
 
 
 def dfg_dist_calc_suc(log1, log2):
-    dfg1 = dfg_factory.apply(log1)
-    dfg2 = dfg_factory.apply(log2)
+    dfg1 = dfg_algorithm.apply(log1)
+    dfg2 = dfg_algorithm.apply(log2)
     df1_dfg = act_dist_calc.occu_var_act(dfg1)
     df2_dfg = act_dist_calc.occu_var_act(dfg2)
     df_dfg = pd.merge(df1_dfg, df2_dfg, how='outer', on='var').fillna(0)
@@ -29,8 +29,8 @@ def dfg_dist_calc_suc(log1, log2):
 def dfg_dist_calc(log1, log2):
     act1 = attributes_filter.get_attribute_values(log1, "concept:name")
     act2 = attributes_filter.get_attribute_values(log2, "concept:name")
-    dfg1 = dfg_factory.apply(log1)
-    dfg2 = dfg_factory.apply(log2)
+    dfg1 = dfg_algorithm.apply(log1)
+    dfg2 = dfg_algorithm.apply(log2)
     df1_act = act_dist_calc.occu_var_act(act1)
     df2_act = act_dist_calc.occu_var_act(act2)
     df1_dfg = act_dist_calc.occu_var_act(dfg1)
@@ -47,8 +47,8 @@ def dfg_dist_calc(log1, log2):
 def dfg_dist_calc_minkowski(log1, log2, alpha):
     act1 = attributes_filter.get_attribute_values(log1, "concept:name")
     act2 = attributes_filter.get_attribute_values(log2, "concept:name")
-    dfg1 = dfg_factory.apply(log1)
-    dfg2 = dfg_factory.apply(log2)
+    dfg1 = dfg_algorithm.apply(log1)
+    dfg2 = dfg_algorithm.apply(log2)
     df1_act = act_dist_calc.occu_var_act(act1)
     df2_act = act_dist_calc.occu_var_act(act2)
     df1_dfg = act_dist_calc.occu_var_act(dfg1)

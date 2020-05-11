@@ -1,6 +1,6 @@
 from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay.versions import token_replay, backwards
-from pm4py.objects.conversion.log import factory as log_converter
+from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri.exporter.versions import pnml as petri_exporter
 from pm4py.statistics.variants.log import get as variants_module
@@ -20,7 +20,7 @@ VARIANTS_IDX = 'variants_idx'
                         details='Use algorithm entrypoint instead')
 def apply(log, net, initial_marking, final_marking, parameters=None, variant=TOKEN_REPLAY):
     """
-    Factory method to apply token-based replay
+    Method to apply token-based replay
     
     Parameters
     -----------

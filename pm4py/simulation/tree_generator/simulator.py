@@ -1,28 +1,36 @@
 from pm4py.simulation.tree_generator.versions import basic, ptandloggenerator
+from enum import Enum
+from pm4py.util import exec_utils
 
-BASIC = "basic"
-PTANDLOGGENERATOR = "ptandloggenerator"
 
-VERSIONS = {BASIC: basic.apply, PTANDLOGGENERATOR: ptandloggenerator.apply}
+class Variants(Enum):
+    BASIC = basic
+    PTANDLOGGENERATOR = ptandloggenerator
 
-def apply(variant=PTANDLOGGENERATOR, parameters=None):
+
+BASIC = Variants.BASIC
+PTANDLOGGENERATOR = Variants.PTANDLOGGENERATOR
+DEFAULT_VARIANT = Variants.PTANDLOGGENERATOR
+
+VERSIONS = {Variants.BASIC, Variants.PTANDLOGGENERATOR}
+
+
+def apply(variant=DEFAULT_VARIANT, parameters=None):
     """
     Generate a process tree
 
     Parameters
     ------------
     variant
-        Variant of the algorithm. Admitted values: basic
+        Variant of the algorithm. Admitted values:
+            - Variants.BASIC
+            - Variants.PTANDLOGGENERATOR
     parameters
-        Paramters of the algorithm, including:
-            rec_depth -> current recursion depth
-            min_rec_depth -> minimum recursion depth
-            max_rec_depth -> maximum recursion depth
-            prob_leaf -> Probability to get a leaf
+        Specific parameters of the algorithm
 
     Returns
     ------------
     tree
         Process tree
     """
-    return VERSIONS[variant](parameters=parameters)
+    return exec_utils.get_variant(variant).apply(parameters=parameters)

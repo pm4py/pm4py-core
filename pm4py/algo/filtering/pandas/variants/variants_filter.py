@@ -2,7 +2,16 @@ from pm4py.algo.filtering.common import filtering_constants
 from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.statistics.traces.pandas.case_statistics import get_variants_df
-from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
+    ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    DECREASING_FACTOR = "decreasingFactor"
+    POSITIVE = "positive"
 
 
 def apply_auto_filter(df, parameters=None):
@@ -15,10 +24,10 @@ def apply_auto_filter(df, parameters=None):
         Dataframe
     parameters
         Parameters of the algorithm, including:
-            case_id_glue -> Column that contains the Case ID
-            activity_key -> Column that contains the activity
+            Parameters.CASE_ID_KEY -> Column that contains the Case ID
+            Parameters.ACTIVITY_KEY -> Column that contains the activity
             variants_df -> If provided, avoid recalculation of the variants dataframe
-            decreasingFactor -> Decreasing factor that should be passed to the algorithm
+            Parameters.DECREASING_FACTOR -> Decreasing factor that should be passed to the algorithm
 
     Returns
     -----------
@@ -27,13 +36,12 @@ def apply_auto_filter(df, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters,
+                                                   filtering_constants.DECREASING_FACTOR)
     variants_df = case_statistics.get_variants_df(df, parameters=parameters)
     parameters["variants_df"] = variants_df
     variants = case_statistics.get_variant_statistics(df, parameters=parameters)
-    decreasing_factor = parameters[
-        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
 
     admitted_variants = []
     if len(variants) > 0:
@@ -61,9 +69,9 @@ def apply(df, admitted_variants, parameters=None):
         List of admitted variants (to include/exclude)
     parameters
         Parameters of the algorithm, including:
-            case_id_glue -> Column that contains the Case ID
-            activity_key -> Column that contains the activity
-            positive -> Specifies if the filter should be applied including traces (positive=True)
+            Parameters.CASE_ID_KEY -> Column that contains the Case ID
+            Parameters.ACTIVITY_KEY -> Column that contains the activity
+            Parameters.POSITIVE -> Specifies if the filter should be applied including traces (positive=True)
             or excluding traces (positive=False)
             variants_df -> If provided, avoid recalculation of the variants dataframe
 
@@ -75,9 +83,8 @@ def apply(df, admitted_variants, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    positive = parameters["positive"] if "positive" in parameters else True
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     variants_df = parameters["variants_df"] if "variants_df" in parameters else get_variants_df(df,
                                                                                                 parameters=parameters)
     variants_df = variants_df[variants_df["variant"].isin(admitted_variants)]

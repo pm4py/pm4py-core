@@ -1,29 +1,43 @@
-from copy import copy
-
-from pm4py import util as pmutil
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri import semantics
 from pm4py.objects.petri.petrinet import Marking
 from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
-from pm4py.util import constants
 from pm4py.objects.log import log as log_implementation
 from pm4py.objects.petri.importer.versions import pnml as petri_importer
 from pm4py.objects.petri import align_utils
-from copy import deepcopy, copy
+from copy import copy
+from enum import Enum
+from pm4py.util import exec_utils, constants
 
-PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
-DEFAULT_VARIANT_DELIMITER = ","
 
-MAX_REC_DEPTH = 50
-MAX_IT_FINAL1 = 5
-MAX_IT_FINAL2 = 5
-MAX_REC_DEPTH_HIDTRANSENABL = 2
-MAX_POSTFIX_SUFFIX_LENGTH = 20
-MAX_NO_THREADS = 1024
-MAX_DEF_THR_EX_TIME = 10
-ENABLE_POSTFIX_CACHE = False
-ENABLE_MARKTOACT_CACHE = False
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+    VARIANTS = "variants"
+    PLACES_SHORTEST_PATH_BY_HIDDEN = "places_shortest_path_by_hidden"
+    THREAD_MAX_EX_TIME = "thread_maximum_ex_time"
+    DISABLE_VARIANTS = "disable_variants"
+    CLEANING_TOKEN_FLOOD = "cleaning_token_flood"
+    IS_REDUCTION = "is_reduction"
+    WALK_THROUGH_HIDDEN_TRANS = "walk_through_hidden_trans"
+    RETURN_NAMES = "return_names"
+    STOP_IMMEDIATELY_UNFIT = "stop_immediately_unfit"
+    TRY_TO_REACH_FINAL_MARKING_THROUGH_HIDDEN = "try_to_reach_final_marking_through_hidden"
+    CONSIDER_REMAINING_IN_FITNESS = "consider_remaining_in_fitness"
+    ENABLE_PLTR_FITNESS = "enable_pltr_fitness"
+
+
+class TechnicalParameters(Enum):
+    MAX_REC_DEPTH = 50
+    MAX_IT_FINAL1 = 5
+    MAX_IT_FINAL2 = 5
+    MAX_REC_DEPTH_HIDTRANSENABL = 2
+    MAX_POSTFIX_SUFFIX_LENGTH = 20
+    MAX_NO_THREADS = 1024
+    MAX_DEF_THR_EX_TIME = 10
+    ENABLE_POSTFIX_CACHE = False
+    ENABLE_MARKTOACT_CACHE = False
 
 
 class DebugConst:
@@ -257,7 +271,7 @@ def apply_hidden_trans(t, net, marking, places_shortest_paths_by_hidden, act_tr,
     vis_mark
         All visited markings
     """
-    if rec_depth >= MAX_REC_DEPTH_HIDTRANSENABL or t in visit_trans:
+    if rec_depth >= TechnicalParameters.MAX_REC_DEPTH_HIDTRANSENABL.value or t in visit_trans:
         return [net, marking, act_tr, vis_mark]
     # if rec_depth > DebugConst.REACH_MRH:
     #    DebugConst.REACH_MRH = rec_depth
@@ -333,7 +347,8 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
                 try_to_reach_final_marking_through_hidden=True, stop_immediately_unfit=False,
                 walk_through_hidden_trans=True, post_fix_caching=None,
-                marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
+                marking_to_activity_caching=None, is_reduction=False,
+                thread_maximum_ex_time=TechnicalParameters.MAX_DEF_THR_EX_TIME.value,
                 enable_postfix_cache=False, enable_marktoact_cache=False, cleaning_token_flood=False,
                 s_components=None, trace_occurrences=1):
     """
@@ -522,7 +537,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         notexisting_activities_in_model[trace[i][activity_key]] = {}
                     notexisting_activities_in_model[trace[i][activity_key]][trace] = current_event_map
             del trace_activities[0]
-            if len(trace_activities) < MAX_POSTFIX_SUFFIX_LENGTH:
+            if len(trace_activities) < TechnicalParameters.MAX_POSTFIX_SUFFIX_LENGTH.value:
                 activating_transition_index[str(trace_activities)] = {"index": len(act_trans),
                                                                       "marking": hash(marking)}
             if i > 0:
@@ -535,7 +550,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                      ""])
 
     if try_to_reach_final_marking_through_hidden and not used_postfix_cache:
-        for i in range(MAX_IT_FINAL1):
+        for i in range(TechnicalParameters.MAX_IT_FINAL1.value):
             if not break_condition_final_marking(marking, final_marking):
                 hidden_transitions_to_enable = get_req_transitions_for_final_marking(marking, final_marking,
                                                                                      places_shortest_path_by_hidden)
@@ -573,7 +588,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                         connections_to_sink.append([place, places_shortest_path_by_hidden[place][sink_place]])
                 connections_to_sink = sorted(connections_to_sink, key=lambda x: len(x[1]))
 
-                for i in range(MAX_IT_FINAL2):
+                for i in range(TechnicalParameters.MAX_IT_FINAL2.value):
                     for j in range(len(connections_to_sink)):
                         for z in range(len(connections_to_sink[j][1])):
                             t = connections_to_sink[j][1][z]
@@ -701,7 +716,8 @@ class ApplyTraceTokenReplay:
                  places_shortest_path_by_hidden, consider_remaining_in_fitness, activity_key="concept:name",
                  reach_mark_through_hidden=True, stop_immediately_when_unfit=False,
                  walk_through_hidden_trans=True, post_fix_caching=None,
-                 marking_to_activity_caching=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
+                 marking_to_activity_caching=None, is_reduction=False,
+                 thread_maximum_ex_time=TechnicalParameters.MAX_DEF_THR_EX_TIME.value,
                  cleaning_token_flood=False, s_components=None, trace_occurrences=1):
         """
         Constructor
@@ -771,8 +787,8 @@ class ApplyTraceTokenReplay:
         self.is_reduction = is_reduction
         self.thread_maximum_ex_time = thread_maximum_ex_time
         self.cleaning_token_flood = cleaning_token_flood
-        self.enable_postfix_cache = ENABLE_POSTFIX_CACHE
-        self.enable_marktoact_cache = ENABLE_MARKTOACT_CACHE
+        self.enable_postfix_cache = TechnicalParameters.ENABLE_POSTFIX_CACHE.value
+        self.enable_marktoact_cache = TechnicalParameters.ENABLE_MARKTOACT_CACHE.value
         if self.is_reduction:
             self.enable_postfix_cache = True
             self.enable_marktoact_cache = True
@@ -888,7 +904,7 @@ def get_variants_from_log(log, activity_key, disable_variants=False):
 def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=False, consider_remaining_in_fitness=False,
               activity_key="concept:name", reach_mark_through_hidden=True, stop_immediately_unfit=False,
               walk_through_hidden_trans=True, places_shortest_path_by_hidden=None,
-              variants=None, is_reduction=False, thread_maximum_ex_time=MAX_DEF_THR_EX_TIME,
+              variants=None, is_reduction=False, thread_maximum_ex_time=TechnicalParameters.MAX_DEF_THR_EX_TIME.value,
               cleaning_token_flood=False, disable_variants=False, return_object_names=False):
     """
     Apply token-based replay to a log
@@ -933,7 +949,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
     post_fix_cache = PostFixCaching()
     marking_to_activity_cache = MarkingToActivityCaching()
     if places_shortest_path_by_hidden is None:
-        places_shortest_path_by_hidden = get_places_shortest_path_by_hidden(net, MAX_REC_DEPTH)
+        places_shortest_path_by_hidden = get_places_shortest_path_by_hidden(net,
+                                                                            TechnicalParameters.MAX_REC_DEPTH.value)
 
     place_fitness_per_trace = {}
     transition_fitness_per_trace = {}
@@ -1003,12 +1020,16 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
 
                     if return_object_names:
                         threads_results[variant]["activated_transitions_labels"] = [x.label for x in
-                                                                        threads_results[variant]["activated_transitions"]]
-                        threads_results[variant]["activated_transitions"] = [x.name for x in threads_results[variant]["activated_transitions"]]
-                        threads_results[variant]["enabled_transitions_in_marking_labels"] = [x.label for x in threads_results[variant][
-                            "enabled_transitions_in_marking"]]
-                        threads_results[variant]["enabled_transitions_in_marking"] = [x.name for x in threads_results[variant][
-                            "enabled_transitions_in_marking"]]
+                                                                                    threads_results[variant][
+                                                                                        "activated_transitions"]]
+                        threads_results[variant]["activated_transitions"] = [x.name for x in threads_results[variant][
+                            "activated_transitions"]]
+                        threads_results[variant]["enabled_transitions_in_marking_labels"] = [x.label for x in
+                                                                                             threads_results[variant][
+                                                                                                 "enabled_transitions_in_marking"]]
+                        threads_results[variant]["enabled_transitions_in_marking"] = [x.name for x in
+                                                                                      threads_results[variant][
+                                                                                          "enabled_transitions_in_marking"]]
                         threads_results[variant]["transitions_with_problems"] = [x.name for x in
                                                                                  threads_results[variant][
                                                                                      "transitions_with_problems"]]
@@ -1050,50 +1071,24 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     if parameters is None:
         parameters = {}
 
-    enable_pltr_fitness = False
+    enable_pltr_fitness = exec_utils.get_param_value(Parameters.ENABLE_PLTR_FITNESS, parameters, False)
     # changed default to uniform behavior with token-based replay fitness
-    consider_remaining_in_fitness = True
-    try_to_reach_final_marking_through_hidden = True
-    stop_immediately_unfit = False
-    walk_through_hidden_trans = True
-    is_reduction = False
-    cleaning_token_flood = False
-    disable_variants = False
-    return_names = False
-    thread_maximum_ex_time = MAX_DEF_THR_EX_TIME
-    places_shortest_path_by_hidden = None
-    activity_key = xes_util.DEFAULT_NAME_KEY
-    variants = None
-
-    if "enable_place_fitness" in parameters:
-        enable_pltr_fitness = parameters["enable_place_fitness"]
-    if "enable_pltr_fitness" in parameters:
-        enable_pltr_fitness = parameters["enable_pltr_fitness"]
-    if "consider_remaining_in_fitness" in parameters:
-        consider_remaining_in_fitness = parameters["consider_remaining_in_fitness"]
-    if "try_to_reach_final_marking_through_hidden" in parameters:
-        try_to_reach_final_marking_through_hidden = parameters["try_to_reach_final_marking_through_hidden"]
-    if "stop_immediately_unfit" in parameters:
-        stop_immediately_unfit = parameters["stop_immediately_unfit"]
-    if "return_names" in parameters:
-        return_names = parameters["return_names"]
-    if "walk_through_hidden_trans" in parameters:
-        walk_through_hidden_trans = parameters[
-            "walk_through_hidden_trans"]
-    if "is_reduction" in parameters:
-        is_reduction = parameters["is_reduction"]
-    if "cleaning_token_flood" in parameters:
-        cleaning_token_flood = parameters["cleaning_token_flood"]
-    if "disable_variants" in parameters:
-        disable_variants = parameters["disable_variants"]
-    if "thread_maximum_ex_time" in parameters:
-        thread_maximum_ex_time = parameters["thread_maximum_ex_time"]
-    if "places_shortest_path_by_hidden" in parameters:
-        places_shortest_path_by_hidden = parameters["places_shortest_path_by_hidden"]
-    if "variants" in parameters:
-        variants = parameters["variants"]
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
-        activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+    consider_remaining_in_fitness = exec_utils.get_param_value(Parameters.CONSIDER_REMAINING_IN_FITNESS, parameters,
+                                                               True)
+    try_to_reach_final_marking_through_hidden = exec_utils.get_param_value(
+        Parameters.TRY_TO_REACH_FINAL_MARKING_THROUGH_HIDDEN, parameters, True)
+    stop_immediately_unfit = exec_utils.get_param_value(Parameters.STOP_IMMEDIATELY_UNFIT, parameters, False)
+    walk_through_hidden_trans = exec_utils.get_param_value(Parameters.WALK_THROUGH_HIDDEN_TRANS, parameters, True)
+    is_reduction = exec_utils.get_param_value(Parameters.IS_REDUCTION, parameters, False)
+    cleaning_token_flood = exec_utils.get_param_value(Parameters.CLEANING_TOKEN_FLOOD, parameters, False)
+    disable_variants = exec_utils.get_param_value(Parameters.DISABLE_VARIANTS, parameters, False)
+    return_names = exec_utils.get_param_value(Parameters.RETURN_NAMES, parameters, False)
+    thread_maximum_ex_time = exec_utils.get_param_value(Parameters.THREAD_MAX_EX_TIME, parameters,
+                                                        TechnicalParameters.MAX_DEF_THR_EX_TIME.value)
+    places_shortest_path_by_hidden = exec_utils.get_param_value(Parameters.PLACES_SHORTEST_PATH_BY_HIDDEN, parameters,
+                                                                None)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+    variants = exec_utils.get_param_value(Parameters.VARIANTS, parameters, None)
 
     return apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=enable_pltr_fitness,
                      consider_remaining_in_fitness=consider_remaining_in_fitness,
@@ -1109,12 +1104,11 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
 def apply_variants_list(variants_list, net, initial_marking, final_marking, parameters=None):
     if parameters is None:
         parameters = {}
-    parameters["return_names"] = True
+    parameters[Parameters.RETURN_NAMES] = True
 
-    activity_key = parameters[
-        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes_util.DEFAULT_NAME_KEY
-    variant_delimiter = parameters[
-        PARAMETER_VARIANT_DELIMITER] if PARAMETER_VARIANT_DELIMITER in parameters else DEFAULT_VARIANT_DELIMITER
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
+                                                   ",")
 
     log = log_implementation.EventLog()
     for var_item in variants_list:

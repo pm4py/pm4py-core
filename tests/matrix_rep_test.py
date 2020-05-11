@@ -15,7 +15,7 @@ class MatrixRepTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
 
-        log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         pref_mat, var_mat, activities = prefix_matrix.get_prefix_variants_matrix(log)
 
         net, im, fm = alpha_miner.apply(log)

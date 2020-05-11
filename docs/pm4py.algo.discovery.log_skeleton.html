@@ -85,6 +85,7 @@
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.log_skeleton.algorithm">pm4py.algo.discovery.log_skeleton.algorithm module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.log_skeleton.factory">pm4py.algo.discovery.log_skeleton.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.algo.discovery.log_skeleton.outputs">pm4py.algo.discovery.log_skeleton.outputs module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.log_skeleton.parameters">pm4py.algo.discovery.log_skeleton.parameters module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.log_skeleton.trace_skel">pm4py.algo.discovery.log_skeleton.trace_skel module</a></li>
 <li><a class="reference internal" href="#module-pm4py.algo.discovery.log_skeleton">Module contents</a></li>
@@ -174,20 +175,33 @@
 </div>
 <div class="section" id="module-pm4py.algo.discovery.log_skeleton.algorithm">
 <span id="pm4py-algo-discovery-log-skeleton-algorithm-module"></span><h2>pm4py.algo.discovery.log_skeleton.algorithm module<a class="headerlink" href="#module-pm4py.algo.discovery.log_skeleton.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.discovery.log_skeleton.algorithm.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.discovery.log_skeleton.algorithm.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/algo/discovery/log_skeleton/algorithm.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.algorithm.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.log_skeleton.algorithm.Variants.CLASSIC">
+<code class="sig-name descname">CLASSIC</code><em class="property"> = &lt;module 'pm4py.algo.discovery.log_skeleton.versions.classic' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\log_skeleton\\versions\\classic.py'&gt;</em><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.algorithm.Variants.CLASSIC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.discovery.log_skeleton.algorithm.apply">
-<code class="sig-prename descclassname">pm4py.algo.discovery.log_skeleton.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">variant='classic'</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/log_skeleton/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.algorithm.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.log_skeleton.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">variant=&lt;Variants.CLASSIC: &lt;module 'pm4py.algo.discovery.log_skeleton.versions.classic' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\log_skeleton\\versions\\classic.py'&gt;&gt;</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/log_skeleton/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.algorithm.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Discover a log skeleton from an event log</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
 <li><p><strong>log</strong> – Event log</p></li>
-<li><p><strong>variant</strong> – Variant of the algorithm, possible values: classic</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm, possible values:
+- Variants.CLASSIC</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
 <dt>Parameters of the algorithm, including:</dt><dd><ul class="simple">
-<li><p>the activity key (pm4py:param:activity_key)</p></li>
-<li><p>the noise threshold (noise_threshold)</p></li>
+<li><p>the activity key (Parameters.ACTIVITY_KEY)</p></li>
+<li><p>the noise threshold (Parameters.NOISE_THRESHOLD)</p></li>
 </ul>
 </dd>
 </dl>
@@ -239,8 +253,75 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-pm4py.algo.discovery.log_skeleton.outputs">
+<span id="pm4py-algo-discovery-log-skeleton-outputs-module"></span><h2>pm4py.algo.discovery.log_skeleton.outputs module<a class="headerlink" href="#module-pm4py.algo.discovery.log_skeleton.outputs" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.discovery.log_skeleton.outputs.Outputs">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.discovery.log_skeleton.outputs.</code><code class="sig-name descname">Outputs</code><a class="reference internal" href="_modules/pm4py/algo/discovery/log_skeleton/outputs.html#Outputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.outputs.Outputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.log_skeleton.outputs.Outputs.ACTIV_FREQ">
+<code class="sig-name descname">ACTIV_FREQ</code><em class="property"> = 'activ_freq'</em><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.outputs.Outputs.ACTIV_FREQ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.log_skeleton.outputs.Outputs.ALWAYS_AFTER">
+<code class="sig-name descname">ALWAYS_AFTER</code><em class="property"> = 'always_after'</em><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.outputs.Outputs.ALWAYS_AFTER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.log_skeleton.outputs.Outputs.ALWAYS_BEFORE">
+<code class="sig-name descname">ALWAYS_BEFORE</code><em class="property"> = 'always_before'</em><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.outputs.Outputs.ALWAYS_BEFORE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.log_skeleton.outputs.Outputs.DIRECTLY_FOLLOWS">
+<code class="sig-name descname">DIRECTLY_FOLLOWS</code><em class="property"> = 'directly_follows'</em><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.outputs.Outputs.DIRECTLY_FOLLOWS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.log_skeleton.outputs.Outputs.EQUIVALENCE">
+<code class="sig-name descname">EQUIVALENCE</code><em class="property"> = 'equivalence'</em><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.outputs.Outputs.EQUIVALENCE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.log_skeleton.outputs.Outputs.NEVER_TOGETHER">
+<code class="sig-name descname">NEVER_TOGETHER</code><em class="property"> = 'never_together'</em><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.outputs.Outputs.NEVER_TOGETHER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.algo.discovery.log_skeleton.parameters">
 <span id="pm4py-algo-discovery-log-skeleton-parameters-module"></span><h2>pm4py.algo.discovery.log_skeleton.parameters module<a class="headerlink" href="#module-pm4py.algo.discovery.log_skeleton.parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.discovery.log_skeleton.parameters.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.discovery.log_skeleton.parameters.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/discovery/log_skeleton/parameters.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.parameters.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.log_skeleton.parameters.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.parameters.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.log_skeleton.parameters.Parameters.CONSIDERED_CONSTRAINTS">
+<code class="sig-name descname">CONSIDERED_CONSTRAINTS</code><em class="property"> = 'considered_constraints'</em><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.parameters.Parameters.CONSIDERED_CONSTRAINTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.log_skeleton.parameters.Parameters.DEFAULT_CONSIDERED_CONSTRAINTS">
+<code class="sig-name descname">DEFAULT_CONSIDERED_CONSTRAINTS</code><em class="property"> = ['equivalence', 'always_after', 'always_before', 'never_together', 'directly_follows', 'activ_freq']</em><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.parameters.Parameters.DEFAULT_CONSIDERED_CONSTRAINTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.log_skeleton.parameters.Parameters.NOISE_THRESHOLD">
+<code class="sig-name descname">NOISE_THRESHOLD</code><em class="property"> = 'noise_threshold'</em><a class="headerlink" href="#pm4py.algo.discovery.log_skeleton.parameters.Parameters.NOISE_THRESHOLD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-pm4py.algo.discovery.log_skeleton.trace_skel">
 <span id="pm4py-algo-discovery-log-skeleton-trace-skel-module"></span><h2>pm4py.algo.discovery.log_skeleton.trace_skel module<a class="headerlink" href="#module-pm4py.algo.discovery.log_skeleton.trace_skel" title="Permalink to this headline">¶</a></h2>

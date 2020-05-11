@@ -2,9 +2,10 @@ from collections import Counter
 
 import numpy as np
 
-from pm4py.objects.conversion.log import factory as conv_factory
+from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.util import xes_constants as xes
-from pm4py.util import constants
+from pm4py.util import exec_utils
+from pm4py.algo.enhancement.sna.parameters import Parameters
 
 
 def apply(log, parameters=None):
@@ -29,11 +30,9 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    resource_key = parameters[
-        constants.PARAMETER_CONSTANT_RESOURCE_KEY] if constants.PARAMETER_CONSTANT_RESOURCE_KEY in parameters else xes.DEFAULT_RESOURCE_KEY
-    activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    stream = conv_factory.apply(log, variant=conv_factory.TO_EVENT_STREAM)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
     activities = Counter(event[activity_key] for event in stream)
     resources = Counter(event[resource_key] for event in stream)
     activity_resource_couples = Counter((event[resource_key], event[activity_key]) for event in stream)

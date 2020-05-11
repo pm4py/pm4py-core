@@ -1,5 +1,5 @@
 from pm4py.statistics.traces.log import case_arrival
-from pm4py.algo.simulation.montecarlo.utils import replay
+from pm4py.simulation.montecarlo.utils import replay
 from pm4py.objects.petri.semantics import enabled_transitions, weak_execute
 from threading import Thread, Semaphore
 from intervaltree import IntervalTree, Interval
@@ -10,6 +10,8 @@ from pm4py.objects.stochastic_petri import utils as stochastic_utils
 import datetime
 from time import sleep, time
 import logging
+import deprecation
+
 
 PARAM_NUM_SIMULATIONS = "num_simulations"
 PARAM_FORCE_DISTRIBUTION = "force_distribution"
@@ -260,7 +262,8 @@ class SimulationThread(Thread):
         if self.enable_diagnostics:
             diagnostics.diagn_open = False
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='pm4py.algo.simulation is deprecated; use pm4py.simulation entrypoint instead')
 def apply(log, net, im, fm, parameters=None):
     """
     Performs a Monte Carlo simulation of an accepting Petri net without duplicate transitions and where the preset is always

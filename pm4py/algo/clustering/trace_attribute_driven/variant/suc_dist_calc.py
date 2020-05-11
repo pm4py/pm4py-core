@@ -1,11 +1,10 @@
 import pandas as pd
 import numpy as np
-import time
 from pm4py.algo.clustering.trace_attribute_driven.util import filter_subsets
 from scipy.spatial.distance import pdist
 from collections import Counter
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.util import constants
+from pm4py.util import exec_utils
+from pm4py.algo.clustering.trace_attribute_driven.parameters import Parameters
 
 
 def occu_suc(dfg, filter_percent):
@@ -38,7 +37,7 @@ def occu_var_suc(var_list, parameters=None):
     if parameters is None:
         parameters = {}
 
-    binarize = parameters["binarize"] if "binarize" in parameters else True
+    binarize = exec_utils.get_param_value(Parameters.BINARIZE, parameters, True)
 
     comb_list = [var_list[i] + ',' + var_list[i + 1] for i in range(len(var_list) - 1)]
     result = Counter(comb_list)  # count number of occurrence of each element
@@ -67,7 +66,7 @@ def suc_sim(var_list_1, var_list_2, log1, log2, freq_thres, num, parameters=None
     if parameters is None:
         parameters = {}
 
-    single = parameters["single"] if "single" in parameters else False
+    single = exec_utils.get_param_value(Parameters.SINGLE, parameters, False)
 
     if len(var_list_1) >= len(var_list_2):
         max_len = len(var_list_1)
@@ -142,7 +141,7 @@ def suc_sim_dual(var_list_1, var_list_2, log1, log2, freq_thres, num, parameters
     if parameters is None:
         parameters = {}
 
-    single = parameters["single"] if "single" in parameters else False
+    single = exec_utils.get_param_value(Parameters.SINGLE, parameters, False)
 
     if len(var_list_1) >= len(var_list_2):
         max_len = len(var_list_1)

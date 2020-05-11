@@ -7,7 +7,7 @@ from pm4py.algo.filtering.log.end_activities import end_activities_filter
 from pm4py.algo.filtering.log.paths import paths_filter
 from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.algo.filtering.log.variants import variants_filter as variants_module
-from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.statistics.traces.log import case_statistics
 from pm4py.algo.filtering.log.ltl import ltl_checker
 from tests.constants import INPUT_DATA_DIR
@@ -33,8 +33,10 @@ class LogFilteringTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         input_log = os.path.join(INPUT_DATA_DIR, "running-example.xes")
         log = xes_importer.import_log(input_log)
-        log1 = attributes_filter.apply_events(log, ["reject request"], parameters={"positive": True})
-        log2 = attributes_filter.apply_events(log, ["reject request"], parameters={"positive": True})
+        log1 = attributes_filter.apply_events(log, ["reject request"],
+                                              parameters={attributes_filter.Parameters.POSITIVE: True})
+        log2 = attributes_filter.apply_events(log, ["reject request"],
+                                              parameters={attributes_filter.Parameters.POSITIVE: True})
         del log1
         del log2
 
@@ -44,8 +46,10 @@ class LogFilteringTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         input_log = os.path.join(INPUT_DATA_DIR, "running-example.xes")
         log = xes_importer.import_log(input_log)
-        log1 = attributes_filter.apply(log, ["reject request"], parameters={"positive": True})
-        log2 = attributes_filter.apply(log, ["reject request"], parameters={"positive": True})
+        log1 = attributes_filter.apply(log, ["reject request"],
+                                       parameters={attributes_filter.Parameters.POSITIVE: True})
+        log2 = attributes_filter.apply(log, ["reject request"],
+                                       parameters={attributes_filter.Parameters.POSITIVE: True})
         del log1
         del log2
 
@@ -67,10 +71,10 @@ class LogFilteringTest(unittest.TestCase):
         considered_variant = considered_variant + ",examine thoroughly,check ticket,decide,pay compensation"
         log1 = variants_module.apply(log, [
             considered_variant],
-                                     parameters={"positive": False})
+                                     parameters={attributes_filter.Parameters.POSITIVE: False})
         log2 = variants_module.apply(log, [
             considered_variant],
-                                     parameters={"positive": True})
+                                     parameters={attributes_filter.Parameters.POSITIVE: True})
         del log1
         del log2
 
@@ -107,63 +111,66 @@ class LogFilteringTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         input_log = os.path.join(INPUT_DATA_DIR, "running-example.xes")
         log = xes_importer.import_log(input_log)
-        log1 = paths_filter.apply(log, [("examine casually", "check ticket")], {"positive": True})
-        log2 = paths_filter.apply(log, [("examine casually", "check ticket")], {"positive": False})
+        log1 = paths_filter.apply(log, [("examine casually", "check ticket")], {paths_filter.Parameters.POSITIVE: True})
+        log2 = paths_filter.apply(log, [("examine casually", "check ticket")], {paths_filter.Parameters.POSITIVE: False})
         del log1
         del log2
 
     def test_AeventuallyB_pos(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
         filt_A_ev_B_pos = ltl_checker.A_eventually_B(log, "check ticket", "pay compensation",
-                                                     parameters={"positive": True})
+                                                     parameters={ltl_checker.Parameters.POSITIVE: True})
 
     def test_AeventuallyB_neg(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
         filt_A_ev_B_neg = ltl_checker.A_eventually_B(log, "check ticket", "pay compensation",
-                                                     parameters={"positive": False})
+                                                     parameters={ltl_checker.Parameters.POSITIVE: False})
 
     def test_AeventuallyBeventuallyC_pos(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
         filt_A_ev_B_ev_C_pos = ltl_checker.A_eventually_B_eventually_C(log, "check ticket", "decide",
                                                                        "pay compensation",
-                                                                       parameters={"positive": True})
+                                                                       parameters={
+                                                                           ltl_checker.Parameters.POSITIVE: True})
 
     def test_AeventuallyBeventuallyC_neg(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
         filt_A_ev_B_ev_C_neg = ltl_checker.A_eventually_B_eventually_C(log, "check ticket", "decide",
                                                                        "pay compensation",
-                                                                       parameters={"positive": False})
+                                                                       parameters={
+                                                                           ltl_checker.Parameters.POSITIVE: False})
 
     def test_AnextBnextC_pos(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
         filt_A_next_B_next_C_pos = ltl_checker.A_next_B_next_C(log, "check ticket", "decide", "pay compensation",
-                                                               parameters={"positive": True})
+                                                               parameters={ltl_checker.Parameters.POSITIVE: True})
 
     def test_AnextBnextC_neg(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
         filt_A_next_B_next_C_neg = ltl_checker.A_next_B_next_C(log, "check ticket", "decide", "pay compensation",
-                                                               parameters={"positive": False})
+                                                               parameters={ltl_checker.Parameters.POSITIVE: False})
 
     def test_fourEeyesPrinciple_pos(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
         filt_foureyes_pos = ltl_checker.four_eyes_principle(log, "check ticket", "pay compensation",
-                                                            parameters={"positive": True})
+                                                            parameters={ltl_checker.Parameters.POSITIVE: True})
 
     def test_fourEeyesPrinciple_neg(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
         filt_foureyes_neg = ltl_checker.four_eyes_principle(log, "check ticket", "pay compensation",
-                                                            parameters={"positive": False})
+                                                            parameters={ltl_checker.Parameters.POSITIVE: False})
 
     def test_attrValueDifferentPersons_pos(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
         attr_value_different_persons_pos = ltl_checker.attr_value_different_persons(log, "check ticket",
-                                                                                    parameters={"positive": True})
+                                                                                    parameters={
+                                                                                        ltl_checker.Parameters.POSITIVE: True})
 
     def test_attrValueDifferentPersons_neg(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
         attr_value_different_persons_neg = ltl_checker.attr_value_different_persons(log, "check ticket",
-                                                                                    parameters={"positive": False})
-
+                                                                                    parameters={
+                                                                                        ltl_checker.Parameters.POSITIVE: False})
 
 
 if __name__ == "__main__":

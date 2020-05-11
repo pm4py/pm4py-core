@@ -1,0 +1,391 @@
+amount,article,case:concept:name,concept:name,dismissal,expense,lastSent,lifecycle:transition,notificationType,org:resource,paymentAmount,points,time:timestamp,totalPaymentAmount,vehicleClass
+35.0,157.0,N77802,Create Fine,NIL,,,complete,,537,,0.0,2005-03-23 00:00:00+01:00,0.0,A
+,,N77802,Send Fine,,11.0,,complete,,,,,2005-07-22 00:00:00+02:00,,
+36.0,157.0,A17641,Create Fine,NIL,,,complete,,541,,0.0,2007-07-14 00:00:00+02:00,0.0,A
+,,A17641,Payment,,,,complete,,,36.0,,2007-07-16 00:00:00+02:00,36.0,
+35.0,157.0,S106046,Create Fine,NIL,,,complete,,52,,0.0,2006-07-12 00:00:00+02:00,0.0,A
+,,S106046,Send Fine,,11.0,,complete,,,,,2006-12-04 00:00:00+01:00,,
+,,S106046,Insert Fine Notification,,,P,complete,P,,,,2006-12-25 00:00:00+01:00,,
+71.5,,S106046,Add penalty,,,,complete,,,,,2007-02-23 00:00:00+01:00,,
+,,S106046,Payment,,,,complete,,,49.25,,2007-05-28 00:00:00+02:00,49.25,
+,,S106046,Payment,,,,complete,,,33.25,,2007-07-05 00:00:00+02:00,82.5,
+35.0,157.0,N86044,Create Fine,NIL,,,complete,,541,,0.0,2005-10-30 00:00:00+02:00,0.0,A
+,,N86044,Payment,,,,complete,,,35.0,,2005-11-10 00:00:00+01:00,35.0,
+32.0,7.0,S57499,Create Fine,NIL,,,complete,,31,,0.0,2002-04-10 00:00:00+02:00,0.0,A
+,,S57499,Send Fine,,10.0,,complete,,,,,2002-06-10 00:00:00+02:00,,
+33.6,157.0,N67803,Create Fine,NIL,,,complete,,537,,0.0,2004-12-09 00:00:00+01:00,0.0,A
+,,N67803,Send Fine,,11.0,,complete,,,,,2005-04-28 00:00:00+02:00,,
+,,N67803,Insert Fine Notification,,,P,complete,P,,,,2005-05-06 00:00:00+02:00,,
+68.77,,N67803,Add penalty,,,,complete,,,,,2005-07-05 00:00:00+02:00,,
+,,N67803,Send for Credit Collection,,,,complete,,,,,2007-02-28 00:00:00+01:00,,
+65.0,158.0,S73479,Create Fine,NIL,,,complete,,837,,0.0,2002-06-29 00:00:00+02:00,0.0,A
+,,S73479,Send Fine,,10.0,,complete,,,,,2002-07-29 00:00:00+02:00,,
+36.0,157.0,A23741,Create Fine,NIL,,,complete,,550,,0.0,2008-01-14 00:00:00+01:00,0.0,A
+,,A23741,Send Fine,,13.0,,complete,,,,,2008-03-01 00:00:00+01:00,,
+,,A23741,Insert Fine Notification,,,P,complete,P,,,,2008-03-20 00:00:00+01:00,,
+74.0,,A23741,Add penalty,,,,complete,,,,,2008-05-19 00:00:00+02:00,,
+,,A23741,Send for Credit Collection,,,,complete,,,,,2009-03-30 00:00:00+02:00,,
+31.3,7.0,S59734,Create Fine,NIL,,,complete,,811,,0.0,2000-10-22 00:00:00+02:00,0.0,A
+,,S59734,Send Fine,,6.71,,complete,,,,,2000-11-30 00:00:00+01:00,,
+,,S59734,Insert Fine Notification,,,N,complete,P,,,,2001-01-08 00:00:00+01:00,,
+62.59,,S59734,Add penalty,,,,complete,,,,,2001-03-09 00:00:00+01:00,,
+,,S59734,Send for Credit Collection,,,,complete,,,,,2002-04-10 00:00:00+02:00,,
+33.6,157.0,N55940,Create Fine,NIL,,,complete,,536,,0.0,2004-06-21 00:00:00+02:00,0.0,A
+,,N55940,Payment,,,,complete,,,33.6,,2004-06-24 00:00:00+02:00,33.6,
+22.0,7.0,A13415,Create Fine,NIL,,,complete,,550,,0.0,2007-09-12 00:00:00+02:00,0.0,A
+,,A13415,Send Fine,,13.0,,complete,,,,,2007-12-27 00:00:00+01:00,,
+38.0,157.0,A43678,Create Fine,NIL,,,complete,,561,,0.0,2009-06-30 00:00:00+02:00,0.0,A
+,,A43678,Send Fine,,13.5,,complete,,,,,2009-09-25 00:00:00+02:00,,
+,,A43678,Insert Fine Notification,,,P,complete,P,,,,2009-10-01 00:00:00+02:00,,
+77.5,,A43678,Add penalty,,,,complete,,,,,2009-11-30 00:00:00+01:00,,
+,,A43678,Payment,,,,complete,,,51.5,,2009-11-30 00:00:00+01:00,51.5,
+22.0,7.0,A17768,Create Fine,NIL,,,complete,,560,,0.0,2007-07-15 00:00:00+02:00,0.0,A
+,,A17768,Send Fine,,13.0,,complete,,,,,2007-10-31 00:00:00+01:00,,
+32.8,157.0,N38118,Create Fine,NIL,,,complete,,538,,0.0,2001-10-22 00:00:00+02:00,0.0,A
+,,N38118,Send Fine,,6.71,,complete,,,,,2001-11-24 00:00:00+01:00,,
+,,N38118,Insert Fine Notification,,,N,complete,P,,,,2002-01-02 00:00:00+01:00,,
+65.6,,N38118,Add penalty,,,,complete,,,,,2002-03-03 00:00:00+01:00,,
+,,N38118,Send for Credit Collection,,,,complete,,,,,2003-01-10 00:00:00+01:00,,
+38.0,157.0,S127586,Create Fine,NIL,,,complete,,24,,0.0,2009-08-15 00:00:00+02:00,0.0,A
+,,S127586,Payment,,,,complete,,,38.0,,2009-08-17 00:00:00+02:00,38.0,
+65.6,41.0,S60775,Create Fine,A,,,complete,,30,,0.0,2001-07-26 00:00:00+02:00,0.0,A
+,,S60775,Send Fine,,6.71,,complete,,,,,2001-10-18 00:00:00+02:00,,
+38.0,157.0,S138518,Create Fine,NIL,,,complete,,848,,0.0,2009-06-20 00:00:00+02:00,0.0,A
+,,S138518,Send Fine,,13.5,,complete,,,,,2009-09-18 00:00:00+02:00,,
+,,S138518,Insert Fine Notification,,,P,complete,P,,,,2009-10-08 00:00:00+02:00,,
+77.5,,S138518,Add penalty,,,,complete,,,,,2009-12-07 00:00:00+01:00,,
+,,S138518,Send for Credit Collection,,,,complete,,,,,2012-03-26 00:00:00+02:00,,
+32.8,7.0,C13687,Create Fine,NIL,,,complete,,820,,0.0,2001-07-09 00:00:00+02:00,0.0,M
+,,C13687,Send Fine,,0.0,,complete,,,,,2001-07-09 00:00:00+02:00,,
+,,C13687,Insert Fine Notification,,,N,complete,P,,,,2001-07-09 00:00:00+02:00,,
+65.6,,C13687,Add penalty,,,,complete,,,,,2001-09-07 00:00:00+02:00,,
+,,C13687,Send for Credit Collection,,,,complete,,,,,2003-01-10 00:00:00+01:00,,
+65.0,158.0,S71489,Create Fine,NIL,,,complete,,833,,0.0,2002-06-06 00:00:00+02:00,0.0,A
+,,S71489,Send Fine,,10.0,,complete,,,,,2002-09-05 00:00:00+02:00,,
+,,S71489,Insert Fine Notification,,,N,complete,P,,,,2002-09-11 00:00:00+02:00,,
+131.0,,S71489,Add penalty,,,,complete,,,,,2002-11-10 00:00:00+01:00,,
+,,S71489,Send for Credit Collection,,,,complete,,,,,2004-01-10 00:00:00+01:00,,
+24.0,7.0,P5172,Create Fine,NIL,,,complete,,559,,0.0,2012-08-25 00:00:00+02:00,0.0,A
+,,P5172,Send Fine,,30.0,,complete,,,,,2013-02-06 00:00:00+01:00,,
+32.8,7.0,S67541,Create Fine,NIL,,,complete,,839,,0.0,2001-08-05 00:00:00+02:00,0.0,A
+,,S67541,Send Fine,,6.71,,complete,,,,,2001-11-09 00:00:00+01:00,,
+,,S67541,Payment,,,,complete,,,39.51,,2001-12-14 00:00:00+01:00,39.51,
+23.0,181.0,S157468,Create Fine,NIL,,,complete,,858,,0.0,2010-07-31 00:00:00+02:00,0.0,A
+,,S157468,Payment,,,,complete,,,23.0,,2010-08-17 00:00:00+02:00,23.0,
+35.0,7.0,S100992,Create Fine,NIL,,,complete,,49,,0.0,2005-02-01 00:00:00+01:00,0.0,A
+,,S100992,Send Fine,,16.6,,complete,,,,,2005-06-10 00:00:00+02:00,,
+,,S100992,Insert Fine Notification,,,P,complete,P,,,,2005-06-30 00:00:00+02:00,,
+,,S100992,Payment,,,,complete,,,46.0,,2005-08-09 00:00:00+02:00,46.0,
+71.5,,S100992,Add penalty,,,,complete,,,,,2005-08-29 00:00:00+02:00,,
+,,S100992,Payment,,,,complete,,,5.6,,2005-09-09 00:00:00+02:00,51.6,
+24.0,7.0,P716,Create Fine,NIL,,,complete,,559,,0.0,2011-06-21 00:00:00+02:00,0.0,A
+,,P716,Send Fine,,15.0,,complete,,,,,2011-07-26 00:00:00+02:00,,
+,,P716,Insert Fine Notification,,,P,complete,P,,,,2011-10-13 00:00:00+02:00,,
+47.0,,P716,Add penalty,,,,complete,,,,,2011-12-12 00:00:00+01:00,,
+,,P716,Send for Credit Collection,,,,complete,,,,,2013-04-24 00:00:00+02:00,,
+143.0,80.0,C18200,Create Fine,NIL,,,complete,,57,,0.0,2005-09-17 00:00:00+02:00,0.0,A
+,,C18200,Send Fine,,0.0,,complete,,,,,2005-09-17 00:00:00+02:00,,
+,,C18200,Insert Fine Notification,,,C,complete,P,,,,2005-09-17 00:00:00+02:00,,
+286.5,,C18200,Add penalty,,,,complete,,,,,2005-11-16 00:00:00+01:00,,
+,,C18200,Send for Credit Collection,,,,complete,,,,,2007-02-28 00:00:00+01:00,,
+33.6,157.0,N62843,Create Fine,NIL,,,complete,,541,,0.0,2004-08-27 00:00:00+02:00,0.0,A
+,,N62843,Send Fine,,11.0,,complete,,,,,2004-12-24 00:00:00+01:00,,
+,,N62843,Insert Fine Notification,,,P,complete,P,,,,2005-01-08 00:00:00+01:00,,
+,,N62843,Payment,,,,complete,,,33.6,,2005-01-18 00:00:00+01:00,33.6,
+68.77,,N62843,Add penalty,,,,complete,,,,,2005-03-09 00:00:00+01:00,,
+,,N62843,Payment,,,,complete,,,11.0,,2005-06-24 00:00:00+02:00,44.6,
+33.6,7.0,S82710,Create Fine,NIL,,,complete,,45,,0.0,2003-08-03 00:00:00+02:00,0.0,A
+,,S82710,Send Fine,,10.0,,complete,,,,,2003-11-03 00:00:00+01:00,,
+,,S82710,Insert Fine Notification,,,N,complete,P,,,,2003-11-13 00:00:00+01:00,,
+68.77,,S82710,Add penalty,,,,complete,,,,,2004-01-12 00:00:00+01:00,,
+,,S82710,Send for Credit Collection,,,,complete,,,,,2004-12-25 00:00:00+01:00,,
+32.0,7.0,S72997,Create Fine,NIL,,,complete,,825,,0.0,2002-07-17 00:00:00+02:00,0.0,A
+,,S72997,Send Fine,,10.0,,complete,,,,,2002-09-05 00:00:00+02:00,,
+,,S72997,Payment,,,,complete,,,42.0,,2002-09-13 00:00:00+02:00,42.0,
+33.6,157.0,N68169,Create Fine,NIL,,,complete,,541,,0.0,2004-12-03 00:00:00+01:00,0.0,A
+,,N68169,Payment,,,,complete,,,33.6,,2004-12-09 00:00:00+01:00,33.6,
+36.0,157.0,A34570,Create Fine,NIL,,,complete,,565,,0.0,2008-07-26 00:00:00+02:00,0.0,A
+,,A34570,Payment,,,,complete,,,36.0,,2008-08-04 00:00:00+02:00,36.0,
+33.6,157.0,N61259,Create Fine,NIL,,,complete,,554,,0.0,2004-08-08 00:00:00+02:00,0.0,A
+,,N61259,Send Fine,,16.6,,complete,,,,,2004-12-17 00:00:00+01:00,,
+,,N61259,Payment,,,,complete,,,44.6,,2005-01-11 00:00:00+01:00,44.6,
+,,N61259,Insert Fine Notification,,,P,complete,P,,,,2005-01-13 00:00:00+01:00,,
+68.77,,N61259,Add penalty,,,,complete,,,,,2005-03-14 00:00:00+01:00,,
+,,N61259,Payment,,,,complete,,,5.6,,2005-04-04 00:00:00+02:00,50.2,
+71.0,158.0,S114544,Create Fine,NIL,,,complete,,45,,0.0,2006-08-12 00:00:00+02:00,0.0,A
+,,S114544,Payment,,,,complete,,,71.0,,2006-08-21 00:00:00+02:00,71.0,
+137.55,142.0,V10961,Create Fine,NIL,,,complete,,35,,0.0,2003-02-25 00:00:00+01:00,0.0,A
+,,V10961,Send Fine,,10.0,,complete,,,,,2003-05-20 00:00:00+02:00,,
+35.0,157.0,N98851,Create Fine,NIL,,,complete,,541,,0.0,2006-06-25 00:00:00+02:00,0.0,A
+,,N98851,Payment,,,,complete,,,35.0,,2006-06-28 00:00:00+02:00,35.0,
+32.8,157.0,N32179,Create Fine,NIL,,,complete,,548,,0.0,2001-03-12 00:00:00+01:00,0.0,A
+,,N32179,Send Fine,,6.71,,complete,,,,,2001-06-07 00:00:00+02:00,,
+,,N32179,Insert Fine Notification,,,N,complete,P,,,,2001-06-28 00:00:00+02:00,,
+65.6,,N32179,Add penalty,,,,complete,,,,,2001-08-27 00:00:00+02:00,,
+,,N32179,Send for Credit Collection,,,,complete,,,,,2003-01-10 00:00:00+01:00,,
+24.0,7.0,P1616,Create Fine,NIL,,,complete,,537,,0.0,2011-08-07 00:00:00+02:00,0.0,A
+,,P1616,Send Fine,,15.0,,complete,,,,,2011-10-04 00:00:00+02:00,,
+,,P1616,Insert Fine Notification,,,P,complete,P,,,,2011-11-24 00:00:00+01:00,,
+47.0,,P1616,Add penalty,,,,complete,,,,,2012-01-23 00:00:00+01:00,,
+,,P1616,Send for Credit Collection,,,,complete,,,,,2013-04-24 00:00:00+02:00,,
+32.8,7.0,S60957,Create Fine,NIL,,,complete,,813,,0.0,2001-05-07 00:00:00+02:00,0.0,A
+,,S60957,Payment,,,,complete,,,32.8,,2001-05-10 00:00:00+02:00,32.8,
+39.0,7.0,S177357,Create Fine,NIL,,,complete,,53,,0.0,2011-11-15 00:00:00+01:00,0.0,A
+,,S177357,Send Fine,,15.0,,complete,,,,,2012-01-14 00:00:00+01:00,,
+,,S177357,Insert Fine Notification,,,P,complete,P,,,,2012-02-03 00:00:00+01:00,,
+79.5,,S177357,Add penalty,,,,complete,,,,,2012-04-03 00:00:00+02:00,,
+,,S177357,Send for Credit Collection,,,,complete,,,,,2013-04-24 00:00:00+02:00,,
+35.0,157.0,N81159,Create Fine,NIL,,,complete,,559,,0.0,2005-07-21 00:00:00+02:00,0.0,A
+,,N81159,Send Fine,,14.25,,complete,,,,,2005-12-03 00:00:00+01:00,,
+,,N81159,Insert Fine Notification,,,P,complete,P,,,,2005-12-21 00:00:00+01:00,,
+,,N81159,Payment,,,,complete,,,35.0,,2006-02-08 00:00:00+01:00,35.0,
+71.5,,N81159,Add penalty,,,,complete,,,,,2006-02-19 00:00:00+01:00,,
+,,N81159,Payment,,,,complete,,,14.25,,2006-11-21 00:00:00+01:00,49.25,
+33.6,157.0,N61346,Create Fine,NIL,,,complete,,555,,0.0,2004-07-31 00:00:00+02:00,0.0,A
+,,N61346,Send Fine,,11.0,,complete,,,,,2004-12-17 00:00:00+01:00,,
+,,N61346,Insert Fine Notification,,,P,complete,P,,,,2005-01-21 00:00:00+01:00,,
+68.77,,N61346,Add penalty,,,,complete,,,,,2005-03-22 00:00:00+01:00,,
+,,N61346,Send for Credit Collection,,,,complete,,,,,2006-02-28 00:00:00+01:00,,
+38.0,7.0,S132979,Create Fine,NIL,,,complete,,58,,0.0,2009-03-11 00:00:00+01:00,0.0,A
+,,S132979,Payment,,,,complete,,,38.0,,2009-03-25 00:00:00+01:00,38.0,
+39.0,7.0,S168952,Create Fine,NIL,,,complete,,852,,0.0,2011-06-09 00:00:00+02:00,0.0,A
+,,S168952,Send Fine,,15.0,,complete,,,,,2011-07-26 00:00:00+02:00,,
+,,S168952,Insert Fine Notification,,,P,complete,P,,,,2011-10-02 00:00:00+02:00,,
+79.5,,S168952,Add penalty,,,,complete,,,,,2011-12-01 00:00:00+01:00,,
+,,S168952,Send for Credit Collection,,,,complete,,,,,2013-04-24 00:00:00+02:00,,
+21.0,7.0,N73576,Create Fine,NIL,,,complete,,538,,0.0,2005-09-22 00:00:00+02:00,0.0,A
+,,N73576,Send Fine,,14.25,,complete,,,,,2005-12-22 00:00:00+01:00,,
+,,N73576,Insert Fine Notification,,,P,complete,P,,,,2006-01-23 00:00:00+01:00,,
+42.5,,N73576,Add penalty,,,,complete,,,,,2006-03-24 00:00:00+01:00,,
+,,N73576,Send for Credit Collection,,,,complete,,,,,2007-02-28 00:00:00+01:00,,
+39.0,7.0,S163863,Create Fine,NIL,,,complete,,24,,0.0,2012-03-16 00:00:00+01:00,0.0,A
+,,S163863,Send Fine,,15.0,,complete,,,,,2012-04-16 00:00:00+02:00,,
+,,S163863,Insert Fine Notification,,,P,complete,P,,,,2012-04-26 00:00:00+02:00,,
+79.5,,S163863,Add penalty,,,,complete,,,,,2012-06-25 00:00:00+02:00,,
+,,S163863,Payment,,,,complete,,,54.0,,2012-06-26 00:00:00+02:00,54.0,
+36.0,7.0,S125897,Create Fine,NIL,,,complete,,49,,0.0,2008-07-28 00:00:00+02:00,0.0,A
+,,S125897,Payment,,,,complete,,,36.0,,2008-09-12 00:00:00+02:00,36.0,
+68.25,158.0,S84154,Create Fine,NIL,,,complete,,32,,0.0,2003-08-15 00:00:00+02:00,0.0,A
+,,S84154,Send Fine,,10.0,,complete,,,,,2003-11-10 00:00:00+01:00,,
+35.0,157.0,S111357,Create Fine,NIL,,,complete,,824,,0.0,2006-05-05 00:00:00+02:00,0.0,A
+,,S111357,Payment,,,,complete,,,35.0,,2006-05-05 00:00:00+02:00,35.0,
+39.0,157.0,S181181,Create Fine,NIL,,,complete,,63,,0.0,2012-07-03 00:00:00+02:00,0.0,A
+,,S181181,Send Fine,,15.0,,complete,,,,,2012-09-07 00:00:00+02:00,,
+,,S181181,Insert Fine Notification,,,P,complete,P,,,,2012-09-17 00:00:00+02:00,,
+79.5,,S181181,Add penalty,,,,complete,,,,,2012-11-16 00:00:00+01:00,,
+,,S181181,Payment,,,,complete,,,94.5,,2013-01-15 00:00:00+01:00,94.5,
+33.6,157.0,N57174,Create Fine,NIL,,,complete,,538,,0.0,2004-07-05 00:00:00+02:00,0.0,A
+,,N57174,Send Fine,,11.0,,complete,,,,,2004-11-22 00:00:00+01:00,,
+33.6,157.0,N57933,Create Fine,NIL,,,complete,,555,,0.0,2004-07-12 00:00:00+02:00,0.0,A
+,,N57933,Send Fine,,11.0,,complete,,,,,2004-11-23 00:00:00+01:00,,
+,,N57933,Insert Fine Notification,,,P,complete,P,,,,2004-11-30 00:00:00+01:00,,
+,,N57933,Payment,,,,complete,,,33.6,,2004-12-13 00:00:00+01:00,33.6,
+68.77,,N57933,Add penalty,,,,complete,,,,,2005-01-29 00:00:00+01:00,,
+,,N57933,Payment,,,,complete,,,11.0,,2005-06-21 00:00:00+02:00,44.6,
+32.0,142.0,V9832,Create Fine,NIL,,,complete,,25,,0.0,2002-08-27 00:00:00+02:00,0.0,A
+,,V9832,Send Fine,,10.0,,complete,,,,,2002-10-25 00:00:00+02:00,,
+,,V9832,Insert Fine Notification,,,N,complete,P,,,,2002-10-31 00:00:00+01:00,,
+65.5,,V9832,Add penalty,,,,complete,,,,,2002-12-30 00:00:00+01:00,,
+,,V9832,Send for Credit Collection,,,,complete,,,,,2004-01-10 00:00:00+01:00,,
+32.8,157.0,S58927,Create Fine,NIL,,,complete,,704,,0.0,2001-02-08 00:00:00+01:00,0.0,A
+,,S58927,Send Fine,,17.04,,complete,,,,,2001-07-04 00:00:00+02:00,,
+,,S58927,Insert Fine Notification,,,N,complete,P,,,,2001-07-30 00:00:00+02:00,,
+65.6,,S58927,Add penalty,,,,complete,,,,,2001-09-28 00:00:00+02:00,,
+,,S58927,Send for Credit Collection,,,,complete,,,,,2003-01-10 00:00:00+01:00,,
+148.0,142.0,V18195,Create Fine,NIL,,,complete,,29,,5.0,2008-12-23 00:00:00+01:00,0.0,A
+,,V18195,Send Fine,,26.0,,complete,,,,,2009-05-12 00:00:00+02:00,,
+,,V18195,Insert Fine Notification,,,P,complete,P,,,,2009-05-20 00:00:00+02:00,,
+,,V18195,Insert Date Appeal to Prefecture,,,,complete,,,,,2009-06-22 00:00:00+02:00,,
+297.0,,V18195,Add penalty,,,,complete,,,,,2009-07-19 00:00:00+02:00,,
+,,V18195,Send Appeal to Prefecture,NIL,,,complete,,,,,2009-08-10 00:00:00+02:00,,
+,,V18195,Receive Result Appeal from Prefecture,,,,complete,,,,,2009-10-08 00:00:00+02:00,,
+,,V18195,Notify Result Appeal to Offender,,,,complete,,,,,2009-10-12 00:00:00+02:00,,
+,,V18195,Payment,,,,complete,,,174.0,,2009-10-29 00:00:00+01:00,174.0,
+35.0,157.0,N74729,Create Fine,NIL,,,complete,,552,,0.0,2005-05-30 00:00:00+02:00,0.0,A
+,,N74729,Send Fine,,14.25,,complete,,,,,2005-09-21 00:00:00+02:00,,
+,,N74729,Insert Fine Notification,,,P,complete,P,,,,2005-09-30 00:00:00+02:00,,
+71.5,,N74729,Add penalty,,,,complete,,,,,2005-11-29 00:00:00+01:00,,
+,,N74729,Payment,,,,complete,,,49.25,,2005-12-05 00:00:00+01:00,49.25,
+,,N74729,Payment,,,,complete,,,36.5,,2006-01-10 00:00:00+01:00,85.75,
+35.0,157.0,N98199,Create Fine,NIL,,,complete,,560,,0.0,2006-06-06 00:00:00+02:00,0.0,A
+,,N98199,Payment,,,,complete,,,35.0,,2006-06-15 00:00:00+02:00,35.0,
+38.0,157.0,A43990,Create Fine,NIL,,,complete,,541,,0.0,2009-08-11 00:00:00+02:00,0.0,A
+,,A43990,Send Fine,,13.5,,complete,,,,,2009-12-17 00:00:00+01:00,,
+,,A43990,Insert Fine Notification,,,P,complete,P,,,,2009-12-28 00:00:00+01:00,,
+77.5,,A43990,Add penalty,,,,complete,,,,,2010-02-26 00:00:00+01:00,,
+,,A43990,Send for Credit Collection,,,,complete,,,,,2012-03-26 00:00:00+02:00,,
+71.0,158.0,S115977,Create Fine,NIL,,,complete,,53,,0.0,2006-09-01 00:00:00+02:00,0.0,A
+,,S115977,Send Fine,,11.0,,complete,,,,,2006-12-15 00:00:00+01:00,,
+,,S115977,Insert Fine Notification,,,P,complete,P,,,,2006-12-30 00:00:00+01:00,,
+143.0,,S115977,Add penalty,,,,complete,,,,,2007-02-28 00:00:00+01:00,,
+,,S115977,Payment,,,,complete,,,82.0,,2007-04-18 00:00:00+02:00,82.0,
+,,S115977,Payment,,,,complete,,,72.0,,2007-05-26 00:00:00+02:00,154.0,
+32.8,7.0,S63516,Create Fine,NIL,,,complete,,834,,0.0,2001-07-01 00:00:00+02:00,0.0,A
+,,S63516,Send Fine,,6.71,,complete,,,,,2001-08-27 00:00:00+02:00,,
+,,S63516,Insert Fine Notification,,,N,complete,P,,,,2001-09-14 00:00:00+02:00,,
+65.6,,S63516,Add penalty,,,,complete,,,,,2001-11-13 00:00:00+01:00,,
+,,S63516,Send for Credit Collection,,,,complete,,,,,2003-01-10 00:00:00+01:00,,
+36.0,157.0,A10466,Create Fine,NIL,,,complete,,558,,0.0,2007-03-19 00:00:00+01:00,0.0,A
+,,A10466,Send Fine,,13.0,,complete,,,,,2007-07-17 00:00:00+02:00,,
+,,A10466,Insert Fine Notification,,,P,complete,P,,,,2007-07-25 00:00:00+02:00,,
+74.0,,A10466,Add penalty,,,,complete,,,,,2007-09-23 00:00:00+02:00,,
+,,A10466,Send for Credit Collection,,,,complete,,,,,2009-03-30 00:00:00+02:00,,
+24.0,7.0,P990,Create Fine,NIL,,,complete,,538,,0.0,2011-07-16 00:00:00+02:00,0.0,A
+,,P990,Send Fine,,15.0,,complete,,,,,2011-09-09 00:00:00+02:00,,
+,,P990,Insert Fine Notification,,,P,complete,P,,,,2011-09-23 00:00:00+02:00,,
+47.0,,P990,Add penalty,,,,complete,,,,,2011-11-22 00:00:00+01:00,,
+,,P990,Payment,,,,complete,,,39.0,,2011-12-31 00:00:00+01:00,39.0,
+,,P990,Payment,,,,complete,,,23.0,,2012-11-07 00:00:00+01:00,62.0,
+33.6,157.0,N58044,Create Fine,NIL,,,complete,,556,,0.0,2004-07-10 00:00:00+02:00,0.0,A
+,,N58044,Send Fine,,16.6,,complete,,,,,2004-11-23 00:00:00+01:00,,
+,,N58044,Insert Fine Notification,,,P,complete,P,,,,2004-12-16 00:00:00+01:00,,
+68.77,,N58044,Add penalty,,,,complete,,,,,2005-02-14 00:00:00+01:00,,
+,,N58044,Send for Credit Collection,,,,complete,,,,,2006-02-28 00:00:00+01:00,,
+31.3,157.0,S45359,Create Fine,NIL,,,complete,,33,,0.0,2000-03-15 00:00:00+01:00,0.0,A
+,,S45359,Send Fine,,6.46,,complete,,,,,2000-04-16 00:00:00+02:00,,
+,,S45359,Insert Fine Notification,,,N,complete,P,,,,2000-05-25 00:00:00+02:00,,
+62.59,,S45359,Add penalty,,,,complete,,,,,2000-07-24 00:00:00+02:00,,
+,,S45359,Send for Credit Collection,,,,complete,,,,,2002-04-10 00:00:00+02:00,,
+36.0,158.0,A16409,Create Fine,NIL,,,complete,,562,,0.0,2007-06-20 00:00:00+02:00,0.0,A
+,,A16409,Send Fine,,13.0,,complete,,,,,2007-08-22 00:00:00+02:00,,
+,,A16409,Insert Fine Notification,,,P,complete,P,,,,2007-08-30 00:00:00+02:00,,
+74.0,,A16409,Add penalty,,,,complete,,,,,2007-10-29 00:00:00+01:00,,
+,,A16409,Send for Credit Collection,,,,complete,,,,,2009-03-30 00:00:00+02:00,,
+125.19,142.0,V5222,Create Fine,NIL,,,complete,,30,,0.0,2000-06-10 00:00:00+02:00,0.0,A
+,,V5222,Send Fine,,11.41,,complete,,,,,2000-07-27 00:00:00+02:00,,
+,,V5222,Insert Fine Notification,,,N,complete,P,,,,2000-09-20 00:00:00+02:00,,
+250.38,,V5222,Add penalty,,,,complete,,,,,2000-11-19 00:00:00+01:00,,
+,,V5222,Send for Credit Collection,,,,complete,,,,,2002-04-10 00:00:00+02:00,,
+138.0,146.0,C18702,Create Fine,NIL,,,complete,,40,,6.0,2006-07-14 00:00:00+02:00,0.0,A
+,,C18702,Send Fine,,0.0,,complete,,,,,2006-07-14 00:00:00+02:00,,
+,,C18702,Insert Fine Notification,,,C,complete,P,,,,2006-07-14 00:00:00+02:00,,
+275.0,,C18702,Add penalty,,,,complete,,,,,2006-09-12 00:00:00+02:00,,
+,,C18702,Payment,,,,complete,,,275.0,,2007-05-08 00:00:00+02:00,275.0,
+33.6,7.0,S93300,Create Fine,NIL,,,complete,,58,,0.0,2004-07-10 00:00:00+02:00,0.0,A
+,,S93300,Send Fine,,11.0,,complete,,,,,2004-11-10 00:00:00+01:00,,
+,,S93300,Insert Fine Notification,,,P,complete,P,,,,2004-11-18 00:00:00+01:00,,
+68.77,,S93300,Add penalty,,,,complete,,,,,2005-01-17 00:00:00+01:00,,
+,,S93300,Send for Credit Collection,,,,complete,,,,,2006-02-28 00:00:00+01:00,,
+35.0,157.0,N76661,Create Fine,NIL,,,complete,,557,,0.0,2005-07-10 00:00:00+02:00,0.0,A
+,,N76661,Send Fine,,11.0,,complete,,,,,2005-12-02 00:00:00+01:00,,
+35.0,7.0,A182,Create Fine,NIL,,,complete,,541,,0.0,2006-08-06 00:00:00+02:00,0.0,A
+,,A182,Send Fine,,11.0,,complete,,,,,2006-12-13 00:00:00+01:00,,
+,,A182,Insert Fine Notification,,,P,complete,P,,,,2007-01-05 00:00:00+01:00,,
+71.5,,A182,Add penalty,,,,complete,,,,,2007-03-06 00:00:00+01:00,,
+,,A182,Payment,,,,complete,,,82.5,,2007-11-19 00:00:00+01:00,82.5,
+39.0,7.0,C22944,Create Fine,NIL,,,complete,,63,,0.0,2012-04-21 00:00:00+02:00,0.0,A
+,,C22944,Send Fine,,0.0,,complete,,,,,2012-04-21 00:00:00+02:00,,
+,,C22944,Insert Fine Notification,,,C,complete,P,,,,2012-04-21 00:00:00+02:00,,
+79.5,,C22944,Add penalty,,,,complete,,,,,2012-06-20 00:00:00+02:00,,
+,,C22944,Payment,,,,complete,,,79.5,,2012-10-23 00:00:00+02:00,79.5,
+21.0,7.0,N91722,Create Fine,NIL,,,complete,,537,,0.0,2006-04-18 00:00:00+02:00,0.0,A
+,,N91722,Send Fine,,11.0,,complete,,,,,2006-08-17 00:00:00+02:00,,
+,,N91722,Insert Fine Notification,,,P,complete,P,,,,2006-08-25 00:00:00+02:00,,
+42.5,,N91722,Add penalty,,,,complete,,,,,2006-10-24 00:00:00+02:00,,
+,,N91722,Payment,,,,complete,,,53.5,,2007-11-28 00:00:00+01:00,53.5,
+80.0,158.0,S173060,Create Fine,NIL,,,complete,,848,,0.0,2011-08-25 00:00:00+02:00,0.0,A
+,,S173060,Send Fine,,15.0,,complete,,,,,2011-10-24 00:00:00+02:00,,
+,,S173060,Insert Fine Notification,,,P,complete,P,,,,2011-11-21 00:00:00+01:00,,
+159.0,,S173060,Add penalty,,,,complete,,,,,2012-01-20 00:00:00+01:00,,
+,,S173060,Payment,,,,complete,,,174.0,,2012-11-29 00:00:00+01:00,174.0,
+32.0,158.0,S75551,Create Fine,NIL,,,complete,,821,,0.0,2002-07-21 00:00:00+02:00,0.0,A
+,,S75551,Send Fine,,15.16,,complete,,,,,2002-09-05 00:00:00+02:00,,
+,,S75551,Insert Fine Notification,,,N,complete,P,,,,2002-09-20 00:00:00+02:00,,
+65.5,,S75551,Add penalty,,,,complete,,,,,2002-11-19 00:00:00+01:00,,
+,,S75551,Send for Credit Collection,,,,complete,,,,,2004-01-10 00:00:00+01:00,,
+137.55,142.0,V11342,Create Fine,NIL,,,complete,,30,,0.0,2003-04-01 00:00:00+02:00,0.0,A
+,,V11342,Send Fine,,10.0,,complete,,,,,2003-05-20 00:00:00+02:00,,
+35.0,157.0,N79305,Create Fine,NIL,,,complete,,558,,0.0,2005-04-07 00:00:00+02:00,0.0,A
+,,N79305,Payment,,,,complete,,,35.0,,2005-04-12 00:00:00+02:00,35.0,
+38.0,7.0,S139983,Create Fine,NIL,,,complete,,49,,0.0,2009-07-11 00:00:00+02:00,0.0,A
+,,S139983,Payment,,,,complete,,,38.0,,2009-07-15 00:00:00+02:00,38.0,
+39.0,7.0,S171178,Create Fine,NIL,,,complete,,26,,0.0,2011-07-24 00:00:00+02:00,0.0,A
+,,S171178,Payment,,,,complete,,,39.0,,2011-07-24 00:00:00+02:00,39.0,
+36.0,157.0,A14816,Create Fine,NIL,,,complete,,559,,0.0,2007-07-02 00:00:00+02:00,0.0,A
+,,A14816,Send Fine,,13.0,,complete,,,,,2007-09-29 00:00:00+02:00,,
+,,A14816,Insert Fine Notification,,,P,complete,P,,,,2007-10-12 00:00:00+02:00,,
+74.0,,A14816,Add penalty,,,,complete,,,,,2007-12-11 00:00:00+01:00,,
+,,A14816,Send for Credit Collection,,,,complete,,,,,2009-03-30 00:00:00+02:00,,
+22.0,181.0,S132229,Create Fine,NIL,,,complete,,56,,0.0,2008-12-23 00:00:00+01:00,0.0,A
+,,S132229,Send Fine,,0.0,,complete,,,,,2009-01-28 00:00:00+01:00,,
+,,S132229,Insert Fine Notification,,,,complete,P,,,,2009-01-28 00:00:00+01:00,,
+44.0,,S132229,Add penalty,,,,complete,,,,,2009-03-29 00:00:00+01:00,,
+,,S132229,Send for Credit Collection,,,,complete,,,,,2010-10-15 00:00:00+02:00,,
+32.8,157.0,N33329,Create Fine,I,,,complete,,538,,0.0,2001-04-02 00:00:00+02:00,0.0,A
+,,N33329,Send Fine,,6.71,,complete,,,,,2001-06-07 00:00:00+02:00,,
+33.6,7.0,S83371,Create Fine,NIL,,,complete,,52,,0.0,2003-08-15 00:00:00+02:00,0.0,A
+,,S83371,Payment,,,,complete,,,33.6,,2003-08-18 00:00:00+02:00,33.6,
+21.0,7.0,N74006,Create Fine,NIL,,,complete,,555,,0.0,2005-05-10 00:00:00+02:00,0.0,A
+,,N74006,Send Fine,,14.25,,complete,,,,,2005-09-17 00:00:00+02:00,,
+,,N74006,Insert Fine Notification,,,P,complete,P,,,,2005-10-05 00:00:00+02:00,,
+42.5,,N74006,Add penalty,,,,complete,,,,,2005-12-04 00:00:00+01:00,,
+,,N74006,Send for Credit Collection,,,,complete,,,,,2007-02-28 00:00:00+01:00,,
+31.3,157.0,N29297,Create Fine,NIL,,,complete,,536,,0.0,2000-09-28 00:00:00+02:00,0.0,A
+,,N29297,Send Fine,,6.71,,complete,,,,,2000-11-10 00:00:00+01:00,,
+,,N29297,Insert Fine Notification,,,N,complete,P,,,,2000-12-02 00:00:00+01:00,,
+62.59,,N29297,Add penalty,,,,complete,,,,,2001-01-31 00:00:00+01:00,,
+,,N29297,Send for Credit Collection,,,,complete,,,,,2002-04-10 00:00:00+02:00,,
+32.0,157.0,S77408,Create Fine,NIL,,,complete,,820,,0.0,2002-08-19 00:00:00+02:00,0.0,A
+,,S77408,Send Fine,,10.0,,complete,,,,,2002-10-25 00:00:00+02:00,,
+,,S77408,Insert Fine Notification,,,N,complete,P,,,,2002-10-31 00:00:00+01:00,,
+65.5,,S77408,Add penalty,,,,complete,,,,,2002-12-30 00:00:00+01:00,,
+,,S77408,Send for Credit Collection,,,,complete,,,,,2004-01-10 00:00:00+01:00,,
+35.0,157.0,N78482,Create Fine,NIL,,,complete,,536,,0.0,2005-09-08 00:00:00+02:00,0.0,A
+,,N78482,Send Fine,,11.0,,complete,,,,,2005-12-22 00:00:00+01:00,,
+35.0,157.0,N74075,Create Fine,NIL,,,complete,,555,,0.0,2005-05-13 00:00:00+02:00,0.0,A
+,,N74075,Payment,,,,complete,,,35.0,,2005-05-19 00:00:00+02:00,35.0,
+22.0,7.0,A19204,Create Fine,NIL,,,complete,,560,,0.0,2007-06-08 00:00:00+02:00,0.0,A
+,,A19204,Send Fine,,13.0,,complete,,,,,2007-09-13 00:00:00+02:00,,
+,,A19204,Insert Fine Notification,,,P,complete,P,,,,2007-10-03 00:00:00+02:00,,
+44.0,,A19204,Add penalty,,,,complete,,,,,2007-12-02 00:00:00+01:00,,
+,,A19204,Send for Credit Collection,,,,complete,,,,,2009-03-30 00:00:00+02:00,,
+35.0,157.0,N77682,Create Fine,NIL,,,complete,,541,,0.0,2005-03-27 00:00:00+01:00,0.0,A
+,,N77682,Send Fine,,11.0,,complete,,,,,2005-07-23 00:00:00+02:00,,
+78.0,158.0,S153533,Create Fine,NIL,,,complete,,850,,0.0,2010-06-29 00:00:00+02:00,0.0,A
+,,S153533,Payment,,,,complete,,,78.0,,2010-07-05 00:00:00+02:00,78.0,
+32.8,7.0,S61365,Create Fine,NIL,,,complete,,818,,0.0,2001-05-11 00:00:00+02:00,0.0,A
+,,S61365,Send Fine,,11.88,,complete,,,,,2001-07-04 00:00:00+02:00,,
+,,S61365,Payment,,,,complete,,,44.68,,2001-07-23 00:00:00+02:00,44.68,
+38.0,7.0,S150741,Create Fine,NIL,,,complete,,850,,0.0,2010-05-03 00:00:00+02:00,0.0,A
+,,S150741,Send Fine,,13.5,,complete,,,,,2010-08-20 00:00:00+02:00,,
+,,S150741,Insert Fine Notification,,,P,complete,P,,,,2010-09-06 00:00:00+02:00,,
+77.5,,S150741,Add penalty,,,,complete,,,,,2010-11-05 00:00:00+01:00,,
+,,S150741,Send for Credit Collection,,,,complete,,,,,2012-03-26 00:00:00+02:00,,
+33.6,157.0,N47046,Create Fine,NIL,,,complete,,538,,0.0,2003-01-22 00:00:00+01:00,0.0,A
+,,N47046,Send Fine,,15.16,,complete,,,,,2003-05-20 00:00:00+02:00,,
+,,N47046,Insert Fine Notification,,,N,complete,P,,,,2003-05-28 00:00:00+02:00,,
+68.77,,N47046,Add penalty,,,,complete,,,,,2003-07-27 00:00:00+02:00,,
+,,N47046,Payment,,,,complete,,,53.6,,2003-08-21 00:00:00+02:00,53.6,
+,,N47046,Payment,,,,complete,,,30.33,,2003-10-22 00:00:00+02:00,83.93,
+32.8,157.0,N36957,Create Fine,NIL,,,complete,,537,,0.0,2001-10-02 00:00:00+02:00,0.0,A
+,,N36957,Payment,,,,complete,,,32.8,,2001-10-05 00:00:00+02:00,32.8,
+,,N36957,Send Fine,,6.71,,complete,,,,,2001-11-24 00:00:00+01:00,,
+36.0,157.0,A26153,Create Fine,NIL,,,complete,,537,,0.0,2008-01-24 00:00:00+01:00,0.0,A
+,,A26153,Send Fine,,13.0,,complete,,,,,2008-03-01 00:00:00+01:00,,
+36.0,157.0,S126332,Create Fine,NIL,,,complete,,26,,0.0,2008-07-20 00:00:00+02:00,0.0,A
+,,S126332,Payment,,,,complete,,,36.0,,2008-08-01 00:00:00+02:00,36.0,
+32.8,171.0,S70308,Create Fine,NIL,,,complete,,820,,0.0,2001-09-26 00:00:00+02:00,0.0,M
+,,S70308,Send Fine,,11.87,,complete,,,,,2001-12-22 00:00:00+01:00,,
+,,S70308,Insert Fine Notification,,,N,complete,P,,,,2002-01-11 00:00:00+01:00,,
+65.6,,S70308,Add penalty,,,,complete,,,,,2002-03-12 00:00:00+01:00,,
+,,S70308,Send for Credit Collection,,,,complete,,,,,2003-01-10 00:00:00+01:00,,
+36.0,157.0,S125404,Create Fine,NIL,,,complete,,50,,0.0,2008-06-12 00:00:00+02:00,0.0,A
+,,S125404,Send Fine,,13.0,,complete,,,,,2008-07-30 00:00:00+02:00,,
+,,S125404,Insert Fine Notification,,,P,complete,P,,,,2008-08-06 00:00:00+02:00,,
+74.0,,S125404,Add penalty,,,,complete,,,,,2008-10-05 00:00:00+02:00,,
+,,S125404,Payment,,,,complete,,,87.0,,2009-07-15 00:00:00+02:00,87.0,
+32.8,158.0,S68119,Create Fine,NIL,,,complete,,16,,0.0,2001-12-13 00:00:00+01:00,0.0,A
+,,S68119,Send Fine,,6.71,,complete,,,,,2001-12-31 00:00:00+01:00,,
+,,S68119,Payment,,,,complete,,,39.51,,2002-01-15 00:00:00+01:00,39.51,
+36.0,157.0,A18477,Create Fine,NIL,,,complete,,556,,0.0,2007-07-12 00:00:00+02:00,0.0,A
+,,A18477,Send Fine,,13.0,,complete,,,,,2007-10-31 00:00:00+01:00,,
+,,A18477,Insert Fine Notification,,,P,complete,P,,,,2007-11-19 00:00:00+01:00,,
+74.0,,A18477,Add penalty,,,,complete,,,,,2008-01-18 00:00:00+01:00,,
+,,A18477,Payment,,,,complete,,,87.0,,2008-09-18 00:00:00+02:00,87.0,
+36.0,157.0,S125452,Create Fine,NIL,,,complete,,53,,0.0,2008-06-13 00:00:00+02:00,0.0,A
+,,S125452,Payment,,,,complete,,,36.0,,2008-07-19 00:00:00+02:00,36.0,
+125.19,142.0,V6627,Create Fine,NIL,,,complete,,36,,0.0,2000-09-05 00:00:00+02:00,0.0,A
+,,V6627,Send Fine,,6.71,,complete,,,,,2000-11-10 00:00:00+01:00,,
+,,V6627,Insert Fine Notification,,,N,complete,P,,,,2000-12-19 00:00:00+01:00,,
+250.38,,V6627,Add penalty,,,,complete,,,,,2001-02-17 00:00:00+01:00,,
+,,V6627,Send for Credit Collection,,,,complete,,,,,2002-04-10 00:00:00+02:00,,

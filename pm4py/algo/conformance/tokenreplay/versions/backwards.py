@@ -1,9 +1,28 @@
-from pm4py.algo.filtering.log.variants import variants_filter
+from pm4py.statistics.variants.log import get as variants_filter
 from pm4py.objects.petri.semantics import is_enabled, weak_execute
 from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
 from copy import copy
 from pm4py.objects.petri.petrinet import Marking
 from collections import Counter
+from pm4py.util import exec_utils, constants
+from enum import Enum
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+    VARIANTS = "variants"
+    PLACES_SHORTEST_PATH_BY_HIDDEN = "places_shortest_path_by_hidden"
+    THREAD_MAX_EX_TIME = "thread_maximum_ex_time"
+    DISABLE_VARIANTS = "disable_variants"
+    CLEANING_TOKEN_FLOOD = "cleaning_token_flood"
+    IS_REDUCTION = "is_reduction"
+    WALK_THROUGH_HIDDEN_TRANS = "walk_through_hidden_trans"
+    RETURN_NAMES = "return_names"
+    STOP_IMMEDIATELY_UNFIT = "stop_immediately_unfit"
+    TRY_TO_REACH_FINAL_MARKING_THROUGH_HIDDEN = "try_to_reach_final_marking_through_hidden"
+    CONSIDER_REMAINING_IN_FITNESS = "consider_remaining_in_fitness"
+    ENABLE_PLTR_FITNESS = "enable_pltr_fitness"
 
 
 def get_bmap(net, m, bmap):
@@ -149,7 +168,7 @@ def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
     if parameters is None:
         parameters = {}
 
-    stop_immediately_unfit = parameters["stop_immediately_unfit"] if "stop_immediately_unfit" in parameters else False
+    stop_immediately_unfit = exec_utils.get_param_value(Parameters.STOP_IMMEDIATELY_UNFIT, parameters, False)
 
     m = copy(im)
     tokens_counter = Counter()
@@ -215,17 +234,17 @@ def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
         tokens_counter["consumed"] += m[p]
 
     trace_fitness = 0.5 * (1.0 - float(tokens_counter["missing"]) / float(tokens_counter["consumed"])) + 0.5 * (
-                1.0 - float(tokens_counter["remaining"]) / float(tokens_counter["produced"]))
+            1.0 - float(tokens_counter["remaining"]) / float(tokens_counter["produced"]))
 
     enabled_transitions_in_marking = get_visible_transitions_eventually_enabled_by_marking(net, m)
 
     return {"activated_transitions": visited_transitions, "trace_is_fit": is_fit,
             "replay_interrupted": replay_interrupted, "transitions_with_problems": transitions_with_problems,
             "activated_transitions_labels": [x.label for x in visited_transitions],
-                            "missing_tokens": tokens_counter["missing"],
-                            "consumed_tokens": tokens_counter["consumed"],
-                            "produced_tokens": tokens_counter["produced"],
-                            "remaining_tokens": tokens_counter["remaining"], "trace_fitness": trace_fitness,
+            "missing_tokens": tokens_counter["missing"],
+            "consumed_tokens": tokens_counter["consumed"],
+            "produced_tokens": tokens_counter["produced"],
+            "remaining_tokens": tokens_counter["remaining"], "trace_fitness": trace_fitness,
             "enabled_transitions_in_marking": enabled_transitions_in_marking}
 
 

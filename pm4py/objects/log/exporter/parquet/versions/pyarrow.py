@@ -3,6 +3,15 @@ import pyarrow.parquet as pq
 import os
 import shutil
 from pm4py.objects.log.util import dataframe_utils
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    COMPRESSION = "compression"
+    PARTITION_COLS = "partition_cols"
+    AUTO_PARTITIONING = "auto_partitioning"
+    NUM_PARTITIONS = "num_partitions"
 
 
 def apply(df, path, parameters=None):
@@ -16,15 +25,19 @@ def apply(df, path, parameters=None):
     path
         Path
     parameters
-        Possible parameters of the algorithm
+        Possible parameters of the algorithm:
+            - Parameters.COMPRESSION
+            - Parameters.PARTITION_COLS
+            - Parameters.AUTO_PARTITIONING
+            - Parameters.NUM_PARTITIONS
     """
     if parameters is None:
         parameters = {}
 
-    compression = parameters["compression"] if "compression" in parameters else "snappy"
-    partition_cols = parameters["partition_cols"] if "partition_cols" in parameters else None
-    auto_partitioning = parameters["auto_partitioning"] if "auto_partitioning" in parameters else False
-    num_partitions = parameters["num_partitions"] if "num_partitions" in parameters else 128
+    compression = exec_utils.get_param_value(Parameters.COMPRESSION, parameters, "snappy")
+    partition_cols = exec_utils.get_param_value(Parameters.PARTITION_COLS, parameters, None)
+    auto_partitioning = exec_utils.get_param_value(Parameters.AUTO_PARTITIONING, parameters, False)
+    num_partitions = exec_utils.get_param_value(Parameters.NUM_PARTITIONS, parameters, 128)
 
     if partition_cols is None and auto_partitioning:
         df = dataframe_utils.insert_partitioning(df, num_partitions, parameters=parameters)

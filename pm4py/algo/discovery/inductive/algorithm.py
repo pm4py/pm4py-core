@@ -1,28 +1,17 @@
 from pm4py.algo.discovery.inductive.versions.dfg import dfg_based_old, dfg_based
+from enum import Enum
+from pm4py.util import exec_utils
 
-DFG_BASED_OLD_VERSION = 'dfg_based_old_version'
-DFG_BASED = 'dfg_based'
 
+class Variants(Enum):
+    DFG_BASED = dfg_based
+
+
+DFG_BASED = Variants.DFG_BASED
 DEFAULT_VARIANT = DFG_BASED
 DEFAULT_VARIANT_DFG = DFG_BASED
 
-# these versions apply on an EventLog object. Specific conversions are done when needed
-# to extract an accepting Petri net
-VERSIONS = {DFG_BASED: dfg_based.apply, DFG_BASED_OLD_VERSION: dfg_based_old.apply}
-# these versions apply on a DFG (dictionary of directly-follows relations along with their count)
-# to extract an accepting Petri net
-VERSIONS_DFG = {DFG_BASED: dfg_based.apply_dfg, DFG_BASED_OLD_VERSION: dfg_based_old.apply_dfg}
-# these versions apply on an EventLog object. Specific conversions are done when needed
-# to extract a process tree
-VERSIONS_TREE = {DFG_BASED: dfg_based.apply_tree, DFG_BASED_OLD_VERSION: dfg_based_old.apply_tree}
-# these versions apply on a DFG (dictionary of directly-follows relations along with their count)
-# to extract a process tree
-VERSIONS_TREE_DFG = {DFG_BASED: dfg_based.apply_tree_dfg, DFG_BASED_OLD_VERSION: dfg_based_old.apply_tree_dfg}
-# these versions apply on a dictionary/list/set of variants to extract an accepting Petri net
-VERSIONS_VARIANTS = {DFG_BASED: dfg_based.apply_variants, DFG_BASED_OLD_VERSION: dfg_based_old.apply_variants}
-# these versions apply on a dictionary/list/set of variants to extract a process tree
-VERSIONS_TREE_VARIANTS = {DFG_BASED: dfg_based.apply_tree_variants,
-                          DFG_BASED_OLD_VERSION: dfg_based_old.apply_tree_variants}
+VERSIONS = {Variants.DFG_BASED}
 
 
 def apply(log, parameters=None, variant=DEFAULT_VARIANT):
@@ -35,11 +24,10 @@ def apply(log, parameters=None, variant=DEFAULT_VARIANT):
         Log
     variant
         Variant of the algorithm to apply, possible values:
-        - dfg_based: the latest version of the DFG-based algorithm
-        - dfg_based_old_version: the previous version of the DFG-based algorithm
+        - Variants.DFG_BASED
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -51,7 +39,7 @@ def apply(log, parameters=None, variant=DEFAULT_VARIANT):
     final_marking
         Final marking
     """
-    return VERSIONS[variant](log, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(log, parameters=parameters)
 
 
 def apply_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
@@ -64,11 +52,10 @@ def apply_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
         Directly-Follows graph
     variant
         Variant of the algorithm to apply, possible values:
-        - dfg_based: the latest version of the DFG-based algorithm
-        - dfg_based_old_version: the previous version of the DFG-based algorithm
+        - Variants.DFG_BASED
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -80,7 +67,7 @@ def apply_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
     final_marking
         Final marking
     """
-    return VERSIONS_DFG[variant](dfg, parameters=parameters)
+    return exec_utils.get_variant(variant).apply_dfg(dfg, parameters=parameters)
 
 
 def apply_tree(log, parameters=None, variant=DEFAULT_VARIANT):
@@ -93,11 +80,10 @@ def apply_tree(log, parameters=None, variant=DEFAULT_VARIANT):
         Log
     variant
         Variant of the algorithm to apply, possible values:
-        - dfg_based: the latest version of the DFG-based algorithm
-        - dfg_based_old_version: the previous version of the DFG-based algorithm
+        - Variants.DFG_BASED
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -105,7 +91,7 @@ def apply_tree(log, parameters=None, variant=DEFAULT_VARIANT):
     tree
         Process tree
     """
-    return VERSIONS_TREE[variant](log, parameters=parameters)
+    return exec_utils.get_variant(variant).apply_tree(log, parameters=parameters)
 
 
 def apply_tree_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
@@ -118,11 +104,10 @@ def apply_tree_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
         Directly-follows graph
     variant
         Variant of the algorithm to apply, possible values:
-        - dfg_based: the latest version of the DFG-based algorithm
-        - dfg_based_old_version: the previous version of the DFG-based algorithm
+        - Variants.DFG_BASED
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -130,7 +115,7 @@ def apply_tree_dfg(dfg, parameters=None, variant=DEFAULT_VARIANT_DFG):
     tree
         Process tree
     """
-    return VERSIONS_TREE_DFG[variant](dfg, parameters=parameters)
+    return exec_utils.get_variant(variant).apply_tree_dfg(dfg, parameters=parameters)
 
 
 def apply_variants(variants, parameters=None, variant=DEFAULT_VARIANT):
@@ -141,14 +126,13 @@ def apply_variants(variants, parameters=None, variant=DEFAULT_VARIANT):
     -----------
     variants
         Dictionary/list/set of variants in the log
-    parameters
-        Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
-            (default concept:name)
     variant
         Variant of the algorithm to apply, possible values:
-        - dfg_based: the latest version of the DFG-based algorithm
-        - dfg_based_old_version: the previous version of the DFG-based algorithm
+        - Variants.DFG_BASED
+    parameters
+        Parameters of the algorithm, including:
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
+            (default concept:name)
 
     Returns
     -----------
@@ -159,7 +143,7 @@ def apply_variants(variants, parameters=None, variant=DEFAULT_VARIANT):
     final_marking
         Final marking
     """
-    return VERSIONS_VARIANTS[variant](variants, parameters=parameters)
+    return exec_utils.get_variant(variant).apply_variants(variants, parameters=parameters)
 
 
 def apply_tree_variants(variants, parameters=None, variant=DEFAULT_VARIANT):
@@ -170,18 +154,16 @@ def apply_tree_variants(variants, parameters=None, variant=DEFAULT_VARIANT):
     ----------
     variants
         Dictionary/list/set of variants in the log
-    parameters
-        Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
-            (default concept:name)
     variant
         Variant of the algorithm to apply, possible values:
-        - dfg_based: the latest version of the DFG-based algorithm
-        - dfg_based_old_version: the previous version of the DFG-based algorithm
+        - Variants.DFG_BASED
+    parameters
+        Parameters of the algorithm, including:
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
 
     Returns
     ----------
     tree
         Process tree
     """
-    return VERSIONS_TREE_VARIANTS[variant](variants, parameters=parameters)
+    return exec_utils.get_variant(variant).apply_tree_variants(variants, parameters=parameters)

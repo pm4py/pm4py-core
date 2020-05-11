@@ -161,13 +161,26 @@
 <dt id="pm4py.algo.discovery.heuristics.versions.classic.apply">
 <code class="sig-prename descclassname">pm4py.algo.discovery.heuristics.versions.classic.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/heuristics/versions/classic.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.heuristics.versions.classic.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Discovers a Petri net using Heuristics Miner</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dd class="field-odd"><ul>
 <li><p><strong>log</strong> – Event log</p></li>
 <li><p><strong>parameters</strong> – Possible parameters of the algorithm,
-including: activity_key, case_id_glue, timestamp_key,
-dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh</p></li>
+including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Parameters.ACTIVITY_KEY</p></li>
+<li><p>Parameters.TIMESTAMP_KEY</p></li>
+<li><p>Parameters.CASE_ID_KEY</p></li>
+<li><p>Parameters.DEPENDENCY_THRESH</p></li>
+<li><p>Parameters.AND_MEASURE_THRESH</p></li>
+<li><p>Parameters.MIN_ACT_COUNT</p></li>
+<li><p>Parameters.MIN_DFG_OCCURRENCES</p></li>
+<li><p>Parameters.DFG_PRE_CLEANING_NOISE_THRESH</p></li>
+<li><p>Parameters.LOOP_LENGTH_TWO_THRESH</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -185,18 +198,30 @@ dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_p
 <dt id="pm4py.algo.discovery.heuristics.versions.classic.apply_dfg">
 <code class="sig-prename descclassname">pm4py.algo.discovery.heuristics.versions.classic.</code><code class="sig-name descname">apply_dfg</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">activities=None</em>, <em class="sig-param">activities_occurrences=None</em>, <em class="sig-param">start_activities=None</em>, <em class="sig-param">end_activities=None</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/heuristics/versions/classic.html#apply_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.heuristics.versions.classic.apply_dfg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Discovers a Petri net using Heuristics Miner</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dd class="field-odd"><ul>
 <li><p><strong>dfg</strong> – Directly-Follows Graph</p></li>
 <li><p><strong>activities</strong> – (If provided) list of activities of the log</p></li>
 <li><p><strong>activities_occurrences</strong> – (If provided) dictionary of activities occurrences</p></li>
 <li><p><strong>start_activities</strong> – (If provided) dictionary of start activities occurrences</p></li>
 <li><p><strong>end_activities</strong> – (If provided) dictionary of end activities occurrences</p></li>
 <li><p><strong>parameters</strong> – Possible parameters of the algorithm,
-including: activity_key, case_id_glue, timestamp_key,
-dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
-loops_length_two_thresh</p></li>
+including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Parameters.ACTIVITY_KEY</p></li>
+<li><p>Parameters.TIMESTAMP_KEY</p></li>
+<li><p>Parameters.CASE_ID_KEY</p></li>
+<li><p>Parameters.DEPENDENCY_THRESH</p></li>
+<li><p>Parameters.AND_MEASURE_THRESH</p></li>
+<li><p>Parameters.MIN_ACT_COUNT</p></li>
+<li><p>Parameters.MIN_DFG_OCCURRENCES</p></li>
+<li><p>Parameters.DFG_PRE_CLEANING_NOISE_THRESH</p></li>
+<li><p>Parameters.LOOP_LENGTH_TWO_THRESH</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -214,14 +239,26 @@ loops_length_two_thresh</p></li>
 <dt id="pm4py.algo.discovery.heuristics.versions.classic.apply_heu">
 <code class="sig-prename descclassname">pm4py.algo.discovery.heuristics.versions.classic.</code><code class="sig-name descname">apply_heu</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/heuristics/versions/classic.html#apply_heu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.heuristics.versions.classic.apply_heu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Discovers an Heuristics Net using Heuristics Miner</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dd class="field-odd"><ul>
 <li><p><strong>log</strong> – Event log</p></li>
 <li><p><strong>parameters</strong> – Possible parameters of the algorithm,
-including: activity_key, case_id_glue, timestamp_key,
-dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
-loops_length_two_thresh</p></li>
+including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Parameters.ACTIVITY_KEY</p></li>
+<li><p>Parameters.TIMESTAMP_KEY</p></li>
+<li><p>Parameters.CASE_ID_KEY</p></li>
+<li><p>Parameters.DEPENDENCY_THRESH</p></li>
+<li><p>Parameters.AND_MEASURE_THRESH</p></li>
+<li><p>Parameters.MIN_ACT_COUNT</p></li>
+<li><p>Parameters.MIN_DFG_OCCURRENCES</p></li>
+<li><p>Parameters.DFG_PRE_CLEANING_NOISE_THRESH</p></li>
+<li><p>Parameters.LOOP_LENGTH_TWO_THRESH</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -237,9 +274,9 @@ loops_length_two_thresh</p></li>
 <dt id="pm4py.algo.discovery.heuristics.versions.classic.apply_heu_dfg">
 <code class="sig-prename descclassname">pm4py.algo.discovery.heuristics.versions.classic.</code><code class="sig-name descname">apply_heu_dfg</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">activities=None</em>, <em class="sig-param">activities_occurrences=None</em>, <em class="sig-param">start_activities=None</em>, <em class="sig-param">end_activities=None</em>, <em class="sig-param">dfg_window_2=None</em>, <em class="sig-param">freq_triples=None</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/heuristics/versions/classic.html#apply_heu_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.heuristics.versions.classic.apply_heu_dfg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Discovers an Heuristics Net using Heuristics Miner</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dd class="field-odd"><ul>
 <li><p><strong>dfg</strong> – Directly-Follows Graph</p></li>
 <li><p><strong>activities</strong> – (If provided) list of activities of the log</p></li>
 <li><p><strong>activities_occurrences</strong> – (If provided) dictionary of activities occurrences</p></li>
@@ -248,9 +285,21 @@ loops_length_two_thresh</p></li>
 <li><p><strong>dfg_window_2</strong> – (If provided) DFG of window 2</p></li>
 <li><p><strong>freq_triples</strong> – (If provided) Frequency triples</p></li>
 <li><p><strong>parameters</strong> – Possible parameters of the algorithm,
-including: activity_key, case_id_glue, timestamp_key,
-dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
-loops_length_two_thresh</p></li>
+including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Parameters.ACTIVITY_KEY</p></li>
+<li><p>Parameters.TIMESTAMP_KEY</p></li>
+<li><p>Parameters.CASE_ID_KEY</p></li>
+<li><p>Parameters.DEPENDENCY_THRESH</p></li>
+<li><p>Parameters.AND_MEASURE_THRESH</p></li>
+<li><p>Parameters.MIN_ACT_COUNT</p></li>
+<li><p>Parameters.MIN_DFG_OCCURRENCES</p></li>
+<li><p>Parameters.DFG_PRE_CLEANING_NOISE_THRESH</p></li>
+<li><p>Parameters.LOOP_LENGTH_TWO_THRESH</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

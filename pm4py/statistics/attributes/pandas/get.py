@@ -1,5 +1,7 @@
 from pm4py.statistics.attributes.common import get as attributes_common
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
+from pm4py.statistics.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def get_attribute_values(df, attribute_key, parameters=None):
@@ -53,8 +55,7 @@ def get_kde_numeric_attribute(df, attribute, parameters=None):
     if parameters is None:
         parameters = {}
 
-    max_no_of_points_to_sample = parameters[
-        "max_no_of_points_to_sample"] if "max_no_of_points_to_sample" in parameters else 100000
+    max_no_of_points_to_sample = exec_utils.get_param_value(Parameters.MAX_NO_POINTS_SAMPLE, parameters, 100000)
     red_df = df.dropna(subset=[attribute])
     if len(red_df) > max_no_of_points_to_sample:
         red_df = red_df.sample(n=max_no_of_points_to_sample)
@@ -113,8 +114,7 @@ def get_kde_date_attribute(df, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None)
     if parameters is None:
         parameters = {}
 
-    max_no_of_points_to_sample = parameters[
-        "max_no_of_points_to_sample"] if "max_no_of_points_to_sample" in parameters else 100000
+    max_no_of_points_to_sample = exec_utils.get_param_value(Parameters.MAX_NO_POINTS_SAMPLE, parameters, 100000)
     red_df = df.dropna(subset=[attribute])
     if len(red_df) > max_no_of_points_to_sample:
         red_df = red_df.sample(n=max_no_of_points_to_sample)

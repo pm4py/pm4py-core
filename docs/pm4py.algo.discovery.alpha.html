@@ -185,18 +185,43 @@
 </div>
 <div class="section" id="module-pm4py.algo.discovery.alpha.algorithm">
 <span id="pm4py-algo-discovery-alpha-algorithm-module"></span><h2>pm4py.algo.discovery.alpha.algorithm module<a class="headerlink" href="#module-pm4py.algo.discovery.alpha.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.discovery.alpha.algorithm.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.discovery.alpha.algorithm.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/algorithm.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.algorithm.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.alpha.algorithm.Variants.ALPHA_VERSION_CLASSIC">
+<code class="sig-name descname">ALPHA_VERSION_CLASSIC</code><em class="property"> = &lt;module 'pm4py.algo.discovery.alpha.versions.classic' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\alpha\\versions\\classic.py'&gt;</em><a class="headerlink" href="#pm4py.algo.discovery.alpha.algorithm.Variants.ALPHA_VERSION_CLASSIC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.alpha.algorithm.Variants.ALPHA_VERSION_PLUS">
+<code class="sig-name descname">ALPHA_VERSION_PLUS</code><em class="property"> = &lt;module 'pm4py.algo.discovery.alpha.versions.plus' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\alpha\\versions\\plus.py'&gt;</em><a class="headerlink" href="#pm4py.algo.discovery.alpha.algorithm.Variants.ALPHA_VERSION_PLUS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.discovery.alpha.algorithm.apply">
-<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='classic'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.algorithm.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.ALPHA_VERSION_CLASSIC: &lt;module 'pm4py.algo.discovery.alpha.versions.classic' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\alpha\\versions\\classic.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.algorithm.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the Alpha Miner on top of a log</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
 <li><p><strong>log</strong> – Log</p></li>
-<li><p><strong>variant</strong> – Variant of the algorithm to use (classic)</p></li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use:</dt><dd><ul class="simple">
+<li><p>Variants.ALPHA_VERSION_CLASSIC</p></li>
+<li><p>Variants.ALPHA_VERSION_PLUS</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>activity key -&gt; Name of the attribute that contains the activity</p>
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>Parameters.ACTIVITY_KEY -&gt; Name of the attribute that contains the activity</p>
 </dd>
 </dl>
 </li>
@@ -215,13 +240,13 @@
 
 <dl class="function">
 <dt id="pm4py.algo.discovery.alpha.algorithm.apply_dfg">
-<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.algorithm.</code><code class="sig-name descname">apply_dfg</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='classic'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/algorithm.html#apply_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.algorithm.apply_dfg" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.algorithm.</code><code class="sig-name descname">apply_dfg</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.ALPHA_VERSION_CLASSIC: &lt;module 'pm4py.algo.discovery.alpha.versions.classic' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\alpha\\versions\\classic.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/algorithm.html#apply_dfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.algorithm.apply_dfg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply Alpha Miner directly on top of a DFG graph</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
 <li><p><strong>dfg</strong> – Directly-Follows graph</p></li>
-<li><p><strong>version</strong> – Variant of the algorithm to use (classic)</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm to use (classic)</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
 <dt>Possible parameters of the algorithm, including:</dt><dd><p>activity key -&gt; Name of the attribute that contains the activity</p>
@@ -283,7 +308,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
 <li><p><strong>dfg</strong> – Directly-Follows graph</p></li>
-<li><p><strong>version</strong> – Variant of the algorithm to use (classic)</p></li>
+<li><p><strong>variant</strong> – Variant of the algorithm to use (classic)</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
 <dt>Possible parameters of the algorithm, including:</dt><dd><p>activity key -&gt; Name of the attribute that contains the activity</p>

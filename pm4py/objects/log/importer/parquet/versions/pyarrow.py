@@ -1,10 +1,14 @@
 import pyarrow.parquet as pq
 from pm4py.objects.log.util import dataframe_utils
+import deprecation
+from pm4py.util import exec_utils
+from pm4py.objects.log.importer.parquet.parameters import Parameters
+
+COLUMNS = Parameters.COLUMNS.value
 
 
-COLUMNS = "columns"
-
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def apply(path, parameters=None):
     """
     Import a Parquet file
@@ -15,7 +19,7 @@ def apply(path, parameters=None):
         Path of the file to import
     parameters
         Parameters of the algorithm, possible values:
-            columns -> columns to import from the Parquet file
+            Parameters.COLUMNS -> columns to import from the Parquet file
 
     Returns
     -------------
@@ -25,7 +29,7 @@ def apply(path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    columns = parameters[COLUMNS] if COLUMNS in parameters else None
+    columns = exec_utils.get_param_value(Parameters.COLUMNS, parameters, None)
 
     if columns:
         df = pq.read_pandas(path, columns=columns).to_pandas()
@@ -35,6 +39,8 @@ def apply(path, parameters=None):
     return dataframe_utils.legacy_parquet_support(df)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def import_table(path, parameters=None):
     """
     Imports a Pyarrow table from a Parquet file
@@ -54,7 +60,8 @@ def import_table(path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    columns = parameters[COLUMNS] if COLUMNS in parameters else None
+    columns = exec_utils.get_param_value(Parameters.COLUMNS, parameters, None)
+
     if columns:
         table = pq.read_table(path, columns=columns)
     else:
@@ -63,6 +70,8 @@ def import_table(path, parameters=None):
     return table
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def import_log(path, parameters=None):
     """
     Imports an event log from a Parquet file

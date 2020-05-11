@@ -273,6 +273,23 @@ and of the start activities and end activities in the log (possibly inferred fro
 </div>
 <div class="section" id="module-pm4py.algo.discovery.alpha.versions.plus">
 <span id="pm4py-algo-discovery-alpha-versions-plus-module"></span><h2>pm4py.algo.discovery.alpha.versions.plus module<a class="headerlink" href="#module-pm4py.algo.discovery.alpha.versions.plus" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.alpha.versions.plus.Parameters.REMOVE_UNCONNECTED">
+<code class="sig-name descname">REMOVE_UNCONNECTED</code><em class="property"> = 'remove_unconnected'</em><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.Parameters.REMOVE_UNCONNECTED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.discovery.alpha.versions.plus.add_sink">
 <code class="sig-prename descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="sig-name descname">add_sink</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">end_activities</em>, <em class="sig-param">label_transition_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#add_sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.add_sink" title="Permalink to this definition">¶</a></dt>
@@ -309,14 +326,11 @@ and of the start activities and end activities in the log (possibly inferred fro
 
 <dl class="function">
 <dt id="pm4py.algo.discovery.alpha.versions.plus.get_relations">
-<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="sig-name descname">get_relations</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#get_relations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.get_relations" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="sig-name descname">get_relations</code><span class="sig-paren">(</span><em class="sig-param">log</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#get_relations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.get_relations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applying the classic Alpha Algorithm</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>log</strong> – Filtered log</p></li>
-<li><p><strong>parameters</strong> – Parameters of the algorithm</p></li>
-</ul>
+<dd class="field-odd"><p><strong>log</strong> – Filtered log</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
@@ -373,7 +387,7 @@ and of the start activities and end activities in the log (possibly inferred fro
 
 <dl class="function">
 <dt id="pm4py.algo.discovery.alpha.versions.plus.postprocessing">
-<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="sig-name descname">postprocessing</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">A</em>, <em class="sig-param">B</em>, <em class="sig-param">pairs</em>, <em class="sig-param">loop_one_list</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#postprocessing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.postprocessing" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="sig-name descname">postprocessing</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">A</em>, <em class="sig-param">B</em>, <em class="sig-param">pairs</em>, <em class="sig-param">loop_one_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#postprocessing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.postprocessing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adding the filtered transitions to the Petri net</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -382,7 +396,6 @@ and of the start activities and end activities in the log (possibly inferred fro
 <li><p><strong>classical_alpha_result</strong> – Result after applying the classic alpha algorithm to the filtered log</p></li>
 <li><p><strong>A</strong> – See Paper for definition</p></li>
 <li><p><strong>B</strong> – See Paper for definition</p></li>
-<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -423,7 +436,7 @@ and of the start activities and end activities in the log (possibly inferred fro
 
 <dl class="function">
 <dt id="pm4py.algo.discovery.alpha.versions.plus.processing">
-<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="sig-name descname">processing</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">causal</em>, <em class="sig-param">follows</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.processing" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.alpha.versions.plus.</code><code class="sig-name descname">processing</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">causal</em>, <em class="sig-param">follows</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/alpha/versions/plus.html#processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.alpha.versions.plus.processing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applying the Alpha Miner with the new relations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

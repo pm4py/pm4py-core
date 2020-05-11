@@ -2,10 +2,32 @@ from pm4py.statistics.variants.log import get as variants_get
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.xes_constants import DEFAULT_TRACEID_KEY
 from pm4py.statistics.traces.common import case_duration as case_duration_commons
-from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.business_hours import BusinessHours
 import numpy as np
+from enum import Enum
+from pm4py.util import exec_utils
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+
+    MAX_VARIANTS_TO_RETURN = "max_variants_to_return"
+    VARIANTS = "variants"
+    VAR_DURATIONS = "var_durations"
+
+    ENABLE_SORT = "enable_sort"
+    SORT_BY_INDEX = "sort_by_index"
+    SORT_ASCENDING = "sort_ascending"
+    MAX_RET_CASES = "max_ret_cases"
+    BUSINESS_HOURS = "business_hours"
+    WORKTIMING = "worktiming"
+    WEEKENDS = "weekends"
+
+    INDEXED_LOG = "indexed_log"
 
 
 def get_variant_statistics(log, parameters=None):
@@ -19,9 +41,9 @@ def get_variant_statistics(log, parameters=None):
         Log
     parameters
         Parameters of the algorithm, including:
-            activity_key -> Attribute identifying the activity in the log
-            max_variants_to_return -> Maximum number of variants to return
-            variants -> If provided, avoid recalculation of the variants
+            Parameters.ACTIVITY_KEY -> Attribute identifying the activity in the log
+            Parameters.MAX_VARIANTS_TO_RETURN -> Maximum number of variants to return
+            Parameters.VARIANT -> If provided, avoid recalculation of the variants
 
     Returns
     ----------
@@ -31,10 +53,10 @@ def get_variant_statistics(log, parameters=None):
 
     if parameters is None:
         parameters = {}
-    max_variants_to_return = parameters["max_variants_to_return"] if "max_variants_to_return" in parameters else None
-    varnt = parameters["variants"] if "variants" in parameters else variants_get.get_variants(log,
-                                                                                                 parameters=parameters)
-    var_durations = parameters["var_durations"] if "var_durations" in parameters else None
+    max_variants_to_return = exec_utils.get_param_value(Parameters.MAX_VARIANTS_TO_RETURN, parameters, None)
+    varnt = exec_utils.get_param_value(Parameters.VARIANTS, parameters, variants_get.get_variants(log,
+                                                                                              parameters=parameters))
+    var_durations = exec_utils.get_param_value(Parameters.VAR_DURATIONS, parameters, None)
     if var_durations is None:
         var_durations = {}
     variants_list = []
@@ -60,17 +82,17 @@ def get_cases_description(log, parameters=None):
         Log
     parameters
         Parameters of the algorithm, including:
-        case_id_key -> Trace attribute in which the case ID is contained
-        timestamp_key -> Column that identifies the timestamp
-        enable_sort -> Enable sorting of traces
-        sort_by_index ->         Sort the traces using this index:
+        Parameters.CASE_ID_KEY -> Trace attribute in which the case ID is contained
+        Parameters.TIMESTAMP_KEY -> Column that identifies the timestamp
+        Parameters.ENABLE_SORT -> Enable sorting of traces
+        Parameters.SORT_BY_INDEX ->         Sort the traces using this index:
             0 -> case ID
             1 -> start time
             2 -> end time
             3 -> difference
-        sort_ascending -> Set sort direction (boolean; it true then the sort direction is ascending, otherwise
+        Parameters.SORT_ASCENDING -> Set sort direction (boolean; it true then the sort direction is ascending, otherwise
         descending)
-        max_ret_cases -> Set the maximum number of returned traces
+        Parameters.MAX_RET_CASES -> Set the maximum number of returned traces
 
     Returns
     -----------
@@ -81,27 +103,26 @@ def get_cases_description(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_key = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else DEFAULT_TRACEID_KEY
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
-    enable_sort = parameters["enable_sort"] if "enable_sort" in parameters else True
-    sort_by_index = parameters["sort_by_index"] if "sort_by_index" in parameters else 0
-    sort_ascending = parameters["sort_ascending"] if "sort_ascending" in parameters else True
-    max_ret_cases = parameters["max_ret_cases"] if "max_ret_cases" in parameters else None
-    business_hours = parameters["business_hours"] if "business_hours" in parameters else False
-    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
-    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, DEFAULT_TRACEID_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    enable_sort = exec_utils.get_param_value(Parameters.ENABLE_SORT, parameters, True)
+    sort_by_index = exec_utils.get_param_value(Parameters.SORT_BY_INDEX, parameters, 0)
+    sort_ascending = exec_utils.get_param_value(Parameters.SORT_ASCENDING, parameters, True)
+    max_ret_cases = exec_utils.get_param_value(Parameters.MAX_RET_CASES, parameters, None)
+    business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
 
     statistics_list = []
 
     for index, trace in enumerate(log):
         if trace:
-            ci = trace.attributes[case_id_key] if case_id_key in trace.attributes else "EMPTY"+str(index)
+            ci = trace.attributes[case_id_key] if case_id_key in trace.attributes else "EMPTY" + str(index)
             st = trace[0][timestamp_key]
             et = trace[-1][timestamp_key]
             if business_hours:
-                bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None), worktiming=worktiming, weekends=weekends)
+                bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None), worktiming=worktiming,
+                                   weekends=weekends)
                 diff = bh.getseconds()
             else:
                 diff = et.timestamp() - st.timestamp()
@@ -133,7 +154,7 @@ def index_log_caseid(log, parameters=None):
         Log object
     parameters
         Possible parameters of the algorithm, including:
-            case id key -> Trace attribute in which the Case ID is contained
+            Parameters.CASE_ID_KEY -> Trace attribute in which the Case ID is contained
 
     Returns
     -----------
@@ -144,8 +165,7 @@ def index_log_caseid(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_key = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else DEFAULT_TRACEID_KEY
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, DEFAULT_TRACEID_KEY)
     indexed_log = {}
 
     for trace in log:
@@ -167,8 +187,8 @@ def get_events(log, case_id, parameters=None):
         Required case ID
     parameters
         Possible parameters of the algorithm, including:
-            case id key -> Trace attribute in which the case ID is contained
-            indexed_log -> Indexed log (if it has been calculated previously)
+            Parameters.CASE_ID_KEY -> Trace attribute in which the case ID is contained
+            Parameters.INDEXED_LOG -> Indexed log (if it has been calculated previously)
 
     Returns
     ----------
@@ -177,8 +197,10 @@ def get_events(log, case_id, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    indexed_log = parameters["indexed_log"] if "indexed_log" in parameters else index_log_caseid(log,
-                                                                                                 parameters)
+
+    indexed_log = exec_utils.get_param_value(Parameters.INDEXED_LOG, parameters, index_log_caseid(log,
+                                                                                                 parameters))
+
     list_eve = []
     for event in indexed_log[case_id]:
         list_eve.append(dict(event))
@@ -226,8 +248,6 @@ def get_first_quartile_caseduration(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    parameters["sorted"] = True
-
     duration_values = get_all_casedurations(log, parameters=parameters)
     if duration_values:
         return duration_values[int((len(duration_values) * 3) / 4)]
@@ -253,8 +273,6 @@ def get_median_caseduration(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    parameters["sorted"] = True
-    
     duration_values = get_all_casedurations(log, parameters=parameters)
     if duration_values:
         return duration_values[int(len(duration_values) / 2)]
@@ -271,7 +289,7 @@ def get_kde_caseduration(log, parameters=None):
         Log object
     parameters
         Possible parameters of the algorithm, including:
-            graph_points -> number of points to include in the graph
+            Parameters.GRAPH_POINTS -> number of points to include in the graph
 
     Returns
     --------------
@@ -295,8 +313,8 @@ def get_kde_caseduration_json(log, parameters=None):
         Log object
     parameters
         Possible parameters of the algorithm, including:
-            graph_points -> number of points to include in the graph
-            case_id_glue -> Column hosting the Case ID
+            Parameters.GRAPH_POINTS -> number of points to include in the graph
+            Parameters.CASE_ID_KEY -> Column hosting the Case ID
 
     Returns
     --------------

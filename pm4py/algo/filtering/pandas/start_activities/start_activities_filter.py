@@ -7,7 +7,16 @@ from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import GROUPED_DATAFRAME
+from enum import Enum
+from pm4py.util import exec_utils
 
+
+class Parameters(Enum):
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
+    ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    DECREASING_FACTOR = "decreasingFactor"
+    GROUP_DATAFRAME = GROUPED_DATAFRAME
+    POSITIVE = "positive"
 
 
 def apply(df, values, parameters=None):
@@ -22,9 +31,9 @@ def apply(df, values, parameters=None):
         Values to filter on
     parameters
         Possible parameters of the algorithm, including:
-            case_id_glue -> Case ID column in the dataframe
-            activity_key -> Column that represents the activity
-            positive -> Specifies if the filtered should be applied including traces (positive=True)
+            Parameters.CASE_ID_KEY -> Case ID column in the dataframe
+            Parameters.ACTIVITY_KEY -> Column that represents the activity
+            Parameters.POSITIVE -> Specifies if the filtered should be applied including traces (positive=True)
             or excluding traces (positive=False)
 
     Returns
@@ -34,12 +43,11 @@ def apply(df, values, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    grouped_df = parameters[GROUPED_DATAFRAME] if GROUPED_DATAFRAME in parameters else None
-    positive = parameters["positive"] if "positive" in parameters else True
+
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+    grouped_df = exec_utils.get_param_value(Parameters.GROUP_DATAFRAME, parameters, None)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     return filter_df_on_start_activities(df, values, case_id_glue=case_id_glue, activity_key=activity_key,
                                          positive=positive, grouped_df=grouped_df)
@@ -55,9 +63,9 @@ def apply_auto_filter(df, parameters=None):
         Pandas dataframe
     parameters
         Parameters of the algorithm, including:
-            case_id_glue -> Case ID column in the dataframe
-            activity_key -> Column that represents the activity
-            decreasingFactor -> Decreasing factor that should be passed to the algorithm
+            Parameters.CASE_ID_KEY -> Case ID column in the dataframe
+            Parameters.ACTIVITY_KEY -> Column that represents the activity
+            Parameters.DECREASING_FACTOR -> Decreasing factor that should be passed to the algorithm
 
     Returns
     -----------
@@ -67,13 +75,11 @@ def apply_auto_filter(df, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    decreasing_factor = parameters[
-        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
-    grouped_df = parameters[GROUPED_DATAFRAME] if GROUPED_DATAFRAME in parameters else None
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+    grouped_df = exec_utils.get_param_value(Parameters.GROUP_DATAFRAME, parameters, None)
+    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters,
+                                                   filtering_constants.DECREASING_FACTOR)
 
     start_activities = get_start_activities(df, parameters=parameters)
     salist = start_activities_common.get_sorted_start_activities_list(start_activities)
@@ -151,9 +157,9 @@ def filter_df_on_start_activities_nocc(df, nocc, sa_count0=None, case_id_glue=CA
     first_eve_df = grouped_df.first()
     if sa_count0 is None:
         parameters = {
-            PARAMETER_CONSTANT_CASEID_KEY: case_id_glue,
-            PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
-            GROUPED_DATAFRAME: grouped_df
+            Parameters.CASE_ID_KEY: case_id_glue,
+            Parameters.ACTIVITY_KEY: activity_key,
+            Parameters.GROUP_DATAFRAME: grouped_df
         }
         sa_count0 = get_start_activities(df, parameters=parameters)
     sa_count = [k for k, v in sa_count0.items() if v >= nocc]

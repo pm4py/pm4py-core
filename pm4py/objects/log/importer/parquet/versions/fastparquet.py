@@ -1,10 +1,14 @@
 from fastparquet import ParquetFile
 from pm4py.objects.log.util import dataframe_utils
+import deprecation
+from pm4py.objects.log.importer.parquet.parameters import Parameters
+from pm4py.util import exec_utils
+
+COLUMNS = Parameters.COLUMNS.value
 
 
-COLUMNS = "columns"
-
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def apply(path, parameters=None):
     """
     Import a Parquet file
@@ -15,7 +19,7 @@ def apply(path, parameters=None):
         Path of the file to import
     parameters
         Parameters of the algorithm, possible values:
-            columns -> columns to import from the Parquet file
+            Parameters.COLUMNS -> columns to import from the Parquet file
 
     Returns
     -------------
@@ -25,7 +29,8 @@ def apply(path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    columns = parameters[COLUMNS] if COLUMNS in parameters else None
+    columns = exec_utils.get_param_value(Parameters.COLUMNS, parameters, None)
+
     pf = ParquetFile(path)
 
     if columns:

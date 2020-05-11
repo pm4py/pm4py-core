@@ -7,24 +7,17 @@ import heapq
 from pm4py.objects.petri import align_utils as utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.objects.petri import decomposition as decomp_utils
-from pm4py.algo.filtering.log.variants import variants_filter as variants_module
+from pm4py.statistics.variants.log import get as variants_module
 from pm4py import util as pm4pyutil
 from copy import copy
-
-BEST_WORST_COST = 'best_worst_cost'
-PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
-
-ICACHE = "icache"
-MCACHE = "mcache"
-
-PARAM_THRESHOLD_BORDER_AGREEMENT = "thresh_border_agreement"
-DEFAULT_THRESHOLD_BORDER_AGREEMENT = 100000000
+from pm4py.algo.conformance.decomp_alignments.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
     trace = log_implementation.Trace()
     new_parameters = copy(parameters)
-    new_parameters[PARAM_TRACE_COST_FUNCTION] = list(
+    new_parameters[Parameters.PARAM_TRACE_COST_FUNCTION] = list(
         map(lambda e: utils.STD_MODEL_LOG_MOVE_COST, trace))
 
     best_worst, cf = align(trace, petri_net, initial_marking, final_marking, parameters=new_parameters)
@@ -64,7 +57,7 @@ def apply(log, net, im, fm, parameters=None):
         parameters = {}
 
     best_worst_cost = get_best_worst_cost(net, im, fm, parameters=parameters)
-    parameters[BEST_WORST_COST] = best_worst_cost
+    parameters[Parameters.BEST_WORST_COST] = best_worst_cost
 
     list_nets = decomp_utils.decompose(net, im, fm)
 
@@ -92,11 +85,11 @@ def apply_log(log, list_nets, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    icache = parameters[ICACHE] if ICACHE in parameters else dict()
-    mcache = parameters[MCACHE] if MCACHE in parameters else dict()
+    icache = exec_utils.get_param_value(Parameters.ICACHE, parameters, dict())
+    mcache = exec_utils.get_param_value(Parameters.MCACHE, parameters, dict())
 
-    parameters[ICACHE] = icache
-    parameters[MCACHE] = mcache
+    parameters[Parameters.ICACHE] = icache
+    parameters[Parameters.MCACHE] = mcache
 
     variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
     one_tr_per_var = []
@@ -296,13 +289,11 @@ def apply_trace(trace, list_nets, parameters=None):
     if parameters is None:
         parameters = {}
 
-    threshold_border_agreement = parameters[
-        PARAM_THRESHOLD_BORDER_AGREEMENT] if PARAM_THRESHOLD_BORDER_AGREEMENT in parameters else DEFAULT_THRESHOLD_BORDER_AGREEMENT
-    activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
-        parameters[
-            pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-    icache = parameters[ICACHE] if ICACHE in parameters else dict()
-    mcache = parameters[MCACHE] if MCACHE in parameters else dict()
+    threshold_border_agreement = exec_utils.get_param_value(Parameters.PARAM_THRESHOLD_BORDER_AGREEMENT, parameters,
+                                                            100000000)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+    icache = exec_utils.get_param_value(Parameters.ICACHE, parameters, dict())
+    mcache = exec_utils.get_param_value(Parameters.MCACHE, parameters, dict())
     cons_nets = copy(list_nets)
     acache = get_acache(cons_nets)
     cons_nets_result = []
@@ -380,9 +371,10 @@ def apply_trace(trace, list_nets, parameters=None):
         cost = cost + overall_cost_dict[el]
     alignment = [x[1] for x in alignment]
     res = {"cost": cost, "alignment": alignment}
-    if BEST_WORST_COST in parameters and len(trace) > 0:
+    best_worst_cost = exec_utils.get_param_value(Parameters.BEST_WORST_COST, parameters, None)
+    if best_worst_cost is not None and len(trace) > 0:
         cost1 = cost // utils.STD_MODEL_LOG_MOVE_COST
-        fitness = 1.0 - cost1 / (parameters[BEST_WORST_COST] + len(trace))
+        fitness = 1.0 - cost1 / (best_worst_cost + len(trace))
         res["fitness"] = fitness
     return res
 

@@ -2,9 +2,15 @@ from copy import deepcopy
 
 from pm4py.objects.log.util import basic_filter
 from pm4py.util import xes_constants as xes
-from pm4py.util import constants
 
 from statistics import median
+from enum import Enum
+from pm4py.util import exec_utils
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
 def get_case_duration(case, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY):
@@ -60,7 +66,7 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
         Not existing activities in the model
     parameters
         Possible parameters of the algorithm, including:
-            PARAMETER_CONSTANT_TIMESTAMP_KEY -> attribute of the event containing the timestamp
+            Parameters.TIMESTAMP_KEY -> attribute of the event containing the timestamp
 
     Returns
     -------------
@@ -70,8 +76,7 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
     if parameters is None:
         parameters = {}
 
-    timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
     diagnostics = {}
 
     parameters_filtering = deepcopy(parameters)
@@ -114,7 +119,7 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
         For each transition, keeps track of unfit executions
     parameters
         Possible parameters of the algorithm, including:
-            PARAMETER_CONSTANT_TIMESTAMP_KEY -> attribute of the event containing the timestamp
+            Parameters.TIMESTAMP_KEY -> attribute of the event containing the timestamp
 
     Returns
     -------------
@@ -124,8 +129,7 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
     if parameters is None:
         parameters = {}
 
-    timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
     diagnostics = {}
 
     parameters_filtering = deepcopy(parameters)

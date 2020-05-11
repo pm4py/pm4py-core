@@ -12,7 +12,7 @@ class ETCTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        log = xes_importer.import_log(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
+        log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, marking, final_marking = inductive_miner.apply(log)
         precision = etc_alg.apply(log, net, marking, final_marking, variant=etc_alg.ETCONFORMANCE_TOKEN)
         del precision
