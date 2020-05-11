@@ -146,4 +146,6 @@ This is a minor release, consisting of the following changes:
 This is a minor release, consisting of the following changes:
 1. commit 531b767d85bb4c95996ae0c9644a958f75aad120
 	- fixed utilities of Petri nets (acyclic net variants (M. Pegoraro); strongly connected components by NX graph)
+2. commit c9cebbfab9c82bf8edbe8851a000fd1b1f31f8be
+    - added a 'properties' object to all members of the Petri net class (including transitions/places/arcs)
 
