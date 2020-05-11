@@ -1,1 +1,1 @@
-from pm4py.objects.log.importer.xes.versions import iterparse_xes, python_nonstandard
+from pm4py.objects.log.importer.xes.versions import python_nonstandard,iterparse_xes

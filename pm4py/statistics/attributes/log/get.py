@@ -1,10 +1,8 @@
 from pm4py.statistics.attributes.common import get as attributes_common
-from pm4py.objects.conversion.log import factory as log_conv_fact
+from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.log.log import EventLog
 from pm4py.util import xes_constants as xes
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
-
-DEFAULT_MAX_CASES_FOR_ATTR_SELECTION = 50
 
 
 def get_all_trace_attributes_from_log(log):
@@ -144,7 +142,7 @@ def get_kde_numeric_attribute(log, attribute, parameters=None):
     """
 
     if type(log) is EventLog:
-        event_log = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)
     else:
         event_log = log
 
@@ -178,7 +176,7 @@ def get_kde_numeric_attribute_json(log, attribute, parameters=None):
     """
 
     if type(log) is EventLog:
-        event_log = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)
     else:
         event_log = log
 
@@ -211,7 +209,7 @@ def get_kde_date_attribute(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None
     """
 
     if type(log) is EventLog:
-        event_log = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)
     else:
         event_log = log
 
@@ -245,7 +243,7 @@ def get_kde_date_attribute_json(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters
     """
 
     if type(log) is EventLog:
-        event_log = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)
     else:
         event_log = log
 

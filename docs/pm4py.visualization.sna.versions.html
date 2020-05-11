@@ -158,9 +158,26 @@
 </div>
 <div class="section" id="module-pm4py.visualization.sna.versions.networkx">
 <span id="pm4py-visualization-sna-versions-networkx-module"></span><h2>pm4py.visualization.sna.versions.networkx module<a class="headerlink" href="#module-pm4py.visualization.sna.versions.networkx" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.visualization.sna.versions.networkx.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.visualization.sna.versions.networkx.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/networkx.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.networkx.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.visualization.sna.versions.networkx.Parameters.FORMAT">
+<code class="sig-name descname">FORMAT</code><em class="property"> = 'format'</em><a class="headerlink" href="#pm4py.visualization.sna.versions.networkx.Parameters.FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.visualization.sna.versions.networkx.Parameters.WEIGHT_THRESHOLD">
+<code class="sig-name descname">WEIGHT_THRESHOLD</code><em class="property"> = 'weight_threshold'</em><a class="headerlink" href="#pm4py.visualization.sna.versions.networkx.Parameters.WEIGHT_THRESHOLD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.visualization.sna.versions.networkx.apply">
-<code class="descclassname">pm4py.visualization.sna.versions.networkx.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>metric_values</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/networkx.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.networkx.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.sna.versions.networkx.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">metric_values</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/networkx.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.networkx.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform SNA visualization starting from the Matrix Container object
 and the Resource-Resource matrix</p>
 <dl class="field-list">
@@ -169,8 +186,10 @@ and the Resource-Resource matrix</p>
 <li><p><strong>metric_values</strong> – Value of the metrics</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>weight_threshold: the weight threshold to use in displaying the graph
-format: format of the output image (png, svg …)</p>
+<dt>Possible parameters of the algorithm, including:</dt><dd><ul class="simple">
+<li><p>Parameters.WEIGHT_THRESHOLD -&gt; the weight threshold to use in displaying the graph</p></li>
+<li><p>Parameters.FORMAT -&gt; format of the output image (png, svg …)</p></li>
+</ul>
 </dd>
 </dl>
 </li>
@@ -187,7 +206,7 @@ format: format of the output image (png, svg …)</p>
 
 <dl class="function">
 <dt id="pm4py.visualization.sna.versions.networkx.get_temp_file_name">
-<code class="descclassname">pm4py.visualization.sna.versions.networkx.</code><code class="descname">get_temp_file_name</code><span class="sig-paren">(</span><em>format</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/networkx.html#get_temp_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.networkx.get_temp_file_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.sna.versions.networkx.</code><code class="sig-name descname">get_temp_file_name</code><span class="sig-paren">(</span><em class="sig-param">format</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/networkx.html#get_temp_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.networkx.get_temp_file_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a temporary file name for the image</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -198,7 +217,7 @@ format: format of the output image (png, svg …)</p>
 
 <dl class="function">
 <dt id="pm4py.visualization.sna.versions.networkx.save">
-<code class="descclassname">pm4py.visualization.sna.versions.networkx.</code><code class="descname">save</code><span class="sig-paren">(</span><em>temp_file_name</em>, <em>dest_file</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/networkx.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.networkx.save" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.sna.versions.networkx.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">temp_file_name</em>, <em class="sig-param">dest_file</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/networkx.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.networkx.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the SNA visualization from a temporary file to a well-defined destination file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -213,7 +232,7 @@ format: format of the output image (png, svg …)</p>
 
 <dl class="function">
 <dt id="pm4py.visualization.sna.versions.networkx.view">
-<code class="descclassname">pm4py.visualization.sna.versions.networkx.</code><code class="descname">view</code><span class="sig-paren">(</span><em>temp_file_name</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/networkx.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.networkx.view" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.sna.versions.networkx.</code><code class="sig-name descname">view</code><span class="sig-paren">(</span><em class="sig-param">temp_file_name</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/networkx.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.networkx.view" title="Permalink to this definition">¶</a></dt>
 <dd><p>View the SNA visualization on the screen</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -228,9 +247,21 @@ format: format of the output image (png, svg …)</p>
 </div>
 <div class="section" id="module-pm4py.visualization.sna.versions.pyvis">
 <span id="pm4py-visualization-sna-versions-pyvis-module"></span><h2>pm4py.visualization.sna.versions.pyvis module<a class="headerlink" href="#module-pm4py.visualization.sna.versions.pyvis" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.visualization.sna.versions.pyvis.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.visualization.sna.versions.pyvis.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/pyvis.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.pyvis.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.visualization.sna.versions.pyvis.Parameters.WEIGHT_THRESHOLD">
+<code class="sig-name descname">WEIGHT_THRESHOLD</code><em class="property"> = 'weight_threshold'</em><a class="headerlink" href="#pm4py.visualization.sna.versions.pyvis.Parameters.WEIGHT_THRESHOLD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.visualization.sna.versions.pyvis.apply">
-<code class="descclassname">pm4py.visualization.sna.versions.pyvis.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>metric_values</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/pyvis.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.pyvis.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.sna.versions.pyvis.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">metric_values</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/pyvis.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.pyvis.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform SNA visualization starting from the Matrix Container object
 and the Resource-Resource matrix</p>
 <dl class="field-list">
@@ -239,7 +270,9 @@ and the Resource-Resource matrix</p>
 <li><p><strong>metric_values</strong> – Value of the metrics</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>weight_threshold: the weight threshold to use in displaying the graph</p>
+<dt>Possible parameters of the algorithm, including:</dt><dd><ul class="simple">
+<li><p>Parameters.WEIGHT_THRESHOLD -&gt; the weight threshold to use in displaying the graph</p></li>
+</ul>
 </dd>
 </dl>
 </li>
@@ -256,7 +289,7 @@ and the Resource-Resource matrix</p>
 
 <dl class="function">
 <dt id="pm4py.visualization.sna.versions.pyvis.get_temp_file_name">
-<code class="descclassname">pm4py.visualization.sna.versions.pyvis.</code><code class="descname">get_temp_file_name</code><span class="sig-paren">(</span><em>format</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/pyvis.html#get_temp_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.pyvis.get_temp_file_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.sna.versions.pyvis.</code><code class="sig-name descname">get_temp_file_name</code><span class="sig-paren">(</span><em class="sig-param">format</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/pyvis.html#get_temp_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.pyvis.get_temp_file_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a temporary file name for the image</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -267,7 +300,7 @@ and the Resource-Resource matrix</p>
 
 <dl class="function">
 <dt id="pm4py.visualization.sna.versions.pyvis.save">
-<code class="descclassname">pm4py.visualization.sna.versions.pyvis.</code><code class="descname">save</code><span class="sig-paren">(</span><em>temp_file_name</em>, <em>dest_file</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/pyvis.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.pyvis.save" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.sna.versions.pyvis.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">temp_file_name</em>, <em class="sig-param">dest_file</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/pyvis.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.pyvis.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the SNA visualization from a temporary file to a well-defined destination file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -282,7 +315,7 @@ and the Resource-Resource matrix</p>
 
 <dl class="function">
 <dt id="pm4py.visualization.sna.versions.pyvis.view">
-<code class="descclassname">pm4py.visualization.sna.versions.pyvis.</code><code class="descname">view</code><span class="sig-paren">(</span><em>temp_file_name</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/pyvis.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.pyvis.view" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.sna.versions.pyvis.</code><code class="sig-name descname">view</code><span class="sig-paren">(</span><em class="sig-param">temp_file_name</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/sna/versions/pyvis.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.sna.versions.pyvis.view" title="Permalink to this definition">¶</a></dt>
 <dd><p>View the SNA visualization on the screen</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

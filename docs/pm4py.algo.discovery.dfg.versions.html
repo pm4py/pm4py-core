@@ -161,7 +161,7 @@
 <span id="pm4py-algo-discovery-dfg-versions-freq-triples-module"></span><h2>pm4py.algo.discovery.dfg.versions.freq_triples module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.versions.freq_triples" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.discovery.dfg.versions.freq_triples.apply">
-<code class="descclassname">pm4py.algo.discovery.dfg.versions.freq_triples.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/versions/freq_triples.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.versions.freq_triples.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.dfg.versions.freq_triples.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/versions/freq_triples.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.versions.freq_triples.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Counts the number of directly follows occurrences, i.e. of the form &lt;…a,b…&gt;, in an event log.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -169,7 +169,7 @@
 <li><p><strong>log</strong> – Trace log</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters passed to the algorithms:</dt><dd><p>activity_key -&gt; Attribute to use as activity</p>
+<dt>Possible parameters passed to the algorithms:</dt><dd><p>Parameters.ACTIVITY_KEY -&gt; Attribute to use as activity</p>
 </dd>
 </dl>
 </li>
@@ -189,7 +189,7 @@
 <span id="pm4py-algo-discovery-dfg-versions-native-module"></span><h2>pm4py.algo.discovery.dfg.versions.native module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.versions.native" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.discovery.dfg.versions.native.apply">
-<code class="descclassname">pm4py.algo.discovery.dfg.versions.native.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/versions/native.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.versions.native.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.dfg.versions.native.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/versions/native.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.versions.native.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Counts the number of directly follows occurrences, i.e. of the form &lt;…a,b…&gt;, in an event log.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -197,7 +197,7 @@
 <li><p><strong>log</strong> – Trace log</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters passed to the algorithms:</dt><dd><p>activity_key -&gt; Attribute to use as activity</p>
+<dt>Possible parameters passed to the algorithms:</dt><dd><p>Parameters.ACTIVITY_KEY -&gt; Attribute to use as activity</p>
 </dd>
 </dl>
 </li>
@@ -217,7 +217,7 @@
 <span id="pm4py-algo-discovery-dfg-versions-performance-module"></span><h2>pm4py.algo.discovery.dfg.versions.performance module<a class="headerlink" href="#module-pm4py.algo.discovery.dfg.versions.performance" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.discovery.dfg.versions.performance.apply">
-<code class="descclassname">pm4py.algo.discovery.dfg.versions.performance.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/versions/performance.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.versions.performance.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.dfg.versions.performance.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/dfg/versions/performance.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.dfg.versions.performance.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Measure performance between couples of attributes in the DFG graph</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -225,9 +225,9 @@
 <li><p><strong>log</strong> – Log</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters passed to the algorithms:</dt><dd><p>aggregationMeasure -&gt; performance aggregation measure (min, max, mean, median)
-activity_key -&gt; Attribute to use as activity
-timestamp_key -&gt; Attribute to use as timestamp</p>
+<dt>Possible parameters passed to the algorithms:</dt><dd><p>Parameters.AGGREGATION_MEASURE -&gt; performance aggregation measure (min, max, mean, median)
+Parameters.ACTIVITY_KEY -&gt; Attribute to use as activity
+Parameters.TIMESTAMP_KEY -&gt; Attribute to use as timestamp</p>
 </dd>
 </dl>
 </li>

@@ -157,9 +157,31 @@
 </div>
 <div class="section" id="module-pm4py.algo.filtering.log.paths.paths_filter">
 <span id="pm4py-algo-filtering-log-paths-paths-filter-module"></span><h2>pm4py.algo.filtering.log.paths.paths_filter module<a class="headerlink" href="#module-pm4py.algo.filtering.log.paths.paths_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.filtering.log.paths.paths_filter.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.paths.paths_filter.Parameters.ATTRIBUTE_KEY">
+<code class="sig-name descname">ATTRIBUTE_KEY</code><em class="property"> = 'pm4py:param:attribute_key'</em><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.Parameters.ATTRIBUTE_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.paths.paths_filter.Parameters.DECREASING_FACTOR">
+<code class="sig-name descname">DECREASING_FACTOR</code><em class="property"> = 'decreasingFactor'</em><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.Parameters.DECREASING_FACTOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.paths.paths_filter.Parameters.POSITIVE">
+<code class="sig-name descname">POSITIVE</code><em class="property"> = 'positive'</em><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.Parameters.POSITIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.paths.paths_filter.apply">
-<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>paths</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">paths</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a filter on traces containing / not containing a path</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -168,8 +190,8 @@
 <li><p><strong>paths</strong> – Paths that we are looking for (expressed as tuple of 2 strings)</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>activity_key -&gt; Attribute identifying the activity in the log
-positive -&gt; Indicate if events should be kept/removed</p>
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.ATTRIBUTE_KEY -&gt; Attribute identifying the activity in the log
+Parameters.POSITIVE -&gt; Indicate if events should be kept/removed</p>
 </dd>
 </dl>
 </li>
@@ -186,7 +208,7 @@ positive -&gt; Indicate if events should be kept/removed</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.paths.paths_filter.apply_auto_filter">
-<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>log</em>, <em>variants=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="sig-name descname">apply_auto_filter</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">variants=None</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply an attributes filter detecting automatically a percentage</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -195,9 +217,9 @@ positive -&gt; Indicate if events should be kept/removed</p>
 <li><p><strong>variants</strong> – (If specified) Dictionary with variant as the key and the list of traces as the value</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>decreasingFactor -&gt; Decreasing factor (stops the algorithm when the next activity by occurrence is below
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.DECREASING_FACTOR -&gt; Decreasing factor (stops the algorithm when the next activity by occurrence is below
 this factor in comparison to previous)
-attribute_key -&gt; Attribute key (must be specified if different from concept:name)</p>
+Parameters.ATTRIBUTE_KEY -&gt; Attribute key (must be specified if different from concept:name)</p>
 </dd>
 </dl>
 </li>
@@ -214,7 +236,7 @@ attribute_key -&gt; Attribute key (must be specified if different from concept:n
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.paths.paths_filter.filter_log_by_paths">
-<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">filter_log_by_paths</code><span class="sig-paren">(</span><em>log</em>, <em>paths</em>, <em>variants</em>, <em>vc</em>, <em>threshold</em>, <em>attribute_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#filter_log_by_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.filter_log_by_paths" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="sig-name descname">filter_log_by_paths</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">paths</em>, <em class="sig-param">variants</em>, <em class="sig-param">vc</em>, <em class="sig-param">threshold</em>, <em class="sig-param">attribute_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#filter_log_by_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.filter_log_by_paths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keep only paths which number of occurrences is above the threshold (or they belong to the first variant)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -238,7 +260,7 @@ attribute_key -&gt; Attribute key (must be specified if different from concept:n
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.paths.paths_filter.get_paths_from_log">
-<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">get_paths_from_log</code><span class="sig-paren">(</span><em>log</em>, <em>attribute_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#get_paths_from_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.get_paths_from_log" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="sig-name descname">get_paths_from_log</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">attribute_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#get_paths_from_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.get_paths_from_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the paths of the log along with their count</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -258,7 +280,7 @@ attribute_key -&gt; Attribute key (must be specified if different from concept:n
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.paths.paths_filter.get_paths_threshold">
-<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">get_paths_threshold</code><span class="sig-paren">(</span><em>plist</em>, <em>decreasing_factor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#get_paths_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.get_paths_threshold" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="sig-name descname">get_paths_threshold</code><span class="sig-paren">(</span><em class="sig-param">plist</em>, <em class="sig-param">decreasing_factor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#get_paths_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.get_paths_threshold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get end attributes cutting threshold</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -278,7 +300,7 @@ attribute_key -&gt; Attribute key (must be specified if different from concept:n
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.paths.paths_filter.get_sorted_paths_list">
-<code class="descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="descname">get_sorted_paths_list</code><span class="sig-paren">(</span><em>paths</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#get_sorted_paths_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.get_sorted_paths_list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.paths.paths_filter.</code><code class="sig-name descname">get_sorted_paths_list</code><span class="sig-paren">(</span><em class="sig-param">paths</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/paths/paths_filter.html#get_sorted_paths_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.paths.paths_filter.get_sorted_paths_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets sorted paths list</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

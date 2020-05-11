@@ -6,7 +6,10 @@ from pm4py.objects.petri import semantics
 
 import time
 import datetime
+import deprecation
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='pm4py.algo.simulation is deprecated; use pm4py.simulation entrypoint instead')
 def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100):
     """
     Do the playout of a Petrinet generating a log

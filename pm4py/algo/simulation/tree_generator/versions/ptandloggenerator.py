@@ -6,7 +6,11 @@ import math
 import itertools
 import random
 import copy
+import deprecation
 
+
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='pm4py.algo.simulation is deprecated; use pm4py.simulation entrypoint instead')
 def apply(parameters=None):
     """
     Generate a process tree using the PTAndLogGenerator approach

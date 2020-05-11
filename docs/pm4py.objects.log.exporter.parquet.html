@@ -83,6 +83,7 @@
 <li><a class="reference internal" href="#">pm4py.objects.log.exporter.parquet package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pm4py.objects.log.exporter.parquet.exporter">pm4py.objects.log.exporter.parquet.exporter module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.exporter.parquet.factory">pm4py.objects.log.exporter.parquet.factory module</a></li>
 <li><a class="reference internal" href="#module-pm4py.objects.log.exporter.parquet">Module contents</a></li>
 </ul>
@@ -159,6 +160,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pm4py.objects.log.exporter.parquet.versions.html">pm4py.objects.log.exporter.parquet.versions package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.objects.log.exporter.parquet.versions.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.objects.log.exporter.parquet.versions.html#module-pm4py.objects.log.exporter.parquet.versions.pandas">pm4py.objects.log.exporter.parquet.versions.pandas module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.objects.log.exporter.parquet.versions.html#module-pm4py.objects.log.exporter.parquet.versions.pyarrow">pm4py.objects.log.exporter.parquet.versions.pyarrow module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.objects.log.exporter.parquet.versions.html#module-pm4py.objects.log.exporter.parquet.versions">Module contents</a></li>
 </ul>
@@ -169,11 +171,98 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pm4py.objects.log.exporter.parquet.exporter">
+<span id="pm4py-objects-log-exporter-parquet-exporter-module"></span><h2>pm4py.objects.log.exporter.parquet.exporter module<a class="headerlink" href="#module-pm4py.objects.log.exporter.parquet.exporter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.objects.log.exporter.parquet.exporter.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.objects.log.exporter.parquet.exporter.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/exporter.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.exporter.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.objects.log.exporter.parquet.exporter.Variants.PYARROW">
+<code class="sig-name descname">PYARROW</code><em class="property"> = &lt;module 'pm4py.objects.log.exporter.parquet.versions.pyarrow' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\objects\\log\\exporter\\parquet\\versions\\pyarrow.py'&gt;</em><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.exporter.Variants.PYARROW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.exporter.parquet.exporter.apply">
+<code class="sig-prename descclassname">pm4py.objects.log.exporter.parquet.exporter.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;module 'pm4py.objects.log.exporter.parquet.versions.pyarrow' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\objects\\log\\exporter\\parquet\\versions\\pyarrow.py'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/exporter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.exporter.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports a log to a Parquet file</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>path</strong> – Path</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm, possible values:</dt><dd><ul class="simple">
+<li><p>Variants.PYARROW</p></li>
+<li><p>Variants.PANDAS</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.exporter.parquet.exporter.export_df">
+<code class="sig-prename descclassname">pm4py.objects.log.exporter.parquet.exporter.</code><code class="sig-name descname">export_df</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;module 'pm4py.objects.log.exporter.parquet.versions.pyarrow' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\objects\\log\\exporter\\parquet\\versions\\pyarrow.py'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/exporter.html#export_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.exporter.export_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports a log to a Parquet file</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>path</strong> – Path</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm, possible values:</dt><dd><ul class="simple">
+<li><p>Variants.PYARROW</p></li>
+<li><p>Variants.PANDAS</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.objects.log.exporter.parquet.exporter.export_log">
+<code class="sig-prename descclassname">pm4py.objects.log.exporter.parquet.exporter.</code><code class="sig-name descname">export_log</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;module 'pm4py.objects.log.exporter.parquet.versions.pyarrow' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\objects\\log\\exporter\\parquet\\versions\\pyarrow.py'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/exporter.html#export_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.exporter.export_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports a log to a Parquet file</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>log</strong> – Log</p></li>
+<li><p><strong>path</strong> – Path</p></li>
+<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm, possible values:</dt><dd><ul class="simple">
+<li><p>Variants.PYARROW</p></li>
+<li><p>Variants.PANDAS</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.objects.log.exporter.parquet.factory">
 <span id="pm4py-objects-log-exporter-parquet-factory-module"></span><h2>pm4py.objects.log.exporter.parquet.factory module<a class="headerlink" href="#module-pm4py.objects.log.exporter.parquet.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.objects.log.exporter.parquet.factory.apply">
-<code class="descclassname">pm4py.objects.log.exporter.parquet.factory.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>path</em>, <em>parameters=None</em>, <em>variant='pyarrow'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.factory.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.objects.log.exporter.parquet.factory.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='pyarrow'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.factory.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exports a log to a Parquet file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -185,11 +274,14 @@
 </ul>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use exporter module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.exporter.parquet.factory.export_df">
-<code class="descclassname">pm4py.objects.log.exporter.parquet.factory.</code><code class="descname">export_df</code><span class="sig-paren">(</span><em>log</em>, <em>path</em>, <em>parameters=None</em>, <em>variant='pyarrow'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/factory.html#export_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.factory.export_df" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.objects.log.exporter.parquet.factory.</code><code class="sig-name descname">export_df</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='pyarrow'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/factory.html#export_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.factory.export_df" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exports a log to a Parquet file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -201,11 +293,14 @@
 </ul>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use exporter module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.objects.log.exporter.parquet.factory.export_log">
-<code class="descclassname">pm4py.objects.log.exporter.parquet.factory.</code><code class="descname">export_log</code><span class="sig-paren">(</span><em>log</em>, <em>path</em>, <em>parameters=None</em>, <em>variant='pyarrow'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/factory.html#export_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.factory.export_log" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.objects.log.exporter.parquet.factory.</code><code class="sig-name descname">export_log</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">path</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='pyarrow'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/factory.html#export_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.factory.export_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exports a log to a Parquet file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -217,6 +312,9 @@
 </ul>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use exporter module instead.</p>
+</div>
 </dd></dl>
 
 </div>

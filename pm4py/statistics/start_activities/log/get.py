@@ -1,5 +1,6 @@
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.statistics.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def get_start_activities(log, parameters=None):
@@ -12,7 +13,7 @@ def get_start_activities(log, parameters=None):
         Log
     parameters
         Parameters of the algorithm, including:
-            attribute_key -> Attribute key (must be specified if different from concept:name)
+            Parameters.ACTIVITY_KEY -> Attribute key (must be specified if different from concept:name)
 
     Returns
     ----------
@@ -21,8 +22,7 @@ def get_start_activities(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
+    attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
 
     start_activities = {}
 

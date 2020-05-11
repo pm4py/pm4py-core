@@ -3,9 +3,13 @@ import shutil
 import subprocess
 import sys
 import tempfile
-
+from enum import Enum
+from pm4py.util import exec_utils
 import numpy as np
-from pyvis.network import Network
+
+
+class Parameters(Enum):
+    WEIGHT_THRESHOLD = "weight_threshold"
 
 
 def get_temp_file_name(format):
@@ -33,17 +37,19 @@ def apply(metric_values, parameters=None):
         Value of the metrics
     parameters
         Possible parameters of the algorithm, including:
-            weight_threshold: the weight threshold to use in displaying the graph
+            - Parameters.WEIGHT_THRESHOLD -> the weight threshold to use in displaying the graph
 
     Returns
     -------------
     temp_file_name
         Name of a temporary file where the visualization is placed
     """
+    from pyvis.network import Network
+
     if parameters is None:
         parameters = {}
 
-    weight_threshold = parameters["weight_threshold"] if "weight_threshold" in parameters else 0
+    weight_threshold = exec_utils.get_param_value(Parameters.WEIGHT_THRESHOLD, parameters, 0)
     directed = metric_values[2]
 
     temp_file_name = get_temp_file_name("html")

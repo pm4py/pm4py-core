@@ -1,5 +1,3 @@
-import networkx as nx
-
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import add_arc_from_to, remove_transition
 
@@ -54,6 +52,8 @@ def find_bindings(and_measures):
     bindings
         Bindings
     """
+    import networkx as nx
+
     G = nx.Graph()
     allocated_nodes = set()
     for n1 in list(and_measures.keys()):

@@ -2,6 +2,8 @@ from graphviz import Source
 import tempfile
 
 from pm4py.statistics.variants.log import get as variants_get
+from pm4py.util import exec_utils
+from pm4py.visualization.parameters import Parameters
 
 
 def apply(log, aligned_traces, parameters=None):
@@ -32,7 +34,7 @@ def apply(log, aligned_traces, parameters=None):
         variants_idx_list.append((variant, variants_idx_dict[variant]))
     variants_idx_list = sorted(variants_idx_list, key=lambda x: len(x[1]), reverse=True)
 
-    image_format = parameters["format"] if "format" in parameters else "png"
+    image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
 
     table_alignments_list = ["digraph {\n", "tbl [\n", "shape=plaintext\n", "label=<\n"]
     table_alignments_list.append("<table border='0' cellborder='1' color='blue' cellspacing='0'>\n")
@@ -43,7 +45,8 @@ def apply(log, aligned_traces, parameters=None):
         al_tr = aligned_traces[variant[1][0]]
         table_alignments_list.append("<tr>")
         table_alignments_list.append(
-            "<td><font point-size='9'>Variant " + str(index + 1) + " (" + str(len(variant[1])) + " occurrences)</font></td>")
+            "<td><font point-size='9'>Variant " + str(index + 1) + " (" + str(
+                len(variant[1])) + " occurrences)</font></td>")
         table_alignments_list.append("<td><font point-size='6'><table border='0'><tr>")
         for move in al_tr['alignment']:
             move_descr = str(move[1]).replace(">", "&gt;")

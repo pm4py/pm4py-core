@@ -1,1 +1,1 @@
-from pm4py.visualization.petrinet import factory, common, versions, util
+from pm4py.visualization.petrinet import visualizer, common, versions, util, variants

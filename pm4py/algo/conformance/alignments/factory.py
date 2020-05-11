@@ -9,7 +9,7 @@ from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PAR
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
 from pm4py.statistics.variants.log import get as variants_module
-from pm4py.objects.conversion.log import factory as log_converter
+from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.util import xes_constants as xes_util
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -18,16 +18,21 @@ from pm4py.objects.petri.exporter.versions import pnml as petri_exporter
 from pm4py.objects.petri import check_soundness
 import math
 import time
+import deprecation
+import warnings
 
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
 VERSION_DIJKSTRA_NO_HEURISTICS = 'dijkstra_no_heuristics'
 
-
 DEFAULT_VARIANT = VERSION_STATE_EQUATION_A_STAR
 
-VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply, VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.apply}
-VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost, VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.get_best_worst_cost}
-VERSIONS_VARIANTS_LIST_MPROCESSING = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply_from_variants_list_petri_string_mprocessing, VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.apply_from_variants_list_petri_string_mprocessing}
+VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply,
+            VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.apply}
+VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost,
+                 VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.get_best_worst_cost}
+VERSIONS_VARIANTS_LIST_MPROCESSING = {
+    VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply_from_variants_list_petri_string_mprocessing,
+    VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.apply_from_variants_list_petri_string_mprocessing}
 
 VARIANTS_IDX = 'variants_idx'
 
@@ -36,7 +41,11 @@ DEFAULT_MAX_ALIGN_TIME_TRACE = sys.maxsize
 PARAM_MAX_ALIGN_TIME = "max_align_time"
 DEFAULT_MAX_ALIGN_TIME = sys.maxsize
 
+
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(obj, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
+    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = {}
     if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
@@ -52,6 +61,8 @@ def apply(obj, petri_net, initial_marking, final_marking, parameters=None, versi
                          final_marking, parameters, version)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=None,
                 version=DEFAULT_VARIANT):
     """
@@ -71,11 +82,11 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     parameters
         :class:`dict` parameters of the algorithm, for key \'state_equation_a_star\':
             pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> Attribute in the log that contains the activity
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_MODEL_COST_FUNCTION ->
             mapping of each transition in the model to corresponding synchronous costs
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->
             mapping of each transition in the model to corresponding model cost
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_TRACE_COST_FUNCTION ->
             mapping of each index of the trace to a positive cost value
     Returns
     -----------
@@ -85,6 +96,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
         The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t)
         representing synchronous/log/model-moves.
     """
+    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = copy({PARAMETER_CONSTANT_ACTIVITY_KEY: DEFAULT_NAME_KEY})
     if PARAM_TRACE_COST_FUNCTION not in parameters:
@@ -93,6 +105,8 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     return VERSIONS[version](trace, petri_net, initial_marking, final_marking, parameters)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
     """
     apply alignments to a log
@@ -112,11 +126,11 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         :class:`dict` parameters of the algorithm,
         for key \'state_equation_a_star\':
             pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> Attribute in the log that contains the activity
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_MODEL_COST_FUNCTION ->
             mapping of each transition in the model to corresponding synchronous costs
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->
             mapping of each transition in the model to corresponding model cost
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_TRACE_COST_FUNCTION ->
             mapping of each index of the trace to a positive cost value
     Returns
     -----------
@@ -126,12 +140,12 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         The alignment is a sequence of labels of the form (a,t), (a,>>), or (>>,t)
         representing synchronous/log/model-moves.
     """
+    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = dict()
 
     if not check_soundness.check_relaxed_soundness_net_in_fin_marking(petri_net, initial_marking, final_marking):
         raise Exception("trying to apply alignments on a Petri net that is not a relaxed sound net!!")
-
 
     start_time = time.time()
     activity_key = parameters[
@@ -164,7 +178,8 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     if PARAM_MAX_ALIGN_TIME_TRACE in parameters_best_worst:
         del parameters_best_worst[PARAM_MAX_ALIGN_TIME_TRACE]
 
-    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters_best_worst)
+    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking,
+                                             parameters=parameters_best_worst)
 
     variants_idxs = parameters[VARIANTS_IDX] if VARIANTS_IDX in parameters else None
     if variants_idxs is None:
@@ -180,10 +195,10 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
 
     all_alignments = []
     for trace in one_tr_per_var:
-        this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time))*0.5)
+        this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time)) * 0.5)
         parameters[PARAM_MAX_ALIGN_TIME_TRACE] = this_max_align_time
         all_alignments.append(apply_trace(trace, petri_net, initial_marking, final_marking, parameters=copy(parameters),
-                    version=version))
+                                          version=version))
 
     al_idx = {}
     for index_variant, variant in enumerate(variants_idxs):
@@ -207,11 +222,19 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
                 align['fitness'] = 0
     return alignments
 
+
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def chunks(l, n):
+    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
+
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
+    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = dict()
 
@@ -244,7 +267,8 @@ def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, pa
     if PARAM_MAX_ALIGN_TIME_TRACE in parameters_best_worst:
         del parameters_best_worst[PARAM_MAX_ALIGN_TIME_TRACE]
 
-    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking, parameters=parameters_best_worst)
+    best_worst_cost = VERSIONS_COST[version](petri_net, initial_marking, final_marking,
+                                             parameters=parameters_best_worst)
 
     variants_idxs = parameters[VARIANTS_IDX] if VARIANTS_IDX in parameters else None
     if variants_idxs is None:
@@ -255,14 +279,16 @@ def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, pa
 
     petri_net_string = petri_exporter.export_petri_as_string(petri_net, initial_marking, final_marking)
 
-    n = math.ceil(len(variants_list)/no_cores)
+    n = math.ceil(len(variants_list) / no_cores)
 
     variants_list_split = list(chunks(variants_list, n))
 
     # Define an output queue
     output = mp.Queue()
 
-    processes = [mp.Process(target=VERSIONS_VARIANTS_LIST_MPROCESSING[version](output, x, petri_net_string, parameters=parameters)) for x in variants_list_split]
+    processes = [mp.Process(
+        target=VERSIONS_VARIANTS_LIST_MPROCESSING[version](output, x, petri_net_string, parameters=parameters)) for x in
+        variants_list_split]
 
     # Run processes
     for p in processes:
@@ -297,5 +323,3 @@ def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, pa
                 align['fitness'] = 0
 
     return alignments
-
-

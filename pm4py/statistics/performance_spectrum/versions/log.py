@@ -3,6 +3,8 @@ from pm4py.objects.log.util import sorting
 from pm4py.objects.log.util import basic_filter
 from pm4py.util import points_subset
 from pm4py.util import xes_constants as xes
+from pm4py.statistics.performance_spectrum.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def apply(log, list_activities, sample_size, parameters):
@@ -19,7 +21,9 @@ def apply(log, list_activities, sample_size, parameters):
     sample_size
         Size of the sample
     parameters
-        Parameters of the algorithm, including the activity key and the timestamp key
+        Parameters of the algorithm,  including:
+            - Parameters.ACTIVITY_KEY
+            - Parameters.TIMESTAMP_KEY
 
     Returns
     -------------
@@ -29,14 +33,11 @@ def apply(log, list_activities, sample_size, parameters):
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
-
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
+    
     log = sorting.sort_timestamp_log(log, timestamp_key=timestamp_key)
-    parameters[
-        constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
+    parameters[Parameters.ATTRIBUTE_KEY] = activity_key
     log = basic_filter.filter_log_events_attr(log, list_activities, parameters=parameters)
 
     points = []

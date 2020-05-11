@@ -160,25 +160,8 @@
 <div class="section" id="module-pm4py.algo.discovery.inductive.util.petri_cleaning">
 <span id="pm4py-algo-discovery-inductive-util-petri-cleaning-module"></span><h2>pm4py.algo.discovery.inductive.util.petri_cleaning module<a class="headerlink" href="#module-pm4py.algo.discovery.inductive.util.petri_cleaning" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="pm4py.algo.discovery.inductive.util.petri_cleaning.clean_duplicate_transitions">
-<code class="descclassname">pm4py.algo.discovery.inductive.util.petri_cleaning.</code><code class="descname">clean_duplicate_transitions</code><span class="sig-paren">(</span><em>net</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/util/petri_cleaning.html#clean_duplicate_transitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.util.petri_cleaning.clean_duplicate_transitions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clean duplicate transitions in a Petri net</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>net</strong> – Petri net</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Cleaned Petri net</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>net</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
 <dt id="pm4py.algo.discovery.inductive.util.petri_cleaning.petri_reduction_treplay">
-<code class="descclassname">pm4py.algo.discovery.inductive.util.petri_cleaning.</code><code class="descname">petri_reduction_treplay</code><span class="sig-paren">(</span><em>net</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/util/petri_cleaning.html#petri_reduction_treplay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.util.petri_cleaning.petri_reduction_treplay" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.inductive.util.petri_cleaning.</code><code class="sig-name descname">petri_reduction_treplay</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/util/petri_cleaning.html#petri_reduction_treplay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.util.petri_cleaning.petri_reduction_treplay" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply petri_reduction on the Petrinet removing hidden transitions
 that are unused according to token-based replay</p>
 <dl class="field-list">
@@ -207,24 +190,24 @@ that are unused according to token-based replay</p>
 <span id="pm4py-algo-discovery-inductive-util-petri-el-count-module"></span><h2>pm4py.algo.discovery.inductive.util.petri_el_count module<a class="headerlink" href="#module-pm4py.algo.discovery.inductive.util.petri_el_count" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pm4py.algo.discovery.inductive.util.petri_el_count.Counts">
-<em class="property">class </em><code class="descclassname">pm4py.algo.discovery.inductive.util.petri_el_count.</code><code class="descname">Counts</code><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/util/petri_el_count.html#Counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.util.petri_el_count.Counts" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.discovery.inductive.util.petri_el_count.</code><code class="sig-name descname">Counts</code><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/util/petri_el_count.html#Counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.util.petri_el_count.Counts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Shared variables among executions</p>
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.util.petri_el_count.Counts.inc_no_hidden">
-<code class="descname">inc_no_hidden</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/util/petri_el_count.html#Counts.inc_no_hidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.util.petri_el_count.Counts.inc_no_hidden" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">inc_no_hidden</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/util/petri_el_count.html#Counts.inc_no_hidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.util.petri_el_count.Counts.inc_no_hidden" title="Permalink to this definition">¶</a></dt>
 <dd><p>Increase the number of hidden transitions</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.util.petri_el_count.Counts.inc_no_visible">
-<code class="descname">inc_no_visible</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/util/petri_el_count.html#Counts.inc_no_visible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.util.petri_el_count.Counts.inc_no_visible" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">inc_no_visible</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/util/petri_el_count.html#Counts.inc_no_visible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.util.petri_el_count.Counts.inc_no_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Increase the number of visible transitions</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pm4py.algo.discovery.inductive.util.petri_el_count.Counts.inc_places">
-<code class="descname">inc_places</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/util/petri_el_count.html#Counts.inc_places"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.util.petri_el_count.Counts.inc_places" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">inc_places</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/inductive/util/petri_el_count.html#Counts.inc_places"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.inductive.util.petri_el_count.Counts.inc_places" title="Permalink to this definition">¶</a></dt>
 <dd><p>Increase the number of places</p>
 </dd></dl>
 
