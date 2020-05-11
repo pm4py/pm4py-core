@@ -157,19 +157,36 @@
 </div>
 <div class="section" id="module-pm4py.algo.filtering.pandas.timestamp.timestamp_filter">
 <span id="pm4py-algo-filtering-pandas-timestamp-timestamp-filter-module"></span><h2>pm4py.algo.filtering.pandas.timestamp.timestamp_filter module<a class="headerlink" href="#module-pm4py.algo.filtering.pandas.timestamp.timestamp_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.filtering.pandas.timestamp.timestamp_filter.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.filtering.pandas.timestamp.timestamp_filter.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/timestamp/timestamp_filter.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.timestamp.timestamp_filter.Parameters.CASE_ID_KEY">
+<code class="sig-name descname">CASE_ID_KEY</code><em class="property"> = 'case_id_glue'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.Parameters.CASE_ID_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.timestamp.timestamp_filter.Parameters.TIMESTAMP_KEY">
+<code class="sig-name descname">TIMESTAMP_KEY</code><em class="property"> = 'pm4py:param:timestamp_key'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.Parameters.TIMESTAMP_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.timestamp.timestamp_filter.apply">
-<code class="descclassname">pm4py.algo.filtering.pandas.timestamp.timestamp_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/timestamp/timestamp_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.pandas.timestamp.timestamp_filter.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/timestamp/timestamp_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.apply" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.timestamp.timestamp_filter.apply_auto_filter">
-<code class="descclassname">pm4py.algo.filtering.pandas.timestamp.timestamp_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/timestamp/timestamp_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.pandas.timestamp.timestamp_filter.</code><code class="sig-name descname">apply_auto_filter</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/timestamp/timestamp_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.timestamp.timestamp_filter.apply_events">
-<code class="descclassname">pm4py.algo.filtering.pandas.timestamp.timestamp_filter.</code><code class="descname">apply_events</code><span class="sig-paren">(</span><em>df</em>, <em>dt1</em>, <em>dt2</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/timestamp/timestamp_filter.html#apply_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.apply_events" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.pandas.timestamp.timestamp_filter.</code><code class="sig-name descname">apply_events</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">dt1</em>, <em class="sig-param">dt2</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/timestamp/timestamp_filter.html#apply_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.apply_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a new log containing all the events contained in the given interval</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -179,7 +196,7 @@
 <li><p><strong>dt2</strong> – Upper bound to the interval (possibly expressed as string, but automatically converted)</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>timestamp_key -&gt; Attribute to use as timestamp</p>
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>Parameters.TIMESTAMP_KEY -&gt; Attribute to use as timestamp</p>
 </dd>
 </dl>
 </li>
@@ -196,7 +213,7 @@
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.timestamp.timestamp_filter.filter_traces_contained">
-<code class="descclassname">pm4py.algo.filtering.pandas.timestamp.timestamp_filter.</code><code class="descname">filter_traces_contained</code><span class="sig-paren">(</span><em>df</em>, <em>dt1</em>, <em>dt2</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/timestamp/timestamp_filter.html#filter_traces_contained"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.filter_traces_contained" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.pandas.timestamp.timestamp_filter.</code><code class="sig-name descname">filter_traces_contained</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">dt1</em>, <em class="sig-param">dt2</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/timestamp/timestamp_filter.html#filter_traces_contained"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.filter_traces_contained" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get traces that are contained in the given interval</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -206,8 +223,8 @@
 <li><p><strong>dt2</strong> – Upper bound to the interval (possibly expressed as string, but automatically converted)</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>timestamp_key -&gt; Attribute to use as timestamp
-case_id_glue -&gt; Column that contains the timestamp</p>
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>Parameters.TIMESTAMP_KEY -&gt; Attribute to use as timestamp
+Parameters.CASE_ID_KEY -&gt; Column that contains the timestamp</p>
 </dd>
 </dl>
 </li>
@@ -224,7 +241,7 @@ case_id_glue -&gt; Column that contains the timestamp</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.timestamp.timestamp_filter.filter_traces_intersecting">
-<code class="descclassname">pm4py.algo.filtering.pandas.timestamp.timestamp_filter.</code><code class="descname">filter_traces_intersecting</code><span class="sig-paren">(</span><em>df</em>, <em>dt1</em>, <em>dt2</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/timestamp/timestamp_filter.html#filter_traces_intersecting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.filter_traces_intersecting" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.pandas.timestamp.timestamp_filter.</code><code class="sig-name descname">filter_traces_intersecting</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">dt1</em>, <em class="sig-param">dt2</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/timestamp/timestamp_filter.html#filter_traces_intersecting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.timestamp.timestamp_filter.filter_traces_intersecting" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter traces intersecting the given interval</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -234,8 +251,8 @@ case_id_glue -&gt; Column that contains the timestamp</p>
 <li><p><strong>dt2</strong> – Upper bound to the interval (possibly expressed as string, but automatically converted)</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>timestamp_key -&gt; Attribute to use as timestamp
-case_id_glue -&gt; Column that contains the timestamp</p>
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>Parameters.TIMESTAMP_KEY -&gt; Attribute to use as timestamp
+Parameters.CASE_ID_KEY -&gt; Column that contains the timestamp</p>
 </dd>
 </dl>
 </li>

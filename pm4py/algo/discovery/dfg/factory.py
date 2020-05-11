@@ -1,10 +1,11 @@
 import pandas
+import deprecation
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.algo.discovery.dfg.versions import native, performance, freq_triples
-from pm4py.objects.conversion.log import factory as log_conversion
-from pm4py.objects.log.adapters.pandas import csv_import_adapter
+from pm4py.objects.conversion.log import converter as log_conversion
+from pm4py.objects.log.util import dataframe_utils
 from pm4py.util import xes_constants as xes_util
 
 DFG_NATIVE = 'native'
@@ -18,7 +19,8 @@ VERSIONS = {DFG_NATIVE: native.apply, DFG_FREQUENCY: native.apply, DFG_PERFORMAN
             DFG_FREQUENCY_GREEDY: native.apply, DFG_PERFORMANCE_GREEDY: performance.apply,
             FREQ_TRIPLES: freq_triples.apply}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, parameters=None, variant=DFG_NATIVE):
     """
     Calculates DFG graph (frequency or performance) starting from a log
@@ -50,7 +52,7 @@ def apply(log, parameters=None, variant=DFG_NATIVE):
     if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
         parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
     if isinstance(log, pandas.core.frame.DataFrame):
-        log = csv_import_adapter.convert_timestamp_columns_in_df(log, timest_columns=[
+        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_columns=[
             parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY]])
         dfg_frequency, dfg_performance = df_statistics.get_dfg_graph(log, measure="both",
                                                                      activity_key=parameters[

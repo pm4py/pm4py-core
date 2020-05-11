@@ -15,10 +15,11 @@ from pm4py.statistics.start_activities.log import get as log_start_act_stats
 from pm4py.statistics.attributes.pandas import get as pd_attributes_stats
 from pm4py.statistics.end_activities.pandas import get as pd_end_act_stats
 from pm4py.statistics.start_activities.pandas import get as pd_start_act_stats
-from pm4py.objects.conversion.process_tree import factory as tree_to_petri
-from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.conversion.process_tree import converter as tree_to_petri
+from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.dfg.utils import dfg_utils
-from pm4py.util import xes_constants as xes_util
+from pm4py.util import exec_utils
+from pm4py.algo.discovery.inductive.parameters import Parameters
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
 
@@ -33,7 +34,7 @@ def apply(log, parameters=None):
         Log
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -47,19 +48,16 @@ def apply(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
-    if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmutil.constants.CASE_CONCEPT_NAME)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, pmutil.xes_constants.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, pmutil.xes_constants.DEFAULT_TIMESTAMP_KEY)
     if isinstance(log, pandas.core.frame.DataFrame):
-        dfg = df_statistics.get_dfg_graph(log, case_id_glue=parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY],
-                                          activity_key=parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY],
-                                          timestamp_key=parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY])
+        dfg = df_statistics.get_dfg_graph(log, case_id_glue=case_id_glue,
+                                          activity_key=activity_key,
+                                          timestamp_key=timestamp_key)
         start_activities = pd_start_act_stats.get_start_activities(log, parameters=parameters)
         end_activities = pd_end_act_stats.get_end_activities(log, parameters=parameters)
-        activities = pd_attributes_stats.get_attribute_values(log, parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY], parameters=parameters)
+        activities = pd_attributes_stats.get_attribute_values(log, activity_key, parameters=parameters)
         return apply_dfg(dfg, activities=activities, start_activities=start_activities, end_activities=end_activities, parameters=parameters)
     log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
     tree = apply_tree(log, parameters=parameters)
@@ -77,7 +75,7 @@ def apply_variants(variants, parameters=None):
         Dictionary/list/set of variants in the log
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -105,7 +103,7 @@ def apply_tree_variants(variants, parameters=None):
         Dictionary/list/set of variants in the log
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -129,7 +127,7 @@ def apply_tree(log, parameters=None):
         Log
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
 
     Returns
@@ -139,9 +137,8 @@ def apply_tree(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, pmutil.xes_constants.DEFAULT_NAME_KEY)
 
     # get the DFG
     dfg = [(k, v) for k, v in dfg_inst.apply(log, parameters={
@@ -176,7 +173,7 @@ def apply_dfg(dfg, parameters=None, activities=None, contains_empty_traces=False
         Directly-Follows graph
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
     activities
         Activities of the process (default None)
@@ -217,7 +214,7 @@ def apply_tree_dfg(dfg, parameters=None, activities=None, contains_empty_traces=
         Directly-follows graph
     parameters
         Parameters of the algorithm, including:
-            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> attribute of the log to use as activity name
+            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
             (default concept:name)
     activities
         Activities of the process (default None)
@@ -236,10 +233,7 @@ def apply_tree_dfg(dfg, parameters=None, activities=None, contains_empty_traces=
     if parameters is None:
         parameters = {}
 
-    noise_threshold = shared_constants.NOISE_THRESHOLD
-
-    if "noiseThreshold" in parameters:
-        noise_threshold = parameters["noiseThreshold"]
+    noise_threshold = exec_utils.get_param_value(Parameters.NOISE_THRESHOLD, parameters, 0.0)
 
     if type(dfg) is Counter or type(dfg) is dict:
         newdfg = []

@@ -158,9 +158,21 @@
 </div>
 <div class="section" id="module-pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics">
 <span id="pm4py-algo-conformance-tokenreplay-diagnostics-duration-diagnostics-module"></span><h2>pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics module<a class="headerlink" href="#module-pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.Parameters.TIMESTAMP_KEY">
+<code class="sig-name descname">TIMESTAMP_KEY</code><em class="property"> = 'pm4py:param:timestamp_key'</em><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.Parameters.TIMESTAMP_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.diagnose_from_notexisting_activities">
-<code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="descname">diagnose_from_notexisting_activities</code><span class="sig-paren">(</span><em>log</em>, <em>notexisting_activities_in_model</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#diagnose_from_notexisting_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.diagnose_from_notexisting_activities" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="sig-name descname">diagnose_from_notexisting_activities</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">notexisting_activities_in_model</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#diagnose_from_notexisting_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.diagnose_from_notexisting_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide some conformance diagnostics related to activities that are not present in the model</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -169,7 +181,7 @@
 <li><p><strong>notexisting_activities_in_model</strong> – Not existing activities in the model</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; attribute of the event containing the timestamp</p>
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>Parameters.TIMESTAMP_KEY -&gt; attribute of the event containing the timestamp</p>
 </dd>
 </dl>
 </li>
@@ -186,7 +198,7 @@
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.diagnose_from_trans_fitness">
-<code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="descname">diagnose_from_trans_fitness</code><span class="sig-paren">(</span><em>log</em>, <em>trans_fitness</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#diagnose_from_trans_fitness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.diagnose_from_trans_fitness" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="sig-name descname">diagnose_from_trans_fitness</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">trans_fitness</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#diagnose_from_trans_fitness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.diagnose_from_trans_fitness" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide some conformance diagnostics related to transitions that are executed in a unfit manner</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -195,7 +207,7 @@
 <li><p><strong>trans_fitness</strong> – For each transition, keeps track of unfit executions</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>PARAMETER_CONSTANT_TIMESTAMP_KEY -&gt; attribute of the event containing the timestamp</p>
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>Parameters.TIMESTAMP_KEY -&gt; attribute of the event containing the timestamp</p>
 </dd>
 </dl>
 </li>
@@ -212,7 +224,7 @@
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.get_case_duration">
-<code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="descname">get_case_duration</code><span class="sig-paren">(</span><em>case</em>, <em>timestamp_key='time:timestamp'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#get_case_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.get_case_duration" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="sig-name descname">get_case_duration</code><span class="sig-paren">(</span><em class="sig-param">case</em>, <em class="sig-param">timestamp_key='time:timestamp'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#get_case_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.get_case_duration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the duration of a case</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -232,7 +244,7 @@
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.get_median_case_duration">
-<code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="descname">get_median_case_duration</code><span class="sig-paren">(</span><em>list_cases</em>, <em>timestamp_key='time:timestamp'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#get_median_case_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.get_median_case_duration" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.</code><code class="sig-name descname">get_median_case_duration</code><span class="sig-paren">(</span><em class="sig-param">list_cases</em>, <em class="sig-param">timestamp_key='time:timestamp'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/duration_diagnostics.html#get_median_case_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.duration_diagnostics.get_median_case_duration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the median case duration of a list of cases</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -253,9 +265,31 @@
 </div>
 <div class="section" id="module-pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis">
 <span id="pm4py-algo-conformance-tokenreplay-diagnostics-root-cause-analysis-module"></span><h2>pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis module<a class="headerlink" href="#module-pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.Parameters.ENABLE_MULTIPLIER">
+<code class="sig-name descname">ENABLE_MULTIPLIER</code><em class="property"> = 'enable_multiplier'</em><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.Parameters.ENABLE_MULTIPLIER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.Parameters.NUMERIC_ATTRIBUTES">
+<code class="sig-name descname">NUMERIC_ATTRIBUTES</code><em class="property"> = 'numeric_attributes'</em><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.Parameters.NUMERIC_ATTRIBUTES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.Parameters.STRING_ATTRIBUTES">
+<code class="sig-name descname">STRING_ATTRIBUTES</code><em class="property"> = 'string_attributes'</em><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.Parameters.STRING_ATTRIBUTES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.diagnose_from_notexisting_activities">
-<code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="descname">diagnose_from_notexisting_activities</code><span class="sig-paren">(</span><em>log</em>, <em>notexisting_activities_in_model</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#diagnose_from_notexisting_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.diagnose_from_notexisting_activities" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="sig-name descname">diagnose_from_notexisting_activities</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">notexisting_activities_in_model</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#diagnose_from_notexisting_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.diagnose_from_notexisting_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform root cause analysis related to activities that are not present in the model</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -294,7 +328,7 @@
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.diagnose_from_trans_fitness">
-<code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="descname">diagnose_from_trans_fitness</code><span class="sig-paren">(</span><em>log</em>, <em>trans_fitness</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#diagnose_from_trans_fitness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.diagnose_from_trans_fitness" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="sig-name descname">diagnose_from_trans_fitness</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">trans_fitness</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#diagnose_from_trans_fitness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.diagnose_from_trans_fitness" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform root cause analysis starting from transition fitness knowledge</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -333,7 +367,7 @@
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.form_log_from_dictio_couple">
-<code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="descname">form_log_from_dictio_couple</code><span class="sig-paren">(</span><em>first_cases_repr</em>, <em>second_cases_repr</em>, <em>enable_multiplier=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#form_log_from_dictio_couple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.form_log_from_dictio_couple" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="sig-name descname">form_log_from_dictio_couple</code><span class="sig-paren">(</span><em class="sig-param">first_cases_repr</em>, <em class="sig-param">second_cases_repr</em>, <em class="sig-param">enable_multiplier=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#form_log_from_dictio_couple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.form_log_from_dictio_couple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Form a log from a couple of dictionary, to use for
 root cause analysis</p>
 <dl class="field-list simple">
@@ -355,7 +389,7 @@ root cause analysis</p>
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.form_representation_from_dictio_couple">
-<code class="descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="descname">form_representation_from_dictio_couple</code><span class="sig-paren">(</span><em>first_cases_repr</em>, <em>second_cases_repr</em>, <em>string_attributes</em>, <em>numeric_attributes</em>, <em>enable_multiplier=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#form_representation_from_dictio_couple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.form_representation_from_dictio_couple" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.</code><code class="sig-name descname">form_representation_from_dictio_couple</code><span class="sig-paren">(</span><em class="sig-param">first_cases_repr</em>, <em class="sig-param">second_cases_repr</em>, <em class="sig-param">string_attributes</em>, <em class="sig-param">numeric_attributes</em>, <em class="sig-param">enable_multiplier=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/tokenreplay/diagnostics/root_cause_analysis.html#form_representation_from_dictio_couple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.tokenreplay.diagnostics.root_cause_analysis.form_representation_from_dictio_couple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a log representation, useful for training the decision tree,
 from a couple of dictionaries along with the list of string attributes
 and numeric attributes to consider, to use for root cause analysis</p>

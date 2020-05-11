@@ -157,9 +157,41 @@
 </div>
 <div class="section" id="module-pm4py.algo.filtering.pandas.start_activities.start_activities_filter">
 <span id="pm4py-algo-filtering-pandas-start-activities-start-activities-filter-module"></span><h2>pm4py.algo.filtering.pandas.start_activities.start_activities_filter module<a class="headerlink" href="#module-pm4py.algo.filtering.pandas.start_activities.start_activities_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.CASE_ID_KEY">
+<code class="sig-name descname">CASE_ID_KEY</code><em class="property"> = 'case_id_glue'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.CASE_ID_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.DECREASING_FACTOR">
+<code class="sig-name descname">DECREASING_FACTOR</code><em class="property"> = 'decreasingFactor'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.DECREASING_FACTOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.GROUP_DATAFRAME">
+<code class="sig-name descname">GROUP_DATAFRAME</code><em class="property"> = 'grouped_dataframe'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.GROUP_DATAFRAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.POSITIVE">
+<code class="sig-name descname">POSITIVE</code><em class="property"> = 'positive'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.POSITIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply">
-<code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>df</em>, <em>values</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">values</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter dataframe on start activities</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -168,9 +200,9 @@
 <li><p><strong>values</strong> – Values to filter on</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Case ID column in the dataframe
-activity_key -&gt; Column that represents the activity
-positive -&gt; Specifies if the filtered should be applied including traces (positive=True)
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>Parameters.CASE_ID_KEY -&gt; Case ID column in the dataframe
+Parameters.ACTIVITY_KEY -&gt; Column that represents the activity
+Parameters.POSITIVE -&gt; Specifies if the filtered should be applied including traces (positive=True)
 or excluding traces (positive=False)</p>
 </dd>
 </dl>
@@ -188,7 +220,7 @@ or excluding traces (positive=False)</p>
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply_auto_filter">
-<code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="sig-name descname">apply_auto_filter</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply auto filter on end activities</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -196,9 +228,9 @@ or excluding traces (positive=False)</p>
 <li><p><strong>df</strong> – Pandas dataframe</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Case ID column in the dataframe
-activity_key -&gt; Column that represents the activity
-decreasingFactor -&gt; Decreasing factor that should be passed to the algorithm</p>
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.CASE_ID_KEY -&gt; Case ID column in the dataframe
+Parameters.ACTIVITY_KEY -&gt; Column that represents the activity
+Parameters.DECREASING_FACTOR -&gt; Decreasing factor that should be passed to the algorithm</p>
 </dd>
 </dl>
 </li>
@@ -215,7 +247,7 @@ decreasingFactor -&gt; Decreasing factor that should be passed to the algorithm<
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities">
-<code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">filter_df_on_start_activities</code><span class="sig-paren">(</span><em>df</em>, <em>values</em>, <em>case_id_glue='case:concept:name'</em>, <em>activity_key='concept:name'</em>, <em>grouped_df=None</em>, <em>positive=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#filter_df_on_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="sig-name descname">filter_df_on_start_activities</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">values</em>, <em class="sig-param">case_id_glue='case:concept:name'</em>, <em class="sig-param">activity_key='concept:name'</em>, <em class="sig-param">grouped_df=None</em>, <em class="sig-param">positive=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#filter_df_on_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter dataframe on start activities</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -240,7 +272,7 @@ decreasingFactor -&gt; Decreasing factor that should be passed to the algorithm<
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities_nocc">
-<code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">filter_df_on_start_activities_nocc</code><span class="sig-paren">(</span><em>df</em>, <em>nocc</em>, <em>sa_count0=None</em>, <em>case_id_glue='case:concept:name'</em>, <em>activity_key='concept:name'</em>, <em>grouped_df=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#filter_df_on_start_activities_nocc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities_nocc" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="sig-name descname">filter_df_on_start_activities_nocc</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">nocc</em>, <em class="sig-param">sa_count0=None</em>, <em class="sig-param">case_id_glue='case:concept:name'</em>, <em class="sig-param">activity_key='concept:name'</em>, <em class="sig-param">grouped_df=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#filter_df_on_start_activities_nocc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.filter_df_on_start_activities_nocc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter dataframe on start activities number of occurrences</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -258,32 +290,6 @@ decreasingFactor -&gt; Decreasing factor that should be passed to the algorithm<
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>df</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.get_start_activities">
-<code class="descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="descname">get_start_activities</code><span class="sig-paren">(</span><em>df</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#get_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.get_start_activities" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get start activities count</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul>
-<li><p><strong>df</strong> – Pandas dataframe</p></li>
-<li><p><strong>parameters</strong> –</p>
-<dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Case ID column in the dataframe
-activity_key -&gt; Column that represents the activity</p>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dictionary of start activities along with their count</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>startact_dict</p>
 </dd>
 </dl>
 </dd></dl>

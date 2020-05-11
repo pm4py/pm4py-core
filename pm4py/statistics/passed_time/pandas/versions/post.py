@@ -1,8 +1,8 @@
-from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY, \
-    PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.statistics.parameters import Parameters
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.objects.dfg.retrieval import pandas
+from pm4py.util import exec_utils
 
 
 def apply(df, activity, parameters=None):
@@ -27,12 +27,9 @@ def apply(df, activity, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
     [dfg_frequency, dfg_performance] = pandas.get_dfg_graph(df, measure="both", activity_key=activity_key,
                                            case_id_glue=case_id_glue, timestamp_key=timestamp_key)

@@ -1,10 +1,12 @@
+import pandas
+import numpy as np
+import deprecation
+
 from pm4py.algo.enhancement.sna.versions.log import handover as log_handover, jointactivities as log_jointactivities, \
     subcontracting as log_subcontracting, working_together as log_workingtogether
 from pm4py.algo.enhancement.sna.versions.pandas import handover as pd_handover, subcontracting as pd_subcontracting, \
     working_together as pd_workingtogether, jointactivities as pd_jointactivities
-from pm4py.objects.conversion.log import factory as conv_factory
-import pandas
-import numpy as np
+from pm4py.objects.conversion.log import converter as log_converter
 
 HANDOVER = "handover"
 WORKING_TOGETHER = "working_together"
@@ -18,7 +20,8 @@ VERSIONS_LOG = {HANDOVER: log_handover.apply, WORKING_TOGETHER: log_workingtoget
 VERSIONS_PANDAS = {HANDOVER: pd_handover.apply, WORKING_TOGETHER: pd_workingtogether.apply,
                    SUBCONTRACTING: pd_subcontracting.apply, JOINTACTIVITIES: pd_jointactivities.apply}
 
-
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use algorithm entrypoint instead')
 def apply(log, parameters=None, variant=HANDOVER):
     """
     Calculates a SNA metric
@@ -50,7 +53,7 @@ def apply(log, parameters=None, variant=HANDOVER):
             sna[0] = sna[0] / abs_max
         return sna
     if variant in VERSIONS_LOG:
-        log = conv_factory.apply(log, parameters=parameters)
+        log = log_converter.apply(log, parameters=parameters)
         sna = VERSIONS_LOG[variant](log, parameters=parameters)
         abs_max = np.max(np.abs(sna[0]))
         if enable_metric_normalization and abs_max > 0:

@@ -1,6 +1,8 @@
+import deprecation
+
 from pm4py import util as pmutil
 from pm4py.evaluation.precision.versions import etconformance_token, align_etconformance
-from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import xes_constants as xes_util
 from pm4py.objects import petri
 
@@ -10,9 +12,11 @@ ALIGN_ETCONFORMANCE = "align_etconformance"
 
 VERSIONS = {ETCONFORMANCE_TOKEN: etconformance_token.apply, ALIGN_ETCONFORMANCE: align_etconformance.apply}
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use evaluator entrypoint instead')
 def apply(log, net, marking, final_marking, parameters=None, variant=None):
     """
-    Factory method to apply ET Conformance
+    Method to apply ET Conformance
 
     Parameters
     -----------

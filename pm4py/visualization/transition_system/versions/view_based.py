@@ -1,4 +1,5 @@
 import pm4py
+from pm4py.visualization.transition_system.parameters import Parameters
 
 
 def apply(tsys, parameters=None):

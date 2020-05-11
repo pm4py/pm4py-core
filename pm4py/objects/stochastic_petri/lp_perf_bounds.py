@@ -5,12 +5,12 @@ import numpy as np
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import remove_place, remove_transition, add_arc_from_to
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
-from pm4py.util.lp import factory as lp_solver_factory
+from pm4py.util.lp import factory as lp_solver
 from pm4py.util.lp.util import aeq_redundant_fix
 
 DEFAULT_REPLACEMENT_IMMEDIATE = 1000
 
-DEFAULT_LP_SOLVER_VARIANT = lp_solver_factory.ORTOOLS_SOLVER
+DEFAULT_LP_SOLVER_VARIANT = lp_solver.ORTOOLS_SOLVER
 
 
 class LpPerfBounds(object):
@@ -110,10 +110,10 @@ class LpPerfBounds(object):
             c[target_column] = -1.0
         else:
             c[target_column] = 1.0
-        sol = lp_solver_factory.apply(c, self.Aub, self.bub, self.Aeq, self.beq, variant=DEFAULT_LP_SOLVER_VARIANT)
+        sol = lp_solver.apply(c, self.Aub, self.bub, self.Aeq, self.beq, variant=DEFAULT_LP_SOLVER_VARIANT)
         parameters_points = {"maximize": maximize, "return_when_none": True, "var_corr": self.var_corr}
 
-        return lp_solver_factory.get_points_from_sol(sol, parameters=parameters_points,
+        return lp_solver.get_points_from_sol(sol, parameters=parameters_points,
                                                      variant=DEFAULT_LP_SOLVER_VARIANT)
 
     def build_problem(self):
@@ -151,7 +151,7 @@ class LpPerfBounds(object):
 
         self.Aeq, self.beq = aeq_redundant_fix.remove_redundant_rows(self.Aeq, self.beq)
 
-        if DEFAULT_LP_SOLVER_VARIANT == lp_solver_factory.CVXOPT:
+        if DEFAULT_LP_SOLVER_VARIANT == lp_solver.CVXOPT:
             self.Aeq = np.transpose(self.Aeq.astype(np.float64)).tolist()
             self.beq = np.transpose(self.beq.astype(np.float64)).tolist()
             self.Aub = np.transpose(self.Aub.astype(np.float64)).tolist()

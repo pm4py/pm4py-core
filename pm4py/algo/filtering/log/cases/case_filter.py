@@ -1,6 +1,12 @@
 from pm4py.objects.log.log import EventLog
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
 def filter_on_case_performance(log, inf_perf, sup_perf, parameters=None):
@@ -25,8 +31,7 @@ def filter_on_case_performance(log, inf_perf, sup_perf, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
     filtered_log = EventLog([trace for trace in log if satisfy_perf(trace, inf_perf, sup_perf, timestamp_key)])
     return filtered_log
 
@@ -100,6 +105,10 @@ def satisfy_perf(trace, inf_perf, sup_perf, timestamp_key):
         trace_duration = (trace[-1][timestamp_key] - trace[0][timestamp_key]).total_seconds()
         return inf_perf <= trace_duration <= sup_perf
     return False
+
+
+def filter_case_performance(log, inf_perf, sup_perf, parameters=None):
+    return filter_on_case_performance(log, inf_perf, sup_perf, parameters=parameters)
 
 
 def apply(df, parameters=None):

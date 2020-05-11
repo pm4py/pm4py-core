@@ -3,15 +3,18 @@ import tempfile
 from graphviz import Digraph
 
 from pm4py.objects.petri.petrinet import Marking
+from pm4py.util import exec_utils
+from enum import Enum
+from pm4py.visualization.petrinet.parameters import Parameters
 
-FORMAT = "format"
-DEBUG = "debug"
-RANKDIR = "set_rankdir"
+FORMAT = Parameters.FORMAT
+DEBUG = Parameters.DEBUG
+RANKDIR = Parameters.RANKDIR
 
 
 def apply(net, initial_marking, final_marking, decorations=None, parameters=None):
     """
-    Apply method for Petri net visualization (useful for recall from factory; it calls the
+    Apply method for Petri net visualization (it calls the
     graphviz_visualization method)
 
     Parameters
@@ -34,15 +37,10 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
     """
     if parameters is None:
         parameters = {}
-    image_format = "png"
-    debug = False
-    set_rankdir = None
-    if FORMAT in parameters:
-        image_format = parameters["format"]
-    if DEBUG in parameters:
-        debug = parameters["debug"]
-    if RANKDIR in parameters:
-        set_rankdir = parameters[RANKDIR]
+
+    image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
+    debug = exec_utils.get_param_value(Parameters.DEBUG, parameters, False)
+    set_rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, None)
     return graphviz_visualization(net, image_format=image_format, initial_marking=initial_marking,
                                   final_marking=final_marking, decorations=decorations, debug=debug,
                                   set_rankdir=set_rankdir)

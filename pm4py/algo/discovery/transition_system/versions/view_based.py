@@ -1,20 +1,16 @@
 import collections
 
-from pm4py.algo.discovery.transition_system.parameters import *
+from pm4py.algo.discovery.transition_system.parameters import Parameters
+from pm4py.util import exec_utils
 from pm4py.objects.log import util as log_util
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.transition_system import transition_system as ts
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
 def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
-    for parameter in DEFAULT_PARAMETERS:
-        if parameter not in parameters:
-            parameters[parameter] = DEFAULT_PARAMETERS[parameter]
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
     transition_system = ts.TransitionSystem()
     control_flow_log = log_util.log.project_traces(log, activity_key)
     view_sequence = (list(map(lambda t: __compute_view_sequence(t, parameters), control_flow_log)))
@@ -43,20 +39,25 @@ def __construct_state_path(view_sequence, transition_system):
 
 def __compute_view_sequence(trace, parameters):
     view_sequences = list()
+    direction = exec_utils.get_param_value(Parameters.PARAM_KEY_DIRECTION, parameters,
+                                           Parameters.DIRECTION_FORWARD.value)
+    window = exec_utils.get_param_value(Parameters.PARAM_KEY_WINDOW, parameters, 2)
     for i in range(0, len(trace) + 1):
-        if parameters[PARAM_KEY_DIRECTION] == DIRECTION_FORWARD:
-            view_sequences.append((__apply_abstr(trace[i:i + parameters[PARAM_KEY_WINDOW]], parameters),
+        if direction == Parameters.DIRECTION_FORWARD.value:
+            view_sequences.append((__apply_abstr(trace[i:i + window], parameters),
                                    trace[i] if i < len(trace) else None))
         else:
-            view_sequences.append((__apply_abstr(trace[max(0, i - parameters[PARAM_KEY_WINDOW]):i], parameters),
+            view_sequences.append((__apply_abstr(trace[max(0, i - window):i], parameters),
                                    trace[i] if i < len(trace) else None))
     return view_sequences
 
 
 def __apply_abstr(seq, parameters):
-    case = {
-        VIEW_SEQUENCE: list,
-        VIEW_MULTI_SET: collections.Counter,
-        VIEW_SET: set
-    }
-    return case[parameters[PARAM_KEY_VIEW]](seq) if len(seq) > 0 else case[parameters[PARAM_KEY_VIEW]]()
+    key_view = exec_utils.get_param_value(Parameters.PARAM_KEY_VIEW, parameters, Parameters.VIEW_SEQUENCE.value)
+
+    if key_view == Parameters.VIEW_SEQUENCE.value:
+        return list(seq)
+    elif key_view == Parameters.VIEW_MULTI_SET.value:
+        return collections.Counter(seq)
+    elif key_view == Parameters.VIEW_SET.value:
+        return set(seq)

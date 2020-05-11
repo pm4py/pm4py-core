@@ -4,6 +4,8 @@ import tempfile
 import pydotplus
 
 from pm4py.visualization.common.utils import human_readable_stat
+from pm4py.util import exec_utils
+from pm4py.visualization.parameters import Parameters
 
 
 def get_corr_hex(num):
@@ -99,7 +101,8 @@ def apply(heu_net, parameters=None):
     heu_net
         Heuristics net
     parameters
-        Possible parameters of the algorithm, including: format
+        Possible parameters of the algorithm, including:
+            - Parameters.FORMAT
 
     Returns
     ------------
@@ -109,7 +112,7 @@ def apply(heu_net, parameters=None):
     if parameters is None:
         parameters = {}
 
-    image_format = parameters["format"] if "format" in parameters else "png"
+    image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
 
     graph = pydotplus.Dot(strict=True)
     graph.obj_dict['attributes']['bgcolor'] = 'transparent'

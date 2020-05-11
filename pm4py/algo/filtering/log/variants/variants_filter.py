@@ -1,8 +1,17 @@
-from pm4py.statistics.variants.log.get import get_variants_from_log_trace_idx, get_variants, get_variants_along_with_case_durations, get_variants_sorted_by_count, convert_variants_trace_idx_to_trace_obj
+from pm4py.statistics.variants.log.get import get_variants_from_log_trace_idx, get_variants, \
+    get_variants_along_with_case_durations, get_variants_sorted_by_count, convert_variants_trace_idx_to_trace_obj
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.objects.log.log import EventLog
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    DECREASING_FACTOR = "decreasingFactor"
+    POSITIVE = "positive"
 
 
 def apply(log, admitted_variants, parameters=None):
@@ -17,13 +26,13 @@ def apply(log, admitted_variants, parameters=None):
         Admitted variants
     parameters
         Parameters of the algorithm, including:
-            activity_key -> Attribute identifying the activity in the log
-            positive -> Indicate if events should be kept/removed
+            Parameters.ACTIVITY_KEY -> Attribute identifying the activity in the log
+            Parameters.POSITIVE -> Indicate if events should be kept/removed
     """
 
     if parameters is None:
         parameters = {}
-    positive = parameters["positive"] if "positive" in parameters else True
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     variants = get_variants(log, parameters=parameters)
     log = EventLog()
     for variant in variants:
@@ -150,8 +159,8 @@ def apply_auto_filter(log, variants=None, parameters=None):
         Variants contained in the log
     parameters
         Parameters of the algorithm, including:
-            activity_key -> Key that identifies the activity
-            decreasingFactor -> Decreasing factor (stops the algorithm when the next variant by occurrence is below
+            Parameters.ACTIVITY_KEY -> Key that identifies the activity
+            Parameters.DECREASING_FACTOR -> Decreasing factor (stops the algorithm when the next variant by occurrence is below
             this factor in comparison to previous)
     
     Returns
@@ -162,10 +171,9 @@ def apply_auto_filter(log, variants=None, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    decreasing_factor = parameters[
-        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters,
+                                                   filtering_constants.DECREASING_FACTOR)
 
     parameters_variants = {PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
     if variants is None:

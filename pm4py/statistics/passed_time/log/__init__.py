@@ -1,1 +1,1 @@
-from pm4py.statistics.passed_time.log import factory, versions
+from pm4py.statistics.passed_time.log import algorithm, versions

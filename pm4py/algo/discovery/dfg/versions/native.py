@@ -11,7 +11,7 @@ def apply(log, parameters=None):
         Trace log
     parameters
         Possible parameters passed to the algorithms:
-            activity_key -> Attribute to use as activity
+            Parameters.ACTIVITY_KEY -> Attribute to use as activity
 
     Returns
     -------

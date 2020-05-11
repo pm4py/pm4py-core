@@ -1,11 +1,22 @@
+from enum import Enum
+
+import deprecation
 from lxml import etree
 
-from pm4py.objects.conversion.log import factory as log_converter
+from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log import log as log_instance
+from pm4py.objects.log.exporter.xes.util import compression
 from pm4py.util import xes_constants as xes_util
+import tempfile
+import shutil
+
+
+class Parameters(Enum):
+    COMPRESS = True
+
 
 # defines correspondence between Python types and XES types
-TYPE_CORRESPONDENCE = {
+__TYPE_CORRESPONDENCE = {
     "str": xes_util.TAG_STRING,
     "int": xes_util.TAG_INT,
     "float": xes_util.TAG_FLOAT,
@@ -15,10 +26,10 @@ TYPE_CORRESPONDENCE = {
     "dict": xes_util.TAG_LIST
 }
 # if a type is not found in the previous list, then default to string
-DEFAULT_TYPE = xes_util.TAG_STRING
+__DEFAULT_TYPE = xes_util.TAG_STRING
 
 
-def get_xes_attr_type(attr_type):
+def __get_xes_attr_type(attr_type):
     """
     Transform a Python attribute type (e.g. str, datetime) into a XES attribute type (e.g. string, date)
 
@@ -27,14 +38,14 @@ def get_xes_attr_type(attr_type):
     attr_type:
         Python attribute type
     """
-    if attr_type in TYPE_CORRESPONDENCE:
-        attr_type_xes = TYPE_CORRESPONDENCE[attr_type]
+    if attr_type in __TYPE_CORRESPONDENCE:
+        attr_type_xes = __TYPE_CORRESPONDENCE[attr_type]
     else:
-        attr_type_xes = DEFAULT_TYPE
+        attr_type_xes = __DEFAULT_TYPE
     return attr_type_xes
 
 
-def get_xes_attr_value(attr_value, attr_type_xes):
+def __get_xes_attr_value(attr_value, attr_type_xes):
     """
     Transform an attribute value from Python format to XES format (the type is provided as argument)
 
@@ -60,7 +71,7 @@ def get_xes_attr_value(attr_value, attr_type_xes):
     return str(attr_value)
 
 
-def export_attributes(log, root):
+def __export_attributes(log, root):
     """
     Export XES attributes (at the log level) from a PM4PY log
 
@@ -72,10 +83,10 @@ def export_attributes(log, root):
         Output XML root element
 
     """
-    export_attributes_element(log, root)
+    __export_attributes_element(log, root)
 
 
-def export_extensions(log, root):
+def __export_extensions(log, root):
     """
     Export XES extensions from a PM4PY log
 
@@ -96,7 +107,7 @@ def export_extensions(log, root):
             log_extension.set(xes_util.KEY_URI, ext_value[xes_util.KEY_URI])
 
 
-def export_globals(log, root):
+def __export_globals(log, root):
     """
     Export XES globals from a PM4PY log
 
@@ -112,10 +123,10 @@ def export_globals(log, root):
         glob_els = log.omni_present[glob]
         xes_global = etree.SubElement(root, xes_util.TAG_GLOBAL)
         xes_global.set(xes_util.KEY_SCOPE, glob)
-        export_attributes_element(glob_els, xes_global)
+        __export_attributes_element(glob_els, xes_global)
 
 
-def export_classifiers(log, root):
+def __export_classifiers(log, root):
     """
     Export XES classifiers from a PM4PY log
 
@@ -138,7 +149,7 @@ def export_classifiers(log, root):
         classifier.set(xes_util.KEY_KEYS, " ".join(clas_value))
 
 
-def export_attributes_element(log_element, xml_element):
+def __export_attributes_element(log_element, xml_element):
     """
     Export attributes related to a single element
 
@@ -155,33 +166,33 @@ def export_attributes_element(log_element, xml_element):
     for attr in log_element:
         if attr is not None:
             attr_type = type(log_element[attr]).__name__
-            attr_type_xes = get_xes_attr_type(attr_type)
+            attr_type_xes = __get_xes_attr_type(attr_type)
             if attr_type is not None and attr_type_xes is not None:
                 if attr_type_xes == xes_util.TAG_LIST:
                     if log_element[attr]['value'] is None:
                         this_attribute = etree.SubElement(xml_element, attr_type_xes)
                         this_attribute.set(xes_util.KEY_KEY, attr)
                         this_attribute_values = etree.SubElement(this_attribute, "values")
-                        export_attributes_element(log_element[attr]['children'], this_attribute_values)
+                        __export_attributes_element(log_element[attr]['children'], this_attribute_values)
                     else:
                         attr_type = type(log_element[attr]['value']).__name__
-                        attr_type_xes = get_xes_attr_type(attr_type)
+                        attr_type_xes = __get_xes_attr_type(attr_type)
                         if attr_type is not None and attr_type_xes is not None:
                             attr_value = log_element[attr]['value']
                             if attr_value is not None:
                                 this_attribute = etree.SubElement(xml_element, attr_type_xes)
                                 this_attribute.set(xes_util.KEY_KEY, attr)
                                 this_attribute.set(xes_util.KEY_VALUE, str(log_element[attr]['value']))
-                                export_attributes_element(log_element[attr]['children'], this_attribute)
+                                __export_attributes_element(log_element[attr]['children'], this_attribute)
                 else:
-                    attr_value = get_xes_attr_value(log_element[attr], attr_type_xes)
+                    attr_value = __get_xes_attr_value(log_element[attr], attr_type_xes)
                     if attr_value is not None:
                         this_attribute = etree.SubElement(xml_element, attr_type_xes)
                         this_attribute.set(xes_util.KEY_KEY, attr)
                         this_attribute.set(xes_util.KEY_VALUE, str(attr_value))
 
 
-def export_traces_events(tr, trace):
+def __export_traces_events(tr, trace):
     """
     Export XES events given a PM4PY trace
 
@@ -196,10 +207,10 @@ def export_traces_events(tr, trace):
 
     for ev in tr:
         event = etree.SubElement(trace, xes_util.TAG_EVENT)
-        export_attributes_element(ev, event)
+        __export_attributes_element(ev, event)
 
 
-def export_traces(log, root):
+def __export_traces(log, root):
     """
     Export XES traces from a PM4PY log
 
@@ -213,11 +224,11 @@ def export_traces(log, root):
     """
     for tr in log:
         trace = etree.SubElement(root, xes_util.TAG_TRACE)
-        export_attributes_element(tr, trace)
-        export_traces_events(tr, trace)
+        __export_attributes_element(tr, trace)
+        __export_traces_events(tr, trace)
 
 
-def export_log_tree(log):
+def __export_log_tree(log):
     """
     Get XES log XML tree from a PM4Py log
 
@@ -237,22 +248,22 @@ def export_log_tree(log):
     root = etree.Element(xes_util.TAG_LOG)
 
     # add attributes at the log level
-    export_attributes(log, root)
+    __export_attributes(log, root)
     # add extensions at the log level
-    export_extensions(log, root)
+    __export_extensions(log, root)
     # add globals at the log level
-    export_globals(log, root)
+    __export_globals(log, root)
     # add classifiers at the log level
-    export_classifiers(log, root)
+    __export_classifiers(log, root)
     # add traces at the log level
-    export_traces(log, root)
+    __export_traces(log, root)
 
     tree = etree.ElementTree(root)
 
     return tree
 
 
-def export_log_as_string(log, parameters=None):
+def __export_log_as_string(log, parameters=None):
     """
     Export a log into a string
 
@@ -273,12 +284,12 @@ def export_log_as_string(log, parameters=None):
     del parameters
 
     # Gets the XML tree to export
-    tree = export_log_tree(log)
+    tree = __export_log_tree(log)
 
     return etree.tostring(tree, xml_declaration=True, encoding="utf-8", pretty_print=True)
 
 
-def export_log(log, output_file_path, parameters=None):
+def __export_log(log, output_file_path, parameters=None):
     """
     Export XES log from a PM4PY log
 
@@ -292,11 +303,28 @@ def export_log(log, output_file_path, parameters=None):
         Parameters of the algorithm
 
     """
-    if parameters is None:
-        parameters = {}
-    del parameters
+    parameters = dict() if parameters is None else parameters
 
     # Gets the XML tree to export
-    tree = export_log_tree(log)
+    tree = __export_log_tree(log)
     # Effectively do the export of the event log
-    tree.write(output_file_path, pretty_print=True, xml_declaration=True, encoding="utf-8")
+    if Parameters.COMPRESS in parameters and parameters[Parameters.COMPRESS]:
+        if not output_file_path.lower().endswith(".gz"):
+            output_file_path = output_file_path + ".gz"
+        fp = tempfile.NamedTemporaryFile(suffix=".xes")
+        fp.close()
+        tree.write(fp.name, pretty_print=True, xml_declaration=True, encoding="utf-8")
+        compression.compress(fp.name)
+        shutil.copyfile(fp.name+".gz", output_file_path)
+    else:
+        tree.write(output_file_path, pretty_print=True, xml_declaration=True, encoding="utf-8")
+
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use variant package instead')
+def apply(log, output_file_path, parameters=None):
+    return __export_log(log, output_file_path, parameters)
+
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Use variant package instead')
+def export_log_as_string(log, parameters=None):
+    return __export_log_as_string(log, parameters=parameters)
