@@ -176,16 +176,53 @@
 </div>
 <div class="section" id="module-pm4py.objects.log.exporter.parquet.versions.pyarrow">
 <span id="pm4py-objects-log-exporter-parquet-versions-pyarrow-module"></span><h2>pm4py.objects.log.exporter.parquet.versions.pyarrow module<a class="headerlink" href="#module-pm4py.objects.log.exporter.parquet.versions.pyarrow" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.objects.log.exporter.parquet.versions.pyarrow.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.objects.log.exporter.parquet.versions.pyarrow.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/versions/pyarrow.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.versions.pyarrow.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.objects.log.exporter.parquet.versions.pyarrow.Parameters.AUTO_PARTITIONING">
+<code class="sig-name descname">AUTO_PARTITIONING</code><em class="property"> = 'auto_partitioning'</em><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.versions.pyarrow.Parameters.AUTO_PARTITIONING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.objects.log.exporter.parquet.versions.pyarrow.Parameters.COMPRESSION">
+<code class="sig-name descname">COMPRESSION</code><em class="property"> = 'compression'</em><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.versions.pyarrow.Parameters.COMPRESSION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.objects.log.exporter.parquet.versions.pyarrow.Parameters.NUM_PARTITIONS">
+<code class="sig-name descname">NUM_PARTITIONS</code><em class="property"> = 'num_partitions'</em><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.versions.pyarrow.Parameters.NUM_PARTITIONS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.objects.log.exporter.parquet.versions.pyarrow.Parameters.PARTITION_COLS">
+<code class="sig-name descname">PARTITION_COLS</code><em class="property"> = 'partition_cols'</em><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.versions.pyarrow.Parameters.PARTITION_COLS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.objects.log.exporter.parquet.versions.pyarrow.apply">
 <code class="sig-prename descclassname">pm4py.objects.log.exporter.parquet.versions.pyarrow.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">path</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/log/exporter/parquet/versions/pyarrow.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.log.exporter.parquet.versions.pyarrow.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exports a dataframe to a Parquet file</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dd class="field-odd"><ul>
 <li><p><strong>df</strong> – Dataframe</p></li>
 <li><p><strong>path</strong> – Path</p></li>
-<li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm:</dt><dd><ul class="simple">
+<li><p>Parameters.COMPRESSION</p></li>
+<li><p>Parameters.PARTITION_COLS</p></li>
+<li><p>Parameters.AUTO_PARTITIONING</p></li>
+<li><p>Parameters.NUM_PARTITIONS</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </dd>
 </dl>

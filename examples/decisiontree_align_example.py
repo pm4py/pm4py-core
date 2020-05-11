@@ -1,7 +1,7 @@
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.algo.discovery.inductive import factory as inductive_miner
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.algo.enhancement.decision import algorithm
-from pm4py.visualization.decisiontree import factory as visualizer
+from pm4py.visualization.decisiontree import visualizer as visualizer
 import os
 
 
@@ -12,7 +12,8 @@ def execute_script():
     # we need to specify a decision point. In this case, the place p_25 is a suitable decision point
     clf, feature_names, classes = algorithm.get_decision_tree(log, net, im, fm, decision_point="p_25")
     # we can visualize the decision tree
-    gviz = visualizer.apply(clf, feature_names, classes, parameters={"format": "svg"})
+    gviz = visualizer.apply(clf, feature_names, classes,
+                            parameters={visualizer.Variants.CLASSIC.value.Parameters.FORMAT: "svg"})
     visualizer.view(gviz)
 
 

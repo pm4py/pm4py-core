@@ -10,37 +10,10 @@ from pm4py.objects.stochastic_petri import utils as stochastic_utils
 import datetime
 from time import sleep, time
 import logging
+from pm4py.simulation.montecarlo.parameters import Parameters
+from pm4py.simulation.montecarlo.outputs import Outputs
+from pm4py.util import exec_utils
 
-PARAM_NUM_SIMULATIONS = "num_simulations"
-PARAM_FORCE_DISTRIBUTION = "force_distribution"
-PARAM_ENABLE_DIAGNOSTICS = "enable_diagnostics"
-PARAM_DIAGN_INTERVAL = "diagn_interval"
-PARAM_CASE_ARRIVAL_RATIO = "case_arrival_ratio"
-PARAM_PROVIDED_SMAP = "provided_stochastic_map"
-PARAM_MAP_RESOURCES_PER_PLACE = "map_resources_per_place"
-PARAM_DEFAULT_NUM_RESOURCES_PER_PLACE = "default_num_resources_per_place"
-PARAM_SMALL_SCALE_FACTOR = "small_scale_factor"
-PARAM_MAX_THREAD_EXECUTION_TIME = "max_thread_exec_time"
-DEFAULT_NUM_SIMULATIONS = 100
-DEFAULT_FORCE_DISTRIBUTION = None
-DEFAULT_ENABLE_DIAGNOSTICS = True
-# 32 seconds between diagnostics prints
-DEFAULT_DIAGN_INTERVAL = 32.0
-DEFAULT_CASE_ARRIVAL_RATIO = None
-DEFAULT_PROVIDED_SMAP = None
-DEFAULT_MAP_RESOURCES_PER_PLACE = None
-DEFAULT_DEFAULT_NUM_RESOURCES_PER_PLACES = 1
-# 1 second in the simulation corresponds to 10gg
-DEFAULT_SMALL_SCALE_FACTOR = 864000.0
-# 1 min to finish a thread
-DEFAULT_MAX_THREAD_EXECUTION_TIME = 60.0
-
-OUTPUT_PLACES_INTERVAL_TREES = "places_interval_trees"
-OUTPUT_TRANSITIONS_INTERVAL_TREES = "transitions_interval_trees"
-OUTPUT_CASES_EX_TIME = "cases_ex_time"
-OUTPUT_MEDIAN_CASES_EX_TIME = "median_cases_ex_time"
-OUTPUT_CASE_ARRIVAL_RATIO = "input_case_arrival_ratio"
-OUTPUT_TOTAL_CASES_TIME = "total_cases_time"
 
 class SimulationDiagnostics(Thread):
     def __init__(self, sim_thread):
@@ -77,7 +50,8 @@ class SimulationDiagnostics(Thread):
 
 class SimulationThread(Thread):
     def __init__(self, id, net, im, fm, map, start_time, places_interval_trees, transitions_interval_trees,
-                 cases_ex_time, list_cases, enable_diagnostics, diagn_interval, small_scale_factor, max_thread_exec_time):
+                 cases_ex_time, list_cases, enable_diagnostics, diagn_interval, small_scale_factor,
+                 max_thread_exec_time):
         """
         Instantiates the object of the simulation
 
@@ -255,7 +229,7 @@ class SimulationThread(Thread):
         if self.enable_diagnostics:
             if rem_time == 0:
                 if self.enable_diagnostics:
-                    logger.info(str(time()) + " terminated for timeout thread ID " +str(self.id))
+                    logger.info(str(time()) + " terminated for timeout thread ID " + str(self.id))
 
         if self.enable_diagnostics:
             diagnostics.diagn_open = False
@@ -300,36 +274,39 @@ def apply(log, net, im, fm, parameters=None):
         Simulated event log
     simulation_result
         Result of the simulation:
-            OUTPUT_PLACES_INTERVAL_TREES => inteval trees that associate to each place the times in which it was occupied.
-            OUTPUT_TRANSITIONS_INTERVAL_TREES => interval trees that associate to each transition the intervals of time
+            Outputs.OUTPUT_PLACES_INTERVAL_TREES => inteval trees that associate to each place the times in which it was occupied.
+            Outputs.OUTPUT_TRANSITIONS_INTERVAL_TREES => interval trees that associate to each transition the intervals of time
             in which it could not fire because some token was in the output.
-            OUTPUT_CASES_EX_TIME => Throughput time of the cases included in the simulated log
-            OUTPUT_MEDIAN_CASES_EX_TIME => Median of the throughput times
-            OUTPUT_CASE_ARRIVAL_RATIO => Case arrival ratio that was specified in the simulation
-            OUTPUT_TOTAL_CASES_TIME => Total time occupied by cases of the simulated log
+            Outputs.OUTPUT_CASES_EX_TIME => Throughput time of the cases included in the simulated log
+            Outputs.OUTPUT_MEDIAN_CASES_EX_TIME => Median of the throughput times
+            Outputs.OUTPUT_CASE_ARRIVAL_RATIO => Case arrival ratio that was specified in the simulation
+            Outputs.OUTPUT_TOTAL_CASES_TIME => Total time occupied by cases of the simulated log
     """
     if parameters is None:
         parameters = {}
 
-    timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes_constants.DEFAULT_TIMESTAMP_KEY
-    no_simulations = parameters[
-        PARAM_NUM_SIMULATIONS] if PARAM_NUM_SIMULATIONS in parameters else DEFAULT_NUM_SIMULATIONS
-    force_distribution = parameters[PARAM_FORCE_DISTRIBUTION] if PARAM_FORCE_DISTRIBUTION in parameters else None
-    enable_diagnostics = parameters[
-        PARAM_ENABLE_DIAGNOSTICS] if PARAM_ENABLE_DIAGNOSTICS in parameters else DEFAULT_ENABLE_DIAGNOSTICS
-    diagn_interval = parameters[PARAM_DIAGN_INTERVAL] if PARAM_DIAGN_INTERVAL in parameters else DEFAULT_DIAGN_INTERVAL
-    case_arrival_ratio = parameters[
-        PARAM_CASE_ARRIVAL_RATIO] if PARAM_CASE_ARRIVAL_RATIO in parameters else DEFAULT_CASE_ARRIVAL_RATIO
-    smap = parameters[PARAM_PROVIDED_SMAP] if PARAM_PROVIDED_SMAP in parameters else DEFAULT_PROVIDED_SMAP
-    resources_per_places = parameters[
-        PARAM_MAP_RESOURCES_PER_PLACE] if PARAM_MAP_RESOURCES_PER_PLACE in parameters else DEFAULT_MAP_RESOURCES_PER_PLACE
-    default_num_resources_per_places = parameters[
-        PARAM_DEFAULT_NUM_RESOURCES_PER_PLACE] if PARAM_DEFAULT_NUM_RESOURCES_PER_PLACE in parameters else DEFAULT_DEFAULT_NUM_RESOURCES_PER_PLACES
-    small_scale_factor = parameters[
-        PARAM_SMALL_SCALE_FACTOR] if PARAM_SMALL_SCALE_FACTOR in parameters else DEFAULT_SMALL_SCALE_FACTOR
-    max_thread_exec_time = parameters[
-        PARAM_MAX_THREAD_EXECUTION_TIME] if PARAM_MAX_THREAD_EXECUTION_TIME in parameters else DEFAULT_MAX_THREAD_EXECUTION_TIME
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    no_simulations = exec_utils.get_param_value(Parameters.PARAM_NUM_SIMULATIONS, parameters,
+                                                100)
+    force_distribution = exec_utils.get_param_value(Parameters.PARAM_FORCE_DISTRIBUTION, parameters,
+                                                    None)
+    enable_diagnostics = exec_utils.get_param_value(Parameters.PARAM_ENABLE_DIAGNOSTICS, parameters,
+                                                    True)
+    diagn_interval = exec_utils.get_param_value(Parameters.PARAM_DIAGN_INTERVAL, parameters,
+                                                32.0)
+    case_arrival_ratio = exec_utils.get_param_value(Parameters.PARAM_CASE_ARRIVAL_RATIO, parameters,
+                                                    None)
+    smap = exec_utils.get_param_value(Parameters.PARAM_PROVIDED_SMAP, parameters,
+                                      None)
+    resources_per_places = exec_utils.get_param_value(Parameters.PARAM_MAP_RESOURCES_PER_PLACE, parameters,
+                                                      None)
+    default_num_resources_per_places = exec_utils.get_param_value(Parameters.PARAM_DEFAULT_NUM_RESOURCES_PER_PLACE,
+                                                                  parameters, 1)
+    small_scale_factor = exec_utils.get_param_value(Parameters.PARAM_SMALL_SCALE_FACTOR, parameters,
+                                                    864000)
+    max_thread_exec_time = exec_utils.get_param_value(Parameters.PARAM_MAX_THREAD_EXECUTION_TIME, parameters,
+                                                      60.0)
 
     if case_arrival_ratio is None:
         case_arrival_ratio = case_arrival.get_case_arrival_avg(log, parameters=parameters)
@@ -406,7 +383,9 @@ def apply(log, net, im, fm, parameters=None):
 
     transitions_interval_trees = {t.name: y for t, y in transitions_interval_trees.items()}
 
-    return log, {OUTPUT_PLACES_INTERVAL_TREES: places_interval_trees,
-                 OUTPUT_TRANSITIONS_INTERVAL_TREES: transitions_interval_trees, OUTPUT_CASES_EX_TIME: cases_ex_time,
-                 OUTPUT_MEDIAN_CASES_EX_TIME: median(cases_ex_time), OUTPUT_CASE_ARRIVAL_RATIO: case_arrival_ratio,
-                 OUTPUT_TOTAL_CASES_TIME: max_timestamp - min_timestamp}
+    return log, {Outputs.OUTPUT_PLACES_INTERVAL_TREES.value: places_interval_trees,
+                 Outputs.OUTPUT_TRANSITIONS_INTERVAL_TREES.value: transitions_interval_trees,
+                 Outputs.OUTPUT_CASES_EX_TIME.value: cases_ex_time,
+                 Outputs.OUTPUT_MEDIAN_CASES_EX_TIME.value: median(cases_ex_time),
+                 Outputs.OUTPUT_CASE_ARRIVAL_RATIO.value: case_arrival_ratio,
+                 Outputs.OUTPUT_TOTAL_CASES_TIME.value: max_timestamp - min_timestamp}

@@ -7,6 +7,20 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAM_MOST_COMMON_VARIANT
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
+    DECREASING_FACTOR = "decreasingFactor"
+    POSITIVE = "positive"
+    STREAM_FILTER_KEY1 = "stream_filter_key1"
+    STREAM_FILTER_VALUE1 = "stream_filter_value1"
+    STREAM_FILTER_KEY2 = "stream_filter_key2"
+    STREAM_FILTER_VALUE2 = "stream_filter_value2"
 
 
 def apply_numeric_events(df, int1, int2, parameters=None):
@@ -23,7 +37,7 @@ def apply_numeric_events(df, int1, int2, parameters=None):
         Upper bound of the interval
     parameters
         Possible parameters of the algorithm:
-            PARAMETER_CONSTANT_ATTRIBUTE_KEY => indicates which attribute to filter
+            Parameters.ATTRIBUTE_KEY => indicates which attribute to filter
             positive => keep or remove events?
 
     Returns
@@ -33,9 +47,10 @@ def apply_numeric_events(df, int1, int2, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    positive = parameters["positive"] if "positive" in parameters else True
+
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+
     if positive:
         return df[(df[attribute_key] >= int1) & (df[attribute_key] <= int2)]
     else:
@@ -56,8 +71,8 @@ def apply_numeric(df, int1, int2, parameters=None):
         Upper bound of the interval
     parameters
         Possible parameters of the algorithm:
-            PARAMETER_CONSTANT_ATTRIBUTE_KEY => indicates which attribute to filter
-            positive => keep or remove traces with such events?
+            Parameters.ATTRIBUTE_KEY => indicates which attribute to filter
+            Parameters.POSITIVE => keep or remove traces with such events?
 
     Returns
     --------------
@@ -66,17 +81,17 @@ def apply_numeric(df, int1, int2, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    positive = parameters["positive"] if "positive" in parameters else True
+
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+
     # stream_filter_key is helpful to filter on cases containing an event with an attribute
     # in the specified value set, but such events shall have an activity in particular.
-    stream_filter_key1 = parameters["stream_filter_key1"] if "stream_filter_key1" in parameters else None
-    stream_filter_value1 = parameters["stream_filter_value1"] if "stream_filter_value1" in parameters else None
-    stream_filter_key2 = parameters["stream_filter_key2"] if "stream_filter_key2" in parameters else None
-    stream_filter_value2 = parameters["stream_filter_value2"] if "stream_filter_value2" in parameters else None
+    stream_filter_key1 = exec_utils.get_param_value(Parameters.STREAM_FILTER_KEY1, parameters, None)
+    stream_filter_value1 = exec_utils.get_param_value(Parameters.STREAM_FILTER_VALUE1, parameters, None)
+    stream_filter_key2 = exec_utils.get_param_value(Parameters.STREAM_FILTER_KEY2, parameters, None)
+    stream_filter_value2 = exec_utils.get_param_value(Parameters.STREAM_FILTER_VALUE2, parameters, None)
 
     filtered_df_by_ev = df[(df[attribute_key] >= int1) & (df[attribute_key] <= int2)]
     if stream_filter_key1 is not None:
@@ -103,8 +118,8 @@ def apply_events(df, values, parameters=None):
         Values to filter on
     parameters
         Possible parameters of the algorithm, including:
-            attribute_key -> Attribute we want to filter
-            positive -> Specifies if the filter should be applied including traces (positive=True) or
+            Parameters.ATTRIBUTE_KEY -> Attribute we want to filter
+            Parameters.POSITIVE -> Specifies if the filter should be applied including traces (positive=True) or
             excluding traces (positive=False)
     Returns
     ----------
@@ -113,9 +128,10 @@ def apply_events(df, values, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    positive = parameters["positive"] if "positive" in parameters else True
+
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+
     if positive:
         return df[df[attribute_key].isin(values)]
     else:
@@ -134,9 +150,9 @@ def apply(df, values, parameters=None):
         Values to filter on
     parameters
         Possible parameters of the algorithm, including:
-            case_id_glue -> Case ID column in the dataframe
-            attribute_key -> Attribute we want to filter
-            positive -> Specifies if the filter should be applied including traces (positive=True) or
+            Parameters.CASE_ID_KEY -> Case ID column in the dataframe
+            Parameters.ATTRIBUTE_KEY -> Attribute we want to filter
+            Parameters.POSITIVE -> Specifies if the filter should be applied including traces (positive=True) or
             excluding traces (positive=False)
     Returns
     ----------
@@ -146,11 +162,9 @@ def apply(df, values, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    positive = parameters["positive"] if "positive" in parameters else True
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     return filter_df_on_attribute_values(df, values, case_id_glue=case_id_glue, attribute_key=attribute_key,
                                          positive=positive)
@@ -166,8 +180,8 @@ def apply_auto_filter(df, parameters=None):
         Dataframe
     parameters
         Possible parameters of the algorithm, including:
-            activity_key -> Column containing the activity
-            decreasingFactor -> Decreasing factor that should be passed to the algorithm
+            Parameters.ACTIVITY_KEY -> Column containing the activity
+            Parameters.DECREASING_FACTOR -> Decreasing factor that should be passed to the algorithm
 
     Returns
     ------------
@@ -182,10 +196,8 @@ def apply_auto_filter(df, parameters=None):
     if most_common_variant is None:
         most_common_variant = []
 
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
-    decreasing_factor = parameters[
-        "decreasingFactor"] if "decreasingFactor" in parameters else DECREASING_FACTOR
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters, DECREASING_FACTOR)
 
     if len(df) > 0:
         activities = get_attribute_values(df, activity_key)

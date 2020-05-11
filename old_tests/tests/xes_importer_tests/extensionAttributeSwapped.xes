@@ -1,0 +1,4 @@
+<log xes.version="1849.2016" xes.features="">
+	<string key="key" value="value" />
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext" />
+</log>

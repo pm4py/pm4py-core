@@ -1,4 +1,4 @@
-from pm4py.algo.conformance.tokenreplay import factory as tr_factory
+from pm4py.algo.conformance.tokenreplay import algorithm as tr_algorithm
 from pm4py.util.colors import get_string_from_int_below_255
 from collections import Counter
 from copy import copy
@@ -80,12 +80,12 @@ def compare_element_usage_two_logs(net, im, fm, log1, log2, parameters=None):
         parameters = {}
 
     tr_parameters = copy(parameters)
-    tr_parameters["enable_place_fitness"] = True
+    tr_parameters[tr_algorithm.Variants.TOKEN_REPLAY.value.Parameters.ENABLE_PLTR_FITNESS] = True
 
-    rep_traces1, pl_fit_trace1, tr_fit_trace1, ne_act_model1 = tr_factory.apply(log1, net, im, fm,
-                                                                                parameters=tr_parameters)
-    rep_traces2, pl_fit_trace2, tr_fit_trace2, ne_act_model2 = tr_factory.apply(log2, net, im, fm,
-                                                                                parameters=tr_parameters)
+    rep_traces1, pl_fit_trace1, tr_fit_trace1, ne_act_model1 = tr_algorithm.apply(log1, net, im, fm,
+                                                                                  parameters=tr_parameters)
+    rep_traces2, pl_fit_trace2, tr_fit_trace2, ne_act_model2 = tr_algorithm.apply(log2, net, im, fm,
+                                                                                  parameters=tr_parameters)
 
     tr_occ1 = Counter([y for x in rep_traces1 for y in x["activated_transitions"]])
     tr_occ2 = Counter([y for x in rep_traces2 for y in x["activated_transitions"]])

@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.spatial.distance import pdist
-from pm4py.algo.filtering.log.attributes import attributes_filter
+from pm4py.statistics.attributes.log import get as attributes_filter
 from pm4py.util import constants
 from pm4py.algo.discovery.dfg.versions import native
 import pandas as pd

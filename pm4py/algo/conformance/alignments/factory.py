@@ -9,7 +9,7 @@ from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PAR
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_SYNC_COST_FUNCTION
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import PARAM_TRACE_COST_FUNCTION
 from pm4py.statistics.variants.log import get as variants_module
-from pm4py.objects.conversion.log import factory as log_converter
+from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.util import xes_constants as xes_util
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -82,11 +82,11 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     parameters
         :class:`dict` parameters of the algorithm, for key \'state_equation_a_star\':
             pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> Attribute in the log that contains the activity
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_MODEL_COST_FUNCTION ->
             mapping of each transition in the model to corresponding synchronous costs
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->
             mapping of each transition in the model to corresponding model cost
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_TRACE_COST_FUNCTION ->
             mapping of each index of the trace to a positive cost value
     Returns
     -----------
@@ -126,11 +126,11 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         :class:`dict` parameters of the algorithm,
         for key \'state_equation_a_star\':
             pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> Attribute in the log that contains the activity
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_MODEL_COST_FUNCTION ->
             mapping of each transition in the model to corresponding synchronous costs
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_SYNC_COST_FUNCTION ->
             mapping of each transition in the model to corresponding model cost
-            pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION ->
+            pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_TRACE_COST_FUNCTION ->
             mapping of each index of the trace to a positive cost value
     Returns
     -----------

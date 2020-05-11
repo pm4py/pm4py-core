@@ -1,14 +1,17 @@
 from pm4py.visualization.sna.versions import networkx, pyvis
-
-NETWORKX = "networkx"
-PYVIS = "pyvis"
-
-VERSIONS_APPLY = {NETWORKX: networkx.apply, PYVIS: pyvis.apply}
-VERSIONS_VIEW = {NETWORKX: networkx.view, PYVIS: pyvis.view}
-VERSIONS_SAVE = {NETWORKX: networkx.save, PYVIS: pyvis.save}
+from enum import Enum
+from pm4py.util import exec_utils
 
 
-def apply(metric_values, parameters=None, variant=NETWORKX):
+class Variants(Enum):
+    NETWORKX = networkx
+    PYVIS = pyvis
+
+
+DEFAULT_VARIANT = Variants.NETWORKX
+
+
+def apply(metric_values, parameters=None, variant=DEFAULT_VARIANT):
     """
     Perform SNA visualization starting from the Matrix Container object
     and the Resource-Resource matrix
@@ -18,20 +21,21 @@ def apply(metric_values, parameters=None, variant=NETWORKX):
     metric_values
         Value of the metrics
     parameters
-        Possible parameters of the algorithm, including:
-            weight_threshold: the weight threshold to use in displaying the graph
-            directed: indicates if the graph has to be drawn directed
-            format: format of the output image (png, svg ...)
+        Possible parameters of the algorithm
+    variant
+        Variant of the algorithm to use, possible values:
+            - Variants.NETWORKX
+            - Variants.PYVIS
 
     Returns
     -------------
     temp_file_name
         Name of a temporary file where the visualization is placed
     """
-    return VERSIONS_APPLY[variant](metric_values, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(metric_values, parameters=parameters)
 
 
-def view(temp_file_name, parameters=None, variant=NETWORKX):
+def view(temp_file_name, parameters=None, variant=DEFAULT_VARIANT):
     """
     View the SNA visualization on the screen
 
@@ -42,10 +46,10 @@ def view(temp_file_name, parameters=None, variant=NETWORKX):
     parameters
         Possible parameters of the algorithm
     """
-    return VERSIONS_VIEW[variant](temp_file_name, parameters=parameters)
+    return exec_utils.get_variant(variant).view(temp_file_name, parameters=parameters)
 
 
-def save(temp_file_name, dest_file, parameters=None, variant=NETWORKX):
+def save(temp_file_name, dest_file, parameters=None, variant=DEFAULT_VARIANT):
     """
     Save the SNA visualization from a temporary file to a well-defined destination file
 
@@ -58,4 +62,4 @@ def save(temp_file_name, dest_file, parameters=None, variant=NETWORKX):
     parameters
         Possible parameters of the algorithm
     """
-    return VERSIONS_SAVE[variant](temp_file_name, dest_file, parameters=parameters)
+    return exec_utils.get_variant(variant).save(temp_file_name, dest_file, parameters=parameters)

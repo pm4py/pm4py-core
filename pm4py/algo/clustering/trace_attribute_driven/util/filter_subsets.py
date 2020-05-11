@@ -4,8 +4,10 @@ from collections import Counter
 from pm4py.objects.log.log import EventLog, Trace
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
-from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.statistics.traces.log import case_statistics
+from pm4py.statistics.variants.log import get as variants_statistics
+from pm4py.util import exec_utils
+from pm4py.algo.clustering.trace_attribute_driven.parameters import Parameters
 
 
 def apply_trace_attributes(log, list_of_values, parameters=None):
@@ -32,9 +34,8 @@ def apply_trace_attributes(log, list_of_values, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    positive = parameters["positive"] if "positive" in parameters else True
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     filtered_log = EventLog()
     for trace in log:
@@ -93,8 +94,7 @@ def sublog_percent(log, upper_percent, parameters=None):
 
     if parameters is None:
         parameters = {}
-    lower_percent = parameters[
-        "lower_percent"] if "lower_percent" in parameters else 0
+    lower_percent = exec_utils.get_param_value(Parameters.LOWER_PERCENT, parameters, 0)
 
     variants_count = case_statistics.get_variant_statistics(log)
     variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
@@ -124,8 +124,7 @@ def sublog_percent2actlist(log, upper_percent, parameters=None):
 
     if parameters is None:
         parameters = {}
-    lower_percent = parameters[
-        "lower_percent"] if "lower_percent" in parameters else 0
+    lower_percent = exec_utils.get_param_value(Parameters.LOWER_PERCENT, parameters, 0)
 
     variants_count = case_statistics.get_variant_statistics(log)
     variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
@@ -155,8 +154,7 @@ def sublog_percent2varlist(log, upper_percent, parameters=None):
 
     if parameters is None:
         parameters = {}
-    lower_percent = parameters[
-        "lower_percent"] if "lower_percent" in parameters else 0
+    lower_percent = exec_utils.get_param_value(Parameters.LOWER_PERCENT, parameters, 0)
 
     variants_count = case_statistics.get_variant_statistics(log)
     variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
@@ -194,6 +192,34 @@ def logslice_percent_act(log, unit):
     return loglist, freq_list
 
 
+def apply_variants_filter(log, admitted_variants, parameters=None):
+    """
+    Filter log keeping/removing only provided variants
+
+    Parameters
+    -----------
+    log
+        Log object
+    admitted_variants
+        Admitted variants
+    parameters
+        Parameters of the algorithm, including:
+            activity_key -> Attribute identifying the activity in the log
+            positive -> Indicate if events should be kept/removed
+    """
+
+    if parameters is None:
+        parameters = {}
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+    variants = variants_statistics.get_variants(log, parameters=parameters)
+    log = EventLog()
+    for variant in variants:
+        if (positive and variant in admitted_variants) or (not positive and variant not in admitted_variants):
+            for trace in variants[variant]:
+                log.append(trace)
+    return log
+
+
 def logslice_percent(log, unit):
     '''
     slice the log per unit percent
@@ -209,7 +235,7 @@ def logslice_percent(log, unit):
     for i in range(len(num_list)):
         (df, var_list) = sublog_percent2varlist(log, num_list[i] + unit, parameters={"lower_percent": num_list[i]})
         if len(var_list) != 0:
-            log1 = variants_filter.apply(log, var_list, parameters={"positive": True})
+            log1 = apply_variants_filter(log, var_list, parameters={"positive": True})
             sum1 = np.array(df['count']).sum()
             loglist.append(log1)
             freq_list.append(sum1)

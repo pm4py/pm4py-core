@@ -1,6 +1,6 @@
 from pm4py.algo.conformance.log_skeleton.versions import classic
 from pm4py.objects.log.log import Trace
-from pm4py.objects.conversion.log import factory as log_conv_factory
+from pm4py.objects.conversion.log import converter as log_converter
 import deprecation
 import warnings
 
@@ -40,11 +40,10 @@ def apply(obj, model, variant=DEFAULT_VARIANT, parameters=None):
         - dev_fitness => deviation based fitness (between 0 and 1; the more the trace is near to 1 the more fit is)
         - deviations => list of deviations in the model
     """
-    warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
         parameters = {}
 
     if type(obj) is Trace:
-        return VERSIONS_TRACE[variant](log_conv_factory.apply(obj, parameters=parameters), model, parameters=parameters)
+        return VERSIONS_TRACE[variant](log_converter.apply(obj, parameters=parameters), model, parameters=parameters)
     else:
-        return VERSIONS_LOG[variant](log_conv_factory.apply(obj, parameters=parameters), model, parameters=parameters)
+        return VERSIONS_LOG[variant](log_converter.apply(obj, parameters=parameters), model, parameters=parameters)

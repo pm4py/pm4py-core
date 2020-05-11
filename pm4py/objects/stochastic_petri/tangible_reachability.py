@@ -1,5 +1,5 @@
 from pm4py.objects.petri.reachability_graph import construct_reachability_graph
-from pm4py.objects.conversion.log import factory as conv_factory
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 def get_tangible_reachability_from_log_net_im_fm(log, net, im, fm, parameters=None):
@@ -30,7 +30,7 @@ def get_tangible_reachability_from_log_net_im_fm(log, net, im, fm, parameters=No
         parameters = {}
 
     from pm4py.simulation.montecarlo.utils import replay
-    stochastic_info = replay.get_map_from_log_and_net(conv_factory.apply(log, parameters=parameters), net, im, fm,
+    stochastic_info = replay.get_map_from_log_and_net(log_converter.apply(log, parameters=parameters), net, im, fm,
                                                       parameters=parameters)
 
     reachability_graph, tangible_reachability_graph = get_tangible_reachability_from_net_im_sinfo(net, im,

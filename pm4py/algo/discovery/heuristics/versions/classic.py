@@ -8,11 +8,13 @@ from pm4py.statistics.start_activities.log import get as log_sa_filter
 from pm4py.statistics.start_activities.pandas import get as pd_sa_filter
 from pm4py.statistics.end_activities.log import get as log_ea_filter
 from pm4py.statistics.end_activities.pandas import get as pd_ea_filter
-from pm4py.objects.conversion.heuristics_net import factory as hn_conv_alg
+from pm4py.objects.conversion.heuristics_net import converter as hn_conv_alg
 from pm4py.objects.heuristics_net import defaults
 from pm4py.objects.heuristics_net.net import HeuristicsNet
 from pm4py.util import xes_constants as xes
 from pm4py.util import constants
+from pm4py.algo.discovery.heuristics.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def apply(log, parameters=None):
@@ -25,8 +27,16 @@ def apply(log, parameters=None):
         Event log
     parameters
         Possible parameters of the algorithm,
-        including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh
+        including:
+            - Parameters.ACTIVITY_KEY
+            - Parameters.TIMESTAMP_KEY
+            - Parameters.CASE_ID_KEY
+            - Parameters.DEPENDENCY_THRESH
+            - Parameters.AND_MEASURE_THRESH
+            - Parameters.MIN_ACT_COUNT
+            - Parameters.MIN_DFG_OCCURRENCES
+            - Parameters.DFG_PRE_CLEANING_NOISE_THRESH
+            - Parameters.LOOP_LENGTH_TWO_THRESH
 
     Returns
     ------------
@@ -72,12 +82,9 @@ def apply_pandas(df, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    case_id_glue = parameters[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else constants.CASE_CONCEPT_NAME
-    timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
 
     start_activities = pd_sa_filter.get_start_activities(df, parameters=parameters)
     end_activities = pd_ea_filter.get_end_activities(df, parameters=parameters)
@@ -128,9 +135,16 @@ def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activitie
         (If provided) dictionary of end activities occurrences
     parameters
         Possible parameters of the algorithm,
-        including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
-        loops_length_two_thresh
+        including:
+            - Parameters.ACTIVITY_KEY
+            - Parameters.TIMESTAMP_KEY
+            - Parameters.CASE_ID_KEY
+            - Parameters.DEPENDENCY_THRESH
+            - Parameters.AND_MEASURE_THRESH
+            - Parameters.MIN_ACT_COUNT
+            - Parameters.MIN_DFG_OCCURRENCES
+            - Parameters.DFG_PRE_CLEANING_NOISE_THRESH
+            - Parameters.LOOP_LENGTH_TWO_THRESH
 
     Returns
     ------------
@@ -161,9 +175,16 @@ def apply_heu(log, parameters=None):
         Event log
     parameters
         Possible parameters of the algorithm,
-        including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
-        loops_length_two_thresh
+        including:
+            - Parameters.ACTIVITY_KEY
+            - Parameters.TIMESTAMP_KEY
+            - Parameters.CASE_ID_KEY
+            - Parameters.DEPENDENCY_THRESH
+            - Parameters.AND_MEASURE_THRESH
+            - Parameters.MIN_ACT_COUNT
+            - Parameters.MIN_DFG_OCCURRENCES
+            - Parameters.DFG_PRE_CLEANING_NOISE_THRESH
+            - Parameters.LOOP_LENGTH_TWO_THRESH
 
     Returns
     ------------
@@ -173,8 +194,7 @@ def apply_heu(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
     start_activities = log_sa_filter.get_start_activities(log, parameters=parameters)
     end_activities = log_ea_filter.get_end_activities(log, parameters=parameters)
@@ -184,7 +204,7 @@ def apply_heu(log, parameters=None):
     parameters_w2 = deepcopy(parameters)
     parameters_w2["window"] = 2
     dfg_window_2 = dfg_alg.apply(log, parameters=parameters_w2)
-    freq_triples = dfg_alg.apply(log, parameters=parameters, variant="freq_triples")
+    freq_triples = dfg_alg.apply(log, parameters=parameters, variant=dfg_alg.Variants.FREQ_TRIPLES)
 
     return apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
                          start_activities=start_activities,
@@ -215,9 +235,16 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
         (If provided) Frequency triples
     parameters
         Possible parameters of the algorithm,
-        including: activity_key, case_id_glue, timestamp_key,
-        dependency_thresh, and_measure_thresh, min_act_count, min_dfg_occurrences, dfg_pre_cleaning_noise_thresh,
-        loops_length_two_thresh
+        including:
+            - Parameters.ACTIVITY_KEY
+            - Parameters.TIMESTAMP_KEY
+            - Parameters.CASE_ID_KEY
+            - Parameters.DEPENDENCY_THRESH
+            - Parameters.AND_MEASURE_THRESH
+            - Parameters.MIN_ACT_COUNT
+            - Parameters.MIN_DFG_OCCURRENCES
+            - Parameters.DFG_PRE_CLEANING_NOISE_THRESH
+            - Parameters.LOOP_LENGTH_TWO_THRESH
 
     Returns
     ------------
@@ -227,18 +254,16 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
     if parameters is None:
         parameters = {}
 
-    dependency_thresh = parameters[
-        defaults.DEPENDENCY_THRESH] if defaults.DEPENDENCY_THRESH in parameters else defaults.DEFAULT_DEPENDENCY_THRESH
-    and_measure_thresh = parameters[
-        defaults.AND_MEASURE_THRESH] if defaults.AND_MEASURE_THRESH in parameters else defaults.DEFAULT_AND_MEASURE_THRESH
-    min_act_count = parameters[
-        defaults.MIN_ACT_COUNT] if defaults.MIN_ACT_COUNT in parameters else defaults.DEFAULT_MIN_ACT_COUNT
-    min_dfg_occurrences = parameters[
-        defaults.MIN_DFG_OCCURRENCES] if defaults.MIN_DFG_OCCURRENCES in parameters else defaults.DEFAULT_MIN_DFG_OCCURRENCES
-    dfg_pre_cleaning_noise_thresh = parameters[
-        defaults.DFG_PRE_CLEANING_NOISE_THRESH] if defaults.DFG_PRE_CLEANING_NOISE_THRESH in parameters else defaults.DEFAULT_DFG_PRE_CLEANING_NOISE_THRESH
-    loops_length_two_thresh = parameters[
-        defaults.LOOP_LENGTH_TWO_THRESH] if defaults.LOOP_LENGTH_TWO_THRESH in parameters else defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH
+    dependency_thresh = exec_utils.get_param_value(Parameters.DEPENDENCY_THRESH, parameters,
+                                                  defaults.DEFAULT_DEPENDENCY_THRESH)
+    and_measure_thresh = exec_utils.get_param_value(Parameters.AND_MEASURE_THRESH, parameters,
+                                                    defaults.DEFAULT_AND_MEASURE_THRESH)
+    min_act_count = exec_utils.get_param_value(Parameters.MIN_ACT_COUNT, parameters, defaults.DEFAULT_MIN_ACT_COUNT)
+    min_dfg_occurrences = exec_utils.get_param_value(Parameters.MIN_DFG_OCCURRENCES, parameters,
+                                                     defaults.DEFAULT_MIN_DFG_OCCURRENCES)
+    dfg_pre_cleaning_noise_thresh = exec_utils.get_param_value(Parameters.DFG_PRE_CLEANING_NOISE_THRESH, parameters,
+                                                               defaults.DEFAULT_DFG_PRE_CLEANING_NOISE_THRESH)
+    loops_length_two_thresh = exec_utils.get_param_value(Parameters.LOOP_LENGTH_TWO_THRESH, parameters, defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH)
     heu_net = HeuristicsNet(dfg, activities=activities, activities_occurrences=activities_occurrences,
                             start_activities=start_activities, end_activities=end_activities,
                             dfg_window_2=dfg_window_2,

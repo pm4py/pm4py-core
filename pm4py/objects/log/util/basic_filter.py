@@ -1,7 +1,14 @@
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.log.log import EventLog, Trace, EventStream
-from pm4py.objects.conversion.log import factory as log_conv_fact
+from pm4py.objects.conversion.log import converter as log_converter
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    POSITIVE = "positive"
 
 
 def filter_log_events_attr(log, values, parameters=None):
@@ -30,17 +37,16 @@ def filter_log_events_attr(log, values, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    positive = parameters["positive"] if "positive" in parameters else True
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
-    stream = log_conv_fact.apply(log, variant=log_conv_fact.TO_EVENT_STREAM)
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
     if positive:
         stream = EventStream(list(filter(lambda x: x[attribute_key] in values, stream)))
     else:
         stream = EventStream(list(filter(lambda x: x[attribute_key] not in values, stream)))
 
-    filtered_log = log_conv_fact.apply(stream)
+    filtered_log = log_converter.apply(stream)
 
     return filtered_log
 
@@ -72,9 +78,8 @@ def filter_log_traces_attr(log, values, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    positive = parameters["positive"] if "positive" in parameters else True
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     filtered_log = EventLog()
     for trace in log:

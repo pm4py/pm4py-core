@@ -1,6 +1,6 @@
 import deprecation
 
-from pm4py.objects.conversion.log import factory as log_conv_factory
+from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.algo.discovery.log_skeleton.versions import classic
 
 CLASSIC = "classic"
@@ -31,4 +31,4 @@ def apply(log, variant=DEFAULT_VARIANT, parameters=None):
     model
         Log skeleton model
     """
-    return VERSIONS[variant](log_conv_factory.apply(log, parameters=parameters), parameters=parameters)
+    return VERSIONS[variant](log_converter.apply(log, parameters=parameters), parameters=parameters)

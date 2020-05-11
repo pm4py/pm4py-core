@@ -1,14 +1,8 @@
-from pm4py.objects.process_tree import pt_util
+from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.objects.log.importer.xes import importer as xes_importer
 
-'''
-Use the scripts folder to write custom scripts for your (research) project, when using PM4Py directly from source.  
-'''
+log = xes_importer.apply('../tests/input_data/running-example.xes')
+print(log[0])
+df = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
+print(df)
 
-
-def pm4py_demo_script():
-    pt1 = pt_util.parse('X(\'a\',\'b\')')
-    print(pt1)
-
-
-if __name__ == '__main__':
-    pm4py_demo_script()

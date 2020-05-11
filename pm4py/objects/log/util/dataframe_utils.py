@@ -1,6 +1,6 @@
 from pm4py.util import constants
 from pm4py.objects.log.log import EventStream
-from pm4py.objects.conversion.log import factory as log_conv_factory
+from pm4py.objects.conversion.log import converter as log_converter
 import pandas as pd
 from pm4py.util.versions import check_pandas_ge_024
 
@@ -60,9 +60,9 @@ def legacy_parquet_support(df, parameters=None):
     return df
 
 
-def table_to_log(table, parameters=None):
+def table_to_stream(table, parameters=None):
     """
-    Converts a Pyarrow table to an event log
+    Converts a Pyarrow table to an event stream
 
     Parameters
     ------------
@@ -83,7 +83,26 @@ def table_to_log(table, parameters=None):
 
     stream = EventStream([dict(zip(dict0, i)) for i in zip(*dict0.values())])
 
-    return log_conv_factory.apply(stream, parameters=parameters)
+    return stream
+
+
+def table_to_log(table, parameters=None):
+    """
+    Converts a Pyarrow table to an event log
+
+    Parameters
+    ------------
+    table
+        Pyarrow table
+    parameters
+        Possible parameters of the algorithm
+    """
+    if parameters is None:
+        parameters = {}
+
+    stream = table_to_stream(table, parameters=parameters)
+
+    return log_converter.apply(stream, parameters=parameters)
 
 
 def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None):

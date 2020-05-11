@@ -1,46 +1,44 @@
 import pandas
 
 from pm4py import util as pmutil
-from pm4py.objects.conversion.log import factory as log_conversion
-from pm4py.objects.log.adapters.pandas import csv_import_adapter
-from pm4py.util import xes_constants as xes_util
+from pm4py.objects.conversion.log import converter as log_conversion
+from pm4py.objects.log.util import dataframe_utils
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
-from pm4py.visualization.petrinet.versions import wo_decoration, token_decoration, greedy_decoration, alignments
+from pm4py.visualization.petrinet.variants import wo_decoration, alignments, greedy_decoration_performance, \
+    greedy_decoration_frequency, token_decoration_performance, token_decoration_frequency
+from pm4py.util import exec_utils, xes_constants
+from enum import Enum
 
-WO_DECORATION = "wo_decoration"
-FREQUENCY_DECORATION = "frequency"
-PERFORMANCE_DECORATION = "performance"
-FREQUENCY_GREEDY = "frequency_greedy"
-PERFORMANCE_GREEDY = "performance_greedy"
-ALIGNMENTS = "alignments"
 
-RANKDIR = "set_rankdir"
+class Variants(Enum):
+    WO_DECORATION = wo_decoration
+    FREQUENCY = token_decoration_frequency
+    PERFORMANCE = token_decoration_performance
+    FREQUENCY_GREEDY = greedy_decoration_frequency
+    PERFORMANCE_GREEDY = greedy_decoration_performance
+    ALIGNMENTS = alignments
 
-VERSIONS = {WO_DECORATION: wo_decoration.apply, FREQUENCY_DECORATION: token_decoration.apply_frequency,
-            PERFORMANCE_DECORATION: token_decoration.apply_performance,
-            FREQUENCY_GREEDY: greedy_decoration.apply_frequency,
-            PERFORMANCE_GREEDY: greedy_decoration.apply_performance,
-            ALIGNMENTS: alignments.apply}
+
+WO_DECORATION = Variants.WO_DECORATION
+FREQUENCY_DECORATION = Variants.FREQUENCY
+PERFORMANCE_DECORATION = Variants.PERFORMANCE
+FREQUENCY_GREEDY = Variants.FREQUENCY_GREEDY
+PERFORMANCE_GREEDY = Variants.PERFORMANCE_GREEDY
+ALIGNMENTS = Variants.ALIGNMENTS
 
 
 def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_statistics=None, parameters=None,
-          variant="wo_decoration"):
+          variant=Variants.WO_DECORATION):
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
-    if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
     if log is not None:
         if isinstance(log, pandas.core.frame.DataFrame):
-            log = csv_import_adapter.convert_timestamp_columns_in_df(log, timest_columns=[
-                parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY]])
+            log = dataframe_utils.convert_timestamp_columns_in_df(log)
         log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
-    return VERSIONS[variant](net, initial_marking, final_marking, log=log, aggregated_statistics=aggregated_statistics,
-                             parameters=parameters)
+    return exec_utils.get_variant(variant).apply(net, initial_marking, final_marking, log=log,
+                                           aggregated_statistics=aggregated_statistics,
+                                           parameters=parameters)
 
 
 def save(gviz, output_file_path):

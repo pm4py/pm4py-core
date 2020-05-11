@@ -2,7 +2,7 @@ import pandas
 import deprecation
 
 from pm4py.algo.discovery.heuristics.versions import classic
-from pm4py.objects.conversion.log import factory as conv_factory
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 CLASSIC = "classic"
@@ -43,7 +43,7 @@ def apply(log, parameters=None, variant=CLASSIC):
     if isinstance(log, pandas.core.frame.DataFrame):
         return VERSIONS_PANDAS[variant](log, parameters=parameters)
 
-    return VERSIONS[variant](conv_factory.apply(log, parameters=parameters), parameters=parameters)
+    return VERSIONS[variant](log_converter.apply(log, parameters=parameters), parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
                         details='Use algorithm entrypoint instead')

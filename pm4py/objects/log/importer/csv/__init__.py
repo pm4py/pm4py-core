@@ -1,1 +1,1 @@
-from pm4py.objects.log.importer.csv import factory, importer, versions
+from pm4py.objects.log.importer.csv import factory, versions

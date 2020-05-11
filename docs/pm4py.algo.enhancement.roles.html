@@ -179,6 +179,23 @@
 </div>
 <div class="section" id="module-pm4py.algo.enhancement.roles.algorithm">
 <span id="pm4py-algo-enhancement-roles-algorithm-module"></span><h2>pm4py.algo.enhancement.roles.algorithm module<a class="headerlink" href="#module-pm4py.algo.enhancement.roles.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.enhancement.roles.algorithm.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.enhancement.roles.algorithm.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/algorithm.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.algorithm.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.roles.algorithm.Variants.LOG">
+<code class="sig-name descname">LOG</code><em class="property"> = &lt;module 'pm4py.algo.enhancement.roles.versions.log' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\enhancement\\roles\\versions\\log.py'&gt;</em><a class="headerlink" href="#pm4py.algo.enhancement.roles.algorithm.Variants.LOG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.enhancement.roles.algorithm.Variants.PANDAS">
+<code class="sig-name descname">PANDAS</code><em class="property"> = &lt;module 'pm4py.algo.enhancement.roles.versions.pandas' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\enhancement\\roles\\versions\\pandas.py'&gt;</em><a class="headerlink" href="#pm4py.algo.enhancement.roles.algorithm.Variants.PANDAS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.enhancement.roles.algorithm.apply">
 <code class="sig-prename descclassname">pm4py.algo.enhancement.roles.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">variant=None</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/enhancement/roles/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.enhancement.roles.algorithm.apply" title="Permalink to this definition">¶</a></dt>
@@ -186,11 +203,19 @@
 out of the log.</p>
 <p>The roles detection is introduced by
 Burattin, Andrea, Alessandro Sperduti, and Marco Veluscek. “Business models enhancement through discovery of roles.” 2013 IEEE Symposium on Computational Intelligence and Data Mining (CIDM). IEEE, 2013.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dd class="field-odd"><ul>
 <li><p><strong>log</strong> – Log object (also Pandas dataframe)</p></li>
-<li><p><strong>variant</strong> – Variant of the algorithm to apply. Possible values: log, pandas</p></li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to apply. Possible values:</dt><dd><ul class="simple">
+<li><p>Variants.LOG</p></li>
+<li><p>Variants.PANDAS</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 <li><p><strong>parameters</strong> – Possible parameters of the algorithm</p></li>
 </ul>
 </dd>

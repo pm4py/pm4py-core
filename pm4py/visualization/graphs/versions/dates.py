@@ -2,6 +2,8 @@ import matplotlib
 from copy import copy
 
 from pm4py.visualization.graphs.util import common
+from pm4py.visualization.graphs.parameters import Parameters
+from pm4py.util import exec_utils
 
 TIMESTAMP_LABEL = "Date"
 DENSITY_LABEL = "Density"
@@ -20,7 +22,8 @@ def apply_plot(x, y, parameters=None):
         Values for y-axis
     parameters
         Parameters of the algorithm, including:
-            format -> Format of the target image
+            Parameters.FORMAT -> Format of the target image
+            Parameters.TITLE -> Title of the image
 
     Returns
     ------------
@@ -30,8 +33,8 @@ def apply_plot(x, y, parameters=None):
     if parameters is None:
         parameters = {}
 
-    format = parameters["format"] if "format" in parameters else "png"
-    title = parameters["title"] if "title" in parameters else GRAPH_DEFAULT_TITLE
+    format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
+    title = exec_utils.get_param_value(Parameters.TITLE, parameters, GRAPH_DEFAULT_TITLE)
 
     filename = common.get_temp_file_name(format)
 
@@ -65,7 +68,8 @@ def apply_semilogx(x, y, parameters=None):
         Values for y-axis
     parameters
         Parameters of the algorithm, including:
-            format -> Format of the target image
+            Parameters.FORMAT -> Format of the target image
+            Parameters.TITLE -> Title of the image
 
     Returns
     ------------
@@ -75,8 +79,8 @@ def apply_semilogx(x, y, parameters=None):
     if parameters is None:
         parameters = {}
 
-    format = parameters["format"] if "format" in parameters else "png"
-    title = parameters["title"] if "title" in parameters else GRAPH_DEFAULT_TITLE
+    format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
+    title = exec_utils.get_param_value(Parameters.TITLE, parameters, GRAPH_DEFAULT_TITLE)
 
     filename = common.get_temp_file_name(format)
 

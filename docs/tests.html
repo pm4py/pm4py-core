@@ -81,13 +81,14 @@
               <!-- Local TOC -->
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">tests package</a><ul>
-<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-tests.algorithm_test">tests.algorithm_test module</a></li>
 <li><a class="reference internal" href="#module-tests.alignment_test">tests.alignment_test module</a></li>
 <li><a class="reference internal" href="#module-tests.alpha_test">tests.alpha_test module</a></li>
 <li><a class="reference internal" href="#module-tests.constants">tests.constants module</a></li>
 <li><a class="reference internal" href="#module-tests.csv_impexp_test">tests.csv_impexp_test module</a></li>
 <li><a class="reference internal" href="#module-tests.dec_tree_test">tests.dec_tree_test module</a></li>
+<li><a class="reference internal" href="#module-tests.doc_tests">tests.doc_tests module</a></li>
 <li><a class="reference internal" href="#module-tests.etc_tests">tests.etc_tests module</a></li>
 <li><a class="reference internal" href="#module-tests.evaluation_tests">tests.evaluation_tests module</a></li>
 <li><a class="reference internal" href="#module-tests.execute_tests">tests.execute_tests module</a></li>
@@ -100,15 +101,16 @@
 <li><a class="reference internal" href="#module-tests.inductive_test">tests.inductive_test module</a></li>
 <li><a class="reference internal" href="#module-tests.inductive_tree_test">tests.inductive_tree_test module</a></li>
 <li><a class="reference internal" href="#module-tests.main_fac_test">tests.main_fac_test module</a></li>
+<li><a class="reference internal" href="#module-tests.map_filter_functions_test">tests.map_filter_functions_test module</a></li>
 <li><a class="reference internal" href="#module-tests.matrix_rep_test">tests.matrix_rep_test module</a></li>
+<li><a class="reference internal" href="#module-tests.old_factories_test">tests.old_factories_test module</a></li>
 <li><a class="reference internal" href="#module-tests.other_tests">tests.other_tests module</a></li>
 <li><a class="reference internal" href="#module-tests.passed_time">tests.passed_time module</a></li>
 <li><a class="reference internal" href="#module-tests.petri_imp_exp_test">tests.petri_imp_exp_test module</a></li>
-<li><a class="reference internal" href="#module-tests.pt_compress">tests.pt_compress module</a></li>
-<li><a class="reference internal" href="#module-tests.pt_to_pn">tests.pt_to_pn module</a></li>
 <li><a class="reference internal" href="#module-tests.role_detection">tests.role_detection module</a></li>
-<li><a class="reference internal" href="#module-tests.serialization_test">tests.serialization_test module</a></li>
 <li><a class="reference internal" href="#module-tests.sna_test">tests.sna_test module</a></li>
+<li><a class="reference internal" href="#module-tests.statistics_df_test">tests.statistics_df_test module</a></li>
+<li><a class="reference internal" href="#module-tests.statistics_log_test">tests.statistics_log_test module</a></li>
 <li><a class="reference internal" href="#module-tests.trans_syst_tests">tests.trans_syst_tests module</a></li>
 <li><a class="reference internal" href="#module-tests.xes_impexp_test">tests.xes_impexp_test module</a></li>
 <li><a class="reference internal" href="#module-tests.xescerttest">tests.xescerttest module</a></li>
@@ -181,27 +183,97 @@
             
   <div class="section" id="tests-package">
 <h1>tests package<a class="headerlink" href="#tests-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tests.documentation_tests.html">tests.documentation_tests package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tests.documentation_tests.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tests.documentation_tests.html#module-tests.documentation_tests.test_doc_alpha1">tests.documentation_tests.test_doc_alpha1 module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tests.documentation_tests.html#module-tests.documentation_tests.test_doc_classifiers1">tests.documentation_tests.test_doc_classifiers1 module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tests.documentation_tests.html#module-tests.documentation_tests.test_doc_csv1">tests.documentation_tests.test_doc_csv1 module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tests.documentation_tests.html#module-tests.documentation_tests.test_doc_dfgraph1">tests.documentation_tests.test_doc_dfgraph1 module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tests.documentation_tests.html#module-tests.documentation_tests.test_doc_inductive1">tests.documentation_tests.test_doc_inductive1 module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tests.documentation_tests.html#module-tests.documentation_tests.test_doc_measures">tests.documentation_tests.test_doc_measures module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tests.documentation_tests.html#module-tests.documentation_tests.test_doc_xes1">tests.documentation_tests.test_doc_xes1 module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tests.documentation_tests.html#module-tests.documentation_tests">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-tests.algorithm_test">
+<span id="tests-algorithm-test-module"></span><h2>tests.algorithm_test module<a class="headerlink" href="#module-tests.algorithm_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.algorithm_test.AlgorithmTest">
+<em class="property">class </em><code class="sig-prename descclassname">tests.algorithm_test.</code><code class="sig-name descname">AlgorithmTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_alignment">
+<code class="sig-name descname">test_alignment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_alignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_alignment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_alpha_miner_dataframe">
+<code class="sig-name descname">test_alpha_miner_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_alpha_miner_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_alpha_miner_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_alpha_miner_log">
+<code class="sig-name descname">test_alpha_miner_log</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_alpha_miner_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_alpha_miner_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_decomp_alignment">
+<code class="sig-name descname">test_decomp_alignment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_decomp_alignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_decomp_alignment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_evaluation">
+<code class="sig-name descname">test_evaluation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_evaluation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_evaluation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_hiearch_clustering">
+<code class="sig-name descname">test_hiearch_clustering</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_hiearch_clustering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_hiearch_clustering" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_importing_csv">
+<code class="sig-name descname">test_importing_csv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_importing_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_importing_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_importing_parquet">
+<code class="sig-name descname">test_importing_parquet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_importing_parquet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_importing_parquet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_importing_xes">
+<code class="sig-name descname">test_importing_xes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_importing_xes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_importing_xes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_inductive_miner">
+<code class="sig-name descname">test_inductive_miner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_inductive_miner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_inductive_miner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_log_skeleton">
+<code class="sig-name descname">test_log_skeleton</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_log_skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_log_skeleton" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_performance_spectrum">
+<code class="sig-name descname">test_performance_spectrum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_performance_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_performance_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_playout">
+<code class="sig-name descname">test_playout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_playout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_playout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_tokenreplay">
+<code class="sig-name descname">test_tokenreplay</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_tokenreplay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_tokenreplay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_tree_generation">
+<code class="sig-name descname">test_tree_generation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_tree_generation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_tree_generation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.algorithm_test.AlgorithmTest.test_tsystem">
+<code class="sig-name descname">test_tsystem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/algorithm_test.html#AlgorithmTest.test_tsystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.algorithm_test.AlgorithmTest.test_tsystem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-tests.alignment_test">
 <span id="tests-alignment-test-module"></span><h2>tests.alignment_test module<a class="headerlink" href="#module-tests.alignment_test" title="Permalink to this headline">¶</a></h2>
@@ -275,11 +347,6 @@
 <code class="sig-name descname">test_importExportCSVtoXES</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/csv_impexp_test.html#CsvImportExportTest.test_importExportCSVtoXES"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.csv_impexp_test.CsvImportExportTest.test_importExportCSVtoXES" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="tests.csv_impexp_test.CsvImportExportTest.test_importExportParquet">
-<code class="sig-name descname">test_importExportParquet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/csv_impexp_test.html#CsvImportExportTest.test_importExportParquet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.csv_impexp_test.CsvImportExportTest.test_importExportParquet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </div>
@@ -297,6 +364,400 @@
 <dl class="method">
 <dt id="tests.dec_tree_test.DecisionTreeTest.test_decisiontree_traceduration">
 <code class="sig-name descname">test_decisiontree_traceduration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/dec_tree_test.html#DecisionTreeTest.test_decisiontree_traceduration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.dec_tree_test.DecisionTreeTest.test_decisiontree_traceduration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.doc_tests">
+<span id="tests-doc-tests-module"></span><h2>tests.doc_tests module<a class="headerlink" href="#module-tests.doc_tests" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.doc_tests.DocTests">
+<em class="property">class </em><code class="sig-prename descclassname">tests.doc_tests.</code><code class="sig-name descname">DocTests</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.load_receipt_df">
+<code class="sig-name descname">load_receipt_df</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.load_receipt_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.load_receipt_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.load_receipt_stream">
+<code class="sig-name descname">load_receipt_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.load_receipt_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.load_receipt_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.load_receipt_xes">
+<code class="sig-name descname">load_receipt_xes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.load_receipt_xes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.load_receipt_xes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.load_roadtraffic100_csv">
+<code class="sig-name descname">load_roadtraffic100_csv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.load_roadtraffic100_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.load_roadtraffic100_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.load_roadtraffic100_xes">
+<code class="sig-name descname">load_roadtraffic100_xes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.load_roadtraffic100_xes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.load_roadtraffic100_xes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.load_roadtraffic50_xes">
+<code class="sig-name descname">load_roadtraffic50_xes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.load_roadtraffic50_xes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.load_roadtraffic50_xes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.load_running_example_df">
+<code class="sig-name descname">load_running_example_df</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.load_running_example_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.load_running_example_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.load_running_example_pnml">
+<code class="sig-name descname">load_running_example_pnml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.load_running_example_pnml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.load_running_example_pnml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.load_running_example_stream">
+<code class="sig-name descname">load_running_example_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.load_running_example_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.load_running_example_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.load_running_example_xes">
+<code class="sig-name descname">load_running_example_xes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.load_running_example_xes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.load_running_example_xes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_1">
+<code class="sig-name descname">test_1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_10">
+<code class="sig-name descname">test_10</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_10" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_11">
+<code class="sig-name descname">test_11</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_11"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_11" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_12">
+<code class="sig-name descname">test_12</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_12" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_13">
+<code class="sig-name descname">test_13</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_13"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_13" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_14">
+<code class="sig-name descname">test_14</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_14"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_14" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_15">
+<code class="sig-name descname">test_15</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_15"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_15" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_16">
+<code class="sig-name descname">test_16</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_16"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_16" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_17">
+<code class="sig-name descname">test_17</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_17"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_17" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_18">
+<code class="sig-name descname">test_18</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_18"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_18" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_19">
+<code class="sig-name descname">test_19</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_19"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_19" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_2">
+<code class="sig-name descname">test_2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_20">
+<code class="sig-name descname">test_20</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_20"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_20" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_21">
+<code class="sig-name descname">test_21</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_21"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_21" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_22">
+<code class="sig-name descname">test_22</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_22"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_22" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_23">
+<code class="sig-name descname">test_23</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_23"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_23" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_24">
+<code class="sig-name descname">test_24</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_24"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_24" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_25">
+<code class="sig-name descname">test_25</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_25"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_25" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_26">
+<code class="sig-name descname">test_26</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_26"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_26" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_27">
+<code class="sig-name descname">test_27</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_27"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_27" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_28">
+<code class="sig-name descname">test_28</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_28"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_28" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_29">
+<code class="sig-name descname">test_29</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_29"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_29" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_3">
+<code class="sig-name descname">test_3</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_30">
+<code class="sig-name descname">test_30</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_30"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_30" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_31">
+<code class="sig-name descname">test_31</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_31"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_31" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_32">
+<code class="sig-name descname">test_32</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_32"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_32" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_33">
+<code class="sig-name descname">test_33</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_33"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_33" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_34">
+<code class="sig-name descname">test_34</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_34"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_34" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_35">
+<code class="sig-name descname">test_35</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_35"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_35" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_36">
+<code class="sig-name descname">test_36</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_36"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_36" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_37">
+<code class="sig-name descname">test_37</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_37"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_37" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_38">
+<code class="sig-name descname">test_38</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_38"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_38" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_39">
+<code class="sig-name descname">test_39</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_39"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_39" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_4">
+<code class="sig-name descname">test_4</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_40">
+<code class="sig-name descname">test_40</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_40" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_41">
+<code class="sig-name descname">test_41</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_41"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_41" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_42">
+<code class="sig-name descname">test_42</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_42"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_42" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_43">
+<code class="sig-name descname">test_43</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_43"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_43" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_44">
+<code class="sig-name descname">test_44</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_44"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_44" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_45">
+<code class="sig-name descname">test_45</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_45"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_45" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_46">
+<code class="sig-name descname">test_46</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_46"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_46" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_47">
+<code class="sig-name descname">test_47</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_47"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_47" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_48">
+<code class="sig-name descname">test_48</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_48"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_48" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_49">
+<code class="sig-name descname">test_49</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_49"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_49" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_5">
+<code class="sig-name descname">test_5</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_50">
+<code class="sig-name descname">test_50</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_50"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_50" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_51">
+<code class="sig-name descname">test_51</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_51"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_51" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_52">
+<code class="sig-name descname">test_52</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_52"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_52" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_53">
+<code class="sig-name descname">test_53</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_53"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_53" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_54">
+<code class="sig-name descname">test_54</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_54"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_54" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_55">
+<code class="sig-name descname">test_55</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_55"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_55" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_56">
+<code class="sig-name descname">test_56</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_56"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_56" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_57">
+<code class="sig-name descname">test_57</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_57"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_57" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_58">
+<code class="sig-name descname">test_58</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_58"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_58" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_59">
+<code class="sig-name descname">test_59</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_59"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_59" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_6">
+<code class="sig-name descname">test_6</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_6"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_60">
+<code class="sig-name descname">test_60</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_60"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_60" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_61">
+<code class="sig-name descname">test_61</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_61"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_61" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_62">
+<code class="sig-name descname">test_62</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_62"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_62" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_63">
+<code class="sig-name descname">test_63</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_63"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_63" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_64">
+<code class="sig-name descname">test_64</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_64"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_64" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_65">
+<code class="sig-name descname">test_65</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_65"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_65" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_66">
+<code class="sig-name descname">test_66</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_66"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_66" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_67">
+<code class="sig-name descname">test_67</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_67"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_67" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_7">
+<code class="sig-name descname">test_7</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_7" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_8">
+<code class="sig-name descname">test_8</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_8" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.doc_tests.DocTests.test_9">
+<code class="sig-name descname">test_9</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/doc_tests.html#DocTests.test_9"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.doc_tests.DocTests.test_9" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -620,18 +1081,8 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="tests.inductive_other_tests.InductiveMinerOtherTests.test_dataframe_dfg_based_old">
-<code class="sig-name descname">test_dataframe_dfg_based_old</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_other_tests.html#InductiveMinerOtherTests.test_dataframe_dfg_based_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_other_tests.InductiveMinerOtherTests.test_dataframe_dfg_based_old" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="tests.inductive_other_tests.InductiveMinerOtherTests.test_df_tree_variants_dfg_based">
 <code class="sig-name descname">test_df_tree_variants_dfg_based</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_other_tests.html#InductiveMinerOtherTests.test_df_tree_variants_dfg_based"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_other_tests.InductiveMinerOtherTests.test_df_tree_variants_dfg_based" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="tests.inductive_other_tests.InductiveMinerOtherTests.test_df_tree_variants_dfg_based_old">
-<code class="sig-name descname">test_df_tree_variants_dfg_based_old</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_other_tests.html#InductiveMinerOtherTests.test_df_tree_variants_dfg_based_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_other_tests.InductiveMinerOtherTests.test_df_tree_variants_dfg_based_old" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -640,28 +1091,13 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="tests.inductive_other_tests.InductiveMinerOtherTests.test_df_variants_dfg_based_old">
-<code class="sig-name descname">test_df_variants_dfg_based_old</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_other_tests.html#InductiveMinerOtherTests.test_df_variants_dfg_based_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_other_tests.InductiveMinerOtherTests.test_df_variants_dfg_based_old" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="tests.inductive_other_tests.InductiveMinerOtherTests.test_log_tree_variants_dfg_based">
 <code class="sig-name descname">test_log_tree_variants_dfg_based</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_other_tests.html#InductiveMinerOtherTests.test_log_tree_variants_dfg_based"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_other_tests.InductiveMinerOtherTests.test_log_tree_variants_dfg_based" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="tests.inductive_other_tests.InductiveMinerOtherTests.test_log_tree_variants_dfg_based_old">
-<code class="sig-name descname">test_log_tree_variants_dfg_based_old</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_other_tests.html#InductiveMinerOtherTests.test_log_tree_variants_dfg_based_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_other_tests.InductiveMinerOtherTests.test_log_tree_variants_dfg_based_old" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="tests.inductive_other_tests.InductiveMinerOtherTests.test_log_variants_dfg_based">
 <code class="sig-name descname">test_log_variants_dfg_based</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_other_tests.html#InductiveMinerOtherTests.test_log_variants_dfg_based"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_other_tests.InductiveMinerOtherTests.test_log_variants_dfg_based" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="tests.inductive_other_tests.InductiveMinerOtherTests.test_log_variants_dfg_based_old">
-<code class="sig-name descname">test_log_variants_dfg_based_old</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_other_tests.html#InductiveMinerOtherTests.test_log_variants_dfg_based_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_other_tests.InductiveMinerOtherTests.test_log_variants_dfg_based_old" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -675,7 +1111,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
 <dl class="method">
 <dt id="tests.inductive_test.InductiveMinerTest.obtainPetriNetThroughImdf">
-<code class="sig-name descname">obtainPetriNetThroughImdf</code><span class="sig-paren">(</span><em class="sig-param">log_name</em>, <em class="sig-param">variant='dfg_based'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_test.html#InductiveMinerTest.obtainPetriNetThroughImdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_test.InductiveMinerTest.obtainPetriNetThroughImdf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">obtainPetriNetThroughImdf</code><span class="sig-paren">(</span><em class="sig-param">log_name</em>, <em class="sig-param">variant=&lt;Variants.DFG_BASED: &lt;module 'pm4py.algo.discovery.inductive.versions.dfg.dfg_based' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\inductive\\versions\\dfg\\dfg_based.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_test.html#InductiveMinerTest.obtainPetriNetThroughImdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_test.InductiveMinerTest.obtainPetriNetThroughImdf" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -718,18 +1154,8 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="tests.inductive_tree_test.InductiveMinerTreeTest.test_tree_receipt_dfg_based_old">
-<code class="sig-name descname">test_tree_receipt_dfg_based_old</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_tree_test.html#InductiveMinerTreeTest.test_tree_receipt_dfg_based_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_tree_test.InductiveMinerTreeTest.test_tree_receipt_dfg_based_old" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="tests.inductive_tree_test.InductiveMinerTreeTest.test_tree_running_example_dfg_based">
 <code class="sig-name descname">test_tree_running_example_dfg_based</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_tree_test.html#InductiveMinerTreeTest.test_tree_running_example_dfg_based"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_tree_test.InductiveMinerTreeTest.test_tree_running_example_dfg_based" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="tests.inductive_tree_test.InductiveMinerTreeTest.test_tree_running_example_dfg_based_old">
-<code class="sig-name descname">test_tree_running_example_dfg_based_old</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/inductive_tree_test.html#InductiveMinerTreeTest.test_tree_running_example_dfg_based_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.inductive_tree_test.InductiveMinerTreeTest.test_tree_running_example_dfg_based_old" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -754,11 +1180,6 @@
 <dl class="method">
 <dt id="tests.main_fac_test.MainFactoriesTest.test_alphaminer_stream">
 <code class="sig-name descname">test_alphaminer_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/main_fac_test.html#MainFactoriesTest.test_alphaminer_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.main_fac_test.MainFactoriesTest.test_alphaminer_stream" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="tests.main_fac_test.MainFactoriesTest.test_csvimp_csvexp">
-<code class="sig-name descname">test_csvimp_csvexp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/main_fac_test.html#MainFactoriesTest.test_csvimp_csvexp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.main_fac_test.MainFactoriesTest.test_csvimp_csvexp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -812,11 +1233,6 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="tests.main_fac_test.MainFactoriesTest.test_pdimp_csvexp">
-<code class="sig-name descname">test_pdimp_csvexp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/main_fac_test.html#MainFactoriesTest.test_pdimp_csvexp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.main_fac_test.MainFactoriesTest.test_pdimp_csvexp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="tests.main_fac_test.MainFactoriesTest.test_pdimp_xesexp">
 <code class="sig-name descname">test_pdimp_xesexp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/main_fac_test.html#MainFactoriesTest.test_pdimp_xesexp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.main_fac_test.MainFactoriesTest.test_pdimp_xesexp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -837,13 +1253,47 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="tests.main_fac_test.MainFactoriesTest.test_xesimp_csvexp">
-<code class="sig-name descname">test_xesimp_csvexp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/main_fac_test.html#MainFactoriesTest.test_xesimp_csvexp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.main_fac_test.MainFactoriesTest.test_xesimp_csvexp" title="Permalink to this definition">¶</a></dt>
+<dt id="tests.main_fac_test.MainFactoriesTest.test_xesimp_xesexp">
+<code class="sig-name descname">test_xesimp_xesexp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/main_fac_test.html#MainFactoriesTest.test_xesimp_xesexp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.main_fac_test.MainFactoriesTest.test_xesimp_xesexp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.map_filter_functions_test">
+<span id="tests-map-filter-functions-test-module"></span><h2>tests.map_filter_functions_test module<a class="headerlink" href="#module-tests.map_filter_functions_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.map_filter_functions_test.MapFilterFunctionsTest">
+<em class="property">class </em><code class="sig-prename descclassname">tests.map_filter_functions_test.</code><code class="sig-name descname">MapFilterFunctionsTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/map_filter_functions_test.html#MapFilterFunctionsTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.map_filter_functions_test.MapFilterFunctionsTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="tests.map_filter_functions_test.MapFilterFunctionsTest.add_underscore_to_resource">
+<code class="sig-name descname">add_underscore_to_resource</code><span class="sig-paren">(</span><em class="sig-param">ev</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/map_filter_functions_test.html#MapFilterFunctionsTest.add_underscore_to_resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.map_filter_functions_test.MapFilterFunctionsTest.add_underscore_to_resource" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="tests.main_fac_test.MainFactoriesTest.test_xesimp_xesexp">
-<code class="sig-name descname">test_xesimp_xesexp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/main_fac_test.html#MainFactoriesTest.test_xesimp_xesexp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.main_fac_test.MainFactoriesTest.test_xesimp_xesexp" title="Permalink to this definition">¶</a></dt>
+<dt id="tests.map_filter_functions_test.MapFilterFunctionsTest.new_trace">
+<code class="sig-name descname">new_trace</code><span class="sig-paren">(</span><em class="sig-param">t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/map_filter_functions_test.html#MapFilterFunctionsTest.new_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.map_filter_functions_test.MapFilterFunctionsTest.new_trace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.map_filter_functions_test.MapFilterFunctionsTest.test_filter_log">
+<code class="sig-name descname">test_filter_log</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/map_filter_functions_test.html#MapFilterFunctionsTest.test_filter_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.map_filter_functions_test.MapFilterFunctionsTest.test_filter_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.map_filter_functions_test.MapFilterFunctionsTest.test_filter_stream">
+<code class="sig-name descname">test_filter_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/map_filter_functions_test.html#MapFilterFunctionsTest.test_filter_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.map_filter_functions_test.MapFilterFunctionsTest.test_filter_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.map_filter_functions_test.MapFilterFunctionsTest.test_map_log">
+<code class="sig-name descname">test_map_log</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/map_filter_functions_test.html#MapFilterFunctionsTest.test_map_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.map_filter_functions_test.MapFilterFunctionsTest.test_map_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.map_filter_functions_test.MapFilterFunctionsTest.test_map_stream">
+<code class="sig-name descname">test_map_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/map_filter_functions_test.html#MapFilterFunctionsTest.test_map_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.map_filter_functions_test.MapFilterFunctionsTest.test_map_stream" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -863,12 +1313,106 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-tests.old_factories_test">
+<span id="tests-old-factories-test-module"></span><h2>tests.old_factories_test module<a class="headerlink" href="#module-tests.old_factories_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.old_factories_test.OldFactoriesTest">
+<em class="property">class </em><code class="sig-prename descclassname">tests.old_factories_test.</code><code class="sig-name descname">OldFactoriesTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_alignment">
+<code class="sig-name descname">test_alignment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_alignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_alignment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_alpha_miner_dataframe">
+<code class="sig-name descname">test_alpha_miner_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_alpha_miner_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_alpha_miner_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_alpha_miner_log">
+<code class="sig-name descname">test_alpha_miner_log</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_alpha_miner_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_alpha_miner_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_decomp_alignment">
+<code class="sig-name descname">test_decomp_alignment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_decomp_alignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_decomp_alignment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_evaluation">
+<code class="sig-name descname">test_evaluation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_evaluation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_evaluation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_hiearch_clustering">
+<code class="sig-name descname">test_hiearch_clustering</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_hiearch_clustering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_hiearch_clustering" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_importing_csv">
+<code class="sig-name descname">test_importing_csv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_importing_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_importing_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_importing_parquet">
+<code class="sig-name descname">test_importing_parquet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_importing_parquet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_importing_parquet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_importing_xes">
+<code class="sig-name descname">test_importing_xes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_importing_xes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_importing_xes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_inductive_miner">
+<code class="sig-name descname">test_inductive_miner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_inductive_miner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_inductive_miner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_log_skeleton">
+<code class="sig-name descname">test_log_skeleton</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_log_skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_log_skeleton" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_performance_spectrum">
+<code class="sig-name descname">test_performance_spectrum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_performance_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_performance_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_playout">
+<code class="sig-name descname">test_playout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_playout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_playout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_tokenreplay">
+<code class="sig-name descname">test_tokenreplay</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_tokenreplay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_tokenreplay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_tree_generation">
+<code class="sig-name descname">test_tree_generation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_tree_generation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_tree_generation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.old_factories_test.OldFactoriesTest.test_tsystem">
+<code class="sig-name descname">test_tsystem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/old_factories_test.html#OldFactoriesTest.test_tsystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.old_factories_test.OldFactoriesTest.test_tsystem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-tests.other_tests">
 <span id="tests-other-tests-module"></span><h2>tests.other_tests module<a class="headerlink" href="#module-tests.other_tests" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="tests.other_tests.OtherPartsTests">
 <em class="property">class </em><code class="sig-prename descclassname">tests.other_tests.</code><code class="sig-name descname">OtherPartsTests</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/other_tests.html#OtherPartsTests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.other_tests.OtherPartsTests" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="tests.other_tests.OtherPartsTests.test_alignment">
+<code class="sig-name descname">test_alignment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/other_tests.html#OtherPartsTests.test_alignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.other_tests.OtherPartsTests.test_alignment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="tests.other_tests.OtherPartsTests.test_log_skeleton">
 <code class="sig-name descname">test_log_skeleton</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/other_tests.html#OtherPartsTests.test_log_skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.other_tests.OtherPartsTests.test_log_skeleton" title="Permalink to this definition">¶</a></dt>
@@ -918,11 +1462,6 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="tests.petri_imp_exp_test.PetriImportExportTest.test_importingExportingStochasticNet">
-<code class="sig-name descname">test_importingExportingStochasticNet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/petri_imp_exp_test.html#PetriImportExportTest.test_importingExportingStochasticNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.petri_imp_exp_test.PetriImportExportTest.test_importingExportingStochasticNet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="tests.petri_imp_exp_test.PetriImportExportTest.test_importingPetriLogAlignment">
 <code class="sig-name descname">test_importingPetriLogAlignment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/petri_imp_exp_test.html#PetriImportExportTest.test_importingPetriLogAlignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.petri_imp_exp_test.PetriImportExportTest.test_importingPetriLogAlignment" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -939,12 +1478,6 @@
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-tests.pt_compress">
-<span id="tests-pt-compress-module"></span><h2>tests.pt_compress module<a class="headerlink" href="#module-tests.pt_compress" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-tests.pt_to_pn">
-<span id="tests-pt-to-pn-module"></span><h2>tests.pt_to_pn module<a class="headerlink" href="#module-tests.pt_to_pn" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-tests.role_detection">
 <span id="tests-role-detection-module"></span><h2>tests.role_detection module<a class="headerlink" href="#module-tests.role_detection" title="Permalink to this headline">¶</a></h2>
@@ -975,25 +1508,6 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-tests.serialization_test">
-<span id="tests-serialization-test-module"></span><h2>tests.serialization_test module<a class="headerlink" href="#module-tests.serialization_test" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="tests.serialization_test.SerializationTest">
-<em class="property">class </em><code class="sig-prename descclassname">tests.serialization_test.</code><code class="sig-name descname">SerializationTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/serialization_test.html#SerializationTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.serialization_test.SerializationTest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
-<dl class="method">
-<dt id="tests.serialization_test.SerializationTest.test_serialization_log">
-<code class="sig-name descname">test_serialization_log</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/serialization_test.html#SerializationTest.test_serialization_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.serialization_test.SerializationTest.test_serialization_log" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="tests.serialization_test.SerializationTest.test_serialization_stream">
-<code class="sig-name descname">test_serialization_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/serialization_test.html#SerializationTest.test_serialization_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.serialization_test.SerializationTest.test_serialization_stream" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
 <div class="section" id="module-tests.sna_test">
 <span id="tests-sna-test-module"></span><h2>tests.sna_test module<a class="headerlink" href="#module-tests.sna_test" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -1008,6 +1522,99 @@
 <dl class="method">
 <dt id="tests.sna_test.SnaTests.test_pandas">
 <code class="sig-name descname">test_pandas</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/sna_test.html#SnaTests.test_pandas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.sna_test.SnaTests.test_pandas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.statistics_df_test">
+<span id="tests-statistics-df-test-module"></span><h2>tests.statistics_df_test module<a class="headerlink" href="#module-tests.statistics_df_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.statistics_df_test.StatisticsDfTest">
+<em class="property">class </em><code class="sig-prename descclassname">tests.statistics_df_test.</code><code class="sig-name descname">StatisticsDfTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_df_test.html#StatisticsDfTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_df_test.StatisticsDfTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="tests.statistics_df_test.StatisticsDfTest.get_dataframe">
+<code class="sig-name descname">get_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_df_test.html#StatisticsDfTest.get_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_df_test.StatisticsDfTest.get_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_df_test.StatisticsDfTest.test_case_arrival">
+<code class="sig-name descname">test_case_arrival</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_df_test.html#StatisticsDfTest.test_case_arrival"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_df_test.StatisticsDfTest.test_case_arrival" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_df_test.StatisticsDfTest.test_case_statistics">
+<code class="sig-name descname">test_case_statistics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_df_test.html#StatisticsDfTest.test_case_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_df_test.StatisticsDfTest.test_case_statistics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_df_test.StatisticsDfTest.test_end_activities">
+<code class="sig-name descname">test_end_activities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_df_test.html#StatisticsDfTest.test_end_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_df_test.StatisticsDfTest.test_end_activities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_df_test.StatisticsDfTest.test_get_attributes">
+<code class="sig-name descname">test_get_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_df_test.html#StatisticsDfTest.test_get_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_df_test.StatisticsDfTest.test_get_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_df_test.StatisticsDfTest.test_start_activities">
+<code class="sig-name descname">test_start_activities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_df_test.html#StatisticsDfTest.test_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_df_test.StatisticsDfTest.test_start_activities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_df_test.StatisticsDfTest.test_variants">
+<code class="sig-name descname">test_variants</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_df_test.html#StatisticsDfTest.test_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_df_test.StatisticsDfTest.test_variants" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.statistics_log_test">
+<span id="tests-statistics-log-test-module"></span><h2>tests.statistics_log_test module<a class="headerlink" href="#module-tests.statistics_log_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.statistics_log_test.StatisticsLogTest">
+<em class="property">class </em><code class="sig-prename descclassname">tests.statistics_log_test.</code><code class="sig-name descname">StatisticsLogTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_log_test.html#StatisticsLogTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_log_test.StatisticsLogTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="tests.statistics_log_test.StatisticsLogTest.get_log">
+<code class="sig-name descname">get_log</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_log_test.html#StatisticsLogTest.get_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_log_test.StatisticsLogTest.get_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_log_test.StatisticsLogTest.test_case_arrival">
+<code class="sig-name descname">test_case_arrival</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_log_test.html#StatisticsLogTest.test_case_arrival"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_log_test.StatisticsLogTest.test_case_arrival" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_log_test.StatisticsLogTest.test_case_statistics">
+<code class="sig-name descname">test_case_statistics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_log_test.html#StatisticsLogTest.test_case_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_log_test.StatisticsLogTest.test_case_statistics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_log_test.StatisticsLogTest.test_end_activities">
+<code class="sig-name descname">test_end_activities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_log_test.html#StatisticsLogTest.test_end_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_log_test.StatisticsLogTest.test_end_activities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_log_test.StatisticsLogTest.test_get_attributes">
+<code class="sig-name descname">test_get_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_log_test.html#StatisticsLogTest.test_get_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_log_test.StatisticsLogTest.test_get_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_log_test.StatisticsLogTest.test_select_attributes">
+<code class="sig-name descname">test_select_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_log_test.html#StatisticsLogTest.test_select_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_log_test.StatisticsLogTest.test_select_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_log_test.StatisticsLogTest.test_start_activities">
+<code class="sig-name descname">test_start_activities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_log_test.html#StatisticsLogTest.test_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_log_test.StatisticsLogTest.test_start_activities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.statistics_log_test.StatisticsLogTest.test_variants">
+<code class="sig-name descname">test_variants</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/statistics_log_test.html#StatisticsLogTest.test_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.statistics_log_test.StatisticsLogTest.test_variants" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1041,11 +1648,6 @@
 <dl class="method">
 <dt id="tests.xes_impexp_test.XesImportExportTest.test_importExportXESfromGZIP_imp1">
 <code class="sig-name descname">test_importExportXESfromGZIP_imp1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/xes_impexp_test.html#XesImportExportTest.test_importExportXESfromGZIP_imp1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.xes_impexp_test.XesImportExportTest.test_importExportXESfromGZIP_imp1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="tests.xes_impexp_test.XesImportExportTest.test_importExportXEStoCSV">
-<code class="sig-name descname">test_importExportXEStoCSV</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/xes_impexp_test.html#XesImportExportTest.test_importExportXEStoCSV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tests.xes_impexp_test.XesImportExportTest.test_importExportXEStoCSV" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

@@ -173,34 +173,107 @@
 </div>
 <div class="section" id="module-pm4py.algo.conformance.alignments.algorithm">
 <span id="pm4py-algo-conformance-alignments-algorithm-module"></span><h2>pm4py.algo.conformance.alignments.algorithm module<a class="headerlink" href="#module-pm4py.algo.conformance.alignments.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.conformance.alignments.algorithm.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/algorithm.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.PARAMETER_VARIANT_DELIMITER">
+<code class="sig-name descname">PARAMETER_VARIANT_DELIMITER</code><em class="property"> = 'variant_delimiter'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.PARAMETER_VARIANT_DELIMITER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE">
+<code class="sig-name descname">PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE</code><em class="property"> = 'ret_tuple_as_trans_desc'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_MAX_ALIGN_TIME">
+<code class="sig-name descname">PARAM_MAX_ALIGN_TIME</code><em class="property"> = 'max_align_time'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_MAX_ALIGN_TIME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_MAX_ALIGN_TIME_TRACE">
+<code class="sig-name descname">PARAM_MAX_ALIGN_TIME_TRACE</code><em class="property"> = 'max_align_time_trace'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_MAX_ALIGN_TIME_TRACE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_MODEL_COST_FUNCTION">
+<code class="sig-name descname">PARAM_MODEL_COST_FUNCTION</code><em class="property"> = 'model_cost_function'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_MODEL_COST_FUNCTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_SYNC_COST_FUNCTION">
+<code class="sig-name descname">PARAM_SYNC_COST_FUNCTION</code><em class="property"> = 'sync_cost_function'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_SYNC_COST_FUNCTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_TRACE_COST_FUNCTION">
+<code class="sig-name descname">PARAM_TRACE_COST_FUNCTION</code><em class="property"> = 'trace_cost_function'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_TRACE_COST_FUNCTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_TRACE_NET_COSTS">
+<code class="sig-name descname">PARAM_TRACE_NET_COSTS</code><em class="property"> = 'trace_net_costs'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.PARAM_TRACE_NET_COSTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.TRACE_NET_CONSTR_FUNCTION">
+<code class="sig-name descname">TRACE_NET_CONSTR_FUNCTION</code><em class="property"> = 'trace_net_constr_function'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.TRACE_NET_CONSTR_FUNCTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.TRACE_NET_COST_AWARE_CONSTR_FUNCTION">
+<code class="sig-name descname">TRACE_NET_COST_AWARE_CONSTR_FUNCTION</code><em class="property"> = 'trace_net_cost_aware_constr_function'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.TRACE_NET_COST_AWARE_CONSTR_FUNCTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Parameters.VARIANTS_IDX">
+<code class="sig-name descname">VARIANTS_IDX</code><em class="property"> = 'variants_idx'</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Parameters.VARIANTS_IDX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.conformance.alignments.algorithm.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/algorithm.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Variants.VERSION_DIJKSTRA_NO_HEURISTICS">
+<code class="sig-name descname">VERSION_DIJKSTRA_NO_HEURISTICS</code><em class="property"> = &lt;module 'pm4py.algo.conformance.alignments.versions.dijkstra_no_heuristics' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\conformance\\alignments\\versions\\dijkstra_no_heuristics.py'&gt;</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Variants.VERSION_DIJKSTRA_NO_HEURISTICS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.conformance.alignments.algorithm.Variants.VERSION_STATE_EQUATION_A_STAR">
+<code class="sig-name descname">VERSION_STATE_EQUATION_A_STAR</code><em class="property"> = &lt;module 'pm4py.algo.conformance.alignments.versions.state_equation_a_star' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\conformance\\alignments\\versions\\state_equation_a_star.py'&gt;</em><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.Variants.VERSION_STATE_EQUATION_A_STAR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.conformance.alignments.algorithm.apply">
-<code class="sig-prename descclassname">pm4py.algo.conformance.alignments.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">petri_net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">version='state_equation_a_star'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.conformance.alignments.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">petri_net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.VERSION_STATE_EQUATION_A_STAR: &lt;module 'pm4py.algo.conformance.alignments.versions.state_equation_a_star' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\conformance\\alignments\\versions\\state_equation_a_star.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.apply" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="pm4py.algo.conformance.alignments.algorithm.apply_log">
-<code class="sig-prename descclassname">pm4py.algo.conformance.alignments.algorithm.</code><code class="sig-name descname">apply_log</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">petri_net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">version='state_equation_a_star'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/algorithm.html#apply_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.apply_log" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.conformance.alignments.algorithm.</code><code class="sig-name descname">apply_log</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">petri_net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.VERSION_STATE_EQUATION_A_STAR: &lt;module 'pm4py.algo.conformance.alignments.versions.state_equation_a_star' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\conformance\\alignments\\versions\\state_equation_a_star.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/algorithm.html#apply_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.apply_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>apply alignments to a log
 :Parameters: * <strong>log</strong> – object of the form <code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.EventLog</span></code> event log</p>
 <blockquote>
-<div><ul>
+<div><ul class="simple">
 <li><p><strong>petri_net</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.PetriNet" title="pm4py.objects.petri.petrinet.PetriNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.PetriNet</span></code></a> the model to use for the alignment</p></li>
 <li><p><strong>initial_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> initial marking of the net</p></li>
 <li><p><strong>final_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> final marking of the net</p></li>
-<li><p><strong>version</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> selected variant of the algorithm, possible values: {‘state_equation_a_star’}</p></li>
-<li><p><strong>parameters</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> parameters of the algorithm,
-for key ‘state_equation_a_star’:</p>
-<blockquote>
-<div><p>pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; Attribute in the log that contains the activity
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION -&gt;
-mapping of each transition in the model to corresponding synchronous costs
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION -&gt;
-mapping of each transition in the model to corresponding model cost
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION -&gt;
-mapping of each index of the trace to a positive cost value</p>
-</div></blockquote>
-</li>
+<li><p><strong>variant</strong> – selected variant of the algorithm, possible values: {‘Variants.VERSION_STATE_EQUATION_A_STAR, Variants.VERSION_DIJKSTRA_NO_HEURISTICS ‘}</p></li>
+<li><p><strong>parameters</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> parameters of the algorithm,</p></li>
 </ul>
 </div></blockquote>
 <dl class="field-list simple">
@@ -217,13 +290,8 @@ representing synchronous/log/model-moves.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pm4py.algo.conformance.alignments.algorithm.apply_log_multiprocessing">
-<code class="sig-prename descclassname">pm4py.algo.conformance.alignments.algorithm.</code><code class="sig-name descname">apply_log_multiprocessing</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">petri_net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">version='state_equation_a_star'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/algorithm.html#apply_log_multiprocessing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.apply_log_multiprocessing" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
 <dt id="pm4py.algo.conformance.alignments.algorithm.apply_trace">
-<code class="sig-prename descclassname">pm4py.algo.conformance.alignments.algorithm.</code><code class="sig-name descname">apply_trace</code><span class="sig-paren">(</span><em class="sig-param">trace</em>, <em class="sig-param">petri_net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">version='state_equation_a_star'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/algorithm.html#apply_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.apply_trace" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.conformance.alignments.algorithm.</code><code class="sig-name descname">apply_trace</code><span class="sig-paren">(</span><em class="sig-param">trace</em>, <em class="sig-param">petri_net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.VERSION_STATE_EQUATION_A_STAR: &lt;module 'pm4py.algo.conformance.alignments.versions.state_equation_a_star' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\conformance\\alignments\\versions\\state_equation_a_star.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/algorithm.html#apply_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.apply_trace" title="Permalink to this definition">¶</a></dt>
 <dd><p>apply alignments to a trace
 :Parameters: * <strong>trace</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.log.log.Trace</span></code> trace of events</p>
 <blockquote>
@@ -231,15 +299,15 @@ representing synchronous/log/model-moves.</p>
 <li><p><strong>petri_net</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.PetriNet" title="pm4py.objects.petri.petrinet.PetriNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.PetriNet</span></code></a> the model to use for the alignment</p></li>
 <li><p><strong>initial_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> initial marking of the net</p></li>
 <li><p><strong>final_marking</strong> – <a class="reference internal" href="pm4py.objects.petri.html#pm4py.objects.petri.petrinet.Marking" title="pm4py.objects.petri.petrinet.Marking"><code class="xref py py-class docutils literal notranslate"><span class="pre">pm4py.objects.petri.petrinet.Marking</span></code></a> final marking of the net</p></li>
-<li><p><strong>version</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> selected variant of the algorithm, possible values: {‘state_equation_a_star’}</p></li>
+<li><p><strong>variant</strong> – selected variant of the algorithm, possible values: {‘Variants.VERSION_STATE_EQUATION_A_STAR, Variants.VERSION_DIJKSTRA_NO_HEURISTICS ‘}</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> parameters of the algorithm, for key ‘state_equation_a_star’:</dt><dd><p>pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; Attribute in the log that contains the activity
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION -&gt;
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> parameters of the algorithm, for key ‘state_equation_a_star’:</dt><dd><p>Parameters.ACTIVITY_KEY -&gt; Attribute in the log that contains the activity
+Parameters.PARAM_MODEL_COST_FUNCTION -&gt;
 mapping of each transition in the model to corresponding synchronous costs
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION -&gt;
+Parameters.PARAM_SYNC_COST_FUNCTION -&gt;
 mapping of each transition in the model to corresponding model cost
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION -&gt;
+Parameters.PARAM_TRACE_COST_FUNCTION -&gt;
 mapping of each index of the trace to a positive cost value</p>
 </dd>
 </dl>
@@ -258,11 +326,6 @@ representing synchronous/log/model-moves.</p>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.conformance.alignments.algorithm.chunks">
-<code class="sig-prename descclassname">pm4py.algo.conformance.alignments.algorithm.</code><code class="sig-name descname">chunks</code><span class="sig-paren">(</span><em class="sig-param">l</em>, <em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/conformance/alignments/algorithm.html#chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.conformance.alignments.algorithm.chunks" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </div>
 <div class="section" id="module-pm4py.algo.conformance.alignments.factory">
@@ -290,11 +353,11 @@ representing synchronous/log/model-moves.</p>
 for key ‘state_equation_a_star’:</p>
 <blockquote>
 <div><p>pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; Attribute in the log that contains the activity
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION -&gt;
+pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_MODEL_COST_FUNCTION -&gt;
 mapping of each transition in the model to corresponding synchronous costs
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION -&gt;
+pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_SYNC_COST_FUNCTION -&gt;
 mapping of each transition in the model to corresponding model cost
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION -&gt;
+pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_TRACE_COST_FUNCTION -&gt;
 mapping of each index of the trace to a positive cost value</p>
 </div></blockquote>
 </li>
@@ -338,11 +401,11 @@ representing synchronous/log/model-moves.</p>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
 <dt><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> parameters of the algorithm, for key ‘state_equation_a_star’:</dt><dd><p>pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -&gt; Attribute in the log that contains the activity
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_MODEL_COST_FUNCTION -&gt;
+pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_MODEL_COST_FUNCTION -&gt;
 mapping of each transition in the model to corresponding synchronous costs
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_SYNC_COST_FUNCTION -&gt;
+pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_SYNC_COST_FUNCTION -&gt;
 mapping of each transition in the model to corresponding model cost
-pm4py.algo.conformance.alignments.versions.state_equation_a_star.PARAM_TRACE_COST_FUNCTION -&gt;
+pm4py.algo.conformance.alignments.variants.state_equation_a_star.PARAM_TRACE_COST_FUNCTION -&gt;
 mapping of each index of the trace to a positive cost value</p>
 </dd>
 </dl>

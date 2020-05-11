@@ -229,15 +229,42 @@
 </div>
 <div class="section" id="module-pm4py.visualization.heuristics_net.visualizer">
 <span id="pm4py-visualization-heuristics-net-visualizer-module"></span><h2>pm4py.visualization.heuristics_net.visualizer module<a class="headerlink" href="#module-pm4py.visualization.heuristics_net.visualizer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.visualization.heuristics_net.visualizer.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.visualization.heuristics_net.visualizer.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/visualization/heuristics_net/visualizer.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.heuristics_net.visualizer.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.visualization.heuristics_net.visualizer.Variants.PYDOTPLUS">
+<code class="sig-name descname">PYDOTPLUS</code><em class="property"> = &lt;module 'pm4py.visualization.heuristics_net.versions.pydotplus' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\heuristics_net\\versions\\pydotplus.py'&gt;</em><a class="headerlink" href="#pm4py.visualization.heuristics_net.visualizer.Variants.PYDOTPLUS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.visualization.heuristics_net.visualizer.apply">
-<code class="sig-prename descclassname">pm4py.visualization.heuristics_net.visualizer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">heu_net</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='pydotplus'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/heuristics_net/visualizer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.heuristics_net.visualizer.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.heuristics_net.visualizer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">heu_net</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.PYDOTPLUS: &lt;module 'pm4py.visualization.heuristics_net.versions.pydotplus' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\heuristics_net\\versions\\pydotplus.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/heuristics_net/visualizer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.heuristics_net.visualizer.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a representation of an Heuristics Net</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dd class="field-odd"><ul>
 <li><p><strong>heu_net</strong> – Heuristics net</p></li>
-<li><p><strong>parameters</strong> – Possible parameters of the algorithm, including: format</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm, including:</dt><dd><ul class="simple">
+<li><p>Parameters.FORMAT</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use:</dt><dd><ul class="simple">
+<li><p>Variants.PYDOTPLUS</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

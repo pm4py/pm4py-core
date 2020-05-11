@@ -157,6 +157,38 @@
 </div>
 <div class="section" id="module-pm4py.algo.filtering.pandas.start_activities.start_activities_filter">
 <span id="pm4py-algo-filtering-pandas-start-activities-start-activities-filter-module"></span><h2>pm4py.algo.filtering.pandas.start_activities.start_activities_filter module<a class="headerlink" href="#module-pm4py.algo.filtering.pandas.start_activities.start_activities_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.CASE_ID_KEY">
+<code class="sig-name descname">CASE_ID_KEY</code><em class="property"> = 'case_id_glue'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.CASE_ID_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.DECREASING_FACTOR">
+<code class="sig-name descname">DECREASING_FACTOR</code><em class="property"> = 'decreasingFactor'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.DECREASING_FACTOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.GROUP_DATAFRAME">
+<code class="sig-name descname">GROUP_DATAFRAME</code><em class="property"> = 'grouped_dataframe'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.GROUP_DATAFRAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.POSITIVE">
+<code class="sig-name descname">POSITIVE</code><em class="property"> = 'positive'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.Parameters.POSITIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply">
 <code class="sig-prename descclassname">pm4py.algo.filtering.pandas.start_activities.start_activities_filter.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">values</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/start_activities/start_activities_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.start_activities.start_activities_filter.apply" title="Permalink to this definition">¶</a></dt>
@@ -168,9 +200,9 @@
 <li><p><strong>values</strong> – Values to filter on</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Case ID column in the dataframe
-activity_key -&gt; Column that represents the activity
-positive -&gt; Specifies if the filtered should be applied including traces (positive=True)
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>Parameters.CASE_ID_KEY -&gt; Case ID column in the dataframe
+Parameters.ACTIVITY_KEY -&gt; Column that represents the activity
+Parameters.POSITIVE -&gt; Specifies if the filtered should be applied including traces (positive=True)
 or excluding traces (positive=False)</p>
 </dd>
 </dl>
@@ -196,9 +228,9 @@ or excluding traces (positive=False)</p>
 <li><p><strong>df</strong> – Pandas dataframe</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Case ID column in the dataframe
-activity_key -&gt; Column that represents the activity
-decreasingFactor -&gt; Decreasing factor that should be passed to the algorithm</p>
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.CASE_ID_KEY -&gt; Case ID column in the dataframe
+Parameters.ACTIVITY_KEY -&gt; Column that represents the activity
+Parameters.DECREASING_FACTOR -&gt; Decreasing factor that should be passed to the algorithm</p>
 </dd>
 </dl>
 </li>

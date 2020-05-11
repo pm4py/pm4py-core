@@ -10,19 +10,20 @@ if __name__ == "__main__":
     sys.path.insert(0, parentdir)
     sys.path.insert(0, parentdir2)
     import time
-    from pm4py.objects.log.importer.xes import factory as xes_factory
-    from pm4py.algo.discovery.inductive import factory as inductive
-    from pm4py.algo.conformance.alignments import factory as align_factory
-    from pm4py.algo.discovery.alpha import factory as alpha
-    from pm4py.algo.discovery.heuristics import factory as heuristics_miner
+    #import pm4pycvxopt
+    from pm4py.objects.log.importer.xes import importer as xes_importer
+    from pm4py.algo.discovery.inductive import algorithm as inductive
+    from pm4py.algo.conformance.alignments import algorithm as align_algorithm
+    from pm4py.algo.discovery.alpha import algorithm as alpha
+    from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     from pm4py.objects.petri import check_soundness
-    from pm4py.evaluation.replay_fitness import factory as fitness_factory
-    from pm4py.evaluation.precision import factory as precision_factory
-    from pm4py.evaluation.simplicity import factory as simplicity_factory
-    from pm4py.evaluation.generalization import factory as generalization_factory
+    from pm4py.evaluation.replay_fitness import evaluator as fitness_evaluator
+    from pm4py.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.evaluation.simplicity import evaluator as simplicity_evaluator
+    from pm4py.evaluation.generalization import evaluator as generalization_evaluator
     from pm4py.objects.log.util import insert_classifier
     from pm4py.objects.petri.exporter import pnml as pnml_exporter
-    from pm4py.visualization.petrinet import factory as petri_vis_factory
+    from pm4py.visualization.petrinet import visualizer as petri_vis
     from pm4py.visualization.common.save import save as vis_save
     from pm4py import util as pmutil
 
@@ -41,13 +42,14 @@ if __name__ == "__main__":
 
         return get_elonged_string(stru)
 
+
     ENABLE_VISUALIZATIONS = False
     ENABLE_VISUALIZATIONS_INDUCTIVE = False
     ENABLE_ALIGNMENTS = False
     ENABLE_PRECISION = False
     ENABLE_PETRI_EXPORTING = False
     CHECK_SOUNDNESS = False
-    align_factory.DEFAULT_VARIANT = align_factory.VERSION_DIJKSTRA_NO_HEURISTICS
+    align_algorithm.DEFAULT_VARIANT = align_algorithm.Variants.VERSION_STATE_EQUATION_A_STAR
     logFolder = os.path.join("..", "compressed_input_data")
     pnmlFolder = "pnml_folder"
     pngFolder = "png_folder"
@@ -140,19 +142,13 @@ if __name__ == "__main__":
     for logName in os.listdir(logFolder):
         if "." in logName:
             logNamePrefix = logName.split(".")[0]
-            logExtension = logName[len(logNamePrefix)+1:]
+            logExtension = logName[len(logNamePrefix) + 1:]
 
             print("\nelaborating " + logName)
 
             logPath = os.path.join(logFolder, logName)
             if "xes" in logExtension:
-                log = xes_factory.import_log(logPath, variant="iterparse")
-            else:
-                from pm4py.objects.log.importer.parquet import factory as parquet_importer
-                from pm4py.objects.conversion.log import factory as log_conv_factory
-                dataframe = parquet_importer.apply(logPath)
-                log = log_conv_factory.apply(dataframe)
-                del dataframe
+                log = xes_importer.apply(logPath, variant=xes_importer.Variants.ITERPARSE)
 
             log, classifier_key = insert_classifier.search_act_class_attr(log, force_activity_transition_insertion=True)
 
@@ -185,7 +181,8 @@ if __name__ == "__main__":
             t2 = time.time()
             print("time interlapsed for calculating Heuristics Model", (t2 - t1))
             if CHECK_SOUNDNESS:
-                print("heuristics is_sound_wfnet", check_soundness.check_petri_wfnet_and_soundness(heu_model, debug=True))
+                print("heuristics is_sound_wfnet",
+                      check_soundness.check_petri_wfnet_and_soundness(heu_model, debug=True))
 
             t1 = time.time()
             tree = inductive.apply_tree(log, parameters=parameters_discovery)
@@ -205,89 +202,101 @@ if __name__ == "__main__":
                 print("inductive is_sound_wfnet",
                       check_soundness.check_petri_wfnet_and_soundness(inductive_model, debug=True))
 
-            parameters = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key,
-                          pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: activity_key, "format": "png"}
+            parameters = {fitness_evaluator.Variants.TOKEN_BASED.value.Parameters.ACTIVITY_KEY: activity_key,
+                          fitness_evaluator.Variants.TOKEN_BASED.value.Parameters.ATTRIBUTE_KEY: activity_key, "format": "png"}
 
             t1 = time.time()
             fitness_token_alpha[logName] = \
-                fitness_factory.apply(log, alpha_model, alpha_initial_marking, alpha_final_marking,
-                                      parameters=parameters, variant="token_replay")[
+                fitness_evaluator.apply(log, alpha_model, alpha_initial_marking, alpha_final_marking,
+                                        parameters=parameters, variant=fitness_evaluator.Variants.TOKEN_BASED)[
                     'perc_fit_traces']
-            print(str(time.time())+" fitness_token_alpha for " + logName + " succeeded! "+str(fitness_token_alpha[logName]))
+            print(str(time.time()) + " fitness_token_alpha for " + logName + " succeeded! " + str(
+                fitness_token_alpha[logName]))
             t2 = time.time()
             times_tokenreplay_alpha[logName] = t2 - t1
 
             t1 = time.time()
             fitness_token_imdf[logName] = \
-                fitness_factory.apply(log, inductive_model, inductive_im, inductive_fm, parameters=parameters,
-                                      variant="token_replay")[
+                fitness_evaluator.apply(log, inductive_model, inductive_im, inductive_fm, parameters=parameters,
+                                        variant=fitness_evaluator.Variants.TOKEN_BASED)[
                     'perc_fit_traces']
-            print(str(time.time())+" fitness_token_inductive for " + logName + " succeeded! "+str(fitness_token_imdf[logName]))
+            print(str(time.time()) + " fitness_token_inductive for " + logName + " succeeded! " + str(
+                fitness_token_imdf[logName]))
             t2 = time.time()
             times_tokenreplay_imdf[logName] = t2 - t1
 
             if ENABLE_ALIGNMENTS:
                 t1 = time.time()
                 fitness_align_imdf[logName] = \
-                    fitness_factory.apply(log, inductive_model, inductive_im, inductive_fm,
-                                          variant="alignments", parameters=parameters)['percFitTraces']
-                print(str(time.time())+" fitness_token_align for " + logName + " succeeded! "+str(fitness_align_imdf[logName]))
+                    fitness_evaluator.apply(log, inductive_model, inductive_im, inductive_fm,
+                                            variant=fitness_evaluator.Variants.ALIGNMENT_BASED, parameters=parameters)[
+                        'percFitTraces']
+                print(str(time.time()) + " fitness_token_align for " + logName + " succeeded! " + str(
+                    fitness_align_imdf[logName]))
                 t2 = time.time()
                 times_alignments_imdf[logName] = t2 - t1
 
             if ENABLE_PRECISION:
-                precision_alpha[logName] = precision_factory.apply(log, alpha_model, alpha_initial_marking,
-                                                                   alpha_final_marking, variant="etconformance", parameters=parameters)
+                precision_alpha[logName] = precision_evaluator.apply(log, alpha_model, alpha_initial_marking,
+                                                                     alpha_final_marking,
+                                                                     variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN,
+                                                                     parameters=parameters)
             else:
                 precision_alpha[logName] = 0.0
-            print(str(time.time())+" precision_alpha for " + logName + " succeeded! "+str(precision_alpha[logName]))
+            print(str(time.time()) + " precision_alpha for " + logName + " succeeded! " + str(precision_alpha[logName]))
 
-            generalization_alpha[logName] = generalization_factory.apply(log, alpha_model, alpha_initial_marking,
-                                                                         alpha_final_marking, parameters=parameters)
-            print(str(time.time())+" generalization_alpha for " + logName + " succeeded! "+str(generalization_alpha[logName]))
-            simplicity_alpha[logName] = simplicity_factory.apply(alpha_model, parameters=parameters)
-            print(str(time.time())+" simplicity_alpha for " + logName + " succeeded! "+str(simplicity_alpha[logName]))
+            generalization_alpha[logName] = generalization_evaluator.apply(log, alpha_model, alpha_initial_marking,
+                                                                           alpha_final_marking, parameters=parameters)
+            print(str(time.time()) + " generalization_alpha for " + logName + " succeeded! " + str(
+                generalization_alpha[logName]))
+            simplicity_alpha[logName] = simplicity_evaluator.apply(alpha_model, parameters=parameters)
+            print(
+                str(time.time()) + " simplicity_alpha for " + logName + " succeeded! " + str(simplicity_alpha[logName]))
 
             if ENABLE_PRECISION:
-                precision_imdf[logName] = precision_factory.apply(log, inductive_model, inductive_im,
-                                                              inductive_fm, variant="etconformance", parameters=parameters)
+                precision_imdf[logName] = precision_evaluator.apply(log, inductive_model, inductive_im,
+                                                                    inductive_fm, variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN,
+                                                                    parameters=parameters)
             else:
                 precision_imdf[logName] = 0.0
-            print(str(time.time())+" precision_imdf for " + logName + " succeeded! "+str(precision_imdf[logName]))
+            print(str(time.time()) + " precision_imdf for " + logName + " succeeded! " + str(precision_imdf[logName]))
 
-            generalization_imdf[logName] = generalization_factory.apply(log, inductive_model, inductive_im,
-                                                                        inductive_fm, parameters=parameters)
-            print(str(time.time())+" generalization_imdf for " + logName + " succeeded! "+str(generalization_imdf[logName]))
-            simplicity_imdf[logName] = simplicity_factory.apply(inductive_model, parameters=parameters)
-            print(str(time.time())+" simplicity_imdf for " + logName + " succeeded! "+str(simplicity_imdf[logName]))
+            generalization_imdf[logName] = generalization_evaluator.apply(log, inductive_model, inductive_im,
+                                                                          inductive_fm, parameters=parameters)
+            print(str(time.time()) + " generalization_imdf for " + logName + " succeeded! " + str(
+                generalization_imdf[logName]))
+            simplicity_imdf[logName] = simplicity_evaluator.apply(inductive_model, parameters=parameters)
+            print(str(time.time()) + " simplicity_imdf for " + logName + " succeeded! " + str(simplicity_imdf[logName]))
 
             write_report()
 
             if ENABLE_VISUALIZATIONS:
                 try:
-                    alpha_vis = petri_vis_factory.apply(alpha_model, alpha_initial_marking, alpha_final_marking, log=log,
-                                                        parameters=parameters, variant="frequency")
+                    alpha_vis = petri_vis.apply(alpha_model, alpha_initial_marking, alpha_final_marking, log=log,
+                                                parameters=parameters, variant=petri_vis.Variants.FREQUENCY)
                     vis_save(alpha_vis, os.path.join(pngFolder, logNamePrefix + "_alpha.png"))
-                    print(str(time.time())+" alpha visualization for "+logName+" succeeded!")
+                    print(str(time.time()) + " alpha visualization for " + logName + " succeeded!")
                 except:
-                    print(str(time.time())+" alpha visualization for "+logName+" failed!")
+                    print(str(time.time()) + " alpha visualization for " + logName + " failed!")
                     traceback.print_exc()
 
                 try:
-                    heuristics_vis = petri_vis_factory.apply(heu_model, heu_initial_marking, heu_final_marking,
-                                                             log=log, parameters=parameters, variant="frequency")
+                    heuristics_vis = petri_vis.apply(heu_model, heu_initial_marking, heu_final_marking,
+                                                     log=log, parameters=parameters,
+                                                     variant=petri_vis.FREQUENCY_DECORATION)
                     vis_save(heuristics_vis, os.path.join(pngFolder, logNamePrefix + "_heuristics.png"))
-                    print(str(time.time())+" heuristics visualization for "+logName+" succeeded!")
+                    print(str(time.time()) + " heuristics visualization for " + logName + " succeeded!")
                 except:
-                    print(str(time.time())+" heuristics visualization for " + logName + " failed!")
+                    print(str(time.time()) + " heuristics visualization for " + logName + " failed!")
                     traceback.print_exc()
 
             if ENABLE_VISUALIZATIONS or ENABLE_VISUALIZATIONS_INDUCTIVE:
                 try:
-                    inductive_vis = petri_vis_factory.apply(inductive_model, inductive_im, inductive_fm,
-                                                            log=log, parameters=parameters, variant="frequency")
+                    inductive_vis = petri_vis.apply(inductive_model, inductive_im, inductive_fm,
+                                                    log=log, parameters=parameters,
+                                                    variant=petri_vis.PERFORMANCE_DECORATION)
                     vis_save(inductive_vis, os.path.join(pngFolder, logNamePrefix + "_inductive.png"))
-                    print(str(time.time())+" inductive visualization for "+logName+" succeeded!")
+                    print(str(time.time()) + " inductive visualization for " + logName + " succeeded!")
                 except:
-                    print(str(time.time())+" inductive visualization for " + logName + " failed!")
+                    print(str(time.time()) + " inductive visualization for " + logName + " failed!")
                     traceback.print_exc()

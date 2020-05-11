@@ -163,13 +163,22 @@
 <code class="sig-prename descclassname">pm4py.statistics.performance_spectrum.versions.dataframe.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">dataframe</em>, <em class="sig-param">list_activities</em>, <em class="sig-param">sample_size</em>, <em class="sig-param">parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/performance_spectrum/versions/dataframe.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.performance_spectrum.versions.dataframe.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the performance spectrum provided a dataframe
 and a list of activities</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dd class="field-odd"><ul>
 <li><p><strong>dataframe</strong> – Dataframe</p></li>
 <li><p><strong>list_activities</strong> – List of activities interesting for the performance spectrum (at least two)</p></li>
 <li><p><strong>sample_size</strong> – Size of the sample</p></li>
-<li><p><strong>parameters</strong> – Parameters of the algorithm, including the activity key and the timestamp key</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm,  including:</dt><dd><ul class="simple">
+<li><p>Parameters.ACTIVITY_KEY</p></li>
+<li><p>Parameters.TIMESTAMP_KEY</p></li>
+<li><p>Parameters.CASE_ID_KEY</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -189,13 +198,21 @@ and a list of activities</p>
 <code class="sig-prename descclassname">pm4py.statistics.performance_spectrum.versions.log.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">list_activities</em>, <em class="sig-param">sample_size</em>, <em class="sig-param">parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/statistics/performance_spectrum/versions/log.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.statistics.performance_spectrum.versions.log.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the performance spectrum provided a log
 and a list of activities</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dd class="field-odd"><ul>
 <li><p><strong>log</strong> – Log</p></li>
 <li><p><strong>list_activities</strong> – List of activities interesting for the performance spectrum (at least two)</p></li>
 <li><p><strong>sample_size</strong> – Size of the sample</p></li>
-<li><p><strong>parameters</strong> – Parameters of the algorithm, including the activity key and the timestamp key</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Parameters of the algorithm,  including:</dt><dd><ul class="simple">
+<li><p>Parameters.ACTIVITY_KEY</p></li>
+<li><p>Parameters.TIMESTAMP_KEY</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

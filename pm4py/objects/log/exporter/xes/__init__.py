@@ -1,1 +1,1 @@
-from pm4py.objects.log.exporter.xes import factory, exporter, versions
+from pm4py.objects.log.exporter.xes import exporter, versions

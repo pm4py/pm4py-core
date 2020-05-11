@@ -2,13 +2,15 @@ import unittest
 import os
 
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.objects.log.adapters.pandas import csv_import_adapter
+import pandas as pd
+from pm4py.objects.log.util import dataframe_utils
 from pm4py.algo.enhancement.roles import algorithm as role_mining
 
 
 class RoleDetectionTest(unittest.TestCase):
     def test_role_running_csv(self):
-        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
         roles = role_mining.apply(df)
 
     def test_role_running_xes(self):
@@ -16,7 +18,8 @@ class RoleDetectionTest(unittest.TestCase):
         roles = role_mining.apply(log)
 
     def test_role_receipt_csv(self):
-        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "receipt.csv"))
+        df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
         roles = role_mining.apply(df)
 
     def test_role_receipt_xes(self):

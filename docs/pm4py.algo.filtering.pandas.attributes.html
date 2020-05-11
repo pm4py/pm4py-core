@@ -157,6 +157,58 @@
 </div>
 <div class="section" id="module-pm4py.algo.filtering.pandas.attributes.attributes_filter">
 <span id="pm4py-algo-filtering-pandas-attributes-attributes-filter-module"></span><h2>pm4py.algo.filtering.pandas.attributes.attributes_filter module<a class="headerlink" href="#module-pm4py.algo.filtering.pandas.attributes.attributes_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.ATTRIBUTE_KEY">
+<code class="sig-name descname">ATTRIBUTE_KEY</code><em class="property"> = 'pm4py:param:attribute_key'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.ATTRIBUTE_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.CASE_ID_KEY">
+<code class="sig-name descname">CASE_ID_KEY</code><em class="property"> = 'case_id_glue'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.CASE_ID_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.DECREASING_FACTOR">
+<code class="sig-name descname">DECREASING_FACTOR</code><em class="property"> = 'decreasingFactor'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.DECREASING_FACTOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.POSITIVE">
+<code class="sig-name descname">POSITIVE</code><em class="property"> = 'positive'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.POSITIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.STREAM_FILTER_KEY1">
+<code class="sig-name descname">STREAM_FILTER_KEY1</code><em class="property"> = 'stream_filter_key1'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.STREAM_FILTER_KEY1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.STREAM_FILTER_KEY2">
+<code class="sig-name descname">STREAM_FILTER_KEY2</code><em class="property"> = 'stream_filter_key2'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.STREAM_FILTER_KEY2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.STREAM_FILTER_VALUE1">
+<code class="sig-name descname">STREAM_FILTER_VALUE1</code><em class="property"> = 'stream_filter_value1'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.STREAM_FILTER_VALUE1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.STREAM_FILTER_VALUE2">
+<code class="sig-name descname">STREAM_FILTER_VALUE2</code><em class="property"> = 'stream_filter_value2'</em><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.Parameters.STREAM_FILTER_VALUE2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.filtering.pandas.attributes.attributes_filter.apply">
 <code class="sig-prename descclassname">pm4py.algo.filtering.pandas.attributes.attributes_filter.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">values</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/pandas/attributes/attributes_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.pandas.attributes.attributes_filter.apply" title="Permalink to this definition">¶</a></dt>
@@ -168,9 +220,9 @@
 <li><p><strong>values</strong> – Values to filter on</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>case_id_glue -&gt; Case ID column in the dataframe
-attribute_key -&gt; Attribute we want to filter
-positive -&gt; Specifies if the filter should be applied including traces (positive=True) or
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>Parameters.CASE_ID_KEY -&gt; Case ID column in the dataframe
+Parameters.ATTRIBUTE_KEY -&gt; Attribute we want to filter
+Parameters.POSITIVE -&gt; Specifies if the filter should be applied including traces (positive=True) or
 excluding traces (positive=False)</p>
 </dd>
 </dl>
@@ -196,8 +248,8 @@ excluding traces (positive=False)</p>
 <li><p><strong>df</strong> – Dataframe</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>activity_key -&gt; Column containing the activity
-decreasingFactor -&gt; Decreasing factor that should be passed to the algorithm</p>
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>Parameters.ACTIVITY_KEY -&gt; Column containing the activity
+Parameters.DECREASING_FACTOR -&gt; Decreasing factor that should be passed to the algorithm</p>
 </dd>
 </dl>
 </li>
@@ -223,8 +275,8 @@ decreasingFactor -&gt; Decreasing factor that should be passed to the algorithm<
 <li><p><strong>values</strong> – Values to filter on</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm, including:</dt><dd><p>attribute_key -&gt; Attribute we want to filter
-positive -&gt; Specifies if the filter should be applied including traces (positive=True) or
+<dt>Possible parameters of the algorithm, including:</dt><dd><p>Parameters.ATTRIBUTE_KEY -&gt; Attribute we want to filter
+Parameters.POSITIVE -&gt; Specifies if the filter should be applied including traces (positive=True) or
 excluding traces (positive=False)</p>
 </dd>
 </dl>
@@ -252,8 +304,8 @@ excluding traces (positive=False)</p>
 <li><p><strong>int2</strong> – Upper bound of the interval</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm:</dt><dd><p>PARAMETER_CONSTANT_ATTRIBUTE_KEY =&gt; indicates which attribute to filter
-positive =&gt; keep or remove traces with such events?</p>
+<dt>Possible parameters of the algorithm:</dt><dd><p>Parameters.ATTRIBUTE_KEY =&gt; indicates which attribute to filter
+Parameters.POSITIVE =&gt; keep or remove traces with such events?</p>
 </dd>
 </dl>
 </li>
@@ -280,7 +332,7 @@ positive =&gt; keep or remove traces with such events?</p>
 <li><p><strong>int2</strong> – Upper bound of the interval</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Possible parameters of the algorithm:</dt><dd><p>PARAMETER_CONSTANT_ATTRIBUTE_KEY =&gt; indicates which attribute to filter
+<dt>Possible parameters of the algorithm:</dt><dd><p>Parameters.ATTRIBUTE_KEY =&gt; indicates which attribute to filter
 positive =&gt; keep or remove events?</p>
 </dd>
 </dl>

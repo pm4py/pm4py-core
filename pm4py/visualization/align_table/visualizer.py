@@ -1,13 +1,18 @@
 from pm4py.visualization.align_table.versions import classic
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
-
-CLASSIC = "classic"
-
-VERSIONS = {CLASSIC: classic.apply}
+from enum import Enum
+from pm4py.util import exec_utils
 
 
-def apply(log, aligned_traces, variant=CLASSIC, parameters=None):
+class Variants(Enum):
+    CLASSIC = classic
+
+
+DEFAULT_VARIANT = Variants.CLASSIC
+
+
+def apply(log, aligned_traces, variant=DEFAULT_VARIANT, parameters=None):
     """
     Gets the alignment table visualization from the alignments output
 
@@ -18,7 +23,8 @@ def apply(log, aligned_traces, variant=CLASSIC, parameters=None):
     aligned_traces
         Aligned traces
     variant
-        Variant of the algorithm to apply, possible values: classic
+        Variant of the algorithm to apply, possible values:
+            - Variants.CLASSIC
     parameters
         Parameters of the algorithm
 
@@ -27,7 +33,7 @@ def apply(log, aligned_traces, variant=CLASSIC, parameters=None):
     gviz
         Graphviz object
     """
-    return VERSIONS[variant](log, aligned_traces, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(log, aligned_traces, parameters=parameters)
 
 
 def save(gviz, output_file_path):

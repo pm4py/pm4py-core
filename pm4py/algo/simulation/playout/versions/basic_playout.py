@@ -6,9 +6,11 @@ from pm4py.objects.petri import semantics
 
 import time
 import datetime
+import deprecation
 
-
-def apply_playout(net, initial_marking, final_marking=None, no_traces=100, max_trace_length=100):
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='pm4py.algo.simulation is deprecated; use pm4py.simulation entrypoint instead')
+def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100):
     """
     Do the playout of a Petrinet generating a log
 
@@ -18,8 +20,6 @@ def apply_playout(net, initial_marking, final_marking=None, no_traces=100, max_t
         Petri net to play-out
     initial_marking
         Initial marking of the Petri net
-    final_marking
-        (If provided) Final marking of the Petri net
     no_traces
         Number of traces to generate
     max_trace_length
@@ -32,9 +32,7 @@ def apply_playout(net, initial_marking, final_marking=None, no_traces=100, max_t
         trace = log_instance.Trace()
         trace.attributes["concept:name"] = str(i)
         marking = copy(initial_marking)
-        while True:
-            if final_marking is not None and marking == final_marking:
-                break
+        for j in range(100000):
             if not semantics.enabled_transitions(net, marking):
                 break
             all_enabled_trans = semantics.enabled_transitions(net, marking)
@@ -56,7 +54,7 @@ def apply_playout(net, initial_marking, final_marking=None, no_traces=100, max_t
     return log
 
 
-def apply(net, initial_marking, final_marking=None, parameters=None):
+def apply(net, initial_marking, parameters=None):
     """
     Do the playout of a Petrinet generating a log
 
@@ -66,8 +64,6 @@ def apply(net, initial_marking, final_marking=None, parameters=None):
         Petri net to play-out
     initial_marking
         Initial marking of the Petri net
-    final_marking
-        (If provided) Final marking of the Petri net
     parameters
         Parameters of the algorithm:
             noTraces -> Number of traces of the log to generate
@@ -82,5 +78,4 @@ def apply(net, initial_marking, final_marking=None, parameters=None):
     if "maxTraceLength" in parameters:
         max_trace_length = parameters["maxTraceLength"]
 
-    return apply_playout(net, initial_marking, final_marking=final_marking, max_trace_length=max_trace_length,
-                         no_traces=no_traces)
+    return apply_playout(net, initial_marking, max_trace_length=max_trace_length, no_traces=no_traces)

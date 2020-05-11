@@ -173,15 +173,40 @@
 </div>
 <div class="section" id="module-pm4py.algo.discovery.causal.algorithm">
 <span id="pm4py-algo-discovery-causal-algorithm-module"></span><h2>pm4py.algo.discovery.causal.algorithm module<a class="headerlink" href="#module-pm4py.algo.discovery.causal.algorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.discovery.causal.algorithm.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.discovery.causal.algorithm.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/algo/discovery/causal/algorithm.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.causal.algorithm.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.causal.algorithm.Variants.CAUSAL_ALPHA">
+<code class="sig-name descname">CAUSAL_ALPHA</code><em class="property"> = &lt;module 'pm4py.algo.discovery.causal.versions.alpha' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\causal\\versions\\alpha.py'&gt;</em><a class="headerlink" href="#pm4py.algo.discovery.causal.algorithm.Variants.CAUSAL_ALPHA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.discovery.causal.algorithm.Variants.CAUSAL_HEURISTIC">
+<code class="sig-name descname">CAUSAL_HEURISTIC</code><em class="property"> = &lt;module 'pm4py.algo.discovery.causal.versions.heuristic' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\causal\\versions\\heuristic.py'&gt;</em><a class="headerlink" href="#pm4py.algo.discovery.causal.algorithm.Variants.CAUSAL_HEURISTIC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.discovery.causal.algorithm.apply">
-<code class="sig-prename descclassname">pm4py.algo.discovery.causal.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">variant='alpha'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/causal/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.causal.algorithm.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.discovery.causal.algorithm.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">variant=&lt;Variants.CAUSAL_ALPHA: &lt;module 'pm4py.algo.discovery.causal.versions.alpha' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\algo\\discovery\\causal\\versions\\alpha.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/discovery/causal/algorithm.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.discovery.causal.algorithm.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the causal relation on the basis of a given directly follows graph.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dd class="field-odd"><ul>
 <li><p><strong>dfg</strong> – Directly follows graph</p></li>
-<li><p><strong>variant</strong> – Variant of the algorithm to use (classic)</p></li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use:</dt><dd><ul class="simple">
+<li><p>Variants.CAUSAL_ALPHA</p></li>
+<li><p>Variants.CAUSAL_HEURISTIC</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
