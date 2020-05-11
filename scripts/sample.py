@@ -1,8 +1,14 @@
-from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+from pm4py.objects.log.importer.xes import importer
+from pm4py.visualization.petrinet import visualizer
 
-log = xes_importer.apply('../tests/input_data/running-example.xes')
-print(log[0])
-df = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
-print(df)
 
+def sample():
+    log = importer.apply('../tests/input_data/running-example.xes')
+    net, initial_marking, final_marking = alpha_miner.apply(log)
+    gviz = visualizer.apply(net, initial_marking, final_marking)
+    visualizer.view(gviz)
+
+
+if __name__ == '__main__':
+    sample()
