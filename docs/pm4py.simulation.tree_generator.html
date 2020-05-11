@@ -207,23 +207,40 @@ prob_leaf -&gt; Probability to get a leaf</p>
 </div>
 <div class="section" id="module-pm4py.simulation.tree_generator.simulator">
 <span id="pm4py-simulation-tree-generator-simulator-module"></span><h2>pm4py.simulation.tree_generator.simulator module<a class="headerlink" href="#module-pm4py.simulation.tree_generator.simulator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.simulation.tree_generator.simulator.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.simulation.tree_generator.simulator.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/simulation/tree_generator/simulator.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.tree_generator.simulator.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.simulator.Variants.BASIC">
+<code class="sig-name descname">BASIC</code><em class="property"> = &lt;module 'pm4py.simulation.tree_generator.versions.basic' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\simulation\\tree_generator\\versions\\basic.py'&gt;</em><a class="headerlink" href="#pm4py.simulation.tree_generator.simulator.Variants.BASIC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.simulation.tree_generator.simulator.Variants.PTANDLOGGENERATOR">
+<code class="sig-name descname">PTANDLOGGENERATOR</code><em class="property"> = &lt;module 'pm4py.simulation.tree_generator.versions.ptandloggenerator' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\simulation\\tree_generator\\versions\\ptandloggenerator.py'&gt;</em><a class="headerlink" href="#pm4py.simulation.tree_generator.simulator.Variants.PTANDLOGGENERATOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.simulation.tree_generator.simulator.apply">
-<code class="sig-prename descclassname">pm4py.simulation.tree_generator.simulator.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">variant='ptandloggenerator'</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/simulation/tree_generator/simulator.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.tree_generator.simulator.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.simulation.tree_generator.simulator.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">variant=&lt;Variants.PTANDLOGGENERATOR: &lt;module 'pm4py.simulation.tree_generator.versions.ptandloggenerator' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\simulation\\tree_generator\\versions\\ptandloggenerator.py'&gt;&gt;</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/simulation/tree_generator/simulator.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.tree_generator.simulator.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a process tree</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
-<li><p><strong>variant</strong> – Variant of the algorithm. Admitted values: basic</p></li>
-<li><p><strong>parameters</strong> –</p>
+<li><p><strong>variant</strong> –</p>
 <dl class="simple">
-<dt>Paramters of the algorithm, including:</dt><dd><p>rec_depth -&gt; current recursion depth
-min_rec_depth -&gt; minimum recursion depth
-max_rec_depth -&gt; maximum recursion depth
-prob_leaf -&gt; Probability to get a leaf</p>
+<dt>Variant of the algorithm. Admitted values:</dt><dd><ul class="simple">
+<li><p>Variants.BASIC</p></li>
+<li><p>Variants.PTANDLOGGENERATOR</p></li>
+</ul>
 </dd>
 </dl>
 </li>
+<li><p><strong>parameters</strong> – Specific parameters of the algorithm</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

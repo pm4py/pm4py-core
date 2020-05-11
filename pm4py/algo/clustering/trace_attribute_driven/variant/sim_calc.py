@@ -3,6 +3,8 @@ import numpy as np
 from pm4py.algo.clustering.trace_attribute_driven.variant import act_dist_calc, suc_dist_calc
 from pm4py.algo.clustering.trace_attribute_driven.util import filter_subsets
 from scipy.spatial.distance import pdist
+from pm4py.util import exec_utils
+from pm4py.algo.clustering.trace_attribute_driven.parameters import Parameters
 
 
 def inner_prod_calc(df):
@@ -28,7 +30,7 @@ def dist_calc(var_list_1, var_list_2, log1, log2, freq_thres, num, alpha, parame
     if parameters is None:
         parameters = {}
 
-    single = parameters["single"] if "single" in parameters else False
+    single = exec_utils.get_param_value(Parameters.SINGLE, parameters, False)
 
     if len(var_list_1) >= len(var_list_2):
         max_len = len(var_list_1)
@@ -102,6 +104,5 @@ def dist_calc(var_list_1, var_list_2, log1, log2, freq_thres, num, alpha, parame
         vmin_vec = (var_count_min.values).reshape(1, -1)
         vec_sum = np.sum(np.dot(vmax_vec, vmin_vec))
         dist = (np.sum(col_sum_act) * alpha + np.sum(col_sum_suc) * (1 - alpha)) / vec_sum
-
 
     return dist

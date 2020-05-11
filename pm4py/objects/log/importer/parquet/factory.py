@@ -36,8 +36,9 @@ except:
 
 COLUMNS = "columns"
 
+
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use importer module instead.')
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def apply(path, parameters=None, variant=DEFAULT_VARIANT):
     """
     Import a Parquet file
@@ -77,8 +78,9 @@ def apply(path, parameters=None, variant=DEFAULT_VARIANT):
 
     return df
 
+
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use importer module instead.')
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def import_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
     """
     Import a Parquet file
@@ -103,8 +105,9 @@ def import_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
 
     return VERSIONS_LOG[variant](path, parameters=parameters)
 
+
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use importer module instead.')
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def import_minimal_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
     """
     Import a Parquet file (as a minimal log with only the essential columns)
@@ -131,8 +134,9 @@ def import_minimal_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
 
     return VERSIONS_LOG[variant](path, parameters=parameters)
 
+
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use importer module instead.')
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def import_df(path, parameters=None, variant=DEFAULT_VARIANT):
     """
     Import a Parquet file
@@ -154,8 +158,9 @@ def import_df(path, parameters=None, variant=DEFAULT_VARIANT):
     """
     return apply(path, variant=variant, parameters=parameters)
 
+
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use importer module instead.')
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def get_list_parquet(path, parameters=None):
     """
     Gets the list of Parquets contained into a dataset

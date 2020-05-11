@@ -1,40 +1,62 @@
 import os
 import pandas as pd
-from pm4py.util import constants
+
+from pm4py.util import constants, exec_utils
 from pm4py.util import xes_constants as xes
+from enum import Enum
 
-PYARROW = "pyarrow"
-FASTPARQUET = "fastparquet"
+import deprecation
+import traceback
 
-VERSIONS = {}
-VERSIONS_LOG = {}
+
+class Variants(Enum):
+    pass
+
+
+VERSIONS = set()
+VERSIONS_LOG = set()
 
 DEFAULT_VARIANT = None
 DEFAULT_VARIANT_LOG = None
 
 try:
     from pm4py.objects.log.importer.parquet.versions import fastparquet
-    VERSIONS[FASTPARQUET] = fastparquet.apply
 
-    DEFAULT_VARIANT = FASTPARQUET
+    Variants.FASTPARQUET = fastparquet
+    VERSIONS.add(Variants.FASTPARQUET)
+
+    DEFAULT_VARIANT = Variants.FASTPARQUET
 except:
     # Fastparquet is not installed
+    # traceback.print_exc()
     pass
 
 try:
     from pm4py.objects.log.importer.parquet.versions import pyarrow
-    VERSIONS[PYARROW] = pyarrow.apply
-    VERSIONS_LOG[PYARROW] = pyarrow.import_log
 
-    DEFAULT_VARIANT = PYARROW
-    DEFAULT_VARIANT_LOG = PYARROW
+    Variants.PYARROW = pyarrow
+    VERSIONS.add(Variants.PYARROW)
+    VERSIONS_LOG.add(Variants.PYARROW)
+
+    DEFAULT_VARIANT = Variants.PYARROW
+    DEFAULT_VARIANT_LOG = Variants.PYARROW
 except:
     # Pyarrow is not installed
+    # traceback.print_exc()
     pass
 
-COLUMNS = "columns"
+
+class Parameters(Enum):
+    COLUMNS = "columns"
 
 
+COLUMNS = Parameters.COLUMNS.value
+PYARROW = Variants.PYARROW
+FASTPARQUET = Variants.FASTPARQUET
+
+
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def apply(path, parameters=None, variant=DEFAULT_VARIANT):
     """
     Import a Parquet file
@@ -45,9 +67,11 @@ def apply(path, parameters=None, variant=DEFAULT_VARIANT):
         Path of the file to import
     parameters
         Parameters of the algorithm, possible values:
-            columns -> columns to import from the Parquet file
+            Parameters.COLUMNS -> columns to import from the Parquet file
     variant
-        Variant of the algorithm, possible values: pyarrow
+        Variant of the algorithm, possible values:
+            - Variants.PYARROW
+            - Variants.FASTPARQUET
 
     Returns
     -------------
@@ -66,15 +90,17 @@ def apply(path, parameters=None, variant=DEFAULT_VARIANT):
         all_parquets = get_list_parquet(path, parameters=parameters)
         dataframes = []
         for file in all_parquets:
-            dataframes.append(VERSIONS[variant](file, parameters=parameters))
+            dataframes.append(exec_utils.get_variant(variant).apply(file, parameters=parameters))
         df = pd.concat(dataframes)
         df = df.sort_values([case_id_key, timestamp_key])
     else:
-        df = VERSIONS[variant](path, parameters=parameters)
+        df = exec_utils.get_variant(variant).apply(path, parameters=parameters)
 
     return df
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def import_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
     """
     Import a Parquet file
@@ -85,9 +111,10 @@ def import_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
         Path of the file to import
     parameters
         Parameters of the algorithm, possible values:
-            columns -> columns to import from the Parquet file
+            Parameters.COLUMNS -> columns to import from the Parquet file
     variant
-        Variant of the algorithm, possible values: pyarrow
+        Variant of the algorithm, possible values:
+            - Variants.PYARROW
 
     Returns
     -------------
@@ -97,9 +124,11 @@ def import_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
     if parameters is None:
         parameters = {}
 
-    return VERSIONS_LOG[variant](path, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(path, parameters=parameters)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def import_minimal_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
     """
     Import a Parquet file (as a minimal log with only the essential columns)
@@ -110,9 +139,10 @@ def import_minimal_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
         Path of the file to import
     parameters
         Parameters of the algorithm, possible values:
-            columns -> columns to import from the Parquet file
+            Parameters.COLUMNS -> columns to import from the Parquet file
     variant
-        Variant of the algorithm, possible values: pyarrow
+        Variant of the algorithm, possible values:
+            - Variants.PYARROW
 
     Returns
     -------------
@@ -124,9 +154,11 @@ def import_minimal_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
 
     parameters[COLUMNS] = [constants.CASE_CONCEPT_NAME, xes.DEFAULT_NAME_KEY, xes.DEFAULT_TIMESTAMP_KEY]
 
-    return VERSIONS_LOG[variant](path, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(path, parameters=parameters)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def import_df(path, parameters=None, variant=DEFAULT_VARIANT):
     """
     Import a Parquet file
@@ -137,9 +169,10 @@ def import_df(path, parameters=None, variant=DEFAULT_VARIANT):
         Path of the file to import
     parameters
         Parameters of the algorithm, possible values:
-            columns -> columns to import from the Parquet file
+            Parameters.COLUMNS -> columns to import from the Parquet file
     variant
-        Variant of the algorithm, possible values: pyarrow
+        Variant of the algorithm, possible values:
+            - Variants.PYARROW
 
     Returns
     -------------
@@ -149,6 +182,8 @@ def import_df(path, parameters=None, variant=DEFAULT_VARIANT):
     return apply(path, variant=variant, parameters=parameters)
 
 
+@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
+                        details='Please import the parquet to a pandas df, then convert it to an event log, if needed')
 def get_list_parquet(path, parameters=None):
     """
     Gets the list of Parquets contained into a dataset

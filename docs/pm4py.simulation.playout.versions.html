@@ -168,8 +168,8 @@
 <li><p><strong>initial_marking</strong> – Initial marking of the Petri net</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm:</dt><dd><p>noTraces -&gt; Number of traces of the log to generate
-maxTraceLength -&gt; Maximum trace length</p>
+<dt>Parameters of the algorithm:</dt><dd><p>Parameters.NO_TRACES -&gt; Number of traces of the log to generate
+Parameters.MAX_TRACE_LENGTH -&gt; Maximum trace length</p>
 </dd>
 </dl>
 </li>
@@ -180,7 +180,7 @@ maxTraceLength -&gt; Maximum trace length</p>
 
 <dl class="function">
 <dt id="pm4py.simulation.playout.versions.basic_playout.apply_playout">
-<code class="sig-prename descclassname">pm4py.simulation.playout.versions.basic_playout.</code><code class="sig-name descname">apply_playout</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">no_traces=100</em>, <em class="sig-param">max_trace_length=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/simulation/playout/versions/basic_playout.html#apply_playout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.playout.versions.basic_playout.apply_playout" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.simulation.playout.versions.basic_playout.</code><code class="sig-name descname">apply_playout</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">no_traces=100</em>, <em class="sig-param">max_trace_length=100</em>, <em class="sig-param">case_id_key='concept:name'</em>, <em class="sig-param">activity_key='concept:name'</em>, <em class="sig-param">timestamp_key='time:timestamp'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/simulation/playout/versions/basic_playout.html#apply_playout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.simulation.playout.versions.basic_playout.apply_playout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do the playout of a Petrinet generating a log</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -189,6 +189,9 @@ maxTraceLength -&gt; Maximum trace length</p>
 <li><p><strong>initial_marking</strong> – Initial marking of the Petri net</p></li>
 <li><p><strong>no_traces</strong> – Number of traces to generate</p></li>
 <li><p><strong>max_trace_length</strong> – Maximum number of events per trace (do break)</p></li>
+<li><p><strong>case_id_key</strong> – Trace attribute that is the case ID</p></li>
+<li><p><strong>activity_key</strong> – Event attribute that corresponds to the activity</p></li>
+<li><p><strong>timestamp_key</strong> – Event attribute that corresponds to the timestamp</p></li>
 </ul>
 </dd>
 </dl>

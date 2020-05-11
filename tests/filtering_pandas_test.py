@@ -8,7 +8,7 @@ from pm4py.algo.filtering.pandas.paths import paths_filter
 from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
 from pm4py.algo.filtering.pandas.variants import variants_filter
 from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
-from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.conversion.log import factory as log_conv_fact
 from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.algo.filtering.pandas.ltl import ltl_checker
 from tests.constants import INPUT_DATA_DIR
@@ -25,8 +25,8 @@ class DataframePrefilteringTest(unittest.TestCase):
         dataframe = case_filter.filter_on_ncases(dataframe, case_id_glue="case:concept:name")
         dataframe = csv_import_adapter.convert_timestamp_columns_in_df(dataframe)
         dataframe = dataframe.sort_values('time:timestamp')
-        event_log = log_conversion.apply(dataframe, variant=log_conversion.TO_EVENT_STREAM)
-        log = log_conversion.apply(event_log)
+        event_log = log_conv_fact.apply(dataframe, variant=log_conv_fact.TO_EVENT_STREAM)
+        log = log_conv_fact.apply(event_log)
         del log
 
     def test_autofiltering_dataframe(self):
@@ -55,8 +55,10 @@ class DataframePrefilteringTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         input_log = os.path.join(INPUT_DATA_DIR, "running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path_wo_timeconversion(input_log, sep=',')
-        df1 = attributes_filter.apply_events(dataframe, ["reject request"], parameters={"positive": True})
-        df2 = attributes_filter.apply_events(dataframe, ["reject request"], parameters={"positive": False})
+        df1 = attributes_filter.apply_events(dataframe, ["reject request"],
+                                             parameters={attributes_filter.Parameters.POSITIVE: True})
+        df2 = attributes_filter.apply_events(dataframe, ["reject request"],
+                                             parameters={attributes_filter.Parameters.POSITIVE: False})
         del df1
         del df2
 
@@ -66,9 +68,11 @@ class DataframePrefilteringTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         input_log = os.path.join(INPUT_DATA_DIR, "running-example.csv")
         dataframe = csv_import_adapter.import_dataframe_from_path(input_log, sep=',')
-        df3 = paths_filter.apply(dataframe, [("examine casually", "check ticket")], {"positive": False})
+        df3 = paths_filter.apply(dataframe, [("examine casually", "check ticket")],
+                                 {paths_filter.Parameters.POSITIVE: False})
         del df3
-        df3 = paths_filter.apply(dataframe, [("examine casually", "check ticket")], {"positive": True})
+        df3 = paths_filter.apply(dataframe, [("examine casually", "check ticket")],
+                                 {paths_filter.Parameters.POSITIVE: True})
         del df3
 
     def test_filtering_timeframe(self):
@@ -87,54 +91,58 @@ class DataframePrefilteringTest(unittest.TestCase):
     def test_AeventuallyB_pos(self):
         df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
         filt_A_ev_B_pos = ltl_checker.A_eventually_B(df, "check ticket", "pay compensation",
-                                                     parameters={"positive": True})
+                                                     parameters={ltl_checker.Parameters.POSITIVE: True})
 
     def test_AeventuallyB_neg(self):
         df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
         filt_A_ev_B_neg = ltl_checker.A_eventually_B(df, "check ticket", "pay compensation",
-                                                     parameters={"positive": False})
+                                                     parameters={ltl_checker.Parameters.POSITIVE: False})
 
     def test_AeventuallyBeventuallyC_pos(self):
         df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
         filt_A_ev_B_ev_C_pos = ltl_checker.A_eventually_B_eventually_C(df, "check ticket", "decide",
                                                                        "pay compensation",
-                                                                       parameters={"positive": True})
+                                                                       parameters={
+                                                                           ltl_checker.Parameters.POSITIVE: True})
 
     def test_AeventuallyBeventuallyC_neg(self):
         df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
         filt_A_ev_B_ev_C_neg = ltl_checker.A_eventually_B_eventually_C(df, "check ticket", "decide",
                                                                        "pay compensation",
-                                                                       parameters={"positive": False})
+                                                                       parameters={
+                                                                           ltl_checker.Parameters.POSITIVE: False})
 
     def test_AnextBnextC_pos(self):
         df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
         filt_A_next_B_next_C_pos = ltl_checker.A_next_B_next_C(df, "check ticket", "decide", "pay compensation",
-                                                               parameters={"positive": True})
+                                                               parameters={ltl_checker.Parameters.POSITIVE: True})
 
     def test_AnextBnextC_neg(self):
         df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
         filt_A_next_B_next_C_neg = ltl_checker.A_next_B_next_C(df, "check ticket", "decide", "pay compensation",
-                                                               parameters={"positive": False})
+                                                               parameters={ltl_checker.Parameters.POSITIVE: False})
 
     def test_fourEeyesPrinciple_pos(self):
         df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
         filt_foureyes_pos = ltl_checker.four_eyes_principle(df, "check ticket", "pay compensation",
-                                                            parameters={"positive": True})
+                                                            parameters={ltl_checker.Parameters.POSITIVE: True})
 
     def test_fourEeyesPrinciple_neg(self):
         df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
         filt_foureyes_neg = ltl_checker.four_eyes_principle(df, "check ticket", "pay compensation",
-                                                            parameters={"positive": False})
+                                                            parameters={ltl_checker.Parameters.POSITIVE: False})
 
     def test_attrValueDifferentPersons_pos(self):
         df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
         attr_value_different_persons_pos = ltl_checker.attr_value_different_persons(df, "check ticket",
-                                                                                    parameters={"positive": True})
+                                                                                    parameters={
+                                                                                        ltl_checker.Parameters.POSITIVE: True})
 
     def test_attrValueDifferentPersons_neg(self):
         df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
         attr_value_different_persons_neg = ltl_checker.attr_value_different_persons(df, "check ticket",
-                                                                                    parameters={"positive": False})
+                                                                                    parameters={
+                                                                                        ltl_checker.Parameters.POSITIVE: False})
 
 
 if __name__ == "__main__":

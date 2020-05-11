@@ -1,0 +1,808 @@
+import unittest
+import os
+
+
+class DocTests(unittest.TestCase):
+    def load_running_example_xes(self):
+        from pm4py.objects.log.importer.xes import importer
+        log = importer.apply(os.path.join("input_data", "running-example.xes"))
+        return log
+
+    def load_running_example_df(self):
+        from pm4py.objects.log.adapters.pandas import csv_import_adapter
+        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
+        return df
+
+    def load_running_example_stream(self):
+        from pm4py.objects.log.importer.csv import importer
+        stream = importer.apply(os.path.join("input_data", "running-example.csv"))
+        return stream
+
+    def load_running_example_pnml(self):
+        from pm4py.objects.petri.importer import importer
+        net, im, fm = importer.apply(os.path.join("input_data", "running-example.pnml"))
+        return net, im, fm
+
+    def load_receipt_xes(self):
+        from pm4py.objects.log.importer.xes import importer
+        log = importer.apply(os.path.join("input_data", "receipt.xes"))
+        return log
+
+    def load_receipt_df(self):
+        from pm4py.objects.log.adapters.pandas import csv_import_adapter
+        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "receipt.csv"))
+        return df
+
+    def load_receipt_stream(self):
+        from pm4py.objects.log.importer.csv import importer
+        stream = importer.apply(os.path.join("input_data", "receipt.csv"))
+        return stream
+
+    def load_roadtraffic50_xes(self):
+        from pm4py.objects.log.importer.xes import importer
+        log = importer.apply(os.path.join("input_data", "roadtraffic50traces.xes"))
+        return log
+
+    def load_roadtraffic100_xes(self):
+        from pm4py.objects.log.importer.xes import importer
+        log = importer.apply(os.path.join("input_data", "roadtraffic100traces.xes"))
+        return log
+
+    def load_roadtraffic100_csv(self):
+        from pm4py.objects.log.importer.xes import importer
+        log = importer.apply(os.path.join("input_data", "roadtraffic100traces.csv"))
+        return log
+
+    def test_1(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        print(log[0])  # prints the first trace of the log
+        print(log[0][0])  # prints the first event of the first trace
+
+    def test_2(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        variant = xes_importer.Variants.ITERPARSE
+        parameters = {variant.value.Parameters.TIMESTAMP_SORT: True}
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"),
+                                 variant=variant, parameters=parameters)
+
+    def test_3(self):
+        import pandas as pd
+        from pm4py.objects.conversion.log import converter as log_converter
+
+        log_csv = pd.read_csv(os.path.join("input_data", "running-example.csv"), sep=',')
+        event_log = log_converter.apply(log_csv)
+
+    def test_4(self):
+        import pandas as pd
+        from pm4py.objects.conversion.log import converter as log_converter
+
+        log_csv = pd.read_csv(os.path.join("input_data", "running-example.csv"), sep=',')
+        log_csv.rename(columns={'case:concept:name': 'case'}, inplace=True)
+        parameters = {log_converter.Variants.TO_EVENT_LOG.value.Parameters.CASE_ID_KEY: 'case'}
+        event_log = log_converter.apply(log_csv, parameters=parameters, variant=log_converter.Variants.TO_EVENT_LOG)
+
+    def test_5(self):
+        log = self.load_running_example_xes()
+        from pm4py.objects.log.exporter.xes import exporter as xes_exporter
+        path = os.path.join("test_output_data", "ru.xes")
+        xes_exporter.apply(log, path)
+        os.remove(path)
+
+    def test_6(self):
+        log = self.load_running_example_xes()
+        import pandas as pd
+        from pm4py.objects.conversion.log import converter as log_converter
+        dataframe = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
+        dataframe.to_csv("ru.csv")
+        os.remove("ru.csv")
+
+    def test_7(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        from pm4py.objects.log.util import func
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        log = func.filter_(lambda t: len(t) > 2, log)
+
+    def test_8(self):
+        from pm4py.algo.filtering.log.timestamp import timestamp_filter
+        log = self.load_running_example_xes()
+        filtered_log = timestamp_filter.filter_traces_contained(log, "2011-03-09 00:00:00", "2012-01-18 23:59:59")
+
+    def test_9(self):
+        from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
+        dataframe = self.load_running_example_df()
+        df_timest_intersecting = timestamp_filter.filter_traces_intersecting(dataframe, "2011-03-09 00:00:00",
+                                                                             "2012-01-18 23:59:59", parameters={
+                timestamp_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                timestamp_filter.Parameters.TIMESTAMP_KEY: "time:timestamp"})
+
+    def test_10(self):
+        from pm4py.algo.filtering.log.timestamp import timestamp_filter
+        log = self.load_running_example_xes()
+        filtered_log = timestamp_filter.filter_traces_intersecting(log, "2011-03-09 00:00:00", "2012-01-18 23:59:59")
+
+    def test_11(self):
+        from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
+        dataframe = self.load_running_example_df()
+        df_timest_intersecting = timestamp_filter.filter_traces_intersecting(dataframe, "2011-03-09 00:00:00",
+                                                                             "2012-01-18 23:59:59", parameters={
+                timestamp_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                timestamp_filter.Parameters.TIMESTAMP_KEY: "time:timestamp"})
+
+    def test_12(self):
+        from pm4py.algo.filtering.log.timestamp import timestamp_filter
+        log = self.load_running_example_xes()
+        filtered_log_events = timestamp_filter.apply_events(log, "2011-03-09 00:00:00", "2012-01-18 23:59:59")
+
+    def test_13(self):
+        from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
+        dataframe = self.load_running_example_df()
+        df_timest_events = timestamp_filter.apply_events(dataframe, "2011-03-09 00:00:00", "2012-01-18 23:59:59",
+                                                         parameters={
+                                                             timestamp_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                             timestamp_filter.Parameters.TIMESTAMP_KEY: "time:timestamp"})
+
+    def test_14(self):
+        from pm4py.algo.filtering.log.cases import case_filter
+        log = self.load_running_example_xes()
+        filtered_log = case_filter.filter_case_performance(log, 86400, 864000)
+
+    def test_15(self):
+        from pm4py.algo.filtering.pandas.cases import case_filter
+        dataframe = self.load_running_example_df()
+        df_cases = case_filter.filter_case_performance(dataframe, min_case_performance=86400,
+                                                       max_case_performance=864000, parameters={
+                case_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                case_filter.Parameters.TIMESTAMP_KEY: "time:timestamp"})
+
+    def test_16(self):
+        from pm4py.algo.filtering.log.start_activities import start_activities_filter
+        log = self.load_running_example_xes()
+        log_start = start_activities_filter.get_start_activities(log)
+        filtered_log = start_activities_filter.apply(log,
+                                                     ["register request"])
+
+    def test_17(self):
+        from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
+        dataframe = self.load_running_example_df()
+        log_start = start_activities_filter.get_start_activities(dataframe)
+        df_start_activities = start_activities_filter.apply(dataframe, ["register request"],
+                                                            parameters={
+                                                                start_activities_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                                start_activities_filter.Parameters.ACTIVITY_KEY: "concept:name"})
+
+    def test_18(self):
+        from pm4py.algo.filtering.log.start_activities import start_activities_filter
+        log = self.load_running_example_xes()
+        log_af_sa = start_activities_filter.apply_auto_filter(log, parameters={
+            start_activities_filter.Parameters.DECREASING_FACTOR: 0.6})
+
+    def test_19(self):
+        from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
+        dataframe = self.load_running_example_df()
+        df_auto_sa = start_activities_filter.apply_auto_filter(dataframe, parameters={
+            start_activities_filter.Parameters.DECREASING_FACTOR: 0.6})
+
+    def test_20(self):
+        from pm4py.algo.filtering.log.end_activities import end_activities_filter
+        log = self.load_running_example_xes()
+        end_activities = end_activities_filter.get_end_activities(log)
+        filtered_log = end_activities_filter.apply(log, ["pay compensation"])
+
+    def test_21(self):
+        from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
+        from pm4py.util import constants
+        df = self.load_running_example_df()
+        end_acitivites = end_activities_filter.get_end_activities(df)
+        filtered_df = end_activities_filter.apply(df, ["pay compensation"],
+                                                  parameters={
+                                                      end_activities_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                      end_activities_filter.Parameters.ACTIVITY_KEY: "concept:name"})
+
+    def test_22(self):
+        from pm4py.algo.filtering.log.variants import variants_filter
+        log = self.load_running_example_xes()
+        variants = variants_filter.get_variants(log)
+
+    def test_23(self):
+        from pm4py.statistics.traces.pandas import case_statistics
+        df = self.load_running_example_df()
+        variants = case_statistics.get_variants_df(df,
+                                                   parameters={
+                                                       case_statistics.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                       case_statistics.Parameters.ACTIVITY_KEY: "concept:name"})
+
+    def test_24(self):
+        from pm4py.statistics.traces.log import case_statistics
+        log = self.load_running_example_xes()
+        variants_count = case_statistics.get_variant_statistics(log)
+        variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
+
+    def test_25(self):
+        from pm4py.statistics.traces.pandas import case_statistics
+        df = self.load_running_example_df()
+        variants_count = case_statistics.get_variant_statistics(df,
+                                                                parameters={
+                                                                    case_statistics.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                                    case_statistics.Parameters.ACTIVITY_KEY: "concept:name",
+                                                                    case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"})
+        variants_count = sorted(variants_count, key=lambda x: x['case:concept:name'], reverse=True)
+
+    def test_26(self):
+        from pm4py.algo.filtering.log.variants import variants_filter
+        log = self.load_running_example_xes()
+        variants = ["register request,examine thoroughly,check ticket,decide,reject request"]
+        filtered_log1 = variants_filter.apply(log, variants)
+
+    def test_27(self):
+        from pm4py.algo.filtering.pandas.variants import variants_filter
+        df = self.load_running_example_df()
+        variants = ["register request,examine thoroughly,check ticket,decide,reject request"]
+        filtered_df1 = variants_filter.apply(df, variants,
+                                             parameters={variants_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                         variants_filter.Parameters.ACTIVITY_KEY: "concept:name"})
+
+    def test_28(self):
+        from pm4py.algo.filtering.log.variants import variants_filter
+        log = self.load_running_example_xes()
+        variants = ["register request,examine thoroughly,check ticket,decide,reject request"]
+        filtered_log2 = variants_filter.apply(log, variants, parameters={variants_filter.Parameters.POSITIVE: False})
+
+    def test_29(self):
+        from pm4py.algo.filtering.pandas.variants import variants_filter
+        df = self.load_running_example_df()
+        variants = ["register request,examine thoroughly,check ticket,decide,reject request"]
+        filtered_df2 = variants_filter.apply(df, variants,
+                                             parameters={variants_filter.Parameters.POSITIVE: False,
+                                                         variants_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                         variants_filter.Parameters.ACTIVITY_KEY: "concept:name"})
+
+    def test_30(self):
+        from pm4py.algo.filtering.log.variants import variants_filter
+        log = self.load_running_example_xes()
+        auto_filtered_log = variants_filter.apply_auto_filter(log)
+
+    def test_31(self):
+        from pm4py.algo.filtering.pandas.variants import variants_filter
+        df = self.load_running_example_df()
+        auto_filtered_df = variants_filter.apply_auto_filter(df,
+                                                             parameters={variants_filter.Parameters.POSITIVE: False,
+                                                                         variants_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                                         variants_filter.Parameters.ACTIVITY_KEY: "concept:name"})
+
+    def test_32(self):
+        from pm4py.algo.filtering.log.attributes import attributes_filter
+        log = self.load_running_example_xes()
+        activities = attributes_filter.get_attribute_values(log, "concept:name")
+        resources = attributes_filter.get_attribute_values(log, "org:resource")
+
+    def test_33(self):
+        from pm4py.algo.filtering.pandas.attributes import attributes_filter
+        df = self.load_running_example_df()
+        activities = attributes_filter.get_attribute_values(df, attribute_key="concept:name")
+        resources = attributes_filter.get_attribute_values(df, attribute_key="org:resource")
+
+    def test_34(self):
+        from pm4py.algo.filtering.log.attributes import attributes_filter
+        from pm4py.util import constants
+        log = self.load_receipt_xes()
+        tracefilter_log_pos = attributes_filter.apply(log, ["Resource10"],
+                                                      parameters={
+                                                          attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource",
+                                                          attributes_filter.Parameters.POSITIVE: True})
+        tracefilter_log_neg = attributes_filter.apply(log, ["Resource10"],
+                                                      parameters={
+                                                          attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource",
+                                                          attributes_filter.Parameters.POSITIVE: False})
+
+    def test_35(self):
+        from pm4py.util import constants
+        from pm4py.algo.filtering.pandas.attributes import attributes_filter
+        df = self.load_receipt_df()
+        df_traces_pos = attributes_filter.apply(df, ["Resource10"],
+                                                parameters={
+                                                    attributes_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                    attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource",
+                                                    attributes_filter.Parameters.POSITIVE: True})
+        df_traces_neg = attributes_filter.apply(df, ["Resource10"],
+                                                parameters={
+                                                    attributes_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                    attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource",
+                                                    attributes_filter.Parameters.POSITIVE: False})
+
+    def test_36(self):
+        from pm4py.algo.filtering.log.attributes import attributes_filter
+        log = self.load_running_example_xes()
+        filtered_log = attributes_filter.apply_auto_filter(log, parameters={
+            attributes_filter.Parameters.ATTRIBUTE_KEY: "concept:name",
+            attributes_filter.Parameters.DECREASING_FACTOR: 0.6})
+
+    def test_37(self):
+        from pm4py.algo.filtering.pandas.attributes import attributes_filter
+        df = self.load_running_example_df()
+        filtered_df = attributes_filter.apply_auto_filter(df, parameters={
+            attributes_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+            attributes_filter.Parameters.ATTRIBUTE_KEY: "concept:name",
+            attributes_filter.Parameters.DECREASING_FACTOR: 0.6})
+
+    def test_38(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "roadtraffic100traces.xes"))
+
+        from pm4py.algo.filtering.log.attributes import attributes_filter
+        filtered_log_events = attributes_filter.apply_numeric_events(log, 34, 36,
+                                                                     parameters={
+                                                                         attributes_filter.Parameters.ATTRIBUTE_KEY: "amount"})
+
+        filtered_log_cases = attributes_filter.apply_numeric(log, 34, 36,
+                                                             parameters={
+                                                                 attributes_filter.Parameters.ATTRIBUTE_KEY: "amount"})
+
+        filtered_log_cases = attributes_filter.apply_numeric(log, 34, 500,
+                                                             parameters={
+                                                                 attributes_filter.Parameters.ATTRIBUTE_KEY: "amount",
+                                                                 attributes_filter.Parameters.STREAM_FILTER_KEY1: "concept:name",
+                                                                 attributes_filter.Parameters.STREAM_FILTER_VALUE1: "Add penalty"})
+
+    def test_39(self):
+        import os
+        from pm4py.objects.log.adapters.pandas import csv_import_adapter
+        df = csv_import_adapter.import_dataframe_from_path(
+            os.path.join("input_data", "roadtraffic100traces.csv"))
+
+        from pm4py.algo.filtering.pandas.attributes import attributes_filter
+        filtered_df_events = attributes_filter.apply_numeric_events(df, 34, 36,
+                                                                    parameters={
+                                                                        attributes_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                                        attributes_filter.Parameters.ATTRIBUTE_KEY: "amount"})
+
+        filtered_df_cases = attributes_filter.apply_numeric(df, 34, 36,
+                                                            parameters={
+                                                                attributes_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                                attributes_filter.Parameters.ATTRIBUTE_KEY: "amount"})
+
+        filtered_df_cases = attributes_filter.apply_numeric(df, 34, 500,
+                                                            parameters={
+                                                                attributes_filter.Parameters.CASE_ID_KEY: "case:concept:name",
+                                                                attributes_filter.Parameters.ATTRIBUTE_KEY: "amount",
+                                                                attributes_filter.Parameters.STREAM_FILTER_KEY1: "concept:name",
+                                                                attributes_filter.Parameters.STREAM_FILTER_VALUE1: "Add penalty"})
+
+    def test_40(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+        net, initial_marking, final_marking = alpha_miner.apply(log)
+
+    def test_41(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        net, initial_marking, final_marking = inductive_miner.apply(log)
+
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+        from pm4py.visualization.process_tree import visualizer as pt_visualizer
+
+        tree = inductive_miner.apply_tree(log)
+
+        gviz = pt_visualizer.apply(tree)
+
+        from pm4py.objects.conversion.process_tree import converter as pt_converter
+        net, initial_marking, final_marking = pt_converter.apply(tree, variant=pt_converter.Variants.TO_PETRI_NET)
+
+    def test_42(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        log_path = os.path.join("compressed_input_data", "09_a32f0n00.xes.gz")
+        log = xes_importer.apply(log_path)
+
+        from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
+        heu_net = heuristics_miner.apply_heu(log, parameters={
+            heuristics_miner.Variants.CLASSIC.value.Parameters.DEPENDENCY_THRESH: 0.99})
+
+        from pm4py.visualization.heuristics_net import visualizer as hn_visualizer
+        gviz = hn_visualizer.apply(heu_net)
+
+        from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
+        net, im, fm = heuristics_miner.apply(log, parameters={
+            heuristics_miner.Variants.CLASSIC.value.Parameters.DEPENDENCY_THRESH: 0.99})
+
+        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        gviz = pn_visualizer.apply(net, im, fm)
+
+    def test_43(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
+        dfg = dfg_discovery.apply(log)
+
+        from pm4py.visualization.dfg import visualizer as dfg_visualization
+        gviz = dfg_visualization.apply(dfg, log=log, variant=dfg_visualization.Variants.FREQUENCY)
+
+    def test_44(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
+        from pm4py.visualization.dfg import visualizer as dfg_visualization
+
+        dfg = dfg_discovery.apply(log, variant=dfg_discovery.Variants.PERFORMANCE)
+        gviz = dfg_visualization.apply(dfg, log=log, variant=dfg_visualization.Variants.PERFORMANCE)
+
+    def test_45(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
+        from pm4py.visualization.dfg import visualizer as dfg_visualization
+
+        dfg = dfg_discovery.apply(log, variant=dfg_discovery.Variants.PERFORMANCE)
+        parameters = {dfg_visualization.Variants.PERFORMANCE.value.Parameters.FORMAT: "svg"}
+        gviz = dfg_visualization.apply(dfg, log=log, variant=dfg_visualization.Variants.PERFORMANCE,
+                                       parameters=parameters)
+
+        dfg_visualization.save(gviz, os.path.join("test_output_data", "dfg.svg"))
+        os.remove(os.path.join("test_output_data", "dfg.svg"))
+
+    def test_46(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
+        dfg = dfg_discovery.apply(log)
+
+        from pm4py.objects.conversion.dfg import converter as dfg_mining
+        net, im, fm = dfg_mining.apply(dfg)
+
+    def test_47(self):
+        log = self.load_running_example_xes()
+
+        import os
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+        net, initial_marking, final_marking = inductive_miner.apply(log)
+
+        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        parameters = {pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: "png"}
+        gviz = pn_visualizer.apply(net, initial_marking, final_marking, parameters=parameters,
+                                   variant=pn_visualizer.Variants.FREQUENCY, log=log)
+        pn_visualizer.save(gviz, os.path.join("test_output_data", "inductive_frequency.png"))
+
+        os.remove(os.path.join("test_output_data", "inductive_frequency.png"))
+
+    def test_48(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        parameters = {alpha_miner.Variants.ALPHA_VERSION_CLASSIC.value.Parameters.ACTIVITY_KEY: "concept:name"}
+        net, initial_marking, final_marking = alpha_miner.apply(log, parameters=parameters)
+
+    def test_49(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+
+        log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
+        classifiers = log.classifiers
+
+        from pm4py.objects.log.util import insert_classifier
+        log, activity_key = insert_classifier.insert_activity_classifier_attribute(log, "Activity classifier")
+
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+        parameters = {alpha_miner.Variants.ALPHA_VERSION_CLASSIC.value.Parameters.ACTIVITY_KEY: activity_key}
+        net, initial_marking, final_marking = alpha_miner.apply(log, parameters=parameters)
+
+    def test_50(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+
+        log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
+        for trace in log:
+            for event in trace:
+                event["customClassifier"] = event["concept:name"] + event["lifecycle:transition"]
+
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+        parameters = {alpha_miner.Variants.ALPHA_VERSION_CLASSIC.value.Parameters.ACTIVITY_KEY: "customClassifier"}
+        net, initial_marking, final_marking = alpha_miner.apply(log, parameters=parameters)
+
+    def test_51(self):
+        import os
+        from pm4py.objects.petri.importer import importer as pnml_importer
+        net, initial_marking, final_marking = pnml_importer.apply(
+            os.path.join("input_data", "running-example.pnml"))
+
+        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        gviz = pn_visualizer.apply(net, initial_marking, final_marking)
+
+        from pm4py.objects.petri.exporter import exporter as pnml_exporter
+        pnml_exporter.apply(net, initial_marking, "petri.pnml")
+
+        pnml_exporter.apply(net, initial_marking, "petri_final.pnml", final_marking=final_marking)
+
+        os.remove("petri.pnml")
+        os.remove("petri_final.pnml")
+
+        from pm4py.objects.petri import semantics
+        transitions = semantics.enabled_transitions(net, initial_marking)
+
+        places = net.places
+        transitions = net.transitions
+        arcs = net.arcs
+
+        for place in places:
+            stru = "\nPLACE: " + place.name
+            for arc in place.in_arcs:
+                stru = str(arc.source.name) + " " + str(arc.source.label)
+
+    def test_52(self):
+        # creating an empty Petri net
+        from pm4py.objects.petri.petrinet import PetriNet, Marking
+        net = PetriNet("new_petri_net")
+
+        # creating source, p_1 and sink place
+        source = PetriNet.Place("source")
+        sink = PetriNet.Place("sink")
+        p_1 = PetriNet.Place("p_1")
+        # add the places to the Petri Net
+        net.places.add(source)
+        net.places.add(sink)
+        net.places.add(p_1)
+
+        # Create transitions
+        t_1 = PetriNet.Transition("name_1", "label_1")
+        t_2 = PetriNet.Transition("name_2", "label_2")
+        # Add the transitions to the Petri Net
+        net.transitions.add(t_1)
+        net.transitions.add(t_2)
+
+        # Add arcs
+        from pm4py.objects.petri import utils
+        utils.add_arc_from_to(source, t_1, net)
+        utils.add_arc_from_to(t_1, p_1, net)
+        utils.add_arc_from_to(p_1, t_2, net)
+        utils.add_arc_from_to(t_2, sink, net)
+
+        # Adding tokens
+        initial_marking = Marking()
+        initial_marking[source] = 1
+        final_marking = Marking()
+        final_marking[sink] = 1
+
+        from pm4py.objects.petri.exporter import exporter as pnml_exporter
+        pnml_exporter.apply(net, initial_marking, "createdPetriNet1.pnml", final_marking=final_marking)
+
+        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        gviz = pn_visualizer.apply(net, initial_marking, final_marking)
+
+        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        parameters = {pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: "svg"}
+        gviz = pn_visualizer.apply(net, initial_marking, final_marking, parameters=parameters)
+
+        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        parameters = {pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: "svg"}
+        gviz = pn_visualizer.apply(net, initial_marking, final_marking, parameters=parameters)
+        pn_visualizer.save(gviz, "alpha.svg")
+
+        os.remove("createdPetriNet1.pnml")
+        os.remove("alpha.svg")
+
+    def test_53(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+        net, initial_marking, final_marking = inductive_miner.apply(log)
+
+        from pm4py.objects.petri import utils
+        cycles = utils.get_cycles_petri_net_places(net)
+
+    def test_54(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+        net, initial_marking, final_marking = inductive_miner.apply(log)
+
+        from pm4py.objects.petri import utils
+        scc = utils.get_strongly_connected_subnets(net)
+
+        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        gviz = pn_visualizer.apply(scc[0][0], scc[0][1], scc[0][2])
+
+    def test_55(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+        net, initial_marking, final_marking = inductive_miner.apply(log)
+
+        from pm4py.objects.petri import utils
+        cycles = utils.get_cycles_petri_net_places(net)
+
+    def test_56(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        net, initial_marking, final_marking = inductive_miner.apply(log)
+
+        from pm4py.algo.conformance.alignments import algorithm as alignments
+        alignments = alignments.apply_log(log, net, initial_marking, final_marking)
+
+    def test_57(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        for trace in log:
+            for event in trace:
+                event["customClassifier"] = event["concept:name"] + event["concept:name"]
+
+        from pm4py.algo.conformance.alignments import algorithm as alignments
+
+        # define the activity key in the parameters
+        parameters = {inductive_miner.Variants.DFG_BASED.value.Parameters.ACTIVITY_KEY: "customClassifier",
+                      alignments.Variants.VERSION_STATE_EQUATION_A_STAR.value.Parameters.ACTIVITY_KEY: "customClassifier"}
+
+        # calculate process model using the given classifier
+        net, initial_marking, final_marking = inductive_miner.apply(log, parameters=parameters)
+        alignments = alignments.apply_log(log, net, initial_marking, final_marking, parameters=parameters)
+
+        from pm4py.evaluation.replay_fitness import evaluator as replay_fitness
+        log_fitness = replay_fitness.evaluate(alignments, variant=replay_fitness.Variants.ALIGNMENT_BASED)
+
+    def test_58(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        net, initial_marking, final_marking = inductive_miner.apply(log)
+
+        from pm4py.algo.conformance.alignments import algorithm as alignments
+
+        model_cost_function = dict()
+        sync_cost_function = dict()
+        for t in net.transitions:
+            # if the label is not None, we have a visible transition
+            if t.label is not None:
+                # associate cost 1000 to each move-on-model associated to visible transitions
+                model_cost_function[t] = 1000
+                # associate cost 0 to each move-on-log
+                sync_cost_function[t] = 0
+            else:
+                # associate cost 1 to each move-on-model associated to hidden transitions
+                model_cost_function[t] = 1
+
+        parameters = {}
+        parameters[
+            alignments.Variants.VERSION_STATE_EQUATION_A_STAR.value.Parameters.PARAM_MODEL_COST_FUNCTION] = model_cost_function
+        parameters[
+            alignments.Variants.VERSION_STATE_EQUATION_A_STAR.value.Parameters.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
+
+        alignments = alignments.apply_log(log, net, initial_marking, final_marking, parameters=parameters)
+
+    def test_59(self):
+        from pm4py.simulation.tree_generator import simulator as tree_gen
+        parameters = {}
+        tree = tree_gen.apply(parameters=parameters)
+
+        from pm4py.objects.process_tree import semantics
+        log = semantics.generate_log(tree, no_traces=100)
+
+        from pm4py.objects.conversion.process_tree import converter as pt_converter
+        net, im, fm = pt_converter.apply(tree)
+
+        from pm4py.visualization.process_tree import visualizer as pt_visualizer
+        gviz = pt_visualizer.apply(tree, parameters={pt_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: "png"})
+
+    def test_60(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "roadtraffic50traces.xes"))
+
+        from pm4py.objects.log.util import get_log_representation
+        str_trace_attributes = []
+        str_event_attributes = ["concept:name"]
+        num_trace_attributes = []
+        num_event_attributes = ["amount"]
+        data, feature_names = get_log_representation.get_representation(
+            log, str_trace_attributes, str_event_attributes,
+            num_trace_attributes, num_event_attributes)
+
+        data, feature_names = get_log_representation.get_default_representation(log)
+
+        from pm4py.objects.log.util import get_class_representation
+        target, classes = get_class_representation.get_class_representation_by_str_ev_attr_value_value(log,
+                                                                                                       "concept:name")
+
+        from sklearn import tree
+        clf = tree.DecisionTreeClassifier()
+        clf.fit(data, target)
+
+        from pm4py.visualization.decisiontree import visualizer as dectree_visualizer
+        gviz = dectree_visualizer.apply(clf, feature_names, classes)
+
+    def test_61(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "roadtraffic50traces.xes"))
+
+        from pm4py.objects.log.util import get_log_representation
+        str_trace_attributes = []
+        str_event_attributes = ["concept:name"]
+        num_trace_attributes = []
+        num_event_attributes = ["amount"]
+
+        data, feature_names = get_log_representation.get_representation(log, str_trace_attributes, str_event_attributes,
+                                                                        num_trace_attributes, num_event_attributes)
+
+        data, feature_names = get_log_representation.get_default_representation(log)
+
+        from pm4py.objects.log.util import get_class_representation
+        target, classes = get_class_representation.get_class_representation_by_trace_duration(log, 2 * 8640000)
+
+        from sklearn import tree
+        clf = tree.DecisionTreeClassifier()
+        clf.fit(data, target)
+
+        from pm4py.visualization.decisiontree import visualizer as dectree_visualizer
+        gviz = dectree_visualizer.apply(clf, feature_names, classes)
+
+    def test_62(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        xes_importer.Variants.ITERPARSE.value.Parameters.TIMESTAMP_SORT
+        xes_importer.Variants.ITERPARSE.value.Parameters.TIMESTAMP_KEY
+        xes_importer.Variants.ITERPARSE.value.Parameters.REVERSE_SORT
+        xes_importer.Variants.ITERPARSE.value.Parameters.INSERT_TRACE_INDICES
+        xes_importer.Variants.ITERPARSE.value.Parameters.MAX_TRACES
+
+    def test_63(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        xes_importer.Variants.LINE_BY_LINE.value.Parameters.TIMESTAMP_SORT
+        xes_importer.Variants.LINE_BY_LINE.value.Parameters.TIMESTAMP_KEY
+        xes_importer.Variants.LINE_BY_LINE.value.Parameters.REVERSE_SORT
+        xes_importer.Variants.LINE_BY_LINE.value.Parameters.INSERT_TRACE_INDICES
+        xes_importer.Variants.LINE_BY_LINE.value.Parameters.MAX_TRACES
+        xes_importer.Variants.LINE_BY_LINE.value.Parameters.MAX_BYTES
+
+    def test_64(self):
+        from pm4py.objects.conversion.log import converter
+        converter.Variants.TO_EVENT_LOG.value.Parameters.STREAM_POST_PROCESSING
+        converter.Variants.TO_EVENT_LOG.value.Parameters.CASE_ATTRIBUTE_PREFIX
+        converter.Variants.TO_EVENT_LOG.value.Parameters.CASE_ID_KEY
+        converter.Variants.TO_EVENT_LOG.value.Parameters.DEEP_COPY
+        converter.Variants.TO_EVENT_LOG.value.Parameters.CASE_ID_KEY
+
+    def test_65(self):
+        from pm4py.objects.conversion.log import converter
+        converter.Variants.TO_EVENT_STREAM.value.Parameters.STREAM_POST_PROCESSING
+        converter.Variants.TO_EVENT_STREAM.value.Parameters.CASE_ATTRIBUTE_PREFIX
+        converter.Variants.TO_EVENT_STREAM.value.Parameters.DEEP_COPY
+
+    def test_66(self):
+        from pm4py.objects.conversion.log import converter
+        converter.Variants.TO_EVENT_STREAM.value.Parameters.CASE_ATTRIBUTE_PREFIX
+        converter.Variants.TO_EVENT_STREAM.value.Parameters.DEEP_COPY
+
+    def test_67(self):
+        from pm4py.objects.log.exporter.xes import exporter as xes_exporter
+        xes_exporter.Variants.ETREE.value.Parameters.COMPRESS
+
+
+if __name__ == "__main__":
+    unittest.main()

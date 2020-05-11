@@ -4,6 +4,15 @@ from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
+    ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    DECREASING_FACTOR = "decreasingFactor"
+    POSITIVE = "positive"
 
 
 def apply(df, paths, parameters=None):
@@ -18,9 +27,9 @@ def apply(df, paths, parameters=None):
         Paths to filter on
     parameters
         Possible parameters of the algorithm, including:
-            case_id_glue -> Case ID column in the dataframe
-            attribute_key -> Attribute we want to filter
-            positive -> Specifies if the filter should be applied including traces (positive=True)
+            Parameters.CASE_ID_KEY -> Case ID column in the dataframe
+            Parameters.ATTRIBUTE_KEY -> Attribute we want to filter
+            Parameters.POSITIVE -> Specifies if the filter should be applied including traces (positive=True)
             or excluding traces (positive=False)
     Returns
     ----------
@@ -30,11 +39,9 @@ def apply(df, paths, parameters=None):
     if parameters is None:
         parameters = {}
     paths = [path[0] + "," + path[1] for path in paths]
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    positive = parameters["positive"] if "positive" in parameters else True
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     filt_df = df[[case_id_glue, attribute_key]]
     filt_dif_shifted = filt_df.shift(-1)
     filt_dif_shifted.columns = [str(col) + '_2' for col in filt_dif_shifted.columns]

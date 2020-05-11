@@ -1,0 +1,9 @@
+<log xes.version="1849.2016" xes.features="">
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext" />
+	<extension name="Organizational" prefix="org" uri="http://www.xes-standard.org/org.xesext" />
+	<global scope="event">
+		<string key="concept:name" value="name" />
+		<string key="org:resource" value="name" />
+	</global>
+	<classifier name="name" keys=" " />
+</log>

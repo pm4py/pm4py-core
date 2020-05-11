@@ -1,13 +1,12 @@
 from pm4py.algo.enhancement.roles.versions import log, pandas
 import pandas as pd
+from pm4py.util import exec_utils
+from enum import Enum
 
-LOG = 'log'
-PANDAS = 'pandas'
 
-DEFAULT_THRESHOLD = 0.65
-ROLES_THRESHOLD_PARAMETER = "roles_threshold_parameter"
-
-VERSIONS = {LOG: log.apply, PANDAS: pandas.apply}
+class Variants(Enum):
+    LOG = log
+    PANDAS = pandas
 
 
 def apply(log, variant=None, parameters=None):
@@ -24,7 +23,9 @@ def apply(log, variant=None, parameters=None):
     log
         Log object (also Pandas dataframe)
     variant
-        Variant of the algorithm to apply. Possible values: log, pandas
+        Variant of the algorithm to apply. Possible values:
+            - Variants.LOG
+            - Variants.PANDAS
     parameters
         Possible parameters of the algorithm
 
@@ -37,13 +38,10 @@ def apply(log, variant=None, parameters=None):
     if parameters is None:
         parameters = {}
 
-    if ROLES_THRESHOLD_PARAMETER not in parameters:
-        parameters[ROLES_THRESHOLD_PARAMETER] = DEFAULT_THRESHOLD
-
     if variant is None:
         if type(log) is pd.DataFrame:
-            variant = PANDAS
+            variant = Variants.PANDAS
         else:
-            variant = LOG
+            variant = Variants.LOG
 
-    return VERSIONS[variant](log, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(log, parameters=parameters)

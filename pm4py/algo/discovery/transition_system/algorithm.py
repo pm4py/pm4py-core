@@ -1,14 +1,19 @@
 from pm4py import util as pmutil
 from pm4py.algo.discovery.transition_system.versions import view_based
-from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import xes_constants as xes_util
+from pm4py.util import exec_utils
+from enum import Enum
 
-VIEW_BASED = "view_based"
+class Variants(Enum):
+    VIEW_BASED = view_based
 
-VERSIONS = {VIEW_BASED: view_based.apply}
+VERSIONS = {Variants.VIEW_BASED}
+VIEW_BASED = Variants.VIEW_BASED
+DEFAULT_VARIANT = Variants.VIEW_BASED
 
 
-def apply(log, parameters=None, variant=VIEW_BASED):
+def apply(log, parameters=None, variant=DEFAULT_VARIANT):
     """
     Find transition system given log
 
@@ -18,12 +23,12 @@ def apply(log, parameters=None, variant=VIEW_BASED):
         Log
     parameters
         Possible parameters of the algorithm, including:
-            view
-            window
-            direction
+            Parameters.PARAM_KEY_VIEW
+            Parameters.PARAM_KEY_WINDOW
+            Parameters.PARAM_KEY_DIRECTION
     variant
         Variant of the algorithm to use, including:
-            view_based
+            Variants.VIEW_BASED
 
     Returns
     ----------
@@ -32,11 +37,5 @@ def apply(log, parameters=None, variant=VIEW_BASED):
     """
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    if pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_util.DEFAULT_TIMESTAMP_KEY
-    if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY] = pmutil.constants.CASE_ATTRIBUTE_GLUE
 
-    return VERSIONS[variant](log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters=parameters)
+    return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters=parameters)

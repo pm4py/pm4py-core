@@ -1,6 +1,7 @@
 import numpy as np
 import json, pkgutil, logging
-import math
+from pm4py.statistics.traces.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def get_kde_caseduration(duration_values, parameters=None):
@@ -28,7 +29,7 @@ def get_kde_caseduration(duration_values, parameters=None):
         if parameters is None:
             parameters = {}
 
-        graph_points = parameters["graph_points"] if "graph_points" in parameters else 200
+        graph_points = exec_utils.get_param_value(Parameters.GRAPH_POINTS, parameters, 200)
         duration_values = sorted(duration_values)
         density = gaussian_kde(duration_values)
         xs1 = list(np.linspace(min(duration_values), max(duration_values), int(graph_points/2)))

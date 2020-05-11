@@ -84,6 +84,7 @@
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.dfg.factory">pm4py.visualization.dfg.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.visualization.dfg.parameters">pm4py.visualization.dfg.parameters module</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.dfg.visualizer">pm4py.visualization.dfg.visualizer module</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.dfg">Module contents</a></li>
 </ul>
@@ -158,6 +159,13 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="pm4py.visualization.dfg.variants.html">pm4py.visualization.dfg.variants package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.dfg.variants.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.dfg.variants.html#module-pm4py.visualization.dfg.variants.frequency">pm4py.visualization.dfg.variants.frequency module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.dfg.variants.html#module-pm4py.visualization.dfg.variants.performance">pm4py.visualization.dfg.variants.performance module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.dfg.variants.html#module-pm4py.visualization.dfg.variants">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="pm4py.visualization.dfg.versions.html">pm4py.visualization.dfg.versions package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.dfg.versions.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pm4py.visualization.dfg.versions.html#module-pm4py.visualization.dfg.versions.simple_visualize">pm4py.visualization.dfg.versions.simple_visualize module</a></li>
@@ -212,11 +220,63 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-pm4py.visualization.dfg.parameters">
+<span id="pm4py-visualization-dfg-parameters-module"></span><h2>pm4py.visualization.dfg.parameters module<a class="headerlink" href="#module-pm4py.visualization.dfg.parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.visualization.dfg.parameters.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.visualization.dfg.parameters.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/visualization/dfg/parameters.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.dfg.parameters.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.visualization.dfg.parameters.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.visualization.dfg.parameters.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.visualization.dfg.parameters.Parameters.END_ACTIVITIES">
+<code class="sig-name descname">END_ACTIVITIES</code><em class="property"> = 'end_activities'</em><a class="headerlink" href="#pm4py.visualization.dfg.parameters.Parameters.END_ACTIVITIES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.visualization.dfg.parameters.Parameters.FORMAT">
+<code class="sig-name descname">FORMAT</code><em class="property"> = 'format'</em><a class="headerlink" href="#pm4py.visualization.dfg.parameters.Parameters.FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.visualization.dfg.parameters.Parameters.MAX_NO_EDGES_IN_DIAGRAM">
+<code class="sig-name descname">MAX_NO_EDGES_IN_DIAGRAM</code><em class="property"> = 'maxNoOfEdgesInDiagram'</em><a class="headerlink" href="#pm4py.visualization.dfg.parameters.Parameters.MAX_NO_EDGES_IN_DIAGRAM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.visualization.dfg.parameters.Parameters.START_ACTIVITIES">
+<code class="sig-name descname">START_ACTIVITIES</code><em class="property"> = 'start_activities'</em><a class="headerlink" href="#pm4py.visualization.dfg.parameters.Parameters.START_ACTIVITIES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-pm4py.visualization.dfg.visualizer">
 <span id="pm4py-visualization-dfg-visualizer-module"></span><h2>pm4py.visualization.dfg.visualizer module<a class="headerlink" href="#module-pm4py.visualization.dfg.visualizer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.visualization.dfg.visualizer.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.visualization.dfg.visualizer.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/visualization/dfg/visualizer.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.dfg.visualizer.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.visualization.dfg.visualizer.Variants.FREQUENCY">
+<code class="sig-name descname">FREQUENCY</code><em class="property"> = &lt;module 'pm4py.visualization.dfg.variants.frequency' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\dfg\\variants\\frequency.py'&gt;</em><a class="headerlink" href="#pm4py.visualization.dfg.visualizer.Variants.FREQUENCY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.visualization.dfg.visualizer.Variants.PERFORMANCE">
+<code class="sig-name descname">PERFORMANCE</code><em class="property"> = &lt;module 'pm4py.visualization.dfg.variants.performance' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\dfg\\variants\\performance.py'&gt;</em><a class="headerlink" href="#pm4py.visualization.dfg.visualizer.Variants.PERFORMANCE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.visualization.dfg.visualizer.apply">
-<code class="sig-prename descclassname">pm4py.visualization.dfg.visualizer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">log=None</em>, <em class="sig-param">activities_count=None</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='frequency'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/dfg/visualizer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.dfg.visualizer.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.dfg.visualizer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">dfg</em>, <em class="sig-param">log=None</em>, <em class="sig-param">activities_count=None</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.FREQUENCY: &lt;module 'pm4py.visualization.dfg.variants.frequency' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\dfg\\variants\\frequency.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/dfg/visualizer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.dfg.visualizer.apply" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">

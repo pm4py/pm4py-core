@@ -1,16 +1,19 @@
 from pm4py.visualization.graphs.versions import cases, attributes, dates
 from pm4py.visualization.graphs.util.common import save, view
+from enum import Enum
+from pm4py.util import exec_utils
 
 
-CASES = "cases"
-ATTRIBUTES = "attributes"
-DATES = "dates"
-
-VERSIONS_PLOT = {CASES: cases.apply_plot, ATTRIBUTES: attributes.apply_plot, DATES: dates.apply_plot}
-VERSIONS_SEMILOGX = {CASES: cases.apply_semilogx, ATTRIBUTES: attributes.apply_semilogx, DATES: dates.apply_semilogx}
+class Variants(Enum):
+    CASES = cases
+    ATTRIBUTES = attributes
+    DATES = dates
 
 
-def apply(x, y, parameters=None, variant=CASES):
+DEFAULT_VARIANT = Variants.CASES
+
+
+def apply(x, y, parameters=None, variant=DEFAULT_VARIANT):
     """
     Method to plot (non-logarithmic way) the graph with axis values contained in x and y
 
@@ -22,19 +25,23 @@ def apply(x, y, parameters=None, variant=CASES):
         Values for y-axis
     parameters
         Parameters of the algorithm, including:
-            format -> Format of the target image
+            Parameters.FORMAT -> Format of the target image
+            Parameters.TITLE -> Title of the image
     variant
-        Variant of the algorithm to apply, including: cases
+        Variant of the algorithm to apply, including:
+            - Variants.CASES
+            - Variants.ATTRIBUTES
+            - Variants.DATES
 
     Returns
     ------------
     temp_file_name
         Representation temporary file name
     """
-    return apply_plot(x, y, parameters=parameters, variant=variant)
+    return exec_utils.get_variant(variant).apply_plot(x, y, parameters=parameters)
 
 
-def apply_plot(x, y, parameters=None, variant=CASES):
+def apply_plot(x, y, parameters=None, variant=DEFAULT_VARIANT):
     """
     Method to plot (non-logarithmic way) the graph with axis values contained in x and y
 
@@ -46,19 +53,23 @@ def apply_plot(x, y, parameters=None, variant=CASES):
         Values for y-axis
     parameters
         Parameters of the algorithm, including:
-            format -> Format of the target image
+            Parameters.FORMAT -> Format of the target image
+            Parameters.TITLE -> Title of the image
     variant
-        Variant of the algorithm to apply, including: cases
+        Variant of the algorithm to apply, including:
+            - Variants.CASES
+            - Variants.ATTRIBUTES
+            - Variants.DATES
 
     Returns
     ------------
     temp_file_name
         Representation temporary file name
     """
-    return VERSIONS_PLOT[variant](x, y, parameters=parameters)
+    return exec_utils.get_variant(variant).apply_plot(x, y, parameters=parameters)
 
 
-def apply_semilogx(x, y, parameters=None, variant=CASES):
+def apply_semilogx(x, y, parameters=None, variant=DEFAULT_VARIANT):
     """
     Method to plot (semi-logarithmic way) the graph with axis values contained in x and y
 
@@ -70,13 +81,17 @@ def apply_semilogx(x, y, parameters=None, variant=CASES):
         Values for y-axis
     parameters
         Parameters of the algorithm, including:
-            format -> Format of the target image
+            Parameters.FORMAT -> Format of the target image
+            Parameters.TITLE -> Title of the image
     variant
-        Variant of the algorithm to apply, including: cases
+        Variant of the algorithm to apply, including:
+            - Variants.CASES
+            - Variants.ATTRIBUTES
+            - Variants.DATES
 
     Returns
     ------------
     temp_file_name
         Representation temporary file name
     """
-    return VERSIONS_SEMILOGX[variant](x, y, parameters=parameters)
+    return exec_utils.get_variant(variant).apply_semilogx(x, y, parameters=parameters)

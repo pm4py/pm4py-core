@@ -1,1 +1,1 @@
-from pm4py.evaluation.generalization import factory, evaluator, versions
+from pm4py.evaluation.generalization import evaluator, versions

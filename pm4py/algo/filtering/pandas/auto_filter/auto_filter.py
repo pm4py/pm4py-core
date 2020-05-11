@@ -3,6 +3,21 @@ from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
 from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
 from pm4py.algo.filtering.pandas.variants import variants_filter
 from pm4py.util import constants
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    DECREASING_FACTOR = "decreasingFactor"
+    POSITIVE = "positive"
+    RETURN_EA_COUNT = constants.RETURN_EA_COUNT_DICT_AUTOFILTER
+    ENABLE_ACTIVITES_FILTER = "enable_activities_filter"
+    ENABLE_VARIANTS_FILTER = "enable_variants_filter"
+    ENABLE_START_ACTIVITIES_FILTER = "enable_start_activities_filter"
+    ENABLE_END_ACTIVITIES_FILTER = "enable_end_activities_filter"
 
 
 def apply_auto_filter(df, parameters=None):
@@ -16,16 +31,16 @@ def apply_auto_filter(df, parameters=None):
         Dataframe
     parameters
         Eventual parameters passed to the algorithms:
-            case_id_glue -> Column where the case ID is present
-            activity_key -> Column where the activity is present
-            decreasingFactor -> Decreasing factor (provided to all algorithms)
-            enable_activities_filter -> Enables or disables auto filter on activities number
+            Parameters.CASE_ID_KEY -> Column where the case ID is present
+            Parameters.ACTIVITY_KEY -> Column where the activity is present
+            Parameters.DECREASING_FACTOR -> Decreasing factor (provided to all algorithms)
+            Parameters.ENABLE_ACTIVITES_FILTER -> Enables or disables auto filter on activities number
             (it is useful to disable if the dataframe has been already filtered by activities number before).
             Default is True
-            enable_variants_filter -> Enables or disables auto filter on variants (that is slower than others).
+            Parameters.ENABLE_VARIANTS_FILTER -> Enables or disables auto filter on variants (that is slower than others).
             Default is False
-            enable_start_activities_filter -> Enables or disables auto filter on start activities. Default is False
-            enable_end_activities_filter -> Enables or disables auto filter on end activities. Default is True
+            Parameters.ENABLE_START_ACTIVITIES_FILTER -> Enables or disables auto filter on start activities. Default is False
+            Parameters.ENABLE_END_ACTIVITIES_FILTER -> Enables or disables auto filter on end activities. Default is True
 
     Returns
     ------------
@@ -36,15 +51,13 @@ def apply_auto_filter(df, parameters=None):
     if parameters is None:
         parameters = {}
 
-    enable_activities_filter = parameters[
-        "enable_activities_filter"] if "enable_activities_filter" in parameters else True
-    enable_variants_filter = parameters["enable_variants_filter"] if "enable_variants_filter" in parameters else False
-    enable_start_activities_filter = parameters[
-        "enable_start_activities_filter"] if "enable_start_activities_filter" in parameters else False
-    enable_end_activities_filter = parameters[
-        "enable_end_activities_filter"] if "enable_end_activities_filter" in parameters else True
-    return_dict = parameters[
-        constants.RETURN_EA_COUNT_DICT_AUTOFILTER] if constants.RETURN_EA_COUNT_DICT_AUTOFILTER in parameters else False
+    enable_activities_filter = exec_utils.get_param_value(Parameters.ENABLE_ACTIVITES_FILTER, parameters, True)
+    enable_variants_filter = exec_utils.get_param_value(Parameters.ENABLE_VARIANTS_FILTER, parameters, False)
+    enable_start_activities_filter = exec_utils.get_param_value(Parameters.ENABLE_START_ACTIVITIES_FILTER, parameters,
+                                                                False)
+    enable_end_activities_filter = exec_utils.get_param_value(Parameters.ENABLE_END_ACTIVITIES_FILTER, parameters, True)
+    return_dict = exec_utils.get_param_value(Parameters.RETURN_EA_COUNT, parameters, False)
+
     ea_dict = None
 
     # list of filters that are applied:

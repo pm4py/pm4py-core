@@ -1,13 +1,15 @@
-from pm4py.objects.log.exporter.xes.versions import etree_xes_exp
-from pm4py.objects.log.util import compression
-from pm4py.objects.conversion.log import factory as log_conversion
+from enum import Enum
 
-ETREE = "etree"
-VERSIONS_STRING = {ETREE: etree_xes_exp.export_log_as_string}
-VERSIONS = {ETREE: etree_xes_exp.export_log}
+from pm4py.objects.conversion.log import converter as log_conversion
+from pm4py.objects.log.exporter.xes.variants import etree_xes_exp
+from pm4py.util import exec_utils
 
 
-def export_log_as_string(log, variant="etree", parameters=None):
+class Variants(Enum):
+    ETREE = etree_xes_exp
+
+
+def __export_log_as_string(log, variant=Variants.ETREE, parameters=None):
     """
     Method to export a XES from a log as a string
 
@@ -25,10 +27,12 @@ def export_log_as_string(log, variant="etree", parameters=None):
     string
         String describing the XES
     """
-    return VERSIONS_STRING[variant](log_conversion.apply(log, parameters=parameters), parameters=parameters)
+    parameters = dict() if parameters is None else parameters
+    variant = variant if isinstance(variant, Variants) else Variants.ETREE
+    return variant.value.apply(log_conversion.apply(log, parameters=parameters), parameters=parameters)
 
 
-def export_log(log, output_file_path, variant="etree", parameters=None):
+def __export_log(log, output_file_path, variant=Variants.ETREE, parameters=None):
     """
     Method to export a XES from a log
 
@@ -42,16 +46,14 @@ def export_log(log, output_file_path, variant="etree", parameters=None):
         Selected variant of the algorithm
     parameters
         Parameters of the algorithm:
-            compress -> Indicates that the XES file must be compressed
+            Parameters.COMPRESS -> Indicates that the XES file must be compressed
     """
-    if parameters is None:
-        parameters = {}
-    VERSIONS[variant](log_conversion.apply(log, parameters=parameters), output_file_path, parameters=parameters)
-    if "compress" in parameters and parameters["compress"]:
-        compression.compress(output_file_path)
+    parameters = dict() if parameters is None else parameters
+    return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters=parameters), output_file_path,
+                                                 parameters=parameters)
 
 
-def apply(log, output_file_path, variant="etree", parameters=None):
+def apply(log, output_file_path, variant=Variants.ETREE, parameters=None):
     """
     Method to export a XES from a log
 
@@ -65,6 +67,7 @@ def apply(log, output_file_path, variant="etree", parameters=None):
         Selected variant of the algorithm
     parameters
         Parameters of the algorithm:
-            compress -> Indicates that the XES file must be compressed
+            Parameters.COMPRESS -> Indicates that the XES file must be compressed
     """
-    export_log(log_conversion.apply(log, parameters=parameters), output_file_path, variant=variant, parameters=parameters)
+    __export_log(log, output_file_path, variant=variant,
+                 parameters=parameters)

@@ -2,7 +2,7 @@ import deprecation
 
 from pm4py import util as pmutil
 from pm4py.evaluation.generalization.versions import token_based
-from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import xes_constants as xes_util
 
 GENERALIZATION_TOKEN = "token_replay"

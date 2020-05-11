@@ -159,14 +159,13 @@
 <span id="pm4py-algo-simulation-playout-versions-basic-playout-module"></span><h2>pm4py.algo.simulation.playout.versions.basic_playout module<a class="headerlink" href="#module-pm4py.algo.simulation.playout.versions.basic_playout" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.algo.simulation.playout.versions.basic_playout.apply">
-<code class="sig-prename descclassname">pm4py.algo.simulation.playout.versions.basic_playout.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking=None</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/playout/versions/basic_playout.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.playout.versions.basic_playout.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.simulation.playout.versions.basic_playout.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/playout/versions/basic_playout.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.playout.versions.basic_playout.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do the playout of a Petrinet generating a log</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
 <li><p><strong>net</strong> – Petri net to play-out</p></li>
 <li><p><strong>initial_marking</strong> – Initial marking of the Petri net</p></li>
-<li><p><strong>final_marking</strong> – (If provided) Final marking of the Petri net</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
 <dt>Parameters of the algorithm:</dt><dd><p>noTraces -&gt; Number of traces of the log to generate
@@ -181,19 +180,21 @@ maxTraceLength -&gt; Maximum trace length</p>
 
 <dl class="function">
 <dt id="pm4py.algo.simulation.playout.versions.basic_playout.apply_playout">
-<code class="sig-prename descclassname">pm4py.algo.simulation.playout.versions.basic_playout.</code><code class="sig-name descname">apply_playout</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking=None</em>, <em class="sig-param">no_traces=100</em>, <em class="sig-param">max_trace_length=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/playout/versions/basic_playout.html#apply_playout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.playout.versions.basic_playout.apply_playout" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.simulation.playout.versions.basic_playout.</code><code class="sig-name descname">apply_playout</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">no_traces=100</em>, <em class="sig-param">max_trace_length=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/simulation/playout/versions/basic_playout.html#apply_playout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.simulation.playout.versions.basic_playout.apply_playout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do the playout of a Petrinet generating a log</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>net</strong> – Petri net to play-out</p></li>
 <li><p><strong>initial_marking</strong> – Initial marking of the Petri net</p></li>
-<li><p><strong>final_marking</strong> – (If provided) Final marking of the Petri net</p></li>
 <li><p><strong>no_traces</strong> – Number of traces to generate</p></li>
 <li><p><strong>max_trace_length</strong> – Maximum number of events per trace (do break)</p></li>
 </ul>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. pm4py.algo.simulation is deprecated; use pm4py.simulation entrypoint instead</p>
+</div>
 </dd></dl>
 
 </div>

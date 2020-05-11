@@ -162,7 +162,7 @@ Minor changes included in this release:
 3. commit 4fca12c1608818348bbd51e390140a8f7e79d7f6
     - alignments decomposition/recomposition
 4. commit 112dc3fc56f0d5e3f3ae0c737a5b0b001be31ba5
-    - fixed typo in Petri net weight
+    - fixed typo in Petri net weight (authorship PR: dominiquesommers)
 5. commit f8d52aa69a3d720d45a93b35c79b4241bb8f7691
     - added the possibility to provide the final marking to the playout factory
 6. commit 4a74ef159d03d3cf3ca43bd7c99f5f97da16baf8
@@ -173,3 +173,13 @@ Minor changes included in this release:
     - cleaning circular dependencies. relaxing some absolutely strict dependencies for some border-line configurations.
 9. commit 52f23361499ca1b850bef4607c25bdfd21001283
     - updated release notes and documentation
+10. commit 9780ef609db7bbb24323d3584abc2338f24252d3
+    - fixed problem with the copy of Event/Trace/EventStream/EventLog objects (signaled by M.Pegoraro)
+11. commit 51802f0828a6d207a5185c06a71bdb3a9faa1a46
+    - fixed problem with sampling log (signaled by jacksbrajin)
+12. commit b1f16bf087691181adcf5616aa85e3e454a7169c
+    - fixed problem with the discovery of 2-loops in the Heuristics Miner (authorship PR: czwilling)
+13. commit 9f76d2e61dbc1cc74fccafac6f60d9ce69b7c791
+    - added table_to_stream auxiliary function in dataframe_utils
+14. commit c96dcb16064ed156a1f48075445113bb5afc6264
+    - fixed get_variants_acyclic function in petri utils (authorship: M.Pegoraro)

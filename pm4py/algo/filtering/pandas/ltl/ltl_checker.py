@@ -2,10 +2,23 @@ from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_CASEID_KEY, \
     PARAMETER_CONSTANT_RESOURCE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
+from enum import Enum
+from pm4py.util import exec_utils
 
-POSITIVE = "positive"
-ENABLE_TIMESTAMP = "enable_timestamp"
-TIMESTAMP_DIFF_BOUNDARIES = "timestamp_diff_boundaries"
+
+class Parameters(Enum):
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
+    ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
+    RESOURCE_KEY = PARAMETER_CONSTANT_RESOURCE_KEY
+    POSITIVE = "positive"
+    ENABLE_TIMESTAMP = "enable_timestamp"
+    TIMESTAMP_DIFF_BOUNDARIES = "timestamp_diff_boundaries"
+
+
+POSITIVE = Parameters.POSITIVE
+ENABLE_TIMESTAMP = Parameters.ENABLE_TIMESTAMP
+TIMESTAMP_DIFF_BOUNDARIES = Parameters.TIMESTAMP_DIFF_BOUNDARIES
 
 
 def A_eventually_B(df0, A, B, parameters=None):
@@ -34,15 +47,12 @@ def A_eventually_B(df0, A, B, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
-    positive = parameters[POSITIVE] if POSITIVE in parameters else True
-    enable_timestamp = parameters[ENABLE_TIMESTAMP] if ENABLE_TIMESTAMP in parameters else False
-    timestamp_diff_boundaries = parameters[TIMESTAMP_DIFF_BOUNDARIES] if TIMESTAMP_DIFF_BOUNDARIES in parameters else []
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+    enable_timestamp = exec_utils.get_param_value(Parameters.ENABLE_TIMESTAMP, parameters, False)
+    timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
 
     colset = [case_id_glue, attribute_key]
     if enable_timestamp:
@@ -61,7 +71,7 @@ def A_eventually_B(df0, A, B, parameters=None):
     df_join = df_join[df_join["@@diffindex"] > 0]
 
     if enable_timestamp:
-        df_join["@@difftimestamp"] = (df_join[timestamp_key+"_2"] - df_join[timestamp_key]).astype('timedelta64[s]')
+        df_join["@@difftimestamp"] = (df_join[timestamp_key + "_2"] - df_join[timestamp_key]).astype('timedelta64[s]')
         if timestamp_diff_boundaries:
             df_join = df_join[df_join["@@difftimestamp"] >= timestamp_diff_boundaries[0][0]]
             df_join = df_join[df_join["@@difftimestamp"] <= timestamp_diff_boundaries[0][1]]
@@ -103,15 +113,12 @@ def A_eventually_B_eventually_C(df0, A, B, C, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
-    positive = parameters[POSITIVE] if POSITIVE in parameters else True
-    enable_timestamp = parameters[ENABLE_TIMESTAMP] if ENABLE_TIMESTAMP in parameters else False
-    timestamp_diff_boundaries = parameters[TIMESTAMP_DIFF_BOUNDARIES] if TIMESTAMP_DIFF_BOUNDARIES in parameters else []
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+    enable_timestamp = exec_utils.get_param_value(Parameters.ENABLE_TIMESTAMP, parameters, False)
+    timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
 
     colset = [case_id_glue, attribute_key]
     if enable_timestamp:
@@ -136,8 +143,9 @@ def A_eventually_B_eventually_C(df0, A, B, C, parameters=None):
     df_join = df_join[df_join["@@diffindex2"] > 0]
 
     if enable_timestamp:
-        df_join["@@difftimestamp"] = (df_join[timestamp_key+"_2"] - df_join[timestamp_key]).astype('timedelta64[s]')
-        df_join["@@difftimestamp2"] = (df_join[timestamp_key+"_3"] - df_join[timestamp_key+"_2"]).astype('timedelta64[s]')
+        df_join["@@difftimestamp"] = (df_join[timestamp_key + "_2"] - df_join[timestamp_key]).astype('timedelta64[s]')
+        df_join["@@difftimestamp2"] = (df_join[timestamp_key + "_3"] - df_join[timestamp_key + "_2"]).astype(
+            'timedelta64[s]')
         if timestamp_diff_boundaries:
             df_join = df_join[df_join["@@difftimestamp"] >= timestamp_diff_boundaries[0][0]]
             df_join = df_join[df_join["@@difftimestamp"] <= timestamp_diff_boundaries[0][1]]
@@ -185,15 +193,12 @@ def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    timestamp_key = parameters[
-        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
-    positive = parameters[POSITIVE] if POSITIVE in parameters else True
-    enable_timestamp = parameters[ENABLE_TIMESTAMP] if ENABLE_TIMESTAMP in parameters else False
-    timestamp_diff_boundaries = parameters[TIMESTAMP_DIFF_BOUNDARIES] if TIMESTAMP_DIFF_BOUNDARIES in parameters else []
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+    enable_timestamp = exec_utils.get_param_value(Parameters.ENABLE_TIMESTAMP, parameters, False)
+    timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
 
     colset = [case_id_glue, attribute_key]
     if enable_timestamp:
@@ -225,9 +230,11 @@ def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     df_join = df_join[df_join["@@diffindex3"] > 0]
 
     if enable_timestamp:
-        df_join["@@difftimestamp"] = (df_join[timestamp_key+"_2"] - df_join[timestamp_key]).astype('timedelta64[s]')
-        df_join["@@difftimestamp2"] = (df_join[timestamp_key+"_3"] - df_join[timestamp_key+"_2"]).astype('timedelta64[s]')
-        df_join["@@difftimestamp3"] = (df_join[timestamp_key+"_4"] - df_join[timestamp_key+"_3"]).astype('timedelta64[s]')
+        df_join["@@difftimestamp"] = (df_join[timestamp_key + "_2"] - df_join[timestamp_key]).astype('timedelta64[s]')
+        df_join["@@difftimestamp2"] = (df_join[timestamp_key + "_3"] - df_join[timestamp_key + "_2"]).astype(
+            'timedelta64[s]')
+        df_join["@@difftimestamp3"] = (df_join[timestamp_key + "_4"] - df_join[timestamp_key + "_3"]).astype(
+            'timedelta64[s]')
 
         if timestamp_diff_boundaries:
             df_join = df_join[df_join["@@difftimestamp"] >= timestamp_diff_boundaries[0][0]]
@@ -274,11 +281,9 @@ def A_next_B_next_C(df0, A, B, C, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    positive = parameters[POSITIVE] if POSITIVE in parameters else True
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     df = df0.copy()
     df = df[[case_id_glue, attribute_key]]
@@ -333,13 +338,10 @@ def four_eyes_principle(df0, A, B, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    resource_key = parameters[
-        PARAMETER_CONSTANT_RESOURCE_KEY] if PARAMETER_CONSTANT_RESOURCE_KEY in parameters else DEFAULT_RESOURCE_KEY
-    positive = parameters[POSITIVE] if POSITIVE in parameters else True
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, DEFAULT_RESOURCE_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     df = df0.copy()
     df = df[[case_id_glue, attribute_key, resource_key]]
@@ -386,13 +388,10 @@ def attr_value_different_persons(df0, A, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_glue = parameters[
-        PARAMETER_CONSTANT_CASEID_KEY] if PARAMETER_CONSTANT_CASEID_KEY in parameters else CASE_CONCEPT_NAME
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else DEFAULT_NAME_KEY
-    resource_key = parameters[
-        PARAMETER_CONSTANT_RESOURCE_KEY] if PARAMETER_CONSTANT_RESOURCE_KEY in parameters else DEFAULT_RESOURCE_KEY
-    positive = parameters[POSITIVE] if POSITIVE in parameters else True
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, DEFAULT_RESOURCE_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     df = df0.copy()
     df = df[[case_id_glue, attribute_key, resource_key]]

@@ -2,24 +2,26 @@ from pm4py.algo.enhancement.sna.versions.log import handover as log_handover, jo
     subcontracting as log_subcontracting, working_together as log_workingtogether
 from pm4py.algo.enhancement.sna.versions.pandas import handover as pd_handover, subcontracting as pd_subcontracting, \
     working_together as pd_workingtogether, jointactivities as pd_jointactivities
-from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.conversion.log import converter as log_conversion
+from pm4py.algo.enhancement.sna.parameters import Parameters
+from pm4py.util import exec_utils
+from enum import Enum
 import pandas
 import numpy as np
 
-HANDOVER = "handover"
-WORKING_TOGETHER = "working_together"
-SUBCONTRACTING = "subcontracting"
-JOINTACTIVITIES = "jointactivities"
 
-METRIC_NORMALIZATION = "metric_normalization"
+class Variants(Enum):
+    HANDOVER_LOG = log_handover
+    WORKING_TOGETHER_LOG = log_workingtogether
+    SUBCONTRACTING_LOG = log_subcontracting
+    JOINTACTIVITIES_LOG = log_jointactivities
+    HANDOVER_PANDAS = pd_handover
+    WORKING_TOGETHER_PANDAS = pd_workingtogether
+    SUBCONTRACTING_PANDAS = pd_subcontracting
+    JOINTACTIVITIES_PANDAS = pd_jointactivities
 
-VERSIONS_LOG = {HANDOVER: log_handover.apply, WORKING_TOGETHER: log_workingtogether.apply,
-                SUBCONTRACTING: log_subcontracting.apply, JOINTACTIVITIES: log_jointactivities.apply}
-VERSIONS_PANDAS = {HANDOVER: pd_handover.apply, WORKING_TOGETHER: pd_workingtogether.apply,
-                   SUBCONTRACTING: pd_subcontracting.apply, JOINTACTIVITIES: pd_jointactivities.apply}
 
-
-def apply(log, parameters=None, variant=HANDOVER):
+def apply(log, parameters=None, variant=Variants.HANDOVER_LOG):
     """
     Calculates a SNA metric
 
@@ -31,7 +33,14 @@ def apply(log, parameters=None, variant=HANDOVER):
         Possible parameters of the algorithm
     variant
         Variant of the algorithm to apply. Possible values:
-            handover, working_together
+            - Variants.HANDOVER_LOG
+            - Variants.WORKING_TOGETHER_LOG
+            - Variants.SUBCONTRACTING_LOG
+            - Variants.JOINTACTIVITIES_LOG
+            - Variants.HANDOVER_PANDAS
+            - Variants.WORKING_TOGETHER_PANDAS
+            - Variants.SUBCONTRACTING_PANDAS
+            - Variants.JOINTACTIVITIES_PANDAS
 
     Returns
     -----------
@@ -41,20 +50,13 @@ def apply(log, parameters=None, variant=HANDOVER):
     if parameters is None:
         parameters = {}
 
-    enable_metric_normalization = parameters[METRIC_NORMALIZATION] if METRIC_NORMALIZATION in parameters else False
+    enable_metric_normalization = exec_utils.get_param_value(Parameters.METRIC_NORMALIZATION, parameters, False)
 
-    if variant in VERSIONS_PANDAS and type(log) is pandas.DataFrame:
-        sna = VERSIONS_PANDAS[variant](log, parameters=parameters)
-        abs_max = np.max(np.abs(sna[0]))
-        if enable_metric_normalization and abs_max > 0:
-            sna[0] = sna[0] / abs_max
-        return sna
-    if variant in VERSIONS_LOG:
+    if variant in [Variants.HANDOVER_LOG, Variants.WORKING_TOGETHER_LOG, Variants.JOINTACTIVITIES_LOG,
+                   Variants.SUBCONTRACTING_LOG]:
         log = log_conversion.apply(log, parameters=parameters)
-        sna = VERSIONS_LOG[variant](log, parameters=parameters)
-        abs_max = np.max(np.abs(sna[0]))
-        if enable_metric_normalization and abs_max > 0:
-            sna[0] = sna[0] / abs_max
-        return sna
-
-    raise Exception("metric not implemented yet")
+    sna = exec_utils.get_variant(variant).apply(log, parameters=parameters)
+    abs_max = np.max(np.abs(sna[0]))
+    if enable_metric_normalization and abs_max > 0:
+        sna[0] = sna[0] / abs_max
+    return sna

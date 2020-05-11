@@ -1,9 +1,6 @@
 from pm4py.algo.conformance import alignments
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import apply as apply_alignments
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.util import xes_constants
-
-DEFAULT_NAME_KEY = xes_constants.DEFAULT_NAME_KEY
+from pm4py.evaluation.replay_fitness.parameters import Parameters
 
 
 def evaluate(aligned_traces, parameters=None):
@@ -47,7 +44,7 @@ def evaluate(aligned_traces, parameters=None):
 
 
 def apply(log, petri_net, initial_marking, final_marking, parameters=None):
-    alignment_result = alignments.factory.apply(log, petri_net, initial_marking, final_marking, parameters=parameters)
+    alignment_result = alignments.algorithm.apply(log, petri_net, initial_marking, final_marking, parameters=parameters)
     return evaluate(alignment_result)
 
 
@@ -72,7 +69,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, ac
     dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
     """
     alignment = apply_alignments(trace, petri_net, initial_marking, final_marking,
-                                 {PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key})
+                                 {Parameters.ACTIVITY_KEY: activity_key})
     fixed_costs = alignment['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
     if best_worst > 0:
         fitness = 1 - (fixed_costs / best_worst)

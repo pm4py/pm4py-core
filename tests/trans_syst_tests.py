@@ -13,10 +13,11 @@ class TransitionSystemTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         input_log = os.path.join(INPUT_DATA_DIR, "running-example.xes")
-        log = xes_importer.import_log(input_log)
-        ts = ts_alg.apply(log, parameters={parameters.PARAM_KEY_VIEW: parameters.VIEW_SEQUENCE,
-                                               parameters.PARAM_KEY_WINDOW: 3,
-                                               parameters.PARAM_KEY_DIRECTION: parameters.DIRECTION_FORWARD})
+        log = xes_importer.apply(input_log)
+        ts = ts_alg.apply(log, parameters={
+            ts_alg.Variants.VIEW_BASED.value.Parameters.PARAM_KEY_VIEW: ts_alg.Variants.VIEW_BASED.value.Parameters.VIEW_SEQUENCE,
+            ts_alg.Variants.VIEW_BASED.value.Parameters.PARAM_KEY_WINDOW: 3,
+            ts_alg.Variants.VIEW_BASED.value.Parameters.PARAM_KEY_DIRECTION: ts_alg.Variants.VIEW_BASED.value.Parameters.DIRECTION_FORWARD})
         viz = pm4py.visualization.transition_system.util.visualize_graphviz.visualize(ts)
         del viz
 

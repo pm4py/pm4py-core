@@ -1,15 +1,12 @@
-from pm4py import util as pmutil
 from pm4py.objects import log as log_lib
 from pm4py.evaluation.precision import utils as precision_utils
 from pm4py.objects import petri
 from pm4py.objects.petri import align_utils as utils
 from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
-
-PARAM_ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
-
-PARAMETERS = [PARAM_ACTIVITY_KEY]
-
+from pm4py.evaluation.precision.parameters import Parameters
+from pm4py.util import exec_utils
+from pm4py.util import xes_constants
 
 def apply(log, net, marking, final_marking, parameters=None):
     """
@@ -27,7 +24,7 @@ def apply(log, net, marking, final_marking, parameters=None):
         Final marking
     parameters
         Parameters of the algorithm, including:
-            pm4py.util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY -> Activity key
+            Parameters.ACTIVITY_KEY -> Activity key
     """
 
     if parameters is None:
@@ -35,8 +32,8 @@ def apply(log, net, marking, final_marking, parameters=None):
 
     debug_level = parameters["debug_level"] if "debug_level" in parameters else 0
 
-    activity_key = parameters[
-        PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, log_lib.util.xes.DEFAULT_NAME_KEY)
+
     # default value for precision, when no activated transitions (not even by looking at the initial marking) are found
     precision = 1.0
     sum_ee = 0
@@ -111,7 +108,7 @@ def transform_markings_from_sync_to_original_net(markings0, net, parameters=None
     net
         Petri net
     parameters
-        Parameters of the Petri net
+        Parameters of the algorithm
 
     Returns
     -------------
@@ -228,8 +225,7 @@ def build_sync_net(trace, petri_net, initial_marking, final_marking, parameters=
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[
-        PARAM_ACTIVITY_KEY] if PARAM_ACTIVITY_KEY in parameters else log_lib.util.xes.DEFAULT_NAME_KEY
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
 
     trace_net, trace_im, trace_fm = petri.utils.construct_trace_net(trace, activity_key=activity_key)
 

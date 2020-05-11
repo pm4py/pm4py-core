@@ -2,8 +2,15 @@ from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log.log import EventLog, Trace
 from pm4py.util import xes_constants as xes
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    DECREASING_FACTOR = "decreasingFactor"
+    POSITIVE = "positive"
 
 
 def apply(log, paths, parameters=None):
@@ -18,8 +25,8 @@ def apply(log, paths, parameters=None):
         Paths that we are looking for (expressed as tuple of 2 strings)
     parameters
         Parameters of the algorithm, including:
-            activity_key -> Attribute identifying the activity in the log
-            positive -> Indicate if events should be kept/removed
+            Parameters.ATTRIBUTE_KEY -> Attribute identifying the activity in the log
+            Parameters.POSITIVE -> Indicate if events should be kept/removed
 
     Returns
     -----------
@@ -28,9 +35,8 @@ def apply(log, paths, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ATTRIBUTE_KEY] if PARAMETER_CONSTANT_ATTRIBUTE_KEY in parameters else xes.DEFAULT_NAME_KEY
-    positive = parameters["positive"] if "positive" in parameters else True
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     filtered_log = EventLog()
     for trace in log:
         found = False
@@ -183,9 +189,9 @@ def apply_auto_filter(log, variants=None, parameters=None):
         (If specified) Dictionary with variant as the key and the list of traces as the value
     parameters
         Parameters of the algorithm, including:
-            decreasingFactor -> Decreasing factor (stops the algorithm when the next activity by occurrence is below
+            Parameters.DECREASING_FACTOR -> Decreasing factor (stops the algorithm when the next activity by occurrence is below
             this factor in comparison to previous)
-            attribute_key -> Attribute key (must be specified if different from concept:name)
+            Parameters.ATTRIBUTE_KEY -> Attribute key (must be specified if different from concept:name)
 
     Returns
     ---------
@@ -194,12 +200,11 @@ def apply_auto_filter(log, variants=None, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasing_factor = parameters[
-        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters,
+                                                   filtering_constants.DECREASING_FACTOR)
 
-    parameters_variants = {PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
+    parameters_variants = {variants_filter.Parameters.ACTIVITY_KEY: attribute_key}
     if variants is None:
         variants = variants_filter.get_variants(log, parameters=parameters_variants)
     vc = variants_filter.get_variants_sorted_by_count(variants)

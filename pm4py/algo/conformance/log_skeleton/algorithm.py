@@ -1,13 +1,17 @@
 from pm4py.algo.conformance.log_skeleton.versions import classic
 from pm4py.objects.log.log import Trace
-from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.conversion.log import converter as log_conversion
+from enum import Enum
+from pm4py.util import exec_utils
 
-CLASSIC = "classic"
 
-DEFAULT_VARIANT = CLASSIC
 
-VERSIONS_LOG = {CLASSIC: classic.apply_log}
-VERSIONS_TRACE = {CLASSIC: classic.apply_trace}
+class Variants(Enum):
+    CLASSIC = classic
+
+
+CLASSIC = Variants.CLASSIC
+DEFAULT_VARIANT = Variants.CLASSIC
 
 
 def apply(obj, model, variant=DEFAULT_VARIANT, parameters=None):
@@ -22,24 +26,26 @@ def apply(obj, model, variant=DEFAULT_VARIANT, parameters=None):
     model
         Log-skeleton model
     variant
-        Variant of the algorithm, possible values: classic
+        Variant of the algorithm, possible values: Variants.CLASSIC
     parameters
         Parameters of the algorithm, including:
-        - the activity key (pm4py:param:activity_key)
-        - the list of considered constraints (considered_constraints) among: equivalence, always_after, always_before, never_together, directly_follows, activ_freq
+        - Parameters.ACTIVITY_KEY
+        - Parameters.CONSIDERED_CONSTRAINTS, among: equivalence, always_after, always_before, never_together, directly_follows, activ_freq
 
     Returns
     --------------
     aligned_traces
         Conformance checking results for each trace:
-        - is_fit => boolean that tells if the trace is perfectly fit according to the model
-        - dev_fitness => deviation based fitness (between 0 and 1; the more the trace is near to 1 the more fit is)
-        - deviations => list of deviations in the model
+        - Outputs.IS_FIT => boolean that tells if the trace is perfectly fit according to the model
+        - Outputs.DEV_FITNESS => deviation based fitness (between 0 and 1; the more the trace is near to 1 the more fit is)
+        - Outputs.DEVIATIONS => list of deviations in the model
     """
     if parameters is None:
         parameters = {}
 
     if type(obj) is Trace:
-        return VERSIONS_TRACE[variant](log_conversion.apply(obj, parameters=parameters), model, parameters=parameters)
+        return exec_utils.get_variant(variant).apply_trace(log_conversion.apply(obj, parameters=parameters), model,
+                                                           parameters=parameters)
     else:
-        return VERSIONS_LOG[variant](log_conversion.apply(obj, parameters=parameters), model, parameters=parameters)
+        return exec_utils.get_variant(variant).apply_log(log_conversion.apply(obj, parameters=parameters), model,
+                                                         parameters=parameters)

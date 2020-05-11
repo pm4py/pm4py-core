@@ -1,10 +1,11 @@
 from pm4py.objects.dfg.retrieval import log as log_retrieval
 from pm4py.statistics.attributes.log import get as attr_get
 from pm4py.util import xes_constants as xes
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.visualization.petrinet.common import visualize
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_decorations_from_dfg_spaths_acticount
 from pm4py.visualization.petrinet.util.vis_trans_shortest_paths import get_shortest_paths
+from pm4py.visualization.petrinet.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def get_decorated_net(net, initial_marking, final_marking, log, parameters=None, variant="frequency"):
@@ -34,18 +35,10 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
     if parameters is None:
         parameters = {}
 
-    aggregation_measure = "mean"
+    aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters,
+                                                     "sum" if "frequency" in variant else "mean")
 
-    if "frequency" in variant:
-        aggregation_measure = "sum"
-    elif "performance" in variant:
-        aggregation_measure = "mean"
-
-    if "aggregationMeasure" in parameters:
-        aggregation_measure = parameters["aggregationMeasure"]
-
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
     # we find the DFG
     if variant == "performance":

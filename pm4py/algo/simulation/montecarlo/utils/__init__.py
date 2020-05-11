@@ -1,1 +1,1 @@
-from pm4py.algo.simulation.montecarlo.utils import replay
+from pm4py.simulation.montecarlo.utils import replay
