@@ -151,35 +151,37 @@ This is a minor release, consisting of the following changes:
 
 
 ===== PM4PY 1.3.0 =====
-This is *major* release, consisting of the following changes:
-1.
+This is *major* release, consisting of the following major changes:
+1. commit b4cea4be6fe6ff90f58c405f9f0acb4dbac973f4
+    - The factories have been renamed (backward-compatible, deprecation) by a more meaningful name.
+2. commit e8f250fec6781c088da8204923ad8817f1b5d689
+    - decision point mining with alignments (for any scikit classification approach) is now integrated.
+3. commit 4ff811ab80b5df15e5ec1da082b4f76c72dcf684
+    - trace attribute hierarchical clustering is now integrated (MSc Thesis Yukun Cao; FIT/RWTH)
+4. commit 4fca12c1608818348bbd51e390140a8f7e79d7f6
+    - alignments decomposition/recomposition is now integrated
+
 
 Minor changes included in this release:
-1. commit e8f250fec6781c088da8204923ad8817f1b5d689
-    - decision point mining with alignments (for any scikit classification approach)
-2. commit 4ff811ab80b5df15e5ec1da082b4f76c72dcf684
-    - trace attribute hierarchical clustering (MSc Thesis Yukun Cao)
-3. commit 4fca12c1608818348bbd51e390140a8f7e79d7f6
-    - alignments decomposition/recomposition
-4. commit 112dc3fc56f0d5e3f3ae0c737a5b0b001be31ba5
+1. commit 112dc3fc56f0d5e3f3ae0c737a5b0b001be31ba5
     - fixed typo in Petri net weight (authorship PR: dominiquesommers)
-5. commit f8d52aa69a3d720d45a93b35c79b4241bb8f7691
+2. commit f8d52aa69a3d720d45a93b35c79b4241bb8f7691
     - added the possibility to provide the final marking to the playout factory
-6. commit 4a74ef159d03d3cf3ca43bd7c99f5f97da16baf8
+3. commit 4a74ef159d03d3cf3ca43bd7c99f5f97da16baf8
     - fixed some problems in the evaluation of replay fitness of recomposed alignments
-7. commit 9a5a64ea2941d69be07ee0e93b771c80f5820166
+4. commit 9a5a64ea2941d69be07ee0e93b771c80f5820166
     - introduced hash functions for event log objects
-8. commit 1f40a17dcade522d308b56a9f53b40c5b8a95dfc
+5. commit 1f40a17dcade522d308b56a9f53b40c5b8a95dfc
     - cleaning circular dependencies. relaxing some absolutely strict dependencies for some border-line configurations.
-9. commit 52f23361499ca1b850bef4607c25bdfd21001283
+6. commit 52f23361499ca1b850bef4607c25bdfd21001283
     - updated release notes and documentation
-10. commit 9780ef609db7bbb24323d3584abc2338f24252d3
+7. commit 9780ef609db7bbb24323d3584abc2338f24252d3
     - fixed problem with the copy of Event/Trace/EventStream/EventLog objects (signaled by M.Pegoraro)
-11. commit 51802f0828a6d207a5185c06a71bdb3a9faa1a46
+8. commit 51802f0828a6d207a5185c06a71bdb3a9faa1a46
     - fixed problem with sampling log (signaled by jacksbrajin)
-12. commit b1f16bf087691181adcf5616aa85e3e454a7169c
+9. commit b1f16bf087691181adcf5616aa85e3e454a7169c
     - fixed problem with the discovery of 2-loops in the Heuristics Miner (authorship PR: czwilling)
-13. commit 9f76d2e61dbc1cc74fccafac6f60d9ce69b7c791
+10. commit 9f76d2e61dbc1cc74fccafac6f60d9ce69b7c791
     - added table_to_stream auxiliary function in dataframe_utils
-14. commit c96dcb16064ed156a1f48075445113bb5afc6264
+11. commit c96dcb16064ed156a1f48075445113bb5afc6264
     - fixed get_variants_acyclic function in petri utils (authorship: M.Pegoraro)
