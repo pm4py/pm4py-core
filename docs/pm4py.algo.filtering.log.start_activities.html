@@ -157,9 +157,26 @@
 </div>
 <div class="section" id="module-pm4py.algo.filtering.log.start_activities.start_activities_filter">
 <span id="pm4py-algo-filtering-log-start-activities-start-activities-filter-module"></span><h2>pm4py.algo.filtering.log.start_activities.start_activities_filter module<a class="headerlink" href="#module-pm4py.algo.filtering.log.start_activities.start_activities_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.algo.filtering.log.start_activities.start_activities_filter.Parameters">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.algo.filtering.log.start_activities.start_activities_filter.</code><code class="sig-name descname">Parameters</code><a class="reference internal" href="_modules/pm4py/algo/filtering/log/start_activities/start_activities_filter.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.start_activities.start_activities_filter.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.start_activities.start_activities_filter.Parameters.ACTIVITY_KEY">
+<code class="sig-name descname">ACTIVITY_KEY</code><em class="property"> = 'pm4py:param:activity_key'</em><a class="headerlink" href="#pm4py.algo.filtering.log.start_activities.start_activities_filter.Parameters.ACTIVITY_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pm4py.algo.filtering.log.start_activities.start_activities_filter.Parameters.DECREASING_FACTOR">
+<code class="sig-name descname">DECREASING_FACTOR</code><em class="property"> = 'decreasingFactor'</em><a class="headerlink" href="#pm4py.algo.filtering.log.start_activities.start_activities_filter.Parameters.DECREASING_FACTOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.start_activities.start_activities_filter.apply">
-<code class="descclassname">pm4py.algo.filtering.log.start_activities.start_activities_filter.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>log</em>, <em>admitted_start_activities</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/start_activities/start_activities_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.start_activities.start_activities_filter.apply" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.start_activities.start_activities_filter.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">admitted_start_activities</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/start_activities/start_activities_filter.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.start_activities.start_activities_filter.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the log on the specified start activities</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -180,7 +197,7 @@
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.start_activities.start_activities_filter.apply_auto_filter">
-<code class="descclassname">pm4py.algo.filtering.log.start_activities.start_activities_filter.</code><code class="descname">apply_auto_filter</code><span class="sig-paren">(</span><em>log</em>, <em>variants=None</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/start_activities/start_activities_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.start_activities.start_activities_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.start_activities.start_activities_filter.</code><code class="sig-name descname">apply_auto_filter</code><span class="sig-paren">(</span><em class="sig-param">log</em>, <em class="sig-param">variants=None</em>, <em class="sig-param">parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/start_activities/start_activities_filter.html#apply_auto_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.start_activities.start_activities_filter.apply_auto_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply an end attributes filter detecting automatically a percentage</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -189,9 +206,9 @@
 <li><p><strong>variants</strong> – (If specified) Dictionary with variant as the key and the list of traces as the value</p></li>
 <li><p><strong>parameters</strong> –</p>
 <dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>decreasingFactor -&gt; Decreasing factor (stops the algorithm when the next activity by occurrence is below
+<dt>Parameters of the algorithm, including:</dt><dd><p>Parameters.DECREASING_FACTOR -&gt; Decreasing factor (stops the algorithm when the next activity by occurrence is below
 this factor in comparison to previous)
-attribute_key -&gt; Attribute key (must be specified if different from concept:name)</p>
+Parameters.ATTRIBUTE_KEY -&gt; Attribute key (must be specified if different from concept:name)</p>
 </dd>
 </dl>
 </li>
@@ -208,7 +225,7 @@ attribute_key -&gt; Attribute key (must be specified if different from concept:n
 
 <dl class="function">
 <dt id="pm4py.algo.filtering.log.start_activities.start_activities_filter.filter_log_by_start_activities">
-<code class="descclassname">pm4py.algo.filtering.log.start_activities.start_activities_filter.</code><code class="descname">filter_log_by_start_activities</code><span class="sig-paren">(</span><em>start_activities</em>, <em>variants</em>, <em>vc</em>, <em>threshold</em>, <em>activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/start_activities/start_activities_filter.html#filter_log_by_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.start_activities.start_activities_filter.filter_log_by_start_activities" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.algo.filtering.log.start_activities.start_activities_filter.</code><code class="sig-name descname">filter_log_by_start_activities</code><span class="sig-paren">(</span><em class="sig-param">start_activities</em>, <em class="sig-param">variants</em>, <em class="sig-param">vc</em>, <em class="sig-param">threshold</em>, <em class="sig-param">activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/start_activities/start_activities_filter.html#filter_log_by_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.start_activities.start_activities_filter.filter_log_by_start_activities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keep only variants of the log with a start activity which number of occurrences is above the threshold</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -225,31 +242,6 @@ attribute_key -&gt; Attribute key (must be specified if different from concept:n
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>filtered_log</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pm4py.algo.filtering.log.start_activities.start_activities_filter.get_start_activities">
-<code class="descclassname">pm4py.algo.filtering.log.start_activities.start_activities_filter.</code><code class="descname">get_start_activities</code><span class="sig-paren">(</span><em>log</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/algo/filtering/log/start_activities/start_activities_filter.html#get_start_activities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.algo.filtering.log.start_activities.start_activities_filter.get_start_activities" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the start attributes of the log along with their count</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul>
-<li><p><strong>log</strong> – Log</p></li>
-<li><p><strong>parameters</strong> –</p>
-<dl class="simple">
-<dt>Parameters of the algorithm, including:</dt><dd><p>attribute_key -&gt; Attribute key (must be specified if different from concept:name)</p>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dictionary of start attributes associated with their count</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>start_activities</p>
 </dd>
 </dl>
 </dd></dl>

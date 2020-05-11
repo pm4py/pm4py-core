@@ -2,23 +2,25 @@ import os
 import traceback
 
 import pm4py
-from pm4py.algo.discovery.inductive import factory as inductive_factory
-from pm4py.objects.log.importer.xes import factory as xes_importer
-from pm4py.visualization.petrinet import factory as pn_vis_factory
+from pm4py.algo.discovery.inductive import algorithm as inductive
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.visualization.petrinet import visualizer as pn_vis
 
 
 def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "running-example.xes")
 
-    log = xes_importer.import_log(log_path)
+    log = xes_importer.apply(log_path)
 
-    net, marking, final_marking = inductive_factory.apply(log)
+    net, marking, final_marking = inductive.apply(log)
     for place in marking:
         print("initial marking " + place.name)
     for place in final_marking:
         print("final marking " + place.name)
-    gviz = pn_vis_factory.apply(net, marking, final_marking, parameters={"format": "svg", "debug": True})
-    pn_vis_factory.view(gviz)
+    gviz = pn_vis.apply(net, marking, final_marking,
+                        parameters={pn_vis.Variants.WO_DECORATION.value.Parameters.FORMAT: "svg",
+                                    pn_vis.Variants.WO_DECORATION.value.Parameters.DEBUG: True})
+    pn_vis.view(gviz)
 
     if True:
         fit_traces = []

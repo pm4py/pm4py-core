@@ -5,8 +5,14 @@ from pm4py.objects import petri
 from pm4py.objects.log.log import EventLog, Trace
 from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri.petrinet import Marking
+from pm4py.util import exec_utils
+from enum import Enum
 
-REMOVE_UNCONNECTED = "remove_unconnected"
+
+class Parameters(Enum):
+    ACTIVITY_KEY = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    REMOVE_UNCONNECTED = "remove_unconnected"
+
 
 def preprocessing(log, parameters=None):
     """
@@ -39,9 +45,8 @@ def preprocessing(log, parameters=None):
 
     if parameters is None:
         parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+
     # List for values that have a loop of length one
     loop_one_list = []
     # Log without activities that have a loop of length one
@@ -109,7 +114,7 @@ def preprocessing(log, parameters=None):
     return (filtered_log, loop_one_list, A_filtered, B_filtered, loops_in_first_place, loops_in_last_place)
 
 
-def get_relations(log, parameters=None):
+def get_relations(log):
     """
     Applying the classic Alpha Algorithm
 
@@ -117,8 +122,6 @@ def get_relations(log, parameters=None):
     --------------
     log
         Filtered log
-    parameters
-        Parameters of the algorithm
 
     Returns
     --------------
@@ -129,11 +132,6 @@ def get_relations(log, parameters=None):
     follows
         Follows relations
     """
-    if parameters is None:
-        parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     # finding loops of length two
     # ordering relations
     triangle = {}
@@ -263,7 +261,7 @@ def get_relations(log, parameters=None):
     return causal, parallel, follows
 
 
-def processing(log, causal, follows, parameters=None):
+def processing(log, causal, follows):
     """
     Applying the Alpha Miner with the new relations
 
@@ -400,7 +398,7 @@ def get_sharp_relations_for_sets(follows, set_1, set_2):
     return True
 
 
-def postprocessing(net, initial_marking, final_marking, A, B, pairs, loop_one_list, parameters=None):
+def postprocessing(net, initial_marking, final_marking, A, B, pairs, loop_one_list):
     """
     Adding the filtered transitions to the Petri net
 
@@ -414,8 +412,6 @@ def postprocessing(net, initial_marking, final_marking, A, B, pairs, loop_one_li
         See Paper for definition
     B
         See Paper for definition
-    parameters
-        Possible parameters of the algorithm
 
     Returns
     ------------
@@ -430,11 +426,7 @@ def postprocessing(net, initial_marking, final_marking, A, B, pairs, loop_one_li
     for label in loop_one_list:
         label_transition_dict[label] = petri.petrinet.PetriNet.Transition(label, label)
         net.transitions.add(label_transition_dict[label])
-    if parameters is None:
-        parameters = {}
-    if not pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+
     # F L1L
     # Key is specific loop element
     for key, value in A.items():
@@ -474,16 +466,15 @@ def apply(trace_log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
-    remove_unconnected = parameters[REMOVE_UNCONNECTED] if REMOVE_UNCONNECTED in parameters else False
+
+    remove_unconnected = exec_utils.get_param_value(Parameters.REMOVE_UNCONNECTED, parameters, False)
 
     filtered_log, loop_one_list, A_filtered, B_filtered, loops_in_first, loops_in_last = preprocessing(trace_log,
                                                                                                        parameters=parameters)
-    causal, parallel, follows = get_relations(filtered_log, parameters=parameters)
-    net, initial_marking, final_marking, pairs = processing(filtered_log, causal, follows, parameters=parameters)
+    causal, parallel, follows = get_relations(filtered_log)
+    net, initial_marking, final_marking, pairs = processing(filtered_log, causal, follows)
     net, initial_marking, final_marking = postprocessing(net, initial_marking, final_marking, A_filtered, B_filtered,
-                                                         pairs, loop_one_list, parameters=parameters)
+                                                         pairs, loop_one_list)
 
     net, initial_marking = remove_initial_hidden_if_possible(net, initial_marking)
     net = remove_final_hidden_if_possible(net, final_marking)

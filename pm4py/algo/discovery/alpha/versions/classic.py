@@ -23,7 +23,8 @@ from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.objects import petri
 from pm4py.objects.petri.petrinet import Marking
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.algo.discovery.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def apply(log, parameters=None):
@@ -57,13 +58,11 @@ def apply(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = pm_util.xes_constants.DEFAULT_NAME_KEY
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
+                                              pm_util.xes_constants.DEFAULT_NAME_KEY)
     dfg = {k: v for k, v in dfg_inst.apply(log, parameters=parameters).items() if v > 0}
-    start_activities = endpoints.derive_start_activities_from_log(log, parameters[
-        pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
-    end_activities = endpoints.derive_end_activities_from_log(log, parameters[
-        pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY])
+    start_activities = endpoints.derive_start_activities_from_log(log, activity_key)
+    end_activities = endpoints.derive_end_activities_from_log(log, activity_key)
     return apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=parameters)
 
 
@@ -121,8 +120,9 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    if pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
-        parameters[pm_util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = pm_util.xes_constants.xes.DEFAULT_NAME_KEY
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
+                                              pm_util.xes_constants.DEFAULT_NAME_KEY)
 
     if start_activities is None:
         start_activities = dfg_utils.infer_start_activities(dfg)
@@ -141,8 +141,7 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
     labels = list(labels)
 
     alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(start_activities, end_activities, dfg,
-                                                                          activity_key=parameters[
-                                                                              PARAMETER_CONSTANT_ACTIVITY_KEY])
+                                                                          activity_key=activity_key)
     pairs = list(map(lambda p: ({p[0]}, {p[1]}),
                      filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p),
                             alpha_abstraction.causal_relation)))

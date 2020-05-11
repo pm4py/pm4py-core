@@ -1,4 +1,4 @@
-from pm4py.objects.conversion.log.versions.to_dataframe import get_dataframe_from_event_stream
+from pm4py.objects.conversion.log import converter
 
 
 def export_log_as_string(log, parameters=None):
@@ -17,12 +17,7 @@ def export_log_as_string(log, parameters=None):
     string
         String representing the CSV log
     """
-    if parameters is None:
-        parameters = {}
-    del parameters
-
-    df = get_dataframe_from_event_stream(log)
-
+    df = converter.apply(log, variant=converter.Variants.TO_DATA_FRAME)
     return df.to_string()
 
 
@@ -43,9 +38,10 @@ def export(log, output_file_path, parameters=None):
         parameters = {}
     del parameters
 
-    df = get_dataframe_from_event_stream(log)
+    df = converter.apply(log, variant=converter.Variants.TO_DATA_FRAME)
     df.to_csv(output_file_path, index=False)
 
 
 def export_log(log, output_file_path, parameters=None):
     return export(log, output_file_path, parameters=parameters)
+

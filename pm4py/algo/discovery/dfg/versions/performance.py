@@ -11,9 +11,9 @@ def apply(log, parameters=None):
         Log
     parameters
         Possible parameters passed to the algorithms:
-            aggregationMeasure -> performance aggregation measure (min, max, mean, median)
-            activity_key -> Attribute to use as activity
-            timestamp_key -> Attribute to use as timestamp
+            Parameters.AGGREGATION_MEASURE -> performance aggregation measure (min, max, mean, median)
+            Parameters.ACTIVITY_KEY -> Attribute to use as activity
+            Parameters.TIMESTAMP_KEY -> Attribute to use as timestamp
 
     Returns
     -------

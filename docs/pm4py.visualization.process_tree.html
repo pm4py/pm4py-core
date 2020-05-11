@@ -84,6 +84,7 @@
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.process_tree.factory">pm4py.visualization.process_tree.factory module</a></li>
+<li><a class="reference internal" href="#module-pm4py.visualization.process_tree.visualizer">pm4py.visualization.process_tree.visualizer module</a></li>
 <li><a class="reference internal" href="#module-pm4py.visualization.process_tree">Module contents</a></li>
 </ul>
 </li>
@@ -173,8 +174,8 @@
 <span id="pm4py-visualization-process-tree-factory-module"></span><h2>pm4py.visualization.process_tree.factory module<a class="headerlink" href="#module-pm4py.visualization.process_tree.factory" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.visualization.process_tree.factory.apply">
-<code class="descclassname">pm4py.visualization.process_tree.factory.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>tree</em>, <em>parameters=None</em>, <em>variant='wo_decoration'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/process_tree/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.process_tree.factory.apply" title="Permalink to this definition">¶</a></dt>
-<dd><p>Factory method for Process Tree representation</p>
+<code class="sig-prename descclassname">pm4py.visualization.process_tree.factory.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">tree0</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant='wo_decoration'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/process_tree/factory.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.process_tree.factory.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for Process Tree representation</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
@@ -199,11 +200,93 @@ format -&gt; Format of the image (PDF, PNG, SVG; default PNG)</p>
 <dd class="field-odd"><p>gviz</p>
 </dd>
 </dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use visualizer module instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="pm4py.visualization.process_tree.factory.save">
-<code class="descclassname">pm4py.visualization.process_tree.factory.</code><code class="descname">save</code><span class="sig-paren">(</span><em>gviz</em>, <em>output_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/process_tree/factory.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.process_tree.factory.save" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.visualization.process_tree.factory.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">gviz</em>, <em class="sig-param">output_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/process_tree/factory.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.process_tree.factory.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the diagram</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gviz</strong> – GraphViz diagram</p></li>
+<li><p><strong>output_file_path</strong> – Path where the GraphViz output should be saved</p></li>
+</ul>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use visualizer module instead.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.process_tree.factory.view">
+<code class="sig-prename descclassname">pm4py.visualization.process_tree.factory.</code><code class="sig-name descname">view</code><span class="sig-paren">(</span><em class="sig-param">gviz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/process_tree/factory.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.process_tree.factory.view" title="Permalink to this definition">¶</a></dt>
+<dd><p>View the diagram</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>gviz</strong> – GraphViz diagram</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.0: </span>This will be removed in 2.0.0. Use visualizer module instead.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pm4py.visualization.process_tree.visualizer">
+<span id="pm4py-visualization-process-tree-visualizer-module"></span><h2>pm4py.visualization.process_tree.visualizer module<a class="headerlink" href="#module-pm4py.visualization.process_tree.visualizer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pm4py.visualization.process_tree.visualizer.Variants">
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.visualization.process_tree.visualizer.</code><code class="sig-name descname">Variants</code><a class="reference internal" href="_modules/pm4py/visualization/process_tree/visualizer.html#Variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.process_tree.visualizer.Variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pm4py.visualization.process_tree.visualizer.Variants.WO_DECORATION">
+<code class="sig-name descname">WO_DECORATION</code><em class="property"> = &lt;module 'pm4py.visualization.process_tree.versions.wo_decoration' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\process_tree\\versions\\wo_decoration.py'&gt;</em><a class="headerlink" href="#pm4py.visualization.process_tree.visualizer.Variants.WO_DECORATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.process_tree.visualizer.apply">
+<code class="sig-prename descclassname">pm4py.visualization.process_tree.visualizer.</code><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">tree0</em>, <em class="sig-param">parameters=None</em>, <em class="sig-param">variant=&lt;Variants.WO_DECORATION: &lt;module 'pm4py.visualization.process_tree.versions.wo_decoration' from 'C:\\Users\\aless\\FRAUNHOFER\\pm4py-source\\pm4py\\visualization\\process_tree\\versions\\wo_decoration.py'&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/process_tree/visualizer.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.process_tree.visualizer.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for Process Tree representation</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>tree</strong> – Process tree</p></li>
+<li><p><strong>parameters</strong> –</p>
+<dl class="simple">
+<dt>Possible parameters of the algorithm:</dt><dd><p>Parameters.FORMAT -&gt; Format of the image (PDF, PNG, SVG; default PNG)</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>variant</strong> –</p>
+<dl class="simple">
+<dt>Variant of the algorithm to use:</dt><dd><ul class="simple">
+<li><p>Variants.WO_DECORATION</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>GraphViz object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>gviz</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pm4py.visualization.process_tree.visualizer.save">
+<code class="sig-prename descclassname">pm4py.visualization.process_tree.visualizer.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">gviz</em>, <em class="sig-param">output_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/process_tree/visualizer.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.process_tree.visualizer.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the diagram</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -216,8 +299,8 @@ format -&gt; Format of the image (PDF, PNG, SVG; default PNG)</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pm4py.visualization.process_tree.factory.view">
-<code class="descclassname">pm4py.visualization.process_tree.factory.</code><code class="descname">view</code><span class="sig-paren">(</span><em>gviz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/process_tree/factory.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.process_tree.factory.view" title="Permalink to this definition">¶</a></dt>
+<dt id="pm4py.visualization.process_tree.visualizer.view">
+<code class="sig-prename descclassname">pm4py.visualization.process_tree.visualizer.</code><code class="sig-name descname">view</code><span class="sig-paren">(</span><em class="sig-param">gviz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/visualization/process_tree/visualizer.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.visualization.process_tree.visualizer.view" title="Permalink to this definition">¶</a></dt>
 <dd><p>View the diagram</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

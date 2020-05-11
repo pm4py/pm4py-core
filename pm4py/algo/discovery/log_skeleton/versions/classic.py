@@ -1,9 +1,9 @@
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.algo.discovery.log_skeleton.parameters import NOISE_THRESHOLD
 from pm4py.objects.log.util import xes
 from collections import Counter
 from pm4py.algo.discovery.log_skeleton import trace_skel
-import math
+from pm4py.algo.discovery.log_skeleton.parameters import Parameters
+from pm4py.algo.discovery.log_skeleton.outputs import Outputs
+from pm4py.util import exec_utils
 
 
 def equivalence(logs_traces, all_activs, noise_threshold=0):
@@ -205,8 +205,8 @@ def apply(log, parameters=None):
         Event log
     parameters
         Parameters of the algorithm, including:
-            - the activity key (pm4py:param:activity_key)
-            - the noise threshold (noise_threshold)
+            - the activity key (Parameters.ACTIVITY_KEY)
+            - the noise threshold (Parameters.NOISE_THRESHOLD)
 
     Returns
     -------------
@@ -216,18 +216,18 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    noise_threshold = parameters[NOISE_THRESHOLD] if NOISE_THRESHOLD in parameters else 0.0
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    noise_threshold = exec_utils.get_param_value(Parameters.NOISE_THRESHOLD, parameters, 0.0)
 
     logs_traces = Counter([tuple(y[activity_key] for y in x) for x in log])
     all_activs = Counter(list(y[activity_key] for x in log for y in x))
 
     ret = {}
-    ret["equivalence"] = equivalence(logs_traces, all_activs, noise_threshold=noise_threshold)
-    ret["always_after"] = always_after(logs_traces, all_activs, noise_threshold=noise_threshold)
-    ret["always_before"] = always_before(logs_traces, all_activs, noise_threshold=noise_threshold)
-    ret["never_together"] = never_together(logs_traces, all_activs, len(log), noise_threshold=noise_threshold)
-    ret["directly_follows"] = directly_follows(logs_traces, all_activs, noise_threshold=noise_threshold)
-    ret["activ_freq"] = activ_freq(logs_traces, all_activs, len(log), noise_threshold=noise_threshold)
+    ret[Outputs.EQUIVALENCE.value] = equivalence(logs_traces, all_activs, noise_threshold=noise_threshold)
+    ret[Outputs.ALWAYS_AFTER.value] = always_after(logs_traces, all_activs, noise_threshold=noise_threshold)
+    ret[Outputs.ALWAYS_BEFORE.value] = always_before(logs_traces, all_activs, noise_threshold=noise_threshold)
+    ret[Outputs.NEVER_TOGETHER.value] = never_together(logs_traces, all_activs, len(log), noise_threshold=noise_threshold)
+    ret[Outputs.DIRECTLY_FOLLOWS.value] = directly_follows(logs_traces, all_activs, noise_threshold=noise_threshold)
+    ret[Outputs.ACTIV_FREQ.value] = activ_freq(logs_traces, all_activs, len(log), noise_threshold=noise_threshold)
 
     return ret

@@ -50,7 +50,7 @@ def sample_log(log, no_traces=100):
     new_log = EventLog(attributes=log.attributes, extensions=log.extensions, globals=log._omni,
                        classifiers=log.classifiers)
     set_traces = set()
-    for i in range(0, min(no_traces, len(log._list))):
+    while len(set_traces) < min(no_traces, len(log._list)):
         set_traces.add(random.randrange(0, len(log._list)))
     set_traces = list(set_traces)
     for trace in set_traces:

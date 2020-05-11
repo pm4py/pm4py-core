@@ -1,1 +1,1 @@
-from pm4py.algo.enhancement.sna import factory, versions
+from pm4py.algo.enhancement.sna import algorithm, versions

@@ -5,7 +5,20 @@ from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.algo.filtering.log.variants import variants_filter as variants_module
 from pm4py.util import xes_constants as xes
 from pm4py.util import constants
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    DECREASING_FACTOR = "decreasingFactor"
+    POSITIVE = "positive"
+    ENABLE_ACTIVITES_FILTER = "enable_activities_filter"
+    ENABLE_VARIANTS_FILTER = "enable_variants_filter"
+    ENABLE_START_ACTIVITIES_FILTER = "enable_start_activities_filter"
+    ENABLE_END_ACTIVITIES_FILTER = "enable_end_activities_filter"
 
 
 def apply_auto_filter(log, parameters=None):
@@ -18,8 +31,8 @@ def apply_auto_filter(log, parameters=None):
         Log
     parameters
         Eventual parameters applied to the algorithms:
-            decreasingFactor -> Decreasing factor (provided to all algorithms)
-            activity_key -> Activity key (must be specified if different from concept:name)
+            Parameters.DECREASING_FACTOR -> Decreasing factor (provided to all algorithms)
+            Parameters.ACTIVITY_KEY -> Activity key (must be specified if different from concept:name)
     
     Returns
     ---------
@@ -36,36 +49,31 @@ def apply_auto_filter(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    decreasing_factor = parameters[
-        "decreasingFactor"] if "decreasingFactor" in parameters else filtering_constants.DECREASING_FACTOR
+    enable_activities_filter = exec_utils.get_param_value(Parameters.ENABLE_ACTIVITES_FILTER, parameters, True)
+    enable_variants_filter = exec_utils.get_param_value(Parameters.ENABLE_VARIANTS_FILTER, parameters, False)
+    enable_start_activities_filter = exec_utils.get_param_value(Parameters.ENABLE_START_ACTIVITIES_FILTER, parameters,
+                                                                False)
+    enable_end_activities_filter = exec_utils.get_param_value(Parameters.ENABLE_END_ACTIVITIES_FILTER, parameters, True)
 
-    parameters_child = {"decreasingFactor": decreasing_factor, constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key,
-                        constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key}
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
-    enable_activities_filter = parameters[
-        "enable_activities_filter"] if "enable_activities_filter" in parameters else True
-    enable_variants_filter = parameters["enable_variants_filter"] if "enable_variants_filter" in parameters else False
-    enable_start_activities_filter = parameters[
-        "enable_start_activities_filter"] if "enable_start_activities_filter" in parameters else False
-    enable_end_activities_filter = parameters[
-        "enable_end_activities_filter"] if "enable_end_activities_filter" in parameters else True
+    parameters[Parameters.ATTRIBUTE_KEY] = attribute_key
+    parameters[Parameters.ACTIVITY_KEY] = attribute_key
 
-    variants = variants_module.get_variants(log, parameters=parameters_child)
+    variants = variants_module.get_variants(log, parameters=parameters)
 
     filtered_log = log
     if enable_activities_filter:
-        filtered_log = attributes_filter.apply_auto_filter(log, variants=variants, parameters=parameters_child)
-        variants = variants_module.get_variants(filtered_log, parameters=parameters_child)
+        filtered_log = attributes_filter.apply_auto_filter(log, variants=variants, parameters=parameters)
+        variants = variants_module.get_variants(filtered_log, parameters=parameters)
     if enable_variants_filter:
-        filtered_log = variants_module.apply_auto_filter(filtered_log, variants=variants, parameters=parameters_child)
-        variants = variants_module.get_variants(filtered_log, parameters=parameters_child)
+        filtered_log = variants_module.apply_auto_filter(filtered_log, variants=variants, parameters=parameters)
+        variants = variants_module.get_variants(filtered_log, parameters=parameters)
     if enable_start_activities_filter:
         filtered_log = start_activities_filter.apply_auto_filter(filtered_log, variants=variants,
-                                                                  parameters=parameters_child)
+                                                                 parameters=parameters)
     if enable_end_activities_filter:
         filtered_log = end_activities_filter.apply_auto_filter(filtered_log, variants=variants,
-                                                                parameters=parameters_child)
+                                                               parameters=parameters)
 
     return filtered_log

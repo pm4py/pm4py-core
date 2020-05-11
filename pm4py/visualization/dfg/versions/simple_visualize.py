@@ -6,8 +6,9 @@ from graphviz import Digraph
 from pm4py.statistics.attributes.log import get as attr_get
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import xes_constants as xes
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.visualization.common.utils import *
+from pm4py.util import exec_utils
+from pm4py.visualization.dfg.parameters import Parameters
 
 
 def get_min_max_value(dfg):
@@ -97,7 +98,7 @@ def get_activities_color(activities_count):
 
 def apply_frequency(dfg, log=None, activities_count=None, parameters=None):
     """
-    Apply method (to be called from the factory method; calls the graphviz_visualization method)
+    Apply method (calls the graphviz_visualization method)
 
     Parameters
     -----------
@@ -117,7 +118,7 @@ def apply_frequency(dfg, log=None, activities_count=None, parameters=None):
 
 def apply_performance(dfg, log=None, activities_count=None, parameters=None):
     """
-    Apply method (to be called from the factory method; calls the graphviz_visualization method)
+    Apply method (calls the graphviz_visualization method)
 
     Parameters
     -----------
@@ -248,19 +249,11 @@ def apply(dfg, log=None, parameters=None, activities_count=None, measure="freque
     if parameters is None:
         parameters = {}
 
-    activity_key = parameters[
-        PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-
-    image_format = "png"
-    max_no_of_edges_in_diagram = 75
-
-    if "format" in parameters:
-        image_format = parameters["format"]
-    if "maxNoOfEdgesInDiagram" in parameters:
-        max_no_of_edges_in_diagram = parameters["maxNoOfEdgesInDiagram"]
-
-    start_activities = parameters["start_activities"] if "start_activities" in parameters else []
-    end_activities = parameters["end_activities"] if "end_activities" in parameters else []
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
+    max_no_of_edges_in_diagram = exec_utils.get_param_value(Parameters.MAX_NO_EDGES_IN_DIAGRAM, parameters, 75)
+    start_activities = exec_utils.get_param_value(Parameters.START_ACTIVITIES, parameters, [])
+    end_activities = exec_utils.get_param_value(Parameters.END_ACTIVITIES, parameters, [])
 
     if activities_count is None:
         if log is not None:
