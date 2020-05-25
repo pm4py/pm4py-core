@@ -1,3 +1,9 @@
+===== PM4PY 1.3.1 =====
+This is a minor release, consisting of the following changes:
+1. commit 00d7c405628033e8f383a845e61a84205f7bbc83
+    - Change the color scheme of the log-log comparison (pm4py.algo.enhancement.comparison.petrinet)
+
+
 ===== PM4PY 1.3.0 =====
 This is *major* release, consisting of the following *major* changes:
 1. commit b4cea4be6fe6ff90f58c405f9f0acb4dbac973f4
