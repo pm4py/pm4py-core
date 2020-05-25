@@ -11,7 +11,7 @@ DEFAULT_VARIANT = Variants.BASIC_PLAYOUT
 VERSIONS = {Variants.BASIC_PLAYOUT}
 
 
-def apply(net, initial_marking, parameters=None, variant=DEFAULT_VARIANT):
+def apply(net, initial_marking, final_marking=None, parameters=None, variant=DEFAULT_VARIANT):
     """
     Do the playout of a Petrinet generating a log
 
@@ -21,6 +21,8 @@ def apply(net, initial_marking, parameters=None, variant=DEFAULT_VARIANT):
         Petri net to play-out
     initial_marking
         Initial marking of the Petri net
+    final_marking
+        (if provided) Final marking of the Petri net
     parameters
         Parameters of the algorithm:
             Parameters.NO_TRACES -> Number of traces of the log to generate
@@ -29,4 +31,5 @@ def apply(net, initial_marking, parameters=None, variant=DEFAULT_VARIANT):
         Variant of the algorithm to use:
             - Variants.BASIC_PLAYOUT
     """
-    return exec_utils.get_variant(variant).apply(net, initial_marking, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(net, initial_marking, final_marking=final_marking,
+                                                 parameters=parameters)
