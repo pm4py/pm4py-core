@@ -21,8 +21,12 @@ def give_color_to_direction_dynamic(dir):
     col
         Color
     """
-    norm = mpl.colors.Normalize(vmin=-1, vmax=1)
-    cmap = cm.plasma
+    dir = 0.5 + 0.5 * dir
+    norm = mpl.colors.Normalize(vmin=0, vmax=1)
+    nodes = [0.0, 0.1, 0.3, 0.4, 0.45, 0.55, 0.7, 0.9, 1.0]
+    colors = ["blue", "lightblue", "blueviolet", "lightgray", "gray", "lightgray", "orange", "red", "crimson"]
+    cmap = mpl.colors.LinearSegmentedColormap.from_list("mycmap2", list(zip(nodes, colors)))
+    #cmap = cm.plasma
     m = cm.ScalarMappable(norm=norm, cmap=cmap)
     rgba = m.to_rgba(dir)
     r = get_string_from_int_below_255(math.ceil(rgba[0] * 255.0))

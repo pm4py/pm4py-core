@@ -161,29 +161,33 @@ def __export_attributes_element(log_element, xml_element):
     if hasattr(log_element, "attributes"):
         log_element = log_element.attributes
 
-    for attr in log_element:
+    if isinstance(log_element, list):
+        items = log_element
+    else:
+        items = log_element.items()
+
+    for attr, attr_value in items:
         if attr is not None:
-            attr_type = type(log_element[attr]).__name__
+            attr_type = type(attr_value).__name__
             attr_type_xes = __get_xes_attr_type(attr_type)
             if attr_type is not None and attr_type_xes is not None:
                 if attr_type_xes == xes_util.TAG_LIST:
-                    if log_element[attr]['value'] is None:
+                    if attr_value['value'] is None:
                         this_attribute = etree.SubElement(xml_element, attr_type_xes)
                         this_attribute.set(xes_util.KEY_KEY, attr)
                         this_attribute_values = etree.SubElement(this_attribute, "values")
-                        __export_attributes_element(log_element[attr]['children'], this_attribute_values)
+                        __export_attributes_element(attr_value['children'], this_attribute_values)
                     else:
-                        attr_type = type(log_element[attr]['value']).__name__
+                        attr_type = type(attr_value['value']).__name__
                         attr_type_xes = __get_xes_attr_type(attr_type)
                         if attr_type is not None and attr_type_xes is not None:
-                            attr_value = log_element[attr]['value']
                             if attr_value is not None:
                                 this_attribute = etree.SubElement(xml_element, attr_type_xes)
                                 this_attribute.set(xes_util.KEY_KEY, attr)
-                                this_attribute.set(xes_util.KEY_VALUE, str(log_element[attr]['value']))
-                                __export_attributes_element(log_element[attr]['children'], this_attribute)
+                                this_attribute.set(xes_util.KEY_VALUE, str(attr_value['value']))
+                                __export_attributes_element(attr_value['children'], this_attribute)
                 else:
-                    attr_value = __get_xes_attr_value(log_element[attr], attr_type_xes)
+                    attr_value = __get_xes_attr_value(attr_value, attr_type_xes)
                     if attr_value is not None:
                         this_attribute = etree.SubElement(xml_element, attr_type_xes)
                         this_attribute.set(xes_util.KEY_KEY, attr)
