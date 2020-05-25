@@ -6,6 +6,8 @@ This is a minor release, consisting of the following changes:
     - Update the README file
 3. commit 332de04112cf780cbc711553e34ca4b835ee8425
     - add parameters object to transient analysis call to dfg learner
+4. commit c7a76e0aaffb5dbcad769b2fbc52fd8c03703769
+    - cleanup of the petri net impoprter/exporter, i.e., stochastic/layout information is now stored in the 'properties' object of places/transitions/nets
 
 
 ===== PM4PY 1.3.0 =====
