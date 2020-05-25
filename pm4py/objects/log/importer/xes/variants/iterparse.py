@@ -217,12 +217,18 @@ def import_log(filename, parameters=None):
 
 def __parse_attribute(elem, store, key, value, tree):
     if len(elem.getchildren()) == 0:
-        store[key] = value
+        if type(store) is list:
+            # changes to the store of lists: not dictionaries anymore
+            # but pairs of key-values.
+            store.append((key, value))
+        else:
+            store[key] = value
     else:
-        store[key] = {xes_constants.KEY_VALUE: value, xes_constants.KEY_CHILDREN: {}}
         if elem.getchildren()[0].tag.endswith(xes_constants.TAG_VALUES):
+            store[key] = {xes_constants.KEY_VALUE: value, xes_constants.KEY_CHILDREN: list()}
             tree[elem] = store[key][xes_constants.KEY_CHILDREN]
             tree[elem.getchildren()[0]] = tree[elem]
         else:
+            store[key] = {xes_constants.KEY_VALUE: value, xes_constants.KEY_CHILDREN: dict()}
             tree[elem] = store[key][xes_constants.KEY_CHILDREN]
     return tree

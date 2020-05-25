@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pm4py.objects.petri package &mdash; pm4py  documentation</title>
+  <title>pm4py.objects.petri package &mdash; PM4Py  documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> pm4py
+            <a href="index.html" class="icon icon-home"> PM4Py
           
 
           
@@ -56,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.3
+              </div>
             
           
 
@@ -113,7 +117,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">pm4py</a>
+          <a href="index.html">PM4Py</a>
         
       </nav>
 
@@ -824,12 +828,17 @@ point (last) or in the first possible point (first)</p></li>
 
 <dl class="class">
 <dt id="pm4py.objects.petri.petrinet.PetriNet">
-<em class="property">class </em><code class="sig-prename descclassname">pm4py.objects.petri.petrinet.</code><code class="sig-name descname">PetriNet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">places=None</em>, <em class="sig-param">transitions=None</em>, <em class="sig-param">arcs=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/petrinet.html#PetriNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pm4py.objects.petri.petrinet.</code><code class="sig-name descname">PetriNet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">places=None</em>, <em class="sig-param">transitions=None</em>, <em class="sig-param">arcs=None</em>, <em class="sig-param">properties=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/petrinet.html#PetriNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="class">
 <dt id="pm4py.objects.petri.petrinet.PetriNet.Arc">
-<em class="property">class </em><code class="sig-name descname">Arc</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">target</em>, <em class="sig-param">weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/petrinet.html#PetriNet.Arc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Arc" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Arc</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">target</em>, <em class="sig-param">weight=1</em>, <em class="sig-param">properties=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/petrinet.html#PetriNet.Arc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Arc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pm4py.objects.petri.petrinet.PetriNet.Arc.properties">
+<em class="property">property </em><code class="sig-name descname">properties</code><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Arc.properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="pm4py.objects.petri.petrinet.PetriNet.Arc.source">
 <em class="property">property </em><code class="sig-name descname">source</code><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Arc.source" title="Permalink to this definition">¶</a></dt>
@@ -849,7 +858,7 @@ point (last) or in the first possible point (first)</p></li>
 
 <dl class="class">
 <dt id="pm4py.objects.petri.petrinet.PetriNet.Place">
-<em class="property">class </em><code class="sig-name descname">Place</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">in_arcs=None</em>, <em class="sig-param">out_arcs=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/petrinet.html#PetriNet.Place"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Place" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Place</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">in_arcs=None</em>, <em class="sig-param">out_arcs=None</em>, <em class="sig-param">properties=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/petrinet.html#PetriNet.Place"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Place" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="pm4py.objects.petri.petrinet.PetriNet.Place.in_arcs">
@@ -866,11 +875,16 @@ point (last) or in the first possible point (first)</p></li>
 <em class="property">property </em><code class="sig-name descname">out_arcs</code><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Place.out_arcs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="pm4py.objects.petri.petrinet.PetriNet.Place.properties">
+<em class="property">property </em><code class="sig-name descname">properties</code><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Place.properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="pm4py.objects.petri.petrinet.PetriNet.Transition">
-<em class="property">class </em><code class="sig-name descname">Transition</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">label=None</em>, <em class="sig-param">in_arcs=None</em>, <em class="sig-param">out_arcs=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/petrinet.html#PetriNet.Transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Transition" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Transition</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">label=None</em>, <em class="sig-param">in_arcs=None</em>, <em class="sig-param">out_arcs=None</em>, <em class="sig-param">properties=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/petrinet.html#PetriNet.Transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Transition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="pm4py.objects.petri.petrinet.PetriNet.Transition.in_arcs">
@@ -892,6 +906,11 @@ point (last) or in the first possible point (first)</p></li>
 <em class="property">property </em><code class="sig-name descname">out_arcs</code><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Transition.out_arcs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="pm4py.objects.petri.petrinet.PetriNet.Transition.properties">
+<em class="property">property </em><code class="sig-name descname">properties</code><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.Transition.properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="method">
@@ -907,6 +926,11 @@ point (last) or in the first possible point (first)</p></li>
 <dl class="method">
 <dt id="pm4py.objects.petri.petrinet.PetriNet.places">
 <em class="property">property </em><code class="sig-name descname">places</code><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.places" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pm4py.objects.petri.petrinet.PetriNet.properties">
+<em class="property">property </em><code class="sig-name descname">properties</code><a class="headerlink" href="#pm4py.objects.petri.petrinet.PetriNet.properties" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1148,7 +1172,7 @@ TODO: find a better representation.</p>
 <span id="pm4py-objects-petri-utils-module"></span><h2>pm4py.objects.petri.utils module<a class="headerlink" href="#module-pm4py.objects.petri.utils" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pm4py.objects.petri.utils.acyclic_net_variants">
-<code class="sig-prename descclassname">pm4py.objects.petri.utils.</code><code class="sig-name descname">acyclic_net_variants</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/utils.html#acyclic_net_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.utils.acyclic_net_variants" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pm4py.objects.petri.utils.</code><code class="sig-name descname">acyclic_net_variants</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">initial_marking</em>, <em class="sig-param">final_marking</em>, <em class="sig-param">activity_key='concept:name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pm4py/objects/petri/utils.html#acyclic_net_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pm4py.objects.petri.utils.acyclic_net_variants" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given an acyclic accepting Petri net, initial and final marking extracts a set of variants (in form of traces)
 replayable on the net.
 Warning: this function is based on a marking exploration. If the accepting Petri net contains loops, the method
@@ -1156,16 +1180,17 @@ will not work properly as it stops the search if a specific marking has already 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>net</strong> (<em>An acyclic workflow net</em>)</p></li>
-<li><p><strong>initial_marking</strong> (<em>The initial marking of the net.</em>)</p></li>
-<li><p><strong>final_marking</strong> (<em>The final marking of the net.</em>)</p></li>
+<li><p><em>param net: An acyclic workflow net</em></p></li>
+<li><p><em>param initial_marking: The initial marking of the net.</em></p></li>
+<li><p><em>param final_marking: The final marking of the net.</em></p></li>
+<li><p><em>param activity_key: activity key to use</em></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>variants</strong></p>
+<dd class="field-even"><p></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> List of variants - in the form of Trace objects - obtainable executing the net</p>
+<dd class="field-odd"><p>return: variants: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> Set of variants - in the form of Trace objects - obtainable executing the net</p>
 </dd>
 </dl>
 </dd></dl>
