@@ -137,7 +137,8 @@ setup(
         'pytz',
         'intervaltree',
         'deprecation',
-        "pm4pycvxopt; python_version < '3.8'"
+        "pm4pycvxopt; python_version < '3.8'",
+        'tqdm'
     ],
     project_urls={
         'Documentation': 'http://www.pm4py.org',

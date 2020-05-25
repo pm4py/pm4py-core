@@ -16,7 +16,8 @@ This is a minor release, consisting of the following changes:
     - fix paths filter for Pandas dataframe when dataframe is not sorted
 8. commit 095f35a3bf9f9c3bea0d518c72c76380f38b77b2
     - add support for (correctly) importing lists from .xes files
-
+9. commit 0ba0679429c8a675d0cb3788bde55b76b00fbbc7 (this commit is only available in the *public release*)
+    - Pull request #160 from AdamBanham: adding progress information for importing logs
 
 ===== PM4PY 1.3.0 =====
 This is *major* release, consisting of the following *major* changes:
