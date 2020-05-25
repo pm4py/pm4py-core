@@ -14,6 +14,8 @@ This is a minor release, consisting of the following changes:
     - allow prefixes in petri net attribute names (petri net importing)
 7. commit d51430106dea70473777c6868a3676c027faf607
     - fix paths filter for Pandas dataframe when dataframe is not sorted
+8. commit 095f35a3bf9f9c3bea0d518c72c76380f38b77b2
+    - add support for (correctly) importing lists from .xes files
 
 
 ===== PM4PY 1.3.0 =====
