@@ -1,3 +1,23 @@
+===== PM4PY 1.3.1 =====
+This is a minor release, consisting of the following changes:
+1. commit 00d7c405628033e8f383a845e61a84205f7bbc83
+    - Change the color scheme of the log-log comparison (pm4py.algo.enhancement.comparison.petrinet)
+2. commit e84c7dc88907b408b4caf97524dd69a378e1859e
+    - Update the README file
+3. commit 332de04112cf780cbc711553e34ca4b835ee8425
+    - add parameters object to transient analysis call to dfg learner
+4. commit c7a76e0aaffb5dbcad769b2fbc52fd8c03703769
+    - cleanup of the petri net impoprter/exporter, i.e., stochastic/layout information is now stored in the 'properties' object of places/transitions/nets
+5. commit f0976015c2b5b7384135855e75b36f69fb44a4db
+    - add final marking to the basic playout of Petri nets
+6. commit e0d43c6dd5ee2492eabfd14c507b430088ec9cf0
+    - allow prefixes in petri net attribute names (petri net importing)
+7. commit d51430106dea70473777c6868a3676c027faf607
+    - fix paths filter for Pandas dataframe when dataframe is not sorted
+8. commit 095f35a3bf9f9c3bea0d518c72c76380f38b77b2
+    - add support for (correctly) importing lists from .xes files
+
+
 ===== PM4PY 1.3.0 =====
 This is *major* release, consisting of the following *major* changes:
 1. commit b4cea4be6fe6ff90f58c405f9f0acb4dbac973f4

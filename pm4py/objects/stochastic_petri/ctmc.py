@@ -93,7 +93,7 @@ def get_tangible_reachability_and_q_matrix_from_dfg_performance(dfg_performance,
     """
     if parameters is None:
         parameters = {}
-    net, im, fm = dfg_converter.apply(dfg_performance)
+    net, im, fm = dfg_converter.apply(dfg_performance, parameters=parameters)
     stochastic_map = {}
     for tr in net.transitions:
         if tr.label is None:
