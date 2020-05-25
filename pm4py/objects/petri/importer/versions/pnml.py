@@ -88,20 +88,20 @@ def import_net(input_file_path, parameters=None):
                 place_name = place_id
                 number = 0
                 for child2 in child:
-                    if "name" in child2.tag:
+                    if child2.tag.endswith('name'):
                         for child3 in child2:
                             if child3.text:
                                 place_name = child3.text
-                    if "initialMarking" in child2.tag:
+                    if child2.tag.endswith('initialMarking'):
                         for child3 in child2:
-                            if child3.tag == "text":
+                            if child3.tag.endswith("text"):
                                 number = int(child3.text)
-                    if "graphics" in child2.tag:
+                    if child2.tag.endswith('graphics'):
                         for child3 in child2:
-                            if "position" in child3.tag:
+                            if child3.tag.endswith('position'):
                                 position_X = float(child3.get("x"))
                                 position_Y = float(child3.get("y"))
-                            elif "dimension" in child3.tag:
+                            elif child3.tag.endswith("dimension"):
                                 dimension_X = float(child3.get("x"))
                                 dimension_Y = float(child3.get("y"))
                 places_dict[place_id] = petri.petrinet.PetriNet.Place(place_id)
@@ -115,7 +115,7 @@ def import_net(input_file_path, parameters=None):
 
     if page is not None:
         for child in page:
-            if "transition" in child.tag:
+            if child.tag.endswith("transition"):
                 position_X = None
                 position_Y = None
                 dimension_X = None
@@ -127,20 +127,20 @@ def import_net(input_file_path, parameters=None):
                 random_variable = None
 
                 for child2 in child:
-                    if child2.tag == "name":
+                    if child2.tag.endswith("name"):
                         for child3 in child2:
                             if child3.text:
                                 if trans_label == trans_name:
                                     trans_label = child3.text
-                    if "graphics" in child2.tag:
+                    if child2.tag.endswith("graphics"):
                         for child3 in child2:
-                            if "position" in child3.tag:
+                            if child3.tag.endswith("position"):
                                 position_X = float(child3.get("x"))
                                 position_Y = float(child3.get("y"))
-                            elif "dimension" in child3.tag:
+                            elif child3.tag.endswith("dimension"):
                                 dimension_X = float(child3.get("x"))
                                 dimension_Y = float(child3.get("y"))
-                    if "toolspecific" in child2.tag:
+                    if child2.tag.endswith("toolspecific"):
                         tool = child2.get("tool")
                         if "ProM" in tool:
                             activity = child2.get("activity")
@@ -185,15 +185,15 @@ def import_net(input_file_path, parameters=None):
 
     if page is not None:
         for child in page:
-            if "arc" in child.tag:
+            if child.tag.endswith("arc"):
                 arc_source = child.get("source")
                 arc_target = child.get("target")
                 arc_weight = 1
 
                 for arc_child in child:
-                    if "inscription" in arc_child.tag:
+                    if arc_child.tag.endswith("inscription"):
                         for text_arcweight in arc_child:
-                            if "text" in text_arcweight.tag:
+                            if text_arcweight.tag.endswith("text"):
                                 arc_weight = int(text_arcweight.text)
 
                 if arc_source in places_dict and arc_target in trans_dict:
@@ -206,7 +206,7 @@ def import_net(input_file_path, parameters=None):
             for child2 in child:
                 place_id = child2.get("idref")
                 for child3 in child2:
-                    if "text" in child3.tag:
+                    if child3.tag.endswith("text"):
                         number = int(child3.text)
                         if number > 0:
                             fmarking[places_dict[place_id]] = number
