@@ -10,6 +10,9 @@ This is a minor release, consisting of the following changes:
     - cleanup of the petri net impoprter/exporter, i.e., stochastic/layout information is now stored in the 'properties' object of places/transitions/nets
 5. commit f0976015c2b5b7384135855e75b36f69fb44a4db
     - add final marking to the basic playout of Petri nets
+6. commit e0d43c6dd5ee2492eabfd14c507b430088ec9cf0
+    - allow prefixes in petri net attribute names (petri net importing)
+
 
 
 ===== PM4PY 1.3.0 =====
