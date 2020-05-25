@@ -22,7 +22,7 @@ def deprecated(func):
 
 
 @deprecated
-def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None, export_prom5=False):
+def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False):
     """
     Export a Petrinet to a XML tree
 
@@ -34,8 +34,6 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
         Marking
     final_marking: :class:`pm4py.entities.petri.petrinet.Marking`
         Final marking (optional)
-    stochastic_map
-        (only for stochastics) map that associates to each transition a probability distribution
     export_prom5
         Enables exporting PNML files in a format that is ProM5-friendly
 
@@ -45,11 +43,11 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
         XML tree
     """
     return versions.pnml.export_petri_tree(petrinet, marking, final_marking=final_marking,
-                                           stochastic_map=stochastic_map, export_prom5=export_prom5)
+                                           export_prom5=export_prom5)
 
 
 @deprecated
-def export_petri_as_string(petrinet, marking, final_marking=None, stochastic_map=None, export_prom5=False):
+def export_petri_as_string(petrinet, marking, final_marking=None, export_prom5=False):
     """
     Parameters
     ----------
@@ -59,8 +57,6 @@ def export_petri_as_string(petrinet, marking, final_marking=None, stochastic_map
         Marking
     final_marking: :class:`pm4py.entities.petri.petrinet.Marking`
         Final marking (optional)
-    stochastic_map
-        (only for stochastics) map that associates to each transition a probability distribution
     export_prom5
         Enables exporting PNML files in a format that is ProM5-friendly
 
@@ -70,11 +66,11 @@ def export_petri_as_string(petrinet, marking, final_marking=None, stochastic_map
         Petri net as string
     """
     return versions.pnml.export_petri_as_string(petrinet, marking, final_marking=final_marking,
-                                                stochastic_map=stochastic_map, export_prom5=export_prom5)
+                                                export_prom5=export_prom5)
 
 
 @deprecated
-def export_net(petrinet, marking, output_filename, final_marking=None, stochastic_map=None, export_prom5=False):
+def export_net(petrinet, marking, output_filename, final_marking=None, export_prom5=False):
     """
     Export a Petrinet to a PNML file
 
@@ -88,10 +84,8 @@ def export_net(petrinet, marking, output_filename, final_marking=None, stochasti
         Final marking (optional)
     output_filename:
         Absolute output file name for saving the pnml file
-    stochastic_map
-        (only for stochastics) map that associates to each transition a probability distribution
     export_prom5
         Enables exporting PNML files in a format that is ProM5-friendly
     """
     return versions.pnml.export_net(petrinet, marking, output_filename, final_marking=final_marking,
-                                    stochastic_map=stochastic_map, export_prom5=export_prom5)
+                                    export_prom5=export_prom5)
