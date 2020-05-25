@@ -4,9 +4,10 @@ from lxml import etree
 
 import pm4py
 from pm4py.objects.petri.petrinet import Marking
+from pm4py.util import constants
 
 
-def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None, export_prom5=False, parameters=None):
+def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False, parameters=None):
     """
     Export a Petrinet to a XML tree
 
@@ -18,8 +19,6 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
         Marking
     final_marking: :class:`pm4py.entities.petri.petrinet.Marking`
         Final marking (optional)
-    stochastic_map
-        (only for stochastics) map that associates to each transition a probability distribution
     export_prom5
         Enables exporting PNML files in a format that is ProM5-friendly
     parameters
@@ -52,11 +51,20 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
         pl.set("id", place.name)
         pl_name = etree.SubElement(pl, "name")
         pl_name_text = etree.SubElement(pl_name, "text")
-        pl_name_text.text = place.name
+        pl_name_text.text = place.properties[
+            constants.PLACE_NAME_TAG] if constants.PLACE_NAME_TAG in place.properties else place.name
         if place in marking:
             pl_initial_marking = etree.SubElement(pl, "initialMarking")
             pl_initial_marking_text = etree.SubElement(pl_initial_marking, "text")
             pl_initial_marking_text.text = str(marking[place])
+        if constants.LAYOUT_INFORMATION_PETRI in place.properties:
+            graphics = etree.SubElement(pl, "graphics")
+            position = etree.SubElement(graphics, "position")
+            position.set("x", str(place.properties[constants.LAYOUT_INFORMATION_PETRI][0][0]))
+            position.set("y", str(place.properties[constants.LAYOUT_INFORMATION_PETRI][0][1]))
+            dimension = etree.SubElement(graphics, "dimension")
+            dimension.set("x", str(place.properties[constants.LAYOUT_INFORMATION_PETRI][1][0]))
+            dimension.set("y", str(place.properties[constants.LAYOUT_INFORMATION_PETRI][1][1]))
     transitions_map = {}
     for transition in petrinet.transitions:
         transitions_map[transition] = transition.name
@@ -64,8 +72,16 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
         trans.set("id", transition.name)
         trans_name = etree.SubElement(trans, "name")
         trans_text = etree.SubElement(trans_name, "text")
-        if stochastic_map is not None and transition in stochastic_map:
-            random_variable = stochastic_map[transition]
+        if constants.LAYOUT_INFORMATION_PETRI in transition.properties:
+            graphics = etree.SubElement(trans, "graphics")
+            position = etree.SubElement(graphics, "position")
+            position.set("x", str(transition.properties[constants.LAYOUT_INFORMATION_PETRI][0][0]))
+            position.set("y", str(transition.properties[constants.LAYOUT_INFORMATION_PETRI][0][1]))
+            dimension = etree.SubElement(graphics, "dimension")
+            dimension.set("x", str(transition.properties[constants.LAYOUT_INFORMATION_PETRI][1][0]))
+            dimension.set("y", str(transition.properties[constants.LAYOUT_INFORMATION_PETRI][1][1]))
+        if constants.STOCHASTIC_DISTRIBUTION in transition.properties:
+            random_variable = transition.properties[constants.STOCHASTIC_DISTRIBUTION]
             stochastic_information = etree.SubElement(trans, "toolspecific")
             stochastic_information.set("tool", "StochasticPetriNet")
             stochastic_information.set("version", "0.2")
@@ -136,7 +152,7 @@ def export_petri_tree(petrinet, marking, final_marking=None, stochastic_map=None
     return tree
 
 
-def export_petri_as_string(petrinet, marking, final_marking=None, stochastic_map=None, export_prom5=False,
+def export_petri_as_string(petrinet, marking, final_marking=None, export_prom5=False,
                            parameters=None):
     """
     Parameters
@@ -147,8 +163,6 @@ def export_petri_as_string(petrinet, marking, final_marking=None, stochastic_map
         Marking
     final_marking: :class:`pm4py.entities.petri.petrinet.Marking`
         Final marking (optional)
-    stochastic_map
-        (only for stochastics) map that associates to each transition a probability distribution
     export_prom5
         Enables exporting PNML files in a format that is ProM5-friendly
 
@@ -161,13 +175,13 @@ def export_petri_as_string(petrinet, marking, final_marking=None, stochastic_map
         parameters = {}
 
     # gets the XML tree
-    tree = export_petri_tree(petrinet, marking, final_marking=final_marking, stochastic_map=stochastic_map,
+    tree = export_petri_tree(petrinet, marking, final_marking=final_marking,
                              export_prom5=export_prom5)
 
     return etree.tostring(tree, xml_declaration=True, encoding="utf-8").decode('utf-8')
 
 
-def export_net(petrinet, marking, output_filename, final_marking=None, stochastic_map=None, export_prom5=False,
+def export_net(petrinet, marking, output_filename, final_marking=None, export_prom5=False,
                parameters=None):
     """
     Export a Petrinet to a PNML file
@@ -182,8 +196,6 @@ def export_net(petrinet, marking, output_filename, final_marking=None, stochasti
         Final marking (optional)
     output_filename:
         Absolute output file name for saving the pnml file
-    stochastic_map
-        (only for stochastics) map that associates to each transition a probability distribution
     export_prom5
         Enables exporting PNML files in a format that is ProM5-friendly
     """
@@ -191,7 +203,7 @@ def export_net(petrinet, marking, output_filename, final_marking=None, stochasti
         parameters = {}
 
     # gets the XML tree
-    tree = export_petri_tree(petrinet, marking, final_marking=final_marking, stochastic_map=stochastic_map,
+    tree = export_petri_tree(petrinet, marking, final_marking=final_marking,
                              export_prom5=export_prom5)
 
     # write the tree to a file

@@ -22,7 +22,7 @@ def deprecated(func):
 
 
 @deprecated
-def import_petri_from_string(petri_string, return_stochastic_information=False):
+def import_petri_from_string(petri_string):
     """
     Import a Petri net from a string
 
@@ -30,17 +30,14 @@ def import_petri_from_string(petri_string, return_stochastic_information=False):
     ----------
     petri_string
         Petri net expressed as PNML string
-    return_stochastic_information
-        Enables return of stochastic information if found in the PNML
     parameters
         Other parameters of the algorithm
     """
-    return versions.pnml.import_petri_from_string(petri_string,
-                                                  return_stochastic_information=return_stochastic_information)
+    return versions.pnml.import_petri_from_string(petri_string)
 
 
 @deprecated
-def import_net(input_file_path, return_stochastic_information=False):
+def import_net(input_file_path):
     """
     Import a Petri net from a PNML file
 
@@ -48,9 +45,7 @@ def import_net(input_file_path, return_stochastic_information=False):
     ----------
     input_file_path
         Input file path
-    return_stochastic_information
-        Enables return of stochastic information if found in the PNML
     parameters
         Other parameters of the algorithm
     """
-    return versions.pnml.import_net(input_file_path, return_stochastic_information=return_stochastic_information)
+    return versions.pnml.import_net(input_file_path)
