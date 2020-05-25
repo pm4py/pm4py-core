@@ -8,7 +8,7 @@ This is a minor release, consisting of the following changes:
     - add parameters object to transient analysis call to dfg learner
 4. commit c7a76e0aaffb5dbcad769b2fbc52fd8c03703769
     - cleanup of the petri net impoprter/exporter, i.e., stochastic/layout information is now stored in the 'properties' object of places/transitions/nets
-5. commit bf01008dfa71772d6aeb5ba8904ca0465b84430b
+5. commit f0976015c2b5b7384135855e75b36f69fb44a4db
     - add final marking to the basic playout of Petri nets
 
 
