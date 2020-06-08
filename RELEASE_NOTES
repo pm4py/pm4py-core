@@ -1,3 +1,7 @@
+===== PM4PY 1.3.3 =====
+This is a minor release, consisting of the following changes:
+
+
 ===== PM4PY 1.3.2 =====
 This is a minor release, consisting of the following changes:
 1. commit 98e6d6d6219cceeeb2421392e9981ec808d2a468 (Merge Request #89)
@@ -6,7 +10,6 @@ This is a minor release, consisting of the following changes:
     - Add a detailed list of all third-party dependencies (README.third_party.md)
 3. cmmit e0685638c6c0c171583108e23f752ebef70d033e (Merge Request 94)
     - New version of Dijkstra based alignment computation
-
 
 
 ===== PM4PY 1.3.1 =====
