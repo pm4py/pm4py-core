@@ -23,13 +23,16 @@ import warnings
 
 VERSION_STATE_EQUATION_A_STAR = 'state_equation_a_star'
 VERSION_DIJKSTRA_NO_HEURISTICS = 'dijkstra_no_heuristics'
+VERSION_DIJKSTRA_LESS_MEMORY = 'dijkstra_less_memory'
 
 DEFAULT_VARIANT = VERSION_STATE_EQUATION_A_STAR
 
 VERSIONS = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply,
-            VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.apply}
+            VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.apply,
+            VERSION_DIJKSTRA_LESS_MEMORY: versions.dijkstra_less_memory.apply}
 VERSIONS_COST = {VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.get_best_worst_cost,
-                 VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.get_best_worst_cost}
+                 VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.get_best_worst_cost,
+                 VERSION_DIJKSTRA_LESS_MEMORY: versions.dijkstra_less_memory.get_best_worst_cost}
 VERSIONS_VARIANTS_LIST_MPROCESSING = {
     VERSION_STATE_EQUATION_A_STAR: versions.state_equation_a_star.apply_from_variants_list_petri_string_mprocessing,
     VERSION_DIJKSTRA_NO_HEURISTICS: versions.dijkstra_no_heuristics.apply_from_variants_list_petri_string_mprocessing}
@@ -102,7 +105,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     if PARAM_TRACE_COST_FUNCTION not in parameters:
         parameters[PARAM_TRACE_COST_FUNCTION] = list(
             map(lambda e: align_utils.STD_MODEL_LOG_MOVE_COST, trace))
-    return VERSIONS[version](trace, petri_net, initial_marking, final_marking, parameters)
+    return VERSIONS[version](trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
