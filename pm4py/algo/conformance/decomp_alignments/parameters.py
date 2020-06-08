@@ -8,3 +8,4 @@ class Parameters(Enum):
     ICACHE = "icache"
     MCACHE = "mcache"
     PARAM_THRESHOLD_BORDER_AGREEMENT = "thresh_border_agreement"
+    PARAMETER_VARIANT_DELIMITER = "variant_delimiter"

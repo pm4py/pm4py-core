@@ -1,6 +1,7 @@
-from pm4py.algo.conformance import alignments
-from pm4py.algo.conformance.alignments.versions.state_equation_a_star import apply as apply_alignments
+from pm4py.algo.conformance.alignments import algorithm as alignments
+from pm4py.algo.conformance.decomp_alignments import algorithm as decomp_alignments
 from pm4py.evaluation.replay_fitness.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def evaluate(aligned_traces, parameters=None):
@@ -43,8 +44,34 @@ def evaluate(aligned_traces, parameters=None):
     return {"percFitTraces": perc_fit_traces, "averageFitness": average_fitness}
 
 
-def apply(log, petri_net, initial_marking, final_marking, parameters=None):
-    alignment_result = alignments.algorithm.apply(log, petri_net, initial_marking, final_marking, parameters=parameters)
+def apply(log, petri_net, initial_marking, final_marking, align_variant=alignments.DEFAULT_VARIANT, parameters=None):
+    """
+    Evaluate fitness based on alignments
+
+    Parameters
+    ----------------
+    log
+        Event log
+    petri_net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    align_variant
+        Variants of the alignments to apply
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ---------------
+    dictionary
+        Containing two keys (percFitTraces and averageFitness)
+    """
+    if align_variant == decomp_alignments.Variants.RECOMPOS_MAXIMAL.value:
+        alignment_result = decomp_alignments.apply(log, petri_net, initial_marking, final_marking, variant=align_variant, parameters=parameters)
+    else:
+        alignment_result = alignments.apply(log, petri_net, initial_marking, final_marking, variant=align_variant, parameters=parameters)
     return evaluate(alignment_result)
 
 
@@ -68,7 +95,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, ac
     -------
     dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
     """
-    alignment = apply_alignments(trace, petri_net, initial_marking, final_marking,
+    alignment = alignments.apply_trace(trace, petri_net, initial_marking, final_marking,
                                  {Parameters.ACTIVITY_KEY: activity_key})
     fixed_costs = alignment['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
     if best_worst > 0:
