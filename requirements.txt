@@ -14,3 +14,4 @@ pyvis
 scipy
 scikit-learn
 deprecation
+stringdist
