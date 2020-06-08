@@ -2,7 +2,8 @@
 This is a minor release, consisting of the following changes:
 1. commit 98e6d6d6219cceeeb2421392e9981ec808d2a468 (Merge Request #89)
     - Support importing and exporting of '.dfg' files (similar to ProM 6.10)
-2.
+2. commit 7ca768b7fcd1eea468bcdb1c1e8c9397676b511a (Merge Request #90)
+    - Add a detailed list of all third-party dependencies (README.third_party.md)
 
 ===== PM4PY 1.3.1 =====
 This is a minor release, consisting of the following changes:
