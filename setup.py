@@ -136,7 +136,8 @@ setup(
         'pulp',
         'pytz',
         'intervaltree',
-        "deprecation"
+        "deprecation",
+        "stringdist"
     ],
     project_urls={
         'Documentation': 'http://www.pm4py.org',
