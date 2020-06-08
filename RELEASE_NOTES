@@ -4,6 +4,10 @@ This is a minor release, consisting of the following changes:
     - Support importing and exporting of '.dfg' files (similar to ProM 6.10)
 2. commit 7ca768b7fcd1eea468bcdb1c1e8c9397676b511a (Merge Request #90)
     - Add a detailed list of all third-party dependencies (README.third_party.md)
+3. cmmit e0685638c6c0c171583108e23f752ebef70d033e (Merge Request 94)
+    - New version of Dijkstra based alignment computation
+
+
 
 ===== PM4PY 1.3.1 =====
 This is a minor release, consisting of the following changes:
