@@ -17,6 +17,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 class Variants(Enum):
     VERSION_STATE_EQUATION_A_STAR = versions.state_equation_a_star
     VERSION_DIJKSTRA_NO_HEURISTICS = versions.dijkstra_no_heuristics
+    VERSION_DIJKSTRA_LESS_MEMORY = versions.dijkstra_less_memory
 
 
 class Parameters(Enum):
@@ -37,8 +38,10 @@ class Parameters(Enum):
 DEFAULT_VARIANT = Variants.VERSION_STATE_EQUATION_A_STAR
 VERSION_STATE_EQUATION_A_STAR = Variants.VERSION_STATE_EQUATION_A_STAR
 VERSION_DIJKSTRA_NO_HEURISTICS = Variants.VERSION_DIJKSTRA_NO_HEURISTICS
+VERSION_DIJKSTRA_LESS_MEMORY = Variants.VERSION_DIJKSTRA_LESS_MEMORY
 
-VERSIONS = {Variants.VERSION_DIJKSTRA_NO_HEURISTICS, Variants.VERSION_DIJKSTRA_NO_HEURISTICS}
+VERSIONS = {Variants.VERSION_DIJKSTRA_NO_HEURISTICS, Variants.VERSION_DIJKSTRA_NO_HEURISTICS,
+            Variants.VERSION_DIJKSTRA_LESS_MEMORY}
 
 
 def apply(obj, petri_net, initial_marking, final_marking, parameters=None, variant=DEFAULT_VARIANT):
@@ -90,7 +93,8 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     if trace_cost_function is None:
         parameters[Parameters.PARAM_TRACE_COST_FUNCTION] = list(
             map(lambda e: align_utils.STD_MODEL_LOG_MOVE_COST, trace))
-    return exec_utils.get_variant(variant).apply(trace, petri_net, initial_marking, final_marking, parameters)
+    return exec_utils.get_variant(variant).apply(trace, petri_net, initial_marking, final_marking,
+                                                 parameters=parameters)
 
 
 def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, variant=DEFAULT_VARIANT):
@@ -151,7 +155,7 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     parameters_best_worst = copy(parameters)
 
     best_worst_cost = exec_utils.get_variant(variant).get_best_worst_cost(petri_net, initial_marking, final_marking,
-                                             parameters=parameters_best_worst)
+                                                                          parameters=parameters_best_worst)
 
     variants_idxs = exec_utils.get_param_value(Parameters.VARIANTS_IDX, parameters, None)
     if variants_idxs is None:
