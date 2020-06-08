@@ -57,42 +57,6 @@ def get_variant_statistics(df, parameters=None):
     return variants_list
 
 
-def get_variant_statistics_with_case_duration(df, parameters=None):
-    """
-    Get variants from a Pandas dataframe with case duration
-
-    Parameters
-    -----------
-    df
-        Dataframe
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.CASE_ID_KEY -> Column that contains the Case ID
-            Parameters.ACTIVITY_KEY -> Column that contains the activity
-            Parameters.MAX_VARIANTS_TO_RETURN -> Maximum number of variants to return
-            variants_df -> If provided, avoid recalculation of the variants dataframe
-
-    Returns
-    -----------
-    variants_list
-        List of variants inside the Pandas dataframe
-    """
-    if parameters is None:
-        parameters = {}
-
-    max_variants_to_return = exec_utils.get_param_value(Parameters.MAX_VARIANTS_TO_RETURN, parameters, None)
-    variants_df = exec_utils.get_param_value(Parameters.VARIANTS_DF, parameters, get_variants_df(df,
-                                                                                                parameters=parameters))
-    variants_df["count"] = 1
-    variants_df = variants_df.reset_index()
-    variants_list = variants_df.groupby("variant").agg({"caseDuration": "mean", "count": "sum"}).reset_index().to_dict(
-        'records')
-    variants_list = sorted(variants_list, key=lambda x: (x["count"], x["variant"]), reverse=True)
-    if max_variants_to_return:
-        variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
-    return variants_list
-
-
 def get_variants_df_and_list(df, parameters=None):
     """
     (Technical method) Provides variants_df and variants_list out of the box
