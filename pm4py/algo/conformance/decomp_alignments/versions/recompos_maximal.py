@@ -8,6 +8,7 @@ from pm4py.objects.petri import align_utils as utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.objects.petri import decomposition as decomp_utils
 from pm4py.statistics.variants.log import get as variants_module
+from pm4py.objects.petri.importer import pnml as petri_importer
 from pm4py import util as pm4pyutil
 from copy import copy
 from pm4py.algo.conformance.decomp_alignments.parameters import Parameters
@@ -28,6 +29,64 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
     best_worst_cost = sum(cf_new[x] for x in best_worst['alignment']) // utils.STD_MODEL_LOG_MOVE_COST if best_worst[
         'alignment'] else 0
     return best_worst_cost
+
+
+def apply_from_variants_list_petri_string(var_list, petri_net_string, parameters=None):
+    if parameters is None:
+        parameters = {}
+
+    petri_net, initial_marking, final_marking = petri_importer.import_petri_from_string(petri_net_string)
+
+    res = apply_from_variants_list(var_list, petri_net, initial_marking, final_marking, parameters=parameters)
+    return res
+
+
+def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking, parameters=None):
+    """
+    Apply the alignments from the specification of a list of variants in the log
+
+    Parameters
+    -------------
+    var_list
+        List of variants (for each item, the first entry is the variant itself, the second entry may be the number of cases)
+    petri_net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    parameters
+        Parameters of the algorithm (same as 'apply' method, plus 'variant_delimiter' that is , by default)
+
+    Returns
+    --------------
+    dictio_alignments
+        Dictionary that assigns to each variant its alignment
+    """
+    if parameters is None:
+        parameters = {}
+    activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
+        parameters[
+            pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
+                                                   ",")
+    log = log_implementation.EventLog()
+    dictio_alignments = {}
+    for varitem in var_list:
+        variant = varitem[0]
+        trace = log_implementation.Trace()
+        variant_split = variant.split(variant_delimiter) if type(variant) is str else variant
+        for el in variant_split:
+            trace.append(log_implementation.Event({activity_key: el}))
+            log.append(trace)
+
+    alignment = apply(log, petri_net, initial_marking, final_marking)
+
+    for index, varitem in enumerate(var_list):
+        variant = varitem[0]
+        dictio_alignments[variant] = alignment[index]
+
+    return dictio_alignments
 
 
 def apply(log, net, im, fm, parameters=None):
