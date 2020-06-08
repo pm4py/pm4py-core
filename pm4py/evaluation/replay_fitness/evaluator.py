@@ -1,7 +1,6 @@
-from pm4py import util as pmutil
 from pm4py.evaluation.replay_fitness.versions import alignment_based, token_replay
+from pm4py.algo.conformance import alignments
 from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.util import xes_constants as xes_util
 from pm4py.objects import petri
 from pm4py.util import exec_utils
 from enum import Enum
@@ -10,6 +9,10 @@ from enum import Enum
 class Variants(Enum):
     ALIGNMENT_BASED = alignment_based
     TOKEN_BASED = token_replay
+
+
+class Parameters(Enum):
+    ALIGN_VARIANT = "align_variant"
 
 
 ALIGNMENT_BASED = Variants.ALIGNMENT_BASED
@@ -51,15 +54,27 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None, varia
     # execute the following part of code when the variant is not specified by the user
     if variant is None:
         if not (
-        petri.check_soundness.check_relaxed_soundness_net_in_fin_marking(petri_net, initial_marking, final_marking)):
+                petri.check_soundness.check_relaxed_soundness_net_in_fin_marking(petri_net, initial_marking,
+                                                                                 final_marking)):
             # in the case the net is not a relaxed sound workflow net, we must apply token-based replay
             variant = TOKEN_BASED
         else:
             # otherwise, use the align-etconformance approach (safer, in the case the model contains duplicates)
             variant = ALIGNMENT_BASED
 
-    return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), petri_net,
-                             initial_marking, final_marking, parameters=parameters)
+    if variant == TOKEN_BASED:
+        # execute the token-based replay variant
+        return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG),
+                                                     petri_net,
+                                                     initial_marking, final_marking, parameters=parameters)
+    else:
+        # execute the alignments based variant, with the specification of the alignments variant
+        align_variant = exec_utils.get_param_value(Parameters.ALIGN_VARIANT, parameters,
+                                                   alignments.algorithm.Variants.VERSION_STATE_EQUATION_A_STAR)
+        return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG),
+                                                     petri_net,
+                                                     initial_marking, final_marking, align_variant=align_variant,
+                                                     parameters=parameters)
 
 
 def evaluate(results, parameters=None, variant=TOKEN_BASED):
