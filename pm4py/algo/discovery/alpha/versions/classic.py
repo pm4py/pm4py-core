@@ -275,8 +275,28 @@ def __pair_maximizer(alpha_pairs, pair):
     return True
 
 
-def __check_is_unrelated(parallel_relation, causal_relation, item_set_1, item_set_2):
-    for pair in product(item_set_1, item_set_2):
+def __check_is_unrelated(parallel_relation, causal_relation, 
+                                        item_set_1, item_set_2,
+                                        parallel_relation_starts, causal_relation_starts,
+                                        parallel_relation_ends, causal_relation_ends):
+
+    reduced_item_set_1 = [
+        item 
+        for item 
+        in item_set_1
+        if item in parallel_relation_starts
+        or item in causal_relation_starts
+    ]
+
+    reduced_item_set_2 = [
+        item 
+        for item 
+        in item_set_2
+        if item in parallel_relation_ends
+        or item in causal_relation_ends
+    ]
+
+    for pair in product(reduced_item_set_1, reduced_item_set_2):
         if pair in parallel_relation or pair in causal_relation:
             return True
     return False
