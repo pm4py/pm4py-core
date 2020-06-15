@@ -26,6 +26,11 @@ from pm4py.objects.petri.petrinet import Marking
 from pm4py.algo.discovery.parameters import Parameters
 from pm4py.util import exec_utils
 
+from pm4py.algo.discovery.alpha.versions.classic_support import find_alpha_pair
+from multiprocessing import Pool
+from os import cpu_count
+
+from tqdm.auto import tqdm
 
 def apply(log, parameters=None):
     """
@@ -118,6 +123,9 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
     final marking : :class:`pm4py.models.net.Marking`
         marking object representing the final marking, not guaranteed that it is actually reachable!
     """
+
+    alpha_progress = tqdm(total=5,desc="alpha miner :: progress",position=1)
+
     if parameters is None:
         parameters = {}
 
@@ -140,41 +148,101 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
         labels.add(a)
     labels = list(labels)
 
+    alpha_progress.update(1)
+
     alpha_abstraction = alpha_classic_abstraction.ClassicAlphaAbstraction(start_activities, end_activities, dfg,
                                                                           activity_key=activity_key)
-    pairs = list(map(lambda p: ({p[0]}, {p[1]}),
-                     filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p),
-                            alpha_abstraction.causal_relation)))
-    for i in range(0, len(pairs)):
+    # pairs = list(map(lambda p: ({p[0]}, {p[1]}),
+    #                  filter(lambda p: __initial_filter(alpha_abstraction.parallel_relation, p),
+    #                         alpha_abstraction.causal_relation)))
+    pairs = [
+            ({p[0]} , {p[1]})
+            for p 
+            in alpha_abstraction.causal_relation
+            if __initial_filter(alpha_abstraction.parallel_relation, p)
+    ]
+
+    alpha_parallel_relation_starts = [
+        start 
+        for start,end
+        in alpha_abstraction.parallel_relation
+    ]
+    alpha_parallel_relation_ends = [
+        end 
+        for start,end
+        in alpha_abstraction.parallel_relation
+    ]
+    alpha_causal_relation_starts = [
+        start 
+        for start,end
+        in alpha_abstraction.causal_relation
+    ]
+    alpha_causal_relation_ends = [
+        end 
+        for start,end
+        in alpha_abstraction.causal_relation
+    ]
+
+    alpha_progress.update(1)
+
+    for i in tqdm(range(0, len(pairs)),desc="alpha miner :: handling pairs",position=0):
         t1 = pairs[i]
-        for j in range(i, len(pairs)):
-            t2 = pairs[j]
-            if t1 != t2:
-                if t1[0].issubset(t2[0]) or t1[1].issubset(t2[1]):
-                    if not (__check_is_unrelated(alpha_abstraction.parallel_relation, alpha_abstraction.causal_relation,
-                                                 t1[0], t2[0]) or __check_is_unrelated(
-                        alpha_abstraction.parallel_relation, alpha_abstraction.causal_relation, t1[1], t2[1])):
-                        new_alpha_pair = (t1[0] | t2[0], t1[1] | t2[1])
-                        if new_alpha_pair not in pairs:
-                            pairs.append((t1[0] | t2[0], t1[1] | t2[1]))
-    internal_places = filter(lambda p: __pair_maximizer(pairs, p), pairs)
+        with Pool(processes=cpu_count()-1) as p:
+            new_rights =  [ t2 
+                        for t2 in pairs 
+                        if t2 != None
+                        if (t1[0] | t2[0], t1[1] | t2[1]) not in pairs
+                        and t1 != t2 
+                      ]
+            new_pairs = p.starmap(
+                find_alpha_pair,
+                [
+                    (t1,t2,
+                    alpha_abstraction.parallel_relation,alpha_abstraction.causal_relation,
+                    alpha_parallel_relation_starts,alpha_causal_relation_starts,
+                    alpha_parallel_relation_ends,alpha_causal_relation_ends)
+                    for t2 
+                    in new_rights
+                ]
+            )
+        #add pairs
+        for new_pair in new_pairs:
+            if new_pair not in pairs and new_pair != None:
+                pairs.append(new_pair)
+    internal_places = [
+        place 
+        for place 
+        in pairs
+        if __pair_maximizer(pairs, place)
+    ]
     net = petri.petrinet.PetriNet('alpha_classic_net_' + str(time.time()))
     label_transition_dict = {}
 
-    for i in range(0, len(labels)):
+    alpha_progress.update(1)
+
+    for i in tqdm(range(0, len(labels)),desc="alpha miner :: making labels",position=0):
         label_transition_dict[labels[i]] = petri.petrinet.PetriNet.Transition(labels[i], labels[i])
         net.transitions.add(label_transition_dict[labels[i]])
 
     src = __add_source(net, alpha_abstraction.start_activities, label_transition_dict)
     sink = __add_sink(net, alpha_abstraction.end_activities, label_transition_dict)
 
-    for pair in internal_places:
+    alpha_progress.update(1)
+
+    for pair in tqdm(internal_places,
+                    desc="alpha miner :: making petri net",
+                    position=0,
+                    total=sum([ 1 for place in (internal_places)])):
         place = petri.petrinet.PetriNet.Place(str(pair))
         net.places.add(place)
         for in_arc in pair[0]:
             petri.utils.add_arc_from_to(label_transition_dict[in_arc], place, net)
         for out_arc in pair[1]:
             petri.utils.add_arc_from_to(place, label_transition_dict[out_arc], net)
+
+    alpha_progress.update(1)
+    alpha_progress.close()
+
     return net, Marking({src: 1}), Marking({sink: 1})
 
 
