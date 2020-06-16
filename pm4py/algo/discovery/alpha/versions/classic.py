@@ -27,7 +27,6 @@ from pm4py.algo.discovery.parameters import Parameters
 from pm4py.util import exec_utils
 
 from pm4py.algo.discovery.alpha.versions.classic_support import run_batch_alpha_pairs
-from multiprocessing import Pool
 from os import cpu_count
 
 from tqdm.auto import tqdm
