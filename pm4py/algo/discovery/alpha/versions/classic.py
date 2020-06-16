@@ -26,7 +26,7 @@ from pm4py.objects.petri.petrinet import Marking
 from pm4py.algo.discovery.parameters import Parameters
 from pm4py.util import exec_utils
 
-from pm4py.algo.discovery.alpha.versions.classic_support import find_alpha_pair
+from pm4py.algo.discovery.alpha.versions.classic_support import run_batch_alpha_pairs
 from multiprocessing import Pool
 from os import cpu_count
 
@@ -187,34 +187,52 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
 
     for i in tqdm(range(0, len(pairs)),desc="alpha miner :: handling pairs",position=0):
         t1 = pairs[i]
-        with Pool(processes=cpu_count()-1) as p:
-            new_rights =  [ t2 
-                        for t2 in pairs 
-                        if t2 != None
-                        if (t1[0] | t2[0], t1[1] | t2[1]) not in pairs
-                        and t1 != t2 
-                      ]
-            new_pairs = p.starmap(
-                find_alpha_pair,
-                [
-                    (t1,t2,
-                    alpha_abstraction.parallel_relation,alpha_abstraction.causal_relation,
-                    alpha_parallel_relation_starts,alpha_causal_relation_starts,
-                    alpha_parallel_relation_ends,alpha_causal_relation_ends)
-                    for t2 
-                    in new_rights
-                ]
+        # if machine has enough resources to make use of mp
+        # run process pool method
+        if (cpu_count() -1 > 2):
+            pairs = run_batch_alpha_pairs(
+                t1,
+                pairs,
+                alpha_abstraction
             )
-        #add pairs
-        for new_pair in new_pairs:
-            if new_pair not in pairs and new_pair != None:
-                pairs.append(new_pair)
+        # otherwise run original implementation 
+        else :
+            for t2 in [ t2 
+                for t2 in pairs 
+                if (t1[0] | t2[0], t1[1] | t2[1]) not in pairs
+                and t1 != t2 
+                ]:
+                if t1[0].issubset(t2[0]) or t1[1].issubset(t2[1]):
+                    if not (
+                            __check_is_unrelated(
+                        alpha_abstraction.parallel_relation, alpha_abstraction.causal_relation,
+                        t1[0], t2[0],
+                        alpha_parallel_relation_starts,alpha_causal_relation_starts,
+                        alpha_parallel_relation_ends,alpha_causal_relation_ends) 
+                        or
+                              __check_is_unrelated(
+                        alpha_abstraction.parallel_relation, alpha_abstraction.causal_relation,
+                        t1[1], t2[1],
+                        alpha_parallel_relation_starts,alpha_causal_relation_starts,
+                        alpha_parallel_relation_ends,alpha_causal_relation_ends)
+                        ):
+                            new_alpha_pair = (t1[0] | t2[0], t1[1] | t2[1])
+                            if new_alpha_pair not in pairs:
+                                pairs.append(new_alpha_pair)
+        #update feedback with new length
+        alpha_progress.set_description(
+            "alpha miner :: progress :: made alpha pairs (%d) " % len(pairs)
+        )
+    #end of making new alpha pairs
+
+    # internal_places = filter(lambda p: __pair_maximizer(pairs, p), pairs)
     internal_places = [
         place 
         for place 
         in pairs
         if __pair_maximizer(pairs, place)
     ]
+
     net = petri.petrinet.PetriNet('alpha_classic_net_' + str(time.time()))
     label_transition_dict = {}
 
