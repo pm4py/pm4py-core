@@ -23,11 +23,11 @@ to change as libraries are added or removed.
 | kiwisolver | https://pypi.org/project/kiwisolver | BSD | 1.2.0 | X | X |
 | lxml | https://pypi.org/project/lxml | BSD | 4.5.1 | X | X |
 | MarkupSafe | https://pypi.org/project/MarkupSafe | BSD | 1.1.1 | | X |
-| matplotlib | https://pypi.org/project/matplotlib | PSF | 3.2.1 | X | X |
+| matplotlib | https://pypi.org/project/matplotlib | PSF | 3.2.2 | X | X |
 | networkx | https://pypi.org/project/networkx | BSD | 2.4 | X | |
-| numpy | https://pypi.org/project/numpy | BSD | 1.18.4 | | X |
+| numpy | https://pypi.org/project/numpy | BSD | 1.19.0 | | X |
 | packaging | https://pypi.org/project/packaging | Apache 2.0 | 20.4 | | |
-| pandas | https://pypi.org/project/pandas | BSD | 1.0.4 | X | X |
+| pandas | https://pypi.org/project/pandas | BSD | 1.0.5 | X | X |
 | parso | https://pypi.org/project/parso | MIT | 0.7.0 | | |
 | pickleshare | https://pypi.org/project/pickleshare | MIT | 0.7.5 | X | |
 | prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD | 3.0.5 | | |
@@ -37,9 +37,9 @@ to change as libraries are added or removed.
 | pyparsing | https://pypi.org/project/pyparsing | MIT | 2.4.7 | | |
 | python-dateutil | https://pypi.org/project/python-dateutil | Apache 2.0 | 2.8.1 | | |
 | pytz | https://pypi.org/project/pytz | 2020.1 | MIT | | |
-| pyvis | https://pypi.org/project/pyvis | BSD | 0.1.7.0 | X | |
+| pyvis | https://pypi.org/project/pyvis | BSD | 0.1.8.0 | X | |
 | scikit-learn | https://pypi.org/project/scikit-learn | BSD | 0.23.1 | X | X |
-| scipy | https://pypi.org/project/scipy | BSD | 1.4.1 | | X |
+| scipy | https://pypi.org/project/scipy | BSD | 1.5.0 | | X |
 | setuptools | https://pypi.org/project/setuptools | MIT | 47.1.1 | X | |
 | six | https://pypi.org/project/six | MIT | 1.15.0 | | |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache 2.0 | 2.1.0 | | |
