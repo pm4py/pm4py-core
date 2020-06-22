@@ -420,6 +420,80 @@ def __decode_marking(m_t):
     return m_d
 
 
+def __check_closed(closed, ns):
+    """
+    Checks if the state is closed
+
+    Parameters
+    -------------
+    closed
+        Closed set
+    ns
+        New state (marking, index)
+
+    Returns
+    -------------
+    bool
+        Boolean (true if the state is closed)
+    """
+    if ns[0] in closed and closed[ns[0]] <= ns[1]:
+        return True
+    return False
+
+
+def __add_closed(closed, ns):
+    """
+    Adds a closed state
+
+    Parameters
+    --------------
+    closed
+        Closed set
+    ns
+        New state (marking, index)
+    """
+    closed[ns[0]] = ns[1]
+
+
+def __add_to_open_set(open_set, ns):
+    """
+    Adds a new state to the open set whether necessary
+
+    Parameters
+    ----------------
+    open_set
+        Open set
+    ns
+        New state
+    """
+    """
+    shall_add = True
+    shall_heapify = False
+    i = 0
+    while i < len(open_set):
+        if open_set[i][POSITION_MARKING] == ns[POSITION_MARKING]:
+            if open_set[i][POSITION_INDEX] <= ns[POSITION_INDEX] and open_set[i][POSITION_TOTAL_COST] <= ns[
+                POSITION_TOTAL_COST]:
+                # do not add anything
+                shall_add = False
+                break
+            if open_set[i][POSITION_INDEX] >= ns[POSITION_INDEX] and open_set[i][POSITION_TOTAL_COST] > ns[
+                POSITION_TOTAL_COST]:
+                del open_set[i]
+                shall_heapify = True
+                continue
+        i = i + 1
+    if shall_add:
+        heapq.heappush(open_set, ns)
+    if shall_heapify:
+        heapq.heapify(open_set)
+    """
+    # the previous code minimizes memory occupation on microcontrollers, but maybe is not worthy
+    # the performance price on larger memory computers
+    heapq.heappush(open_set, ns)
+    return open_set
+
+
 def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, max_align_time_trace=sys.maxsize,
                ret_tuple_as_trans_desc=False):
     """
@@ -478,7 +552,7 @@ def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, 
     open_set = [initial_state]
     heapq.heapify(open_set)
 
-    closed = set()
+    closed = {}
     dummy_count = 0
     visited = 0
 
@@ -488,17 +562,18 @@ def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, 
         curr = heapq.heappop(open_set)
         curr_m0 = curr[POSITION_MARKING]
         curr_m = __decode_marking(curr_m0)
+        visited = visited + 1
         # if a situation equivalent to the one of the current state has been
         # visited previously, then discard this
-        if (curr[POSITION_INDEX], curr_m0) in closed:
+        if __check_closed(closed, (curr_m0, curr[POSITION_INDEX])):
             continue
-        visited = visited + 1
-        closed.add((curr[POSITION_INDEX], curr_m0))
+        __add_closed(closed, (curr_m0, curr[POSITION_INDEX]))
         if curr_m0 == fm:
             if -curr[POSITION_INDEX] == len(transf_trace):
                 # returns the alignment only if the final marking has been reached AND
                 # the trace is over
-                return __reconstruct_alignment(curr, model_struct, trace_struct, visited,
+                return __reconstruct_alignment(curr, model_struct, trace_struct, visited, len(open_set), len(closed),
+                                               len(marking_dict),
                                                ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
         else:
             # retrieves the transitions that are enabled in the current marking
@@ -509,25 +584,24 @@ def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, 
                     transf_trace) else False
                 # virtually fires the transition to get a new marking
                 new_m = __encode_marking(marking_dict,
-                                      __fire_trans(curr_m, trans_pre_dict[t], trans_post_dict[t]))
+                                         __fire_trans(curr_m, trans_pre_dict[t], trans_post_dict[t]))
                 if is_sync:
                     dummy_count = dummy_count + 1
                     new_state = (
                         curr[POSITION_TOTAL_COST] + sync_cost, curr[POSITION_INDEX] - 1, IS_SYNC_MOVE, dummy_count,
                         curr,
                         new_m, t)
-                    if (new_state[POSITION_INDEX], new_state[POSITION_MARKING]) not in closed:
+                    if not __check_closed(closed, (new_state[POSITION_MARKING], new_state[POSITION_INDEX])):
                         # if it can be executed in a sync way, add a new state corresponding
                         # to the sync execution only if it has not already been closed
-                        heapq.heappush(open_set, new_state)
-                dummy_count = dummy_count + 1
-                new_state = (
-                    curr[POSITION_TOTAL_COST] + transf_model_cost_function[t], curr[POSITION_INDEX], IS_MODEL_MOVE,
-                    dummy_count, curr, new_m, t)
-                if (new_state[POSITION_INDEX], new_state[POSITION_MARKING]) not in closed:
-                    # add a model move anyway :) (also if sync execution has been possible)
-                    # also here, checks if it is closed
-                    heapq.heappush(open_set, new_state)
+                        open_set = __add_to_open_set(open_set, new_state)
+                else:
+                    dummy_count = dummy_count + 1
+                    new_state = (
+                        curr[POSITION_TOTAL_COST] + transf_model_cost_function[t], curr[POSITION_INDEX], IS_MODEL_MOVE,
+                        dummy_count, curr, new_m, t)
+                    if not __check_closed(closed, (new_state[POSITION_MARKING], new_state[POSITION_INDEX])):
+                        open_set = __add_to_open_set(open_set, new_state)
         # IMPORTANT: to reduce the complexity, assume that you can schedule a log move
         # only if the previous move has not been a move-on-model.
         # since this setting is equivalent to scheduling all the log moves before and then
@@ -537,12 +611,13 @@ def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, 
             new_state = (
                 curr[POSITION_TOTAL_COST] + trace_cost_function[-curr[POSITION_INDEX]], curr[POSITION_INDEX] - 1,
                 IS_LOG_MOVE, dummy_count, curr, curr_m0, None)
-            if (new_state[POSITION_INDEX], new_state[POSITION_MARKING]) not in closed:
+            if not __check_closed(closed, (new_state[POSITION_MARKING], new_state[POSITION_INDEX])):
                 # adds the log move only if it has not been already closed before
-                heapq.heappush(open_set, new_state)
+                open_set = __add_to_open_set(open_set, new_state)
 
 
-def __reconstruct_alignment(curr, model_struct, trace_struct, visited, ret_tuple_as_trans_desc=False):
+def __reconstruct_alignment(curr, model_struct, trace_struct, visited, open_set_length, closed_set_length,
+                            num_visited_markings, ret_tuple_as_trans_desc=False):
     """
     Reconstruct the alignment from the final state (that reached the final marking)
 
@@ -556,6 +631,12 @@ def __reconstruct_alignment(curr, model_struct, trace_struct, visited, ret_tuple
         Efficient data structure for the trace
     visited
         Number of visited states
+    open_set_length
+        Length of the open set
+    closed_set_length
+        Length of the closed set
+    num_visited_markings
+        Number of visited markings
     ret_tuple_as_trans_desc
         Says if the alignments shall be constructed including also
         the name of the transition, or only the label (default=False includes only the label)
@@ -575,7 +656,7 @@ def __reconstruct_alignment(curr, model_struct, trace_struct, visited, ret_tuple
 
     alignment = []
     cost = curr[POSITION_TOTAL_COST]
-    queued = curr[POSITION_STATES_COUNT]
+    queued = open_set_length + visited
 
     while curr[POSITION_PARENT_STATE] is not None:
         m_name, m_label, t_name, t_label = ">>", ">>", ">>", ">>"
@@ -592,4 +673,5 @@ def __reconstruct_alignment(curr, model_struct, trace_struct, visited, ret_tuple
             alignment = [(t_label, m_label)] + alignment
         curr = curr[POSITION_PARENT_STATE]
 
-    return {"alignment": alignment, "cost": cost, "queued_states": queued, "visited_states": visited}
+    return {"alignment": alignment, "cost": cost, "queued_states": queued, "visited_states": visited,
+            "closed_set_length": closed_set_length, "num_visited_markings": num_visited_markings}
