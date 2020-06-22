@@ -1,5 +1,9 @@
 ===== PM4PY 1.3.3 =====
 This is a minor release, consisting of the following changes:
+1. commit 59630ed8456d9e7842e05fee4c53ff1a3d1389a0
+    - improved memory performance of Dijkstra-based alignments
+2. commit 1278713e2209d7b1e2287afbd9d80097db028617
+    - minor fixes in (to-be-deprecated) Parquet importer and exporter
 
 
 ===== PM4PY 1.3.2 =====
