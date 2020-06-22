@@ -8,16 +8,20 @@ from pm4py.util import exec_utils
 
 DEFAULT_VARIANT = pandas_exporter
 
+
 class Variants(Enum):
-    PANDAS: pandas_exporter
+    PANDAS = pandas_exporter
 
 
 try:
     from pm4py.objects.log.exporter.parquet.versions import pyarrow
-    Variants.PYARROW = pyarrow
 
-    DEFAULT_VARIANT = pyarrow
+    # enums cannot be changed
+    class Variants(Enum):
+        PANDAS = pandas_exporter
+        PYARROW = pyarrow
 except:
+    # pyarrow is not installed correctly or does not work
     pass
 
 
