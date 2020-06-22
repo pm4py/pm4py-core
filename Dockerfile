@@ -13,6 +13,6 @@ RUN apt-get -y install libtool flex bison pkg-config g++ libssl-dev automake
 RUN apt-get -y install libjemalloc-dev libboost-dev libboost-filesystem-dev libboost-system-dev libboost-regex-dev python3-dev autoconf flex bison cmake
 RUN apt-get -y install libxml2-dev libxslt-dev libfreetype6-dev libsuitesparse-dev
 RUN pip install -U wheel six pytest
-RUN pip install cython==0.29.19 pyvis==0.1.7.0 networkx==2.4 matplotlib==3.2.1 numpy==1.18.5 lxml==4.5.1 graphviz==0.14 pyarrow==0.15.1 pandas==1.0.4 scipy==1.4.1 pydotplus==2.0.2 scikit-learn==0.23.1 pulp==2.1 pytz==2020.1 intervaltree==3.0.2 stringdist deprecation tqdm
+RUN pip install cython==0.29.20 pyvis==0.1.8.0 networkx==2.4 matplotlib==3.2.2 numpy==1.19.0 lxml==4.5.1 graphviz==0.14 pyarrow==0.15.1 pandas==1.0.5 scipy==1.4.1 pydotplus==2.0.2 scikit-learn==0.23.1 pulp==2.1 pytz==2020.1 intervaltree==3.0.2 stringdist deprecation tqdm
 COPY . /app
 RUN cd /app && cp tests/test_dockers/setups/setup_master.py setup.py && python setup.py install
