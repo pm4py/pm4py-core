@@ -8,24 +8,18 @@ from enum import Enum
 import deprecation
 import traceback
 
-
-class Variants(Enum):
-    pass
-
-
-VERSIONS = set()
-VERSIONS_LOG = set()
+VERSIONS = dict()
+VERSIONS_LOG = dict()
 
 DEFAULT_VARIANT = None
 DEFAULT_VARIANT_LOG = None
 
+Variants = None
+
 try:
     from pm4py.objects.log.importer.parquet.versions import fastparquet
 
-    Variants.FASTPARQUET = fastparquet
-    VERSIONS.add(Variants.FASTPARQUET)
-
-    DEFAULT_VARIANT = Variants.FASTPARQUET
+    VERSIONS["fastparquet"] = fastparquet
 except:
     # Fastparquet is not installed
     # traceback.print_exc()
@@ -34,12 +28,8 @@ except:
 try:
     from pm4py.objects.log.importer.parquet.versions import pyarrow
 
-    Variants.PYARROW = pyarrow
-    VERSIONS.add(Variants.PYARROW)
-    VERSIONS_LOG.add(Variants.PYARROW)
-
-    DEFAULT_VARIANT = Variants.PYARROW
-    DEFAULT_VARIANT_LOG = Variants.PYARROW
+    VERSIONS["pyarrow"] = pyarrow
+    VERSIONS_LOG["pyarrow"] = pyarrow
 except:
     # Pyarrow is not installed
     # traceback.print_exc()
@@ -50,9 +40,31 @@ class Parameters(Enum):
     COLUMNS = "columns"
 
 
+# define the Variants enum dynamically (since when defined cannot be changed)
+versions_keys = sorted(list(VERSIONS.keys()))
+if versions_keys == ["fastparquet", "pyarrow"]:
+    class Variants(Enum):
+        FASTPARQUET = VERSIONS["fastparquet"]
+        PYARROW = VERSIONS["pyarrow"]
+
+
+    DEFAULT_VARIANT = Variants.PYARROW
+    DEFAULT_VARIANT_LOG = Variants.PYARROW
+elif versions_keys == ["pyarrow"]:
+    class Variants(Enum):
+        PYARROW = VERSIONS["pyarrow"]
+
+
+    DEFAULT_VARIANT = Variants.PYARROW
+    DEFAULT_VARIANT_LOG = Variants.PYARROW
+elif versions_keys == ["fastparquet"]:
+    class Variants(Enum):
+        FASTPARQUET = VERSIONS["fastparquet"]
+
+
+    DEFAULT_VARIANT = Variants.FASTPARQUET
+
 COLUMNS = Parameters.COLUMNS.value
-PYARROW = Variants.PYARROW
-FASTPARQUET = Variants.FASTPARQUET
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
