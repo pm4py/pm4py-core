@@ -14,12 +14,14 @@ to change as libraries are added or removed.
 | decorator | https://pypi.org/project/decorator | BSD | 4.4.2 | | |
 | deprecation | https://pypi.org/project/deprecation | Apache 2.0 | 2.1.0 | | |
 | graphviz | https://pypi.org/project/graphviz | MIT | 0.14 | X | |
+| importlib-metadata | https://pypi.org/project/importlib-metadata | Apache | 1.7.0 | X | |
 | intervaltree | https://pypi.org/project/intervaltree | Apache 2.0 | 3.0.2 | | |
 | ipython | https://pypi.org/project/ipython | BSD | 7.15.0 | X | |
 | ipython-genutils | https://pypi.org/project/ipython-genutils | BSD | 0.2.0 | | |
 | jedi | https://pypi.org/project/jedi | MIT | 0.17.0 | | |
 | jinja2 | https://pypi.org/project/jinja2 | BSD | 2.11.2 | | |
 | joblib | https://pypi.org/project/joblib | BSD | 0.15.1 | X | |
+| jsonpickle | https://pypi.org/project/jsonpickle | BSD | 1.4.1 | X | |
 | kiwisolver | https://pypi.org/project/kiwisolver | BSD | 1.2.0 | X | X |
 | lxml | https://pypi.org/project/lxml | BSD | 4.5.1 | X | X |
 | MarkupSafe | https://pypi.org/project/MarkupSafe | BSD | 1.1.1 | | X |
@@ -47,3 +49,4 @@ to change as libraries are added or removed.
 | threadpoolctl | https://pypi.org/project/threadpoolctl | BSD | 2.1.0 | | |
 | traitlets | https://pypi.org/project/traitlets | BSD | 4.3.3 | | |
 | wcwidth | https://pypi.org/project/wcwidth | MIT | 0.1.9 | | |
+| zipp | https://pypi.org/project/zipp | MIT | 3.1.0 | X | |
