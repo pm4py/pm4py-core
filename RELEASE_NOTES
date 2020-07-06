@@ -5,6 +5,11 @@ This is a minor release, consisting of the following changes:
 2. commit b99da02411259897f1df52f9a9a62153228dab8a
     - force PuLP <= 2.1 is forced (for now, due to excessive console output of v2.2.)
     - new version of Pyvis requires additional dependencies (Apache, BSD, MIT licenses), which are now specified
+3. commit a42d0f087c94cb9e7914532f7ae0228af3a7f9ce
+    - add 'extensive' playout, which allows to generate all traces in the language of a model up-to a given length.
+4. commit eaed442d10a5b4c9eead3966cef473e2c3f0d61b
+    - improved efficiency of reachability graph computation
+    - added footprint-based conformance checking
 
 
 ===== PM4PY 1.3.3 =====
