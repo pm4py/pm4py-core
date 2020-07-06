@@ -134,9 +134,10 @@ setup(
         'scipy',
         'scikit-learn',
         'pydotplus',
-        'pulp',
+        'pulp<=2.1',
         'pytz',
         'intervaltree',
+        "jsonpickle",
         "deprecation",
         "stringdist"
     ],
