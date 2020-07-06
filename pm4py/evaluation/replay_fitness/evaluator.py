@@ -70,7 +70,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None, varia
     else:
         # execute the alignments based variant, with the specification of the alignments variant
         align_variant = exec_utils.get_param_value(Parameters.ALIGN_VARIANT, parameters,
-                                                   alignments.algorithm.Variants.VERSION_STATE_EQUATION_A_STAR)
+                                                   alignments.algorithm.DEFAULT_VARIANT)
         return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG),
                                                      petri_net,
                                                      initial_marking, final_marking, align_variant=align_variant,

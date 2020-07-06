@@ -578,15 +578,18 @@ def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, 
         else:
             # retrieves the transitions that are enabled in the current marking
             en_t = [t for t in trans_pre_dict if __dict_leq(trans_pre_dict[t], curr_m)]
-            for t in en_t:
+            this_closed = set()
+            j = 0
+            while j < len(en_t):
+                t = en_t[j]
                 # checks if a given transition can be executed in sync with the trace
                 is_sync = trans_labels_dict[t] == transf_trace[-curr[POSITION_INDEX]] if -curr[POSITION_INDEX] < len(
                     transf_trace) else False
-                # virtually fires the transition to get a new marking
-                new_m = __encode_marking(marking_dict,
-                                         __fire_trans(curr_m, trans_pre_dict[t], trans_post_dict[t]))
                 if is_sync:
                     dummy_count = dummy_count + 1
+                    # virtually fires the transition to get a new marking
+                    new_m = __encode_marking(marking_dict,
+                                             __fire_trans(curr_m, trans_pre_dict[t], trans_post_dict[t]))
                     new_state = (
                         curr[POSITION_TOTAL_COST] + sync_cost, curr[POSITION_INDEX] - 1, IS_SYNC_MOVE, dummy_count,
                         curr,
@@ -595,13 +598,27 @@ def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, 
                         # if it can be executed in a sync way, add a new state corresponding
                         # to the sync execution only if it has not already been closed
                         open_set = __add_to_open_set(open_set, new_state)
-                else:
-                    dummy_count = dummy_count + 1
-                    new_state = (
-                        curr[POSITION_TOTAL_COST] + transf_model_cost_function[t], curr[POSITION_INDEX], IS_MODEL_MOVE,
-                        dummy_count, curr, new_m, t)
+                    # if a sync move reached new_m, do not schedule any model move that reaches new_m
+                    this_closed.add(new_m)
+                    del en_t[j]
+                    continue
+                j = j + 1
+            en_t.sort(key=lambda t: transf_model_cost_function[t])
+            j = 0
+            while j < len(en_t):
+                t = en_t[j]
+                dummy_count = dummy_count + 1
+                # virtually fires the transition to get a new marking
+                new_m = __encode_marking(marking_dict,
+                                         __fire_trans(curr_m, trans_pre_dict[t], trans_post_dict[t]))
+                new_state = (
+                    curr[POSITION_TOTAL_COST] + transf_model_cost_function[t], curr[POSITION_INDEX], IS_MODEL_MOVE,
+                    dummy_count, curr, new_m, t)
+                if new_m not in this_closed and not curr_m0 == new_m:
                     if not __check_closed(closed, (new_state[POSITION_MARKING], new_state[POSITION_INDEX])):
                         open_set = __add_to_open_set(open_set, new_state)
+                    this_closed.add(new_m)
+                j = j + 1
         # IMPORTANT: to reduce the complexity, assume that you can schedule a log move
         # only if the previous move has not been a move-on-model.
         # since this setting is equivalent to scheduling all the log moves before and then

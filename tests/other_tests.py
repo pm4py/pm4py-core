@@ -60,6 +60,16 @@ class OtherPartsTests(unittest.TestCase):
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_STATE_EQUATION_A_STAR)
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_DIJKSTRA_NO_HEURISTICS)
 
+    def test_footprints_net(self):
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+        net, im, fm = alpha_miner.apply(log)
+        from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
+        fp_log = footprints_discovery.apply(log)
+        fp_net = footprints_discovery.apply(net, im)
+        from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
+        conf = footprints_conformance.apply(fp_log, fp_net)
+
 
 if __name__ == "__main__":
     unittest.main()
