@@ -1,14 +1,15 @@
-from pm4py.simulation.playout.versions import basic_playout
+from pm4py.simulation.playout.versions import basic_playout, extensive
 from pm4py.util import exec_utils
 from enum import Enum
 
 
 class Variants(Enum):
     BASIC_PLAYOUT = basic_playout
+    EXTENSIVE = extensive
 
 
 DEFAULT_VARIANT = Variants.BASIC_PLAYOUT
-VERSIONS = {Variants.BASIC_PLAYOUT}
+VERSIONS = {Variants.BASIC_PLAYOUT, Variants.EXTENSIVE}
 
 
 def apply(net, initial_marking, final_marking=None, parameters=None, variant=DEFAULT_VARIANT):
@@ -24,9 +25,7 @@ def apply(net, initial_marking, final_marking=None, parameters=None, variant=DEF
     final_marking
         (if provided) Final marking of the Petri net
     parameters
-        Parameters of the algorithm:
-            Parameters.NO_TRACES -> Number of traces of the log to generate
-            Parameters.MAX_TRACE_LENGTH -> Maximum trace length
+        Parameters of the algorithm
     variant
         Variant of the algorithm to use:
             - Variants.BASIC_PLAYOUT
