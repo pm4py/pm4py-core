@@ -3,12 +3,13 @@ cython
 deprecation
 graphviz
 intervaltree
+jsonpickle
 lxml
 matplotlib
 networkx
 numpy
 pandas
-pulp
+pulp<=2.1
 pydotplus
 pytz
 pyvis
