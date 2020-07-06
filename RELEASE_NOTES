@@ -1,3 +1,17 @@
+===== PM4PY 1.3.4 =====
+This is a minor release, consisting of the following changes:
+1. commit f05ba60e2faa28b2f2e2d7ef65e0ac415ae298e8
+    - improved memory performance of Dijkstra-based alignments, restriction of model-move scheduling is applied (only one of many is chosen)
+2. commit b99da02411259897f1df52f9a9a62153228dab8a
+    - force PuLP <= 2.1 is forced (for now, due to excessive console output of v2.2.)
+    - new version of Pyvis requires additional dependencies (Apache, BSD, MIT licenses), which are now specified
+3. commit a42d0f087c94cb9e7914532f7ae0228af3a7f9ce
+    - add 'extensive' playout, which allows to generate all traces in the language of a model up-to a given length.
+4. commit eaed442d10a5b4c9eead3966cef473e2c3f0d61b
+    - improved efficiency of reachability graph computation
+    - added footprint-based conformance checking
+
+
 ===== PM4PY 1.3.3 =====
 This is a minor release, consisting of the following changes:
 1. commit 59630ed8456d9e7842e05fee4c53ff1a3d1389a0
@@ -38,7 +52,7 @@ This is a minor release, consisting of the following changes:
     - Pull request #160 from AdamBanham: adding progress information for importing logs
 
 ===== PM4PY 1.3.0 =====
-This is *major* release, consisting of the following *major* changes:
+This is a *major* release, consisting of the following *major* changes:
 1. commit b4cea4be6fe6ff90f58c405f9f0acb4dbac973f4
     - The factories have been renamed (backward-compatible, deprecation) by a more meaningful name.
 2. commit e8f250fec6781c088da8204923ad8817f1b5d689
