@@ -3,6 +3,7 @@ cython==0.29.20
 networkx==2.4
 graphviz==0.14
 intervaltree==3.0.2
+jsonpickle==1.4.1
 lxml==4.5.1
 matplotlib==3.2.2
 networkx==2.4
@@ -11,8 +12,8 @@ pandas==1.0.5
 pulp==2.1
 pydotplus==2.0.2
 pytz==2020.1
-pyvis==0.1.8.0
+pyvis==0.1.8.1.1
 scikit-learn==0.23.1
-scipy==1.5.0
+scipy==1.5.1
 deprecation
 stringdist==1.0.9
