@@ -1,14 +1,21 @@
+import datetime
 from copy import copy
 from random import choice
 
 import pm4py.objects.log.log as log_instance
 from pm4py.objects.petri import semantics
-from pm4py.simulation.playout.parameters import Parameters
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
+from enum import Enum
+from pm4py.util import constants
 
-import time
-import datetime
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    NO_TRACES = "noTraces"
+    MAX_TRACE_LENGTH = "maxTraceLength"
 
 
 def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,

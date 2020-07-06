@@ -4,6 +4,7 @@ import deprecation
 BASIC_PLAYOUT = "basic_playout"
 VERSIONS = {BASIC_PLAYOUT: basic_playout.apply}
 
+
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
                         details='Use simulator module instead.')
 def apply(net, initial_marking, parameters=None, variant=BASIC_PLAYOUT):
