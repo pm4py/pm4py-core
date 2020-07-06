@@ -1,5 +1,7 @@
 ===== PM4PY 1.3.4 =====
 This is a minor release, consisting of the following changes:
+1. commit f05ba60e2faa28b2f2e2d7ef65e0ac415ae298e8
+    - improved memory performance of Dijkstra-based alignments, restriction of model-move scheduling is applied (only one of many is chosen)
 
 
 ===== PM4PY 1.3.3 =====
