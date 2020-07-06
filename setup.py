@@ -145,7 +145,7 @@ setup(
         'intervaltree',
         "jsonpickle",
         "deprecation",
-        "stringdist"
+        "stringdist",
         "pm4pycvxopt; python_version < '3.8'",
         'tqdm'
     ],
