@@ -748,8 +748,10 @@ class SubtreeDFGBased():
                             if self.noise_threshold > 0:
                                 if not second_iteration:
                                     self.initialize_tree(self.dfg, self.initial_dfg, None, second_iteration=True)
+                                else:
+                                    self.detected_cut = "flower"
                             else:
-                                pass
-                            self.detected_cut = "flower"
+                                self.detected_cut = "flower"
+
         else:
             self.detected_cut = "base_xor"
