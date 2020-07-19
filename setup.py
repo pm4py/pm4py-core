@@ -146,7 +146,7 @@ setup(
         "jsonpickle",
         "deprecation",
         "stringdist",
-        "pm4pycvxopt; python_version < '3.8'",
+        "pm4pycvxopt<=0.0.9; python_version < '3.8'",
         'tqdm'
     ],
     project_urls={

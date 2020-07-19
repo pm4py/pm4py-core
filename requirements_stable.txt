@@ -18,5 +18,5 @@ scipy==1.5.1
 deprecation
 stringdist==1.0.9
 
-pm4pycvxopt==0.0.8; python_version < '3.8'
+pm4pycvxopt==0.0.9; python_version < '3.8'
 tqdm==4.46.0
