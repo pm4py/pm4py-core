@@ -3,14 +3,14 @@ from enum import Enum
 
 from lxml import etree
 
-from tqdm.auto import tqdm
-
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting, index_attribute
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.util import parameters as param_util
 from pm4py.util import xes_constants
 from pm4py.util.dt_parsing import parser as dt_parser
+
+import pkgutil
 
 
 class Parameters(Enum):
@@ -67,7 +67,12 @@ def import_log(filename, parameters=None):
 
     #count number of traces and setup progress bar
     no_trace = sum ( [ 1 for trace in  etree.iterparse(filename, events=[_EVENT_START],tag="{*}trace") ])
-    progress = tqdm(total=no_trace,desc="parsing log, completed traces :: ")
+
+    # make tqdm facultative
+    progress = None
+    if pkgutil.find_loader("tqdm"):
+        from tqdm.auto import tqdm
+        progress = tqdm(total=no_trace,desc="parsing log, completed traces :: ")
 
     log = None
     trace = None
@@ -209,7 +214,8 @@ def import_log(filename, parameters=None):
                 log.append(trace)
 
                 #update progress bar as we have a completed trace
-                progress.update()
+                if progress is not None:
+                    progress.update()
 
                 trace = None
                 continue
@@ -218,7 +224,8 @@ def import_log(filename, parameters=None):
                 continue
             
     #gracefully close progress bar
-    progress.close()
+    if progress is not None:
+        progress.close()
     del context, progress
 
     if Parameters.TIMESTAMP_SORT in parameters and parameters[Parameters.TIMESTAMP_SORT]:
