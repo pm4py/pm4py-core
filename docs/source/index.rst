@@ -16,6 +16,6 @@ Welcome to pm4py's documentation!
 Indices and tables
 ==================
 
-* :ref:`genindex`
+.. * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`
+.. * :ref:`search`

@@ -16,7 +16,7 @@ pyvis
 scipy
 scikit-learn
 stringdist
-
+pyemd
 
 pm4pycvxopt; python_version < '3.8'
 tqdm # from (public/github) commit 0ba0679429c8a675d0cb3788bde55b76b00fbbc7 (pull request #160 / AdamBanham)

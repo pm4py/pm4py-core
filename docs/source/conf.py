@@ -20,13 +20,13 @@ sys.path.insert(0, os.path.abspath('../../'))
 # -- Project information -----------------------------------------------------
 
 project = 'PM4Py'
-project_copyright = '2019-2020 @ Fraunhofer FIT'
+project_copyright = 'Fraunhofer FIT'
 author = 'Fraunhofer FIT'
 
 # The short X.Y version
 version = '1.3'
 # The full version, including alpha/beta/rc tags
-release = ''
+release = '4'
 
 # -- General configuration ---------------------------------------------------
 
@@ -71,7 +71,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path .
-exclude_patterns = []
+exclude_patterns = ['tests', 'scripts']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'

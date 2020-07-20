@@ -1,10 +1,10 @@
 ciso8601==2.1.2; python_version < '3.7'
-cython==0.29.20
+cython==0.29.21
 networkx==2.4
-graphviz==0.14
+graphviz==0.14.1
 intervaltree==3.0.2
 jsonpickle==1.4.1
-lxml==4.5.1
+lxml==4.5.2
 matplotlib==3.2.2
 networkx==2.4
 numpy==1.19.0
@@ -17,6 +17,7 @@ scikit-learn==0.23.1
 scipy==1.5.1
 deprecation
 stringdist==1.0.9
+pyemd==0.5.1
 
 pm4pycvxopt==0.0.8; python_version < '3.8'
 tqdm==4.46.0
