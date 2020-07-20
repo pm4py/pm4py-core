@@ -5,6 +5,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    from examples import emd_evaluation
     from examples import event_log_filter
     from examples import event_log_map
     from examples import event_stream_filter
@@ -36,6 +37,8 @@ if __name__ == "__main__":
     from examples import visualization_align_table
     from examples import footprints_petri_net
 
+    print("\n\nemd_evaluation")
+    emd_evaluation.execute_script()
     print("\n\nfootprints_petri_net")
     footprints_petri_net.execute_script()
     print("\n\nevent_log_filter")

@@ -96,8 +96,8 @@ def apply(net, initial_marking, final_marking=None, parameters=None):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
-    no_traces = exec_utils.get_param_value(Parameters.NO_TRACES, parameters, 100)
-    max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, 100)
+    no_traces = exec_utils.get_param_value(Parameters.NO_TRACES, parameters, 1000)
+    max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, 1000)
 
     return apply_playout(net, initial_marking, max_trace_length=max_trace_length, no_traces=no_traces,
                          case_id_key=case_id_key, activity_key=activity_key, timestamp_key=timestamp_key,
