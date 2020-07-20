@@ -13,7 +13,7 @@ to change as libraries are added or removed.
 | cycler | https://pypi.org/project/cycler | BSD | 0.10.0 | | |
 | decorator | https://pypi.org/project/decorator | BSD | 4.4.2 | | |
 | deprecation | https://pypi.org/project/deprecation | Apache 2.0 | 2.1.0 | | |
-| graphviz | https://pypi.org/project/graphviz | MIT | 0.14 | X | |
+| graphviz | https://pypi.org/project/graphviz | MIT | 0.14.1 | X | |
 | importlib-metadata | https://pypi.org/project/importlib-metadata | Apache | 1.7.0 | X | |
 | intervaltree | https://pypi.org/project/intervaltree | Apache 2.0 | 3.0.2 | | |
 | ipython | https://pypi.org/project/ipython | BSD | 7.15.0 | X | |
@@ -23,7 +23,7 @@ to change as libraries are added or removed.
 | joblib | https://pypi.org/project/joblib | BSD | 0.15.1 | X | |
 | jsonpickle | https://pypi.org/project/jsonpickle | BSD | 1.4.1 | X | |
 | kiwisolver | https://pypi.org/project/kiwisolver | BSD | 1.2.0 | X | X |
-| lxml | https://pypi.org/project/lxml | BSD | 4.5.1 | X | X |
+| lxml | https://pypi.org/project/lxml | BSD | 4.5.2 | X | X |
 | MarkupSafe | https://pypi.org/project/MarkupSafe | BSD | 1.1.1 | | X |
 | matplotlib | https://pypi.org/project/matplotlib | PSF | 3.2.2 | X | X |
 | networkx | https://pypi.org/project/networkx | BSD | 2.4 | X | |
@@ -36,6 +36,7 @@ to change as libraries are added or removed.
 | pulp | https://pypi.org/project/pulp | BSD | 2.1 | X | |
 | pydotplus | https://pypi.org/project/pydotplus | MIT | 2.0.2 | X | |
 | pygments | https://pypi.org/project/pygments | BSD | 2.6.1 | | |
+| pyemd | https://pypi.org/project/pyemd | MIT | 0.5.1 | | |
 | pyparsing | https://pypi.org/project/pyparsing | MIT | 2.4.7 | | |
 | python-dateutil | https://pypi.org/project/python-dateutil | Apache 2.0 | 2.8.1 | | |
 | pytz | https://pypi.org/project/pytz | 2020.1 | MIT | | |

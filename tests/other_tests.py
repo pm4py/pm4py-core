@@ -14,9 +14,30 @@ from pm4py.objects.dfg.exporter import exporter as dfg_exporter
 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
 from pm4py.statistics.start_activities.log import get as start_activities
 from pm4py.statistics.end_activities.log import get as end_activities
+from pm4py.evaluation.earth_mover_distance import evaluator as earth_mover_distance
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+from pm4py.statistics.variants.log import get as variants_get
+from pm4py.simulation.playout import simulator
 
 
 class OtherPartsTests(unittest.TestCase):
+    def test_emd_1(self):
+        M = {("a", "b", "d", "e"): 0.49, ("a", "d", "b", "e"): 0.49, ("a", "c", "d", "e"): 0.01,
+             ("a", "d", "c", "e"): 0.01}
+        L1 = {("a", "b", "d", "e"): 0.49, ("a", "d", "b", "e"): 0.49, ("a", "c", "d", "e"): 0.01,
+              ("a", "d", "c", "e"): 0.01}
+        earth_mover_distance.apply(M, L1)
+
+    def test_emd_2(self):
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        lang_log = variants_get.get_language(log)
+        net1, im1, fm1 = inductive_miner.apply(log)
+        lang_model1 = variants_get.get_language(
+            simulator.apply(net1, im1, fm1, variant=simulator.Variants.STOCHASTIC_PLAYOUT,
+                            parameters={simulator.Variants.STOCHASTIC_PLAYOUT.value.Parameters.LOG: log}))
+        emd = earth_mover_distance.apply(lang_model1, lang_log)
+
     def test_importing_dfg(self):
         dfg, sa, ea = dfg_importer.apply(os.path.join("input_data", "running-example.dfg"))
 
