@@ -59,4 +59,7 @@ def apply(net, im, parameters=None):
     parallel = {(x.label, y.label) for (x, y) in parallel}
     sequence = {(x.label, y.label) for (x, y) in sequence}
 
-    return {Outputs.SEQUENCE.value: sequence, Outputs.PARALLEL.value: parallel}
+    activities = set(x.label for x in net.transitions if x.label is not None)
+    start_activities = set(x.label for x in eventually_enabled[im])
+
+    return {Outputs.SEQUENCE.value: sequence, Outputs.PARALLEL.value: parallel, Outputs.ACTIVITIES.value: activities, Outputs.START_ACTIVITIES.value: start_activities}
