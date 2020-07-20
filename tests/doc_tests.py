@@ -56,8 +56,6 @@ class DocTests(unittest.TestCase):
     def test_1(self):
         from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
-        print(log[0])  # prints the first trace of the log
-        print(log[0][0])  # prints the first event of the first trace
 
     def test_2(self):
         from pm4py.objects.log.importer.xes import importer as xes_importer
@@ -802,6 +800,420 @@ class DocTests(unittest.TestCase):
     def test_67(self):
         from pm4py.objects.log.exporter.xes import exporter as xes_exporter
         xes_exporter.Variants.ETREE.value.Parameters.COMPRESS
+
+    def test_tbr_diagn_1(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
+
+        from pm4py.algo.filtering.log.auto_filter.auto_filter import apply_auto_filter
+        filtered_log = apply_auto_filter(log)
+
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+        net, initial_marking, final_marking = inductive_miner.apply(filtered_log)
+
+        from pm4py.algo.conformance.tokenreplay import algorithm as token_based_replay
+        parameters_tbr = {token_based_replay.Variants.TOKEN_REPLAY.value.Parameters.DISABLE_VARIANTS: True,
+                          token_based_replay.Variants.TOKEN_REPLAY.value.Parameters.ENABLE_PLTR_FITNESS: True}
+        replayed_traces, place_fitness, trans_fitness, unwanted_activities = token_based_replay.apply(log, net,
+                                                                                                      initial_marking,
+                                                                                                      final_marking,
+                                                                                                      parameters=parameters_tbr)
+
+        from pm4py.algo.conformance.tokenreplay.diagnostics import duration_diagnostics
+        trans_diagnostics = duration_diagnostics.diagnose_from_trans_fitness(log, trans_fitness)
+        for trans in trans_diagnostics:
+            #print(trans, trans_diagnostics[trans])
+            pass
+
+        from pm4py.algo.conformance.tokenreplay.diagnostics import duration_diagnostics
+        act_diagnostics = duration_diagnostics.diagnose_from_notexisting_activities(log, unwanted_activities)
+        for act in act_diagnostics:
+            #print(act, act_diagnostics[act])
+            pass
+
+    def test_tbr_diagn_2(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
+
+        from pm4py.algo.filtering.log.auto_filter.auto_filter import apply_auto_filter
+        filtered_log = apply_auto_filter(log)
+
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+        net, initial_marking, final_marking = inductive_miner.apply(filtered_log)
+
+        # build decision trees
+        string_attributes = ["org:group"]
+        numeric_attributes = []
+        parameters = {"string_attributes": string_attributes, "numeric_attributes": numeric_attributes}
+
+        from pm4py.algo.conformance.tokenreplay import algorithm as token_based_replay
+        parameters_tbr = {token_based_replay.Variants.TOKEN_REPLAY.value.Parameters.DISABLE_VARIANTS: True,
+                          token_based_replay.Variants.TOKEN_REPLAY.value.Parameters.ENABLE_PLTR_FITNESS: True}
+        replayed_traces, place_fitness, trans_fitness, unwanted_activities = token_based_replay.apply(log, net,
+                                                                                                      initial_marking,
+                                                                                                      final_marking,
+                                                                                                      parameters=parameters_tbr)
+
+        from pm4py.algo.conformance.tokenreplay.diagnostics import root_cause_analysis
+        trans_root_cause = root_cause_analysis.diagnose_from_trans_fitness(log, trans_fitness, parameters=parameters)
+
+
+        from pm4py.visualization.decisiontree import visualizer as dt_vis
+        for trans in trans_root_cause:
+            clf = trans_root_cause[trans]["clf"]
+            feature_names = trans_root_cause[trans]["feature_names"]
+            classes = trans_root_cause[trans]["classes"]
+
+            # visualization could be called
+            gviz = dt_vis.apply(clf, feature_names, classes)
+            break
+
+        from pm4py.algo.conformance.tokenreplay.diagnostics import root_cause_analysis
+        act_root_cause = root_cause_analysis.diagnose_from_notexisting_activities(log, unwanted_activities,
+                                                                                  parameters=parameters)
+
+        from pm4py.visualization.decisiontree import visualizer as dt_vis
+        for act in act_root_cause:
+            clf = act_root_cause[act]["clf"]
+            feature_names = act_root_cause[act]["feature_names"]
+            classes = act_root_cause[act]["classes"]
+            # visualization could be called
+            gviz = dt_vis.apply(clf, feature_names, classes)
+            break
+
+    def test_max_decomp(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        net, im, fm = alpha_miner.apply(log)
+
+        from pm4py.objects.petri.decomposition import decompose
+
+        list_nets = decompose(net, im, fm)
+
+        from pm4py.visualization.petrinet import visualizer
+        gviz = []
+        for index, model in enumerate(list_nets):
+            subnet, s_im, s_fm = model
+
+            gviz.append(visualizer.apply(subnet, s_im, s_fm, parameters={visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: "png"}))
+            break
+
+    def test_reach_graph(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        net, im, fm = alpha_miner.apply(log)
+
+        from pm4py.objects.petri import reachability_graph
+
+        ts = reachability_graph.construct_reachability_graph(net, im)
+
+        from pm4py.visualization.transition_system import visualizer as ts_visualizer
+
+        gviz = ts_visualizer.apply(ts, parameters={ts_visualizer.Variants.VIEW_BASED.value.Parameters.FORMAT: "svg"})
+
+    def test_decomp(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        net, im, fm = alpha_miner.apply(log)
+
+        from pm4py.algo.conformance.decomp_alignments import algorithm as decomp_alignments
+
+        conf = decomp_alignments.apply(log, net, im, fm, parameters={
+            decomp_alignments.Variants.RECOMPOS_MAXIMAL.value.Parameters.PARAM_THRESHOLD_BORDER_AGREEMENT: 2})
+
+        from pm4py.evaluation.replay_fitness import evaluator as rp_fitness_evaluator
+
+        fitness = rp_fitness_evaluator.evaluate(conf, variant=rp_fitness_evaluator.Variants.ALIGNMENT_BASED)
+
+    def test_footprints(self):
+        from pm4py.simulation.tree_generator import simulator as tree_gen
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+        net, im, fm = inductive_miner.apply(log)
+
+        from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
+
+        fp_log = footprints_discovery.apply(log, variant=footprints_discovery.Variants.ENTIRE_EVENT_LOG)
+
+        from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
+
+        fp_trace_by_trace = footprints_discovery.apply(log, variant=footprints_discovery.Variants.TRACE_BY_TRACE)
+
+        fp_net = footprints_discovery.apply(net, im, fm)
+
+        from pm4py.visualization.footprints import visualizer as fp_visualizer
+
+        gviz = fp_visualizer.apply(fp_net, parameters={fp_visualizer.Variants.SINGLE.value.Parameters.FORMAT: "svg"})
+
+        from pm4py.visualization.footprints import visualizer as fp_visualizer
+
+        gviz = fp_visualizer.apply(fp_log, fp_net,
+                                   parameters={fp_visualizer.Variants.COMPARISON.value.Parameters.FORMAT: "svg"})
+
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        from copy import deepcopy
+        from pm4py.algo.filtering.log.variants import variants_filter
+
+        log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
+        filtered_log = variants_filter.apply_auto_filter(deepcopy(log))
+
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+        net, im, fm = inductive_miner.apply(filtered_log)
+
+        from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
+
+        conf_fp = footprints_conformance.apply(fp_trace_by_trace, fp_net)
+
+    def test_log_skeleton(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.algo.discovery.log_skeleton import algorithm as lsk_discovery
+        skeleton = lsk_discovery.apply(log, parameters={
+            lsk_discovery.Variants.CLASSIC.value.Parameters.NOISE_THRESHOLD: 0.0})
+
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
+        from copy import deepcopy
+        from pm4py.algo.filtering.log.variants import variants_filter
+        filtered_log = variants_filter.apply_auto_filter(deepcopy(log))
+
+        from pm4py.algo.conformance.log_skeleton import algorithm as lsk_conformance
+        conf_result = lsk_conformance.apply(log, skeleton)
+
+        from pm4py.algo.discovery.log_skeleton import algorithm as lsk_discovery
+        skeleton = lsk_discovery.apply(log, parameters={
+            lsk_discovery.Variants.CLASSIC.value.Parameters.NOISE_THRESHOLD: 0.03})
+
+        from pm4py.algo.conformance.log_skeleton import algorithm as lsk_conformance
+        conf_result = lsk_conformance.apply(log, skeleton)
+
+    def test_throughput_time(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.statistics.traces.log import case_statistics
+        all_case_durations = case_statistics.get_all_casedurations(log, parameters={
+            case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"})
+
+        from pm4py.statistics.traces.log import case_statistics
+        median_case_duration = case_statistics.get_median_caseduration(log, parameters={
+            case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"
+        })
+
+    def test_case_arrival(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.statistics.traces.log import case_arrival
+        case_arrival_ratio = case_arrival.get_case_arrival_avg(log, parameters={
+            case_arrival.Parameters.TIMESTAMP_KEY: "time:timestamp"})
+
+        from pm4py.statistics.traces.log import case_arrival
+        case_dispersion_ratio = case_arrival.get_case_dispersion_avg(log, parameters={
+            case_arrival.Parameters.TIMESTAMP_KEY: "time:timestamp"})
+
+    def test_ps(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.statistics.performance_spectrum import algorithm as performance_spectrum
+        ps = performance_spectrum.apply(log, ["register request", "decide"],
+                                        parameters={performance_spectrum.Parameters.ACTIVITY_KEY: "concept:name",
+                                                    performance_spectrum.Parameters.TIMESTAMP_KEY: "time:timestamp"})
+
+    def test_business_hours(self):
+        from pm4py.util.business_hours import BusinessHours
+        from datetime import datetime
+
+        st = datetime.fromtimestamp(100000000)
+        et = datetime.fromtimestamp(200000000)
+        bh_object = BusinessHours(st, et)
+        worked_time = bh_object.getseconds()
+
+        bh_object = BusinessHours(st, et, worktiming=[10, 16], weekends=[5, 6, 7])
+        worked_time = bh_object.getseconds()
+
+    def test_cycle_waiting_time(self):
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        import os
+        log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
+
+        from pm4py.objects.log.util import interval_lifecycle
+        enriched_log = interval_lifecycle.assign_lead_cycle_time(log)
+
+    def test_distr_case_duration(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log_path = os.path.join("input_data", "receipt.xes")
+        log = xes_importer.apply(log_path)
+
+        from pm4py.util import constants
+        from pm4py.statistics.traces.log import case_statistics
+        x, y = case_statistics.get_kde_caseduration(log, parameters={
+            constants.PARAMETER_CONSTANT_TIMESTAMP_KEY: "time:timestamp"})
+
+        from pm4py.visualization.graphs import visualizer as graphs_visualizer
+
+        gviz = graphs_visualizer.apply_plot(x, y, variant=graphs_visualizer.Variants.CASES)
+        gviz = graphs_visualizer.apply_semilogx(x, y, variant=graphs_visualizer.Variants.CASES)
+
+    def test_distr_events_time(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log_path = os.path.join("input_data", "receipt.xes")
+        log = xes_importer.apply(log_path)
+
+        from pm4py.algo.filtering.log.attributes import attributes_filter
+
+        x, y = attributes_filter.get_kde_date_attribute(log, attribute="time:timestamp")
+
+        from pm4py.visualization.graphs import visualizer as graphs_visualizer
+
+        gviz = graphs_visualizer.apply_plot(x, y, variant=graphs_visualizer.Variants.DATES)
+
+    def test_distr_num_attribute(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+
+        log_path = os.path.join("input_data", "roadtraffic100traces.xes")
+        log = xes_importer.apply(log_path)
+
+        from pm4py.algo.filtering.log.attributes import attributes_filter
+
+        x, y = attributes_filter.get_kde_numeric_attribute(log, "amount")
+
+        from pm4py.visualization.graphs import visualizer as graphs_visualizer
+
+        gviz = graphs_visualizer.apply_plot(x, y, variant=graphs_visualizer.Variants.ATTRIBUTES)
+
+        from pm4py.visualization.graphs import visualizer as graphs_visualizer
+
+        gviz = graphs_visualizer.apply_semilogx(x, y, variant=graphs_visualizer.Variants.ATTRIBUTES)
+
+    def test_evaluation(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        net, im, fm = alpha_miner.apply(log)
+
+        from pm4py.evaluation.replay_fitness import evaluator as replay_fitness_evaluator
+        fitness = replay_fitness_evaluator.apply(log, net, im, fm,
+                                                 variant=replay_fitness_evaluator.Variants.TOKEN_BASED)
+
+        from pm4py.evaluation.replay_fitness import evaluator as replay_fitness_evaluator
+        fitness = replay_fitness_evaluator.apply(log, net, im, fm,
+                                                 variant=replay_fitness_evaluator.Variants.ALIGNMENT_BASED)
+
+        from pm4py.evaluation.precision import evaluator as precision_evaluator
+        prec = precision_evaluator.apply(log, net, im, fm, variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN)
+
+        from pm4py.evaluation.precision import evaluator as precision_evaluator
+        prec = precision_evaluator.apply(log, net, im, fm, variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
+
+        from pm4py.evaluation.generalization import evaluator as generalization_evaluator
+        gen = generalization_evaluator.apply(log, net, im, fm)
+
+        from pm4py.evaluation.simplicity import evaluator as simplicity_evaluator
+        simp = simplicity_evaluator.apply(net)
+
+    def test_sna(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+
+        from pm4py.algo.enhancement.sna import algorithm as sna
+        hw_values = sna.apply(log, variant=sna.Variants.HANDOVER_LOG)
+
+        from pm4py.visualization.sna import visualizer as sna_visualizer
+        gviz_hw_py = sna_visualizer.apply(hw_values, variant=sna_visualizer.Variants.PYVIS)
+
+        from pm4py.algo.enhancement.sna import algorithm as sna
+        sub_values = sna.apply(log, variant=sna.Variants.SUBCONTRACTING_LOG)
+
+        from pm4py.visualization.sna import visualizer as sna_visualizer
+        gviz_sub_py = sna_visualizer.apply(sub_values, variant=sna_visualizer.Variants.PYVIS)
+
+        from pm4py.algo.enhancement.sna import algorithm as sna
+        wt_values = sna.apply(log, variant=sna.Variants.WORKING_TOGETHER_LOG)
+
+        from pm4py.visualization.sna import visualizer as sna_visualizer
+        gviz_wt_py = sna_visualizer.apply(wt_values, variant=sna_visualizer.Variants.PYVIS)
+
+        from pm4py.algo.enhancement.sna import algorithm as sna
+        ja_values = sna.apply(log, variant=sna.Variants.JOINTACTIVITIES_LOG)
+
+        from pm4py.visualization.sna import visualizer as sna_visualizer
+        gviz_ja_py = sna_visualizer.apply(ja_values, variant=sna_visualizer.Variants.PYVIS)
+
+        from pm4py.algo.enhancement.roles import algorithm as roles_discovery
+        roles = roles_discovery.apply(log)
+
+    def test_playout(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        net, im, fm = alpha_miner.apply(log)
+
+        from pm4py.simulation.playout import simulator
+
+        simulated_log = simulator.apply(net, im, variant=simulator.Variants.BASIC_PLAYOUT,
+                                        parameters={simulator.Variants.BASIC_PLAYOUT.value.Parameters.NO_TRACES: 50})
+
+        from pm4py.simulation.playout import simulator
+
+        simulated_log = simulator.apply(net, im, variant=simulator.Variants.EXTENSIVE,
+                                        parameters={simulator.Variants.EXTENSIVE.value.Parameters.MAX_TRACE_LENGTH: 7})
+
+    def test_ctmc(self):
+        import os
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
+        dfg_perf = dfg_discovery.apply(log, variant=dfg_discovery.Variants.PERFORMANCE)
+        from pm4py.statistics.start_activities.log import get as start_activities
+        from pm4py.statistics.end_activities.log import get as end_activities
+        sa = start_activities.get_start_activities(log)
+        ea = end_activities.get_end_activities(log)
+
+        from pm4py.algo.filtering.log.variants import variants_filter
+        log = variants_filter.apply_auto_filter(log)
+
+        from pm4py.objects.stochastic_petri import ctmc
+        reach_graph, tang_reach_graph, stochastic_map, q_matrix = ctmc.get_tangible_reachability_and_q_matrix_from_dfg_performance(
+            dfg_perf, parameters={"start_activities": sa, "end_activities": ea})
+
+        # pick the source state
+        state = [x for x in tang_reach_graph.states if x.name == "source1"][0]
+        # analyse the distribution over the states of the system starting from the source after 172800.0 seconds (2 days)
+        transient_result = ctmc.transient_analysis_from_tangible_q_matrix_and_single_state(tang_reach_graph, q_matrix,
+                                                                                           state,
+                                                                                           172800.0)
 
 
 if __name__ == "__main__":

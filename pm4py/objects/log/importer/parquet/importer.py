@@ -136,7 +136,7 @@ def import_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
     if parameters is None:
         parameters = {}
 
-    return exec_utils.get_variant(variant).apply(path, parameters=parameters)
+    return exec_utils.get_variant(variant).import_log(path, parameters=parameters)
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
@@ -166,7 +166,7 @@ def import_minimal_log(path, parameters=None, variant=DEFAULT_VARIANT_LOG):
 
     parameters[COLUMNS] = [constants.CASE_CONCEPT_NAME, xes.DEFAULT_NAME_KEY, xes.DEFAULT_TIMESTAMP_KEY]
 
-    return exec_utils.get_variant(variant).apply(path, parameters=parameters)
+    return exec_utils.get_variant(variant).import_log(path, parameters=parameters)
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
