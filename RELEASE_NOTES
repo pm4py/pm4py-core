@@ -1,3 +1,31 @@
+===== PM4PY 1.3.5 =====
+This is a minor release, consisting of the following changes:
+1. commit 143f60a0b4fb265ba5e9d997efddf8f8d66458c3
+    - add support for process tree importing (.ptml files)
+2. commit 4b9132f2835f574d9e7e5af113e5fc96bd821ccf
+    - add new A* version that encodes the states of the state-space differently (up to 10% memory reduction)
+3. commit 6cdf4483548027420b0a54c681a3ecfd515ab8f3
+    - bug fix for de/recomposition approach to handle duplicated labels
+4. commit 93e6e84c4ea78afc562f4ba6cee42de8718eb4cb
+    - add 'stochastic' playout, i.e., use token-based replay on a given log to guide the playout of a given Petri net
+5. commit 107797c5d1be1d742e6522a14231f4f9fce1cb38
+    - add EMD-based process model evaluation ('Earth Mover's Distance' between log/model)
+6. commit 1e02596bc90b6fc22a8c89e80567bdddc2c8f1b7
+    - add process tree based footprint computation
+7. commit 58149e7f085bbedb47e31d58d10e37d686e46a72
+    - small fix in importing of parquet files
+8. commit b08675fe8c03207c4701d2eb8b91c234e3ddbe1b
+    - fix in IMdf; the noise threshold was overridden before
+9. commit 921328cd06d8870ecaa601d53cfde30a6015aec7
+    - parameterize simplicity metric to use a given 'K' for reference
+10. commit 8403093c3e18c1493f4fd72bc83914dadb03e4c2
+    - change the color scheme for net comparison
+11. commit 772ea5d5af9ab2fa3a424b91670d81487ab2667b
+    - minor fix for timestamps that end with symbol 'Z' (Zero timestamp)
+12 commit 1e13cbdb011dff175850c4c665283bf60e0db84c
+    - fix Scipy dependency for tree generator
+
+
 ===== PM4PY 1.3.4 =====
 This is a minor release, consisting of the following changes:
 1. commit f05ba60e2faa28b2f2e2d7ef65e0ac415ae298e8

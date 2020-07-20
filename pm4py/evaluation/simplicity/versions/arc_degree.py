@@ -1,19 +1,27 @@
 from statistics import mean
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    K = "k"
+
 
 def apply(petri_net, parameters=None):
     """
     Gets simplicity from a Petri net
 
-    The approach is suggested in the paper
-    Blum, Fabian Rojas. Metrics in process discovery. Technical Report TR/DCC-2015-6,
-    Computer Science Department, University of Chile, 2015.
+    Vázquez-Barreiros, Borja, Manuel Mucientes, and Manuel Lama. "ProDiGen: Mining complete, precise and minimal
+    structure process models with a genetic algorithm." Information Sciences 294 (2015): 315-333.
 
     Parameters
     -----------
     petri_net
         Petri net
     parameters
-        Possible parameters of the algorithm
+        Possible parameters of the algorithm:
+            - K: defines the value to be substracted in the formula: the lower is the value,
+            the lower is the simplicity value. k is the baseline arc degree (that is subtracted from the others)
 
     Returns
     -----------
@@ -22,11 +30,14 @@ def apply(petri_net, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    #str(parameters)
-    #arc_degree = 0.0
-    #if len(petri_net.transitions) > 0:
-    #    arc_degree = float(len(petri_net.places)) / float(len(petri_net.transitions))
-    #simplicity = 1.0 / (1.0 + arc_degree)
+
+    # original model: we have plenty of choices there.
+    # one choice is about taking a model containing the most frequent variant,
+    # along with a short circuit between the final and the initial marking.
+    # in that case, the average arc degree of the "original model" is 2
+
+    # keep the default to 2
+    k = exec_utils.get_param_value(Parameters.K, parameters, 2)
 
     # TODO: verify the real provenence of the approach before!
 
@@ -36,18 +47,8 @@ def apply(petri_net, parameters=None):
     for trans in petri_net.transitions:
         all_arc_degrees.append(len(trans.in_arcs) + len(trans.out_arcs))
 
-    # original model: we have plenty of choices there.
-    # one choice is about taking a model containing the most frequent variant,
-    # along with a short circuit between the final and the initial marking.
-    # in that case, the average arc degree of the "original model" is 2
-
-    # or take as original model the one containing only the transitions, in that case
-    # the average arc degree of the original model is 0.
-
-    # let's stick with 2
-
     mean_degree = mean(all_arc_degrees) if all_arc_degrees else 0.0
 
-    simplicity = 1.0 / (1.0 + max(mean_degree - 2, 0))
+    simplicity = 1.0 / (1.0 + max(mean_degree - k, 0))
 
     return simplicity
