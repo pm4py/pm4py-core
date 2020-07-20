@@ -18,8 +18,9 @@ def get_graph_components(places, inv_trans, trans_dup_label, tmap):
         while i < len(tmap[x])-1:
             j = i + 1
             while j < len(tmap[x]):
-                G.add_edge(tmap[x][i].name, tmap[x][j].name)
+                G.add_edge(tmap[x][i].label, tmap[x][j].label)
                 j = j + 1
+            i = i + 1
     all_inserted_val = set(places.values()).union(inv_trans.values()).union(trans_dup_label.values())
     for v1 in all_inserted_val:
         for arc in v1.out_arcs:
@@ -39,7 +40,7 @@ def decompose(net, im, fm):
             if t.label not in tmap:
                 tmap[t.label] = []
             tmap[t.label].append(t)
-    trans_dup_label = {x.name: x for x in net.transitions if x.label is not None and len(tmap[x.label]) > 1}
+    trans_dup_label = {x.label: x for x in net.transitions if x.label is not None and len(tmap[x.label]) > 1}
     trans_labels = {x.name: x.label for x in net.transitions}
     conn_comp = get_graph_components(places, inv_trans, trans_dup_label, tmap)
     list_nets = []
@@ -55,7 +56,7 @@ def decompose(net, im, fm):
             elif el in inv_trans:
                 lmap[el] = PetriNet.Transition(el, None)
                 net_new.transitions.add(lmap[el])
-            else:
+            elif el in trans_labels:
                 lmap[el] = PetriNet.Transition(el, trans_labels[el])
                 net_new.transitions.add(lmap[el])
         for el in cmp:
@@ -82,7 +83,9 @@ def decompose(net, im, fm):
         net_new.lvis_labels = lvis_labels
         net_new.t_tuple = t_tuple
 
-        list_nets.append((net_new, im_new, fm_new))
+        if len(net_new.places) > 0 or len(net_new.transitions) > 0:
+            list_nets.append((net_new, im_new, fm_new))
+
     return list_nets
 
 
