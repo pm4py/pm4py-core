@@ -5,6 +5,8 @@ import pandas as pd
 from pm4py.objects.log.util import dataframe_utils
 from pm4py.algo.discovery.log_skeleton import algorithm as lsk_alg
 from pm4py.algo.conformance.log_skeleton import algorithm as lsk_conf_alg
+from pm4py.objects.process_tree.importer import importer as ptree_importer
+from pm4py.objects.process_tree.exporter import exporter as ptree_exporter
 from pm4py.statistics.performance_spectrum.versions import log as log_pspectrum
 from pm4py.statistics.performance_spectrum.versions import dataframe as df_pspectrum
 from pm4py.objects.dfg.importer import importer as dfg_importer
@@ -59,6 +61,12 @@ class OtherPartsTests(unittest.TestCase):
         from pm4py.algo.conformance.alignments import algorithm as alignments
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_STATE_EQUATION_A_STAR)
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_DIJKSTRA_NO_HEURISTICS)
+
+    def test_import_export_ptml(self):
+        tree = ptree_importer.apply(os.path.join("input_data", "running-example.ptml"))
+        ptree_exporter.apply(tree, os.path.join("test_output_data", "running-example2.ptml"))
+        os.remove(os.path.join("test_output_data", "running-example2.ptml"))
+
 
     def test_footprints_net(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
