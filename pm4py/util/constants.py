@@ -21,3 +21,5 @@ PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX = 'case:'
 STOCHASTIC_DISTRIBUTION = "stochastic_distribution"
 LAYOUT_INFORMATION_PETRI = "layout_information_petri"
 PLACE_NAME_TAG = "place_name_tag"
+
+DEFAULT_VARIANT_SEP = ","
