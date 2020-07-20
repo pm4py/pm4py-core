@@ -22,8 +22,12 @@ def execute_script():
     # Footprints discovery: discover a list of footprints
     # for all the cases of the log
     fp_log = footprints_discovery.apply(log)
+    # discover the footpritns from the process tree
+    fp_tree = footprints_discovery.apply(tree)
     # discover the footpritns from the Petri net
     fp_net = footprints_discovery.apply(net, im)
+    print(len(fp_tree["sequence"]), len(fp_tree["parallel"]), len(fp_net["sequence"]), len(fp_net["parallel"]))
+    print(fp_tree["sequence"] == fp_net["sequence"] and fp_tree["parallel"] == fp_net["parallel"])
     # apply the footprints conformance checking
     conf = footprints_conformance.apply(fp_log, fp_net)
     for trace_an in conf:
