@@ -18,6 +18,7 @@ class Variants(Enum):
     VERSION_STATE_EQUATION_A_STAR = versions.state_equation_a_star
     VERSION_DIJKSTRA_NO_HEURISTICS = versions.dijkstra_no_heuristics
     VERSION_DIJKSTRA_LESS_MEMORY = versions.dijkstra_less_memory
+    VERSION_STATE_EQUATION_LESS_MEMORY = versions.state_equation_less_memory
 
 
 class Parameters(Enum):
