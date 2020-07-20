@@ -26,8 +26,6 @@ This is a minor release, consisting of the following changes:
     - fix Scipy dependency for tree generator
 
 
-
-
 ===== PM4PY 1.3.4 =====
 This is a minor release, consisting of the following changes:
 1. commit f05ba60e2faa28b2f2e2d7ef65e0ac415ae298e8
