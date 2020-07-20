@@ -158,8 +158,9 @@ def apply_log(log, list_nets, parameters=None):
     for variant in variants_list:
         one_tr_per_var.append(log[variants_idxs[variant][0]])
     all_alignments = []
-    for trace in one_tr_per_var:
-        all_alignments.append(apply_trace(trace, list_nets, parameters=parameters))
+    for index, trace in enumerate(one_tr_per_var):
+        alignment = apply_trace(trace, list_nets, parameters=parameters)
+        all_alignments.append(alignment)
     al_idx = {}
     for index_variant, variant in enumerate(variants_idxs):
         for trace_idx in variants_idxs[variant]:
@@ -303,7 +304,8 @@ def recompose_alignment(cons_nets, cons_nets_result):
             sind = 1
         else:
             sind = 0
-        overall_ali = overall_ali + [x for x in cons_nets_result[curr]["alignment"][sind:]]
+        if cons_nets_result[curr] is not None:
+            overall_ali = overall_ali + [x for x in cons_nets_result[curr]["alignment"][sind:]]
         visited.add(curr)
         count = count + 1
     to_visit = [x for x in all_available if x not in visited]
@@ -318,10 +320,11 @@ def recompose_alignment(cons_nets, cons_nets_result):
             sind = 1
         else:
             sind = 0
-        for y in [x for x in cons_nets_result[curr]["alignment"][sind:]]:
-            if not y in added:
-                overall_ali.append(y)
-                added.add(y)
+        if cons_nets_result[curr] is not None:
+            for y in [x for x in cons_nets_result[curr]["alignment"][sind:]]:
+                if not y in added:
+                    overall_ali.append(y)
+                    added.add(y)
         visited.add(curr)
         count = count + 1
     return overall_ali
