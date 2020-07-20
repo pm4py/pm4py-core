@@ -83,6 +83,7 @@ class OtherPartsTests(unittest.TestCase):
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_STATE_EQUATION_A_STAR)
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_DIJKSTRA_NO_HEURISTICS)
 
+
     def test_import_export_ptml(self):
         tree = ptree_importer.apply(os.path.join("input_data", "running-example.ptml"))
         ptree_exporter.apply(tree, os.path.join("test_output_data", "running-example2.ptml"))
@@ -98,6 +99,18 @@ class OtherPartsTests(unittest.TestCase):
         fp_net = footprints_discovery.apply(net, im)
         from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
         conf = footprints_conformance.apply(fp_log, fp_net)
+
+
+    def test_footprints_tree(self):
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+        tree = inductive_miner.apply_tree(log)
+        from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
+        fp_log = footprints_discovery.apply(log)
+        fp_tree = footprints_discovery.apply(tree)
+        from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
+        conf = footprints_conformance.apply(fp_log, fp_tree)
+
 
 
 if __name__ == "__main__":
