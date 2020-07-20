@@ -8,6 +8,9 @@ from pm4py.util import exec_utils
 from pm4py.util import xes_constants
 from enum import Enum
 from pm4py.util import constants
+from pm4py.simulation.montecarlo.utils import replay
+from pm4py.objects.petri.common import final_marking as final_marking_discovery
+from pm4py.objects.stochastic_petri import utils as stochastic_utils
 
 
 class Parameters(Enum):
@@ -16,12 +19,14 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     NO_TRACES = "noTraces"
     MAX_TRACE_LENGTH = "maxTraceLength"
+    LOG = "log"
+    STOCHASTIC_MAP = "stochastic_map"
 
 
 def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
                   case_id_key=xes_constants.DEFAULT_TRACEID_KEY,
                   activity_key=xes_constants.DEFAULT_NAME_KEY, timestamp_key=xes_constants.DEFAULT_TIMESTAMP_KEY,
-                  final_marking=None):
+                  final_marking=None, smap=None, log=None):
     """
     Do the playout of a Petrinet generating a log
 
@@ -43,7 +48,18 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
         Event attribute that corresponds to the timestamp
     final_marking
         If provided, the final marking of the Petri net
+    smap
+        Stochastic map
+    log
+        Log
     """
+    if final_marking is None:
+        # infer the final marking from the net
+        final_marking = final_marking_discovery.discover_final_marking(net)
+    if smap is None:
+        if log is None:
+            raise Exception("please provide at least one between stochastic map and log")
+        smap = replay.get_map_from_log_and_net(log, net, initial_marking, final_marking)
     # assigns to each event an increased timestamp from 1970
     curr_timestamp = 10000000
     log = log_instance.EventLog()
@@ -56,9 +72,12 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
                 break
             all_enabled_trans = semantics.enabled_transitions(net, marking)
             if final_marking is not None and marking == final_marking:
-                trans = choice(list(all_enabled_trans.union({None})))
+                en_t_list = list(all_enabled_trans.union({None}))
             else:
-                trans = choice(list(all_enabled_trans))
+                en_t_list = list(all_enabled_trans)
+
+            trans = stochastic_utils.pick_transition(en_t_list, smap)
+
             if trans is None:
                 break
             if trans.label is not None:
@@ -98,7 +117,9 @@ def apply(net, initial_marking, final_marking=None, parameters=None):
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     no_traces = exec_utils.get_param_value(Parameters.NO_TRACES, parameters, 1000)
     max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, 1000)
+    smap = exec_utils.get_param_value(Parameters.STOCHASTIC_MAP, parameters, None)
+    log = exec_utils.get_param_value(Parameters.LOG, parameters, None)
 
     return apply_playout(net, initial_marking, max_trace_length=max_trace_length, no_traces=no_traces,
                          case_id_key=case_id_key, activity_key=activity_key, timestamp_key=timestamp_key,
-                         final_marking=final_marking)
+                         final_marking=final_marking, smap=smap, log=log)
