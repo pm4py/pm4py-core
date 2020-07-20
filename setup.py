@@ -145,7 +145,8 @@ setup(
         'intervaltree',
         "jsonpickle",
         "deprecation",
-        "stringdist"
+        "stringdist",
+        "pyemd"
     ],
     project_urls={
         'Documentation': 'http://www.pm4py.org',

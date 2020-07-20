@@ -1,9 +1,34 @@
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
 from pm4py.statistics.parameters import Parameters
 from pm4py.util import exec_utils
-
+from pm4py.util.constants import DEFAULT_VARIANT_SEP
 
 import numpy as np
+
+
+def get_language(log, parameters=None):
+    """
+    Gets the stochastic language of the log (from the variants)
+
+    Parameters
+    --------------
+    log
+        Event log
+    parameters
+        Parameters
+
+    Returns
+    --------------
+    dictio
+        Dictionary containing the stochastic language of the log
+        (variant associated to a number between 0 and 1; the sum is 1)
+    """
+    vars = get_variants(log, parameters=parameters)
+    vars = {tuple(x.split(DEFAULT_VARIANT_SEP)): len(y) for x,y in vars.items()}
+    all_values_sum = sum(vars.values())
+    for x in vars:
+        vars[x] = vars[x] / all_values_sum
+    return vars
 
 
 def get_variants(log, parameters=None):
@@ -97,7 +122,7 @@ def get_variants_from_log_trace_idx(log, parameters=None):
 
     variants = {}
     for trace_idx, trace in enumerate(log):
-        variant = ",".join([x[attribute_key] for x in trace if attribute_key in x])
+        variant = DEFAULT_VARIANT_SEP.join([x[attribute_key] for x in trace if attribute_key in x])
         if variant not in variants:
             variants[variant] = []
         variants[variant].append(trace_idx)

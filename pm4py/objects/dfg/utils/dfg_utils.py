@@ -1,10 +1,10 @@
 from copy import copy
 from collections import Counter
-
+from pm4py.util.constants import DEFAULT_VARIANT_SEP
 import numpy as np
 
 PARAMETER_VARIANT_SEP = "variant_sep"
-DEFAULT_VARIANT_SEP = ","
+
 
 def get_outgoing_edges(dfg):
     """
