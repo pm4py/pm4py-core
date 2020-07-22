@@ -1,5 +1,7 @@
-===== PM4PY 1.3.6 =====
-This is a minor release, consisting of the following changes:
+===== PM4PY 1.3.5.1 =====
+This is a hotfix release, consisting of the following changes;
+1. commit 844459e366e77ebf88a8d01728064048d71a3e6f
+    - remove pyemd from requirements as it requires a full C studio installation; can be installed and used *optionally*
 
 
 ===== PM4PY 1.3.5 =====
