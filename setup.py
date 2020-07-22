@@ -151,8 +151,8 @@ setup(
         "deprecation",
         "stringdist",
         "pm4pycvxopt>=0.0.9; python_version < '3.8'",
-        "pyemd",
-        'tqdm'
+        'tqdm',
+        "stringdist"
     ],
     project_urls={
         'Documentation': 'http://www.pm4py.org',

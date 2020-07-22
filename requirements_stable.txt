@@ -1,6 +1,6 @@
 ciso8601==2.1.2; python_version < '3.7'
 cython==0.29.21
-networkx==2.4
+deprecation==2.1.0
 graphviz==0.14.1
 intervaltree==3.0.2
 jsonpickle==1.4.1
@@ -15,9 +15,8 @@ pytz==2020.1
 pyvis==0.1.8.1.1
 scikit-learn==0.23.1
 scipy==1.5.1
-deprecation
 stringdist==1.0.9
-pyemd==0.5.1
 
+# ADDITIONAL REQUIREMENTS FOR PUBLIC GPL RELEASE
 pm4pycvxopt==0.0.9; python_version < '3.8'
 tqdm==4.46.0
