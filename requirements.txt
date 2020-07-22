@@ -13,10 +13,10 @@ pulp<=2.1
 pydotplus
 pytz
 pyvis
-scipy
 scikit-learn
+scipy
 stringdist
-pyemd
 
+# ADDITIONAL REQUIREMENTS FOR PUBLIC GPL RELEASE
 pm4pycvxopt>=0.0.9; python_version < '3.8'
 tqdm # from (public/github) commit 0ba0679429c8a675d0cb3788bde55b76b00fbbc7 (pull request #160 / AdamBanham)
