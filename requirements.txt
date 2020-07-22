@@ -13,8 +13,6 @@ pulp<=2.1
 pydotplus
 pytz
 pyvis
-scipy
 scikit-learn
-deprecation
+scipy
 stringdist
-
