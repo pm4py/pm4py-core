@@ -36,7 +36,6 @@ to change as libraries are added or removed.
 | pulp | https://pypi.org/project/pulp | BSD | 2.1 | X | |
 | pydotplus | https://pypi.org/project/pydotplus | MIT | 2.0.2 | X | |
 | pygments | https://pypi.org/project/pygments | BSD | 2.6.1 | | |
-| pyemd | https://pypi.org/project/pyemd | MIT | 0.5.1 | | |
 | pyparsing | https://pypi.org/project/pyparsing | MIT | 2.4.7 | | |
 | python-dateutil | https://pypi.org/project/python-dateutil | Apache 2.0 | 2.8.1 | | |
 | pytz | https://pypi.org/project/pytz | 2020.1 | MIT | | |
