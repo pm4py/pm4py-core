@@ -2,7 +2,8 @@ import math
 
 from pulp import lpSum, LpVariable, LpProblem, LpMinimize
 from pm4py.algo.conformance.alignment_approximation.calculate_a_sa_ea_sets import initialize_a_sa_ea_tau_sets
-from pm4py.algo.conformance.alignment_approximation.utilities import calculate_optimal_alignment, concatenate_traces, trace_to_list_of_str, \
+from pm4py.algo.conformance.alignment_approximation.utilities import calculate_optimal_alignment, concatenate_traces, \
+    trace_to_list_of_str, \
     apply_standard_cost_function_to_alignment
 from pm4py.objects.process_tree.util import get_process_tree_height, process_tree_to_binary_process_tree
 from pm4py.objects.petri.align_utils import SKIP
@@ -17,6 +18,15 @@ from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 
 def apply(obj: Union[Trace, EventLog], pt: ProcessTree, max_trace_length: int = 1,
           max_process_tree_height: int = 1):
+    """
+    this function approximates alignments for a given event log or trace and a process tree
+
+    :param obj: event log or single trace
+    :param pt: process tree
+    :param max_trace_length: specifies when the recursive splitting stops based on the trace's length
+    :param max_process_tree_height: specifies when the recursive splitting stops based on the tree's height
+    :return:
+    """
     assert isinstance(pt, ProcessTree)
     if isinstance(obj, Trace):
         e = EventLog()
