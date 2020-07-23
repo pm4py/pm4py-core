@@ -2,8 +2,9 @@ import math
 
 from pulp import lpSum, LpVariable, LpProblem, LpMinimize
 from pm4py.algo.conformance.alignment_approximation.calculate_a_sa_ea_sets import initialize_a_sa_ea_tau_sets
-from pm4py.algo.conformance.alignment_approximation.utilities import get_process_tree_height, \
-    __calculate_optimal_alignment, concatenate_traces, trace_to_list_of_str, process_tree_to_binary_process_tree
+from pm4py.algo.conformance.alignment_approximation.utilities import calculate_optimal_alignment, concatenate_traces, trace_to_list_of_str, \
+    apply_standard_cost_function_to_alignment
+from pm4py.objects.process_tree.util import get_process_tree_height, process_tree_to_binary_process_tree
 from pm4py.objects.petri.align_utils import SKIP
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.objects.log.log import Trace
@@ -30,9 +31,8 @@ def __approximate_alignments_for_log(log: EventLog, pt: ProcessTree, max_tl: int
     a_sets, sa_sets, ea_sets, tau_sets = initialize_a_sa_ea_tau_sets(pt)
     alignments = []
     for t in log:
-        res = {
-            "alignment": __approximate_alignment_for_trace(pt, a_sets, sa_sets, ea_sets, tau_sets, t, max_tl, max_th)}
-        alignments.append(res)
+        alignment = __approximate_alignment_for_trace(pt, a_sets, sa_sets, ea_sets, tau_sets, t, max_tl, max_th)
+        alignments.append({"alignment": alignment, "cost": apply_standard_cost_function_to_alignment(alignment)})
     return alignments
 
 
@@ -41,7 +41,7 @@ def __approximate_alignment_for_trace(pt: ProcessTree, a_sets: Dict[ProcessTree,
                                       tau_flags: Dict[ProcessTree, bool], trace: Trace, max_tl: int,
                                       max_th: int):
     if len(trace) <= max_tl or get_process_tree_height(pt) <= max_th:
-        return __calculate_optimal_alignment(pt, trace)["alignment"]
+        return calculate_optimal_alignment(pt, trace)["alignment"]
     else:
         if pt.operator == Operator.SEQUENCE:
             return __approximate_alignment_on_sequence(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th)
