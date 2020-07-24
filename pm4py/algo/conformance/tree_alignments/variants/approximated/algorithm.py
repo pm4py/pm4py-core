@@ -1,8 +1,10 @@
 import math
 
 from pulp import lpSum, LpVariable, LpProblem, LpMinimize
-from pm4py.algo.conformance.alignment_approximation.calculate_a_sa_ea_sets import initialize_a_sa_ea_tau_sets
-from pm4py.algo.conformance.alignment_approximation.utilities import calculate_optimal_alignment, concatenate_traces, \
+from pm4py.algo.conformance.tree_alignments.variants.approximated.calculate_a_sa_ea_sets import \
+    initialize_a_sa_ea_tau_sets
+from pm4py.algo.conformance.tree_alignments.variants.approximated.utilities import calculate_optimal_alignment, \
+    concatenate_traces, \
     trace_to_list_of_str, \
     apply_standard_cost_function_to_alignment
 from pm4py.objects.process_tree.util import get_process_tree_height, process_tree_to_binary_process_tree
@@ -14,9 +16,47 @@ from typing import Union, Dict, Set, List, Tuple
 
 from pm4py.objects.process_tree.pt_operator import Operator
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
+from pm4py.util import exec_utils
+from enum import Enum
 
 
-def apply(obj: Union[Trace, EventLog], pt: ProcessTree, max_trace_length: int = 1,
+class Parameters(Enum):
+    MAX_TRACE_LENGTH = "max_trace_length"
+    MAX_PROCESS_TREE_HEIGHT = "max_process_tree_height"
+
+
+def apply(obj: Union[Trace, EventLog], pt: ProcessTree, parameters=None):
+    """
+    Returns approximated alignments for a process tree
+
+    Parameters
+    --------------
+    obj
+        Event log or trace (a conversion is done if necessary)
+    pt
+        Process tree
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    alignments
+        Approximated alignments
+    :param obj:
+    :param pt:
+    :param parameters:
+    :return:
+    """
+    if parameters is None:
+        parameters = {}
+
+    max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, 1)
+    max_process_tree_height = exec_utils.get_param_value(Parameters.MAX_PROCESS_TREE_HEIGHT, parameters, 1)
+
+    return align(obj, pt, max_trace_length=max_trace_length, max_process_tree_height=max_process_tree_height)
+
+
+def align(obj: Union[Trace, EventLog], pt: ProcessTree, max_trace_length: int = 1,
           max_process_tree_height: int = 1):
     """
     this function approximates alignments for a given event log or trace and a process tree
