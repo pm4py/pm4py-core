@@ -1,5 +1,4 @@
 from typing import Set
-from pm4py.algo.conformance.alignment_approximation_process_trees.utilities import empty_sequence_accepted
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.objects.process_tree.util import is_leaf, is_tau_leaf
 from pm4py.objects.process_tree.pt_operator import Operator
