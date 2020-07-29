@@ -200,7 +200,7 @@ def __approximate_alignment_on_loop(pt: ProcessTree, trace: Trace, a_sets: Dict[
         for j, subtree in enumerate(pt.children):
             t_variables[i][j] = LpVariable('t_' + str(i) + '_' + str(j), cat='Binary')
             if tau_flags[subtree]:
-                t_costs[i][j] = 0
+                t_costs[i][j] = -0.00001  # favour to add a cut if possible over not putting a cut
             else:
                 if len(sa_sets[subtree].intersection(ea_sets[subtree])) != 0:
                     t_costs[i][j] = 1
