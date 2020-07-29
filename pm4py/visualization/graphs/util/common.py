@@ -52,7 +52,7 @@ def view(temp_file_name):
 
     if is_ipynb:
         from IPython.display import Image
-        image = Image(open(temp_file_name, "rb").read())
+        image = Image(temp_file_name)
         from IPython.display import display
         return display(image)
     else:
