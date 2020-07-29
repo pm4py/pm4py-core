@@ -169,7 +169,6 @@ def __approximate_alignment_on_loop(pt: ProcessTree, trace: Trace, a_sets: Dict[
     e_costs = {}
     v_costs = {}
 
-    # trace <a_0,...,a_n>
     for i, a in enumerate(trace):
         x_variables[i] = {}
         s_variables[i] = {}
