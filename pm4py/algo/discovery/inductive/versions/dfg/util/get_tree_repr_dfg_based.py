@@ -152,9 +152,6 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
             master_tree_repr.children.append(skip)
             skip.parent = master_tree_repr
 
-            if rec_depth == 0:
-                fix_one_child_xor_flower(master_tree_repr)
-
             return master_tree_repr
 
     if contains_empty_traces and rec_depth == 1:
@@ -167,31 +164,6 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
         master_tree_repr.children.append(skip_transition)
         skip_transition.parent = master_tree_repr
 
-        if rec_depth == 0:
-            fix_one_child_xor_flower(master_tree_repr)
-
         return master_tree_repr
 
-    if rec_depth == 0:
-        fix_one_child_xor_flower(final_tree_repr)
-
     return final_tree_repr
-
-
-def fix_one_child_xor_flower(tree):
-    """
-    Fixes a 1 child XOR that is added when single-activities flowers are found
-
-    Parameters
-    --------------
-    tree
-        Process tree
-    """
-    if tree.parent is not None and tree.operator is Operator.XOR and len(tree.children) == 1:
-        for child in tree.children:
-            child.parent = tree.parent
-            tree.parent.children.append(child)
-            del tree.parent.children[tree.parent.children.index(tree)]
-    else:
-        for child in tree.children:
-            fix_one_child_xor_flower(child)
