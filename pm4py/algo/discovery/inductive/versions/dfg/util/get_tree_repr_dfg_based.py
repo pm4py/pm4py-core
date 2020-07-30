@@ -125,7 +125,7 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
                 child = ProcessTree()
                 child_tree.children.append(child)
                 child.parent = child_tree
-                spec_tree_struct.children.append(None)
+                spec_tree_struct.children.append(ProcessTree(operator=None, label=None, parent=spec_tree_struct))
 
     if spec_tree_struct.detected_cut == "parallel":
         for child in spec_tree_struct.children:

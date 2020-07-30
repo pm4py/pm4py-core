@@ -250,8 +250,8 @@ def apply_tree_dfg(dfg, parameters=None, activities=None, contains_empty_traces=
 
     tree_repr = get_tree_repr_dfg_based.get_repr(s, 0, contains_empty_traces=contains_empty_traces)
     # Ensures consistency to the parent pointers in the process tree
-    tree_repr = tree_consistency.fix_parent_pointers(tree_repr)
+    tree_consistency.fix_parent_pointers(tree_repr)
     # Fixes a 1 child XOR that is added when single-activities flowers are found
-    tree_repr = tree_consistency.fix_one_child_xor_flower(tree_repr)
+    tree_consistency.fix_one_child_xor_flower(tree_repr)
 
     return tree_repr
