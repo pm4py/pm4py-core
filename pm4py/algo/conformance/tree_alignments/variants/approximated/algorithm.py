@@ -10,10 +10,11 @@ from pm4py.algo.conformance.tree_alignments.variants.approximated.utilities impo
 from pm4py.objects.process_tree.util import get_process_tree_height, process_tree_to_binary_process_tree
 from pm4py.objects.petri.align_utils import SKIP
 from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.log.log import Trace
+from pm4py.objects.log.log import Trace, Event
 from pm4py.objects.log.log import EventLog
 from typing import Union, Dict, Set, List, Tuple
 
+from pm4py.objects.process_tree.importer.variants import ptml
 from pm4py.objects.process_tree.pt_operator import Operator
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util import exec_utils
@@ -23,6 +24,75 @@ from enum import Enum
 class Parameters(Enum):
     MAX_TRACE_LENGTH = "max_trace_length"
     MAX_PROCESS_TREE_HEIGHT = "max_process_tree_height"
+    PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+
+
+def apply_from_variants_tree_string(var_list, tree_string, parameters=None):
+    """
+    Apply the alignments from the specification of a list of variants in the log.
+    The tree is specified as a PTML input
+
+    Parameters
+    ------------
+    var_list
+        List of variants (for each item, the first entry is the variant itself, the second entry may be the number of cases)
+    tree_string
+        PTML string representing the tree
+    parameters
+        Parameters of the algorithm
+
+        Returns
+    --------------
+    dictio_alignments
+        Dictionary that assigns to each variant its alignment
+    """
+    if parameters is None:
+        parameters = {}
+
+    tree = ptml.import_tree_from_string(tree_string, parameters=parameters)
+
+    res = apply_from_variants_list(var_list, tree, parameters=parameters)
+    return res
+
+
+def apply_from_variants_list(var_list, tree, parameters=None):
+    """
+    Apply the alignments from the specification of a list of variants in the log
+
+    Parameters
+    -------------
+    var_list
+        List of variants (for each item, the first entry is the variant itself, the second entry may be the number of cases)
+    tree
+        Process tree
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    dictio_alignments
+        Dictionary that assigns to each variant its alignment
+    """
+    if parameters is None:
+        parameters = {}
+
+    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
+                                                   ",")
+
+    dictio_alignments = {}
+    log = EventLog()
+
+    for index, varitem in enumerate(var_list):
+        activities = varitem[0].split(variant_delimiter)
+        trace = Trace()
+        for act in activities:
+            trace.append(Event({DEFAULT_NAME_KEY: act}))
+        log.append(trace)
+
+    alignments = apply(log, tree, parameters=parameters)
+    for index, varitem in enumerate(var_list):
+        dictio_alignments[varitem[0]] = alignments[index]
+    return dictio_alignments
 
 
 def apply(obj: Union[Trace, EventLog], pt: ProcessTree, parameters=None):
