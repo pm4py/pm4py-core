@@ -17,7 +17,7 @@ from typing import Union, Dict, Set, List, Tuple
 from pm4py.objects.process_tree.importer.variants import ptml
 from pm4py.objects.process_tree.pt_operator import Operator
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 from enum import Enum
 
 
@@ -25,6 +25,7 @@ class Parameters(Enum):
     MAX_TRACE_LENGTH = "max_trace_length"
     MAX_PROCESS_TREE_HEIGHT = "max_process_tree_height"
     PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
 def apply_from_variants_tree_string(var_list, tree_string, parameters=None):
@@ -78,6 +79,7 @@ def apply_from_variants_list(var_list, tree, parameters=None):
 
     variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
                                                    ",")
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
 
     dictio_alignments = {}
     log = EventLog()
@@ -86,7 +88,7 @@ def apply_from_variants_list(var_list, tree, parameters=None):
         activities = varitem[0].split(variant_delimiter)
         trace = Trace()
         for act in activities:
-            trace.append(Event({DEFAULT_NAME_KEY: act}))
+            trace.append(Event({activity_key: act}))
         log.append(trace)
 
     alignments = apply(log, tree, parameters=parameters)
@@ -122,12 +124,14 @@ def apply(obj: Union[Trace, EventLog], pt: ProcessTree, parameters=None):
 
     max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, 1)
     max_process_tree_height = exec_utils.get_param_value(Parameters.MAX_PROCESS_TREE_HEIGHT, parameters, 1)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
 
-    return align(obj, pt, max_trace_length=max_trace_length, max_process_tree_height=max_process_tree_height)
+    return align(obj, pt, max_trace_length=max_trace_length, max_process_tree_height=max_process_tree_height,
+                 activity_key=activity_key)
 
 
 def align(obj: Union[Trace, EventLog], pt: ProcessTree, max_trace_length: int = 1,
-          max_process_tree_height: int = 1):
+          max_process_tree_height: int = 1, activity_key=DEFAULT_NAME_KEY):
     """
     this function approximates alignments for a given event log or trace and a process tree
 
@@ -144,14 +148,17 @@ def align(obj: Union[Trace, EventLog], pt: ProcessTree, max_trace_length: int = 
         obj = e
     assert isinstance(obj, EventLog)
     pt = process_tree_to_binary_process_tree(pt)
-    return __approximate_alignments_for_log(obj, pt, max_trace_length, max_process_tree_height)
+    return __approximate_alignments_for_log(obj, pt, max_trace_length, max_process_tree_height,
+                                            activity_key=activity_key)
 
 
-def __approximate_alignments_for_log(log: EventLog, pt: ProcessTree, max_tl: int, max_th: int):
+def __approximate_alignments_for_log(log: EventLog, pt: ProcessTree, max_tl: int, max_th: int,
+                                     activity_key=DEFAULT_NAME_KEY):
     a_sets, sa_sets, ea_sets, tau_sets = initialize_a_sa_ea_tau_sets(pt)
     alignments = []
     for t in log:
-        alignment = __approximate_alignment_for_trace(pt, a_sets, sa_sets, ea_sets, tau_sets, t, max_tl, max_th)
+        alignment = __approximate_alignment_for_trace(pt, a_sets, sa_sets, ea_sets, tau_sets, t, max_tl, max_th,
+                                                      activity_key=activity_key)
         alignments.append({"alignment": alignment, "cost": apply_standard_cost_function_to_alignment(alignment)})
     return alignments
 
@@ -159,23 +166,24 @@ def __approximate_alignments_for_log(log: EventLog, pt: ProcessTree, max_tl: int
 def __approximate_alignment_for_trace(pt: ProcessTree, a_sets: Dict[ProcessTree, Set[str]],
                                       sa_sets: Dict[ProcessTree, Set[str]], ea_sets: Dict[ProcessTree, Set[str]],
                                       tau_flags: Dict[ProcessTree, bool], trace: Trace, max_tl: int,
-                                      max_th: int):
+                                      max_th: int, activity_key=DEFAULT_NAME_KEY):
     if len(trace) <= max_tl or get_process_tree_height(pt) <= max_th:
         return calculate_optimal_alignment(pt, trace)["alignment"]
     else:
         if pt.operator == Operator.SEQUENCE:
-            return __approximate_alignment_on_sequence(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th)
+            return __approximate_alignment_on_sequence(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th, activity_key=activity_key)
         elif pt.operator == Operator.LOOP:
-            return __approximate_alignment_on_loop(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th)
+            return __approximate_alignment_on_loop(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th, activity_key=activity_key)
         elif pt.operator == Operator.XOR:
-            return __approximate_alignment_on_choice(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th)
+            return __approximate_alignment_on_choice(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th, activity_key=activity_key)
         elif pt.operator == Operator.PARALLEL:
-            return __approximate_alignment_on_parallel(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th)
+            return __approximate_alignment_on_parallel(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th, activity_key=activity_key)
 
 
 def __approximate_alignment_on_choice(pt: ProcessTree, trace: Trace, a_sets: Dict[ProcessTree, Set[str]],
                                       sa_sets: Dict[ProcessTree, Set[str]], ea_sets: Dict[ProcessTree, Set[str]],
-                                      tau_flags: Dict[ProcessTree, bool], tl: int, th: int):
+                                      tau_flags: Dict[ProcessTree, bool], tl: int, th: int,
+                                      activity_key=DEFAULT_NAME_KEY):
     assert pt.operator == Operator.XOR
     assert len(trace) > 0
 
@@ -184,13 +192,13 @@ def __approximate_alignment_on_choice(pt: ProcessTree, trace: Trace, a_sets: Dic
     for subtree in pt.children:
         mismatches = 0
         if len(trace) > 0:
-            if trace[0][DEFAULT_NAME_KEY] not in sa_sets[subtree]:
+            if trace[0][activity_key] not in sa_sets[subtree]:
                 mismatches += 1
-            if trace[-1][DEFAULT_NAME_KEY] not in ea_sets[subtree]:
+            if trace[-1][activity_key] not in ea_sets[subtree]:
                 mismatches += 1
             if len(trace) > 2:
                 for a in trace[1:-1]:
-                    if a[DEFAULT_NAME_KEY] not in a_sets[subtree]:
+                    if a[activity_key] not in a_sets[subtree]:
                         mismatches += 1
         else:
             if not tau_flags[subtree] and len(sa_sets[subtree].intersection(ea_sets[subtree])) != 0:
@@ -200,12 +208,14 @@ def __approximate_alignment_on_choice(pt: ProcessTree, trace: Trace, a_sets: Dic
         if mismatches < lowest_mismatches:
             best_suited_subtree = subtree
             lowest_mismatches = mismatches
-    return __approximate_alignment_for_trace(best_suited_subtree, a_sets, sa_sets, ea_sets, tau_flags, trace, tl, th)
+    return __approximate_alignment_for_trace(best_suited_subtree, a_sets, sa_sets, ea_sets, tau_flags, trace, tl, th,
+                                             activity_key=activity_key)
 
 
 def __approximate_alignment_on_loop(pt: ProcessTree, trace: Trace, a_sets: Dict[ProcessTree, Set[str]],
                                     sa_sets: Dict[ProcessTree, Set[str]], ea_sets: Dict[ProcessTree, Set[str]],
-                                    tau_flags: Dict[ProcessTree, bool], tl: int, th: int):
+                                    tau_flags: Dict[ProcessTree, bool], tl: int, th: int,
+                                    activity_key=DEFAULT_NAME_KEY):
     assert pt.operator == Operator.LOOP
     assert len(pt.children) == 2
     assert len(trace) > 0
@@ -253,13 +263,13 @@ def __approximate_alignment_on_loop(pt: ProcessTree, trace: Trace, a_sets: Dict[
             x_variables[i][j] = LpVariable('x_' + str(i) + '_' + str(j), cat='Binary')
 
             s_variables[i][j] = LpVariable('s_' + str(i) + '_' + str(j), cat='Binary')
-            s_costs[i][j] = 0 if a[DEFAULT_NAME_KEY] in sa_sets[subtree] else 1
+            s_costs[i][j] = 0 if a[activity_key] in sa_sets[subtree] else 1
 
             e_variables[i][j] = LpVariable('e_' + str(i) + '_' + str(j), cat='Binary')
-            e_costs[i][j] = 0 if a[DEFAULT_NAME_KEY] in ea_sets[subtree] else 1
+            e_costs[i][j] = 0 if a[activity_key] in ea_sets[subtree] else 1
 
             v_variables[i][j] = LpVariable('v_' + str(i) + '_' + str(j), cat='Binary')
-            v_costs[i][j] = 0 if a[DEFAULT_NAME_KEY] in a_sets[subtree] else 1
+            v_costs[i][j] = 0 if a[activity_key] in a_sets[subtree] else 1
 
             p_variables[i][j] = LpVariable('p_' + str(i) + '_' + str(j), cat='Binary')
             n_variables[i][j] = LpVariable('n_' + str(i) + '_' + str(j), cat='Binary')
@@ -412,13 +422,15 @@ def __approximate_alignment_on_loop(pt: ProcessTree, trace: Trace, a_sets: Dict[
     res = []
     for subtree, sub_trace in alignments_to_calculate:
         res.extend(
-            __approximate_alignment_for_trace(subtree, a_sets, sa_sets, ea_sets, tau_flags, sub_trace, tl, th))
+            __approximate_alignment_for_trace(subtree, a_sets, sa_sets, ea_sets, tau_flags, sub_trace, tl, th,
+                                              activity_key=activity_key))
     return res
 
 
 def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: Dict[ProcessTree, Set[str]],
                                         sa_sets: Dict[ProcessTree, Set[str]], ea_sets: Dict[ProcessTree, Set[str]],
-                                        tau_flags: Dict[ProcessTree, bool], tl: int, th: int):
+                                        tau_flags: Dict[ProcessTree, bool], tl: int, th: int,
+                                        activity_key=DEFAULT_NAME_KEY):
     assert pt.operator == Operator.SEQUENCE
     assert len(pt.children) > 0
     assert len(trace) > 0
@@ -459,13 +471,13 @@ def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: D
             x_variables[i][j] = LpVariable('x_' + str(i) + '_' + str(j), cat='Binary')
 
             s_variables[i][j] = LpVariable('s_' + str(i) + '_' + str(j), cat='Binary')
-            s_costs[i][j] = 0 if a[DEFAULT_NAME_KEY] in sa_sets[subtree] else 1
+            s_costs[i][j] = 0 if a[activity_key] in sa_sets[subtree] else 1
 
             e_variables[i][j] = LpVariable('e_' + str(i) + '_' + str(j), cat='Binary')
-            e_costs[i][j] = 0 if a[DEFAULT_NAME_KEY] in ea_sets[subtree] else 1
+            e_costs[i][j] = 0 if a[activity_key] in ea_sets[subtree] else 1
 
             v_variables[i][j] = LpVariable('v_' + str(i) + '_' + str(j), cat='Binary')
-            v_costs[i][j] = 0 if a[DEFAULT_NAME_KEY] in a_sets[subtree] else 1
+            v_costs[i][j] = 0 if a[activity_key] in a_sets[subtree] else 1
 
     for j in range(len(pt.children)):
         u_variables[j] = LpVariable('u_' + str(j), cat='Binary')
@@ -554,13 +566,15 @@ def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: D
     res = []
     for subtree, sub_trace in alignments_to_calculate:
         res.extend(
-            __approximate_alignment_for_trace(subtree, a_sets, sa_sets, ea_sets, tau_flags, sub_trace, tl, th))
+            __approximate_alignment_for_trace(subtree, a_sets, sa_sets, ea_sets, tau_flags, sub_trace, tl, th,
+                                              activity_key=activity_key))
     return res
 
 
 def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: Dict[ProcessTree, Set[str]],
                                         sa_sets: Dict[ProcessTree, Set[str]], ea_sets: Dict[ProcessTree, Set[str]],
-                                        tau_flags: Dict[ProcessTree, bool], tl: int, th: int):
+                                        tau_flags: Dict[ProcessTree, bool], tl: int, th: int,
+                                        activity_key=DEFAULT_NAME_KEY):
     assert pt.operator == Operator.PARALLEL
     assert len(pt.children) > 0
     assert len(trace) > 0
@@ -600,13 +614,13 @@ def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: D
             x_variables[i][j] = LpVariable('x_' + str(i) + '_' + str(j), cat='Binary')
 
             s_variables[i][j] = LpVariable('s_' + str(i) + '_' + str(j), cat='Binary')
-            s_costs[i][j] = 0 if a[DEFAULT_NAME_KEY] in sa_sets[subtree] else 1
+            s_costs[i][j] = 0 if a[activity_key] in sa_sets[subtree] else 1
 
             e_variables[i][j] = LpVariable('e_' + str(i) + '_' + str(j), cat='Binary')
-            e_costs[i][j] = 0 if a[DEFAULT_NAME_KEY] in ea_sets[subtree] else 1
+            e_costs[i][j] = 0 if a[activity_key] in ea_sets[subtree] else 1
 
             v_variables[i][j] = LpVariable('v_' + str(i) + '_' + str(j), cat='Binary')
-            v_costs[i][j] = 0 if a[DEFAULT_NAME_KEY] in a_sets[subtree] else 1
+            v_costs[i][j] = 0 if a[activity_key] in a_sets[subtree] else 1
 
     for j in range(len(pt.children)):
         u_variables[j] = LpVariable('u_' + str(j), cat='Binary')
@@ -702,7 +716,8 @@ def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: D
             if subtree == trace_part[0]:
                 sub_trace = concatenate_traces(sub_trace, trace_part[1])
         alignments_per_subtree[subtree] = __approximate_alignment_for_trace(subtree, a_sets, sa_sets, ea_sets,
-                                                                            tau_flags, sub_trace, tl, th)
+                                                                            tau_flags, sub_trace, tl, th,
+                                                                            activity_key=activity_key)
     # compose alignments from subtree alignments
     res = []
     for trace_part in trace_parts:
