@@ -18,6 +18,7 @@ from pm4py.objects.process_tree.importer.variants import ptml
 from pm4py.objects.process_tree.pt_operator import Operator
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util import exec_utils, constants
+from pm4py.statistics.variants.log.get import get_variants_from_log_trace_idx
 from enum import Enum
 
 
@@ -124,7 +125,6 @@ def apply(obj: Union[Trace, EventLog], pt: ProcessTree, parameters=None):
 
     max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, 1)
     max_process_tree_height = exec_utils.get_param_value(Parameters.MAX_PROCESS_TREE_HEIGHT, parameters, 1)
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
 
     return align(obj, pt, max_trace_length=max_trace_length, max_process_tree_height=max_process_tree_height,
                  parameters=parameters)
@@ -155,11 +155,19 @@ def align(obj: Union[Trace, EventLog], pt: ProcessTree, max_trace_length: int = 
 def __approximate_alignments_for_log(log: EventLog, pt: ProcessTree, max_tl: int, max_th: int,
                                      parameters=None):
     a_sets, sa_sets, ea_sets, tau_sets = initialize_a_sa_ea_tau_sets(pt)
-    alignments = []
-    for t in log:
-        alignment = __approximate_alignment_for_trace(pt, a_sets, sa_sets, ea_sets, tau_sets, t, max_tl, max_th,
+    variants = get_variants_from_log_trace_idx(log, parameters=parameters)
+
+    inv_corr = {}
+    for i, var in enumerate(variants):
+        alignment = __approximate_alignment_for_trace(pt, a_sets, sa_sets, ea_sets, tau_sets, log[variants[var][0]], max_tl, max_th,
                                                       parameters=parameters)
-        alignments.append({"alignment": alignment, "cost": apply_standard_cost_function_to_alignment(alignment)})
+        for idx in variants[var]:
+            inv_corr[idx] = alignment
+
+    alignments = []
+    for i in range(len(log)):
+        alignments.append(inv_corr[i])
+
     return alignments
 
 
