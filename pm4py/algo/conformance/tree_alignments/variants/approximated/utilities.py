@@ -51,6 +51,6 @@ def empty_sequence_accepted(pt: ProcessTree) -> bool:
     return alignment["cost"] < STD_MODEL_LOG_MOVE_COST
 
 
-def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, variant=Variants.VERSION_STATE_EQUATION_A_STAR):
+def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, variant=Variants.VERSION_STATE_EQUATION_A_STAR, parameters=None):
     net, im, fm = convert_pt_to_petri_net(pt)
-    return get_alignment(trace, net, im, fm, variant=variant)
+    return get_alignment(trace, net, im, fm, variant=variant, parameters=parameters)
