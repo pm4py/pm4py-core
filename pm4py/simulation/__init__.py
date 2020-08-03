@@ -1,4 +1,4 @@
-from pm4py.simulation import playout, montecarlo
+from pm4py.simulation import playout, montecarlo, tree_playout
 import pkgutil
 
 # tree generation is possible only with scipy installed
