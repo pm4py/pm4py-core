@@ -64,6 +64,6 @@ def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, variant=Variants.
     # remove invisible model moves from alignment steps that do not belong to a silent model move in the process tree
     res = []
     for a in alignment["alignment"]:
-        if not (a[0][0] == SKIP and not a[0][0].isdigit()):
+        if not (a[0][0] == SKIP and not a[0][1].isdigit()):
             res.append(a[1])
     return res
