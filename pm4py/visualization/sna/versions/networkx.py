@@ -55,7 +55,7 @@ def apply(metric_values, parameters=None):
         parameters = {}
 
     weight_threshold = exec_utils.get_param_value(Parameters.WEIGHT_THRESHOLD, parameters, 0)
-    format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "svg")
+    format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
 
     directed = metric_values[2]
 
@@ -116,7 +116,7 @@ def view(temp_file_name, parameters=None):
 
     if is_ipynb:
         from IPython.display import Image
-        image = Image(open(temp_file_name, "rb").read())
+        image = Image(temp_file_name)
         from IPython.display import display
         return display(image)
     else:
