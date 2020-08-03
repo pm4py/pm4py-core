@@ -19,6 +19,11 @@ if pkgutil.find_loader("networkx"):
 else:
     logging.error("networkx is not available. This can lead some features of PM4Py to not work correctly!")
 
+if pkgutil.find_loader("matplotlib"):
+    import matplotlib
+else:
+    logging.error("matplotlib is not available. This can lead some features of PM4Py to not work correctly!")
+
 __version__ = '1.3.6'
 __doc__ = "Process Mining for Python (PM4Py)"
 __author__ = 'Fraunhofer Institute for Applied Technology'
