@@ -335,6 +335,7 @@ def process_tree_to_binary_process_tree(pt: ProcessTree) -> ProcessTree:
         new_subtree.children = pt.children[1:]
         pt.children = pt.children[:1]
         pt.children.append(new_subtree)
+        new_subtree.parent = pt
     for c in pt.children:
         process_tree_to_binary_process_tree(c)
     return pt
