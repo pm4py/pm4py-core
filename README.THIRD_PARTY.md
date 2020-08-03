@@ -15,7 +15,7 @@ to change as libraries are added or removed.
 | deprecation | https://pypi.org/project/deprecation | Apache 2.0 | 2.1.0 | | |
 | graphviz | https://pypi.org/project/graphviz | MIT | 0.14.1 | X | |
 | importlib-metadata | https://pypi.org/project/importlib-metadata | Apache | 1.7.0 | X | |
-| intervaltree | https://pypi.org/project/intervaltree | Apache 2.0 | 3.0.2 | | |
+| intervaltree | https://pypi.org/project/intervaltree | Apache 2.0 | 3.1.0 | | |
 | ipython | https://pypi.org/project/ipython | BSD | 7.15.0 | X | |
 | ipython-genutils | https://pypi.org/project/ipython-genutils | BSD | 0.2.0 | | |
 | jedi | https://pypi.org/project/jedi | MIT | 0.17.0 | | |
@@ -25,11 +25,11 @@ to change as libraries are added or removed.
 | kiwisolver | https://pypi.org/project/kiwisolver | BSD | 1.2.0 | X | X |
 | lxml | https://pypi.org/project/lxml | BSD | 4.5.2 | X | X |
 | MarkupSafe | https://pypi.org/project/MarkupSafe | BSD | 1.1.1 | | X |
-| matplotlib | https://pypi.org/project/matplotlib | PSF | 3.2.2 | X | X |
+| matplotlib | https://pypi.org/project/matplotlib | PSF | 3.3.0 | X | X |
 | networkx | https://pypi.org/project/networkx | BSD | 2.4 | X | |
-| numpy | https://pypi.org/project/numpy | BSD | 1.19.0 | | X |
+| numpy | https://pypi.org/project/numpy | BSD | 1.19.1 | | X |
 | packaging | https://pypi.org/project/packaging | Apache 2.0 | 20.4 | | |
-| pandas | https://pypi.org/project/pandas | BSD | 1.0.5 | X | X |
+| pandas | https://pypi.org/project/pandas | BSD | 1.1.0 | X | X |
 | parso | https://pypi.org/project/parso | MIT | 0.7.0 | | |
 | pickleshare | https://pypi.org/project/pickleshare | MIT | 0.7.5 | X | |
 | prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD | 3.0.5 | | |
@@ -41,7 +41,7 @@ to change as libraries are added or removed.
 | pytz | https://pypi.org/project/pytz | 2020.1 | MIT | | |
 | pyvis | https://pypi.org/project/pyvis | BSD | 0.1.8.0 | X | |
 | scikit-learn | https://pypi.org/project/scikit-learn | BSD | 0.23.1 | X | X |
-| scipy | https://pypi.org/project/scipy | BSD | 1.5.0 | | X |
+| scipy | https://pypi.org/project/scipy | BSD | 1.5.2 | | X |
 | setuptools | https://pypi.org/project/setuptools | MIT | 47.1.1 | X | |
 | six | https://pypi.org/project/six | MIT | 1.15.0 | | |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache 2.0 | 2.1.0 | | |

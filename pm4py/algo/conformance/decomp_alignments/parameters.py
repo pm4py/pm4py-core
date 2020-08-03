@@ -9,3 +9,6 @@ class Parameters(Enum):
     MCACHE = "mcache"
     PARAM_THRESHOLD_BORDER_AGREEMENT = "thresh_border_agreement"
     PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+    PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
+    PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
+    PARAM_TRACE_NET_COSTS = "trace_net_costs"

@@ -5,6 +5,28 @@ import numpy as np
 from pulp import LpProblem, LpMinimize, LpVariable, LpStatus, value
 
 MIN_THRESHOLD = 10 ** -12
+# max safe number of constraints (log10)
+MAX_NUM_CONSTRAINTS = 7
+
+
+def get_terminal_part_name_num(num):
+    """
+    Gets the terminal part of the name of a variable
+
+    Parameters
+    ---------------
+    nam
+        Name
+
+    Returns
+    ---------------
+    stru
+        String
+    """
+    ret = str(num)
+    while len(ret) < MAX_NUM_CONSTRAINTS:
+        ret = "0" + ret
+    return ret
 
 
 def apply(c, Aub, bub, Aeq, beq, parameters=None):
@@ -46,7 +68,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
 
     x_list = []
     for i in range(Aub.shape[1]):
-        x_list.append(LpVariable("x_" + str(i)))
+        x_list.append(LpVariable("x_" + get_terminal_part_name_num(i)))
 
     eval_str = ""
     expr_count = 0
@@ -69,14 +91,8 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                     eval_str = eval_str + " + "
                 eval_str = eval_str + str(Aub[i, j]) + "*x_list[" + str(j) + "]"
                 expr_count = expr_count + 1
-        if type(bub[i]) is float:
-            eval_str = eval_str + "<=" + str(bub[i]) + ", \"vinc_" + str(i) + "\""
-        elif type(bub[i]) is np.matrix:
-            eval_str = eval_str + "<=" + str(bub[i].reshape(-1,).tolist()[0][0]) + ", \"vinc_" + str(i) + "\""
-        elif type(bub[i]) is np.ndarray:
-            eval_str = eval_str + "<=" + str(bub[i].tolist()[0]) + ", \"vinc_" + str(i) + "\""
-        else:
-            eval_str = eval_str + "<=" + str(bub[i]) + ", \"vinc_" + str(i) + "\""
+        eval_str = eval_str + "<=" + str(
+            bub[i].reshape(-1, ).tolist()[0][0]) + ", \"vinc_" + get_terminal_part_name_num(i) + "\""
 
         prob += eval(eval_str)
 
@@ -92,14 +108,8 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                     eval_str = eval_str + str(Aeq[i, j]) + "*x_list[" + str(j) + "]"
                     expr_count = expr_count + 1
             if eval_str:
-                if type(beq[i]) is float:
-                    eval_str = eval_str + "<=" + str(beq[i]) + ", \"vinceq_" + str(i+1+Aub.shape[0]) + "\""
-                elif type(beq[i]) is np.matrix:
-                    eval_str = eval_str + "<=" + str(beq[i].reshape(-1,).tolist()[0][0]) + ", \"vinceq_" + str(i+1+Aub.shape[0]) + "\""
-                elif type(beq[i]) is np.ndarray:
-                    eval_str = eval_str + "<=" + str(beq[i].tolist()[0]) + ", \"vinceq_" + str(i+1+Aub.shape[0]) + "\""
-                else:
-                    eval_str = eval_str + "<=" + str(beq[i]) + ", \"vinceq_" + str(i+1+Aub.shape[0]) + "\""
+                eval_str = eval_str + "==" + str(beq[i].reshape(-1, ).tolist()[0][0]) + ", \"vinceq_" + get_terminal_part_name_num(
+                    i + 1 + Aub.shape[0]) + "\""
 
                 prob += eval(eval_str)
 

@@ -20,6 +20,7 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import exec_utils
 from pm4py.algo.discovery.inductive.parameters import Parameters
+from pm4py.algo.discovery.inductive.util import tree_consistency
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
 
@@ -248,5 +249,9 @@ def apply_tree_dfg(dfg, parameters=None, activities=None, contains_empty_traces=
                         initial_end_activities=end_activities)
 
     tree_repr = get_tree_repr_dfg_based.get_repr(s, 0, contains_empty_traces=contains_empty_traces)
+    # Ensures consistency to the parent pointers in the process tree
+    tree_consistency.fix_parent_pointers(tree_repr)
+    # Fixes a 1 child XOR that is added when single-activities flowers are found
+    tree_consistency.fix_one_child_xor_flower(tree_repr)
 
     return tree_repr

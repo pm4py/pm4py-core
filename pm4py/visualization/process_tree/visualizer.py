@@ -1,8 +1,6 @@
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
 from pm4py.visualization.process_tree.versions import wo_decoration
-from pm4py.objects.process_tree import util
-from copy import deepcopy
 from enum import Enum
 from pm4py.util import exec_utils
 
@@ -34,11 +32,7 @@ def apply(tree0, parameters=None, variant=DEFAULT_VARIANT):
     gviz
         GraphViz object
     """
-    # since the process tree object needs to be sorted in the visualization, make a deepcopy of it before
-    # proceeding
-    tree = deepcopy(tree0)
-    util.tree_sort(tree)
-    return exec_utils.get_variant(variant).apply(tree, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(tree0, parameters=parameters)
 
 
 def save(gviz, output_file_path):

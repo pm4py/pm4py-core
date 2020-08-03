@@ -7,6 +7,7 @@ from pm4py.objects.log.log import EventLog
 from pm4py.util import xes_constants
 from pm4py.util import exec_utils
 
+
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
@@ -50,6 +51,9 @@ def apply(log, parameters=None):
             start_activities = set()
             end_activities = set()
 
-        ret.append({Outputs.SEQUENCE.value: sequence, Outputs.PARALLEL.value: parallel, Outputs.ACTIVITIES.value: activities, Outputs.START_ACTIVITIES.value: start_activities, Outputs.END_ACTIVITIES.value: end_activities})
+        ret.append(
+            {Outputs.DFG.value: dfg, Outputs.SEQUENCE.value: sequence, Outputs.PARALLEL.value: parallel, Outputs.ACTIVITIES.value: activities,
+             Outputs.START_ACTIVITIES.value: start_activities, Outputs.END_ACTIVITIES.value: end_activities,
+             Outputs.MIN_TRACE_LENGTH.value: len(trace)})
 
     return ret
