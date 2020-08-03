@@ -1,5 +1,6 @@
 from pm4py.objects.process_tree.pt_operator import Operator
 from pm4py.algo.discovery.footprints.outputs import Outputs
+from pm4py.objects.process_tree import bottomup as bottomup_disc
 
 START_ACTIVITIES = Outputs.START_ACTIVITIES.value
 END_ACTIVITIES = Outputs.END_ACTIVITIES.value
@@ -177,7 +178,7 @@ def get_footprints_sequence(node, footprints_dictio):
 
     # adds the footprints
     i = 0
-    while i < len(node.children)-1:
+    while i < len(node.children) - 1:
         n0 = footprints_dictio[node.children[i]]
         j = i + 1
         while j < len(node.children):
@@ -202,7 +203,7 @@ def get_footprints_sequence(node, footprints_dictio):
         i = i + 1
 
     # adds the end activities
-    i = len(node.children)-1
+    i = len(node.children) - 1
     while i >= 0:
         n = footprints_dictio[node.children[i]]
         end_activities = end_activities.union(n[END_ACTIVITIES])
@@ -309,6 +310,34 @@ def get_footprints(node, footprints_dictio):
         return get_footprints_loop(node, footprints_dictio)
 
 
+def get_all_footprints(tree, parameters=None):
+    """
+    Gets all the footprints for the nodes of the tree
+
+    Parameters
+    -----------------
+    tree
+        Process tree
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ----------------
+    dictio
+        Dictionary that associates a footprint to each node of the tree
+    """
+    if parameters is None:
+        parameters = {}
+
+    # for each node of the bottom up, proceed to getting the footprints
+    bottomup = bottomup_disc.get_bottomup_nodes(tree, parameters=parameters)
+    footprints_dictio = {}
+    for i in range(len(bottomup)):
+        footprints_dictio[bottomup[i]] = get_footprints(bottomup[i], footprints_dictio)
+
+    return footprints_dictio
+
+
 def apply(tree, parameters=None):
     """
     Footprints detection on process tree
@@ -325,30 +354,9 @@ def apply(tree, parameters=None):
     footprints
         Footprints
     """
-    to_visit = [tree]
-    all_nodes = set()
-    while len(to_visit) > 0:
-        n = to_visit.pop(0)
-        all_nodes.add(n)
-        for child in n.children:
-            to_visit.append(child)
-    # starts to visit the tree from the leafs
-    bottomup = [x for x in all_nodes if len(x.children) == 0]
-    # then add iteratively the parent
-    i = 0
-    while i < len(bottomup):
-        parent = bottomup[i].parent
-        if parent is not None and parent not in bottomup:
-            is_ok = True
-            for child in parent.children:
-                if not child in bottomup:
-                    is_ok = False
-                    break
-            if is_ok:
-                bottomup.append(parent)
-        i = i + 1
-    # for each node of the bottom up, proceed to getting the footprints
-    footprints_dictio = {}
-    for i in range(len(bottomup)):
-        footprints_dictio[bottomup[i]] = get_footprints(bottomup[i], footprints_dictio)
-    return footprints_dictio[tree]
+    if parameters is None:
+        parameters = {}
+
+    all_footprints = get_all_footprints(tree, parameters=parameters)
+
+    return all_footprints[tree]
