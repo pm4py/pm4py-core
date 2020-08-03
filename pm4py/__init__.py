@@ -24,7 +24,7 @@ if pkgutil.find_loader("matplotlib"):
 else:
     logging.error("matplotlib is not available. This can lead some features of PM4Py to not work correctly!")
 
-__version__ = '1.4.0'
+__version__ = '1.4.1'
 __doc__ = "Process Mining for Python (PM4Py)"
 __author__ = 'Fraunhofer Institute for Applied Technology'
 __author_email__ = 'pm4py@fit.fraunhofer.de'
