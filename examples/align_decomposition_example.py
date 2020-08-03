@@ -1,3 +1,8 @@
+try:
+    import pm4pycvxopt
+except:
+    pass
+
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.algo.conformance.decomp_alignments import algorithm as dec_align
