@@ -1,18 +1,17 @@
 import heapq
-import sys
-from copy import copy
 import time
 
-import pm4py
 from pm4py import util as pm4pyutil
 from pm4py.objects import petri
 from pm4py.objects.petri.importer import pnml as petri_importer
 from pm4py.objects.log import log as log_implementation
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.petri.synchronous_product import construct_cost_aware
-from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, decorate_transitions_prepostset
+from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, \
+    decorate_transitions_prepostset
 from pm4py.objects.petri import align_utils as utils
 from pm4py.util import exec_utils
+from copy import copy
 from enum import Enum
 import sys
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -54,17 +53,8 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
     if parameters is None:
         parameters = {}
     trace = log_implementation.Trace()
-    new_parameters = copy(parameters)
 
-    trace_cost_function = exec_utils.get_param_value(Parameters.PARAM_TRACE_COST_FUNCTION, new_parameters, [])
-    if len(trace_cost_function) < len(trace):
-        new_parameters[Parameters.PARAM_TRACE_COST_FUNCTION] = list(
-            map(lambda e: utils.STD_MODEL_LOG_MOVE_COST, trace))
-
-    best_worst = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(trace,
-                                                                                        petri_net, initial_marking,
-                                                                                        final_marking,
-                                                                                        parameters=new_parameters)
+    best_worst = apply(trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
     if best_worst['cost'] > 0:
         return best_worst['cost'] // utils.STD_MODEL_LOG_MOVE_COST
@@ -97,16 +87,35 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
     if parameters is None:
         parameters = {}
 
+    parameters = copy(parameters)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
     trace_cost_function = exec_utils.get_param_value(Parameters.PARAM_TRACE_COST_FUNCTION, parameters, None)
     model_cost_function = exec_utils.get_param_value(Parameters.PARAM_MODEL_COST_FUNCTION, parameters, None)
-    sync_cost_function = exec_utils.get_param_value(Parameters.PARAM_SYNC_COST_FUNCTION, parameters, None)
     trace_net_constr_function = exec_utils.get_param_value(Parameters.TRACE_NET_CONSTR_FUNCTION, parameters,
-                                                           petri.utils.construct_trace_net)
+                                                           None)
     trace_net_cost_aware_constr_function = exec_utils.get_param_value(Parameters.TRACE_NET_COST_AWARE_CONSTR_FUNCTION,
                                                                       parameters, construct_trace_net_cost_aware)
 
-    if trace_cost_function is None or model_cost_function is None or sync_cost_function is None:
+    if trace_cost_function is None:
+        trace_cost_function = list(
+            map(lambda e: utils.STD_MODEL_LOG_MOVE_COST, trace))
+        parameters[Parameters.PARAM_TRACE_COST_FUNCTION] = trace_cost_function
+
+    if model_cost_function is None:
+        # reset variables value
+        model_cost_function = dict()
+        sync_cost_function = dict()
+        for t in petri_net.transitions:
+            if t.label is not None:
+                model_cost_function[t] = utils.STD_MODEL_LOG_MOVE_COST
+                sync_cost_function[t] = 0
+            else:
+                model_cost_function[t] = 1
+        parameters[Parameters.PARAM_MODEL_COST_FUNCTION] = model_cost_function
+        parameters[Parameters.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
+
+    if trace_net_constr_function is not None:
+        # keep the possibility to pass TRACE_NET_CONSTR_FUNCTION in this old version
         trace_net, trace_im, trace_fm = trace_net_constr_function(trace, activity_key=activity_key)
     else:
         trace_net, trace_im, trace_fm, parameters[
@@ -114,7 +123,8 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
                                                                                      trace_cost_function,
                                                                                      activity_key=activity_key)
 
-    return apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters)
+    alignment = apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters)
+    return alignment
 
 
 def apply_from_variant(variant, petri_net, initial_marking, final_marking, parameters=None):
@@ -190,7 +200,7 @@ def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking
     max_align_time = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME, parameters,
                                                 sys.maxsize)
     max_align_time_trace = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME_TRACE, parameters,
-                                                     sys.maxsize)
+                                                      sys.maxsize)
     dictio_alignments = {}
     for varitem in var_list:
         this_max_align_time = min(max_align_time_trace, (max_align_time - (time.time() - start_time)) * 0.5)
@@ -254,7 +264,6 @@ def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_
     sync_cost_function = exec_utils.get_param_value(Parameters.PARAM_SYNC_COST_FUNCTION, parameters, None)
     trace_net_costs = exec_utils.get_param_value(Parameters.PARAM_TRACE_NET_COSTS, parameters, None)
 
-
     if trace_cost_function is None or model_cost_function is None or sync_cost_function is None:
         sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
                                                                                                   trace_fm, petri_net,
@@ -317,11 +326,11 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             continue
 
         if current_marking == fin:
-            #from pympler.asizeof import asizeof
-            #from pm4py.util import measurements
-            #measurements.Measurements.ALIGN_TIME.append(asizeof(open_set))
+            # from pympler.asizeof import asizeof
+            # from pm4py.util import measurements
+            # measurements.Measurements.ALIGN_TIME.append(asizeof(open_set))
             return utils.__reconstruct_alignment(curr, visited, queued, traversed,
-                                           ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
+                                                 ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
 
         closed.add(current_marking)
         visited += 1

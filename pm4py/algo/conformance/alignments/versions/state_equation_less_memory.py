@@ -1,7 +1,7 @@
 from pm4py.algo.conformance.alignments.versions.dijkstra_less_memory import __add_to_open_set, __add_closed, \
     __check_closed, __decode_marking, __encode_marking, __fire_trans, __dict_leq, \
-    __transform_model_to_mem_efficient_structure, __transform_trace_to_mem_efficient_structure, get_best_worst_cost, \
-    __reconstruct_alignment
+    __transform_model_to_mem_efficient_structure, __transform_trace_to_mem_efficient_structure, __reconstruct_alignment, \
+    get_best_worst_cost
 
 import time
 import sys
@@ -20,6 +20,7 @@ from pm4py.util.lp import solver as lp_solver
 from enum import Enum
 import heapq
 import numpy as np
+from copy import copy
 
 
 class Parameters(Enum):
@@ -35,6 +36,7 @@ class Parameters(Enum):
     TRACE_NET_COST_AWARE_CONSTR_FUNCTION = "trace_net_cost_aware_constr_function"
     PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
     PARAM_TRACE_NET_COSTS = "trace_net_costs"
+    RETURN_SYNC_COST_FUNCTION = "return_sync_cost_function"
 
 
 PLACES_DICT = "places_dict"
@@ -180,15 +182,34 @@ def construct_sync_prod_net(trace, net, im, fm, parameters=None):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
     trace_cost_function = exec_utils.get_param_value(Parameters.PARAM_TRACE_COST_FUNCTION, parameters, None)
 
+    if trace_cost_function is None:
+        trace_cost_function = list(
+            map(lambda e: utils.STD_MODEL_LOG_MOVE_COST, trace))
+        parameters[Parameters.PARAM_TRACE_COST_FUNCTION] = trace_cost_function
+
     trace_net_cost_aware_constr_function = exec_utils.get_param_value(Parameters.TRACE_NET_COST_AWARE_CONSTR_FUNCTION,
                                                                       parameters, construct_trace_net_cost_aware)
     model_cost_function = exec_utils.get_param_value(Parameters.PARAM_MODEL_COST_FUNCTION, parameters, None)
-    trace_net_costs = exec_utils.get_param_value(Parameters.PARAM_TRACE_NET_COSTS, parameters, None)
+
+    if model_cost_function is None:
+        # reset variables value
+        model_cost_function = dict()
+        sync_cost_function = dict()
+        for t in net.transitions:
+            if t.label is not None:
+                model_cost_function[t] = align_utils.STD_MODEL_LOG_MOVE_COST
+                sync_cost_function[t] = 0
+            else:
+                model_cost_function[t] = 1
+        parameters[Parameters.PARAM_MODEL_COST_FUNCTION] = model_cost_function
+        parameters[Parameters.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
 
     trace_net, trace_im, trace_fm, parameters[
         Parameters.PARAM_TRACE_NET_COSTS] = trace_net_cost_aware_constr_function(trace,
                                                                                  trace_cost_function,
                                                                                  activity_key=activity_key)
+
+    trace_net_costs = exec_utils.get_param_value(Parameters.PARAM_TRACE_NET_COSTS, parameters, None)
     if trace_net_costs is None:
         trace_net_costs = {}
         trans = sorted([(t, int(t.name.split("_")[-1])) for t in trace_net.transitions], key=lambda x: x[-1])
@@ -272,6 +293,7 @@ def apply(trace, net, im, fm, parameters=None):
     if parameters is None:
         parameters = {}
 
+    parameters = copy(parameters)
     sync_cost = exec_utils.get_param_value(Parameters.PARAM_STD_SYNC_COST, parameters, align_utils.STD_SYNC_COST)
     product_net = construct_sync_prod_net(trace, net, im, fm, parameters=parameters)
 
@@ -285,9 +307,15 @@ def apply(trace, net, im, fm, parameters=None):
     ret_tuple_as_trans_desc = exec_utils.get_param_value(Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE,
                                                          parameters, False)
 
-    return __align(model_struct, trace_struct, product_net, corresp, sync_cost=sync_cost,
-                   max_align_time_trace=max_align_time_trace,
-                   ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
+    return_sync_cost = exec_utils.get_param_value(Parameters.RETURN_SYNC_COST_FUNCTION, parameters, False)
+    alignment = __align(model_struct, trace_struct, product_net, corresp, sync_cost=sync_cost,
+                        max_align_time_trace=max_align_time_trace,
+                        ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
+
+    if return_sync_cost:
+        return alignment, product_net[3]
+
+    return alignment
 
 
 def get_corresp_marking_and_trans(m, index, corresp, t):
@@ -404,6 +432,7 @@ def __align(model_struct, trace_struct, product_net, corresp, sync_cost=align_ut
                                              fin_vec,
                                              cost_vec, a_matrix, g_matrix, h_cvx, lp_solver.DEFAULT_LP_SOLVER_VARIANT,
                                              use_cvxopt=use_cvxopt)
+    exact_heu_calculations = 1
 
     initial_state = (0, h, 0, 0, 0, None, im, None, 0, x, trustable)
     open_set = [initial_state]
@@ -438,6 +467,7 @@ def __align(model_struct, trace_struct, product_net, corresp, sync_cost=align_ut
                                                                incidence_matrix, m, fin_vec,
                                                                lp_solver.DEFAULT_LP_SOLVER_VARIANT,
                                                                use_cvxopt=use_cvxopt)
+            exact_heu_calculations = exact_heu_calculations + 1
 
             curr = list(curr)
             curr[POSITION_HEURISTICS] = h
@@ -456,7 +486,7 @@ def __align(model_struct, trace_struct, product_net, corresp, sync_cost=align_ut
                 # returns the alignment only if the final marking has been reached AND
                 # the trace is over
                 return __reconstruct_alignment(curr, model_struct, trace_struct, visited, len(open_set), len(closed),
-                                               len(marking_dict),
+                                               len(marking_dict), exact_heu_calculations,
                                                ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
         else:
             # retrieves the transitions that are enabled in the current marking
@@ -563,7 +593,7 @@ def __align(model_struct, trace_struct, product_net, corresp, sync_cost=align_ut
 
 
 def __reconstruct_alignment(curr, model_struct, trace_struct, visited, open_set_length, closed_set_length,
-                            num_visited_markings, ret_tuple_as_trans_desc=False):
+                            num_visited_markings, exact_heu_calculations, ret_tuple_as_trans_desc=False):
     """
     Reconstruct the alignment from the final state (that reached the final marking)
 
@@ -583,6 +613,8 @@ def __reconstruct_alignment(curr, model_struct, trace_struct, visited, open_set_
         Length of the closed set
     num_visited_markings
         Number of visited markings
+    exact_heu_calculations
+        Number of times the exact heuristics was calculated by solving an LP problem
     ret_tuple_as_trans_desc
         Says if the alignments shall be constructed including also
         the name of the transition, or only the label (default=False includes only the label)
@@ -620,4 +652,5 @@ def __reconstruct_alignment(curr, model_struct, trace_struct, visited, open_set_
         curr = curr[POSITION_PARENT_STATE]
 
     return {"alignment": alignment, "cost": cost, "queued_states": queued, "visited_states": visited,
-            "closed_set_length": closed_set_length, "num_visited_markings": num_visited_markings}
+            "closed_set_length": closed_set_length, "num_visited_markings": num_visited_markings,
+            "exact_heu_calculations": exact_heu_calculations}

@@ -36,7 +36,7 @@ class Parameters(Enum):
     VARIANTS_IDX = "variants_idx"
 
 
-DEFAULT_VARIANT = Variants.VERSION_STATE_EQUATION_A_STAR
+DEFAULT_VARIANT = Variants.VERSION_STATE_EQUATION_LESS_MEMORY
 VERSION_STATE_EQUATION_A_STAR = Variants.VERSION_STATE_EQUATION_A_STAR
 VERSION_DIJKSTRA_NO_HEURISTICS = Variants.VERSION_DIJKSTRA_NO_HEURISTICS
 VERSION_DIJKSTRA_LESS_MEMORY = Variants.VERSION_DIJKSTRA_LESS_MEMORY
@@ -90,10 +90,6 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     """
     if parameters is None:
         parameters = copy({PARAMETER_CONSTANT_ACTIVITY_KEY: DEFAULT_NAME_KEY})
-    trace_cost_function = exec_utils.get_param_value(Parameters.PARAM_TRACE_COST_FUNCTION, parameters, None)
-    if trace_cost_function is None:
-        parameters[Parameters.PARAM_TRACE_COST_FUNCTION] = list(
-            map(lambda e: align_utils.STD_MODEL_LOG_MOVE_COST, trace))
     return exec_utils.get_variant(variant).apply(trace, petri_net, initial_marking, final_marking,
                                                  parameters=parameters)
 
@@ -131,28 +127,11 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         raise Exception("trying to apply alignments on a Petri net that is not a relaxed sound net!!")
 
     start_time = time.time()
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
-    model_cost_function = exec_utils.get_param_value(Parameters.PARAM_MODEL_COST_FUNCTION, parameters, None)
-    sync_cost_function = exec_utils.get_param_value(Parameters.PARAM_SYNC_COST_FUNCTION, parameters, None)
     max_align_time = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME, parameters,
                                                 sys.maxsize)
     max_align_time_case = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME_TRACE, parameters,
                                                      sys.maxsize)
 
-    if model_cost_function is None or sync_cost_function is None:
-        # reset variables value
-        model_cost_function = dict()
-        sync_cost_function = dict()
-        for t in petri_net.transitions:
-            if t.label is not None:
-                model_cost_function[t] = align_utils.STD_MODEL_LOG_MOVE_COST
-                sync_cost_function[t] = 0
-            else:
-                model_cost_function[t] = 1
-
-    parameters[Parameters.ACTIVITY_KEY] = activity_key
-    parameters[Parameters.PARAM_MODEL_COST_FUNCTION] = model_cost_function
-    parameters[Parameters.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
     parameters_best_worst = copy(parameters)
 
     best_worst_cost = exec_utils.get_variant(variant).get_best_worst_cost(petri_net, initial_marking, final_marking,
