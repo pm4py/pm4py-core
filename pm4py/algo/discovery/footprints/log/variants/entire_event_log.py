@@ -47,6 +47,7 @@ def apply(log, parameters=None):
     end_activities = set(get_end_activities.get_end_activities(log, parameters=parameters))
     activities = set(y[activity_key] for x in log for y in x)
 
-    return {Outputs.SEQUENCE.value: sequence, Outputs.PARALLEL.value: parallel,
+    return {Outputs.DFG.value: dfg, Outputs.SEQUENCE.value: sequence, Outputs.PARALLEL.value: parallel,
             Outputs.START_ACTIVITIES.value: start_activities, Outputs.END_ACTIVITIES.value: end_activities,
-            Outputs.ACTIVITIES.value: activities}
+            Outputs.ACTIVITIES.value: activities,
+            Outputs.MIN_TRACE_LENGTH.value: min(len(x) for x in log) if len(log) > 0 else 0}

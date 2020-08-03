@@ -10,13 +10,19 @@ if __name__ == "__main__":
     sys.path.insert(0, parentdir)
     sys.path.insert(0, parentdir2)
     import time
-    #import pm4pycvxopt
+    import pm4pycvxopt
     from pm4py.objects.log.importer.xes import importer as xes_importer
     from pm4py.algo.discovery.inductive import algorithm as inductive
     from pm4py.algo.conformance.alignments import algorithm as align_algorithm
+    from pm4py.algo.conformance.alignments.versions import state_equation_less_memory, state_equation_a_star, \
+        dijkstra_less_memory, dijkstra_no_heuristics
+    from pm4py.algo.conformance.decomp_alignments.versions import recompos_maximal
+    from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
+    from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
     from pm4py.algo.discovery.alpha import algorithm as alpha
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     from pm4py.objects.petri import check_soundness
+    from pm4py.objects.conversion.process_tree import converter as pt_converter
     from pm4py.evaluation.replay_fitness import evaluator as fitness_evaluator
     from pm4py.evaluation.precision import evaluator as precision_evaluator
     from pm4py.evaluation.simplicity import evaluator as simplicity_evaluator
@@ -45,19 +51,23 @@ if __name__ == "__main__":
 
     ENABLE_VISUALIZATIONS = False
     ENABLE_VISUALIZATIONS_INDUCTIVE = False
-    ENABLE_ALIGNMENTS = True
-    ENABLE_PRECISION = False
+    ENABLE_ALIGNMENTS = False
+    ENABLE_PRECISION = True
     ENABLE_PETRI_EXPORTING = False
     CHECK_SOUNDNESS = False
-    align_algorithm.DEFAULT_VARIANT = align_algorithm.Variants.VERSION_STATE_EQUATION_A_STAR
+    INDUCTIVE_MINER_VARIANT = inductive.Variants.DFG_BASED
+    ALIGN_VARIANT = state_equation_less_memory
+    align_algorithm.DEFAULT_VARIANT = align_algorithm.Variants.VERSION_DIJKSTRA_LESS_MEMORY
     logFolder = os.path.join("..", "compressed_input_data")
     pnmlFolder = "pnml_folder"
     pngFolder = "png_folder"
     times_tokenreplay_alpha = {}
     times_tokenreplay_imdf = {}
+    times_footprints_imdf = {}
     times_alignments_imdf = {}
     fitness_token_alpha = {}
     fitness_token_imdf = {}
+    fitness_footprints_imdf = {}
     fitness_align_imdf = {}
     precision_alpha = {}
     precision_imdf = {}
@@ -76,7 +86,8 @@ if __name__ == "__main__":
         f.write(
             get_elonged_string("log") + "\t" + get_elonged_string("fitness_token_alpha") + "\t" + get_elonged_string(
                 "times_tokenreplay_alpha") + "\t" + get_elonged_string(
-                "fitness_token_imdf") + "\t" + get_elonged_string("times_tokenreplay_imdf"))
+                "fitness_token_imdf") + "\t" + get_elonged_string("times_tokenreplay_imdf") + "\t" + get_elonged_string(
+                "fitness_footprints_imdf") + "\t" + get_elonged_string("times_footprints_imdf"))
         if ENABLE_ALIGNMENTS:
             f.write(
                 "\t" + get_elonged_string("fitness_align_imdf") + "\t" + get_elonged_string("times_alignments_imdf"))
@@ -92,6 +103,10 @@ if __name__ == "__main__":
             f.write(get_elonged_float(fitness_token_imdf[this_logname]))
             f.write("\t")
             f.write(get_elonged_float(times_tokenreplay_imdf[this_logname]))
+            f.write("\t")
+            f.write(get_elonged_float(fitness_footprints_imdf[this_logname]))
+            f.write("\t")
+            f.write(get_elonged_float(times_footprints_imdf[this_logname]))
             if ENABLE_ALIGNMENTS:
                 f.write("\t")
                 f.write(get_elonged_float(fitness_align_imdf[this_logname]))
@@ -185,9 +200,13 @@ if __name__ == "__main__":
                       check_soundness.check_petri_wfnet_and_soundness(heu_model, debug=True))
 
             t1 = time.time()
-            tree = inductive.apply_tree(log, parameters=parameters_discovery)
-            print(tree)
-            inductive_model, inductive_im, inductive_fm = inductive.apply(log, parameters=parameters_discovery)
+            tree = inductive.apply_tree(log, parameters=parameters_discovery, variant=INDUCTIVE_MINER_VARIANT)
+            # print(tree)
+
+            inductive_model, inductive_im, inductive_fm = pt_converter.apply(tree)
+
+            """inductive_model, inductive_im, inductive_fm = inductive.apply(log, parameters=parameters_discovery,
+                                                                          variant=INDUCTIVE_MINER_VARIANT)"""
             if ENABLE_PETRI_EXPORTING:
                 pnml_exporter.export_net(inductive_model, inductive_im,
                                          os.path.join(pnmlFolder, logNamePrefix + "_inductive.pnml"),
@@ -203,7 +222,9 @@ if __name__ == "__main__":
                       check_soundness.check_petri_wfnet_and_soundness(inductive_model, debug=True))
 
             parameters = {fitness_evaluator.Variants.TOKEN_BASED.value.Parameters.ACTIVITY_KEY: activity_key,
-                          fitness_evaluator.Variants.TOKEN_BASED.value.Parameters.ATTRIBUTE_KEY: activity_key, "format": "png"}
+                          fitness_evaluator.Variants.TOKEN_BASED.value.Parameters.ATTRIBUTE_KEY: activity_key,
+                          "align_variant": ALIGN_VARIANT,
+                          "format": "png"}
 
             t1 = time.time()
             fitness_token_alpha[logName] = \
@@ -224,6 +245,19 @@ if __name__ == "__main__":
                 fitness_token_imdf[logName]))
             t2 = time.time()
             times_tokenreplay_imdf[logName] = t2 - t1
+
+            t1 = time.time()
+            fp_log = footprints_discovery.apply(log, parameters=parameters)
+            fp_tree = footprints_discovery.apply(tree, parameters=parameters)
+            conf = footprints_conformance.apply(fp_log, fp_tree,
+                                                variant=footprints_conformance.Variants.TRACE_EXTENSIVE,
+                                                parameters=parameters)
+            # fitness_fp = float(len([x for x in conf if len(x) == 0])) / float(len(conf)) * 100.0 if conf else 0.0
+            fitness_fp = float(len([x for x in conf if x["is_footprints_fit"]])) / float(
+                len(conf)) * 100.0 if conf else 0.0
+            t2 = time.time()
+            fitness_footprints_imdf[logName] = fitness_fp
+            times_footprints_imdf[logName] = t2 - t1
 
             if ENABLE_ALIGNMENTS:
                 t1 = time.time()
@@ -255,7 +289,8 @@ if __name__ == "__main__":
 
             if ENABLE_PRECISION:
                 precision_imdf[logName] = precision_evaluator.apply(log, inductive_model, inductive_im,
-                                                                    inductive_fm, variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN,
+                                                                    inductive_fm,
+                                                                    variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN,
                                                                     parameters=parameters)
             else:
                 precision_imdf[logName] = 0.0

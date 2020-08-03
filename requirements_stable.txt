@@ -2,19 +2,19 @@ ciso8601==2.1.2; python_version < '3.7'
 cython==0.29.21
 deprecation==2.1.0
 graphviz==0.14.1
-intervaltree==3.0.2
+intervaltree==3.1.0
 jsonpickle==1.4.1
 lxml==4.5.2
-matplotlib==3.2.2
+matplotlib==3.3.0
 networkx==2.4
-numpy==1.19.0
-pandas==1.0.5
+numpy==1.19.1
+pandas==1.1.0
 pulp==2.1
 pydotplus==2.0.2
 pytz==2020.1
 pyvis==0.1.8.1.1
 scikit-learn==0.23.1
-scipy==1.5.1
+scipy==1.5.2
 stringdist==1.0.9
 
 # ADDITIONAL REQUIREMENTS FOR PUBLIC GPL RELEASE
