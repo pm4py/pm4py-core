@@ -36,6 +36,7 @@ if __name__ == "__main__":
     from examples import montecarlo_petri_net
     from examples import visualization_processtree
     from examples import visualization_align_table
+    from examples import simplified_interface
     from examples import footprints_petri_net
 
     print("\n\nemd_evaluation")
