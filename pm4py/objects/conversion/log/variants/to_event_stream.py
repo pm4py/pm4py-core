@@ -6,7 +6,7 @@ import pandas
 
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.log import log as log_instance
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.log import EventLog, Event
 from pm4py.util import constants as pmutil
 
 
@@ -82,6 +82,8 @@ def apply(log, parameters=None):
         list_events = log.to_dict('records')
         if Parameters.STREAM_POST_PROCESSING in parameters and parameters[Parameters.STREAM_POST_PROCESSING]:
             list_events = __postprocess_stream(list_events)
+        for i in range(len(list_events)):
+            list_events[i] = Event(list_events[i])
         log = log_instance.EventStream(list_events, attributes={'origin': 'csv'})
     if isinstance(log, EventLog):
         case_pref = parameters[
