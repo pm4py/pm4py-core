@@ -1,6 +1,7 @@
 from pm4py.algo.conformance.alignments.algorithm import apply as get_alignment
 from pm4py.algo.conformance.alignments.algorithm import Variants
-from pm4py.objects.conversion.process_tree.factory import apply as convert_pt_to_petri_net
+from pm4py.objects.conversion.process_tree.converter import apply as convert_pt_to_petri_net
+from pm4py.objects.conversion.process_tree.converter import Variants as pt_petri_net_variants
 from pm4py.objects.log.log import Trace, Event
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from typing import Set, List
@@ -51,6 +52,11 @@ def empty_sequence_accepted(pt: ProcessTree) -> bool:
     return alignment["cost"] < STD_MODEL_LOG_MOVE_COST
 
 
-def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, variant=Variants.VERSION_STATE_EQUATION_A_STAR, parameters=None):
-    net, im, fm = convert_pt_to_petri_net(pt)
-    return get_alignment(trace, net, im, fm, variant=variant, parameters=parameters)
+def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, variant=Variants.VERSION_STATE_EQUATION_A_STAR,
+                                parameters=None):
+    parent = pt.parent
+    pt.parent = None
+    net, im, fm = convert_pt_to_petri_net(pt, variant=pt_petri_net_variants.TO_PETRI_NET_TRANSITION_BORDERED)
+    alignment = get_alignment(trace, net, im, fm, variant=variant, parameters=parameters)
+    pt.parent = parent
+    return alignment
