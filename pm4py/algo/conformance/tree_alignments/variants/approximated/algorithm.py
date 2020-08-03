@@ -4,9 +4,7 @@ from pulp import lpSum, LpVariable, LpProblem, LpMinimize
 from pm4py.algo.conformance.tree_alignments.variants.approximated.calculate_a_sa_ea_sets import \
     initialize_a_sa_ea_tau_sets
 from pm4py.algo.conformance.tree_alignments.variants.approximated.utilities import calculate_optimal_alignment, \
-    concatenate_traces, \
-    trace_to_list_of_str, \
-    apply_standard_cost_function_to_alignment
+    concatenate_traces, trace_to_list_of_str
 from pm4py.objects.process_tree.util import get_process_tree_height, process_tree_to_binary_process_tree
 from pm4py.objects.petri.align_utils import SKIP
 from pm4py.objects.process_tree.process_tree import ProcessTree
@@ -159,7 +157,8 @@ def __approximate_alignments_for_log(log: EventLog, pt: ProcessTree, max_tl: int
 
     inv_corr = {}
     for i, var in enumerate(variants):
-        alignment = __approximate_alignment_for_trace(pt, a_sets, sa_sets, ea_sets, tau_sets, log[variants[var][0]], max_tl, max_th,
+        alignment = __approximate_alignment_for_trace(pt, a_sets, sa_sets, ea_sets, tau_sets, log[variants[var][0]],
+                                                      max_tl, max_th,
                                                       parameters=parameters)
         for idx in variants[var]:
             inv_corr[idx] = alignment
