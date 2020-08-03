@@ -58,7 +58,7 @@ def view(figure):
 
     if is_ipynb:
         from IPython.display import Image
-        image = Image(open(figure, "rb").read())
+        image = Image(figure)
         from IPython.display import display
         return display(image)
     else:

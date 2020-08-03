@@ -22,7 +22,7 @@ def view(gviz):
 
     if is_ipynb:
         from IPython.display import Image
-        image = Image(open(gviz.render(), "rb").read())
+        image = Image(gviz.render())
         from IPython.display import display
         return display(image)
     else:
