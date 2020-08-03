@@ -1,1 +1,0 @@
-This folder shall contain the images produced by the XES certification script.
