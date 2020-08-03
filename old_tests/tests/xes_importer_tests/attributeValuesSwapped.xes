@@ -1,6 +1,0 @@
-<log xes.version="1849.2016" xes.features="nested-attributes">
-	<list key="list">
-		<values />
-		<string key="key" value="value" />
-	</list>
-</log>

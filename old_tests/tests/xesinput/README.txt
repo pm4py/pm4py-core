@@ -1,1 +1,0 @@
-This folder shall contain the input XES files for XES certification.
