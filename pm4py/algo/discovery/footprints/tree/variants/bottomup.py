@@ -1,6 +1,7 @@
 from pm4py.objects.process_tree.pt_operator import Operator
 from pm4py.algo.discovery.footprints.outputs import Outputs
 from pm4py.objects.process_tree import bottomup as bottomup_disc
+from copy import copy
 
 START_ACTIVITIES = Outputs.START_ACTIVITIES.value
 END_ACTIVITIES = Outputs.END_ACTIVITIES.value
@@ -8,6 +9,7 @@ ACTIVITIES = Outputs.ACTIVITIES.value
 SKIPPABLE = Outputs.SKIPPABLE.value
 SEQUENCE = Outputs.SEQUENCE.value
 PARALLEL = Outputs.PARALLEL.value
+ACTIVITIES_ALWAYS_HAPPENING = Outputs.ACTIVITIES_ALWAYS_HAPPENING.value
 
 
 def fix_fp(sequence, parallel):
@@ -50,11 +52,11 @@ def get_footprints_leaf(node, footprints_dictio):
     """
     if node.label is None:
         return {START_ACTIVITIES: set(), END_ACTIVITIES: set(), ACTIVITIES: set(), SKIPPABLE: True, SEQUENCE: set(),
-                PARALLEL: set()}
+                PARALLEL: set(), ACTIVITIES_ALWAYS_HAPPENING: set()}
     else:
         return {START_ACTIVITIES: set([node.label]), END_ACTIVITIES: set([node.label]), ACTIVITIES: set([node.label]),
                 SKIPPABLE: False, SEQUENCE: set(),
-                PARALLEL: set()}
+                PARALLEL: set(), ACTIVITIES_ALWAYS_HAPPENING: set([node.label])}
 
 
 def get_footprints_xor(node, footprints_dictio):
@@ -79,6 +81,10 @@ def get_footprints_xor(node, footprints_dictio):
     skippable = False
     sequence = set()
     parallel = set()
+    activities_always_happening = set()
+
+    if node.children:
+        activities_always_happening = copy(footprints_dictio[node.children[0]][ACTIVITIES_ALWAYS_HAPPENING])
 
     for n0 in node.children:
         n = footprints_dictio[n0]
@@ -88,11 +94,16 @@ def get_footprints_xor(node, footprints_dictio):
         skippable = skippable or n[SKIPPABLE]
         sequence = sequence.union(n[SEQUENCE])
         parallel = parallel.union(n[PARALLEL])
+        if not n[SKIPPABLE]:
+            activities_always_happening = activities_always_happening.intersection(n[ACTIVITIES_ALWAYS_HAPPENING])
+        else:
+            activities_always_happening = set()
 
     sequence, parallel = fix_fp(sequence, parallel)
 
     return {START_ACTIVITIES: start_activities, END_ACTIVITIES: end_activities, ACTIVITIES: activities,
-            SKIPPABLE: skippable, SEQUENCE: sequence, PARALLEL: parallel}
+            SKIPPABLE: skippable, SEQUENCE: sequence, PARALLEL: parallel,
+            ACTIVITIES_ALWAYS_HAPPENING: activities_always_happening}
 
 
 def get_footprints_parallel(node, footprints_dictio):
@@ -114,9 +125,10 @@ def get_footprints_parallel(node, footprints_dictio):
     start_activities = set()
     end_activities = set()
     activities = set()
-    skippable = False
+    skippable = True
     sequence = set()
     parallel = set()
+    activities_always_happening = set()
 
     for n0 in node.children:
         n = footprints_dictio[n0]
@@ -126,6 +138,8 @@ def get_footprints_parallel(node, footprints_dictio):
         skippable = skippable and n[SKIPPABLE]
         sequence = sequence.union(n[SEQUENCE])
         parallel = parallel.union(n[PARALLEL])
+        if not n[SKIPPABLE]:
+            activities_always_happening = activities_always_happening.union(n[ACTIVITIES_ALWAYS_HAPPENING])
 
     i = 0
     while i < len(node.children):
@@ -143,7 +157,8 @@ def get_footprints_parallel(node, footprints_dictio):
     sequence, parallel = fix_fp(sequence, parallel)
 
     return {START_ACTIVITIES: start_activities, END_ACTIVITIES: end_activities, ACTIVITIES: activities,
-            SKIPPABLE: skippable, SEQUENCE: sequence, PARALLEL: parallel}
+            SKIPPABLE: skippable, SEQUENCE: sequence, PARALLEL: parallel,
+            ACTIVITIES_ALWAYS_HAPPENING: activities_always_happening}
 
 
 def get_footprints_sequence(node, footprints_dictio):
@@ -168,6 +183,7 @@ def get_footprints_sequence(node, footprints_dictio):
     skippable = True
     sequence = set()
     parallel = set()
+    activities_always_happening = set()
 
     for n0 in node.children:
         n = footprints_dictio[n0]
@@ -175,6 +191,8 @@ def get_footprints_sequence(node, footprints_dictio):
         sequence = sequence.union(n[SEQUENCE])
         parallel = parallel.union(n[PARALLEL])
         activities = activities.union(n[ACTIVITIES])
+        if not n[SKIPPABLE]:
+            activities_always_happening = activities_always_happening.union(n[ACTIVITIES_ALWAYS_HAPPENING])
 
     # adds the footprints
     i = 0
@@ -214,7 +232,8 @@ def get_footprints_sequence(node, footprints_dictio):
     sequence, parallel = fix_fp(sequence, parallel)
 
     return {START_ACTIVITIES: start_activities, END_ACTIVITIES: end_activities, ACTIVITIES: activities,
-            SKIPPABLE: skippable, SEQUENCE: sequence, PARALLEL: parallel}
+            SKIPPABLE: skippable, SEQUENCE: sequence, PARALLEL: parallel,
+            ACTIVITIES_ALWAYS_HAPPENING: activities_always_happening}
 
 
 def get_footprints_loop(node, footprints_dictio):
@@ -236,19 +255,23 @@ def get_footprints_loop(node, footprints_dictio):
     start_activities = set()
     end_activities = set()
     activities = set()
-    skippable = True
     sequence = set()
     parallel = set()
+    activities_always_happening = set()
 
     for n0 in node.children:
         n = footprints_dictio[n0]
-        skippable = skippable and n[SKIPPABLE]
         sequence = sequence.union(n[SEQUENCE])
         parallel = parallel.union(n[PARALLEL])
         activities = activities.union(n[ACTIVITIES])
 
     do = footprints_dictio[node.children[0]]
     redo = footprints_dictio[node.children[1]]
+
+    skippable = do[SKIPPABLE]
+
+    if not do[SKIPPABLE]:
+        activities_always_happening = copy(do[ACTIVITIES_ALWAYS_HAPPENING])
 
     start_activities = start_activities.union(do[START_ACTIVITIES])
     if do[SKIPPABLE]:
@@ -279,7 +302,8 @@ def get_footprints_loop(node, footprints_dictio):
     sequence, parallel = fix_fp(sequence, parallel)
 
     return {START_ACTIVITIES: start_activities, END_ACTIVITIES: end_activities, ACTIVITIES: activities,
-            SKIPPABLE: skippable, SEQUENCE: sequence, PARALLEL: parallel}
+            SKIPPABLE: skippable, SEQUENCE: sequence, PARALLEL: parallel,
+            ACTIVITIES_ALWAYS_HAPPENING: activities_always_happening}
 
 
 def get_footprints(node, footprints_dictio):
@@ -358,5 +382,9 @@ def apply(tree, parameters=None):
         parameters = {}
 
     all_footprints = get_all_footprints(tree, parameters=parameters)
+    root_node_footprints = all_footprints[tree]
 
-    return all_footprints[tree]
+    min_trace_length = bottomup_disc.get_min_trace_length(tree, parameters=parameters)
+    root_node_footprints[Outputs.MIN_TRACE_LENGTH.value] = min_trace_length
+
+    return root_node_footprints
