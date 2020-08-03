@@ -1,10 +1,12 @@
 from enum import Enum
-from pm4py.algo.conformance.footprints.variants import log_model
+from pm4py.algo.conformance.footprints.variants import log_model, log_extensive, trace_extensive
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
     LOG_MODEL = log_model
+    LOG_EXTENSIVE = log_extensive
+    TRACE_EXTENSIVE = trace_extensive
 
 
 def apply(log_footprints, model_footprints, variant=Variants.LOG_MODEL, parameters=None):
@@ -25,7 +27,7 @@ def apply(log_footprints, model_footprints, variant=Variants.LOG_MODEL, paramete
     Returns
     ------------------
     violations
-        Set of all the violations between the log footprints
+        Set/dictionary of all the violations between the log footprints
         and the model footprints, OR list of case-per-case violations
     """
     if parameters is None:

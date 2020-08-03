@@ -5,6 +5,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    from examples import tree_playout
     from examples import emd_evaluation
     from examples import footprints_tree_conf
     from examples import event_log_filter
@@ -39,6 +40,8 @@ if __name__ == "__main__":
     from examples import simplified_interface
     from examples import footprints_petri_net
 
+    print("\n\ntree_playout")
+    tree_playout.execute_script()
     print("\n\nemd_evaluation")
     emd_evaluation.execute_script()
     print("\n\nfootprints_tree_conf")
