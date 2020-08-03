@@ -1,4 +1,5 @@
 from pm4py.algo.conformance.alignments.algorithm import apply as get_alignment
+from pm4py.algo.conformance.alignments.algorithm import Parameters
 from pm4py.algo.conformance.alignments.algorithm import Variants
 from pm4py.objects.conversion.process_tree.converter import apply as convert_pt_to_petri_net
 from pm4py.objects.conversion.process_tree.converter import Variants as pt_petri_net_variants
@@ -57,6 +58,12 @@ def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, variant=Variants.
     parent = pt.parent
     pt.parent = None
     net, im, fm = convert_pt_to_petri_net(pt, variant=pt_petri_net_variants.TO_PETRI_NET_TRANSITION_BORDERED)
-    alignment = get_alignment(trace, net, im, fm, variant=variant, parameters=parameters)
+    alignment = get_alignment(trace, net, im, fm, variant=variant,
+                              parameters={Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE: True})
     pt.parent = parent
-    return alignment
+    # remove invisible model moves from alignment steps that do not belong to a silent model move in the process tree
+    res = []
+    for a in alignment["alignment"]:
+        if not (a[0][0] == SKIP and not a[0][0].isdigit()):
+            res.append(a[1])
+    return res

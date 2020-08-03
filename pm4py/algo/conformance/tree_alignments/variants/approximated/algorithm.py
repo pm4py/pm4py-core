@@ -176,7 +176,7 @@ def __approximate_alignment_for_trace(pt: ProcessTree, a_sets: Dict[ProcessTree,
                                       tau_flags: Dict[ProcessTree, bool], trace: Trace, max_tl: int,
                                       max_th: int, parameters=None):
     if len(trace) <= max_tl or get_process_tree_height(pt) <= max_th:
-        return calculate_optimal_alignment(pt, trace, parameters=parameters)["alignment"]
+        return calculate_optimal_alignment(pt, trace, parameters=parameters)
     else:
         if pt.operator == Operator.SEQUENCE:
             return __approximate_alignment_on_sequence(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th,
