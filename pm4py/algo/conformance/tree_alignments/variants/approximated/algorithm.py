@@ -126,12 +126,12 @@ def apply(obj: Union[Trace, EventLog], pt: ProcessTree, parameters=None):
     max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, 1)
     max_process_tree_height = exec_utils.get_param_value(Parameters.MAX_PROCESS_TREE_HEIGHT, parameters, 1)
 
-    return align(obj, pt, max_trace_length=max_trace_length, max_process_tree_height=max_process_tree_height,
-                 parameters=parameters)
+    return __align(obj, pt, max_trace_length=max_trace_length, max_process_tree_height=max_process_tree_height,
+                   parameters=parameters)
 
 
-def align(obj: Union[Trace, EventLog], pt: ProcessTree, max_trace_length: int = 1,
-          max_process_tree_height: int = 1, parameters=None):
+def __align(obj: Union[Trace, EventLog], pt: ProcessTree, max_trace_length: int = 1,
+            max_process_tree_height: int = 1, parameters=None):
     """
     this function approximates alignments for a given event log or trace and a process tree
 
