@@ -1,9 +1,6 @@
-from pm4py.objects import petri
 from pm4py.objects.log.log import Trace
-from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset
 from pm4py.objects.log import log as log_implementation
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
-import heapq
 from pm4py.objects.petri import align_utils as utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.objects.petri import decomposition as decomp_utils
@@ -13,21 +10,17 @@ from pm4py import util as pm4pyutil
 from copy import copy
 from pm4py.algo.conformance.decomp_alignments.parameters import Parameters
 from pm4py.util import exec_utils
+from pm4py.algo.conformance.alignments.versions import state_equation_less_memory
 
 
 def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
     trace = log_implementation.Trace()
-    new_parameters = copy(parameters)
-    new_parameters[Parameters.PARAM_TRACE_COST_FUNCTION] = list(
-        map(lambda e: utils.STD_MODEL_LOG_MOVE_COST, trace))
 
-    best_worst, cf = align(trace, petri_net, initial_marking, final_marking, parameters=new_parameters)
+    best_worst, cf = align(trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
-    cf_new = {}
-    for el in cf:
-        cf_new[(el.name, el.label)] = cf[el]
-    best_worst_cost = sum(cf_new[x] for x in best_worst['alignment']) // utils.STD_MODEL_LOG_MOVE_COST if best_worst[
+    best_worst_cost = sum(cf[x] for x in best_worst['alignment']) // utils.STD_MODEL_LOG_MOVE_COST if best_worst[
         'alignment'] else 0
+
     return best_worst_cost
 
 
@@ -313,19 +306,20 @@ def recompose_alignment(cons_nets, cons_nets_result):
     added = set()
     while len(to_visit) > 0:
         curr = to_visit.pop(0)
-        output_edges = [e for e in G0.edges if e[0] == curr]
-        for edge in output_edges:
-            to_visit.append(edge[1])
-        if count > 0:
-            sind = 1
-        else:
-            sind = 0
-        if cons_nets_result[curr] is not None:
-            for y in [x for x in cons_nets_result[curr]["alignment"][sind:]]:
-                if not y in added:
-                    overall_ali.append(y)
-                    added.add(y)
-        visited.add(curr)
+        if not curr in visited:
+            output_edges = [e for e in G0.edges if e[0] == curr]
+            for edge in output_edges:
+                to_visit.append(edge[1])
+            if count > 0:
+                sind = 1
+            else:
+                sind = 0
+            if cons_nets_result[curr] is not None:
+                for y in [x for x in cons_nets_result[curr]["alignment"][sind:]]:
+                    if not y in added:
+                        overall_ali.append(y)
+                        added.add(y)
+            visited.add(curr)
         count = count + 1
     return overall_ali
 
@@ -371,11 +365,8 @@ def apply_trace(trace, list_nets, parameters=None):
             tup = (cons_nets[i], acti)
             if tup not in icache:
                 al, cf = align(proj, net, im, fm, parameters=parameters)
-                cf_new = {}
-                for el in cf:
-                    cf_new[(el.name, el.label)] = cf[el]
                 alres = get_alres(al)
-                icache[tup] = (al, cf_new, alres)
+                icache[tup] = (al, cf, alres)
             al, cf, alres = icache[tup]
             cons_nets_result.append(al)
             cons_nets_alres.append(alres)
@@ -442,148 +433,18 @@ def apply_trace(trace, list_nets, parameters=None):
 
 
 def align(trace, petri_net, initial_marking, final_marking, parameters=None):
-    """
-    Align a trace against a Petri net
-
-    Parameters
-    -------------
-    trace
-        Trace
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-
-    Returns
-    -------------
-    alignment
-        Alignment
-    cost_function
-        Cost function
-    """
     if parameters is None:
         parameters = {}
 
-    activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
-        parameters[
-            pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+    new_parameters = copy(parameters)
+    new_parameters[state_equation_less_memory.Parameters.RETURN_SYNC_COST_FUNCTION] = True
+    new_parameters[state_equation_less_memory.Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] = True
 
-    trace_net, trace_im, trace_fm = petri.utils.construct_trace_net(trace, activity_key=activity_key)
+    aligned_trace, cost_function = state_equation_less_memory.apply(trace, petri_net, initial_marking, final_marking,
+                                                                    parameters=new_parameters)
 
-    return apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm)
+    cf = {}
+    for x in cost_function:
+        cf[((x.label[0], x.name[1]), (x.label[0], x.label[1]))] = cost_function[x]
 
-
-def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm):
-    """
-    Apply the alignment to a Petri net with initial and final marking,
-    providing the trace net
-
-    Parameters
-    -------------
-    petri_net
-        Model
-    initial_marking
-        IM of the model
-    final_marking
-        FM of the model
-    trace_net
-        Trace net
-    trace_im
-        IM of the trace net
-    trace_fm
-        FM of the trace net
-
-    Returns
-    -------------
-    alignment
-        Alignment
-    cost_function
-        Cost function
-    """
-    sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
-                                                                                              trace_fm, petri_net,
-                                                                                              initial_marking,
-                                                                                              final_marking,
-                                                                                              utils.SKIP)
-    cost_function = utils.construct_standard_cost_function(sync_prod, utils.SKIP)
-
-    return __search(sync_prod, sync_initial_marking, sync_final_marking, cost_function,
-                    utils.SKIP), cost_function
-
-
-def __search(sync_net, ini, fin, cost_function, skip):
-    """
-    Search function for the decomposed/recomposed alignments
-
-    Parameters
-    ------------
-    sync_net
-        Synchronous Petri net
-    ini
-        Initial marking
-    fin
-        Final marking
-    cost_function
-        Cost function
-    skip
-        Skip symbol
-
-    Returns
-    -------------
-    ali
-        Alignment (if not None)
-    """
-    decorate_transitions_prepostset(sync_net)
-    decorate_places_preset_trans(sync_net)
-
-    closed = set()
-
-    ini_state = utils.DijkstraSearchTuple(0, ini, None, None, 0)
-    open_set = [ini_state]
-    heapq.heapify(open_set)
-    visited = 0
-    queued = 0
-    traversed = 0
-
-    trans_empty_preset = set(t for t in sync_net.transitions if len(t.in_arcs) == 0)
-
-    while not len(open_set) == 0:
-
-        curr = heapq.heappop(open_set)
-
-        current_marking = curr.m
-        already_closed = current_marking in closed
-        if already_closed:
-            continue
-
-        if current_marking == fin:
-            return utils.__reconstruct_alignment(curr, visited, queued, traversed,
-                                                 ret_tuple_as_trans_desc=True)
-
-        closed.add(current_marking)
-        visited += 1
-
-        possible_enabling_transitions = copy(trans_empty_preset)
-        for p in current_marking:
-            for t in p.ass_trans:
-                possible_enabling_transitions.add(t)
-
-        enabled_trans = [t for t in possible_enabling_transitions if t.sub_marking <= current_marking]
-
-        trans_to_visit_with_cost = [(t, cost_function[t]) for t in enabled_trans if not (
-                t is not None and utils.__is_log_move(t, skip) and utils.__is_model_move(t, skip))]
-
-        for t, cost in trans_to_visit_with_cost:
-            traversed += 1
-            new_marking = utils.add_markings(current_marking, t.add_marking)
-
-            if new_marking in closed:
-                continue
-
-            queued += 1
-
-            tp = utils.DijkstraSearchTuple(curr.g + cost, new_marking, curr, t, curr.l + 1)
-
-            heapq.heappush(open_set, tp)
+    return aligned_trace, cf
