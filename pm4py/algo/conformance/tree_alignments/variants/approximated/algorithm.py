@@ -1,17 +1,17 @@
 import math
 
 from pulp import lpSum, LpVariable, LpProblem, LpMinimize
+
 from pm4py.algo.conformance.tree_alignments.variants.approximated.calculate_a_sa_ea_sets import \
     initialize_a_sa_ea_tau_sets
 from pm4py.algo.conformance.tree_alignments.variants.approximated.utilities import calculate_optimal_alignment, \
-    concatenate_traces, trace_to_list_of_str
+    concatenate_traces, trace_to_list_of_str, add_fitness_and_cost_info_to_alignments
 from pm4py.objects.process_tree.util import get_process_tree_height, process_tree_to_binary_process_tree
 from pm4py.objects.petri.align_utils import SKIP
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.objects.log.log import Trace, Event
 from pm4py.objects.log.log import EventLog
 from typing import Union, Dict, Set, List, Tuple
-
 from pm4py.objects.process_tree.importer.variants import ptml
 from pm4py.objects.process_tree.pt_operator import Operator
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
@@ -154,19 +154,17 @@ def __approximate_alignments_for_log(log: EventLog, pt: ProcessTree, max_tl: int
                                      parameters=None):
     a_sets, sa_sets, ea_sets, tau_sets = initialize_a_sa_ea_tau_sets(pt)
     variants = get_variants_from_log_trace_idx(log, parameters=parameters)
-
     inv_corr = {}
     for i, var in enumerate(variants):
         alignment = __approximate_alignment_for_trace(pt, a_sets, sa_sets, ea_sets, tau_sets, log[variants[var][0]],
                                                       max_tl, max_th,
                                                       parameters=parameters)
+        alignment = add_fitness_and_cost_info_to_alignments(alignment, pt, log[variants[var][0]])
         for idx in variants[var]:
             inv_corr[idx] = alignment
-
     alignments = []
     for i in range(len(log)):
         alignments.append(inv_corr[i])
-
     return alignments
 
 
