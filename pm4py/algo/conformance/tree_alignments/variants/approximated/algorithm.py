@@ -517,7 +517,7 @@ def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: D
         [v_variables[i][j] * v_costs[i][j] for i in range(len(trace)) for j in range(len(pt.children))] +
         [s_variables[i][j] * s_costs[i][j] for i in range(len(trace)) for j in range(len(pt.children))] +
         [e_variables[i][j] * e_costs[i][j] for i in range(len(trace)) for j in range(len(pt.children))] +
-        [1 - u_variables[j] * u_costs[j] for j in range(len(pt.children))]), "objective_function"
+        [(1 - u_variables[j]) * u_costs[j] for j in range(len(pt.children))]), "objective_function"
 
     # constraints
     for i in range(len(trace)):
@@ -664,7 +664,7 @@ def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: D
         [v_variables[i][j] * v_costs[i][j] for i in range(len(trace)) for j in range(len(pt.children))] +
         [s_variables[i][j] * s_costs[i][j] for i in range(len(trace)) for j in range(len(pt.children))] +
         [e_variables[i][j] * e_costs[i][j] for i in range(len(trace)) for j in range(len(pt.children))] +
-        [1 - u_variables[j] * u_costs[j] for j in range(len(pt.children))]), "objective_function"
+        [(1 - u_variables[j]) * u_costs[j] for j in range(len(pt.children))]), "objective_function"
 
     # constraints
     for i in range(len(trace)):
