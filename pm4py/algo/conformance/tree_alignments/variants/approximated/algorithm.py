@@ -660,29 +660,28 @@ def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: D
     assert len(pt.children) > 0
     assert len(trace) > 0
 
-    ilp = LpProblem(sense=LpMinimize)
-
     # x_i_j = 1 <=> assigns activity i to subtree j
-    x_variables: Dict[int, Dict[int, LpVariable]] = {}
+    x_variables = {}
 
     # s_i_j = 1 <=> activity i is a start activity in the current sub-trace assigned to subtree j
-    s_variables: Dict[int, Dict[int, LpVariable]] = {}
+    s_variables = {}
 
     # e_i_j = 1 <=> activity i is an end activity in the current sub-trace assigned to subtree j
-    e_variables: Dict[int, Dict[int, LpVariable]] = {}
+    e_variables = {}
 
     # auxiliary u_j <=> u_j=1 if an activity is assigned to subtree j
-    u_variables: Dict[int, LpVariable] = {}
+    u_variables = {}
 
     # v_i_j = 1 <=> activity i is neither a start nor end-activity in the current sub-trace assigned to subtree j
-    v_variables: Dict[int, Dict[int, LpVariable]] = {}
+    v_variables = {}
 
     s_costs = {}
     e_costs = {}
     u_costs = {}
     v_costs = {}
 
-    # trace <a_0,...,a_n>
+    all_variables = []
+
     for i, a in enumerate(trace):
         x_variables[i] = {}
         s_variables[i] = {}
@@ -693,19 +692,21 @@ def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: D
         v_costs[i] = {}
 
         for j, subtree in enumerate(pt.children):
-            x_variables[i][j] = LpVariable('x_' + str(i) + '_' + str(j), cat='Binary')
-
-            s_variables[i][j] = LpVariable('s_' + str(i) + '_' + str(j), cat='Binary')
+            all_variables.append('x_' + str(i) + '_' + str(j))
+            x_variables[i][j] = len(all_variables) - 1
+            all_variables.append('s_' + str(i) + '_' + str(j))
+            s_variables[i][j] = len(all_variables) - 1
+            all_variables.append('e_' + str(i) + '_' + str(j))
+            e_variables[i][j] = len(all_variables) - 1
+            all_variables.append('v_' + str(i) + '_' + str(j))
+            v_variables[i][j] = len(all_variables) - 1
             s_costs[i][j] = 0 if a[activity_key] in sa_sets[subtree] else 1
-
-            e_variables[i][j] = LpVariable('e_' + str(i) + '_' + str(j), cat='Binary')
             e_costs[i][j] = 0 if a[activity_key] in ea_sets[subtree] else 1
-
-            v_variables[i][j] = LpVariable('v_' + str(i) + '_' + str(j), cat='Binary')
             v_costs[i][j] = 0 if a[activity_key] in a_sets[subtree] else 1
 
     for j in range(len(pt.children)):
-        u_variables[j] = LpVariable('u_' + str(j), cat='Binary')
+        all_variables.append('u_' + str(j))
+        u_variables[j] = len(all_variables)-1
         # define costs to not assign anything to subtree j
         if tau_flags[pt.children[j]]:
             u_costs[j] = 0
@@ -717,74 +718,187 @@ def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: D
             u_costs[j] = 2
 
     # objective function
-    ilp += lpSum(
-        [v_variables[i][j] * v_costs[i][j] for i in range(len(trace)) for j in range(len(pt.children))] +
-        [s_variables[i][j] * s_costs[i][j] for i in range(len(trace)) for j in range(len(pt.children))] +
-        [e_variables[i][j] * e_costs[i][j] for i in range(len(trace)) for j in range(len(pt.children))] +
-        [1 - u_variables[j] * u_costs[j] for j in range(len(pt.children))]), "objective_function"
-
-    # constraints
+    c = [0] * len(all_variables)
     for i in range(len(trace)):
-        # every activity is assigned to one subtree
-        ilp += lpSum([x_variables[i][j] * 1 for j in range(len(pt.children))]) == 1
+        for j in range(len(pt.children)):
+            c[v_variables[i][j]] = v_costs[i][j]
+    for i in range(len(trace)):
+        for j in range(len(pt.children)):
+            c[s_variables[i][j]] = s_costs[i][j]
+    for i in range(len(trace)):
+        for j in range(len(pt.children)):
+            c[e_variables[i][j]] = e_costs[i][j]
+    for j in range(len(pt.children)):
+        c[u_variables[j]] = -u_costs[j]
+    Aub = []
+    bub = []
+    Aeq = []
+    beq = []
+
+    # every activity is assigned to one subtree
+    for i in range(len(trace)):
+        r = [0] * len(all_variables)
+        for j in range(len(pt.children)):
+            r[x_variables[i][j]] = 1
+        Aeq.append(r)
+        beq.append(1)
+
+    for i in range(len(trace)):
+        r = [0] * len(all_variables)
+        for j in range(len(pt.children)):
+            r[s_variables[i][j]] = 1
+        Aub.append(r)
+        bub.append(1)
 
     for j in range(len(pt.children)):
+        r1 = [0] * len(all_variables)
+        r2 = [0] * len(all_variables)
         # first activity is start activity
-        ilp += x_variables[0][j] <= s_variables[0][j]
-        # last activity is end-activity
-        ilp += x_variables[len(trace) - 1][j] <= e_variables[len(trace) - 1][j]
+        r1[x_variables[0][j]] = 1
+        r1[s_variables[0][j]] = -1
+        # last activity is an end activity
+        r2[x_variables[len(trace) - 1][j]] = 1
+        r2[e_variables[len(trace) - 1][j]] = -1
+        Aub.append(r1)
+        Aub.append(r2)
+        bub.append(0)
+        bub.append(0)
 
     # define s_i_j variables
     for i in range(1, len(trace)):
         for j in range(len(pt.children)):
-            ilp += s_variables[i][j] >= x_variables[i][j] + 1 - x_variables[i - 1][j] - 1
-            ilp += s_variables[i][j] <= x_variables[i][j]
-            ilp += s_variables[i][j] <= 1 - x_variables[i - 1][j]
-    for i in range(len(trace)):
-        # activity can be only for one subtree a start-activity
-        ilp += lpSum(s_variables[i][j] for j in range(len(pt.children))) <= 1
+            r1 = [0] * len(all_variables)
+            r2 = [0] * len(all_variables)
+            r3 = [0] * len(all_variables)
+            r1[s_variables[i][j]] = -1
+            r1[x_variables[i][j]] = 1
+            r1[x_variables[i - 1][j]] = -1
+            r2[s_variables[i][j]] = 1
+            r2[x_variables[i][j]] = -1
+            r3[s_variables[i][j]] = 1
+            r3[x_variables[i - 1][j]] = 1
+            Aub.append(r1)
+            Aub.append(r2)
+            Aub.append(r3)
+            bub.append(0)
+            bub.append(0)
+            bub.append(1)
 
     # define e_i_j variables
     for i in range(len(trace) - 1):
         for j in range(len(pt.children)):
-            ilp += e_variables[i][j] >= x_variables[i][j] + 1 - x_variables[i + 1][j] - 1
-            ilp += e_variables[i][j] <= x_variables[i][j]
-            ilp += e_variables[i][j] <= 1 - x_variables[i + 1][j]
+            r1 = [0] * len(all_variables)
+            r2 = [0] * len(all_variables)
+            r3 = [0] * len(all_variables)
+            r1[e_variables[i][j]] = -1
+            r1[x_variables[i][j]] = 1
+            r1[x_variables[i + 1][j]] = -1
+            r2[e_variables[i][j]] = 1
+            r2[x_variables[i][j]] = -1
+            r3[e_variables[i][j]] = 1
+            r3[x_variables[i + 1][j]] = 1
+            Aub.append(r1)
+            Aub.append(r2)
+            Aub.append(r3)
+            bub.append(0)
+            bub.append(0)
+            bub.append(1)
     for i in range(len(trace)):
         # activity can be only for one subtree an end-activity
-        ilp += lpSum(e_variables[i][j] for j in range(len(pt.children))) <= 1
+        r = [0] * len(all_variables)
+        for j in range(len(pt.children)):
+            r[e_variables[i][j]] = 1
+        Aub.append(r)
+        bub.append(1)
 
     # constraint - preserving sequence when assigning activities to subtrees
     for i in range(len(trace) - 1):
         for j in range(len(pt.children)):
-            ilp += lpSum(x_variables[i + 1][k] for k in range(j, len(pt.children))) >= x_variables[i][j]
+            r = [0] * len(all_variables)
+            for k in range(j, len(pt.children)):
+                r[x_variables[i + 1][k]] = -1
+            r[x_variables[i][j]] = 1
+            Aub.append(r)
+            bub.append(0)
 
+    # define u_j variables
     for j in range(len(pt.children)):
         for i in range(len(trace)):
-            # define u_j variables
-            ilp += u_variables[j] >= x_variables[i][j]
+            r = [0] * len(all_variables)
+            r[u_variables[j]] = -1
+            r[x_variables[i][j]] = 1
+            Aub.append(r)
+            bub.append(0)
+        r1 = [0] * len(all_variables)
+        r2 = [0] * len(all_variables)
+        r1[u_variables[j]] = 1
+        r2[u_variables[j]] = 1
 
-        # if u_j variable = 1 ==> a start activity must exist
-        ilp += u_variables[j] <= lpSum(s_variables[i][j] for i in range(len(trace)))
-        # if u_j variable = 1 ==> an end activity must exist
-        ilp += u_variables[j] <= lpSum(e_variables[i][j] for i in range(len(trace)))
+        for i in range(len(trace)):
+            r1[s_variables[i][j]] = -1
+            r2[e_variables[i][j]] = -1
+        Aub.append(r1)
+        Aub.append(r2)
+        bub.append(0)
+        bub.append(0)
 
     # define v_i_j variables
     for i in range(len(trace)):
         for j in range(2):
-            ilp += v_variables[i][j] >= 1 - s_variables[i][j] + 1 - e_variables[i][j] + x_variables[i][j] - 2
-            ilp += v_variables[i][j] <= x_variables[i][j]
-            ilp += v_variables[i][j] <= 1 - e_variables[i][j]
-            ilp += v_variables[i][j] <= 1 - s_variables[i][j]
+            r1 = [0] * len(all_variables)
+            r2 = [0] * len(all_variables)
+            r3 = [0] * len(all_variables)
+            r4 = [0] * len(all_variables)
 
-    status = ilp.solve()
-    assert status == 1
+            r1[v_variables[i][j]] = -1
+            r1[s_variables[i][j]] = -1
+            r1[e_variables[i][j]] = -1
+            r1[x_variables[i][j]] = 1
+
+            r2[v_variables[i][j]] = 1
+            r2[x_variables[i][j]] = -1
+
+            r3[v_variables[i][j]] = 1
+            r3[e_variables[i][j]] = 1
+
+            r4[v_variables[i][j]] = 1
+            r4[s_variables[i][j]] = 1
+
+            Aub.append(r1)
+            Aub.append(r2)
+            Aub.append(r3)
+            Aub.append(r4)
+            bub.append(0)
+            bub.append(0)
+            bub.append(1)
+            bub.append(1)
+
+    for idx, v in enumerate(all_variables):
+        r = [0] * len(all_variables)
+        r[idx] = -1
+        Aub.append(r)
+        bub.append(0)
+        r = [0] * len(all_variables)
+        r[idx] = 1
+        Aub.append(r)
+        bub.append(1)
+
+    Aeq = np.asmatrix(Aeq).astype(np.float64)
+    beq = np.asmatrix(beq).transpose().astype(np.float64)
+    Aub = np.asmatrix(Aub).astype(np.float64)
+    bub = np.asmatrix(bub).transpose().astype(np.float64)
+    sol = solver.apply(c, Aub, bub, Aeq, beq)
+    points = solver.get_points_from_sol(sol)
+
+    for i in x_variables:
+        for j in x_variables[i]:
+            x_variables[i][j] = True if points[x_variables[i][j]] == 1.0 else False
 
     alignments_to_calculate: List[Tuple[ProcessTree, Trace]] = []
     for j in range(len(pt.children)):
         sub_trace = Trace()
         for i in range(len(trace)):
-            if x_variables[i][j].varValue == 1:
+            if x_variables[i][j] == 1:
                 sub_trace.append(trace[i])
         alignments_to_calculate.append((pt.children[j], sub_trace))
     # calculate and compose alignments
