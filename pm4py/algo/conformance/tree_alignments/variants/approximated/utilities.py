@@ -1,7 +1,9 @@
 from pm4py.algo.conformance.alignments.algorithm import apply as get_alignment
 from pm4py.algo.conformance.alignments.algorithm import Parameters
 from pm4py.algo.conformance.alignments.algorithm import Variants
-from pm4py.objects.conversion.process_tree.converter import apply as convert_pt_to_petri_net
+from pm4py.algo.conformance.alignments.versions.state_equation_a_star import get_best_worst_cost
+from pm4py.objects.conversion.process_tree.converter import apply as convert_pt_to_petri_net, \
+    Variants as pt_petri_net_variants
 from pm4py.objects.conversion.process_tree.converter import Variants as pt_petri_net_variants
 from pm4py.objects.log.log import Trace, Event
 from pm4py.objects.process_tree.process_tree import ProcessTree
@@ -66,4 +68,20 @@ def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, variant=Variants.
     for a in alignment["alignment"]:
         if not (a[0][0] == SKIP and not a[0][1].isdigit()):
             res.append(a[1])
+    return res
+
+
+def add_fitness_and_cost_info_to_alignments(alignment: List, pt: ProcessTree, trace: Trace) -> List:
+    def calculate_get_best_worst_cost(tree: ProcessTree) -> int:
+        net, im, fm = convert_pt_to_petri_net(tree, variant=pt_petri_net_variants.TO_PETRI_NET_TRANSITION_BORDERED)
+        return get_best_worst_cost(net, im, fm)
+
+    cost = apply_standard_cost_function_to_alignment(alignment)
+    if cost == 0:
+        fitness = 1
+    else:
+        fitness = 1 - cost / (len(trace) + calculate_get_best_worst_cost(pt))
+    res = {"alignment": alignment,
+           "cost": cost,
+           "fitness": fitness}
     return res
