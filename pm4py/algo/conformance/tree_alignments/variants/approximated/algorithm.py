@@ -1619,6 +1619,7 @@ def __ilp_solve(c, Aub, bub, Aeq, beq):
     bub = np.asmatrix(bub).transpose().astype(np.float64)
 
     if "cvxopt" in solver.DEFAULT_LP_SOLVER_VARIANT:
+        # does this part only if cvxopt is imported
         from cvxopt import matrix
         c = matrix([x*1.0 for x in c])
         Aeq = matrix(Aeq)
@@ -1639,11 +1640,12 @@ def __ilp_solve(c, Aub, bub, Aeq, beq):
         if condition_points is False:
             sol = solver.apply(c, Aub, bub, Aeq, beq, variant="cvxopt_solver_custom_align_ilp")
             points = solver.get_points_from_sol(sol, variant="cvxopt_solver_custom_align_ilp")
+        # round the points to the nearest integer (0 or 1).
+        # if the ILP solver is called, these are already integer
+        points = [round(x) for x in points]
     else:
-        sol = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.DEFAULT_LP_SOLVER_VARIANT)
+        # calls other linear solvers (pulp, ortools) with REQUIRE_ILP set to True
+        sol = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.DEFAULT_LP_SOLVER_VARIANT, parameters={solver.Parameters.REQUIRE_ILP: True})
         points = solver.get_points_from_sol(sol, variant=solver.DEFAULT_LP_SOLVER_VARIANT)
-    # round the points to the nearest integer (0 or 1).
-    # if the ILP solver is called, these are already integer
-    points = [round(x) for x in points]
 
     return points
