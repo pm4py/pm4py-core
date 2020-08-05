@@ -598,13 +598,7 @@ def __approximate_alignment_on_loop(pt: ProcessTree, trace: Trace, a_sets: Dict[
         Aub.append(r)
         bub.append(1)
 
-    Aeq = np.asmatrix(Aeq).astype(np.float64)
-    beq = np.asmatrix(beq).transpose().astype(np.float64)
-    Aub = np.asmatrix(Aub).astype(np.float64)
-    bub = np.asmatrix(bub).transpose().astype(np.float64)
-    sol = solver.apply(c, Aub, bub, Aeq, beq)
-    original_points = solver.get_points_from_sol(sol)
-    points = [round(x) for x in original_points]
+    points = __ilp_solve(c, Aub, bub, Aeq, beq)
 
     for i in t__variables:
         for j in t__variables[i]:
