@@ -1,7 +1,7 @@
 from pm4py.algo.conformance.alignments.algorithm import apply as get_alignment
 from pm4py.algo.conformance.alignments.algorithm import Parameters
 from pm4py.algo.conformance.alignments.algorithm import Variants
-from pm4py.algo.conformance.alignments.versions.state_equation_less_memory import get_best_worst_cost
+from pm4py.algo.conformance.alignments.versions.state_equation_a_star import get_best_worst_cost
 from pm4py.objects.conversion.process_tree.converter import apply as convert_pt_to_petri_net, \
     Variants as pt_petri_net_variants
 from pm4py.objects.conversion.process_tree.converter import Variants as pt_petri_net_variants
@@ -59,7 +59,7 @@ def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, parameters=None):
     parent = pt.parent
     pt.parent = None
     net, im, fm = convert_pt_to_petri_net(pt, variant=pt_petri_net_variants.TO_PETRI_NET_TRANSITION_BORDERED)
-    alignment = get_alignment(trace, net, im, fm,
+    alignment = get_alignment(trace, net, im, fm, variant=Variants.VERSION_STATE_EQUATION_A_STAR,
                               parameters={Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE: True})
     pt.parent = parent
     # remove invisible model moves from alignment steps that do not belong to a silent model move in the process tree
