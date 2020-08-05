@@ -1178,6 +1178,10 @@ def __ilp_solve(c, Aub, bub, Aeq, beq):
         Aub = matrix(Aub)
         bub = matrix(bub)
 
+        # tries to solve the problem with LP solving
+        # (faster)
+        # if it produces a vector which elements are different from 0 or 1
+        # then use the ILP solver
         sol = solver.apply(c, Aub, bub, Aeq, beq, variant="cvxopt_solver_custom_align")
         points = solver.get_points_from_sol(sol, variant="cvxopt_solver_custom_align")
         condition_points = True
