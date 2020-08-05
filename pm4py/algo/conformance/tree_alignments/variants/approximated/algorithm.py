@@ -1646,7 +1646,6 @@ def __ilp_solve(c, Aub, bub, Aeq, beq):
             sol = solver.apply(c, Aub, bub, Aeq, beq, variant="cvxopt_solver_custom_align_ilp")
             points = solver.get_points_from_sol(sol, variant="cvxopt_solver_custom_align_ilp")
     else:
-        print("NOOOO")
         sol = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.DEFAULT_LP_SOLVER_VARIANT)
         points = solver.get_points_from_sol(sol, variant=solver.DEFAULT_LP_SOLVER_VARIANT)
     # round the points to the nearest integer (0 or 1).
