@@ -1,4 +1,4 @@
-def view_petri_net(petri_net, format="png"):
+def view_petri_net(petri_net, initial_marking, final_marking, format="png"):
     """
     Views a (composite) Petri net
 
@@ -9,9 +9,8 @@ def view_petri_net(petri_net, format="png"):
     format
         Format of the output picture (default: png)
     """
-    net, im, fm = petri_net
     from pm4py.visualization.petrinet import visualizer as pn_visualizer
-    gviz = pn_visualizer.apply(net, im, fm,
+    gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
                                parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format})
     pn_visualizer.view(gviz)
 
