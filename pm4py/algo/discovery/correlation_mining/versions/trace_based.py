@@ -18,6 +18,24 @@ DEFAULT_INDEX_KEY = "@@@index"
 
 
 def apply(log, parameters=None):
+    """
+    Novel approach of correlation mining, that creates the PS-matrix and the duration matrix
+    using the order list of events of each trace of the log
+
+    Parameters
+    -------------
+    log
+        Event log
+    parameters
+        Parameters
+
+    Returns
+    ---------------
+    dfg
+        DFG
+    performance_dfg
+        Performance DFG (containing the estimated performance for the arcs)
+    """
     if parameters is None:
         parameters = {}
     log = converter.apply(log, parameters=parameters)
@@ -52,6 +70,23 @@ def apply(log, parameters=None):
 
 
 def get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key):
+    """
+    Calculates the precede succeed matrix
+
+    Parameters
+    ---------------
+    activities
+        Sorted list of activities of the log
+    trace_grouped_list
+        A list of lists of lists, containing for each trace and each activity the events having such activity
+    timestamp_key
+        The key to be used as timestamp
+
+    Returns
+    ---------------
+    mat
+        The precede succeed matrix
+    """
     ret = np.zeros((len(activities), len(activities)))
     for i in range(len(activities)):
         for j in range(i + 1, len(activities)):
@@ -78,6 +113,23 @@ def get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key):
 
 
 def get_duration_matrix(activities, trace_grouped_list, timestamp_key):
+    """
+    Calculates the duration matrix
+
+    Parameters
+    --------------
+    activities
+        Sorted list of activities of the log
+    trace_grouped_list
+        A list of lists of lists, containing for each trace and each activity the events having such activity
+    timestamp_key
+        The key to be used as timestamp
+
+    Returns
+    --------------
+    mat
+        The duration matrix
+    """
     ret = np.zeros((len(activities), len(activities)))
     for i in range(len(activities)):
         for j in range(len(activities)):
