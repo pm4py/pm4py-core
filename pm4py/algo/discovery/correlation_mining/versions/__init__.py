@@ -1,1 +1,1 @@
-from pm4py.algo.discovery.correlation_mining.versions import classic
+from pm4py.algo.discovery.correlation_mining.versions import classic, trace_based

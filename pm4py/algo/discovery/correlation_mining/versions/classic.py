@@ -3,9 +3,9 @@ from enum import Enum
 from pm4py.util import constants, xes_constants
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.log import EventStream, Event
+from pm4py.algo.discovery.correlation_mining import util as cm_util
 from statistics import mean
 import numpy as np
-from pm4py.util.lp import solver
 import pandas as pd
 
 
@@ -53,7 +53,7 @@ def apply(stream, parameters=None):
     if type(stream) is pd.DataFrame:
         # keep only the two columns before conversion
         stream = stream[[activity_key, timestamp_key]]
-    stream = converter.apply(stream, variant=converter.TO_EVENT_STREAM)
+    stream = converter.apply(stream, variant=converter.TO_EVENT_STREAM, parameters=parameters)
     transf_stream = EventStream()
     for idx, ev in enumerate(stream):
         transf_stream.append(
@@ -61,10 +61,11 @@ def apply(stream, parameters=None):
     transf_stream = sorted(transf_stream, key=lambda x: (x[timestamp_key], x[index_key]))
     activities = sorted(list(set(x[activity_key] for x in transf_stream)))
     activities_grouped = {x: [y for y in transf_stream if y[activity_key] == x] for x in activities}
+    activities_counter = {x: len(y) for x,y in activities_grouped.items()}
     PS_matrix = get_precede_succeed_matrix(activities, activities_grouped, timestamp_key)
     duration_matrix = get_duration_matrix(activities, activities_grouped, timestamp_key)
-    C_matrix = get_c_matrix(PS_matrix, duration_matrix, activities, activities_grouped)
-    dfg, performance_dfg = resolve_LP(C_matrix, duration_matrix, activities, activities_grouped)
+    C_matrix = cm_util.get_c_matrix(PS_matrix, duration_matrix, activities, activities_counter)
+    dfg, performance_dfg = cm_util.resolve_LP(C_matrix, duration_matrix, activities, activities_counter)
     return dfg, performance_dfg
 
 
@@ -160,114 +161,3 @@ def get_duration_matrix(activities, activities_grouped, timestamp_key):
     return ret
 
 
-def get_c_matrix(PS_matrix, duration_matrix, activities, activities_grouped):
-    """
-    Calculates the C-matrix out of the PS matrix and the duration matrix
-
-    Parameters
-    --------------
-    PS_matrix
-        PS matrix
-    duration_matrix
-        Duration matrix
-    activities
-        Ordered list of activities of the log
-    activities_grouped
-        Grouped dictionary
-
-    Returns
-    --------------
-    c_matrix
-        C matrix
-    """
-    C_matrix = np.zeros((len(activities), len(activities)))
-    for i in range(len(activities)):
-        for j in range(len(activities)):
-            val = duration_matrix[i, j] / PS_matrix[i, j] * 1 / (
-                min(len(activities_grouped[activities[i]]), len(activities_grouped[activities[j]]))) if PS_matrix[
-                                                                                                            i, j] > 0 else 0
-            if val == 0:
-                val = 100000000000
-            C_matrix[i, j] = val
-    return C_matrix
-
-
-def resolve_LP(C_matrix, duration_matrix, activities, activities_grouped):
-    """
-    Formulates and solve the LP problem
-
-    Parameters
-    --------------
-    C_matrix
-        C_matrix
-    duration_matrix
-        Duration matrix
-    activities
-        Ordered list of activities of the log
-    activities_grouped
-        Grouped dictionary
-
-    Returns
-    -------------
-    dfg
-        Directly-Follows Graph
-    performance_dfg
-        Performance DFG (containing the estimated performance for the arcs)
-    """
-    edges = [(i, j) for i in range(len(activities)) for j in range(len(activities))]
-    c = [C_matrix[i, j] for i in range(len(activities)) for j in range(len(activities))]
-    edges_sources = {i: [z for z in range(len(edges)) if edges[z][0] == i] for i in range(len(activities))}
-    edges_targets = {j: [z for z in range(len(edges)) if edges[z][1] == j] for j in range(len(activities))}
-    activities_occurrences = {i: len(activities_grouped[activities[i]]) for i in range(len(activities))}
-    Aeq = []
-    beq = []
-    for i in range(len(activities)):
-        rec = [0] * len(edges)
-        for e in edges_sources[i]:
-            rec[e] = 1
-        Aeq.append(rec)
-        beq.append(activities_occurrences[i])
-    for j in range(len(activities)):
-        rec = [0] * len(edges)
-        for e in edges_targets[j]:
-            rec[e] = 1
-        Aeq.append(rec)
-        beq.append(activities_occurrences[j])
-    Aeq = np.asmatrix(Aeq).astype(np.float64)
-    beq = np.asmatrix(beq).transpose().astype(np.float64)
-    Aub = []
-    bub = []
-    for i in range(len(activities)):
-        for e in edges_sources[i]:
-            rec = [0] * len(edges)
-            rec[e] = 1
-            Aub.append(rec)
-            bub.append(activities_occurrences[i])
-            rec = [-x for x in rec]
-            Aub.append(rec)
-            bub.append(0)
-    for j in range(len(activities)):
-        for e in edges_targets[j]:
-            rec = [0] * len(edges)
-            rec[e] = 1
-            Aub.append(rec)
-            bub.append(activities_occurrences[j])
-            rec = [-x for x in rec]
-            Aub.append(rec)
-            bub.append(0)
-    Aub = np.asmatrix(Aub).astype(np.float64)
-    bub = np.asmatrix(bub).transpose().astype(np.float64)
-
-    res = solver.apply(c, Aub, bub, Aeq, beq)
-    points = solver.get_points_from_sol(res)
-    points = [round(p) for p in points]
-
-    dfg = {}
-    performance_dfg = {}
-
-    for idx, p in enumerate(points):
-        if p > 0:
-            dfg[(activities[edges[idx][0]], activities[edges[idx][1]])] = p
-            performance_dfg[(activities[edges[idx][0]], activities[edges[idx][1]])] = duration_matrix[
-                edges[idx][0], edges[idx][1]]
-    return dfg, performance_dfg
