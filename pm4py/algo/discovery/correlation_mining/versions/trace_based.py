@@ -38,40 +38,106 @@ def apply(log, parameters=None):
     performance_dfg
         Performance DFG (containing the estimated performance for the arcs)
     """
-    if parameters is None:
-        parameters = {}
+    traces_list, trace_grouped_list, activities, activities_counter = preprocess_log(log, activities=None,
+                                                                                     activities_counter=None)
+
+    PS_matrix, duration_matrix = get_PS_duration_matrix(activities, trace_grouped_list, parameters=parameters)
+
+    return resolve_lp_get_dfg(PS_matrix, duration_matrix, activities, activities_counter)
 
 
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
-    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
-                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+def resolve_lp_get_dfg(PS_matrix, duration_matrix, activities, activities_counter):
+    """
+    Resolves a LP problem to get a DFG
 
+    Parameters
+    ---------------
+    PS_matrix
+        Precede-succeed matrix
+    duration_matrix
+        Duration matrix
+    activities
+        List of activities of the log
+    activities_counter
+        Counter for the activities of the log
 
-    activities_counter = Counter([y[activity_key] for x in traces_list for y in x])
-    activities = sorted(list(activities_counter))
-    trace_grouped_list = []
-    for trace in traces_list:
-        gr = []
-        for act in activities:
-            act_gr = [x for x in trace if x[activity_key] == act]
-            gr.append(act_gr)
-        trace_grouped_list.append(gr)
-
-    PS_matrix = get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key)
-    duration_matrix = get_duration_matrix(activities, trace_grouped_list, timestamp_key)
+    Returns
+    ---------------
+    dfg
+        Frequency DFG
+    performance_dfg
+        Performance DFG
+    """
     C_matrix = cm_util.get_c_matrix(PS_matrix, duration_matrix, activities, activities_counter)
     dfg, performance_dfg = cm_util.resolve_LP(C_matrix, duration_matrix, activities, activities_counter)
     return dfg, performance_dfg
 
 
-def preprocess_log(log, parameters=None):
+def get_PS_duration_matrix(activities, trace_grouped_list, parameters=None):
+    """
+    Gets the precede-succeed matrix
+
+    Parameters
+    --------------
+    activities
+        Activities
+    trace_grouped_list
+        Grouped list of simplified traces (per activity)
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    PS_matrix
+        precede-succeed matrix
+    duration_matrix
+        Duration matrix
+    """
+    if parameters is None:
+        parameters = {}
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+
+    PS_matrix = get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key)
+    duration_matrix = get_duration_matrix(activities, trace_grouped_list, timestamp_key)
+
+    return PS_matrix, duration_matrix
+
+
+def preprocess_log(log, activities=None, activities_counter=None, parameters=None):
+    """
+    Preprocess the log to get a grouped list of simplified traces (per activity)
+
+    Parameters
+    --------------
+    log
+        Log object
+    activities
+        (if provided) activities of the log
+    activities_counter
+        (if provided) counter of the activities of the log
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    traces_list
+        List of simplified traces of the log
+    trace_grouped_list
+        Grouped list of simplified traces (per activity)
+    activities
+        Activities of the log
+    activities_counter
+        Activities counter
+    """
     if parameters is None:
         parameters = {}
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
-    caseid_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes_constants.DEFAULT_TRACEID_KEY)
+    caseid_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     index_key = exec_utils.get_param_value(Parameters.INDEX_KEY, parameters, DEFAULT_INDEX_KEY)
 
     if type(log) is pd.DataFrame:
@@ -87,6 +153,22 @@ def preprocess_log(log, parameters=None):
             i in range(len(trace))]
         trace_stream = sorted(trace_stream, key=lambda x: (x[timestamp_key], x[index_key]))
         traces_list.append(trace_stream)
+
+    if activities is None:
+        activities = sorted(list(set(y[activity_key] for x in traces_list for y in x)))
+
+    trace_grouped_list = []
+    for trace in traces_list:
+        gr = []
+        for act in activities:
+            act_gr = [x for x in trace if x[activity_key] == act]
+            gr.append(act_gr)
+        trace_grouped_list.append(gr)
+
+    if activities_counter is None:
+        activities_counter = Counter(y[activity_key] for x in traces_list for y in x)
+
+    return traces_list, trace_grouped_list, activities, activities_counter
 
 
 def get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key):
