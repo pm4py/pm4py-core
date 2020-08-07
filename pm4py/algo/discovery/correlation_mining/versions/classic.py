@@ -45,12 +45,9 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    transf_stream, activities_grouped, activities = preprocess_log(log, parameters=parameters)
 
-    transf_stream = preprocess_log(log, parameters=parameters)
-    activities = sorted(list(set(x[activity_key] for x in transf_stream)))
-
-    activities_grouped, PS_matrix, duration_matrix = get_PS_dur_matrix(transf_stream, activities, parameters=parameters)
+    PS_matrix, duration_matrix = get_PS_dur_matrix(activities_grouped, activities, parameters=parameters)
     activities_counter = {x: len(y) for x, y in activities_grouped.items()}
 
     return resolve_lp_get_dfg(PS_matrix, duration_matrix, activities, activities_counter)
@@ -83,14 +80,14 @@ def resolve_lp_get_dfg(PS_matrix, duration_matrix, activities, activities_counte
     return dfg, performance_dfg
 
 
-def get_PS_dur_matrix(transf_stream, activities, parameters=None):
+def get_PS_dur_matrix(activities_grouped, activities, parameters=None):
     """
     Combined methods to get the two matrixes
 
     Parameters
     ----------------
-    transf_stream
-        Transformed stream
+    activities_grouped
+        Grouped activities
     activities
         List of activities of the log
     parameters
@@ -98,8 +95,6 @@ def get_PS_dur_matrix(transf_stream, activities, parameters=None):
 
     Returns
     ---------------
-    activities_grouped
-        Grouped activities
     PS_matrix
         Precede-succeed matrix
     duration_matrix
@@ -108,18 +103,16 @@ def get_PS_dur_matrix(transf_stream, activities, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
 
-    activities_grouped = {x: [y for y in transf_stream if y[activity_key] == x] for x in activities}
     PS_matrix = get_precede_succeed_matrix(activities, activities_grouped, timestamp_key)
     duration_matrix = get_duration_matrix(activities, activities_grouped, timestamp_key)
 
-    return activities_grouped, PS_matrix, duration_matrix
+    return PS_matrix, duration_matrix
 
 
-def preprocess_log(log, parameters=None):
+def preprocess_log(log, activities=None, parameters=None):
     """
     Preprocess a log to enable correlation mining
 
@@ -127,6 +120,8 @@ def preprocess_log(log, parameters=None):
     --------------
     log
         Log object
+    activities
+        (if provided) list of activities of the log
     parameters
         Parameters of the algorithm
 
@@ -134,6 +129,10 @@ def preprocess_log(log, parameters=None):
     --------------
     transf_stream
         Transformed stream
+    activities_grouped
+        Grouped activities
+    activities
+        List of activities of the log
     """
     if parameters is None:
         parameters = {}
@@ -153,7 +152,13 @@ def preprocess_log(log, parameters=None):
         transf_stream.append(
             Event({activity_key: ev[activity_key], timestamp_key: ev[timestamp_key].timestamp(), index_key: idx}))
     transf_stream = sorted(transf_stream, key=lambda x: (x[timestamp_key], x[index_key]))
-    return transf_stream
+
+    if activities is None:
+        activities = sorted(list(set(x[activity_key] for x in transf_stream)))
+
+    activities_grouped = {x: [y for y in transf_stream if y[activity_key] == x] for x in activities}
+
+    return transf_stream, activities_grouped, activities
 
 
 def get_precede_succeed_matrix(activities, activities_grouped, timestamp_key):
@@ -177,20 +182,22 @@ def get_precede_succeed_matrix(activities, activities_grouped, timestamp_key):
     ret = np.zeros((len(activities), len(activities)))
     for i in range(len(activities)):
         ai = [x[timestamp_key] for x in activities_grouped[activities[i]]]
-        for j in range(i + 1, len(activities)):
-            aj = [x[timestamp_key] for x in activities_grouped[activities[j]]]
-            k = 0
-            z = 0
-            count = 0
-            while k < len(ai):
-                while z < len(aj):
-                    if ai[k] < aj[z]:
-                        break
-                    z = z + 1
-                count = count + (len(aj) - z)
-                k = k + 1
-            ret[i, j] = count / float(len(ai) * len(aj))
-            ret[j, i] = 1.0 - ret[i, j]
+        if ai:
+            for j in range(i + 1, len(activities)):
+                aj = [x[timestamp_key] for x in activities_grouped[activities[j]]]
+                if aj:
+                    k = 0
+                    z = 0
+                    count = 0
+                    while k < len(ai):
+                        while z < len(aj):
+                            if ai[k] < aj[z]:
+                                break
+                            z = z + 1
+                        count = count + (len(aj) - z)
+                        k = k + 1
+                    ret[i, j] = count / float(len(ai) * len(aj))
+                ret[j, i] = 1.0 - ret[i, j]
 
     return ret
 
@@ -217,32 +224,34 @@ def get_duration_matrix(activities, activities_grouped, timestamp_key):
     ret = np.zeros((len(activities), len(activities)))
     for i in range(len(activities)):
         ai = [x[timestamp_key] for x in activities_grouped[activities[i]]]
-        for j in range(len(activities)):
-            if not i == j:
-                aj = [x[timestamp_key] for x in activities_grouped[activities[j]]]
-                k = 0
-                z = 0
-                times0 = []
-                while k < len(ai):
-                    while z < len(aj):
-                        if ai[k] < aj[z]:
-                            times0.append((aj[z] - ai[k]))
-                            z = z + 1
-                            break
-                        z = z + 1
-                    k = k + 1
-                times0 = mean(times0) if times0 else 0
-                k = len(ai) - 1
-                z = len(aj) - 1
-                times1 = []
-                while z >= 0:
-                    while k >= 0:
-                        if ai[k] < aj[z]:
-                            times1.append((aj[z] - ai[k]))
-                            k = k - 1
-                            break
-                        k = k - 1
-                    z = z - 1
-                times1 = mean(times1) if times1 else 0
-                ret[i, j] = min(times0, times1)
+        if ai:
+            for j in range(len(activities)):
+                if not i == j:
+                    aj = [x[timestamp_key] for x in activities_grouped[activities[j]]]
+                    if aj:
+                        k = 0
+                        z = 0
+                        times0 = []
+                        while k < len(ai):
+                            while z < len(aj):
+                                if ai[k] < aj[z]:
+                                    times0.append((aj[z] - ai[k]))
+                                    z = z + 1
+                                    break
+                                z = z + 1
+                            k = k + 1
+                        times0 = mean(times0) if times0 else 0
+                        k = len(ai) - 1
+                        z = len(aj) - 1
+                        times1 = []
+                        while z >= 0:
+                            while k >= 0:
+                                if ai[k] < aj[z]:
+                                    times1.append((aj[z] - ai[k]))
+                                    k = k - 1
+                                    break
+                                k = k - 1
+                            z = z - 1
+                        times1 = mean(times1) if times1 else 0
+                        ret[i, j] = min(times0, times1)
     return ret
