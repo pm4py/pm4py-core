@@ -6,11 +6,13 @@ from pm4py.algo.discovery.correlation_mining import util as cm_util
 from statistics import mean
 import numpy as np
 from collections import Counter
+import pandas as pd
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     INDEX_KEY = "index_key"
 
 
@@ -38,19 +40,12 @@ def apply(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    log = converter.apply(log, parameters=parameters)
+
+
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
-    index_key = exec_utils.get_param_value(Parameters.INDEX_KEY, parameters, DEFAULT_INDEX_KEY)
 
-    traces_list = []
-    for trace in log:
-        trace_stream = [
-            {activity_key: trace[i][activity_key], timestamp_key: trace[i][timestamp_key].timestamp(), index_key: i} for
-            i in range(len(trace))]
-        trace_stream = sorted(trace_stream, key=lambda x: (x[timestamp_key], x[index_key]))
-        traces_list.append(trace_stream)
 
     activities_counter = Counter([y[activity_key] for x in traces_list for y in x])
     activities = sorted(list(activities_counter))
@@ -67,6 +62,31 @@ def apply(log, parameters=None):
     C_matrix = cm_util.get_c_matrix(PS_matrix, duration_matrix, activities, activities_counter)
     dfg, performance_dfg = cm_util.resolve_LP(C_matrix, duration_matrix, activities, activities_counter)
     return dfg, performance_dfg
+
+
+def preprocess_log(log, parameters=None):
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    caseid_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes_constants.DEFAULT_TRACEID_KEY)
+    index_key = exec_utils.get_param_value(Parameters.INDEX_KEY, parameters, DEFAULT_INDEX_KEY)
+
+    if type(log) is pd.DataFrame:
+        # keep only the two columns before conversion
+        log = log[[activity_key, timestamp_key, caseid_key]]
+
+    log = converter.apply(log, parameters=parameters)
+
+    traces_list = []
+    for trace in log:
+        trace_stream = [
+            {activity_key: trace[i][activity_key], timestamp_key: trace[i][timestamp_key].timestamp(), index_key: i} for
+            i in range(len(trace))]
+        trace_stream = sorted(trace_stream, key=lambda x: (x[timestamp_key], x[index_key]))
+        traces_list.append(trace_stream)
 
 
 def get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key):
