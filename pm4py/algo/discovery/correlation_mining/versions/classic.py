@@ -18,7 +18,7 @@ class Parameters(Enum):
 DEFAULT_INDEX_KEY = "@@@index"
 
 
-def apply(stream, parameters=None):
+def apply(log, parameters=None):
     """
     Apply the correlation miner to an event stream
     (other types of logs are converted to that)
@@ -30,8 +30,8 @@ def apply(stream, parameters=None):
 
     Parameters
     ---------------
-    stream
-        Event stream
+    log
+        Log object
     parameters
         Parameters of the algorithm
 
@@ -46,27 +46,114 @@ def apply(stream, parameters=None):
         parameters = {}
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+
+    transf_stream = preprocess_log(log, parameters=parameters)
+    activities = sorted(list(set(x[activity_key] for x in transf_stream)))
+
+    activities_grouped, PS_matrix, duration_matrix = get_PS_dur_matrix(transf_stream, activities, parameters=parameters)
+    activities_counter = {x: len(y) for x, y in activities_grouped.items()}
+
+    return resolve_lp_get_dfg(PS_matrix, duration_matrix, activities, activities_counter)
+
+
+def resolve_lp_get_dfg(PS_matrix, duration_matrix, activities, activities_counter):
+    """
+    Resolves a LP problem to get a DFG
+
+    Parameters
+    --------------
+    PS_matrix
+        Precede-succeed matrix
+    duration_matrix
+        Duration matrix
+    activities
+        List of activities of the log
+    activities_counter
+        Counter of the activities
+
+    Returns
+    --------------
+    dfg
+        DFG
+    performance_dfg
+        Performance DFG (containing the estimated performance for the arcs)
+    """
+    C_matrix = cm_util.get_c_matrix(PS_matrix, duration_matrix, activities, activities_counter)
+    dfg, performance_dfg = cm_util.resolve_LP(C_matrix, duration_matrix, activities, activities_counter)
+    return dfg, performance_dfg
+
+
+def get_PS_dur_matrix(transf_stream, activities, parameters=None):
+    """
+    Combined methods to get the two matrixes
+
+    Parameters
+    ----------------
+    transf_stream
+        Transformed stream
+    activities
+        List of activities of the log
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ---------------
+    activities_grouped
+        Grouped activities
+    PS_matrix
+        Precede-succeed matrix
+    duration_matrix
+        Duration matrix
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+
+    activities_grouped = {x: [y for y in transf_stream if y[activity_key] == x] for x in activities}
+    PS_matrix = get_precede_succeed_matrix(activities, activities_grouped, timestamp_key)
+    duration_matrix = get_duration_matrix(activities, activities_grouped, timestamp_key)
+
+    return activities_grouped, PS_matrix, duration_matrix
+
+
+def preprocess_log(log, parameters=None):
+    """
+    Preprocess a log to enable correlation mining
+
+    Parameters
+    --------------
+    log
+        Log object
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    --------------
+    transf_stream
+        Transformed stream
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     index_key = exec_utils.get_param_value(Parameters.INDEX_KEY, parameters, DEFAULT_INDEX_KEY)
 
-    if type(stream) is pd.DataFrame:
+    if type(log) is pd.DataFrame:
         # keep only the two columns before conversion
-        stream = stream[[activity_key, timestamp_key]]
-    stream = converter.apply(stream, variant=converter.TO_EVENT_STREAM, parameters=parameters)
+        log = log[[activity_key, timestamp_key]]
+
+    log = converter.apply(log, variant=converter.TO_EVENT_STREAM, parameters=parameters)
     transf_stream = EventStream()
-    for idx, ev in enumerate(stream):
+    for idx, ev in enumerate(log):
         transf_stream.append(
             Event({activity_key: ev[activity_key], timestamp_key: ev[timestamp_key].timestamp(), index_key: idx}))
     transf_stream = sorted(transf_stream, key=lambda x: (x[timestamp_key], x[index_key]))
-    activities = sorted(list(set(x[activity_key] for x in transf_stream)))
-    activities_grouped = {x: [y for y in transf_stream if y[activity_key] == x] for x in activities}
-    activities_counter = {x: len(y) for x,y in activities_grouped.items()}
-    PS_matrix = get_precede_succeed_matrix(activities, activities_grouped, timestamp_key)
-    duration_matrix = get_duration_matrix(activities, activities_grouped, timestamp_key)
-    C_matrix = cm_util.get_c_matrix(PS_matrix, duration_matrix, activities, activities_counter)
-    dfg, performance_dfg = cm_util.resolve_LP(C_matrix, duration_matrix, activities, activities_counter)
-    return dfg, performance_dfg
+    return transf_stream
 
 
 def get_precede_succeed_matrix(activities, activities_grouped, timestamp_key):
@@ -159,5 +246,3 @@ def get_duration_matrix(activities, activities_grouped, timestamp_key):
                 times1 = mean(times1) if times1 else 0
                 ret[i, j] = min(times0, times1)
     return ret
-
-
