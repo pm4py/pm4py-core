@@ -160,3 +160,30 @@ def filter_variants_percentage(log, percentage=0.8):
     else:
         from pm4py.algo.filtering.log.variants import variants_filter
         return variants_filter.filter_log_variants_percentage(log, percentage=percentage)
+
+
+def filter_paths(log, allowed_paths, positive=True):
+    """
+    Filter a log on a specified list of paths
+
+    Parameters
+    ---------------
+    log
+        Log object
+    allowed_paths
+        Allowed/forbidden paths
+    positive
+        Parameter that says whether the paths
+        should be kept/removed
+
+    Returns
+    ----------------
+    filtered_log
+        Filtered log object
+    """
+    if type(log) is pd.DataFrame:
+        from pm4py.algo.filtering.pandas.paths import paths_filter
+        return paths_filter.apply(log, allowed_paths, parameters={paths_filter.Parameters.POSITIVE: positive})
+    else:
+        from pm4py.algo.filtering.log.paths import paths_filter
+        return paths_filter.apply(log, allowed_paths, parameters={paths_filter.Parameters.POSITIVE: positive})
