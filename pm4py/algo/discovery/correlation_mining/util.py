@@ -1,6 +1,7 @@
 import numpy as np
 from pm4py.util.lp import solver
 
+
 def get_c_matrix(PS_matrix, duration_matrix, activities, activities_counter):
     """
     Calculates the C-matrix out of the PS matrix and the duration matrix
@@ -26,7 +27,7 @@ def get_c_matrix(PS_matrix, duration_matrix, activities, activities_counter):
         for j in range(len(activities)):
             val = duration_matrix[i, j] / PS_matrix[i, j] * 1 / (
                 min(activities_counter[activities[i]], activities_counter[activities[j]])) if PS_matrix[
-                                                                                                            i, j] > 0 else 0
+                                                                                                  i, j] > 0 else 0
             if val == 0:
                 val = 100000000000
             C_matrix[i, j] = val
@@ -125,3 +126,71 @@ def resolve_LP(C_matrix, duration_matrix, activities, activities_counter):
             performance_dfg[(activities[edges[idx][0]], activities[edges[idx][1]])] = duration_matrix[
                 edges[idx][0], edges[idx][1]]
     return dfg, performance_dfg
+
+
+def calculate_time_match_fifo(ai, aj, times0=None):
+    """
+    Associate the times between
+    two lists of timestamps using FIFO
+
+    Parameters
+    --------------
+    ai
+        First list of timestamps
+    aj
+        Second list of timestamps
+    times0
+        Correspondence between execution times
+
+    Returns
+    --------------
+    times0
+        Correspondence between execution times
+    """
+    if times0 is None:
+        times0 = []
+    k = 0
+    z = 0
+    while k < len(ai):
+        while z < len(aj):
+            if ai[k] < aj[z]:
+                times0.append((ai[k], aj[z]))
+                z = z + 1
+                break
+            z = z + 1
+        k = k + 1
+    return times0
+
+
+def calculate_time_match_rlifo(ai, aj, times1=None):
+    """
+    Associate the times between
+    two lists of timestamps using LIFO (start from end)
+
+    Parameters
+    --------------
+    ai
+        First list of timestamps
+    aj
+        Second list of timestamps
+    times0
+        Correspondence between execution times
+
+    Returns
+    --------------
+    times0
+        Correspondence between execution times
+    """
+    if times1 is None:
+        times1 = []
+    k = len(ai) - 1
+    z = len(aj) - 1
+    while z >= 0:
+        while k >= 0:
+            if ai[k] < aj[z]:
+                times1.append((ai[k], aj[z]))
+                k = k - 1
+                break
+            k = k - 1
+        z = z - 1
+    return times1
