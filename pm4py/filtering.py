@@ -187,3 +187,41 @@ def filter_paths(log, allowed_paths, positive=True):
     else:
         from pm4py.algo.filtering.log.paths import paths_filter
         return paths_filter.apply(log, allowed_paths, parameters={paths_filter.Parameters.POSITIVE: positive})
+
+
+def filter_timestamp(log, dt1, dt2, how="events"):
+    """
+    Filter a log on a time interval
+
+    Parameters
+    ----------------
+    log
+        Log object
+    dt1
+        Left extreme of the interval
+    dt2
+        Right extreme of the interval
+    how
+        Modality of filtering (events, traces_contained, traces_intersecting)
+
+    Returns
+    ----------------
+    filtered_log
+        Filtered log
+    """
+    if type(log) is pd.DataFrame:
+        from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
+        if how == "events":
+            return timestamp_filter.apply_events(log, dt1, dt2)
+        elif how == "traces_contained":
+            return timestamp_filter.filter_traces_contained(log, dt1, dt2)
+        elif how == "traces_intersecting":
+            return timestamp_filter.filter_traces_intersecting(log, dt1, dt2)
+    else:
+        from pm4py.algo.filtering.log.timestamp import timestamp_filter
+        if how == "events":
+            return timestamp_filter.apply_events(log, dt1, dt2)
+        elif how == "traces_contained":
+            return timestamp_filter.filter_traces_contained(log, dt1, dt2)
+        elif how == "traces_intersecting":
+            return timestamp_filter.filter_traces_intersecting(log, dt1, dt2)
