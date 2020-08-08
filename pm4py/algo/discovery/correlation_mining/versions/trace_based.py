@@ -12,6 +12,7 @@ import pandas as pd
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     INDEX_KEY = "index_key"
 
@@ -98,9 +99,11 @@ def get_PS_duration_matrix(activities, trace_grouped_list, parameters=None):
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
+                                                     xes_constants.DEFAULT_TIMESTAMP_KEY)
 
-    PS_matrix = get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key)
-    duration_matrix = get_duration_matrix(activities, trace_grouped_list, timestamp_key)
+    PS_matrix = get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key, start_timestamp_key)
+    duration_matrix = get_duration_matrix(activities, trace_grouped_list, timestamp_key, start_timestamp_key)
 
     return PS_matrix, duration_matrix
 
@@ -137,21 +140,24 @@ def preprocess_log(log, activities=None, activities_counter=None, parameters=Non
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
+                                                     xes_constants.DEFAULT_TIMESTAMP_KEY)
     caseid_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     index_key = exec_utils.get_param_value(Parameters.INDEX_KEY, parameters, DEFAULT_INDEX_KEY)
 
     if type(log) is pd.DataFrame:
         # keep only the two columns before conversion
-        log = log[[activity_key, timestamp_key, caseid_key]]
+        log = log[list(set([activity_key, timestamp_key, start_timestamp_key, caseid_key]))]
 
     log = converter.apply(log, parameters=parameters)
 
     traces_list = []
     for trace in log:
         trace_stream = [
-            {activity_key: trace[i][activity_key], timestamp_key: trace[i][timestamp_key].timestamp(), index_key: i} for
+            {activity_key: trace[i][activity_key], timestamp_key: trace[i][timestamp_key].timestamp(),
+             start_timestamp_key: trace[i][start_timestamp_key].timestamp(), index_key: i} for
             i in range(len(trace))]
-        trace_stream = sorted(trace_stream, key=lambda x: (x[timestamp_key], x[index_key]))
+        trace_stream = sorted(trace_stream, key=lambda x: (x[start_timestamp_key], x[timestamp_key], x[index_key]))
         traces_list.append(trace_stream)
 
     if activities is None:
@@ -171,7 +177,7 @@ def preprocess_log(log, activities=None, activities_counter=None, parameters=Non
     return traces_list, trace_grouped_list, activities, activities_counter
 
 
-def get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key):
+def get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key, start_timestamp_key):
     """
     Calculates the precede succeed matrix
 
@@ -183,6 +189,8 @@ def get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key):
         A list of lists of lists, containing for each trace and each activity the events having such activity
     timestamp_key
         The key to be used as timestamp
+    start_timestamp_key
+        The key to be used as start timestamp
 
     Returns
     ---------------
@@ -191,30 +199,30 @@ def get_precede_succeed_matrix(activities, trace_grouped_list, timestamp_key):
     """
     ret = np.zeros((len(activities), len(activities)))
     for i in range(len(activities)):
-        for j in range(i + 1, len(activities)):
-            count = 0
-            total = 0
-            for tr in trace_grouped_list:
-                ai = [x[timestamp_key] for x in tr[i]]
-                aj = [x[timestamp_key] for x in tr[j]]
-                if ai and aj:
-                    total += len(ai) * len(aj)
-                    k = 0
-                    z = 0
-                    while k < len(ai):
-                        while z < len(aj):
-                            if ai[k] < aj[z]:
-                                break
-                            z = z + 1
-                        count = count + (len(aj) - z)
-                        k = k + 1
-            if total > 0:
-                ret[i, j] = count / float(total)
-            ret[j, i] = 1.0 - ret[i, j]
+        for j in range(len(activities)):
+            if not i == j:
+                count = 0
+                total = 0
+                for tr in trace_grouped_list:
+                    ai = [x[timestamp_key] for x in tr[i]]
+                    aj = [x[start_timestamp_key] for x in tr[j]]
+                    if ai and aj:
+                        total += len(ai) * len(aj)
+                        k = 0
+                        z = 0
+                        while k < len(ai):
+                            while z < len(aj):
+                                if ai[k] < aj[z]:
+                                    break
+                                z = z + 1
+                            count = count + (len(aj) - z)
+                            k = k + 1
+                if total > 0:
+                    ret[i, j] = count / float(total)
     return ret
 
 
-def get_duration_matrix(activities, trace_grouped_list, timestamp_key):
+def get_duration_matrix(activities, trace_grouped_list, timestamp_key, start_timestamp_key):
     """
     Calculates the duration matrix
 
@@ -226,6 +234,8 @@ def get_duration_matrix(activities, trace_grouped_list, timestamp_key):
         A list of lists of lists, containing for each trace and each activity the events having such activity
     timestamp_key
         The key to be used as timestamp
+    start_timestamp_key
+        The key to be used as start timestamp
 
     Returns
     --------------
@@ -236,35 +246,15 @@ def get_duration_matrix(activities, trace_grouped_list, timestamp_key):
     for i in range(len(activities)):
         for j in range(len(activities)):
             if not i == j:
-                times0 = []
-                times1 = []
+                tm0 = []
+                tm1 = []
                 for tr in trace_grouped_list:
                     ai = [x[timestamp_key] for x in tr[i]]
-                    aj = [x[timestamp_key] for x in tr[j]]
+                    aj = [x[start_timestamp_key] for x in tr[j]]
                     if ai and aj:
-                        # FIFO
-                        k = 0
-                        z = 0
-                        while k < len(ai):
-                            while z < len(aj):
-                                if ai[k] < aj[z]:
-                                    times0.append((aj[z] - ai[k]))
-                                    z = z + 1
-                                    break
-                                z = z + 1
-                            k = k + 1
-                        # LIFO
-                        k = len(ai) - 1
-                        z = len(aj) - 1
-                        while z >= 0:
-                            while k >= 0:
-                                if ai[k] < aj[z]:
-                                    times1.append((aj[z] - ai[k]))
-                                    k = k - 1
-                                    break
-                                k = k - 1
-                            z = z - 1
-                times0 = mean(times0) if times0 else 0
-                times1 = mean(times1) if times1 else 0
-                ret[i, j] = min(times0, times1)
+                        tm0 = cm_util.calculate_time_match_fifo(ai, aj, times0=tm0)
+                        tm1 = cm_util.calculate_time_match_rlifo(ai, aj, times1=tm1)
+                td0 = mean([x[1] - x[0] for x in tm0]) if tm0 else 0
+                td1 = mean([x[1] - x[0] for x in tm1]) if tm1 else 0
+                ret[i, j] = min(td0, td1)
     return ret
