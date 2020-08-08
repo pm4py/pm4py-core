@@ -168,7 +168,11 @@ def read_petri_net(file_path):
     Returns
     ----------------
     petri_net
-        Composite Petri net object (Petri net + initial marking + final marking)
+        Petri net object
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
     """
     from pm4py.objects.petri.importer import importer as pnml_importer
     net, im, fm = pnml_importer.apply(file_path)
@@ -206,7 +210,11 @@ def read_dfg(file_path):
     Returns
     ------------------
     dfg
-        Composite DFG object (DFG + start activities + end activities)
+        DFG
+    start_activities
+        Start activities
+    end_activities
+        End activities
     """
     from pm4py.objects.dfg.importer import importer as dfg_importer
     dfg, start_activities, end_activities = dfg_importer.apply(file_path)

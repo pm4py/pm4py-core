@@ -6,6 +6,10 @@ def view_petri_net(petri_net, initial_marking, final_marking, format="png"):
     -------------
     petri_net
         Petri net
+    initial_marking
+        Initial marking
+    final marking
+        Final marking
     format
         Format of the output picture (default: png)
     """
@@ -23,6 +27,10 @@ def save_vis_petri_net(petri_net, initial_marking, final_marking, file_path):
     --------------
     petri_net
         Petri net
+    initial_marking
+        Initial marking
+    final marking
+        Final marking
     file_path
         Destination path
     """
@@ -41,6 +49,10 @@ def view_dfg(dfg, start_activities, end_activities, format="png", log=None):
     -------------
     dfg
         DFG object
+    start_activities
+        Start activities
+    end_activities
+        End activities
     format
         Format of the output picture (default: png)
     """
@@ -61,6 +73,10 @@ def save_vis_dfg(dfg, start_activities, end_activities, file_path, log=None):
     --------------
     dfg
         DFG object
+    start_activities
+        Start activities
+    end_activities
+        End activities
     file_path
         Destination path
     """
