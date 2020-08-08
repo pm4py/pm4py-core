@@ -39,8 +39,8 @@ to change as libraries are added or removed.
 | pyparsing | https://pypi.org/project/pyparsing | MIT | 2.4.7 | | |
 | python-dateutil | https://pypi.org/project/python-dateutil | Apache 2.0 | 2.8.1 | | |
 | pytz | https://pypi.org/project/pytz | 2020.1 | MIT | | |
-| pyvis | https://pypi.org/project/pyvis | BSD | 0.1.8.0 | X | |
-| scikit-learn | https://pypi.org/project/scikit-learn | BSD | 0.23.1 | X | X |
+| pyvis | https://pypi.org/project/pyvis | BSD | 0.1.8.2 | X | |
+| scikit-learn | https://pypi.org/project/scikit-learn | BSD | 0.23.2 | X | X |
 | scipy | https://pypi.org/project/scipy | BSD | 1.5.2 | | X |
 | setuptools | https://pypi.org/project/setuptools | MIT | 47.1.1 | X | |
 | six | https://pypi.org/project/six | MIT | 1.15.0 | | |

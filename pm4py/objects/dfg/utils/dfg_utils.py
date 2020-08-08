@@ -2,6 +2,8 @@ from copy import copy
 from collections import Counter
 from pm4py.util.constants import DEFAULT_VARIANT_SEP
 import numpy as np
+import pkgutil
+import logging
 
 PARAMETER_VARIANT_SEP = "variant_sep"
 
@@ -772,3 +774,34 @@ def get_dfg_sa_ea_act_from_variants(variants, parameters=None):
     start_activities = dict(Counter(x[0] for x in variants if x))
     end_activities = dict(Counter(x[-1] for x in variants if x))
     return dfg, list_act, start_activities, end_activities
+
+
+def transform_dfg_to_directed_nx_graph(dfg, activities=None):
+    """
+    Transform DFG to directed NetworkX graph
+
+    Returns
+    ------------
+    G
+        NetworkX digraph
+    nodes_map
+        Correspondence between digraph nodes and activities
+    """
+    if activities is None:
+        activities = get_activities_from_dfg(dfg)
+
+    if pkgutil.find_loader("networkx"):
+        import networkx as nx
+
+        G = nx.DiGraph()
+        for act in activities:
+            G.add_node(act)
+        for el in dfg:
+            act1 = el[0][0]
+            act2 = el[0][1]
+            G.add_edge(act1, act2)
+        return G
+    else:
+        msg = "networkx is not available. inductive miner cannot be used!"
+        logging.error(msg)
+        raise Exception(msg)
