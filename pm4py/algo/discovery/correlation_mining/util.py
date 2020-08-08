@@ -99,8 +99,21 @@ def resolve_LP(C_matrix, duration_matrix, activities, activities_counter):
     Aub = np.asmatrix(Aub).astype(np.float64)
     bub = np.asmatrix(bub).transpose().astype(np.float64)
 
-    res = solver.apply(c, Aub, bub, Aeq, beq)
-    points = solver.get_points_from_sol(res)
+    use_cvxopt = False
+    if solver.DEFAULT_LP_SOLVER_VARIANT == solver.CVXOPT_SOLVER_CUSTOM_ALIGN or solver.DEFAULT_LP_SOLVER_VARIANT == solver.CVXOPT_SOLVER_CUSTOM_ALIGN_ILP:
+        use_cvxopt = True
+
+    if use_cvxopt:
+        from cvxopt import matrix
+
+        c = matrix(c)
+        Aub = matrix(Aub)
+        bub = matrix(bub)
+        Aeq = matrix(Aeq)
+        beq = matrix(beq)
+
+    res = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.DEFAULT_LP_SOLVER_VARIANT)
+    points = solver.get_points_from_sol(res, variant=solver.DEFAULT_LP_SOLVER_VARIANT)
     points = [round(p) for p in points]
 
     dfg = {}
