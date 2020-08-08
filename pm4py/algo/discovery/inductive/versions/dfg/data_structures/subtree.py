@@ -10,7 +10,7 @@ from pm4py.objects.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_ed
     infer_start_activities, infer_end_activities
 from pm4py.objects.dfg.filtering.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.objects.dfg.utils.dfg_utils import infer_start_activities_from_prev_connections_and_current_dfg, \
-    infer_end_activities_from_succ_connections_and_current_dfg
+    infer_end_activities_from_succ_connections_and_current_dfg, transform_dfg_to_directed_nx_graph
 
 
 class SubtreeDFGBased():
@@ -557,33 +557,6 @@ class SubtreeDFGBased():
 
         return [False, []]
 
-    def transform_dfg_to_directed_nx_graph(self):
-        """
-        Transform DFG to directed NetworkX graph
-
-        Returns
-        ------------
-        G
-            NetworkX digraph
-        nodes_map
-            Correspondence between digraph nodes and activities
-        """
-        if pkgutil.find_loader("networkx"):
-            import networkx as nx
-
-            G = nx.DiGraph()
-            for act in self.activities:
-                G.add_node(act)
-            for el in self.dfg:
-                act1 = el[0][0]
-                act2 = el[0][1]
-                G.add_edge(act1, act2)
-            return G
-        else:
-            msg = "networkx is not available. inductive miner cannot be used!"
-            logging.error(msg)
-            raise Exception(msg)
-
     def put_skips_in_seq_cut(self):
         """
         Puts the skips in sequential cut
@@ -674,7 +647,7 @@ class SubtreeDFGBased():
         if self.dfg:
             # print("\n\n")
             conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
-            this_nx_graph = self.transform_dfg_to_directed_nx_graph()
+            this_nx_graph = transform_dfg_to_directed_nx_graph(self.dfg, self.activities)
             strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
 
             # print("strongly_connected_components", strongly_connected_components)
