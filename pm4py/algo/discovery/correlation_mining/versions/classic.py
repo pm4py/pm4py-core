@@ -149,7 +149,7 @@ def preprocess_log(log, activities=None, parameters=None):
 
     if type(log) is pd.DataFrame:
         # keep only the two columns before conversion
-        log = log[[activity_key, timestamp_key]]
+        log = log[list(set([activity_key, timestamp_key, start_timestamp_key]))]
 
     log = converter.apply(log, variant=converter.TO_EVENT_STREAM, parameters=parameters)
     transf_stream = EventStream()
