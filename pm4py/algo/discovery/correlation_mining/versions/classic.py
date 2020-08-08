@@ -183,21 +183,21 @@ def get_precede_succeed_matrix(activities, activities_grouped, timestamp_key):
     for i in range(len(activities)):
         ai = [x[timestamp_key] for x in activities_grouped[activities[i]]]
         if ai:
-            for j in range(i + 1, len(activities)):
-                aj = [x[timestamp_key] for x in activities_grouped[activities[j]]]
-                if aj:
-                    k = 0
-                    z = 0
-                    count = 0
-                    while k < len(ai):
-                        while z < len(aj):
-                            if ai[k] < aj[z]:
-                                break
-                            z = z + 1
-                        count = count + (len(aj) - z)
-                        k = k + 1
-                    ret[i, j] = count / float(len(ai) * len(aj))
-                ret[j, i] = 1.0 - ret[i, j]
+            for j in range(len(activities)):
+                if not i == j:
+                    aj = [x[timestamp_key] for x in activities_grouped[activities[j]]]
+                    if aj:
+                        k = 0
+                        z = 0
+                        count = 0
+                        while k < len(ai):
+                            while z < len(aj):
+                                if ai[k] < aj[z]:
+                                    break
+                                z = z + 1
+                            count = count + (len(aj) - z)
+                            k = k + 1
+                        ret[i, j] = count / float(len(ai) * len(aj))
 
     return ret
 
