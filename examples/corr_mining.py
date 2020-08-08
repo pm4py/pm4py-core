@@ -1,3 +1,4 @@
+#import pm4pycvxopt
 from pm4py.objects.log.adapters.pandas import csv_import_adapter
 from pm4py.algo.discovery.correlation_mining import algorithm as correlation_miner
 from pm4py.visualization.dfg import visualizer as dfg_vis
