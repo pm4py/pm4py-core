@@ -10,7 +10,11 @@ def discover_dfg(log):
     Returns
     --------------
     dfg
-        Composite DFG object
+        DFG
+    start_activities
+        Start activities
+    end_activities
+        End activities
     """
     from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
     dfg = dfg_discovery.apply(log)
@@ -33,7 +37,11 @@ def discover_petri_net_alpha(log):
     Returns
     --------------
     petri_net
-        Composite Petri net object
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
     """
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC)
@@ -51,7 +59,11 @@ def discover_petri_net_alpha_plus(log):
     Returns
     --------------
     petri_net
-        Composite Petri net object
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
     """
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS)
@@ -71,7 +83,11 @@ def discover_petri_net_inductive(log, noise_threshold=0.0):
     Returns
     --------------
     petri_net
-        Composite Petri net object
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
     """
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
     return inductive_miner.apply(log, variant=inductive_miner.Variants.DFG_BASED, parameters={
@@ -94,9 +110,13 @@ def discover_petri_net_heuristics(log, dependency_threshold=0.5, and_threshold=0
         Loop two threshold (default: 0.5)
 
     Returns
-    ---------------
+    --------------
     petri_net
-        Composite Petri net object
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
     """
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
