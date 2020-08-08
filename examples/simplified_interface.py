@@ -103,6 +103,22 @@ def execute_script():
           len(pm4py.filter_variants(df2, ["register request,examine thoroughly,check ticket,decide,reject request"])))
     print("variants filter percentage = ", len(pm4py.filter_variants_percentage(log2, percentage=0.8)))
 
+    print("paths filter log len = ", len(pm4py.filter_paths(log2, [("register request", "examine casually")])))
+    print("paths filter dataframe len = ", len(pm4py.filter_paths(df2, [("register request", "examine casually")])))
+
+    print("timeframe filter log events len = ",
+          len(pm4py.filter_timestamp(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", how="events")))
+    print("timeframe filter log traces_contained len = ",
+          len(pm4py.filter_timestamp(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", how="traces_contained")))
+    print("timeframe filter log traces_intersecting len = ",
+          len(pm4py.filter_timestamp(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", how="traces_intersecting")))
+    print("timeframe filter df events len = ",
+          len(pm4py.filter_timestamp(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", how="events")))
+    print("timeframe filter df traces_contained len = ",
+          len(pm4py.filter_timestamp(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", how="traces_contained")))
+    print("timeframe filter df traces_intersecting len = ",
+          len(pm4py.filter_timestamp(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", how="traces_intersecting")))
+
     # remove the temporary files
     os.remove("ru1.xes")
     os.remove("ru1.csv")
