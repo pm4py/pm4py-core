@@ -12,6 +12,7 @@ import pandas as pd
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     INDEX_KEY = "index_key"
 
 
@@ -105,9 +106,11 @@ def get_PS_dur_matrix(activities_grouped, activities, parameters=None):
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
+                                                     xes_constants.DEFAULT_TIMESTAMP_KEY)
 
-    PS_matrix = get_precede_succeed_matrix(activities, activities_grouped, timestamp_key)
-    duration_matrix = get_duration_matrix(activities, activities_grouped, timestamp_key)
+    PS_matrix = get_precede_succeed_matrix(activities, activities_grouped, timestamp_key, start_timestamp_key)
+    duration_matrix = get_duration_matrix(activities, activities_grouped, timestamp_key, start_timestamp_key)
 
     return PS_matrix, duration_matrix
 
@@ -161,7 +164,7 @@ def preprocess_log(log, activities=None, parameters=None):
     return transf_stream, activities_grouped, activities
 
 
-def get_precede_succeed_matrix(activities, activities_grouped, timestamp_key):
+def get_precede_succeed_matrix(activities, activities_grouped, timestamp_key, start_timestamp_key):
     """
     Calculates the precede succeed matrix
 
@@ -173,6 +176,8 @@ def get_precede_succeed_matrix(activities, activities_grouped, timestamp_key):
         Grouped list of activities
     timestamp_key
         Timestamp key
+    start_timestamp_key
+        Start timestamp key (events start)
 
     Returns
     ---------------
@@ -183,26 +188,26 @@ def get_precede_succeed_matrix(activities, activities_grouped, timestamp_key):
     for i in range(len(activities)):
         ai = [x[timestamp_key] for x in activities_grouped[activities[i]]]
         if ai:
-            for j in range(i + 1, len(activities)):
-                aj = [x[timestamp_key] for x in activities_grouped[activities[j]]]
-                if aj:
-                    k = 0
-                    z = 0
-                    count = 0
-                    while k < len(ai):
-                        while z < len(aj):
-                            if ai[k] < aj[z]:
-                                break
-                            z = z + 1
-                        count = count + (len(aj) - z)
-                        k = k + 1
-                    ret[i, j] = count / float(len(ai) * len(aj))
-                ret[j, i] = 1.0 - ret[i, j]
+            for j in range(len(activities)):
+                if not i == j:
+                    aj = [x[start_timestamp_key] for x in activities_grouped[activities[j]]]
+                    if aj:
+                        k = 0
+                        z = 0
+                        count = 0
+                        while k < len(ai):
+                            while z < len(aj):
+                                if ai[k] < aj[z]:
+                                    break
+                                z = z + 1
+                            count = count + (len(aj) - z)
+                            k = k + 1
+                        ret[i, j] = count / float(len(ai) * len(aj))
 
     return ret
 
 
-def get_duration_matrix(activities, activities_grouped, timestamp_key):
+def get_duration_matrix(activities, activities_grouped, timestamp_key, start_timestamp_key):
     """
     Calculates the duration matrix
 
@@ -214,6 +219,8 @@ def get_duration_matrix(activities, activities_grouped, timestamp_key):
         Grouped list of activities
     timestamp_key
         Timestamp key
+    start_timestamp_key
+        Start timestamp key (events start)
 
     Returns
     ---------------
@@ -227,31 +234,11 @@ def get_duration_matrix(activities, activities_grouped, timestamp_key):
         if ai:
             for j in range(len(activities)):
                 if not i == j:
-                    aj = [x[timestamp_key] for x in activities_grouped[activities[j]]]
+                    aj = [x[start_timestamp_key] for x in activities_grouped[activities[j]]]
                     if aj:
-                        k = 0
-                        z = 0
-                        times0 = []
-                        while k < len(ai):
-                            while z < len(aj):
-                                if ai[k] < aj[z]:
-                                    times0.append((aj[z] - ai[k]))
-                                    z = z + 1
-                                    break
-                                z = z + 1
-                            k = k + 1
-                        times0 = mean(times0) if times0 else 0
-                        k = len(ai) - 1
-                        z = len(aj) - 1
-                        times1 = []
-                        while z >= 0:
-                            while k >= 0:
-                                if ai[k] < aj[z]:
-                                    times1.append((aj[z] - ai[k]))
-                                    k = k - 1
-                                    break
-                                k = k - 1
-                            z = z - 1
-                        times1 = mean(times1) if times1 else 0
-                        ret[i, j] = min(times0, times1)
+                        tm0 = cm_util.calculate_time_match_fifo(ai, aj)
+                        td0 = mean([x[1] - x[0] for x in tm0]) if tm0 else 0
+                        tm1 = cm_util.calculate_time_match_rlifo(ai, aj)
+                        td1 = mean([x[1] - x[0] for x in tm1]) if tm1 else 0
+                        ret[i, j] = min(td0, td1)
     return ret
