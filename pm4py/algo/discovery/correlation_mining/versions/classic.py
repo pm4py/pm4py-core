@@ -143,6 +143,8 @@ def preprocess_log(log, activities=None, parameters=None):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
+                                                     xes_constants.DEFAULT_TIMESTAMP_KEY)
     index_key = exec_utils.get_param_value(Parameters.INDEX_KEY, parameters, DEFAULT_INDEX_KEY)
 
     if type(log) is pd.DataFrame:
@@ -153,8 +155,9 @@ def preprocess_log(log, activities=None, parameters=None):
     transf_stream = EventStream()
     for idx, ev in enumerate(log):
         transf_stream.append(
-            Event({activity_key: ev[activity_key], timestamp_key: ev[timestamp_key].timestamp(), index_key: idx}))
-    transf_stream = sorted(transf_stream, key=lambda x: (x[timestamp_key], x[index_key]))
+            Event({activity_key: ev[activity_key], timestamp_key: ev[timestamp_key].timestamp(),
+                   start_timestamp_key: ev[start_timestamp_key].timestamp(), index_key: idx}))
+    transf_stream = sorted(transf_stream, key=lambda x: (x[start_timestamp_key], x[timestamp_key], x[index_key]))
 
     if activities is None:
         activities = sorted(list(set(x[activity_key] for x in transf_stream)))
