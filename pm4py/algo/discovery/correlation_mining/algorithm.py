@@ -1,9 +1,10 @@
-from pm4py.algo.discovery.correlation_mining.versions import classic
+from pm4py.algo.discovery.correlation_mining.versions import classic_split, classic
 from pm4py.util import exec_utils
 from enum import Enum
 
 
 class Variants(Enum):
+    CLASSIC_SPLIT = classic_split
     CLASSIC = classic
 
 
