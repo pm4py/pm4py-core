@@ -3,7 +3,8 @@ from pm4py.algo.discovery.log_skeleton.outputs import Outputs as DiscoveryOutput
 from pm4py.objects.log.util import xes
 from pm4py.algo.discovery.log_skeleton import trace_skel
 from pm4py.algo.conformance.log_skeleton.outputs import Outputs
-from pm4py.util import exec_utils
+from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.util import exec_utils, constants
 
 
 def apply_log(log, model, parameters=None):
@@ -167,3 +168,67 @@ def apply_actlist(trace, model, parameters=None):
     ret[Outputs.DEVIATIONS.value] = sorted(ret[Outputs.DEVIATIONS.value], key=lambda x: (x[0], x[1]))
     ret[Outputs.IS_FIT.value] = len(ret[Outputs.DEVIATIONS.value]) == 0
     return ret
+
+
+def apply_from_variants_list(var_list, model, parameters=None):
+    """
+    Performs conformance checking using the log skeleton,
+    applying it from a list of variants
+
+    Parameters
+    --------------
+    var_list
+        List of variants
+    model
+        Log skeleton model
+    parameters
+        Parameters
+
+    Returns
+    --------------
+    conformance_dictio
+        Dictionary containing, for each variant, the result
+        of log skeleton checking
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
+                                                   constants.DEFAULT_VARIANT_SEP)
+
+    conformance_output = {}
+
+    for cv in var_list:
+        v = cv[0]
+        tr = v.split(variant_delimiter)
+        trace = Trace()
+        for act in tr:
+            trace.append(Event({activity_key: act}))
+        conformance_output[v] = apply_trace(trace, model, parameters=parameters)
+
+    return conformance_output
+
+
+def after_decode(log_skeleton):
+    """
+    Prepares the log skeleton after decoding
+
+    Parameters
+    --------------
+    log_skeleton
+        Log skeleton
+
+    Returns
+    --------------
+    log_skeleton
+        Log skeleton (with sets instead of lists)
+    """
+    log_skeleton[DiscoveryOutputs.EQUIVALENCE.value] = set(log_skeleton[DiscoveryOutputs.EQUIVALENCE.value])
+    log_skeleton[DiscoveryOutputs.ALWAYS_AFTER.value] = set(log_skeleton[DiscoveryOutputs.ALWAYS_AFTER.value])
+    log_skeleton[DiscoveryOutputs.ALWAYS_BEFORE.value] = set(log_skeleton[DiscoveryOutputs.ALWAYS_BEFORE.value])
+    log_skeleton[DiscoveryOutputs.NEVER_TOGETHER.value] = set(log_skeleton[DiscoveryOutputs.NEVER_TOGETHER.value])
+    log_skeleton[DiscoveryOutputs.DIRECTLY_FOLLOWS.value] = set(log_skeleton[DiscoveryOutputs.DIRECTLY_FOLLOWS.value])
+    for act in log_skeleton[DiscoveryOutputs.ACTIV_FREQ.value]:
+        log_skeleton[DiscoveryOutputs.ACTIV_FREQ.value][act] = set(log_skeleton[DiscoveryOutputs.ACTIV_FREQ.value][act])
+    return log_skeleton
