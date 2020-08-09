@@ -11,9 +11,11 @@ class Parameters(Enum):
     DEFAULT_CONSIDERED_CONSTRAINTS = ["equivalence", "always_after", "always_before", "never_together",
                                       "directly_follows", "activ_freq"]
     ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
 
 
 NOISE_THRESHOLD = Parameters.NOISE_THRESHOLD
 CONSIDERED_CONSTRAINTS = Parameters.CONSIDERED_CONSTRAINTS
 DEFAULT_CONSIDERED_CONSTRAINTS = Parameters.DEFAULT_CONSIDERED_CONSTRAINTS
 ACTIVITY_KEY = Parameters.ACTIVITY_KEY
+PARAMETER_VARIANT_DELIMITER = Parameters.PARAMETER_VARIANT_DELIMITER

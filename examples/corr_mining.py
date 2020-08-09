@@ -7,7 +7,7 @@ from pm4py.visualization.dfg import visualizer as dfg_vis
 def execute_script():
     df = csv_import_adapter.import_dataframe_from_path("../tests/input_data/receipt.csv")
     act_count = dict(df["concept:name"].value_counts())
-    dfg, performance_dfg = correlation_miner.apply(df)
+    dfg, performance_dfg = correlation_miner.apply(df, variant=correlation_miner.Variants.CLASSIC)
     gviz_freq = dfg_vis.apply(dfg, activities_count=act_count, variant=dfg_vis.Variants.FREQUENCY,
                               parameters={"format": "svg"})
     dfg_vis.view(gviz_freq)
