@@ -282,7 +282,7 @@ def prepare_encode(log_skeleton):
     Returns
     --------------
     log_skeleton
-        Log skeleton
+        Log skeleton (with lists instead of sets)
     """
     log_skeleton[Outputs.EQUIVALENCE.value] = list(log_skeleton[Outputs.EQUIVALENCE.value])
     log_skeleton[Outputs.ALWAYS_AFTER.value] = list(log_skeleton[Outputs.ALWAYS_AFTER.value])
