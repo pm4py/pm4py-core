@@ -62,7 +62,7 @@ def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking
         parameters[
             pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   ",")
+                                                   pm4pyutil.constants.DEFAULT_VARIANT_SEP)
     log = log_implementation.EventLog()
     dictio_alignments = {}
     for varitem in var_list:

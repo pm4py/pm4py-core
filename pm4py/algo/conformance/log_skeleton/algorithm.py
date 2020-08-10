@@ -5,7 +5,6 @@ from enum import Enum
 from pm4py.util import exec_utils
 
 
-
 class Variants(Enum):
     CLASSIC = classic
 
@@ -49,3 +48,31 @@ def apply(obj, model, variant=DEFAULT_VARIANT, parameters=None):
     else:
         return exec_utils.get_variant(variant).apply_log(log_conversion.apply(obj, parameters=parameters), model,
                                                          parameters=parameters)
+
+
+def apply_from_variants_list(var_list, model, variant=DEFAULT_VARIANT, parameters=None):
+    """
+    Performs conformance checking using the log skeleton,
+    applying it from a list of variants
+
+    Parameters
+    --------------
+    var_list
+        List of variants
+    model
+        Log skeleton model
+    variant
+        Variant of the algorithm, possible values: Variants.CLASSIC
+    parameters
+        Parameters
+
+    Returns
+    --------------
+    conformance_dictio
+        Dictionary containing, for each variant, the result
+        of log skeleton checking
+    """
+    if parameters is None:
+        parameters = {}
+
+    return exec_utils.get_variant(variant).apply_from_variants_list(var_list, model, parameters=parameters)

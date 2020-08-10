@@ -2,6 +2,7 @@ import inspect
 import os
 import sys
 import traceback
+import pkgutil
 
 if __name__ == "__main__":
     currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -10,7 +11,10 @@ if __name__ == "__main__":
     sys.path.insert(0, parentdir)
     sys.path.insert(0, parentdir2)
     import time
-    import pm4pycvxopt
+
+    if pkgutil.find_loader("pm4pycvxopt"):
+        # loads pm4pycvxopt in this test script if it is installed
+        import pm4pycvxopt
     from pm4py.objects.log.importer.xes import importer as xes_importer
     from pm4py.algo.discovery.inductive import algorithm as inductive
     from pm4py.algo.conformance.alignments import algorithm as align_algorithm
@@ -57,7 +61,6 @@ if __name__ == "__main__":
     CHECK_SOUNDNESS = False
     INDUCTIVE_MINER_VARIANT = inductive.Variants.DFG_BASED
     ALIGN_VARIANT = state_equation_less_memory
-    align_algorithm.DEFAULT_VARIANT = align_algorithm.Variants.VERSION_DIJKSTRA_LESS_MEMORY
     logFolder = os.path.join("..", "compressed_input_data")
     pnmlFolder = "pnml_folder"
     pngFolder = "png_folder"
@@ -203,7 +206,8 @@ if __name__ == "__main__":
             tree = inductive.apply_tree(log, parameters=parameters_discovery, variant=INDUCTIVE_MINER_VARIANT)
             # print(tree)
 
-            inductive_model, inductive_im, inductive_fm = pt_converter.apply(tree)
+            inductive_model, inductive_im, inductive_fm = pt_converter.apply(tree,
+                                                                             variant=pt_converter.Variants.TO_PETRI_NET)
 
             """inductive_model, inductive_im, inductive_fm = inductive.apply(log, parameters=parameters_discovery,
                                                                           variant=INDUCTIVE_MINER_VARIANT)"""
