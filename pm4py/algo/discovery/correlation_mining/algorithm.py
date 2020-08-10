@@ -1,4 +1,4 @@
-from pm4py.algo.discovery.correlation_mining.versions import classic_split, classic
+from pm4py.algo.discovery.correlation_mining.versions import classic_split, classic, trace_based
 from pm4py.util import exec_utils
 from enum import Enum
 
@@ -6,12 +6,13 @@ from enum import Enum
 class Variants(Enum):
     CLASSIC_SPLIT = classic_split
     CLASSIC = classic
+    TRACE_BASED = trace_based
 
 
 DEFAULT_VARIANT = Variants.CLASSIC
 
 
-def apply(stream, variant=DEFAULT_VARIANT, parameters=None):
+def apply(log, variant=DEFAULT_VARIANT, parameters=None):
     """
     Applies the Correlation Miner to the event stream (a log is converted to a stream)
 
@@ -22,8 +23,8 @@ def apply(stream, variant=DEFAULT_VARIANT, parameters=None):
 
     Parameters
     -------------
-    stream
-        Event stream
+    log
+        Log object
     variant
         Variant of the algorithm to use
     parameters
@@ -39,4 +40,4 @@ def apply(stream, variant=DEFAULT_VARIANT, parameters=None):
     if parameters is None:
         parameters = {}
 
-    return exec_utils.get_variant(variant).apply(stream, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(log, parameters=parameters)

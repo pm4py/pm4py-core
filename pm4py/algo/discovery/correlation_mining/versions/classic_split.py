@@ -41,7 +41,7 @@ def apply(log, parameters=None):
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
                                                      xes_constants.DEFAULT_TIMESTAMP_KEY)
-    sample_size = exec_utils.get_param_value(Parameters.SAMPLE_SIZE, parameters, 100)
+    sample_size = exec_utils.get_param_value(Parameters.SAMPLE_SIZE, parameters, 100000)
 
     PS_matrixes = []
     duration_matrixes = []
