@@ -3,6 +3,8 @@ import tempfile
 import numpy as np
 
 from pulp import LpProblem, LpMinimize, LpVariable, LpStatus, value
+from pm4py.util.lp.parameters import Parameters
+from pm4py.util import exec_utils
 
 MIN_THRESHOLD = 10 ** -12
 # max safe number of constraints (log10)
@@ -56,6 +58,8 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
     if parameters is None:
         parameters = {}
 
+    require_ilp = exec_utils.get_param_value(Parameters.REQUIRE_ILP, parameters, False)
+
     Aub = np.asmatrix(Aub)
     if type(bub) is list and len(bub) == 1:
         bub = bub[0]
@@ -68,7 +72,10 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
 
     x_list = []
     for i in range(Aub.shape[1]):
-        x_list.append(LpVariable("x_" + get_terminal_part_name_num(i)))
+        if require_ilp:
+            x_list.append(LpVariable("x_" + get_terminal_part_name_num(i), cat='Binary'))
+        else:
+            x_list.append(LpVariable("x_" + get_terminal_part_name_num(i)))
 
     eval_str = ""
     expr_count = 0
