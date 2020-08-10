@@ -4,6 +4,8 @@ from pm4py.objects.process_tree import state as pt_st
 import copy
 import hashlib
 
+from pm4py.objects.process_tree.process_tree import ProcessTree
+
 
 def fold(tree):
     '''
@@ -312,3 +314,28 @@ def structurally_language_equal(tree1, tree2):
                 return True if len(matches) == 0 else False
         else:
             return False
+
+
+def get_process_tree_height(pt: ProcessTree) -> int:
+    """
+    calculates from the given node the max height downwards
+    :param pt: process tree node
+    :return: height
+    """
+    if is_leaf(pt):
+        return 1
+    else:
+        return 1 + max([get_process_tree_height(x) for x in pt.children])
+
+
+def process_tree_to_binary_process_tree(pt: ProcessTree) -> ProcessTree:
+    if len(pt.children) > 2:
+        new_subtree = ProcessTree()
+        new_subtree.operator = pt.operator
+        new_subtree.children = pt.children[1:]
+        pt.children = pt.children[:1]
+        pt.children.append(new_subtree)
+        new_subtree.parent = pt
+    for c in pt.children:
+        process_tree_to_binary_process_tree(c)
+    return pt

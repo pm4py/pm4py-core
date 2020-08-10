@@ -1,4 +1,6 @@
 from pm4py.util.lp.versions import pulp_solver
+from pm4py.util.lp.parameters import Parameters
+
 
 # not available in the latest version of PM4Py
 CVXOPT = "cvxopt"
