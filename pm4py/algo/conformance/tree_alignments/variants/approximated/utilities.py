@@ -1,5 +1,5 @@
 from pm4py.algo.conformance.alignments.algorithm import apply as get_alignment
-from pm4py.algo.conformance.alignments.algorithm import Parameters
+from pm4py.algo.conformance.alignments.algorithm import Parameters as AlignParameters
 from pm4py.algo.conformance.alignments.algorithm import Variants
 from pm4py.algo.conformance.alignments.versions.state_equation_a_star import get_best_worst_cost
 from pm4py.objects.conversion.process_tree.converter import apply as convert_pt_to_petri_net, \
@@ -10,6 +10,12 @@ from pm4py.objects.process_tree.process_tree import ProcessTree
 from typing import Set, List
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.petri.align_utils import SKIP, STD_MODEL_LOG_MOVE_COST
+from pm4py.util import exec_utils
+from enum import Enum
+
+
+class Parameters(Enum):
+    CLASSIC_ALIGNMENTS_VARIANT = "classic_alignments_variant"
 
 
 def concatenate_traces(t1: Trace, t2: Trace) -> Trace:
@@ -51,17 +57,21 @@ def apply_standard_cost_function_to_alignment(align: List) -> int:
 
 
 def empty_sequence_accepted(pt: ProcessTree) -> bool:
-    alignment = calculate_optimal_alignment(pt, Trace(), variant=Variants.VERSION_STATE_EQUATION_A_STAR)
+    alignment = calculate_optimal_alignment(pt, Trace())
     return alignment["cost"] < STD_MODEL_LOG_MOVE_COST
 
 
-def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, variant=Variants.VERSION_STATE_EQUATION_A_STAR,
-                                parameters=None):
+def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, parameters=None):
+    if parameters is None:
+        parameters = {}
+    align_variant = exec_utils.get_param_value(Parameters.CLASSIC_ALIGNMENTS_VARIANT, parameters,
+                                               Variants.VERSION_STATE_EQUATION_A_STAR)
+
     parent = pt.parent
     pt.parent = None
     net, im, fm = convert_pt_to_petri_net(pt, variant=pt_petri_net_variants.TO_PETRI_NET_TRANSITION_BORDERED)
-    alignment = get_alignment(trace, net, im, fm, variant=variant,
-                              parameters={Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE: True})
+    alignment = get_alignment(trace, net, im, fm, variant=align_variant,
+                              parameters={AlignParameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE: True})
     pt.parent = parent
     # remove invisible model moves from alignment steps that do not belong to a silent model move in the process tree
     res = []
