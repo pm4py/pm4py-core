@@ -11,7 +11,7 @@ def apply(tree, parameters=None):
     '''
     net = petrinet.PetriNet(name=str(tree))
     if len(tree.children) == 0:
-        pn_util.add_transition(net, label=tree.label)
+        pn_util.add_transition(net, label=tree.label, name=str(id(tree)))
     else:
         sub_nets = list()
         for c in tree.children:
@@ -66,7 +66,7 @@ def construct_sequence_pattern(net, sub_nets):
     src = pn_util.add_transition(net)
     pn_util.add_arc_from_to(src, places[0], net)
     sink = pn_util.add_transition(net)
-    pn_util.add_arc_from_to(places[len(places)-1], sink, net)
+    pn_util.add_arc_from_to(places[len(places) - 1], sink, net)
     return net, petrinet.Marking(), petrinet.Marking()
 
 
@@ -97,7 +97,7 @@ def construct_and_pattern(net, sub_nets):
 
 
 def construct_loop_pattern(net, sub_nets):
-    assert(len(sub_nets) == 2)
+    assert (len(sub_nets) == 2)
     p_s = pn_util.add_place(net)
     p_t = pn_util.add_place(net)
     pn_util.add_arc_from_to(p_s, _get_src_transition(sub_nets[0]), net)
