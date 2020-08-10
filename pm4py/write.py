@@ -36,7 +36,7 @@ def write_csv(log, file_path):
     csv_exporter.apply(log, file_path)
 
 
-def write_petri_net(petri_net, file_path):
+def write_petri_net(petri_net, initial_marking, final_marking, file_path):
     """
     Exports a (composite) Petri net object
 
@@ -44,6 +44,10 @@ def write_petri_net(petri_net, file_path):
     ------------
     petri_net
         Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
     file_path
         Destination path
 
@@ -51,9 +55,8 @@ def write_petri_net(petri_net, file_path):
     ------------
     void
     """
-    net, im, fm = petri_net
     from pm4py.objects.petri.exporter import exporter as petri_exporter
-    petri_exporter.apply(net, im, file_path, final_marking=fm)
+    petri_exporter.apply(petri_net, initial_marking, file_path, final_marking=final_marking)
 
 
 def write_process_tree(tree, file_path):
@@ -75,7 +78,7 @@ def write_process_tree(tree, file_path):
     tree_exporter.apply(tree, file_path)
 
 
-def write_dfg(dfg, file_path):
+def write_dfg(dfg, start_activities, end_activities, file_path):
     """
     Exports a DFG
 
@@ -83,6 +86,10 @@ def write_dfg(dfg, file_path):
     -------------
     dfg
         DFG
+    start_activities
+        Start activities
+    end_activities
+        End activities
     file_path
         Destination path
 
@@ -91,7 +98,6 @@ def write_dfg(dfg, file_path):
     void
     """
     from pm4py.objects.dfg.exporter import exporter as dfg_exporter
-    dfg, start_activities, end_activities = dfg
     dfg_exporter.apply(dfg, file_path,
                        parameters={dfg_exporter.Variants.CLASSIC.value.Parameters.START_ACTIVITIES: start_activities,
                                    dfg_exporter.Variants.CLASSIC.value.Parameters.END_ACTIVITIES: end_activities})

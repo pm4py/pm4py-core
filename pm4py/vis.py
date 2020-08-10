@@ -1,4 +1,4 @@
-def view_petri_net(petri_net, format="png"):
+def view_petri_net(petri_net, initial_marking, final_marking, format="png"):
     """
     Views a (composite) Petri net
 
@@ -6,17 +6,20 @@ def view_petri_net(petri_net, format="png"):
     -------------
     petri_net
         Petri net
+    initial_marking
+        Initial marking
+    final marking
+        Final marking
     format
         Format of the output picture (default: png)
     """
-    net, im, fm = petri_net
     from pm4py.visualization.petrinet import visualizer as pn_visualizer
-    gviz = pn_visualizer.apply(net, im, fm,
+    gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
                                parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format})
     pn_visualizer.view(gviz)
 
 
-def save_vis_petri_net(petri_net, file_path):
+def save_vis_petri_net(petri_net, initial_marking, final_marking, file_path):
     """
     Saves a Petri net visualization to a file
 
@@ -24,18 +27,21 @@ def save_vis_petri_net(petri_net, file_path):
     --------------
     petri_net
         Petri net
+    initial_marking
+        Initial marking
+    final marking
+        Final marking
     file_path
         Destination path
     """
-    net, im, fm = petri_net
     format = file_path[file_path.index(".") + 1:].lower()
     from pm4py.visualization.petrinet import visualizer as pn_visualizer
-    gviz = pn_visualizer.apply(net, im, fm,
+    gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
                                parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format})
     pn_visualizer.save(gviz, file_path)
 
 
-def view_dfg(dfg, format="png", log=None):
+def view_dfg(dfg, start_activities, end_activities, format="png", log=None):
     """
     Views a (composite) DFG
 
@@ -43,10 +49,13 @@ def view_dfg(dfg, format="png", log=None):
     -------------
     dfg
         DFG object
+    start_activities
+        Start activities
+    end_activities
+        End activities
     format
         Format of the output picture (default: png)
     """
-    dfg, start_activities, end_activities = dfg
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
     gviz = dfg_visualizer.apply(dfg, log=log, variant=dfg_visualizer.Variants.FREQUENCY,
@@ -56,7 +65,7 @@ def view_dfg(dfg, format="png", log=None):
     dfg_visualizer.view(gviz)
 
 
-def save_vis_dfg(dfg, file_path, log=None):
+def save_vis_dfg(dfg, start_activities, end_activities, file_path, log=None):
     """
     Saves a DFG visualization to a file
 
@@ -64,10 +73,13 @@ def save_vis_dfg(dfg, file_path, log=None):
     --------------
     dfg
         DFG object
+    start_activities
+        Start activities
+    end_activities
+        End activities
     file_path
         Destination path
     """
-    dfg, start_activities, end_activities = dfg
     format = file_path[file_path.index(".") + 1:].lower()
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters

@@ -1,3 +1,15 @@
+===== PM4PY 1.4.1 =====
+This is a minor release, consisting of the following changes:
+1. commit 9cfd4183968118f488c95ab0bbd7e3e9b66ba355
+    - alignments approximation on process trees
+2. commit fc724c4c9e00a388b94efea50be46412c1351bc5
+    - refactoring correlation miner
+    - increased scalability of the correlation miner
+3. commit f9a898da47367f86bf616a7bc8dc796be1b3e440
+    - discovery of log skeleton from the list of variants
+4. commit e18021f06e4431628a84b441acf136d44c9baed6
+    - revision/enrichment of simplified API
+
 ===== PM4PY 1.4.0 =====
 This is a *major* release, consisting of the following *major* changes:
 1. commit cba7a2e574aa15709d0a2dda35f8a27da9200f42
