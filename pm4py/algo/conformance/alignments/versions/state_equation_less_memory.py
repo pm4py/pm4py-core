@@ -488,86 +488,86 @@ def __align(model_struct, trace_struct, product_net, corresp, sync_cost=align_ut
                 return __reconstruct_alignment(curr, model_struct, trace_struct, visited, len(open_set), len(closed),
                                                len(marking_dict), exact_heu_calculations,
                                                ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
-        else:
-            # retrieves the transitions that are enabled in the current marking
-            en_t = [[t, __encode_marking(marking_dict, __fire_trans(curr_m, trans_pre_dict[t], trans_post_dict[t])), 0,
-                     None, False]
-                    for t in trans_pre_dict if __dict_leq(trans_pre_dict[t], curr_m)]
+        # retrieves the transitions that are enabled in the current marking
+        en_t = [[t, __encode_marking(marking_dict, __fire_trans(curr_m, trans_pre_dict[t], trans_post_dict[t])), 0,
+                 None, False]
+                for t in trans_pre_dict if __dict_leq(trans_pre_dict[t], curr_m)]
 
-            this_closed = set()
-            j = 0
-            while j < len(en_t):
-                t = en_t[j][0]
-                # checks if a given transition can be executed in sync with the trace
-                is_sync = trans_labels_dict[t] == transf_trace[-curr[POSITION_INDEX]] if -curr[POSITION_INDEX] < len(
-                    transf_trace) else False
-                if is_sync:
-                    new_m = en_t[j][1]
-                    new_h, new_x, new_trustable = __calculate_heuristics(h, x, new_m,
-                                                                         curr[POSITION_INDEX] - 1,
-                                                                         corresp,
-                                                                         (curr[POSITION_INDEX], t), sync_net,
-                                                                         incidence_matrix,
-                                                                         fin_vec,
-                                                                         cost_vec, a_matrix, g_matrix, h_cvx,
-                                                                         lp_solver.DEFAULT_LP_SOLVER_VARIANT,
-                                                                         use_cvxopt=use_cvxopt)
-
-                    dummy_count = dummy_count + 1
-                    new_f = curr[POSITION_COST] + sync_cost
-
-                    new_g = new_f + new_h
-                    new_state = (
-                        new_g, new_h, curr[POSITION_INDEX] - 1, IS_SYNC_MOVE, dummy_count,
-                        curr,
-                        new_m, t, new_f, new_x, new_trustable)
-                    if not __check_closed(closed, (new_state[POSITION_MARKING], new_state[POSITION_INDEX])):
-                        # if it can be executed in a sync way, add a new state corresponding
-                        # to the sync execution only if it has not already been closed
-                        open_set = __add_to_open_set(open_set, new_state)
-                    # if a sync move reached new_m, do not schedule any model move that reaches new_m
-                    this_closed.add(new_m)
-                    del en_t[j]
-
-                    continue
-                j = j + 1
-
-            # calculate the heuristics for the remaining states
-            j = 0
-            while j < len(en_t):
-                t = en_t[j][0]
+        this_closed = set()
+        j = 0
+        while j < len(en_t):
+            t = en_t[j][0]
+            # checks if a given transition can be executed in sync with the trace
+            is_sync = trans_labels_dict[t] == transf_trace[-curr[POSITION_INDEX]] if -curr[POSITION_INDEX] < len(
+                transf_trace) else False
+            if is_sync:
                 new_m = en_t[j][1]
-                en_t[j][2], en_t[j][3], en_t[j][4] = __calculate_heuristics(h, x, new_m,
-                                                                            curr[POSITION_INDEX],
-                                                                            corresp, (">>", t), sync_net,
-                                                                            incidence_matrix,
-                                                                            fin_vec,
-                                                                            cost_vec, a_matrix, g_matrix, h_cvx,
-                                                                            lp_solver.DEFAULT_LP_SOLVER_VARIANT,
-                                                                            use_cvxopt=use_cvxopt)
-                j = j + 1
-
-            en_t.sort(key=lambda t: transf_model_cost_function[t[0]] + t[2])
-            j = 0
-            while j < len(en_t):
-                t = en_t[j][0]
-                new_m = en_t[j][1]
-                new_h = en_t[j][2]
-                new_x = en_t[j][3]
-                new_trustable = en_t[j][4]
+                new_h, new_x, new_trustable = __calculate_heuristics(h, x, new_m,
+                                                                     curr[POSITION_INDEX] - 1,
+                                                                     corresp,
+                                                                     (curr[POSITION_INDEX], t), sync_net,
+                                                                     incidence_matrix,
+                                                                     fin_vec,
+                                                                     cost_vec, a_matrix, g_matrix, h_cvx,
+                                                                     lp_solver.DEFAULT_LP_SOLVER_VARIANT,
+                                                                     use_cvxopt=use_cvxopt)
 
                 dummy_count = dummy_count + 1
-                new_f = curr[POSITION_COST] + transf_model_cost_function[t]
+                new_f = curr[POSITION_COST] + sync_cost
 
                 new_g = new_f + new_h
                 new_state = (
-                    new_g, new_h, curr[POSITION_INDEX], IS_MODEL_MOVE,
-                    dummy_count, curr, new_m, t, new_f, new_x, new_trustable)
-                if new_m not in this_closed and not curr_m0 == new_m:
-                    if not __check_closed(closed, (new_state[POSITION_MARKING], new_state[POSITION_INDEX])):
-                        open_set = __add_to_open_set(open_set, new_state)
-                    this_closed.add(new_m)
-                j = j + 1
+                    new_g, new_h, curr[POSITION_INDEX] - 1, IS_SYNC_MOVE, dummy_count,
+                    curr,
+                    new_m, t, new_f, new_x, new_trustable)
+                if not __check_closed(closed, (new_state[POSITION_MARKING], new_state[POSITION_INDEX])):
+                    # if it can be executed in a sync way, add a new state corresponding
+                    # to the sync execution only if it has not already been closed
+                    open_set = __add_to_open_set(open_set, new_state)
+                # if a sync move reached new_m, do not schedule any model move that reaches new_m
+                this_closed.add(new_m)
+                del en_t[j]
+
+                continue
+            j = j + 1
+
+        # calculate the heuristics for the remaining states
+        j = 0
+        while j < len(en_t):
+            t = en_t[j][0]
+            new_m = en_t[j][1]
+            en_t[j][2], en_t[j][3], en_t[j][4] = __calculate_heuristics(h, x, new_m,
+                                                                        curr[POSITION_INDEX],
+                                                                        corresp, (">>", t), sync_net,
+                                                                        incidence_matrix,
+                                                                        fin_vec,
+                                                                        cost_vec, a_matrix, g_matrix, h_cvx,
+                                                                        lp_solver.DEFAULT_LP_SOLVER_VARIANT,
+                                                                        use_cvxopt=use_cvxopt)
+            j = j + 1
+
+        en_t.sort(key=lambda t: transf_model_cost_function[t[0]] + t[2])
+        j = 0
+        while j < len(en_t):
+            t = en_t[j][0]
+            new_m = en_t[j][1]
+            new_h = en_t[j][2]
+            new_x = en_t[j][3]
+            new_trustable = en_t[j][4]
+
+            dummy_count = dummy_count + 1
+            new_f = curr[POSITION_COST] + transf_model_cost_function[t]
+
+            new_g = new_f + new_h
+            new_state = (
+                new_g, new_h, curr[POSITION_INDEX], IS_MODEL_MOVE,
+                dummy_count, curr, new_m, t, new_f, new_x, new_trustable)
+            if new_m not in this_closed and not curr_m0 == new_m:
+                if not __check_closed(closed, (new_state[POSITION_MARKING], new_state[POSITION_INDEX])):
+                    open_set = __add_to_open_set(open_set, new_state)
+                this_closed.add(new_m)
+            j = j + 1
+
         # IMPORTANT: to reduce the complexity, assume that you can schedule a log move
         # only if the previous move has not been a move-on-model.
         # since this setting is equivalent to scheduling all the log moves before and then
