@@ -1,3 +1,8 @@
+===== PM4PY 1.4.1.1 =====
+This is a hotfixes release, consisting of the following changes:
+1. commit 76df914ad48b93a72127b0d79e5547669d3148db
+    - fixed bug in less-memory alignments when im == fm
+
 ===== PM4PY 1.4.1 =====
 This is a minor release, consisting of the following changes:
 1. commit 9cfd4183968118f488c95ab0bbd7e3e9b66ba355
