@@ -59,7 +59,7 @@ if __name__ == "__main__":
     ENABLE_PRECISION = True
     ENABLE_PETRI_EXPORTING = False
     CHECK_SOUNDNESS = False
-    INDUCTIVE_MINER_VARIANT = inductive.Variants.DFG_BASED
+    INDUCTIVE_MINER_VARIANT = inductive.Variants.IM
     ALIGN_VARIANT = state_equation_less_memory
     logFolder = os.path.join("..", "compressed_input_data")
     pnmlFolder = "pnml_folder"

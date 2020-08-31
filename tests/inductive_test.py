@@ -1,5 +1,5 @@
 import logging
-import os
+import os, sys
 import unittest
 
 from pm4py.objects.conversion.log import converter as log_conversion
@@ -14,11 +14,17 @@ from pm4py.objects.log.util import sampling, sorting, index_attribute
 from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import exporter as petri_exporter
 from pm4py.visualization.petrinet.common import visualize as pn_viz
-from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
+
+# from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
+
+INPUT_DATA_DIR = "input_data"
+OUTPUT_DATA_DIR = "test_output_data"
+PROBLEMATIC_XES_DIR = "xes_importer_tests"
+COMPRESSED_INPUT_DATA = "compressed_input_data"
 
 
 class InductiveMinerTest(unittest.TestCase):
-    def obtainPetriNetThroughImdf(self, log_name, variant=inductive_miner.DEFAULT_VARIANT):
+    def obtain_petri_net_through_im(self, log_name, variant=inductive_miner.DEFAULT_VARIANT_LOG):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
@@ -29,7 +35,9 @@ class InductiveMinerTest(unittest.TestCase):
             df = dataframe_utils.convert_timestamp_columns_in_df(df)
             log = log_conversion.apply(df)
         # apply dummily the test to all the available variants
-        net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.DFG_BASED)
+        net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.IMd)
+        net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.IM)
+        net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.IMf)
         net, marking, final_marking = inductive_miner.apply(log, variant=variant)
         soundness = check_soundness.check_petri_wfnet_and_soundness(net)
         del soundness
@@ -42,9 +50,9 @@ class InductiveMinerTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         # calculate and compare Petri nets obtained on the same log to verify that instances
         # are working correctly
-        log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughImdf(
+        log1, net1, marking1, fmarking1 = self.obtain_petri_net_through_im(
             os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughImdf(
+        log2, net2, marking2, fmarking2 = self.obtain_petri_net_through_im(
             os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         log1 = sorting.sort_timestamp(log1)
         log1 = sampling.sample(log1)
@@ -68,9 +76,9 @@ class InductiveMinerTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         # calculate and compare Petri nets obtained on the same log to verify that instances
         # are working correctly
-        log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughImdf(
+        log1, net1, marking1, fmarking1 = self.obtain_petri_net_through_im(
             os.path.join(INPUT_DATA_DIR, "running-example.csv"))
-        log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughImdf(
+        log2, net2, marking2, fmarking2 = self.obtain_petri_net_through_im(
             os.path.join(INPUT_DATA_DIR, "running-example.csv"))
         log1 = sorting.sort_timestamp(log1)
         log1 = sampling.sample(log1)
@@ -92,7 +100,7 @@ class InductiveMinerTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        log, net, marking, fmarking = self.obtainPetriNetThroughImdf(
+        log, net, marking, fmarking = self.obtain_petri_net_through_im(
             os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         log = sorting.sort_timestamp(log)
         log = sampling.sample(log)
@@ -118,8 +126,8 @@ class InductiveMinerTest(unittest.TestCase):
                 log_full_path = os.path.join(PROBLEMATIC_XES_DIR, log)
                 # calculate and compare Petri nets obtained on the same log to verify that instances
                 # are working correctly
-                log1, net1, marking1, fmarking1 = self.obtainPetriNetThroughImdf(log_full_path)
-                log2, net2, marking2, fmarking2 = self.obtainPetriNetThroughImdf(log_full_path)
+                log1, net1, marking1, fmarking1 = self.obtain_petri_net_through_im(log_full_path)
+                log2, net2, marking2, fmarking2 = self.obtain_petri_net_through_im(log_full_path)
                 self.assertEqual(len(net1.places), len(net2.places))
                 final_marking = petri.petrinet.Marking()
                 for p in net1.places:

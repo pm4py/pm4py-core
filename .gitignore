@@ -1,3 +1,5 @@
 *.pyc
 /.idea
 /venv/
+*.mps
+*.sol
