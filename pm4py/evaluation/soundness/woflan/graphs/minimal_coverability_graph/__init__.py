@@ -1,0 +1,1 @@
+from pm4py.evaluation.soundness.woflan.graphs.minimal_coverability_graph import minimal_coverability_graph
