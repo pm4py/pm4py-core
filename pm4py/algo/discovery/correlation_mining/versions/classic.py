@@ -4,7 +4,6 @@ from pm4py.util import constants, xes_constants
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.log import EventStream, Event
 from pm4py.algo.discovery.correlation_mining import util as cm_util
-from statistics import mean
 import numpy as np
 import pandas as pd
 
@@ -13,6 +12,7 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    EXACT_TIME_MATCHING = "exact_time_matching"
     INDEX_KEY = "index_key"
 
 
@@ -108,9 +108,11 @@ def get_PS_dur_matrix(activities_grouped, activities, parameters=None):
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
                                                      xes_constants.DEFAULT_TIMESTAMP_KEY)
+    exact_time_matching = exec_utils.get_param_value(Parameters.EXACT_TIME_MATCHING, parameters, False)
 
     PS_matrix = get_precede_succeed_matrix(activities, activities_grouped, timestamp_key, start_timestamp_key)
-    duration_matrix = get_duration_matrix(activities, activities_grouped, timestamp_key, start_timestamp_key)
+    duration_matrix = get_duration_matrix(activities, activities_grouped, timestamp_key, start_timestamp_key,
+                                          exact=exact_time_matching)
 
     return PS_matrix, duration_matrix
 
@@ -210,7 +212,7 @@ def get_precede_succeed_matrix(activities, activities_grouped, timestamp_key, st
     return ret
 
 
-def get_duration_matrix(activities, activities_grouped, timestamp_key, start_timestamp_key):
+def get_duration_matrix(activities, activities_grouped, timestamp_key, start_timestamp_key, exact=False):
     """
     Calculates the duration matrix
 
@@ -224,6 +226,8 @@ def get_duration_matrix(activities, activities_grouped, timestamp_key, start_tim
         Timestamp key
     start_timestamp_key
         Start timestamp key (events start)
+    exact
+        Performs an exact matching of the times (True/False)
 
     Returns
     ---------------
@@ -239,9 +243,5 @@ def get_duration_matrix(activities, activities_grouped, timestamp_key, start_tim
                 if not i == j:
                     aj = [x[start_timestamp_key] for x in activities_grouped[activities[j]]]
                     if aj:
-                        tm0 = cm_util.calculate_time_match_fifo(ai, aj)
-                        td0 = mean([x[1] - x[0] for x in tm0]) if tm0 else 0
-                        tm1 = cm_util.calculate_time_match_rlifo(ai, aj)
-                        td1 = mean([x[1] - x[0] for x in tm1]) if tm1 else 0
-                        ret[i, j] = min(td0, td1)
+                        ret[i, j] = cm_util.match_return_avg_time(ai, aj, exact=exact)
     return ret
