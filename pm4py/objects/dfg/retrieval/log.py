@@ -12,6 +12,7 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     WINDOW = "window"
     AGGREGATION_MEASURE = "aggregationMeasure"
+    KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
 def freq_triples(log, parameters=None):
@@ -61,7 +62,11 @@ def native(log, parameters=None):
         parameters = {}
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
     window = exec_utils.get_param_value(Parameters.WINDOW, parameters, 1)
-    dfgs = map((lambda t: [(t[i - window][activity_key], t[i][activity_key]) for i in range(window, len(t))]), log)
+    keep_once_per_case = exec_utils.get_param_value(Parameters.KEEP_ONCE_PER_CASE, parameters, False)
+    if keep_once_per_case:
+        dfgs = map((lambda t: set((t[i - window][activity_key], t[i][activity_key]) for i in range(window, len(t)))), log)
+    else:
+        dfgs = map((lambda t: [(t[i - window][activity_key], t[i][activity_key]) for i in range(window, len(t))]), log)
     return Counter([dfg for lista in dfgs for dfg in lista])
 
 
