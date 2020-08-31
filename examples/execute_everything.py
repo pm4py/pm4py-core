@@ -95,9 +95,9 @@ def logs_petri_visual_comparison():
 
 
 def imdf_example():
-    from examples import imdf_example
+    from examples import im_example
     print("\n\nimdf_example")
-    imdf_example.execute_script()
+    im_example.execute_script()
 
 
 def test_evaluation():
