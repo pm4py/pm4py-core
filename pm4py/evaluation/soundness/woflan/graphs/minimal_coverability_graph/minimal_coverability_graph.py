@@ -5,7 +5,7 @@ from Alain Finkel
 """
 import numpy as np
 import networkx as nx
-import pm4py.evaluation.soundness.woflan.graphs.utility as helper
+from pm4py.evaluation.soundness.woflan.graphs import utility as helper
 from copy import copy
 
 
