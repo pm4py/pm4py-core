@@ -9,8 +9,6 @@ from pm4py.objects.petri.networkx_graph import create_networkx_undirected_graph
 from pm4py.util.lp import solver as lp_solver
 from pm4py.objects.petri import explore_path
 
-DEFAULT_LP_SOLVER_VARIANT = lp_solver.PULP
-
 
 def check_source_and_sink_reachability(net, unique_source, unique_sink):
     """
@@ -277,9 +275,10 @@ def check_stability_wfnet(net):
     while i < matrix.shape[0] + matrix.shape[1]:
         bub[i] = -0.01
         i = i + 1
+    bub = np.asmatrix(bub).transpose()
 
     try:
-        sol = lp_solver.apply(c, vstack_matrix, bub, None, None, variant=DEFAULT_LP_SOLVER_VARIANT)
+        sol = lp_solver.apply(c, vstack_matrix, bub, None, None)
         if sol:
             return True
     except:

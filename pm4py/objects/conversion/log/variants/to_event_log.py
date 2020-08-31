@@ -5,58 +5,31 @@ from enum import Enum
 import pandas
 
 import pm4py
-from pm4py import util as pmutil
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.conversion.log.variants import to_event_stream
 from pm4py.objects.log import log as log_instance
 from pm4py.util import xes_constants as xes
+from pm4py.util import exec_utils, xes_constants, constants as pmconstants
 
 
 class Parameters(Enum):
-    STREAM_POST_PROCESSING = False
-    DEEP_COPY = False
-    CASE_ID_KEY = 'case:concept:name'
-    CASE_ATTRIBUTE_PREFIX = 'case:'
-
-
-# this parameter is deprecated should be removed...
-DEEPCOPY = constants.DEEPCOPY
-
-
-# helper function, should be removed later...
-def __parse_parameters(parameters):
-    if DEEPCOPY in parameters:
-        parameters[Parameters.DEEP_COPY] = parameters[DEEPCOPY]
-    if pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY in parameters:
-        parameters[Parameters.CASE_ID_KEY] = parameters[pmutil.constants.PARAMETER_CONSTANT_CASEID_KEY]
-    if pmutil.constants.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX in parameters:
-        parameters[Parameters.CASE_ATTRIBUTE_PREFIX] = parameters[pmutil.constants.PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX]
-    return parameters
-
-
-def __generate_to_stream_parameters(parameters):
-    # utility in case a df is an input, which is first converted to an event stream.
-    stream_param = dict()
-    if Parameters.STREAM_POST_PROCESSING in parameters:
-        stream_param[to_event_stream.Parameters.STREAM_POST_PROCESSING] = parameters[
-            Parameters.STREAM_POST_PROCESSING]
-    if Parameters.DEEP_COPY in parameters:
-        stream_param[to_event_stream.Parameters.DEEP_COPY] = parameters[Parameters.DEEP_COPY]
-    if Parameters.CASE_ATTRIBUTE_PREFIX in parameters:
-        stream_param[to_event_stream.Parameters.CASE_ATTRIBUTE_PREFIX] = parameters[Parameters.CASE_ATTRIBUTE_PREFIX]
-    return stream_param
+    DEEP_COPY = constants.DEEPCOPY
+    STREAM_POST_PROCESSING = constants.STREAM_POSTPROCESSING
+    CASE_ATTRIBUTE_PREFIX = "case_attribute_prefix"
+    CASE_ID_KEY = pmconstants.PARAMETER_CONSTANT_CASEID_KEY
 
 
 def apply(log, parameters=None):
-    parameters = dict() if parameters is None else __parse_parameters(parameters)
+    if parameters is None:
+        parameters = {}
+    enable_deepcopy = exec_utils.get_param_value(Parameters.DEEP_COPY, parameters, False)
+    glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmconstants.CASE_CONCEPT_NAME)
+    case_pref = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTE_PREFIX, parameters,
+                                           "case:")
+
     if isinstance(log, pandas.core.frame.DataFrame):
-        log = to_event_stream.apply(log, parameters=__generate_to_stream_parameters(parameters))
+        log = to_event_stream.apply(log, parameters=parameters)
     if isinstance(log, pm4py.objects.log.log.EventStream) and (not isinstance(log, pm4py.objects.log.log.EventLog)):
-        glue = parameters[
-            Parameters.CASE_ID_KEY] if Parameters.CASE_ID_KEY in parameters else Parameters.CASE_ID_KEY.value
-        case_pref = parameters[
-            Parameters.CASE_ATTRIBUTE_PREFIX] if Parameters.CASE_ATTRIBUTE_PREFIX in parameters else Parameters.CASE_ATTRIBUTE_PREFIX.value
-        enable_deepcopy = parameters[Parameters.DEEP_COPY] if Parameters.DEEP_COPY in parameters else False
         return __transform_event_stream_to_event_log(log, case_glue=glue, include_case_attributes=True,
                                                      case_attribute_prefix=case_pref, enable_deepcopy=enable_deepcopy)
     return log

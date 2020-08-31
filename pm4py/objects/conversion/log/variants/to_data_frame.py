@@ -4,20 +4,13 @@ import pandas as pd
 
 from pm4py.objects.conversion.log.variants import to_event_stream
 from pm4py.objects.log import log as log_instance
+from pm4py.objects.conversion.log import constants
 
 
 class Parameters(Enum):
-    DEEP_COPY = False
-    CASE_ATTRIBUTE_PREFIX = 'case:'
-
-
-def __parse_params(parameters):
-    new_params = dict()
-    if Parameters.DEEP_COPY in parameters:
-        new_params[to_event_stream.Parameters.DEEP_COPY] = parameters[Parameters.DEEP_COPY]
-    if Parameters.CASE_ATTRIBUTE_PREFIX in parameters:
-        new_params[to_event_stream.Parameters.CASE_ATTRIBUTE_PREFIX] = parameters[Parameters.CASE_ATTRIBUTE_PREFIX]
-    return new_params
+    DEEP_COPY = constants.DEEPCOPY
+    STREAM_POST_PROCESSING = constants.STREAM_POSTPROCESSING
+    CASE_ATTRIBUTE_PREFIX = "case_attribute_prefix"
 
 
 def apply(log, parameters=None):
@@ -45,7 +38,7 @@ def apply(log, parameters=None):
     if isinstance(log, pd.core.frame.DataFrame):
         return log
     if type(log) is log_instance.EventLog:
-        log = to_event_stream.apply(log, parameters=__parse_params(parameters))
+        log = to_event_stream.apply(log, parameters=parameters)
     transf_log = [dict(x) for x in log]
     df = pd.DataFrame.from_dict(transf_log)
     return df

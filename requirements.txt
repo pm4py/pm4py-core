@@ -15,6 +15,7 @@ pytz
 pyvis
 scikit-learn
 scipy
+sympy
 stringdist
 
 # ADDITIONAL REQUIREMENTS FOR PUBLIC GPL RELEASE

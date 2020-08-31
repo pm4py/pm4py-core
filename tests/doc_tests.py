@@ -652,7 +652,7 @@ class DocTests(unittest.TestCase):
         from pm4py.algo.conformance.alignments import algorithm as alignments
 
         # define the activity key in the parameters
-        parameters = {inductive_miner.Variants.DFG_BASED.value.Parameters.ACTIVITY_KEY: "customClassifier",
+        parameters = {inductive_miner.Variants.IMd.value.Parameters.ACTIVITY_KEY: "customClassifier",
                       alignments.Variants.VERSION_STATE_EQUATION_A_STAR.value.Parameters.ACTIVITY_KEY: "customClassifier"}
 
         # calculate process model using the given classifier

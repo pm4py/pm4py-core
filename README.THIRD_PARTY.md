@@ -25,11 +25,12 @@ to change as libraries are added or removed.
 | kiwisolver | https://pypi.org/project/kiwisolver | BSD | 1.2.0 | X | X |
 | lxml | https://pypi.org/project/lxml | BSD | 4.5.2 | X | X |
 | MarkupSafe | https://pypi.org/project/MarkupSafe | BSD | 1.1.1 | | X |
-| matplotlib | https://pypi.org/project/matplotlib | PSF | 3.3.0 | X | X |
-| networkx | https://pypi.org/project/networkx | BSD | 2.4 | X | |
+| matplotlib | https://pypi.org/project/matplotlib | PSF | 3.3.1 | X | X |
+| mpmath | https://pypi.org/project/mpmath | BSD | 1.1.0 | | |
+| networkx | https://pypi.org/project/networkx | BSD | 2.5 | X | |
 | numpy | https://pypi.org/project/numpy | BSD | 1.19.1 | | X |
 | packaging | https://pypi.org/project/packaging | Apache 2.0 | 20.4 | | |
-| pandas | https://pypi.org/project/pandas | BSD | 1.1.0 | X | X |
+| pandas | https://pypi.org/project/pandas | BSD | 1.1.1 | X | X |
 | parso | https://pypi.org/project/parso | MIT | 0.7.0 | | |
 | pickleshare | https://pypi.org/project/pickleshare | MIT | 0.7.5 | X | |
 | prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD | 3.0.5 | | |
@@ -43,6 +44,7 @@ to change as libraries are added or removed.
 | scikit-learn | https://pypi.org/project/scikit-learn | BSD | 0.23.2 | X | X |
 | scipy | https://pypi.org/project/scipy | BSD | 1.5.2 | | X |
 | setuptools | https://pypi.org/project/setuptools | MIT | 47.1.1 | X | |
+| sympy | https://pypi.org/project/sympy | BSD | 1.6.2 | | |
 | six | https://pypi.org/project/six | MIT | 1.15.0 | | |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache 2.0 | 2.1.0 | | |
 | StringDist | https://pypi.org/project/StringDist | MIT | 1.0.9 | | |
