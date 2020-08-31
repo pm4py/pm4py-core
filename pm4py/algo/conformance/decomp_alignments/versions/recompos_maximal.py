@@ -11,6 +11,8 @@ from copy import copy
 from pm4py.algo.conformance.decomp_alignments.parameters import Parameters
 from pm4py.util import exec_utils
 from pm4py.algo.conformance.alignments.versions import state_equation_less_memory
+import sys
+import time
 
 
 def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
@@ -18,8 +20,7 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
 
     best_worst, cf = align(trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
-    best_worst_cost = sum(cf[x] for x in best_worst['alignment']) // utils.STD_MODEL_LOG_MOVE_COST if best_worst[
-        'alignment'] else 0
+    best_worst_cost = sum(cf[x] for x in best_worst['alignment']) // utils.STD_MODEL_LOG_MOVE_COST if best_worst else 0
 
     return best_worst_cost
 
@@ -151,8 +152,14 @@ def apply_log(log, list_nets, parameters=None):
     for variant in variants_list:
         one_tr_per_var.append(log[variants_idxs[variant][0]])
     all_alignments = []
+    max_align_time = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME, parameters, sys.maxsize)
+    start_time = time.time()
     for index, trace in enumerate(one_tr_per_var):
-        alignment = apply_trace(trace, list_nets, parameters=parameters)
+        this_time = time.time()
+        if this_time - start_time <= max_align_time:
+            alignment = apply_trace(trace, list_nets, parameters=parameters)
+        else:
+            alignment = None
         all_alignments.append(alignment)
     al_idx = {}
     for index_variant, variant in enumerate(variants_idxs):
@@ -202,17 +209,19 @@ def get_alres(al):
     alres
         Description of the alignment
     """
-    ret = {}
-    for index, el in enumerate(al["alignment"]):
-        if el[1][0] is not None and el[1][0] != ">>":
-            if not el[1][0] in ret:
-                ret[el[1][0]] = []
+    if al is not None:
+        ret = {}
+        for index, el in enumerate(al["alignment"]):
+            if el[1][0] is not None and el[1][0] != ">>":
+                if not el[1][0] in ret:
+                    ret[el[1][0]] = []
 
-            if el[1][1] is not None and el[1][1] != ">>":
-                ret[el[1][0]].append(0)
-            else:
-                ret[el[1][0]].append(1)
-    return ret
+                if el[1][1] is not None and el[1][1] != ">>":
+                    ret[el[1][0]].append(0)
+                else:
+                    ret[el[1][0]].append(1)
+        return ret
+    return None
 
 
 def order_nodes_second_round(to_visit, G0):
@@ -345,6 +354,7 @@ def apply_trace(trace, list_nets, parameters=None):
     if parameters is None:
         parameters = {}
 
+    max_align_time_trace = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME_TRACE, parameters, sys.maxsize)
     threshold_border_agreement = exec_utils.get_param_value(Parameters.PARAM_THRESHOLD_BORDER_AGREEMENT, parameters,
                                                             100000000)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
@@ -356,8 +366,13 @@ def apply_trace(trace, list_nets, parameters=None):
     cons_nets_alres = []
     cons_nets_costs = []
     max_val_alres = 0
+    start_time = time.time()
     i = 0
     while i < len(cons_nets):
+        this_time = time.time()
+        if this_time - start_time > max_align_time_trace:
+            # the alignment did not termine in the provided time
+            return None
         net, im, fm = cons_nets[i]
         proj = Trace([x for x in trace if x[activity_key] in net.lvis_labels])
         if len(proj) > 0:
@@ -371,7 +386,10 @@ def apply_trace(trace, list_nets, parameters=None):
             cons_nets_result.append(al)
             cons_nets_alres.append(alres)
             cons_nets_costs.append(cf)
-            max_val_alres = max(max_val_alres, max(z for y in alres.values() for z in y))
+            if this_time - start_time > max_align_time_trace:
+                # the alignment did not termine in the provided time
+                return None
+            max_val_alres = max(max_val_alres, max(z for y in alres.values() for z in y) if alres else 0)
             border_disagreements = 0
             if max_val_alres > 0:
                 comp_to_merge = set()
@@ -379,6 +397,9 @@ def apply_trace(trace, list_nets, parameters=None):
                     for ind in acache[act]:
                         if ind >= i:
                             break
+                        if cons_nets_alres[ind] is None or cons_nets_alres[ind] is None:
+                            # the alignment did not termine in the provided time
+                            return None
                         if cons_nets_alres[ind][act] != cons_nets_alres[i][act]:
                             for ind2 in acache[act]:
                                 comp_to_merge.add(ind2)
@@ -413,6 +434,9 @@ def apply_trace(trace, list_nets, parameters=None):
             cons_nets_alres.append(None)
             cons_nets_costs.append(None)
         i = i + 1
+    if this_time - start_time > max_align_time_trace:
+        # the alignment did not termine in the provided time
+        return None
     alignment = recompose_alignment(cons_nets, cons_nets_result, )
     overall_cost_dict = {}
     for cf in cons_nets_costs:
@@ -423,6 +447,9 @@ def apply_trace(trace, list_nets, parameters=None):
     for el in alignment:
         cost = cost + overall_cost_dict[el]
     alignment = [x[1] for x in alignment]
+    if this_time - start_time > max_align_time_trace:
+        # the alignment did not termine in the provided time
+        return None
     res = {"cost": cost, "alignment": alignment}
     best_worst_cost = exec_utils.get_param_value(Parameters.BEST_WORST_COST, parameters, None)
     if best_worst_cost is not None and len(trace) > 0:

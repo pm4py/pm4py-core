@@ -1,5 +1,6 @@
 import numpy as np
 from pm4py.util.lp import solver
+from statistics import mean
 
 
 def get_c_matrix(PS_matrix, duration_matrix, activities, activities_counter):
@@ -126,6 +127,59 @@ def resolve_LP(C_matrix, duration_matrix, activities, activities_counter):
             performance_dfg[(activities[edges[idx][0]], activities[edges[idx][1]])] = duration_matrix[
                 edges[idx][0], edges[idx][1]]
     return dfg, performance_dfg
+
+
+def match_return_avg_time(ai, aj, exact=False):
+    """
+    Matches two list of times (exact or greedy)
+    and returns the average.
+
+    Parameters
+    --------------
+    ai
+        First list
+    aj
+        Second list
+
+    Returns
+    ---------------
+    times_mean
+        Mean of times
+    """
+    if exact:
+        from pm4py.statistics.util import times_bipartite_matching
+        matching = times_bipartite_matching.exact_match_minimum_average(ai, aj)
+        ret_exact = mean([x[1] - x[0] for x in matching]) if matching else 0
+        return ret_exact
+    else:
+        ret_greedy = greedy_match_return_avg_time(ai, aj)
+        return ret_greedy
+
+
+def greedy_match_return_avg_time(ai, aj):
+    """
+    Matches two list of times with a greedy method
+    and returns the average.
+
+    Parameters
+    --------------
+    ai
+        First list
+    aj
+        Second list
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ---------------
+    times_mean
+        Mean of times
+    """
+    tm0 = calculate_time_match_fifo(ai, aj)
+    td0 = mean([x[1] - x[0] for x in tm0]) if tm0 else 0
+    tm1 = calculate_time_match_rlifo(ai, aj)
+    td1 = mean([x[1] - x[0] for x in tm1]) if tm1 else 0
+    return min(td0, td1)
 
 
 def calculate_time_match_fifo(ai, aj, times0=None):
