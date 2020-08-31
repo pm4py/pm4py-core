@@ -1,7 +1,7 @@
 from pm4py.statistics.attributes.common import get as attributes_common
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.statistics.parameters import Parameters
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 
 
 def get_attribute_values(df, attribute_key, parameters=None):
@@ -24,7 +24,12 @@ def get_attribute_values(df, attribute_key, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    str(parameters)
+
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    keep_once_per_case = exec_utils.get_param_value(Parameters.KEEP_ONCE_PER_CASE, parameters, False)
+
+    if keep_once_per_case:
+        df = df.groupby([case_id_glue, attribute_key]).first().reset_index()
     attributes_values_dict = dict(df[attribute_key].value_counts())
     # print("attributes_values_dict=",attributes_values_dict)
     return attributes_values_dict
