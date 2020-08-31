@@ -15,4 +15,5 @@ pytz
 pyvis
 scikit-learn
 scipy
+sympy
 stringdist
