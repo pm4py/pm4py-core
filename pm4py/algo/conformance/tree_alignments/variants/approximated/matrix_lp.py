@@ -3,7 +3,8 @@ import math
 from pm4py.algo.conformance.tree_alignments.variants.approximated.calculate_a_sa_ea_sets import \
     initialize_a_sa_ea_tau_sets
 from pm4py.algo.conformance.tree_alignments.variants.approximated.utilities import calculate_optimal_alignment, \
-    concatenate_traces, trace_to_list_of_str, add_fitness_and_cost_info_to_alignments
+    concatenate_traces, trace_to_list_of_str, add_fitness_and_cost_info_to_alignments, AlignmentNoneException, \
+    EfficientTree
 from pm4py.objects.process_tree.util import get_process_tree_height, process_tree_to_binary_process_tree
 from pm4py.objects.petri.align_utils import SKIP
 from pm4py.objects.process_tree.process_tree import ProcessTree
@@ -18,16 +19,23 @@ from pm4py.statistics.variants.log.get import get_variants_from_log_trace_idx
 from pm4py.util.lp import solver
 from enum import Enum
 import numpy as np
+from copy import copy
+import sys
+import time
 
 from pulp import lpSum, LpVariable, LpProblem, LpMinimize
 
-TOL = 0.1**6
+TOL = 0.1 ** 6
+
 
 class Parameters(Enum):
     MAX_TRACE_LENGTH = "max_trace_length"
     MAX_PROCESS_TREE_HEIGHT = "max_process_tree_height"
     PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    PARAM_MAX_ALIGN_TIME_TRACE = "max_align_time_trace"
+    PARAM_MAX_ALIGN_TIME = "max_align_time"
+    SUBTREE_ALIGN_CACHE = "subtree_align_cache"
 
 
 def apply_from_variants_tree_string(var_list, tree_string, parameters=None):
@@ -149,20 +157,44 @@ def __align(obj: Union[Trace, EventLog], pt: ProcessTree, max_trace_length: int 
         obj = e
     assert isinstance(obj, EventLog)
     pt = process_tree_to_binary_process_tree(pt)
+    pt = EfficientTree(pt)
+
+    parameters[Parameters.SUBTREE_ALIGN_CACHE] = {}
+
     return __approximate_alignments_for_log(obj, pt, max_trace_length, max_process_tree_height,
                                             parameters=parameters)
 
 
 def __approximate_alignments_for_log(log: EventLog, pt: ProcessTree, max_tl: int, max_th: int,
                                      parameters=None):
+    if parameters is None:
+        parameters = {}
+
     a_sets, sa_sets, ea_sets, tau_sets = initialize_a_sa_ea_tau_sets(pt)
     variants = get_variants_from_log_trace_idx(log, parameters=parameters)
     inv_corr = {}
-    for i, var in enumerate(variants):
-        alignment = __approximate_alignment_for_trace(pt, a_sets, sa_sets, ea_sets, tau_sets, log[variants[var][0]],
-                                                      max_tl, max_th,
-                                                      parameters=parameters)
-        alignment = add_fitness_and_cost_info_to_alignments(alignment, pt, log[variants[var][0]])
+
+    max_align_time = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME, parameters,
+                                                sys.maxsize)
+    log_alignment_start_time = time.time()
+
+    var_keys_with_trace_length = list((x, len(log[y[0]])) for x, y in variants.items())
+    var_keys_with_trace_length = sorted(var_keys_with_trace_length, key=lambda x: x[1])
+    var_keys = [x[0] for x in var_keys_with_trace_length]
+
+    for i, var in enumerate(var_keys):
+        this_time = time.time()
+
+        if this_time - log_alignment_start_time <= max_align_time:
+            parameters["trace_alignment_start_time"] = this_time
+            alignment = __approximate_alignment_for_trace(pt, a_sets, sa_sets, ea_sets, tau_sets, log[variants[var][0]],
+                                                          max_tl, max_th,
+                                                          parameters=parameters)
+            alignment = add_fitness_and_cost_info_to_alignments(alignment, pt, log[variants[var][0]],
+                                                                parameters=parameters)
+        else:
+            alignment = None
+
         for idx in variants[var]:
             inv_corr[idx] = alignment
     alignments = []
@@ -175,21 +207,71 @@ def __approximate_alignment_for_trace(pt: ProcessTree, a_sets: Dict[ProcessTree,
                                       sa_sets: Dict[ProcessTree, Set[str]], ea_sets: Dict[ProcessTree, Set[str]],
                                       tau_flags: Dict[ProcessTree, bool], trace: Trace, max_tl: int,
                                       max_th: int, parameters=None):
-    if len(trace) <= max_tl or get_process_tree_height(pt) <= max_th:
-        return calculate_optimal_alignment(pt, trace, parameters=parameters)
-    else:
-        if pt.operator == Operator.SEQUENCE:
-            return __approximate_alignment_on_sequence(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th,
-                                                       parameters=parameters)
-        elif pt.operator == Operator.LOOP:
-            return __approximate_alignment_on_loop(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th,
-                                                   parameters=parameters)
-        elif pt.operator == Operator.XOR:
-            return __approximate_alignment_on_choice(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th,
-                                                     parameters=parameters)
-        elif pt.operator == Operator.PARALLEL:
-            return __approximate_alignment_on_parallel(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl, max_th,
-                                                       parameters=parameters)
+    if parameters is None:
+        parameters = {}
+
+    max_align_time_trace = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME_TRACE, parameters,
+                                                      sys.maxsize)
+    subtree_align_cache = exec_utils.get_param_value(Parameters.SUBTREE_ALIGN_CACHE, parameters, {})
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+
+    start_time = parameters["trace_alignment_start_time"]
+    current_time = time.time()
+
+    trace_activities = tuple([x[activity_key] for x in trace])
+
+    id_pt = id(pt)
+
+    # if the combination process tree-trace is in the cache
+    # use the cache to avoid further computations
+    if (id_pt, trace_activities) in subtree_align_cache:
+        return copy(subtree_align_cache[(id_pt, trace_activities)])
+
+    if current_time - start_time > max_align_time_trace:
+        # the alignment of the trace did not terminate in an useful time
+        subtree_align_cache[(id_pt, trace_activities)] = None
+        return None
+
+    try:
+        if len(trace) <= max_tl or get_process_tree_height(pt) <= max_th:
+            aligned_trace = calculate_optimal_alignment(pt, trace, parameters=parameters)
+            subtree_align_cache[(id_pt, trace_activities)] = copy(aligned_trace)
+            return aligned_trace
+        else:
+            if pt.operator == Operator.SEQUENCE:
+                aligned_trace = __approximate_alignment_on_sequence(pt, trace, a_sets, sa_sets, ea_sets, tau_flags,
+                                                                    max_tl,
+                                                                    max_th,
+                                                                    parameters=parameters)
+                subtree_align_cache[(id_pt, trace_activities)] = copy(aligned_trace)
+                return aligned_trace
+            elif pt.operator == Operator.LOOP:
+                aligned_trace = __approximate_alignment_on_loop(pt, trace, a_sets, sa_sets, ea_sets, tau_flags, max_tl,
+                                                                max_th,
+                                                                parameters=parameters)
+                subtree_align_cache[(id_pt, trace_activities)] = copy(aligned_trace)
+                return aligned_trace
+            elif pt.operator == Operator.XOR:
+                aligned_trace = __approximate_alignment_on_choice(pt, trace, a_sets, sa_sets, ea_sets, tau_flags,
+                                                                  max_tl, max_th,
+                                                                  parameters=parameters)
+                subtree_align_cache[(id_pt, trace_activities)] = copy(aligned_trace)
+                return aligned_trace
+            elif pt.operator == Operator.PARALLEL:
+                aligned_trace = __approximate_alignment_on_parallel(pt, trace, a_sets, sa_sets, ea_sets, tau_flags,
+                                                                    max_tl,
+                                                                    max_th,
+                                                                    parameters=parameters)
+                subtree_align_cache[(id_pt, trace_activities)] = copy(aligned_trace)
+                return aligned_trace
+    except AlignmentNoneException:
+        # alignment did not terminate correctly. return None
+        subtree_align_cache[(id_pt, trace_activities)] = None
+        return None
+    except IndexError:
+        # alignment did not terminate correctly. return None
+        subtree_align_cache[(id_pt, trace_activities)] = None
+        return None
 
 
 def __approximate_alignment_on_choice(pt: ProcessTree, trace: Trace, a_sets: Dict[ProcessTree, Set[str]],
@@ -641,9 +723,13 @@ def __approximate_alignment_on_loop(pt: ProcessTree, trace: Trace, a_sets: Dict[
 
     res = []
     for subtree, sub_trace in alignments_to_calculate:
-        res.extend(
-            __approximate_alignment_for_trace(subtree, a_sets, sa_sets, ea_sets, tau_flags, sub_trace, tl, th,
-                                              parameters=parameters))
+        align_result = __approximate_alignment_for_trace(subtree, a_sets, sa_sets, ea_sets, tau_flags, sub_trace, tl,
+                                                         th,
+                                                         parameters=parameters)
+        if align_result is None:
+            # the alignment did not terminate correctly
+            return None
+        res.extend(align_result)
     return res
 
 
@@ -900,9 +986,14 @@ def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: D
     # calculate and compose alignments
     res = []
     for subtree, sub_trace in alignments_to_calculate:
-        res.extend(
-            __approximate_alignment_for_trace(subtree, a_sets, sa_sets, ea_sets, tau_flags, sub_trace, tl, th,
-                                              parameters=parameters))
+        align_result = __approximate_alignment_for_trace(subtree, a_sets, sa_sets, ea_sets, tau_flags, sub_trace, tl,
+                                                         th,
+                                                         parameters=parameters)
+        if align_result is None:
+            # the alignment did not terminate correctly
+            return None
+        res.extend(align_result)
+
     return res
 
 
@@ -1035,7 +1126,7 @@ def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: D
                 r[x__variables[k][j]] = 1
                 Aub.append(r)
                 bub.append(1)
-         # activity can be only an end-activity for one subtree
+        # activity can be only an end-activity for one subtree
         r = [0] * len(all_variables)
         for j in range(len(pt.children)):
             r[e__variables[i][j]] = 1
@@ -1141,9 +1232,15 @@ def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: D
         for trace_part in trace_parts:
             if subtree == trace_part[0]:
                 sub_trace = concatenate_traces(sub_trace, trace_part[1])
-        alignments_per_subtree[subtree] = __approximate_alignment_for_trace(subtree, a_sets, sa_sets, ea_sets,
-                                                                            tau_flags, sub_trace, tl, th,
-                                                                            parameters=parameters)
+        align_result = __approximate_alignment_for_trace(subtree, a_sets, sa_sets, ea_sets,
+                                                         tau_flags, sub_trace, tl, th,
+                                                         parameters=parameters)
+        if align_result is None:
+            # the alignment did not terminate correctly.
+            return None
+        alignments_per_subtree[subtree] = align_result
+
+
     # compose alignments from subtree alignments
     res = []
     for trace_part in trace_parts:
@@ -1172,7 +1269,7 @@ def __ilp_solve(c, Aub, bub, Aeq, beq):
     if "cvxopt" in solver.DEFAULT_LP_SOLVER_VARIANT:
         # does this part only if cvxopt is imported
         from cvxopt import matrix
-        c = matrix([x*1.0 for x in c])
+        c = matrix([x * 1.0 for x in c])
         Aeq = matrix(Aeq)
         beq = matrix(beq)
         Aub = matrix(Aub)
@@ -1187,7 +1284,7 @@ def __ilp_solve(c, Aub, bub, Aeq, beq):
         condition_points = True
         for x in points:
             if x > TOL or x < 1 - TOL:
-               continue
+                continue
             condition_points = False
             break
         # there is at least one point in the solution that is not integer.
@@ -1200,7 +1297,8 @@ def __ilp_solve(c, Aub, bub, Aeq, beq):
         points = [round(x) for x in points]
     else:
         # calls other linear solvers (pulp, ortools) with REQUIRE_ILP set to True
-        sol = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.DEFAULT_LP_SOLVER_VARIANT, parameters={solver.Parameters.REQUIRE_ILP: True})
+        sol = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.DEFAULT_LP_SOLVER_VARIANT,
+                           parameters={solver.Parameters.REQUIRE_ILP: True})
         points = solver.get_points_from_sol(sol, variant=solver.DEFAULT_LP_SOLVER_VARIANT)
 
     return points
