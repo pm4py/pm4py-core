@@ -4,6 +4,12 @@ import sys
 import traceback
 
 
+def woflan():
+    from examples import woflan
+    print("\n\nwoflan")
+    woflan.execute_script()
+
+
 def tree_playout():
     from examples import tree_playout
     print("\n\ntree_playout")
@@ -95,9 +101,9 @@ def logs_petri_visual_comparison():
 
 
 def imdf_example():
-    from examples import imdf_example
+    from examples import im_example
     print("\n\nimdf_example")
-    imdf_example.execute_script()
+    im_example.execute_script()
 
 
 def test_evaluation():
@@ -225,6 +231,7 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(woflan)
     execute_script(tree_playout)
     execute_script(emd_evaluation)
     execute_script(footprints_tree_conf)

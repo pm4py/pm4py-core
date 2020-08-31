@@ -7,10 +7,10 @@ import os
 
 def execute_script():
     # in this case, we obtain a decision tree by alignments on a specific decision point
-    log = xes_importer.apply(os.path.join("..", "tests", "input_data", "receipt.xes"))
+    log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
     net, im, fm = inductive_miner.apply(log)
-    # we need to specify a decision point. In this case, the place p_25 is a suitable decision point
-    clf, feature_names, classes = algorithm.get_decision_tree(log, net, im, fm, decision_point="p_25")
+    # we need to specify a decision point. In this case, the place p_10 is a suitable decision point
+    clf, feature_names, classes = algorithm.get_decision_tree(log, net, im, fm, decision_point="p_10")
     # we can visualize the decision tree
     gviz = visualizer.apply(clf, feature_names, classes,
                             parameters={visualizer.Variants.CLASSIC.value.Parameters.FORMAT: "svg"})

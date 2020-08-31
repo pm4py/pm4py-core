@@ -1,7 +1,41 @@
+===== PM4PY 1.5.0 =====
+This is a *major* release, consisting of the following *major* changes:
+1. commit 3bb5125f1849985ec9e2ba7962a287a25ede8e43
+    - new implementation of the (classical) Inductive Miner, based on the PhD thesis of Sander Leemans.
+    the implementation covers the following fall through functions:
+        - empty trace
+        - strict tau loop
+        - tau loop
+        - activity once per trace
+        - activity concurrent
+        - flower loop
+2. commit 1639d7a17660b4641a58cb435f7061d4168ce422
+    - implemention of 'WOFLAN', based on the PhD thesis of Eric (H.M.W.) Verbeek.
+
+The following *minor* changes included in this release:
+1. commit 3c9ed4b5e1860e2494d3b68668e3e1021ee59585
+    - invisible transition reduction in process tree to Petri net transformation
+2. commit 26ac905fed4703724805f8fb1b5daa21475df147
+    - minor optimizations in process tree alignment approximation algorithm
+3. commit c5b5ffdd51cd832be14d3078948e29f88f6c2673
+    - add time-out parameter to decomposed alignment calculation
+4. commit 4a5fb9ff5ab395529062ce92747b9624a1799b0e
+    - add bipartite graph matching for correlation mining to obtain exact matching results
+5. commit 30b9059fac3d59abac1c973637bd66388d7dd6db
+    - bug fix in parameter parsing of log conversions
+6. commit acc46269040a3b60bdcc6f5afe9ea55ddb5549e1
+    - minor performance improvement of process tree playout
+7. commit 5dd0fe17d5a07a2096afc647306a5673d86508ba
+    - apply trace-level directly on pandas data frames
+8. commit 4c35335da6a6d4419b68a49af3cbd358eca8881d
+    - add 'COUNT' functionality for log/dfg statistics, e.g., in how many cases does act 'A' appear?
+
+
 ===== PM4PY 1.4.1.1 =====
 This is a hotfixes release, consisting of the following changes:
 1. commit 76df914ad48b93a72127b0d79e5547669d3148db
     - fixed bug in less-memory alignments when im == fm
+
 
 ===== PM4PY 1.4.1 =====
 This is a minor release, consisting of the following changes:
@@ -14,6 +48,7 @@ This is a minor release, consisting of the following changes:
     - discovery of log skeleton from the list of variants
 4. commit e18021f06e4431628a84b441acf136d44c9baed6
     - revision/enrichment of simplified API
+
 
 ===== PM4PY 1.4.0 =====
 This is a *major* release, consisting of the following *major* changes:
