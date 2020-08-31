@@ -26,7 +26,8 @@ SEQ_SET2_CONST = -0.28
 PAR_CUT_CONSTANT = 0
 
 # default noise threshold
-NOISE_THRESHOLD = 0.0
+NOISE_THRESHOLD_IMD = 0.0
+NOISE_THRESHOLD_IMF = 0.2
 
 # recursion limit for IMDF
 REC_LIMIT = 100000
