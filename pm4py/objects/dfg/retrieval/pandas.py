@@ -2,7 +2,7 @@ import pandas as pd
 
 def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name",
                   timestamp_key="time:timestamp", perf_aggregation_key="mean", sort_caseid_required=True,
-                  sort_timestamp_along_case_id=True, window=1):
+                  sort_timestamp_along_case_id=True, keep_once_per_case=False, window=1):
     """
     Get DFG graph from Pandas dataframe
 
@@ -24,6 +24,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         Specify if a sort on the Case ID is required
     sort_timestamp_along_case_id
         Specifying if sorting by timestamp along the CaseID is required
+    keep_once_per_case
+        In the counts, keep only one occurrence of the path per case (the first)
     window
         Window of the DFG (default 1)
 
@@ -52,6 +54,9 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     # as successive rows in the sorted dataframe may belong to different case IDs we have to restrict ourselves to
     # successive rows belonging to same case ID
     df_successive_rows = df_successive_rows[df_successive_rows[case_id_glue] == df_successive_rows[case_id_glue + '_2']]
+    if keep_once_per_case:
+        df_successive_rows = df_successive_rows.groupby([case_id_glue, activity_key, activity_key+"_2"]).first().reset_index()
+
     all_columns = set(df_successive_rows.columns)
     all_columns = list(all_columns - set([activity_key, activity_key + '_2']))
 
