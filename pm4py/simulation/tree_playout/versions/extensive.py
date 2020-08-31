@@ -1,3 +1,4 @@
+from pm4py.algo.discovery.footprints import algorithm as fp_discovery
 from pm4py.objects.process_tree import bottomup as bottomup_discovery
 from pm4py.util import exec_utils
 from pm4py.objects.log.log import EventLog, Trace, Event
@@ -15,6 +16,7 @@ class Parameters(Enum):
     MAX_LOOP_OCC = "max_loop_occ"
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     MAX_LIMIT_NUM_TRACES = "max_limit_num_traces"
+    RETURN_SET_STRINGS = "return_set_strings"
 
 
 def get_playout_leaf(node, playout_dictio, max_trace_length, max_loop_occ, min_rem_dict, max_limit_num_traces):
@@ -85,10 +87,12 @@ def get_sequential_compositions_children(traces, max_trace_length, mr, max_limit
     Returns alls the possible sequential combinations between
     the children of a tree
     """
+    diff = max_trace_length - mr
     min_len_traces, min_rem_length = get_min_remaining_length(traces)
     curr = list(traces[0])
     i = 1
     while i < len(traces):
+        mrl = min_rem_length[i]
         to_visit = []
         j = 0
         while j < len(curr):
@@ -100,7 +104,7 @@ def get_sequential_compositions_children(traces, max_trace_length, mr, max_limit
                 y = traces[i][z]
                 xy = list(x)
                 xy.append(y)
-                if len(flatten(xy)) + min_rem_length[i] <= max_trace_length - mr:
+                if sum(len(k) for k in xy) + mrl <= diff:
                     to_visit.append(xy)
                 z = z + 1
             j = j + 1
@@ -142,14 +146,14 @@ def get_playout_sequence(node, playout_dictio, max_trace_length, max_loop_occ, m
     Performs the playout of a sequence node, returning the traces allowed by the tree
     """
     mr = min_rem_dict[node]
-    final_traces = list()
+    final_traces = set()
     traces = list(sorted(playout_dictio[x][TRACES], key=lambda x: len(x)) for x in node.children)
     sequential_compositions = get_sequential_compositions_children(traces, max_trace_length, mr, max_limit_num_traces)
     for x in sequential_compositions:
-        final_traces.append(tuple(flatten(x)))
+        final_traces.add(tuple(flatten(x)))
     for n in node.children:
         del playout_dictio[n][TRACES]
-    playout_dictio[node] = {TRACES: set(final_traces)}
+    playout_dictio[node] = {TRACES: final_traces}
 
 
 def get_playout_loop(node, playout_dictio, max_trace_length, max_loop_occ, min_rem_dict, max_limit_num_traces):
@@ -157,35 +161,44 @@ def get_playout_loop(node, playout_dictio, max_trace_length, max_loop_occ, min_r
     Performs the playout of a loop node, returning the traces allowed by the tree
     """
     mr = min_rem_dict[node]
-    final_traces = list()
+    final_traces = set()
     do_traces = sorted(list(playout_dictio[node.children[0]][TRACES]), key=lambda x: len(x))
     redo_traces = sorted(list(playout_dictio[node.children[1]][TRACES]), key=lambda x: len(x))
     min_do_trace = min(len(x) for x in do_traces) if do_traces else 0
     to_visit = list((x, 0, 0) for x in do_traces)
+    closed = set()
+    diff1 = max_trace_length - mr
+    diff2 = max_trace_length - min_do_trace - mr
     while to_visit:
         curr = to_visit.pop(0)
         curr_trace = curr[0]
         position = curr[1]
         num_loops = curr[2]
-        if position == 0 and len(curr_trace) <= max_trace_length - mr:
-            final_traces.append(curr_trace)
-            if len(final_traces) > max_limit_num_traces:
-                break
         if position == 0:
+            if curr_trace in closed:
+                continue
+            closed.add(curr_trace)
+
+            if len(curr_trace) <= diff1:
+                final_traces.add(curr_trace)
+                if len(final_traces) > max_limit_num_traces:
+                    break
+
             for y in redo_traces:
                 new = curr_trace + y
-                if len(new) <= max_trace_length - min_do_trace - mr and num_loops + 1 <= max_loop_occ:
+                if len(new) <= diff2 and num_loops + 1 <= max_loop_occ:
                     to_visit.append((new, 1, num_loops + 1))
                 else:
                     break
-        if position == 1:
+
+        elif position == 1:
             for y in do_traces:
                 new = curr_trace + y
-                if len(new) <= max_trace_length - mr:
+                if len(new) <= diff1:
                     to_visit.append((new, 0, num_loops))
                 else:
                     break
-    playout_dictio[node] = {TRACES: set(final_traces)}
+    playout_dictio[node] = {TRACES: final_traces}
 
 
 def get_playout(node, playout_dictio, max_trace_length, max_loop_occ, min_rem_dict, max_limit_num_traces):
@@ -226,11 +239,18 @@ def apply(tree, parameters=None):
     if parameters is None:
         parameters = {}
 
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    # to save memory in the returned log, allocate each activity once. to know the list of activities of the
+    # process tree, use the footprints module
+    fp_tree = fp_discovery.apply(tree, parameters=parameters)
+    activities = fp_tree["activities"]
+    activities = {act: Event({activity_key: act}) for act in activities}
+
     min_allowed_trace_length = bottomup_discovery.get_min_trace_length(tree, parameters=parameters)
     max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, min_allowed_trace_length)
-    max_loop_occ = exec_utils.get_param_value(Parameters.MAX_LOOP_OCC, parameters, max_trace_length)
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
-    max_limit_num_traces = exec_utils.get_param_value(Parameters.MAX_LIMIT_NUM_TRACES, parameters, sys.maxsize)
+    max_loop_occ = exec_utils.get_param_value(Parameters.MAX_LOOP_OCC, parameters, int(max_trace_length/2))
+    max_limit_num_traces = exec_utils.get_param_value(Parameters.MAX_LIMIT_NUM_TRACES, parameters, 100000)
+    return_set_strings = exec_utils.get_param_value(Parameters.RETURN_SET_STRINGS, parameters, False)
 
     bottomup = bottomup_discovery.get_bottomup_nodes(tree, parameters=parameters)
     min_rem_dict = bottomup_discovery.get_min_rem_dict(tree, parameters=parameters)
@@ -240,11 +260,14 @@ def apply(tree, parameters=None):
         get_playout(bottomup[i], playout_dictio, max_trace_length, max_loop_occ, min_rem_dict, max_limit_num_traces)
     tree_playout_traces = playout_dictio[tree][TRACES]
 
+    if return_set_strings:
+        return tree_playout_traces
+
     log = EventLog()
     for tr0 in tree_playout_traces:
         trace = Trace()
         for act in tr0:
-            trace.append(Event({activity_key: act}))
+            trace.append(activities[act])
         log.append(trace)
 
     return log

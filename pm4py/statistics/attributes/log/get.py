@@ -3,6 +3,8 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.log.log import EventLog
 from pm4py.util import xes_constants as xes
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
+from pm4py.statistics.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def get_all_trace_attributes_from_log(log):
@@ -71,17 +73,21 @@ def get_attribute_values(log, attribute_key, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attributes = {}
+    keep_once_per_case = exec_utils.get_param_value(Parameters.KEEP_ONCE_PER_CASE, parameters, False)
+
+    attribute_values = {}
 
     for trace in log:
-        for event in trace:
-            if attribute_key in event:
-                attribute = event[attribute_key]
-                if attribute not in attributes:
-                    attributes[attribute] = 0
-                attributes[attribute] = attributes[attribute] + 1
+        trace_values = [x[attribute_key] for x in trace if attribute_key in x]
+        if keep_once_per_case:
+            trace_values = set(trace_values)
 
-    return attributes
+        for val in trace_values:
+            if val not in attribute_values:
+                attribute_values[val] = 0
+            attribute_values[val] = attribute_values[val] + 1
+
+    return attribute_values
 
 
 def get_trace_attribute_values(log, attribute_key, parameters=None):
