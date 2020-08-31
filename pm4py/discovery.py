@@ -90,8 +90,12 @@ def discover_petri_net_inductive(log, noise_threshold=0.0):
         Final marking
     """
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-    return inductive_miner.apply(log, variant=inductive_miner.Variants.DFG_BASED, parameters={
-        inductive_miner.Variants.DFG_BASED.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+    if noise_threshold > 0.0:
+        return inductive_miner.apply(log, variant=inductive_miner.Variants.IMf, parameters={
+            inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+    else:
+        return inductive_miner.apply(log, variant=inductive_miner.Variants.IM, parameters={
+            inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
 
 
 def discover_petri_net_heuristics(log, dependency_threshold=0.5, and_threshold=0.65, loop_two_threshold=0.5):
@@ -142,8 +146,12 @@ def discover_tree_inductive(log, noise_threshold=0.0):
         Process tree object
     """
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-    return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.DFG_BASED, parameters={
-        inductive_miner.Variants.DFG_BASED.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+    if noise_threshold > 0.0:
+        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IMf, parameters={
+            inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+    else:
+        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM, parameters={
+            inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
 
 
 def discover_heuristics_net(log, dependency_threshold=0.5, and_threshold=0.65, loop_two_threshold=0.5):
