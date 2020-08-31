@@ -154,6 +154,7 @@ setup(
         'intervaltree',
         "jsonpickle",
         "deprecation",
+        "sympy",
         "stringdist"
     ],
     project_urls={

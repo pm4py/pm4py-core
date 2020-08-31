@@ -36,6 +36,7 @@ if __name__ == "__main__":
     from tests.statistics_log_test import StatisticsLogTest
     from tests.statistics_df_test import StatisticsDfTest
     from tests.trans_syst_tests import TransitionSystemTest
+    from tests.woflan_tests import WoflanTest
 
     test_ts = TransitionSystemTest()
     test_doc_tests = DocTests()
@@ -66,5 +67,6 @@ if __name__ == "__main__":
     main_factories_test = MainFactoriesTest()
     algorithm_test = AlgorithmTest()
     old_factories_test = OldFactoriesTest()
+    woflan_test = WoflanTest()
 
     unittest.main()
