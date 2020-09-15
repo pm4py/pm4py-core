@@ -1,4 +1,4 @@
-# PM4Py
+# 👷 PM4Py
 Process Mining for Python
 
 Designed to be used in both academia and industry, PM4Py is the leading open source process mining platform written in Python, implementing _Petri nets_, _Open XES Importing/Exporting_, _CSV Importing/Exporting_, _Process Discovery_, _Conformance Checking_, and _BPMN Support_.
