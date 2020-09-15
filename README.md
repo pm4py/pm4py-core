@@ -9,7 +9,7 @@ Designed to be used in both academia and industry, PM4Py is the leading open sou
 
 ## Installing PM4Py
 
-PM4Py is available on PyPI:
+PM4Py is available on [PyPI](https://pypi.org/project/pm4py/):
 
 `python -m pip install pm4py`
 
