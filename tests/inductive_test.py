@@ -11,7 +11,6 @@ import pandas as pd
 from pm4py.objects.log.util import dataframe_utils
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import sampling, sorting, index_attribute
-from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import exporter as petri_exporter
 from pm4py.visualization.petrinet.common import visualize as pn_viz
 
@@ -39,8 +38,6 @@ class InductiveMinerTest(unittest.TestCase):
         net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.IM)
         net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.IMf)
         net, marking, final_marking = inductive_miner.apply(log, variant=variant)
-        soundness = check_soundness.check_petri_wfnet_and_soundness(net)
-        del soundness
 
         return log, net, marking, final_marking
 

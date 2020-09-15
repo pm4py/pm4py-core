@@ -25,7 +25,6 @@ if __name__ == "__main__":
     from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
     from pm4py.algo.discovery.alpha import algorithm as alpha
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
-    from pm4py.objects.petri import check_soundness
     from pm4py.objects.conversion.process_tree import converter as pt_converter
     from pm4py.evaluation.replay_fitness import evaluator as fitness_evaluator
     from pm4py.evaluation.precision import evaluator as precision_evaluator
@@ -192,16 +191,12 @@ if __name__ == "__main__":
             t2 = time.time()
             print("time interlapsed for calculating Alpha Model", (t2 - t1))
             if CHECK_SOUNDNESS:
-                res_classic = check_soundness.check_petri_wfnet_and_soundness(alpha_model, debug=True)
-                print("alpha is_sound_wfnet", res_classic)
                 try:
                     res_woflan, diagn = woflan.apply(alpha_model, alpha_initial_marking, alpha_final_marking,
                                               parameters={"return_asap_when_not_sound": WOFLAN_RETURN_ASAP,
                                                           "print_diagnostics": WOFLAN_PRINT_DIAGNOSTICS,
                                                           "return_diagnostics": WOFLAN_RETURN_DIAGNOSTICS})
                     print("alpha woflan", res_woflan)
-                    if not res_classic == res_woflan:
-                        raise Exception("ALPHA DIFFERENT")
                 except:
                     if ENABLE_PETRI_EXPORTING_DEBUG:
                         exce = traceback.format_exc()
@@ -221,16 +216,12 @@ if __name__ == "__main__":
             t2 = time.time()
             print("time interlapsed for calculating Heuristics Model", (t2 - t1))
             if CHECK_SOUNDNESS:
-                res_classic = check_soundness.check_petri_wfnet_and_soundness(heu_model, debug=True)
-                print("heuristics is_sound_wfnet", res_classic)
                 try:
                     res_woflan, diagn = woflan.apply(heu_model, heu_initial_marking, heu_initial_marking,
                                               parameters={"return_asap_when_not_sound": WOFLAN_RETURN_ASAP,
                                                           "print_diagnostics": WOFLAN_PRINT_DIAGNOSTICS,
                                                           "return_diagnostics": WOFLAN_RETURN_DIAGNOSTICS})
                     print("heuristics woflan", res_woflan)
-                    if not res_classic == res_woflan:
-                        raise Exception("HEURISTICS DIFFERENT")
                 except:
                     if ENABLE_PETRI_EXPORTING_DEBUG:
                         exce = traceback.format_exc()
@@ -261,16 +252,11 @@ if __name__ == "__main__":
             t2 = time.time()
             print("time interlapsed for calculating Inductive Model", (t2 - t1))
             if CHECK_SOUNDNESS:
-                res_classic = check_soundness.check_petri_wfnet_and_soundness(inductive_model, debug=True)
-                print("inductive is_sound_wfnet", res_classic)
                 res_woflan, diagn = woflan.apply(inductive_model, inductive_im, inductive_fm,
                                           parameters={"return_asap_when_not_sound": WOFLAN_RETURN_ASAP,
                                                           "print_diagnostics": WOFLAN_PRINT_DIAGNOSTICS,
                                                           "return_diagnostics": WOFLAN_RETURN_DIAGNOSTICS})
                 print("inductive woflan", res_woflan)
-                if not res_classic == res_woflan:
-                    print("INDUCTIVE DIFFERENT")
-                    input()
 
             parameters = {fitness_evaluator.Variants.TOKEN_BASED.value.Parameters.ACTIVITY_KEY: activity_key,
                           fitness_evaluator.Variants.TOKEN_BASED.value.Parameters.ATTRIBUTE_KEY: activity_key,
