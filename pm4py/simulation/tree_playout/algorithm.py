@@ -1,4 +1,4 @@
-from pm4py.simulation.tree_playout.versions import basic_playout, extensive
+from pm4py.simulation.tree_playout.versions import basic_playout, extensive, topbottom
 from enum import Enum
 from pm4py.util import exec_utils
 
@@ -6,9 +6,10 @@ from pm4py.util import exec_utils
 class Variants(Enum):
     BASIC_PLAYOUT = basic_playout
     EXTENSIVE = extensive
+    TOPBOTTOM = topbottom
 
 
-DEFAULT_VARIANT = Variants.BASIC_PLAYOUT
+DEFAULT_VARIANT = Variants.TOPBOTTOM
 
 
 def apply(tree, variant=DEFAULT_VARIANT, parameters=None):
