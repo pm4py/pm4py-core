@@ -5,7 +5,6 @@ from pm4py.algo.conformance.alignments import algorithm as align_alg
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.objects import petri
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import exporter as petri_exporter
 from pm4py.objects.petri.importer import importer as petri_importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
@@ -19,13 +18,9 @@ class PetriImportExportTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         imported_petri1, marking1, fmarking1 = petri_importer.apply(
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
-        soundness = check_soundness.check_petri_wfnet_and_soundness(imported_petri1)
-        del soundness
         petri_exporter.apply(imported_petri1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         imported_petri2, marking2, fmarking2 = petri_importer.apply(
             os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
-        soundness = check_soundness.check_petri_wfnet_and_soundness(imported_petri2)
-        del soundness
 
         self.assertEqual(sorted([x.name for x in imported_petri1.places]),
                          sorted([x.name for x in imported_petri2.places]))
@@ -42,8 +37,6 @@ class PetriImportExportTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         imported_petri1, marking1, fmarking1 = petri_importer.apply(
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
-        soundness = check_soundness.check_petri_wfnet_and_soundness(imported_petri1)
-        del soundness
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         aligned_traces = token_replay.apply(log, imported_petri1, marking1, fmarking1)
         del aligned_traces
@@ -54,8 +47,6 @@ class PetriImportExportTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         imported_petri1, marking1, fmarking1 = petri_importer.apply(
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
-        soundness = check_soundness.check_petri_wfnet_and_soundness(imported_petri1)
-        del soundness
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         final_marking = petri.petrinet.Marking()
         for p in imported_petri1.places:
