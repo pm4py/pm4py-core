@@ -1,6 +1,8 @@
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.util import xes_constants as xes
+from pm4py.util import constants as pm4_constants
 import deprecation
+
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
                         details='conversion versions are deprecated; use conversion variants instead')
@@ -26,13 +28,15 @@ def apply(df, parameters=None):
     if parameters is None:
         parameters = {}
     variant_stats = case_statistics.get_variant_statistics(df, parameters=parameters)
+    activity_key = parameters[
+        pm4_constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pm4_constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     log = EventLog()
     for vd in variant_stats:
         variant = vd['variant'].split(",")
         trace = Trace()
         for activity in variant:
             event = Event()
-            event[xes.DEFAULT_NAME_KEY] = activity
+            event[activity_key] = activity
             trace.append(event)
         log.append(trace)
     return log

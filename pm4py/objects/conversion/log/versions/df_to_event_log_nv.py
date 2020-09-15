@@ -2,7 +2,9 @@ from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.util import xes_constants as xes
 from pm4py.util import constants as pm4_constants
 import deprecation
+
 RETURN_VARIANTS = 'return_variants'
+
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
                         details='conversion versions are deprecated; use conversion variants instead')
@@ -32,6 +34,8 @@ def apply(df, parameters=None):
 
     case_glue = parameters[
         pm4_constants.PARAMETER_CONSTANT_CASEID_KEY] if pm4_constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else pm4_constants.CASE_CONCEPT_NAME
+    activity_key = parameters[
+        pm4_constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pm4_constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
 
     variant_stats = case_statistics.get_variant_statistics(df, parameters=parameters)
 
@@ -43,12 +47,12 @@ def apply(df, parameters=None):
         trace = Trace()
         for activity in variant:
             event = Event()
-            event[xes.DEFAULT_NAME_KEY] = activity
+            event[activity_key] = activity
             trace.append(event)
         all_variants_log[vd['variant']] = []
         for i in range(variant_count):
             log.append(trace)
-            all_variants_log[vd['variant']].append(len(log)-1)
+            all_variants_log[vd['variant']].append(len(log) - 1)
 
     if return_variants:
         return log, all_variants_log
