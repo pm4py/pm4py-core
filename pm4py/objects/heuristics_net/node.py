@@ -42,6 +42,8 @@ class Node:
         self.node_type = node_type
         self.net_name = net_name
         self.nodes_dictionary = nodes_dictionary
+        self.fill_color = None
+        self.font_color = None
 
     def add_output_connection(self, other_node, dependency_value, dfg_value, repr_color=None, repr_value=None):
         """
@@ -180,6 +182,27 @@ class Node:
                 l2l = (v1 + v2) / (v1 + v2 + 1)
                 if l2l >= loops_length_two_thresh:
                     self.loop_length_two[n2] = c1
+
+    def get_fill_color(self, default):
+        """
+        Gets the fill color for the representation
+
+        Parameters
+        --------------
+        default
+            Default value
+        """
+        if self.fill_color is not None:
+            return self.fill_color
+        return default
+
+    def get_font_color(self):
+        """
+        Gets the font color for the representation
+        """
+        if self.font_color is not None:
+            return self.font_color
+        return "#000000"
 
     def __repr__(self):
         ret = "(node:" + self.node_name + " connections:{"
