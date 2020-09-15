@@ -28,9 +28,9 @@ to change as libraries are added or removed.
 | matplotlib | https://pypi.org/project/matplotlib | PSF | 3.3.1 | X | X |
 | mpmath | https://pypi.org/project/mpmath | BSD | 1.1.0 | | |
 | networkx | https://pypi.org/project/networkx | BSD | 2.5 | X | |
-| numpy | https://pypi.org/project/numpy | BSD | 1.19.1 | | X |
+| numpy | https://pypi.org/project/numpy | BSD | 1.19.2 | | X |
 | packaging | https://pypi.org/project/packaging | Apache 2.0 | 20.4 | | |
-| pandas | https://pypi.org/project/pandas | BSD | 1.1.1 | X | X |
+| pandas | https://pypi.org/project/pandas | BSD | 1.1.2 | X | X |
 | parso | https://pypi.org/project/parso | MIT | 0.7.0 | | |
 | pickleshare | https://pypi.org/project/pickleshare | MIT | 0.7.5 | X | |
 | prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD | 3.0.5 | | |

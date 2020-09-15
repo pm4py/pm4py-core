@@ -18,3 +18,5 @@ class Parameters(Enum):
     PARAM_KEY_DIRECTION = 'direction'
 
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+
+    INCLUDE_DATA = 'include_data'

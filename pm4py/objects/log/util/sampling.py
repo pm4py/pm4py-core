@@ -22,12 +22,7 @@ def sample_stream(event_log, no_events=100):
     """
     new_log = EventStream(attributes=event_log.attributes, extensions=event_log.extensions, globals=event_log._omni,
                           classifiers=event_log.classifiers)
-    set_events = set()
-    for i in range(0, min(no_events, len(event_log._list))):
-        set_events.add(random.randrange(0, len(event_log._list)))
-    set_events = list(set_events)
-    for event in set_events:
-        new_log.append(copy(event_log._list[event]))
+    new_log._list = random.sample(event_log, min(no_events, len(event_log)))
     return new_log
 
 
@@ -49,12 +44,7 @@ def sample_log(log, no_traces=100):
     """
     new_log = EventLog(attributes=log.attributes, extensions=log.extensions, globals=log._omni,
                        classifiers=log.classifiers)
-    set_traces = set()
-    while len(set_traces) < min(no_traces, len(log._list)):
-        set_traces.add(random.randrange(0, len(log._list)))
-    set_traces = list(set_traces)
-    for trace in set_traces:
-        new_log.append(copy(log._list[trace]))
+    new_log._list = random.sample(log, min(no_traces, len(log)))
     return new_log
 
 

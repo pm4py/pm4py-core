@@ -1,10 +1,13 @@
+from pm4py.objects.transition_system import constants
+
+
 class TransitionSystem(object):
     class State(object):
         def __init__(self, name, incoming=None, outgoing=None, data=None):
             self.__name = name
             self.__incoming = set() if incoming is None else incoming
             self.__outgoing = set() if outgoing is None else outgoing
-            self.__data = dict() if data is None else data
+            self.__data = {constants.INGOING_EVENTS: [], constants.OUTGOING_EVENTS: []} if data is None else data
 
         def __get_name(self):
             return self.__name
@@ -44,7 +47,7 @@ class TransitionSystem(object):
             self.__name = name
             self.__from_state = from_state
             self.__to_state = to_state
-            self.__data = dict() if data is None else data
+            self.__data = {constants.EVENTS: []} if data is None else data
 
         def __get_name(self):
             return self.__name
