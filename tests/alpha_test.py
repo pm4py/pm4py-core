@@ -9,7 +9,6 @@ from pm4py.algo.discovery.alpha import algorithm as alpha_alg
 from pm4py.objects import petri
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import sampling, sorting, index_attribute
-from pm4py.objects.petri import check_soundness
 from pm4py.objects.petri.exporter import exporter as petri_exporter
 from pm4py.visualization.petrinet.common import visualize as pn_viz
 import pandas as pd
@@ -30,8 +29,6 @@ class AlphaMinerTest(unittest.TestCase):
             df = dataframe_utils.convert_timestamp_columns_in_df(df)
             log = log_conversion.apply(df)
         net, marking, fmarking = alpha_alg.apply(log)
-        soundness = check_soundness.check_petri_wfnet_and_soundness(net)
-        del soundness
 
         return log, net, marking, fmarking
 
