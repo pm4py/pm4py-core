@@ -1,5 +1,18 @@
 ===== PM4PY 1.5.1 =====
 This is a minor release, consisting of the following changes:
+1. commit 526342e3e96c7386dc7451ac0d9ec74c76b86b4f
+    - performance improvement of the 'less memory' alignment variant
+2. commit 9e926a5d1a373d124a041c72f909eb34083f4649
+    - removed the old soundness check
+3. commit 83c71eaaa9bb4ee55e2f773dd3fc9704c6324704
+    - generalization of the heuristics miner visualization
+4. commit 7e7d9ba9e9b4f94d9801f5c8df3c5e4b3afd5971
+    - improved speed of event log sampling
+5. commit 11d06ba2a44fd7d0a83e439b6615befad5e3c4ba
+    - faster process tree playout (recursive, ignoring PT statespace)
+6. commit ce3a8609013bd7f5890b52cb44e155b57b2fc1c0
+    - allow adding (arbitrary) data to transition system
+
 
 ===== PM4PY 1.5.0 =====
 This is a *major* release, consisting of the following *major* changes:
