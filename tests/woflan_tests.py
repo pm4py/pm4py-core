@@ -142,7 +142,7 @@ class WoflanTest(unittest.TestCase):
         initial_marking[p_1] = 1
         final_marking = Marking()
         final_marking[p_2] = 1
-        self.assertFalse(woflan.apply(net, initial_marking, final_marking))
+        self.assertFalse(woflan.apply(net, initial_marking, final_marking, parameters={"print_diagnostics": False}))
 
     def test_mcg(self):
         net = PetriNet("mcg")

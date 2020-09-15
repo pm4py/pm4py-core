@@ -34,3 +34,32 @@ class Edge:
         self.repr_color = repr_color
         self.edge_type = edge_type
         self.net_name = net_name
+        self.repr_font_color = None
+        self.pen_width = None
+
+    def get_color(self):
+        """
+        Gets the color to use for the representation
+        """
+        return self.repr_color
+
+    def get_font_color(self):
+        """
+        Gets the font color to use for the representation
+        """
+        if self.repr_font_color is not None:
+            return self.repr_font_color
+        return self.repr_color
+
+    def get_penwidth(self, default):
+        """
+        Gets the pen width to use for the representation
+
+        Parameters
+        --------------
+        default
+            Default value
+        """
+        if self.pen_width is not None:
+            return self.pen_width
+        return default

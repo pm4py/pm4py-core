@@ -472,9 +472,8 @@ class SubtreeInfrequent(object):
         # dfg_vis_factory.view(gviz)
         if parameters is None:
             parameters = {}
-        activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, self.parameters,
+        activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
                                                   pmutil.xes_constants.DEFAULT_NAME_KEY)
-
         # check base cases:
         empty_log = base_case.empty_log(self.log)
         single_activity = base_case.single_activity(self.log, activity_key)
@@ -631,7 +630,7 @@ class SubtreeInfrequent(object):
                                   initial_end_activities=self.initial_end_activities, parameters=parameters))
         elif empty_traces_present and not enough_traces:
             # no node is added to the PT, instead we just use recursion on the log without the empty traces
-            self.detect_cut_if()
+            self.detect_cut_if(parameters=parameters)
         else:
             if use_act_once_per_trace:
                 activity_once, new_log, small_log = fall_through.act_once_per_trace(self.log, self.activities, activity_key)

@@ -45,11 +45,11 @@ def apply(log, net, marking, final_marking, parameters=None, variant=None):
 
     # execute the following part of code when the variant is not specified by the user
     if variant is None:
-        if not (petri.check_soundness.check_relaxed_soundness_net_in_fin_marking(
+        if not (petri.check_soundness.check_easy_soundness_net_in_fin_marking(
                 net,
                 marking,
                 final_marking)):
-            # in the case the net is not a relaxed sound workflow net, we must apply token-based replay
+            # in the case the net is not a easy sound workflow net, we must apply token-based replay
             variant = ETCONFORMANCE_TOKEN
         else:
             # otherwise, use the align-etconformance approach (safer, in the case the model contains duplicates)
