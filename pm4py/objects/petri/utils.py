@@ -5,7 +5,6 @@ import random
 from pm4py.objects import petri
 from pm4py.objects.log.log import Trace, Event
 from pm4py.util import xes_constants as xes_util
-from pm4py.objects.petri.check_soundness import check_petri_wfnet_and_soundness
 from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
 
 
@@ -555,8 +554,6 @@ def get_s_components_from_petri(net, im, fm, rec_depth=0, curr_s_comp=None, visi
     if list_s_components is None:
         list_s_components = []
     if len(im) > 1 or len(fm) > 1:
-        return list_s_components
-    if not check_petri_wfnet_and_soundness(net):
         return list_s_components
     source = list(im.keys())[0]
     if curr_s_comp is None:
