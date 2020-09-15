@@ -123,8 +123,8 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     if parameters is None:
         parameters = dict()
 
-    if not check_soundness.check_relaxed_soundness_net_in_fin_marking(petri_net, initial_marking, final_marking):
-        raise Exception("trying to apply alignments on a Petri net that is not a relaxed sound net!!")
+    if not check_soundness.check_easy_soundness_net_in_fin_marking(petri_net, initial_marking, final_marking):
+        raise Exception("trying to apply alignments on a Petri net that is not a easy sound net!!")
 
     start_time = time.time()
     max_align_time = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME, parameters,
