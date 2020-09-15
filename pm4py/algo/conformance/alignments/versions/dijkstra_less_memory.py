@@ -7,6 +7,8 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.petri.importer import pnml as petri_importer
 from pm4py.util import exec_utils
+from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.semantics import enabled_transitions
 from enum import Enum
 from copy import copy
 import heapq
@@ -43,10 +45,11 @@ IS_MODEL_MOVE = 2
 POSITION_TOTAL_COST = 0
 POSITION_INDEX = 1
 POSITION_TYPE_MOVE = 2
-POSITION_STATES_COUNT = 3
-POSITION_PARENT_STATE = 4
-POSITION_MARKING = 5
-POSITION_EN_T = 6
+POSITION_ALIGN_LENGTH = 3
+POSITION_STATES_COUNT = 4
+POSITION_PARENT_STATE = 5
+POSITION_MARKING = 6
+POSITION_EN_T = 7
 
 
 def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
@@ -162,7 +165,7 @@ def apply_from_variant(variant, petri_net, initial_marking, final_marking, param
     return apply(trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
 
-def __transform_model_to_mem_efficient_structure(net, im, fm, parameters=None):
+def __transform_model_to_mem_efficient_structure(net, im, fm, trace, parameters=None):
     """
     Transform the Petri net model to a memory efficient structure
 
@@ -174,6 +177,8 @@ def __transform_model_to_mem_efficient_structure(net, im, fm, parameters=None):
         Initial marking
     fm
         Final marking
+    trace
+        Trace
     parameters
         Parameters
 
@@ -194,13 +199,35 @@ def __transform_model_to_mem_efficient_structure(net, im, fm, parameters=None):
     if parameters is None:
         parameters = {}
 
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+    labels = sorted(list(set(x[activity_key] for x in trace)))
+
     model_cost_function = exec_utils.get_param_value(Parameters.PARAM_MODEL_COST_FUNCTION, parameters, None)
 
     if model_cost_function is None:
         model_cost_function = {}
         for t in net.transitions:
-            model_cost_function[
-                t] = align_utils.STD_MODEL_LOG_MOVE_COST if t.label is not None else align_utils.STD_TAU_COST
+            if t.label is not None:
+                model_cost_function[t] = align_utils.STD_MODEL_LOG_MOVE_COST
+            else:
+                preset_t = Marking()
+                for a in t.in_arcs:
+                    preset_t[a.source] = a.weight
+                # optimization 12/08/2020
+                #
+                # instead of giving undiscriminately weight 1 to
+                # invisible transitions, assign weight 0 to the ones
+                # for which no 'sync' transition is enabled in their
+                # activation markings.
+                #
+                # this requires to modify the state of the alignment, keeping track
+                # of the length of the alignment, to avoid loops.
+                en_t = enabled_transitions(net, preset_t)
+                vis_t_trace = [t for t in en_t if t.label in labels]
+                if len(vis_t_trace) == 0:
+                    model_cost_function[t] = 0
+                else:
+                    model_cost_function[t] = align_utils.STD_TAU_COST
 
     places_dict = {place: index for index, place in enumerate(net.places)}
     trans_dict = {trans: index for index, trans in enumerate(net.transitions)}
@@ -298,7 +325,7 @@ def apply(trace, net, im, fm, parameters=None):
     if parameters is None:
         parameters = {}
 
-    model_struct = __transform_model_to_mem_efficient_structure(net, im, fm, parameters=parameters)
+    model_struct = __transform_model_to_mem_efficient_structure(net, im, fm, trace, parameters=parameters)
     trace_struct = __transform_trace_to_mem_efficient_structure(trace, model_struct, parameters=parameters)
 
     sync_cost = exec_utils.get_param_value(Parameters.PARAM_STD_SYNC_COST, parameters, align_utils.STD_SYNC_COST)
@@ -544,11 +571,12 @@ def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, 
     # ----------- 0 (IS_SYNC_MOVE): sync moves
     # ----------- 1 (IS_LOG_MOVE): log moves
     # ----------- 2 (IS_MODEL_MOVE): model moves
-    # position 3 (POSITION_STATES_COUNT): the count of states visited
-    # position 4 (POSITION_PARENT_STATE): if valued, the parent state of the current state
-    # position 5 (POSITION_MARKING): the marking associated to the state
-    # position 6 (POSITION_EN_T): if valued, the transition that was enabled to reach the state
-    initial_state = (0, 0, 0, 0, None, im, None)
+    # position 3 (POSITION_ALIGN_LENGTH): the length of the alignment
+    # position 4 (POSITION_STATES_COUNT): the count of states visited
+    # position 5 (POSITION_PARENT_STATE): if valued, the parent state of the current state
+    # position 6 (POSITION_MARKING): the marking associated to the state
+    # position 7 (POSITION_EN_T): if valued, the transition that was enabled to reach the state
+    initial_state = (0, 0, 0, 0, 0, None, im, None)
     open_set = [initial_state]
     heapq.heapify(open_set)
 
@@ -562,11 +590,12 @@ def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, 
         curr = heapq.heappop(open_set)
         curr_m0 = curr[POSITION_MARKING]
         curr_m = __decode_marking(curr_m0)
-        visited = visited + 1
         # if a situation equivalent to the one of the current state has been
         # visited previously, then discard this
         if __check_closed(closed, (curr_m0, curr[POSITION_INDEX])):
             continue
+        visited = visited + 1
+
         __add_closed(closed, (curr_m0, curr[POSITION_INDEX]))
         if curr_m0 == fm:
             if -curr[POSITION_INDEX] == len(transf_trace):
@@ -590,7 +619,8 @@ def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, 
                 new_m = __encode_marking(marking_dict,
                                          __fire_trans(curr_m, trans_pre_dict[t], trans_post_dict[t]))
                 new_state = (
-                    curr[POSITION_TOTAL_COST] + sync_cost, curr[POSITION_INDEX] - 1, IS_SYNC_MOVE, dummy_count,
+                    curr[POSITION_TOTAL_COST] + sync_cost, curr[POSITION_INDEX] - 1, IS_SYNC_MOVE,
+                    curr[POSITION_ALIGN_LENGTH] + 1, dummy_count,
                     curr,
                     new_m, t)
                 if not __check_closed(closed, (new_state[POSITION_MARKING], new_state[POSITION_INDEX])):
@@ -612,7 +642,7 @@ def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, 
                                      __fire_trans(curr_m, trans_pre_dict[t], trans_post_dict[t]))
             new_state = (
                 curr[POSITION_TOTAL_COST] + transf_model_cost_function[t], curr[POSITION_INDEX], IS_MODEL_MOVE,
-                dummy_count, curr, new_m, t)
+                curr[POSITION_ALIGN_LENGTH] + 1, dummy_count, curr, new_m, t)
             if new_m not in this_closed and not curr_m0 == new_m:
                 if not __check_closed(closed, (new_state[POSITION_MARKING], new_state[POSITION_INDEX])):
                     open_set = __add_to_open_set(open_set, new_state)
@@ -627,7 +657,7 @@ def __dijkstra(model_struct, trace_struct, sync_cost=align_utils.STD_SYNC_COST, 
             dummy_count = dummy_count + 1
             new_state = (
                 curr[POSITION_TOTAL_COST] + trace_cost_function[-curr[POSITION_INDEX]], curr[POSITION_INDEX] - 1,
-                IS_LOG_MOVE, dummy_count, curr, curr_m0, None)
+                IS_LOG_MOVE, curr[POSITION_ALIGN_LENGTH] + 1, dummy_count, curr, curr_m0, None)
             if not __check_closed(closed, (new_state[POSITION_MARKING], new_state[POSITION_INDEX])):
                 # adds the log move only if it has not been already closed before
                 open_set = __add_to_open_set(open_set, new_state)
