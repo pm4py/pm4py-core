@@ -1,4 +1,6 @@
 import deprecation
+import tempfile
+
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
                         details='Use visualizer module instead.')
@@ -27,3 +29,27 @@ def view(gviz):
         return display(image)
     else:
         return gviz.view(cleanup=True)
+
+
+def matplotlib_view(gviz):
+    """
+    Views the diagram using Matplotlib
+
+    Parameters
+    ---------------
+    gviz
+        Graphviz
+    """
+
+    from pm4py.visualization.common import save
+    import matplotlib.pyplot as plt
+    import matplotlib.image as mpimg
+
+    file_name = tempfile.NamedTemporaryFile(suffix='.png')
+    file_name.close()
+
+    save.save(gviz, file_name.name)
+
+    img = mpimg.imread(file_name.name)
+    plt.imshow(img)
+    plt.show()
