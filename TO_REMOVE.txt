@@ -1,4 +1,0 @@
-objects.log.importer.csv.*
-objects.log.importer.parquet.*
-objects.log.adapter.*
-objects.log.importer.xes.versions.*
