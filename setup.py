@@ -14,7 +14,7 @@ setup(
     name=pm4py.__name__,
     version=pm4py.__version__,
     description=pm4py.__doc__.strip(),
-    long_description=read_file('README'),
+    long_description=read_file('README.md'),
     author=pm4py.__author__,
     author_email=pm4py.__author_email__,
     py_modules=[pm4py.__name__],
