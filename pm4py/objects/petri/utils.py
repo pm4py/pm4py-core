@@ -592,3 +592,26 @@ def get_s_components_from_petri(net, im, fm, rec_depth=0, curr_s_comp=None, visi
         list_s_components.append(set([place.name for place in curr_s_comp]))
 
     return list_s_components
+
+
+def remove_arc(net, arc):
+    """
+    Removes an arc from a Petri net
+
+    Parameters
+    ---------------
+    net
+        Petri net
+    arc
+        Arc of the Petri net
+
+    Returns
+    -------------
+    net
+        Petri net
+    """
+    net.arcs.remove(arc)
+    arc.source.out_arcs.remove(arc)
+    arc.target.in_arcs.remove(arc)
+
+    return net
