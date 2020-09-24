@@ -59,3 +59,16 @@ def view(gviz):
         GraphViz diagram
     """
     return gview.view(gviz)
+
+
+def matplotlib_view(gviz):
+    """
+    Views the diagram using Matplotlib
+
+    Parameters
+    ---------------
+    gviz
+        Graphviz
+    """
+
+    return gview.matplotlib_view(gviz)

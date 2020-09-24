@@ -62,3 +62,20 @@ def view(temp_file_name):
             os.startfile(temp_file_name)
         elif os.name == 'posix':  # For Linux, Mac, etc.
             subprocess.call(('xdg-open', temp_file_name))
+
+
+def matplotlib_view(temp_file_name):
+    """
+    Views the diagram using Matplotlib
+
+    Parameters
+    ---------------
+    temp_file_name
+        Path to the temporary file hosting the graph
+    """
+    import matplotlib.pyplot as plt
+    import matplotlib.image as mpimg
+
+    img = mpimg.imread(temp_file_name)
+    plt.imshow(img)
+    plt.show()

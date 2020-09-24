@@ -94,3 +94,27 @@ def save(figure, output_file_path):
         pass
 
     shutil.copyfile(figure, output_file_path)
+
+
+def matplotlib_view(figure):
+    """
+    Views the figure using Matplotlib
+
+    Parameters
+    ---------------
+    figure
+        Figure
+    """
+    try:
+        filename = figure.name
+        figure = filename
+    except AttributeError:
+        # continue without problems, a proper path has been provided
+        pass
+
+    import matplotlib.pyplot as plt
+    import matplotlib.image as mpimg
+
+    img = mpimg.imread(figure)
+    plt.imshow(img)
+    plt.show()
