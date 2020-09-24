@@ -1,3 +1,14 @@
+===== PM4Py 1.5.2 =====
+This is a minor release, consisting of the following changes:
+1. commit c42bad174247eb13134e0cb4acb0703c301aa869
+    - fixed the compatibility with Python 3.5
+2. commit 13cd96da7fe22427839f1b21dd38a5ac8ff8c231
+    - provided alternative visualizations through Matplotlib of the main visualizations
+3. commit 7bf3aea0b4638f6eceaa192ec37e17370e47f560
+    - fixing a parameter issue on stochastic playout
+4. commit e7e3dfa11264a7e737ca7b65165eb7f719817f59
+    - utility to remove an arc
+
 ===== PM4PY 1.5.1 =====
 This is a minor release, consisting of the following changes:
 1. commit 526342e3e96c7386dc7451ac0d9ec74c76b86b4f
