@@ -59,7 +59,9 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
     if smap is None:
         if log is None:
             raise Exception("please provide at least one between stochastic map and log")
-        smap = replay.get_map_from_log_and_net(log, net, initial_marking, final_marking)
+        smap = replay.get_map_from_log_and_net(log, net, initial_marking, final_marking,
+                                               parameters={Parameters.ACTIVITY_KEY: activity_key,
+                                                           Parameters.TIMESTAMP_KEY: timestamp_key})
     # assigns to each event an increased timestamp from 1970
     curr_timestamp = 10000000
     log = log_instance.EventLog()
