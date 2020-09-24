@@ -25,7 +25,7 @@ to change as libraries are added or removed.
 | kiwisolver | https://pypi.org/project/kiwisolver | BSD | 1.2.0 | X | X |
 | lxml | https://pypi.org/project/lxml | BSD | 4.5.2 | X | X |
 | MarkupSafe | https://pypi.org/project/MarkupSafe | BSD | 1.1.1 | | X |
-| matplotlib | https://pypi.org/project/matplotlib | PSF | 3.3.1 | X | X |
+| matplotlib | https://pypi.org/project/matplotlib | PSF | 3.3.2 | X | X |
 | mpmath | https://pypi.org/project/mpmath | BSD | 1.1.0 | | |
 | networkx | https://pypi.org/project/networkx | BSD | 2.5 | X | |
 | numpy | https://pypi.org/project/numpy | BSD | 1.19.2 | | X |
