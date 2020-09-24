@@ -37,8 +37,8 @@ def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_st
             log = dataframe_utils.convert_timestamp_columns_in_df(log)
         log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
     return exec_utils.get_variant(variant).apply(net, initial_marking, final_marking, log=log,
-                                           aggregated_statistics=aggregated_statistics,
-                                           parameters=parameters)
+                                                 aggregated_statistics=aggregated_statistics,
+                                                 parameters=parameters)
 
 
 def save(gviz, output_file_path):
@@ -65,3 +65,16 @@ def view(gviz):
         GraphViz diagram
     """
     return gview.view(gviz)
+
+
+def matplotlib_view(gviz):
+    """
+    Views the diagram using Matplotlib
+
+    Parameters
+    ---------------
+    gviz
+        Graphviz
+    """
+
+    return gview.matplotlib_view(gviz)
