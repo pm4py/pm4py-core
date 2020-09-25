@@ -1,6 +1,8 @@
 import unittest
+from pm4py.objects.log.util import dataframe_utils
 from pm4py.objects.log.importer.xes import importer as xes_importer
 import os
+import pandas as pd
 
 
 class AlgorithmTest(unittest.TestCase):
@@ -21,16 +23,6 @@ class AlgorithmTest(unittest.TestCase):
                                           variant=parquet_importer.Variants.PYARROW)
         log = parquet_importer.import_minimal_log(os.path.join("input_data", "running-example.parquet"),
                                                   variant=parquet_importer.Variants.PYARROW)
-
-    def test_importing_csv(self):
-        from pm4py.objects.log.importer.csv import importer as csv_importer
-        df = csv_importer.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
-        df = csv_importer.import_dataframe_from_path_wo_timeconversion(
-            os.path.join("input_data", "running-example.csv"))
-        stream = csv_importer.apply(os.path.join("input_data", "running-example.csv"))
-        stru = "case:concept:name,concept:name,time:timestamp\nA1,A,1970-01-01 01:00:00\n"
-        df = csv_importer.import_dataframe_from_csv_string(stru)
-        stream = csv_importer.import_log_from_string(stru)
 
     def test_hiearch_clustering(self):
         from pm4py.algo.clustering.trace_attribute_driven import algorithm as clust_algorithm
@@ -115,8 +107,8 @@ class AlgorithmTest(unittest.TestCase):
         net3, im3, fm3 = alpha_miner.apply_dfg(dfg, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC)
 
     def test_alpha_miner_dataframe(self):
-        from pm4py.objects.log.adapters.pandas import csv_import_adapter
-        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
         from pm4py.algo.discovery.alpha import algorithm as alpha_miner
         net, im, fm = alpha_miner.apply(df, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC)
 
@@ -134,8 +126,8 @@ class AlgorithmTest(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.statistics.performance_spectrum import algorithm as pspectrum
         ps = pspectrum.apply(log, ["register request", "decide"])
-        from pm4py.objects.log.adapters.pandas import csv_import_adapter
-        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
         ps = pspectrum.apply(df, ["register request", "decide"])
 
 if __name__ == "__main__":

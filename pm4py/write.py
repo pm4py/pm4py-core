@@ -32,8 +32,9 @@ def write_csv(log, file_path):
     --------------
     void
     """
-    from pm4py.objects.log.exporter.csv import exporter as csv_exporter
-    csv_exporter.apply(log, file_path)
+    from pm4py.objects.conversion.log import converter
+    dataframe = converter.apply(log, variant=converter.Variants.TO_DATA_FRAME)
+    dataframe.to_csv(file_path, index=False)
 
 
 def write_petri_net(petri_net, initial_marking, final_marking, file_path):
