@@ -1,6 +1,6 @@
 from pm4py.objects.log.importer.xes import importer
 from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.algo.discovery.inductive import factory as inductive_miner
+from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects.conversion.process_tree import converter
 from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
 from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
