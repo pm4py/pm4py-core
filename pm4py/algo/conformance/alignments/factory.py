@@ -46,7 +46,7 @@ DEFAULT_MAX_ALIGN_TIME = sys.maxsize
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (alignments/factory)')
 def apply(obj, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
     warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:
@@ -65,7 +65,7 @@ def apply(obj, petri_net, initial_marking, final_marking, parameters=None, versi
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (alignments/factory)')
 def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=None,
                 version=DEFAULT_VARIANT):
     """
@@ -109,7 +109,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (alignments/factory)')
 def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
     """
     apply alignments to a log
@@ -227,7 +227,7 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (alignnments/factory)')
 def chunks(l, n):
     warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     for i in range(0, len(l), n):
@@ -235,7 +235,7 @@ def chunks(l, n):
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (alignments/factory)')
 def apply_log_multiprocessing(log, petri_net, initial_marking, final_marking, parameters=None, version=DEFAULT_VARIANT):
     warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:

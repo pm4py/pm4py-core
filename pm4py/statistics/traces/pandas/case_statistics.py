@@ -2,7 +2,7 @@ from pm4py.util import xes_constants as xes
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.statistics.traces.common import case_duration as case_duration_commons
 from pm4py.util.constants import CASE_CONCEPT_NAME
-from pm4py.util import exec_utils, constants
+from pm4py.util import exec_utils, constants, pandas_utils
 from enum import Enum
 import pandas as pd
 
@@ -50,7 +50,7 @@ def get_variant_statistics(df, parameters=None):
                                                                                                 parameters=parameters))
 
     variants_df = variants_df.reset_index()
-    variants_list = variants_df.groupby("variant").agg("count").reset_index().to_dict('records')
+    variants_list = pandas_utils.to_dict_records(variants_df.groupby("variant").agg("count").reset_index())
     variants_list = sorted(variants_list, key=lambda x: (x[case_id_glue], x["variant"]), reverse=True)
     if max_variants_to_return:
         variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
@@ -148,7 +148,7 @@ def get_cases_description(df, parameters=None):
 
     if max_ret_cases is not None:
         stacked_df = stacked_df.head(n=min(max_ret_cases, len(stacked_df)))
-    ret = stacked_df.to_dict('index')
+    ret = pandas_utils.to_dict_index(stacked_df)
     return ret
 
 
@@ -255,7 +255,7 @@ def get_events(df, case_id, parameters=None):
         parameters = {}
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
 
-    return df[df[case_id_glue] == case_id].to_dict('records')
+    return pandas_utils.to_dict_records(df[df[case_id_glue] == case_id])
 
 
 def get_kde_caseduration(df, parameters=None):

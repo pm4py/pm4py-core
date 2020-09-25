@@ -8,7 +8,7 @@ from pm4py.algo.filtering.pandas.paths import paths_filter
 from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
 from pm4py.algo.filtering.pandas.variants import variants_filter
 from pm4py.objects.log.adapters.pandas import csv_import_adapter as csv_import_adapter
-from pm4py.objects.conversion.log import factory as log_conv_fact
+from pm4py.objects.conversion.log import converter as log_conv_fact
 from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.algo.filtering.pandas.ltl import ltl_checker
 from tests.constants import INPUT_DATA_DIR
