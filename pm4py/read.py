@@ -23,7 +23,7 @@ def read_xes(file_path):
     return log
 
 
-def read_csv(file_path, sep=",", quotechar=None, encoding=None, nrows=None, timest_format=None):
+def read_csv(file_path, sep=",", quotechar=None, encoding='utf-8', nrows=10000000, timest_format=None):
     """
     Reads an event log in the CSV format (Pandas adapter)
 
@@ -38,7 +38,7 @@ def read_csv(file_path, sep=",", quotechar=None, encoding=None, nrows=None, time
     encoding
         Encoding; default: default of Pandas
     nrows
-        (If specified) number of rows
+        maximum number of rows to read (default 10000000)
     timest_format
         Format of the timestamp columns
 
@@ -47,9 +47,13 @@ def read_csv(file_path, sep=",", quotechar=None, encoding=None, nrows=None, time
     dataframe
         Dataframe
     """
-    from pm4py.objects.log.adapters.pandas import csv_import_adapter
-    df = csv_import_adapter.import_dataframe_from_path(file_path, sep=sep, quotechar=quotechar, encoding=encoding,
-                                                       nrows=nrows, timest_format=timest_format)
+    from pm4py.objects.log.util import dataframe_utils
+    import pandas as pd
+    if quotechar is not None:
+        df = pd.read_csv(file_path, sep=sep, quotechar=quotechar, encoding=encoding, nrows=nrows)
+    else:
+        df = pd.read_csv(file_path, sep=sep, encoding=encoding, nrows=nrows)
+    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format)
     if len(df.columns) < 2:
         logging.error(
             "Less than three columns were imported from the CSV file. Please check the specification of the separation and the quote character!")

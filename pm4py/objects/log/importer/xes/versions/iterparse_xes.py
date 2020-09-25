@@ -6,7 +6,7 @@ from lxml import etree
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting
 from pm4py.util import xes_constants
-from pm4py.util.dt_parsing import parser as dt_parse_factory
+from pm4py.util.dt_parsing import parser as dt_parser
 
 # ITERPARSE EVENTS
 EVENT_END = 'end'
@@ -39,7 +39,7 @@ def import_log(filename, parameters=None):
     if parameters is None:
         parameters = {}
 
-    date_parser = dt_parse_factory.get()
+    date_parser = dt_parser.get()
 
     timestamp_sort = False
     timestamp_key = "time:timestamp"

@@ -1,1 +1,1 @@
-from pm4py.algo.conformance.alignments import versions, factory, algorithm
+from pm4py.algo.conformance.alignments import versions, algorithm
