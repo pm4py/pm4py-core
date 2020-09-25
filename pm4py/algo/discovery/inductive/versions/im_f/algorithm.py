@@ -7,7 +7,7 @@ from pm4py.algo.filtering.log.end_activities import end_activities_filter
 from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.algo.discovery.inductive.versions.im_f.data_structures import subtree_infrequent as subtree
-from pm4py.objects.conversion.process_tree import factory as tree_to_petri
+from pm4py.objects.conversion.process_tree import converter as tree_to_petri
 from pm4py.algo.discovery.inductive.parameters import Parameters
 from pm4py.util import exec_utils
 from pm4py.objects.conversion.log import converter

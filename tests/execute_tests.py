@@ -29,7 +29,6 @@ if __name__ == "__main__":
     from tests.matrix_rep_test import MatrixRepTest
     from tests.main_fac_test import MainFactoriesTest
     from tests.algorithm_test import AlgorithmTest
-    from tests.old_factories_test import OldFactoriesTest
     from tests.filtering_log_test import LogFilteringTest
     from tests.filtering_pandas_test import DataframePrefilteringTest
     from tests.map_filter_functions_test import MapFilterFunctionsTest
@@ -37,6 +36,7 @@ if __name__ == "__main__":
     from tests.statistics_df_test import StatisticsDfTest
     from tests.trans_syst_tests import TransitionSystemTest
     from tests.woflan_tests import WoflanTest
+    from tests.simplified_interface import SimplifiedInterfaceTest
 
     test_ts = TransitionSystemTest()
     test_doc_tests = DocTests()
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     matrixrep_test = MatrixRepTest()
     main_factories_test = MainFactoriesTest()
     algorithm_test = AlgorithmTest()
-    old_factories_test = OldFactoriesTest()
     woflan_test = WoflanTest()
+    simplified_test = SimplifiedInterfaceTest()
 
     unittest.main()

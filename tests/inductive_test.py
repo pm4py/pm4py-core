@@ -113,30 +113,6 @@ class InductiveMinerTest(unittest.TestCase):
         del gviz
         del aligned_traces
 
-    def test_applyImdfToProblematicLogs(self):
-        # to avoid static method warnings in tests,
-        # that by construction of the unittest package have to be expressed in such way
-        self.dummy_variable = "dummy_value"
-        logs = os.listdir(PROBLEMATIC_XES_DIR)
-        for log in logs:
-            try:
-                log_full_path = os.path.join(PROBLEMATIC_XES_DIR, log)
-                # calculate and compare Petri nets obtained on the same log to verify that instances
-                # are working correctly
-                log1, net1, marking1, fmarking1 = self.obtain_petri_net_through_im(log_full_path)
-                log2, net2, marking2, fmarking2 = self.obtain_petri_net_through_im(log_full_path)
-                self.assertEqual(len(net1.places), len(net2.places))
-                final_marking = petri.petrinet.Marking()
-                for p in net1.places:
-                    if not p.out_arcs:
-                        final_marking[p] = 1
-                aligned_traces = token_replay.apply(log1, net1, marking1, final_marking)
-                del aligned_traces
-            except SyntaxError as e:
-                logging.info("SyntaxError on log " + str(log) + ": " + str(e))
-            except NoConceptNameException as e:
-                logging.info("Concept name error on log " + str(log) + ": " + str(e))
-
 
 if __name__ == "__main__":
     unittest.main()

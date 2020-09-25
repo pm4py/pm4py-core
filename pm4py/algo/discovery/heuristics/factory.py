@@ -14,7 +14,7 @@ VERSIONS_HEU = {CLASSIC: classic.apply_heu}
 VERSIONS_DFG_HEU = {CLASSIC: classic.apply_heu_dfg}
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (discovery/heuristics/factory)')
 def apply(log, parameters=None, variant=CLASSIC):
     """
     Discovers a Petri net using Heuristics Miner
@@ -46,7 +46,7 @@ def apply(log, parameters=None, variant=CLASSIC):
     return VERSIONS[variant](log_converter.apply(log, parameters=parameters), parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (discovery/heuristics/factory)')
 def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
               parameters=None, variant=CLASSIC):
     """
@@ -86,7 +86,7 @@ def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activitie
                                  parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (discovery/heuristics/factory)')
 def apply_heu(log, parameters=None, variant=CLASSIC):
     """
     Discovers an Heuristics Net using Heuristics Miner
@@ -115,7 +115,7 @@ def apply_heu(log, parameters=None, variant=CLASSIC):
     return VERSIONS_HEU[variant](log, parameters=parameters)
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (discovery/heuristics/factory)')
 def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
                   parameters=None, variant=CLASSIC):
     """

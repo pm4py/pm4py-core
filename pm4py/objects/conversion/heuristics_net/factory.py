@@ -7,7 +7,7 @@ VERSIONS = {TO_PETRI_NET: to_petri_net.apply}
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (conversion/heuristics_net/factory)')
 def apply(heu_net, parameters=None, variant=TO_PETRI_NET):
     """
     Converts an Heuristics Net to a different type of object
