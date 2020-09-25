@@ -1,1 +1,1 @@
-from pm4py.objects.log.exporter.parquet import factory, exporter, versions
+from pm4py.objects.log.exporter.parquet import exporter, versions

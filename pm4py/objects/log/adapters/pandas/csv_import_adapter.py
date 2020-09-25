@@ -3,7 +3,7 @@ import tempfile
 
 import pandas as pd
 
-from pm4py.objects.conversion.log import factory as log_conversion
+from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util.versions import check_pandas_ge_024
 
 
