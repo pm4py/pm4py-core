@@ -1,5 +1,5 @@
 import logging
-from pm4py.util import constants, xes_constants
+from pm4py.util import constants, xes_constants, pandas_utils
 
 INDEX_COLUMN = "@@index"
 
@@ -91,7 +91,7 @@ def format_dataframe(df, case_id=constants.CASE_CONCEPT_NAME, activity_key=xes_c
                             timestamp_key: xes_constants.DEFAULT_TIMESTAMP_KEY})
     df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype(str)
     # set an index column
-    df[INDEX_COLUMN] = df.index
+    df = pandas_utils.insert_index(df, INDEX_COLUMN)
     # sorts the dataframe
     df = df.sort_values([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_TIMESTAMP_KEY, INDEX_COLUMN])
     logging.warning(

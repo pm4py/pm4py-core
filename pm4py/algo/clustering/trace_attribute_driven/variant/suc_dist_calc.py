@@ -3,7 +3,7 @@ import numpy as np
 from pm4py.algo.clustering.trace_attribute_driven.util import filter_subsets
 from scipy.spatial.distance import pdist
 from collections import Counter
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils, constants
 from pm4py.algo.clustering.trace_attribute_driven.parameters import Parameters
 
 
@@ -23,7 +23,8 @@ def occu_suc(dfg, filter_percent):
     # delete self succession
     # filter out direct succession by percentage
     filter = list(range(0, round(filter_percent * len(df))))
-    df = df[(df.index).isin(filter)].reset_index(drop=True)
+    df = pandas_utils.insert_index(df)
+    df = df[df[constants.DEFAULT_INDEX_KEY].isin(filter)].reset_index(drop=True)
     return df
 
 

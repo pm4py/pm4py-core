@@ -3,7 +3,7 @@ from pm4py.util.constants import CASE_CONCEPT_NAME
 import pandas as pd
 import numpy as np
 from pm4py.statistics.performance_spectrum.parameters import Parameters
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils, constants
 
 
 def apply(dataframe, list_activities, sample_size, parameters):
@@ -39,8 +39,8 @@ def apply(dataframe, list_activities, sample_size, parameters):
 
     dataframe = dataframe[[case_id_glue, activity_key, timestamp_key]]
     dataframe = dataframe[dataframe[activity_key].isin(list_activities)]
-    dataframe["@@event_index"] = dataframe.index
-    dataframe = dataframe.sort_values([case_id_glue, timestamp_key, "@@event_index"])
+    dataframe = pandas_utils.insert_index(dataframe, constants.DEFAULT_EVENT_INDEX_KEY)
+    dataframe = dataframe.sort_values([case_id_glue, timestamp_key, constants.DEFAULT_EVENT_INDEX_KEY])
     dataframe[timestamp_key] = dataframe[timestamp_key].astype(np.int64) / 10**9
     list_replicas = []
     activity_names = []
@@ -66,7 +66,7 @@ def apply(dataframe, list_activities, sample_size, parameters):
     if len(dataframe) > sample_size:
         dataframe = dataframe.sample(n=sample_size)
 
-    points = dataframe.to_dict("r")
+    points = pandas_utils.to_dict_records(dataframe)
     points = [[p[tk] for tk in filt_col_names] for p in points]
     points = sorted(points, key=lambda x: x[0])
 

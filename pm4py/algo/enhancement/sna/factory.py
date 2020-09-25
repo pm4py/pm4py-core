@@ -21,7 +21,7 @@ VERSIONS_PANDAS = {HANDOVER: pd_handover.apply, WORKING_TOGETHER: pd_workingtoge
                    SUBCONTRACTING: pd_subcontracting.apply, JOINTACTIVITIES: pd_jointactivities.apply}
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (sna/factory)')
 def apply(log, parameters=None, variant=HANDOVER):
     """
     Calculates a SNA metric

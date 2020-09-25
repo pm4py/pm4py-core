@@ -17,7 +17,7 @@ VERSION_METHODS = {VARIANT_DMM_LEVEN: evaluation.eval_DMM_leven, VARIANT_AVG_LEV
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (clustering/trace_attribute_driven/factory)')
 def bfs(tree):
     queue = []
     output = []
@@ -37,7 +37,7 @@ def bfs(tree):
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (clustering/trace_attribute_driven/factory)')
 def apply(log, trace_attribute, variant=VARIANT_DMM_LEVEN, parameters=None):
     """
     Apply the hierarchical clustering to a log starting from a trace attribute.

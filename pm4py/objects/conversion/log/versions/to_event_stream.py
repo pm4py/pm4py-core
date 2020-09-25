@@ -2,6 +2,7 @@ from copy import deepcopy
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.log import log as log_instance
 from pm4py.util import constants as pmutil
+from pm4py.util import pandas_utils
 from pm4py.objects.log.log import EventLog
 import pandas
 import math
@@ -43,7 +44,7 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
     if isinstance(log, pandas.core.frame.DataFrame):
-        list_events = log.to_dict('records')
+        list_events = pandas_utils.to_dict_records(log)
         enable_postprocessing = parameters[STREAM_POSTPROCESSING] if STREAM_POSTPROCESSING in parameters else False
         if enable_postprocessing:
             list_events = postprocess_stream(list_events)
