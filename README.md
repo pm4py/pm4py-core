@@ -7,13 +7,11 @@ The documentation about PM4Py is offered at http://pm4py.org/
 
 ## First Example
 A very simple example, to whet your appetite:
-```python
-import pm4py
 
+import pm4py
 log = pm4py.read_xes('<path-to-xes-log-file.xes>')
 net, initial_marking, final_marking = pm4py.discover_petri_net_inductive(log)
 pm4py.view_petri_net(pnet, initial_marking, final_marking, format="svg")
-```
 
 ## Installation
 PM4Py can be installed on Python 3.6.x / 3.7.x / 3.8.x by doing:
