@@ -427,9 +427,9 @@ def __align(model_struct, trace_struct, product_net, corresp, sync_cost=align_ut
     incidence_matrix = petri.incidence_matrix.construct(sync_net)
     ini_vec, fin_vec, cost_vec = utils.__vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
-    a_matrix = np.asarray(incidence_matrix.a_matrix).astype(np.float64)
+    a_matrix = np.asmatrix(incidence_matrix.a_matrix).astype(np.float64)
     g_matrix = -np.eye(len(sync_net.transitions))
-    h_cvx = np.array(np.zeros(len(sync_net.transitions))).transpose()
+    h_cvx = np.matrix(np.zeros(len(sync_net.transitions))).transpose()
     cost_vec = [x * 1.0 for x in cost_vec]
 
     use_cvxopt = False
