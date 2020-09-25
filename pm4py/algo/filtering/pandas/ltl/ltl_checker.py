@@ -3,7 +3,7 @@ from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEF
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_CASEID_KEY, \
     PARAMETER_CONSTANT_RESOURCE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils, constants
 
 
 class Parameters(Enum):
@@ -60,14 +60,14 @@ def A_eventually_B(df0, A, B, parameters=None):
 
     df = df0.copy()
     df = df[colset]
-    df["@@index"] = df.index
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == B]
+    df = pandas_utils.insert_index(df)
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == B].copy()
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna()
-    df_join["@@diffindex"] = df_join["@@index_2"] - df_join["@@index"]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
     df_join = df_join[df_join["@@diffindex"] > 0]
 
     if enable_timestamp:
@@ -126,20 +126,20 @@ def A_eventually_B_eventually_C(df0, A, B, C, parameters=None):
 
     df = df0.copy()
     df = df[colset]
-    df["@@index"] = df.index
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == B]
-    df_C = df[df[attribute_key] == C]
+    df = pandas_utils.insert_index(df)
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == B].copy()
+    df_C = df[df[attribute_key] == C].copy()
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
     df_C["@@conceptname"] = df_C[case_id_glue]
     df_C = df_C.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna()
-    df_join["@@diffindex"] = df_join["@@index_2"] - df_join["@@index"]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
     df_join = df_join[df_join["@@diffindex"] > 0]
     df_join = df_join.join(df_C, on=case_id_glue, rsuffix="_3").dropna()
-    df_join["@@diffindex2"] = df_join["@@index_3"] - df_join["@@index_2"]
+    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY+"_3"] - df_join[constants.DEFAULT_INDEX_KEY+"_2"]
     df_join = df_join[df_join["@@diffindex2"] > 0]
 
     if enable_timestamp:
@@ -206,11 +206,11 @@ def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
 
     df = df0.copy()
     df = df[colset]
-    df["@@index"] = df.index
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == B]
-    df_C = df[df[attribute_key] == C]
-    df_D = df[df[attribute_key] == D]
+    df = pandas_utils.insert_index(df)
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == B].copy()
+    df_C = df[df[attribute_key] == C].copy()
+    df_D = df[df[attribute_key] == D].copy()
 
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
@@ -220,13 +220,13 @@ def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     df_D = df_D.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna()
-    df_join["@@diffindex"] = df_join["@@index_2"] - df_join["@@index"]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
     df_join = df_join[df_join["@@diffindex"] > 0]
     df_join = df_join.join(df_C, on=case_id_glue, rsuffix="_3").dropna()
-    df_join["@@diffindex2"] = df_join["@@index_3"] - df_join["@@index_2"]
+    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY+"_3"] - df_join[constants.DEFAULT_INDEX_KEY+"_2"]
     df_join = df_join[df_join["@@diffindex2"] > 0]
     df_join = df_join.join(df_D, on=case_id_glue, rsuffix="_4").dropna()
-    df_join["@@diffindex3"] = df_join["@@index_4"] - df_join["@@index_3"]
+    df_join["@@diffindex3"] = df_join[constants.DEFAULT_INDEX_KEY+"_4"] - df_join[constants.DEFAULT_INDEX_KEY+"_3"]
     df_join = df_join[df_join["@@diffindex3"] > 0]
 
     if enable_timestamp:
@@ -287,18 +287,18 @@ def A_next_B_next_C(df0, A, B, C, parameters=None):
 
     df = df0.copy()
     df = df[[case_id_glue, attribute_key]]
-    df["@@index"] = df.index
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == B]
-    df_C = df[df[attribute_key] == C]
+    df = pandas_utils.insert_index(df)
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == B].copy()
+    df_C = df[df[attribute_key] == C].copy()
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
     df_C["@@conceptname"] = df_C[case_id_glue]
     df_C = df_C.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna().join(df_C, on=case_id_glue, rsuffix="_3").dropna()
-    df_join["@@diffindex"] = df_join["@@index_2"] - df_join["@@index"]
-    df_join["@@diffindex2"] = df_join["@@index_3"] - df_join["@@index_2"]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY+"_3"] - df_join[constants.DEFAULT_INDEX_KEY+"_2"]
     df_join = df_join[df_join["@@diffindex"] == 1]
     df_join = df_join[df_join["@@diffindex2"] == 1]
 
@@ -346,8 +346,8 @@ def four_eyes_principle(df0, A, B, parameters=None):
     df = df0.copy()
     df = df[[case_id_glue, attribute_key, resource_key]]
 
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == B]
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == B].copy()
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
 
@@ -396,8 +396,8 @@ def attr_value_different_persons(df0, A, parameters=None):
     df = df0.copy()
     df = df[[case_id_glue, attribute_key, resource_key]]
 
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == A]
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == A].copy()
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
 

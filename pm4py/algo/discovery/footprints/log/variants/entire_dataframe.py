@@ -2,7 +2,7 @@ from enum import Enum
 from pm4py.util import xes_constants
 from pm4py.util import constants
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from pm4py.algo.discovery.causal import algorithm as causal_discovery
 from pm4py.algo.discovery.footprints.outputs import Outputs
 
@@ -48,7 +48,7 @@ def apply(df, parameters=None):
 
     df = df[[caseid_key, activity_key, timestamp_key]]
     if sort_required:
-        df[index_key] = df.index
+        df = pandas_utils.insert_index(df, index_key)
         df = df.sort_values([caseid_key, timestamp_key, index_key])
 
     grouped_df = df.groupby(caseid_key)

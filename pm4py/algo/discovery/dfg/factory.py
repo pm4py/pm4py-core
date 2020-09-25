@@ -20,7 +20,7 @@ VERSIONS = {DFG_NATIVE: native.apply, DFG_FREQUENCY: native.apply, DFG_PERFORMAN
             FREQ_TRIPLES: freq_triples.apply}
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (discovery/dfg/factory)')
 def apply(log, parameters=None, variant=DFG_NATIVE):
     """
     Calculates DFG graph (frequency or performance) starting from a log
