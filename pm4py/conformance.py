@@ -144,3 +144,25 @@ def evaluate_precision_alignments(log, petri_net, initial_marking, final_marking
     from pm4py.evaluation.precision import evaluator as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
+
+
+def soundness_woflan(petri_net, initial_marking, final_marking):
+    """
+    Check soundness using WOFLAN
+
+    Parameters
+    ---------------
+    petri_net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+
+    Returns
+    --------------
+    boolean
+        Soundness
+    """
+    from pm4py.evaluation.soundness.woflan import algorithm as woflan
+    return woflan.apply(petri_net, initial_marking, final_marking)
