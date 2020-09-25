@@ -1,6 +1,7 @@
 ===== PM4Py 1.5.3 =====
 This is a minor release, consisting of the following changes:
-
+1. commit 2d4a8b67e25164838030dca709816918ddbf9279
+    - fixed dependencies on factories. fixed some release notes. fixed some deprecations.
 
 ===== PM4Py 1.5.2.1 =====
 This is a minor release, consisting of the following changes:
