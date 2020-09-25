@@ -13,17 +13,6 @@ class AlgorithmTest(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"),
                                  variant=xes_importer.Variants.LINE_BY_LINE)
 
-    def test_importing_parquet(self):
-        from pm4py.objects.log.importer.parquet import importer as parquet_importer
-        df = parquet_importer.apply(os.path.join("input_data", "receipt.parquet"),
-                                    variant=parquet_importer.Variants.PYARROW)
-        df = parquet_importer.apply(os.path.join("input_data", "receipt.parquet"),
-                                    variant=parquet_importer.Variants.FASTPARQUET)
-        log = parquet_importer.import_log(os.path.join("input_data", "running-example.parquet"),
-                                          variant=parquet_importer.Variants.PYARROW)
-        log = parquet_importer.import_minimal_log(os.path.join("input_data", "running-example.parquet"),
-                                                  variant=parquet_importer.Variants.PYARROW)
-
     def test_hiearch_clustering(self):
         from pm4py.algo.clustering.trace_attribute_driven import algorithm as clust_algorithm
         log = xes_importer.apply(os.path.join("input_data", "receipt.xes"), variant=xes_importer.Variants.LINE_BY_LINE,
