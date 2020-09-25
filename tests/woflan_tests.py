@@ -14,13 +14,13 @@ class WoflanTest(unittest.TestCase):
         path = os.path.join("input_data", "running-example.xes")
         log = xes_import.apply(path)
         net, i_m, f_m = alpha_miner.apply(log)
-        self.assertTrue(woflan.apply(net, i_m, f_m))
+        self.assertTrue(woflan.apply(net, i_m, f_m, parameters={"print_diagnostics": False}))
 
     def test_running_example_inductive(self):
         path = os.path.join("input_data", "running-example.xes")
         log = xes_import.apply(path)
         net, i_m, f_m = inductive_miner.apply(log)
-        self.assertTrue(woflan.apply(net, i_m, f_m))
+        self.assertTrue(woflan.apply(net, i_m, f_m, parameters={"print_diagnostics": False}))
 
     def test_figure415(self):
         net = PetriNet("figure_4_15")
@@ -79,7 +79,7 @@ class WoflanTest(unittest.TestCase):
         initial_marking[p_1] = 1
         final_marking = Marking()
         final_marking[p_7] = 1
-        self.assertTrue(woflan.apply(net, initial_marking, final_marking))
+        self.assertTrue(woflan.apply(net, initial_marking, final_marking, parameters={"print_diagnostics": False}))
 
     def test_figure42(self):
         net = PetriNet("figure_4_2")
