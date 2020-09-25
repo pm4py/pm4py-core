@@ -3,7 +3,7 @@ from pm4py.util.constants import CASE_CONCEPT_NAME
 import pandas as pd
 import numpy as np
 from pm4py.statistics.performance_spectrum.parameters import Parameters
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 
 
 def apply(dataframe, list_activities, sample_size, parameters):
@@ -66,7 +66,7 @@ def apply(dataframe, list_activities, sample_size, parameters):
     if len(dataframe) > sample_size:
         dataframe = dataframe.sample(n=sample_size)
 
-    points = dataframe.to_dict("r")
+    points = pandas_utils.to_dict_records(dataframe)
     points = [[p[tk] for tk in filt_col_names] for p in points]
     points = sorted(points, key=lambda x: x[0])
 
