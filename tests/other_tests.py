@@ -18,8 +18,8 @@ from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.statistics.variants.log import get as variants_get
 from pm4py.simulation.playout import simulator
-from pm4py.objects.log.adapters.pandas import csv_import_adapter
 from pm4py.objects.conversion.log import converter
+from pm4py.objects.log.util import dataframe_utils
 
 
 class OtherPartsTests(unittest.TestCase):
@@ -124,7 +124,8 @@ class OtherPartsTests(unittest.TestCase):
                                              variant=footprints_conformance.Variants.TRACE_EXTENSIVE)
 
     def test_footprints_tree_df(self):
-        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         log = converter.apply(df)
         tree = inductive_miner.apply_tree(log)
