@@ -19,6 +19,6 @@ VERSIONS = {TO_TRACE_LOG: to_event_log.apply, TO_EVENT_LOG: to_event_log.apply, 
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (conversion/log/factory)')
 def apply(log, parameters=None, variant=TO_EVENT_LOG):
     return VERSIONS[variant](log, parameters=parameters)
