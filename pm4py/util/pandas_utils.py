@@ -1,3 +1,6 @@
+from pm4py.util import constants
+
+
 def to_dict_records(df):
     """
     Pandas dataframe to dictionary (records method)
@@ -30,3 +33,20 @@ def to_dict_index(df):
         dict like {index -> {column -> value}}
     """
     return df.to_dict('index')
+
+
+def insert_index(df, column_name=constants.DEFAULT_INDEX_KEY):
+    """
+    Inserts the dataframe index in the specified column
+
+    Parameters
+    --------------
+    df
+        Dataframe
+
+    Returns
+    --------------
+    df
+        Dataframe with index
+    """
+    df[column_name] = df.index
