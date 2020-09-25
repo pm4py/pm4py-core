@@ -5,7 +5,7 @@ from pm4py.objects.petri import align_utils as utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.objects.petri import decomposition as decomp_utils
 from pm4py.statistics.variants.log import get as variants_module
-from pm4py.objects.petri.importer import pnml as petri_importer
+from pm4py.objects.petri.importer import importer as petri_importer
 from pm4py import util as pm4pyutil
 from copy import copy
 from pm4py.algo.conformance.decomp_alignments.parameters import Parameters
