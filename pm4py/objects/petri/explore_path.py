@@ -21,7 +21,7 @@ def __search(net, ini, fin):
 
     a_matrix = np.asmatrix(incidence_matrix.a_matrix).astype(np.float64)
     g_matrix = -np.eye(len(net.transitions))
-    h_cvx = np.array(np.zeros(len(net.transitions))).transpose()
+    h_cvx = np.matrix(np.zeros(len(net.transitions))).transpose()
     cost_vec = [x * 1.0 for x in cost_vec]
 
     use_cvxopt = False

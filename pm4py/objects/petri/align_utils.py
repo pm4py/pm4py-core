@@ -149,7 +149,7 @@ def __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, c
                                           marking, fin_vec, variant, use_cvxopt=False):
     m_vec = incidence_matrix.encode_marking(marking)
     b_term = [i - j for i, j in zip(fin_vec, m_vec)]
-    b_term = np.array([x * 1.0 for x in b_term]).transpose()
+    b_term = np.matrix([x * 1.0 for x in b_term]).transpose()
 
     if use_cvxopt:
         # not available in the latest version of PM4Py

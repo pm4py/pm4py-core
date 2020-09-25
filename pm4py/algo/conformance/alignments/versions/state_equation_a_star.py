@@ -399,9 +399,9 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
 
     closed = set()
 
-    a_matrix = np.asarray(incidence_matrix.a_matrix).astype(np.float64)
+    a_matrix = np.asmatrix(incidence_matrix.a_matrix).astype(np.float64)
     g_matrix = -np.eye(len(sync_net.transitions))
-    h_cvx = np.array(np.zeros(len(sync_net.transitions))).transpose()
+    h_cvx = np.matrix(np.zeros(len(sync_net.transitions))).transpose()
     cost_vec = [x * 1.0 for x in cost_vec]
 
     use_cvxopt = False
