@@ -8,7 +8,7 @@ from pm4py.objects.conversion.log import constants
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log.log import EventLog, Event
 from pm4py.util import constants as pmutil
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 
 
 class Parameters(Enum):
@@ -76,7 +76,7 @@ def apply(log, parameters=None):
     enable_deepcopy = exec_utils.get_param_value(Parameters.DEEP_COPY, parameters, False)
 
     if isinstance(log, pandas.core.frame.DataFrame):
-        list_events = log.to_dict('records')
+        list_events = pandas_utils.to_dict_records(log)
         if stream_post_processing:
             list_events = __postprocess_stream(list_events)
         for i in range(len(list_events)):

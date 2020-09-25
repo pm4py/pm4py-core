@@ -220,6 +220,12 @@ def visualization_align_table():
     visualization_align_table.execute_script()
 
 
+def simplified_interface():
+    from examples import simplified_interface
+    print("\n\nsimplified_interface")
+    simplified_interface.execute_script()
+
+
 def execute_script(f):
     try:
         f()
@@ -267,3 +273,4 @@ if __name__ == "__main__":
     execute_script(monte_carlo_petri_net)
     execute_script(visualization_processtree)
     execute_script(visualization_align_table)
+    execute_script(simplified_interface)

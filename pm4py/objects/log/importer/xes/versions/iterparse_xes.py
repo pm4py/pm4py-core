@@ -6,7 +6,7 @@ from lxml import etree
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting
 from pm4py.util import xes_constants
-from pm4py.util.dt_parsing import factory as dt_parse_factory
+from pm4py.util.dt_parsing import parser as dt_parse_factory
 
 # ITERPARSE EVENTS
 EVENT_END = 'end'

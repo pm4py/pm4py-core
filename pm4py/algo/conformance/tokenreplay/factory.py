@@ -17,7 +17,7 @@ VARIANTS_IDX = 'variants_idx'
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (tokenreplay/factory)')
 def apply(log, net, initial_marking, final_marking, parameters=None, variant=TOKEN_REPLAY):
     """
     Method to apply token-based replay
@@ -53,7 +53,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None, variant=TOK
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (tokenreplay/factory)')
 def chunks(l, n):
     warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     for i in range(0, len(l), n):
@@ -61,7 +61,7 @@ def chunks(l, n):
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (tokenreplay/factory)')
 def apply_multiprocessing(log, net, initial_marking, final_marking, parameters=None, variant=TOKEN_REPLAY):
     warnings.warn('factory methods are deprecated, use algorithm entrypoint instead', DeprecationWarning)
     if parameters is None:

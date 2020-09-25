@@ -16,7 +16,7 @@ VERSIONS_DFG = {ALPHA_VERSION_CLASSIC: versions.classic.apply_dfg}
 DEFAULT_PARAMETERS = {pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: xes_util.DEFAULT_NAME_KEY}
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (discovery/alpha/factory)')
 def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     """
     Apply the Alpha Miner on top of a log
@@ -57,7 +57,7 @@ def apply(log, parameters=None, variant=ALPHA_VERSION_CLASSIC):
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='Use algorithm entrypoint instead')
+                        details='Use algorithm entrypoint instead (discovery/alpha/factory)')
 def apply_dfg(dfg, parameters=None, variant=ALPHA_VERSION_CLASSIC):
     """
     Apply Alpha Miner directly on top of a DFG graph
