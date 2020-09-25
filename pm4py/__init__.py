@@ -38,7 +38,7 @@ from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_p
     discover_petri_net_inductive, discover_tree_inductive, discover_heuristics_net, discover_dfg
 from pm4py.conformance import conformance_tbr, conformance_alignments, evaluate_fitness_tbr, \
     evaluate_fitness_alignments, evaluate_precision_tbr, \
-    evaluate_precision_alignments
+    evaluate_precision_alignments, soundness_woflan
 from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg, view_process_tree, \
     save_vis_process_tree, \
     view_heuristics_net, save_vis_heuristics_net
