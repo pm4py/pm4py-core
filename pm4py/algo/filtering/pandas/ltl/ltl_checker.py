@@ -61,8 +61,8 @@ def A_eventually_B(df0, A, B, parameters=None):
     df = df0.copy()
     df = df[colset]
     df = pandas_utils.insert_index(df)
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == B]
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == B].copy()
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
 
@@ -127,9 +127,9 @@ def A_eventually_B_eventually_C(df0, A, B, C, parameters=None):
     df = df0.copy()
     df = df[colset]
     df = pandas_utils.insert_index(df)
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == B]
-    df_C = df[df[attribute_key] == C]
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == B].copy()
+    df_C = df[df[attribute_key] == C].copy()
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
     df_C["@@conceptname"] = df_C[case_id_glue]
@@ -207,10 +207,10 @@ def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     df = df0.copy()
     df = df[colset]
     df = pandas_utils.insert_index(df)
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == B]
-    df_C = df[df[attribute_key] == C]
-    df_D = df[df[attribute_key] == D]
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == B].copy()
+    df_C = df[df[attribute_key] == C].copy()
+    df_D = df[df[attribute_key] == D].copy()
 
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
@@ -288,9 +288,9 @@ def A_next_B_next_C(df0, A, B, C, parameters=None):
     df = df0.copy()
     df = df[[case_id_glue, attribute_key]]
     df = pandas_utils.insert_index(df)
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == B]
-    df_C = df[df[attribute_key] == C]
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == B].copy()
+    df_C = df[df[attribute_key] == C].copy()
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
     df_C["@@conceptname"] = df_C[case_id_glue]
@@ -346,8 +346,8 @@ def four_eyes_principle(df0, A, B, parameters=None):
     df = df0.copy()
     df = df[[case_id_glue, attribute_key, resource_key]]
 
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == B]
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == B].copy()
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
 
@@ -396,8 +396,8 @@ def attr_value_different_persons(df0, A, parameters=None):
     df = df0.copy()
     df = df[[case_id_glue, attribute_key, resource_key]]
 
-    df_A = df[df[attribute_key] == A]
-    df_B = df[df[attribute_key] == A]
+    df_A = df[df[attribute_key] == A].copy()
+    df_B = df[df[attribute_key] == A].copy()
     df_B["@@conceptname"] = df_B[case_id_glue]
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
 
