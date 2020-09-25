@@ -5,7 +5,7 @@ import numpy as np
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import remove_place, remove_transition, add_arc_from_to
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
-from pm4py.util.lp import factory as lp_solver
+from pm4py.util.lp import solver as lp_solver
 from pm4py.util.lp.util import aeq_redundant_fix
 
 DEFAULT_REPLACEMENT_IMMEDIATE = 1000

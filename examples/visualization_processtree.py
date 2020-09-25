@@ -1,6 +1,6 @@
 from pm4py.objects.log.importer.xes import importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.visualization.process_tree import factory as pt_vis_factory
+from pm4py.visualization.process_tree import visualizer as pt_vis_factory
 from pm4py.visualization.process_tree import visualizer as pt_visualizer
 import os
 

@@ -1,5 +1,5 @@
 from pm4py.objects.log.adapters.pandas.csv_import_adapter import import_dataframe_from_path
-from pm4py.objects.conversion.log import factory as log_conv_fact
+from pm4py.objects.conversion.log import converter as log_conv_fact
 from pm4py.objects.log.importer.csv.parameters import Parameters
 import deprecation
 from pm4py.util import exec_utils

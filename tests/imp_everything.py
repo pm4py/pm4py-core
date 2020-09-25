@@ -8,7 +8,7 @@ class Pm4pyImportPackageTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         import pm4py
-        log = pm4py.objects.log.importer.xes.variants.line_by_line.import_log(
+        log = pm4py.objects.log.importer.xes.importer.apply(
             os.path.join("input_data", "running-example.xes"))
         self.assertEqual(len(log), 6)
 

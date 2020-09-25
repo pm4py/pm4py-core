@@ -4,7 +4,7 @@ import deprecation
 
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting
-from pm4py.util.dt_parsing import factory as dt_parse_factory
+from pm4py.util.dt_parsing import parser as dt_parse_factory
 
 
 @deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
