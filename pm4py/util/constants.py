@@ -23,3 +23,5 @@ LAYOUT_INFORMATION_PETRI = "layout_information_petri"
 PLACE_NAME_TAG = "place_name_tag"
 
 DEFAULT_VARIANT_SEP = ","
+DEFAULT_INDEX_KEY = "@@index"
+DEFAULT_EVENT_INDEX_KEY = "@@event_index"
