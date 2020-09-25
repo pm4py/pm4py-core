@@ -393,9 +393,6 @@ class SubtreeInfrequent(object):
         self.dfg = filtered_dfg
 
     def apply_cut_im_plain(self, type_of_cut, cut, activity_key):
-        # dfg_viz = dfg_factory.apply(self.log)
-        # gviz = dfg_vis_factory.apply(dfg_viz, log=self.log, variant="frequency", parameters={"format": "PDF"})
-        # dfg_vis_factory.view(gviz)
         if type_of_cut == 'concurrent':
             self.detected_cut = 'concurrent'
             new_logs = split.split_xor(cut[1], self.log, activity_key)
@@ -467,9 +464,6 @@ class SubtreeInfrequent(object):
                                       initial_end_activities=self.initial_end_activities, parameters=self.parameters))
 
     def detect_cut_if(self, second_iteration=False, parameters=None):
-        # dfg_viz = dfg_factory.apply(self.log)
-        # gviz = dfg_vis_factory.apply(dfg_viz, log=self.log, variant="frequency", parameters={"format": "PDF"})
-        # dfg_vis_factory.view(gviz)
         if parameters is None:
             parameters = {}
         activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
@@ -492,11 +486,6 @@ class SubtreeInfrequent(object):
             # but this time, we have to use different splitting functions:
             else:
                 self.filter_dfg_on_threshold()
-                """
-                dfg_viz = dfg_factory.apply(self.log)
-                gviz = dfg_vis_factory.apply(dfg_viz, log=self.log, variant="frequency", parameters={"format": "PDF"})
-                dfg_vis_factory.view(gviz)
-                """
                 found_plain_cut, type_of_cut, cut = self.check_cut_im_plain()
                 if found_plain_cut:
                     if type_of_cut == 'concurrent':
