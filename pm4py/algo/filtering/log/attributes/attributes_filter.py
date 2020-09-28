@@ -212,6 +212,44 @@ def apply(log, values, parameters=None):
     return filtered_log
 
 
+def apply_trace_attribute(log, values, parameters=None):
+    """
+    Filter a log on the trace attribute values
+
+    Parameters
+    --------------
+    log
+        Event log
+    values
+        Allowed/forbidden values
+    parameters
+        Parameters of the algorithm, including:
+            - Parameters.ATTRIBUTE_KEY: the attribute at the trace level to filter
+            - Parameters.POSITIVE: boolean (keep/discard values)
+
+    Returns
+    --------------
+    filtered_log
+        Filtered log
+    """
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+
+    filtered_log = EventLog()
+    for trace in log:
+        if positive:
+            if attribute_key in trace.attributes and trace.attributes[attribute_key] in values:
+                filtered_log.append(trace)
+        else:
+            if not attribute_key in trace.attributes or not trace.attributes[attribute_key] in values:
+                filtered_log.append(trace)
+
+    return filtered_log
+
+
 def filter_log_on_max_no_activities(log, max_no_activities=25, parameters=None):
     """
     Filter a log on a maximum number of activities
