@@ -113,6 +113,37 @@ def filter_attribute_values(log, attribute, values, how="cases", positive=True):
                 constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute, attributes_filter.Parameters.POSITIVE: positive})
 
 
+def filter_trace_attribute(log, attribute, values, positive=True):
+    """
+    Filter a log on the values of a trace attribute
+
+    Parameters
+    --------------
+    log
+        Event log
+    attribute
+        Attribute to filter
+    values
+        Values to filter (list of)
+    positive
+        Boolean value (keep/discard cases)
+
+    Returns
+    --------------
+    filtered_log
+        Filtered event log
+    """
+    if type(log) is pd.DataFrame:
+        check_dataframe_columns(log)
+        from pm4py.algo.filtering.pandas.attributes import attributes_filter
+        return attributes_filter.apply(log, values, parameters={attributes_filter.Parameters.ATTRIBUTE_KEY: attribute,
+                                                                attributes_filter.Parameters.POSITIVE: positive})
+    else:
+        from pm4py.algo.filtering.log.attributes import attributes_filter
+        return attributes_filter.apply_trace_attribute(log, values, parameters={
+            attributes_filter.Parameters.ATTRIBUTE_KEY: attribute, attributes_filter.Parameters.POSITIVE: positive})
+
+
 def filter_variants(log, admitted_variants):
     """
     Filter a log on a specified set of variants
