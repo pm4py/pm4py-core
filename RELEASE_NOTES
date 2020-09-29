@@ -4,6 +4,8 @@ This is a minor release, consisting of the following changes:
     - fixed dependencies on factories. fixed some release notes. fixed some deprecations.
 2. commit 0d75241676a736919952e5c9ab96ab2be4c71046
     - added utility for trace attributes filtering
+3. commit d8433ac1bbb57082b19b3b97bc726b353096c76e
+    - better specification of 'stable' requirements
 
 ===== PM4Py 1.5.2.1 =====
 This is a minor release, consisting of the following changes:
