@@ -84,7 +84,30 @@ def get_attributes(log):
         return list(log.columns)
     else:
         from pm4py.statistics.attributes.log import get
-        return get.get_all_event_attributes_from_log(log)
+        return list(get.get_all_event_attributes_from_log(log))
+
+
+def get_trace_attributes(log):
+    """
+    Gets the attributes at the trace level of a log object
+
+    Parameters
+    ----------------
+    log
+        Log object
+
+    Returns
+    ---------------
+    trace_attributes_list
+        List of attributes at the trace level
+    """
+    from pm4py.util import constants
+    if type(log) is pd.DataFrame:
+        check_dataframe_columns(log)
+        return [x for x in list(log.columns) if x.startswith(constants.CASE_ATTRIBUTE_PREFIX)]
+    else:
+        from pm4py.statistics.attributes.log import get
+        return list(get.get_all_trace_attributes_from_log(log))
 
 
 def get_attribute_values(log, attribute):
