@@ -1,12 +1,14 @@
+from pm4py.objects.log.util import dataframe_utils
 import unittest
 import os
+import pandas as pd
 
 
 class StatisticsDfTest(unittest.TestCase):
     def get_dataframe(self):
-        from pm4py.objects.log.adapters.pandas import csv_import_adapter
-        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "roadtraffic100traces.csv"))
-        return df
+        dataframe = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe)
+        return dataframe
 
     def test_get_attributes(self):
         from pm4py.statistics.attributes.pandas import get
