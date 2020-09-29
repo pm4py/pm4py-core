@@ -50,5 +50,5 @@ cython
 tqdm
 intel-openmp
 mkl
-cvxopt
+cvxopt; python_version < '3.8'
 pm4pycvxopt>=0.0.10; python_version < '3.8'
