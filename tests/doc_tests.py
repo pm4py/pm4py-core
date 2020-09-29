@@ -1,5 +1,7 @@
+from pm4py.objects.log.util import dataframe_utils
 import unittest
 import os
+import pandas as pd
 
 
 class DocTests(unittest.TestCase):
@@ -9,13 +11,15 @@ class DocTests(unittest.TestCase):
         return log
 
     def load_running_example_df(self):
-        from pm4py.objects.log.adapters.pandas import csv_import_adapter
-        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "running-example.csv"))
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
         return df
 
     def load_running_example_stream(self):
-        from pm4py.objects.log.importer.csv import importer
-        stream = importer.apply(os.path.join("input_data", "running-example.csv"))
+        from pm4py.objects.conversion.log import converter
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        stream = converter.apply(df, variant=converter.TO_EVENT_STREAM)
         return stream
 
     def load_running_example_pnml(self):
@@ -29,13 +33,15 @@ class DocTests(unittest.TestCase):
         return log
 
     def load_receipt_df(self):
-        from pm4py.objects.log.adapters.pandas import csv_import_adapter
-        df = csv_import_adapter.import_dataframe_from_path(os.path.join("input_data", "receipt.csv"))
+        df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
         return df
 
     def load_receipt_stream(self):
-        from pm4py.objects.log.importer.csv import importer
-        stream = importer.apply(os.path.join("input_data", "receipt.csv"))
+        from pm4py.objects.conversion.log import converter
+        df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        stream = converter.apply(df, variant=converter.TO_EVENT_STREAM)
         return stream
 
     def load_roadtraffic50_xes(self):
@@ -345,9 +351,8 @@ class DocTests(unittest.TestCase):
 
     def test_39(self):
         import os
-        from pm4py.objects.log.adapters.pandas import csv_import_adapter
-        df = csv_import_adapter.import_dataframe_from_path(
-            os.path.join("input_data", "roadtraffic100traces.csv"))
+        df = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
 
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         filtered_df_events = attributes_filter.apply_numeric_events(df, 34, 36,
