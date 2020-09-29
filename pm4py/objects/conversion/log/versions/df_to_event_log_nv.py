@@ -1,13 +1,10 @@
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.util import xes_constants as xes
 from pm4py.util import constants as pm4_constants
-import deprecation
 
 RETURN_VARIANTS = 'return_variants'
 
 
-@deprecation.deprecated(deprecated_in='1.3.0', removed_in='2.0.0', current_version='',
-                        details='conversion versions are deprecated; use conversion variants instead')
 def apply(df, parameters=None):
     """
     Convert a dataframe into a log containing N case per variant (only control-flow
