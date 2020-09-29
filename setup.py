@@ -159,7 +159,7 @@ setup(
         'networkx',
         'numpy',
         'pandas',
-        "pm4pycvxopt>=0.0.9; python_version < '3.8'",
+        "pm4pycvxopt>=0.0.10; python_version < '3.8'",
         'pulp<=2.1',
         'pydotplus',
         'pytz',
