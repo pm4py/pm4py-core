@@ -265,7 +265,7 @@ def __export_log_tree(log):
     return tree
 
 
-def __export_log_as_string(log, parameters=None):
+def export_log_as_string(log, parameters=None):
     """
     Export a log into a string
 
