@@ -5,7 +5,7 @@ from pm4py.objects.log import log as log_implementation
 from pm4py import util as pm4pyutil
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.objects.petri.importer import importer as petri_importer
+from pm4py.objects.petri.importer.versions import pnml as petri_importer
 from pm4py.util import exec_utils
 from pm4py.objects.petri.petrinet import Marking
 from pm4py.objects.petri.semantics import enabled_transitions
