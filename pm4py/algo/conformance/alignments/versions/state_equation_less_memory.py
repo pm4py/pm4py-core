@@ -11,7 +11,7 @@ from pm4py import util as pm4pyutil
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
-from pm4py.objects.petri.importer import importer as petri_importer
+from pm4py.objects.petri.importer.versions import pnml as petri_importer
 from pm4py.objects.petri import align_utils as utils
 from pm4py.util import exec_utils
 from pm4py.objects import petri
