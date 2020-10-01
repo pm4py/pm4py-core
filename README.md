@@ -9,8 +9,11 @@ The documentation about PM4Py is offered at http://pm4py.org/
 A very simple example, to whet your appetite:
 
 import pm4py
+
 log = pm4py.read_xes('<path-to-xes-log-file.xes>')
+
 net, initial_marking, final_marking = pm4py.discover_petri_net_inductive(log)
+
 pm4py.view_petri_net(pnet, initial_marking, final_marking, format="svg")
 
 ## Installation
