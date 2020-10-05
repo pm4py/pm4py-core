@@ -57,9 +57,11 @@ def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, m
         Filtered dataframe
     """
     element_group_size = df[case_id_glue].groupby(df[case_id_glue]).transform('size')
+    df = df[element_group_size >= min_case_size]
     if max_case_size:
-        return df[min_case_size <= element_group_size <= max_case_size]
-    return df[element_group_size >= min_case_size]
+        element_group_size = df[case_id_glue].groupby(df[case_id_glue]).transform('size')
+        df = df[element_group_size <= max_case_size]
+    return df
 
 
 def filter_on_case_performance(df, case_id_glue=constants.CASE_CONCEPT_NAME,
