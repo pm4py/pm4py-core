@@ -38,7 +38,6 @@ if __name__ == "__main__":
     from tests.trans_syst_tests import TransitionSystemTest
     from tests.woflan_tests import WoflanTest
     from tests.simplified_interface import SimplifiedInterfaceTest
-    from tests.parquet_tests import ParquetTests
 
     test_ts = TransitionSystemTest()
     test_doc_tests = DocTests()
@@ -71,6 +70,5 @@ if __name__ == "__main__":
     woflan_test = WoflanTest()
     diagn_dataframe_test = DiagnDfConfChecking()
     simplified_test = SimplifiedInterfaceTest()
-    parquet_test = ParquetTests()
 
     unittest.main()
