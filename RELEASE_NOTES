@@ -1,6 +1,17 @@
 ===== PM4Py 2.0.0 =====
 This is a *major* release, consisting of the following *major* changes:
-1. commit 
+1. commit f408a181
+    - add streaming token-based replay and footprint-based comparison
+2. commit a9c5aa34
+    - compatibility with Python 3.9 (limited to windows)
+3. commit 7a89d4dd
+    - remove deprecated factories
+
+The following *minor* changes included in this release:
+1. commit 1a8f9281
+    - bug fix in PANDAS case size filter
+2. commit fde08b03
+    - output conformance checking diagnostics in a dataframe
 
 
 ===== PM4Py 1.5.2.2 =====
