@@ -37,3 +37,29 @@ def apply(log, net, initial_marking, final_marking, parameters=None, variant=DEF
         parameters = {}
     return exec_utils.get_variant(variant).apply(log_converter.apply(log, parameters, log_converter.TO_EVENT_LOG), net, initial_marking,
                              final_marking, parameters=parameters)
+
+
+def get_diagnostics_dataframe(log, tbr_output, variant=DEFAULT_VARIANT, parameters=None):
+    """
+    Gets the results of token-based replay in a dataframe
+
+    Parameters
+    --------------
+    log
+        Event log
+    tbr_output
+        Output of the token-based replay technique
+    variant
+        Variant of the algorithm to use:
+            - Variants.TOKEN_REPLAY
+            - Variants.BACKWARDS
+
+    Returns
+    --------------
+    dataframe
+        Diagnostics dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    return exec_utils.get_variant(variant).get_diagnostics_dataframe(log, tbr_output, parameters=parameters)
