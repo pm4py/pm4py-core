@@ -11,7 +11,6 @@ from pm4py import util as pm4pyutil
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
-from pm4py.objects.petri.importer.versions import pnml as petri_importer
 from pm4py.objects.petri import align_utils as utils
 from pm4py.util import exec_utils
 from pm4py.objects import petri
@@ -75,6 +74,8 @@ POSITION_TRUSTABLE = 11
 def apply_from_variants_list_petri_string(var_list, petri_net_string, parameters=None):
     if parameters is None:
         parameters = {}
+
+    from pm4py.objects.petri.importer.versions import pnml as petri_importer
 
     petri_net, initial_marking, final_marking = petri_importer.import_petri_from_string(petri_net_string)
 

@@ -1,8 +1,6 @@
 import logging
 from enum import Enum
 
-from lxml import etree
-
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting, index_attribute
 from pm4py.objects.log.util import xes as xes_util
@@ -49,6 +47,7 @@ def import_log(filename, parameters=None):
     log : :class:`pm4py.log.log.EventLog`
         A log
     """
+    from lxml import etree
 
     parameters = dict() if parameters is None else parameters
 
