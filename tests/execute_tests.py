@@ -22,6 +22,7 @@ if __name__ == "__main__":
     from tests.sna_test import SnaTests
     from tests.petri_imp_exp_test import PetriImportExportTest
     from tests.etc_tests import ETCTest
+    from tests.diagn_df_conf_checking import DiagnDfConfChecking
     from tests.evaluation_tests import ProcessModelEvaluationTests
     from tests.dec_tree_test import DecisionTreeTest
     from tests.graphs_forming import GraphsForming
@@ -68,6 +69,7 @@ if __name__ == "__main__":
     main_factories_test = MainFactoriesTest()
     algorithm_test = AlgorithmTest()
     woflan_test = WoflanTest()
+    diagn_dataframe_test = DiagnDfConfChecking()
     simplified_test = SimplifiedInterfaceTest()
     parquet_test = ParquetTests()
 

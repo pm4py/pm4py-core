@@ -4,7 +4,7 @@ from pm4py.objects.log.util import xes
 from pm4py.algo.discovery.log_skeleton import trace_skel
 from pm4py.algo.conformance.log_skeleton.outputs import Outputs
 from pm4py.objects.log.log import EventLog, Trace, Event
-from pm4py.util import exec_utils, constants
+from pm4py.util import exec_utils, constants, xes_constants
 
 
 def apply_log(log, model, parameters=None):
@@ -232,3 +232,41 @@ def after_decode(log_skeleton):
     for act in log_skeleton[DiscoveryOutputs.ACTIV_FREQ.value]:
         log_skeleton[DiscoveryOutputs.ACTIV_FREQ.value][act] = set(log_skeleton[DiscoveryOutputs.ACTIV_FREQ.value][act])
     return log_skeleton
+
+
+def get_diagnostics_dataframe(log, conf_result, parameters=None):
+    """
+    Gets the diagnostics dataframe from a log and the results
+    of log skeleton-based conformance checking
+
+    Parameters
+    --------------
+    log
+        Event log
+    conf_result
+        Results of conformance checking
+
+    Returns
+    --------------
+    diagn_dataframe
+        Diagnostics dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes_constants.DEFAULT_TRACEID_KEY)
+
+    import pandas as pd
+
+    diagn_stream = []
+
+    for index in range(len(log)):
+        case_id = log[index].attributes[case_id_key]
+
+        no_dev_total = conf_result[index][Outputs.NO_DEV_TOTAL.value]
+        no_constr_total = conf_result[index][Outputs.NO_CONSTR_TOTAL.value]
+        dev_fitness = conf_result[index][Outputs.DEV_FITNESS.value]
+
+        diagn_stream.append({"case_id": case_id, "no_dev_total": no_dev_total, "no_constr_total": no_constr_total, "dev_fitness": dev_fitness})
+
+    return pd.DataFrame(diagn_stream)
