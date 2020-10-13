@@ -5,7 +5,6 @@ from pm4py.objects.petri import align_utils as utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.objects.petri import decomposition as decomp_utils
 from pm4py.statistics.variants.log import get as variants_module
-from pm4py.objects.petri.importer.versions import pnml as petri_importer
 from pm4py import util as pm4pyutil
 from copy import copy
 from pm4py.algo.conformance.decomp_alignments.parameters import Parameters
@@ -28,6 +27,8 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
 def apply_from_variants_list_petri_string(var_list, petri_net_string, parameters=None):
     if parameters is None:
         parameters = {}
+
+    from pm4py.objects.petri.importer.versions import pnml as petri_importer
 
     petri_net, initial_marking, final_marking = petri_importer.import_petri_from_string(petri_net_string)
 
