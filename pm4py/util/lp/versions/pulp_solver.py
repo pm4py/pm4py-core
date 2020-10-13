@@ -2,7 +2,7 @@ import sys
 import tempfile
 import numpy as np
 
-from pulp import LpProblem, LpMinimize, LpVariable, LpStatus, value
+from pulp import LpProblem, LpMinimize, LpVariable, LpStatus, value, PULP_CBC_CMD
 from pm4py.util.lp.parameters import Parameters
 from pm4py.util import exec_utils
 
@@ -122,7 +122,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
 
     filename = tempfile.NamedTemporaryFile(suffix='.lp').name
     prob.writeLP(filename)
-    prob.solve()
+    PULP_CBC_CMD(msg=0).solve(prob)
 
     return prob
 

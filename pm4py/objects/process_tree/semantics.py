@@ -134,7 +134,7 @@ def execute_enabled(enabled, open, closed, execution_sequence=None):
         Execution sequence
     """
     execution_sequence = list() if execution_sequence is None else execution_sequence
-    vertex = random.sample(enabled, 1)[0]
+    vertex = random.sample(list(enabled), 1)[0]
     enabled.remove(vertex)
     open.add(vertex)
     execution_sequence.append((vertex, pt_st.State.OPEN))
