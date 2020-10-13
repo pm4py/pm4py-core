@@ -214,16 +214,16 @@ def visualization_processtree():
     visualization_processtree.execute_script()
 
 
+def diagn_add_dataframe():
+    from examples import diagn_add_dataframe
+    print("\n\ndiagn_add_dataframe")
+    diagn_add_dataframe.execute_script()
+
+
 def visualization_align_table():
     from examples import visualization_align_table
     print("\n\nvisualization_align_table")
     visualization_align_table.execute_script()
-
-
-def simplified_interface():
-    from examples import simplified_interface
-    print("\n\nsimplified_interface")
-    simplified_interface.execute_script()
 
 
 def execute_script(f):
@@ -241,7 +241,6 @@ if __name__ == "__main__":
     execute_script(tree_playout)
     execute_script(emd_evaluation)
     execute_script(footprints_tree_conf)
-    execute_script(simplified_interface)
     execute_script(footprints_petri_net)
     execute_script(events_log_filter)
     execute_script(event_log_map)

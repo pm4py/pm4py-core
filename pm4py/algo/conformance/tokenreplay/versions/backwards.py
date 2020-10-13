@@ -4,11 +4,12 @@ from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_e
 from copy import copy
 from pm4py.objects.petri.petrinet import Marking
 from collections import Counter
-from pm4py.util import exec_utils, constants
+from pm4py.util import exec_utils, constants, xes_constants
 from enum import Enum
 
 
 class Parameters(Enum):
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
     VARIANTS = "variants"
@@ -308,3 +309,42 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
         ret.append(al_idx[i])
 
     return ret
+
+
+def get_diagnostics_dataframe(log, tbr_output, parameters=None):
+    """
+    Gets the results of token-based replay in a dataframe
+
+    Parameters
+    --------------
+    log
+        Event log
+    tbr_output
+        Output of the token-based replay technique
+
+    Returns
+    --------------
+    dataframe
+        Diagnostics dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes_constants.DEFAULT_TRACEID_KEY)
+
+    import pandas as pd
+
+    diagn_stream = []
+
+    for index in range(len(log)):
+        case_id = log[index].attributes[case_id_key]
+        is_fit = tbr_output[index]["trace_is_fit"]
+        trace_fitness = tbr_output[index]["trace_fitness"]
+        missing = tbr_output[index]["missing_tokens"]
+        remaining = tbr_output[index]["remaining_tokens"]
+        produced = tbr_output[index]["produced_tokens"]
+        consumed = tbr_output[index]["consumed_tokens"]
+
+        diagn_stream.append({"case_id": case_id, "is_fit": is_fit, "trace_fitness": trace_fitness, "missing": missing, "remaining": remaining, "produced": produced, "consumed": consumed})
+
+    return pd.DataFrame(diagn_stream)

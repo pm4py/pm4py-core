@@ -76,3 +76,26 @@ def apply_from_variants_list(var_list, model, variant=DEFAULT_VARIANT, parameter
         parameters = {}
 
     return exec_utils.get_variant(variant).apply_from_variants_list(var_list, model, parameters=parameters)
+
+
+def get_diagnostics_dataframe(log, conf_result, variant=DEFAULT_VARIANT, parameters=None):
+    """
+    Gets the diagnostics dataframe from a log and the results
+    of log skeleton-based conformance checking
+
+    Parameters
+    --------------
+    log
+        Event log
+    conf_result
+        Results of conformance checking
+
+    Returns
+    --------------
+    diagn_dataframe
+        Diagnostics dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    return exec_utils.get_variant(variant).get_diagnostics_dataframe(log, conf_result, parameters=parameters)

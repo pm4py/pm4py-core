@@ -5,13 +5,13 @@ from pm4py.algo.conformance.alignments import versions
 from pm4py.objects.petri import align_utils
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TRACEID_KEY
 from pm4py.objects.petri import check_soundness
 import time
 from pm4py.util import exec_utils
 from enum import Enum
 import sys
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
 
 
 class Variants(Enum):
@@ -32,6 +32,7 @@ class Parameters(Enum):
     PARAM_MAX_ALIGN_TIME_TRACE = "max_align_time_trace"
     PARAM_MAX_ALIGN_TIME = "max_align_time"
     PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
     ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
     VARIANTS_IDX = "variants_idx"
 
@@ -177,3 +178,40 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
             else:
                 align['fitness'] = 0
     return alignments
+
+
+def get_diagnostics_dataframe(log, align_output, parameters=None):
+    """
+    Gets the diagnostics results of alignments (of a log) in a dataframe
+
+    Parameters
+    --------------
+    log
+        Event log
+    align_output
+        Output of the alignments
+
+    Returns
+    --------------
+    dataframe
+        Diagnostics dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, DEFAULT_TRACEID_KEY)
+
+    import pandas as pd
+
+    diagn_stream = []
+
+    for index in range(len(log)):
+        case_id = log[index].attributes[case_id_key]
+
+        cost = align_output[index]["cost"]
+        fitness = align_output[index]["fitness"]
+        is_fit = fitness == 1.0
+
+        diagn_stream.append({"case_id": case_id, "cost": cost, "fitness": fitness, "is_fit": is_fit})
+
+    return pd.DataFrame(diagn_stream)
