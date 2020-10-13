@@ -1,8 +1,9 @@
+import pkgutil
 from enum import Enum
 
 import deprecation
 
-from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line
+from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_iterable
 from pm4py.objects.log.util import compression
 from pm4py.objects.log.util import string_to_file
 from pm4py.util import exec_utils
@@ -11,6 +12,7 @@ from pm4py.util import exec_utils
 class Variants(Enum):
     ITERPARSE = iterparse
     LINE_BY_LINE = line_by_line
+    ITERPARSE_ITERABLE = iterparse_iterable
 
 
 # deprecated variant keys; remove in 2.0.0
