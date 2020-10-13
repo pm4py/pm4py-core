@@ -1,12 +1,16 @@
 if True:
     # ignore this part in true PowerBI executions
-    from pm4py.objects.log.adapters.pandas import csv_import_adapter
+    import pandas as pd
+    from pm4py.objects.log.util import dataframe_utils
 
-    dataset = csv_import_adapter.import_dataframe_from_path("C:/running-example.csv")
+    dataset = pd.read_csv("C:/running-example.csv")
+    dataset = dataframe_utils.convert_timestamp_columns_in_df(dataset)
 
 import pandas as pd
+
 # this part is required because the dataframe provided by PowerBI has strings
 dataset["time:timestamp"] = pd.to_datetime(dataset["time:timestamp"])
+dataset = dataset.sort_values("time:timestamp")
 
 from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.visualization.graphs import visualizer as graphs_visualizer
