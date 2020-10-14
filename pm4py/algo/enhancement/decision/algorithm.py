@@ -1,7 +1,6 @@
 import pm4py.algo.conformance.alignments.algorithm as ali
 from pm4py.algo.conformance.alignments.variants import state_equation_a_star as star
 import sys
-import pandas as pd
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from copy import deepcopy, copy
@@ -95,8 +94,11 @@ def apply(log, net, initial_marking, final_marking, decision_point=None, attribu
     class_name
         Target class names
     """
+    import pandas as pd
+
     if parameters is None:
         parameters = {}
+
     log = log_converter.apply(log, parameters=parameters)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     if decision_point is None:

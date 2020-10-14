@@ -4,7 +4,6 @@ from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.petri import semantics
 from copy import copy
 import sys
-import pandas as pd
 
 
 class Parameters:
@@ -367,6 +366,8 @@ class TbrStreamingConformance(object):
         diagn_df
             Diagnostics dataframe
         """
+        import pandas as pd
+
         cases = list(self.case_dict.keys())
 
         diagn_stream = []
