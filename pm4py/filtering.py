@@ -1,5 +1,13 @@
-import pandas as pd
 from pm4py.util import constants, xes_constants
+import pkgutil
+
+
+def check_is_dataframe(log):
+    if pkgutil.find_loader("pandas"):
+        import pandas as pd
+        return type(log) is pd.DataFrame
+
+    return False
 
 
 def check_dataframe_columns(df):
@@ -35,7 +43,7 @@ def filter_start_activities(log, admitted_start_activities):
     filtered_log
         Filtered log object
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
         return start_activities_filter.apply(log, admitted_start_activities)
@@ -60,7 +68,7 @@ def filter_end_activities(log, admitted_end_activities):
     filtered_log
         Filtered log object
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
         return end_activities_filter.apply(log, admitted_end_activities)
@@ -92,7 +100,7 @@ def filter_attribute_values(log, attribute, values, how="cases", positive=True):
     filtered_log
         Filtered log object
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         if how == "events":
@@ -133,7 +141,7 @@ def filter_trace_attribute(log, attribute, values, positive=True):
     filtered_log
         Filtered event log
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         return attributes_filter.apply(log, values, parameters={attributes_filter.Parameters.ATTRIBUTE_KEY: attribute,
@@ -160,7 +168,7 @@ def filter_variants(log, admitted_variants):
     filtered_log
         Filtered log object
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.variants import variants_filter
         return variants_filter.apply(log, admitted_variants)
@@ -185,7 +193,7 @@ def filter_variants_percentage(log, percentage=0.8):
     filtered_log
         Filtered log object
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         raise Exception(
             "filtering variants percentage on Pandas dataframe is currently not available! please convert the dataframe to event log with the method: log =  pm4py.convert_to_event_log(df)")
     else:
@@ -212,7 +220,7 @@ def filter_paths(log, allowed_paths, positive=True):
     filtered_log
         Filtered log object
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         from pm4py.algo.filtering.pandas.paths import paths_filter
         return paths_filter.apply(log, allowed_paths, parameters={paths_filter.Parameters.POSITIVE: positive})
     else:
@@ -240,7 +248,7 @@ def filter_timestamp(log, dt1, dt2, how="events"):
     filtered_log
         Filtered log
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
         if how == "events":
             return timestamp_filter.apply_events(log, dt1, dt2)
