@@ -114,6 +114,8 @@ def get_freq_triples(df, activity_key="concept:name", case_id_glue="case:concept
     freq_triples
         Frequency triples from the dataframe
     """
+    import pandas as pd
+
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
             df = df.sort_values([case_id_glue, timestamp_key])
