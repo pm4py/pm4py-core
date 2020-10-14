@@ -1,4 +1,4 @@
-from pm4py.algo.discovery.heuristics.versions import classic
+from pm4py.algo.discovery.heuristics.variants import classic
 import pandas
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import exec_utils

@@ -1,2 +1,2 @@
-from pm4py.simulation.montecarlo import utils, versions, simulator, outputs
+from pm4py.simulation.montecarlo import utils, variants, simulator, outputs
 

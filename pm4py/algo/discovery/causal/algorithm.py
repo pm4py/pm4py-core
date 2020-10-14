@@ -1,4 +1,4 @@
-from pm4py.algo.discovery.causal.versions import alpha, heuristic
+from pm4py.algo.discovery.causal.variants import alpha, heuristic
 from enum import Enum
 from pm4py.util import exec_utils
 

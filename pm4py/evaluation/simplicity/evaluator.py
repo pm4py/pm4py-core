@@ -1,4 +1,4 @@
-from pm4py.evaluation.simplicity.versions import arc_degree
+from pm4py.evaluation.simplicity.variants import arc_degree
 from enum import Enum
 from pm4py.util import exec_utils
 

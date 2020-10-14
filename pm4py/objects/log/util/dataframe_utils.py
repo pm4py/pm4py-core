@@ -2,7 +2,7 @@ from pm4py.util import constants
 from pm4py.objects.log.log import EventStream
 from pm4py.objects.conversion.log import converter as log_converter
 import pandas as pd
-from pm4py.util.versions import check_pandas_ge_024
+from pm4py.util.vers_checker import check_pandas_ge_024
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.util import points_subset

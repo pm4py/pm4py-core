@@ -1,11 +1,11 @@
 import deprecation
 
 from pm4py import util as pmutil
-from pm4py.algo.conformance.tokenreplay.versions import token_replay
-from pm4py.evaluation.generalization.versions import token_based as generalization_token_based
-from pm4py.evaluation.precision.versions import etconformance_token as precision_token_based
-from pm4py.evaluation.replay_fitness.versions import token_replay as fitness_token_based
-from pm4py.evaluation.simplicity.versions import arc_degree as simplicity_arc_degree
+from pm4py.algo.conformance.tokenreplay.variants import token_replay
+from pm4py.evaluation.generalization.variants import token_based as generalization_token_based
+from pm4py.evaluation.precision.variants import etconformance_token as precision_token_based
+from pm4py.evaluation.replay_fitness.variants import token_replay as fitness_token_based
+from pm4py.evaluation.simplicity.variants import arc_degree as simplicity_arc_degree
 from pm4py.objects import log as log_lib
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import xes_constants as xes_util

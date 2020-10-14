@@ -2,7 +2,7 @@ import numpy as np
 from scipy.spatial.distance import pdist
 from pm4py.statistics.attributes.log import get as attributes_filter
 from pm4py.util import constants
-from pm4py.algo.discovery.dfg.versions import native
+from pm4py.algo.discovery.dfg.variants import native
 import pandas as pd
 from pm4py.algo.clustering.trace_attribute_driven.util import filter_subsets
 from pm4py.algo.clustering.trace_attribute_driven.variant import act_dist_calc

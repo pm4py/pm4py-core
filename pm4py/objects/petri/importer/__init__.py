@@ -1,1 +1,1 @@
-from pm4py.objects.petri.importer import versions, importer
+from pm4py.objects.petri.importer import variants, importer

@@ -1,4 +1,4 @@
-from pm4py.simulation.montecarlo.versions import petri_semaph_fifo
+from pm4py.simulation.montecarlo.variants import petri_semaph_fifo
 from pm4py.simulation.montecarlo.outputs import Outputs
 from pm4py.util import exec_utils
 from enum import Enum

@@ -1,4 +1,4 @@
-from pm4py.simulation.tree_generator.versions import basic, ptandloggenerator
+from pm4py.simulation.tree_generator.variants import basic, ptandloggenerator
 from enum import Enum
 from pm4py.util import exec_utils
 

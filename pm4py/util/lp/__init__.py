@@ -1,1 +1,1 @@
-from pm4py.util.lp import solver, util, versions
+from pm4py.util.lp import solver, util, variants
