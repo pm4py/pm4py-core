@@ -1,4 +1,4 @@
-from pm4py.objects.petri.importer.versions import pnml
+from pm4py.objects.petri.importer.variants import pnml
 from pm4py.util import exec_utils
 from enum import Enum
 

@@ -1,1 +1,1 @@
-from pm4py.evaluation.generalization import evaluator, versions
+from pm4py.evaluation.generalization import evaluator, variants

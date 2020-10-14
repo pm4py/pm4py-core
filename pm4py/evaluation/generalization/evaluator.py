@@ -1,4 +1,4 @@
-from pm4py.evaluation.generalization.versions import token_based
+from pm4py.evaluation.generalization.variants import token_based
 from pm4py.objects.conversion.log import converter as log_conversion
 from enum import Enum
 from pm4py.util import exec_utils

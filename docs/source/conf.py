@@ -24,7 +24,7 @@ project_copyright = 'Fraunhofer FIT'
 author = 'Fraunhofer FIT'
 
 # The short X.Y version
-version = '1.3'
+version = '2.0'
 # The full version, including alpha/beta/rc tags
 release = '4'
 

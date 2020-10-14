@@ -4,7 +4,7 @@ import unittest
 
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
-from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNameException
+from pm4py.algo.conformance.tokenreplay.variants.token_replay import NoConceptNameException
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects import petri
 import pandas as pd

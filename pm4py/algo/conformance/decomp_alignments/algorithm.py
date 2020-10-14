@@ -1,4 +1,4 @@
-from pm4py.algo.conformance.decomp_alignments.versions import recompos_maximal
+from pm4py.algo.conformance.decomp_alignments.variants import recompos_maximal
 from enum import Enum
 from pm4py.util import exec_utils
 

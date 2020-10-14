@@ -13,14 +13,14 @@ to change as libraries are added or removed.
 | cycler | https://pypi.org/project/cycler | BSD | 0.10.0 | | |
 | decorator | https://pypi.org/project/decorator | BSD | 4.4.2 | | |
 | deprecation | https://pypi.org/project/deprecation | Apache 2.0 | 2.1.0 | | |
-| graphviz | https://pypi.org/project/graphviz | MIT | 0.14.1 | X | |
+| graphviz | https://pypi.org/project/graphviz | MIT | 0.14.2 | X | |
 | importlib-metadata | https://pypi.org/project/importlib-metadata | Apache | 2.0.0 | X | |
 | intervaltree | https://pypi.org/project/intervaltree | Apache 2.0 | 3.1.0 | | |
 | ipython | https://pypi.org/project/ipython | BSD | 7.18.1 | X | |
 | ipython-genutils | https://pypi.org/project/ipython-genutils | BSD | 0.2.0 | | |
 | jedi | https://pypi.org/project/jedi | MIT | 0.17.0 | | |
 | jinja2 | https://pypi.org/project/jinja2 | BSD | 2.11.2 | | |
-| joblib | https://pypi.org/project/joblib | BSD | 0.15.1 | X | |
+| joblib | https://pypi.org/project/joblib | BSD | 0.17.0 | X | |
 | jsonpickle | https://pypi.org/project/jsonpickle | BSD | 1.4.1 | X | |
 | kiwisolver | https://pypi.org/project/kiwisolver | BSD | 1.2.0 | X | X |
 | lxml | https://pypi.org/project/lxml | BSD | 4.5.2 | X | X |
@@ -30,7 +30,7 @@ to change as libraries are added or removed.
 | networkx | https://pypi.org/project/networkx | BSD | 2.5 | X | |
 | numpy | https://pypi.org/project/numpy | BSD | 1.19.2 | | X |
 | packaging | https://pypi.org/project/packaging | Apache 2.0 | 20.4 | | |
-| pandas | https://pypi.org/project/pandas | BSD | 1.1.2 | X | X |
+| pandas | https://pypi.org/project/pandas | BSD | 1.1.3 | X | X |
 | parso | https://pypi.org/project/parso | MIT | 0.7.0 | | |
 | pickleshare | https://pypi.org/project/pickleshare | MIT | 0.7.5 | X | |
 | prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD | 3.0.7 | | |
@@ -51,4 +51,4 @@ to change as libraries are added or removed.
 | threadpoolctl | https://pypi.org/project/threadpoolctl | BSD | 2.1.0 | | |
 | traitlets | https://pypi.org/project/traitlets | BSD | 5.0.4 | | |
 | wcwidth | https://pypi.org/project/wcwidth | MIT | 0.1.9 | | |
-| zipp | https://pypi.org/project/zipp | MIT | 3.2.0 | X | |
+| zipp | https://pypi.org/project/zipp | MIT | 3.3.0 | X | |
