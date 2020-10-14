@@ -1,0 +1,6 @@
+The support to Python 3.9 is based on unofficial packages, and comes only for Windows!!
+
+The packages are the ones reported at the page:
+https://www.lfd.uci.edu/~gohlke/pythonlibs/
+
+Use it at your own responsibility!!!

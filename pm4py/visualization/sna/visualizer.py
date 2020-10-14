@@ -1,4 +1,4 @@
-from pm4py.visualization.sna.versions import networkx, pyvis
+from pm4py.visualization.sna.variants import networkx, pyvis
 from enum import Enum
 from pm4py.util import exec_utils
 

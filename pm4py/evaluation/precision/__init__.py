@@ -1,1 +1,1 @@
-from pm4py.evaluation.precision import evaluator, versions
+from pm4py.evaluation.precision import evaluator, variants

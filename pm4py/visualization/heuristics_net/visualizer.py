@@ -2,7 +2,7 @@ import os
 import shutil
 import subprocess
 import sys
-from pm4py.visualization.heuristics_net.versions import pydotplus
+from pm4py.visualization.heuristics_net.variants import pydotplus
 from enum import Enum
 from pm4py.util import exec_utils
 

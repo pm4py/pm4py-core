@@ -1,4 +1,4 @@
-from pm4py.objects.conversion.heuristics_net.versions import to_petri_net
+from pm4py.objects.conversion.heuristics_net.variants import to_petri_net
 from enum import Enum
 from pm4py.util import exec_utils
 

@@ -1,5 +1,5 @@
-from pm4py.objects.conversion.process_tree.versions import to_petri_net
-from pm4py.objects.conversion.process_tree.versions import to_petri_net_transition_bordered
+from pm4py.objects.conversion.process_tree.variants import to_petri_net
+from pm4py.objects.conversion.process_tree.variants import to_petri_net_transition_bordered
 from pm4py.util import exec_utils
 from enum import Enum
 

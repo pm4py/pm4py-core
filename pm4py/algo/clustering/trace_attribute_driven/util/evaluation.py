@@ -1,7 +1,7 @@
 from scipy.spatial.distance import squareform
 import numpy as np
-from pm4py.algo.clustering.trace_attribute_driven.variant import act_dist_calc
-from pm4py.algo.clustering.trace_attribute_driven.variant import suc_dist_calc
+from pm4py.algo.clustering.trace_attribute_driven.variants import act_dist_calc
+from pm4py.algo.clustering.trace_attribute_driven.variants import suc_dist_calc
 from pm4py.algo.clustering.trace_attribute_driven.leven_dist import leven_dist_calc
 from pm4py.algo.clustering.trace_attribute_driven.dfg import dfg_dist
 

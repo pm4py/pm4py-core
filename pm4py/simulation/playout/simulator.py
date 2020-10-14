@@ -1,4 +1,4 @@
-from pm4py.simulation.playout.versions import basic_playout, extensive, stochastic_playout
+from pm4py.simulation.playout.variants import basic_playout, extensive, stochastic_playout
 from pm4py.util import exec_utils
 from enum import Enum
 
