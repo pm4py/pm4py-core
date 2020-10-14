@@ -14,7 +14,6 @@ from pm4py.objects.process_tree import util
 from pm4py.objects.log.util import filtering_utils
 from pm4py.util import constants, xes_constants
 from pm4py.objects.log.log import EventLog, Trace, Event
-from pm4py.statistics.variants.pandas import get as variants_get
 from pm4py.algo.discovery.inductive.util import tree_consistency
 import pkgutil
 
@@ -43,6 +42,8 @@ def apply(log, parameters=None):
     """
     if pkgutil.find_loader("pandas"):
         import pandas as pd
+        from pm4py.statistics.variants.pandas import get as variants_get
+
         if type(log) is pd.DataFrame:
             vars = variants_get.get_variants_count(log, parameters=parameters)
             return apply_variants(vars, parameters=parameters)

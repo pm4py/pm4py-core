@@ -1,8 +1,6 @@
 from pm4py import util as pmutil
-from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.algo.discovery.dfg.variants import native, performance, freq_triples
 from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.objects.log.util import dataframe_utils
 from pm4py.util import xes_constants as xes_util
 from pm4py.util import exec_utils
 from pm4py.algo.discovery.parameters import Parameters
@@ -66,6 +64,9 @@ def apply(log, parameters=None, variant=DEFAULT_VARIANT):
 
     if pkgutil.find_loader("pandas"):
         import pandas
+        from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
+        from pm4py.objects.log.util import dataframe_utils
+
         if isinstance(log, pandas.core.frame.DataFrame) and not variant == Variants.FREQ_TRIPLES:
             log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_columns=[
                 timestamp_key])

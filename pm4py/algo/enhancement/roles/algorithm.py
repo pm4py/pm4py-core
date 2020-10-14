@@ -1,7 +1,7 @@
 from pm4py.algo.enhancement.roles.variants import log, pandas
-import pandas as pd
 from pm4py.util import exec_utils
 from enum import Enum
+import pkgutil
 
 
 class Variants(Enum):
@@ -39,9 +39,12 @@ def apply(log, variant=None, parameters=None):
         parameters = {}
 
     if variant is None:
-        if type(log) is pd.DataFrame:
-            variant = Variants.PANDAS
-        else:
+        if pkgutil.find_loader("pandas"):
+            import pandas as pd
+            if type(log) is pd.DataFrame:
+                variant = Variants.PANDAS
+
+        if variant is None:
             variant = Variants.LOG
 
     return exec_utils.get_variant(variant).apply(log, parameters=parameters)
