@@ -1,4 +1,4 @@
-from pm4py.algo.conformance.tokenreplay.versions import token_replay, backwards
+from pm4py.algo.conformance.tokenreplay.variants import token_replay, backwards
 from pm4py.objects.conversion.log import converter as log_converter
 from enum import Enum
 from pm4py.util import exec_utils

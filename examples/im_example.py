@@ -27,7 +27,7 @@ def execute_script():
         for i in range(0, len(log)):
             try:
                 print("\n", i, [x["concept:name"] for x in log[i]])
-                cf_result = pm4py.algo.conformance.alignments.versions.state_equation_a_star.apply(log[i], net, marking,
+                cf_result = pm4py.algo.conformance.alignments.variants.state_equation_a_star.apply(log[i], net, marking,
                                                                                                    final_marking)[
                     'alignment']
                 if cf_result is None:

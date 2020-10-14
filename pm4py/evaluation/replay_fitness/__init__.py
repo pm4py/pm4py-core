@@ -1,1 +1,1 @@
-from pm4py.evaluation.replay_fitness import evaluator, versions
+from pm4py.evaluation.replay_fitness import evaluator, variants

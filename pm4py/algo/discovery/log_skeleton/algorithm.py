@@ -1,5 +1,5 @@
 from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.algo.discovery.log_skeleton.versions import classic
+from pm4py.algo.discovery.log_skeleton.variants import classic
 from enum import Enum
 from pm4py.util import exec_utils
 

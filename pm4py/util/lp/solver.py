@@ -1,4 +1,4 @@
-from pm4py.util.lp.versions import pulp_solver
+from pm4py.util.lp.variants import pulp_solver
 from pm4py.util.lp.parameters import Parameters
 
 
@@ -20,7 +20,7 @@ MAX_ALLOWED_HEURISTICS = 10**15
 
 try:
     # in the case ortools is installed, it works
-    from pm4py.util.lp.versions import ortools_solver
+    from pm4py.util.lp.variants import ortools_solver
 
     VERSIONS_APPLY[ORTOOLS_SOLVER] = ortools_solver.apply
     VERSIONS_GET_PRIM_OBJ[ORTOOLS_SOLVER] = ortools_solver.get_prim_obj_from_sol

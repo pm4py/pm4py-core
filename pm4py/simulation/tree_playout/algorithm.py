@@ -1,4 +1,4 @@
-from pm4py.simulation.tree_playout.versions import basic_playout, extensive, topbottom
+from pm4py.simulation.tree_playout.variants import basic_playout, extensive, topbottom
 from enum import Enum
 from pm4py.util import exec_utils
 

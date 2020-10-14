@@ -1,4 +1,4 @@
-from pm4py.statistics.performance_spectrum.versions import dataframe, log
+from pm4py.statistics.performance_spectrum.variants import dataframe, log
 import pandas as pd
 from enum import Enum
 from pm4py.util import exec_utils

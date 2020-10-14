@@ -1,7 +1,7 @@
 from copy import copy
 
 import pm4py
-from pm4py.algo.conformance.alignments import versions
+from pm4py.algo.conformance.alignments import variants
 from pm4py.objects.petri import align_utils
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.conversion.log import converter as log_converter
@@ -15,10 +15,10 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONS
 
 
 class Variants(Enum):
-    VERSION_STATE_EQUATION_A_STAR = versions.state_equation_a_star
-    VERSION_DIJKSTRA_NO_HEURISTICS = versions.dijkstra_no_heuristics
-    VERSION_DIJKSTRA_LESS_MEMORY = versions.dijkstra_less_memory
-    VERSION_STATE_EQUATION_LESS_MEMORY = versions.state_equation_less_memory
+    VERSION_STATE_EQUATION_A_STAR = variants.state_equation_a_star
+    VERSION_DIJKSTRA_NO_HEURISTICS = variants.dijkstra_no_heuristics
+    VERSION_DIJKSTRA_LESS_MEMORY = variants.dijkstra_less_memory
+    VERSION_STATE_EQUATION_LESS_MEMORY = variants.state_equation_less_memory
 
 
 class Parameters(Enum):

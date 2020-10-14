@@ -1,4 +1,4 @@
-from pm4py.evaluation.replay_fitness.versions import alignment_based, token_replay
+from pm4py.evaluation.replay_fitness.variants import alignment_based, token_replay
 from pm4py.algo.conformance import alignments
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects import petri
