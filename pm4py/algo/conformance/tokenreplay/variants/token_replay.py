@@ -452,7 +452,14 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
             else:
                 if trace[i][activity_key] in trans_map:
                     current_event_map.update(trace[i])
-                    t = trans_map[trace[i][activity_key]]
+                    # change 14/10/2020: to better support duplicate transitions with this approach, we check
+                    # whether in the current marking there is at least one transition corresponding to the activity
+                    # key without looking at the transition map (that contains one entry per label)
+                    corr_en_t = [x for x in semantics.enabled_transitions(net, marking) if x.label == trace[i][activity_key]]
+                    if corr_en_t:
+                        t = corr_en_t[0]
+                    else:
+                        t = trans_map[trace[i][activity_key]]
                     if walk_through_hidden_trans and not semantics.is_enabled(t, net,
                                                                               marking):
                         visited_transitions = set()
