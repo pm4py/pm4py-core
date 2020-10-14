@@ -1,9 +1,9 @@
 from pm4py.statistics.performance_spectrum.variants import dataframe, log
-import pandas as pd
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.statistics.performance_spectrum.parameters import Parameters
 from pm4py.statistics.performance_spectrum.outputs import Outputs
+import pkgutil
 
 
 class Variants(Enum):
@@ -45,11 +45,15 @@ def apply(log, list_activities, parameters=None):
     if len(list_activities) < 2:
         raise Exception("performance spectrum can be applied providing at least two activities!")
 
-    if type(log) is pd.DataFrame:
-        points = exec_utils.get_variant(Variants.DATAFRAME).apply(log, list_activities, sample_size, parameters)
-    else:
-        points = exec_utils.get_variant(Variants.LOG).apply(log_conversion.apply(log), list_activities, sample_size,
-                                                            parameters)
+    points = None
+
+    if pkgutil.find_loader("pandas"):
+        import pandas as pd
+        if type(log) is pd.DataFrame:
+            points = exec_utils.get_variant(Variants.DATAFRAME).apply(log, list_activities, sample_size, parameters)
+
+    points = exec_utils.get_variant(Variants.LOG).apply(log_conversion.apply(log), list_activities, sample_size,
+                                                        parameters)
 
     ps = {Outputs.LIST_ACTIVITIES.value: list_activities, Outputs.POINTS.value: points}
 
