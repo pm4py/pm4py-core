@@ -5,7 +5,7 @@ from pm4py.util import constants
 from pm4py.algo.discovery.dfg.variants import native
 import pandas as pd
 from pm4py.algo.clustering.trace_attribute_driven.util import filter_subsets
-from pm4py.algo.clustering.trace_attribute_driven.variant import act_dist_calc
+from pm4py.algo.clustering.trace_attribute_driven.variants import act_dist_calc
 
 
 def log2sublog(log, str):
