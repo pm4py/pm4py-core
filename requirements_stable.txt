@@ -51,5 +51,5 @@ cython==0.29.21
 tqdm==4.50.2
 intel-openmp==2020.0.133
 mkl==2019.0
-cvxopt==1.2.5; python_version < '3.9'
+cvxopt==1.2.5.post1; python_version < '3.9'
 pm4pycvxopt>=0.0.10; python_version < '3.9'
