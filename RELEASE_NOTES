@@ -12,6 +12,8 @@ The following *minor* changes included in this release:
     - bug fix in PANDAS case size filter
 2. commit fde08b03
     - output conformance checking diagnostics in a dataframe
+3. commit 62801513
+    - improved performance of token-based replay with duplicate labels
 
 
 ===== PM4Py 1.5.2.2 =====
