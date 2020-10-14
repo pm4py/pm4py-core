@@ -55,7 +55,7 @@ setup(
               'pm4py.algo.filtering.pandas.start_activities', 'pm4py.algo.clustering',
               'pm4py.algo.clustering.trace_attribute_driven', 'pm4py.algo.clustering.trace_attribute_driven.dfg',
               'pm4py.algo.clustering.trace_attribute_driven.util',
-              'pm4py.algo.clustering.trace_attribute_driven.variant',
+              'pm4py.algo.clustering.trace_attribute_driven.variants',
               'pm4py.algo.clustering.trace_attribute_driven.merge_log',
               'pm4py.algo.clustering.trace_attribute_driven.leven_dist',
               'pm4py.algo.clustering.trace_attribute_driven.linkage_method', 'pm4py.algo.conformance',
