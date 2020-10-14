@@ -18,9 +18,9 @@ if __name__ == "__main__":
     from pm4py.objects.log.importer.xes import importer as xes_importer
     from pm4py.algo.discovery.inductive import algorithm as inductive
     from pm4py.algo.conformance.alignments import algorithm as align_algorithm
-    from pm4py.algo.conformance.alignments.versions import state_equation_less_memory, state_equation_a_star, \
+    from pm4py.algo.conformance.alignments.variants import state_equation_less_memory, state_equation_a_star, \
         dijkstra_less_memory, dijkstra_no_heuristics
-    from pm4py.algo.conformance.decomp_alignments.versions import recompos_maximal
+    from pm4py.algo.conformance.decomp_alignments.variants import recompos_maximal
     from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
     from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
     from pm4py.algo.discovery.alpha import algorithm as alpha

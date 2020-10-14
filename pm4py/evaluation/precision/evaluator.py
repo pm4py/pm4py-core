@@ -1,4 +1,4 @@
-from pm4py.evaluation.precision.versions import etconformance_token, align_etconformance
+from pm4py.evaluation.precision.variants import etconformance_token, align_etconformance
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects import petri
 from enum import Enum

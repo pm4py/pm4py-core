@@ -1,4 +1,4 @@
-from pm4py.objects.conversion.dfg.versions import to_petri_net_activity_defines_place
+from pm4py.objects.conversion.dfg.variants import to_petri_net_activity_defines_place
 from enum import Enum
 from pm4py.util import exec_utils
 

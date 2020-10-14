@@ -1,7 +1,7 @@
 from pm4py.algo.conformance.alignments.algorithm import apply as get_alignment
 from pm4py.algo.conformance.alignments.algorithm import Parameters as AlignParameters
 from pm4py.algo.conformance.alignments.algorithm import Variants
-from pm4py.algo.conformance.alignments.versions.state_equation_a_star import get_best_worst_cost
+from pm4py.algo.conformance.alignments.variants.state_equation_a_star import get_best_worst_cost
 from pm4py.objects.conversion.process_tree.converter import apply as convert_pt_to_petri_net
 from pm4py.objects.conversion.process_tree.converter import Variants as pt_petri_net_variants
 from pm4py.objects.log.log import Trace, Event

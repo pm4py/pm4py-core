@@ -1,1 +1,1 @@
-from pm4py.streaming.algo.conformance.footprints import algorithm, versions
+from pm4py.streaming.algo.conformance.footprints import algorithm, variants

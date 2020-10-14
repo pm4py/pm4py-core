@@ -1,6 +1,6 @@
-from pm4py.algo.enhancement.sna.versions.log import handover as log_handover, jointactivities as log_jointactivities, \
+from pm4py.algo.enhancement.sna.variants.log import handover as log_handover, jointactivities as log_jointactivities, \
     subcontracting as log_subcontracting, working_together as log_workingtogether
-from pm4py.algo.enhancement.sna.versions.pandas import handover as pd_handover, subcontracting as pd_subcontracting, \
+from pm4py.algo.enhancement.sna.variants.pandas import handover as pd_handover, subcontracting as pd_subcontracting, \
     working_together as pd_workingtogether, jointactivities as pd_jointactivities
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.algo.enhancement.sna.parameters import Parameters

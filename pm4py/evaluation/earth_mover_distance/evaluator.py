@@ -1,4 +1,4 @@
-from pm4py.evaluation.earth_mover_distance.versions import pyemd
+from pm4py.evaluation.earth_mover_distance.variants import pyemd
 from enum import Enum
 from pm4py.util import exec_utils
 

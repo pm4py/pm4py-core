@@ -1,6 +1,6 @@
 from enum import Enum
 from pm4py.util import exec_utils
-from pm4py.streaming.algo.conformance.tbr.versions import classic
+from pm4py.streaming.algo.conformance.tbr.variants import classic
 
 
 class Variants(Enum):
