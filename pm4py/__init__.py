@@ -36,7 +36,6 @@ __author_email__ = 'pm4py@fit.fraunhofer.de'
 __maintainer__ = 'Fraunhofer Institute for Applied Technology'
 __maintainer_email__ = "pm4py@fit.fraunhofer.de"
 
-"""
 from pm4py.read import read_xes, read_csv, read_petri_net, read_process_tree, read_dfg, format_dataframe, \
     convert_to_event_log, convert_to_event_stream, convert_to_dataframe
 from pm4py.write import write_xes, write_csv, write_petri_net, write_process_tree, write_dfg
@@ -52,4 +51,3 @@ from pm4py.filtering import filter_start_activities, filter_end_activities, filt
     filter_variants_percentage, filter_paths, filter_timestamp, filter_trace_attribute
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
     get_trace_attributes
-"""
