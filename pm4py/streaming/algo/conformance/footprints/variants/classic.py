@@ -1,6 +1,5 @@
 from pm4py.util import constants, exec_utils, xes_constants
 import logging
-import pandas as pd
 
 
 class Parameters:
@@ -262,6 +261,8 @@ class FootprintsStreamingConformance(object):
         diagn_df
             Diagnostics dataframe
         """
+        import pandas as pd
+
         cases = list(self.case_dict.keys())
 
         diagn_stream = []

@@ -2,14 +2,13 @@ from copy import copy
 from copy import deepcopy
 from enum import Enum
 
-import pandas
-
 import pm4py
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.conversion.log.variants import to_event_stream
 from pm4py.objects.log import log as log_instance
 from pm4py.util import xes_constants as xes
-from pm4py.util import exec_utils, xes_constants, constants as pmconstants
+from pm4py.util import exec_utils, constants as pmconstants
+import pkgutil
 
 
 class Parameters(Enum):
@@ -27,8 +26,10 @@ def apply(log, parameters=None):
     case_pref = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTE_PREFIX, parameters,
                                            "case:")
 
-    if isinstance(log, pandas.core.frame.DataFrame):
-        log = to_event_stream.apply(log, parameters=parameters)
+    if pkgutil.find_loader("pandas"):
+        import pandas
+        if isinstance(log, pandas.core.frame.DataFrame):
+            log = to_event_stream.apply(log, parameters=parameters)
     if isinstance(log, pm4py.objects.log.log.EventStream) and (not isinstance(log, pm4py.objects.log.log.EventLog)):
         return __transform_event_stream_to_event_log(log, case_glue=glue, include_case_attributes=True,
                                                      case_attribute_prefix=case_pref, enable_deepcopy=enable_deepcopy)
