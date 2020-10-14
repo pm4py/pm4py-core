@@ -1,1 +1,1 @@
-from pm4py.algo.discovery.heuristics import versions, algorithm
+from pm4py.algo.discovery.heuristics import variants, algorithm

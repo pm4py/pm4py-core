@@ -1,4 +1,4 @@
-from pm4py.statistics.passed_time.log.versions import pre, post, prepost
+from pm4py.statistics.passed_time.log.variants import pre, post, prepost
 from enum import Enum
 from pm4py.util import exec_utils
 

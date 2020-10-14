@@ -2,7 +2,7 @@ import pandas
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.parameters import Parameters
-from pm4py.algo.discovery.alpha import versions
+from pm4py.algo.discovery.alpha import variants
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import xes_constants as xes_util
@@ -11,8 +11,8 @@ from enum import Enum
 
 
 class Variants(Enum):
-    ALPHA_VERSION_CLASSIC = versions.classic
-    ALPHA_VERSION_PLUS = versions.plus
+    ALPHA_VERSION_CLASSIC = variants.classic
+    ALPHA_VERSION_PLUS = variants.plus
 
 
 ALPHA_VERSION_CLASSIC = Variants.ALPHA_VERSION_CLASSIC

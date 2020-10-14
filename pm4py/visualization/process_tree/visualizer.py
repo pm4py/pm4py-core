@@ -1,6 +1,6 @@
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
-from pm4py.visualization.process_tree.versions import wo_decoration
+from pm4py.visualization.process_tree.variants import wo_decoration
 from enum import Enum
 from pm4py.util import exec_utils
 

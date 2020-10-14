@@ -1,1 +1,1 @@
-from pm4py.streaming.algo.conformance.tbr import algorithm, versions
+from pm4py.streaming.algo.conformance.tbr import algorithm, variants
