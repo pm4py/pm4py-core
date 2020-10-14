@@ -3,8 +3,8 @@ from scipy.spatial.distance import squareform
 from pm4py.algo.clustering.trace_attribute_driven.leven_dist import leven_dist_calc
 from pm4py.algo.clustering.trace_attribute_driven.merge_log import merge_log
 from pm4py.algo.clustering.trace_attribute_driven.dfg import dfg_dist
-from pm4py.algo.clustering.trace_attribute_driven.variant import act_dist_calc
-from pm4py.algo.clustering.trace_attribute_driven.variant import suc_dist_calc
+from pm4py.algo.clustering.trace_attribute_driven.variants import act_dist_calc
+from pm4py.algo.clustering.trace_attribute_driven.variants import suc_dist_calc
 
 
 def linkage_dfg_update(loglist, dist_mat, alpha, percent):
