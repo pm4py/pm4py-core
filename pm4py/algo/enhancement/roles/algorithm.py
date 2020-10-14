@@ -1,4 +1,4 @@
-from pm4py.algo.enhancement.roles.versions import log, pandas
+from pm4py.algo.enhancement.roles.variants import log, pandas
 import pandas as pd
 from pm4py.util import exec_utils
 from enum import Enum

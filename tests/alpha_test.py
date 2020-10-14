@@ -4,7 +4,7 @@ import unittest
 
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
-from pm4py.algo.conformance.tokenreplay.versions.token_replay import NoConceptNameException
+from pm4py.algo.conformance.tokenreplay.variants.token_replay import NoConceptNameException
 from pm4py.algo.discovery.alpha import algorithm as alpha_alg
 from pm4py.objects import petri
 from pm4py.objects.log.importer.xes import importer as xes_importer

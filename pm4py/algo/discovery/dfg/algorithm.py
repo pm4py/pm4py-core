@@ -2,7 +2,7 @@ import pandas
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
-from pm4py.algo.discovery.dfg.versions import native, performance, freq_triples
+from pm4py.algo.discovery.dfg.variants import native, performance, freq_triples
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.log.util import dataframe_utils
 from pm4py.util import xes_constants as xes_util

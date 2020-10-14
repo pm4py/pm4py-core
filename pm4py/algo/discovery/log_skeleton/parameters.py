@@ -1,5 +1,5 @@
 from enum import Enum
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
 
 
 class Parameters(Enum):
@@ -10,6 +10,7 @@ class Parameters(Enum):
     # default choice for conformance checking
     DEFAULT_CONSIDERED_CONSTRAINTS = ["equivalence", "always_after", "always_before", "never_together",
                                       "directly_follows", "activ_freq"]
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
     ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
     PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
 
