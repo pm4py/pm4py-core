@@ -29,6 +29,16 @@ if pkgutil.find_loader("lxml"):
 else:
     logging.error("lxml is not available. This can lead some features of PM4Py to not work correctly!")
 
+if pkgutil.find_loader("pandas"):
+    import pandas
+else:
+    logging.error("pandas is not available. This can lead some features of PM4Py to not work correctly!")
+
+if pkgutil.find_loader("pulp"):
+    import pulp
+else:
+    logging.error("pulp is not available. This can lead some features of PM4Py to not work correctly!")
+
 __version__ = '2.0.0'
 __doc__ = "Process Mining for Python (PM4Py)"
 __author__ = 'Fraunhofer Institute for Applied Technology'

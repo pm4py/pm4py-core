@@ -22,8 +22,6 @@ from copy import copy
 import sys
 import time
 
-from pulp import lpSum, LpVariable, LpProblem, LpMinimize
-
 TOL = 0.1 ** 6
 
 
