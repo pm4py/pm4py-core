@@ -102,6 +102,8 @@ def apply_tree(log, parameters=None):
 
     if pkgutil.find_loader("pandas"):
         import pandas as pd
+        from pm4py.statistics.variants.pandas import get as variants_get
+
         if type(log) is pd.DataFrame:
             vars = variants_get.get_variants_count(log, parameters=parameters)
             return apply_tree_variants(vars, parameters=parameters)
