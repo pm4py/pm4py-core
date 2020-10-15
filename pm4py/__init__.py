@@ -39,6 +39,11 @@ if pkgutil.find_loader("pulp"):
 else:
     logging.error("pulp is not available. This can lead some features of PM4Py to not work correctly!")
 
+if pkgutil.find_loader("graphviz"):
+    import graphviz
+else:
+    logging.error("graphviz is not available. This can lead some features of PM4Py to not work correctly!")
+
 __version__ = '2.0.0'
 __doc__ = "Process Mining for Python (PM4Py)"
 __author__ = 'Fraunhofer Institute for Applied Technology'
