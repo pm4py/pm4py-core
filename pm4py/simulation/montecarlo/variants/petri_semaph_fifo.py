@@ -2,7 +2,6 @@ from pm4py.statistics.traces.log import case_arrival
 from pm4py.simulation.montecarlo.utils import replay
 from pm4py.objects.petri.semantics import enabled_transitions, weak_execute
 from threading import Thread, Semaphore
-from intervaltree import IntervalTree, Interval
 from statistics import median
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.util import constants, xes_constants
@@ -284,6 +283,8 @@ def apply(log, net, im, fm, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    from intervaltree import IntervalTree, Interval
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
