@@ -112,6 +112,8 @@ class SimulationThread(Thread):
             diagnostics = SimulationDiagnostics(self)
             diagnostics.start()
 
+        from intervaltree import IntervalTree, Interval
+
         logging.basicConfig()
         logger = logging.getLogger(__name__)
         logger.setLevel(logging.DEBUG)
