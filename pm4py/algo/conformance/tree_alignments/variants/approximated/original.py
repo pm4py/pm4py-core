@@ -1,7 +1,5 @@
 import math
 
-from pulp import lpSum, LpVariable, LpProblem, LpMinimize
-
 from pm4py.algo.conformance.tree_alignments.variants.approximated.calculate_a_sa_ea_sets import \
     initialize_a_sa_ea_tau_sets
 from pm4py.algo.conformance.tree_alignments.variants.approximated.utilities import calculate_optimal_alignment, \
@@ -272,6 +270,9 @@ def __approximate_alignment_on_loop(pt: ProcessTree, trace: Trace, a_sets: Dict[
                                     parameters=None):
     if parameters is None:
         parameters = {}
+
+    from pulp import lpSum, LpVariable, LpProblem, LpMinimize
+
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
 
     assert pt.operator == Operator.LOOP
@@ -494,6 +495,9 @@ def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: D
                                         parameters=None):
     if parameters is None:
         parameters = {}
+
+    from pulp import lpSum, LpVariable, LpProblem, LpMinimize
+
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
 
     assert pt.operator == Operator.SEQUENCE
@@ -645,6 +649,9 @@ def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: D
                                         parameters=None):
     if parameters is None:
         parameters = {}
+
+    from pulp import lpSum, LpVariable, LpProblem, LpMinimize
+
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
 
     assert pt.operator == Operator.PARALLEL
