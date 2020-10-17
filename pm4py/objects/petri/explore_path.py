@@ -1,20 +1,19 @@
 import numpy as np
 from pm4py.util.lp import solver as lp_solver
 from pm4py.objects.petri import align_utils as utils
-from pm4py.objects import petri
+from pm4py.objects.petri.incidence_matrix import construct
+from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset
 from copy import copy
 import heapq
 
 
 def __search(net, ini, fin):
-    from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset
-
     cost_function = {t: 1 for t in net.transitions}
 
     decorate_transitions_prepostset(net)
     decorate_places_preset_trans(net)
 
-    incidence_matrix = petri.incidence_matrix.construct(net)
+    incidence_matrix = construct(net)
     ini_vec, fin_vec, cost_vec = utils.__vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
     closed = set()
@@ -38,7 +37,8 @@ def __search(net, ini, fin):
         cost_vec = matrix(cost_vec)
 
     h, x = utils.__compute_exact_heuristic_new_version(net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix, ini,
-                                                       fin_vec, lp_solver.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
+                                                       fin_vec, lp_solver.DEFAULT_LP_SOLVER_VARIANT,
+                                                       use_cvxopt=use_cvxopt)
     ini_state = utils.SearchTuple(0 + h, 0, h, ini, None, None, x, True)
     open_set = [ini_state]
     heapq.heapify(open_set)
@@ -62,7 +62,8 @@ def __search(net, ini, fin):
         while not curr.trust:
             h, x = utils.__compute_exact_heuristic_new_version(net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                                incidence_matrix, curr.m,
-                                                               fin_vec, lp_solver.DEFAULT_LP_SOLVER_VARIANT, use_cvxopt=use_cvxopt)
+                                                               fin_vec, lp_solver.DEFAULT_LP_SOLVER_VARIANT,
+                                                               use_cvxopt=use_cvxopt)
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?

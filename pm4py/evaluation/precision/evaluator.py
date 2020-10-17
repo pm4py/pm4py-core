@@ -1,6 +1,6 @@
 from pm4py.evaluation.precision.variants import etconformance_token, align_etconformance
 from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.objects import petri
+from pm4py.objects.petri.check_soundness import check_easy_soundness_net_in_fin_marking
 from enum import Enum
 from pm4py.util import exec_utils
 
@@ -45,7 +45,7 @@ def apply(log, net, marking, final_marking, parameters=None, variant=None):
 
     # execute the following part of code when the variant is not specified by the user
     if variant is None:
-        if not (petri.check_soundness.check_easy_soundness_net_in_fin_marking(
+        if not (check_easy_soundness_net_in_fin_marking(
                 net,
                 marking,
                 final_marking)):

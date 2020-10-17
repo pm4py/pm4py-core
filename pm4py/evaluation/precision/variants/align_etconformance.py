@@ -1,12 +1,16 @@
 from pm4py.objects import log as log_lib
 from pm4py.evaluation.precision import utils as precision_utils
-from pm4py.objects import petri
 from pm4py.objects.petri import align_utils as utils
+from pm4py.objects.petri import check_soundness
+from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.utils import construct_trace_net
+from pm4py.objects.petri.synchronous_product import construct
 from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
 from pm4py.evaluation.precision.parameters import Parameters
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
+
 
 def apply(log, net, marking, final_marking, parameters=None):
     """
@@ -40,7 +44,7 @@ def apply(log, net, marking, final_marking, parameters=None):
     sum_at = 0
     unfit = 0
 
-    if not petri.check_soundness.check_easy_soundness_net_in_fin_marking(net, marking, final_marking):
+    if not check_soundness.check_easy_soundness_net_in_fin_marking(net, marking, final_marking):
         raise Exception("trying to apply Align-ETConformance on a Petri net that is not a easy sound net!!")
 
     prefixes, prefix_count = precision_utils.get_log_prefixes(log, activity_key=activity_key)
@@ -136,7 +140,7 @@ def transform_markings_from_sync_to_original_net(markings0, net, parameters=None
             for j in range(len(res_list)):
                 res = res_list[j]
 
-                atm = petri.petrinet.Marking()
+                atm = Marking()
                 for pl, count in res.items():
                     if pl[0] == utils.SKIP:
                         atm[places_corr[pl[1]]] = count
@@ -177,7 +181,7 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
         trace = fake_log[i]
         sync_net, sync_initial_marking, sync_final_marking = build_sync_net(trace, net, marking, final_marking,
                                                                             parameters=parameters)
-        stop_marking = petri.petrinet.Marking()
+        stop_marking = Marking()
         for pl, count in sync_final_marking.items():
             if pl.name[1] == utils.SKIP:
                 stop_marking[pl] = count
@@ -227,9 +231,9 @@ def build_sync_net(trace, petri_net, initial_marking, final_marking, parameters=
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
 
-    trace_net, trace_im, trace_fm = petri.utils.construct_trace_net(trace, activity_key=activity_key)
+    trace_net, trace_im, trace_fm = construct_trace_net(trace, activity_key=activity_key)
 
-    sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
+    sync_prod, sync_initial_marking, sync_final_marking = construct(trace_net, trace_im,
                                                                                               trace_fm, petri_net,
                                                                                               initial_marking,
                                                                                               final_marking,
