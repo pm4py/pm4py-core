@@ -2,7 +2,6 @@ from copy import copy
 from copy import deepcopy
 from enum import Enum
 
-import pm4py
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.conversion.log.variants import to_event_stream
 from pm4py.objects.log import log as log_instance
@@ -30,7 +29,7 @@ def apply(log, parameters=None):
         import pandas
         if isinstance(log, pandas.core.frame.DataFrame):
             log = to_event_stream.apply(log, parameters=parameters)
-    if isinstance(log, pm4py.objects.log.log.EventStream) and (not isinstance(log, pm4py.objects.log.log.EventLog)):
+    if isinstance(log, log_instance.EventStream) and (not isinstance(log, log_instance.EventLog)):
         return __transform_event_stream_to_event_log(log, case_glue=glue, include_case_attributes=True,
                                                      case_attribute_prefix=case_pref, enable_deepcopy=enable_deepcopy)
     return log

@@ -1,4 +1,4 @@
-import pm4py.algo.conformance.alignments.algorithm as ali
+from pm4py.algo.conformance.alignments import algorithm as ali
 from pm4py.algo.conformance.alignments.variants import state_equation_a_star as star
 import sys
 from pm4py.statistics.variants.log import get as variants_module
