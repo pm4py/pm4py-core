@@ -6,7 +6,6 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.algo.enhancement.sna.parameters import Parameters
 from pm4py.util import exec_utils
 from enum import Enum
-import pandas
 import numpy as np
 
 

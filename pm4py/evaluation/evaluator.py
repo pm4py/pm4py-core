@@ -1,5 +1,3 @@
-import deprecation
-
 from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay.variants import token_replay
 from pm4py.evaluation.generalization.variants import token_based as generalization_token_based

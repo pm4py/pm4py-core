@@ -1,7 +1,4 @@
-import numpy
-
 from pm4py.util import xes_constants as xes
-from pm4py.statistics.traces.pandas import case_statistics
 from enum import Enum
 from pm4py.util import constants, exec_utils
 
@@ -34,6 +31,9 @@ def apply(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    import numpy
+    from pm4py.statistics.traces.pandas import case_statistics
 
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY)
     n = exec_utils.get_param_value(Parameters.N, parameters, 2)

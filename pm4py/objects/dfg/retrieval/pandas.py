@@ -1,5 +1,3 @@
-import pandas as pd
-
 def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name",
                   timestamp_key="time:timestamp", perf_aggregation_key="mean", sort_caseid_required=True,
                   sort_timestamp_along_case_id=True, keep_once_per_case=False, window=1):
@@ -34,6 +32,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     dfg
         DFG in the chosen measure (may be only the frequency, only the performance, or both)
     """
+    import pandas as pd
+
     # to get rows belonging to same case ID together, we need to sort on case ID
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
@@ -114,6 +114,8 @@ def get_freq_triples(df, activity_key="concept:name", case_id_glue="case:concept
     freq_triples
         Frequency triples from the dataframe
     """
+    import pandas as pd
+
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
             df = df.sort_values([case_id_glue, timestamp_key])

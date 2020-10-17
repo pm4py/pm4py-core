@@ -1,10 +1,9 @@
-import pandas as pd
-
-
 def check_pandas_ge_110():
     """
     Checks if the Pandas version is >= 1.1.0
     """
+    import pandas as pd
+
     MAJOR = int(pd.__version__.split(".")[0])
     INTERM = int(pd.__version__.split(".")[1])
 
@@ -17,6 +16,8 @@ def check_pandas_ge_024():
     """
     Checks if the Pandas version is >= 0.24
     """
+    import pandas as pd
+
     MAJOR = int(pd.__version__.split(".")[0])
     INTERM = int(pd.__version__.split(".")[1])
 
