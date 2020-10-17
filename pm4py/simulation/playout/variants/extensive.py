@@ -1,6 +1,6 @@
 import datetime
 
-import pm4py.objects.log.log as log_instance
+from pm4py.objects.log import log as log_instance
 from pm4py.objects.petri import semantics
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants

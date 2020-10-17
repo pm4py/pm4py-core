@@ -1,4 +1,3 @@
-import pm4py
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.statistics.variants.log import get as variants_get
 from pm4py.visualization.petrinet.common import visualize

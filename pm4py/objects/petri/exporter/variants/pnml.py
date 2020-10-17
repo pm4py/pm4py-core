@@ -2,7 +2,7 @@ import uuid
 
 from lxml import etree
 
-import pm4py
+from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.petri.petrinet import Marking
 from pm4py.util import constants
 
@@ -126,7 +126,7 @@ def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False,
     for arc in petrinet.arcs:
         arc_el = etree.SubElement(page, "arc")
         arc_el.set("id", str(hash(arc)))
-        if type(arc.source) is pm4py.objects.petri.petrinet.PetriNet.Place:
+        if type(arc.source) is PetriNet.Place:
             arc_el.set("source", str(places_map[arc.source]))
             arc_el.set("target", str(transitions_map[arc.target]))
         else:
