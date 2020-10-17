@@ -11,11 +11,11 @@ mpmath==1.1.0
 numpy==1.19.2
 parso==0.8.0
 pickleshare==0.7.5
-Pillow==7.2.0
+Pillow==8.0.0
 Pygments==2.7.1
 pyparsing==2.4.7
 pytz==2020.1
-setuptools==50.3.0
+setuptools==50.3.1
 six==1.15.0
 sortedcontainers==2.2.2
 threadpoolctl==2.1.0
@@ -29,8 +29,8 @@ packaging==20.4
 prompt-toolkit==3.0.8
 python-dateutil==2.8.1
 scipy==1.5.2
-traitlets==5.0.4
-zipp==3.3.0
+traitlets==5.0.5
+zipp==3.3.1
 importlib-metadata==2.0.0
 ipython==7.18.1
 jsonpickle==1.4.1
