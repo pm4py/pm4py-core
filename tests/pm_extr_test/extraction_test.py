@@ -31,7 +31,7 @@ if __name__ == "__main__":
     from pm4py.evaluation.simplicity import evaluator as simplicity_evaluator
     from pm4py.evaluation.generalization import evaluator as generalization_evaluator
     from pm4py.objects.log.util import insert_classifier
-    from pm4py.objects.petri.exporter import pnml as pnml_exporter
+    from pm4py.objects.petri.exporter import exporter as pnml_exporter
     from pm4py.visualization.petrinet import visualizer as petri_vis
     from pm4py.visualization.common.save import save as vis_save
     from pm4py import util as pmutil
