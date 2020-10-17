@@ -1,8 +1,8 @@
-import time, pkgutil, logging
+import time, pkgutil, logging, sys
 
 time.clock = time.process_time
 
-from pm4py import util, objects, statistics, algo, visualization, evaluation, streaming, simulation
+from pm4py import util, objects, statistics, algo, visualization, evaluation, simulation
 
 if pkgutil.find_loader("scipy"):
     import scipy
@@ -71,3 +71,7 @@ from pm4py.filtering import filter_start_activities, filter_end_activities, filt
     filter_variants_percentage, filter_paths, filter_timestamp, filter_trace_attribute
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
     get_trace_attributes
+
+# this package is available only for Python >= 3.5
+if sys.version_info >= (3, 5):
+    from pm4py import streaming
