@@ -518,7 +518,7 @@ def apply(tree, parameters=None):
     del parameters
 
     counts = Counts()
-    net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
+    net = PetriNet('imdf_net_' + str(time.time()))
     initial_marking = Marking()
     final_marking = Marking()
     source = get_new_place(counts)
