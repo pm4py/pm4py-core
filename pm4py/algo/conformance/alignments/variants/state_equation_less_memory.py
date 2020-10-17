@@ -13,11 +13,11 @@ from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware
 from pm4py.objects.petri import align_utils as utils
 from pm4py.util import exec_utils
-from pm4py.objects import petri
 from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.util.lp import solver as lp_solver
-from pm4py.objects.petri.petrinet import Marking
 from pm4py.objects.petri.semantics import enabled_transitions
+from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.incidence_matrix import construct
 from enum import Enum
 import heapq
 import numpy as np
@@ -341,7 +341,7 @@ def apply(trace, net, im, fm, parameters=None):
 
 
 def get_corresp_marking_and_trans(m, index, corresp, t):
-    marking = petri.petrinet.Marking()
+    marking = Marking()
     marking[corresp[0][-index]] = 1
     for pl in m:
         if not corresp[1][pl] in marking:
@@ -425,7 +425,7 @@ def __align(model_struct, trace_struct, product_net, corresp, sync_cost=align_ut
     trace_cost_function = trace_struct[TRACE_COST_FUNCTION]
 
     sync_net, ini, fin, cost_function = product_net
-    incidence_matrix = petri.incidence_matrix.construct(sync_net)
+    incidence_matrix = construct(sync_net)
     ini_vec, fin_vec, cost_vec = utils.__vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
     a_matrix = np.asmatrix(incidence_matrix.a_matrix).astype(np.float64)

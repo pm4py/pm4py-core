@@ -21,8 +21,8 @@ from pm4py.algo.discovery.alpha.data_structures import alpha_classic_abstraction
 from pm4py.algo.discovery.alpha.utils import endpoints
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.algo.discovery.dfg.variants import native as dfg_inst
-from pm4py.objects import petri
-from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.petri.utils import add_arc_from_to
 from pm4py.algo.discovery.parameters import Parameters
 from pm4py.util import exec_utils
 
@@ -158,39 +158,39 @@ def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
                         if new_alpha_pair not in pairs:
                             pairs.append((t1[0] | t2[0], t1[1] | t2[1]))
     internal_places = filter(lambda p: __pair_maximizer(pairs, p), pairs)
-    net = petri.petrinet.PetriNet('alpha_classic_net_' + str(time.time()))
+    net = PetriNet('alpha_classic_net_' + str(time.time()))
     label_transition_dict = {}
 
     for i in range(0, len(labels)):
-        label_transition_dict[labels[i]] = petri.petrinet.PetriNet.Transition(labels[i], labels[i])
+        label_transition_dict[labels[i]] = PetriNet.Transition(labels[i], labels[i])
         net.transitions.add(label_transition_dict[labels[i]])
 
     src = __add_source(net, alpha_abstraction.start_activities, label_transition_dict)
     sink = __add_sink(net, alpha_abstraction.end_activities, label_transition_dict)
 
     for pair in internal_places:
-        place = petri.petrinet.PetriNet.Place(str(pair))
+        place = PetriNet.Place(str(pair))
         net.places.add(place)
         for in_arc in pair[0]:
-            petri.utils.add_arc_from_to(label_transition_dict[in_arc], place, net)
+            add_arc_from_to(label_transition_dict[in_arc], place, net)
         for out_arc in pair[1]:
-            petri.utils.add_arc_from_to(place, label_transition_dict[out_arc], net)
+            add_arc_from_to(place, label_transition_dict[out_arc], net)
     return net, Marking({src: 1}), Marking({sink: 1})
 
 
 def __add_source(net, start_activities, label_transition_dict):
-    source = petri.petrinet.PetriNet.Place('start')
+    source = PetriNet.Place('start')
     net.places.add(source)
     for s in start_activities:
-        petri.utils.add_arc_from_to(source, label_transition_dict[s], net)
+        add_arc_from_to(source, label_transition_dict[s], net)
     return source
 
 
 def __add_sink(net, end_activities, label_transition_dict):
-    end = petri.petrinet.PetriNet.Place('end')
+    end = PetriNet.Place('end')
     net.places.add(end)
     for e in end_activities:
-        petri.utils.add_arc_from_to(label_transition_dict[e], end, net)
+        add_arc_from_to(label_transition_dict[e], end, net)
     return end
 
 

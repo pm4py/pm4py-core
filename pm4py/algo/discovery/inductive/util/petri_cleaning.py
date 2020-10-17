@@ -1,4 +1,5 @@
-from pm4py.objects import petri
+from pm4py.objects.petri.utils import remove_transition
+
 
 def petri_reduction_treplay(net, parameters=None):
     """
@@ -32,6 +33,6 @@ def petri_reduction_treplay(net, parameters=None):
     for trans in transitions:
         if trans.label is None:
             if trans not in enabled_trans_in_at_least_one_trace:
-                net = petri.utils.remove_transition(net, trans)
+                net = remove_transition(net, trans)
 
     return net

@@ -1,5 +1,4 @@
 from pm4py.objects.log import log
-from pm4py.algo.discovery.inductive.variants.im.data_structures import subtree_plain as subtree
 from copy import copy, deepcopy
 import logging
 
@@ -126,6 +125,8 @@ def act_once_per_trace(l, activities, activity_key):
 
 
 def activity_concurrent(self, l, activities, activity_key, parameters=None):
+    from pm4py.algo.discovery.inductive.variants.im.data_structures import subtree_plain as subtree
+
     small_log = log.EventLog()
     test_log = log.EventLog()
     key = None
