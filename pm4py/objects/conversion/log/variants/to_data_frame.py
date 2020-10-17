@@ -1,7 +1,5 @@
 from enum import Enum
 
-import pandas as pd
-
 from pm4py.objects.conversion.log.variants import to_event_stream
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.conversion.log import constants
@@ -33,6 +31,8 @@ def apply(log, parameters=None):
     df
         Pandas dataframe
     """
+    import pandas as pd
+
     if parameters is None:
         parameters = dict()
     if isinstance(log, pd.core.frame.DataFrame):

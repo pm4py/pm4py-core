@@ -1,8 +1,6 @@
 from pm4py.algo.discovery.inductive.variants.im_d import dfg_based
 from pm4py.algo.discovery.inductive.variants.im import algorithm as im_algo
 from pm4py.algo.discovery.inductive.variants.im_f import algorithm as im_f_algo
-from pm4py.objects.log.log import EventLog
-import pandas as pd
 from enum import Enum
 from pm4py.util import exec_utils
 

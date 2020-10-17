@@ -43,12 +43,12 @@ to change as libraries are added or removed.
 | pyvis | https://pypi.org/project/pyvis | BSD | 0.1.8.2 | X | |
 | scikit-learn | https://pypi.org/project/scikit-learn | BSD | 0.23.2 | X | X |
 | scipy | https://pypi.org/project/scipy | BSD | 1.5.2 | | X |
-| setuptools | https://pypi.org/project/setuptools | MIT | 47.1.1 | X | |
+| setuptools | https://pypi.org/project/setuptools | MIT | 50.3.1 | X | |
 | sympy | https://pypi.org/project/sympy | BSD | 1.6.2 | | |
 | six | https://pypi.org/project/six | MIT | 1.15.0 | | |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache 2.0 | 2.1.0 | | |
 | StringDist | https://pypi.org/project/StringDist | MIT | 1.0.9 | | |
 | threadpoolctl | https://pypi.org/project/threadpoolctl | BSD | 2.1.0 | | |
-| traitlets | https://pypi.org/project/traitlets | BSD | 5.0.4 | | |
+| traitlets | https://pypi.org/project/traitlets | BSD | 5.0.5 | | |
 | wcwidth | https://pypi.org/project/wcwidth | MIT | 0.1.9 | | |
-| zipp | https://pypi.org/project/zipp | MIT | 3.3.0 | X | |
+| zipp | https://pypi.org/project/zipp | MIT | 3.3.1 | X | |
