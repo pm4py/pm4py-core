@@ -2,8 +2,9 @@ from copy import copy, deepcopy
 import time
 import random
 
-from pm4py.objects import petri
 from pm4py.objects.log.log import Trace, Event
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.petri import semantics
 from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
 
@@ -56,7 +57,7 @@ def remove_transition(net, trans):
 def add_place(net, name=None):
     name = name if name is not None else 'p_' + str(len(net.places)) + '_' + str(time.time()) + str(
         random.randint(0, 10000))
-    p = petri.petrinet.PetriNet.Place(name=name)
+    p = PetriNet.Place(name=name)
     net.places.add(p)
     return p
 
@@ -64,13 +65,13 @@ def add_place(net, name=None):
 def add_transition(net, name=None, label=None):
     name = name if name is not None else 't_' + str(len(net.transitions)) + '_' + str(time.time()) + str(
         random.randint(0, 10000))
-    t = petri.petrinet.PetriNet.Transition(name=name, label=label)
+    t = PetriNet.Transition(name=name, label=label)
     net.transitions.add(t)
     return t
 
 
 def merge(trgt=None, nets=None):
-    trgt = trgt if trgt is not None else petri.petrinet.PetriNet()
+    trgt = trgt if trgt is not None else PetriNet()
     nets = nets if nets is not None else list()
     for net in nets:
         trgt.transitions.update(net.transitions)
@@ -125,7 +126,7 @@ def add_arc_from_to(fr, to, net, weight=1):
     -------
     None
     """
-    a = petri.petrinet.PetriNet.Arc(fr, to, weight)
+    a = PetriNet.Arc(fr, to, weight)
     net.arcs.add(a)
     fr.out_arcs.add(a)
     to.in_arcs.add(a)
@@ -148,18 +149,18 @@ def construct_trace_net(trace, trace_name_key=xes_util.DEFAULT_NAME_KEY, activit
     tuple: :class:`tuple` of the net, initial marking and the final marking
 
     """
-    net = petri.petrinet.PetriNet(
+    net = PetriNet(
         'trace net of %s' % trace.attributes[trace_name_key] if trace_name_key in trace.attributes else ' ')
-    place_map = {0: petri.petrinet.PetriNet.Place('p_0')}
+    place_map = {0: PetriNet.Place('p_0')}
     net.places.add(place_map[0])
     for i in range(0, len(trace)):
-        t = petri.petrinet.PetriNet.Transition('t_' + trace[i][activity_key] + '_' + str(i), trace[i][activity_key])
+        t = PetriNet.Transition('t_' + trace[i][activity_key] + '_' + str(i), trace[i][activity_key])
         net.transitions.add(t)
-        place_map[i + 1] = petri.petrinet.PetriNet.Place('p_' + str(i + 1))
+        place_map[i + 1] = PetriNet.Place('p_' + str(i + 1))
         net.places.add(place_map[i + 1])
-        petri.utils.add_arc_from_to(place_map[i], t, net)
-        petri.utils.add_arc_from_to(t, place_map[i + 1], net)
-    return net, petri.petrinet.Marking({place_map[0]: 1}), petri.petrinet.Marking({place_map[len(trace)]: 1})
+        add_arc_from_to(place_map[i], t, net)
+        add_arc_from_to(t, place_map[i + 1], net)
+    return net, Marking({place_map[0]: 1}), Marking({place_map[len(trace)]: 1})
 
 
 def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT_NAME_KEY,
@@ -180,20 +181,20 @@ def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT
 
 
     """
-    net = petri.petrinet.PetriNet(
+    net = PetriNet(
         'trace net of %s' % trace.attributes[trace_name_key] if trace_name_key in trace.attributes else ' ')
-    place_map = {0: petri.petrinet.PetriNet.Place('p_0')}
+    place_map = {0: PetriNet.Place('p_0')}
     net.places.add(place_map[0])
     cost_map = dict()
     for i in range(0, len(trace)):
-        t = petri.petrinet.PetriNet.Transition('t_' + trace[i][activity_key] + '_' + str(i), trace[i][activity_key])
+        t = PetriNet.Transition('t_' + trace[i][activity_key] + '_' + str(i), trace[i][activity_key])
         cost_map[t] = costs[i]
         net.transitions.add(t)
-        place_map[i + 1] = petri.petrinet.PetriNet.Place('p_' + str(i + 1))
+        place_map[i + 1] = PetriNet.Place('p_' + str(i + 1))
         net.places.add(place_map[i + 1])
-        petri.utils.add_arc_from_to(place_map[i], t, net)
-        petri.utils.add_arc_from_to(t, place_map[i + 1], net)
-    return net, petri.petrinet.Marking({place_map[0]: 1}), petri.petrinet.Marking({place_map[len(trace)]: 1}), cost_map
+        add_arc_from_to(place_map[i], t, net)
+        add_arc_from_to(t, place_map[i + 1], net)
+    return net, Marking({place_map[0]: 1}), Marking({place_map[len(trace)]: 1}), cost_map
 
 
 def acyclic_net_variants(net, initial_marking, final_marking, activity_key=xes_util.DEFAULT_NAME_KEY):
@@ -221,13 +222,13 @@ def acyclic_net_variants(net, initial_marking, final_marking, activity_key=xes_u
     while active:
         curr_marking, curr_partial_trace = active.pop()
         curr_pair = (curr_marking, curr_partial_trace)
-        enabled_transitions = petri.semantics.enabled_transitions(net, curr_marking)
+        enabled_transitions = semantics.enabled_transitions(net, curr_marking)
         for transition in enabled_transitions:
             if transition.label is not None:
                 next_partial_trace = curr_partial_trace + (transition.label,)
             else:
                 next_partial_trace = curr_partial_trace
-            next_marking = petri.semantics.execute(transition, net, curr_marking)
+            next_marking = semantics.execute(transition, net, curr_marking)
             next_pair = (next_marking, next_partial_trace)
 
             if next_marking == final_marking:
@@ -290,7 +291,7 @@ def get_cycles_petri_net_places(net):
     for cycle in cycles:
         cycles_places.append([])
         for el in cycle:
-            if el in inv_dictionary and type(inv_dictionary[el]) is petri.petrinet.PetriNet.Place:
+            if el in inv_dictionary and type(inv_dictionary[el]) is PetriNet.Place:
                 cycles_places[-1].append(inv_dictionary[el])
     return cycles_places
 
@@ -317,7 +318,7 @@ def get_cycles_petri_net_transitions(net):
     for cycle in cycles:
         cycles_trans.append([])
         for el in cycle:
-            if el in inv_dictionary and type(inv_dictionary[el]) is petri.petrinet.PetriNet.Transition:
+            if el in inv_dictionary and type(inv_dictionary[el]) is PetriNet.Transition:
                 cycles_trans[-1].append(inv_dictionary[el])
     return cycles_trans
 
@@ -386,20 +387,20 @@ def get_strongly_connected_subnets(net):
     strongly_connected_subnets = []
     for sg in list(sccg):
         if len(sg) > 1:
-            subnet = petri.petrinet.PetriNet()
-            imarking = petri.petrinet.Marking()
-            fmarking = petri.petrinet.Marking()
+            subnet = PetriNet()
+            imarking = Marking()
+            fmarking = Marking()
             corr = {}
             for node in sg:
                 if node in inv_dictionary:
-                    if type(inv_dictionary[node]) is petri.petrinet.PetriNet.Transition:
+                    if type(inv_dictionary[node]) is PetriNet.Transition:
                         prev_trans = inv_dictionary[node]
-                        new_trans = petri.petrinet.PetriNet.Transition(prev_trans.name, prev_trans.label)
+                        new_trans = PetriNet.Transition(prev_trans.name, prev_trans.label)
                         corr[node] = new_trans
                         subnet.transitions.add(new_trans)
-                    if type(inv_dictionary[node]) is petri.petrinet.PetriNet.Place:
+                    if type(inv_dictionary[node]) is PetriNet.Place:
                         prev_place = inv_dictionary[node]
-                        new_place = petri.petrinet.PetriNet.Place(prev_place.name)
+                        new_place = PetriNet.Place(prev_place.name)
                         corr[node] = new_place
                         subnet.places.add(new_place)
             for edge in graph.edges:

@@ -4,14 +4,13 @@ from pm4py.util import xes_constants as xes_util
 import heapq
 from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset
 from pm4py.objects.petri import align_utils as utils
-from pm4py.objects import petri
-
+from pm4py.objects.petri.incidence_matrix import construct
 
 def __search(sync_net, ini, fin, stop, cost_function, skip):
     decorate_transitions_prepostset(sync_net)
     decorate_places_preset_trans(sync_net)
 
-    incidence_matrix = petri.incidence_matrix.construct(sync_net)
+    incidence_matrix = construct(sync_net)
     ini_vec, fin_vec, cost_vec = utils.__vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
     closed = set()
