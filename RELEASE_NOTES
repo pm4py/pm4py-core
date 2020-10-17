@@ -2,7 +2,9 @@
 This is a minor release, consisting of the following changes:
 1. commit 81579e19ea8b3cf9e1dd964f4d4e40045e76c62d
     - relaxing the importing of some dependencies (pandas, pulp, graphviz, intervaltree)
-
+    to make a basic set of functionalities of PM4Py work even without those dependencies
+2. commit ed45eafcbb7b7e242574222555836c710a5d164e
+    - fixing circular dependencies issues and added partial compatibility with (old) Python 3.4
 
 
 ===== PM4Py 2.0.0 =====
