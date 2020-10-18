@@ -1,4 +1,5 @@
 from pm4py.util import constants, exec_utils, xes_constants
+from pm4py.streaming.util.dictio import generator
 import logging
 
 
@@ -34,8 +35,8 @@ class FootprintsStreamingConformance(object):
         self.end_activities = footprints[END_ACTIVITIES]
         self.activities = footprints[ACTIVITIES]
         self.all_fps = set(footprints[SEQUENCE]).union(set(footprints[PARALLEL]))
-        self.case_dict = {}
-        self.dev_dict = {}
+        self.case_dict = generator.apply()
+        self.dev_dict = generator.apply()
 
     def receive(self, event):
         """
