@@ -75,3 +75,8 @@ from pm4py.stats import get_start_activities, get_end_activities, get_attributes
 # this package is available only for Python >= 3.5
 if sys.version_info >= (3, 5):
     from pm4py import streaming
+
+    if pkgutil.find_loader("sympy"):
+        import sympy
+    else:
+        logging.error("sympy is not available. This can lead some features of PM4Py to not work correctly!")
