@@ -1,1 +1,1 @@
-from pm4py.streaming.stream import stream
+from pm4py.streaming.stream import live_event_stream

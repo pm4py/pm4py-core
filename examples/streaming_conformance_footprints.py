@@ -1,6 +1,6 @@
 import pm4py
 from pm4py.algo.discovery.footprints import algorithm as fp_discovery
-from pm4py.streaming.stream.stream import LiveEventStream
+from pm4py.streaming.stream.live_event_stream import LiveEventStream
 from pm4py.streaming.algo.conformance.footprints import algorithm as streaming_fp_conf
 import os, time
 
