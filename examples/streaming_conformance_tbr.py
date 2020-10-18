@@ -1,5 +1,5 @@
 import pm4py
-from pm4py.streaming.stream.stream import LiveEventStream
+from pm4py.streaming.stream.live_event_stream import LiveEventStream
 from pm4py.streaming.algo.conformance.tbr import algorithm as streaming_tbr
 import os, time
 
