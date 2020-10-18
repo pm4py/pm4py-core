@@ -1,4 +1,5 @@
 from pm4py.util import constants, exec_utils, xes_constants
+from pm4py.streaming.util.dictio import generator
 import logging
 from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.petri import semantics
@@ -38,9 +39,9 @@ class TbrStreamingConformance(object):
         self.fm = fm
         self.activities = list(set(x.label for x in self.net.transitions))
         self.dictio_spaths = self.get_paths_net()
-        self.case_dict = {}
-        self.missing = {}
-        self.remaining = {}
+        self.case_dict = generator.apply()
+        self.missing = generator.apply()
+        self.remaining = generator.apply()
 
     def get_paths_net(self):
         """
