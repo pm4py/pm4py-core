@@ -23,7 +23,7 @@ to change as libraries are added or removed.
 | joblib | https://pypi.org/project/joblib | BSD | 0.17.0 | X | |
 | jsonpickle | https://pypi.org/project/jsonpickle | BSD | 1.4.1 | X | |
 | kiwisolver | https://pypi.org/project/kiwisolver | BSD | 1.2.0 | X | X |
-| lxml | https://pypi.org/project/lxml | BSD | 4.5.2 | X | X |
+| lxml | https://pypi.org/project/lxml | BSD | 4.6.1 | X | X |
 | MarkupSafe | https://pypi.org/project/MarkupSafe | BSD | 1.1.1 | | X |
 | matplotlib | https://pypi.org/project/matplotlib | PSF | 3.3.2 | X | X |
 | mpmath | https://pypi.org/project/mpmath | BSD | 1.1.0 | | |
@@ -42,8 +42,8 @@ to change as libraries are added or removed.
 | pytz | https://pypi.org/project/pytz | 2020.1 | MIT | | |
 | pyvis | https://pypi.org/project/pyvis | BSD | 0.1.8.2 | X | |
 | scikit-learn | https://pypi.org/project/scikit-learn | BSD | 0.23.2 | X | X |
-| scipy | https://pypi.org/project/scipy | BSD | 1.5.2 | | X |
-| setuptools | https://pypi.org/project/setuptools | MIT | 50.3.1 | X | |
+| scipy | https://pypi.org/project/scipy | BSD | 1.5.3 | | X |
+| setuptools | https://pypi.org/project/setuptools | MIT | 50.3.2 | X | |
 | sympy | https://pypi.org/project/sympy | BSD | 1.6.2 | | |
 | six | https://pypi.org/project/six | MIT | 1.15.0 | | |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache 2.0 | 2.1.0 | | |
