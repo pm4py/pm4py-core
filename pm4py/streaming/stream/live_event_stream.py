@@ -2,6 +2,7 @@ import collections
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
+from pm4py.util import exec_utils
 
 
 class StreamState(Enum):
@@ -10,15 +11,19 @@ class StreamState(Enum):
     FINISHED = 3
 
 
+class Parameters(Enum):
+    THREAD_POOL_SIZE = "thread_pool_size"
+
+
 class LiveEventStream:
 
-    def __init__(self):
+    def __init__(self, parameters=None):
         self._dq = collections.deque()
         self._state = StreamState.INACTIVE
         self._cond = threading.Condition(threading.Lock())
         self._observers = set()
         self._mail_man = None
-        self._tp = ThreadPoolExecutor(6)
+        self._tp = ThreadPoolExecutor(exec_utils.get_param_value(Parameters.THREAD_POOL_SIZE, parameters, 6))
 
     def append(self, event):
         self._cond.acquire()
