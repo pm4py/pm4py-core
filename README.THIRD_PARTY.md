@@ -36,7 +36,7 @@ to change as libraries are added or removed.
 | prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD | 3.0.7 | | |
 | pulp | https://pypi.org/project/pulp | BSD | 2.1 | X | |
 | pydotplus | https://pypi.org/project/pydotplus | MIT | 2.0.2 | X | |
-| pygments | https://pypi.org/project/pygments | BSD | 2.6.1 | | |
+| pygments | https://pypi.org/project/pygments | BSD | 2.7.2 | | |
 | pyparsing | https://pypi.org/project/pyparsing | MIT | 2.4.7 | | |
 | python-dateutil | https://pypi.org/project/python-dateutil | Apache 2.0 | 2.8.1 | | |
 | pytz | https://pypi.org/project/pytz | 2020.1 | MIT | | |
@@ -51,4 +51,4 @@ to change as libraries are added or removed.
 | threadpoolctl | https://pypi.org/project/threadpoolctl | BSD | 2.1.0 | | |
 | traitlets | https://pypi.org/project/traitlets | BSD | 5.0.5 | | |
 | wcwidth | https://pypi.org/project/wcwidth | MIT | 0.1.9 | | |
-| zipp | https://pypi.org/project/zipp | MIT | 3.3.1 | X | |
+| zipp | https://pypi.org/project/zipp | MIT | 3.4.0 | X | |
