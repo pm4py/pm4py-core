@@ -5,7 +5,8 @@ This is a minor release, consisting of the following changes:
     to make a basic set of functionalities of PM4Py work even without those dependencies
 2. commit ed45eafcbb7b7e242574222555836c710a5d164e
     - fixing circular dependencies issues and added partial compatibility with (old) Python 3.4
-
+3. commit c51b1f02da1e532fb557acbace8ddb672980d3a2
+    - parametrizing size of the thread pool in streaming package
 
 ===== PM4Py 2.0.0 =====
 This is a *major* release, consisting of the following *major* changes:
