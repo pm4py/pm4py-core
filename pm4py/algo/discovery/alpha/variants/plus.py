@@ -7,6 +7,7 @@ from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import add_arc_from_to, remove_place, remove_transition
 from pm4py.util import exec_utils
 from enum import Enum
+from copy import deepcopy
 
 
 class Parameters(Enum):
@@ -466,6 +467,10 @@ def apply(trace_log, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    # deep copy the log object because otherwise the original log would be modified with
+    # artificial start/end activities
+    trace_log = deepcopy(trace_log)
 
     remove_unconnected = exec_utils.get_param_value(Parameters.REMOVE_UNCONNECTED, parameters, False)
 
