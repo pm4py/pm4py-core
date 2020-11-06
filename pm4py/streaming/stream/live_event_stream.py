@@ -39,7 +39,9 @@ class LiveEventStream:
                 if self._state != StreamState.FINISHED:
                     self._cond.wait()
                 else:
+                    self._cond.release()
                     return
+            self._cond.notify()
             event = self._dq.popleft()
             for algo in self._observers:
                 self._tp.submit(algo.receive, event)
@@ -54,6 +56,8 @@ class LiveEventStream:
 
     def stop(self):
         self._cond.acquire()
+        while len(self._dq) > 0:
+            self._cond.wait()
         if self._state == StreamState.ACTIVE:
             self._state = StreamState.FINISHED
         self._cond.release()
