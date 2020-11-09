@@ -9,6 +9,7 @@ from pm4py.util import xes_constants as xes
 from pm4py.visualization.common.utils import *
 from pm4py.util import exec_utils
 from pm4py.visualization.dfg.parameters import Parameters
+from pm4py.statistics.sojourn_time.log import get as soj_time_get
 
 
 def get_min_max_value(dfg):
@@ -97,7 +98,7 @@ def get_activities_color(activities_count):
 
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
-                           max_no_of_edges_in_diagram=170, start_activities=None, end_activities=None):
+                           max_no_of_edges_in_diagram=170, start_activities=None, end_activities=None, soj_time=None):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -113,6 +114,12 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         Describes which measure is assigned to edges in direcly follows graph (frequency/performance)
     max_no_of_edges_in_diagram
         Maximum number of edges in the diagram allowed for visualization
+    start_activities
+        Start activities of the log
+    end_activities
+        End activities of the log
+    soj_time
+        For each activity, the sojourn time in the log
 
     Returns
     -----------
@@ -170,7 +177,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
                      fillcolor=activities_color[act])
             activities_map[act] = str(hash(act))
         else:
-            viz.node(str(hash(act)), act)
+            viz.node(str(hash(act)), act + " (" + human_readable_stat(soj_time[act]) + ")")
             activities_map[act] = str(hash(act))
 
     # make edges addition always in the same order
@@ -205,7 +212,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     return viz
 
 
-def apply(dfg, log=None, parameters=None, activities_count=None):
+def apply(dfg, log=None, parameters=None, activities_count=None, soj_time=None):
     if parameters is None:
         parameters = {}
 
@@ -214,14 +221,20 @@ def apply(dfg, log=None, parameters=None, activities_count=None):
     max_no_of_edges_in_diagram = exec_utils.get_param_value(Parameters.MAX_NO_EDGES_IN_DIAGRAM, parameters, 75)
     start_activities = exec_utils.get_param_value(Parameters.START_ACTIVITIES, parameters, [])
     end_activities = exec_utils.get_param_value(Parameters.END_ACTIVITIES, parameters, [])
+    activities = dfg_utils.get_activities_from_dfg(dfg)
 
     if activities_count is None:
         if log is not None:
             activities_count = attr_get.get_attribute_values(log, activity_key, parameters=parameters)
         else:
-            activities = dfg_utils.get_activities_from_dfg(dfg)
             activities_count = {key: 1 for key in activities}
+
+    if soj_time is None:
+        if log is not None:
+            soj_time = soj_time_get.apply(log, parameters=parameters)
+        else:
+            soj_time = {key: 0 for key in activities}
 
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
-                                  start_activities=start_activities, end_activities=end_activities)
+                                  start_activities=start_activities, end_activities=end_activities, soj_time=soj_time)

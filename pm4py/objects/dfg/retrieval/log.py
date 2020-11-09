@@ -1,13 +1,14 @@
 from collections import Counter
-
-from pm4py.util import xes_constants as xes_util
-from statistics import mean, median, stdev
-from pm4py.util import constants, exec_utils
 from enum import Enum
+from statistics import mean, median, stdev
+
+from pm4py.util import constants, exec_utils
+from pm4py.util import xes_constants as xes_util
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     WINDOW = "window"
@@ -64,7 +65,8 @@ def native(log, parameters=None):
     window = exec_utils.get_param_value(Parameters.WINDOW, parameters, 1)
     keep_once_per_case = exec_utils.get_param_value(Parameters.KEEP_ONCE_PER_CASE, parameters, False)
     if keep_once_per_case:
-        dfgs = map((lambda t: set((t[i - window][activity_key], t[i][activity_key]) for i in range(window, len(t)))), log)
+        dfgs = map((lambda t: set((t[i - window][activity_key], t[i][activity_key]) for i in range(window, len(t)))),
+                   log)
     else:
         dfgs = map((lambda t: [(t[i - window][activity_key], t[i][activity_key]) for i in range(window, len(t))]), log)
     return Counter([dfg for lista in dfgs for dfg in lista])
@@ -94,11 +96,14 @@ def performance(log, parameters=None):
         parameters = {}
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                                     xes_util.DEFAULT_TIMESTAMP_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
 
     dfgs0 = map((lambda t: [
-        ((t[i - 1][activity_key], t[i][activity_key]), (t[i][timestamp_key] - t[i - 1][timestamp_key]).total_seconds())
+        ((t[i - 1][activity_key], t[i][activity_key]),
+         max(0, (t[i][start_timestamp_key] - t[i - 1][timestamp_key]).total_seconds()))
         for i in range(1, len(t))]), log)
     ret0 = {}
     for el in dfgs0:
