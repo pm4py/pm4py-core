@@ -1,1 +1,1 @@
-from pm4py.streaming import algo, stream, util
+from pm4py.streaming import algo, stream, importer, util
