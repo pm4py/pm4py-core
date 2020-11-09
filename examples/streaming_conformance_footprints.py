@@ -26,13 +26,8 @@ def execute_script():
     # (so it is sent to the conformance checking algorithm)
     for event in event_stream:
         live_stream.append(event)
-    print("sleeping")
-    time.sleep(3)
     # stops the live event stream
     live_stream.stop()
-    print("sleeping")
-    time.sleep(3)
-    print("slept")
     # sends a termination signal to the conformance checking algorithm;
     # the conditions on the closure of all the cases are checked
     # (for each case, it is checked whether the end activity of the case
@@ -40,7 +35,7 @@ def execute_script():
     diagn_df = conf_obj.get_diagnostics_dataframe()
     conf_obj.terminate_all()
     print(diagn_df)
-
+    print(diagn_df[diagn_df["is_fit"] == False])
 
 
 if __name__ == "__main__":
