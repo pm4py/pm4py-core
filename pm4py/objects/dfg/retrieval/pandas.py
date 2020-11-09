@@ -1,5 +1,9 @@
+from pm4py.util import xes_constants
+
+
 def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name",
-                  timestamp_key="time:timestamp", perf_aggregation_key="mean", sort_caseid_required=True,
+                  start_timestamp_key=None, timestamp_key="time:timestamp", perf_aggregation_key="mean",
+                  sort_caseid_required=True,
                   sort_timestamp_along_case_id=True, keep_once_per_case=False, window=1):
     """
     Get DFG graph from Pandas dataframe
@@ -14,6 +18,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         Activity key to use in the grouping
     case_id_glue
         Case ID identifier
+    start_timestamp_key
+        Start timestamp key
     timestamp_key
         Timestamp key
     perf_aggregation_key
@@ -34,17 +40,24 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     """
     import pandas as pd
 
+    # if not differently specified, set the start timestamp key to the timestamp key
+    # to avoid retro-compatibility problems
+    if start_timestamp_key is None:
+        start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
+        df[start_timestamp_key] = df[timestamp_key]
+
     # to get rows belonging to same case ID together, we need to sort on case ID
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
-            df = df.sort_values([case_id_glue, timestamp_key])
+            df = df.sort_values([case_id_glue, start_timestamp_key, timestamp_key])
         else:
             df = df.sort_values(case_id_glue)
+
     # to test approaches reduce dataframe to case, activity (and possibly complete timestamp) columns
     if measure == "frequency":
         df_reduced = df[[case_id_glue, activity_key]]
     else:
-        df_reduced = df[[case_id_glue, activity_key, timestamp_key]]
+        df_reduced = df[[case_id_glue, activity_key, start_timestamp_key, timestamp_key]]
     # shift the dataframe by 1, in order to couple successive rows
     df_reduced_shifted = df_reduced.shift(-window)
     # change column names to shifted dataframe
@@ -55,7 +68,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     # successive rows belonging to same case ID
     df_successive_rows = df_successive_rows[df_successive_rows[case_id_glue] == df_successive_rows[case_id_glue + '_2']]
     if keep_once_per_case:
-        df_successive_rows = df_successive_rows.groupby([case_id_glue, activity_key, activity_key+"_2"]).first().reset_index()
+        df_successive_rows = df_successive_rows.groupby(
+            [case_id_glue, activity_key, activity_key + "_2"]).first().reset_index()
 
     all_columns = set(df_successive_rows.columns)
     all_columns = list(all_columns - set([activity_key, activity_key + '_2']))
@@ -63,7 +77,9 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     if measure == "performance" or measure == "both":
         # calculate the difference between the timestamps of two successive events
         df_successive_rows['caseDuration'] = (
-                df_successive_rows[timestamp_key + '_2'] - df_successive_rows[timestamp_key]).astype('timedelta64[s]')
+                df_successive_rows[start_timestamp_key + '_2'] - df_successive_rows[timestamp_key]).astype('timedelta64[s]')
+        # in the arc performance calculation, make sure to consider positive or null values
+        df_successive_rows['caseDuration'] = df_successive_rows['caseDuration'].apply(lambda x: max(x, 0))
         # groups couple of attributes (directly follows relation, we can measure the frequency and the performance)
         directly_follows_grouping = df_successive_rows.groupby([activity_key, activity_key + '_2'])['caseDuration']
     else:
@@ -88,6 +104,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
 
     if measure == "both":
         return [dfg_frequency, dfg_performance]
+
 
 def get_freq_triples(df, activity_key="concept:name", case_id_glue="case:concept:name", timestamp_key="time:timestamp",
                      sort_caseid_required=True, sort_timestamp_along_case_id=True):

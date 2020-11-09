@@ -166,10 +166,16 @@ def heu_miner_test():
     heu_miner_test.execute_script()
 
 
-def dfg_min_ex():
-    from examples import dfg_min_ex
-    print("\n\ndfg_min_ex")
-    dfg_min_ex.execute_script()
+def dfg_min_ex_log():
+    from examples import dfg_min_ex_log
+    print("\n\ndfg_min_ex_log")
+    dfg_min_ex_log.execute_script()
+
+
+def dfg_min_ex_pandas():
+    from examples import dfg_min_ex_pandas
+    print("\n\ndfg_min_ex_pandas")
+    dfg_min_ex_pandas.execute_script()
 
 
 def graphs_visualization():
@@ -263,7 +269,8 @@ if __name__ == "__main__":
     execute_script(align_decomposition_example)
     execute_script(transition_system_test)
     execute_script(heu_miner_test)
-    execute_script(dfg_min_ex)
+    execute_script(dfg_min_ex_log)
+    execute_script(dfg_min_ex_pandas)
     execute_script(graphs_visualization)
     execute_script(backwards_token_replay)
     execute_script(transient_dfg)
