@@ -29,8 +29,9 @@ def execute_script():
     # sends a termination signal to the conformance checking algorithm;
     # the conditions on the closure of all the cases are checked
     # (for each case, it is checked whether the final marking is reached)
-    diagn_df = conf_obj.get_diagnostics_dataframe()
+    diagn_df = conf_obj._current_result()
     conf_obj.terminate_all()
+    print(diagn_df)
     print(diagn_df[diagn_df["is_fit"] == False])
 
 
