@@ -50,6 +50,8 @@ def apply(log, parameters=None):
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmutil.constants.CASE_CONCEPT_NAME)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
                                               pmutil.xes_constants.DEFAULT_NAME_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               None)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                pmutil.xes_constants.DEFAULT_TIMESTAMP_KEY)
     if pkgutil.find_loader("pandas"):
@@ -60,7 +62,8 @@ def apply(log, parameters=None):
         if isinstance(log, pandas.core.frame.DataFrame):
             dfg = df_statistics.get_dfg_graph(log, case_id_glue=case_id_glue,
                                               activity_key=activity_key,
-                                              timestamp_key=timestamp_key)
+                                              timestamp_key=timestamp_key,
+                                              start_timestamp_key=start_timestamp_key)
             start_activities = pd_start_act_stats.get_start_activities(log, parameters=parameters)
             end_activities = pd_end_act_stats.get_end_activities(log, parameters=parameters)
             activities = pd_attributes_stats.get_attribute_values(log, activity_key, parameters=parameters)

@@ -30,9 +30,11 @@ def apply(df, activity, parameters=None):
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, None)
 
     [dfg_frequency, dfg_performance] = pandas.get_dfg_graph(df, measure="both", activity_key=activity_key,
-                                           case_id_glue=case_id_glue, timestamp_key=timestamp_key)
+                                           case_id_glue=case_id_glue, timestamp_key=timestamp_key,
+                                                            start_timestamp_key=start_timestamp_key)
 
     post = []
     sum_perf_post = 0.0
