@@ -220,6 +220,12 @@ def diagn_add_dataframe():
     diagn_add_dataframe.execute_script()
 
 
+def pn_to_pt():
+    from examples import pn_to_pt
+    print("\n\npn_to_pt")
+    pn_to_pt.execute_script()
+
+
 def visualization_align_table():
     from examples import visualization_align_table
     print("\n\nvisualization_align_table")
@@ -272,4 +278,5 @@ if __name__ == "__main__":
     execute_script(monte_carlo_petri_net)
     execute_script(visualization_processtree)
     execute_script(visualization_align_table)
+    execute_script(pn_to_pt)
     execute_script(simplified_interface)

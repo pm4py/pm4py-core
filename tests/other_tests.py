@@ -135,6 +135,13 @@ class OtherPartsTests(unittest.TestCase):
         from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
         conf = footprints_conformance.apply(fp_df, fp_tree)
 
+    def test_conversion_pn_to_pt(self):
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+        net, im, fm = alpha_miner.apply(log)
+        from pm4py.objects.conversion.wf_net import converter as wf_net_converter
+        tree = wf_net_converter.apply(net, im, fm, variant=wf_net_converter.Variants.TO_PROCESS_TREE)
+
     def test_playout_tree_basic(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
