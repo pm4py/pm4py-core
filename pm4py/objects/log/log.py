@@ -110,7 +110,9 @@ class Trace(Sequence):
         self._list = list(*args)
 
     def __hash__(self):
-        return hash(tuple(self))
+        tup = tuple(tuple(((x, y) for x, y in event.items())) for event in self._list)
+        ret = hash(tup)
+        return ret
 
     def __getitem__(self, key):
         return self._list[key]
