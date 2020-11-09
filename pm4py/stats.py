@@ -1,12 +1,12 @@
-from pm4py.util import constants, xes_constants
 import pkgutil
+
+from pm4py.util import constants, xes_constants
 
 
 def check_is_dataframe(log):
     if pkgutil.find_loader("pandas"):
         import pandas as pd
         return type(log) is pd.DataFrame
-
     return False
 
 
@@ -21,8 +21,7 @@ def check_dataframe_columns(df):
         Pandas dataframe
     """
     if len(set(df.columns).intersection(
-            set([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_NAME_KEY,
-                 xes_constants.DEFAULT_TIMESTAMP_KEY]))) < 3:
+            {constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_NAME_KEY, xes_constants.DEFAULT_TIMESTAMP_KEY})) < 3:
         raise Exception(
             "please format your dataframe accordingly! df = pm4py.format_dataframe(df, case_id='<name of the case ID column>', activity_key='<name of the activity column>', timestamp_key='<name of the timestamp column>')")
 

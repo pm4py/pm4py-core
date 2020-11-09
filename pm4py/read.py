@@ -1,4 +1,5 @@
 import logging
+
 from pm4py.util import constants, xes_constants, pandas_utils
 
 INDEX_COLUMN = "@@index"
