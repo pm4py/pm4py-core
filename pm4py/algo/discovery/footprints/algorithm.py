@@ -8,7 +8,7 @@ from pm4py.objects.process_tree.process_tree import ProcessTree
 from enum import Enum
 from pm4py.util import exec_utils
 from collections import Counter
-import pandas as pd
+import pkgutil
 
 
 class Variants(Enum):
@@ -43,9 +43,7 @@ def apply(*args, variant=None, parameters=None):
         Footprints object
     """
     if variant is None:
-        if type(args[0]) is pd.DataFrame:
-            variant = Variants.ENTIRE_DATAFRAME
-        elif type(args[0]) is EventLog:
+        if type(args[0]) is EventLog:
             variant = Variants.TRACE_BY_TRACE
         elif type(args[0]) is PetriNet:
             variant = Variants.PETRI_REACH_GRAPH
@@ -53,7 +51,14 @@ def apply(*args, variant=None, parameters=None):
             variant = Variants.PROCESS_TREE
         elif type(args[0]) is dict or type(args[0]) is Counter:
             variant = Variants.DFG
-        else:
+
+        if pkgutil.find_loader("pandas"):
+            import pandas as pd
+
+            if type(args[0]) is pd.DataFrame:
+                variant = Variants.ENTIRE_DATAFRAME
+
+        if variant is None:
             return Exception("unsupported arguments")
 
     if variant in [Variants.TRACE_BY_TRACE, Variants.ENTIRE_EVENT_LOG, Variants.DFG, Variants.PROCESS_TREE,

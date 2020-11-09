@@ -3,3 +3,4 @@
 /venv/
 *.mps
 *.sol
+debug.log

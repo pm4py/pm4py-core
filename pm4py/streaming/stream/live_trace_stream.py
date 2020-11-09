@@ -2,6 +2,7 @@ import collections
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
+from pm4py.util import exec_utils
 
 
 class StreamState(Enum):
@@ -10,15 +11,20 @@ class StreamState(Enum):
     FINISHED = 3
 
 
-class LiveEventStream:
+class Parameters(Enum):
+    THREAD_POOL_SIZE = "thread_pool_size"
 
-    def __init__(self):
+
+class LiveTraceStream:
+
+    def __init__(self, parameters=None):
         self._dq = collections.deque()
         self._state = StreamState.INACTIVE
-        self._cond = threading.Condition(threading.Lock())
+        self._lock = threading.Lock()
+        self._cond = threading.Condition(self._lock)
         self._observers = set()
         self._mail_man = None
-        self._tp = ThreadPoolExecutor(6)
+        self._tp = ThreadPoolExecutor(exec_utils.get_param_value(Parameters.THREAD_POOL_SIZE, parameters, 6))
 
     def append(self, event):
         self._cond.acquire()
@@ -31,9 +37,11 @@ class LiveEventStream:
         while self._state != StreamState.INACTIVE:
             self._cond.acquire()
             while len(self._dq) == 0:
+                self._cond.notify()
                 if self._state != StreamState.FINISHED:
                     self._cond.wait()
                 else:
+                    self._cond.release()
                     return
             event = self._dq.popleft()
             for algo in self._observers:
@@ -49,8 +57,12 @@ class LiveEventStream:
 
     def stop(self):
         self._cond.acquire()
+        while len(self._dq) > 0:
+            self._cond.wait()
+        self._tp.shutdown()
         if self._state == StreamState.ACTIVE:
             self._state = StreamState.FINISHED
+            self._cond.notify()
         self._cond.release()
 
     def register(self, algo):

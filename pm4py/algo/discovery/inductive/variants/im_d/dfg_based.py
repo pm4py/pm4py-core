@@ -1,7 +1,6 @@
 import sys
 from collections import Counter
 
-import pandas
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.variants import native as dfg_inst
@@ -12,9 +11,6 @@ from pm4py.algo.discovery.inductive.variants.im_d.util import get_tree_repr_dfg_
 from pm4py.statistics.attributes.log import get as log_attributes_stats
 from pm4py.statistics.end_activities.log import get as log_end_act_stats
 from pm4py.statistics.start_activities.log import get as log_start_act_stats
-from pm4py.statistics.attributes.pandas import get as pd_attributes_stats
-from pm4py.statistics.end_activities.pandas import get as pd_end_act_stats
-from pm4py.statistics.start_activities.pandas import get as pd_start_act_stats
 from pm4py.objects.conversion.process_tree import converter as tree_to_petri
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.dfg.utils import dfg_utils
@@ -22,6 +18,7 @@ from pm4py.util import exec_utils
 from pm4py.algo.discovery.inductive.parameters import Parameters
 from pm4py.algo.discovery.inductive.util import tree_consistency
 from pm4py.objects.process_tree import util
+import pkgutil
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
 
@@ -53,17 +50,25 @@ def apply(log, parameters=None):
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmutil.constants.CASE_CONCEPT_NAME)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
                                               pmutil.xes_constants.DEFAULT_NAME_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               None)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                pmutil.xes_constants.DEFAULT_TIMESTAMP_KEY)
-    if isinstance(log, pandas.core.frame.DataFrame):
-        dfg = df_statistics.get_dfg_graph(log, case_id_glue=case_id_glue,
-                                          activity_key=activity_key,
-                                          timestamp_key=timestamp_key)
-        start_activities = pd_start_act_stats.get_start_activities(log, parameters=parameters)
-        end_activities = pd_end_act_stats.get_end_activities(log, parameters=parameters)
-        activities = pd_attributes_stats.get_attribute_values(log, activity_key, parameters=parameters)
-        return apply_dfg(dfg, activities=activities, start_activities=start_activities, end_activities=end_activities,
-                         parameters=parameters)
+    if pkgutil.find_loader("pandas"):
+        import pandas
+        from pm4py.statistics.attributes.pandas import get as pd_attributes_stats
+        from pm4py.statistics.end_activities.pandas import get as pd_end_act_stats
+        from pm4py.statistics.start_activities.pandas import get as pd_start_act_stats
+        if isinstance(log, pandas.core.frame.DataFrame):
+            dfg = df_statistics.get_dfg_graph(log, case_id_glue=case_id_glue,
+                                              activity_key=activity_key,
+                                              timestamp_key=timestamp_key,
+                                              start_timestamp_key=start_timestamp_key)
+            start_activities = pd_start_act_stats.get_start_activities(log, parameters=parameters)
+            end_activities = pd_end_act_stats.get_end_activities(log, parameters=parameters)
+            activities = pd_attributes_stats.get_attribute_values(log, activity_key, parameters=parameters)
+            return apply_dfg(dfg, activities=activities, start_activities=start_activities, end_activities=end_activities,
+                             parameters=parameters)
     log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
     tree = apply_tree(log, parameters=parameters)
     net, initial_marking, final_marking = tree_to_petri.apply(tree)

@@ -1,5 +1,4 @@
 import numpy as np
-import pulp
 
 
 def removearray(L, arr):
@@ -28,6 +27,8 @@ def transform_basis(basis, style=None):
     At the moment, 'uniform' (all weights have value 0 or 1), and 'weighted' (all weights are >=0) are supported
     :return: List of p-invariants that fits the style
     """
+    import pulp
+
     if style==None:
         style='weighted'
 

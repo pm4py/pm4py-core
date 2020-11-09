@@ -1,3 +1,7 @@
 from pm4py.objects.log.util import compression, insert_classifier, string_to_file, log, sampling, \
-    sorting, index_attribute, get_class_representation, get_log_representation, get_prefixes, prefix_matrix, \
-    get_log_encoded, interval_lifecycle, dataframe_utils, log_regex, basic_filter, func
+    sorting, index_attribute, get_class_representation, get_log_representation, get_prefixes, \
+    get_log_encoded, interval_lifecycle, log_regex, basic_filter, func
+import pkgutil
+
+if pkgutil.find_loader("pandas"):
+    from pm4py.objects.log.util import prefix_matrix, dataframe_utils

@@ -13,8 +13,8 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.FREQUENCY
 
 
-def apply(dfg, log=None, activities_count=None, parameters=None, variant=DEFAULT_VARIANT):
-    return exec_utils.get_variant(variant).apply(dfg, log=log, activities_count=activities_count, parameters=parameters)
+def apply(dfg, log=None, activities_count=None, soj_time=None, parameters=None, variant=DEFAULT_VARIANT):
+    return exec_utils.get_variant(variant).apply(dfg, log=log, activities_count=activities_count, soj_time=soj_time, parameters=parameters)
 
 
 def save(gviz, output_file_path):
