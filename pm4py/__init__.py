@@ -25,7 +25,7 @@ else:
     logging.error("matplotlib is not available. This can lead some features of PM4Py to not work correctly!")
 
 if pkgutil.find_loader("lxml"):
-    import matplotlib
+    import lxml
 else:
     logging.error("lxml is not available. This can lead some features of PM4Py to not work correctly!")
 
