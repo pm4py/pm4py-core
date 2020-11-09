@@ -1,12 +1,29 @@
 ===== PM4Py 2.0.1 =====
 This is a minor release, consisting of the following changes:
-1. commit 81579e19ea8b3cf9e1dd964f4d4e40045e76c62d
+1. commit 81579e19e
     - relaxing the importing of some dependencies (pandas, pulp, graphviz, intervaltree)
     to make a basic set of functionalities of PM4Py work even without those dependencies
-2. commit ed45eafcbb7b7e242574222555836c710a5d164e
+2. commit ed45eafc
     - fixing circular dependencies issues and added partial compatibility with (old) Python 3.4
-3. commit c51b1f02da1e532fb557acbace8ddb672980d3a2
+3. commit c51b1f02
     - parametrizing size of the thread pool in streaming package
+4. commit b9d47b83
+    - fix the live event stream class to finish all the events that are still in the internal queue when stop() is called
+5. commit 8e07d847
+    - add (unbounded) dfg discovery on an event stream
+6. commit 4c115dbb
+    - fix bug in hash function of traces
+7. commit 16e3f7f5
+    - integration of the wf-net to process tree algorithm described in https://doi.org/10.3390/a13110279
+8. commit 0dd8f28e
+    - fix bug in the alpha+ algorithm (was adding artificial start/end to the underlying event log)
+9. commit 1a26f678
+    - allow creation of 'live' streaming objects directly from xes and csv files
+10. commit b08564ed
+    - start minor support for interval-based process models
+11. commit 36cb7130
+    - added support for generic dictionaries in streaming conformance checking
+
 
 ===== PM4Py 2.0.0 =====
 This is a *major* release, consisting of the following *major* changes:
