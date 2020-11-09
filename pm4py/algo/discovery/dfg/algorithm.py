@@ -59,6 +59,7 @@ def apply(log, parameters=None, variant=DEFAULT_VARIANT):
     if parameters is None:
         parameters = {}
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, None)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmutil.constants.CASE_CONCEPT_NAME)
 
@@ -73,7 +74,8 @@ def apply(log, parameters=None, variant=DEFAULT_VARIANT):
             dfg_frequency, dfg_performance = df_statistics.get_dfg_graph(log, measure="both",
                                                                          activity_key=activity_key,
                                                                          timestamp_key=timestamp_key,
-                                                                         case_id_glue=case_id_glue)
+                                                                         case_id_glue=case_id_glue,
+                                                                         start_timestamp_key=start_timestamp_key)
             if variant in [Variants.PERFORMANCE, Variants.PERFORMANCE_GREEDY]:
                 return dfg_performance
             else:

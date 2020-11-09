@@ -10,6 +10,7 @@ from pm4py.algo.discovery.footprints.outputs import Outputs
 class Parameters(Enum):
     SORT_REQUIRED = "sort_required"
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     INDEX_KEY = "index_key"
@@ -41,6 +42,8 @@ def apply(df, parameters=None):
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     caseid_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               None)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     sort_required = exec_utils.get_param_value(Parameters.SORT_REQUIRED, parameters, DEFAULT_SORT_REQUIRED)
@@ -49,12 +52,15 @@ def apply(df, parameters=None):
     df = df[[caseid_key, activity_key, timestamp_key]]
     if sort_required:
         df = pandas_utils.insert_index(df, index_key)
-        df = df.sort_values([caseid_key, timestamp_key, index_key])
+        if start_timestamp_key is not None:
+            df = df.sort_values([caseid_key, start_timestamp_key, timestamp_key, index_key])
+        else:
+            df = df.sort_values([caseid_key, timestamp_key, index_key])
 
     grouped_df = df.groupby(caseid_key)
     dfg = df_statistics.get_dfg_graph(df, measure="frequency", activity_key=activity_key, case_id_glue=caseid_key,
                                       timestamp_key=timestamp_key, sort_caseid_required=False,
-                                      sort_timestamp_along_case_id=False)
+                                      sort_timestamp_along_case_id=False, start_timestamp_key=start_timestamp_key)
     activities = set(df[activity_key].unique())
     start_activities = set(grouped_df.first()[activity_key].unique())
     end_activities = set(grouped_df.last()[activity_key].unique())
