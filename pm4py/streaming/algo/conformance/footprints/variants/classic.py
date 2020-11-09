@@ -1,9 +1,16 @@
 from pm4py.util import constants, exec_utils, xes_constants
 from pm4py.streaming.util.dictio import generator
+from pm4py.streaming.algo.interface import StreamingAlgorithm
 import logging
+from copy import copy
+from threading import Lock
 
 
 class Parameters:
+    DICT_VARIANT = "dict_variant"
+    DICT_ID = "dict_id"
+    CASE_DICT_ID = "case_dict_id"
+    DEV_DICT_ID = "dev_dict_id"
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
@@ -15,7 +22,7 @@ SEQUENCE = "sequence"
 PARALLEL = "parallel"
 
 
-class FootprintsStreamingConformance(object):
+class FootprintsStreamingConformance(StreamingAlgorithm):
     def __init__(self, footprints, parameters=None):
         """
         Initialize the footprints streaming conformance object
@@ -35,21 +42,38 @@ class FootprintsStreamingConformance(object):
         self.end_activities = footprints[END_ACTIVITIES]
         self.activities = footprints[ACTIVITIES]
         self.all_fps = set(footprints[SEQUENCE]).union(set(footprints[PARALLEL]))
-        self.case_dict = generator.apply()
-        self.dev_dict = generator.apply()
+        self.build_dictionaries(parameters=parameters)
+        StreamingAlgorithm.__init__(self)
 
-    def receive(self, event):
+    def build_dictionaries(self, parameters):
         """
-        Receive an event from the live stream
+        Builds the dictionaries needed to store the information during the replay
 
         Parameters
         ---------------
-        event
-            Event (dictionary)
+        parameters
+            Parameters:
+             - Parameters.DICT_VARIANT: type of dictionary to use
+             - Parameters.CASE_DICT_ID: identifier of the dictionary hosting the last activity of a case (1)
+             - Parameters.DEV_DICT_ID: identifier of the dictionary hosting the deviations (2)
         """
-        self.check(event)
+        dict_variant = exec_utils.get_param_value(Parameters.DICT_VARIANT, parameters, generator.Variants.CLASSIC)
+        case_dict_id = exec_utils.get_param_value(Parameters.CASE_DICT_ID, parameters, 0)
+        dev_dict_id = exec_utils.get_param_value(Parameters.DEV_DICT_ID, parameters, 1)
+        parameters_case_dict = copy(parameters)
+        parameters_case_dict[Parameters.DICT_ID] = case_dict_id
+        parameters_dev_dict = copy(parameters)
+        parameters_dev_dict[Parameters.DICT_ID] = dev_dict_id
+        self.case_dict = generator.apply(variant=dict_variant, parameters=parameters_case_dict)
+        self.dev_dict = generator.apply(variant=dict_variant, parameters=parameters_dev_dict)
 
-    def check(self, event):
+    def encode_str(self, stru):
+        """
+        Encodes a string for storage in generic dictionaries
+        """
+        return str(stru)
+
+    def _process(self, event):
         """
         Check an event and updates the case dictionary
 
@@ -61,7 +85,7 @@ class FootprintsStreamingConformance(object):
         case = event[self.case_id_key] if self.case_id_key in event else None
         activity = event[self.activity_key] if self.activity_key in event else None
         if case is not None and activity is not None:
-            self.verify_footprints(case, activity)
+            self.verify_footprints(self.encode_str(case), self.encode_str(activity))
         else:
             self.message_case_or_activity_not_in_event(event)
 
@@ -253,7 +277,7 @@ class FootprintsStreamingConformance(object):
         """
         logging.error("the case " + str(case) + " is not in the dictionary! case: " + str(case))
 
-    def get_diagnostics_dataframe(self):
+    def _current_result(self):
         """
         Gets a diagnostics dataframe with the status of the cases
 
