@@ -1,5 +1,6 @@
-from pm4py.util import constants, xes_constants
 import pkgutil
+
+from pm4py.util import constants, xes_constants
 
 
 def check_is_dataframe(log):
