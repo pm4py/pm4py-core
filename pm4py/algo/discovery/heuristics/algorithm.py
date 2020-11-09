@@ -1,8 +1,8 @@
 from pm4py.algo.discovery.heuristics.variants import classic
-import pandas
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import exec_utils
 from enum import Enum
+import pkgutil
 
 
 class Variants(Enum):
@@ -48,8 +48,11 @@ def apply(log, parameters=None, variant=CLASSIC):
     fm
         Final marking
     """
-    if isinstance(log, pandas.core.frame.DataFrame):
-        return exec_utils.get_variant(variant).apply_pandas(log, parameters=parameters)
+    if pkgutil.find_loader("pandas"):
+        import pandas
+
+        if isinstance(log, pandas.core.frame.DataFrame):
+            return exec_utils.get_variant(variant).apply_pandas(log, parameters=parameters)
 
     return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters=parameters),
                                                  parameters=parameters)

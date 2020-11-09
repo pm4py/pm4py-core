@@ -1,6 +1,6 @@
 import re
 
-from pm4py.objects import petri
+from pm4py.objects.petri import semantics, align_utils
 from pm4py.objects.transition_system import transition_system as ts
 from pm4py.objects.transition_system import utils
 from pm4py.util import exec_utils
@@ -60,12 +60,12 @@ def marking_flow_petri(net, im, return_eventually_enabled=False, parameters=None
             # interrupt the execution
             return incoming_transitions, outgoing_transitions, eventually_enabled
         m = active.pop()
-        enabled_transitions = petri.semantics.enabled_transitions(net, m)
+        enabled_transitions = semantics.enabled_transitions(net, m)
         if return_eventually_enabled:
-            eventually_enabled[m] = petri.align_utils.get_visible_transitions_eventually_enabled_by_marking(net, m)
+            eventually_enabled[m] = align_utils.get_visible_transitions_eventually_enabled_by_marking(net, m)
         outgoing_transitions[m] = {}
         for t in enabled_transitions:
-            nm = petri.semantics.weak_execute(t, m)
+            nm = semantics.weak_execute(t, m)
             outgoing_transitions[m][t] = nm
             if nm not in incoming_transitions:
                 incoming_transitions[nm] = set()

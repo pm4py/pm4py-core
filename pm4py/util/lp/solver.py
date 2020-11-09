@@ -1,5 +1,5 @@
-from pm4py.util.lp.variants import pulp_solver
 from pm4py.util.lp.parameters import Parameters
+import pkgutil
 
 
 # not available in the latest version of PM4Py
@@ -10,15 +10,25 @@ CVXOPT_SOLVER_CUSTOM_ALIGN = "cvxopt_solver_custom_align"
 CVXOPT_SOLVER_CUSTOM_ALIGN_ILP = "cvxopt_solver_custom_align_ilp"
 ORTOOLS_SOLVER = "ortools_solver"
 
-VERSIONS_APPLY = {PULP: pulp_solver.apply}
-VERSIONS_GET_PRIM_OBJ = {PULP: pulp_solver.get_prim_obj_from_sol}
-VERSIONS_GET_POINTS_FROM_SOL = {PULP: pulp_solver.get_points_from_sol}
-
-DEFAULT_LP_SOLVER_VARIANT = PULP
 # max allowed heuristics value (27/10/2019, due to the numerical instability of some of our solvers)
 MAX_ALLOWED_HEURISTICS = 10**15
 
-try:
+VERSIONS_APPLY = {}
+VERSIONS_GET_PRIM_OBJ = {}
+VERSIONS_GET_POINTS_FROM_SOL = {}
+DEFAULT_LP_SOLVER_VARIANT = None
+
+if pkgutil.find_loader("pulp"):
+    # assuming pulp is installed
+    from pm4py.util.lp.variants import pulp_solver
+
+    VERSIONS_APPLY[PULP] = pulp_solver.apply
+    VERSIONS_GET_PRIM_OBJ[PULP] = pulp_solver.get_prim_obj_from_sol
+    VERSIONS_GET_POINTS_FROM_SOL[PULP] = pulp_solver.get_points_from_sol
+
+    DEFAULT_LP_SOLVER_VARIANT = PULP
+
+if pkgutil.find_loader("ortools"):
     # in the case ortools is installed, it works
     from pm4py.util.lp.variants import ortools_solver
 
@@ -27,9 +37,7 @@ try:
     VERSIONS_GET_POINTS_FROM_SOL[ORTOOLS_SOLVER] = ortools_solver.get_points_from_sol
 
     DEFAULT_LP_SOLVER_VARIANT = ORTOOLS_SOLVER
-except:
-    # in this case, ortools is not installed since it is broken
-    pass
+
 
 def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT):
     """

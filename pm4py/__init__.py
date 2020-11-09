@@ -1,6 +1,4 @@
-import logging
-import pkgutil
-import time
+import time, pkgutil, logging, sys
 
 time.clock = time.process_time
 
@@ -9,7 +7,8 @@ try:
 except:
     pass
 
-from pm4py import util, objects, statistics, algo, visualization, evaluation, streaming, simulation
+
+from pm4py import util, objects, statistics, algo, visualization, evaluation, simulation
 
 if pkgutil.find_loader("scipy"):
     pass
@@ -32,11 +31,31 @@ else:
     logging.error("matplotlib is not available. This can lead some features of PM4Py to not work correctly!")
 
 if pkgutil.find_loader("lxml"):
-    import matplotlib
+    import lxml
 else:
     logging.error("lxml is not available. This can lead some features of PM4Py to not work correctly!")
 
-__version__ = '2.0.0'
+if pkgutil.find_loader("pandas"):
+    import pandas
+else:
+    logging.error("pandas is not available. This can lead some features of PM4Py to not work correctly!")
+
+if pkgutil.find_loader("pulp"):
+    import pulp
+else:
+    logging.error("pulp is not available. This can lead some features of PM4Py to not work correctly!")
+
+if pkgutil.find_loader("graphviz"):
+    import graphviz
+else:
+    logging.error("graphviz is not available. This can lead some features of PM4Py to not work correctly!")
+
+if pkgutil.find_loader("intervaltree"):
+    import intervaltree
+else:
+    logging.error("intervaltree is not available. This can lead some features of PM4Py to not work correctly!")
+
+__version__ = '2.0.1'
 __doc__ = "Process Mining for Python (PM4Py)"
 __author__ = 'Fraunhofer Institute for Applied Technology'
 __author_email__ = 'pm4py@fit.fraunhofer.de'
@@ -58,3 +77,12 @@ from pm4py.filtering import filter_start_activities, filter_end_activities, filt
     filter_variants_percentage, filter_paths, filter_timestamp, filter_trace_attribute
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
     get_trace_attributes
+
+# this package is available only for Python >= 3.5
+if sys.version_info >= (3, 5):
+    from pm4py import streaming
+
+    if pkgutil.find_loader("sympy"):
+        import sympy
+    else:
+        logging.error("sympy is not available. This can lead some features of PM4Py to not work correctly!")

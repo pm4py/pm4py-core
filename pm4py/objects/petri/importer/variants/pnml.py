@@ -4,8 +4,9 @@ import time
 
 from lxml import etree, objectify
 
-from pm4py.objects import petri
 from pm4py.objects.petri.common import final_marking
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.petri.utils import add_arc_from_to
 from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.util import constants
 
@@ -51,9 +52,9 @@ def import_net(input_file_path, parameters=None):
     tree = objectify.parse(input_file_path, parser=parser)
     root = tree.getroot()
 
-    net = petri.petrinet.PetriNet('imported_' + str(time.time()))
-    marking = petri.petrinet.Marking()
-    fmarking = petri.petrinet.Marking()
+    net = PetriNet('imported_' + str(time.time()))
+    marking = Marking()
+    fmarking = Marking()
 
     nett = None
     page = None
@@ -104,7 +105,7 @@ def import_net(input_file_path, parameters=None):
                             elif child3.tag.endswith("dimension"):
                                 dimension_X = float(child3.get("x"))
                                 dimension_Y = float(child3.get("y"))
-                places_dict[place_id] = petri.petrinet.PetriNet.Place(place_id)
+                places_dict[place_id] = PetriNet.Place(place_id)
                 places_dict[place_id].properties[constants.PLACE_NAME_TAG] = place_name
                 net.places.add(places_dict[place_id])
                 if position_X is not None and position_Y is not None and dimension_X is not None and dimension_Y is not None:
@@ -175,7 +176,7 @@ def import_net(input_file_path, parameters=None):
                 #if "INVISIBLE" in trans_label:
                 #    trans_label = None
 
-                trans_dict[trans_name] = petri.petrinet.PetriNet.Transition(trans_name, trans_label)
+                trans_dict[trans_name] = PetriNet.Transition(trans_name, trans_label)
                 net.transitions.add(trans_dict[trans_name])
 
                 if random_variable is not None:
@@ -197,9 +198,9 @@ def import_net(input_file_path, parameters=None):
                                 arc_weight = int(text_arcweight.text)
 
                 if arc_source in places_dict and arc_target in trans_dict:
-                    petri.utils.add_arc_from_to(places_dict[arc_source], trans_dict[arc_target], net, weight=arc_weight)
+                    add_arc_from_to(places_dict[arc_source], trans_dict[arc_target], net, weight=arc_weight)
                 elif arc_target in places_dict and arc_source in trans_dict:
-                    petri.utils.add_arc_from_to(trans_dict[arc_source], places_dict[arc_target], net, weight=arc_weight)
+                    add_arc_from_to(trans_dict[arc_source], places_dict[arc_target], net, weight=arc_weight)
 
     if finalmarkings is not None:
         for child in finalmarkings:

@@ -1,7 +1,5 @@
-from pm4py import util as pmutil
 from pm4py.algo.discovery.transition_system.variants import view_based
 from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.util import xes_constants as xes_util
 from pm4py.util import exec_utils
 from enum import Enum
 
