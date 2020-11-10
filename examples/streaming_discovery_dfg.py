@@ -25,7 +25,7 @@ def execute_script():
     # stops the live event stream
     live_stream.stop()
     # gets the DFG along with the start and end activities from the stream
-    dfg, activities, start_activities, end_activities = stream_dfg_disc._current_result()
+    dfg, activities, start_activities, end_activities = stream_dfg_disc.get()
     # visualize the DFG
     gviz = dfg_visualizer.apply(dfg, variant=dfg_visualizer.Variants.FREQUENCY, activities_count=activities,
                                 parameters={"start_activities": start_activities, "end_activities": end_activities})

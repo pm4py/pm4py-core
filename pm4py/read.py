@@ -59,8 +59,9 @@ def read_csv(file_path, sep=",", quotechar=None, encoding='utf-8', nrows=1000000
         logging.error(
             "Less than three columns were imported from the CSV file. Please check the specification of the separation and the quote character!")
     else:
-        logging.warning(
-            "Please specify the format of the dataframe: df = pm4py.format_dataframe(df, case_id='<name of the case ID column>', activity_key='<name of the activity column>', timestamp_key='<name of the timestamp column>')")
+        #logging.warning(
+        #    "Please specify the format of the dataframe: df = pm4py.format_dataframe(df, case_id='<name of the case ID column>', activity_key='<name of the activity column>', timestamp_key='<name of the timestamp column>')")
+        pass
 
     return df
 
@@ -99,8 +100,8 @@ def format_dataframe(df, case_id=constants.CASE_CONCEPT_NAME, activity_key=xes_c
     df = pandas_utils.insert_index(df, INDEX_COLUMN)
     # sorts the dataframe
     df = df.sort_values([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_TIMESTAMP_KEY, INDEX_COLUMN])
-    logging.warning(
-        "please convert the dataframe for advanced process mining applications. log = pm4py.convert_to_event_log(df)")
+    # logging.warning(
+    #    "please convert the dataframe for advanced process mining applications. log = pm4py.convert_to_event_log(df)")
     return df
 
 
