@@ -1,6 +1,6 @@
 import abc
 from threading import Lock
-from typing import final
+#from typing import final
 
 
 class StreamingAlgorithm(abc.ABC):
@@ -15,14 +15,12 @@ class StreamingAlgorithm(abc.ABC):
     def _current_result(self):
         pass
 
-    @final
     def get(self):
         self._lock.acquire()
         ret = self._current_result()
         self._lock.release()
         return ret
 
-    @final
     def receive(self, event):
         self._lock.acquire()
         self._process(event)
