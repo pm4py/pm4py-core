@@ -49,7 +49,7 @@ if pkgutil.find_loader("intervaltree"):
 else:
     logging.error("intervaltree is not available. This can lead some features of PM4Py to not work correctly!")
 
-__version__ = '2.0.1.2'
+__version__ = '2.0.1.3'
 __doc__ = "Process Mining for Python (PM4Py)"
 __author__ = 'Fraunhofer Institute for Applied Technology'
 __author_email__ = 'pm4py@fit.fraunhofer.de'
