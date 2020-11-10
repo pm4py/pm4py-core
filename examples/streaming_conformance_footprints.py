@@ -32,7 +32,7 @@ def execute_script():
     # the conditions on the closure of all the cases are checked
     # (for each case, it is checked whether the end activity of the case
     # is possible according to the footprints)
-    diagn_df = conf_obj._current_result()
+    diagn_df = conf_obj.get()
     conf_obj.terminate_all()
     print(diagn_df)
     print(diagn_df[diagn_df["is_fit"] == False])
