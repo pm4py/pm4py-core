@@ -18,8 +18,9 @@ class StreamingAlgorithm(abc.ABC):
     @final
     def get(self):
         self._lock.acquire()
-        self._current_result()
+        ret = self._current_result()
         self._lock.release()
+        return ret
 
     @final
     def receive(self, event):
