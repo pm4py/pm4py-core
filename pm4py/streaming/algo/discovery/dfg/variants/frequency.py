@@ -113,17 +113,17 @@ class StreamingDfgDiscovery(StreamingAlgorithm):
             activity = self.encode_str(event[self.activity_key])
             if case not in self.case_dict:
                 if activity not in self.start_activities:
-                    self.start_activities[activity] = 0
+                    self.start_activities[activity] = 1
                 else:
                     self.start_activities[activity] = self.start_activities[activity] + 1
             else:
                 df = self.encode_tuple((self.case_dict[case], activity))
                 if df not in self.dfg:
-                    self.dfg[df] = 0
+                    self.dfg[df] = 1
                 else:
                     self.dfg[df] = self.dfg[df] + 1
             if activity not in self.activities:
-                self.activities[activity] = 0
+                self.activities[activity] = 1
             else:
                 self.activities[activity] = self.activities[activity] + 1
             self.case_dict[case] = activity
