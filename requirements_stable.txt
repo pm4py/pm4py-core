@@ -38,7 +38,7 @@ deprecation==2.1.0
 graphviz==0.14.2
 intervaltree==3.1.0
 lxml==4.6.1
-matplotlib==3.3.2
+matplotlib==3.3.3
 pandas==1.1.4
 pulp==2.1
 pydotplus==2.0.2
