@@ -5,3 +5,4 @@ https://files.pythonhosted.org/packages/b1/7c/5c700b90898bd57e5698d971d54f460c3e
 pydotplus
 networkx==2.0
 pulp==2.1
+deprecation

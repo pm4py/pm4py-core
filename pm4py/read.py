@@ -1,6 +1,8 @@
 import logging
 
-from pm4py.util import constants, xes_constants, pandas_utils
+import deprecation
+
+from pm4py import VERSION
 
 INDEX_COLUMN = "@@index"
 
@@ -24,6 +26,9 @@ def read_xes(file_path):
     return log
 
 
+@deprecation.deprecated(deprecated_in="2.0.1.3", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use pandas to import CSV files")
 def read_csv(file_path, sep=",", quotechar=None, encoding='utf-8', nrows=10000000, timest_format=None):
     """
     Reads an event log in the CSV format (Pandas adapter)
@@ -59,49 +64,10 @@ def read_csv(file_path, sep=",", quotechar=None, encoding='utf-8', nrows=1000000
         logging.error(
             "Less than three columns were imported from the CSV file. Please check the specification of the separation and the quote character!")
     else:
-        #logging.warning(
+        # logging.warning(
         #    "Please specify the format of the dataframe: df = pm4py.format_dataframe(df, case_id='<name of the case ID column>', activity_key='<name of the activity column>', timestamp_key='<name of the timestamp column>')")
         pass
 
-    return df
-
-
-def format_dataframe(df, case_id=constants.CASE_CONCEPT_NAME, activity_key=xes_constants.DEFAULT_NAME_KEY,
-                     timestamp_key=xes_constants.DEFAULT_TIMESTAMP_KEY):
-    """
-    Give the appropriate format on the dataframe, for process mining purposes
-
-    Parameters
-    --------------
-    df
-        Dataframe
-    case_id
-        Case identifier column
-    activity_key
-        Activity column
-    timestamp_key
-        Timestamp column
-
-    Returns
-    --------------
-    df
-        Dataframe
-    """
-    if case_id not in df.columns:
-        raise Exception(case_id + " column (case ID) is not in the dataframe!")
-    if activity_key not in df.columns:
-        raise Exception(activity_key + " column (activity) is not in the dataframe!")
-    if timestamp_key not in df.columns:
-        raise Exception(timestamp_key + " column (timestamp) is not in the dataframe!")
-    df = df.rename(columns={case_id: constants.CASE_CONCEPT_NAME, activity_key: xes_constants.DEFAULT_NAME_KEY,
-                            timestamp_key: xes_constants.DEFAULT_TIMESTAMP_KEY})
-    df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype(str)
-    # set an index column
-    df = pandas_utils.insert_index(df, INDEX_COLUMN)
-    # sorts the dataframe
-    df = df.sort_values([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_TIMESTAMP_KEY, INDEX_COLUMN])
-    # logging.warning(
-    #    "please convert the dataframe for advanced process mining applications. log = pm4py.convert_to_event_log(df)")
     return df
 
 
