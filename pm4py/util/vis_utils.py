@@ -1,4 +1,7 @@
 import base64
+import os
+import subprocess
+import sys
 
 MAX_EDGE_PENWIDTH_GRAPHVIZ = 2.6
 MIN_EDGE_PENWIDTH_GRAPHVIZ = 1.0
@@ -58,7 +61,7 @@ def get_arc_penwidth(arc_measure, min_arc_measure, max_arc_measure):
         Current arc width in the graph
     """
     return MIN_EDGE_PENWIDTH_GRAPHVIZ + (MAX_EDGE_PENWIDTH_GRAPHVIZ - MIN_EDGE_PENWIDTH_GRAPHVIZ) * (
-                arc_measure - min_arc_measure) / (max_arc_measure - min_arc_measure + 0.00001)
+            arc_measure - min_arc_measure) / (max_arc_measure - min_arc_measure + 0.00001)
 
 
 def get_trans_freq_color(trans_count, min_trans_count, max_trans_count):
@@ -119,3 +122,50 @@ def get_base64_from_file(temp_file):
     """
     with open(temp_file, "rb") as f:
         return base64.b64encode(f.read())
+
+
+def check_visualization_inside_jupyter():
+    """
+    Checks if the visualization of the model is performed
+    inside a Jupyter notebook
+    """
+    try:
+        shell = get_ipython().__class__.__name__
+        if shell == "ZMQInteractiveShell":
+            return True
+        else:
+            return False
+    except NameError:
+        return False
+
+
+def view_image_in_jupyter(file_name):
+    """
+    Visualizes a picture inside the Jupyter notebooks
+
+    Parameters
+    -------------
+    file_name
+        Name of the file
+    """
+    from IPython.display import Image
+    image = Image(file_name)
+    from IPython.display import display
+    return display(image)
+
+
+def open_opsystem_image_viewer(file_name):
+    """
+    Visualizes a picture using the image viewer of the operating system
+
+    Parameters
+    -------------
+    file_name
+        Name of the file
+    """
+    if sys.platform.startswith('darwin'):
+        subprocess.call(('open', file_name))
+    elif os.name == 'nt':  # For Windows
+        os.startfile(file_name)
+    elif os.name == 'posix':  # For Linux, Mac, etc.
+        subprocess.call(('xdg-open', file_name))
