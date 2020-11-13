@@ -1,5 +1,7 @@
 import tempfile
 
+from pm4py.util import vis_utils
+
 
 def view(gviz):
     """
@@ -10,20 +12,8 @@ def view(gviz):
     gviz
         GraphViz diagram
     """
-    is_ipynb = False
-
-    try:
-        get_ipython()
-        is_ipynb = True
-    except NameError:
-        # we are not inside Jupyter, do nothing
-        pass
-
-    if is_ipynb:
-        from IPython.display import Image
-        image = Image(gviz.render())
-        from IPython.display import display
-        return display(image)
+    if vis_utils.check_visualization_inside_jupyter():
+        vis_utils.view_image_in_jupyter(gviz.render())
     else:
         return gviz.view(cleanup=True)
 

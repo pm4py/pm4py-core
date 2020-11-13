@@ -1,14 +1,12 @@
-import os
 import shutil
-import subprocess
-import sys
 import tempfile
-
-import numpy as np
-import matplotlib
 from copy import copy
 from enum import Enum
-from pm4py.util import exec_utils
+
+import matplotlib
+import numpy as np
+
+from pm4py.util import exec_utils, vis_utils
 
 
 class Parameters(Enum):
@@ -106,26 +104,10 @@ def view(temp_file_name, parameters=None):
     if parameters is None:
         parameters = {}
 
-    is_ipynb = False
-
-    try:
-        get_ipython()
-        is_ipynb = True
-    except NameError:
-        pass
-
-    if is_ipynb:
-        from IPython.display import Image
-        image = Image(temp_file_name)
-        from IPython.display import display
-        return display(image)
+    if vis_utils.check_visualization_inside_jupyter():
+        vis_utils.view_image_in_jupyter(temp_file_name)
     else:
-        if sys.platform.startswith('darwin'):
-            subprocess.call(('open', temp_file_name))
-        elif os.name == 'nt':  # For Windows
-            os.startfile(temp_file_name)
-        elif os.name == 'posix':  # For Linux, Mac, etc.
-            subprocess.call(('xdg-open', temp_file_name))
+        vis_utils.open_opsystem_image_viewer(temp_file_name)
 
 
 def save(temp_file_name, dest_file, parameters=None):

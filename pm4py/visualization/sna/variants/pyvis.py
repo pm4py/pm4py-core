@@ -1,11 +1,10 @@
-import os
 import shutil
-import subprocess
-import sys
 import tempfile
 from enum import Enum
-from pm4py.util import exec_utils
+
 import numpy as np
+
+from pm4py.util import exec_utils, vis_utils
 
 
 class Parameters(Enum):
@@ -118,25 +117,10 @@ def view(temp_file_name, parameters=None):
     if parameters is None:
         parameters = {}
 
-    is_ipynb = False
-
-    try:
-        get_ipython()
-        is_ipynb = True
-    except NameError:
-        pass
-
-    if is_ipynb:
+    if vis_utils.check_visualization_inside_jupyter():
         raise Exception("pyvis visualization not working inside Jupyter notebooks")
-        from IPython.display import IFrame
-        return IFrame(temp_file_name, width="100%", height="750px")
     else:
-        if sys.platform.startswith('darwin'):
-            subprocess.call(('open', temp_file_name))
-        elif os.name == 'nt':  # For Windows
-            os.startfile(temp_file_name)
-        elif os.name == 'posix':  # For Linux, Mac, etc.
-            subprocess.call(('xdg-open', temp_file_name))
+        vis_utils.open_opsystem_image_viewer(temp_file_name)
 
 
 def save(temp_file_name, dest_file, parameters=None):

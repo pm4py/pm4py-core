@@ -1,10 +1,8 @@
-import os
 import shutil
-import subprocess
-import sys
-from pm4py.visualization.heuristics_net.variants import pydotplus
 from enum import Enum
-from pm4py.util import exec_utils
+
+from pm4py.util import exec_utils, vis_utils
+from pm4py.visualization.heuristics_net.variants import pydotplus
 
 
 class Variants(Enum):
@@ -53,26 +51,10 @@ def view(figure):
         # continue without problems, a proper path has been provided
         pass
 
-    is_ipynb = False
-
-    try:
-        get_ipython()
-        is_ipynb = True
-    except NameError:
-        pass
-
-    if is_ipynb:
-        from IPython.display import Image
-        image = Image(figure)
-        from IPython.display import display
-        return display(image)
+    if vis_utils.check_visualization_inside_jupyter():
+        vis_utils.view_image_in_jupyter(figure)
     else:
-        if sys.platform.startswith('darwin'):
-            subprocess.call(('open', figure))
-        elif os.name == 'nt':  # For Windows
-            os.startfile(figure)
-        elif os.name == 'posix':  # For Linux, Mac, etc.
-            subprocess.call(('xdg-open', figure))
+        vis_utils.open_opsystem_image_viewer(figure)
 
 
 def save(figure, output_file_path):
