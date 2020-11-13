@@ -38,6 +38,7 @@ deprecation
 graphviz
 intervaltree
 lxml
+matplotlib
 pandas
 pulp<=2.1
 pydotplus
