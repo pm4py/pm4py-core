@@ -1,8 +1,7 @@
-import os
 import shutil
-import subprocess
-import sys
 import tempfile
+
+from pm4py.util import vis_utils
 
 
 def get_temp_file_name(format):
@@ -14,7 +13,7 @@ def get_temp_file_name(format):
     format
         Format of the target image
     """
-    filename = tempfile.NamedTemporaryFile(suffix='.'+format)
+    filename = tempfile.NamedTemporaryFile(suffix='.' + format)
 
     return filename.name
 
@@ -42,26 +41,10 @@ def view(temp_file_name):
     temp_file_name
         Path to the temporary file hosting the graph
     """
-    is_ipynb = False
-
-    try:
-        get_ipython()
-        is_ipynb = True
-    except NameError:
-        pass
-
-    if is_ipynb:
-        from IPython.display import Image
-        image = Image(temp_file_name)
-        from IPython.display import display
-        return display(image)
+    if vis_utils.check_visualization_inside_jupyter():
+        vis_utils.view_image_in_jupyter(temp_file_name)
     else:
-        if sys.platform.startswith('darwin'):
-            subprocess.call(('open', temp_file_name))
-        elif os.name == 'nt':  # For Windows
-            os.startfile(temp_file_name)
-        elif os.name == 'posix':  # For Linux, Mac, etc.
-            subprocess.call(('xdg-open', temp_file_name))
+        vis_utils.open_opsystem_image_viewer(temp_file_name)
 
 
 def matplotlib_view(temp_file_name):
