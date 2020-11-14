@@ -60,7 +60,6 @@ def reduce_single_exit_transitions(net):
 def apply_simple_reduction(net):
     """
     Apply a simple reduction to the Petri net
-    (version specific)
 
     Parameters
     --------------
