@@ -76,9 +76,9 @@ def apply(log, parameters=None, variant=DEFAULT_VARIANT):
                                                                          timestamp_key=timestamp_key,
                                                                          case_id_glue=case_id_glue,
                                                                          start_timestamp_key=start_timestamp_key)
-            if variant in [Variants.PERFORMANCE, Variants.PERFORMANCE_GREEDY]:
-                return dfg_performance
-            else:
-                return dfg_frequency
+            return {
+                "frequency": dfg_frequency,
+                "performance": dfg_performance
+            }
 
     return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters=parameters)
