@@ -1,3 +1,8 @@
+import deprecation
+
+from pm4py import VERSION
+
+
 def write_xes(log, file_path):
     """
     Exports a XES log
@@ -17,6 +22,9 @@ def write_xes(log, file_path):
     xes_exporter.apply(log, file_path)
 
 
+@deprecation.deprecated(deprecated_in="2.0.2", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use pandas to export CSV files")
 def write_csv(log, file_path):
     """
     Exports a CSV log
