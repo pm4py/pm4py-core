@@ -134,7 +134,7 @@ def get_variants(log):
     if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.statistics.variants.pandas import get
-        return get.get_variants_set(log)
+        return get.get_variants_count(log)
     else:
         from pm4py.statistics.variants.log import get
         return get.get_variants(log)
