@@ -21,6 +21,7 @@ if __name__ == "__main__":
     from tests.alignment_test import AlignmentTest
     from tests.sna_test import SnaTests
     from tests.petri_imp_exp_test import PetriImportExportTest
+    from tests.bpmn_tests import BPMNTests
     from tests.etc_tests import ETCTest
     from tests.diagn_df_conf_checking import DiagnDfConfChecking
     from tests.evaluation_tests import ProcessModelEvaluationTests
@@ -58,6 +59,7 @@ if __name__ == "__main__":
     test56_object = InductiveMinerOtherTests()
     test6_object = AlignmentTest()
     test7_object = PetriImportExportTest()
+    bpmn_test = BPMNTests()
     test17_object = ETCTest()
     test20_object = ProcessModelEvaluationTests()
     test21_object = DecisionTreeTest()

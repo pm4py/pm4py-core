@@ -1,5 +1,6 @@
 from pm4py.objects.conversion.process_tree.variants import to_petri_net
 from pm4py.objects.conversion.process_tree.variants import to_petri_net_transition_bordered
+from pm4py.objects.conversion.process_tree.variants import to_bpmn
 from pm4py.util import exec_utils
 from enum import Enum
 
@@ -7,6 +8,7 @@ from enum import Enum
 class Variants(Enum):
     TO_PETRI_NET = to_petri_net
     TO_PETRI_NET_TRANSITION_BORDERED = to_petri_net_transition_bordered
+    TO_BPMN = to_bpmn
 
 
 def apply(tree, parameters=None, variant=Variants.TO_PETRI_NET):
