@@ -102,3 +102,23 @@ def write_dfg(dfg, start_activities, end_activities, file_path):
     dfg_exporter.apply(dfg, file_path,
                        parameters={dfg_exporter.Variants.CLASSIC.value.Parameters.START_ACTIVITIES: start_activities,
                                    dfg_exporter.Variants.CLASSIC.value.Parameters.END_ACTIVITIES: end_activities})
+
+
+def write_bpmn(bpmn_graph, file_path, enable_layout=True):
+    """
+    Writes a BPMN to a file
+
+    Parameters
+    ---------------
+    bpmn_graph
+        BPMN
+    file_path
+        Destination path
+    enable_layout
+        Enables the automatic layouting of the BPMN diagram (default: True)
+    """
+    if enable_layout:
+        from pm4py.objects.bpmn.layout import layouter
+        bpmn_graph = layouter.apply(bpmn_graph)
+    from pm4py.objects.bpmn.exporter import exporter
+    exporter.apply(bpmn_graph, file_path)

@@ -191,3 +191,22 @@ def read_dfg(file_path):
     from pm4py.objects.dfg.importer import importer as dfg_importer
     dfg, start_activities, end_activities = dfg_importer.apply(file_path)
     return dfg, start_activities, end_activities
+
+
+def read_bpmn(file_path):
+    """
+    Reads a BPMN from a .bpmn file
+
+    Parameters
+    ---------------
+    file_path
+        File path
+
+    Returns
+    ---------------
+    bpmn_graph
+        BPMN graph
+    """
+    from pm4py.objects.bpmn.importer import importer as bpmn_importer
+    bpmn_graph = bpmn_importer.apply(file_path)
+    return bpmn_graph
