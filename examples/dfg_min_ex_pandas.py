@@ -5,8 +5,10 @@ from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.objects.conversion.dfg import converter as dfg_conv
 from pm4py.statistics.attributes.pandas import get as att_get
 from pm4py.statistics.end_activities.pandas import get as ea_get
-from pm4py.statistics.start_activities.pandas import get as sa_get
 from pm4py.statistics.sojourn_time.pandas import get as soj_time_get
+from pm4py.statistics.concurrent_activities.pandas import get as conc_act_get
+from pm4py.statistics.eventually_follows.pandas import get as efg_get
+from pm4py.statistics.start_activities.pandas import get as sa_get
 from pm4py.util import constants
 from pm4py.visualization.dfg import visualizer as dfg_vis_fact
 from pm4py.visualization.petrinet import visualizer as pn_vis
@@ -27,6 +29,14 @@ def execute_script():
     parameters["start_activities"] = start_activities
     parameters["end_activities"] = end_activities
     soj_time = soj_time_get.apply(dataframe, parameters=parameters)
+    print("soj_time")
+    print(soj_time)
+    conc_act = conc_act_get.apply(dataframe, parameters=parameters)
+    print("conc_act")
+    print(conc_act)
+    efg = efg_get.apply(dataframe, parameters=parameters)
+    print("efg")
+    print(efg)
     dfg_freq, dfg_perf = df_statistics.get_dfg_graph(dataframe, measure="both", start_timestamp_key="start_timestamp")
     dfg_gv_freq = dfg_vis_fact.apply(dfg_freq, activities_count=att_count, variant=dfg_vis_fact.Variants.FREQUENCY,
                                      soj_time=soj_time, parameters=parameters)
