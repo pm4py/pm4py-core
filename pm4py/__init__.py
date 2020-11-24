@@ -55,7 +55,7 @@ if pkgutil.find_loader("intervaltree"):
 else:
     logging.error("intervaltree is not available. This can lead some features of PM4Py to not work correctly!")
 
-VERSION = '2.0.1.3'
+VERSION = '2.1.0'
 
 __version__ = VERSION
 __doc__ = "Process Mining for Python (PM4Py)"
@@ -65,8 +65,8 @@ __maintainer__ = 'Fraunhofer Institute for Applied Technology'
 __maintainer_email__ = "pm4py@fit.fraunhofer.de"
 
 from pm4py.read import read_xes, read_csv, read_petri_net, read_process_tree, read_dfg, \
-    convert_to_event_log, convert_to_event_stream, convert_to_dataframe
-from pm4py.write import write_xes, write_csv, write_petri_net, write_process_tree, write_dfg
+    convert_to_event_log, convert_to_event_stream, convert_to_dataframe, read_bpmn
+from pm4py.write import write_xes, write_csv, write_petri_net, write_process_tree, write_dfg, write_bpmn
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_heuristics, \
     discover_petri_net_inductive, discover_tree_inductive, discover_heuristics_net, discover_dfg
 from pm4py.conformance import conformance_tbr, conformance_alignments, evaluate_fitness_tbr, \

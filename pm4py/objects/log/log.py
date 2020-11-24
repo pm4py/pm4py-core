@@ -1,5 +1,39 @@
-from collections.abc import Mapping, Sequence
 import copy
+from collections.abc import Mapping, Sequence
+from enum import Enum
+
+
+class XESExtension(Enum):
+    ArtifactLifecycle = (
+    'ArtifactLifecycle', 'artifactlifecycle', 'http://www.xes-standard.org/artifactlifecycle.xesext')
+    Concept = ('Concept', 'concept', 'http://www.xes-standard.org/concept.xesext')
+    Cost = ('Cost', 'cost', 'http://www.xes-standard.org/cost.xesext')
+    Identity = ('Identity', 'identity', 'http://www.xes-standard.org/identity.xesext')
+    Lifecycle = ('Lifecycle', 'lifecycle', 'http://www.xes-standard.org/lifecycle.xesext')
+    Micro = ('Micro', 'micro', 'http://www.xes-standard.org/micro.xesext')
+    Organizational = ('Organizational', 'organizational', 'http://www.xes-standard.org/org.xesext')
+    Semantic = ('Semantic', 'semantic', 'http://www.xes-standard.org/semantic.xesext')
+    SoftwareCommunication = ('Software Communication', 'swcomm', 'http://www.xes-standard.org/swcomm.xesext')
+    SoftwareEvent = ('Software Event', 'swevent', 'http://www.xes-standard.org/swevent.xesext')
+    SoftwareTelemetry = ('Software Telemetry', 'swtelemetry', 'http://www.xes-standard.org/swtelemetry.xesext')
+    Time = ('Time', 'time', 'http://www.xes-standard.org/time.xesext')
+
+    def __init__(self, name, prefix, uri):
+        self._name = name
+        self._prefix = prefix
+        self._uri = uri
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def prefix(self):
+        return self._prefix
+
+    @property
+    def uri(self):
+        return self._uri
 
 
 class Event(Mapping):

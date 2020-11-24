@@ -5,6 +5,9 @@ from pm4py.objects.conversion.dfg import converter as dfg_conv
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.statistics.end_activities.log import get as ea_get
 from pm4py.statistics.start_activities.log import get as sa_get
+from pm4py.statistics.sojourn_time.log import get as soj_time_get
+from pm4py.statistics.concurrent_activities.log import get as conc_act_get
+from pm4py.statistics.eventually_follows.log import get as efg_get
 from pm4py.util import constants
 from pm4py.visualization.dfg import visualizer as dfg_vis_fact
 from pm4py.visualization.petrinet import visualizer as pn_vis
@@ -22,6 +25,15 @@ def execute_script():
     end_activities = ea_get.get_end_activities(log, parameters=parameters)
     parameters["start_activities"] = start_activities
     parameters["end_activities"] = end_activities
+    soj_time = soj_time_get.apply(log, parameters=parameters)
+    print("soj_time")
+    print(soj_time)
+    conc_act = conc_act_get.apply(log, parameters=parameters)
+    print("conc_act")
+    print(conc_act)
+    efg = efg_get.apply(log, parameters=parameters)
+    print("efg")
+    print(efg)
     dfg_freq = dfg_algorithm.apply(log, parameters=parameters, variant=dfg_algorithm.Variants.FREQUENCY)
     dfg_perf = dfg_algorithm.apply(log, parameters=parameters, variant=dfg_algorithm.Variants.PERFORMANCE)
     dfg_gv_freq = dfg_vis_fact.apply(dfg_freq, log=log, variant=dfg_vis_fact.Variants.FREQUENCY,
