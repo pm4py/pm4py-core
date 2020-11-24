@@ -1,1 +1,1 @@
-from pm4py.objects.dfg.retrieval.pandas import get_dfg_graph
+from pm4py.objects.dfg.retrieval.pandas import get_dfg_graph, get_concurrent_events_dataframe, get_partial_order_dataframe
