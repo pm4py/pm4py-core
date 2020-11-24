@@ -1,13 +1,13 @@
 import math
+import pkgutil
 from copy import deepcopy
 from enum import Enum
 
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.log import log as log_instance
-from pm4py.objects.log.log import EventLog, Event
+from pm4py.objects.log.log import EventLog, Event, XESExtension
 from pm4py.util import constants as pmutil
-from pm4py.util import exec_utils, pandas_utils
-import pkgutil
+from pm4py.util import exec_utils, pandas_utils, xes_constants
 
 
 class Parameters(Enum):
@@ -79,16 +79,31 @@ def apply(log, parameters=None):
     if pkgutil.find_loader("pandas"):
         import pandas
         if isinstance(log, pandas.core.frame.DataFrame):
+            extensions = __detect_extensions(log)
             list_events = pandas_utils.to_dict_records(log)
             if stream_post_processing:
                 list_events = __postprocess_stream(list_events)
             for i in range(len(list_events)):
                 list_events[i] = Event(list_events[i])
             log = log_instance.EventStream(list_events, attributes={'origin': 'csv'})
+            for ex in extensions:
+                log.extensions[ex.name] = {
+                    xes_constants.KEY_PREFIX: ex.prefix,
+                    xes_constants.KEY_URI: ex.uri}
     if isinstance(log, EventLog):
         return __transform_event_log_to_event_stream(log, include_case_attributes=True,
                                                      case_attribute_prefix=case_pref, enable_deepcopy=enable_deepcopy)
     return log
+
+
+def __detect_extensions(df):
+    extensions = set()
+    for col in df.columns:
+        for single_key in col.split(':'):
+            for ext in XESExtension:
+                if single_key == ext.prefix:
+                    extensions.add(ext)
+    return extensions
 
 
 def __transform_event_log_to_event_stream(log, include_case_attributes=True,
