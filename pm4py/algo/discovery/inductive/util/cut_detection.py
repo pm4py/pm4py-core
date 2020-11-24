@@ -49,7 +49,29 @@ def detect_sequential_cut(subtree, dfg, strongly_connected_components):
                     comps.append([])
                 comps[-1].append(i)
         if len(comps) > 1:
-            comps = [detection_utils.perform_list_union(list(set(strongly_connected_components[i]) for i in comp)) for comp in
+            comps = [detection_utils.perform_list_union(list(set(strongly_connected_components[i]) for i in comp)) for
+                     comp in
                      comps]
+
+            # this part assures that the sequential cut follows completely the definition, i.e. there are no
+            # subsequent components with no edges between them (except when the detected cut is binary).
+            #
+            # Remind: the tree returned by IM is folded at the end, this ensures that the cut is still maximal
+            dfg = [x[0] for x in dfg]
+            i = 0
+            while i < len(comps) - 1:
+                outer_edges = [d for d in dfg if d[0] in comps[i] and d[1] not in comps[i] and d[1] not in comps[i + 1]]
+                # a situation that is not managed by considering only the outer edges is the one
+                # that sees a chain of invisibles at the end. In this case, it can be detected that the end activity
+                # has no edge toward any of the following components.
+                end_activities_wo_exedge = set(
+                    a for a in subtree.end_activities if a in comps[i] and a not in [x[0] for x in dfg])
+                # before merging the connected components, make sure that at the end there are two (or more)
+                # connected components
+                if (outer_edges or end_activities_wo_exedge) and len(comps) > 2:
+                    comps[i] = comps[i].union(comps[i + 1])
+                    del comps[i + 1]
+                    continue
+                i = i + 1
             return [True, comps]
     return [False, [], []]

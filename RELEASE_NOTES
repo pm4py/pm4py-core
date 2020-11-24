@@ -1,3 +1,30 @@
+===== PM4Py 2.1.0 =====
+This is a *major* release, consisting of the following *major* changes:
+1. commit 6afd8ab9
+    - support for importing/exporting BPMN files;
+    - supported elements: tasks, xor, and, or gateways
+    - conversion of BPMN to WF-net
+    - conversion of Process Tree to BPMN
+2. commit a0a7fd09
+    - bug fix in the inductive miner: sequence cuts were to maximal, leading to underfitting models (involving too many skips)
+3. commit 848a1610
+    - conversion of dataframes to event streams / event logs now detects the use of XES Extensions
+
+The following *minor* changes included in this release:
+1. commit 8874f7b4
+    - add statistics on concurrent activities
+    - discover eventually follows relations with concurrent activities
+2. commit 3b8fcd4a
+    - apply invisible transition reduction on Petri nets obtained by Heursistic Miner
+3. commit 0138f93d
+    - deprecated 'pm4py.write_csv' -> conversion and subsequent pandas export should be used.
+4. commit 5b32725a
+    - fix use of deepcopy in event log conversion
+5. commit 33103b5c
+    - fix get-variants behavior for event log / df (yielded different results)
+
+
+
 ===== PM4Py 2.0.1 =====
 This is a minor release, consisting of the following changes:
 1. commit 81579e19e
