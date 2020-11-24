@@ -15,7 +15,7 @@ to change as libraries are added or removed.
 | decorator | https://pypi.org/project/decorator | BSD | 4.4.2 | | |
 | deprecation | https://pypi.org/project/deprecation | Apache 2.0 | 2.1.0 | | |
 | graphviz | https://pypi.org/project/graphviz | MIT | 0.14.2 | X | |
-| importlib-metadata | https://pypi.org/project/importlib-metadata | Apache | 2.0.0 | X | |
+| importlib-metadata | https://pypi.org/project/importlib-metadata | Apache | 3.0.0 | X | |
 | intervaltree | https://pypi.org/project/intervaltree | Apache 2.0 | 3.1.0 | | |
 | ipython | https://pypi.org/project/ipython | BSD | 7.19.0 | X | |
 | ipython-genutils | https://pypi.org/project/ipython-genutils | BSD | 0.2.0 | | |
