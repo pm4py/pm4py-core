@@ -10,6 +10,18 @@ def woflan():
     woflan.execute_script()
 
 
+def bpmn_from_pt():
+    from examples import bpmn_from_pt_conversion
+    print("\n\nbpmn_from_pt_conversion")
+    bpmn_from_pt_conversion.execute_script()
+
+
+def bpmn_import_and_to_petri_net():
+    from examples import bpmn_import_and_to_petri_net
+    print("\n\nbpmn_import_and_to_petri_net")
+    bpmn_import_and_to_petri_net.execute_script()
+
+
 def tree_playout():
     from examples import tree_playout
     print("\n\ntree_playout")
@@ -250,6 +262,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfi
 
 if __name__ == "__main__":
     execute_script(woflan)
+    execute_script(bpmn_from_pt)
+    execute_script(bpmn_import_and_to_petri_net)
     execute_script(tree_playout)
     execute_script(emd_evaluation)
     execute_script(footprints_tree_conf)

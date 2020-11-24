@@ -1,6 +1,7 @@
+from enum import Enum
+
 from pm4py.objects.conversion.wf_net.variants import to_process_tree
 from pm4py.util import exec_utils
-from enum import Enum
 
 
 class Variants(Enum):
