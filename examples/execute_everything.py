@@ -10,6 +10,18 @@ def woflan():
     woflan.execute_script()
 
 
+def bpmn_from_pt():
+    from examples import bpmn_from_pt_conversion
+    print("\n\nbpmn_from_pt_conversion")
+    bpmn_from_pt_conversion.execute_script()
+
+
+def bpmn_import_and_to_petri_net():
+    from examples import bpmn_import_and_to_petri_net
+    print("\n\nbpmn_import_and_to_petri_net")
+    bpmn_import_and_to_petri_net.execute_script()
+
+
 def tree_playout():
     from examples import tree_playout
     print("\n\ntree_playout")
@@ -166,10 +178,16 @@ def heu_miner_test():
     heu_miner_test.execute_script()
 
 
-def dfg_min_ex():
-    from examples import dfg_min_ex
-    print("\n\ndfg_min_ex")
-    dfg_min_ex.execute_script()
+def dfg_min_ex_log():
+    from examples import dfg_min_ex_log
+    print("\n\ndfg_min_ex_log")
+    dfg_min_ex_log.execute_script()
+
+
+def dfg_min_ex_pandas():
+    from examples import dfg_min_ex_pandas
+    print("\n\ndfg_min_ex_pandas")
+    dfg_min_ex_pandas.execute_script()
 
 
 def graphs_visualization():
@@ -220,6 +238,12 @@ def diagn_add_dataframe():
     diagn_add_dataframe.execute_script()
 
 
+def pn_to_pt():
+    from examples import pn_to_pt
+    print("\n\npn_to_pt")
+    pn_to_pt.execute_script()
+
+
 def visualization_align_table():
     from examples import visualization_align_table
     print("\n\nvisualization_align_table")
@@ -238,6 +262,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfi
 
 if __name__ == "__main__":
     execute_script(woflan)
+    execute_script(bpmn_from_pt)
+    execute_script(bpmn_import_and_to_petri_net)
     execute_script(tree_playout)
     execute_script(emd_evaluation)
     execute_script(footprints_tree_conf)
@@ -263,7 +289,8 @@ if __name__ == "__main__":
     execute_script(align_decomposition_example)
     execute_script(transition_system_test)
     execute_script(heu_miner_test)
-    execute_script(dfg_min_ex)
+    execute_script(dfg_min_ex_log)
+    execute_script(dfg_min_ex_pandas)
     execute_script(graphs_visualization)
     execute_script(backwards_token_replay)
     execute_script(transient_dfg)
@@ -272,4 +299,5 @@ if __name__ == "__main__":
     execute_script(monte_carlo_petri_net)
     execute_script(visualization_processtree)
     execute_script(visualization_align_table)
+    execute_script(pn_to_pt)
     execute_script(simplified_interface)

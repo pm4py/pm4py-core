@@ -1,7 +1,5 @@
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import CASE_CONCEPT_NAME
-import pandas as pd
-import numpy as np
 from pm4py.statistics.performance_spectrum.parameters import Parameters
 from pm4py.util import exec_utils, pandas_utils, constants
 
@@ -32,6 +30,9 @@ def apply(dataframe, list_activities, sample_size, parameters):
     """
     if parameters is None:
         parameters = {}
+
+    import pandas as pd
+    import numpy as np
 
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)

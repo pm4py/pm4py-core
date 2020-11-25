@@ -15,9 +15,8 @@ from pm4py.objects.process_tree import util
 from pm4py.util import constants, xes_constants
 from pm4py.objects.log.util import filtering_utils
 from pm4py.objects.log.log import EventLog, Trace, Event
-import pandas as pd
-from pm4py.statistics.variants.pandas import get as variants_get
 from pm4py.algo.discovery.inductive.util import tree_consistency
+import pkgutil
 
 
 def apply(log, parameters):
@@ -42,13 +41,18 @@ def apply(log, parameters):
     final_marking
         Final marking
     """
-    if type(log) is pd.DataFrame:
-        vars = variants_get.get_variants_count(log, parameters=parameters)
-        return apply_variants(vars, parameters=parameters)
-    else:
-        log = converter.apply(log, parameters=parameters)
-        net, initial_marking, final_marking = tree_to_petri.apply(apply_tree(log, parameters))
-        return net, initial_marking, final_marking
+
+    if pkgutil.find_loader("pandas"):
+        import pandas as pd
+        from pm4py.statistics.variants.pandas import get as variants_get
+
+        if type(log) is pd.DataFrame:
+            vars = variants_get.get_variants_count(log, parameters=parameters)
+            return apply_variants(vars, parameters=parameters)
+
+    log = converter.apply(log, parameters=parameters)
+    net, initial_marking, final_marking = tree_to_petri.apply(apply_tree(log, parameters))
+    return net, initial_marking, final_marking
 
 
 def apply_variants(variants, parameters=None):
@@ -98,51 +102,55 @@ def apply_tree(log, parameters):
     if parameters is None:
         parameters = {}
 
-    if type(log) is pd.DataFrame:
-        vars = variants_get.get_variants_count(log, parameters=parameters)
-        return apply_tree_variants(vars, parameters=parameters)
-    else:
-        activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
-                                                  pmutil.xes_constants.DEFAULT_NAME_KEY)
+    if pkgutil.find_loader("pandas"):
+        import pandas as pd
+        from pm4py.statistics.variants.pandas import get as variants_get
 
-        log = converter.apply(log, parameters=parameters)
-        # keep only the activity attribute (since the others are not used)
-        log = filtering_utils.keep_only_one_attribute_per_event(log, activity_key)
+        if type(log) is pd.DataFrame:
+            vars = variants_get.get_variants_count(log, parameters=parameters)
+            return apply_tree_variants(vars, parameters=parameters)
 
-        noise_threshold = exec_utils.get_param_value(Parameters.NOISE_THRESHOLD, parameters,
-                                                     shared_constants.NOISE_THRESHOLD_IMF)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
+                                              pmutil.xes_constants.DEFAULT_NAME_KEY)
 
-        dfg = [(k, v) for k, v in dfg_inst.apply(log, parameters=parameters).items() if v > 0]
-        c = Counts()
-        activities = attributes_filter.get_attribute_values(log, activity_key)
-        start_activities = list(start_activities_filter.get_start_activities(log, parameters=parameters).keys())
-        end_activities = list(end_activities_filter.get_end_activities(log, parameters=parameters).keys())
-        contains_empty_traces = False
-        traces_length = [len(trace) for trace in log]
-        if traces_length:
-            contains_empty_traces = min([len(trace) for trace in log]) == 0
+    log = converter.apply(log, parameters=parameters)
+    # keep only the activity attribute (since the others are not used)
+    log = filtering_utils.keep_only_one_attribute_per_event(log, activity_key)
 
-        # set the threshold parameter based on f and the max value in the dfg:
-        max_value = 0
-        for key, value in dfg:
-            if value > max_value:
-                max_value = value
-        threshold = noise_threshold * max_value
+    noise_threshold = exec_utils.get_param_value(Parameters.NOISE_THRESHOLD, parameters,
+                                                 shared_constants.NOISE_THRESHOLD_IMF)
 
-        recursion_depth = 0
-        sub = subtree.make_tree(log, dfg, dfg, dfg, activities, c, recursion_depth, noise_threshold, threshold,
-                                start_activities, end_activities,
-                                start_activities, end_activities, parameters=parameters)
+    dfg = [(k, v) for k, v in dfg_inst.apply(log, parameters=parameters).items() if v > 0]
+    c = Counts()
+    activities = attributes_filter.get_attribute_values(log, activity_key)
+    start_activities = list(start_activities_filter.get_start_activities(log, parameters=parameters).keys())
+    end_activities = list(end_activities_filter.get_end_activities(log, parameters=parameters).keys())
+    contains_empty_traces = False
+    traces_length = [len(trace) for trace in log]
+    if traces_length:
+        contains_empty_traces = min([len(trace) for trace in log]) == 0
 
-        process_tree = get_tree_repr_implain.get_repr(sub, 0, contains_empty_traces=contains_empty_traces)
-        # Ensures consistency to the parent pointers in the process tree
-        tree_consistency.fix_parent_pointers(process_tree)
-        # Fixes a 1 child XOR that is added when single-activities flowers are found
-        tree_consistency.fix_one_child_xor_flower(process_tree)
-        # folds the process tree (to simplify it in case fallthroughs/filtering is applied)
-        process_tree = util.fold(process_tree)
+    # set the threshold parameter based on f and the max value in the dfg:
+    max_value = 0
+    for key, value in dfg:
+        if value > max_value:
+            max_value = value
+    threshold = noise_threshold * max_value
 
-        return process_tree
+    recursion_depth = 0
+    sub = subtree.make_tree(log, dfg, dfg, dfg, activities, c, recursion_depth, noise_threshold, threshold,
+                            start_activities, end_activities,
+                            start_activities, end_activities, parameters=parameters)
+
+    process_tree = get_tree_repr_implain.get_repr(sub, 0, contains_empty_traces=contains_empty_traces)
+    # Ensures consistency to the parent pointers in the process tree
+    tree_consistency.fix_parent_pointers(process_tree)
+    # Fixes a 1 child XOR that is added when single-activities flowers are found
+    tree_consistency.fix_one_child_xor_flower(process_tree)
+    # folds the process tree (to simplify it in case fallthroughs/filtering is applied)
+    process_tree = util.fold(process_tree)
+
+    return process_tree
 
 
 def apply_tree_variants(variants, parameters=None):

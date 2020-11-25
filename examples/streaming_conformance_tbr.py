@@ -1,5 +1,5 @@
 import pm4py
-from pm4py.streaming.stream.stream import LiveEventStream
+from pm4py.streaming.stream.live_event_stream import LiveEventStream
 from pm4py.streaming.algo.conformance.tbr import algorithm as streaming_tbr
 import os, time
 
@@ -23,15 +23,16 @@ def execute_script():
     # (so it is sent to the conformance checking algorithm)
     for event in event_stream:
         live_stream.append(event)
+    #time.sleep(5)
     # stops the live event stream
     live_stream.stop()
     # sends a termination signal to the conformance checking algorithm;
     # the conditions on the closure of all the cases are checked
     # (for each case, it is checked whether the final marking is reached)
-    diagn_df = conf_obj.get_diagnostics_dataframe()
+    diagn_df = conf_obj.get()
     conf_obj.terminate_all()
-    time.sleep(2)
     print(diagn_df)
+    print(diagn_df[diagn_df["is_fit"] == False])
 
 
 if __name__ == "__main__":

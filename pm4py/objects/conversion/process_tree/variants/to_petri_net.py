@@ -1,13 +1,12 @@
 import time
-
-from pm4py.objects import petri
-from pm4py.objects.petri.petrinet import Marking
-from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.objects.process_tree.pt_operator import Operator
-from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.petri.utils import remove_transition, remove_place, add_arc_from_to
 import uuid
 
+from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri.utils import remove_transition, add_arc_from_to
+from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.petri import reduction
 
 class Counts(object):
     """
@@ -75,7 +74,7 @@ def clean_duplicate_transitions(net):
                         break
                     already_visited_combo.add(combo)
             if to_delete:
-                net = petri.utils.remove_transition(net, trans)
+                net = remove_transition(net, trans)
     return net
 
 
@@ -84,7 +83,7 @@ def get_new_place(counts):
     Create a new place in the Petri net
     """
     counts.inc_places()
-    return petri.petrinet.PetriNet.Place('p_' + str(counts.num_places))
+    return PetriNet.Place('p_' + str(counts.num_places))
 
 
 def get_new_hidden_trans(counts, type_trans="unknown"):
@@ -92,7 +91,7 @@ def get_new_hidden_trans(counts, type_trans="unknown"):
     Create a new hidden transition in the Petri net
     """
     counts.inc_no_hidden()
-    return petri.petrinet.PetriNet.Transition(type_trans + '_' + str(counts.num_hidden), None)
+    return PetriNet.Transition(type_trans + '_' + str(counts.num_hidden), None)
 
 
 def get_transition(counts, label):
@@ -100,7 +99,7 @@ def get_transition(counts, label):
     Create a transitions with the specified label in the Petri net
     """
     counts.inc_no_visible()
-    return petri.petrinet.PetriNet.Transition(str(uuid.uuid4()), label)
+    return PetriNet.Transition(str(uuid.uuid4()), label)
 
 
 def get_first_terminal_child_transitions(tree):
@@ -328,7 +327,7 @@ def recursively_add_tree(parent_tree, tree, net, initial_entity_subtree, final_e
     if type(initial_entity_subtree) is PetriNet.Transition:
         initial_place = get_new_place(counts)
         net.places.add(initial_place)
-        petri.utils.add_arc_from_to(initial_entity_subtree, initial_place, net)
+        add_arc_from_to(initial_entity_subtree, initial_place, net)
     else:
         initial_place = initial_entity_subtree
     if final_entity_subtree is not None and type(final_entity_subtree) is PetriNet.Place:
@@ -337,7 +336,7 @@ def recursively_add_tree(parent_tree, tree, net, initial_entity_subtree, final_e
         final_place = get_new_place(counts)
         net.places.add(final_place)
         if final_entity_subtree is not None and type(final_entity_subtree) is PetriNet.Transition:
-            petri.utils.add_arc_from_to(final_place, final_entity_subtree, net)
+            add_arc_from_to(final_place, final_entity_subtree, net)
     tree_childs = [child for child in tree.children]
 
     if tree.operator is None:
@@ -347,8 +346,8 @@ def recursively_add_tree(parent_tree, tree, net, initial_entity_subtree, final_e
         else:
             petri_trans = get_transition(counts, trans.label)
         net.transitions.add(petri_trans)
-        petri.utils.add_arc_from_to(initial_place, petri_trans, net)
-        petri.utils.add_arc_from_to(petri_trans, final_place, net)
+        add_arc_from_to(initial_place, petri_trans, net)
+        add_arc_from_to(petri_trans, final_place, net)
 
     if tree.operator == Operator.XOR:
         for subtree in tree_childs:
@@ -358,10 +357,10 @@ def recursively_add_tree(parent_tree, tree, net, initial_entity_subtree, final_e
     elif tree.operator == Operator.PARALLEL:
         new_initial_trans = get_new_hidden_trans(counts, type_trans="tauSplit")
         net.transitions.add(new_initial_trans)
-        petri.utils.add_arc_from_to(initial_place, new_initial_trans, net)
+        add_arc_from_to(initial_place, new_initial_trans, net)
         new_final_trans = get_new_hidden_trans(counts, type_trans="tauJoin")
         net.transitions.add(new_final_trans)
-        petri.utils.add_arc_from_to(new_final_trans, final_place, net)
+        add_arc_from_to(new_final_trans, final_place, net)
 
         for subtree in tree_childs:
             net, counts, intermediate_place = recursively_add_tree(tree, subtree, net, new_initial_trans,
@@ -383,8 +382,8 @@ def recursively_add_tree(parent_tree, tree, net, initial_entity_subtree, final_e
         net.places.add(new_initial_place)
         init_loop_trans = get_new_hidden_trans(counts, type_trans="init_loop")
         net.transitions.add(init_loop_trans)
-        petri.utils.add_arc_from_to(initial_place, init_loop_trans, net)
-        petri.utils.add_arc_from_to(init_loop_trans, new_initial_place, net)
+        add_arc_from_to(initial_place, init_loop_trans, net)
+        add_arc_from_to(init_loop_trans, new_initial_place, net)
         initial_place = new_initial_place
         loop_trans = get_new_hidden_trans(counts, type_trans="loop")
         net.transitions.add(loop_trans)
@@ -393,8 +392,8 @@ def recursively_add_tree(parent_tree, tree, net, initial_entity_subtree, final_e
                                                                    final_place,
                                                                    counts,
                                                                    rec_depth + 1, force_add_skip=force_add_skip)
-            petri.utils.add_arc_from_to(final_place, loop_trans, net)
-            petri.utils.add_arc_from_to(loop_trans, initial_place, net)
+            add_arc_from_to(final_place, loop_trans, net)
+            add_arc_from_to(loop_trans, initial_place, net)
         else:
             dummy = ProcessTree()
             do = tree_childs[0]
@@ -414,83 +413,15 @@ def recursively_add_tree(parent_tree, tree, net, initial_entity_subtree, final_e
 
             looping_place = int2
 
-            petri.utils.add_arc_from_to(looping_place, loop_trans, net)
-            petri.utils.add_arc_from_to(loop_trans, initial_place, net)
+            add_arc_from_to(looping_place, loop_trans, net)
+            add_arc_from_to(loop_trans, initial_place, net)
     if force_add_skip:
         skip_trans = get_new_hidden_trans(counts, type_trans="skip")
         net.transitions.add(skip_trans)
-        petri.utils.add_arc_from_to(initial_place, skip_trans, net)
-        petri.utils.add_arc_from_to(skip_trans, final_place, net)
+        add_arc_from_to(initial_place, skip_trans, net)
+        add_arc_from_to(skip_trans, final_place, net)
 
     return net, counts, final_place
-
-
-def reduce_single_entry_transitions(net):
-    """
-    Reduces the number of the single entry transitions in the Petri net
-
-    Parameters
-    ----------------
-    net
-        Petri net
-    """
-    cont = True
-    while cont:
-        cont = False
-        single_entry_transitions = [t for t in net.transitions if t.label is None and len(t.in_arcs) == 1]
-        for i in range(len(single_entry_transitions)):
-            t = single_entry_transitions[i]
-            source_place = list(t.in_arcs)[0].source
-            target_places = [a.target for a in t.out_arcs]
-            if len(source_place.in_arcs) == 1 and len(source_place.out_arcs) == 1:
-                source_transition = list(source_place.in_arcs)[0].source
-                remove_transition(net, t)
-                remove_place(net, source_place)
-                for p in target_places:
-                    add_arc_from_to(source_transition, p, net)
-                cont = True
-                break
-
-
-def reduce_single_exit_transitions(net):
-    """
-    Reduces the number of the single exit transitions in the Petri net
-
-    Parameters
-    --------------
-    net
-        Petri net
-    """
-    cont = True
-    while cont:
-        cont = False
-        single_exit_transitions = [t for t in net.transitions if t.label is None and len(t.out_arcs) == 1]
-        for i in range(len(single_exit_transitions)):
-            t = single_exit_transitions[i]
-            target_place = list(t.out_arcs)[0].target
-            source_places = [a.source for a in t.in_arcs]
-            if len(target_place.in_arcs) == 1 and len(target_place.out_arcs) == 1:
-                target_transition = list(target_place.out_arcs)[0].target
-                remove_transition(net, t)
-                remove_place(net, target_place)
-                for p in source_places:
-                    add_arc_from_to(p, target_transition, net)
-                cont = True
-                break
-
-
-def apply_simple_reduction(net):
-    """
-    Apply a simple reduction to the Petri net
-    (version specific)
-
-    Parameters
-    --------------
-    net
-        Petri net
-    """
-    reduce_single_entry_transitions(net)
-    reduce_single_exit_transitions(net)
 
 
 def apply(tree, parameters=None):
@@ -518,7 +449,7 @@ def apply(tree, parameters=None):
     del parameters
 
     counts = Counts()
-    net = petri.petrinet.PetriNet('imdf_net_' + str(time.time()))
+    net = PetriNet('imdf_net_' + str(time.time()))
     initial_marking = Marking()
     final_marking = Marking()
     source = get_new_place(counts)
@@ -536,8 +467,8 @@ def apply(tree, parameters=None):
         net.places.add(initial_place)
         tau_initial = get_new_hidden_trans(counts, type_trans="tau")
         net.transitions.add(tau_initial)
-        petri.utils.add_arc_from_to(source, tau_initial, net)
-        petri.utils.add_arc_from_to(tau_initial, initial_place, net)
+        add_arc_from_to(source, tau_initial, net)
+        add_arc_from_to(tau_initial, initial_place, net)
     else:
         initial_place = source
     if final_mandatory:
@@ -545,14 +476,14 @@ def apply(tree, parameters=None):
         net.places.add(final_place)
         tau_final = get_new_hidden_trans(counts, type_trans="tau")
         net.transitions.add(tau_final)
-        petri.utils.add_arc_from_to(final_place, tau_final, net)
-        petri.utils.add_arc_from_to(tau_final, sink, net)
+        add_arc_from_to(final_place, tau_final, net)
+        add_arc_from_to(tau_final, sink, net)
     else:
         final_place = sink
 
     net, counts, last_added_place = recursively_add_tree(tree, tree, net, initial_place, final_place, counts, 0)
 
     net = clean_duplicate_transitions(net)
-    apply_simple_reduction(net)
+    reduction.apply_simple_reduction(net)
 
     return net, initial_marking, final_marking

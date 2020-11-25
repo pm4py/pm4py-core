@@ -19,14 +19,14 @@ import time
 import numpy as np
 
 from pm4py import util as pm4pyutil
-from pm4py.objects import petri
 from pm4py.objects.log import log as log_implementation
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.objects.petri.synchronous_product import construct_cost_aware
+from pm4py.objects.petri.synchronous_product import construct_cost_aware, construct
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, \
     decorate_transitions_prepostset
 from pm4py.util.lp import solver as lp_solver
 from pm4py.objects.petri import align_utils as utils
+from pm4py.objects.petri.incidence_matrix import construct as inc_mat_construct
 from pm4py.util import exec_utils
 from enum import Enum
 import sys
@@ -341,7 +341,7 @@ def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_
     trace_net_costs = exec_utils.get_param_value(Parameters.PARAM_TRACE_NET_COSTS, parameters, None)
 
     if trace_cost_function is None or model_cost_function is None or sync_cost_function is None:
-        sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
+        sync_prod, sync_initial_marking, sync_final_marking = construct(trace_net, trace_im,
                                                                                                   trace_fm, petri_net,
                                                                                                   initial_marking,
                                                                                                   final_marking,
@@ -395,7 +395,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     decorate_transitions_prepostset(sync_net)
     decorate_places_preset_trans(sync_net)
 
-    incidence_matrix = petri.incidence_matrix.construct(sync_net)
+    incidence_matrix = inc_mat_construct(sync_net)
     ini_vec, fin_vec, cost_vec = utils.__vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function)
 
     closed = set()

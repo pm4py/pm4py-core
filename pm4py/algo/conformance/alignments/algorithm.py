@@ -1,12 +1,12 @@
 from copy import copy
 
-import pm4py
 from pm4py.algo.conformance.alignments import variants
 from pm4py.objects.petri import align_utils
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TRACEID_KEY
 from pm4py.objects.petri import check_soundness
+from pm4py.objects.log.log import Trace
 import time
 from pm4py.util import exec_utils
 from enum import Enum
@@ -49,7 +49,7 @@ VERSIONS = {Variants.VERSION_DIJKSTRA_NO_HEURISTICS, Variants.VERSION_DIJKSTRA_N
 def apply(obj, petri_net, initial_marking, final_marking, parameters=None, variant=DEFAULT_VARIANT):
     if parameters is None:
         parameters = {}
-    if isinstance(obj, pm4py.objects.log.log.Trace):
+    if isinstance(obj, Trace):
         return apply_trace(obj, petri_net, initial_marking, final_marking, parameters=parameters, variant=variant)
     else:
         return apply_log(log_converter.apply(obj, parameters, log_converter.TO_EVENT_LOG), petri_net, initial_marking,

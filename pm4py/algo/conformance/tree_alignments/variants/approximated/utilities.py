@@ -1,17 +1,17 @@
-from pm4py.algo.conformance.alignments.algorithm import apply as get_alignment
+from copy import copy
+from enum import Enum
+from typing import Set, List
+
 from pm4py.algo.conformance.alignments.algorithm import Parameters as AlignParameters
 from pm4py.algo.conformance.alignments.algorithm import Variants
+from pm4py.algo.conformance.alignments.algorithm import apply as get_alignment
 from pm4py.algo.conformance.alignments.variants.state_equation_a_star import get_best_worst_cost
-from pm4py.objects.conversion.process_tree.converter import apply as convert_pt_to_petri_net
-from pm4py.objects.conversion.process_tree.converter import Variants as pt_petri_net_variants
+from pm4py.objects.conversion.process_tree import converter as pt_converter
 from pm4py.objects.log.log import Trace, Event
-from pm4py.objects.process_tree.process_tree import ProcessTree
-from typing import Set, List
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.petri.align_utils import SKIP, STD_MODEL_LOG_MOVE_COST
+from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.util import exec_utils
-from enum import Enum
-from copy import copy
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 
 
 class Parameters(Enum):
@@ -94,11 +94,11 @@ def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, parameters=None):
     align_variant = exec_utils.get_param_value(Parameters.CLASSIC_ALIGNMENTS_VARIANT, parameters,
                                                Variants.VERSION_STATE_EQUATION_A_STAR)
     conversion_version = exec_utils.get_param_value(Parameters.CONVERSION_VERSION, parameters,
-                                                    pt_petri_net_variants.TO_PETRI_NET_TRANSITION_BORDERED)
+                                                    pt_converter.Variants.TO_PETRI_NET_TRANSITION_BORDERED)
 
     parent = pt.parent
     pt.parent = None
-    net, im, fm = convert_pt_to_petri_net(pt, variant=conversion_version)
+    net, im, fm = pt_converter.apply(pt, variant=conversion_version)
 
     # in this way, also the other parameters are passed to alignments
     alignment_parameters = copy(parameters)
@@ -114,7 +114,7 @@ def calculate_optimal_alignment(pt: ProcessTree, trace: Trace, parameters=None):
     if alignment is None:
         raise AlignmentNoneException("alignment terminated prematurely")
 
-    if conversion_version == pt_petri_net_variants.TO_PETRI_NET_TRANSITION_BORDERED or conversion_version == pt_petri_net_variants.TO_PETRI_NET_TRANSITION_BORDERED.value:
+    if conversion_version == pt_converter.Variants.TO_PETRI_NET_TRANSITION_BORDERED or conversion_version == pt_converter.Variants.TO_PETRI_NET_TRANSITION_BORDERED.value:
         # remove invisible model moves from alignment steps that do not belong to a silent model move in the process tree
         # this is possible only if the TO_PETRI_NET_TRANSITION_BORDERED variant is used
         for a in alignment["alignment"]:
@@ -132,11 +132,11 @@ def add_fitness_and_cost_info_to_alignments(alignment: List, pt: ProcessTree, tr
         parameters = {}
 
     def calculate_get_best_worst_cost(tree: ProcessTree, conversion_version) -> int:
-        net, im, fm = convert_pt_to_petri_net(tree, variant=conversion_version)
+        net, im, fm = pt_converter.apply(tree, variant=conversion_version)
         return get_best_worst_cost(net, im, fm)
 
     conversion_version = exec_utils.get_param_value(Parameters.CONVERSION_VERSION, parameters,
-                                                    pt_petri_net_variants.TO_PETRI_NET_TRANSITION_BORDERED)
+                                                    pt_converter.Variants.TO_PETRI_NET_TRANSITION_BORDERED)
     if alignment is not None:
         # if the alignment is not None, return a nice dictionary with the alignment of the trace
         cost = apply_standard_cost_function_to_alignment(alignment)

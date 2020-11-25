@@ -1,12 +1,13 @@
 import time
 
 from pm4py import util as pmutil
-from pm4py.objects import petri
 from pm4py.objects.log.log import EventLog, Trace
 from pm4py.util import xes_constants as xes_util
-from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.petri.utils import add_arc_from_to, remove_place, remove_transition
 from pm4py.util import exec_utils
 from enum import Enum
+from copy import deepcopy
 
 
 class Parameters(Enum):
@@ -317,26 +318,26 @@ def processing(log, causal, follows):
     # maximize pairs
     cleaned_pairs = list(filter(lambda p: __pair_maximizer(pairs, p), pairs))
     # create transitions
-    net = petri.petrinet.PetriNet('alpha_plus_net_' + str(time.time()))
+    net = PetriNet('alpha_plus_net_' + str(time.time()))
     label_transition_dict = {}
     for label in labels:
         if label != 'artificial_start' and label != 'artificial_end':
-            label_transition_dict[label] = petri.petrinet.PetriNet.Transition(label, label)
+            label_transition_dict[label] = PetriNet.Transition(label, label)
             net.transitions.add(label_transition_dict[label])
         else:
-            label_transition_dict[label] = petri.petrinet.PetriNet.Transition(label, None)
+            label_transition_dict[label] = PetriNet.Transition(label, None)
             net.transitions.add(label_transition_dict[label])
     # and source and sink
     src = add_source(net, start_activities, label_transition_dict)
     sink = add_sink(net, end_activities, label_transition_dict)
     # create places
     for pair in cleaned_pairs:
-        place = petri.petrinet.PetriNet.Place(str(pair))
+        place = PetriNet.Place(str(pair))
         net.places.add(place)
         for in_arc in pair[0]:
-            petri.utils.add_arc_from_to(label_transition_dict[in_arc], place, net)
+            add_arc_from_to(label_transition_dict[in_arc], place, net)
         for out_arc in pair[1]:
-            petri.utils.add_arc_from_to(place, label_transition_dict[out_arc], net)
+            add_arc_from_to(place, label_transition_dict[out_arc], net)
 
     return net, Marking({src: 1}), Marking({sink: 1}), cleaned_pairs
 
@@ -424,7 +425,7 @@ def postprocessing(net, initial_marking, final_marking, A, B, pairs, loop_one_li
     """
     label_transition_dict = {}
     for label in loop_one_list:
-        label_transition_dict[label] = petri.petrinet.PetriNet.Transition(label, label)
+        label_transition_dict[label] = PetriNet.Transition(label, label)
         net.transitions.add(label_transition_dict[label])
 
     # F L1L
@@ -438,9 +439,9 @@ def postprocessing(net, initial_marking, final_marking, A, B, pairs, loop_one_li
                 in_part = pair_try[0]
                 out_part = pair_try[1]
                 if pair[0].issubset(in_part) and pair[1].issubset(out_part):
-                    pair_try_place = petri.petrinet.PetriNet.Place(str(pair_try))
-                    petri.utils.add_arc_from_to(label_transition_dict[key], pair_try_place, net)
-                    petri.utils.add_arc_from_to(pair_try_place, label_transition_dict[key], net)
+                    pair_try_place = PetriNet.Place(str(pair_try))
+                    add_arc_from_to(label_transition_dict[key], pair_try_place, net)
+                    add_arc_from_to(pair_try_place, label_transition_dict[key], net)
     return net, initial_marking, final_marking
 
 
@@ -466,6 +467,10 @@ def apply(trace_log, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    # deep copy the log object because otherwise the original log would be modified with
+    # artificial start/end activities
+    trace_log = deepcopy(trace_log)
 
     remove_unconnected = exec_utils.get_param_value(Parameters.REMOVE_UNCONNECTED, parameters, False)
 
@@ -498,10 +503,10 @@ def add_source(net, start_activities, label_transition_dict):
     """
     Adding source pe
     """
-    source = petri.petrinet.PetriNet.Place('start')
+    source = PetriNet.Place('start')
     net.places.add(source)
     for s in start_activities:
-        petri.utils.add_arc_from_to(source, label_transition_dict[s], net)
+        add_arc_from_to(source, label_transition_dict[s], net)
     return source
 
 
@@ -509,10 +514,10 @@ def add_sink(net, end_activities, label_transition_dict):
     """
     Adding sink pe
     """
-    end = petri.petrinet.PetriNet.Place('end')
+    end = PetriNet.Place('end')
     net.places.add(end)
     for e in end_activities:
-        petri.utils.add_arc_from_to(label_transition_dict[e], end, net)
+        add_arc_from_to(label_transition_dict[e], end, net)
     return end
 
 
@@ -542,8 +547,8 @@ def remove_initial_hidden_if_possible(net, im):
         if len(target_place_first_hidden.in_arcs) == 1:
             new_im = Marking()
             new_im[target_place_first_hidden] = 1
-            petri.utils.remove_place(net, source)
-            petri.utils.remove_transition(net, first_hidden)
+            remove_place(net, source)
+            remove_transition(net, first_hidden)
             return net, new_im
     return net, im
 
@@ -580,7 +585,7 @@ def remove_final_hidden_if_possible(net, fm):
                     break
     if removal_possible:
         all_sources = set()
-        petri.utils.remove_transition(net, last_hidden)
+        remove_transition(net, last_hidden)
         i = 0
         while i < len(source_places_last_hidden):
             place = source_places_last_hidden[i]
@@ -588,8 +593,8 @@ def remove_final_hidden_if_possible(net, fm):
             for trans in source_trans:
                 if trans not in all_sources:
                     all_sources.add(trans)
-                    petri.utils.add_arc_from_to(trans, sink, net)
-            petri.utils.remove_place(net, place)
+                    add_arc_from_to(trans, sink, net)
+            remove_place(net, place)
             i = i + 1
     return net
 
@@ -612,6 +617,6 @@ def remove_unconnected_transitions(net):
     i = 0
     while i < len(transitions):
         if len(transitions[i].in_arcs) == 0 and len(transitions[i].out_arcs) == 0:
-            petri.utils.remove_transition(net, transitions[i])
+            remove_transition(net, transitions[i])
         i = i + 1
     return net

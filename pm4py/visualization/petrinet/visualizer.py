@@ -1,14 +1,11 @@
-import pandas
-
-from pm4py import util as pmutil
 from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.objects.log.util import dataframe_utils
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
 from pm4py.visualization.petrinet.variants import wo_decoration, alignments, greedy_decoration_performance, \
     greedy_decoration_frequency, token_decoration_performance, token_decoration_frequency
-from pm4py.util import exec_utils, xes_constants
+from pm4py.util import exec_utils
 from enum import Enum
+import pkgutil
 
 
 class Variants(Enum):
@@ -33,8 +30,12 @@ def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_st
     if parameters is None:
         parameters = {}
     if log is not None:
-        if isinstance(log, pandas.core.frame.DataFrame):
-            log = dataframe_utils.convert_timestamp_columns_in_df(log)
+        if pkgutil.find_loader("pandas"):
+            import pandas
+            from pm4py.objects.log.util import dataframe_utils
+
+            if isinstance(log, pandas.core.frame.DataFrame):
+                log = dataframe_utils.convert_timestamp_columns_in_df(log)
         log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
     return exec_utils.get_variant(variant).apply(net, initial_marking, final_marking, log=log,
                                                  aggregated_statistics=aggregated_statistics,

@@ -1,4 +1,4 @@
-import pm4py
+from pm4py.visualization.transition_system.util import visualize_graphviz
 from pm4py.visualization.transition_system.parameters import Parameters
 
 
@@ -19,5 +19,5 @@ def apply(tsys, parameters=None):
         Graph visualization
     """
 
-    gviz = pm4py.visualization.transition_system.util.visualize_graphviz.visualize(tsys, parameters=parameters)
+    gviz = visualize_graphviz.visualize(tsys, parameters=parameters)
     return gviz

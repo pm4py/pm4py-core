@@ -1,22 +1,4 @@
-import pandas as pd
-from pm4py.util import constants, xes_constants
-
-
-def check_dataframe_columns(df):
-    """
-    Checks if the dataframe contains all the required columns.
-    If not, raise an exception
-
-    Parameters
-    --------------
-    df
-        Pandas dataframe
-    """
-    if len(set(df.columns).intersection(
-            set([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_NAME_KEY,
-                 xes_constants.DEFAULT_TIMESTAMP_KEY]))) < 3:
-        raise Exception(
-            "please format your dataframe accordingly! df = pm4py.format_dataframe(df, case_id='<name of the case ID column>', activity_key='<name of the activity column>', timestamp_key='<name of the timestamp column>')")
+from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
 
 
 def get_start_activities(log):
@@ -33,7 +15,7 @@ def get_start_activities(log):
     start_activities
         Dictionary of start activities along with their count
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.statistics.start_activities.pandas import get
         return get.get_start_activities(log)
@@ -56,7 +38,7 @@ def get_end_activities(log):
     end_activities
         Dictionary of end activities along with their count
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.statistics.end_activities.pandas import get
         return get.get_end_activities(log)
@@ -79,7 +61,7 @@ def get_attributes(log):
     attributes_list
         List of attributes contained in the log
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         check_dataframe_columns(log)
         return list(log.columns)
     else:
@@ -102,7 +84,7 @@ def get_trace_attributes(log):
         List of attributes at the trace level
     """
     from pm4py.util import constants
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         check_dataframe_columns(log)
         return [x for x in list(log.columns) if x.startswith(constants.CASE_ATTRIBUTE_PREFIX)]
     else:
@@ -126,7 +108,7 @@ def get_attribute_values(log, attribute):
     attribute_values
         Dictionary of values along with their count
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get
         return get.get_attribute_values(log, attribute)
@@ -149,10 +131,10 @@ def get_variants(log):
     variants
         Dictionary of variants along with their count
     """
-    if type(log) is pd.DataFrame:
+    if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.statistics.variants.pandas import get
-        return get.get_variants_set(log)
+        return get.get_variants_count(log)
     else:
         from pm4py.statistics.variants.log import get
         return get.get_variants(log)

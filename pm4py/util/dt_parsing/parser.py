@@ -3,8 +3,17 @@ import pkgutil
 
 CISO8601 = "ciso8601"
 STRPFROMISO = "strpfromiso"
+DUMMY = "dummy"
 
 VERSIONS = {}
+
+
+from pm4py.util.dt_parsing.variants import dummy
+VERSIONS[DUMMY] = dummy
+# this option should never be used, except in particular situations
+# (problematic Python <= 3.4,3.5,3.6 environments)
+DEFAULT_VARIANT = DUMMY
+
 
 if pkgutil.find_loader("ciso8601"):
     # ciso8601 variant is included only if ciso8601 installed

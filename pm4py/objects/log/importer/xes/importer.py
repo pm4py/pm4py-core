@@ -1,8 +1,6 @@
 import pkgutil
 from enum import Enum
 
-import deprecation
-
 from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line
 from pm4py.objects.log.util import compression
 from pm4py.objects.log.util import string_to_file
