@@ -116,9 +116,9 @@ def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_tran
             alignment = [(parent.t.name, parent.t.label)] + alignment
             parent = parent.p
     else:
-        alignment = [state.t.label]
+        alignment = [state.t if type(state.t) is tuple else state.t.label]
         while parent.p is not None:
-            alignment = [parent.t.label] + alignment
+            alignment = [parent.t if type(parent.t) is tuple else parent.t.label] + alignment
             parent = parent.p
     return {'alignment': alignment, 'cost': state.g, 'visited_states': visited, 'queued_states': queued,
             'traversed_arcs': traversed}
