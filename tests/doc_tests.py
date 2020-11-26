@@ -771,7 +771,6 @@ class DocTests(unittest.TestCase):
         xes_importer.Variants.ITERPARSE.value.Parameters.TIMESTAMP_SORT
         xes_importer.Variants.ITERPARSE.value.Parameters.TIMESTAMP_KEY
         xes_importer.Variants.ITERPARSE.value.Parameters.REVERSE_SORT
-        xes_importer.Variants.ITERPARSE.value.Parameters.INSERT_TRACE_INDICES
         xes_importer.Variants.ITERPARSE.value.Parameters.MAX_TRACES
 
     def test_63(self):
@@ -779,7 +778,6 @@ class DocTests(unittest.TestCase):
         xes_importer.Variants.LINE_BY_LINE.value.Parameters.TIMESTAMP_SORT
         xes_importer.Variants.LINE_BY_LINE.value.Parameters.TIMESTAMP_KEY
         xes_importer.Variants.LINE_BY_LINE.value.Parameters.REVERSE_SORT
-        xes_importer.Variants.LINE_BY_LINE.value.Parameters.INSERT_TRACE_INDICES
         xes_importer.Variants.LINE_BY_LINE.value.Parameters.MAX_TRACES
         xes_importer.Variants.LINE_BY_LINE.value.Parameters.MAX_BYTES
 
