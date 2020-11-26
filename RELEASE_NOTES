@@ -1,3 +1,9 @@
+===== PM4Py 2.1.0.1 =====
+This is a *hotfix* release, consisting of the following *hotfixes*:
+1. commit f6cdf1a9
+    - hotfix problem in XES importer parameters read
+
+
 ===== PM4Py 2.1.0 =====
 This is a *major* release, consisting of the following *major* changes:
 1. commit 6afd8ab9
