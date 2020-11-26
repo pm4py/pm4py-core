@@ -235,4 +235,6 @@ def apply(heu_net, parameters=None):
                 add_arc_from_to(int_place, hid_trans, net)
                 add_arc_from_to(hid_trans, sink_places[el[1]], net)
     net = remove_rendundant_invisible_transitions(net)
+    from pm4py.objects.petri import reduction
+    reduction.apply_simple_reduction(net)
     return net, im, fm

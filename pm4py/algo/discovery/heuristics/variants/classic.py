@@ -12,7 +12,6 @@ from pm4py.statistics.start_activities.log import get as log_sa_filter
 from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
-from pm4py.objects.petri import reduction
 
 
 def apply(log, parameters=None):
@@ -50,7 +49,6 @@ def apply(log, parameters=None):
 
     heu_net = apply_heu(log, parameters=parameters)
     net, im, fm = hn_conv_alg.apply(heu_net, parameters=parameters)
-    reduction.apply_simple_reduction(net)
 
     return net, im, fm
 
@@ -124,7 +122,6 @@ def apply_pandas(df, parameters=None):
                                 dfg_window_2=dfg_window_2,
                                 freq_triples=frequency_triples, parameters=parameters)
         net, im, fm = hn_conv_alg.apply(heu_net, parameters=parameters)
-        reduction.apply_simple_reduction(net)
 
         return net, im, fm
 
@@ -174,7 +171,6 @@ def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activitie
     heu_net = apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
                             start_activities=start_activities, end_activities=end_activities, parameters=parameters)
     net, im, fm = hn_conv_alg.apply(heu_net, parameters=parameters)
-    reduction.apply_simple_reduction(net)
 
     return net, im, fm
 
