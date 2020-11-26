@@ -1,22 +1,20 @@
 import os
+import sys
 from enum import Enum
 
-from pm4py.objects.log.importer.xes.parameters import Parameters
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting
-from pm4py.objects.log.util import xes as xes_util
-from pm4py.util import parameters as param_util
+from pm4py.util import constants, xes_constants, exec_utils
 from pm4py.util.dt_parsing import parser as dt_parser
 
 
 class Parameters(Enum):
-    TIMESTAMP_SORT = False
-    TIMESTAMP_KEY = xes_util.DEFAULT_TIMESTAMP_KEY
-    REVERSE_SORT = False
-    INSERT_TRACE_INDICES = False
-    MAX_TRACES = 1000000000
-    MAX_BYTES = 10000000000
-    SKYP_BYTES = 0
+    TIMESTAMP_SORT = "timestamp_sort"
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    REVERSE_SORT = "reverse_sort"
+    MAX_TRACES = "max_traces"
+    MAX_BYTES = "max_bytes"
+    SKIP_BYTES = "skip_bytes"
 
 
 def apply(filename, parameters=None):
@@ -41,7 +39,6 @@ def import_log(filename, parameters=None):
             Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
             Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
             Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
-            Parameters.INSERT_TRACE_INDICES -> Specify if trace indexes should be added as event attribute for each event
             Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
             Parameters.MAX_BYTES -> Maximum number of bytes to read
             Parameters.SKYP_BYTES -> Number of bytes to skip
@@ -56,13 +53,15 @@ def import_log(filename, parameters=None):
         parameters = {}
 
     date_parser = dt_parser.get()
-    timestamp_sort = param_util.fetch(Parameters.TIMESTAMP_SORT, parameters)
-    timestamp_key = param_util.fetch(Parameters.TIMESTAMP_KEY, parameters)
-    reverse_sort = param_util.fetch(Parameters.REVERSE_SORT, parameters)
-    insert_trace_indexes = param_util.fetch(Parameters.INSERT_TRACE_INDICES, parameters)
-    max_no_traces_to_import = param_util.fetch(Parameters.MAX_TRACES, parameters)
-    skip_bytes = param_util.fetch(Parameters.SKYP_BYTES, parameters)
-    max_bytes_to_read = param_util.fetch(Parameters.MAX_BYTES, parameters)
+
+    max_no_traces_to_import = exec_utils.get_param_value(Parameters.MAX_TRACES, parameters, sys.maxsize)
+    timestamp_sort = exec_utils.get_param_value(Parameters.TIMESTAMP_SORT, parameters, False)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    reverse_sort = exec_utils.get_param_value(Parameters.REVERSE_SORT, parameters, False)
+
+    skip_bytes = exec_utils.get_param_value(Parameters.SKIP_BYTES, parameters, False)
+    max_bytes_to_read = exec_utils.get_param_value(Parameters.MAX_BYTES, parameters, sys.maxsize)
 
     file_size = os.stat(filename).st_size
 
@@ -122,7 +121,5 @@ def import_log(filename, parameters=None):
 
     if timestamp_sort:
         log = sorting.sort_timestamp(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
-    if insert_trace_indexes:
-        log.insert_trace_index_as_event_attribute()
 
     return log

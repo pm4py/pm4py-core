@@ -31,11 +31,11 @@ python-dateutil==2.8.1
 scipy==1.5.4
 traitlets==5.0.5
 zipp==3.4.0
-importlib-metadata==3.0.0
+importlib-metadata==3.1.0
 ipython==7.19.0
 jsonpickle==1.4.1
 deprecation==2.1.0
-graphviz==0.14.2
+graphviz==0.15
 intervaltree==3.1.0
 lxml==4.6.1
 matplotlib==3.3.3
