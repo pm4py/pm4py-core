@@ -11,7 +11,7 @@ class XESExtension(Enum):
     Identity = ('Identity', 'identity', 'http://www.xes-standard.org/identity.xesext')
     Lifecycle = ('Lifecycle', 'lifecycle', 'http://www.xes-standard.org/lifecycle.xesext')
     Micro = ('Micro', 'micro', 'http://www.xes-standard.org/micro.xesext')
-    Organizational = ('Organizational', 'organizational', 'http://www.xes-standard.org/org.xesext')
+    Organizational = ('Organizational', 'org', 'http://www.xes-standard.org/org.xesext')
     Semantic = ('Semantic', 'semantic', 'http://www.xes-standard.org/semantic.xesext')
     SoftwareCommunication = ('Software Communication', 'swcomm', 'http://www.xes-standard.org/swcomm.xesext')
     SoftwareEvent = ('Software Event', 'swevent', 'http://www.xes-standard.org/swevent.xesext')
