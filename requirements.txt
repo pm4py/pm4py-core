@@ -8,7 +8,7 @@ ipython-genutils
 joblib
 more-itertools
 mpmath
-numpy
+numpy<=1.19.3
 parso
 pickleshare
 pillow
@@ -43,7 +43,7 @@ pandas
 pulp<=2.1
 pydotplus
 pyvis
-scikit-learn
+scikit-learn; python_version < '3.9'
 stringdist
 sympy
 ciso8601; python_version < '3.7'

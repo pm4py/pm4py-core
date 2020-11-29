@@ -248,6 +248,7 @@ def __export_log_tree(log):
     if type(log) is log_instance.EventStream:
         log = log_converter.apply(log)
     root = etree.Element(xes_util.TAG_LOG)
+    root.set(xes_util.TAG_VERSION, xes_util.VALUE_XES_VERSION)
 
     # add attributes at the log level
     __export_attributes(log, root)
