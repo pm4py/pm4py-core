@@ -13,6 +13,7 @@ TAG_LOG = 'log'
 TAG_STRING = 'string'
 TAG_TRACE = 'trace'
 TAG_VALUES = 'values'
+TAG_VERSION = 'xes.version'
 
 # XES/INTERNAL KEYS
 KEY_CHILDREN = 'children'
@@ -30,4 +31,6 @@ DEFAULT_START_TIMESTAMP_KEY = 'start_timestamp'
 DEFAULT_TRACEID_KEY = 'concept:name'
 DEFAULT_RESOURCE_KEY = 'org:resource'
 DEFAULT_TRANSITION_KEY = "lifecycle:transition"
+
+VALUE_XES_VERSION = '1849-2016'
 
