@@ -1,3 +1,10 @@
+===== PM4Py 2.1.0.2 =====
+This is a *hotfix* release, consisting of the following *hotfixes*:
+1. commit f18c3e17
+    - downgrading Numpy to 1.19.3 for Windows 10 2004 compatibility problems
+    - skip blocking Scikit-Learn installation for Python 3.9
+
+
 ===== PM4Py 2.1.0.1 =====
 This is a *hotfix* release, consisting of the following *hotfixes*:
 1. commit f6cdf1a9
