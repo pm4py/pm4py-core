@@ -30,7 +30,7 @@ to change as libraries are added or removed.
 | mpmath | https://pypi.org/project/mpmath | BSD | 1.1.0 | | |
 | networkx | https://pypi.org/project/networkx | BSD | 2.5 | X | |
 | numpy | https://pypi.org/project/numpy | BSD | 1.19.3 | | X |
-| packaging | https://pypi.org/project/packaging | Apache 2.0 | 20.5 | | |
+| packaging | https://pypi.org/project/packaging | Apache 2.0 | 20.7 | | |
 | pandas | https://pypi.org/project/pandas | BSD | 1.1.4 | X | X |
 | parso | https://pypi.org/project/parso | MIT | 0.8.0 | | |
 | pickleshare | https://pypi.org/project/pickleshare | MIT | 0.7.5 | X | |
