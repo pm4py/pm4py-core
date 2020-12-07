@@ -68,7 +68,7 @@ from pm4py.conformance import conformance_tbr, conformance_alignments, evaluate_
     evaluate_precision_alignments, soundness_woflan
 from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg, view_process_tree, \
     save_vis_process_tree, \
-    view_heuristics_net, save_vis_heuristics_net
+    view_heuristics_net, save_vis_heuristics_net, view_bpmn, save_vis_bpmn
 from pm4py.filtering import filter_start_activities, filter_end_activities, filter_attribute_values, filter_variants, \
     filter_variants_percentage, filter_paths, filter_timestamp, filter_trace_attribute
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
