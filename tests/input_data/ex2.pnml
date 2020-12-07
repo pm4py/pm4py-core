@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="c1">
+        <name>
+          <text>c1</text>
+        </name>
+      </place>
+      <place id="c6">
+        <name>
+          <text>c6</text>
+        </name>
+      </place>
+      <place id="c2">
+        <name>
+          <text>c2</text>
+        </name>
+      </place>
+      <place id="c5">
+        <name>
+          <text>c5</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="c3">
+        <name>
+          <text>c3</text>
+        </name>
+      </place>
+      <place id="c4">
+        <name>
+          <text>c4</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="c7">
+        <name>
+          <text>c7</text>
+        </name>
+      </place>
+      <place id="c8">
+        <name>
+          <text>c8</text>
+        </name>
+      </place>
+      <transition id="E">
+        <name>
+          <text>Compute Low-value Claim</text>
+        </name>
+      </transition>
+      <transition id="G">
+        <name>
+          <text>Consult Expert</text>
+        </name>
+      </transition>
+      <transition id="A">
+        <name>
+          <text>Set Checkpoint</text>
+        </name>
+      </transition>
+      <transition id="H">
+        <name>
+          <text>Check Liability</text>
+        </name>
+      </transition>
+      <transition id="D">
+        <name>
+          <text>Check Policy</text>
+        </name>
+      </transition>
+      <transition id="I">
+        <name>
+          <text>Set Checkpoint</text>
+        </name>
+      </transition>
+      <transition id="F">
+        <name>
+          <text>Compute High-value Claim</text>
+        </name>
+      </transition>
+      <transition id="C">
+        <name>
+          <text>Register as High-Value Claim</text>
+        </name>
+      </transition>
+      <transition id="B">
+        <name>
+          <text>Register as Low-Value Claim</text>
+        </name>
+      </transition>
+      <arc id="116746892551" source="c2" target="D"/>
+      <arc id="116746892554" source="c5" target="E"/>
+      <arc id="116746889867" source="A" target="c1"/>
+      <arc id="116746889870" source="c1" target="B"/>
+      <arc id="116746892563" source="c6" target="G"/>
+      <arc id="116746892581" source="G" target="c7"/>
+      <arc id="116746892587" source="c7" target="H"/>
+      <arc id="116746884142" source="B" target="c5"/>
+      <arc id="116746892593" source="D" target="c3"/>
+      <arc id="116746892599" source="c3" target="E"/>
+      <arc id="116746892605" source="c3" target="F"/>
+      <arc id="116746892611" source="H" target="c8"/>
+      <arc id="116746884169" source="C" target="c6"/>
+      <arc id="116746892617" source="c8" target="F"/>
+      <arc id="116746884301" source="C" target="c2"/>
+      <arc id="116746892623" source="E" target="c4"/>
+      <arc id="116746889813" source="source" target="A"/>
+      <arc id="116746892629" source="F" target="c4"/>
+      <arc id="116746892635" source="c4" target="I"/>
+      <arc id="116746892641" source="I" target="sink"/>
+      <arc id="116746884205" source="B" target="c2"/>
+      <arc id="116746889978" source="c1" target="C"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>
