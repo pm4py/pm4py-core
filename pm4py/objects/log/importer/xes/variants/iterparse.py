@@ -1,4 +1,5 @@
 import logging
+import pkgutil
 import sys
 from enum import Enum
 
@@ -7,8 +8,6 @@ from pm4py.objects.log.util import sorting
 from pm4py.util import exec_utils, constants
 from pm4py.util import xes_constants
 from pm4py.util.dt_parsing import parser as dt_parser
-
-import pkgutil
 
 
 class Parameters(Enum):
@@ -25,6 +24,37 @@ _EVENT_START = 'start'
 
 def apply(filename, parameters=None):
     return import_log(filename, parameters)
+
+
+def count_traces(filename):
+    """
+    Efficiently count the number of traces of a XES event log
+
+    Parameters
+    -------------
+    filename
+        Path to the XES log
+
+    Returns
+    -------------
+    num_traces
+        Number of traces of the XES log
+    """
+    from lxml import etree
+
+    num_traces = 0
+
+    context = etree.iterparse(filename, events=[_EVENT_START, _EVENT_END])
+
+    for tree_event, elem in context:
+        if tree_event == _EVENT_START:  # starting to read
+            if elem.tag.endswith(xes_constants.TAG_TRACE):
+                num_traces = num_traces + 1
+        elem.clear()
+
+    del context
+
+    return num_traces
 
 
 def import_log(filename, parameters=None):
@@ -59,21 +89,17 @@ def import_log(filename, parameters=None):
     reverse_sort = exec_utils.get_param_value(Parameters.REVERSE_SORT, parameters, False)
 
     date_parser = dt_parser.get()
+
+    # count number of traces and setup progress bar
+    no_trace = count_traces(filename)
+
     context = etree.iterparse(filename, events=[_EVENT_START, _EVENT_END])
-
-    # check to see if log has a namespace before looking for traces  (but this might be more effort than worth)
-    # but you could just assume that log use on the standard namespace desbried in XES
-    # to only find elements that start a trace use tag="{http://www.xes-standard.org}trace"
-    # or just use the {*} syntax to match to all namespaces with a trace element
-
-    #count number of traces and setup progress bar
-    no_trace = sum ( [ 1 for trace in  etree.iterparse(filename, events=[_EVENT_START],tag="{*}trace") ])
 
     # make tqdm facultative
     progress = None
     if pkgutil.find_loader("tqdm"):
         from tqdm.auto import tqdm
-        progress = tqdm(total=no_trace,desc="parsing log, completed traces :: ")
+        progress = tqdm(total=no_trace, desc="parsing log, completed traces :: ")
 
     log = None
     trace = None
@@ -214,7 +240,7 @@ def import_log(filename, parameters=None):
             elif elem.tag.endswith(xes_constants.TAG_TRACE):
                 log.append(trace)
 
-                #update progress bar as we have a completed trace
+                # update progress bar as we have a completed trace
                 if progress is not None:
                     progress.update()
 
@@ -223,8 +249,8 @@ def import_log(filename, parameters=None):
 
             elif elem.tag.endswith(xes_constants.TAG_LOG):
                 continue
-            
-    #gracefully close progress bar
+
+    # gracefully close progress bar
     if progress is not None:
         progress.close()
     del context, progress
