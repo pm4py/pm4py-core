@@ -6,6 +6,10 @@ This is a *minor* release, consisting of the following chages:
     - added conversion to simplified interface
 3. commit 43e7ce9e
     - full conversion of WF-nets to BPMN models
+4. commit 71c9eeec
+    - pull-request #185: reformatting of README file
+5. commit b189e746
+    - pull-request #187: memory-leak fix in xes importing
 
 
 ===== PM4Py 2.1.0.2 =====
