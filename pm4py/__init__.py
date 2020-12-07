@@ -1,4 +1,4 @@
-VERSION = '2.1.0.2'
+VERSION = '2.1.1'
 
 import time, pkgutil, logging, sys
 
@@ -65,7 +65,7 @@ __maintainer__ = 'Fraunhofer Institute for Applied Technology'
 __maintainer_email__ = "pm4py@fit.fraunhofer.de"
 
 from pm4py.read import read_xes, read_csv, read_petri_net, read_process_tree, read_dfg, \
-    convert_to_event_log, convert_to_event_stream, convert_to_dataframe, read_bpmn
+    read_bpmn
 from pm4py.write import write_xes, write_csv, write_petri_net, write_process_tree, write_dfg, write_bpmn
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_heuristics, \
     discover_petri_net_inductive, discover_tree_inductive, discover_heuristics_net, discover_dfg
@@ -74,11 +74,13 @@ from pm4py.conformance import conformance_tbr, conformance_alignments, evaluate_
     evaluate_precision_alignments, soundness_woflan
 from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg, view_process_tree, \
     save_vis_process_tree, \
-    view_heuristics_net, save_vis_heuristics_net
+    view_heuristics_net, save_vis_heuristics_net, view_bpmn, save_vis_bpmn
 from pm4py.filtering import filter_start_activities, filter_end_activities, filter_attribute_values, filter_variants, \
     filter_variants_percentage, filter_paths, filter_timestamp, filter_trace_attribute
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
     get_trace_attributes
+from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
+    convert_to_petri_net, convert_to_process_tree
 from pm4py.utils import format_dataframe
 
 # this package is available only for Python >= 3.5
