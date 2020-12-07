@@ -71,63 +71,6 @@ def read_csv(file_path, sep=",", quotechar=None, encoding='utf-8', nrows=1000000
     return df
 
 
-def convert_to_event_log(obj):
-    """
-    Converts a log object to an event log
-
-    Parameters
-    -------------
-    obj
-        Log object
-
-    Returns
-    -------------
-    log
-        Event log object
-    """
-    from pm4py.objects.conversion.log import converter
-    log = converter.apply(obj, variant=converter.Variants.TO_EVENT_LOG)
-    return log
-
-
-def convert_to_event_stream(obj):
-    """
-    Converts a log object to an event stream
-
-    Parameters
-    --------------
-    obj
-        Log object
-
-    Returns
-    --------------
-    stream
-        Event stream object
-    """
-    from pm4py.objects.conversion.log import converter
-    stream = converter.apply(obj, variant=converter.Variants.TO_EVENT_STREAM)
-    return stream
-
-
-def convert_to_dataframe(obj):
-    """
-    Converts a log object to a dataframe
-
-    Parameters
-    --------------
-    obj
-        Log object
-
-    Returns
-    --------------
-    df
-        Dataframe
-    """
-    from pm4py.objects.conversion.log import converter
-    df = converter.apply(obj, variant=converter.Variants.TO_DATA_FRAME)
-    return df
-
-
 def read_petri_net(file_path):
     """
     Reads a Petri net from the .PNML format
@@ -210,3 +153,66 @@ def read_bpmn(file_path):
     from pm4py.objects.bpmn.importer import importer as bpmn_importer
     bpmn_graph = bpmn_importer.apply(file_path)
     return bpmn_graph
+
+
+@deprecation.deprecated(deprecated_in="2.1.0", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use pm4py.convert.convert_to_event_log method")
+def convert_to_event_log(obj):
+    """
+    Converts a log object to an event log
+
+    Parameters
+    -------------
+    obj
+        Log object
+
+    Returns
+    -------------
+    log
+        Event log object
+    """
+    from pm4py.convert import convert_to_event_log
+    return convert_to_event_log(obj)
+
+
+@deprecation.deprecated(deprecated_in="2.1.0", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use pm4py.convert.convert_to_event_stream method")
+def convert_to_event_stream(obj):
+    """
+    Converts a log object to an event stream
+
+    Parameters
+    --------------
+    obj
+        Log object
+
+    Returns
+    --------------
+    stream
+        Event stream object
+    """
+    from pm4py.convert import convert_to_event_stream
+    return convert_to_event_stream(obj)
+
+
+@deprecation.deprecated(deprecated_in="2.1.0", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use pm4py.convert.convert_to_event_stream method")
+def convert_to_dataframe(obj):
+    """
+    Converts a log object to a dataframe
+
+    Parameters
+    --------------
+    obj
+        Log object
+
+    Returns
+    --------------
+    df
+        Dataframe
+    """
+    from pm4py.convert import convert_to_dataframe
+    return convert_to_dataframe(obj)

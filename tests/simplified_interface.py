@@ -1,6 +1,10 @@
-import pm4py
-import unittest
 import os
+import unittest
+
+import pm4py
+from pm4py.objects.bpmn.bpmn_graph import BPMN
+from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.process_tree.process_tree import ProcessTree
 
 
 class SimplifiedInterfaceTest(unittest.TestCase):
@@ -87,6 +91,42 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         log = pm4py.read_xes("input_data/running-example.xes")
         net, im, fm = pm4py.discover_petri_net_inductive(log)
         precision_tbr = pm4py.evaluate_precision_tbr(log, net, im, fm)
+
+    def test_convert_to_tree_from_petri(self):
+        net, im, fm = pm4py.read_petri_net("input_data/running-example.pnml")
+        tree = pm4py.convert_to_process_tree(net, im, fm)
+        self.assertTrue(isinstance(tree, ProcessTree))
+
+    def test_convert_to_tree_from_bpmn(self):
+        bpmn = pm4py.read_bpmn("input_data/running-example.bpmn")
+        tree = pm4py.convert_to_process_tree(bpmn)
+        self.assertTrue(isinstance(tree, ProcessTree))
+
+    def test_convert_to_net_from_tree(self):
+        tree = pm4py.read_process_tree("input_data/running-example.ptml")
+        net, im, fm = pm4py.convert_to_petri_net(tree)
+        self.assertTrue(isinstance(net, PetriNet))
+
+    def test_convert_to_net_from_bpmn(self):
+        bpmn = pm4py.read_bpmn("input_data/running-example.bpmn")
+        net, im, fm = pm4py.convert_to_petri_net(bpmn)
+        self.assertTrue(isinstance(net, PetriNet))
+
+    def test_convert_to_net_from_dfg(self):
+        dfg, sa, ea = pm4py.read_dfg("input_data/running-example.dfg")
+        net, im, fm = pm4py.convert_to_petri_net(dfg, sa, ea)
+        self.assertTrue(isinstance(net, PetriNet))
+
+    def test_convert_to_net_from_heu(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        heu_net = pm4py.discover_heuristics_net(log)
+        net, im, fm = pm4py.convert_to_petri_net(heu_net)
+        self.assertTrue(isinstance(net, PetriNet))
+
+    def test_convert_to_bpmn_from_tree(self):
+        tree = pm4py.read_process_tree("input_data/running-example.ptml")
+        bpmn = pm4py.convert_to_bpmn(tree)
+        self.assertTrue(isinstance(bpmn, BPMN))
 
 
 if __name__ == "__main__":
