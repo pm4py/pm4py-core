@@ -125,6 +125,41 @@ def save_vis_process_tree(tree, file_path):
     pt_visualizer.save(gviz, file_path)
 
 
+def save_vis_bpmn(bpmn_graph, file_path):
+    """
+    Saves the visualization of a BPMN graph
+
+    Parameters
+    --------------
+    bpmn_graph
+        BPMN graph
+    file_path
+        Destination path
+    """
+    format = file_path[file_path.index(".") + 1:].lower()
+    from pm4py.visualization.bpmn import visualizer as bpmn_visualizer
+    parameters = bpmn_visualizer.Variants.CLASSIC.value.Parameters
+    gviz = bpmn_visualizer.apply(bpmn_graph, parameters={parameters.FORMAT: format})
+    bpmn_visualizer.save(gviz, file_path)
+
+
+def view_bpmn(bpmn_graph, format="png"):
+    """
+    Views a BPMN graph
+
+    Parameters
+    ---------------
+    bpmn_graph
+        BPMN graph
+    format
+        Format of the visualization (default: png)
+    """
+    from pm4py.visualization.bpmn import visualizer as bpmn_visualizer
+    parameters = bpmn_visualizer.Variants.CLASSIC.value.Parameters
+    gviz = bpmn_visualizer.apply(bpmn_graph, parameters={parameters.FORMAT: format})
+    bpmn_visualizer.view(gviz)
+
+
 def view_heuristics_net(heu_net, format="png"):
     """
     Views an heuristics net
