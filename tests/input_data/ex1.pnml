@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="p1">
+        <name>
+          <text>p1</text>
+        </name>
+      </place>
+      <place id="p5">
+        <name>
+          <text>p5</text>
+        </name>
+      </place>
+      <place id="p2">
+        <name>
+          <text>p2</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p4">
+        <name>
+          <text>p4</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p3">
+        <name>
+          <text>p3</text>
+        </name>
+      </place>
+      <place id="p6">
+        <name>
+          <text>p6</text>
+        </name>
+      </place>
+      <transition id="A">
+        <name>
+          <text>A</text>
+        </name>
+      </transition>
+      <transition id="B">
+        <name>
+          <text>B</text>
+        </name>
+      </transition>
+      <transition id="C">
+        <name>
+          <text>C</text>
+        </name>
+      </transition>
+      <transition id="D">
+        <name>
+          <text>D</text>
+        </name>
+      </transition>
+      <transition id="E">
+        <name>
+          <text>E</text>
+        </name>
+      </transition>
+      <arc id="138343024378" source="p6" target="D"/>
+      <arc id="138343014759" source="A" target="p1"/>
+      <arc id="138343014765" source="p1" target="B"/>
+      <arc id="138343019855" source="p5" target="E"/>
+      <arc id="138343014801" source="p2" target="C"/>
+      <arc id="138343024273" source="C" target="p6"/>
+      <arc id="138343019891" source="p3" target="E"/>
+      <arc id="138343014708" source="source" target="A"/>
+      <arc id="138343024213" source="B" target="p3"/>
+      <arc id="138343024276" source="p4" target="D"/>
+      <arc id="138343019828" source="D" target="p5"/>
+      <arc id="138343019987" source="E" target="sink"/>
+      <arc id="138343014810" source="A" target="p2"/>
+      <arc id="138343024219" source="B" target="p4"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>
