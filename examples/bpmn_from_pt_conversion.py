@@ -1,5 +1,6 @@
 import os
 
+import pm4py
 from pm4py.objects.conversion.process_tree import converter as pt_converter
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects.log.importer.xes import importer as xes_import
@@ -15,6 +16,7 @@ def execute_script():
     #bpmn = bpmn_layouter.apply(bpmn)
     bpmn_exporter.apply(bpmn, "stru.bpmn")
     os.remove("stru.bpmn")
+    pm4py.view_bpmn(bpmn, format="svg")
 
 
 if __name__ == "__main__":
