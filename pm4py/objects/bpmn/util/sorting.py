@@ -33,7 +33,7 @@ def sort_nodes_given_bfs(nodes, bfs):
                     should_exchange = True
                 elif bfs[nodes[i]] == bfs[nodes[j]] and name_j and not name_i:
                     should_exchange = True
-                elif bfs[nodes[i]] == bfs[nodes[j]] and name_i and name_j and name_i <= name_j:
+                elif bfs[nodes[i]] == bfs[nodes[j]] and name_i and name_j and name_i < name_j:
                     should_exchange = True
                 if should_exchange:
                     nodes[i], nodes[j] = nodes[j], nodes[i]
