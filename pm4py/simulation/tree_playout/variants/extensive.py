@@ -230,7 +230,7 @@ def apply(tree, parameters=None):
         - Parameters.MAX_TRACE_LENGTH => maximum length of a trace (default: min_allowed_trace_length)
         - Parameters.MAX_LOOP_OCC => maximum number of occurrences for a loop (default: MAX_TRACE_LENGTH)
         - Parameters.ACTIVITY_KEY => activity key
-        - Parameters.MAX_LIMIT_NUM_TRACES => maximum number to the limit of traces; the playout shall stop when the number is reached (default: sys.maxsize)
+        - Parameters.MAX_LIMIT_NUM_TRACES => maximum number to the limit of traces; the playout shall stop when the number is reached (default: 100000)
     Returns
     -------------
     log
