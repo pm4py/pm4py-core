@@ -1,6 +1,7 @@
 import os
 import sys
 from enum import Enum
+from io import StringIO
 
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting
@@ -25,15 +26,16 @@ def __fetch_param_value(param, params):
     return params[param] if param in params else param.value
 
 
-def import_log(filename, parameters=None):
+def import_log_from_file_object(f, file_size=sys.maxsize, parameters=None):
     """
-    Import a log object from a XML file
-    containing the traces, the events and the simple attributes of them
+    Import a log object from a (XML) file object
 
     Parameters
     -----------
-    filename
-        XES file to parse
+    f
+        file object
+    file_size
+        Size of the file (measured on disk)
     parameters
         Parameters of the algorithm, including
             Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
@@ -46,12 +48,9 @@ def import_log(filename, parameters=None):
 
     Returns
     -----------
-    xes
-        XES file
+    log
+        Log file
     """
-    if parameters is None:
-        parameters = {}
-
     date_parser = dt_parser.get()
 
     max_no_traces_to_import = exec_utils.get_param_value(Parameters.MAX_TRACES, parameters, sys.maxsize)
@@ -63,8 +62,6 @@ def import_log(filename, parameters=None):
     skip_bytes = exec_utils.get_param_value(Parameters.SKIP_BYTES, parameters, False)
     max_bytes_to_read = exec_utils.get_param_value(Parameters.MAX_BYTES, parameters, sys.maxsize)
 
-    file_size = os.stat(filename).st_size
-
     if file_size > max_bytes_to_read:
         skip_bytes = file_size - max_bytes_to_read
 
@@ -73,7 +70,6 @@ def import_log(filename, parameters=None):
     trace = None
     event = None
 
-    f = open(filename, "r")
     f.seek(skip_bytes)
 
     for line in f:
@@ -117,9 +113,74 @@ def import_log(filename, parameters=None):
                     trace = None
             elif tag.startswith("trace"):
                 trace = Trace()
-    f.close()
 
     if timestamp_sort:
         log = sorting.sort_timestamp(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
 
     return log
+
+
+def import_log(filename, parameters=None):
+    """
+    Import a log object from a XML file
+    containing the traces, the events and the simple attributes of them
+
+    Parameters
+    -----------
+    filename
+        XES file to parse
+    parameters
+        Parameters of the algorithm, including
+            Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
+            Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
+            Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
+            Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            Parameters.MAX_BYTES -> Maximum number of bytes to read
+            Parameters.SKYP_BYTES -> Number of bytes to skip
+
+
+    Returns
+    -----------
+    log
+        Log file
+    """
+    if parameters is None:
+        parameters = {}
+
+    file_size = os.stat(filename).st_size
+
+    f = open(filename, "r")
+    log = import_log_from_file_object(f, file_size=file_size, parameters=parameters)
+    f.close()
+
+    return log
+
+
+def import_from_string(log_string, parameters=None):
+    """
+    Deserialize a text/binary string representing a XES log
+
+    Parameters
+    -----------
+    log_string
+        String that contains the XES
+    parameters
+        Parameters of the algorithm, including
+            Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
+            Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
+            Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
+            Parameters.INSERT_TRACE_INDICES -> Specify if trace indexes should be added as event attribute for each event
+            Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+
+    Returns
+    -----------
+    log
+        Trace log object
+    """
+    if parameters is None:
+        parameters = {}
+
+    if type(log_string) is bytes:
+        log_string = log_string.decode(constants.DEFAULT_ENCODING)
+
+    return import_log_from_file_object(StringIO(log_string), parameters=parameters)

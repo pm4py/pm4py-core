@@ -2,8 +2,10 @@ import os
 import tempfile
 import time
 
+import deprecation
 from lxml import etree, objectify
 
+from pm4py import VERSION
 from pm4py.objects.petri.common import final_marking
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import add_arc_from_to
@@ -11,6 +13,9 @@ from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.util import constants
 
 
+@deprecation.deprecated(deprecated_in="2.1.1", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use the entrypoint import_from_string method")
 def import_petri_from_string(petri_string, parameters=None):
     """
     Import a Petri net from a string
@@ -27,9 +32,15 @@ def import_petri_from_string(petri_string, parameters=None):
 
     fp = tempfile.NamedTemporaryFile(suffix='.pnml')
     fp.close()
-    with open(fp.name, 'w') as f:
-        f.write(petri_string)
-    net, initial_marking, this_final_marking = import_net(fp.name)
+
+    if type(petri_string) is bytes:
+        with open(fp.name, 'wb') as f:
+            f.write(petri_string)
+    else:
+        with open(fp.name, 'w') as f:
+            f.write(petri_string)
+
+    net, initial_marking, this_final_marking = import_net(fp.name, parameters=parameters)
     os.remove(fp.name)
     return net, initial_marking, this_final_marking
 
@@ -44,6 +55,15 @@ def import_net(input_file_path, parameters=None):
         Input file path
     parameters
         Other parameters of the algorithm
+
+    Returns
+    -----------
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
     """
     if parameters is None:
         parameters = {}
@@ -51,6 +71,55 @@ def import_net(input_file_path, parameters=None):
     parser = etree.XMLParser(remove_comments=True)
     tree = objectify.parse(input_file_path, parser=parser)
     root = tree.getroot()
+
+    return import_net_from_xml_object(root, parameters=parameters)
+
+
+def import_net_from_string(petri_string, parameters=None):
+    """
+    Imports a Petri net from a string
+
+    Parameters
+    -------------
+    petri_string
+        (Binary) string representing the Petri net
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    -----------
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    """
+    if parameters is None:
+        parameters = {}
+
+    if type(petri_string) is str:
+        petri_string = petri_string.encode(constants.DEFAULT_ENCODING)
+
+    parser = etree.XMLParser(remove_comments=True)
+    root = objectify.fromstring(petri_string, parser=parser)
+
+    return import_net_from_xml_object(root, parameters=parameters)
+
+
+def import_net_from_xml_object(root, parameters=None):
+    """
+    Import a Petri net from an etree XML object
+
+    Parameters
+    ----------
+    root
+        Root object of the XML
+    parameters
+        Other parameters of the algorithm
+    """
+    if parameters is None:
+        parameters = {}
 
     net = PetriNet('imported_' + str(time.time()))
     marking = Marking()
@@ -109,7 +178,8 @@ def import_net(input_file_path, parameters=None):
                 places_dict[place_id].properties[constants.PLACE_NAME_TAG] = place_name
                 net.places.add(places_dict[place_id])
                 if position_X is not None and position_Y is not None and dimension_X is not None and dimension_Y is not None:
-                    places_dict[place_id].properties[constants.LAYOUT_INFORMATION_PETRI] = ((position_X, position_Y), (dimension_X, dimension_Y))
+                    places_dict[place_id].properties[constants.LAYOUT_INFORMATION_PETRI] = (
+                        (position_X, position_Y), (dimension_X, dimension_Y))
                 if number > 0:
                     marking[places_dict[place_id]] = number
                 del place_name
@@ -173,7 +243,7 @@ def import_net(input_file_path, parameters=None):
 
                 if not trans_visible:
                     trans_label = None
-                #if "INVISIBLE" in trans_label:
+                # if "INVISIBLE" in trans_label:
                 #    trans_label = None
 
                 trans_dict[trans_name] = PetriNet.Transition(trans_name, trans_label)
@@ -182,7 +252,8 @@ def import_net(input_file_path, parameters=None):
                 if random_variable is not None:
                     trans_dict[trans_name].properties[constants.STOCHASTIC_DISTRIBUTION] = random_variable
                 if position_X is not None and position_Y is not None and dimension_X is not None and dimension_Y is not None:
-                    trans_dict[trans_name].properties[constants.LAYOUT_INFORMATION_PETRI] = ((position_X, position_Y), (dimension_X, dimension_Y))
+                    trans_dict[trans_name].properties[constants.LAYOUT_INFORMATION_PETRI] = (
+                        (position_X, position_Y), (dimension_X, dimension_Y))
 
     if page is not None:
         for child in page:

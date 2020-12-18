@@ -1,25 +1,33 @@
 import os
 import unittest
-from pm4py.objects.log.importer.xes import importer as xes_importer
+
 import pandas as pd
-from pm4py.objects.log.util import dataframe_utils
-from pm4py.algo.discovery.alpha import algorithm as alpha_miner
-from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
-from pm4py.algo.discovery.dfg import algorithm as dfg_mining
-from pm4py.algo.discovery.transition_system import algorithm as ts_disc
+
 from pm4py.algo.conformance.alignments import algorithm as align_alg
 from pm4py.algo.conformance.tokenreplay import algorithm as tr_alg
+from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+from pm4py.algo.discovery.dfg import algorithm as dfg_mining
+from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
+from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+from pm4py.algo.discovery.transition_system import algorithm as ts_disc
 from pm4py.evaluation import evaluator as eval_alg
-from pm4py.evaluation.replay_fitness import evaluator as rp_fit
-from pm4py.evaluation.precision import evaluator as precision_evaluator
 from pm4py.evaluation.generalization import evaluator as generalization
+from pm4py.evaluation.precision import evaluator as precision_evaluator
+from pm4py.evaluation.replay_fitness import evaluator as rp_fit
 from pm4py.evaluation.simplicity import evaluator as simplicity
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.log.exporter.xes import exporter as xes_exporter
+from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.objects.log.util import dataframe_utils
 
 
 class MainFactoriesTest(unittest.TestCase):
+    def test_nonstandard_exporter(self):
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        xes_exporter.apply(log, os.path.join("test_output_data", "running-example.xes"),
+                           variant=xes_exporter.Variants.LINE_BY_LINE)
+        os.remove(os.path.join("test_output_data", "running-example.xes"))
+
     def test_alphaminer_log(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = alpha_miner.apply(log)
@@ -30,6 +38,10 @@ class MainFactoriesTest(unittest.TestCase):
         precision = precision_evaluator.apply(log, net, im, fm)
         gen = generalization.apply(log, net, im, fm)
         sim = simplicity.apply(net)
+
+    def test_memory_efficient_iterparse(self):
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"),
+                                 variant=xes_importer.Variants.ITERPARSE_MEM_COMPRESSED)
 
     def test_alphaminer_stream(self):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))

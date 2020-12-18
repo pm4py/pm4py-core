@@ -3,6 +3,7 @@ import logging
 import deprecation
 
 from pm4py import VERSION
+from pm4py.util import constants
 
 INDEX_COLUMN = "@@index"
 
@@ -29,7 +30,7 @@ def read_xes(file_path):
 @deprecation.deprecated(deprecated_in="2.0.1.3", removed_in="3.0",
                         current_version=VERSION,
                         details="Use pandas to import CSV files")
-def read_csv(file_path, sep=",", quotechar=None, encoding='utf-8', nrows=10000000, timest_format=None):
+def read_csv(file_path, sep=",", quotechar=None, encoding=constants.DEFAULT_ENCODING, nrows=10000000, timest_format=None):
     """
     Reads an event log in the CSV format (Pandas adapter)
 
