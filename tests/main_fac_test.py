@@ -22,6 +22,12 @@ from pm4py.objects.log.util import dataframe_utils
 
 
 class MainFactoriesTest(unittest.TestCase):
+    def test_nonstandard_exporter(self):
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
+        xes_exporter.apply(log, os.path.join("test_output_data", "running-example.xes"),
+                           variant=xes_exporter.Variants.LINE_BY_LINE)
+        os.remove(os.path.join("test_output_data", "running-example.xes"))
+
     def test_alphaminer_log(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = alpha_miner.apply(log)
