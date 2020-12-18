@@ -168,7 +168,8 @@ setup(
         "scikit-learn; python_version < '3.9'",
         'scipy',
         'stringdist',
-        'sympy'
+        'sympy',
+        "tqdm"
     ],
     project_urls={
         'Documentation': 'http://www.pm4py.org',
