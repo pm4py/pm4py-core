@@ -1,6 +1,7 @@
 import uuid
 
 from pm4py.objects.bpmn.bpmn_graph import BPMN
+from pm4py.util import constants
 
 
 def apply(bpmn_graph, target_path, parameters=None):
@@ -17,7 +18,7 @@ def apply(bpmn_graph, target_path, parameters=None):
         Possible parameters of the algorithm
     """
     xml_string = get_xml_string(bpmn_graph, parameters=parameters)
-    F = open(target_path, "w")
+    F = open(target_path, "wb")
     F.write(xml_string)
     F.close()
 
@@ -53,8 +54,8 @@ def get_xml_string(bpmn_graph, parameters=None):
         process_planes[process] = plane
 
         p = ET.SubElement(definitions, "process",
-                                {"id": "id" + process, "isClosed": "false", "isExecutable": "false",
-                                 "processType": "None"})
+                          {"id": "id" + process, "isClosed": "false", "isExecutable": "false",
+                           "processType": "None"})
         process_process[process] = p
 
     for node in bpmn_graph.get_nodes():
@@ -70,11 +71,11 @@ def get_xml_string(bpmn_graph, parameters=None):
     for flow in bpmn_graph.get_flows():
         process = flow.get_process()
 
-        flow_shape = ET.SubElement(process_planes[process], "bpmndi:BPMNEdge", {"bpmnElement": "id" + str(flow.get_id()),
-                                                              "id": "id" + str(flow.get_id()) + "_gui"})
+        flow_shape = ET.SubElement(process_planes[process], "bpmndi:BPMNEdge",
+                                   {"bpmnElement": "id" + str(flow.get_id()),
+                                    "id": "id" + str(flow.get_id()) + "_gui"})
         for x, y in flow.get_waypoints():
             waypoint = ET.SubElement(flow_shape, "omgdi:waypoint", {"x": str(x), "y": str(y)})
-
 
     for node in bpmn_graph.get_nodes():
         process = process_process[node.get_process()]
@@ -123,4 +124,4 @@ def get_xml_string(bpmn_graph, parameters=None):
                                                            "sourceRef": str(source.get_id()),
                                                            "targetRef": str(target.get_id())})
 
-    return minidom.parseString(ET.tostring(definitions)).toprettyxml(encoding="utf-8").decode("utf-8")
+    return minidom.parseString(ET.tostring(definitions)).toprettyxml(encoding=constants.DEFAULT_ENCODING)
