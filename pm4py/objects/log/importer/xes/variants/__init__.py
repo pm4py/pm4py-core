@@ -1,1 +1,1 @@
-from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line
+from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_mem_compressed

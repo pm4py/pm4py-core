@@ -15,13 +15,13 @@ to change as libraries are added or removed.
 | decorator | https://pypi.org/project/decorator | BSD | 4.4.2 | | |
 | deprecation | https://pypi.org/project/deprecation | Apache 2.0 | 2.1.0 | | |
 | graphviz | https://pypi.org/project/graphviz | MIT | 0.15 | X | |
-| importlib-metadata | https://pypi.org/project/importlib-metadata | Apache | 3.1.1 | X | |
+| importlib-metadata | https://pypi.org/project/importlib-metadata | Apache | 3.3.0 | X | |
 | intervaltree | https://pypi.org/project/intervaltree | Apache 2.0 | 3.1.0 | | |
 | ipython | https://pypi.org/project/ipython | BSD | 7.19.0 | X | |
 | ipython-genutils | https://pypi.org/project/ipython-genutils | BSD | 0.2.0 | | |
 | jedi | https://pypi.org/project/jedi | MIT | 0.17.0 | | |
 | jinja2 | https://pypi.org/project/jinja2 | BSD | 2.11.2 | | |
-| joblib | https://pypi.org/project/joblib | BSD | 0.17.0 | X | |
+| joblib | https://pypi.org/project/joblib | BSD | 1.0.0 | X | |
 | jsonpickle | https://pypi.org/project/jsonpickle | BSD | 1.4.2 | X | |
 | kiwisolver | https://pypi.org/project/kiwisolver | BSD | 1.3.1 | X | X |
 | lxml | https://pypi.org/project/lxml | BSD | 4.6.1 | X | X |
@@ -30,8 +30,8 @@ to change as libraries are added or removed.
 | mpmath | https://pypi.org/project/mpmath | BSD | 1.1.0 | | |
 | networkx | https://pypi.org/project/networkx | BSD | 2.5 | X | |
 | numpy | https://pypi.org/project/numpy | BSD | 1.19.3 | | X |
-| packaging | https://pypi.org/project/packaging | Apache 2.0 | 20.7 | | |
-| pandas | https://pypi.org/project/pandas | BSD | 1.1.4 | X | X |
+| packaging | https://pypi.org/project/packaging | Apache 2.0 | 20.8 | | |
+| pandas | https://pypi.org/project/pandas | BSD | 1.1.5 | X | X |
 | parso | https://pypi.org/project/parso | MIT | 0.7.1 | | |
 | pickleshare | https://pypi.org/project/pickleshare | MIT | 0.7.5 | X | |
 | prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD | 3.0.7 | | |
@@ -45,7 +45,7 @@ to change as libraries are added or removed.
 | scikit-learn | https://pypi.org/project/scikit-learn | BSD | 0.23.2 | X | X |
 | scipy | https://pypi.org/project/scipy | BSD | 1.5.4 | | X |
 | setuptools | https://pypi.org/project/setuptools | MIT | 51.0.0 | X | |
-| sympy | https://pypi.org/project/sympy | BSD | 1.7 | | |
+| sympy | https://pypi.org/project/sympy | BSD | 1.7.1 | | |
 | six | https://pypi.org/project/six | MIT | 1.15.0 | | |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache 2.0 | 2.3.0 | | |
 | StringDist | https://pypi.org/project/StringDist | MIT | 1.0.9 | | |

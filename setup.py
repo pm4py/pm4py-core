@@ -151,7 +151,7 @@ setup(
     url='http://www.pm4py.org',
     license='GPL 3.0',
     install_requires=[
-        "ciso8601; python_version < '3.7'",
+        'ciso8601; python_version < \'3.7\'',
         'deprecation',
         'graphviz',
         'intervaltree',
@@ -161,16 +161,17 @@ setup(
         'networkx',
         'numpy<=1.19.3',
         'pandas',
-        "pm4pycvxopt>=0.0.10; python_version < '3.9'",
+        'pm4pycvxopt>=0.0.10; python_version < \'3.9\'',
         'pulp<=2.1',
         'pydotplus',
         'pytz',
         'pyvis',
-        "scikit-learn; python_version < '3.9'",
+        'scikit-learn; python_version < \'3.9\'',
         'scipy',
         'stringdist',
         'sympy',
         'tqdm'
+
     ],
     project_urls={
         'Documentation': 'http://www.pm4py.org',

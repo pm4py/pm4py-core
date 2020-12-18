@@ -26,3 +26,5 @@ DEFAULT_VARIANT_SEP = ","
 DEFAULT_INDEX_KEY = "@@index"
 DEFAULT_EVENT_INDEX_KEY = "@@event_index"
 DEFAULT_FLOW_TIME = "@@flow_time"
+
+DEFAULT_ENCODING = "utf-8"

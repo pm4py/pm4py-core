@@ -2,7 +2,7 @@ import logging
 import pkgutil
 import sys
 from enum import Enum
-from io import BytesIO
+from io import BytesIO, StringIO
 
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting
@@ -87,6 +87,7 @@ def import_from_context(context, num_traces, parameters=None):
     event = None
 
     tree = {}
+    compression_dictio = {}
 
     for tree_event, elem in context:
         if tree_event == _EVENT_START:  # starting to read
@@ -95,13 +96,13 @@ def import_from_context(context, num_traces, parameters=None):
             if elem.tag.endswith(xes_constants.TAG_STRING):
                 if parent is not None:
                     tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY),
-                                             elem.get(xes_constants.KEY_VALUE), tree)
+                                             elem.get(xes_constants.KEY_VALUE), tree, compression_dictio)
                 continue
 
             elif elem.tag.endswith(xes_constants.TAG_DATE):
                 try:
                     dt = date_parser.apply(elem.get(xes_constants.KEY_VALUE))
-                    tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), dt, tree)
+                    tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), dt, tree, compression_dictio)
                 except TypeError:
                     logging.info("failed to parse date: " + str(elem.get(xes_constants.KEY_VALUE)))
                 except ValueError:
@@ -128,7 +129,7 @@ def import_from_context(context, num_traces, parameters=None):
                 if parent is not None:
                     try:
                         val = float(elem.get(xes_constants.KEY_VALUE))
-                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree)
+                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree, compression_dictio)
                     except ValueError:
                         logging.info("failed to parse float: " + str(elem.get(xes_constants.KEY_VALUE)))
                 continue
@@ -137,7 +138,7 @@ def import_from_context(context, num_traces, parameters=None):
                 if parent is not None:
                     try:
                         val = int(elem.get(xes_constants.KEY_VALUE))
-                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree)
+                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree, compression_dictio)
                     except ValueError:
                         logging.info("failed to parse int: " + str(elem.get(xes_constants.KEY_VALUE)))
                 continue
@@ -149,7 +150,7 @@ def import_from_context(context, num_traces, parameters=None):
                         val = False
                         if str(val0).lower() == "true":
                             val = True
-                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree)
+                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree, compression_dictio)
                     except ValueError:
                         logging.info("failed to parse boolean: " + str(elem.get(xes_constants.KEY_VALUE)))
                 continue
@@ -157,13 +158,13 @@ def import_from_context(context, num_traces, parameters=None):
             elif elem.tag.endswith(xes_constants.TAG_LIST):
                 if parent is not None:
                     # lists have no value, hence we put None as a value
-                    tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), None, tree)
+                    tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), None, tree, compression_dictio)
                 continue
 
             elif elem.tag.endswith(xes_constants.TAG_ID):
                 if parent is not None:
                     tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY),
-                                             elem.get(xes_constants.KEY_VALUE), tree)
+                                             elem.get(xes_constants.KEY_VALUE), tree, compression_dictio)
                 continue
 
             elif elem.tag.endswith(xes_constants.TAG_EXTENSION):
@@ -325,7 +326,7 @@ def import_from_string(log_string, parameters=None):
         parameters = {}
 
     if type(log_string) is str:
-        log_string = log_string.encode(constants.DEFAULT_ENCODING)
+        log_string = log_string.encode("utf-8")
 
     bio = BytesIO(log_string)
     context = etree.iterparse(bio, events=[_EVENT_START, _EVENT_END])
@@ -337,8 +338,22 @@ def import_from_string(log_string, parameters=None):
     return import_from_context(context, num_traces, parameters=parameters)
 
 
-def __parse_attribute(elem, store, key, value, tree):
+def __parse_attribute(elem, store, key, value, tree, compression_dict):
     if len(elem.getchildren()) == 0:
+        if key in compression_dict:
+            # using existing istantiations of existing objects
+            key = compression_dict[key]
+        else:
+            # set up a new instantiation
+            compression_dict[key] = key
+
+        if value in compression_dict:
+            # using existing istantiations of existing objects
+            value = compression_dict[value]
+        else:
+            # set up a new instantiation
+            compression_dict[value] = value
+
         if type(store) is list:
             # changes to the store of lists: not dictionaries anymore
             # but pairs of key-values.
