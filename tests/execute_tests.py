@@ -37,10 +37,12 @@ if __name__ == "__main__":
     from tests.statistics_log_test import StatisticsLogTest
     from tests.statistics_df_test import StatisticsDfTest
     from tests.trans_syst_tests import TransitionSystemTest
+    from tests.imp_exp_from_string import ImpExpFromString
     from tests.woflan_tests import WoflanTest
     from tests.simplified_interface import SimplifiedInterfaceTest
 
     test_ts = TransitionSystemTest()
+    test_ies = ImpExpFromString()
     test_doc_tests = DocTests()
     test_map_filter = MapFilterFunctionsTest()
     test_stats_log = StatisticsLogTest

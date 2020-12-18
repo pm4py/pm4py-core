@@ -27,3 +27,25 @@ def apply(tree, output_path, variant=DEFAULT_VARIANT, parameters=None):
         Parameters
     """
     return exec_utils.get_variant(variant).apply(tree, output_path, parameters=parameters)
+
+
+def serialize(tree, variant=DEFAULT_VARIANT, parameters=None):
+    """
+    Serializes the process tree into a binary string
+
+    Parameters
+    ----------------
+    tree
+        Process tree
+    variant
+        Variant of the algorithm:
+            - Variants.PTML
+    parameters
+        Parameters
+
+    Returns
+    ---------------
+    serialization
+        Serialized string
+    """
+    return exec_utils.get_variant(variant).export_tree_as_string(tree, parameters=parameters)
