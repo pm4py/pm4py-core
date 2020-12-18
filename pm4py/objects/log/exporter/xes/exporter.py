@@ -1,12 +1,13 @@
 from enum import Enum
 
 from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.objects.log.exporter.xes.variants import etree_xes_exp
+from pm4py.objects.log.exporter.xes.variants import etree_xes_exp, line_by_line
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
     ETREE = etree_xes_exp
+    LINE_BY_LINE = line_by_line
 
 
 def apply(log, output_file_path, variant=Variants.ETREE, parameters=None):
