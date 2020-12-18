@@ -1,5 +1,21 @@
+===== PM4Py 2.1.2 =====
+This is a *minor* (christmas) release, consisting of the following changes:
+1. commit 97cc315c
+    - add (de)serialization functionality for PM4Py objects
+2. commit 96a7681c
+    - significant memory footprint reduction for iterparse-based event log importing
+3. commit 8270a46e
+    - significantly faster 'line-by-line' xes exporter
+4. commit aae4be33
+    - advanced DFG filtering in (activities percentage, paths percentage) ensuring reachability from start and end
+5. commit 2fb0b807
+    - bug fix in BPMN layouting (nodes with same label)
+6. commit d38f4c97
+    - number of occurrences as a start or end activity is visualized in the DFG visualization
+
+
 ===== PM4Py 2.1.1 =====
-This is a *minor* release, consisting of the following chages:
+This is a *minor* release, consisting of the following changes:
 1. commit 029d30f5
     - allowing for visualizing and exporting BPMN models
 2. commit f76dd379
