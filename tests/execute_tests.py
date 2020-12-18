@@ -19,6 +19,7 @@ if __name__ == "__main__":
     from tests.inductive_tree_test import InductiveMinerTreeTest
     from tests.inductive_other_tests import InductiveMinerOtherTests
     from tests.alignment_test import AlignmentTest
+    from tests.dfg_tests import DfgTests
     from tests.sna_test import SnaTests
     from tests.petri_imp_exp_test import PetriImportExportTest
     from tests.bpmn_tests import BPMNTests
@@ -57,6 +58,7 @@ if __name__ == "__main__":
     test5_object = InductiveMinerTest()
     test55_object = InductiveMinerTreeTest()
     test56_object = InductiveMinerOtherTests()
+    test_dfg = DfgTests()
     test6_object = AlignmentTest()
     test7_object = PetriImportExportTest()
     bpmn_test = BPMNTests()
