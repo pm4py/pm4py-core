@@ -1,6 +1,8 @@
 import logging
+import pkgutil
 import sys
 from enum import Enum
+from io import BytesIO
 
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting
@@ -21,32 +23,50 @@ _EVENT_END = 'end'
 _EVENT_START = 'start'
 
 
-def apply(filename, parameters=None):
-    return import_log(filename, parameters)
-
-
-def import_log(filename, parameters=None):
+def count_traces(context):
     """
-    Imports an XES file into a log object
+    Efficiently count the number of traces of a XES event log
 
     Parameters
-    ----------
-    filename:
-        Absolute filename
+    -------------
+    context
+        XML iterparse context
+    Returns
+    -------------
+    num_traces
+        Number of traces of the XES log
+    """
+    num_traces = 0
+
+    for tree_event, elem in context:
+        if tree_event == _EVENT_START:  # starting to read
+            if elem.tag.endswith(xes_constants.TAG_TRACE):
+                num_traces = num_traces + 1
+        elem.clear()
+
+    del context
+
+    return num_traces
+
+
+def import_from_context(context, num_traces, parameters=None):
+    """
+    Import a XES log from an iterparse context
+
+    Parameters
+    --------------
+    context
+        Iterparse context
+    num_traces
+        Number of traces of the XES log
     parameters
-        Parameters of the algorithm, including
-            Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
-            Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
-            Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
-            Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+        Parameters of the algorithm
 
     Returns
-    -------
-    log : :class:`pm4py.log.log.EventLog`
-        A log
+    --------------
+    log
+        Event log
     """
-    from lxml import etree
-
     if parameters is None:
         parameters = {}
 
@@ -57,7 +77,10 @@ def import_log(filename, parameters=None):
     reverse_sort = exec_utils.get_param_value(Parameters.REVERSE_SORT, parameters, False)
 
     date_parser = dt_parser.get()
-    context = etree.iterparse(filename, events=[_EVENT_START, _EVENT_END])
+    progress = None
+    if pkgutil.find_loader("tqdm"):
+        from tqdm.auto import tqdm
+        progress = tqdm(total=num_traces, desc="parsing log, completed traces :: ")
 
     log = None
     trace = None
@@ -198,18 +221,120 @@ def import_log(filename, parameters=None):
 
             elif elem.tag.endswith(xes_constants.TAG_TRACE):
                 log.append(trace)
+
+                if progress is not None:
+                    progress.update()
+
                 trace = None
                 continue
 
             elif elem.tag.endswith(xes_constants.TAG_LOG):
                 continue
 
-    del context
+    # gracefully close progress bar
+    if progress is not None:
+        progress.close()
+    del context, progress
 
     if timestamp_sort:
         log = sorting.sort_timestamp(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
 
     return log
+
+
+def apply(filename, parameters=None):
+    """
+    Imports an XES file into a log object
+
+    Parameters
+    ----------
+    filename:
+        Absolute filename
+    parameters
+        Parameters of the algorithm, including
+            Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
+            Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
+            Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
+            Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+
+    Returns
+    -------
+    log : :class:`pm4py.log.log.EventLog`
+        A log
+    """
+    return import_log(filename, parameters)
+
+
+def import_log(filename, parameters=None):
+    """
+    Imports an XES file into a log object
+
+    Parameters
+    ----------
+    filename:
+        Absolute filename
+    parameters
+        Parameters of the algorithm, including
+            Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
+            Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
+            Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
+            Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+
+    Returns
+    -------
+    log : :class:`pm4py.log.log.EventLog`
+        A log
+    """
+    from lxml import etree
+
+    if parameters is None:
+        parameters = {}
+
+    context = etree.iterparse(filename, events=[_EVENT_START, _EVENT_END])
+    num_traces = count_traces(context)
+
+    context = etree.iterparse(filename, events=[_EVENT_START, _EVENT_END])
+
+    return import_from_context(context, num_traces, parameters=parameters)
+
+
+def import_from_string(log_string, parameters=None):
+    """
+    Deserialize a text/binary string representing a XES log
+
+    Parameters
+    -----------
+    log_string
+        String that contains the XES
+    parameters
+        Parameters of the algorithm, including
+            Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
+            Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
+            Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
+            Parameters.INSERT_TRACE_INDICES -> Specify if trace indexes should be added as event attribute for each event
+            Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+
+    Returns
+    -----------
+    log
+        Trace log object
+    """
+    from lxml import etree
+
+    if parameters is None:
+        parameters = {}
+
+    if type(log_string) is str:
+        log_string = log_string.encode(constants.DEFAULT_ENCODING)
+
+    bio = BytesIO(log_string)
+    context = etree.iterparse(bio, events=[_EVENT_START, _EVENT_END])
+    num_traces = count_traces(context)
+
+    bio = BytesIO(log_string)
+    context = etree.iterparse(bio, events=[_EVENT_START, _EVENT_END])
+
+    return import_from_context(context, num_traces, parameters=parameters)
 
 
 def __parse_attribute(elem, store, key, value, tree):

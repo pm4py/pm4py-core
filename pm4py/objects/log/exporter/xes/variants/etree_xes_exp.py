@@ -6,6 +6,7 @@ from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.log.exporter.xes.util import compression
 from pm4py.objects.log.util import xes as xes_util
+from pm4py.util import constants
 from pm4py.util import parameters as param_util
 
 
@@ -56,14 +57,7 @@ def __get_xes_attr_value(attr_value, attr_type_xes):
 
     """
     if attr_type_xes == xes_util.TAG_DATE:
-        if attr_value.strftime('%z') and len(attr_value.strftime('%z')) >= 5:
-            default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + attr_value.strftime('%z')[
-                                                                                   0:3] + ":" + attr_value.strftime(
-                '%z')[
-                                                                                                3:5]
-        else:
-            default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + "+00:00"
-        return default_date_repr.replace(" ", "T")
+        return attr_value.isoformat()
     elif attr_type_xes == xes_util.TAG_BOOLEAN:
         return str(attr_value).lower()
     return str(attr_value)
@@ -230,7 +224,7 @@ def __export_traces(log, root):
         __export_traces_events(tr, trace)
 
 
-def __export_log_tree(log):
+def export_log_tree(log):
     """
     Get XES log XML tree from a PM4Py log
 
@@ -284,12 +278,11 @@ def export_log_as_string(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    del parameters
 
     # Gets the XML tree to export
-    tree = __export_log_tree(log)
+    tree = export_log_tree(log)
 
-    return etree.tostring(tree, xml_declaration=True, encoding="utf-8", pretty_print=True)
+    return etree.tostring(tree, xml_declaration=True, encoding=constants.DEFAULT_ENCODING, pretty_print=True)
 
 
 def __export_log(log, output_file_path, parameters=None):
@@ -309,9 +302,9 @@ def __export_log(log, output_file_path, parameters=None):
     parameters = dict() if parameters is None else parameters
 
     # Gets the XML tree to export
-    tree = __export_log_tree(log)
+    tree = export_log_tree(log)
     # Effectively do the export of the event log
-    tree.write(output_file_path, pretty_print=True, xml_declaration=True, encoding="utf-8")
+    tree.write(output_file_path, pretty_print=True, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)
     compress = param_util.fetch(Parameters.COMPRESS, parameters)
     if compress:
         compression.compress(output_file_path)
