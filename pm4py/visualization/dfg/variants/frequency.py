@@ -127,9 +127,9 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         Digraph object
     """
     if start_activities is None:
-        start_activities = []
+        start_activities = {}
     if end_activities is None:
-        end_activities = []
+        end_activities = {}
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': 'transparent'})
@@ -197,12 +197,14 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     if start_activities_to_include:
         viz.node("@@startnode", "@@S", style='filled', shape='circle', fillcolor="#32CD32", fontcolor="#32CD32")
         for act in start_activities_to_include:
-            viz.edge("@@startnode", activities_map[act])
+            label = str(start_activities[act]) if isinstance(start_activities, dict) else ""
+            viz.edge("@@startnode", activities_map[act], label=label)
 
     if end_activities_to_include:
         viz.node("@@endnode", "@@E", style='filled', shape='circle', fillcolor="#FFA500", fontcolor="#FFA500")
         for act in end_activities_to_include:
-            viz.edge(activities_map[act], "@@endnode")
+            label = str(end_activities[act]) if isinstance(end_activities, dict) else ""
+            viz.edge(activities_map[act], "@@endnode", label=label)
 
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
