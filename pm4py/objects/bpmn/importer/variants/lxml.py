@@ -1,4 +1,5 @@
 from pm4py.objects.bpmn.bpmn_graph import BPMN
+from pm4py.util import constants
 
 
 class Counts:
@@ -118,6 +119,32 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
     return bpmn_graph
 
 
+def import_xml_tree_from_root(root):
+    """
+    Imports a BPMN graph from (the root of) an XML tree
+
+    Parameters
+    -------------
+    root
+        Root of the tree
+
+    Returns
+    -------------
+    bpmn_graph
+        BPMN graph
+    """
+    bpmn_graph = BPMN()
+    counts = Counts()
+    incoming_dict = {}
+    outgoing_dict = {}
+    nodes_dict = {}
+    nodes_bounds = {}
+    flow_info = {}
+
+    return parse_element(bpmn_graph, counts, root, [], incoming_dict, outgoing_dict, nodes_dict, nodes_bounds,
+                         flow_info)
+
+
 def apply(path, parameters=None):
     """
     Imports a BPMN diagram from a file
@@ -141,14 +168,35 @@ def apply(path, parameters=None):
 
     parser = etree.XMLParser(remove_comments=True)
     xml_tree = objectify.parse(path, parser=parser)
-    root = xml_tree.getroot()
-    bpmn_graph = BPMN()
-    counts = Counts()
-    incoming_dict = {}
-    outgoing_dict = {}
-    nodes_dict = {}
-    nodes_bounds = {}
-    flow_info = {}
 
-    return parse_element(bpmn_graph, counts, root, [], incoming_dict, outgoing_dict, nodes_dict, nodes_bounds,
-                         flow_info)
+    return import_xml_tree_from_root(xml_tree.getroot())
+
+
+def import_from_string(bpmn_string, parameters=None):
+    """
+    Imports a BPMN diagram from a string
+
+    Parameters
+    -------------
+    path
+        Path to the file
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    -------------
+    bpmn_graph
+        BPMN graph
+    """
+    if parameters is None:
+        parameters = {}
+
+    if type(bpmn_string) is str:
+        bpmn_string = bpmn_string.encode(constants.DEFAULT_ENCODING)
+
+    from lxml import etree, objectify
+
+    parser = etree.XMLParser(remove_comments=True)
+    root = objectify.fromstring(bpmn_string, parser=parser)
+
+    return import_xml_tree_from_root(root)

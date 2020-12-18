@@ -9,30 +9,7 @@ class Variants(Enum):
     ETREE = etree_xes_exp
 
 
-def __export_log_as_string(log, variant=Variants.ETREE, parameters=None):
-    """
-    Method to export a XES from a log as a string
-
-    Parameters
-    -----------
-    log
-        Trace log
-    variant
-        Selected variant of the algorithm
-    parameters
-        Parameters of the algorithm
-
-    Returns
-    -----------
-    string
-        String describing the XES
-    """
-    parameters = dict() if parameters is None else parameters
-    variant = variant if isinstance(variant, Variants) else Variants.ETREE
-    return variant.value.apply(log_conversion.apply(log, parameters=parameters), parameters=parameters)
-
-
-def __export_log(log, output_file_path, variant=Variants.ETREE, parameters=None):
+def apply(log, output_file_path, variant=Variants.ETREE, parameters=None):
     """
     Method to export a XES from a log
 
@@ -53,21 +30,27 @@ def __export_log(log, output_file_path, variant=Variants.ETREE, parameters=None)
                                                  parameters=parameters)
 
 
-def apply(log, output_file_path, variant=Variants.ETREE, parameters=None):
+def serialize(log, variant=Variants.ETREE, parameters=None):
     """
-    Method to export a XES from a log
+    Serialize a log into a binary string containing the XES of the log
 
     Parameters
     -----------
     log
         Trace log
-    output_file_path
-        Output file path
     variant
         Selected variant of the algorithm
     parameters
-        Parameters of the algorithm:
-            Parameters.COMPRESS -> Indicates that the XES file must be compressed
+        Parameters of the algorithm
+
+    Returns
+    -----------
+    string
+        String describing the XES
     """
-    __export_log(log, output_file_path, variant=variant,
-                 parameters=parameters)
+    parameters = dict() if parameters is None else parameters
+
+    log_string = exec_utils.get_variant(variant).export_log_as_string(log_conversion.apply(log, parameters=parameters),
+                                                                      parameters=parameters)
+
+    return log_string
