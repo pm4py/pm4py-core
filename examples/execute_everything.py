@@ -190,6 +190,12 @@ def dfg_min_ex_pandas():
     dfg_min_ex_pandas.execute_script()
 
 
+def dfg_filt_act_paths_perc():
+    from examples import dfg_filt_act_paths_perc
+    print("\n\ndfg_filt_act_paths_perc")
+    dfg_filt_act_paths_perc.execute_script()
+
+
 def graphs_visualization():
     from examples import graphs_visualization
     print("\n\ngraphs_visualization")
