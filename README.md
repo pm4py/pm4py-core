@@ -13,9 +13,9 @@ import pm4py
 
 log = pm4py.read_xes('<path-to-xes-log-file.xes>')
 
-net, initial_marking, final_marking = pm4py.discover_petri_net_inductive(log)
+process_model, initial_marking, final_marking = pm4py.discover_petri_net_inductive(log)
 
-pm4py.view_petri_net(pnet, initial_marking, final_marking, format="svg")
+pm4py.view_petri_net(process_model, initial_marking, final_marking, format="svg")
 ```
 
 ## Installation
