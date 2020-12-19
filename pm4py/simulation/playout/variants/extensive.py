@@ -62,7 +62,7 @@ def apply(net, initial_marking, final_marking=None, parameters=None):
         trace = state[POSITION_TRACE]
         en_t = semantics.enabled_transitions(net, m)
 
-        if (final_marking is not None and m == final_marking) or len(en_t) == 0:
+        if (final_marking is not None and m == final_marking) or (final_marking is None and len(en_t) == 0):
             if len(trace) <= max_trace_length:
                 log_trace = log_instance.Trace()
                 log_trace.attributes[case_id_key] = str(len(log))
