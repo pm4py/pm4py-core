@@ -70,9 +70,20 @@ def convert_to_bpmn(*args):
         BPMN diagram
     """
     from pm4py.objects.process_tree.process_tree import ProcessTree
+
     if isinstance(args[0], ProcessTree):
         from pm4py.objects.conversion.process_tree.variants import to_bpmn
         return to_bpmn.apply(args[0])
+    else:
+        # try to convert the object to a Petri net. Then, use the PM4Py PN-to-BPMN converter
+        # to get the BPMN object
+        try:
+            net, im, fm = convert_to_petri_net(*args)
+            from pm4py.objects.conversion.wf_net.variants import to_bpmn
+            return to_bpmn.apply(net, im, fm)
+        except:
+            # don't do nothing and throw the following exception
+            pass
     # if no conversion is done, then the format of the arguments is unsupported
     raise Exception("unsupported conversion of the provided object to BPMN")
 
@@ -143,4 +154,3 @@ def convert_to_process_tree(*args):
         return tree
 
     raise Exception("the object represents a model that cannot be represented as a process tree!")
-
