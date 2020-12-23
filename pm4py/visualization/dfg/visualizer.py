@@ -3,7 +3,7 @@ from pm4py.visualization.common import save as gsave
 from pm4py.visualization.dfg.variants import frequency, performance
 from enum import Enum
 from pm4py.util import exec_utils
-
+from copy import deepcopy
 
 class Variants(Enum):
     FREQUENCY = frequency
@@ -13,7 +13,8 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.FREQUENCY
 
 
-def apply(dfg, log=None, activities_count=None, soj_time=None, parameters=None, variant=DEFAULT_VARIANT):
+def apply(dfg0, log=None, activities_count=None, soj_time=None, parameters=None, variant=DEFAULT_VARIANT):
+    dfg = deepcopy(dfg0)
     return exec_utils.get_variant(variant).apply(dfg, log=log, activities_count=activities_count, soj_time=soj_time, parameters=parameters)
 
 
