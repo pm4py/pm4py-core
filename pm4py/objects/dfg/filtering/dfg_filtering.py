@@ -3,6 +3,7 @@ import uuid
 
 from pm4py.objects.dfg.utils.dfg_utils import get_max_activity_count
 from pm4py.util import constants
+from copy import deepcopy
 
 DEFAULT_NOISE_THRESH_DF = 0.16
 
@@ -48,20 +49,20 @@ def generate_nx_graph_from_dfg(dfg, start_activities, end_activities, activities
     return G, start_node, end_node
 
 
-def filter_dfg_on_activities_percentage(dfg, start_activities, end_activities, activities_count, percentage):
+def filter_dfg_on_activities_percentage(dfg0, start_activities0, end_activities0, activities_count0, percentage):
     """
     Filters a DFG (complete, and so connected) on the specified percentage of activities
     (but ensuring that every node is still reachable from the start and to the end)
 
     Parameters
     ----------------
-    dfg
+    dfg0
         (Complete, and so connected) DFG
-    start_activities
+    start_activities0
         Start activities
-    end_activities
+    end_activities0
         End activities
-    activities_count
+    activities_count0
         Activities of the DFG along with their count
     percentage
         Percentage of activities
@@ -78,6 +79,12 @@ def filter_dfg_on_activities_percentage(dfg, start_activities, end_activities, a
         (Filtered) activities of the DFG along with their count
     """
     import networkx as nx
+
+    # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
+    dfg = deepcopy(dfg0)
+    start_activities = deepcopy(start_activities0)
+    end_activities = deepcopy(end_activities0)
+    activities_count = deepcopy(activities_count0)
 
     if len(activities_count) > 1 and len(dfg) > 1:
         activities_count_sorted_list = sorted([(x, y) for x, y in activities_count.items()], key=lambda x: x[1],
@@ -135,23 +142,27 @@ def filter_dfg_on_activities_percentage(dfg, start_activities, end_activities, a
     return dfg, start_activities, end_activities, activities_count
 
 
-def filter_dfg_on_paths_percentage(dfg, start_activities, end_activities, activities_count, percentage):
+def filter_dfg_on_paths_percentage(dfg0, start_activities0, end_activities0, activities_count0, percentage,
+                                   keep_all_activities=False):
     """
     Filters a DFG (complete, and so connected) on the specified percentage of paths
     (but ensuring that every node is still reachable from the start and to the end)
 
     Parameters
     ----------------
-    dfg
+    dfg0
         (Complete, and so connected) DFG
-    start_activities
+    start_activities0
         Start activities
-    end_activities
+    end_activities0
         End activities
-    activities_count
+    activities_count0
         Activities of the DFG along with their count
     percentage
         Percentage of paths
+    keep_all_activities
+        Decides if all the activities (also the ones connected by the low occurrences edges) should be kept,
+        or only the ones appearing in the edges with more occurrences (default).
 
     Returns
     ----------------
@@ -166,6 +177,12 @@ def filter_dfg_on_paths_percentage(dfg, start_activities, end_activities, activi
     """
     import networkx as nx
 
+    # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
+    dfg = deepcopy(dfg0)
+    start_activities = deepcopy(start_activities0)
+    end_activities = deepcopy(end_activities0)
+    activities_count = deepcopy(activities_count0)
+
     if len(activities_count) > 1 and len(dfg) > 1:
         # build a graph structure that helps in deciding whether the paths can be discarded safely
         graph, start_node, end_node = generate_nx_graph_from_dfg(dfg, start_activities, end_activities,
@@ -179,8 +196,16 @@ def filter_dfg_on_paths_percentage(dfg, start_activities, end_activities, activi
             x[0] for x in all_edges[:math.ceil((len(all_edges) - 1) * percentage) + 1])
         discardable_edges = list(x[0] for x in all_edges[math.ceil((len(all_edges) - 1) * percentage) + 1:])
         discardable_edges.reverse()
-        activities_not_to_discard = set(x[0] for x in non_discardable_edges if not x[0] == start_node).union(
-            set(x[1] for x in non_discardable_edges if not x[1] == end_node))
+
+        # according to the parameter's value, keep the activities that appears in the edges that should not be
+        # discarded (default), OR keep all the activities, trying to remove edges but ensure connectiveness of
+        # everything
+        if keep_all_activities:
+            activities_not_to_discard = set(x[0] for x in dfg).union(set(x[1] for x in dfg)).union(
+                set(start_activities)).union(set(end_activities)).union(set(activities_count))
+        else:
+            activities_not_to_discard = set(x[0] for x in non_discardable_edges if not x[0] == start_node).union(
+                set(x[1] for x in non_discardable_edges if not x[1] == end_node))
         for edge in discardable_edges:
             if len(dfg) > 1:
                 new_graph = nx.DiGraph(graph)
