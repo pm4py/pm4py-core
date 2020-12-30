@@ -212,6 +212,7 @@ class BPMN(object):
         if target in self.__nodes:
             target.remove_in_arc(flow)
         self.__flows.remove(flow)
+        self.__graph.remove_edge(source, target)
 
     def add_flow(self, flow):
         if type(flow) != BPMN.Flow:
