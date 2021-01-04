@@ -805,3 +805,89 @@ def transform_dfg_to_directed_nx_graph(dfg, activities=None):
         msg = "networkx is not available. inductive miner cannot be used!"
         logging.error(msg)
         raise Exception(msg)
+
+
+def get_successors(dfg, activities_model=None):
+    """
+    Gets the successors of any node of the DFG graph
+
+    Parameters
+    ----------------
+    dfg
+        DFG
+    activities_model
+        Activities of the process model (if None, it is inferred from the process model)
+
+    Returns
+    -----------------
+    successors
+        Dictionary associating to each node all the descendants
+    """
+    if activities_model is None:
+        activities_model = set(x[0] for x in dfg).union(set(x[1] for x in dfg))
+    prev = {x: set() for x in activities_model}
+    curr = {x: set() for x in activities_model}
+    changed = {x: True for x in activities_model}
+    for x in dfg:
+        curr[x[0]].add(x[1])
+    sthing_diff = True
+    while sthing_diff:
+        sthing_diff = False
+        diff = {}
+        for x in prev:
+            if changed[x]:
+                this_diff = curr[x].difference(prev[x])
+                if this_diff:
+                    sthing_diff = True
+                else:
+                    changed[x] = False
+                diff[x] = this_diff
+        prev = copy(curr)
+        for x in diff:
+            if changed[x]:
+                for y in diff[x]:
+                    curr[x] = curr[x].union(curr[y])
+    return curr
+
+
+def get_predecessors(dfg, activities_model=None):
+    """
+    Gets the predecessors of any node of the DFG graph
+
+    Parameters
+    ----------------
+    dfg
+        DFG
+    activities_model
+        Activities of the process model (if None, it is inferred from the process model)
+
+    Returns
+    -----------------
+    predecessors
+        Dictionary associating to each node all the ascendants
+    """
+    if activities_model is None:
+        activities_model = set(x[0] for x in dfg).union(set(x[1] for x in dfg))
+    prev = {x: set() for x in activities_model}
+    curr = {x: set() for x in activities_model}
+    changed = {x: True for x in activities_model}
+    for x in dfg:
+        curr[x[1]].add(x[0])
+    sthing_diff = True
+    while sthing_diff:
+        sthing_diff = False
+        diff = {}
+        for x in prev:
+            if changed[x]:
+                this_diff = curr[x].difference(prev[x])
+                if this_diff:
+                    sthing_diff = True
+                else:
+                    changed[x] = False
+                diff[x] = this_diff
+        prev = copy(curr)
+        for x in diff:
+            if changed[x]:
+                for y in diff[x]:
+                    curr[x] = curr[x].union(curr[y])
+    return curr

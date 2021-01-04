@@ -1,14 +1,27 @@
 import sys
 import tempfile
-import numpy as np
 
-from pulp import LpProblem, LpMinimize, LpVariable, LpStatus, value, PULP_CBC_CMD
-from pm4py.util.lp.parameters import Parameters
+import numpy as np
+import pulp
+from pulp import LpProblem, LpMinimize, LpVariable, LpStatus, value
+
 from pm4py.util import exec_utils
+from pm4py.util.lp.parameters import Parameters
 
 MIN_THRESHOLD = 10 ** -12
 # max safe number of constraints (log10)
 MAX_NUM_CONSTRAINTS = 7
+
+# keeps compatibility with 1.6.x versions of PuLP in which the interface
+# for solving was the latter one
+if hasattr(pulp, "__version__"):
+    # new interface
+    from pulp import PULP_CBC_CMD
+
+    solver = lambda prob: PULP_CBC_CMD(msg=0).solve(prob)
+else:
+    # old interface
+    solver = lambda prob: prob.solve()
 
 
 def get_terminal_part_name_num(num):
@@ -115,14 +128,15 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                     eval_str = eval_str + str(Aeq[i, j]) + "*x_list[" + str(j) + "]"
                     expr_count = expr_count + 1
             if eval_str:
-                eval_str = eval_str + "==" + str(beq[i].reshape(-1, ).tolist()[0][0]) + ", \"vinceq_" + get_terminal_part_name_num(
+                eval_str = eval_str + "==" + str(
+                    beq[i].reshape(-1, ).tolist()[0][0]) + ", \"vinceq_" + get_terminal_part_name_num(
                     i + 1 + Aub.shape[0]) + "\""
 
                 prob += eval(eval_str)
 
     filename = tempfile.NamedTemporaryFile(suffix='.lp').name
     prob.writeLP(filename)
-    PULP_CBC_CMD(msg=0).solve(prob)
+    solver(prob)
 
     return prob
 

@@ -1,6 +1,9 @@
-VERSION = '2.1.2'
+VERSION = '2.1.3'
 
-import time, pkgutil, logging, sys
+import logging
+import pkgutil
+import sys
+import time
 
 time.clock = time.process_time
 
@@ -28,32 +31,32 @@ else:
     logging.error("networkx is not available. This can lead some features of PM4Py to not work correctly!")
 
 if pkgutil.find_loader("matplotlib"):
-    import matplotlib
+    pass
 else:
     logging.error("matplotlib is not available. This can lead some features of PM4Py to not work correctly!")
 
 if pkgutil.find_loader("lxml"):
-    import lxml
+    pass
 else:
     logging.error("lxml is not available. This can lead some features of PM4Py to not work correctly!")
 
 if pkgutil.find_loader("pandas"):
-    import pandas
+    pass
 else:
     logging.error("pandas is not available. This can lead some features of PM4Py to not work correctly!")
 
 if pkgutil.find_loader("pulp"):
-    import pulp
+    pass
 else:
     logging.error("pulp is not available. This can lead some features of PM4Py to not work correctly!")
 
 if pkgutil.find_loader("graphviz"):
-    import graphviz
+    pass
 else:
     logging.error("graphviz is not available. This can lead some features of PM4Py to not work correctly!")
 
 if pkgutil.find_loader("intervaltree"):
-    import intervaltree
+    pass
 else:
     logging.error("intervaltree is not available. This can lead some features of PM4Py to not work correctly!")
 
@@ -88,6 +91,6 @@ if sys.version_info >= (3, 5):
     from pm4py import streaming
 
     if pkgutil.find_loader("sympy"):
-        import sympy
+        pass
     else:
         logging.error("sympy is not available. This can lead some features of PM4Py to not work correctly!")

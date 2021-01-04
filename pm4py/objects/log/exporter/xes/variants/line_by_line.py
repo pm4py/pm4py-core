@@ -1,11 +1,16 @@
-import tempfile
+import gzip
+import pkgutil
 from enum import Enum
+from io import BytesIO
 
 from pm4py.objects.log.util import xes as xes_util
+from pm4py.util import exec_utils, constants
 
 
 class Parameters(Enum):
-    COMPRESS = False
+    COMPRESS = "compress"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
+    ENCODING = "encoding"
 
 
 # defines correspondence between Python types and XES types
@@ -102,10 +107,10 @@ def export_attribute(attr_name, attr_value, indent_level):
         if attr_value[xes_util.KEY_VALUE] is None:
             # list
             ret.append(get_tab_indent(indent_level) + "<list key=\"%s\">\n" % (attr_name))
-            ret.append(get_tab_indent(indent_level+1) + "<values>\n")
+            ret.append(get_tab_indent(indent_level + 1) + "<values>\n")
             for subattr in attr_value[xes_util.KEY_CHILDREN]:
-                ret.append(export_attribute(subattr[0], subattr[1], indent_level+2))
-            ret.append(get_tab_indent(indent_level+1) + "</values>\n")
+                ret.append(export_attribute(subattr[0], subattr[1], indent_level + 2))
+            ret.append(get_tab_indent(indent_level + 1) + "</values>\n")
             ret.append(get_tab_indent(indent_level) + "</list>\n")
         else:
             # nested attribute
@@ -115,56 +120,72 @@ def export_attribute(attr_name, attr_value, indent_level):
             ret.append(get_tab_indent(
                 indent_level) + "<%s key=\"%s\" value=\"%s\">\n" % (this_type, attr_name, this_value))
             for subattr_name, subattr_value in attr_value[xes_util.KEY_CHILDREN].items():
-                ret.append(export_attribute(subattr_name, subattr_value, indent_level+1))
+                ret.append(export_attribute(subattr_name, subattr_value, indent_level + 1))
             ret.append("</%s>\n" % this_type)
     return "".join(ret)
 
 
-def export_log_line_by_line(log, parameters=None):
+def export_log_line_by_line(log, fp_obj, encoding, parameters=None):
     """
-    Exports the contents of the log line-by-line,
-    yielding each line back to an iterator
+    Exports the contents of the log line-by-line
+    to a file object
 
     Parameters
     --------------
     log
         Event log
+    fp_obj
+        File object
+    encoding
+        Encoding
     parameters
         Parameters of the algorithm
-
-    Returns
-    --------------
-    line
-        Line-by-line yielding of the content of the log
     """
     if parameters is None:
         parameters = {}
 
-    yield "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
-    yield "<log>\n"
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+
+    progress = None
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        from tqdm.auto import tqdm
+        progress = tqdm(total=len(log), desc="exporting log, completed traces :: ")
+
+    fp_obj.write(("<?xml version=\"1.0\" encoding=\"" + encoding + "\" ?>\n").encode(
+        encoding))
+    fp_obj.write(("<log>\n").encode(encoding))
     for ext_name, ext_value in log.extensions.items():
-        yield get_tab_indent(1) + "<extension name=\"%s\" prefix=\"%s\" uri=\"%s\" />\n" % (
-        ext_name, ext_value[xes_util.KEY_PREFIX], ext_value[xes_util.KEY_URI])
+        fp_obj.write((get_tab_indent(1) + "<extension name=\"%s\" prefix=\"%s\" uri=\"%s\" />\n" % (
+            ext_name, ext_value[xes_util.KEY_PREFIX], ext_value[xes_util.KEY_URI])).encode(encoding))
     for clas_name, clas_attributes in log.classifiers.items():
-        yield get_tab_indent(1) + "<classifier name=\"%s\" keys=\"%s\" />\n" % (clas_name, " ".join(clas_attributes))
+        fp_obj.write((get_tab_indent(1) + "<classifier name=\"%s\" keys=\"%s\" />\n" % (
+            clas_name, " ".join(clas_attributes))).encode(encoding))
     for attr_name, attr_value in log.attributes.items():
-        yield export_attribute(attr_name, attr_value, 1)
+        fp_obj.write(export_attribute(attr_name, attr_value, 1).encode(encoding))
     for scope in log.omni_present:
-        yield get_tab_indent(1) + "<global scope=\"%s\">\n" % (scope)
+        fp_obj.write((get_tab_indent(1) + "<global scope=\"%s\">\n" % (scope)).encode(encoding))
         for attr_name, attr_value in log.omni_present[scope].items():
-            yield export_attribute(attr_name, attr_value, 2)
-        yield get_tab_indent(1) + "</global>\n"
+            fp_obj.write(export_attribute(attr_name, attr_value, 2).encode(encoding))
+        fp_obj.write((get_tab_indent(1) + "</global>\n").encode(encoding))
     for trace in log:
-        yield get_tab_indent(1) + "<trace>\n"
+        fp_obj.write((get_tab_indent(1) + "<trace>\n").encode(encoding))
         for attr_name, attr_value in trace.attributes.items():
-            yield export_attribute(attr_name, attr_value, 2)
+            fp_obj.write(export_attribute(attr_name, attr_value, 2).encode(encoding))
         for event in trace:
-            yield get_tab_indent(2) + "<event>\n"
+            fp_obj.write((get_tab_indent(2) + "<event>\n").encode(encoding))
             for attr_name, attr_value in event.items():
-                yield export_attribute(attr_name, attr_value, 3)
-            yield get_tab_indent(2) + "</event>\n"
-        yield get_tab_indent(1) + "</trace>\n"
-    yield "</log>\n"
+                fp_obj.write(export_attribute(attr_name, attr_value, 3).encode(encoding))
+            fp_obj.write((get_tab_indent(2) + "</event>\n").encode(encoding))
+        fp_obj.write((get_tab_indent(1) + "</trace>\n").encode(encoding))
+        if progress is not None:
+            progress.update()
+
+    # gracefully close progress bar
+    if progress is not None:
+        progress.close()
+    del progress
+
+    fp_obj.write("</log>\n".encode(encoding))
 
 
 def apply(log, output_file_path, parameters=None):
@@ -184,10 +205,19 @@ def apply(log, output_file_path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    F = open(output_file_path, "wb")
-    for line in export_log_line_by_line(log, parameters=parameters):
-        F.write(line.encode("utf-8"))
-    F.close()
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, output_file_path.lower().endswith(".gz"))
+
+    if compress:
+        if not output_file_path.lower().endswith(".gz"):
+            output_file_path = output_file_path + ".gz"
+        f = gzip.open(output_file_path, mode="wb")
+    else:
+        f = open(output_file_path, "wb")
+
+    export_log_line_by_line(log, f, encoding, parameters=parameters)
+
+    f.close()
 
 
 def export_log_as_string(log, parameters=None):
@@ -209,12 +239,19 @@ def export_log_as_string(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    ret = []
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, False)
 
-    for line in export_log_line_by_line(log, parameters=parameters):
-        ret.append(line)
+    b = BytesIO()
 
-    ret = "".join(ret)
-    ret = ret.encode("utf-8")
+    if compress:
+        d = gzip.GzipFile(fileobj=b, mode="wb")
+    else:
+        d = b
 
-    return ret
+    export_log_line_by_line(log, d, encoding, parameters=parameters)
+
+    if compress:
+        d.close()
+
+    return b.getvalue()

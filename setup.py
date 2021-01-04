@@ -166,7 +166,7 @@ setup(
         'pydotplus',
         'pytz',
         'pyvis',
-        'scikit-learn; python_version < \'3.9\'',
+        'scikit-learn',
         'scipy',
         'stringdist',
         'sympy',
