@@ -14,6 +14,8 @@ class Parameters(Enum):
     DEEP_COPY = constants.DEEPCOPY
     STREAM_POST_PROCESSING = constants.STREAM_POSTPROCESSING
     CASE_ATTRIBUTE_PREFIX = "case_attribute_prefix"
+    INCLUDE_CASE_ATTRIBUTES = "include_case_attributes"
+    COMPRESS = "compress"
 
 
 def __postprocess_stream(list_events):
@@ -36,16 +38,56 @@ def __postprocess_stream(list_events):
     for event in list_events:
         event_keys = list(event.keys())
         for k in event_keys:
-            if type(event[k]) is pandas._libs.tslibs.nattype.NaTType:
+            typ_k = type(event[k])
+            if typ_k is pandas._libs.tslibs.nattype.NaTType:
                 del event[k]
                 continue
-            if (type(event[k]) is float or type(event[k]) is int) and math.isnan(event[k]):
+            elif (typ_k is float or typ_k is int) and math.isnan(event[k]):
                 del event[k]
                 continue
-            ev_str = str(event[k]).lower()
-            if ev_str == "none" or ev_str == "null" or len(ev_str) == 0:
+            elif event[k] is None:
                 del event[k]
                 continue
+    return list_events
+
+
+def __compress(list_events):
+    """
+    Compress a list of events,
+    using one instantiation for the same key/value.
+
+    Parameters
+    --------------
+    list_events
+        List of events of the stream
+
+    Returns
+    --------------
+    :param list_events:
+    :return:
+    """
+    compress_dict = {}
+    i = 0
+    while i < len(list_events):
+        # create a new event where keys and values are compressed
+        comp_ev = {}
+        for k, v in list_events[i].items():
+            # check if the key has already been instantiated.
+            # in that case, use the current instantiation.
+            if k not in compress_dict:
+                compress_dict[k] = k
+            else:
+                k = compress_dict[k]
+            # check if the value has already been instantiated.
+            # in that case, use the current instantiation
+            if v not in compress_dict:
+                compress_dict[v] = v
+            else:
+                v = compress_dict[v]
+            # saves the compressed keys and values in the dictionary
+            comp_ev[k] = v
+        list_events[i] = comp_ev
+        i = i + 1
     return list_events
 
 
@@ -72,17 +114,21 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    stream_post_processing = exec_utils.get_param_value(Parameters.STREAM_POST_PROCESSING, parameters, False)
+    stream_post_processing = exec_utils.get_param_value(Parameters.STREAM_POST_PROCESSING, parameters, True)
     case_pref = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTE_PREFIX, parameters, 'case:')
-    enable_deepcopy = exec_utils.get_param_value(Parameters.DEEP_COPY, parameters, False)
+    enable_deepcopy = exec_utils.get_param_value(Parameters.DEEP_COPY, parameters, True)
+    include_case_attributes = exec_utils.get_param_value(Parameters.INCLUDE_CASE_ATTRIBUTES, parameters, True)
+    compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, True)
 
     if pkgutil.find_loader("pandas"):
         import pandas
-        if isinstance(log, pandas.core.frame.DataFrame):
+        if isinstance(log, pandas.DataFrame):
             extensions = __detect_extensions(log)
             list_events = pandas_utils.to_dict_records(log)
             if stream_post_processing:
                 list_events = __postprocess_stream(list_events)
+            if compress:
+                list_events = __compress(list_events)
             for i in range(len(list_events)):
                 list_events[i] = Event(list_events[i])
             log = log_instance.EventStream(list_events, attributes={'origin': 'csv'})
@@ -91,7 +137,7 @@ def apply(log, parameters=None):
                     xes_constants.KEY_PREFIX: ex.prefix,
                     xes_constants.KEY_URI: ex.uri}
     if isinstance(log, EventLog):
-        return __transform_event_log_to_event_stream(log, include_case_attributes=True,
+        return __transform_event_log_to_event_stream(log, include_case_attributes=include_case_attributes,
                                                      case_attribute_prefix=case_pref, enable_deepcopy=enable_deepcopy)
     return log
 
