@@ -1,3 +1,4 @@
+import gzip
 import logging
 import pkgutil
 import sys
@@ -16,6 +17,9 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     REVERSE_SORT = "reverse_sort"
     MAX_TRACES = "max_traces"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
+    DECOMPRESS_SERIALIZATION = "decompress_serialization"
+    ENCODING = "encoding"
 
 
 # ITERPARSE EVENTS
@@ -75,10 +79,11 @@ def import_from_context(context, num_traces, parameters=None):
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     reverse_sort = exec_utils.get_param_value(Parameters.REVERSE_SORT, parameters, False)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
 
     date_parser = dt_parser.get()
     progress = None
-    if pkgutil.find_loader("tqdm"):
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
         from tqdm.auto import tqdm
         progress = tqdm(total=num_traces, desc="parsing log, completed traces :: ")
 
@@ -256,6 +261,8 @@ def apply(filename, parameters=None):
             Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
             Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
             Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            Parameters.SHOW_PROGRESS_BAR -> Enables/disables the progress bar (default: True)
+            Parameters.ENCODING -> regulates the encoding (default: utf-8)
 
     Returns
     -------
@@ -279,6 +286,8 @@ def import_log(filename, parameters=None):
             Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
             Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
             Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            Parameters.SHOW_PROGRESS_BAR -> Enables/disables the progress bar (default: True)
+            Parameters.ENCODING -> regulates the encoding (default: utf-8)
 
     Returns
     -------
@@ -290,10 +299,26 @@ def import_log(filename, parameters=None):
     if parameters is None:
         parameters = {}
 
-    context = etree.iterparse(filename, events=[_EVENT_START, _EVENT_END])
-    num_traces = count_traces(context)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    is_compressed = filename.lower().endswith(".gz")
 
-    context = etree.iterparse(filename, events=[_EVENT_START, _EVENT_END])
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        if is_compressed:
+            f = gzip.open(filename, "rb")
+        else:
+            f = open(filename, "rb")
+        context = etree.iterparse(f, events=[_EVENT_START, _EVENT_END], encoding=encoding)
+        num_traces = count_traces(context)
+    else:
+        # avoid the iteration to calculate the number of traces is "tqdm" is not used
+        num_traces = 0
+
+    if is_compressed:
+        f = gzip.open(filename, "rb")
+    else:
+        f = open(filename, "rb")
+    context = etree.iterparse(f, events=[_EVENT_START, _EVENT_END], encoding=encoding)
 
     return import_from_context(context, num_traces, parameters=parameters)
 
@@ -313,6 +338,8 @@ def import_from_string(log_string, parameters=None):
             Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
             Parameters.INSERT_TRACE_INDICES -> Specify if trace indexes should be added as event attribute for each event
             Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            Parameters.SHOW_PROGRESS_BAR -> Enables/disables the progress bar (default: True)
+            Parameters.ENCODING -> regulates the encoding (default: utf-8)
 
     Returns
     -----------
@@ -324,15 +351,33 @@ def import_from_string(log_string, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    decompress_serialization = exec_utils.get_param_value(Parameters.DECOMPRESS_SERIALIZATION, parameters, False)
+
     if type(log_string) is str:
         log_string = log_string.encode(constants.DEFAULT_ENCODING)
 
-    bio = BytesIO(log_string)
-    context = etree.iterparse(bio, events=[_EVENT_START, _EVENT_END])
-    num_traces = count_traces(context)
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        # first iteration: count the number of traces
+        b = BytesIO(log_string)
+        if decompress_serialization:
+            s = gzip.GzipFile(fileobj=b, mode="rb")
+        else:
+            s = b
+        context = etree.iterparse(s, events=[_EVENT_START, _EVENT_END], encoding=encoding)
+        num_traces = count_traces(context)
+    else:
+        # avoid the iteration to calculate the number of traces is "tqdm" is not used
+        num_traces = 0
 
-    bio = BytesIO(log_string)
-    context = etree.iterparse(bio, events=[_EVENT_START, _EVENT_END])
+    # second iteration: actually read the content
+    b = BytesIO(log_string)
+    if decompress_serialization:
+        s = gzip.GzipFile(fileobj=b, mode="rb")
+    else:
+        s = b
+    context = etree.iterparse(s, events=[_EVENT_START, _EVENT_END], encoding=encoding)
 
     return import_from_context(context, num_traces, parameters=parameters)
 
