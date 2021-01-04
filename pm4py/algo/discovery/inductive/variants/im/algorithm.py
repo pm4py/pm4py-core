@@ -2,9 +2,9 @@ from pm4py import util as pmutil
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.variants.im.util import get_tree_repr_implain
 from pm4py.algo.discovery.inductive.variants.im.data_structures import subtree_plain as subtree
-from pm4py.algo.filtering.log.attributes import attributes_filter
-from pm4py.algo.filtering.log.end_activities import end_activities_filter
-from pm4py.algo.filtering.log.start_activities import start_activities_filter
+from pm4py.statistics.attributes.log import get as attributes_get
+from pm4py.statistics.end_activities.log import get as end_activities_get
+from pm4py.statistics.start_activities.log import get as start_activities_get
 from pm4py.algo.discovery.dfg.variants import native as dfg_inst
 from pm4py.objects.conversion.process_tree import converter as tree_to_petri
 from pm4py.algo.discovery.inductive.parameters import Parameters
@@ -119,9 +119,9 @@ def apply_tree(log, parameters=None):
 
     dfg = [(k, v) for k, v in dfg_inst.apply(log, parameters=parameters).items() if v > 0]
     c = Counts()
-    activities = attributes_filter.get_attribute_values(log, activity_key)
-    start_activities = list(start_activities_filter.get_start_activities(log, parameters=parameters).keys())
-    end_activities = list(end_activities_filter.get_end_activities(log, parameters=parameters).keys())
+    activities = attributes_get.get_attribute_values(log, activity_key)
+    start_activities = list(start_activities_get.get_start_activities(log, parameters=parameters).keys())
+    end_activities = list(end_activities_get.get_end_activities(log, parameters=parameters).keys())
     contains_empty_traces = False
     traces_length = [len(trace) for trace in log]
     if traces_length:
