@@ -10,7 +10,10 @@ class Variants(Enum):
     LINE_BY_LINE = line_by_line
 
 
-def apply(log, output_file_path, variant=Variants.ETREE, parameters=None):
+DEFAULT_VARIANT = Variants.LINE_BY_LINE
+
+
+def apply(log, output_file_path, variant=DEFAULT_VARIANT, parameters=None):
     """
     Method to export a XES from a log
 
@@ -31,7 +34,7 @@ def apply(log, output_file_path, variant=Variants.ETREE, parameters=None):
                                                  parameters=parameters)
 
 
-def serialize(log, variant=Variants.ETREE, parameters=None):
+def serialize(log, variant=DEFAULT_VARIANT, parameters=None):
     """
     Serialize a log into a binary string containing the XES of the log
 
