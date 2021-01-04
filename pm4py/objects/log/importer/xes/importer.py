@@ -2,7 +2,6 @@ import pkgutil
 from enum import Enum
 
 from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_mem_compressed
-from pm4py.objects.log.util import compression
 
 
 class Variants(Enum):
@@ -42,11 +41,6 @@ def apply(path, parameters=None, variant=DEFAULT_VARIANT):
     log
         Trace log object
     """
-    # supporting .xes.gz file types
-    if path.endswith("gz"):
-        path = compression.decompress(path)
-
-    # backward compatibility
     if variant == 'nonstandard':
         variant = Variants.LINE_BY_LINE
     elif variant == 'iterparse':
