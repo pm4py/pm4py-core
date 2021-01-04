@@ -807,9 +807,9 @@ def transform_dfg_to_directed_nx_graph(dfg, activities=None):
         raise Exception(msg)
 
 
-def get_descendants(dfg, activities_model=None):
+def get_successors(dfg, activities_model=None):
     """
-    Gets the descendants of any node of the DFG graph
+    Gets the successors of any node of the DFG graph
 
     Parameters
     ----------------
@@ -820,7 +820,7 @@ def get_descendants(dfg, activities_model=None):
 
     Returns
     -----------------
-    descendants
+    successors
         Dictionary associating to each node all the descendants
     """
     if activities_model is None:
@@ -850,9 +850,9 @@ def get_descendants(dfg, activities_model=None):
     return curr
 
 
-def get_ascendants(dfg, activities_model=None):
+def get_predecessors(dfg, activities_model=None):
     """
-    Gets the ascendants of any node of the DFG graph
+    Gets the predecessors of any node of the DFG graph
 
     Parameters
     ----------------
@@ -863,7 +863,7 @@ def get_ascendants(dfg, activities_model=None):
 
     Returns
     -----------------
-    ascendants
+    predecessors
         Dictionary associating to each node all the ascendants
     """
     if activities_model is None:
