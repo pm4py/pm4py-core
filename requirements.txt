@@ -43,7 +43,7 @@ pandas
 pulp<=2.1
 pydotplus
 pyvis
-scikit-learn; python_version < '3.9'
+scikit-learn
 stringdist
 sympy
 ciso8601; python_version < '3.7'

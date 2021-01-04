@@ -1,17 +1,27 @@
+import pkgutil
 from enum import Enum
 
-from lxml import etree
+try:
+    # do not compromise anymore importing the XES "exporter" package if "lxml" is / cannot be installed,
+    # and this variant cannot be used.
+    # after all, the default variant is now the "line_by_line" one.
+    from lxml import etree
+except:
+    pass
 
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log import log as log_instance
-from pm4py.objects.log.exporter.xes.util import compression
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.util import constants
-from pm4py.util import parameters as param_util
+from pm4py.util import exec_utils
+from io import BytesIO
+import gzip
 
 
 class Parameters(Enum):
-    COMPRESS = False
+    COMPRESS = "compress"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
+    ENCODING = "encoding"
 
 
 # defines correspondence between Python types and XES types
@@ -206,7 +216,7 @@ def __export_traces_events(tr, trace):
         __export_attributes_element(ev, event)
 
 
-def __export_traces(log, root):
+def __export_traces(log, root, parameters=None):
     """
     Export XES traces from a PM4PY log
 
@@ -218,13 +228,30 @@ def __export_traces(log, root):
         Output XML root element
 
     """
+    if parameters is None:
+        parameters = {}
+
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+
+    progress = None
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        from tqdm.auto import tqdm
+        progress = tqdm(total=len(log), desc="exporting log, completed traces :: ")
+
     for tr in log:
         trace = etree.SubElement(root, xes_util.TAG_TRACE)
         __export_attributes_element(tr, trace)
         __export_traces_events(tr, trace)
+        if progress is not None:
+            progress.update()
+
+    # gracefully close progress bar
+    if progress is not None:
+        progress.close()
+    del progress
 
 
-def export_log_tree(log):
+def export_log_tree(log, parameters=None):
     """
     Get XES log XML tree from a PM4Py log
 
@@ -253,7 +280,7 @@ def export_log_tree(log):
     # add classifiers at the log level
     __export_classifiers(log, root)
     # add traces at the log level
-    __export_traces(log, root)
+    __export_traces(log, root, parameters=parameters)
 
     tree = etree.ElementTree(root)
 
@@ -279,10 +306,25 @@ def export_log_as_string(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    # Gets the XML tree to export
-    tree = export_log_tree(log)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, False)
 
-    return etree.tostring(tree, xml_declaration=True, encoding=constants.DEFAULT_ENCODING, pretty_print=True)
+    # Gets the XML tree to export
+    tree = export_log_tree(log, parameters=parameters)
+
+    b = BytesIO()
+
+    if compress:
+        d = gzip.GzipFile(fileobj=b, mode="wb")
+    else:
+        d = b
+
+    tree.write(d, pretty_print=True, xml_declaration=True, encoding=encoding)
+
+    if compress:
+        d.close()
+
+    return b.getvalue()
 
 
 def __export_log(log, output_file_path, parameters=None):
@@ -301,13 +343,23 @@ def __export_log(log, output_file_path, parameters=None):
     """
     parameters = dict() if parameters is None else parameters
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, output_file_path.lower().endswith(".gz"))
+
     # Gets the XML tree to export
-    tree = export_log_tree(log)
-    # Effectively do the export of the event log
-    tree.write(output_file_path, pretty_print=True, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)
-    compress = param_util.fetch(Parameters.COMPRESS, parameters)
+    tree = export_log_tree(log, parameters=parameters)
+
     if compress:
-        compression.compress(output_file_path)
+        if not output_file_path.lower().endswith(".gz"):
+            output_file_path = output_file_path + ".gz"
+        f = gzip.open(output_file_path, mode="wb")
+    else:
+        f = open(output_file_path, "wb")
+
+    # Effectively do the export of the event log
+    tree.write(f, pretty_print=True, xml_declaration=True, encoding=encoding)
+
+    f.close()
 
 
 def apply(log, output_file_path, parameters=None):

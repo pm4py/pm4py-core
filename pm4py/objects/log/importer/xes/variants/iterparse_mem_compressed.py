@@ -1,8 +1,9 @@
+import gzip
 import logging
 import pkgutil
 import sys
 from enum import Enum
-from io import BytesIO, StringIO
+from io import BytesIO
 
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting
@@ -16,6 +17,9 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     REVERSE_SORT = "reverse_sort"
     MAX_TRACES = "max_traces"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
+    DECOMPRESS_SERIALIZATION = "decompress_serialization"
+    ENCODING = "encoding"
 
 
 # ITERPARSE EVENTS
@@ -75,10 +79,11 @@ def import_from_context(context, num_traces, parameters=None):
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     reverse_sort = exec_utils.get_param_value(Parameters.REVERSE_SORT, parameters, False)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
 
     date_parser = dt_parser.get()
     progress = None
-    if pkgutil.find_loader("tqdm"):
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
         from tqdm.auto import tqdm
         progress = tqdm(total=num_traces, desc="parsing log, completed traces :: ")
 
@@ -102,7 +107,8 @@ def import_from_context(context, num_traces, parameters=None):
             elif elem.tag.endswith(xes_constants.TAG_DATE):
                 try:
                     dt = date_parser.apply(elem.get(xes_constants.KEY_VALUE))
-                    tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), dt, tree, compression_dictio)
+                    tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), dt, tree,
+                                             compression_dictio)
                 except TypeError:
                     logging.info("failed to parse date: " + str(elem.get(xes_constants.KEY_VALUE)))
                 except ValueError:
@@ -129,7 +135,8 @@ def import_from_context(context, num_traces, parameters=None):
                 if parent is not None:
                     try:
                         val = float(elem.get(xes_constants.KEY_VALUE))
-                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree, compression_dictio)
+                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree,
+                                                 compression_dictio)
                     except ValueError:
                         logging.info("failed to parse float: " + str(elem.get(xes_constants.KEY_VALUE)))
                 continue
@@ -138,7 +145,8 @@ def import_from_context(context, num_traces, parameters=None):
                 if parent is not None:
                     try:
                         val = int(elem.get(xes_constants.KEY_VALUE))
-                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree, compression_dictio)
+                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree,
+                                                 compression_dictio)
                     except ValueError:
                         logging.info("failed to parse int: " + str(elem.get(xes_constants.KEY_VALUE)))
                 continue
@@ -150,7 +158,8 @@ def import_from_context(context, num_traces, parameters=None):
                         val = False
                         if str(val0).lower() == "true":
                             val = True
-                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree, compression_dictio)
+                        tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), val, tree,
+                                                 compression_dictio)
                     except ValueError:
                         logging.info("failed to parse boolean: " + str(elem.get(xes_constants.KEY_VALUE)))
                 continue
@@ -158,7 +167,8 @@ def import_from_context(context, num_traces, parameters=None):
             elif elem.tag.endswith(xes_constants.TAG_LIST):
                 if parent is not None:
                     # lists have no value, hence we put None as a value
-                    tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), None, tree, compression_dictio)
+                    tree = __parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY), None, tree,
+                                             compression_dictio)
                 continue
 
             elif elem.tag.endswith(xes_constants.TAG_ID):
@@ -257,6 +267,8 @@ def apply(filename, parameters=None):
             Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
             Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
             Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            Parameters.SHOW_PROGRESS_BAR -> Enables/disables the progress bar (default: True)
+            Parameters.ENCODING -> regulates the encoding (default: utf-8)
 
     Returns
     -------
@@ -280,6 +292,8 @@ def import_log(filename, parameters=None):
             Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
             Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
             Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            Parameters.SHOW_PROGRESS_BAR -> Enables/disables the progress bar (default: True)
+            Parameters.ENCODING -> regulates the encoding (default: utf-8)
 
     Returns
     -------
@@ -291,10 +305,26 @@ def import_log(filename, parameters=None):
     if parameters is None:
         parameters = {}
 
-    context = etree.iterparse(filename, events=[_EVENT_START, _EVENT_END])
-    num_traces = count_traces(context)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    is_compressed = filename.lower().endswith(".gz")
 
-    context = etree.iterparse(filename, events=[_EVENT_START, _EVENT_END])
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        if is_compressed:
+            f = gzip.open(filename, "rb")
+        else:
+            f = open(filename, "rb")
+        context = etree.iterparse(f, events=[_EVENT_START, _EVENT_END], encoding=encoding)
+        num_traces = count_traces(context)
+    else:
+        # avoid the iteration to calculate the number of traces is "tqdm" is not used
+        num_traces = 0
+
+    if is_compressed:
+        f = gzip.open(filename, "rb")
+    else:
+        f = open(filename, "rb")
+    context = etree.iterparse(f, events=[_EVENT_START, _EVENT_END], encoding=encoding)
 
     return import_from_context(context, num_traces, parameters=parameters)
 
@@ -314,6 +344,8 @@ def import_from_string(log_string, parameters=None):
             Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
             Parameters.INSERT_TRACE_INDICES -> Specify if trace indexes should be added as event attribute for each event
             Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            Parameters.SHOW_PROGRESS_BAR -> Enables/disables the progress bar (default: True)
+            Parameters.ENCODING -> regulates the encoding (default: utf-8)
 
     Returns
     -----------
@@ -325,15 +357,33 @@ def import_from_string(log_string, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    decompress_serialization = exec_utils.get_param_value(Parameters.DECOMPRESS_SERIALIZATION, parameters, False)
+
     if type(log_string) is str:
-        log_string = log_string.encode("utf-8")
+        log_string = log_string.encode(constants.DEFAULT_ENCODING)
 
-    bio = BytesIO(log_string)
-    context = etree.iterparse(bio, events=[_EVENT_START, _EVENT_END])
-    num_traces = count_traces(context)
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        # first iteration: count the number of traces
+        b = BytesIO(log_string)
+        if decompress_serialization:
+            s = gzip.GzipFile(fileobj=b, mode="rb")
+        else:
+            s = b
+        context = etree.iterparse(s, events=[_EVENT_START, _EVENT_END], encoding=encoding)
+        num_traces = count_traces(context)
+    else:
+        # avoid the iteration to calculate the number of traces is "tqdm" is not used
+        num_traces = 0
 
-    bio = BytesIO(log_string)
-    context = etree.iterparse(bio, events=[_EVENT_START, _EVENT_END])
+    # second iteration: actually read the content
+    b = BytesIO(log_string)
+    if decompress_serialization:
+        s = gzip.GzipFile(fileobj=b, mode="rb")
+    else:
+        s = b
+    context = etree.iterparse(s, events=[_EVENT_START, _EVENT_END], encoding=encoding)
 
     return import_from_context(context, num_traces, parameters=parameters)
 
