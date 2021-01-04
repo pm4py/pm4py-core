@@ -1,4 +1,34 @@
+import math
+
 from pm4py.objects.process_tree.pt_operator import Operator
+
+
+def get_max_trace_length(tree, parameters=None):
+    """
+    Get the maximum length of a trace allowed by the process tree
+    (can be infty)
+
+    Parameters
+    ---------------
+    tree
+        Process tree
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    --------------
+    max_trace_length
+        The maximum length of a trace
+    """
+    if parameters is None:
+        parameters = {}
+
+    bottomup = get_bottomup_nodes(tree, parameters=parameters)
+    max_length_dict = {}
+    for i in range(len(bottomup)):
+        get_max_length_dict(bottomup[i], max_length_dict, len(bottomup))
+
+    return max_length_dict[tree]
 
 
 def get_min_trace_length(tree, parameters=None):
@@ -26,6 +56,38 @@ def get_min_trace_length(tree, parameters=None):
         get_min_length_dict(bottomup[i], min_length_dict)
 
     return min_length_dict[tree]
+
+
+def get_max_rem_dict(tree, parameters=None):
+    """
+    Gets for each node of the tree the maximum number of activities
+    that are inserted to 'complete' a trace of the overall tree
+
+    Parameters
+    ----------------
+    tree
+        Process tree
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ---------------
+    max_rem_dict
+        Dictionary described in the docstring
+    """
+    if parameters is None:
+        parameters = {}
+
+    bottomup = get_bottomup_nodes(tree, parameters=parameters)
+    max_length_dict = {}
+    for i in range(len(bottomup)):
+        get_max_length_dict(bottomup[i], max_length_dict, len(bottomup))
+
+    max_rem_dict = {}
+    for i in range(len(bottomup)):
+        max_rem_dict[bottomup[i]] = max_length_dict[tree] - max_length_dict[bottomup[i]]
+
+    return max_rem_dict
 
 
 def get_min_rem_dict(tree, parameters=None):
@@ -58,6 +120,34 @@ def get_min_rem_dict(tree, parameters=None):
         min_rem_dict[bottomup[i]] = min_length_dict[tree] - min_length_dict[bottomup[i]]
 
     return min_rem_dict
+
+
+def get_max_length_dict(node, max_length_dict, num_nodes):
+    """
+    Populates, given the nodes of a tree in a bottom-up order, the maximum length dictionary
+    (every trace generated from that point of the tree has at most length N)
+
+    Parameters
+    ---------------
+    node
+        Node
+    max_length_dict
+        Dictionary that is populated in-place
+    num_nodes
+        Number of nodes in the process tree
+    """
+    if len(node.children) == 0:
+        if node.label is None:
+            max_length_dict[node] = 0
+        else:
+            max_length_dict[node] = 1
+    elif node.operator == Operator.XOR:
+        max_length_dict[node] = max(max_length_dict[x] for x in node.children)
+    elif node.operator == Operator.PARALLEL or node.operator == Operator.SEQUENCE:
+        max_length_dict[node] = sum(max_length_dict[x] for x in node.children)
+    elif node.operator == Operator.LOOP:
+        max_length_dict[node] = sum(max_length_dict[x] for x in node.children) + 2 ** (
+                    48 - math.ceil(math.log(num_nodes) / math.log(2)))
 
 
 def get_min_length_dict(node, min_length_dict):
