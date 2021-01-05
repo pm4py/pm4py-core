@@ -256,16 +256,16 @@ def visualization_align_table():
     visualization_align_table.execute_script()
 
 
-def streaming_conformance_footprints():
-    from examples import streaming_conformance_footprints
-    print("\n\nstreaming_conformance_footprints")
-    streaming_conformance_footprints.execute_script()
-
-
 def align_approx_pt():
     from examples import align_approx_pt
     print("\n\nalign_approx_pt")
     align_approx_pt.execute_script()
+
+
+def streaming_conformance_footprints():
+    from examples import streaming_conformance_footprints
+    print("\n\nstreaming_conformance_footprints")
+    streaming_conformance_footprints.execute_script()
 
 
 def streaming_conformance_tbr():
@@ -361,3 +361,10 @@ if __name__ == "__main__":
     execute_script(visualization_align_table)
     execute_script(pn_to_pt)
     execute_script(simplified_interface)
+    execute_script(align_approx_pt)
+    execute_script(streaming_conformance_footprints)
+    execute_script(streaming_conformance_tbr)
+    execute_script(streaming_csv_reader_event_stream)
+    execute_script(streaming_discovery_dfg)
+    execute_script(streaming_xes_reader_event_stream)
+    execute_script(streaming_xes_reader_trace_stream)
