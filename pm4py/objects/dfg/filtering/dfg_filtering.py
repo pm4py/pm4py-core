@@ -249,7 +249,7 @@ def filter_dfg_on_paths_percentage(dfg0, start_activities0, end_activities0, act
         # make sure that the DFG contains only edges between these activities
         dfg = {x: y for x, y in dfg.items() if x[0] in activities_count and x[1] in activities_count}
 
-        return dfg, start_activities, end_activities, activities_count
+    return dfg, start_activities, end_activities, activities_count
 
 
 def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold, parameters=None):
