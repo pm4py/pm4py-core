@@ -262,6 +262,12 @@ def streaming_conformance_footprints():
     streaming_conformance_footprints.execute_script()
 
 
+def align_approx_pt():
+    from examples import align_approx_pt
+    print("\n\nalign_approx_pt")
+    align_approx_pt.execute_script()
+
+
 def streaming_conformance_tbr():
     from examples import streaming_conformance_tbr
     print("\n\nstreaming_conformacne_tbr")
