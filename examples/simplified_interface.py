@@ -1,5 +1,6 @@
-import pm4py
 import os
+
+import pm4py
 
 
 def execute_script():
@@ -98,9 +99,11 @@ def execute_script():
     print("variants log = ", pm4py.get_variants(log2))
     print("variants df = ", pm4py.get_variants(df2))
     print("variants filter log = ",
-          len(pm4py.filter_variants(log2, ["register request,examine thoroughly,check ticket,decide,reject request"])))
+          len(pm4py.filter_variants(log2, [
+              ["register request", "examine thoroughly", "check ticket", "decide", "reject request"]])))
     print("variants filter df = ",
-          len(pm4py.filter_variants(df2, ["register request,examine thoroughly,check ticket,decide,reject request"])))
+          len(pm4py.filter_variants(df2, [
+              ["register request", "examine thoroughly", "check ticket", "decide", "reject request"]])))
     print("variants filter percentage = ", len(pm4py.filter_variants_percentage(log2, percentage=0.8)))
 
     print("paths filter log len = ", len(pm4py.filter_paths(log2, [("register request", "examine casually")])))
