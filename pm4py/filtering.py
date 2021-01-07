@@ -307,7 +307,7 @@ def filter_eventually_follows_relation(log, relations, retain=True):
         return filtered_log
 
 
-def filter_timestamp_range(log, dt1, dt2, mode="events"):
+def filter_time_range(log, dt1, dt2, mode="events"):
     """
     Filter a log on a time interval
 
