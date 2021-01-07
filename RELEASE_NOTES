@@ -1,10 +1,13 @@
 ===== PM4Py 2.1.3.1 =====
 This is a *hotfix* release, consisting of the following changes:
-1. commit
+1. commit f9f894ed
     - Create an iterable that permits theoretically to iterate over the infinity of traces admitted by a DFG
     - The main "apply" calls the iterable and stops with the usual criterias
     - The "apply" can also return the variants of the log
-
+2. commit 8b5dee65
+    - add lambda-based filtering and sorting to simplified pm4py interface
+3. commit 1c3666b7
+    - small refactoring of the filtering simplified pm4py interface
 
 ===== PM4Py 2.1.3 =====
 This is a *minor* release, consisting of the following changes:
