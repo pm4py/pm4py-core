@@ -1,18 +1,20 @@
+from enum import Enum
+
 from pm4py.algo.filtering.common.filtering_constants import DECREASING_FACTOR
-from pm4py.statistics.start_activities.common import get as start_activities_common
-from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log.log import EventLog
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY
+from pm4py.statistics.start_activities.common import get as start_activities_common
+from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.util import constants
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from enum import Enum
 from pm4py.util import exec_utils
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
     DECREASING_FACTOR = "decreasingFactor"
+    POSITIVE = "positive"
 
 
 def apply(log, admitted_start_activities, parameters=None):
@@ -36,8 +38,13 @@ def apply(log, admitted_start_activities, parameters=None):
     if parameters is None:
         parameters = {}
     attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
-
-    filtered_log = EventLog([trace for trace in log if trace and trace[0][attribute_key] in admitted_start_activities])
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+    if positive:
+        filtered_log = EventLog(
+            [trace for trace in log if trace and trace[0][attribute_key] in admitted_start_activities])
+    else:
+        filtered_log = EventLog(
+            [trace for trace in log if trace and trace[0][attribute_key] not in admitted_start_activities])
 
     return filtered_log
 
