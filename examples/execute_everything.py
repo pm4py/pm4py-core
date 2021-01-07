@@ -256,6 +256,60 @@ def visualization_align_table():
     visualization_align_table.execute_script()
 
 
+def align_approx_pt():
+    from examples import align_approx_pt
+    print("\n\nalign_approx_pt")
+    align_approx_pt.execute_script()
+
+
+def streaming_conformance_footprints():
+    from examples import streaming_conformance_footprints
+    print("\n\nstreaming_conformance_footprints")
+    streaming_conformance_footprints.execute_script()
+
+
+def streaming_conformance_tbr():
+    from examples import streaming_conformance_tbr
+    print("\n\nstreaming_conformacne_tbr")
+    streaming_conformance_tbr.execute_script()
+
+
+def streaming_csv_reader_event_stream():
+    from examples import streaming_csv_reader_event_stream
+    print("\n\nstreaming_csv_reader_event_stream")
+    streaming_csv_reader_event_stream.execute_script()
+
+
+def streaming_discovery_dfg():
+    from examples import streaming_discovery_dfg
+    print("\n\nstreaming_discovery_dfg")
+    streaming_discovery_dfg.execute_script()
+
+
+def streaming_xes_reader_event_stream():
+    from examples import streaming_xes_reader_event_stream
+    print("\n\nstreaming_xes_reader_event_stream")
+    streaming_xes_reader_event_stream.execute_script()
+
+
+def streaming_xes_reader_trace_stream():
+    from examples import streaming_xes_reader_trace_stream
+    print("\n\nstreaming_xes_reader_trace_stream")
+    streaming_xes_reader_trace_stream.execute_script()
+
+
+def dfg_align_log():
+    from examples import dfg_align_log
+    print("\n\ndfg_align_log")
+    dfg_align_log.execute_script()
+
+
+def dfg_playout():
+    from examples import dfg_playout
+    print("\n\ndfg_playout")
+    dfg_playout.execute_script()
+
+
 def execute_script(f):
     try:
         f()
@@ -307,3 +361,10 @@ if __name__ == "__main__":
     execute_script(visualization_align_table)
     execute_script(pn_to_pt)
     execute_script(simplified_interface)
+    execute_script(align_approx_pt)
+    execute_script(streaming_conformance_footprints)
+    execute_script(streaming_conformance_tbr)
+    execute_script(streaming_csv_reader_event_stream)
+    execute_script(streaming_discovery_dfg)
+    execute_script(streaming_xes_reader_event_stream)
+    execute_script(streaming_xes_reader_trace_stream)
