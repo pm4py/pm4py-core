@@ -1,4 +1,4 @@
-VERSION = '2.1.3'
+VERSION = '2.1.3.1'
 
 import logging
 import pkgutil
@@ -80,6 +80,7 @@ from pm4py.stats import get_start_activities, get_end_activities, get_attributes
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree
 from pm4py.utils import format_dataframe
+from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
 
 # this package is available only for Python >= 3.5
 if sys.version_info >= (3, 5):
