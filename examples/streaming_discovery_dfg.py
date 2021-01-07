@@ -1,8 +1,9 @@
+import os
+
 import pm4py
-from pm4py.streaming.stream.live_event_stream import LiveEventStream
 from pm4py.streaming.algo.discovery.dfg import algorithm as dfg_discovery
+from pm4py.streaming.stream.live_event_stream import LiveEventStream
 from pm4py.visualization.dfg import visualizer as dfg_visualizer
-import os, time
 
 
 def execute_script():
@@ -28,7 +29,8 @@ def execute_script():
     dfg, activities, start_activities, end_activities = stream_dfg_disc.get()
     # visualize the DFG
     gviz = dfg_visualizer.apply(dfg, variant=dfg_visualizer.Variants.FREQUENCY, activities_count=activities,
-                                parameters={"start_activities": start_activities, "end_activities": end_activities})
+                                parameters={"format": "svg", "start_activities": start_activities,
+                                            "end_activities": end_activities})
     dfg_visualizer.view(gviz)
 
 

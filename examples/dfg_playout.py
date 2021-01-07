@@ -1,10 +1,11 @@
 import pm4py
 from pm4py.objects.dfg.filtering import dfg_filtering
 from pm4py.objects.dfg.utils import dfg_playout
+import os
 
 
 def execute_script():
-    log = pm4py.read_xes("C:/receipt.xes")
+    log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "receipt.xes"))
     activities = pm4py.get_attribute_values(log, "concept:name")
     dfg, sa, ea = pm4py.discover_dfg(log)
     # filters the DFG to make a simpler one
