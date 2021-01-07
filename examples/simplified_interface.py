@@ -110,17 +110,17 @@ def execute_script():
     print("paths filter dataframe len = ", len(pm4py.filter_directly_follows_relation(df2, [("register request", "examine casually")])))
 
     print("timeframe filter log events len = ",
-          len(pm4py.filter_timestamp(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="events")))
+          len(pm4py.filter_timestamp_range(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="events")))
     print("timeframe filter log traces_contained len = ",
-          len(pm4py.filter_timestamp(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained")))
+          len(pm4py.filter_timestamp_range(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained")))
     print("timeframe filter log traces_intersecting len = ",
-          len(pm4py.filter_timestamp(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_intersecting")))
+          len(pm4py.filter_timestamp_range(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_intersecting")))
     print("timeframe filter df events len = ",
-          len(pm4py.filter_timestamp(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="events")))
+          len(pm4py.filter_timestamp_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="events")))
     print("timeframe filter df traces_contained len = ",
-          len(pm4py.filter_timestamp(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained")))
+          len(pm4py.filter_timestamp_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained")))
     print("timeframe filter df traces_intersecting len = ",
-          len(pm4py.filter_timestamp(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_intersecting")))
+          len(pm4py.filter_timestamp_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_intersecting")))
 
     # remove the temporary files
     os.remove("ru1.xes")
