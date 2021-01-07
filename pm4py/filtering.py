@@ -248,7 +248,7 @@ def filter_directly_follows_relation(log, relations, retain=True):
         return paths_filter.apply(log, relations, parameters={paths_filter.Parameters.POSITIVE: retain})
 
 
-def filter_eventually_follows(log, relations, retain=True):
+def filter_eventually_follows_relation(log, relations, retain=True):
     """
     Retain traces that contain any of the specified 'eventually follows' relations.
     For example, if relations == [('a','b'),('a','c')] and log [<a,b,c>,<a,c,b>,<a,d,b>]
@@ -307,7 +307,7 @@ def filter_eventually_follows(log, relations, retain=True):
         return filtered_log
 
 
-def filter_timestamp(log, dt1, dt2, mode="events"):
+def filter_timestamp_range(log, dt1, dt2, mode="events"):
     """
     Filter a log on a time interval
 
