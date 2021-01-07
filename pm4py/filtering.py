@@ -232,6 +232,52 @@ def filter_directly_follows_relation(log, relations, retain=True):
         return paths_filter.apply(log, relations, parameters={paths_filter.Parameters.POSITIVE: retain})
 
 
+def filter_eventually_follows(log, relations, retain=True):
+    """
+    Retain traces that contain any of the specified 'eventually follows' relations.
+    For example, if relations == [('a','b'),('a','c')] and log [<a,b,c>,<a,c,b>,<a,d,b>]
+    the resulting log will contain traces describing [<a,b,c>,<a,c,b>,<a,d,b>].
+
+    Parameters
+    ---------------
+    log
+        Log object
+    relations
+        List of activity name pairs, which are allowed/forbidden paths
+    retain
+        Parameter that says whether the paths
+        should be kept/removed
+
+    Returns
+    ----------------
+    filtered_log
+        Filtered log object
+    """
+    if check_is_dataframe(log):
+        from pm4py.algo.filtering.pandas.ltl import ltl_checker
+        cases = set()
+        for path in relations:
+            filt_log = ltl_checker.A_eventually_B(log, path[0], path[1],
+                                                  parameters={ltl_checker.Parameters.POSITIVE: retain})
+            cases = cases.union(set(filt_log[constants.CASE_CONCEPT_NAME]))
+        return log[log[constants.CASE_CONCEPT_NAME].isin(cases)]
+    else:
+        from pm4py.objects.log.log import EventLog
+        from pm4py.algo.filtering.log.ltl import ltl_checker
+        traces_to_keep = set()
+        for path in relations:
+            filt_log = ltl_checker.A_eventually_B(log, path[0], path[1],
+                                                  parameters={ltl_checker.Parameters.POSITIVE: retain})
+            for trace in filt_log:
+                traces_to_keep.add(id(trace))
+        filtered_log = EventLog(attributes=log.attributes, extensions=log.extensions, omni_present=log.omni_present,
+                                classifiers=log.classifiers)
+        for trace in log:
+            if id(trace) in traces_to_keep:
+                filtered_log.append(trace)
+        return filtered_log
+
+
 def filter_timestamp(log, dt1, dt2, mode="events"):
     """
     Filter a log on a time interval
