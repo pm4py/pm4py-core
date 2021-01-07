@@ -255,25 +255,38 @@ def filter_eventually_follows(log, relations, retain=True):
     """
     if check_is_dataframe(log):
         from pm4py.algo.filtering.pandas.ltl import ltl_checker
-        cases = set()
+        if retain:
+            cases = set()
+        else:
+            cases = set(log[constants.CASE_CONCEPT_NAME])
         for path in relations:
             filt_log = ltl_checker.A_eventually_B(log, path[0], path[1],
                                                   parameters={ltl_checker.Parameters.POSITIVE: retain})
-            cases = cases.union(set(filt_log[constants.CASE_CONCEPT_NAME]))
+            this_traces = set(filt_log[constants.CASE_CONCEPT_NAME])
+            if retain:
+                cases = cases.union(this_traces)
+            else:
+                cases = cases.intersection(this_traces)
         return log[log[constants.CASE_CONCEPT_NAME].isin(cases)]
     else:
         from pm4py.objects.log.log import EventLog
         from pm4py.algo.filtering.log.ltl import ltl_checker
-        traces_to_keep = set()
+        if retain:
+            cases = set()
+        else:
+            cases = set(id(trace) for trace in log)
         for path in relations:
             filt_log = ltl_checker.A_eventually_B(log, path[0], path[1],
                                                   parameters={ltl_checker.Parameters.POSITIVE: retain})
-            for trace in filt_log:
-                traces_to_keep.add(id(trace))
+            this_traces = set(id(trace) for trace in filt_log)
+            if retain:
+                cases = cases.union(this_traces)
+            else:
+                cases = cases.intersection(this_traces)
         filtered_log = EventLog(attributes=log.attributes, extensions=log.extensions, omni_present=log.omni_present,
                                 classifiers=log.classifiers)
         for trace in log:
-            if id(trace) in traces_to_keep:
+            if id(trace) in cases:
                 filtered_log.append(trace)
         return filtered_log
 
