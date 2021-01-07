@@ -12,6 +12,7 @@ from pm4py.util import exec_utils
 class Parameters(Enum):
     ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
     DECREASING_FACTOR = "decreasingFactor"
+    POSITIVE = "positive"
 
 
 def apply(log, admitted_end_activities, parameters=None):
@@ -35,8 +36,13 @@ def apply(log, admitted_end_activities, parameters=None):
     if parameters is None:
         parameters = {}
     attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
-    filtered_log = [trace for trace in log if trace and trace[-1][attribute_key] in admitted_end_activities]
+    if positive:
+        filtered_log = [trace for trace in log if trace and trace[-1][attribute_key] in admitted_end_activities]
+    else:
+        filtered_log = [trace for trace in log if trace and trace[-1][attribute_key] not in admitted_end_activities]
+    
     return EventLog(filtered_log)
 
 

@@ -198,6 +198,24 @@ class OtherPartsTests(unittest.TestCase):
         from pm4py.statistics.eventually_follows.pandas import get
         efg = get.apply(dataframe, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 
+    def test_dfg_playout(self):
+        import pm4py
+        from pm4py.objects.dfg.utils import dfg_playout
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        dfg, sa, ea = pm4py.discover_dfg(log)
+        dfg_playout.apply(dfg, sa, ea)
+
+    def test_dfg_align(self):
+        import pm4py
+        from pm4py.objects.dfg.filtering import dfg_filtering
+        from pm4py.objects.dfg.utils import dfg_alignment
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        dfg, sa, ea = pm4py.discover_dfg(log)
+        act_count = pm4py.get_attribute_values(log, "concept:name")
+        dfg, sa, ea, act_count = dfg_filtering.filter_dfg_on_activities_percentage(dfg, sa, ea, act_count, 0.5)
+        dfg, sa, ea, act_count = dfg_filtering.filter_dfg_on_paths_percentage(dfg, sa, ea, act_count, 0.5)
+        aligned_traces = dfg_alignment.apply(log, dfg, sa, ea)
+
 
 if __name__ == "__main__":
     unittest.main()
