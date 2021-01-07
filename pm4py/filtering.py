@@ -65,7 +65,7 @@ def filter_end_activities(log, activities, retain=True):
                                            parameters={end_activities_filter.Parameters.POSITIVE: retain})
 
 
-def filter_attribute_values(log, attribute, values, level="case", retain=True):
+def filter_attribute_values(log, attribute_key, values, level="case", retain=True):
     """
     Filter a log object on the values of some attribute
 
@@ -73,7 +73,7 @@ def filter_attribute_values(log, attribute, values, level="case", retain=True):
     --------------
     log
         Log object
-    attribute
+    attribute_key
         Attribute to filter
     values
         Admitted (or forbidden) values
@@ -93,20 +93,20 @@ def filter_attribute_values(log, attribute, values, level="case", retain=True):
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         if level == "event":
             return attributes_filter.apply_events(log, values,
-                                                  parameters={constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute,
+                                                  parameters={constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
                                                               attributes_filter.Parameters.POSITIVE: retain})
         elif level == "case":
             return attributes_filter.apply(log, values, parameters={
-                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute, attributes_filter.Parameters.POSITIVE: retain})
+                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key, attributes_filter.Parameters.POSITIVE: retain})
     else:
         from pm4py.algo.filtering.log.attributes import attributes_filter
         if level == "event":
             return attributes_filter.apply_events(log, values,
-                                                  parameters={constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute,
+                                                  parameters={constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
                                                               attributes_filter.Parameters.POSITIVE: retain})
         else:
             return attributes_filter.apply(log, values, parameters={
-                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute, attributes_filter.Parameters.POSITIVE: retain})
+                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key, attributes_filter.Parameters.POSITIVE: retain})
 
 
 def filter_trace_attribute(log, attribute_key, values, retain=True):
