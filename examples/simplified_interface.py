@@ -86,15 +86,15 @@ def execute_script():
     print("end_activities len(filt_log) = ", len(pm4py.filter_end_activities(log2, ["pay compensation"])))
     print("end_activities len(filt_df) = ", len(pm4py.filter_end_activities(df2, ["pay compensation"])))
     print("attributes org:resource len(filt_log) (cases) cases = ",
-          len(pm4py.filter_attribute_values(log2, "org:resource", ["Ellen"], level="cases")))
+          len(pm4py.filter_attribute_values(log2, "org:resource", ["Ellen"], level="case")))
     print("attributes org:resource len(filt_log) (cases)  events = ",
-          len(pm4py.filter_attribute_values(log2, "org:resource", ["Ellen"], level="events")))
+          len(pm4py.filter_attribute_values(log2, "org:resource", ["Ellen"], level="event")))
     print("attributes org:resource len(filt_df) (events) cases = ",
-          len(pm4py.filter_attribute_values(df2, "org:resource", ["Ellen"], level="cases")))
+          len(pm4py.filter_attribute_values(df2, "org:resource", ["Ellen"], level="case")))
     print("attributes org:resource len(filt_df) (events) events = ",
-          len(pm4py.filter_attribute_values(df2, "org:resource", ["Ellen"], level="events")))
+          len(pm4py.filter_attribute_values(df2, "org:resource", ["Ellen"], level="event")))
     print("attributes org:resource len(filt_df) (events) events notpositive = ",
-          len(pm4py.filter_attribute_values(df2, "org:resource", ["Ellen"], level="events", retain=False)))
+          len(pm4py.filter_attribute_values(df2, "org:resource", ["Ellen"], level="event", retain=False)))
 
     print("variants log = ", pm4py.get_variants(log2))
     print("variants df = ", pm4py.get_variants(df2))
@@ -104,23 +104,25 @@ def execute_script():
     print("variants filter df = ",
           len(pm4py.filter_variants(df2, [
               ["register request", "examine thoroughly", "check ticket", "decide", "reject request"]])))
-    print("variants filter percentage = ", len(pm4py.filter_variants_percentage(log2, percentage=0.8)))
+    print("variants filter percentage = ", len(pm4py.filter_variants_percentage(log2, threshold=0.8)))
 
-    print("paths filter log len = ", len(pm4py.filter_directly_follows_relation(log2, [("register request", "examine casually")])))
-    print("paths filter dataframe len = ", len(pm4py.filter_directly_follows_relation(df2, [("register request", "examine casually")])))
+    print("paths filter log len = ",
+          len(pm4py.filter_directly_follows_relation(log2, [("register request", "examine casually")])))
+    print("paths filter dataframe len = ",
+          len(pm4py.filter_directly_follows_relation(df2, [("register request", "examine casually")])))
 
     print("timeframe filter log events len = ",
-          len(pm4py.filter_timestamp(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="events")))
+          len(pm4py.filter_time_range(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="events")))
     print("timeframe filter log traces_contained len = ",
-          len(pm4py.filter_timestamp(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained")))
+          len(pm4py.filter_time_range(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained")))
     print("timeframe filter log traces_intersecting len = ",
-          len(pm4py.filter_timestamp(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_intersecting")))
+          len(pm4py.filter_time_range(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_intersecting")))
     print("timeframe filter df events len = ",
-          len(pm4py.filter_timestamp(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="events")))
+          len(pm4py.filter_time_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="events")))
     print("timeframe filter df traces_contained len = ",
-          len(pm4py.filter_timestamp(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained")))
+          len(pm4py.filter_time_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained")))
     print("timeframe filter df traces_intersecting len = ",
-          len(pm4py.filter_timestamp(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_intersecting")))
+          len(pm4py.filter_time_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_intersecting")))
 
     # remove the temporary files
     os.remove("ru1.xes")

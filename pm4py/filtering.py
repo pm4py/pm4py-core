@@ -65,9 +65,16 @@ def filter_end_activities(log, activities, retain=True):
                                            parameters={end_activities_filter.Parameters.POSITIVE: retain})
 
 
+@deprecation.deprecated(deprecated_in='2.1.4', removed_in='2.3.0', current_version=PM4PY_CURRENT_VERSION,
+                        details='Filtering method will be removed due to fuzzy naming.\
+                        Use: filter_event_attribute_values')
 def filter_attribute_values(log, attribute_key, values, level="case", retain=True):
+    return filter_event_attribute_values(log, attribute_key, values, level=level, retain=retain)
+
+
+def filter_event_attribute_values(log, attribute_key, values, level="case", retain=True):
     """
-    Filter a log object on the values of some attribute
+    Filter a log object on the values of some event attribute
 
     Parameters
     --------------
@@ -97,19 +104,28 @@ def filter_attribute_values(log, attribute_key, values, level="case", retain=Tru
                                                               attributes_filter.Parameters.POSITIVE: retain})
         elif level == "case":
             return attributes_filter.apply(log, values, parameters={
-                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key, attributes_filter.Parameters.POSITIVE: retain})
+                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
+                attributes_filter.Parameters.POSITIVE: retain})
     else:
         from pm4py.algo.filtering.log.attributes import attributes_filter
         if level == "event":
             return attributes_filter.apply_events(log, values,
                                                   parameters={constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
                                                               attributes_filter.Parameters.POSITIVE: retain})
-        else:
+        elif level == "case":
             return attributes_filter.apply(log, values, parameters={
-                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key, attributes_filter.Parameters.POSITIVE: retain})
+                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
+                attributes_filter.Parameters.POSITIVE: retain})
 
 
+@deprecation.deprecated(deprecated_in='2.1.4', removed_in='2.3.0', current_version=PM4PY_CURRENT_VERSION,
+                        details='Filtering method will be removed due to fuzzy naming.\
+                        Use: filter_event_attribute_values')
 def filter_trace_attribute(log, attribute_key, values, retain=True):
+    return filter_trace_attribute_values(log, attribute_key, values, retain=retain)
+
+
+def filter_trace_attribute_values(log, attribute_key, values, retain=True):
     """
     Filter a log on the values of a trace attribute
 
@@ -232,7 +248,7 @@ def filter_directly_follows_relation(log, relations, retain=True):
         return paths_filter.apply(log, relations, parameters={paths_filter.Parameters.POSITIVE: retain})
 
 
-def filter_eventually_follows(log, relations, retain=True):
+def filter_eventually_follows_relation(log, relations, retain=True):
     """
     Retain traces that contain any of the specified 'eventually follows' relations.
     For example, if relations == [('a','b'),('a','c')] and log [<a,b,c>,<a,c,b>,<a,d,b>]
@@ -291,7 +307,7 @@ def filter_eventually_follows(log, relations, retain=True):
         return filtered_log
 
 
-def filter_timestamp(log, dt1, dt2, mode="events"):
+def filter_time_range(log, dt1, dt2, mode="events"):
     """
     Filter a log on a time interval
 
