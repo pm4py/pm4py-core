@@ -32,9 +32,9 @@ to change as libraries are added or removed.
 | numpy | https://pypi.org/project/numpy | BSD | 1.19.3 | | X |
 | packaging | https://pypi.org/project/packaging | Apache 2.0 | 20.8 | | |
 | pandas | https://pypi.org/project/pandas | BSD | 1.2.0 | X | X |
-| parso | https://pypi.org/project/parso | MIT | 0.7.1 | | |
+| parso | https://pypi.org/project/parso | MIT | 0.8.1 | | |
 | pickleshare | https://pypi.org/project/pickleshare | MIT | 0.7.5 | X | |
-| prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD | 3.0.7 | | |
+| prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD | 3.0.9 | | |
 | pulp | https://pypi.org/project/pulp | BSD | 2.1 | X | |
 | pydotplus | https://pypi.org/project/pydotplus | MIT | 2.0.2 | X | |
 | pygments | https://pypi.org/project/pygments | BSD | 2.7.3 | | |
