@@ -41,10 +41,14 @@ def apply(log, admitted_start_activities, parameters=None):
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     if positive:
         filtered_log = EventLog(
-            [trace for trace in log if trace and trace[0][attribute_key] in admitted_start_activities])
+            [trace for trace in log if trace and trace[0][attribute_key] in admitted_start_activities],
+            attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+            omni_present=log.omni_present)
     else:
         filtered_log = EventLog(
-            [trace for trace in log if trace and trace[0][attribute_key] not in admitted_start_activities])
+            [trace for trace in log if trace and trace[0][attribute_key] not in admitted_start_activities],
+            attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+            omni_present=log.omni_present)
 
     return filtered_log
 
