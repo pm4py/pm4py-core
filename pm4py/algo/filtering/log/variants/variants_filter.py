@@ -1,11 +1,12 @@
-from pm4py.statistics.variants.log.get import get_variants_from_log_trace_idx, get_variants, \
-    get_variants_along_with_case_durations, get_variants_sorted_by_count, convert_variants_trace_idx_to_trace_obj
+from enum import Enum
+
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.objects.log.log import EventLog
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from enum import Enum
+from pm4py.statistics.variants.log.get import get_variants, \
+    get_variants_sorted_by_count
 from pm4py.util import exec_utils
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 
 
 class Parameters(Enum):
@@ -34,7 +35,8 @@ def apply(log, admitted_variants, parameters=None):
         parameters = {}
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     variants = get_variants(log, parameters=parameters)
-    log = EventLog()
+    log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                   omni_present=log.omni_present)
     for variant in variants:
         if (positive and variant in admitted_variants) or (not positive and variant not in admitted_variants):
             for trace in variants[variant]:
@@ -86,7 +88,8 @@ def filter_variants_variants_percentage(log, variants, variants_percentage=0.0):
     filtered_log
         Filtered log
     """
-    filtered_log = EventLog()
+    filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                            omni_present=log.omni_present)
     no_of_traces = len(log)
     variant_count = get_variants_sorted_by_count(variants)
     already_added_sum = 0
