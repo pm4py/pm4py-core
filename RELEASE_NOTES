@@ -5,6 +5,8 @@ This is a *xxx* release, consisting of the following changes:
     - fix the copying of the 'meta attributes' of the filtered event log for the start activities filter
     - fix the copying of the 'meta attributes' of the filtered event log for the end activities filter
     - fix the copying of the 'meta attributes' of the filtered event log for the attributes filter
+    - fix the copying of the 'meta attributes' of the filtered event log for the variants filter
+
 
 
 ===== PM4Py 2.1.3.2 =====
