@@ -1,3 +1,9 @@
+===== PM4Py 2.1.X.Y ====
+This is a *xxx* release, consisting of the following changes:
+1. commit 'hotfixes':
+    - add fall-back to time-range filter if incorrect argument is passed
+
+
 ===== PM4Py 2.1.3.1 =====
 This is a *hotfix* release, consisting of the following changes:
 1. commit f9f894ed
