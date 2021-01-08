@@ -1,3 +1,5 @@
+import warnings
+
 import deprecation
 
 from pm4py import VERSION as PM4PY_CURRENT_VERSION
@@ -97,7 +99,8 @@ def filter_attribute_values(log, attribute_key, values, level="case", retain=Tru
                                                               attributes_filter.Parameters.POSITIVE: retain})
         elif level == "case":
             return attributes_filter.apply(log, values, parameters={
-                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key, attributes_filter.Parameters.POSITIVE: retain})
+                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
+                attributes_filter.Parameters.POSITIVE: retain})
     else:
         from pm4py.algo.filtering.log.attributes import attributes_filter
         if level == "event":
@@ -106,7 +109,8 @@ def filter_attribute_values(log, attribute_key, values, level="case", retain=Tru
                                                               attributes_filter.Parameters.POSITIVE: retain})
         else:
             return attributes_filter.apply(log, values, parameters={
-                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key, attributes_filter.Parameters.POSITIVE: retain})
+                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
+                attributes_filter.Parameters.POSITIVE: retain})
 
 
 def filter_trace_attribute(log, attribute_key, values, retain=True):
@@ -322,6 +326,9 @@ def filter_timestamp(log, dt1, dt2, mode="events"):
             return timestamp_filter.filter_traces_contained(log, dt1, dt2)
         elif mode == "traces_intersecting":
             return timestamp_filter.filter_traces_intersecting(log, dt1, dt2)
+        else:
+            warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
+            return log
     else:
         from pm4py.algo.filtering.log.timestamp import timestamp_filter
         if mode == "events":
@@ -330,3 +337,6 @@ def filter_timestamp(log, dt1, dt2, mode="events"):
             return timestamp_filter.filter_traces_contained(log, dt1, dt2)
         elif mode == "traces_intersecting":
             return timestamp_filter.filter_traces_intersecting(log, dt1, dt2)
+        else:
+            warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
+            return log
