@@ -1,10 +1,11 @@
+from enum import Enum
+
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.log import EventLog
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
+from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_RESOURCE_KEY, \
     PARAMETER_CONSTANT_TIMESTAMP_KEY
-from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
 
 
 class Parameters(Enum):
@@ -70,7 +71,8 @@ def A_eventually_B(log, A, B, parameters=None):
     enable_timestamp = exec_utils.get_param_value(Parameters.ENABLE_TIMESTAMP, parameters, False)
     timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
 
-    new_log = EventLog()
+    new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                       omni_present=log.omni_present)
 
     for trace in log:
         if enable_timestamp:
@@ -137,7 +139,8 @@ def A_eventually_B_eventually_C(log, A, B, C, parameters=None):
     enable_timestamp = exec_utils.get_param_value(Parameters.ENABLE_TIMESTAMP, parameters, False)
     timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
 
-    new_log = EventLog()
+    new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                       omni_present=log.omni_present)
 
     for trace in log:
         if enable_timestamp:
@@ -210,7 +213,8 @@ def A_eventually_B_eventually_C_eventually_D(log, A, B, C, D, parameters=None):
     enable_timestamp = exec_utils.get_param_value(Parameters.ENABLE_TIMESTAMP, parameters, False)
     timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
 
-    new_log = EventLog()
+    new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                       omni_present=log.omni_present)
 
     for trace in log:
         if enable_timestamp:
@@ -286,7 +290,8 @@ def A_next_B_next_C(log, A, B, C, parameters=None):
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
-    new_log = EventLog()
+    new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                       omni_present=log.omni_present)
 
     for trace in log:
         occ_A = [i for i in range(len(trace)) if attribute_key in trace[i] and trace[i][attribute_key] == A]
@@ -344,7 +349,8 @@ def four_eyes_principle(log, A, B, parameters=None):
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, DEFAULT_RESOURCE_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
-    new_log = EventLog()
+    new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                       omni_present=log.omni_present)
 
     for trace in log:
         occ_A = set([trace[i][resource_key] for i in range(len(trace)) if
@@ -393,7 +399,8 @@ def attr_value_different_persons(log, A, parameters=None):
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, DEFAULT_RESOURCE_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
-    new_log = EventLog()
+    new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                       omni_present=log.omni_present)
 
     for trace in log:
         occ_A = set([trace[i][resource_key] for i in range(len(trace)) if
