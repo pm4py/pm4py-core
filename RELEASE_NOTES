@@ -4,6 +4,7 @@ This is a *xxx* release, consisting of the following changes:
     - add fall-back to time-range filter if incorrect argument is passed
     - fix the copying of the 'meta attributes' of the filtered event log for the start activities filter
     - fix the copying of the 'meta attributes' of the filtered event log for the end activities filter
+    - fix the copying of the 'meta attributes' of the filtered event log for the attributes filter
 
 
 ===== PM4Py 2.1.3.2 =====
