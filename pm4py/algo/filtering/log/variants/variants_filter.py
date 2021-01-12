@@ -3,7 +3,7 @@ from enum import Enum
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.objects.log.log import EventLog
 from pm4py.statistics.variants.log.get import get_variants, \
-    get_variants_sorted_by_count
+    get_variants_sorted_by_count, get_variants_along_with_case_durations
 from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
