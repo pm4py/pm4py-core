@@ -4,7 +4,7 @@ import pm4py
 
 
 def execute_script():
-    ENABLE_VISUALIZATION = False
+    ENABLE_VISUALIZATION = True
 
     # reads a XES into an event log
     log1 = pm4py.read_xes("../tests/input_data/running-example.xes")
@@ -58,7 +58,7 @@ def execute_script():
         pm4py.view_petri_net(petri_heuristics, im_heuristics, fm_heuristics, format="svg")
         pm4py.view_process_tree(tree_inductive, format="svg")
         pm4py.view_heuristics_net(heu_net, format="svg")
-        pm4py.view_dfg(dfg, format="svg")
+        pm4py.view_dfg(dfg, dfg_sa, dfg_ea, format="svg")
 
     aligned_traces = pm4py.conformance_alignments(log1, petri_inductive, im_inductive, fm_inductive)
     replayed_traces = pm4py.conformance_tbr(log1, petri_inductive, im_inductive, fm_inductive)
