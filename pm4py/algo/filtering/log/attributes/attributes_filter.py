@@ -1,5 +1,7 @@
 from enum import Enum
 
+from pm4py.statistics.attributes.log.select import *
+from pm4py.statistics.attributes.log.get import *
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.conversion.log import converter as log_converter
