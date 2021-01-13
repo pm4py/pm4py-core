@@ -1,7 +1,7 @@
 import math
 import uuid
 
-from pm4py.objects.dfg.utils.dfg_utils import get_max_activity_count
+from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import constants
 from copy import deepcopy
 
@@ -252,6 +252,196 @@ def filter_dfg_on_paths_percentage(dfg0, start_activities0, end_activities0, act
     return dfg, start_activities, end_activities, activities_count
 
 
+def filter_dfg_to_activity(dfg0, start_activities0, end_activities0, activities_count0, target_activity, parameters=None):
+    """
+    Filters the DFG, making "target_activity" the only possible end activity of the graph
+
+    Parameters
+    ---------------
+    dfg0
+        Directly-follows graph
+    start_activities0
+        Start activities
+    end_activities0
+        End activities
+    activities_count0
+        Activities count
+    target_activity
+        Target activity (only possible end activity after the filtering)
+    parameters
+        Parameters
+
+    Returns
+    ---------------
+    dfg
+        Filtered DFG
+    start_activities
+        Filtered start activities
+    end_activities
+        Filtered end activities
+    activities_count
+        Filtered activities count
+    """
+    if parameters is None:
+        parameters = {}
+
+    # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
+    dfg = deepcopy(dfg0)
+    start_activities = deepcopy(start_activities0)
+    activities_count = deepcopy(activities_count0)
+
+    dfg = {x: y for x, y in dfg.items() if x[0] != target_activity}
+    end_activities = {target_activity: activities_count[target_activity]}
+
+    changed = True
+    while changed:
+        changed = False
+        predecessors = dfg_utils.get_predecessors(dfg, activities_count)
+        successors = dfg_utils.get_successors(dfg, activities_count)
+
+        successors_from_sa = set()
+        for act in start_activities:
+            successors_from_sa = successors_from_sa.union(successors[act])
+            successors_from_sa.add(act)
+
+        reachable_nodes = successors_from_sa.intersection(predecessors[target_activity]).union({target_activity})
+        if reachable_nodes != set(activities_count.keys()):
+            changed = True
+            activities_count = {x: y for x, y in activities_count.items() if x in reachable_nodes}
+            start_activities = {x: y for x, y in start_activities.items() if x in reachable_nodes}
+            dfg = {x: y for x, y in dfg.items() if x[0] in reachable_nodes and x[1] in reachable_nodes}
+
+    return dfg, start_activities, end_activities, activities_count
+
+
+def filter_dfg_from_activity(dfg0, start_activities0, end_activities0, activities_count0, source_activity, parameters=None):
+    """
+    Filters the DFG, making "source_activity" the only possible source activity of the graph
+
+    Parameters
+    ---------------
+    dfg0
+        Directly-follows graph
+    start_activities0
+        Start activities
+    end_activities0
+        End activities
+    activities_count0
+        Activities count
+    source_activity
+        Source activity (only possible start activity after the filtering)
+    parameters
+        Parameters
+
+    Returns
+    ---------------
+    dfg
+        Filtered DFG
+    start_activities
+        Filtered start activities
+    end_activities
+        Filtered end activities
+    activities_count
+        Filtered activities count
+    """
+    if parameters is None:
+        parameters = {}
+
+    # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
+    dfg = deepcopy(dfg0)
+    end_activities = deepcopy(end_activities0)
+    activities_count = deepcopy(activities_count0)
+
+    dfg = {x: y for x, y in dfg.items() if x[1] != source_activity}
+    start_activities = {source_activity: activities_count[source_activity]}
+
+    changed = True
+    while changed:
+        changed = False
+        predecessors = dfg_utils.get_predecessors(dfg, activities_count)
+        successors = dfg_utils.get_successors(dfg, activities_count)
+
+        predecessors_from_ea = set()
+        for ea in end_activities:
+            predecessors_from_ea = predecessors_from_ea.union(predecessors[ea])
+            predecessors_from_ea.add(ea)
+
+        reachable_nodes = predecessors_from_ea.intersection(successors[source_activity]).union({source_activity})
+        if reachable_nodes != set(activities_count.keys()):
+            changed = True
+            activities_count = {x: y for x, y in activities_count.items() if x in reachable_nodes}
+            end_activities = {x: y for x, y in end_activities.items() if x in reachable_nodes}
+            dfg = {x: y for x, y in dfg.items() if x[0] in reachable_nodes and x[1] in reachable_nodes}
+
+    return dfg, start_activities, end_activities, activities_count
+
+
+def filter_dfg_contain_activity(dfg0, start_activities0, end_activities0, activities_count0, activity, parameters=None):
+    """
+    Filters the DFG keeping only nodes that can reach / are reachable from activity
+
+    Parameters
+    ---------------
+    dfg0
+        Directly-follows graph
+    start_activities0
+        Start activities
+    end_activities0
+        End activities
+    activities_count0
+        Activities count
+    activity
+        Activity that should be reachable / should reach all the nodes of the filtered graph
+    parameters
+        Parameters
+
+    Returns
+    ---------------
+    dfg
+        Filtered DFG
+    start_activities
+        Filtered start activities
+    end_activities
+        Filtered end activities
+    activities_count
+        Filtered activities count
+    """
+    if parameters is None:
+        parameters = {}
+
+    # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
+    dfg = deepcopy(dfg0)
+    start_activities = deepcopy(start_activities0)
+    end_activities = deepcopy(end_activities0)
+    activities_count = deepcopy(activities_count0)
+
+    changed = True
+    while changed:
+        changed = False
+        predecessors = dfg_utils.get_predecessors(dfg, activities_count)
+        successors = dfg_utils.get_successors(dfg, activities_count)
+
+        predecessors_act = predecessors[activity].union({activity})
+        successors_act = successors[activity].union({activity})
+
+        start_activities1 = {x: y for x, y in start_activities.items() if x in predecessors_act}
+        end_activities1 = {x: y for x, y in end_activities.items() if x in successors_act}
+
+        if start_activities != start_activities1 or end_activities != end_activities1:
+            changed = True
+
+        start_activities = start_activities1
+        end_activities = end_activities1
+
+        reachable_nodes = predecessors_act.union(successors_act)
+        if reachable_nodes != set(activities_count.keys()):
+            changed = True
+            activities_count = {x: y for x, y in activities_count.items() if x in reachable_nodes}
+            dfg = {x: y for x, y in dfg.items() if x[0] in reachable_nodes and x[1] in reachable_nodes}
+
+    return dfg, start_activities, end_activities, activities_count
+
+
 def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold, parameters=None):
     """
     Clean Directly-Follows graph based on noise threshold
@@ -281,7 +471,7 @@ def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold, parameters
     new_dfg = None
     activ_max_count = {}
     for act in activities:
-        activ_max_count[act] = get_max_activity_count(dfg, act)
+        activ_max_count[act] = dfg_utils.get_max_activity_count(dfg, act)
 
     for el in dfg:
         if type(el[0]) is str:
