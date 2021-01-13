@@ -43,34 +43,41 @@ def apply(log_footprints, model_footprints, parameters=None):
         raise Exception(
             "it is possible to apply this variant only on trace-by-trace footprints, not overall log footprints!")
 
+    conf_traces = {}
+
     enable_act_always_executed = exec_utils.get_param_value(Parameters.ENABLE_ACT_ALWAYS_EXECUTED, parameters, True)
     model_configurations = model_footprints[Outputs.SEQUENCE.value].union(model_footprints[Outputs.PARALLEL.value])
 
     ret = []
     for tr in log_footprints:
-        trace_configurations = tr[Outputs.SEQUENCE.value].union(tr[Outputs.PARALLEL.value])
-        trace_violations = {}
-        trace_violations[ConfOutputs.FOOTPRINTS.value] = set(
-            x for x in trace_configurations if x not in model_configurations)
-        trace_violations[ConfOutputs.START_ACTIVITIES.value] = set(x for x in tr[Outputs.START_ACTIVITIES.value] if
-                                                                   x not in model_footprints[
-                                                                       Outputs.START_ACTIVITIES.value]) if Outputs.START_ACTIVITIES.value in model_footprints else set()
-        trace_violations[ConfOutputs.END_ACTIVITIES.value] = set(
-            x for x in tr[Outputs.END_ACTIVITIES.value] if x not in model_footprints[
-                Outputs.END_ACTIVITIES.value]) if Outputs.END_ACTIVITIES.value in model_footprints else set()
-        trace_violations[ConfOutputs.ACTIVITIES_ALWAYS_HAPPENING.value] = set(
-            x for x in model_footprints[Outputs.ACTIVITIES_ALWAYS_HAPPENING.value] if x not in tr[
-                Outputs.ACTIVITIES.value]) if Outputs.ACTIVITIES_ALWAYS_HAPPENING.value in model_footprints and enable_act_always_executed else set()
-        trace_violations[ConfOutputs.MIN_LENGTH_FIT.value] = tr[Outputs.MIN_TRACE_LENGTH.value] >= model_footprints[
-            Outputs.MIN_TRACE_LENGTH.value] if Outputs.MIN_TRACE_LENGTH.value in tr and Outputs.MIN_TRACE_LENGTH.value in model_footprints else True
-        trace_violations[ConfOutputs.IS_FOOTPRINTS_FIT.value] = len(
-            trace_violations[ConfOutputs.FOOTPRINTS.value]) == 0 and len(
-            trace_violations[ConfOutputs.START_ACTIVITIES.value]) == 0 and len(
-            trace_violations[ConfOutputs.END_ACTIVITIES.value]) == 0 and len(
-            trace_violations[ConfOutputs.ACTIVITIES_ALWAYS_HAPPENING.value]) == 0 and trace_violations[
-                                                                    ConfOutputs.MIN_LENGTH_FIT.value]
+        trace = tr[Outputs.TRACE.value]
+        if trace in conf_traces:
+            ret.append(conf_traces[trace])
+        else:
+            trace_configurations = tr[Outputs.SEQUENCE.value].union(tr[Outputs.PARALLEL.value])
+            trace_violations = {}
+            trace_violations[ConfOutputs.FOOTPRINTS.value] = set(
+                x for x in trace_configurations if x not in model_configurations)
+            trace_violations[ConfOutputs.START_ACTIVITIES.value] = set(x for x in tr[Outputs.START_ACTIVITIES.value] if
+                                                                       x not in model_footprints[
+                                                                           Outputs.START_ACTIVITIES.value]) if Outputs.START_ACTIVITIES.value in model_footprints else set()
+            trace_violations[ConfOutputs.END_ACTIVITIES.value] = set(
+                x for x in tr[Outputs.END_ACTIVITIES.value] if x not in model_footprints[
+                    Outputs.END_ACTIVITIES.value]) if Outputs.END_ACTIVITIES.value in model_footprints else set()
+            trace_violations[ConfOutputs.ACTIVITIES_ALWAYS_HAPPENING.value] = set(
+                x for x in model_footprints[Outputs.ACTIVITIES_ALWAYS_HAPPENING.value] if x not in tr[
+                    Outputs.ACTIVITIES.value]) if Outputs.ACTIVITIES_ALWAYS_HAPPENING.value in model_footprints and enable_act_always_executed else set()
+            trace_violations[ConfOutputs.MIN_LENGTH_FIT.value] = tr[Outputs.MIN_TRACE_LENGTH.value] >= model_footprints[
+                Outputs.MIN_TRACE_LENGTH.value] if Outputs.MIN_TRACE_LENGTH.value in tr and Outputs.MIN_TRACE_LENGTH.value in model_footprints else True
+            trace_violations[ConfOutputs.IS_FOOTPRINTS_FIT.value] = len(
+                trace_violations[ConfOutputs.FOOTPRINTS.value]) == 0 and len(
+                trace_violations[ConfOutputs.START_ACTIVITIES.value]) == 0 and len(
+                trace_violations[ConfOutputs.END_ACTIVITIES.value]) == 0 and len(
+                trace_violations[ConfOutputs.ACTIVITIES_ALWAYS_HAPPENING.value]) == 0 and trace_violations[
+                                                                        ConfOutputs.MIN_LENGTH_FIT.value]
 
-        ret.append(trace_violations)
+            ret.append(trace_violations)
+            conf_traces[trace] = trace_violations
 
     return ret
 
