@@ -1,6 +1,7 @@
 import abc
 from threading import Lock
 #from typing import final
+import traceback
 
 
 class StreamingAlgorithm(abc.ABC):
@@ -17,11 +18,18 @@ class StreamingAlgorithm(abc.ABC):
 
     def get(self):
         self._lock.acquire()
-        ret = self._current_result()
+        try:
+            ret = self._current_result()
+        except:
+            traceback.print_exc()
+            ret = None
         self._lock.release()
         return ret
 
     def receive(self, event):
         self._lock.acquire()
-        self._process(event)
+        try:
+            self._process(event)
+        except:
+            traceback.print_exc()
         self._lock.release()
