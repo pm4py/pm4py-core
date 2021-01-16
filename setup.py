@@ -152,6 +152,7 @@ setup(
     license='GPL 3.0',
     install_requires=[
         'ciso8601; python_version < \'3.7\'',
+        'cvxopt; python_version < \'3.9\'',
         'deprecation',
         'graphviz',
         'intervaltree',
