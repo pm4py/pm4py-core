@@ -161,7 +161,6 @@ setup(
         'networkx',
         'numpy<=1.19.3',
         'pandas',
-        'pm4pycvxopt>=0.0.10; python_version < \'3.9\'',
         'pulp<=2.1',
         'pydotplus',
         'pytz',
