@@ -53,7 +53,7 @@ def count_traces(context):
     return num_traces
 
 
-def import_from_context(context, num_traces, parameters=None):
+def import_from_context(context, num_traces, log, parameters=None):
     """
     Import a XES log from an iterparse context
 
@@ -63,13 +63,15 @@ def import_from_context(context, num_traces, parameters=None):
         Iterparse context
     num_traces
         Number of traces of the XES log
+    log
+        Event log (empty)
     parameters
         Parameters of the algorithm
 
     Returns
     --------------
     log
-        Event log
+        Event log (filled with the contents of the XES log)
     """
     if parameters is None:
         parameters = {}
@@ -87,7 +89,6 @@ def import_from_context(context, num_traces, parameters=None):
         from tqdm.auto import tqdm
         progress = tqdm(total=num_traces, desc="parsing log, completed traces :: ")
 
-    log = None
     trace = None
     event = None
 
@@ -178,8 +179,6 @@ def import_from_context(context, num_traces, parameters=None):
                 continue
 
             elif elem.tag.endswith(xes_constants.TAG_EXTENSION):
-                if log is None:
-                    raise SyntaxError('extension found outside of <log> tag')
                 if elem.get(xes_constants.KEY_NAME) is not None and elem.get(
                         xes_constants.KEY_PREFIX) is not None and elem.get(xes_constants.KEY_URI) is not None:
                     log.extensions[elem.get(xes_constants.KEY_NAME)] = {
@@ -188,16 +187,12 @@ def import_from_context(context, num_traces, parameters=None):
                 continue
 
             elif elem.tag.endswith(xes_constants.TAG_GLOBAL):
-                if log is None:
-                    raise SyntaxError('global found outside of <log> tag')
                 if elem.get(xes_constants.KEY_SCOPE) is not None:
                     log.omni_present[elem.get(xes_constants.KEY_SCOPE)] = {}
                     tree[elem] = log.omni_present[elem.get(xes_constants.KEY_SCOPE)]
                 continue
 
             elif elem.tag.endswith(xes_constants.TAG_CLASSIFIER):
-                if log is None:
-                    raise SyntaxError('classifier found outside of <log> tag')
                 if elem.get(xes_constants.KEY_KEYS) is not None:
                     classifier_value = elem.get(xes_constants.KEY_KEYS)
                     if "'" in classifier_value:
@@ -208,9 +203,6 @@ def import_from_context(context, num_traces, parameters=None):
                 continue
 
             elif elem.tag.endswith(xes_constants.TAG_LOG):
-                if log is not None:
-                    raise SyntaxError('file contains > 1 <log> tags')
-                log = EventLog()
                 tree[elem] = log.attributes
                 continue
 
@@ -326,7 +318,8 @@ def import_log(filename, parameters=None):
         f = open(filename, "rb")
     context = etree.iterparse(f, events=[_EVENT_START, _EVENT_END], encoding=encoding)
 
-    return import_from_context(context, num_traces, parameters=parameters)
+    log = EventLog()
+    return import_from_context(context, num_traces, log, parameters=parameters)
 
 
 def import_from_string(log_string, parameters=None):
@@ -385,7 +378,8 @@ def import_from_string(log_string, parameters=None):
         s = b
     context = etree.iterparse(s, events=[_EVENT_START, _EVENT_END], encoding=encoding)
 
-    return import_from_context(context, num_traces, parameters=parameters)
+    log = EventLog()
+    return import_from_context(context, num_traces, log, parameters=parameters)
 
 
 def __parse_attribute(elem, store, key, value, tree, compression_dict):
