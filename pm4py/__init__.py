@@ -7,12 +7,6 @@ import time
 
 time.clock = time.process_time
 
-try:
-    import pm4pycvxopt
-except:
-    pass
-
-
 from pm4py import util, objects, statistics, algo, visualization, evaluation, simulation
 
 if pkgutil.find_loader("scipy"):
