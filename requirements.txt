@@ -1,5 +1,6 @@
 backcall
 colorama
+cvxopt
 cycler
 decorator
 deprecation
