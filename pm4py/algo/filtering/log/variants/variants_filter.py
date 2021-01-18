@@ -44,6 +44,66 @@ def apply(log, admitted_variants, parameters=None):
     return log
 
 
+def filter_variants_top_k(log, k, parameters=None):
+    """
+    Keeps the top-k variants of the log
+
+    Parameters
+    -------------
+    log
+        Event log
+    k
+        Number of variants that should be kept
+    parameters
+        Parameters
+
+    Returns
+    -------------
+    filtered_log
+        Filtered log
+    """
+    if parameters is None:
+        parameters = {}
+
+    variants = get_variants(log, parameters=parameters)
+    variant_count = get_variants_sorted_by_count(variants)
+    variant_count = variant_count[:min(k, len(variant_count))]
+    variants_to_filter = [x[0] for x in variant_count]
+
+    return apply(log, variants_to_filter, parameters=parameters)
+
+
+def filter_variants_by_coverage_percentage(log, min_coverage_percentage, parameters=None):
+    """
+    Filters the variants of the log by a coverage percentage
+    (e.g., if min_coverage_percentage=0.4, and we have a log with 1000 cases,
+    of which 500 of the variant 1, 400 of the variant 2, and 100 of the variant 3,
+    the filter keeps only the traces of variant 1 and variant 2).
+
+    Parameters
+    ---------------
+    log
+        Event log
+    min_coverage_percentage
+        Minimum allowed percentage of coverage
+    parameters
+        Parameters
+
+    Returns
+    ---------------
+    filtered_log
+        Filtered log
+    """
+    if parameters is None:
+        parameters = {}
+
+    variants = get_variants(log, parameters=parameters)
+    variants = {x: len(y) for x, y in variants.items()}
+    allowed_variants = [x for x, y in variants.items() if y >= min_coverage_percentage * len(log)]
+
+    return apply(log, allowed_variants, parameters=parameters)
+
+
 def filter_log_variants_percentage(log, percentage=0.8, parameters=None):
     """
     Filters a log by variants percentage
