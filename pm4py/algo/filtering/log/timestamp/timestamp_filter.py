@@ -33,7 +33,7 @@ def is_contained(trace, dt1, dt2, timestamp_key):
         Is true if the trace is contained
     """
     if trace:
-        if trace[0][timestamp_key].replace(tzinfo=None) > dt1 and trace[-1][timestamp_key].replace(tzinfo=None) < dt2:
+        if trace[0][timestamp_key].replace(tzinfo=None) >= dt1 and trace[-1][timestamp_key].replace(tzinfo=None) <= dt2:
             return True
     return False
 
@@ -91,10 +91,10 @@ def is_intersecting(trace, dt1, dt2, timestamp_key):
         Is true if the trace is contained
     """
     if trace:
-        condition1 = dt1 < trace[0][timestamp_key].replace(tzinfo=None) < dt2
-        condition2 = dt1 < trace[-1][timestamp_key].replace(tzinfo=None) < dt2
-        condition3 = trace[0][timestamp_key].replace(tzinfo=None) < dt1 < trace[-1][timestamp_key].replace(tzinfo=None)
-        condition4 = trace[0][timestamp_key].replace(tzinfo=None) < dt2 < trace[-1][timestamp_key].replace(tzinfo=None)
+        condition1 = dt1 <= trace[0][timestamp_key].replace(tzinfo=None) <= dt2
+        condition2 = dt1 <= trace[-1][timestamp_key].replace(tzinfo=None) <= dt2
+        condition3 = trace[0][timestamp_key].replace(tzinfo=None) <= dt1 <= trace[-1][timestamp_key].replace(tzinfo=None)
+        condition4 = trace[0][timestamp_key].replace(tzinfo=None) <= dt2 <= trace[-1][timestamp_key].replace(tzinfo=None)
 
         if condition1 or condition2 or condition3 or condition4:
             return True
@@ -162,7 +162,7 @@ def apply_events(log, dt1, dt2, parameters=None):
     dt2 = get_dt_from_string(dt2)
 
     stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
-    filtered_stream = EventStream([x for x in stream if dt1 < x[timestamp_key].replace(tzinfo=None) < dt2],
+    filtered_stream = EventStream([x for x in stream if dt1 <= x[timestamp_key].replace(tzinfo=None) <= dt2],
                                   attributes=log.attributes, extensions=log.extensions, omni_present=log.omni_present,
                                   classifiers=log.classifiers)
     filtered_log = log_converter.apply(filtered_stream)
