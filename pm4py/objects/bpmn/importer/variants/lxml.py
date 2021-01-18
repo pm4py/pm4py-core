@@ -28,14 +28,14 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
         nodes_dict[id] = node
     elif tag.endswith("startevent"):
         id = curr_el.get("id")
-        name = curr_el.get("name").replace("\r", " ").replace("\n", " ")
+        name = curr_el.get("name").replace("\r", " ").replace("\n", " ") if curr_el.get("name") else ""
         start_event = BPMN.StartEvent(name=name)
         bpmn_graph.add_node(start_event)
         node = start_event
         nodes_dict[id] = node
     elif tag.endswith("endevent"):
         id = curr_el.get("id")
-        name = curr_el.get("name").replace("\r", " ").replace("\n", " ")
+        name = curr_el.get("name").replace("\r", " ").replace("\n", " ") if curr_el.get("name") else ""
         end_event = BPMN.EndEvent(name=name)
         bpmn_graph.add_node(end_event)
         node = end_event
