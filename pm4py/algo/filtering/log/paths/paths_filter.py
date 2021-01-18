@@ -1,10 +1,11 @@
+from enum import Enum
+
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log.log import EventLog, Trace
+from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
-from enum import Enum
-from pm4py.util import exec_utils
 
 
 class Parameters(Enum):
@@ -37,7 +38,8 @@ def apply(log, paths, parameters=None):
         parameters = {}
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes.DEFAULT_NAME_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
-    filtered_log = EventLog()
+    filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                            omni_present=log.omni_present)
     for trace in log:
         found = False
         for i in range(len(trace) - 1):
@@ -147,7 +149,8 @@ def filter_log_by_paths(log, paths, variants, vc, threshold, attribute_key="conc
     filtered_log
         Filtered log
     """
-    filtered_log = EventLog()
+    filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                            omni_present=log.omni_present)
     fvft = variants[vc[0][0]][0]
     fvp = set()
     for i in range(0, len(fvft) - 1):

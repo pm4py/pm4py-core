@@ -1,12 +1,13 @@
+from enum import Enum
+
 from pm4py.algo.filtering.common import filtering_constants
-from pm4py.statistics.end_activities.log.get import get_end_activities
-from pm4py.statistics.end_activities.common import get as end_activities_common
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log.log import EventLog
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from enum import Enum
+from pm4py.statistics.end_activities.common import get as end_activities_common
+from pm4py.statistics.end_activities.log.get import get_end_activities
 from pm4py.util import exec_utils
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 
 
 class Parameters(Enum):
@@ -42,8 +43,9 @@ def apply(log, admitted_end_activities, parameters=None):
         filtered_log = [trace for trace in log if trace and trace[-1][attribute_key] in admitted_end_activities]
     else:
         filtered_log = [trace for trace in log if trace and trace[-1][attribute_key] not in admitted_end_activities]
-    
-    return EventLog(filtered_log)
+
+    return EventLog(filtered_log, attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                    omni_present=log.omni_present)
 
 
 def filter_log_by_end_activities(end_activities, variants, vc, threshold, activity_key="concept:name"):

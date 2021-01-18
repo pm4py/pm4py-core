@@ -1,3 +1,5 @@
+import warnings
+
 import deprecation
 
 from pm4py import VERSION as PM4PY_CURRENT_VERSION
@@ -338,6 +340,9 @@ def filter_time_range(log, dt1, dt2, mode="events"):
             return timestamp_filter.filter_traces_contained(log, dt1, dt2)
         elif mode == "traces_intersecting":
             return timestamp_filter.filter_traces_intersecting(log, dt1, dt2)
+        else:
+            warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
+            return log
     else:
         from pm4py.algo.filtering.log.timestamp import timestamp_filter
         if mode == "events":
@@ -346,3 +351,6 @@ def filter_time_range(log, dt1, dt2, mode="events"):
             return timestamp_filter.filter_traces_contained(log, dt1, dt2)
         elif mode == "traces_intersecting":
             return timestamp_filter.filter_traces_intersecting(log, dt1, dt2)
+        else:
+            warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
+            return log
