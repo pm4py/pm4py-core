@@ -11,3 +11,4 @@ class Outputs(Enum):
     SKIPPABLE = "skippable"
     ACTIVITIES_ALWAYS_HAPPENING = "activities_always_happening"
     MIN_TRACE_LENGTH = "min_trace_length"
+    TRACE = "trace"
