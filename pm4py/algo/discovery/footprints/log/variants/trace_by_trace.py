@@ -43,10 +43,11 @@ def apply(log, parameters=None):
         dfg = dfg_discovery.apply(EventLog([trace]), parameters=parameters)
         parallel = {(x, y) for (x, y) in dfg if (y, x) in dfg}
         sequence = {(x, y) for (x, y) in dfg if not (y, x) in dfg}
-        activities = set(x[activity_key] for x in trace)
+        trace = tuple(x[activity_key] for x in trace)
+        activities = set(trace)
         if len(trace) > 0:
-            start_activities = set([trace[0][activity_key]])
-            end_activities = set([trace[-1][activity_key]])
+            start_activities = {trace[0]}
+            end_activities = {trace[-1]}
         else:
             start_activities = set()
             end_activities = set()
@@ -54,6 +55,6 @@ def apply(log, parameters=None):
         ret.append(
             {Outputs.DFG.value: dfg, Outputs.SEQUENCE.value: sequence, Outputs.PARALLEL.value: parallel, Outputs.ACTIVITIES.value: activities,
              Outputs.START_ACTIVITIES.value: start_activities, Outputs.END_ACTIVITIES.value: end_activities,
-             Outputs.MIN_TRACE_LENGTH.value: len(trace)})
+             Outputs.MIN_TRACE_LENGTH.value: len(trace), Outputs.TRACE.value: trace})
 
     return ret

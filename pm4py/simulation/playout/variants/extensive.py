@@ -1,11 +1,14 @@
 import datetime
+from collections import Counter
+from enum import Enum
 
 from pm4py.objects.log import log as log_instance
 from pm4py.objects.petri import semantics
+from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
-from enum import Enum
-from pm4py.util import constants
+import sys
 
 
 class Parameters(Enum):
@@ -13,9 +16,13 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     MAX_TRACE_LENGTH = "maxTraceLength"
+    RETURN_ELEMENTS = "return_elements"
+    MAX_MARKING_OCC = "max_marking_occ"
+
 
 POSITION_MARKING = 0
 POSITION_TRACE = 1
+POSITION_ELEMENTS = 2
 
 
 def apply(net, initial_marking, final_marking=None, parameters=None):
@@ -43,43 +50,67 @@ def apply(net, initial_marking, final_marking=None, parameters=None):
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, 10)
+    return_elements = exec_utils.get_param_value(Parameters.RETURN_ELEMENTS, parameters, False)
+    max_marking_occ = exec_utils.get_param_value(Parameters.MAX_MARKING_OCC, parameters, sys.maxsize)
 
     # assigns to each event an increased timestamp from 1970
     curr_timestamp = 10000000
 
-    log = log_instance.EventLog()
+    feasible_elements = []
 
-    to_visit = [(initial_marking, ())]
+    to_visit = [(initial_marking, (), ())]
     visited = set()
 
     while len(to_visit) > 0:
         state = to_visit.pop(0)
-        if state in visited:
-            continue
-        visited.add(state)
 
         m = state[POSITION_MARKING]
         trace = state[POSITION_TRACE]
+        elements = state[POSITION_ELEMENTS]
+
+        if (m, trace) in visited:
+            continue
+        visited.add((m, trace))
+
         en_t = semantics.enabled_transitions(net, m)
 
         if (final_marking is not None and m == final_marking) or (final_marking is None and len(en_t) == 0):
             if len(trace) <= max_trace_length:
-                log_trace = log_instance.Trace()
-                log_trace.attributes[case_id_key] = str(len(log))
-                for act in trace:
-                    curr_timestamp = curr_timestamp + 1
-                    log_trace.append(log_instance.Event({activity_key: act, timestamp_key: datetime.datetime.fromtimestamp(curr_timestamp)}))
-                log.append(log_trace)
+                feasible_elements.append(elements)
 
         for t in en_t:
+            new_elements = elements + (m,)
+            new_elements = new_elements + (t,)
+
+            counter_elements = Counter(new_elements)
+
+            if counter_elements[m] > max_marking_occ:
+                continue
+
             new_m = semantics.weak_execute(t, m)
             if t.label is not None:
                 new_trace = trace + (t.label,)
             else:
                 new_trace = trace
-            new_state = (new_m, new_trace)
+
+            new_state = (new_m, new_trace, new_elements)
+
             if new_state in visited or len(new_trace) > max_trace_length:
                 continue
             to_visit.append(new_state)
+
+    if return_elements:
+        return feasible_elements
+
+    log = log_instance.EventLog()
+    for elements in feasible_elements:
+        log_trace = log_instance.Trace()
+        log_trace.attributes[case_id_key] = str(len(log))
+        activities = [x.label for x in elements if type(x) is PetriNet.Transition and x.label is not None]
+        for act in activities:
+            curr_timestamp = curr_timestamp + 1
+            log_trace.append(
+                log_instance.Event({activity_key: act, timestamp_key: datetime.datetime.fromtimestamp(curr_timestamp)}))
+        log.append(log_trace)
 
     return log

@@ -148,7 +148,7 @@ def get_variants_sorted_by_count(variants):
     var_count = []
     for variant in variants:
         var_count.append([variant, len(variants[variant])])
-    var_count = sorted(var_count, key=lambda x: x[1], reverse=True)
+    var_count = sorted(var_count, key=lambda x: (x[1], x[0]), reverse=True)
     return var_count
 
 
