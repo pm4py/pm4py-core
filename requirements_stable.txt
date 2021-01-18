@@ -1,5 +1,6 @@
 backcall==0.2.0
 colorama==0.4.4
+cvxopt==1.2.5
 cycler==0.10.0
 decorator==4.4.2
 deprecation==2.1.0
