@@ -12,9 +12,6 @@ if __name__ == "__main__":
     sys.path.insert(0, parentdir2)
     import time
 
-    if pkgutil.find_loader("pm4pycvxopt"):
-        # loads pm4pycvxopt in this test script if it is installed
-        import pm4pycvxopt
     from pm4py.objects.log.importer.xes import importer as xes_importer
     from pm4py.algo.discovery.inductive import algorithm as inductive
     from pm4py.algo.conformance.alignments import algorithm as align_algorithm

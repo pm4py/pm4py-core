@@ -1,7 +1,6 @@
 import os
 import tempfile
 
-import pm4pycvxopt
 import pm4py
 from pm4py.objects.bpmn.exporter import exporter
 from pm4py.objects.bpmn.importer import importer
