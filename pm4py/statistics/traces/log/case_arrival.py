@@ -54,7 +54,7 @@ def get_case_arrival_avg(log, parameters=None):
             case_diff_start_time.append((case_start_time[i+1]-case_start_time[i]).total_seconds())
 
     if case_diff_start_time:
-        return statistics.median(case_diff_start_time)
+        return statistics.mean(case_diff_start_time)
 
     return 0.0
 
@@ -97,6 +97,6 @@ def get_case_dispersion_avg(log, parameters=None):
             case_diff_end_time.append((case_end_time[i+1]-case_end_time[i]).total_seconds())
 
     if case_diff_end_time:
-        return statistics.median(case_diff_end_time)
+        return statistics.mean(case_diff_end_time)
 
     return 0.0
