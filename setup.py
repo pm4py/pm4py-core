@@ -160,7 +160,7 @@ setup(
         'lxml',
         'matplotlib',
         'networkx',
-        'numpy<=1.19.3',
+        'numpy!=1.19.4',
         'pandas',
         'pulp<=2.1',
         'pydotplus',

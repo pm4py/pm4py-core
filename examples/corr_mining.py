@@ -1,4 +1,3 @@
-# import pm4pycvxopt
 import pandas as pd
 
 from pm4py.algo.discovery.correlation_mining import algorithm as correlation_miner

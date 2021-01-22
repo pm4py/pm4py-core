@@ -18,7 +18,7 @@ MarkupSafe==2.0.0a1
 matplotlib==3.3.3
 mpmath==1.1.0
 networkx==2.5
-numpy==1.20.0rc2
+numpy==1.19.5
 packaging==20.8
 pandas==1.2.0
 parso==0.8.1

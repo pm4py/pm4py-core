@@ -92,10 +92,16 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
         nodes_dict[id] = node
     elif tag.endswith("incoming"):
         if node is not None:
-            incoming_dict[curr_el.text] = node
+            incoming_dict[curr_el.text.strip()] = node
     elif tag.endswith("outgoing"):
         if node is not None:
-            outgoing_dict[curr_el.text] = node
+            outgoing_dict[curr_el.text.strip()] = node
+    elif tag.endswith("sequenceflow"):
+        seq_flow_id = curr_el.get("id")
+        source_ref = curr_el.get("sourceRef")
+        target_ref = curr_el.get("targetRef")
+        incoming_dict[seq_flow_id] = nodes_dict[target_ref]
+        outgoing_dict[seq_flow_id] = nodes_dict[source_ref]
     elif tag.endswith("waypoint"):
         if flow is not None:
             x = float(curr_el.get("x"))

@@ -14,7 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-VERSION = '2.1.4'
+
+VERSION = '2.1.4.1'
 
 import logging
 import pkgutil

@@ -130,7 +130,7 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    stream_post_processing = exec_utils.get_param_value(Parameters.STREAM_POST_PROCESSING, parameters, True)
+    stream_post_processing = exec_utils.get_param_value(Parameters.STREAM_POST_PROCESSING, parameters, False)
     case_pref = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTE_PREFIX, parameters, 'case:')
     enable_deepcopy = exec_utils.get_param_value(Parameters.DEEP_COPY, parameters, True)
     include_case_attributes = exec_utils.get_param_value(Parameters.INCLUDE_CASE_ATTRIBUTES, parameters, True)
