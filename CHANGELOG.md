@@ -1,6 +1,42 @@
 # PM4Py Changelog
 
-## PM4PY 2.1.4 (2020.01.18)
+## PM4PY 2.1.4.1 (2021.01.22)
+
+### Fixed
+* 1231f518
+  * strip text read from nodes in bpmn importing
+* 0bc1b330
+  * add type checking for bpmn conversion; i.e., if the input
+  is already bpmn, it is returned.
+* ea0c7e54
+  * fix consistency in obtaining the case arrival statistics in 
+    ```pmpy.statistics.traces.log.case_arrival```; was median, changed to mean.
+    also see: https://github.com/pm4py/pm4py-core/issues/200
+### Removed
+
+### Deprecated
+
+### Changed
+* 51be0910
+  * set ```stream_postprocessing``` default value back to ```False``` for
+  ``dataframe`` to ```stream``` conversion. Columns containing ```None``` values
+    are no longer filtered by default (compliant with ```pm4py<=2.1.2```).
+    also see: https://github.com/pm4py/pm4py-core/issues/199 
+* 8976ad45
+  * drop the explicit dependency on ```numpy 1.19.3```
+  * add explicit dependency ```pulp<=2.1```
+* 1231f518
+  * support ```sequenceflow``` operator node in bpmn file import
+* 62618eeb
+  * explicitly blacklist version 1.9.4 of ```numpy``` in the requirements.txt file.
+
+### Added
+
+### Other
+
+---
+
+## PM4PY 2.1.4 (2021.01.18)
 
 ### Fixed
 * 35f2278a; 89c5f13b; 6a3579bc; 65fc182b; fa4448a6; c4e44311
@@ -46,7 +82,7 @@
 
 ---
 
-## PM4PY 2.1.3.2 (2020.01.08)
+## PM4PY 2.1.3.2 (2021.01.08)
 
 ### Fixed
 * b5cb7f0d; f1c0f037; 960d40e9 
@@ -64,7 +100,7 @@
 
 ---
 
-## PM4PY 2.1.3.1 (2020.01.07)
+## PM4PY 2.1.3.1 (2021.01.07)
 
 ### Fixed
 * f9f894ed
@@ -88,7 +124,7 @@
 
 ---
 
-## PM4PY 2.1.3 (2020.01.04)
+## PM4PY 2.1.3 (2021.01.04)
 
 ### Fixed
 * 388348f2
