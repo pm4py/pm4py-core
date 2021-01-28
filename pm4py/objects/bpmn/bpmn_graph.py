@@ -240,6 +240,6 @@ class BPMN(object):
         if target not in self.__nodes:
             self.add_node(target)
         self.__flows.add(flow)
-        self.__graph.add_edge(source, target)
+        self.__graph.add_edge(source, target, name=flow.get_name())
         source.add_out_arc(flow)
         target.add_in_arc(flow)
