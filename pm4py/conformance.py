@@ -1,3 +1,6 @@
+from deprecation import deprecated
+
+
 def conformance_tbr(log, petri_net, initial_marking, final_marking):
     """
     Apply token-based replay
@@ -146,6 +149,8 @@ def evaluate_precision_alignments(log, petri_net, initial_marking, final_marking
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
 
 
+@deprecated(deprecated_in='2.1.5', removed_in='2.2.0',
+            details='pm4py.soundness_woflan() is deprecated, use pm4py.check_soundness() instead')
 def soundness_woflan(petri_net, initial_marking, final_marking):
     """
     Check soundness using WOFLAN
@@ -164,5 +169,7 @@ def soundness_woflan(petri_net, initial_marking, final_marking):
     boolean
         Soundness
     """
+    import warnings
+    warnings.warn('pm4py.soundness_woflan() is deprecated, use pm4py.check_soundness() instead')
     from pm4py.evaluation.soundness.woflan import algorithm as woflan
     return woflan.apply(petri_net, initial_marking, final_marking)
