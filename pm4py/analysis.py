@@ -5,7 +5,7 @@ from pm4py.objects.petri.petrinet import PetriNet
 
 def check_soundness(petri_net: PetriNet, initial_marking: Dict[PetriNet.Place, int],
                     final_marking: Dict[PetriNet.Place, int]) -> bool:
-    '''
+    """
     Check if a given Petri net is a sound WF-net.
     A Petri net is a WF-net iff:
         - it has a unique source place
@@ -31,6 +31,6 @@ def check_soundness(petri_net: PetriNet, initial_marking: Dict[PetriNet.Place, i
     --------------
     boolean
         Soundness
-    '''
+    """
     from pm4py.evaluation.soundness.woflan import algorithm as woflan
     return woflan.apply(petri_net, initial_marking, final_marking)
