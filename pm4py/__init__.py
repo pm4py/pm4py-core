@@ -55,7 +55,7 @@ else:
     logging.error("intervaltree is not available. This can lead some features of PM4Py to not work correctly!")
 
 __version__ = VERSION
-__doc__ = "Process Mining for Python (PM4Py)"
+__doc__ = 'Process Mining for Python (PM4Py)'
 __author__ = 'Fraunhofer Institute for Applied Technology'
 __author_email__ = 'pm4py@fit.fraunhofer.de'
 __maintainer__ = 'Fraunhofer Institute for Applied Technology'
@@ -81,6 +81,7 @@ from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert
     convert_to_petri_net, convert_to_process_tree
 from pm4py.utils import format_dataframe
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
+from pm4py.analysis import check_soundness
 
 # this package is available only for Python >= 3.5
 if sys.version_info >= (3, 5):
