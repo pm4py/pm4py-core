@@ -1,9 +1,16 @@
+from typing import Counter, List, Dict, Any
+
 from deprecation import deprecated
 
+from pm4py.objects.log.log import EventLog
+from pm4py.objects.petri.petrinet import PetriNet
 
-def conformance_tbr(log, petri_net, initial_marking, final_marking):
+
+def conformance_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Counter[PetriNet.Place],
+                    final_marking: Counter[PetriNet.Place]) -> List[Dict[str, Any]]:
     """
-    Apply token-based replay
+    Apply token-based replay for conformance checking analysis.
+
 
     Parameters
     --------------
@@ -25,7 +32,8 @@ def conformance_tbr(log, petri_net, initial_marking, final_marking):
     return token_replay.apply(log, petri_net, initial_marking, final_marking)
 
 
-def conformance_alignments(log, petri_net, initial_marking, final_marking):
+def conformance_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Counter[PetriNet.Place],
+                           final_marking: Counter[PetriNet.Place]) -> List[Dict[str, Any]]:
     """
     Apply the alignments algorithm between a log and a Petri net
 
