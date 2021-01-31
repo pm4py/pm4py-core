@@ -2,4 +2,4 @@ from enum import Enum
 
 
 class Parameters(Enum):
-    REQUIRE_ILP = True
+    REQUIRE_ILP = "require_ilp"
