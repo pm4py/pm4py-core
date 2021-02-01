@@ -249,7 +249,7 @@ def get_concurrent_events_dataframe(df, start_timestamp_key=None, timestamp_key=
                                     case_id_glue="case:concept:name", activity_key="concept:name", sort_caseid_required=True,
                                     sort_timestamp_along_case_id=True, reduce_dataframe=True,
                                     max_start_column="@@max_start_column", min_complete_column="@@min_complete_column",
-                                    diff_maxs_minc="@@diff_maxs_minc"):
+                                    diff_maxs_minc="@@diff_maxs_minc", strict=False):
     """
     Gets the concurrent events (of the same case) in a Pandas dataframe
 
@@ -271,6 +271,9 @@ def get_concurrent_events_dataframe(df, start_timestamp_key=None, timestamp_key=
         Tells if a sort by timestamp is required along the case ID (default: True)
     reduce_dataframe
         To fasten operation, keep only essential columns in the dataframe
+    strict
+        Gets only entries that are strictly concurrent (i.e. the length of the intersection as real interval is > 0)
+
     Returns
     ---------------
     conc_ev_dataframe
@@ -305,6 +308,9 @@ def get_concurrent_events_dataframe(df, start_timestamp_key=None, timestamp_key=
     df[max_start_column] = df[max_start_column].apply(lambda x: x.timestamp())
     df[min_complete_column] = df[min_complete_column].apply(lambda x: x.timestamp())
     df[diff_maxs_minc] = df[min_complete_column] - df[max_start_column]
-    df = df[df[diff_maxs_minc] >= 0]
+    if strict:
+        df = df[df[diff_maxs_minc] > 0]
+    else:
+        df = df[df[diff_maxs_minc] >= 0]
 
     return df

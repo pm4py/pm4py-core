@@ -16,6 +16,8 @@
 '''
 import pkgutil
 
+import pandas as pd
+
 from pm4py.util import constants, xes_constants
 
 
@@ -61,6 +63,8 @@ def insert_index(df, column_name=constants.DEFAULT_INDEX_KEY):
     --------------
     df
         Dataframe
+    column_name
+        Name of the column that should host the index
 
     Returns
     --------------
@@ -69,6 +73,31 @@ def insert_index(df, column_name=constants.DEFAULT_INDEX_KEY):
     """
     df = df.copy()
     df[column_name] = df.index
+    return df
+
+
+def insert_ev_in_tr_index(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
+                          column_name: str = constants.DEFAULT_INDEX_IN_TRACE_KEY) -> pd.DataFrame:
+    """
+    Inserts a column that specify the index of the event inside the case
+
+    Parameters
+    ---------------
+    df
+        Dataframe
+    case_id
+        Column that hosts the case identifier
+    column_name
+        Name of the column that should host the index
+
+    Returns
+    --------------
+    df
+        Dataframe with index
+    """
+    df = df.copy()
+    df_trace_idx = df.groupby(case_id).cumcount()
+    df[column_name] = df_trace_idx
     return df
 
 

@@ -29,24 +29,24 @@ References
 
 """
 import heapq
-from copy import copy
+import sys
 import time
+from copy import copy
+from enum import Enum
 
 import numpy as np
 
 from pm4py import util as pm4pyutil
 from pm4py.objects.log import log as log_implementation
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY
+from pm4py.objects.petri import align_utils as utils
+from pm4py.objects.petri.incidence_matrix import construct as inc_mat_construct
 from pm4py.objects.petri.synchronous_product import construct_cost_aware, construct
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, \
     decorate_transitions_prepostset
-from pm4py.util.lp import solver as lp_solver
-from pm4py.objects.petri import align_utils as utils
-from pm4py.objects.petri.incidence_matrix import construct as inc_mat_construct
 from pm4py.util import exec_utils
-from enum import Enum
-import sys
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.util.lp import solver as lp_solver
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 
 
 class Parameters(Enum):
@@ -358,10 +358,10 @@ def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_
 
     if trace_cost_function is None or model_cost_function is None or sync_cost_function is None:
         sync_prod, sync_initial_marking, sync_final_marking = construct(trace_net, trace_im,
-                                                                                                  trace_fm, petri_net,
-                                                                                                  initial_marking,
-                                                                                                  final_marking,
-                                                                                                  utils.SKIP)
+                                                                        trace_fm, petri_net,
+                                                                        initial_marking,
+                                                                        final_marking,
+                                                                        utils.SKIP)
         cost_function = utils.construct_standard_cost_function(sync_prod, utils.SKIP)
     else:
         revised_sync = dict()
@@ -444,6 +444,7 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
     visited = 0
     queued = 0
     traversed = 0
+    lp_solved = 1
 
     trans_empty_preset = set(t for t in sync_net.transitions if len(t.in_arcs) == 0)
 
@@ -462,10 +463,13 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
             continue
 
         while not curr.trust:
+            if (time.time() - start_time) > max_align_time_trace:
+                return None
             h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                                incidence_matrix, curr.m,
                                                                fin_vec, lp_solver.DEFAULT_LP_SOLVER_VARIANT,
                                                                use_cvxopt=use_cvxopt)
+            lp_solved += 1
 
             # 11/10/19: shall not a state for which we compute the exact heuristics be
             # by nature a trusted solution?
@@ -489,7 +493,8 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         if curr.h < 0.01:
             if current_marking == fin:
                 return utils.__reconstruct_alignment(curr, visited, queued, traversed,
-                                                     ret_tuple_as_trans_desc=ret_tuple_as_trans_desc)
+                                                     ret_tuple_as_trans_desc=ret_tuple_as_trans_desc,
+                                                     lp_solved=lp_solved)
 
         closed.add(current_marking)
         visited += 1

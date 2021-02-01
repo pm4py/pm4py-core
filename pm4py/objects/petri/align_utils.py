@@ -124,7 +124,7 @@ def __get_alt(open_set, new_marking):
             return item
 
 
-def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_trans_desc=False):
+def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_trans_desc=False, lp_solved = 0):
     parent = state.p
     if ret_tuple_as_trans_desc:
         alignment = [(state.t.name, state.t.label)]
@@ -137,7 +137,7 @@ def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_tran
             alignment = [parent.t.label] + alignment
             parent = parent.p
     return {'alignment': alignment, 'cost': state.g, 'visited_states': visited, 'queued_states': queued,
-            'traversed_arcs': traversed}
+            'traversed_arcs': traversed, 'lp_solved': lp_solved}
 
 
 def __derive_heuristic(incidence_matrix, cost_vec, x, t, h):

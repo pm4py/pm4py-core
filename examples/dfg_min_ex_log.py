@@ -15,11 +15,13 @@ from pm4py.visualization.petrinet import visualizer as pn_vis
 
 def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "interval_event_log.xes")
+    #log_path = os.path.join("..", "tests", "input_data", "reviewing.xes")
     log = xes_importer.apply(log_path)
     parameters = {}
     parameters[constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] = "start_timestamp"
     parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = "time:timestamp"
     parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = "concept:name"
+    parameters["strict"] = False
     parameters["format"] = "svg"
     start_activities = sa_get.get_start_activities(log, parameters=parameters)
     end_activities = ea_get.get_end_activities(log, parameters=parameters)

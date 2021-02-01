@@ -14,9 +14,19 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-def conformance_tbr(log, petri_net, initial_marking, final_marking):
+from typing import Counter, List, Dict, Any
+
+from deprecation import deprecated
+
+from pm4py.objects.log.log import EventLog
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+
+
+def conformance_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
+                    final_marking: Marking) -> List[Dict[str, Any]]:
     """
-    Apply token-based replay
+    Apply token-based replay for conformance checking analysis.
+
 
     Parameters
     --------------
@@ -38,7 +48,8 @@ def conformance_tbr(log, petri_net, initial_marking, final_marking):
     return token_replay.apply(log, petri_net, initial_marking, final_marking)
 
 
-def conformance_alignments(log, petri_net, initial_marking, final_marking):
+def conformance_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
+                           final_marking: Marking) -> List[Dict[str, Any]]:
     """
     Apply the alignments algorithm between a log and a Petri net
 
@@ -162,6 +173,8 @@ def evaluate_precision_alignments(log, petri_net, initial_marking, final_marking
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
 
 
+@deprecated(deprecated_in='2.1.5', removed_in='2.2.0',
+            details='pm4py.soundness_woflan() is deprecated, use pm4py.check_soundness() instead')
 def soundness_woflan(petri_net, initial_marking, final_marking):
     """
     Check soundness using WOFLAN
@@ -180,5 +193,7 @@ def soundness_woflan(petri_net, initial_marking, final_marking):
     boolean
         Soundness
     """
+    import warnings
+    warnings.warn('pm4py.soundness_woflan() is deprecated, use pm4py.check_soundness() instead')
     from pm4py.evaluation.soundness.woflan import algorithm as woflan
     return woflan.apply(petri_net, initial_marking, final_marking)

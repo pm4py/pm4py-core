@@ -188,7 +188,7 @@ class BPMN(object):
     def __init__(self, name="", nodes=None, flows=None):
         self.__id = uuid.uuid4()
         self.__name = name
-        self.__graph = nx.DiGraph()
+        self.__graph = nx.MultiDiGraph()
         self.__nodes = set() if nodes is None else nodes
         self.__flows = set() if flows is None else flows
 

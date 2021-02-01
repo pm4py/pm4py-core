@@ -20,6 +20,8 @@ from pm4py.visualization.dfg.variants import frequency, performance
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import deepcopy
+from pm4py.visualization.common.gview import serialize, serialize_dot
+
 
 class Variants(Enum):
     FREQUENCY = frequency

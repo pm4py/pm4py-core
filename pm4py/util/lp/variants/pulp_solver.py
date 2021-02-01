@@ -102,7 +102,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
     x_list = []
     for i in range(Aub.shape[1]):
         if require_ilp:
-            x_list.append(LpVariable("x_" + get_terminal_part_name_num(i), cat='Binary'))
+            x_list.append(LpVariable("x_" + get_terminal_part_name_num(i), cat='Integer'))
         else:
             x_list.append(LpVariable("x_" + get_terminal_part_name_num(i)))
 

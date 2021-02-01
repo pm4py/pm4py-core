@@ -20,7 +20,6 @@ from graphviz import Digraph
 
 from pm4py.objects.petri.petrinet import Marking
 from pm4py.util import exec_utils
-from enum import Enum
 from pm4py.visualization.petrinet.parameters import Parameters
 
 FORMAT = Parameters.FORMAT
@@ -105,9 +104,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
 
     # transitions
     viz.attr('node', shape='box')
-    # add transitions, in order by their (unique) name, to avoid undeterminism in the visualization
-    trans_sort_list = sorted(list(net.transitions), key=lambda x: (x.label if x.label is not None else "tau", x.name))
-    for t in trans_sort_list:
+    for t in net.transitions:
         if t.label is not None:
             if t in decorations and "label" in decorations[t] and "color" in decorations[t]:
                 viz.node(str(id(t)), decorations[t]["label"], style='filled', fillcolor=decorations[t]["color"],
