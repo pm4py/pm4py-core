@@ -20,6 +20,7 @@ from pm4py.statistics.variants.log import get as variants_get
 from pm4py.simulation.playout import simulator
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.util import dataframe_utils
+from pm4py.util import pandas_utils
 
 
 class OtherPartsTests(unittest.TestCase):
@@ -215,6 +216,14 @@ class OtherPartsTests(unittest.TestCase):
         dfg, sa, ea, act_count = dfg_filtering.filter_dfg_on_activities_percentage(dfg, sa, ea, act_count, 0.5)
         dfg, sa, ea, act_count = dfg_filtering.filter_dfg_on_paths_percentage(dfg, sa, ea, act_count, 0.5)
         aligned_traces = dfg_alignment.apply(log, dfg, sa, ea)
+
+    def test_insert_idx_in_trace(self):
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = pandas_utils.insert_ev_in_tr_index(df)
+
+    def test_automatic_feature_extraction(self):
+        df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        fea_df = dataframe_utils.automatic_feature_extraction_df(df)
 
 
 if __name__ == "__main__":
