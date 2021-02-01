@@ -270,8 +270,14 @@ def streaming_conformance_footprints():
 
 def streaming_conformance_tbr():
     from examples import streaming_conformance_tbr
-    print("\n\nstreaming_conformacne_tbr")
+    print("\n\nstreaming_conformance_tbr")
     streaming_conformance_tbr.execute_script()
+
+
+def streaming_conformance_temporal_profile():
+    from examples import streaming_conformance_temporal_profile
+    print("\n\nstreaming_conformance_temporal_profile")
+    streaming_conformance_temporal_profile.execute_script()
 
 
 def streaming_csv_reader_event_stream():
@@ -308,6 +314,18 @@ def dfg_playout():
     from examples import dfg_playout
     print("\n\ndfg_playout")
     dfg_playout.execute_script()
+
+
+def temporal_profile_log():
+    from examples import temporal_profile_log
+    print("\n\ntemporal_profile_log")
+    temporal_profile_log.execute_script()
+
+
+def temporal_profile_dataframe():
+    from examples import temporal_profile_dataframe
+    print("\n\ntemporal_profile_dataframe")
+    temporal_profile_dataframe.execute_script()
 
 
 def execute_script(f):
