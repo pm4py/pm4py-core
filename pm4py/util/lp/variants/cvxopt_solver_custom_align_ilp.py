@@ -24,22 +24,22 @@ this_options["LPX_K_MSGLEV"] = 0
 this_options["msg_lev"] = "GLP_MSG_OFF"
 this_options["show_progress"] = False
 this_options["presolve"] = "GLP_ON"
-this_options["tol_bnd"] = 10**-5
-this_options["tol_piv"] = 10**-5
-this_options["obj_ll"] = 10**-5
-this_options["obj_ul"] = 10**-5
-this_options["obj_ul"] = 10**-5
-
 
 def custom_solve_ilp(c, G, h, A, b):
-    status, x = glpk.ilp(c, G, h, A, b)
+    size = G.size[1]
+    I = {i for i in range(size)}
+    status, x, y, z = glpk.lp(c, G, h, A, b, options=this_options)
+    if status == "optimal":
+        status, x = glpk.ilp(c, G, h, A, b, I=I, options=this_options)
 
-    if status == 'optimal':
-        pcost = blas.dot(c, x)
+        if status == 'optimal':
+            pcost = blas.dot(c, x)
+        else:
+            pcost = None
+
+        return {'status': status, 'x': x, 'primal objective': pcost}
     else:
-        pcost = None
-
-    return {'status': status, 'x': x, 'primal objective': pcost}
+        return {'status': status, 'x': None, 'primal objective': None}
 
 
 def apply(c, Aub, bub, Aeq, beq, parameters=None):
