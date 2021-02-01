@@ -78,3 +78,16 @@ def matplotlib_view(temp_file_name):
     img = mpimg.imread(temp_file_name)
     plt.imshow(img)
     plt.show()
+
+
+def serialize(temp_file_name: str) -> bytes:
+    """
+    Serializes the graph
+
+    Parameters
+    ------------
+    temp_file_name
+        Path to the temporary file hosting the graph
+    """
+    with open(temp_file_name, "rb") as f:
+        return f.read()

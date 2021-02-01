@@ -76,15 +76,21 @@ def to_interval(log, parameters=None):
                 if transition.lower() == "start":
                     if activity not in activities_start:
                         activities_start[activity] = list()
-                    activities_start[activity].append(timestamp)
+                    activities_start[activity].append(event)
                 elif transition.lower() == "complete":
+                    start_event = None
                     start_timestamp = event[timestamp_key]
                     if activity in activities_start and len(activities_start[activity]) > 0:
-                        start_timestamp = activities_start[activity].pop(0)
+                        start_event = activities_start[activity].pop(0)
+                        start_timestamp = start_event[timestamp_key]
                     new_event = Event()
                     for attr in event:
                         if not attr == timestamp_key and not attr == transition_key:
                             new_event[attr] = event[attr]
+                    if start_event is not None:
+                        for attr in start_event:
+                            if not attr == timestamp_key and not attr == transition_key:
+                                new_event["@@startevent_" + attr] = start_event[attr]
                     new_event[start_timestamp_key] = start_timestamp
                     new_event[timestamp_key] = timestamp
                     new_event["@@duration"] = (timestamp - start_timestamp).total_seconds()

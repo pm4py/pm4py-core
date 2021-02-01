@@ -500,6 +500,9 @@ def __align(model_struct, trace_struct, product_net, corresp, sync_cost=align_ut
         trustable = curr[POSITION_TRUSTABLE]
 
         if not trustable:
+            if (time.time() - start_time) > max_align_time_trace:
+                return None
+            
             m, t = get_corresp_marking_and_trans(curr_m, index, corresp, None)
             h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                                incidence_matrix, m, fin_vec,

@@ -16,7 +16,9 @@
 '''
 import tempfile
 
-from pm4py.util import vis_utils
+from pm4py.util import vis_utils, constants
+from io import BytesIO
+from graphviz.dot import Digraph
 
 
 def view(gviz):
@@ -56,3 +58,42 @@ def matplotlib_view(gviz):
     img = mpimg.imread(file_name.name)
     plt.imshow(img)
     plt.show()
+
+
+def serialize_dot(gviz: Digraph) -> bytes:
+    """
+    Serialize the DOT instructions of a Graphviz object
+
+    Parameters
+    --------------
+    gviz
+        Graphviz object
+
+    Returns
+    --------------
+    bytes_string
+        String containing the DOT instructions
+    """
+    dot = str(gviz)
+    f = BytesIO()
+    f.write(dot.encode(constants.DEFAULT_ENCODING))
+    return f.getvalue()
+
+
+def serialize(gviz: Digraph) -> bytes:
+    """
+    Serialize the image rendered from a Graphviz object
+
+    Parameters
+    ---------------
+    gviz
+        Graphviz object
+
+    Returns
+    ---------------
+    bytes_string
+        String containing the picture
+    """
+    render = gviz.render(cleanup=True)
+    with open(render, "rb") as f1:
+        return f1.read()

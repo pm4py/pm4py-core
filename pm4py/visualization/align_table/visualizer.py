@@ -17,6 +17,7 @@
 from pm4py.visualization.align_table.variants import classic
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
+from pm4py.visualization.common.gview import serialize, serialize_dot
 from enum import Enum
 from pm4py.util import exec_utils
 

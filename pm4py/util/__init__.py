@@ -15,4 +15,4 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.util import lp, vers_checker, constants, points_subset, business_hours, regex, xes_constants, vis_utils, \
-    dt_parsing, colors, exec_utils, pandas_utils
+    dt_parsing, colors, exec_utils, pandas_utils, typing

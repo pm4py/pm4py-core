@@ -19,6 +19,7 @@ from enum import Enum
 
 from pm4py.util import exec_utils, vis_utils
 from pm4py.visualization.heuristics_net.variants import pydotplus
+import tempfile
 
 
 class Variants(Enum):
@@ -92,6 +93,19 @@ def save(figure, output_file_path):
         pass
 
     shutil.copyfile(figure, output_file_path)
+
+
+def serialize(figure: tempfile._TemporaryFileWrapper) -> bytes:
+    """
+    Serialize a figure that has been rendered
+
+    Parameters
+    ----------
+    figure
+        figure
+    """
+    with open(figure.name, "rb") as f:
+        return f.read()
 
 
 def matplotlib_view(figure):

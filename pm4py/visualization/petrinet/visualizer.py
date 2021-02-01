@@ -22,6 +22,7 @@ from pm4py.visualization.petrinet.variants import wo_decoration, alignments, gre
 from pm4py.util import exec_utils
 from enum import Enum
 import pkgutil
+from pm4py.visualization.common.gview import serialize, serialize_dot
 
 
 class Variants(Enum):

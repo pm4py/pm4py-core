@@ -14,15 +14,18 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.util import constants
-from pm4py.objects.log.log import EventStream
-from pm4py.objects.conversion.log import converter as log_converter
-import pandas as pd
-from pm4py.util.vers_checker import check_pandas_ge_024
 from enum import Enum
+from typing import Optional, Dict, Any, List
+
+import pandas as pd
+
+from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.objects.log.log import EventStream
+from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import points_subset
 from pm4py.util import xes_constants
+from pm4py.util.vers_checker import check_pandas_ge_024
 
 LEGACY_PARQUET_TP_REPLACER = "AAA"
 LEGACY_PARQUET_CASECONCEPTNAME = "caseAAAconceptAAAname"
@@ -257,3 +260,125 @@ def automatic_feature_selection_df(df, parameters=None):
     attributes_to_retain = mandatory_attributes.union(other_attributes_to_retain)
 
     return df[attributes_to_retain]
+
+
+def select_number_column(df: pd.DataFrame, fea_df: pd.DataFrame, col: str,
+                         case_id_key=constants.CASE_CONCEPT_NAME) -> pd.DataFrame:
+    """
+    Extract a column for the features dataframe for the given numeric attribute
+
+    Parameters
+    --------------
+    df
+        Dataframe
+    fea_df
+        Feature dataframe
+    col
+        Numeric column
+    case_id_key
+        Case ID key
+
+    Returns
+    --------------
+    fea_df
+        Feature dataframe (desidered output)
+    """
+    df = df.dropna(subset=[col]).groupby(case_id_key).last().reset_index()[[case_id_key, col]]
+    fea_df = fea_df.merge(df, on=[case_id_key], how="left", suffixes=('', '_y'))
+    return fea_df
+
+
+def select_string_column(df: pd.DataFrame, fea_df: pd.DataFrame, col: str,
+                         case_id_key=constants.CASE_CONCEPT_NAME) -> pd.DataFrame:
+    """
+    Extract N columns (for N different attribute values; hotencoding) for the features dataframe for the given string attribute
+
+    Parameters
+    --------------
+    df
+        Dataframe
+    fea_df
+        Feature dataframe
+    col
+        String column
+    case_id_key
+        Case ID key
+
+    Returns
+    --------------
+    fea_df
+        Feature dataframe (desidered output)
+    """
+    vals = df[col].unique()
+    for val in vals:
+        if val is not None:
+            filt_df_cases = df[df[col] == val][case_id_key].unique()
+            new_col = col + "_" + val.encode('ascii', errors='ignore').decode('ascii').replace(" ", "")
+            fea_df[new_col] = fea_df[case_id_key].isin(filt_df_cases)
+            fea_df[new_col] = fea_df[new_col].astype("int")
+    return fea_df
+
+
+def get_features_df(df: pd.DataFrame, list_columns: List[str],
+                    parameters: Optional[Dict[Any, Any]] = None) -> pd.DataFrame:
+    """
+    Given a dataframe and a list of columns, performs an automatic feature extraction
+
+    Parameters
+    ---------------
+    df
+        Dataframe
+    list_column
+        List of column to consider in the feature extraction
+    parameters
+        Parameters of the algorithm, including:
+        - Parameters.CASE_ID_KEY: the case ID
+
+    Returns
+    ---------------
+    fea_df
+        Feature dataframe (desidered output)
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+
+    fea_df = pd.DataFrame({case_id_key: sorted(list(df[case_id_key].unique()))})
+    for col in list_columns:
+        if "object" in str(df[col].dtype):
+            fea_df = select_string_column(df, fea_df, col, case_id_key=case_id_key)
+        elif "float" in str(df[col].dtype) or "int" in str(df[col].dtype):
+            fea_df = select_number_column(df, fea_df, col, case_id_key=case_id_key)
+    fea_df = fea_df.sort_values(case_id_key)
+    return fea_df
+
+
+def automatic_feature_extraction_df(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> pd.DataFrame:
+    """
+    Performs an automatic feature extraction given a dataframe
+
+    Parameters
+    --------------
+    df
+        Dataframe
+    parameters
+        Parameters of the algorithm, including:
+        - Parameters.CASE_ID_KEY: the case ID
+        - Parameters.MIN_DIFFERENT_OCC_STR_ATTR
+        - Parameters.MAX_DIFFERENT_OCC_STR_ATTR
+
+    Returns
+    --------------
+    fea_df
+        Dataframe with the features
+    """
+    if parameters is None:
+        parameters = {}
+
+    fea_sel_df = automatic_feature_selection_df(df, parameters=parameters)
+    columns = set(fea_sel_df.columns)
+    columns.remove(constants.CASE_CONCEPT_NAME)
+    columns.remove(xes_constants.DEFAULT_TIMESTAMP_KEY)
+
+    return get_features_df(fea_sel_df, columns, parameters=parameters)

@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.conformance import alignments, tokenreplay, log_skeleton, footprints
+from pm4py.algo.conformance import alignments, tokenreplay, log_skeleton, footprints, temporal_profile
 
 import sys
 # this package is available only for Python >= 3.6

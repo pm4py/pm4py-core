@@ -19,6 +19,7 @@ from pm4py.visualization.common import save as gsave
 from pm4py.visualization.transition_system.variants import view_based
 from enum import Enum
 from pm4py.util import exec_utils
+from pm4py.visualization.common.gview import serialize, serialize_dot
 
 
 class Variants(Enum):

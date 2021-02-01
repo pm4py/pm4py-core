@@ -25,6 +25,7 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    STRICT = "strict"
 
 
 def apply(interval_log, parameters=None):
@@ -40,6 +41,8 @@ def apply(interval_log, parameters=None):
         - Parameters.ACTIVITY_KEY => activity key
         - Parameters.START_TIMESTAMP_KEY => start timestamp
         - Parameters.TIMESTAMP_KEY => complete timestamp
+        - Parameters.STRICT => Determine if only entries that are strictly concurrent
+            (i.e. the length of the intersection as real interval is > 0) should be obtained. Default: False
 
     Returns
     --------------
@@ -57,6 +60,7 @@ def apply(interval_log, parameters=None):
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
                                                      xes_constants.DEFAULT_TIMESTAMP_KEY)
+    strict = exec_utils.get_param_value(Parameters.STRICT, parameters, False)
 
     ret_dict = {}
     for trace in interval_log:
@@ -72,10 +76,12 @@ def apply(interval_log, parameters=None):
                 tc2 = sorted_trace[j][timestamp_key]
                 act2 = sorted_trace[j][activity_key]
                 if max(ts1, ts2) <= min(tc1, tc2):
-                    tup = (act1, act2)
-                    if not tup in ret_dict:
-                        ret_dict[tup] = 0
-                    ret_dict[tup] = ret_dict[tup] + 1
+                    if not strict or max(ts1, ts2) < min(tc1, tc2):
+                        # avoid getting two entries for the same set of concurrent activities
+                        tup = tuple(sorted((act1, act2)))
+                        if tup not in ret_dict:
+                            ret_dict[tup] = 0
+                        ret_dict[tup] = ret_dict[tup] + 1
                 else:
                     break
                 j = j + 1
