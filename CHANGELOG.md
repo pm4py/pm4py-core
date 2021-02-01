@@ -10,6 +10,11 @@
     * fix usage of integer values in pulp solver rather than binary variables.
 * 6ba4322f
     * fixed conversion behavior lifecycle to interval logs
+* dd3e22da
+    * pass the flow name to edge attribute of graph in BPMN. Reported by @YJDave;
+      see: https://github.com/pm4py/pm4py-core/pull/202
+* ce240905
+    * fix for GLPK ILP when no solution exists. see: https://github.com/pm4py/pm4py-core/pull/204
 
 ### Removed
 
