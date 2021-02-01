@@ -1,5 +1,5 @@
 from pm4py.visualization.graphs.variants import cases, attributes, dates
-from pm4py.visualization.graphs.util.common import save, view, matplotlib_view
+from pm4py.visualization.graphs.util.common import save, view, matplotlib_view, serialize
 from enum import Enum
 from pm4py.util import exec_utils
 
