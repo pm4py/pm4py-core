@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-VERSION = '2.1.4.1'
+VERSION = '2.2.0'
 
 import sys
 import time
