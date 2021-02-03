@@ -176,10 +176,10 @@ def filter_variants_variants_percentage(log, variants, variants_percentage=0.0):
         varcount = variant_count[i][1]
         if varcount < shall_break_under:
             break
-        percentage_already_added = already_added_sum / no_of_traces
         for trace in variants[variant]:
             filtered_log.append(trace)
         already_added_sum = already_added_sum + varcount
+        percentage_already_added = already_added_sum / no_of_traces
         if percentage_already_added >= variants_percentage:
             shall_break_under = varcount
 
