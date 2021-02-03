@@ -111,10 +111,11 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                     eval_str = eval_str + " + "
                 eval_str = eval_str + str(Aub[i, j]) + "*x_list[" + str(j) + "]"
                 expr_count = expr_count + 1
-        eval_str = eval_str + "<=" + str(
-            bub[i].reshape(-1, ).tolist()[0][0]) + ", \"vinc_" + get_terminal_part_name_num(i) + "\""
+        if eval_str:
+            eval_str = eval_str + "<=" + str(
+                bub[i].reshape(-1, ).tolist()[0][0]) + ", \"vinc_" + get_terminal_part_name_num(i) + "\""
 
-        prob += eval(eval_str)
+            prob += eval(eval_str)
 
     if Aeq is not None and beq is not None:
         for i in range(Aeq.shape[0]):
