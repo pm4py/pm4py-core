@@ -1,7 +1,10 @@
-VERSION = '2.2.0'
 
 import sys
 import time
+
+# Keep meta variables accessible at top-level.
+from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
+    __maintainer__, __maintainer_email__
 
 from pm4py import util, objects, statistics, algo, visualization, evaluation, simulation
 from pm4py.analysis import check_soundness
@@ -27,13 +30,6 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
 from pm4py.write import write_xes, write_csv, write_petri_net, write_process_tree, write_dfg, write_bpmn
 
 time.clock = time.process_time
-
-__version__ = VERSION
-__doc__ = 'Process Mining for Python (PM4Py)'
-__author__ = 'Fraunhofer Institute for Applied Technology'
-__author_email__ = 'pm4py@fit.fraunhofer.de'
-__maintainer__ = 'Fraunhofer Institute for Applied Technology'
-__maintainer_email__ = "pm4py@fit.fraunhofer.de"
 
 # this package is available only for Python >= 3.5
 if sys.version_info >= (3, 5):
