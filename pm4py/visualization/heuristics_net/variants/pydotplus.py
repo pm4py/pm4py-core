@@ -218,7 +218,7 @@ def apply(heu_net, parameters=None):
     for index, ea_list in enumerate(heu_net.end_activities):
         effective_ea_list = [n for n in ea_list if n in corr_nodes_names]
         if effective_ea_list:
-            end_i = pydotplus.Node(name="end_" + str(index), label="@@E", color="#",
+            end_i = pydotplus.Node(name="end_" + str(index), label="@@E", color="#FFA500",
                                    fillcolor="#FFA500", fontcolor="#FFA500", fontsize="8",
                                    style="filled")
             graph.add_node(end_i)
