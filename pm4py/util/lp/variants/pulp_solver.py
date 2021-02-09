@@ -73,14 +73,6 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
 
     require_ilp = exec_utils.get_param_value(Parameters.REQUIRE_ILP, parameters, False)
 
-    Aub = np.asmatrix(Aub)
-    if type(bub) is list and len(bub) == 1:
-        bub = bub[0]
-    if Aeq is not None:
-        Aeq = np.asmatrix(Aeq)
-    if beq is not None and type(beq) is list and len(beq) == 1:
-        beq = beq[0]
-
     prob = LpProblem("", LpMinimize)
 
     x_list = []
@@ -113,7 +105,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                 expr_count = expr_count + 1
         if eval_str:
             eval_str = eval_str + "<=" + str(
-                bub[i].reshape(-1, ).tolist()[0][0]) + ", \"vinc_" + get_terminal_part_name_num(i) + "\""
+                bub[i]) + ", \"vinc_" + get_terminal_part_name_num(i) + "\""
 
             prob += eval(eval_str)
 
@@ -130,7 +122,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                     expr_count = expr_count + 1
             if eval_str:
                 eval_str = eval_str + "==" + str(
-                    beq[i].reshape(-1, ).tolist()[0][0]) + ", \"vinceq_" + get_terminal_part_name_num(
+                    beq[i]) + ", \"vinceq_" + get_terminal_part_name_num(
                     i + 1 + Aub.shape[0]) + "\""
 
                 prob += eval(eval_str)
