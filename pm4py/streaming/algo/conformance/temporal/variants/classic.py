@@ -58,9 +58,9 @@ class TemporalProfileStreamingConformance(StreamingAlgorithm):
         self.start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
                                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
         self.case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-        self.zeta = exec_utils.get_param_value(Parameters.ZETA, parameters, 2.0)
+        self.zeta = exec_utils.get_param_value(Parameters.ZETA, parameters, 6.0)
         parameters_gen = copy(parameters)
-        dict_variant = exec_utils.get_param_value(Parameters.DICT_VARIANT, parameters, generator.Variants.CLASSIC)
+        dict_variant = exec_utils.get_param_value(Parameters.DICT_VARIANT, parameters, generator.Variants.THREAD_SAFE)
         case_dict_id = exec_utils.get_param_value(Parameters.CASE_DICT_ID, parameters, 0)
         parameters_gen[Parameters.DICT_ID] = case_dict_id
         self.case_dictionary = generator.apply(variant=dict_variant, parameters=parameters_gen)
