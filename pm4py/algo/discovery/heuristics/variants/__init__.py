@@ -1,1 +1,1 @@
-from pm4py.algo.discovery.heuristics.variants import classic
+from pm4py.algo.discovery.heuristics.variants import classic, plusplus
