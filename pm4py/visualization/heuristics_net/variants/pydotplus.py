@@ -3,8 +3,8 @@ import tempfile
 
 import pydotplus
 
-from pm4py.visualization.common.utils import human_readable_stat
 from pm4py.util import exec_utils
+from pm4py.visualization.common.utils import human_readable_stat
 from pm4py.visualization.parameters import Parameters
 
 
@@ -133,7 +133,9 @@ def apply(heu_net, parameters=None):
                                fontcolor=node.get_font_color())
         else:
             n = pydotplus.Node(name=node_name, shape="box", style="filled",
-                               label=node_name, fillcolor=node.get_fill_color(graycolor),
+                               label=node_name + " (" + human_readable_stat(heu_net.sojourn_times[
+                                                                                node_name]) + ")" if node_name in heu_net.sojourn_times else "0s",
+                               fillcolor=node.get_fill_color(graycolor),
                                fontcolor=node.get_font_color())
         corr_nodes[node] = n
         corr_nodes_names[node_name] = n
