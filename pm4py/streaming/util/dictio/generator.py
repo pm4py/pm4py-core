@@ -1,13 +1,14 @@
-from pm4py.streaming.util.dictio.versions import classic
+from pm4py.streaming.util.dictio.versions import classic, thread_safe
 from enum import Enum
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
     CLASSIC = classic
+    THREAD_SAFE = thread_safe
 
 
-DEFAULT_VARIANT = Variants.CLASSIC
+DEFAULT_VARIANT = Variants.THREAD_SAFE
 
 
 def apply(variant=DEFAULT_VARIANT, parameters=None):
