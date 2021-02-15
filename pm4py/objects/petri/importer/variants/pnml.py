@@ -191,8 +191,8 @@ def import_net_from_xml_object(root, parameters=None):
                 position_Y = None
                 dimension_X = None
                 dimension_Y = None
-                trans_name = child.get("id")
-                trans_label = trans_name
+                trans_id = child.get("id")
+                trans_name = trans_id
                 trans_visible = True
 
                 random_variable = None
@@ -201,8 +201,8 @@ def import_net_from_xml_object(root, parameters=None):
                     if child2.tag.endswith("name"):
                         for child3 in child2:
                             if child3.text:
-                                if trans_label == trans_name:
-                                    trans_label = child3.text
+                                if trans_name == trans_id:
+                                    trans_name = child3.text
                     if child2.tag.endswith("graphics"):
                         for child3 in child2:
                             if child3.tag.endswith("position"):
@@ -241,18 +241,21 @@ def import_net_from_xml_object(root, parameters=None):
                             random_variable.set_priority(priority)
                             random_variable.set_weight(weight)
 
-                if not trans_visible:
+                # 15/02/2021: the name associated in the PNML to invisible transitions was lost.
+                # at least save that as property.
+                if trans_visible:
+                    trans_label = trans_name
+                else:
                     trans_label = None
-                # if "INVISIBLE" in trans_label:
-                #    trans_label = None
 
-                trans_dict[trans_name] = PetriNet.Transition(trans_name, trans_label)
-                net.transitions.add(trans_dict[trans_name])
+                trans_dict[trans_id] = PetriNet.Transition(trans_id, trans_label)
+                trans_dict[trans_id].properties[constants.TRANS_NAME_TAG] = trans_name
+                net.transitions.add(trans_dict[trans_id])
 
                 if random_variable is not None:
-                    trans_dict[trans_name].properties[constants.STOCHASTIC_DISTRIBUTION] = random_variable
+                    trans_dict[trans_id].properties[constants.STOCHASTIC_DISTRIBUTION] = random_variable
                 if position_X is not None and position_Y is not None and dimension_X is not None and dimension_Y is not None:
-                    trans_dict[trans_name].properties[constants.LAYOUT_INFORMATION_PETRI] = (
+                    trans_dict[trans_id].properties[constants.LAYOUT_INFORMATION_PETRI] = (
                         (position_X, position_Y), (dimension_X, dimension_Y))
 
     if page is not None:
