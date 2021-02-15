@@ -79,6 +79,8 @@ class HeuristicsNet:
         self.dfg_window_2_matrix = {}
         self.freq_triples = freq_triples
         self.freq_triples_matrix = {}
+        self.concurrent_activities = {}
+        self.sojourn_times = {}
 
     def calculate(self, dependency_thresh=defaults.DEFAULT_DEPENDENCY_THRESH,
                   and_measure_thresh=defaults.DEFAULT_AND_MEASURE_THRESH, min_act_count=defaults.DEFAULT_MIN_ACT_COUNT,

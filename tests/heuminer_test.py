@@ -39,6 +39,28 @@ class HeuMinerTest(unittest.TestCase):
         gviz = pn_vis.apply(net, im, fm)
         del gviz
 
+    def test_heuplusplus_perf_df(self):
+        df = pd.read_csv(os.path.join(INPUT_DATA_DIR, "interval_event_log.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        heu_net = heuristics_miner.Variants.PLUSPLUS.value.apply_heu_pandas(df, parameters={"heu_net_decoration": "performance"})
+        gviz = hn_vis.apply(heu_net)
+
+    def test_heuplusplus_perf_log(self):
+        log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "interval_event_log.xes"))
+        heu_net = heuristics_miner.apply_heu(log, variant=heuristics_miner.Variants.PLUSPLUS, parameters={"heu_net_decoration": "performance"})
+        gviz = hn_vis.apply(heu_net)
+
+    def test_heuplusplus_petri_df(self):
+        df = pd.read_csv(os.path.join(INPUT_DATA_DIR, "interval_event_log.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        net, im, fm = heuristics_miner.Variants.PLUSPLUS.value.apply_pandas(df)
+        gviz = pn_vis.apply(net, im, fm)
+
+    def test_heuplusplus_petri_log(self):
+        log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "interval_event_log.xes"))
+        net, im, fm = heuristics_miner.apply(log, variant=heuristics_miner.Variants.PLUSPLUS)
+        gviz = pn_vis.apply(net, im, fm)
+
 
 if __name__ == "__main__":
     unittest.main()
