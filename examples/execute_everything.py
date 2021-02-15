@@ -328,6 +328,24 @@ def temporal_profile_dataframe():
     temporal_profile_dataframe.execute_script()
 
 
+def dataframe_prefix_and_fea_extraction():
+    from examples import dataframe_prefix_and_fea_extraction
+    print("\n\ndataframe_prefix_and_fea_extraction")
+    dataframe_prefix_and_fea_extraction.execute_script()
+
+
+def logs_alignments():
+    from examples import logs_alignment
+    print("\n\nlogs_alignment")
+    logs_alignment.execute_script()
+
+
+def visualization_serialization():
+    from examples import visualization_serialization
+    print("\n\visualization_serialization")
+    visualization_serialization.execute_script()
+
+
 def execute_script(f):
     try:
         f()
@@ -339,6 +357,9 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(dataframe_prefix_and_fea_extraction)
+    execute_script(logs_alignments)
+    execute_script(visualization_serialization)
     execute_script(woflan)
     execute_script(bpmn_from_pt)
     execute_script(bpmn_import_and_to_petri_net)
