@@ -16,7 +16,7 @@
 '''
 import deprecation
 
-from pm4py import VERSION
+from pm4py.meta import VERSION
 
 
 def write_xes(log, file_path):

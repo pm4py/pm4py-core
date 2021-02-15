@@ -55,14 +55,6 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
 
     require_ilp = exec_utils.get_param_value(Parameters.REQUIRE_ILP, parameters, False)
 
-    Aub = np.asmatrix(Aub)
-    if type(bub) is list and len(bub) == 1:
-        bub = bub[0]
-    if Aeq is not None:
-        Aeq = np.asmatrix(Aeq)
-    if beq is not None and type(beq) is list and len(beq) == 1:
-        beq = beq[0]
-
     solver = pywraplp.Solver('LinearProgrammingExample',
                              pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
     solver.Clear()
@@ -88,7 +80,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                 ok = True
                 break
         if ok:
-            constraint = solver.Constraint(-solver.infinity(), bub[i].reshape(-1, ).tolist()[0][0])
+            constraint = solver.Constraint(-solver.infinity(), bub[i])
             for j in range(Aub.shape[1]):
                 if abs(Aub[i, j]) > MIN_THRESHOLD:
                     constraint.SetCoefficient(x_list[j], Aub[i, j])
@@ -101,7 +93,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                     ok = True
                     break
             if ok:
-                constraint = solver.Constraint(beq[i].reshape(-1,).tolist()[0][0], beq[i].reshape(-1,).tolist()[0][0])
+                constraint = solver.Constraint(beq[i], beq[i])
                 for j in range(Aeq.shape[1]):
                     if abs(Aeq[i, j]) > MIN_THRESHOLD:
                         constraint.SetCoefficient(x_list[j], Aeq[i, j])

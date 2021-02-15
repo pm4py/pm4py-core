@@ -18,7 +18,7 @@ import logging
 
 import deprecation
 
-from pm4py import VERSION
+from pm4py.meta import VERSION
 from pm4py.util import constants
 
 INDEX_COLUMN = "@@index"

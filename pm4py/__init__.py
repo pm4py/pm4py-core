@@ -14,9 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-
-VERSION = '2.2.0'
-
 import sys
 import time
 
@@ -33,6 +30,9 @@ from pm4py.filtering import filter_start_activities, filter_end_activities, filt
     filter_variants_percentage, filter_directly_follows_relation, filter_time_range, filter_trace_attribute, \
     filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
+# Keep meta variables accessible at top-level.
+from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
+    __maintainer__, __maintainer_email__
 from pm4py.read import read_xes, read_csv, read_petri_net, read_process_tree, read_dfg, \
     read_bpmn
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
@@ -44,13 +44,6 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
 from pm4py.write import write_xes, write_csv, write_petri_net, write_process_tree, write_dfg, write_bpmn
 
 time.clock = time.process_time
-
-__version__ = VERSION
-__doc__ = 'Process Mining for Python (PM4Py)'
-__author__ = 'Fraunhofer Institute for Applied Technology'
-__author_email__ = 'pm4py@fit.fraunhofer.de'
-__maintainer__ = 'Fraunhofer Institute for Applied Technology'
-__maintainer_email__ = "pm4py@fit.fraunhofer.de"
 
 # this package is available only for Python >= 3.5
 if sys.version_info >= (3, 5):

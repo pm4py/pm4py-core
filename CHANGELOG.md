@@ -1,5 +1,36 @@
 # PM4Py Changelog
 
+## PM4PY 2.2.1 (2021.02.15)
+
+### Fixed
+
+* ee11545a
+    * fixed importing names of invisible transitions as stored in ```.pnml``` files
+* 5efff284
+    * handle warning messages thrown in the heuristics net visualization
+
+### Removed
+
+### Deprecated
+
+### Changed
+
+### Added
+
+* 91b494ad
+    * simple process tree reduction that removes parts that are guaranteed not to be needed for the alignment/replay of
+      a trace
+* f75ecff3
+    * thread-safe implementation of ```dict``` for streaming based process mining
+* 03d176f9
+    * implementation of the Heuristics++ Miner
+* 32443759
+    * add support for using ```redis dict``` for streaming
+
+### Other
+
+---
+
 ## PM4PY 2.2.0 (2021.02.01)
 
 ### Fixed

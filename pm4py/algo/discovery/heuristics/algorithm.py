@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.discovery.heuristics.variants import classic
+from pm4py.algo.discovery.heuristics.variants import classic, plusplus
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import exec_utils
 from enum import Enum
@@ -23,6 +23,7 @@ import pkgutil
 
 class Variants(Enum):
     CLASSIC = classic
+    PLUSPLUS = plusplus
 
 
 CLASSIC = Variants.CLASSIC
@@ -54,6 +55,7 @@ def apply(log, parameters=None, variant=CLASSIC):
     variant
         Variant of the algorithm:
             - Variants.CLASSIC
+            - Variants.PLUSPLUS
 
     Returns
     ------------

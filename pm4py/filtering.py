@@ -18,7 +18,7 @@ import warnings
 
 import deprecation
 
-from pm4py import VERSION as PM4PY_CURRENT_VERSION
+from pm4py.meta import VERSION as PM4PY_CURRENT_VERSION
 from pm4py.util import constants
 from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
 
