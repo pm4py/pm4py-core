@@ -1,10 +1,5 @@
-
 import sys
 import time
-
-# Keep meta variables accessible at top-level.
-from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
-    __maintainer__, __maintainer_email__
 
 from pm4py import util, objects, statistics, algo, visualization, evaluation, simulation
 from pm4py.analysis import check_soundness
@@ -19,6 +14,9 @@ from pm4py.filtering import filter_start_activities, filter_end_activities, filt
     filter_variants_percentage, filter_directly_follows_relation, filter_time_range, filter_trace_attribute, \
     filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
+# Keep meta variables accessible at top-level.
+from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
+    __maintainer__, __maintainer_email__
 from pm4py.read import read_xes, read_csv, read_petri_net, read_process_tree, read_dfg, \
     read_bpmn
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
