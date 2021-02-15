@@ -1,19 +1,3 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
 import sys
 
 from cvxopt import blas
@@ -25,13 +9,29 @@ this_options["msg_lev"] = "GLP_MSG_OFF"
 this_options["show_progress"] = False
 this_options["presolve"] = "GLP_ON"
 
-def custom_solve_ilp(c, G, h, A, b):
-    size = G.size[1]
-    I = {i for i in range(size)}
-    status, x, y, z = glpk.lp(c, G, h, A, b, options=this_options)
-    if status == "optimal":
-        status, x = glpk.ilp(c, G, h, A, b, I=I, options=this_options)
+this_options_lp = {}
+this_options_lp["LPX_K_MSGLEV"] = 0
+this_options_lp["msg_lev"] = "GLP_MSG_OFF"
+this_options_lp["show_progress"] = False
+this_options_lp["presolve"] = "GLP_ON"
 
+TOL = 10**(-5)
+
+
+def check_lp_sol_is_integer(x):
+    for i in range(len(x)):
+        if abs(x[i] - round(x[i])) > TOL:
+            return False
+    return True
+
+
+def custom_solve_ilp(c, G, h, A, b):
+    status, x, y, z = glpk.lp(c, G, h, A, b, options=this_options_lp)
+    if status == "optimal":
+        if not check_lp_sol_is_integer(x):
+            size = G.size[1]
+            I = {i for i in range(size)}
+            status, x = glpk.ilp(c, G, h, A, b, I=I, options=this_options)
         if status == 'optimal':
             pcost = blas.dot(c, x)
         else:
