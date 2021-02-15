@@ -73,7 +73,7 @@ class FootprintsStreamingConformance(StreamingAlgorithm):
              - Parameters.CASE_DICT_ID: identifier of the dictionary hosting the last activity of a case (1)
              - Parameters.DEV_DICT_ID: identifier of the dictionary hosting the deviations (2)
         """
-        dict_variant = exec_utils.get_param_value(Parameters.DICT_VARIANT, parameters, generator.Variants.CLASSIC)
+        dict_variant = exec_utils.get_param_value(Parameters.DICT_VARIANT, parameters, generator.Variants.THREAD_SAFE)
         case_dict_id = exec_utils.get_param_value(Parameters.CASE_DICT_ID, parameters, 0)
         dev_dict_id = exec_utils.get_param_value(Parameters.DEV_DICT_ID, parameters, 1)
         parameters_case_dict = copy(parameters)
@@ -117,16 +117,16 @@ class FootprintsStreamingConformance(StreamingAlgorithm):
         activity
             Activity
         """
-        if case not in self.case_dict:
+        if case not in self.case_dict.keys():
             self.dev_dict[case] = 0
         if activity in self.activities:
-            if case not in self.case_dict:
+            if case not in self.case_dict.keys():
                 self.verify_start_case(case, activity)
             else:
                 self.verify_intra_case(case, activity)
             self.case_dict[case] = activity
         else:
-            self.dev_dict[case] += 1
+            self.dev_dict[case] = int(self.dev_dict[case]) + 1
             self.message_activity_not_possible(activity, case)
 
     def verify_intra_case(self, case, activity):
@@ -143,7 +143,7 @@ class FootprintsStreamingConformance(StreamingAlgorithm):
         prev = self.case_dict[case]
         df = (prev, activity)
         if df not in self.all_fps:
-            self.dev_dict[case] += 1
+            self.dev_dict[case] = int(self.dev_dict[case]) + 1
             self.message_footprints_not_possible(df, case)
 
     def verify_start_case(self, case, activity):
@@ -158,7 +158,7 @@ class FootprintsStreamingConformance(StreamingAlgorithm):
             Activity
         """
         if activity not in self.start_activities:
-            self.dev_dict[case] += 1
+            self.dev_dict[case] = int(self.dev_dict[case]) + 1
             self.message_start_activity_not_possible(activity, case)
 
     def get_status(self, case):
@@ -175,8 +175,8 @@ class FootprintsStreamingConformance(StreamingAlgorithm):
         boolean
             Boolean value (True if there are no deviations)
         """
-        if case in self.case_dict:
-            num_dev = self.dev_dict[case]
+        if case in self.case_dict.keys():
+            num_dev = int(self.dev_dict[case])
             if num_dev == 0:
                 return True
             else:
@@ -198,12 +198,12 @@ class FootprintsStreamingConformance(StreamingAlgorithm):
         boolean
             Boolean value (True if there are no deviations)
         """
-        if case in self.case_dict:
+        if case in self.case_dict.keys():
             curr = self.case_dict[case]
             if curr not in self.end_activities:
                 self.message_end_activity_not_possible(curr, case)
-                self.dev_dict[case] += 1
-            num_dev = self.dev_dict[case]
+                self.dev_dict[case] = int(self.dev_dict[case]) + 1
+            num_dev = int(self.dev_dict[case])
             del self.case_dict[case]
             del self.dev_dict[case]
             if num_dev == 0:

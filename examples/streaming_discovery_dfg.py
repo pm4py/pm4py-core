@@ -21,7 +21,7 @@ def execute_script():
     live_stream.start()
     # append each event of the original log to the live event stream
     # (so it is sent to the conformance checking algorithm)
-    for event in event_stream:
+    for index, event in enumerate(event_stream):
         live_stream.append(event)
     # stops the live event stream
     live_stream.stop()

@@ -1,8 +1,13 @@
+import runpy
 from os.path import dirname, join
-
+from pathlib import Path
 from setuptools import setup
 
-import pm4py
+
+# Import only the metadata of the pm4py to use in the setup. We cannot import it directly because
+# then we need to import packages that are about to be installed by the setup itself.
+meta_path = Path(__file__).parent.absolute() / "pm4py" / "meta.py"
+meta = runpy.run_path(meta_path)
 
 
 def read_file(filename):
@@ -11,13 +16,13 @@ def read_file(filename):
 
 
 setup(
-    name=pm4py.__name__,
-    version=pm4py.__version__,
-    description=pm4py.__doc__.strip(),
+    name=meta['__name__'],
+    version=meta['__version__'],
+    description=meta['__doc__'].strip(),
     long_description=read_file('README.md'),
-    author=pm4py.__author__,
-    author_email=pm4py.__author_email__,
-    py_modules=[pm4py.__name__],
+    author=meta['__author__'],
+    author_email=meta['__author_email__'],
+    py_modules=[meta['__name__']],
     include_package_data=True,
     packages=['pm4py', 'pm4py.algo', 'pm4py.algo.discovery', 'pm4py.algo.discovery.dfg',
               'pm4py.algo.discovery.dfg.utils', 'pm4py.algo.discovery.dfg.adapters',
@@ -53,9 +58,9 @@ setup(
               'pm4py.algo.filtering.pandas.paths', 'pm4py.algo.filtering.pandas.variants',
               'pm4py.algo.filtering.pandas.timestamp', 'pm4py.algo.filtering.pandas.attributes',
               'pm4py.algo.filtering.pandas.auto_filter', 'pm4py.algo.filtering.pandas.end_activities',
-              'pm4py.algo.filtering.pandas.start_activities', 'pm4py.algo.clustering',
-              'pm4py.algo.clustering.trace_attribute_driven', 'pm4py.algo.clustering.trace_attribute_driven.dfg',
-              'pm4py.algo.clustering.trace_attribute_driven.util',
+              'pm4py.algo.filtering.pandas.start_activities', 'pm4py.algo.reduction', 'pm4py.algo.reduction.variants',
+              'pm4py.algo.clustering', 'pm4py.algo.clustering.trace_attribute_driven',
+              'pm4py.algo.clustering.trace_attribute_driven.dfg', 'pm4py.algo.clustering.trace_attribute_driven.util',
               'pm4py.algo.clustering.trace_attribute_driven.variants',
               'pm4py.algo.clustering.trace_attribute_driven.merge_log',
               'pm4py.algo.clustering.trace_attribute_driven.leven_dist',
