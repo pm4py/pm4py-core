@@ -439,16 +439,17 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         curr = heapq.heappop(open_set)
 
         current_marking = curr.m
-        # 11/10/2019 (optimization Y, that was optimization X,
-        # but with the good reasons this way): avoid checking markings in the cycle using
-        # the __get_alt function, but check them 'on the road'
-        already_closed = current_marking in closed
-        if already_closed:
-            continue
 
         while not curr.trust:
             if (time.time() - start_time) > max_align_time_trace:
                 return None
+
+            already_closed = current_marking in closed
+            if already_closed:
+                curr = heapq.heappop(open_set)
+                current_marking = curr.m
+                continue
+
             h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                                incidence_matrix, curr.m,
                                                                fin_vec, lp_solver.DEFAULT_LP_SOLVER_VARIANT,
