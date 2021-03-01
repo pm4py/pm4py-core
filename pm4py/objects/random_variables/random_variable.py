@@ -20,6 +20,7 @@ from pm4py.objects.random_variables.constant0.random_variable import Constant0
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
 from pm4py.objects.random_variables.normal.random_variable import Normal
 from pm4py.objects.random_variables.uniform.random_variable import Uniform
+from pm4py.objects.random_variables.unknown.random_variable import Unknown
 
 
 class RandomVariable(object):
@@ -48,6 +49,8 @@ class RandomVariable(object):
             self.random_variable.read_from_string(distribution_parameters)
         elif distribution_type == "IMMEDIATE":
             self.random_variable = Constant0()
+        else:
+            self.random_variable = Unknown()
 
     def get_distribution_type(self):
         """
