@@ -7,7 +7,7 @@ from setuptools import setup
 # Import only the metadata of the pm4py to use in the setup. We cannot import it directly because
 # then we need to import packages that are about to be installed by the setup itself.
 meta_path = Path(__file__).parent.absolute() / "pm4py" / "meta.py"
-meta = runpy.run_path(meta_path)
+meta = runpy.run_path(str(meta_path))
 
 
 def read_file(filename):
