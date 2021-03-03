@@ -23,8 +23,6 @@ def execute_script():
 
     # writes the log1 to a XES file
     pm4py.write_xes(log1, "ru1.xes")
-    # writes the df to a CSV file
-    pm4py.write_csv(df, "ru1.csv")
 
     dfg, dfg_sa, dfg_ea = pm4py.discover_dfg(log1)
     petri_alpha, im_alpha, fm_alpha = pm4py.discover_petri_net_alpha(log1)

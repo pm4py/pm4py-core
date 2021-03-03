@@ -13,7 +13,7 @@ def execute_script():
     print("precision", precision_tbr)
     fitness_tbr = pm4py.evaluate_fitness_tbr(log, net, im, fm)
     print("fitness", fitness_tbr)
-    print(pm4py.soundness_woflan(net, im, fm))
+    print(pm4py.check_soundness(net, im, fm))
 
 
 if __name__ == "__main__":
