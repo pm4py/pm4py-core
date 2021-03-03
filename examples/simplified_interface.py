@@ -124,7 +124,6 @@ def execute_script():
 
     # remove the temporary files
     os.remove("ru1.xes")
-    os.remove("ru1.csv")
     os.remove("ru_dfg.dfg")
     os.remove("ru_alpha.pnml")
     os.remove("ru_inductive.pnml")
