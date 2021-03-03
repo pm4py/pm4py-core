@@ -17,9 +17,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         stream1 = pm4py.convert_to_event_stream(log2)
         df2 = pm4py.convert_to_dataframe(log2)
         pm4py.write_xes(log2, "test_output_data/log.xes")
-        pm4py.write_csv(df, "test_output_data/log.csv")
         os.remove("test_output_data/log.xes")
-        os.remove("test_output_data/log.csv")
 
     def test_alpha_miner(self):
         log = pm4py.read_xes("input_data/running-example.xes")
