@@ -61,7 +61,7 @@ def execute_script():
         pm4py.view_dfg(dfg, dfg_sa, dfg_ea, format="svg")
 
     aligned_traces = pm4py.conformance_alignments(log1, petri_inductive, im_inductive, fm_inductive)
-    replayed_traces = pm4py.conformance_tbr(log1, petri_inductive, im_inductive, fm_inductive)
+    replayed_traces = pm4py.conformance_token_based_replay(log1, petri_inductive, im_inductive, fm_inductive)
 
     fitness_tbr = pm4py.evaluate_fitness_tbr(log1, petri_inductive, im_inductive, fm_inductive)
     print("fitness_tbr", fitness_tbr)

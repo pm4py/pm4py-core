@@ -4,9 +4,10 @@ import time
 from pm4py import util, objects, statistics, algo, visualization, evaluation, simulation
 from pm4py.analysis import check_soundness, solve_marking_equation, solve_extended_marking_equation, \
     construct_synchronous_product_net
-from pm4py.conformance import conformance_tbr, conformance_alignments, evaluate_fitness_tbr, \
-    evaluate_fitness_alignments, evaluate_precision_tbr, \
-    evaluate_precision_alignments, soundness_woflan
+from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \
+    fitness_token_based_replay, \
+    fitness_alignments, precision_token_based_replay, \
+    precision_alignments
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_heuristics, \
@@ -20,6 +21,7 @@ from pm4py.meta import __name__, __version__, __doc__, __author__, __author_emai
     __maintainer__, __maintainer_email__
 from pm4py.read import read_xes, read_csv, read_petri_net, read_process_tree, read_dfg, \
     read_bpmn
+from pm4py.sim import playout, generate_model
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
     get_trace_attributes, get_variants_as_tuples
 from pm4py.utils import format_dataframe
@@ -27,7 +29,6 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     save_vis_process_tree, \
     view_heuristics_net, save_vis_heuristics_net, view_bpmn, save_vis_bpmn
 from pm4py.write import write_xes, write_csv, write_petri_net, write_process_tree, write_dfg, write_bpmn
-from pm4py.sim import playout, generate_model
 
 time.clock = time.process_time
 
