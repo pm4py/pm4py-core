@@ -1,15 +1,21 @@
 from collections import Counter
+from typing import Union, Tuple
+
+from pm4py.objects.log.log import EventLog
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.process_tree.process_tree import ProcessTree
 
 
-def playout(*args, **kwargs):
+def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, ProcessTree], **kwargs) -> EventLog:
     """
     Performs the playout of the provided model,
-    i.e., gets a set of traces from the model
+    i.e., gets a set of traces from the model.
+    The function either takes a petri net, initial and final marking, or, a process tree as an input.
 
     Parameters
     ---------------
     args
-        Model
+        Model (Petri net, initial, final marking) or ProcessTree
     kwargs
         Parameters of the playout
 
@@ -34,29 +40,19 @@ def playout(*args, **kwargs):
     raise Exception("unsupported model for playout")
 
 
-def generate_model(model_type="petri_net", **kwargs):
+def generate_process_tree(**kwargs) -> ProcessTree:
     """
-    Generates a process model
+    Generates a process tree
 
     Parameters
     -------------
-    model_type
-        Type of model, possible values:
-        - petri_net : generates a Petri net
-        - process_tree : generates a process tree
     kwargs
-        Parameters of the playout
+        Parameters of the process tree generator algorithm
 
     Returns
     -------------
     model
-        Process model
+        process tree
     """
-    import pm4py
     from pm4py.simulation.tree_generator import simulator
-    tree = simulator.apply(**kwargs)
-    if model_type == "process_tree":
-        return tree
-    elif model_type == "petri_net":
-        net, im, fm = pm4py.convert_to_petri_net(tree)
-        return net, im, fm
+    return simulator.apply(**kwargs)

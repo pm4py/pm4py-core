@@ -5,20 +5,19 @@ import pm4py
 from pm4py.objects.bpmn.bpmn_graph import BPMN
 from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.process_tree.process_tree import ProcessTree
+import pandas as pd
 
 
 class SimplifiedInterfaceTest(unittest.TestCase):
     def test_csv(self):
-        df = pm4py.read_csv("input_data/running-example.csv")
+        df = pd.read_csv("input_data/running-example.csv")
         df = pm4py.format_dataframe(df, case_id="case:concept:name", activity_key="concept:name",
                                     timestamp_key="time:timestamp")
         log2 = pm4py.convert_to_event_log(df)
         stream1 = pm4py.convert_to_event_stream(log2)
         df2 = pm4py.convert_to_dataframe(log2)
         pm4py.write_xes(log2, "test_output_data/log.xes")
-        pm4py.write_csv(df, "test_output_data/log.csv")
         os.remove("test_output_data/log.xes")
-        os.remove("test_output_data/log.csv")
 
     def test_alpha_miner(self):
         log = pm4py.read_xes("input_data/running-example.xes")
@@ -70,7 +69,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
     def test_tbr(self):
         log = pm4py.read_xes("input_data/running-example.xes")
         net, im, fm = pm4py.discover_petri_net_inductive(log)
-        replayed_traces = pm4py.conformance_token_based_replay(log, net, im, fm)
+        replayed_traces = pm4py.conformance_tbr(log, net, im, fm)
 
     def test_fitness_alignments(self):
         log = pm4py.read_xes("input_data/running-example.xes")
