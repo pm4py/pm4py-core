@@ -7,7 +7,8 @@ from pm4py.analysis import check_soundness, solve_marking_equation, solve_extend
 from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \
     fitness_token_based_replay, \
     fitness_alignments, precision_token_based_replay, \
-    precision_alignments
+    precision_alignments, conformance_alignments, conformance_tbr, evaluate_precision_alignments, \
+    evaluate_precision_tbr, evaluate_fitness_tbr, evaluate_fitness_alignments
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_heuristics, \
