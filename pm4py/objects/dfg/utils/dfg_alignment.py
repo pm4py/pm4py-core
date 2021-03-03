@@ -5,6 +5,7 @@ from enum import Enum
 
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.util import constants, xes_constants, exec_utils
+from pm4py.util import variants_util
 
 
 class Parameters(Enum):
@@ -188,13 +189,7 @@ def apply_from_variant(variant, dfg, sa, ea, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
-    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   constants.DEFAULT_VARIANT_SEP)
-    variant_split = variant.split(variant_delimiter) if type(variant) is str else variant
-    trace = Trace()
-    for act in variant_split:
-        trace.append(Event({activity_key: act}))
+    trace = variants_util.variant_to_trace(variant, parameters=parameters)
     return apply_trace(trace, dfg, sa, ea, parameters=parameters)
 
 
