@@ -2,10 +2,12 @@ import pm4py
 from pm4py.algo.discovery.heuristics.variants import plusplus
 from pm4py.visualization.heuristics_net import visualizer
 from pm4py.visualization.petrinet import visualizer as pn_visualizer
+import pandas as pd
 
 
 def execute_script():
-    df = pm4py.read_csv("../tests/input_data/interval_event_log.csv")
+    df = pd.read_csv("../tests/input_data/interval_event_log.csv")
+    df = pm4py.format_dataframe(df)
     log = pm4py.read_xes("../tests/input_data/interval_event_log.xes")
     heu_net = plusplus.apply_heu(log, parameters={"heu_net_decoration": "performance"})
     heu_net_2 = plusplus.apply_heu_pandas(df, parameters={"heu_net_decoration": "performance"})
