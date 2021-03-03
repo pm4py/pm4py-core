@@ -27,6 +27,7 @@ def format_dataframe(df, case_id=constants.CASE_CONCEPT_NAME, activity_key=xes_c
         Dataframe
     """
     import pandas as pd
+    from pm4py.objects.log.util import dataframe_utils
     if case_id not in df.columns:
         raise Exception(case_id + " column (case ID) is not in the dataframe!")
     if activity_key not in df.columns:
@@ -37,8 +38,8 @@ def format_dataframe(df, case_id=constants.CASE_CONCEPT_NAME, activity_key=xes_c
                             timestamp_key: xes_constants.DEFAULT_TIMESTAMP_KEY})
     df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype(str)
     # makes sure that the timestamp column is of timestamp type
-    df[xes_constants.DEFAULT_TIMESTAMP_KEY] = pd.to_datetime(df[xes_constants.DEFAULT_TIMESTAMP_KEY],
-                                                             format=timest_format)
+    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format,
+                                                         timest_columns=[xes_constants.DEFAULT_TIMESTAMP_KEY])
     # set an index column
     df = pandas_utils.insert_index(df, INDEX_COLUMN)
     # sorts the dataframe
