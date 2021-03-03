@@ -3,6 +3,7 @@ from typing import Tuple
 
 import deprecation
 
+from pm4py.objects.heuristics_net.net import HeuristicsNet
 from pm4py.objects.log.log import EventLog
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.process_tree.process_tree import ProcessTree
@@ -194,7 +195,7 @@ def discover_tree_inductive(log: EventLog, noise_threshold: float = 0.0) -> Proc
 
 
 def discover_heuristics_net(log: EventLog, dependency_threshold: float = 0.5, and_threshold: float = 0.65,
-                            loop_two_threshold: float = 0.5) -> PetriNet:
+                            loop_two_threshold: float = 0.5) -> HeuristicsNet:
     """
     Discovers an heuristics net
 
