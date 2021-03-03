@@ -4,6 +4,7 @@ from pm4py.statistics.variants.log import get as variants_filter
 from pm4py.util import xes_constants as xes
 from enum import Enum
 from pm4py.util import constants, exec_utils
+from pm4py.util import variants_util
 
 
 class Parameters(Enum):
@@ -43,14 +44,16 @@ def apply(log, parameters=None):
                            variants_filter.Parameters.ATTRIBUTE_KEY: resource_key}
     variants_occ = {x: len(y) for x, y in variants_filter.get_variants(log, parameters=parameters_variants).items()}
     variants_resources = list(variants_occ.keys())
-    resources = [x.split(",") for x in variants_resources]
+    resources = [variants_util.get_activities_from_variant(y) for y in variants_resources]
+
     flat_list = sorted(list(set([item for sublist in resources for item in sublist])))
 
     metric_matrix = numpy.zeros((len(flat_list), len(flat_list)))
 
     sum_i_to_j = {}
 
-    for rv in resources:
+    for idx, rv in enumerate(resources):
+        rvj = variants_resources[idx]
         for i in range(len(rv) - 1):
             res_i = flat_list.index(rv[i])
             if not res_i in sum_i_to_j:
@@ -60,17 +63,18 @@ def apply(log, parameters=None):
                 if not res_j in sum_i_to_j[res_i]:
                     sum_i_to_j[res_i][res_j] = 0
                 if beta == 0:
-                    sum_i_to_j[res_i][res_j] += variants_occ[",".join(rv)]
+                    sum_i_to_j[res_i][res_j] += variants_occ[rvj]
                     break
                 else:
-                    sum_i_to_j[res_i][res_j] += variants_occ[",".join(rv)] * (beta ** (j - i - 1))
+                    sum_i_to_j[res_i][res_j] += variants_occ[rvj] * (beta ** (j - i - 1))
 
     dividend = 0
-    for rv in resources:
+    for idx, rv in enumerate(resources):
+        rvj = variants_resources[idx]
         if beta == 0:
-            dividend = dividend + variants_occ[",".join(rv)] * (len(rv) - 1)
+            dividend = dividend + variants_occ[rvj] * (len(rv) - 1)
         else:
-            dividend = dividend + variants_occ[",".join(rv)] * (len(rv) - 1)
+            dividend = dividend + variants_occ[rvj] * (len(rv) - 1)
 
     for key1 in sum_i_to_j:
         for key2 in sum_i_to_j[key1]:

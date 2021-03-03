@@ -17,6 +17,7 @@ from pm4py.objects.log.util import filtering_utils
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.algo.discovery.inductive.util import tree_consistency
 import pkgutil
+from pm4py.util import variants_util
 
 
 def apply(log, parameters):
@@ -180,10 +181,7 @@ def apply_tree_variants(variants, parameters=None):
         if type(val) is list:
             val = len(val)
         for i in range(val):
-            trace = Trace()
-            activities = var.split(constants.DEFAULT_VARIANT_SEP)
-            for act in activities:
-                trace.append(Event({activity_key: act}))
+            trace = variants_util.variant_to_trace(var, parameters=parameters)
             log.append(trace)
 
     return apply_tree(log, parameters=parameters)
