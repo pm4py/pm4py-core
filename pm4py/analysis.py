@@ -131,5 +131,5 @@ def check_soundness(petri_net: PetriNet, initial_marking: Marking,
     boolean
         Soundness
     """
-    from pm4py.evaluation.soundness.woflan import algorithm as woflan
+    from pm4py.algo.analysis.woflan import algorithm as woflan
     return woflan.apply(petri_net, initial_marking, final_marking)
