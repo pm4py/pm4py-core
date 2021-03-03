@@ -131,6 +131,39 @@ def get_variants(log):
     variants
         Dictionary of variants along with their count
     """
+    import pm4py
+    if pm4py.util.variants_util.VARIANT_SPECIFICATION == pm4py.util.variants_util.VariantsSpecifications.STRING:
+        import warnings
+        warnings.warn('pm4py.get_variants is deprecated. Please use pm4py.get_variants_as_tuples instead.')
+    if pm4py.util.variants_util.VARIANT_SPECIFICATION == pm4py.util.variants_util.VariantsSpecifications.LIST:
+        raise Exception('Please use pm4py.get_variants_as_tuples')
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.variants.pandas import get
+        return get.get_variants_count(log)
+    else:
+        from pm4py.statistics.variants.log import get
+        return get.get_variants(log)
+
+
+def get_variants_as_tuples(log):
+    """
+    Gets the variants from the log
+    (where the keys are tuples and not strings)
+
+    Parameters
+    --------------
+    log
+        Event log
+
+    Returns
+    --------------
+    variants
+        Dictionary of variants along with their count
+    """
+    import pm4py
+    # the behavior of PM4Py is changed to allow this to work
+    pm4py.util.variants_util.VARIANT_SPECIFICATION = pm4py.util.variants_util.VariantsSpecifications.LIST
     if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.statistics.variants.pandas import get

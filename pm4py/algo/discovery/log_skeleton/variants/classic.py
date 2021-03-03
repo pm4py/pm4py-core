@@ -5,6 +5,7 @@ from pm4py.algo.discovery.log_skeleton.parameters import Parameters
 from pm4py.algo.discovery.log_skeleton.outputs import Outputs
 from pm4py.util import exec_utils, constants
 from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.util import variants_util
 
 
 def equivalence(logs_traces, all_activs, noise_threshold=0):
@@ -254,17 +255,10 @@ def apply_from_variants_list(var_list, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
-    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   constants.DEFAULT_VARIANT_SEP)
-
     log = EventLog()
     for cv in var_list:
         v = cv[0]
-        tr = v.split(variant_delimiter)
-        trace = Trace()
-        for act in tr:
-            trace.append(Event({activity_key: act}))
+        trace = variants_util.variant_to_trace(v, parameters=parameters)
         log.append(trace)
 
     return apply(log, parameters=parameters)
