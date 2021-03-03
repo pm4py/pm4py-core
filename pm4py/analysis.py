@@ -1,13 +1,13 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple, Dict
 
 from pm4py.objects.log.log import Trace
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 
 
-def calculate_sync_prod(trace: Trace, petri_net: PetriNet, initial_marking: Marking,
-                        final_marking: Marking):
+def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial_marking: Marking,
+                                      final_marking: Marking) -> Tuple[PetriNet, Marking, Marking]:
     """
-    Calculates the synchronous product net between a trace and a Petri net process model.
+    constructs the synchronous product net between a trace and a Petri net process model.
 
     Parameters
     ----------------
@@ -38,13 +38,12 @@ def calculate_sync_prod(trace: Trace, petri_net: PetriNet, initial_marking: Mark
     return sync_net, sync_im, sync_fm
 
 
-def heuristics_marking_equation(petri_net: PetriNet, initial_marking: Marking,
-                                final_marking: Marking) -> float:
+def solve_marking_equation(petri_net: PetriNet, initial_marking: Marking,
+                           final_marking: Marking, cost_function: Dict[PetriNet.Transition, float] = None) -> float:
     """
-    Gets an heuristics value (underestimation of the cost of an alignment) on a Petri net
-    using the marking equation with the standard cost function
-    (e.g. sync moves get cost equal to 0, invisible moves get cost equal to 1,
-    other move on model / move on log get cost equal to 10000)
+    Solves the marking equation of a Petri net.
+    The marking equation is solved as an ILP problem.
+    An optional transition-based cost function to minimize can be provided as well.
 
     Parameters
     ---------------
@@ -54,6 +53,8 @@ def heuristics_marking_equation(petri_net: PetriNet, initial_marking: Marking,
         Initial marking
     final_marking
         Final marking
+    cost_function
+        optional cost function to use when solving the marking equation.
 
     Returns
     ----------------
@@ -62,12 +63,17 @@ def heuristics_marking_equation(petri_net: PetriNet, initial_marking: Marking,
     """
     from pm4py.algo.analysis.marking_equation import algorithm as marking_equation
 
-    me = marking_equation.build(petri_net, initial_marking, final_marking)
+    if cost_function is None:
+        cost_function = dict()
+        for t in petri_net.transitions:
+            cost_function[t] = 1
+
+    me = marking_equation.build(petri_net, initial_marking, final_marking, parameters={'costs': cost_function})
     return marking_equation.get_h_value(me)
 
 
-def heuristics_extended_marking_equation(trace: Trace, sync_net: PetriNet, sync_im: Marking,
-                                         sync_fm: Marking, split_points: Optional[List[int]] = None) -> float:
+def solve_extended_marking_equation(trace: Trace, sync_net: PetriNet, sync_im: Marking,
+                                    sync_fm: Marking, split_points: Optional[List[int]] = None) -> float:
     """
     Gets an heuristics value (underestimation of the cost of an alignment) between a trace
     and a synchronous product net using the extended marking equation with the standard cost function
