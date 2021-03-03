@@ -1,4 +1,15 @@
-def convert_to_event_log(obj):
+from typing import Union, Tuple
+
+import pandas as pd
+
+from pm4py.objects.bpmn.bpmn_graph import BPMN
+from pm4py.objects.heuristics_net.net import HeuristicsNet
+from pm4py.objects.log.log import EventLog, EventStream
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.process_tree.process_tree import ProcessTree
+
+
+def convert_to_event_log(obj: Union[pd.DataFrame, EventStream]) -> EventLog:
     """
     Converts a log object to an event log
 
@@ -17,7 +28,7 @@ def convert_to_event_log(obj):
     return log
 
 
-def convert_to_event_stream(obj):
+def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame]) -> EventStream:
     """
     Converts a log object to an event stream
 
@@ -36,7 +47,7 @@ def convert_to_event_stream(obj):
     return stream
 
 
-def convert_to_dataframe(obj):
+def convert_to_dataframe(obj: Union[EventStream, EventLog]) -> pd.DataFrame:
     """
     Converts a log object to a dataframe
 
@@ -55,7 +66,7 @@ def convert_to_dataframe(obj):
     return df
 
 
-def convert_to_bpmn(*args):
+def convert_to_bpmn(*args: Union[Tuple[PetriNet, Marking, Marking], ProcessTree]) -> BPMN:
     """
     Converts an object to a BPMN diagram
 
@@ -92,7 +103,7 @@ def convert_to_bpmn(*args):
     raise Exception("unsupported conversion of the provided object to BPMN")
 
 
-def convert_to_petri_net(*args):
+def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, dict]) -> Tuple[PetriNet, Marking, Marking]:
     """
     Converts an object to an (accepting) Petri net
 
@@ -110,10 +121,6 @@ def convert_to_petri_net(*args):
     fm
         Final marking
     """
-    from pm4py.objects.process_tree.process_tree import ProcessTree
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
-    from pm4py.objects.heuristics_net.net import HeuristicsNet
-    from pm4py.objects.petri.petrinet import PetriNet
     if isinstance(args[0], PetriNet):
         # the object is already a Petri net
         return args[0], args[1], args[2]
@@ -136,7 +143,7 @@ def convert_to_petri_net(*args):
     raise Exception("unsupported conversion of the provided object to Petri net")
 
 
-def convert_to_process_tree(*args):
+def convert_to_process_tree(*args: Union[Tuple[PetriNet, Marking, Marking], BPMN]) -> ProcessTree:
     """
     Converts an object to a process tree
 
