@@ -22,7 +22,7 @@ from pm4py.meta import __name__, __version__, __doc__, __author__, __author_emai
     __maintainer__, __maintainer_email__
 from pm4py.read import read_xes, read_petri_net, read_process_tree, read_dfg, \
     read_bpmn, read_pnml, read_ptml
-from pm4py.sim import playout, generate_model
+from pm4py.sim import play_out, generate_process_tree
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
     get_trace_attributes, get_variants_as_tuples
 from pm4py.utils import format_dataframe
