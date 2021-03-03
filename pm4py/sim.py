@@ -32,3 +32,31 @@ def playout(*args, **kwargs):
             from pm4py.simulation.tree_playout import algorithm
             return algorithm.apply(args[0], **kwargs)
     raise Exception("unsupported model for playout")
+
+
+def generate_model(model_type="petri_net", **kwargs):
+    """
+    Generates a process model
+
+    Parameters
+    -------------
+    model_type
+        Type of model, possible values:
+        - petri_net : generates a Petri net
+        - process_tree : generates a process tree
+    kwargs
+        Parameters of the playout
+
+    Returns
+    -------------
+    model
+        Process model
+    """
+    import pm4py
+    from pm4py.simulation.tree_generator import simulator
+    tree = simulator.apply(**kwargs)
+    if model_type == "process_tree":
+        return tree
+    elif model_type == "petri_net":
+        net, im, fm = pm4py.convert_to_petri_net(tree)
+        return net, im, fm
