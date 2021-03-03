@@ -1,10 +1,15 @@
+from typing import Optional
+
+import pandas as pd
+
 from pm4py.util import constants, xes_constants, pandas_utils
 
 INDEX_COLUMN = "@@index"
 
 
-def format_dataframe(df, case_id=constants.CASE_CONCEPT_NAME, activity_key=xes_constants.DEFAULT_NAME_KEY,
-                     timestamp_key=xes_constants.DEFAULT_TIMESTAMP_KEY, timest_format=None):
+def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
+                     activity_key: str = xes_constants.DEFAULT_NAME_KEY,
+                     timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY, timest_format: Optional[str] = None):
     """
     Give the appropriate format on the dataframe, for process mining purposes
 
@@ -26,7 +31,6 @@ def format_dataframe(df, case_id=constants.CASE_CONCEPT_NAME, activity_key=xes_c
     df
         Dataframe
     """
-    import pandas as pd
     from pm4py.objects.log.util import dataframe_utils
     if case_id not in df.columns:
         raise Exception(case_id + " column (case ID) is not in the dataframe!")
