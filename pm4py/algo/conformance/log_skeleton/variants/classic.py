@@ -5,6 +5,7 @@ from pm4py.algo.discovery.log_skeleton import trace_skel
 from pm4py.algo.conformance.log_skeleton.outputs import Outputs
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import variants_util
 
 
 def apply_log(log, model, parameters=None):
@@ -193,18 +194,12 @@ def apply_from_variants_list(var_list, model, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
-    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   constants.DEFAULT_VARIANT_SEP)
-
     conformance_output = {}
 
     for cv in var_list:
         v = cv[0]
-        tr = v.split(variant_delimiter)
-        trace = Trace()
-        for act in tr:
-            trace.append(Event({activity_key: act}))
+        trace = variants_util.variant_to_trace(v, parameters=parameters)
+
         conformance_output[v] = apply_trace(trace, model, parameters=parameters)
 
     return conformance_output

@@ -21,7 +21,7 @@ from pm4py.meta import __name__, __version__, __doc__, __author__, __author_emai
 from pm4py.read import read_xes, read_csv, read_petri_net, read_process_tree, read_dfg, \
     read_bpmn
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
-    get_trace_attributes
+    get_trace_attributes, get_variants_as_tuples
 from pm4py.utils import format_dataframe
 from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg, view_process_tree, \
     save_vis_process_tree, \
