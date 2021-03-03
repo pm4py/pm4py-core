@@ -27,6 +27,7 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     save_vis_process_tree, \
     view_heuristics_net, save_vis_heuristics_net, view_bpmn, save_vis_bpmn
 from pm4py.write import write_xes, write_csv, write_petri_net, write_process_tree, write_dfg, write_bpmn
+from pm4py.sim import playout
 
 time.clock = time.process_time
 
