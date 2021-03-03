@@ -14,6 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import copy
 import uuid
 
 from lxml import etree
@@ -70,11 +71,12 @@ def export_ptree_tree(tree, parameters=None):
     xml_tree
         XML tree object
     """
+    tree = copy.deepcopy(tree)
     if parameters is None:
         parameters = {}
 
     nodes = get_list_nodes_from_tree(tree, parameters=parameters)
-    nodes_dict = {x: str(uuid.uuid4()) for x in nodes}
+    nodes_dict = {(id(x), x): str(uuid.uuid4()) for x in nodes}
 
     # make sure that in the exporting, loops have 3 children
     # (for ProM compatibility)
@@ -84,20 +86,20 @@ def export_ptree_tree(tree, parameters=None):
             third_children = ProcessTree(operator=None, label=None)
             third_children.parent = node
             node.children.append(third_children)
-            nodes_dict[third_children] = str(uuid.uuid4())
+            nodes_dict[(id(third_children), third_children)] = str(uuid.uuid4())
 
     # repeat twice (structure has changed)
     nodes = get_list_nodes_from_tree(tree, parameters=parameters)
-    nodes_dict = {x: str(uuid.uuid4()) for x in nodes}
+    nodes_dict = {(id(x), x): str(uuid.uuid4()) for x in nodes}
 
     root = etree.Element("ptml")
     processtree = etree.SubElement(root, "processTree")
     processtree.set("name", str(uuid.uuid4()))
-    processtree.set("root", nodes_dict[tree])
+    processtree.set("root", nodes_dict[(id(tree), tree)])
     processtree.set("id", str(uuid.uuid4()))
 
     for node in nodes:
-        nk = nodes_dict[node]
+        nk = nodes_dict[(id(node), node)]
         child = None
         if node.operator is None:
             if node.label is None:
@@ -124,11 +126,10 @@ def export_ptree_tree(tree, parameters=None):
         if not node == tree:
             child = etree.SubElement(processtree, "parentsNode")
             child.set("id", str(uuid.uuid4()))
-            child.set("sourceId", nodes_dict[node.parent])
-            child.set("targetId", nodes_dict[node])
+            child.set("sourceId", nodes_dict[(id(node.parent), node.parent)])
+            child.set("targetId", nodes_dict[(id(node), node)])
 
     tree = etree.ElementTree(root)
-
     return tree
 
 

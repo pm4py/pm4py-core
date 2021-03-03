@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.statistics.traces.pandas import case_statistics
-from collections import Counter
 
 
 def get_variants_count(df, parameters=None):

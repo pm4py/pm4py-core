@@ -14,10 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+from typing import Dict, Union, List, Tuple
+
+import pandas as pd
+
+from pm4py.objects.log.log import EventLog, Trace
 from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
 
 
-def get_start_activities(log):
+def get_start_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
     """
     Returns the start activities from a log object
 
@@ -40,7 +45,7 @@ def get_start_activities(log):
         return get.get_start_activities(log)
 
 
-def get_end_activities(log):
+def get_end_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
     """
     Returns the end activities of a log
 
@@ -63,7 +68,7 @@ def get_end_activities(log):
         return get.get_end_activities(log)
 
 
-def get_attributes(log):
+def get_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     """
     Returns the attributes at the event level of the log
 
@@ -85,7 +90,7 @@ def get_attributes(log):
         return list(get.get_all_event_attributes_from_log(log))
 
 
-def get_trace_attributes(log):
+def get_trace_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     """
     Gets the attributes at the trace level of a log object
 
@@ -108,7 +113,7 @@ def get_trace_attributes(log):
         return list(get.get_all_trace_attributes_from_log(log))
 
 
-def get_attribute_values(log, attribute):
+def get_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str) -> Dict[str, int]:
     """
     Returns the values for a specified attribute
 
@@ -133,7 +138,7 @@ def get_attribute_values(log, attribute):
         return get.get_attribute_values(log, attribute)
 
 
-def get_variants(log):
+def get_variants(log: Union[EventLog, pd.DataFrame]) -> Dict[str, List[Trace]]:
     """
     Gets the variants from the log
 
@@ -147,6 +152,39 @@ def get_variants(log):
     variants
         Dictionary of variants along with their count
     """
+    import pm4py
+    if pm4py.util.variants_util.VARIANT_SPECIFICATION == pm4py.util.variants_util.VariantsSpecifications.STRING:
+        import warnings
+        warnings.warn('pm4py.get_variants is deprecated. Please use pm4py.get_variants_as_tuples instead.')
+    if pm4py.util.variants_util.VARIANT_SPECIFICATION == pm4py.util.variants_util.VariantsSpecifications.LIST:
+        raise Exception('Please use pm4py.get_variants_as_tuples')
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.variants.pandas import get
+        return get.get_variants_count(log)
+    else:
+        from pm4py.statistics.variants.log import get
+        return get.get_variants(log)
+
+
+def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame]) -> Dict[Tuple[str], List[Trace]]:
+    """
+    Gets the variants from the log
+    (where the keys are tuples and not strings)
+
+    Parameters
+    --------------
+    log
+        Event log
+
+    Returns
+    --------------
+    variants
+        Dictionary of variants along with their count
+    """
+    import pm4py
+    # the behavior of PM4Py is changed to allow this to work
+    pm4py.util.variants_util.VARIANT_SPECIFICATION = pm4py.util.variants_util.VariantsSpecifications.LIST
     if check_is_dataframe(log):
         check_dataframe_columns(log)
         from pm4py.statistics.variants.pandas import get

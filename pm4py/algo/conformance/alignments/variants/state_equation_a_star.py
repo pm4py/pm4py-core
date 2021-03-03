@@ -47,6 +47,7 @@ from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.lp import solver as lp_solver
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
+from pm4py.util import variants_util
 
 
 class Parameters(Enum):
@@ -187,15 +188,8 @@ def apply_from_variant(variant, petri_net, initial_marking, final_marking, param
     """
     if parameters is None:
         parameters = {}
-    activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
-        parameters[
-            pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-    trace = log_implementation.Trace()
-    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   pm4pyutil.constants.DEFAULT_VARIANT_SEP)
-    variant_split = variant.split(variant_delimiter) if type(variant) is str else variant
-    for i in range(len(variant_split)):
-        trace.append(log_implementation.Event({activity_key: variant_split[i]}))
+    trace = variants_util.variant_to_trace(variant, parameters=parameters)
+
     return apply(trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
 
@@ -455,16 +449,17 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         curr = heapq.heappop(open_set)
 
         current_marking = curr.m
-        # 11/10/2019 (optimization Y, that was optimization X,
-        # but with the good reasons this way): avoid checking markings in the cycle using
-        # the __get_alt function, but check them 'on the road'
-        already_closed = current_marking in closed
-        if already_closed:
-            continue
 
         while not curr.trust:
             if (time.time() - start_time) > max_align_time_trace:
                 return None
+
+            already_closed = current_marking in closed
+            if already_closed:
+                curr = heapq.heappop(open_set)
+                current_marking = curr.m
+                continue
+
             h, x = utils.__compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec,
                                                                incidence_matrix, curr.m,
                                                                fin_vec, lp_solver.DEFAULT_LP_SOLVER_VARIANT,

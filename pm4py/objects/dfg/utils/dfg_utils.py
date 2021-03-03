@@ -20,9 +20,7 @@ from pm4py.util.constants import DEFAULT_VARIANT_SEP
 import numpy as np
 import pkgutil
 import logging
-
-PARAMETER_VARIANT_SEP = "variant_sep"
-
+from pm4py.util import variants_util
 
 def get_outgoing_edges(dfg):
     """
@@ -781,10 +779,8 @@ def get_dfg_sa_ea_act_from_variants(variants, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    variant_sep = parameters[PARAMETER_VARIANT_SEP] if PARAMETER_VARIANT_SEP in parameters else DEFAULT_VARIANT_SEP
-    if type(variants) is not set:
-        variants = set(variants)
-    variants = [x.split(variant_sep) for x in variants]
+
+    variants = set(variants_util.get_activities_from_variant(v) for v in variants)
     dfg = dict(Counter(list((x[i], x[i+1]) for x in variants for i in range(len(x)-1))))
     list_act = list(set(y for x in variants for y in x))
     start_activities = dict(Counter(x[0] for x in variants if x))

@@ -1,5 +1,41 @@
 # PM4Py Changelog
 
+## PM4PY 2.2.2 (2021.03.03)
+
+### Fixed
+
+* 1a5c080c
+    * fix for timestamp conversion of dataframe formatting
+* 19c615e1
+    * fix bug in process tree exporter
+    * change visualization of process trees (similar to PorM)
+
+### Removed
+
+### Deprecated
+
+* 0e61f4b2
+    * evaluation.soundness.wofland and evaluation.wf_net
+
+### Changed
+
+* 0e61f4b2
+    * woflan and wf-net checks are moved to algo.analysis package
+* 2e158ec4
+    * minor improvements for A* performance
+* d550f777
+    * various renamings in the simplified interface of pm4py, several methods are deprecated.
+
+### Added
+
+* 65ef822c
+    * generic support for the marking equation
+    * generic support for the extended marking equation
+* 92ba4aa7
+    * variants can now be represented as a tuple of activities, rather than a single string
+
+### Other
+
 ## PM4PY 2.2.1 (2021.02.15)
 
 ### Fixed

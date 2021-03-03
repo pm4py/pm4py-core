@@ -24,6 +24,7 @@ from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util import exec_utils
 from pm4py.objects.petri.petrinet import Marking
 from pm4py.objects.petri.semantics import enabled_transitions
+from pm4py.util import variants_util
 from enum import Enum
 from copy import copy
 import heapq
@@ -170,15 +171,7 @@ def apply_from_variant(variant, petri_net, initial_marking, final_marking, param
     """
     if parameters is None:
         parameters = {}
-    activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
-        parameters[
-            pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-    trace = log_implementation.Trace()
-    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   pm4pyutil.constants.DEFAULT_VARIANT_SEP)
-    variant_split = variant.split(variant_delimiter) if type(variant) is str else variant
-    for i in range(len(variant_split)):
-        trace.append(log_implementation.Event({activity_key: variant_split[i]}))
+    trace = variants_util.variant_to_trace(variant, parameters=parameters)
     return apply(trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
 

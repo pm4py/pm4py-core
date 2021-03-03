@@ -14,7 +14,16 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-def view_petri_net(petri_net, initial_marking, final_marking, format="png"):
+from typing import Optional
+
+from pm4py.objects.bpmn.bpmn_graph import BPMN
+from pm4py.objects.heuristics_net.net import HeuristicsNet
+from pm4py.objects.log.log import EventLog
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.process_tree.process_tree import ProcessTree
+
+
+def view_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, format: str = "png"):
     """
     Views a (composite) Petri net
 
@@ -35,7 +44,7 @@ def view_petri_net(petri_net, initial_marking, final_marking, format="png"):
     pn_visualizer.view(gviz)
 
 
-def save_vis_petri_net(petri_net, initial_marking, final_marking, file_path):
+def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str):
     """
     Saves a Petri net visualization to a file
 
@@ -57,7 +66,8 @@ def save_vis_petri_net(petri_net, initial_marking, final_marking, file_path):
     pn_visualizer.save(gviz, file_path)
 
 
-def view_dfg(dfg, start_activities, end_activities, format="png", log=None):
+def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png",
+             log: Optional[EventLog] = None):
     """
     Views a (composite) DFG
 
@@ -81,7 +91,8 @@ def view_dfg(dfg, start_activities, end_activities, format="png", log=None):
     dfg_visualizer.view(gviz)
 
 
-def save_vis_dfg(dfg, start_activities, end_activities, file_path, log=None):
+def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str,
+                 log: Optional[EventLog] = None):
     """
     Saves a DFG visualization to a file
 
@@ -106,7 +117,7 @@ def save_vis_dfg(dfg, start_activities, end_activities, file_path, log=None):
     dfg_visualizer.save(gviz, file_path)
 
 
-def view_process_tree(tree, format="png"):
+def view_process_tree(tree: ProcessTree, format: str = "png"):
     """
     Views a process tree
 
@@ -123,7 +134,7 @@ def view_process_tree(tree, format="png"):
     pt_visualizer.view(gviz)
 
 
-def save_vis_process_tree(tree, file_path):
+def save_vis_process_tree(tree: ProcessTree, file_path: str):
     """
     Saves the visualization of a process tree
 
@@ -141,7 +152,7 @@ def save_vis_process_tree(tree, file_path):
     pt_visualizer.save(gviz, file_path)
 
 
-def save_vis_bpmn(bpmn_graph, file_path):
+def save_vis_bpmn(bpmn_graph: BPMN, file_path: str):
     """
     Saves the visualization of a BPMN graph
 
@@ -159,7 +170,7 @@ def save_vis_bpmn(bpmn_graph, file_path):
     bpmn_visualizer.save(gviz, file_path)
 
 
-def view_bpmn(bpmn_graph, format="png"):
+def view_bpmn(bpmn_graph: BPMN, format: str = "png"):
     """
     Views a BPMN graph
 
@@ -176,7 +187,7 @@ def view_bpmn(bpmn_graph, format="png"):
     bpmn_visualizer.view(gviz)
 
 
-def view_heuristics_net(heu_net, format="png"):
+def view_heuristics_net(heu_net: HeuristicsNet, format: str = "png"):
     """
     Views an heuristics net
 
@@ -193,7 +204,7 @@ def view_heuristics_net(heu_net, format="png"):
     hn_visualizer.view(gviz)
 
 
-def save_vis_heuristics_net(heu_net, file_path):
+def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str):
     """
     Saves the visualization of an heuristics net
 

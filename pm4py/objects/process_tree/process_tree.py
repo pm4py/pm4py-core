@@ -126,7 +126,7 @@ class ProcessTree(object):
         elif self.label is not None:
             return self.label
         else:
-            return u'\u03c4'
+            return '*tau*'
 
     def __str__(self):
         """
