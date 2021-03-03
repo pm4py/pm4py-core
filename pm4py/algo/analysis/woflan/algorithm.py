@@ -1,36 +1,37 @@
-import copy
-import warnings
-from enum import Enum
-
-import deprecation
 import networkx as nx
+from pm4py.util import exec_utils
+from enum import Enum
+from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri import utils
+import copy
 import numpy as np
 
-# Minimal Coverability Graph
-from pm4py.evaluation.soundness.woflan.graphs.minimal_coverability_graph.minimal_coverability_graph import \
-    apply as minimal_coverability_graph
-# reachability Graph Creation
-from pm4py.evaluation.soundness.woflan.graphs.reachability_graph.reachability_graph import apply as reachability_graph
-# Restricted coverability graph
-from pm4py.evaluation.soundness.woflan.graphs.restricted_coverability_graph.restricted_coverability_graph import \
-    construct_tree as restricted_coverability_tree
-from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_dead_tasks
-from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_improper_conditions
-from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_substates
-from pm4py.evaluation.soundness.woflan.graphs.utility import convert_marking
-# Importing to discover not-well handled pairs
-from pm4py.evaluation.soundness.woflan.not_well_handled_pairs.not_well_handled_pairs import \
-    apply as compute_not_well_handled_pairs
 # Importing for place invariants related stuff (s-components, uniform and weighted place invariants)
 from pm4py.evaluation.soundness.woflan.place_invariants.place_invariants import compute_place_invariants
+from pm4py.evaluation.soundness.woflan.place_invariants.utility import transform_basis
 from pm4py.evaluation.soundness.woflan.place_invariants.s_component import compute_s_components
 from pm4py.evaluation.soundness.woflan.place_invariants.s_component import compute_uncovered_places_in_component
 from pm4py.evaluation.soundness.woflan.place_invariants.utility import \
     compute_uncovered_places as compute_uncovered_place_in_invariants
-from pm4py.evaluation.soundness.woflan.place_invariants.utility import transform_basis
-from pm4py.objects.petri import utils
-from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.util import exec_utils
+
+# Importing to discover not-well handled pairs
+from pm4py.evaluation.soundness.woflan.not_well_handled_pairs.not_well_handled_pairs import \
+    apply as compute_not_well_handled_pairs
+
+# Minimal Coverability Graph
+from pm4py.evaluation.soundness.woflan.graphs.minimal_coverability_graph.minimal_coverability_graph import \
+    apply as minimal_coverability_graph
+from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_dead_tasks
+from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_improper_conditions
+from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_substates
+from pm4py.evaluation.soundness.woflan.graphs.utility import convert_marking
+
+# Restricted coverability graph
+from pm4py.evaluation.soundness.woflan.graphs.restricted_coverability_graph.restricted_coverability_graph import \
+    construct_tree as restricted_coverability_tree
+
+# reachability Graph Creation
+from pm4py.evaluation.soundness.woflan.graphs.reachability_graph.reachability_graph import apply as reachability_graph
 
 
 class Parameters(Enum):
@@ -502,8 +503,6 @@ def step_13(woflan_object, return_asap_when_unsound=False):
     return False
 
 
-@deprecation.deprecated('2.2.2', removed_in='3.0.0',
-                        details='deprecated version of WOFLAN; use pm4py.algo.analysis.woflan')
 def apply(net, i_m, f_m, parameters=None):
     """
     Apply the Woflan Soundness check. Trough this process, different steps are executed.
@@ -512,8 +511,6 @@ def apply(net, i_m, f_m, parameters=None):
     :param f_m: final marking of given Net. Marking object of PM4Py
     :return: True, if net is sound; False otherwise.
     """
-    warnings.warn('deprecated version of WOFLAN; use pm4py.algo.analysis.woflan',
-                  DeprecationWarning)
     if parameters is None:
         parameters = {}
     return_asap_when_unsound = exec_utils.get_param_value(Parameters.RETURN_ASAP_WHEN_NOT_SOUND, parameters, False)

@@ -1,7 +1,4 @@
-import warnings
 from enum import Enum
-
-import deprecation
 
 from pm4py.evaluation.wf_net.variants import petri_net
 from pm4py.util import exec_utils
@@ -11,10 +8,7 @@ class Variants(Enum):
     PETRI_NET = petri_net
 
 
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='3.0.0',
-                        details='this wf-net check is moved to the pm4py.algo.analysis package')
 def apply(net, parameters=None, variant=Variants.PETRI_NET):
-    warnings.warn('this wf-net check is moved to the pm4py.algo.analysis package', DeprecationWarning)
     """
     Checks if a Petri net is a workflow net
 
