@@ -1,7 +1,6 @@
 from pm4py.algo.conformance.alignments import algorithm as alignments
 from pm4py.algo.conformance.decomp_alignments import algorithm as decomp_alignments
 from pm4py.evaluation.replay_fitness.parameters import Parameters
-from pm4py.util import exec_utils
 
 
 def evaluate(aligned_traces, parameters=None):
@@ -41,7 +40,9 @@ def evaluate(aligned_traces, parameters=None):
         perc_fit_traces = (100.0 * float(no_fit_traces)) / (float(no_traces))
         average_fitness = float(sum_fitness) / float(no_traces)
 
-    return {"percFitTraces": perc_fit_traces, "averageFitness": average_fitness}
+    return {"percFitTraces": perc_fit_traces, "averageFitness": average_fitness,
+            "percentage_of_fitting_traces": perc_fit_traces,
+            "average_trace_fitness": average_fitness}
 
 
 def apply(log, petri_net, initial_marking, final_marking, align_variant=alignments.DEFAULT_VARIANT, parameters=None):
@@ -69,9 +70,11 @@ def apply(log, petri_net, initial_marking, final_marking, align_variant=alignmen
         Containing two keys (percFitTraces and averageFitness)
     """
     if align_variant == decomp_alignments.Variants.RECOMPOS_MAXIMAL.value:
-        alignment_result = decomp_alignments.apply(log, petri_net, initial_marking, final_marking, variant=align_variant, parameters=parameters)
+        alignment_result = decomp_alignments.apply(log, petri_net, initial_marking, final_marking,
+                                                   variant=align_variant, parameters=parameters)
     else:
-        alignment_result = alignments.apply(log, petri_net, initial_marking, final_marking, variant=align_variant, parameters=parameters)
+        alignment_result = alignments.apply(log, petri_net, initial_marking, final_marking, variant=align_variant,
+                                            parameters=parameters)
     return evaluate(alignment_result)
 
 
@@ -96,7 +99,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, ac
     dictionary: `dict` with keys **alignment**, **cost**, **visited_states**, **queued_states** and **traversed_arcs**
     """
     alignment = alignments.apply_trace(trace, petri_net, initial_marking, final_marking,
-                                 {Parameters.ACTIVITY_KEY: activity_key})
+                                       {Parameters.ACTIVITY_KEY: activity_key})
     fixed_costs = alignment['cost'] // alignments.utils.STD_MODEL_LOG_MOVE_COST
     if best_worst > 0:
         fitness = 1 - (fixed_costs / best_worst)
