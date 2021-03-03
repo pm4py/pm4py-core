@@ -7,7 +7,7 @@ from setuptools import setup
 # Import only the metadata of the pm4py to use in the setup. We cannot import it directly because
 # then we need to import packages that are about to be installed by the setup itself.
 meta_path = Path(__file__).parent.absolute() / "pm4py" / "meta.py"
-meta = runpy.run_path(meta_path)
+meta = runpy.run_path(str(meta_path))
 
 
 def read_file(filename):
@@ -24,12 +24,19 @@ setup(
     author_email=meta['__author_email__'],
     py_modules=[meta['__name__']],
     include_package_data=True,
-    packages=['pm4py', 'pm4py.algo', 'pm4py.algo.discovery', 'pm4py.algo.discovery.dfg',
-              'pm4py.algo.discovery.dfg.utils', 'pm4py.algo.discovery.dfg.adapters',
-              'pm4py.algo.discovery.dfg.adapters.pandas', 'pm4py.algo.discovery.dfg.variants',
-              'pm4py.algo.discovery.alpha', 'pm4py.algo.discovery.alpha.utils', 'pm4py.algo.discovery.alpha.variants',
-              'pm4py.algo.discovery.alpha.data_structures', 'pm4py.algo.discovery.causal',
-              'pm4py.algo.discovery.causal.variants', 'pm4py.algo.discovery.inductive',
+    packages=['pm4py', 'pm4py.algo', 'pm4py.algo.analysis', 'pm4py.algo.analysis.woflan',
+              'pm4py.algo.analysis.woflan.graphs', 'pm4py.algo.analysis.woflan.graphs.reachability_graph',
+              'pm4py.algo.analysis.woflan.graphs.minimal_coverability_graph',
+              'pm4py.algo.analysis.woflan.graphs.restricted_coverability_graph',
+              'pm4py.algo.analysis.woflan.place_invariants', 'pm4py.algo.analysis.woflan.not_well_handled_pairs',
+              'pm4py.algo.analysis.workflow_net', 'pm4py.algo.analysis.workflow_net.variants',
+              'pm4py.algo.analysis.marking_equation', 'pm4py.algo.analysis.marking_equation.variants',
+              'pm4py.algo.analysis.extended_marking_equation', 'pm4py.algo.analysis.extended_marking_equation.variants',
+              'pm4py.algo.discovery', 'pm4py.algo.discovery.dfg', 'pm4py.algo.discovery.dfg.utils',
+              'pm4py.algo.discovery.dfg.adapters', 'pm4py.algo.discovery.dfg.adapters.pandas',
+              'pm4py.algo.discovery.dfg.variants', 'pm4py.algo.discovery.alpha', 'pm4py.algo.discovery.alpha.utils',
+              'pm4py.algo.discovery.alpha.variants', 'pm4py.algo.discovery.alpha.data_structures',
+              'pm4py.algo.discovery.causal', 'pm4py.algo.discovery.causal.variants', 'pm4py.algo.discovery.inductive',
               'pm4py.algo.discovery.inductive.util', 'pm4py.algo.discovery.inductive.variants',
               'pm4py.algo.discovery.inductive.variants.im', 'pm4py.algo.discovery.inductive.variants.im.util',
               'pm4py.algo.discovery.inductive.variants.im.data_structures',

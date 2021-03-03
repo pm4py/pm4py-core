@@ -14,11 +14,11 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.conformance.tokenreplay.variants import token_replay
 from pm4py.algo.conformance.tokenreplay import algorithm as executor
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY
+from pm4py.algo.conformance.tokenreplay.variants import token_replay
 from pm4py.evaluation.replay_fitness.parameters import Parameters
 from pm4py.util import exec_utils
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 
 
 def evaluate(aligned_traces, parameters=None):
@@ -54,7 +54,8 @@ def evaluate(aligned_traces, parameters=None):
         perc_fit_traces = float(100.0 * fit_traces) / float(no_traces)
         average_fitness = float(sum_of_fitness) / float(no_traces)
         log_fitness = 0.5 * (1 - total_m / total_c) + 0.5 * (1 - total_r / total_p)
-    return {"perc_fit_traces": perc_fit_traces, "average_trace_fitness": average_fitness, "log_fitness": log_fitness}
+    return {"perc_fit_traces": perc_fit_traces, "average_trace_fitness": average_fitness, "log_fitness": log_fitness,
+            "percentage_of_fitting_traces": perc_fit_traces }
 
 
 def apply(log, petri_net, initial_marking, final_marking, parameters=None):
@@ -92,6 +93,6 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
                      token_replay.Parameters.CLEANING_TOKEN_FLOOD: cleaning_token_flood}
 
     aligned_traces = executor.apply(log, petri_net, initial_marking, final_marking, variant=token_replay_variant,
-                                        parameters=parameters_tr)
+                                    parameters=parameters_tr)
 
     return evaluate(aligned_traces)

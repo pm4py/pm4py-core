@@ -24,6 +24,7 @@ from pm4py.objects.petri import align_utils
 from copy import copy
 from enum import Enum
 from pm4py.util import exec_utils, constants
+from pm4py.util import variants_util
 
 
 class Parameters(Enum):
@@ -893,7 +894,9 @@ def get_variant_from_trace(trace, activity_key, disable_variants=False):
     """
     if disable_variants:
         return str(hash(trace))
-    return ",".join([x[activity_key] for x in trace])
+    parameters = {}
+    parameters[variants_util.Parameters.ACTIVITY_KEY] = activity_key
+    return variants_util.get_variant_from_trace(trace, parameters=parameters)
 
 
 def get_variants_from_log(log, activity_key, disable_variants=False):
@@ -1129,17 +1132,10 @@ def apply_variants_list(variants_list, net, initial_marking, final_marking, para
         parameters = {}
     parameters[Parameters.RETURN_NAMES] = True
 
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
-    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   ",")
-
     log = log_implementation.EventLog()
     for var_item in variants_list:
-        variant = var_item[0].split(variant_delimiter)
-        trace = log_implementation.Trace()
-        for activ in variant:
-            event = log_implementation.Event({activity_key: activ})
-            trace.append(event)
+        trace = variants_util.variant_to_trace(var_item[0], parameters=parameters)
+
         log.append(trace)
 
     return apply(log, net, initial_marking, final_marking, parameters=parameters)

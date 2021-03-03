@@ -14,11 +14,13 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import pkgutil
+from enum import Enum
+
 from pm4py.algo.discovery.heuristics.variants import classic, plusplus
 from pm4py.objects.conversion.log import converter as log_conversion
+from pm4py.objects.heuristics_net.net import HeuristicsNet
 from pm4py.util import exec_utils
-from enum import Enum
-import pkgutil
 
 
 class Variants(Enum):
@@ -124,7 +126,7 @@ def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activitie
                                                      parameters=parameters)
 
 
-def apply_heu(log, parameters=None, variant=CLASSIC):
+def apply_heu(log, parameters=None, variant=CLASSIC) -> HeuristicsNet:
     """
     Discovers an Heuristics Net using Heuristics Miner
 

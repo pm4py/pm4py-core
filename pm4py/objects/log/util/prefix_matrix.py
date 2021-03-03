@@ -22,7 +22,7 @@ import pandas as pd
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.log.log import EventStream
 from pm4py.util import xes_constants as xes
-from pm4py.util import constants
+from pm4py.util import constants, variants_util
 
 KEEP_UNIQUE = "keep_unique"
 SKIP_LAST = "skip_last"
@@ -53,7 +53,7 @@ def get_variants_matrix_from_variants_list(variants_list, activities, parameters
     keep_unique = parameters[KEEP_UNIQUE] if KEEP_UNIQUE in parameters else True
     variants_mat = []
     for var in variants_list:
-        variant = var[0].split(",")
+        variant = variants_util.get_activities_from_variant(var[0])
         count = var[1]
         this_var_repr = [0] * len(activities)
         for act in variant:
@@ -114,7 +114,8 @@ def get_prefix_matrix_from_variants_list(variants_list, activities, parameters=N
 
     prefixes = {}
     for var in variants_list:
-        variant = var[0].split(",")
+        variant = variants_util.get_activities_from_variant(var[0])
+        
         count = var[1]
         prefix = []
         for index, act in enumerate(variant):

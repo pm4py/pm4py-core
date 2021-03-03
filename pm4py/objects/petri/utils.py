@@ -23,7 +23,7 @@ from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri import semantics
 from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
-
+from pm4py.objects.petri import properties
 
 def pre_set(elem):
     pre = set()
@@ -171,8 +171,12 @@ def construct_trace_net(trace, trace_name_key=xes_util.DEFAULT_NAME_KEY, activit
     net.places.add(place_map[0])
     for i in range(0, len(trace)):
         t = PetriNet.Transition('t_' + trace[i][activity_key] + '_' + str(i), trace[i][activity_key])
+        # 16/02/2021: set the trace index as property of the transition of the trace net
+        t.properties[properties.TRACE_NET_TRANS_INDEX] = i
         net.transitions.add(t)
         place_map[i + 1] = PetriNet.Place('p_' + str(i + 1))
+        # 16/02/2021: set the place index as property of the place of the trace net
+        place_map[i + 1].properties[properties.TRACE_NET_PLACE_INDEX] = i + 1
         net.places.add(place_map[i + 1])
         add_arc_from_to(place_map[i], t, net)
         add_arc_from_to(t, place_map[i + 1], net)
@@ -204,9 +208,13 @@ def construct_trace_net_cost_aware(trace, costs, trace_name_key=xes_util.DEFAULT
     cost_map = dict()
     for i in range(0, len(trace)):
         t = PetriNet.Transition('t_' + trace[i][activity_key] + '_' + str(i), trace[i][activity_key])
+        # 16/02/2021: set the trace index as property of the transition of the trace net
+        t.properties[properties.TRACE_NET_TRANS_INDEX] = i
         cost_map[t] = costs[i]
         net.transitions.add(t)
         place_map[i + 1] = PetriNet.Place('p_' + str(i + 1))
+        # 16/02/2021: set the place index as property of the place of the trace net
+        place_map[i + 1].properties[properties.TRACE_NET_PLACE_INDEX] = i + 1
         net.places.add(place_map[i + 1])
         add_arc_from_to(place_map[i], t, net)
         add_arc_from_to(t, place_map[i + 1], net)

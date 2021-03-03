@@ -33,6 +33,7 @@ from pm4py.statistics.variants.log.get import get_variants_from_log_trace_idx
 from enum import Enum
 import sys
 import time
+from pm4py.util import variants_util
 
 
 class Parameters(Enum):
@@ -95,18 +96,11 @@ def apply_from_variants_list(var_list, tree, parameters=None):
     if parameters is None:
         parameters = {}
 
-    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   ",")
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
-
     dictio_alignments = {}
     log = EventLog()
 
     for index, varitem in enumerate(var_list):
-        activities = varitem[0].split(variant_delimiter)
-        trace = Trace()
-        for act in activities:
-            trace.append(Event({activity_key: act}))
+        trace = variants_util.variant_to_trace(varitem[0], parameters=parameters)
         log.append(trace)
 
     alignments = apply(log, tree, parameters=parameters)

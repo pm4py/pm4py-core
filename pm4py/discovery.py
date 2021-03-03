@@ -14,7 +14,18 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-def discover_dfg(log):
+import warnings
+from typing import Tuple
+
+import deprecation
+
+from pm4py.objects.heuristics_net.net import HeuristicsNet
+from pm4py.objects.log.log import EventLog
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.process_tree.process_tree import ProcessTree
+
+
+def discover_dfg(log: EventLog) -> Tuple[dict, dict, dict]:
     """
     Discovers a DFG from a log
 
@@ -41,7 +52,7 @@ def discover_dfg(log):
     return dfg, start_activities, end_activities
 
 
-def discover_petri_net_alpha(log):
+def discover_petri_net_alpha(log: EventLog) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the Alpha Miner
 
@@ -63,7 +74,7 @@ def discover_petri_net_alpha(log):
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC)
 
 
-def discover_petri_net_alpha_plus(log):
+def discover_petri_net_alpha_plus(log: EventLog) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the Alpha+ algorithm
 
@@ -85,7 +96,7 @@ def discover_petri_net_alpha_plus(log):
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS)
 
 
-def discover_petri_net_inductive(log, noise_threshold=0.0):
+def discover_petri_net_inductive(log: EventLog, noise_threshold: float = 0.0) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the IMDFc algorithm
 
@@ -114,7 +125,8 @@ def discover_petri_net_inductive(log, noise_threshold=0.0):
             inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
 
 
-def discover_petri_net_heuristics(log, dependency_threshold=0.5, and_threshold=0.65, loop_two_threshold=0.5):
+def discover_petri_net_heuristics(log: EventLog, dependency_threshold: float = 0.5, and_threshold: float = 0.65,
+                                  loop_two_threshold: float = 0.5) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discover a Petri net using the Heuristics Miner
 
@@ -145,7 +157,7 @@ def discover_petri_net_heuristics(log, dependency_threshold=0.5, and_threshold=0
         parameters.LOOP_LENGTH_TWO_THRESH: loop_two_threshold})
 
 
-def discover_tree_inductive(log, noise_threshold=0.0):
+def discover_process_tree_inductive(log: EventLog, noise_threshold: float = 0.0) -> ProcessTree:
     """
     Discovers a process tree using the IMDFc algorithm
 
@@ -170,7 +182,36 @@ def discover_tree_inductive(log, noise_threshold=0.0):
             inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
 
 
-def discover_heuristics_net(log, dependency_threshold=0.5, and_threshold=0.65, loop_two_threshold=0.5):
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
+                        details='discover_tree_inductive is deprecated, use discover_process_tree_inductive')
+def discover_tree_inductive(log: EventLog, noise_threshold: float = 0.0) -> ProcessTree:
+    warnings.warn('discover_tree_inductive is deprecated, use discover_process_tree_inductive', DeprecationWarning)
+    """
+    Discovers a process tree using the IMDFc algorithm
+
+    Parameters
+    --------------
+    log
+        Event log
+    noise_threshold
+        Noise threshold (default: 0.0)
+
+    Returns
+    --------------
+    process_tree
+        Process tree object
+    """
+    from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+    if noise_threshold > 0.0:
+        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IMf, parameters={
+            inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+    else:
+        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM, parameters={
+            inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+
+
+def discover_heuristics_net(log: EventLog, dependency_threshold: float = 0.5, and_threshold: float = 0.65,
+                            loop_two_threshold: float = 0.5) -> HeuristicsNet:
     """
     Discovers an heuristics net
 

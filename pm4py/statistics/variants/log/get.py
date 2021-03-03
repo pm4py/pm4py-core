@@ -16,8 +16,7 @@
 '''
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
 from pm4py.statistics.parameters import Parameters
-from pm4py.util import exec_utils
-from pm4py.util.constants import DEFAULT_VARIANT_SEP
+from pm4py.util import exec_utils, variants_util, constants
 
 import numpy as np
 
@@ -40,7 +39,8 @@ def get_language(log, parameters=None):
         (variant associated to a number between 0 and 1; the sum is 1)
     """
     vars = get_variants(log, parameters=parameters)
-    vars = {tuple(x.split(DEFAULT_VARIANT_SEP)): len(y) for x,y in vars.items()}
+    vars = {variants_util.get_activities_from_variant(x): len(y) for x, y in vars.items()}
+
     all_values_sum = sum(vars.values())
     for x in vars:
         vars[x] = vars[x] / all_values_sum
@@ -134,11 +134,9 @@ def get_variants_from_log_trace_idx(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
-
     variants = {}
     for trace_idx, trace in enumerate(log):
-        variant = DEFAULT_VARIANT_SEP.join([x[attribute_key] for x in trace if attribute_key in x])
+        variant = variants_util.get_variant_from_trace(trace, parameters=parameters)
         if variant not in variants:
             variants[variant] = []
         variants[variant].append(trace_idx)

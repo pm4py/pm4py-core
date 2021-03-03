@@ -15,15 +15,19 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import warnings
+from typing import List, Union
 
 import deprecation
+import pandas as pd
 
 from pm4py.meta import VERSION as PM4PY_CURRENT_VERSION
+from pm4py.objects.log.log import EventLog
 from pm4py.util import constants
 from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
 
 
-def filter_start_activities(log, activities, retain=True):
+def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: List[str], retain: bool = True) -> Union[
+    EventLog, pd.DataFrame]:
     """
     Filter cases having a start activity in the provided list
 
@@ -53,7 +57,8 @@ def filter_start_activities(log, activities, retain=True):
                                              parameters={start_activities_filter.Parameters.POSITIVE: retain})
 
 
-def filter_end_activities(log, activities, retain=True):
+def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities: List[str], retain: bool = True) -> Union[
+    EventLog, pd.DataFrame]:
     """
     Filter cases having an end activity in the provided list
 
@@ -90,7 +95,8 @@ def filter_attribute_values(log, attribute_key, values, level="case", retain=Tru
     return filter_event_attribute_values(log, attribute_key, values, level=level, retain=retain)
 
 
-def filter_event_attribute_values(log, attribute_key, values, level="case", retain=True):
+def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values: List[str],
+                                  level: str = "case", retain: bool = True) -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log object on the values of some event attribute
 
@@ -143,7 +149,8 @@ def filter_trace_attribute(log, attribute_key, values, retain=True):
     return filter_trace_attribute_values(log, attribute_key, values, retain=retain)
 
 
-def filter_trace_attribute_values(log, attribute_key, values, retain=True):
+def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values: List[str],
+                                  retain: bool = True) -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log on the values of a trace attribute
 
@@ -175,7 +182,8 @@ def filter_trace_attribute_values(log, attribute_key, values, retain=True):
             attributes_filter.Parameters.ATTRIBUTE_KEY: attribute_key, attributes_filter.Parameters.POSITIVE: retain})
 
 
-def filter_variants(log, variants, retain=True):
+def filter_variants(log: Union[EventLog, pd.DataFrame], variants: List[List[str]], retain: bool = True) -> Union[
+    EventLog, pd.DataFrame]:
     """
     Filter a log on a specified set of variants
 
@@ -207,7 +215,8 @@ def filter_variants(log, variants, retain=True):
 @deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.3.0', current_version=PM4PY_CURRENT_VERSION,
                         details='Filtering method will be removed due to fuzzy interpretation of the threshold.\
                         Will be replaced with two new functions filter_variants_top_k and filter_variants_relative_frequency')
-def filter_variants_percentage(log, threshold=0.8):
+def filter_variants_percentage(log: Union[EventLog, pd.DataFrame], threshold: float = 0.8) -> Union[
+    EventLog, pd.DataFrame]:
     """
     Filter a log on the percentage of variants
 
@@ -237,7 +246,8 @@ def filter_paths(log, allowed_paths, retain=True):
     return filter_directly_follows_relation(log, allowed_paths, retain)
 
 
-def filter_directly_follows_relation(log, relations, retain=True):
+def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True) -> \
+        Union[EventLog, pd.DataFrame]:
     """
     Retain traces that contain any of the specified 'directly follows' relations.
     For example, if relations == [('a','b'),('a','c')] and log [<a,b,c>,<a,c,b>,<a,d,b>]
@@ -266,7 +276,8 @@ def filter_directly_follows_relation(log, relations, retain=True):
         return paths_filter.apply(log, relations, parameters={paths_filter.Parameters.POSITIVE: retain})
 
 
-def filter_eventually_follows_relation(log, relations, retain=True):
+def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True) -> \
+        Union[EventLog, pd.DataFrame]:
     """
     Retain traces that contain any of the specified 'eventually follows' relations.
     For example, if relations == [('a','b'),('a','c')] and log [<a,b,c>,<a,c,b>,<a,d,b>]
@@ -325,7 +336,8 @@ def filter_eventually_follows_relation(log, relations, retain=True):
         return filtered_log
 
 
-def filter_time_range(log, dt1, dt2, mode="events"):
+def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mode="events") -> Union[
+    EventLog, pd.DataFrame]:
     """
     Filter a log on a time interval
 

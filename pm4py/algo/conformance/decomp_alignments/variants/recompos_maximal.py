@@ -28,6 +28,7 @@ from pm4py.util import exec_utils
 from pm4py.algo.conformance.alignments.variants import state_equation_less_memory
 import sys
 import time
+from pm4py.util import variants_util
 
 
 def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
@@ -76,20 +77,13 @@ def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking
     """
     if parameters is None:
         parameters = {}
-    activity_key = DEFAULT_NAME_KEY if parameters is None or PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters else \
-        parameters[
-            pm4pyutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   pm4pyutil.constants.DEFAULT_VARIANT_SEP)
+
     log = log_implementation.EventLog()
     dictio_alignments = {}
     for varitem in var_list:
         variant = varitem[0]
-        trace = log_implementation.Trace()
-        variant_split = variant.split(variant_delimiter) if type(variant) is str else variant
-        for el in variant_split:
-            trace.append(log_implementation.Event({activity_key: el}))
-            log.append(trace)
+        trace = variants_util.variant_to_trace(variant, parameters=parameters)
+        log.append(trace)
 
     alignment = apply(log, petri_net, initial_marking, final_marking)
 

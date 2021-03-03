@@ -14,13 +14,19 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+from typing import Optional
+
+import pandas as pd
+
 from pm4py.util import constants, xes_constants, pandas_utils
 
 INDEX_COLUMN = "@@index"
 
 
-def format_dataframe(df, case_id=constants.CASE_CONCEPT_NAME, activity_key=xes_constants.DEFAULT_NAME_KEY,
-                     timestamp_key=xes_constants.DEFAULT_TIMESTAMP_KEY, timest_format=None):
+def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
+                     activity_key: str = xes_constants.DEFAULT_NAME_KEY,
+                     timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
+                     timest_format: Optional[str] = None) -> pd.DataFrame:
     """
     Give the appropriate format on the dataframe, for process mining purposes
 
@@ -42,7 +48,7 @@ def format_dataframe(df, case_id=constants.CASE_CONCEPT_NAME, activity_key=xes_c
     df
         Dataframe
     """
-    import pandas as pd
+    from pm4py.objects.log.util import dataframe_utils
     if case_id not in df.columns:
         raise Exception(case_id + " column (case ID) is not in the dataframe!")
     if activity_key not in df.columns:
@@ -53,8 +59,8 @@ def format_dataframe(df, case_id=constants.CASE_CONCEPT_NAME, activity_key=xes_c
                             timestamp_key: xes_constants.DEFAULT_TIMESTAMP_KEY})
     df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype(str)
     # makes sure that the timestamp column is of timestamp type
-    df[xes_constants.DEFAULT_TIMESTAMP_KEY] = pd.to_datetime(df[xes_constants.DEFAULT_TIMESTAMP_KEY],
-                                                             format=timest_format)
+    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format,
+                                                         timest_columns=[xes_constants.DEFAULT_TIMESTAMP_KEY])
     # set an index column
     df = pandas_utils.insert_index(df, INDEX_COLUMN)
     # sorts the dataframe

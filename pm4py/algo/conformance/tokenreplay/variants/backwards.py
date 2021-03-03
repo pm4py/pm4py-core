@@ -22,6 +22,7 @@ from pm4py.objects.petri.petrinet import Marking
 from collections import Counter
 from pm4py.util import exec_utils, constants, xes_constants
 from enum import Enum
+from pm4py.util import variants_util
 
 
 class Parameters(Enum):
@@ -311,7 +312,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
             tmap[t.label].append(t)
 
     for variant in variants_idxs:
-        vlist = variant.split(",")
+        vlist = variants_util.get_activities_from_variant(variant)
         result = tr_vlist(vlist, net, initial_marking, final_marking, tmap, bmap, parameters=parameters)
         results.append(result)
 
