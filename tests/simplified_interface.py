@@ -71,7 +71,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
     def test_tbr(self):
         log = pm4py.read_xes("input_data/running-example.xes")
         net, im, fm = pm4py.discover_petri_net_inductive(log)
-        replayed_traces = pm4py.conformance_token_based_replay(log, net, im, fm)
+        replayed_traces = pm4py.conformance_tbr(log, net, im, fm)
 
     def test_fitness_alignments(self):
         log = pm4py.read_xes("input_data/running-example.xes")
