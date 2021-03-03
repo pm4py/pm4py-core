@@ -1,14 +1,14 @@
-import deprecation
-import pandas as pd
+import warnings
 
-from pm4py.meta import VERSION
+import deprecation
+
 from pm4py.objects.bpmn.bpmn_graph import BPMN
 from pm4py.objects.log.log import EventLog
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.process_tree.process_tree import ProcessTree
 
 
-def write_xes(log: EventLog, file_path: str):
+def write_xes(log: EventLog, file_path: str) -> None:
     """
     Exports a XES log
 
@@ -27,30 +27,7 @@ def write_xes(log: EventLog, file_path: str):
     xes_exporter.apply(log, file_path)
 
 
-@deprecation.deprecated(deprecated_in="2.0.2", removed_in="3.0",
-                        current_version=VERSION,
-                        details="Use pandas to export CSV files")
-def write_csv(log: pd.DataFrame, file_path: str):
-    """
-    Exports a CSV log
-
-    Parameters
-    ---------------
-    log
-        Event log
-    file_path
-        Destination path
-
-    Returns
-    --------------
-    void
-    """
-    from pm4py.objects.conversion.log import converter
-    dataframe = converter.apply(log, variant=converter.Variants.TO_DATA_FRAME)
-    dataframe.to_csv(file_path, index=False)
-
-
-def write_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str):
+def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str) -> None:
     """
     Exports a (composite) Petri net object
 
@@ -73,7 +50,55 @@ def write_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking
     petri_exporter.apply(petri_net, initial_marking, file_path, final_marking=final_marking)
 
 
-def write_process_tree(tree: ProcessTree, file_path: str):
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
+                        details='write_petri_net is deprecated, please use write_pnml')
+def write_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str) -> None:
+    warnings.warn('write_petri_net is deprecated, please use write_pnml', DeprecationWarning)
+    """
+    Exports a (composite) Petri net object
+
+    Parameters
+    ------------
+    petri_net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    file_path
+        Destination path
+
+    Returns
+    ------------
+    void
+    """
+    from pm4py.objects.petri.exporter import exporter as petri_exporter
+    petri_exporter.apply(petri_net, initial_marking, file_path, final_marking=final_marking)
+
+
+def write_ptml(tree: ProcessTree, file_path: str) -> None:
+    """
+    Exports a process tree
+
+    Parameters
+    ------------
+    tree
+        Process tree
+    file_path
+        Destination path
+
+    Returns
+    ------------
+    void
+    """
+    from pm4py.objects.process_tree.exporter import exporter as tree_exporter
+    tree_exporter.apply(tree, file_path)
+
+
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
+                        details='write_process_tree is deprecated, please use write_ptml')
+def write_process_tree(tree: ProcessTree, file_path: str) -> None:
+    warnings.warn('write_process_tree is deprecated, please use write_ptml', DeprecationWarning)
     """
     Exports a process tree
 
