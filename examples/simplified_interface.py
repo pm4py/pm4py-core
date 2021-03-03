@@ -1,7 +1,7 @@
 import os
 
 import pm4py
-
+import pandas as pd
 
 def execute_script():
     ENABLE_VISUALIZATION = True
@@ -10,7 +10,7 @@ def execute_script():
     log1 = pm4py.read_xes("../tests/input_data/running-example.xes")
 
     # reads a CSV into a dataframe
-    df = pm4py.read_csv("../tests/input_data/running-example.csv")
+    df = pd.read_csv("../tests/input_data/running-example.csv")
     # formats the dataframe with the mandatory columns for process mining purposes
     df = pm4py.format_dataframe(df, case_id="case:concept:name", activity_key="concept:name",
                                 timestamp_key="time:timestamp")
@@ -23,8 +23,6 @@ def execute_script():
 
     # writes the log1 to a XES file
     pm4py.write_xes(log1, "ru1.xes")
-    # writes the df to a CSV file
-    pm4py.write_csv(df, "ru1.csv")
 
     dfg, dfg_sa, dfg_ea = pm4py.discover_dfg(log1)
     petri_alpha, im_alpha, fm_alpha = pm4py.discover_petri_net_alpha(log1)
@@ -61,7 +59,7 @@ def execute_script():
         pm4py.view_dfg(dfg, dfg_sa, dfg_ea, format="svg")
 
     aligned_traces = pm4py.conformance_alignments(log1, petri_inductive, im_inductive, fm_inductive)
-    replayed_traces = pm4py.conformance_token_based_replay(log1, petri_inductive, im_inductive, fm_inductive)
+    replayed_traces = pm4py.conformance_tbr(log1, petri_inductive, im_inductive, fm_inductive)
 
     fitness_tbr = pm4py.evaluate_fitness_tbr(log1, petri_inductive, im_inductive, fm_inductive)
     print("fitness_tbr", fitness_tbr)
