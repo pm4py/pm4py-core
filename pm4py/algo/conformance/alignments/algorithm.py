@@ -16,6 +16,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONS
 
 class Variants(Enum):
     VERSION_STATE_EQUATION_A_STAR = variants.state_equation_a_star
+    VERSION_TWEAKED_STATE_EQUATION_A_STAR = variants.tweaked_state_equation_a_star
     VERSION_DIJKSTRA_NO_HEURISTICS = variants.dijkstra_no_heuristics
     VERSION_DIJKSTRA_LESS_MEMORY = variants.dijkstra_less_memory
     VERSION_STATE_EQUATION_LESS_MEMORY = variants.state_equation_less_memory
