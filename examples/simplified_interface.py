@@ -1,7 +1,7 @@
 import os
 
 import pm4py
-
+import pandas as pd
 
 def execute_script():
     ENABLE_VISUALIZATION = True
@@ -10,7 +10,7 @@ def execute_script():
     log1 = pm4py.read_xes("../tests/input_data/running-example.xes")
 
     # reads a CSV into a dataframe
-    df = pm4py.read_csv("../tests/input_data/running-example.csv")
+    df = pd.read_csv("../tests/input_data/running-example.csv")
     # formats the dataframe with the mandatory columns for process mining purposes
     df = pm4py.format_dataframe(df, case_id="case:concept:name", activity_key="concept:name",
                                 timestamp_key="time:timestamp")

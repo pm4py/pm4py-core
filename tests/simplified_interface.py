@@ -5,11 +5,12 @@ import pm4py
 from pm4py.objects.bpmn.bpmn_graph import BPMN
 from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.process_tree.process_tree import ProcessTree
+import pandas as pd
 
 
 class SimplifiedInterfaceTest(unittest.TestCase):
     def test_csv(self):
-        df = pm4py.read_csv("input_data/running-example.csv")
+        df = pd.read_csv("input_data/running-example.csv")
         df = pm4py.format_dataframe(df, case_id="case:concept:name", activity_key="concept:name",
                                     timestamp_key="time:timestamp")
         log2 = pm4py.convert_to_event_log(df)
