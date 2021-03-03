@@ -23,6 +23,8 @@
     * woflan and wf-net checks are moved to algo.analysis package
 * 2e158ec4
     * minor improvements for A* performance
+* d550f777
+    * various renamings in the simplified interface of pm4py, several methods are deprecated.
 
 ### Added
 
