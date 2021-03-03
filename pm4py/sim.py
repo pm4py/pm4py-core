@@ -1,7 +1,12 @@
 from collections import Counter
+from typing import Union, Tuple
+
+from pm4py.objects.log.log import EventLog
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.process_tree.process_tree import ProcessTree
 
 
-def playout(*args, **kwargs):
+def playout(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, ProcessTree], **kwargs) -> EventLog:
     """
     Performs the playout of the provided model,
     i.e., gets a set of traces from the model
@@ -34,7 +39,7 @@ def playout(*args, **kwargs):
     raise Exception("unsupported model for playout")
 
 
-def generate_model(model_type="petri_net", **kwargs):
+def generate_model(model_type: str = "petri_net", **kwargs) -> Union[Tuple[PetriNet, Marking, Marking], ProcessTree]:
     """
     Generates a process model
 
