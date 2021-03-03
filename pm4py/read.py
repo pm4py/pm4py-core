@@ -4,11 +4,18 @@ import deprecation
 
 from pm4py.meta import VERSION
 from pm4py.util import constants
+from pm4py.objects.log.log import EventLog
+import pandas as pd
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.process_tree.process_tree import ProcessTree
+from typing import Tuple
+from pm4py.objects.bpmn.bpmn_graph import BPMN
+
 
 INDEX_COLUMN = "@@index"
 
 
-def read_xes(file_path):
+def read_xes(file_path: str) -> EventLog:
     """
     Reads an event log in the XES standard
 
@@ -72,7 +79,7 @@ def read_csv(file_path, sep=",", quotechar=None, encoding=constants.DEFAULT_ENCO
     return df
 
 
-def read_petri_net(file_path):
+def read_petri_net(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
     """
     Reads a Petri net from the .PNML format
 
@@ -95,7 +102,7 @@ def read_petri_net(file_path):
     return net, im, fm
 
 
-def read_process_tree(file_path):
+def read_process_tree(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
     """
     Reads a process tree from a .ptml file
 
@@ -114,7 +121,7 @@ def read_process_tree(file_path):
     return tree
 
 
-def read_dfg(file_path):
+def read_dfg(file_path: str) -> Tuple[dict, dict, dict]:
     """
     Reads a DFG from a .dfg file
 
@@ -137,7 +144,7 @@ def read_dfg(file_path):
     return dfg, start_activities, end_activities
 
 
-def read_bpmn(file_path):
+def read_bpmn(file_path: str) -> BPMN:
     """
     Reads a BPMN from a .bpmn file
 
