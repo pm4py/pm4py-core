@@ -1,15 +1,98 @@
-import numpy as np
-from pm4py.util.lp import solver as lp_solver
-from pm4py.objects.petri.petrinet import Marking
-from pm4py.objects.petri import semantics
-from copy import copy
+import heapq
 import sys
+from copy import copy
+from typing import List, Tuple
 
+import numpy as np
+
+from pm4py.objects.petri import semantics
+from pm4py.objects.petri.petrinet import Marking, PetriNet
+from pm4py.util.lp import solver as lp_solver
 
 SKIP = '>>'
 STD_MODEL_LOG_MOVE_COST = 10000
 STD_TAU_COST = 1
 STD_SYNC_COST = 0
+
+
+def search_path_among_sol(sync_net: PetriNet, ini: Marking, fin: Marking,
+                          activated_transitions: List[PetriNet.Transition], skip=SKIP) -> Tuple[
+    List[PetriNet.Transition], bool, int]:
+    """
+    (Efficient method) Searches a firing sequence among the X vector that is the solution of the
+    (extended) marking equation
+
+    Parameters
+    ---------------
+    sync_net
+        Synchronous product net
+    ini
+        Initial marking of the net
+    fin
+        Final marking of the net
+    activated_transitions
+        Transitions that have non-zero occurrences in the X vector
+    skip
+        Skip transition
+
+    Returns
+    ---------------
+    firing_sequence
+        Firing sequence
+    reach_fm
+        Boolean value that tells if the final marking is reached by the firing sequence
+    explained_events
+        Number of explained events
+    """
+    trans_empty_preset = set(t for t in sync_net.transitions if len(t.in_arcs) == 0)
+    activated_transitions = tuple(sorted(activated_transitions, key=lambda x: x.name))
+    open_set = [(0, 0, 0, activated_transitions, ini, tuple())]
+    heapq.heapify(open_set)
+    firing_sequence = []
+    firing_sequence_explained_events = 0
+    closed = set()
+    count = 0
+    while len(open_set) > 0:
+        curr = heapq.heappop(open_set)
+        explained_events = -curr[0]
+        curr_cost = curr[1]
+        activated_transitions = curr[3]
+        marking = curr[4]
+        visited = curr[5]
+        if not activated_transitions:
+            if marking == fin:
+                return visited, True, explained_events
+        if (activated_transitions, marking) in closed:
+            continue
+        closed.add((activated_transitions, marking))
+        possible_enabling_transitions = copy(trans_empty_preset)
+        for p in marking:
+            for t in p.ass_trans:
+                possible_enabling_transitions.add(t)
+        enabled = set(t for t in possible_enabling_transitions if t.sub_marking <= marking)
+        enabled = enabled.intersection(set(activated_transitions))
+        vis_enabled = set(x for x in enabled if x.label[0] is not skip)
+        if vis_enabled:
+            enabled = vis_enabled
+        if not enabled:
+            if explained_events > firing_sequence_explained_events:
+                firing_sequence = visited
+                firing_sequence_explained_events = explained_events
+        for tr in enabled:
+            count = count + 1
+            this_cost = 1 if tr.label[0] is skip else 0
+            new_trans = list(activated_transitions)
+            idx = new_trans.index(tr)
+            del new_trans[idx]
+            new_trans = tuple(new_trans)
+            new_visited = list(visited)
+            new_visited.append(tr)
+            new_visited = tuple(new_visited)
+            new_marking = semantics.weak_execute(tr, marking)
+            new_explained_events = len(list(x for x in new_visited if x.label[0] is not skip))
+            heapq.heappush(open_set,
+                           (-new_explained_events, this_cost + curr_cost, count, new_trans, new_marking, new_visited))
+    return firing_sequence, False, firing_sequence_explained_events
 
 
 def construct_standard_cost_function(synchronous_product_net, skip):
@@ -108,7 +191,7 @@ def __get_alt(open_set, new_marking):
             return item
 
 
-def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_trans_desc=False, lp_solved = 0):
+def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_trans_desc=False, lp_solved=0):
     parent = state.p
     if ret_tuple_as_trans_desc:
         alignment = [(state.t.name, state.t.label)]
@@ -160,7 +243,7 @@ def __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, c
     parameters_solving = {"solver": "glpk"}
 
     sol = lp_solver.apply(cost_vec, g_matrix, h_cvx, a_matrix, b_term, parameters=parameters_solving,
-                                  variant=variant)
+                          variant=variant)
     prim_obj = lp_solver.get_prim_obj_from_sol(sol, variant=variant)
     points = lp_solver.get_points_from_sol(sol, variant=variant)
 
