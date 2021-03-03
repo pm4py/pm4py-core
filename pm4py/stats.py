@@ -1,7 +1,10 @@
 from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
+from typing import Dict, Union, List, Tuple
+from pm4py.objects.log.log import EventLog, Trace
+import pandas as pd
 
 
-def get_start_activities(log):
+def get_start_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
     """
     Returns the start activities from a log object
 
@@ -24,7 +27,7 @@ def get_start_activities(log):
         return get.get_start_activities(log)
 
 
-def get_end_activities(log):
+def get_end_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
     """
     Returns the end activities of a log
 
@@ -47,7 +50,7 @@ def get_end_activities(log):
         return get.get_end_activities(log)
 
 
-def get_attributes(log):
+def get_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     """
     Returns the attributes at the event level of the log
 
@@ -69,7 +72,7 @@ def get_attributes(log):
         return list(get.get_all_event_attributes_from_log(log))
 
 
-def get_trace_attributes(log):
+def get_trace_attributes(log: EventLog) -> List[str]:
     """
     Gets the attributes at the trace level of a log object
 
@@ -92,7 +95,7 @@ def get_trace_attributes(log):
         return list(get.get_all_trace_attributes_from_log(log))
 
 
-def get_attribute_values(log, attribute):
+def get_attribute_values(log: EventLog, attribute: str) -> Dict[str, int]:
     """
     Returns the values for a specified attribute
 
@@ -117,7 +120,7 @@ def get_attribute_values(log, attribute):
         return get.get_attribute_values(log, attribute)
 
 
-def get_variants(log):
+def get_variants(log: EventLog) -> Dict[str, List[Trace]]:
     """
     Gets the variants from the log
 
@@ -146,7 +149,7 @@ def get_variants(log):
         return get.get_variants(log)
 
 
-def get_variants_as_tuples(log):
+def get_variants_as_tuples(log: EventLog) -> Dict[Tuple[str], List[Trace]]:
     """
     Gets the variants from the log
     (where the keys are tuples and not strings)
