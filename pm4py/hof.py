@@ -1,9 +1,10 @@
 import warnings
+from typing import Callable, Any, Union
 
 from pm4py.objects.log import log as log_inst
 
 
-def filter_log(f, log):
+def filter_log(f: Callable[[Any], bool], log: log_inst.EventLog) -> Union[log_inst.EventLog, log_inst.EventStream]:
     """
     Filters the log according to a given (lambda) function.
 
@@ -31,7 +32,7 @@ def filter_log(f, log):
         return log
 
 
-def filter_trace(f, trace):
+def filter_trace(f: Callable[[Any], bool], trace: log_inst.Trace) -> log_inst.Trace:
     """
     Filters the trace according to a given (lambda) function.
 
@@ -53,7 +54,7 @@ def filter_trace(f, trace):
         warnings.warn('input trace object is not of the appropriate type, filter() not applied')
 
 
-def sort_log(log, key, reverse=False):
+def sort_log(log: log_inst.EventLog, key, reverse: bool = False) -> Union[log_inst.EventLog, log_inst.EventStream]:
     """
     Sorts the event log according to a given key.
 
@@ -82,7 +83,7 @@ def sort_log(log, key, reverse=False):
         return log
 
 
-def sort_trace(trace, key, reverse=False):
+def sort_trace(trace: log_inst.Trace, key, reverse: bool = False) -> log_inst.Trace:
     """
 
     Parameters
