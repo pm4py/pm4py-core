@@ -2,8 +2,8 @@ import sys
 import time
 
 from pm4py import util, objects, statistics, algo, visualization, evaluation, simulation
-from pm4py.analysis import check_soundness, heuristics_marking_equation, heuristics_extended_marking_equation, \
-    calculate_sync_prod
+from pm4py.analysis import check_soundness, solve_marking_equation, solve_extended_marking_equation, \
+    construct_synchronous_product_net
 from pm4py.conformance import conformance_tbr, conformance_alignments, evaluate_fitness_tbr, \
     evaluate_fitness_alignments, evaluate_precision_tbr, \
     evaluate_precision_alignments, soundness_woflan

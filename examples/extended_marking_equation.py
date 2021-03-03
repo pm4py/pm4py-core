@@ -12,7 +12,7 @@ def execute_script():
     idx = 0
     # try to resolve the marking equation to find an heuristics and possible a vector of transitions
     # leading from im to fm
-    sync_net, sync_im, sync_fm = pm4py.calculate_sync_prod(log[idx], net, im, fm)
+    sync_net, sync_im, sync_fm = pm4py.construct_synchronous_product_net(log[idx], net, im, fm)
     me_solver = marking_equation.build(sync_net, sync_im, sync_fm)
     h, x = me_solver.solve()
     firing_sequence, reach_fm1, explained_events = me_solver.get_firing_sequence(x)
