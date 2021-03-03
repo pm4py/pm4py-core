@@ -9,7 +9,8 @@ INDEX_COLUMN = "@@index"
 
 def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
                      activity_key: str = xes_constants.DEFAULT_NAME_KEY,
-                     timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY, timest_format: Optional[str] = None):
+                     timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
+                     timest_format: Optional[str] = None) -> pd.DataFrame:
     """
     Give the appropriate format on the dataframe, for process mining purposes
 
