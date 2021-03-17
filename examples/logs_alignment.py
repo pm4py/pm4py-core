@@ -2,9 +2,9 @@ import time
 
 import pm4py
 from pm4py.algo.conformance.logs_alignments import algorithm as logs_alignment
-from pm4py.evaluation.replay_fitness.variants import alignment_based
+from pm4py.algo.evaluation.replay_fitness.variants import alignment_based
 from pm4py.objects.process_tree import bottomup as bottomup_discovery
-from pm4py.simulation.tree_playout import algorithm as tree_playout
+from pm4py.algo.simulation.tree_playout import algorithm as tree_playout
 
 
 def execute_script():

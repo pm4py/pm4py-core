@@ -34,11 +34,11 @@ class AlgorithmTest(unittest.TestCase):
         from pm4py.algo.conformance.alignments import algorithm as alignments
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_STATE_EQUATION_A_STAR)
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_DIJKSTRA_NO_HEURISTICS)
-        from pm4py.evaluation.replay_fitness import evaluator as rp_fitness_evaluator
+        from pm4py.algo.evaluation.replay_fitness import evaluator as rp_fitness_evaluator
         fitness = rp_fitness_evaluator.apply(log, net, im, fm, variant=rp_fitness_evaluator.Variants.ALIGNMENT_BASED)
         evaluation = rp_fitness_evaluator.evaluate(aligned_traces,
                                                    variant=rp_fitness_evaluator.Variants.ALIGNMENT_BASED)
-        from pm4py.evaluation.precision import evaluator as precision_evaluator
+        from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
         precision = precision_evaluator.apply(log, net, im, fm, variant=rp_fitness_evaluator.Variants.ALIGNMENT_BASED)
 
     def test_decomp_alignment(self):
@@ -55,13 +55,13 @@ class AlgorithmTest(unittest.TestCase):
         from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
         replayed_traces = token_replay.apply(log, net, im, fm, variant=token_replay.Variants.TOKEN_REPLAY)
         replayed_traces = token_replay.apply(log, net, im, fm, variant=token_replay.Variants.BACKWARDS)
-        from pm4py.evaluation.replay_fitness import evaluator as rp_fitness_evaluator
+        from pm4py.algo.evaluation.replay_fitness import evaluator as rp_fitness_evaluator
         fitness = rp_fitness_evaluator.apply(log, net, im, fm, variant=rp_fitness_evaluator.Variants.TOKEN_BASED)
         evaluation = rp_fitness_evaluator.evaluate(replayed_traces, variant=rp_fitness_evaluator.Variants.TOKEN_BASED)
-        from pm4py.evaluation.precision import evaluator as precision_evaluator
+        from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
         precision = precision_evaluator.apply(log, net, im, fm,
                                               variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN)
-        from pm4py.evaluation.generalization import evaluator as generalization_evaluation
+        from pm4py.algo.evaluation.generalization import evaluator as generalization_evaluation
         generalization = generalization_evaluation.apply(log, net, im, fm,
                                                          variant=generalization_evaluation.Variants.GENERALIZATION_TOKEN)
 
@@ -69,20 +69,20 @@ class AlgorithmTest(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.alpha import algorithm as alpha_miner
         net, im, fm = alpha_miner.apply(log)
-        from pm4py.evaluation.simplicity import evaluator as simplicity
+        from pm4py.algo.evaluation.simplicity import evaluator as simplicity
         simp = simplicity.apply(net)
-        from pm4py.evaluation import evaluator as evaluation_method
+        from pm4py.algo.evaluation import evaluator as evaluation_method
         eval = evaluation_method.apply(log, net, im, fm)
 
     def test_playout(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.alpha import algorithm as alpha_miner
         net, im, fm = alpha_miner.apply(log)
-        from pm4py.simulation.playout import simulator
+        from pm4py.algo.simulation.playout import simulator
         log2 = simulator.apply(net, im, fm)
 
     def test_tree_generation(self):
-        from pm4py.simulation.tree_generator import simulator as tree_simulator
+        from pm4py.algo.simulation.tree_generator import simulator as tree_simulator
         tree1 = tree_simulator.apply(variant=tree_simulator.Variants.BASIC)
         tree2 = tree_simulator.apply(variant=tree_simulator.Variants.PTANDLOGGENERATOR)
 

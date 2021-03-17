@@ -1,7 +1,7 @@
 import os
 
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.evaluation import evaluator as general_evaluation
+from pm4py.algo.evaluation import evaluator as general_evaluation
 from pm4py.objects.log.importer.xes import importer as xes_importer
 
 

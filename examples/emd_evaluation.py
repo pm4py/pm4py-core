@@ -1,9 +1,9 @@
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.alpha import algorithm as alpha_miner
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.evaluation.earth_mover_distance import evaluator as earth_mover_distance
+from pm4py.algo.evaluation.earth_mover_distance import evaluator as earth_mover_distance
 from pm4py.statistics.variants.log import get as variants_get
-from pm4py.simulation.playout import simulator
+from pm4py.algo.simulation.playout import simulator
 import os
 
 
