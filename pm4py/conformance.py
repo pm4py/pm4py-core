@@ -5,6 +5,8 @@ from deprecation import deprecated
 
 from pm4py.objects.log.log import EventLog
 from pm4py.objects.petri.petrinet import PetriNet, Marking
+from collections import Counter
+from pm4py.objects.process_tree.process_tree import ProcessTree
 
 
 @deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
@@ -62,30 +64,42 @@ def conformance_diagnostics_token_based_replay(log: EventLog, petri_net: PetriNe
     return token_replay.apply(log, petri_net, initial_marking, final_marking)
 
 
-def conformance_diagnostics_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
-                                       final_marking: Marking) -> List[Dict[str, Any]]:
+def conformance_diagnostics_alignments(log: EventLog, *args) -> List[Dict[str, Any]]:
     """
-    Apply the alignments algorithm between a log and a Petri net
+    Apply the alignments algorithm between a log and a process model.
     The methods return the full alignment diagnostics.
 
     Parameters
     -------------
     log
         Event log
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
+    args
+        Specification of the process model
 
     Returns
     -------------
     aligned_traces
         A list of alignments for each trace of the log (in the same order as the traces in the event log)
     """
+    if len(args) == 3:
+        if type(args[0]) is PetriNet:
+            # Petri net alignments
+            from pm4py.algo.conformance.alignments import algorithm as alignments
+            return alignments.apply(log, args[0], args[1], args[2])
+        elif type(args[0]) is dict or type(args[0]) is Counter:
+            # DFG alignments
+            from pm4py.objects.dfg.utils import dfg_alignment
+            return dfg_alignment.apply(log, args[0], args[1], args[2])
+    elif len(args) == 1:
+        if type(args[0]) is ProcessTree:
+            # process tree alignments
+            from pm4py.algo.conformance.tree_alignments import algorithm as tree_alignments
+            return tree_alignments.apply(log, args[0])
+    # try to convert to Petri net
+    import pm4py
     from pm4py.algo.conformance.alignments import algorithm as alignments
-    return alignments.apply(log, petri_net, initial_marking, final_marking)
+    net, im, fm = pm4py.convert_to_petri_net(*args)
+    return alignments.apply(log, net, im, fm)
 
 
 @deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
