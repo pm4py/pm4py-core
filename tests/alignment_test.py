@@ -48,6 +48,18 @@ class AlignmentTest(unittest.TestCase):
             if not is_fit:
                 raise Exception("should be fit")
 
+    def test_tree_align_receipt(self):
+        import pm4py
+        log = pm4py.read_xes("input_data/receipt.xes")
+        tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
+        al = pm4py.conformance_diagnostics_alignments(log, tree)
+
+    def test_tree_align_reviewing(self):
+        import pm4py
+        log = pm4py.read_xes("compressed_input_data/04_reviewing.xes.gz")
+        tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
+        al = pm4py.conformance_diagnostics_alignments(log, tree)
+
 
 if __name__ == "__main__":
     unittest.main()

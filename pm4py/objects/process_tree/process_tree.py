@@ -1,7 +1,15 @@
+from enum import Enum
+
 from pm4py.objects.process_tree import pt_operator
 
 
 class ProcessTree(object):
+
+    class OperatorState(Enum):
+        ENABLED = "enabled"
+        OPEN = "open"
+        CLOSED = "closed"
+        FUTURE = "future"
 
     def __init__(self, operator=None, parent=None, children=None, label=None):
         """
@@ -69,21 +77,23 @@ class ProcessTree(object):
         return self._label
 
     def __eq__(self, other):
-        if self.label is not None:
-            return True if other.label == self.label else False
-        elif len(self.children) == 0:
-            return other.label is None and len(other.children) == 0
-        else:
-            if self.operator == other.operator:
-                if len(self.children) != len(other.children):
-                    return False
-                else:
-                    for i in range(len(self.children)):
-                        if self.children[i] != other.children[i]:
-                            return False
-                    return True
+        if isinstance(other, ProcessTree):
+            if self.label is not None:
+                return True if other.label == self.label else False
+            elif len(self.children) == 0:
+                return id(self) == id(other)
             else:
-                return False
+                if self.operator == other.operator:
+                    if len(self.children) != len(other.children):
+                        return False
+                    else:
+                        for i in range(len(self.children)):
+                            if self.children[i] != other.children[i]:
+                                return False
+                        return True
+                else:
+                    return False
+        return False
 
     def __repr__(self):
         """
