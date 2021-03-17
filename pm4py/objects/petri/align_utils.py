@@ -383,7 +383,7 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
     marking
         Current marking
     """
-    all_enabled_transitions = sorted(list(semantics.enabled_transitions(net, marking)))
+    all_enabled_transitions = list(semantics.enabled_transitions(net, marking))
     initial_all_enabled_transitions_marking_dictio = {}
     all_enabled_transitions_marking_dictio = {}
     for trans in all_enabled_transitions:
@@ -403,7 +403,7 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
             else:
                 if semantics.is_enabled(t, net, marking_copy):
                     new_marking = semantics.execute(t, net, marking_copy)
-                    new_enabled_transitions = sorted(list(semantics.enabled_transitions(net, new_marking)))
+                    new_enabled_transitions = list(semantics.enabled_transitions(net, new_marking))
                     for t2 in new_enabled_transitions:
                         all_enabled_transitions.append(t2)
                         all_enabled_transitions_marking_dictio[t2] = new_marking
