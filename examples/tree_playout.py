@@ -1,6 +1,6 @@
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.simulation.tree_playout import algorithm as tree_playout
+from pm4py.algo.simulation.tree_playout import algorithm as tree_playout
 import os
 
 

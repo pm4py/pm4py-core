@@ -95,7 +95,6 @@ class DocTests(unittest.TestCase):
 
     def test_6(self):
         log = self.load_running_example_xes()
-        import pandas as pd
         from pm4py.objects.conversion.log import converter as log_converter
         dataframe = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
         dataframe.to_csv("ru.csv")
@@ -195,7 +194,6 @@ class DocTests(unittest.TestCase):
 
     def test_21(self):
         from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
-        from pm4py.util import constants
         df = self.load_running_example_df()
         end_acitivites = end_activities_filter.get_end_activities(df)
         filtered_df = end_activities_filter.apply(df, ["pay compensation"],
@@ -288,7 +286,6 @@ class DocTests(unittest.TestCase):
 
     def test_34(self):
         from pm4py.algo.filtering.log.attributes import attributes_filter
-        from pm4py.util import constants
         log = self.load_receipt_xes()
         tracefilter_log_pos = attributes_filter.apply(log, ["Resource10"],
                                                       parameters={
@@ -300,7 +297,6 @@ class DocTests(unittest.TestCase):
                                                           attributes_filter.Parameters.POSITIVE: False})
 
     def test_35(self):
-        from pm4py.util import constants
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         df = self.load_receipt_df()
         df_traces_pos = attributes_filter.apply(df, ["Resource10"],
@@ -664,7 +660,7 @@ class DocTests(unittest.TestCase):
         net, initial_marking, final_marking = inductive_miner.apply(log, parameters=parameters)
         alignments = alignments.apply_log(log, net, initial_marking, final_marking, parameters=parameters)
 
-        from pm4py.evaluation.replay_fitness import evaluator as replay_fitness
+        from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
         log_fitness = replay_fitness.evaluate(alignments, variant=replay_fitness.Variants.ALIGNMENT_BASED)
 
     def test_58(self):
@@ -700,7 +696,7 @@ class DocTests(unittest.TestCase):
         alignments = alignments.apply_log(log, net, initial_marking, final_marking, parameters=parameters)
 
     def test_59(self):
-        from pm4py.simulation.tree_generator import simulator as tree_gen
+        from pm4py.algo.simulation.tree_generator import simulator as tree_gen
         parameters = {}
         tree = tree_gen.apply(parameters=parameters)
 
@@ -935,12 +931,11 @@ class DocTests(unittest.TestCase):
         conf = decomp_alignments.apply(log, net, im, fm, parameters={
             decomp_alignments.Variants.RECOMPOS_MAXIMAL.value.Parameters.PARAM_THRESHOLD_BORDER_AGREEMENT: 2})
 
-        from pm4py.evaluation.replay_fitness import evaluator as rp_fitness_evaluator
+        from pm4py.algo.evaluation.replay_fitness import evaluator as rp_fitness_evaluator
 
         fitness = rp_fitness_evaluator.evaluate(conf, variant=rp_fitness_evaluator.Variants.ALIGNMENT_BASED)
 
     def test_footprints(self):
-        from pm4py.simulation.tree_generator import simulator as tree_gen
         from pm4py.objects.log.importer.xes import importer as xes_importer
         import os
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
@@ -1122,24 +1117,24 @@ class DocTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = alpha_miner.apply(log)
 
-        from pm4py.evaluation.replay_fitness import evaluator as replay_fitness_evaluator
+        from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness_evaluator
         fitness = replay_fitness_evaluator.apply(log, net, im, fm,
                                                  variant=replay_fitness_evaluator.Variants.TOKEN_BASED)
 
-        from pm4py.evaluation.replay_fitness import evaluator as replay_fitness_evaluator
+        from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness_evaluator
         fitness = replay_fitness_evaluator.apply(log, net, im, fm,
                                                  variant=replay_fitness_evaluator.Variants.ALIGNMENT_BASED)
 
-        from pm4py.evaluation.precision import evaluator as precision_evaluator
+        from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
         prec = precision_evaluator.apply(log, net, im, fm, variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN)
 
-        from pm4py.evaluation.precision import evaluator as precision_evaluator
+        from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
         prec = precision_evaluator.apply(log, net, im, fm, variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
 
-        from pm4py.evaluation.generalization import evaluator as generalization_evaluator
+        from pm4py.algo.evaluation.generalization import evaluator as generalization_evaluator
         gen = generalization_evaluator.apply(log, net, im, fm)
 
-        from pm4py.evaluation.simplicity import evaluator as simplicity_evaluator
+        from pm4py.algo.evaluation.simplicity import evaluator as simplicity_evaluator
         simp = simplicity_evaluator.apply(net)
 
     def test_sna(self):
@@ -1183,12 +1178,12 @@ class DocTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = alpha_miner.apply(log)
 
-        from pm4py.simulation.playout import simulator
+        from pm4py.algo.simulation.playout import simulator
 
         simulated_log = simulator.apply(net, im, variant=simulator.Variants.BASIC_PLAYOUT,
                                         parameters={simulator.Variants.BASIC_PLAYOUT.value.Parameters.NO_TRACES: 50})
 
-        from pm4py.simulation.playout import simulator
+        from pm4py.algo.simulation.playout import simulator
 
         simulated_log = simulator.apply(net, im, variant=simulator.Variants.EXTENSIVE,
                                         parameters={simulator.Variants.EXTENSIVE.value.Parameters.MAX_TRACE_LENGTH: 7})

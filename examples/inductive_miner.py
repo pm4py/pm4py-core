@@ -4,11 +4,8 @@ sys.path.append("/Users/Julian/Documents/HiWi/PADS/pm4py-source")
 from pm4py.objects.log.importer.xes import importer as xes_import
 from pm4py.algo.discovery.inductive import algorithm as ind_miner
 from pm4py.visualization.process_tree import visualizer as pt_vis
-from pm4py.visualization.petrinet import visualizer as pn_vis
 from pm4py.objects.conversion.process_tree import converter
-from pm4py.evaluation.replay_fitness import evaluator
-from pm4py.algo.discovery.inductive.variants.im.util import fall_through
-from pm4py.algo.discovery.inductive.variants.im.util import constants as inductive_consts
+from pm4py.algo.evaluation.replay_fitness import evaluator
 from pm4py.algo.discovery.inductive.parameters import Parameters
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.log.log import EventLog
@@ -54,7 +51,7 @@ def execute_script():
     net, im, fm = converter.apply(ptree)
 
     pt_vis.view(gviz)
-   print(evaluator.apply(log, net, im, fm, variant=evaluator.Variants.TOKEN_BASED))
+    print(evaluator.apply(log, net, im, fm, variant=evaluator.Variants.TOKEN_BASED))
 
 
 if __name__ == "__main__":

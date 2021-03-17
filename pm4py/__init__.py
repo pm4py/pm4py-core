@@ -1,7 +1,7 @@
 import sys
 import time
 
-from pm4py import util, objects, statistics, algo, visualization, evaluation, simulation
+from pm4py import util, objects, statistics, algo, visualization
 from pm4py.analysis import check_soundness, solve_marking_equation, solve_extended_marking_equation, \
     construct_synchronous_product_net
 from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \

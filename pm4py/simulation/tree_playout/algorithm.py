@@ -1,6 +1,9 @@
 from pm4py.simulation.tree_playout.variants import basic_playout, extensive, topbottom
 from enum import Enum
 from pm4py.util import exec_utils
+import deprecation
+from pm4py.meta import VERSION
+import warnings
 
 
 class Variants(Enum):
@@ -12,6 +15,9 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.TOPBOTTOM
 
 
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use the pm4py.algo.simulation.tree_playout package")
 def apply(tree, variant=DEFAULT_VARIANT, parameters=None):
     """
     Performs a playout of a process tree
@@ -27,6 +33,7 @@ def apply(tree, variant=DEFAULT_VARIANT, parameters=None):
     parameters
         Parameters of the algorithm
     """
+    warnings.warn("Use the pm4py.algo.simulation.tree_playout package")
     if parameters is None:
         parameters = {}
 

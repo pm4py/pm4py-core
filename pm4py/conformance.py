@@ -141,7 +141,7 @@ def fitness_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marki
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
-    from pm4py.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.TOKEN_BASED)
 
@@ -171,7 +171,7 @@ def evaluate_fitness_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Ma
     fitness_dictionary
         Fitness dictionary (from TBR)
     """
-    from pm4py.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.TOKEN_BASED)
 
@@ -197,7 +197,7 @@ def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Mark
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
-    from pm4py.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.ALIGNMENT_BASED)
 
@@ -226,7 +226,7 @@ def evaluate_fitness_alignments(log: EventLog, petri_net: PetriNet, initial_mark
     fitness_dictionary
         Fitness dictionary (from alignments)
     """
-    from pm4py.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.ALIGNMENT_BASED)
 
@@ -252,7 +252,7 @@ def precision_token_based_replay(log: EventLog, petri_net: PetriNet, initial_mar
     precision
         float representing the precision value
     """
-    from pm4py.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN)
 
@@ -281,7 +281,7 @@ def evaluate_precision_tbr(log: EventLog, petri_net: PetriNet, initial_marking: 
     precision
         float representing the precision value
     """
-    from pm4py.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN)
 
@@ -307,7 +307,7 @@ def precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Ma
     precision
         float representing the precision value
     """
-    from pm4py.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
 
@@ -336,7 +336,7 @@ def evaluate_precision_alignments(log: EventLog, petri_net: PetriNet, initial_ma
     precision
         float representing the precision value
     """
-    from pm4py.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
 
