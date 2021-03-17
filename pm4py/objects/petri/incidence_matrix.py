@@ -21,12 +21,10 @@ class IncidenceMatrix(object):
     def __construct_matrix(self, net):
         self.matrix_built = True
         p_index, t_index = {}, {}
-        places = sorted([x for x in net.places], key=lambda x: (str(x.name), id(x)))
-        transitions = sorted([x for x in net.transitions], key=lambda x: (str(x.name), id(x)))
 
-        for p in places:
+        for p in net.places:
             p_index[p] = len(p_index)
-        for t in transitions:
+        for t in net.transitions:
             t_index[t] = len(t_index)
         a_matrix = [[0 for i in range(len(t_index))] for j in range(len(p_index))]
         for p in net.places:
