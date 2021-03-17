@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 from deprecation import deprecated
 
@@ -339,3 +339,103 @@ def evaluate_precision_alignments(log: EventLog, petri_net: PetriNet, initial_ma
     from pm4py.evaluation.precision import evaluator as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
+
+
+def __convert_to_fp(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
+    """
+    Internal method to convert the provided event log / process model argument
+    to footprints (using footprints discovery)
+
+    Parameters
+    ----------------
+    args
+        Event log / process model
+
+    Returns
+    ---------------
+    fp
+        Footprints
+    """
+    import pm4py
+    while type(args) is tuple:
+        if len(args) == 1:
+            args = args[0]
+        else:
+            fp = pm4py.discover_footprints(*args)
+            return fp
+    if type(args) is list or type(args) is dict:
+        return args
+    fp = pm4py.discover_footprints(args)
+    return fp
+
+
+def conformance_diagnostics_footprints(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
+    """
+    Provide conformance checking diagnostics using footprints
+
+    Parameters
+    ----------------
+    args
+        Provided argument:
+        - The first argument is supposed to be an event log (or the footprints discovered from the event log)
+        - The other arguments are supposed to be the process model (or the footprints discovered from the process model)
+
+    Returns
+    ----------------
+    fps
+        Footprints of the event log / process model
+    """
+    fp1 = __convert_to_fp(args[0])
+    fp2 = __convert_to_fp(args[1:])
+    from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
+    if isinstance(fp1, list):
+        return footprints_conformance.apply(fp1, fp2, variant=footprints_conformance.Variants.TRACE_EXTENSIVE)
+    else:
+        return footprints_conformance.apply(fp1, fp2, variant=footprints_conformance.Variants.LOG_EXTENSIVE)
+
+
+def fitness_footprints(*args) -> Dict[str, float]:
+    """
+    Calculates fitness using footprints
+
+    Parameters
+    ----------------
+    args
+        Provided argument:
+        - The first argument is supposed to be an event log (or the footprints discovered from the event log)
+        - The other arguments are supposed to be the process model (or the footprints discovered from the process model)
+
+    Returns
+    ----------------
+    fitness_dict
+        A dictionary containing two keys:
+        - perc_fit_traces => percentage of fit traces (over the log)
+        - log_fitness => the fitness value over the log
+    """
+    fp_conf = conformance_diagnostics_footprints(*args)
+    fp1 = __convert_to_fp(args[0])
+    fp2 = __convert_to_fp(args[1:])
+    from pm4py.algo.conformance.footprints.util import evaluation
+    return evaluation.fp_fitness(fp1, fp2, fp_conf)
+
+
+def precision_footprints(*args) -> float:
+    """
+    Calculates precision using footprints
+
+    Parameters
+    ----------------
+    args
+        Provided argument:
+        - The first argument is supposed to be an event log (or the footprints discovered from the event log)
+        - The other arguments are supposed to be the process model (or the footprints discovered from the process model)
+
+    Returns
+    ----------------
+    precision
+        The precision of the process model (as a number between 0 and 1)
+    """
+    fp1 = __convert_to_fp(args[0])
+    fp2 = __convert_to_fp(args[1:])
+    from pm4py.algo.conformance.footprints.util import evaluation
+    return evaluation.fp_precision(fp1, fp2)
