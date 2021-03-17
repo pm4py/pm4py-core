@@ -1,4 +1,4 @@
-from pm4py.evaluation.soundness.woflan.place_invariants.uniform_invariant import apply as compute_uniform_invariants
+from pm4py.algo.analysis.woflan.place_invariants.uniform_invariant import apply as compute_uniform_invariants
 
 def apply(net):
     """

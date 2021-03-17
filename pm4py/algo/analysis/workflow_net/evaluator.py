@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pm4py.evaluation.wf_net.variants import petri_net
+from pm4py.algo.analysis.workflow_net.variants import petri_net
 from pm4py.util import exec_utils
 
 

@@ -1,7 +1,7 @@
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.dfg import algorithm as dfg_miner
 from pm4py.objects.conversion.dfg import converter as dfg_conv
-from pm4py.simulation.montecarlo import simulator as montecarlo_simulation
+from pm4py.algo.simulation.montecarlo import simulator as montecarlo_simulation
 from pm4py.algo.conformance.tokenreplay.algorithm import Variants
 import os
 
