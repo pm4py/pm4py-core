@@ -127,6 +127,19 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         bpmn = pm4py.convert_to_bpmn(tree)
         self.assertTrue(isinstance(bpmn, BPMN))
 
+    def test_new_statistics_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.get_trace_attribute_values(log, "creator")
+        pm4py.get_eventually_follows_graph(log)
+        pm4py.get_case_arrival_average(log)
+
+    def test_new_statistics_df(self):
+        df = pd.read_csv("input_data/running-example.csv")
+        df = pm4py.format_dataframe(df)
+        pm4py.get_trace_attribute_values(df, "case:creator")
+        pm4py.get_eventually_follows_graph(df)
+        pm4py.get_case_arrival_average(df)
+
 
 if __name__ == "__main__":
     unittest.main()
