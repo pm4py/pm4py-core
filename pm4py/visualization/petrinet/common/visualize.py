@@ -135,7 +135,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
                     viz.node(str(id(p)), "")
 
     # add arcs, in order by their source and target objects names, to avoid undeterminism in the visualization
-    arcs_sort_list = sorted(list(net.arcs), key=lambda x: (x.source.name, x.target.name))
+    arcs_sort_list = sorted(list(net.arcs))
     for a in arcs_sort_list:
         if a in decorations and "label" in decorations[a] and "penwidth" in decorations[a]:
             viz.edge(str(id(a.source)), str(id(a.target)), label=decorations[a]["label"],
