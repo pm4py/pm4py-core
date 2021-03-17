@@ -4,6 +4,37 @@
 
 ### Fixed
 
+### Removed
+
+### Deprecated
+
+* c3cde455
+    * deprecated (moved internally) the evaluation and simulation pacakges.
+
+### Changed
+
+* 8474507b
+    * make timestamp and performance-based trace filters inclusive on the boundaries provided
+* b6154457
+    * changed the equals functionality for event logs
+
+### Added
+
+* 5de03f1e
+    * added progress bar to all the alignment algorithms
+* 24778a7c
+    * added footprint comparison to simple the interface
+    * added eventually follows discovery to the simple interface
+    * added some additional statistics to the simple interface
+* b2b1fdc5
+  * add a faster alignment algorithm for process trees
+
+### Other
+
+## PM4PY 2.2.2 (2021.03.03)
+
+### Fixed
+
 * 1a5c080c
     * fix for timestamp conversion of dataframe formatting
 * 19c615e1
