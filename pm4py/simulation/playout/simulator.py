@@ -1,6 +1,9 @@
 from pm4py.simulation.playout.variants import basic_playout, extensive, stochastic_playout
 from pm4py.util import exec_utils
 from enum import Enum
+import deprecation
+from pm4py.meta import VERSION
+import warnings
 
 
 class Variants(Enum):
@@ -13,6 +16,9 @@ DEFAULT_VARIANT = Variants.BASIC_PLAYOUT
 VERSIONS = {Variants.BASIC_PLAYOUT, Variants.EXTENSIVE, Variants.STOCHASTIC_PLAYOUT}
 
 
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use the pm4py.algo.simulation.playout package")
 def apply(net, initial_marking, final_marking=None, parameters=None, variant=DEFAULT_VARIANT):
     """
     Do the playout of a Petrinet generating a log
@@ -36,5 +42,6 @@ def apply(net, initial_marking, final_marking=None, parameters=None, variant=DEF
             or the log.
             - Variants.EXTENSIVE: gets all the traces from the model. can be expensive
     """
+    warnings.warn("Use the pm4py.algo.simulation.playout package")
     return exec_utils.get_variant(variant).apply(net, initial_marking, final_marking=final_marking,
                                                  parameters=parameters)

@@ -1,6 +1,6 @@
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.alpha import algorithm as alpha_miner
-from pm4py.evaluation.soundness.woflan import algorithm as woflan
+from pm4py.algo.analysis.woflan import algorithm as woflan
 import os
 
 

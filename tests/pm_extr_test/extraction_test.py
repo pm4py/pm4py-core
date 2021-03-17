@@ -2,7 +2,6 @@ import inspect
 import os
 import sys
 import traceback
-import pkgutil
 
 if __name__ == "__main__":
     currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -14,25 +13,22 @@ if __name__ == "__main__":
 
     from pm4py.objects.log.importer.xes import importer as xes_importer
     from pm4py.algo.discovery.inductive import algorithm as inductive
-    from pm4py.algo.conformance.alignments import algorithm as align_algorithm
-    from pm4py.algo.conformance.alignments.variants import state_equation_less_memory, state_equation_a_star, \
-        dijkstra_less_memory, dijkstra_no_heuristics
-    from pm4py.algo.conformance.decomp_alignments.variants import recompos_maximal
+    from pm4py.algo.conformance.alignments.variants import state_equation_less_memory
     from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
     from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
     from pm4py.algo.discovery.alpha import algorithm as alpha
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     from pm4py.objects.conversion.process_tree import converter as pt_converter
-    from pm4py.evaluation.replay_fitness import evaluator as fitness_evaluator
-    from pm4py.evaluation.precision import evaluator as precision_evaluator
-    from pm4py.evaluation.simplicity import evaluator as simplicity_evaluator
-    from pm4py.evaluation.generalization import evaluator as generalization_evaluator
+    from pm4py.algo.evaluation.replay_fitness import evaluator as fitness_evaluator
+    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.simplicity import evaluator as simplicity_evaluator
+    from pm4py.algo.evaluation.generalization import evaluator as generalization_evaluator
     from pm4py.objects.log.util import insert_classifier
     from pm4py.objects.petri.exporter import exporter as pnml_exporter
     from pm4py.visualization.petrinet import visualizer as petri_vis
     from pm4py.visualization.common.save import save as vis_save
     from pm4py import util as pmutil
-    from pm4py.evaluation.soundness.woflan import algorithm as woflan
+    from pm4py.algo.analysis.woflan import algorithm as woflan
 
 
     def get_elonged_string(stru):

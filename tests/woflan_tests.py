@@ -1,11 +1,11 @@
 import os
-from pm4py.evaluation.soundness.woflan import algorithm as woflan
+from pm4py.algo.analysis.woflan import algorithm as woflan
 from pm4py.objects.log.importer.xes import importer as xes_import
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.algo.discovery.alpha import algorithm as alpha_miner
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri import utils
-from pm4py.evaluation.soundness.woflan.graphs.minimal_coverability_graph import minimal_coverability_graph
+from pm4py.algo.analysis.woflan.graphs.minimal_coverability_graph import minimal_coverability_graph
 import unittest
 
 
