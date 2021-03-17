@@ -1,5 +1,6 @@
 import copy
 import hashlib
+from typing import Optional, List, Dict
 
 from pm4py.objects.process_tree import process_tree as pt
 from pm4py.objects.process_tree import pt_operator as pt_op
@@ -26,7 +27,7 @@ def fold(tree):
         tree.children.clear()
         del tree
         tree = root
-    if reduce_tau_leafs(copy.deepcopy(tree)) != tree:
+    if str(reduce_tau_leafs(copy.deepcopy(tree))) != str(tree):
         tree = fold(tree)
     return tree
 
@@ -340,3 +341,59 @@ def process_tree_to_binary_process_tree(pt: ProcessTree) -> ProcessTree:
     for c in pt.children:
         process_tree_to_binary_process_tree(c)
     return pt
+
+
+def common_ancestor(t1: ProcessTree, t2: ProcessTree) -> Optional[ProcessTree]:
+    parents = set()
+    parent = t1.parent
+    while parent is not None:
+        parents.add(parent)
+        parent = parent.parent
+    parent = t2.parent
+    while parent is not None:
+        if parent in parents:
+            return parent
+        parent = parent.parent
+    return None
+
+
+def get_ancestors_until(t: ProcessTree, until: ProcessTree, include_until: bool = True) -> Optional[List[ProcessTree]]:
+    ancestors = list()
+    if t == until:
+        return ancestors
+    parent = t.parent
+    while parent != until:
+        ancestors.append(parent)
+        parent = parent.parent
+        if parent is None:
+            return None
+    if include_until:
+        ancestors.append(until)
+    return ancestors
+
+
+def get_leaves(t: ProcessTree, leaves=None):
+    leaves = leaves if leaves is not None else set()
+    if t.label is not None:
+        leaves.add(t)
+    else:
+        for c in t.children:
+            leaves = get_leaves(c, leaves)
+    return leaves
+
+
+def is_operator(tree: ProcessTree, operator: pt_op.Operator) -> bool:
+    return tree is not None and tree.operator is not None and tree.operator == operator
+
+
+def is_any_operator_of(tree: ProcessTree, operators: List[pt_op.Operator]) -> bool:
+    return tree is not None and tree.operator is not None and tree.operator in operators
+
+
+def is_in_state(tree: ProcessTree, target_state: ProcessTree.OperatorState,
+                tree_state: Dict[ProcessTree, ProcessTree.OperatorState]) -> bool:
+    return tree is not None and (id(tree), tree) in tree_state and tree_state[(id(tree), tree)] == target_state
+
+
+def is_root(tree: ProcessTree) -> bool:
+    return tree.parent is None
