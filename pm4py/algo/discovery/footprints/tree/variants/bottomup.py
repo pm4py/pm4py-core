@@ -326,7 +326,7 @@ def get_footprints(node, footprints_dictio):
         return get_footprints_leaf(node, footprints_dictio)
     elif node.operator == Operator.XOR:
         return get_footprints_xor(node, footprints_dictio)
-    elif node.operator == Operator.PARALLEL:
+    elif node.operator == Operator.PARALLEL or node.operator == Operator.OR:
         return get_footprints_parallel(node, footprints_dictio)
     elif node.operator == Operator.SEQUENCE:
         return get_footprints_sequence(node, footprints_dictio)
