@@ -1,5 +1,5 @@
 from pm4py.objects.process_tree import process_tree
-from pm4py.objects.process_tree import pt_operator
+from pm4py.objects.process_tree import process_tree as pt_operator
 from scipy.stats import triang as triangular
 import string
 import math

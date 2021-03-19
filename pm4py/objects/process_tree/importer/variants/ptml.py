@@ -6,7 +6,7 @@ from lxml import etree, objectify
 
 from pm4py.meta import VERSION
 from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import Operator
 from pm4py.objects.process_tree.util import tree_sort
 from pm4py.util import constants
 
