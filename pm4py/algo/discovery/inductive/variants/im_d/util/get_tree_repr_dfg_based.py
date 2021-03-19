@@ -16,7 +16,7 @@
 '''
 from pm4py.objects.dfg.utils.dfg_utils import get_activities_self_loop
 from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import Operator
 
 
 def get_transition(label):

@@ -15,12 +15,15 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import warnings
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 from deprecation import deprecated
 
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.petri.petrinet import PetriNet, Marking
+from collections import Counter
+from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.util import xes_constants
 
 
 @deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
@@ -78,30 +81,42 @@ def conformance_diagnostics_token_based_replay(log: EventLog, petri_net: PetriNe
     return token_replay.apply(log, petri_net, initial_marking, final_marking)
 
 
-def conformance_diagnostics_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
-                                       final_marking: Marking) -> List[Dict[str, Any]]:
+def conformance_diagnostics_alignments(log: EventLog, *args) -> List[Dict[str, Any]]:
     """
-    Apply the alignments algorithm between a log and a Petri net
+    Apply the alignments algorithm between a log and a process model.
     The methods return the full alignment diagnostics.
 
     Parameters
     -------------
     log
         Event log
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
+    args
+        Specification of the process model
 
     Returns
     -------------
     aligned_traces
         A list of alignments for each trace of the log (in the same order as the traces in the event log)
     """
+    if len(args) == 3:
+        if type(args[0]) is PetriNet:
+            # Petri net alignments
+            from pm4py.algo.conformance.alignments import algorithm as alignments
+            return alignments.apply(log, args[0], args[1], args[2])
+        elif type(args[0]) is dict or type(args[0]) is Counter:
+            # DFG alignments
+            from pm4py.objects.dfg.utils import dfg_alignment
+            return dfg_alignment.apply(log, args[0], args[1], args[2])
+    elif len(args) == 1:
+        if type(args[0]) is ProcessTree:
+            # process tree alignments
+            from pm4py.algo.conformance.tree_alignments import algorithm as tree_alignments
+            return tree_alignments.apply(log, args[0])
+    # try to convert to Petri net
+    import pm4py
     from pm4py.algo.conformance.alignments import algorithm as alignments
-    return alignments.apply(log, petri_net, initial_marking, final_marking)
+    net, im, fm = pm4py.convert_to_petri_net(*args)
+    return alignments.apply(log, net, im, fm)
 
 
 @deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
@@ -157,7 +172,7 @@ def fitness_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marki
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
-    from pm4py.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.TOKEN_BASED)
 
@@ -187,7 +202,7 @@ def evaluate_fitness_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Ma
     fitness_dictionary
         Fitness dictionary (from TBR)
     """
-    from pm4py.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.TOKEN_BASED)
 
@@ -213,7 +228,7 @@ def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Mark
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
-    from pm4py.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.ALIGNMENT_BASED)
 
@@ -242,7 +257,7 @@ def evaluate_fitness_alignments(log: EventLog, petri_net: PetriNet, initial_mark
     fitness_dictionary
         Fitness dictionary (from alignments)
     """
-    from pm4py.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.ALIGNMENT_BASED)
 
@@ -268,7 +283,7 @@ def precision_token_based_replay(log: EventLog, petri_net: PetriNet, initial_mar
     precision
         float representing the precision value
     """
-    from pm4py.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN)
 
@@ -297,7 +312,7 @@ def evaluate_precision_tbr(log: EventLog, petri_net: PetriNet, initial_marking: 
     precision
         float representing the precision value
     """
-    from pm4py.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN)
 
@@ -323,7 +338,7 @@ def precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Ma
     precision
         float representing the precision value
     """
-    from pm4py.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
 
@@ -352,6 +367,234 @@ def evaluate_precision_alignments(log: EventLog, petri_net: PetriNet, initial_ma
     precision
         float representing the precision value
     """
-    from pm4py.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
+
+
+def __convert_to_fp(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
+    """
+    Internal method to convert the provided event log / process model argument
+    to footprints (using footprints discovery)
+
+    Parameters
+    ----------------
+    args
+        Event log / process model
+
+    Returns
+    ---------------
+    fp
+        Footprints
+    """
+    import pm4py
+    while type(args) is tuple:
+        if len(args) == 1:
+            args = args[0]
+        else:
+            fp = pm4py.discover_footprints(*args)
+            return fp
+    if type(args) is list or type(args) is dict:
+        return args
+    fp = pm4py.discover_footprints(args)
+    return fp
+
+
+def conformance_diagnostics_footprints(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
+    """
+    Provide conformance checking diagnostics using footprints
+
+    Parameters
+    ----------------
+    args
+        Provided argument:
+        - The first argument is supposed to be an event log (or the footprints discovered from the event log)
+        - The other arguments are supposed to be the process model (or the footprints discovered from the process model)
+
+    Returns
+    ----------------
+    fps
+        Footprints of the event log / process model
+    """
+    fp1 = __convert_to_fp(args[0])
+    fp2 = __convert_to_fp(args[1:])
+    from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
+    if isinstance(fp1, list):
+        return footprints_conformance.apply(fp1, fp2, variant=footprints_conformance.Variants.TRACE_EXTENSIVE)
+    else:
+        return footprints_conformance.apply(fp1, fp2, variant=footprints_conformance.Variants.LOG_EXTENSIVE)
+
+
+def fitness_footprints(*args) -> Dict[str, float]:
+    """
+    Calculates fitness using footprints
+
+    Parameters
+    ----------------
+    args
+        Provided argument:
+        - The first argument is supposed to be an event log (or the footprints discovered from the event log)
+        - The other arguments are supposed to be the process model (or the footprints discovered from the process model)
+
+    Returns
+    ----------------
+    fitness_dict
+        A dictionary containing two keys:
+        - perc_fit_traces => percentage of fit traces (over the log)
+        - log_fitness => the fitness value over the log
+    """
+    fp_conf = conformance_diagnostics_footprints(*args)
+    fp1 = __convert_to_fp(args[0])
+    fp2 = __convert_to_fp(args[1:])
+    from pm4py.algo.conformance.footprints.util import evaluation
+    return evaluation.fp_fitness(fp1, fp2, fp_conf)
+
+
+def precision_footprints(*args) -> float:
+    """
+    Calculates precision using footprints
+
+    Parameters
+    ----------------
+    args
+        Provided argument:
+        - The first argument is supposed to be an event log (or the footprints discovered from the event log)
+        - The other arguments are supposed to be the process model (or the footprints discovered from the process model)
+
+    Returns
+    ----------------
+    precision
+        The precision of the process model (as a number between 0 and 1)
+    """
+    fp1 = __convert_to_fp(args[0])
+    fp2 = __convert_to_fp(args[1:])
+    from pm4py.algo.conformance.footprints.util import evaluation
+    return evaluation.fp_precision(fp1, fp2)
+
+
+def __check_is_fit_process_tree(trace, tree, activity_key=xes_constants.DEFAULT_NAME_KEY):
+    """
+    Check if a trace object is fit against a process tree model
+
+    Parameters
+    -----------------
+    trace
+        Trace
+    tree
+        Process tree
+    activity_key
+        Activity key (optional)
+
+    Returns
+    -----------------
+    is_fit
+        Boolean value (True if the trace fits; False if the trace does not)
+    """
+    from pm4py.discovery import discover_footprints
+    log = EventLog()
+    log.append(trace)
+    fp_tree = discover_footprints(tree)
+    fp_log = discover_footprints(log)
+    fp_conf_res = conformance_diagnostics_footprints(fp_log, fp_tree)[0]
+    # CHECK 1) if footprints already say is not fit, then return False
+    # (if they say True, it might be a false positive)
+    if not fp_conf_res["is_footprints_fit"]:
+        return False
+    else:
+        from pm4py.convert import convert_to_petri_net
+        net, im, fm = convert_to_petri_net(tree)
+        tbr_conf_res = conformance_diagnostics_token_based_replay(log, net, im, fm)[0]
+        # CHECK 2) if TBR says that is fit, then return True
+        # (if they say False, it might be a false negative)
+        if tbr_conf_res["trace_is_fit"]:
+            return True
+        else:
+            # CHECK 3) alignments definitely say if the trace is fit or not if the previous methods fail
+            align_conf_res = conformance_diagnostics_alignments(log, tree)[0]
+            return align_conf_res["fitness"] == 1.0
+
+
+def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFAULT_NAME_KEY):
+    """
+    Checks if a trace object is fit against Petri net object
+
+    Parameters
+    ----------------
+    trace
+        Trace
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    activity_key
+        Activity key (optional)
+
+    Returns
+    -----------------
+    is_fit
+        Boolean value (True if the trace fits; False if the trace does not)
+    """
+    from pm4py.util import variants_util
+    # avoid checking footprints on Petri net (they are too slow)
+    activities_model = set(trans.label for trans in net.transitions if trans.label is not None)
+    activities_trace = set([x[activity_key] for x in trace])
+    diff = activities_trace.difference(activities_model)
+    if diff:
+        # CHECK 1) there are activities in the trace that are not in the model
+        return False
+    else:
+        log = EventLog()
+        log.append(trace)
+        tbr_conf_res = conformance_diagnostics_token_based_replay(log, net, im, fm)[0]
+        # CHECK 2) if TBR says that is fit, then return True
+        # (if they say False, it might be a false negative)
+        if tbr_conf_res["trace_is_fit"]:
+            return True
+        else:
+            # CHECK 3) alignments definitely say if the trace is fit or not if the previous methods fail
+            align_conf_res = conformance_diagnostics_alignments(log, net, im, fm)[0]
+            return align_conf_res["fitness"] == 1.0
+
+
+def check_is_fitting(*args, activity_key=xes_constants.DEFAULT_NAME_KEY):
+    """
+    Checks if a trace object is fit against a process model
+
+    Parameters
+    -----------------
+    trace
+        Trace object (trace / variant)
+    model
+        Model (process tree, Petri net, BPMN, ...)
+    activity_key
+        Activity key (optional)
+
+    Returns
+    -----------------
+    is_fit
+        Boolean value (True if the trace fits; False if the trace does not)
+    """
+    from pm4py.util import variants_util
+    from pm4py.convert import convert_to_process_tree, convert_to_petri_net
+
+    trace = args[0]
+    model = args[1:]
+
+    try:
+        model = convert_to_process_tree(*model)
+    except:
+        # the model cannot be expressed as a process tree, let's say if at least can be expressed as a Petri net
+        model = convert_to_petri_net(*model)
+
+    if not isinstance(trace, Trace):
+        activities = variants_util.get_activities_from_variant(trace)
+        trace = Trace()
+        for act in activities:
+            trace.append(Event({activity_key: act}))
+
+    if isinstance(model, ProcessTree):
+        return __check_is_fit_process_tree(trace, model, activity_key=activity_key)
+    elif isinstance(model, tuple) and isinstance(model[0], PetriNet):
+        return __check_is_fit_petri_net(trace, model[0], model[1], model[2], activity_key=activity_key)

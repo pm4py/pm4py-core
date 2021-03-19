@@ -45,7 +45,7 @@ def get_tangible_reachability_from_log_net_im_fm(log, net, im, fm, parameters=No
     if parameters is None:
         parameters = {}
 
-    from pm4py.simulation.montecarlo.utils import replay
+    from pm4py.algo.simulation.montecarlo.utils import replay
     stochastic_info = replay.get_map_from_log_and_net(log_converter.apply(log, parameters=parameters), net, im, fm,
                                                       parameters=parameters)
 

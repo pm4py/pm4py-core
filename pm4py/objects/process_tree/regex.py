@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.process_tree import pt_operator
+from pm4py.objects.process_tree import process_tree as pt_operator
 from pm4py.util.regex import SharedObj, get_new_char
 
 

@@ -14,26 +14,28 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import pkgutil
+
 from pm4py import util as pmutil
+from pm4py.algo.discovery.dfg.variants import native as dfg_inst
+from pm4py.algo.discovery.inductive.parameters import Parameters
 from pm4py.algo.discovery.inductive.util import shared_constants
+from pm4py.algo.discovery.inductive.util import tree_consistency
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.variants.im.util import get_tree_repr_implain
+from pm4py.algo.discovery.inductive.variants.im_f.data_structures import subtree_infrequent as subtree
+from pm4py.objects.conversion.log import converter
+from pm4py.objects.conversion.process_tree import converter as tree_to_petri
+from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.util import filtering_utils
+from pm4py.objects.process_tree import util
+from pm4py.objects.process_tree.util import tree_sort
 from pm4py.statistics.attributes.log import get as attributes_get
 from pm4py.statistics.end_activities.log import get as end_activities_get
 from pm4py.statistics.start_activities.log import get as start_activities_get
-from pm4py.algo.discovery.dfg.variants import native as dfg_inst
-from pm4py.algo.discovery.inductive.variants.im_f.data_structures import subtree_infrequent as subtree
-from pm4py.objects.conversion.process_tree import converter as tree_to_petri
-from pm4py.algo.discovery.inductive.parameters import Parameters
 from pm4py.util import exec_utils
-from pm4py.objects.conversion.log import converter
-from pm4py.objects.process_tree import util
-from pm4py.util import constants, xes_constants
-from pm4py.objects.log.util import filtering_utils
-from pm4py.objects.log.log import EventLog, Trace, Event
-from pm4py.algo.discovery.inductive.util import tree_consistency
-import pkgutil
 from pm4py.util import variants_util
+from pm4py.util import xes_constants
 
 
 def apply(log, parameters):
@@ -166,6 +168,8 @@ def apply_tree(log, parameters):
     tree_consistency.fix_one_child_xor_flower(process_tree)
     # folds the process tree (to simplify it in case fallthroughs/filtering is applied)
     process_tree = util.fold(process_tree)
+    # sorts the process tree to ensure consistency in different executions of the algorithm
+    tree_sort(process_tree)
 
     return process_tree
 

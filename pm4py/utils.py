@@ -18,6 +18,7 @@ from typing import Optional
 
 import pandas as pd
 
+from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.util import constants, xes_constants, pandas_utils
 
 INDEX_COLUMN = "@@index"
@@ -68,3 +69,22 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     # logging.warning(
     #    "please convert the dataframe for advanced process mining applications. log = pm4py.convert_to_event_log(df)")
     return df
+
+
+def parse_process_tree(tree_string: str) -> ProcessTree:
+    """
+    Parse a process tree from a string
+
+    Parameters
+    ----------------
+    tree_string
+        String representing a process tree (e.g. '-> ( 'A', O ( 'B', 'C' ), 'D' )')
+        Operators are '->': sequence, '+': parallel, 'X': xor choice, '*': binary loop, 'O' or choice
+
+    Returns
+    ----------------
+    tree
+        Process tree
+    """
+    from pm4py.objects.process_tree.util import parse
+    return parse(tree_string)

@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.discovery import alpha, dfg, heuristics, inductive, transition_system, log_skeleton, footprints, temporal_profile
+from pm4py.algo.discovery import alpha, dfg, heuristics, inductive, transition_system, log_skeleton, footprints, temporal_profile, minimum_self_distance
 import pkgutil
 
 if pkgutil.find_loader("pandas"):

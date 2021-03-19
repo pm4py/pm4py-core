@@ -31,6 +31,8 @@ def visualize(ts, parameters=None):
     show_names = exec_utils.get_param_value(Parameters.SHOW_NAMES, parameters, True)
     force_names = exec_utils.get_param_value(Parameters.FORCE_NAMES, parameters, None)
     fillcolors = exec_utils.get_param_value(Parameters.FILLCOLORS, parameters, {})
+    font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 11)
+    font_size = str(font_size)
 
     for state in ts.states:
         state.label = state.name
@@ -53,23 +55,22 @@ def visualize(ts, parameters=None):
     for s in ts.states:
         if show_names:
             if s in fillcolors:
-                viz.node(str(id(s)), str(s.label), style="filled", fillcolor=fillcolors[s])
+                viz.node(str(id(s)), str(s.label), style="filled", fillcolor=fillcolors[s], fontsize=font_size)
             else:
-                viz.node(str(id(s)), str(s.label))
+                viz.node(str(id(s)), str(s.label), fontsize=font_size)
         else:
             if s in fillcolors:
-                viz.node(str(id(s)), "", style="filled", fillcolor=fillcolors[s])
+                viz.node(str(id(s)), "", style="filled", fillcolor=fillcolors[s], fontsize=font_size)
             else:
-                viz.node(str(id(s)), "")
+                viz.node(str(id(s)), "", fontsize=font_size)
     # arcs
     for t in ts.transitions:
         if show_labels:
-            viz.edge(str(id(t.from_state)), str(id(t.to_state)), label=t.name)
+            viz.edge(str(id(t.from_state)), str(id(t.to_state)), label=t.name, fontsize=font_size)
         else:
             viz.edge(str(id(t.from_state)), str(id(t.to_state)))
 
     viz.attr(overlap='false')
-    viz.attr(fontsize='11')
 
     viz.format = image_format
 

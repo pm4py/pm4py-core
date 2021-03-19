@@ -17,19 +17,20 @@
 import sys
 import time
 
-from pm4py import util, objects, statistics, algo, visualization, evaluation, simulation
+from pm4py import util, objects, statistics, algo, visualization
 from pm4py.analysis import check_soundness, solve_marking_equation, solve_extended_marking_equation, \
     construct_synchronous_product_net
 from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \
     fitness_token_based_replay, \
     fitness_alignments, precision_token_based_replay, \
     precision_alignments, conformance_alignments, conformance_tbr, evaluate_precision_alignments, \
-    evaluate_precision_tbr, evaluate_fitness_tbr, evaluate_fitness_alignments
+    evaluate_precision_tbr, evaluate_fitness_tbr, evaluate_fitness_alignments, conformance_diagnostics_footprints, \
+    fitness_footprints, precision_footprints, check_is_fitting
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_heuristics, \
     discover_petri_net_inductive, discover_tree_inductive, discover_process_tree_inductive, discover_heuristics_net, \
-    discover_dfg
+    discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph
 from pm4py.filtering import filter_start_activities, filter_end_activities, filter_attribute_values, filter_variants, \
     filter_variants_percentage, filter_directly_follows_relation, filter_time_range, filter_trace_attribute, \
     filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values
@@ -40,8 +41,9 @@ from pm4py.read import read_xes, read_petri_net, read_process_tree, read_dfg, \
     read_bpmn, read_pnml, read_ptml
 from pm4py.sim import play_out, generate_process_tree
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
-    get_trace_attributes, get_variants_as_tuples
-from pm4py.utils import format_dataframe
+    get_trace_attributes, get_variants_as_tuples, get_trace_attribute_values, get_case_arrival_average, \
+    get_minimum_self_distances, get_minimum_self_distance_witnesses
+from pm4py.utils import format_dataframe, parse_process_tree
 from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg, view_process_tree, \
     save_vis_process_tree, \
     view_heuristics_net, save_vis_heuristics_net, view_bpmn, save_vis_bpmn

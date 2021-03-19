@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.evaluation.soundness.woflan.place_invariants.uniform_invariant import apply as compute_uniform_invariants
+from pm4py.algo.analysis.woflan.place_invariants.uniform_invariant import apply as compute_uniform_invariants
 
 def apply(net):
     """

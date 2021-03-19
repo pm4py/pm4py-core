@@ -14,13 +14,16 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from copy import copy
-from collections import Counter
-from pm4py.util.constants import DEFAULT_VARIANT_SEP
-import numpy as np
-import pkgutil
 import logging
+import pkgutil
+import queue
+from collections import Counter
+from copy import copy
+
+import numpy as np
+
 from pm4py.util import variants_util
+
 
 def get_outgoing_edges(dfg):
     """
@@ -779,9 +782,8 @@ def get_dfg_sa_ea_act_from_variants(variants, parameters=None):
     """
     if parameters is None:
         parameters = {}
-
     variants = set(variants_util.get_activities_from_variant(v) for v in variants)
-    dfg = dict(Counter(list((x[i], x[i+1]) for x in variants for i in range(len(x)-1))))
+    dfg = dict(Counter(list((x[i], x[i + 1]) for x in variants for i in range(len(x) - 1))))
     list_act = list(set(y for x in variants for y in x))
     start_activities = dict(Counter(x[0] for x in variants if x))
     end_activities = dict(Counter(x[-1] for x in variants if x))
@@ -903,3 +905,56 @@ def get_predecessors(dfg, activities_model=None):
                 for y in diff[x]:
                     curr[x] = curr[x].union(curr[y])
     return curr
+
+
+def get_transitive_relations(dfg, alphabet):
+    '''
+
+    Parameters
+    ----------
+    dfg
+        directly follows relation (counter describing activity pairs)
+
+    Returns
+    -------
+        tuple with two dicts.
+        first argument maps an activit on all other activities that are able to reach the activity ('transitive pre set')
+        second argument maps an activity on all other activities that it can reach (transitively) ('transitive post set')
+
+    '''
+    q = queue.Queue()
+    pre = dict()
+    post = dict()
+    for a in alphabet:
+        pre[a] = set()
+        post[a] = set()
+    if len(dfg) > 0:
+        for e in dfg:
+            q.put(e)
+        while q.qsize() > 0:
+            s, t = q.get()
+            post[s].add(t)
+            pre[t].add(s)
+            post[s].update(post[t])
+            pre[t].update(pre[s])
+
+            for a, b in dfg:
+                if b == s:
+                    # incoming arcs in s; inherit postset of s
+                    if not post[s].issubset(post[a]):
+                        post[a].update(post[s])
+                        q.put((a, b))
+                if a == t:
+                    # outgoing arcs from t
+                    if not pre[t].issubset(pre[b]):
+                        pre[b].update(pre[t])
+                        q.put((a, b))
+    return pre, post
+
+
+def get_alphabet(dfg):
+    alpha = set()
+    for a, b in dfg:
+        alpha.add(a)
+        alpha.add(b)
+    return alpha

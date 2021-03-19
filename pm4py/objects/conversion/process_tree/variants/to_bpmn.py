@@ -16,7 +16,7 @@
 '''
 import copy
 
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import Operator
 
 
 class Counts(object):
@@ -105,6 +105,19 @@ def add_parallel_gateway(bpmn, counts):
     return bpmn, split, join, counts
 
 
+def add_inclusive_gateway(bpmn, counts):
+    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    counts.inc_para_gateways()
+    split_name = "parallel_" + str(counts.num_para_gateways) + "_split"
+    join_name = "parallel_" + str(counts.num_para_gateways) + "_join"
+
+    split = BPMN.InclusiveGateway(name=split_name)
+    join = BPMN.InclusiveGateway(name=join_name)
+    bpmn.add_node(split)
+    bpmn.add_node(join)
+    return bpmn, split, join, counts
+
+
 def recursively_add_tree(parent_tree, tree, bpmn, initial_event, final_event, counts, rec_depth):
     from pm4py.objects.bpmn.bpmn_graph import BPMN
     tree_childs = [child for child in tree.children]
@@ -139,6 +152,17 @@ def recursively_add_tree(parent_tree, tree, bpmn, initial_event, final_event, co
 
     elif tree.operator == Operator.PARALLEL:
         bpmn, split_gateway, join_gateway, counts = add_parallel_gateway(bpmn, counts)
+        for subtree in tree_childs:
+            bpmn, counts, x, y = recursively_add_tree(tree, subtree, bpmn, split_gateway, join_gateway,
+                                                      counts,
+                                                      rec_depth + 1)
+        bpmn.add_flow(BPMN.Flow(initial_event, split_gateway))
+        bpmn.add_flow(BPMN.Flow(join_gateway, final_event))
+        initial_connector = split_gateway
+        final_connector = join_gateway
+
+    elif tree.operator == Operator.OR:
+        bpmn, split_gateway, join_gateway, counts = add_inclusive_gateway(bpmn, counts)
         for subtree in tree_childs:
             bpmn, counts, x, y = recursively_add_tree(tree, subtree, bpmn, split_gateway, join_gateway,
                                                       counts,

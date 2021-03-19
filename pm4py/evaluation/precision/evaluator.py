@@ -19,6 +19,9 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.petri.check_soundness import check_easy_soundness_net_in_fin_marking
 from enum import Enum
 from pm4py.util import exec_utils
+import deprecation
+from pm4py.meta import VERSION
+import warnings
 
 
 class Variants(Enum):
@@ -31,7 +34,9 @@ ALIGN_ETCONFORMANCE = Variants.ALIGN_ETCONFORMANCE
 
 VERSIONS = {ETCONFORMANCE_TOKEN, ALIGN_ETCONFORMANCE}
 
-
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use the pm4py.algo.evaluation.precision package")
 def apply(log, net, marking, final_marking, parameters=None, variant=None):
     """
     Method to apply ET Conformance
@@ -54,6 +59,8 @@ def apply(log, net, marking, final_marking, parameters=None, variant=None):
             - Variants.ETCONFORMANCE_TOKEN
             - Variants.ALIGN_ETCONFORMANCE
     """
+    warnings.warn("Use the pm4py.algo.evaluation.precision package")
+
     if parameters is None:
         parameters = {}
 

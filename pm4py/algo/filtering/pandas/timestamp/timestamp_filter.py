@@ -70,8 +70,8 @@ def filter_traces_contained(df, dt1, dt2, parameters=None):
     last = grouped_df.last()
     last.columns = [str(col) + '_2' for col in last.columns]
     stacked = pd.concat([first, last], axis=1)
-    stacked = stacked[stacked[timestamp_key] > dt1]
-    stacked = stacked[stacked[timestamp_key + "_2"] < dt2]
+    stacked = stacked[stacked[timestamp_key] >= dt1]
+    stacked = stacked[stacked[timestamp_key + "_2"] <= dt2]
     i1 = df.set_index(case_id_glue).index
     i2 = stacked.set_index(case_id_glue).index
     return df[i1.isin(i2)]
@@ -162,8 +162,8 @@ def apply_events(df, dt1, dt2, parameters=None):
         dt1 = pd.to_datetime(dt1, utc=True)
         dt2 = pd.to_datetime(dt2, utc=True)
 
-    df = df[df[timestamp_key] > dt1]
-    df = df[df[timestamp_key] < dt2]
+    df = df[df[timestamp_key] >= dt1]
+    df = df[df[timestamp_key] <= dt2]
 
     return df
 

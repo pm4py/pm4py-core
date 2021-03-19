@@ -17,14 +17,14 @@
 import datetime
 import itertools
 import uuid
-
 from copy import deepcopy
 from enum import Enum
 
 from pm4py.objects.petri import utils as pn_util
 from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.objects.process_tree import pt_operator
+from pm4py.objects.process_tree import process_tree as pt_operator
 from pm4py.objects.process_tree import util as pt_util
+from pm4py.objects.process_tree.util import tree_sort
 from pm4py.util import exec_utils
 
 TRANSITION_PREFIX = str(uuid.uuid4())
@@ -251,7 +251,7 @@ def group_blocks_in_net(net, parameters=None):
     if parameters is None:
         parameters = {}
 
-    from pm4py.evaluation.wf_net import evaluator as wf_eval
+    from pm4py.algo.analysis.workflow_net import evaluator as wf_eval
 
     if not wf_eval.apply(net):
         raise ValueError('The Petri net provided is not a WF-net')
@@ -302,7 +302,9 @@ def apply(net, im, fm, parameters=None):
     if len(grouped_net.transitions) == 1:
         pt_str = list(grouped_net.transitions)[0].label
         pt = pt_util.parse(pt_str)
-        return pt_util.fold(pt) if fold else pt
+        ret = pt_util.fold(pt) if fold else pt
+        tree_sort(ret)
+        return ret
     else:
         if debug:
             from pm4py.visualization.petrinet import visualizer as pn_viz

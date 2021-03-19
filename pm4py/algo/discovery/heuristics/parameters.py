@@ -29,3 +29,4 @@ class Parameters(Enum):
     MIN_DFG_OCCURRENCES = "min_dfg_occurrences"
     DFG_PRE_CLEANING_NOISE_THRESH = "dfg_pre_cleaning_noise_thresh"
     LOOP_LENGTH_TWO_THRESH = "loop_length_two_thresh"
+    HEU_NET_DECORATION = "heu_net_decoration"

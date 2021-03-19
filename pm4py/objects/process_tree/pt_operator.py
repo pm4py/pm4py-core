@@ -15,45 +15,8 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
+import warnings
 
+warnings.warn("the pt_operator.Operator class has been deprecated. Please use process_tree.Operator instead!")
 
-class Operator(Enum):
-    # sequence operator
-    SEQUENCE = '->'
-    # exclusive choice operator
-    XOR = 'X'
-    # parallel operator
-    PARALLEL = '+'
-    # loop operator
-    LOOP = '*'
-    # or operator
-    OR = 'O'
-
-    '''
-    SEQUENCE = u'\u2192'
-    XOR = u'\u00d7'
-    PARALLEL = u'\u002b'
-    LOOP = u'\u27f2'
-    '''
-
-    def __str__(self):
-        """
-        Provides a string representation of the current operator
-
-        Returns
-        -----------
-        stri
-            String representation of the process tree
-        """
-        return self.value
-
-    def __repr__(self):
-        """
-        Provides a string representation of the current operator
-
-        Returns
-        -----------
-        stri
-            String representation of the process tree
-        """
-        return self.value
+from pm4py.objects.process_tree.process_tree import Operator

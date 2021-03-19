@@ -23,6 +23,7 @@ from graphviz import Digraph
 class Parameters(Enum):
     FORMAT = "format"
     RANKDIR = "rankdir"
+    FONT_SIZE = "font_size"
 
 
 def apply(bpmn_graph, parameters=None):
@@ -51,6 +52,8 @@ def apply(bpmn_graph, parameters=None):
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "LR")
+    font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 12)
+    font_size = str(font_size)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': 'transparent'})
@@ -61,19 +64,19 @@ def apply(bpmn_graph, parameters=None):
     for n in nodes:
         n_id = str(id(n))
         if isinstance(n, BPMN.Task):
-            viz.node(n_id, shape="box", label=n.get_name())
+            viz.node(n_id, shape="box", label=n.get_name(), fontsize=font_size)
         elif isinstance(n, BPMN.StartEvent):
-            viz.node(n_id, label="", shape="circle", style="filled", fillcolor="green")
+            viz.node(n_id, label="", shape="circle", style="filled", fillcolor="green", fontsize=font_size)
         elif isinstance(n, BPMN.EndEvent):
-            viz.node(n_id, label="", shape="circle", style="filled", fillcolor="orange")
+            viz.node(n_id, label="", shape="circle", style="filled", fillcolor="orange", fontsize=font_size)
         elif isinstance(n, BPMN.ParallelGateway):
-            viz.node(n_id, label="+", shape="diamond")
+            viz.node(n_id, label="+", shape="diamond", fontsize=font_size)
         elif isinstance(n, BPMN.ExclusiveGateway):
-            viz.node(n_id, label="X", shape="diamond")
+            viz.node(n_id, label="X", shape="diamond", fontsize=font_size)
         elif isinstance(n, BPMN.InclusiveGateway):
-            viz.node(n_id, label="O", shape="diamond")
+            viz.node(n_id, label="O", shape="diamond", fontsize=font_size)
         elif isinstance(n, BPMN.OtherEvent):
-            viz.node(n_id, label="", shape="circle")
+            viz.node(n_id, label="", shape="circle", fontsize=font_size)
 
     for e in edges:
         n_id_1 = str(id(e[0]))
@@ -82,7 +85,6 @@ def apply(bpmn_graph, parameters=None):
         viz.edge(n_id_1, n_id_2)
 
     viz.attr(overlap='false')
-    viz.attr(fontsize='11')
 
     viz.format = image_format
 

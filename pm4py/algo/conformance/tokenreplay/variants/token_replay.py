@@ -25,6 +25,7 @@ from copy import copy
 from enum import Enum
 from pm4py.util import exec_utils, constants
 from pm4py.util import variants_util
+import pkgutil
 
 
 class Parameters(Enum):
@@ -43,6 +44,7 @@ class Parameters(Enum):
     TRY_TO_REACH_FINAL_MARKING_THROUGH_HIDDEN = "try_to_reach_final_marking_through_hidden"
     CONSIDER_REMAINING_IN_FITNESS = "consider_remaining_in_fitness"
     ENABLE_PLTR_FITNESS = "enable_pltr_fitness"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
 
 
 class TechnicalParameters(Enum):
@@ -931,7 +933,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
               activity_key="concept:name", reach_mark_through_hidden=True, stop_immediately_unfit=False,
               walk_through_hidden_trans=True, places_shortest_path_by_hidden=None,
               variants=None, is_reduction=False, thread_maximum_ex_time=TechnicalParameters.MAX_DEF_THR_EX_TIME.value,
-              cleaning_token_flood=False, disable_variants=False, return_object_names=False):
+              cleaning_token_flood=False, disable_variants=False, return_object_names=False, show_progress_bar=True):
     """
     Apply token-based replay to a log
 
@@ -1006,6 +1008,12 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
             if activity_key in log[0][0]:
                 if variants is None:
                     variants = get_variants_from_log(log, activity_key, disable_variants=disable_variants)
+
+                progress = None
+                if pkgutil.find_loader("tqdm") and show_progress_bar and len(variants) > 1:
+                    from tqdm.auto import tqdm
+                    progress = tqdm(total=len(variants), desc="replaying log with TBR, completed variants :: ")
+
                 vc = variants_module.get_variants_sorted_by_count(variants)
                 threads = {}
                 threads_results = {}
@@ -1030,6 +1038,9 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                                                              cleaning_token_flood=cleaning_token_flood,
                                                              s_components=s_components, trace_occurrences=vc[i][1])
                     threads[variant].run()
+                    if progress is not None:
+                        progress.update()
+
                     t = threads[variant]
                     threads_results[variant] = {"trace_is_fit": copy(t.t_fit),
                                                 "trace_fitness": float(copy(t.t_value)),
@@ -1068,6 +1079,11 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                     if trace_variant in threads_results:
                         t = threads_results[trace_variant]
                         aligned_traces.append(t)
+
+                # gracefully close progress bar
+                if progress is not None:
+                    progress.close()
+                del progress
             else:
                 raise NoConceptNameException("at least an event is without " + activity_key)
 
@@ -1116,6 +1132,8 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
     variants = exec_utils.get_param_value(Parameters.VARIANTS, parameters, None)
 
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+
     return apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=enable_pltr_fitness,
                      consider_remaining_in_fitness=consider_remaining_in_fitness,
                      reach_mark_through_hidden=try_to_reach_final_marking_through_hidden,
@@ -1124,7 +1142,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
                      places_shortest_path_by_hidden=places_shortest_path_by_hidden, activity_key=activity_key,
                      variants=variants, is_reduction=is_reduction, thread_maximum_ex_time=thread_maximum_ex_time,
                      cleaning_token_flood=cleaning_token_flood, disable_variants=disable_variants,
-                     return_object_names=return_names)
+                     return_object_names=return_names, show_progress_bar=show_progress_bar)
 
 
 def apply_variants_list(variants_list, net, initial_marking, final_marking, parameters=None):

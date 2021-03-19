@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.evaluation.soundness.woflan.place_invariants import place_invariants, s_component, uniform_invariant, utility
+

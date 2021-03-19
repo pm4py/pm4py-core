@@ -150,7 +150,7 @@ def apply(heu_net, parameters=None):
         else:
             n = pydotplus.Node(name=node_name, shape="box", style="filled",
                                label=node_name + " (" + human_readable_stat(heu_net.sojourn_times[
-                                                                                node_name]) + ")" if node_name in heu_net.sojourn_times else "0s",
+                                                                                node_name]) + ")" if node_name in heu_net.sojourn_times else node_name + " (0s)",
                                fillcolor=node.get_fill_color(graycolor),
                                fontcolor=node.get_font_color())
         corr_nodes[node] = n

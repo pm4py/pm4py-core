@@ -37,8 +37,8 @@ class IncidenceMatrix(object):
     def __construct_matrix(self, net):
         self.matrix_built = True
         p_index, t_index = {}, {}
-        places = sorted([x for x in net.places], key=lambda x: (x.name, id(x)))
-        transitions = sorted([x for x in net.transitions], key=lambda x: (x.name, id(x)))
+        places = sorted([x for x in net.places], key=lambda x: (str(x.name), id(x)))
+        transitions = sorted([x for x in net.transitions], key=lambda x: (str(x.name), id(x)))
 
         for p in places:
             p_index[p] = len(p_index)

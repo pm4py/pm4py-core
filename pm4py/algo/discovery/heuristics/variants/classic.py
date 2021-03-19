@@ -111,6 +111,8 @@ def apply_pandas(df, parameters=None):
         end_activities = pd_ea_filter.get_end_activities(df, parameters=parameters)
         activities_occurrences = pd_attributes.get_attribute_values(df, activity_key, parameters=parameters)
         activities = list(activities_occurrences.keys())
+        heu_net_decoration = exec_utils.get_param_value(Parameters.HEU_NET_DECORATION, parameters, "frequency")
+
         if timestamp_key in df:
             dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
                                               activity_key=activity_key, timestamp_key=timestamp_key,
@@ -133,10 +135,16 @@ def apply_pandas(df, parameters=None):
                                                                   timestamp_key=timestamp_key,
                                                                   sort_timestamp_along_case_id=False)
 
+        performance_dfg = None
+        if heu_net_decoration == "performance":
+            performance_dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
+                                              activity_key=activity_key, timestamp_key=timestamp_key,
+                                              start_timestamp_key=start_timestamp_key, measure="performance")
+
         heu_net = apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
                                 start_activities=start_activities, end_activities=end_activities,
                                 dfg_window_2=dfg_window_2,
-                                freq_triples=frequency_triples, parameters=parameters)
+                                freq_triples=frequency_triples, performance_dfg=performance_dfg, parameters=parameters)
         net, im, fm = hn_conv_alg.apply(heu_net, parameters=parameters)
 
         return net, im, fm
@@ -221,6 +229,7 @@ def apply_heu(log, parameters=None):
         parameters = {}
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    heu_net_decoration = exec_utils.get_param_value(Parameters.HEU_NET_DECORATION, parameters, "frequency")
 
     start_activities = log_sa_filter.get_start_activities(log, parameters=parameters)
     end_activities = log_ea_filter.get_end_activities(log, parameters=parameters)
@@ -231,15 +240,18 @@ def apply_heu(log, parameters=None):
     parameters_w2["window"] = 2
     dfg_window_2 = dfg_alg.apply(log, parameters=parameters_w2)
     freq_triples = dfg_alg.apply(log, parameters=parameters, variant=dfg_alg.Variants.FREQ_TRIPLES)
+    performance_dfg = None
+    if heu_net_decoration == "performance":
+        performance_dfg = dfg_alg.apply(log, variant=dfg_alg.Variants.PERFORMANCE, parameters=parameters)
 
     return apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
                          start_activities=start_activities,
                          end_activities=end_activities, dfg_window_2=dfg_window_2, freq_triples=freq_triples,
-                         parameters=parameters)
+                         performance_dfg=performance_dfg, parameters=parameters)
 
 
 def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
-                  dfg_window_2=None, freq_triples=None, parameters=None):
+                  dfg_window_2=None, freq_triples=None, performance_dfg=None, parameters=None):
     """
     Discovers an Heuristics Net using Heuristics Miner
 
@@ -259,6 +271,8 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
         (If provided) DFG of window 2
     freq_triples
         (If provided) Frequency triples
+    performance_dfg
+        (If provided) Performance DFG
     parameters
         Possible parameters of the algorithm,
         including:
@@ -294,7 +308,7 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
     heu_net = HeuristicsNet(dfg, activities=activities, activities_occurrences=activities_occurrences,
                             start_activities=start_activities, end_activities=end_activities,
                             dfg_window_2=dfg_window_2,
-                            freq_triples=freq_triples)
+                            freq_triples=freq_triples, performance_dfg=performance_dfg)
     heu_net.calculate(dependency_thresh=dependency_thresh, and_measure_thresh=and_measure_thresh,
                       min_act_count=min_act_count, min_dfg_occurrences=min_dfg_occurrences,
                       dfg_pre_cleaning_noise_thresh=dfg_pre_cleaning_noise_thresh,

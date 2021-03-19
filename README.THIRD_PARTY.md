@@ -32,7 +32,7 @@ to change as libraries are added or removed.
 | pandas | https://pypi.org/project/pandas | BSD | 1.2.0 |
 | parso | https://pypi.org/project/parso | MIT License (MIT) | 0.8.1 |
 | pickleshare | https://pypi.org/project/pickleshare | MIT License (MIT) | 0.7.5 |
-| pillow | https://pypi.org/project/pillow | Historical Permission Notice and Disclaimer (HPND) (HPND) | 8.1.0 |
+| pillow | https://pypi.org/project/pillow | Historical Permission Notice and Disclaimer (HPND) (HPND) | 8.1.2 |
 | prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD License | 3.0.10 |
 | pulp | https://pypi.org/project/pulp | BSD License | 2.1 |
 | pydotplus | https://pypi.org/project/pydotplus | MIT License (UNKNOWN) | 2.0.2 |

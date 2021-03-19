@@ -27,7 +27,7 @@ from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.objects.log.log import Trace, Event
 from pm4py.objects.log.log import EventLog
 from typing import Union, Dict, Set, List, Tuple
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import Operator
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util import exec_utils, constants
 from pm4py.statistics.variants.log.get import get_variants_from_log_trace_idx

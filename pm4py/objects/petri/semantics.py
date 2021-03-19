@@ -71,6 +71,13 @@ def execute(t, pn, m):
     return m_out
 
 
+def try_to_execute(t, pn, m):
+    if not is_enabled(t, pn, m):
+        return None
+    else:
+        return execute(t, pn, m)
+
+
 def weak_execute(t, m):
     """
     Execute a transition even if it is not fully enabled

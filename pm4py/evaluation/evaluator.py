@@ -26,6 +26,9 @@ from pm4py.util import xes_constants as xes_util
 from pm4py.util import constants
 from enum import Enum
 from pm4py.util import exec_utils
+import deprecation
+from pm4py.meta import VERSION
+import warnings
 
 
 class Parameters(Enum):
@@ -36,6 +39,9 @@ class Parameters(Enum):
     PARAM_GENERALIZATION_WEIGHT = 'generalization_weight'
 
 
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use the pm4py.algo.evaluation.evaluator class")
 def apply(log, net, initial_marking, final_marking, parameters=None):
     """
     Calculates all metrics based on token-based replay and returns a unified dictionary
@@ -59,6 +65,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
         Dictionary containing fitness, precision, generalization and simplicity; along with the average weight of
         these metrics
     """
+    warnings.warn("Use the pm4py.algo.evaluation.evaluator class")
     if parameters is None:
         parameters = {}
     log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)

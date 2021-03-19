@@ -18,7 +18,7 @@ import random
 
 from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.util import xes_constants as xes
-from pm4py.objects.process_tree import pt_operator as pt_opt
+from pm4py.objects.process_tree import process_tree as pt_opt
 from pm4py.objects.process_tree import state as pt_st
 from pm4py.objects.process_tree import util as pt_util
 from pm4py.objects.process_tree.process_tree import ProcessTree
