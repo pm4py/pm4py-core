@@ -8,7 +8,8 @@ from pm4py.conformance import conformance_diagnostics_token_based_replay, confor
     fitness_token_based_replay, \
     fitness_alignments, precision_token_based_replay, \
     precision_alignments, conformance_alignments, conformance_tbr, evaluate_precision_alignments, \
-    evaluate_precision_tbr, evaluate_fitness_tbr, evaluate_fitness_alignments, conformance_diagnostics_footprints, fitness_footprints, precision_footprints
+    evaluate_precision_tbr, evaluate_fitness_tbr, evaluate_fitness_alignments, conformance_diagnostics_footprints, \
+    fitness_footprints, precision_footprints
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_heuristics, \
@@ -24,7 +25,8 @@ from pm4py.read import read_xes, read_petri_net, read_process_tree, read_dfg, \
     read_bpmn, read_pnml, read_ptml
 from pm4py.sim import play_out, generate_process_tree
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
-    get_trace_attributes, get_variants_as_tuples, get_trace_attribute_values, get_case_arrival_average
+    get_trace_attributes, get_variants_as_tuples, get_trace_attribute_values, get_case_arrival_average, \
+    get_minimum_self_distances, get_minimum_self_distance_witnesses
 from pm4py.utils import format_dataframe
 from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg, view_process_tree, \
     save_vis_process_tree, \
