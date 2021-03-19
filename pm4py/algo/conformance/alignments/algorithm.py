@@ -155,7 +155,7 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         one_tr_per_var.append(log[variants_idxs[var][0]])
 
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar:
+    if pkgutil.find_loader("tqdm") and show_progress_bar and len(one_tr_per_var) > 1:
         from tqdm.auto import tqdm
         progress = tqdm(total=len(one_tr_per_var), desc="aligning log, completed variants :: ")
 
