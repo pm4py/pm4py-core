@@ -31,12 +31,21 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
     end_activities
         End activities
     """
-    from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
-    dfg = dfg_discovery.apply(log)
-    from pm4py.statistics.start_activities.log import get as start_activities_module
-    from pm4py.statistics.end_activities.log import get as end_activities_module
-    start_activities = start_activities_module.get_start_activities(log)
-    end_activities = end_activities_module.get_end_activities(log)
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.objects.dfg.retrieval.pandas import get_dfg_graph
+        dfg = get_dfg_graph(log)
+        from pm4py.statistics.start_activities.pandas import get as start_activities_module
+        from pm4py.statistics.end_activities.pandas import get as end_activities_module
+        start_activities = start_activities_module.get_start_activities(log)
+        end_activities = end_activities_module.get_end_activities(log)
+    else:
+        from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
+        dfg = dfg_discovery.apply(log)
+        from pm4py.statistics.start_activities.log import get as start_activities_module
+        from pm4py.statistics.end_activities.log import get as end_activities_module
+        start_activities = start_activities_module.get_start_activities(log)
+        end_activities = end_activities_module.get_end_activities(log)
     return dfg, start_activities, end_activities
 
 
