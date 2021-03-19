@@ -143,7 +143,7 @@ def get_max_length_dict(node, max_length_dict, num_nodes):
             max_length_dict[node] = 1
     elif node.operator == Operator.XOR:
         max_length_dict[node] = max(max_length_dict[x] for x in node.children)
-    elif node.operator == Operator.PARALLEL or node.operator == Operator.SEQUENCE:
+    elif node.operator == Operator.PARALLEL or node.operator == Operator.SEQUENCE or node.operator == Operator.OR:
         max_length_dict[node] = sum(max_length_dict[x] for x in node.children)
     elif node.operator == Operator.LOOP:
         max_length_dict[node] = sum(max_length_dict[x] for x in node.children) + 2 ** (
@@ -169,7 +169,7 @@ def get_min_length_dict(node, min_length_dict):
             min_length_dict[node] = 1
     elif node.operator == Operator.XOR:
         min_length_dict[node] = min(min_length_dict[x] for x in node.children)
-    elif node.operator == Operator.PARALLEL or node.operator == Operator.SEQUENCE:
+    elif node.operator == Operator.PARALLEL or node.operator == Operator.SEQUENCE or node.operator == Operator.OR:
         min_length_dict[node] = sum(min_length_dict[x] for x in node.children)
     elif node.operator == Operator.LOOP:
         min_length_dict[node] = min_length_dict[node.children[0]]
