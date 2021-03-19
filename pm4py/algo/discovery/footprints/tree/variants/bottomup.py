@@ -1,4 +1,4 @@
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import Operator
 from pm4py.algo.discovery.footprints.outputs import Outputs
 from pm4py.objects.process_tree import bottomup as bottomup_disc
 from copy import copy

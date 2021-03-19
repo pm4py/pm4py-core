@@ -1,6 +1,6 @@
 import copy
 
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import Operator
 
 
 class Counts(object):

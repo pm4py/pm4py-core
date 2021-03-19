@@ -1,6 +1,46 @@
 from enum import Enum
 
-from pm4py.objects.process_tree import pt_operator
+
+class Operator(Enum):
+    # sequence operator
+    SEQUENCE = '->'
+    # exclusive choice operator
+    XOR = 'X'
+    # parallel operator
+    PARALLEL = '+'
+    # loop operator
+    LOOP = '*'
+    # or operator
+    OR = 'O'
+
+    '''
+    SEQUENCE = u'\u2192'
+    XOR = u'\u00d7'
+    PARALLEL = u'\u002b'
+    LOOP = u'\u27f2'
+    '''
+
+    def __str__(self):
+        """
+        Provides a string representation of the current operator
+
+        Returns
+        -----------
+        stri
+            String representation of the process tree
+        """
+        return self.value
+
+    def __repr__(self):
+        """
+        Provides a string representation of the current operator
+
+        Returns
+        -----------
+        stri
+            String representation of the process tree
+        """
+        return self.value
 
 
 class ProcessTree(object):
@@ -40,15 +80,15 @@ class ProcessTree(object):
             h = 1337
             for i in range(len(self.children)):
                 h += 41 * i * hash(self.children[i])
-            if self.operator == pt_operator.Operator.SEQUENCE:
+            if self.operator == Operator.SEQUENCE:
                 h = h * 13
-            elif self.operator == pt_operator.Operator.XOR:
+            elif self.operator == Operator.XOR:
                 h = h * 17
-            elif self.operator == pt_operator.Operator.OR:
+            elif self.operator == Operator.OR:
                 h = h * 23
-            elif self.operator == pt_operator.Operator.PARALLEL:
+            elif self.operator == Operator.PARALLEL:
                 h = h * 29
-            elif self.operator == pt_operator.Operator.LOOP:
+            elif self.operator == Operator.LOOP:
                 h = h * 37
             return h % 268435456
 
