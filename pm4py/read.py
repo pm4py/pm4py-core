@@ -22,6 +22,7 @@ import deprecation
 from pm4py.objects.bpmn.bpmn_graph import BPMN
 from pm4py.objects.log.log import EventLog
 from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.process_tree.process_tree import ProcessTree
 
 INDEX_COLUMN = "@@index"
 
@@ -94,7 +95,7 @@ def read_petri_net(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
     return net, im, fm
 
 
-def read_ptml(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
+def read_ptml(file_path: str) -> ProcessTree:
     """
     Reads a process tree from a .ptml file
 

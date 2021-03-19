@@ -208,17 +208,19 @@ def __get_alt(open_set, new_marking):
 
 
 def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_trans_desc=False, lp_solved=0):
-    parent = state.p
-    if ret_tuple_as_trans_desc:
-        alignment = [(state.t.name, state.t.label)]
-        while parent.p is not None:
-            alignment = [(parent.t.name, parent.t.label)] + alignment
-            parent = parent.p
-    else:
-        alignment = [state.t.label]
-        while parent.p is not None:
-            alignment = [parent.t.label] + alignment
-            parent = parent.p
+    alignment = list()
+    if state.p is not None and state.t is not None:
+        parent = state.p
+        if ret_tuple_as_trans_desc:
+            alignment = [(state.t.name, state.t.label)]
+            while parent.p is not None:
+                alignment = [(parent.t.name, parent.t.label)] + alignment
+                parent = parent.p
+        else:
+            alignment = [state.t.label]
+            while parent.p is not None:
+                alignment = [parent.t.label] + alignment
+                parent = parent.p
     return {'alignment': alignment, 'cost': state.g, 'visited_states': visited, 'queued_states': queued,
             'traversed_arcs': traversed, 'lp_solved': lp_solved}
 
@@ -245,10 +247,16 @@ def __trust_solution(x):
 
 
 def __compute_exact_heuristic_new_version(sync_net, a_matrix, h_cvx, g_matrix, cost_vec, incidence_matrix,
-                                          marking, fin_vec, variant, use_cvxopt=False):
+                                          marking, fin_vec, variant, use_cvxopt=False, strict=True):
     m_vec = incidence_matrix.encode_marking(marking)
     b_term = [i - j for i, j in zip(fin_vec, m_vec)]
     b_term = np.matrix([x * 1.0 for x in b_term]).transpose()
+
+    if not strict:
+        g_matrix = np.vstack([g_matrix, a_matrix])
+        h_cvx = np.vstack([h_cvx, b_term])
+        a_matrix = np.zeros((0, a_matrix.shape[1]))
+        b_term = np.zeros((0, b_term.shape[1]))
 
     if use_cvxopt:
         # not available in the latest version of PM4Py
@@ -399,7 +407,8 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
     marking
         Current marking
     """
-    all_enabled_transitions = list(semantics.enabled_transitions(net, marking))
+    all_enabled_transitions = sorted(list(semantics.enabled_transitions(net, marking)),
+                                     key=lambda x: (str(x.name), id(x)))
     initial_all_enabled_transitions_marking_dictio = {}
     all_enabled_transitions_marking_dictio = {}
     for trans in all_enabled_transitions:
@@ -419,7 +428,8 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
             else:
                 if semantics.is_enabled(t, net, marking_copy):
                     new_marking = semantics.execute(t, net, marking_copy)
-                    new_enabled_transitions = list(semantics.enabled_transitions(net, new_marking))
+                    new_enabled_transitions = sorted(list(semantics.enabled_transitions(net, new_marking)),
+                                                     key=lambda x: (str(x.name), id(x)))
                     for t2 in new_enabled_transitions:
                         all_enabled_transitions.append(t2)
                         all_enabled_transitions_marking_dictio[t2] = new_marking

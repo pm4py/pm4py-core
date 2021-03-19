@@ -22,7 +22,6 @@ from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.petri.utils import remove_place, remove_transition, add_arc_from_to
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
 from pm4py.util.lp import solver as lp_solver
-from pm4py.util.lp.util import aeq_redundant_fix
 
 DEFAULT_REPLACEMENT_IMMEDIATE = 1000
 
@@ -164,8 +163,6 @@ class LpPerfBounds(object):
             (aub_1, aub_2, aub_3, aub_4, aub_5, aub_6, aub_18, aub_19, aub_21, aub_22, aub_26, aub_general))
         self.bub = np.vstack(
             (bub_1, bub_2, bub_3, bub_4, bub_5, bub_6, bub_18, bub_19, bub_21, bub_22, bub_26, bub_general))
-
-        self.Aeq, self.beq = aeq_redundant_fix.remove_redundant_rows(self.Aeq, self.beq)
 
         if DEFAULT_LP_SOLVER_VARIANT == lp_solver.CVXOPT:
             self.Aeq = np.transpose(self.Aeq.astype(np.float64)).tolist()

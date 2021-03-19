@@ -114,7 +114,8 @@ def get_activities_color(activities_count):
 
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
-                           max_no_of_edges_in_diagram=170, start_activities=None, end_activities=None, soj_time=None):
+                           max_no_of_edges_in_diagram=170, start_activities=None, end_activities=None, soj_time=None,
+                            font_size="12"):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -190,10 +191,10 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     for act in activities_to_include:
         if "frequency" in measure and act in activities_count_int:
             viz.node(str(hash(act)), act + " (" + str(activities_count_int[act]) + ")", style='filled',
-                     fillcolor=activities_color[act])
+                     fillcolor=activities_color[act], fontsize=font_size)
             activities_map[act] = str(hash(act))
         else:
-            viz.node(str(hash(act)), act + " (" + human_readable_stat(soj_time[act]) + ")")
+            viz.node(str(hash(act)), act + " (" + human_readable_stat(soj_time[act]) + ")", fontsize=font_size)
             activities_map[act] = str(hash(act))
 
     # make edges addition always in the same order
@@ -205,7 +206,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
             label = str(dfg[edge])
         else:
             label = human_readable_stat(dfg[edge])
-        viz.edge(str(hash(edge[0])), str(hash(edge[1])), label=label, penwidth=str(penwidth[edge]))
+        viz.edge(str(hash(edge[0])), str(hash(edge[1])), label=label, penwidth=str(penwidth[edge]), fontsize=font_size)
 
     start_activities_to_include = [act for act in start_activities if act in activities_map]
     end_activities_to_include = [act for act in end_activities if act in activities_map]
@@ -214,16 +215,15 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         viz.node("@@startnode", "@@S", style='filled', shape='circle', fillcolor="#32CD32", fontcolor="#32CD32")
         for act in start_activities_to_include:
             label = str(start_activities[act]) if isinstance(start_activities, dict) else ""
-            viz.edge("@@startnode", activities_map[act], label=label)
+            viz.edge("@@startnode", activities_map[act], label=label, fontsize=font_size)
 
     if end_activities_to_include:
         viz.node("@@endnode", "@@E", style='filled', shape='circle', fillcolor="#FFA500", fontcolor="#FFA500")
         for act in end_activities_to_include:
             label = str(end_activities[act]) if isinstance(end_activities, dict) else ""
-            viz.edge(activities_map[act], "@@endnode", label=label)
+            viz.edge(activities_map[act], "@@endnode", label=label, fontsize=font_size)
 
     viz.attr(overlap='false')
-    viz.attr(fontsize='11')
 
     viz.format = image_format
 
@@ -239,6 +239,8 @@ def apply(dfg, log=None, parameters=None, activities_count=None, soj_time=None):
     max_no_of_edges_in_diagram = exec_utils.get_param_value(Parameters.MAX_NO_EDGES_IN_DIAGRAM, parameters, 75)
     start_activities = exec_utils.get_param_value(Parameters.START_ACTIVITIES, parameters, [])
     end_activities = exec_utils.get_param_value(Parameters.END_ACTIVITIES, parameters, [])
+    font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 12)
+    font_size = str(font_size)
     activities = dfg_utils.get_activities_from_dfg(dfg)
 
     if activities_count is None:
@@ -255,4 +257,5 @@ def apply(dfg, log=None, parameters=None, activities_count=None, soj_time=None):
 
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
-                                  start_activities=start_activities, end_activities=end_activities, soj_time=soj_time)
+                                  start_activities=start_activities, end_activities=end_activities, soj_time=soj_time,
+                                  font_size=font_size)

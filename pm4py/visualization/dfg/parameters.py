@@ -26,3 +26,4 @@ class Parameters(Enum):
     END_ACTIVITIES = "end_activities"
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    FONT_SIZE = "font_size"

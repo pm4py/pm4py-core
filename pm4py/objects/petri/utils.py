@@ -14,16 +14,33 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from copy import copy, deepcopy
-import time
 import random
+import time
+from copy import copy, deepcopy
 
 from pm4py.objects.log.log import Trace, Event
-from pm4py.objects.petri.petrinet import PetriNet, Marking
-from pm4py.objects.petri import semantics
-from pm4py.util import xes_constants as xes_util
-from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
 from pm4py.objects.petri import properties
+from pm4py.objects.petri import semantics
+from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
+from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.util import xes_constants as xes_util
+
+
+def is_sub_marking(sub_marking, marking):
+    for p in sub_marking:
+        if p not in marking:
+            return False
+        elif marking[p] > sub_marking[p]:
+            return False
+    return True
+
+
+def place_set_as_marking(places):
+    m = Marking()
+    for p in places:
+        m[p] = 1
+    return m
+
 
 def pre_set(elem):
     pre = set()

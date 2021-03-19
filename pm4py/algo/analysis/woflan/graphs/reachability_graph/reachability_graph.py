@@ -16,7 +16,7 @@
 '''
 import networkx as nx
 import numpy as np
-from pm4py.evaluation.soundness.woflan.graphs import utility as helper
+from pm4py.algo.analysis.woflan.graphs import utility as helper
 
 
 def apply(net, initial_marking, original_net=None):

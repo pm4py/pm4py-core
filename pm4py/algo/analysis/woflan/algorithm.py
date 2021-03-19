@@ -23,31 +23,31 @@ import copy
 import numpy as np
 
 # Importing for place invariants related stuff (s-components, uniform and weighted place invariants)
-from pm4py.evaluation.soundness.woflan.place_invariants.place_invariants import compute_place_invariants
-from pm4py.evaluation.soundness.woflan.place_invariants.utility import transform_basis
-from pm4py.evaluation.soundness.woflan.place_invariants.s_component import compute_s_components
-from pm4py.evaluation.soundness.woflan.place_invariants.s_component import compute_uncovered_places_in_component
-from pm4py.evaluation.soundness.woflan.place_invariants.utility import \
+from pm4py.algo.analysis.woflan.place_invariants.place_invariants import compute_place_invariants
+from pm4py.algo.analysis.woflan.place_invariants.utility import transform_basis
+from pm4py.algo.analysis.woflan.place_invariants.s_component import compute_s_components
+from pm4py.algo.analysis.woflan.place_invariants.s_component import compute_uncovered_places_in_component
+from pm4py.algo.analysis.woflan.place_invariants.utility import \
     compute_uncovered_places as compute_uncovered_place_in_invariants
 
 # Importing to discover not-well handled pairs
-from pm4py.evaluation.soundness.woflan.not_well_handled_pairs.not_well_handled_pairs import \
+from pm4py.algo.analysis.woflan.not_well_handled_pairs.not_well_handled_pairs import \
     apply as compute_not_well_handled_pairs
 
 # Minimal Coverability Graph
-from pm4py.evaluation.soundness.woflan.graphs.minimal_coverability_graph.minimal_coverability_graph import \
+from pm4py.algo.analysis.woflan.graphs.minimal_coverability_graph.minimal_coverability_graph import \
     apply as minimal_coverability_graph
-from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_dead_tasks
-from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_improper_conditions
-from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_substates
-from pm4py.evaluation.soundness.woflan.graphs.utility import convert_marking
+from pm4py.algo.analysis.woflan.graphs.utility import check_for_dead_tasks
+from pm4py.algo.analysis.woflan.graphs.utility import check_for_improper_conditions
+from pm4py.algo.analysis.woflan.graphs.utility import check_for_substates
+from pm4py.algo.analysis.woflan.graphs.utility import convert_marking
 
 # Restricted coverability graph
-from pm4py.evaluation.soundness.woflan.graphs.restricted_coverability_graph.restricted_coverability_graph import \
+from pm4py.algo.analysis.woflan.graphs.restricted_coverability_graph.restricted_coverability_graph import \
     construct_tree as restricted_coverability_tree
 
 # reachability Graph Creation
-from pm4py.evaluation.soundness.woflan.graphs.reachability_graph.reachability_graph import apply as reachability_graph
+from pm4py.algo.analysis.woflan.graphs.reachability_graph.reachability_graph import apply as reachability_graph
 
 
 class Parameters(Enum):

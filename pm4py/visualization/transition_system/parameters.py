@@ -22,3 +22,4 @@ class Parameters(Enum):
     SHOW_NAMES = "show_names"
     FORCE_NAMES = "force_names"
     FILLCOLORS = "fillcolors"
+    FONT_SIZE = "font_size"

@@ -14,10 +14,12 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.discovery.inductive.variants.im_d import dfg_based
-from pm4py.algo.discovery.inductive.variants.im import algorithm as im_algo
-from pm4py.algo.discovery.inductive.variants.im_f import algorithm as im_f_algo
 from enum import Enum
+
+from pm4py.algo.discovery.inductive.variants.im import algorithm as im_algo
+from pm4py.algo.discovery.inductive.variants.im_clean import algorithm as im_clean
+from pm4py.algo.discovery.inductive.variants.im_d import dfg_based
+from pm4py.algo.discovery.inductive.variants.im_f import algorithm as im_f_algo
 from pm4py.util import exec_utils
 
 
@@ -25,17 +27,18 @@ class Variants(Enum):
     IMd = dfg_based
     IM = im_algo
     IMf = im_f_algo
+    IM_CLEAN = im_clean
 
 
 IM = Variants.IM
 IMf = Variants.IMf
 IMd = Variants.IMd
+IM_CLEAN = Variants.IM_CLEAN
 
-VERSIONS = {Variants.IMd, Variants.IM, Variants.IMf}
+VERSIONS = {Variants.IMd, Variants.IM, Variants.IMf, Variants.IM_CLEAN}
 
-
-DEFAULT_VARIANT_LOG = IM
-DEFAULT_VARIANT_VARIANTS = IM
+DEFAULT_VARIANT_LOG = IM_CLEAN
+DEFAULT_VARIANT_VARIANTS = IM_CLEAN
 DEFAULT_VARIANT_DFG = IMd
 
 

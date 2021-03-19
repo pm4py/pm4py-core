@@ -18,6 +18,9 @@ from pm4py.simulation.montecarlo.variants import petri_semaph_fifo
 from pm4py.simulation.montecarlo.outputs import Outputs
 from pm4py.util import exec_utils
 from enum import Enum
+import deprecation
+from pm4py.meta import VERSION
+import warnings
 
 
 class Variants(Enum):
@@ -29,6 +32,9 @@ DEFAULT_VARIANT = Variants.PETRI_SEMAPH_FIFO
 VERSIONS = {Variants.PETRI_SEMAPH_FIFO}
 
 
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use the pm4py.algo.simulation.montecarlo package")
 def apply(log, net, im, fm, variant=DEFAULT_VARIANT, parameters=None):
     """
     Performs a Monte Carlo simulation of an accepting Petri net without duplicate transitions and where the preset is always
@@ -78,4 +84,5 @@ def apply(log, net, im, fm, variant=DEFAULT_VARIANT, parameters=None):
             Outputs.OUTPUT_CASE_ARRIVAL_RATIO => Case arrival ratio that was specified in the simulation
             Outputs.OUTPUT_TOTAL_CASES_TIME => Total time occupied by cases of the simulated log
     """
+    warnings.warn("Use the pm4py.algo.simulation.montecarlo package")
     return exec_utils.get_variant(variant).apply(log, net, im, fm, parameters=parameters)

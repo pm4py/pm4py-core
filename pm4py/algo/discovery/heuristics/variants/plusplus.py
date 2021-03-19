@@ -177,7 +177,7 @@ def apply_heu(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> Heu
     start_activities, end_activities, activities_occurrences, dfg, performance_dfg, sojourn_time, concurrent_activities = discover_abstraction_log(
         log, parameters=parameters)
     return discover_heu_net_plus_plus(start_activities, end_activities, activities_occurrences, dfg, performance_dfg,
-                                      sojourn_time, concurrent_activities)
+                                      sojourn_time, concurrent_activities, parameters=parameters)
 
 
 def discover_abstraction_log(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> Tuple[
@@ -378,6 +378,7 @@ def discover_heu_net_plus_plus(start_activities, end_activities, activities_occu
     min_dfg_occurrences = exec_utils.get_param_value(Parameters.MIN_DFG_OCCURRENCES, parameters,
                                                      defaults.DEFAULT_MIN_DFG_OCCURRENCES)
     heu_net_decoration = exec_utils.get_param_value(Parameters.HEU_NET_DECORATION, parameters, "frequency")
+
     # filter on activity and paths occurrence
     activities_occurrences = {x: y for x, y in activities_occurrences.items() if y >= min_act_count}
     dfg = {x: y for x, y in dfg.items() if

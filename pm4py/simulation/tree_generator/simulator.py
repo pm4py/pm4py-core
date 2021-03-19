@@ -17,6 +17,9 @@
 from pm4py.simulation.tree_generator.variants import basic, ptandloggenerator
 from enum import Enum
 from pm4py.util import exec_utils
+import deprecation
+from pm4py.meta import VERSION
+import warnings
 
 
 class Variants(Enum):
@@ -31,6 +34,9 @@ DEFAULT_VARIANT = Variants.PTANDLOGGENERATOR
 VERSIONS = {Variants.BASIC, Variants.PTANDLOGGENERATOR}
 
 
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use the pm4py.algo.simulation.tree_generator package")
 def apply(variant=DEFAULT_VARIANT, parameters=None):
     """
     Generate a process tree
@@ -49,4 +55,5 @@ def apply(variant=DEFAULT_VARIANT, parameters=None):
     tree
         Process tree
     """
+    warnings.warn("Use the pm4py.algo.simulation.tree_generator package")
     return exec_utils.get_variant(variant).apply(parameters=parameters)

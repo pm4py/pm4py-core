@@ -14,20 +14,20 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.log.log import Trace
-from pm4py.objects.log import log as log_implementation
-from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
-from pm4py.objects.petri import align_utils as utils
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.objects.petri import decomposition as decomp_utils
-from pm4py.statistics.variants.log import get as variants_module
-from pm4py import util as pm4pyutil
-from copy import copy
-from pm4py.algo.conformance.decomp_alignments.parameters import Parameters
-from pm4py.util import exec_utils
-from pm4py.algo.conformance.alignments.variants import state_equation_less_memory
+import pkgutil
 import sys
 import time
+from copy import copy
+
+from pm4py.algo.conformance.alignments.variants import state_equation_less_memory
+from pm4py.algo.conformance.decomp_alignments.parameters import Parameters
+from pm4py.objects.log import log as log_implementation
+from pm4py.objects.log.log import Trace
+from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
+from pm4py.objects.petri import align_utils as utils
+from pm4py.objects.petri import decomposition as decomp_utils
+from pm4py.statistics.variants.log import get as variants_module
+from pm4py.util import exec_utils
 from pm4py.util import variants_util
 
 
@@ -149,6 +149,8 @@ def apply_log(log, list_nets, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
     icache = exec_utils.get_param_value(Parameters.ICACHE, parameters, dict())
     mcache = exec_utils.get_param_value(Parameters.MCACHE, parameters, dict())
 
@@ -156,6 +158,13 @@ def apply_log(log, list_nets, parameters=None):
     parameters[Parameters.MCACHE] = mcache
 
     variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
+
+    progress = None
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        from tqdm.auto import tqdm
+        progress = tqdm(total=len(variants_idxs),
+                        desc="aligning log with decomposition/recomposition, completed variants :: ")
+
     one_tr_per_var = []
     variants_list = []
     for index_variant, variant in enumerate(variants_idxs):
@@ -171,6 +180,8 @@ def apply_log(log, list_nets, parameters=None):
             alignment = apply_trace(trace, list_nets, parameters=parameters)
         else:
             alignment = None
+        if progress is not None:
+            progress.update()
         all_alignments.append(alignment)
     al_idx = {}
     for index_variant, variant in enumerate(variants_idxs):
@@ -179,6 +190,10 @@ def apply_log(log, list_nets, parameters=None):
     alignments = []
     for i in range(len(log)):
         alignments.append(al_idx[i])
+    # gracefully close progress bar
+    if progress is not None:
+        progress.close()
+    del progress
     return alignments
 
 

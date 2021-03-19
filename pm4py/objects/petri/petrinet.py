@@ -15,6 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from collections import Counter
+from copy import deepcopy
 
 
 class Marking(Counter):
@@ -65,6 +66,16 @@ class Marking(Counter):
         # The previous representation had a bug, it took into account the order of the places with tokens
         return str([str(p.name) + ":" + str(self.get(p)) for p in sorted(list(self.keys()), key=lambda x: x.name)])
 
+    def __deepcopy__(self, memodict={}):
+        marking = Marking()
+        memodict[id(self)] = marking
+        for place in self:
+            place_occ = self[place]
+            new_place = memodict[id(place)] if id(place) in memodict else PetriNet.Place(place.name,
+                                                                                         properties=place.properties)
+            marking[new_place] = place_occ
+        return marking
+
 
 class PetriNet(object):
     class Place(object):
@@ -92,6 +103,27 @@ class PetriNet(object):
 
         def __repr__(self):
             return str(self.name)
+
+        def __eq__(self, other):
+            # keep the ID for now in places
+            return id(self) == id(other)
+
+        def __hash__(self):
+            # keep the ID for now in places
+            return id(self)
+
+        def __deepcopy__(self, memodict={}):
+            if id(self) in memodict:
+                return memodict[id(self)]
+            new_place = PetriNet.Place(self.name, properties=self.properties)
+            memodict[id(self)] = new_place
+            for arc in self.in_arcs:
+                new_arc = deepcopy(arc, memo=memodict)
+                new_place.in_arcs.add(new_arc)
+            for arc in self.out_arcs:
+                new_arc = deepcopy(arc, memo=memodict)
+                new_place.out_arcs.add(new_arc)
+            return new_place
 
         name = property(__get_name, __set_name)
         in_arcs = property(__get_in_arcs)
@@ -133,6 +165,27 @@ class PetriNet(object):
                 return str(self.name)
             else:
                 return str(self.label)
+
+        def __eq__(self, other):
+            # keep the ID for now in transitions
+            return id(self) == id(other)
+
+        def __hash__(self):
+            # keep the ID for now in transitions
+            return id(self)
+
+        def __deepcopy__(self, memodict={}):
+            if id(self) in memodict:
+                return memodict[id(self)]
+            new_trans = PetriNet.Transition(self.name, self.label, properties=self.properties)
+            memodict[id(self)] = new_trans
+            for arc in self.in_arcs:
+                new_arc = deepcopy(arc, memo=memodict)
+                new_trans.in_arcs.add(new_arc)
+            for arc in self.out_arcs:
+                new_arc = deepcopy(arc, memo=memodict)
+                new_trans.out_arcs.add(new_arc)
+            return new_trans
 
         name = property(__get_name, __set_name)
         label = property(__get_label, __set_label)
@@ -177,6 +230,26 @@ class PetriNet(object):
                 else:
                     return "(p)" + str(self.source.name) + "->" + "(t)" + str(self.target.name)
 
+
+        def __hash__(self):
+            return id(self)
+
+        def __eq__(self, other):
+            return self.source == other.source and self.target == other.target
+
+        def __deepcopy__(self, memodict={}):
+            if id(self) in memodict:
+                return memodict[id(self)]
+            new_source = memodict[id(self.source)] if id(self.source) in memodict else deepcopy(self.source,
+                                                                                                memo=memodict)
+            new_target = memodict[id(self.target)] if id(self.target) in memodict else deepcopy(self.target,
+                                                                                                memo=memodict)
+            memodict[id(self.source)] = new_source
+            memodict[id(self.target)] = new_target
+            new_arc = PetriNet.Arc(new_source, new_target, weight=self.weight, properties=self.properties)
+            memodict[id(self)] = new_arc
+            return new_arc
+
         source = property(__get_source)
         target = property(__get_target)
         weight = property(__get_weight, __set_weight)
@@ -206,6 +279,36 @@ class PetriNet(object):
 
     def __get_properties(self):
         return self.__properties
+
+    def __hash__(self):
+        ret = 0
+        for p in self.places:
+            ret += hash(p)
+            ret = ret % 479001599
+        for t in self.transitions:
+            ret += hash(t)
+            ret = ret % 479001599
+        return ret
+
+    def __eq__(self, other):
+        # for the Petri net equality keep the ID for now
+        return id(self) == id(other)
+
+    def __deepcopy__(self, memodict={}):
+        from pm4py.objects.petri.utils import add_arc_from_to
+        this_copy = PetriNet(self.name)
+        memodict[id(self)] = this_copy
+        for place in self.places:
+            place_copy = PetriNet.Place(place.name, properties=place.properties)
+            this_copy.places.add(place_copy)
+            memodict[id(place)] = place_copy
+        for trans in self.transitions:
+            trans_copy = PetriNet.Transition(trans.name, trans.label, properties=trans.properties)
+            this_copy.transitions.add(trans_copy)
+            memodict[id(trans)] = trans_copy
+        for arc in self.arcs:
+            add_arc_from_to(memodict[id(arc.source)], memodict[id(arc.target)], this_copy, weight=arc.weight)
+        return this_copy
 
     name = property(__get_name, __set_name)
     places = property(__get_places)

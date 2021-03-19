@@ -14,8 +14,9 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.evaluation.soundness.woflan.place_invariants.place_invariants import compute_place_invariants
-from pm4py.evaluation.soundness.woflan.place_invariants.utility import transform_basis
+from pm4py.algo.analysis.woflan.place_invariants.place_invariants import compute_place_invariants
+from pm4py.algo.analysis.woflan.place_invariants.utility import transform_basis
+
 
 def apply(net):
     place_invariants= compute_place_invariants(net)

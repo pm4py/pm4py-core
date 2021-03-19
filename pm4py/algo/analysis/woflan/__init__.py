@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.evaluation.soundness.woflan import algorithm, graphs, not_well_handled_pairs, place_invariants
+from pm4py.algo.analysis.woflan import algorithm

@@ -23,7 +23,7 @@ packaging==20.8
 pandas==1.2.0
 parso==0.8.1
 pickleshare==0.7.5
-pillow==8.1.0
+pillow==8.1.2
 prompt-toolkit==3.0.10
 pulp==2.1
 pydotplus==2.0.2

@@ -29,6 +29,7 @@ class Parameters(Enum):
     FORMAT = "format"
     COLOR_MAP = "color_map"
     ENABLE_DEEPCOPY = "enable_deepcopy"
+    FONT_SIZE = "font_size"
 
 
 # maps the operators to the ProM strings
@@ -75,24 +76,45 @@ def repr_tree(tree, viz, current_node, rec_depth, color_map, parameters):
     gviz
         (partial) GraphViz object
     """
-    for child in tree.children:
-        if child.operator is None:
-            viz.attr('node', shape='ellipse', fixedsize='false', fontsize="16")
-            this_trans_id = str(uuid.uuid4())
-            if child.label is None:
-                viz.node(this_trans_id, "tau", style='filled', fillcolor='black', shape='point', width="0.075")
-            else:
-                node_color = get_color(child, color_map)
-                viz.node(this_trans_id, str(child), color=node_color, fontcolor=node_color)
-            viz.edge(current_node, this_trans_id, dirType='none')
+    if tree.operator is None:
+        this_trans_id = str(uuid.uuid4())
+        if tree.label is None:
+            viz.node(this_trans_id, "tau", style='filled', fillcolor='black', shape='point', width="0.075")
         else:
-            viz.attr('node', shape='ellipse', fixedsize='false', fontsize="14")
-            op_node_identifier = str(uuid.uuid4())
-            node_color = get_color(child, color_map)
-            viz.node(op_node_identifier, operators_mapping[str(child.operator)], color=node_color, fontcolor=node_color)
-            viz.edge(current_node, op_node_identifier, dirType='none')
-            viz = repr_tree(child, viz, op_node_identifier, rec_depth + 1, color_map, parameters)
+            node_color = get_color(tree, color_map)
+            viz.node(this_trans_id, str(tree), color=node_color, fontcolor=node_color)
+        viz.edge(current_node, this_trans_id, dirType='none')
+    else:
+        op_node_identifier = str(uuid.uuid4())
+        node_color = get_color(tree, color_map)
+        viz.node(op_node_identifier, operators_mapping[str(tree.operator)], color=node_color, fontcolor=node_color)
+        viz.edge(current_node, op_node_identifier, dirType='none')
+        viz = repr_tree(tree, viz, op_node_identifier, rec_depth + 1, color_map, parameters)
+
     return viz
+
+
+def repr_tree_2(tree, viz, color_map, parameters):
+    font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 15)
+    font_size = str(font_size)
+
+    this_node_id = str(id(tree))
+
+    if tree.operator is None:
+        if tree.label is None:
+            viz.node(this_node_id, "tau", style='filled', fillcolor='black', shape='point', width="0.075", fontsize=font_size)
+        else:
+            node_color = get_color(tree, color_map)
+            viz.node(this_node_id, str(tree), color=node_color, fontcolor=node_color, fontsize=font_size)
+    else:
+        node_color = get_color(tree, color_map)
+        viz.node(this_node_id, operators_mapping[str(tree.operator)], color=node_color, fontcolor=node_color, fontsize=font_size)
+
+        for child in tree.children:
+            repr_tree_2(child, viz, color_map, parameters)
+
+    if tree.parent is not None:
+        viz.edge(str(id(tree.parent)), this_node_id, dirType='none')
 
 
 def apply(tree, parameters=None):
@@ -116,9 +138,10 @@ def apply(tree, parameters=None):
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': 'transparent'})
+    viz.attr('node', shape='ellipse', fixedsize='false')
+
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     color_map = exec_utils.get_param_value(Parameters.COLOR_MAP, parameters, {})
-    node_color = get_color(tree, color_map)
 
     enable_deepcopy = exec_utils.get_param_value(Parameters.ENABLE_DEEPCOPY, parameters, True)
 
@@ -128,23 +151,9 @@ def apply(tree, parameters=None):
         tree = deepcopy(tree)
         util.tree_sort(tree)
 
-    # add first operator
-    if tree.operator:
-        viz.attr('node', shape='ellipse', fixedsize='false', fontsize="14")
-        op_node_identifier = str(uuid.uuid4())
-        viz.node(op_node_identifier, operators_mapping[str(tree.operator)], color=node_color, fontcolor=node_color)
-
-        viz = repr_tree(tree, viz, op_node_identifier, 0, color_map, parameters)
-    else:
-        viz.attr('node', shape='ellipse', fixedsize='false', fontsize="16")
-        this_trans_id = str(uuid.uuid4())
-        if tree.label is None:
-            viz.node(this_trans_id, "tau", style='filled', fillcolor='black', shape='point', width="0.075")
-        else:
-            viz.node(this_trans_id, str(tree), color=node_color, fontcolor=node_color)
+    repr_tree_2(tree, viz, color_map, parameters)
 
     viz.attr(overlap='false')
-    viz.attr(fontsize='16')
     viz.attr(splines='false')
     viz.format = image_format
 

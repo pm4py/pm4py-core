@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import Operator
 from pm4py.algo.discovery.footprints.outputs import Outputs
 from pm4py.objects.process_tree import bottomup as bottomup_disc
 from copy import copy
@@ -342,7 +342,7 @@ def get_footprints(node, footprints_dictio):
         return get_footprints_leaf(node, footprints_dictio)
     elif node.operator == Operator.XOR:
         return get_footprints_xor(node, footprints_dictio)
-    elif node.operator == Operator.PARALLEL:
+    elif node.operator == Operator.PARALLEL or node.operator == Operator.OR:
         return get_footprints_parallel(node, footprints_dictio)
     elif node.operator == Operator.SEQUENCE:
         return get_footprints_sequence(node, footprints_dictio)

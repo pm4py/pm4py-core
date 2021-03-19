@@ -75,7 +75,10 @@ class Event(Mapping):
         return str(dict(self))
 
     def __hash__(self):
-        return hash(frozenset(dict(self)))
+        return hash(frozenset((str(x), str(y)) for x, y in self.items()))
+
+    def __eq__(self, other):
+        return frozenset((str(x), str(y)) for x, y in self.items()) == frozenset((str(x), str(y)) for x, y in other.items())
 
     def __copy__(self):
         event = Event()
@@ -94,7 +97,28 @@ class EventStream(Sequence):
         self._list = list(*args)
 
     def __hash__(self):
-        return hash(tuple(self))
+        ret = 0
+        for ev in self._list:
+            ret += hash(ev)
+            ret = ret % 479001599
+        return ret
+
+    def __eq__(self, other):
+        if len(self) != len(other):
+            return False
+        elif self.attributes != other.attributes:
+            return False
+        elif self.extensions != other.extensions:
+            return False
+        elif self.omni_present != other.omni_present:
+            return False
+        elif self.classifiers != other.classifiers:
+            return False
+        else:
+            for i in range(len(self._list)):
+                if self[i] != other[i]:
+                    return False
+        return True
 
     def __getitem__(self, key):
         return self._list[key]
@@ -160,9 +184,22 @@ class Trace(Sequence):
         self._list = list(*args)
 
     def __hash__(self):
-        tup = tuple(tuple(((x, y) for x, y in event.items())) for event in self._list)
-        ret = hash(tup)
+        ret = 0
+        for ev in self._list:
+            ret += hash(ev)
+            ret = ret % 479001599
         return ret
+
+    def __eq__(self, other):
+        if len(self) != len(other):
+            return False
+        elif self.attributes != other.attributes:
+            return False
+        else:
+            for i in range(len(self._list)):
+                if self[i] != other[i]:
+                    return False
+        return True
 
     def __getitem__(self, key):
         return self._list[key]
@@ -247,3 +284,27 @@ class EventLog(EventStream):
         log._classifiers = copy.copy(self._classifiers)
         log._list = copy.copy(self._list)
         return log
+
+    def __hash__(self):
+        ret = 0
+        for trace in self._list:
+            ret += hash(trace)
+            ret = ret % 479001599
+        return ret
+
+    def __eq__(self, other):
+        if len(self) != len(other):
+            return False
+        elif self.attributes != other.attributes:
+            return False
+        elif self.extensions != other.extensions:
+            return False
+        elif self.omni_present != other.omni_present:
+            return False
+        elif self.classifiers != other.classifiers:
+            return False
+        else:
+            for i in range(len(self._list)):
+                if self[i] != other[i]:
+                    return False
+        return True

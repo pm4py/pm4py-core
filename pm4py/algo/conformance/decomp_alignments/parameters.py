@@ -30,3 +30,4 @@ class Parameters(Enum):
     PARAM_TRACE_NET_COSTS = "trace_net_costs"
     PARAM_MAX_ALIGN_TIME = "max_align_time"
     PARAM_MAX_ALIGN_TIME_TRACE = "max_align_time_trace"
+    SHOW_PROGRESS_BAR = "show_progress_bar"

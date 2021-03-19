@@ -4,6 +4,58 @@
 
 ### Fixed
 
+* d1285706
+    * fixed the consistency (w.r.t ProM) of align-etc conformance results
+
+### Removed
+
+### Deprecated
+
+* c3cde455
+    * deprecated (moved internally) the evaluation and simulation pacakges.
+* a756f1fa
+  * pm4py.objects.process_tree.pt_operator.py
+
+### Changed
+
+* 8474507b
+    * make timestamp and performance-based trace filters inclusive on the boundaries provided
+* b6154457
+    * changed the equals functionality for event logs
+* 9eff5646
+    * classical inductive miner is rebuilt from scratch and thoroughly tested
+* efc1c6e8
+    * changed equals functionality of Petri nets and all their objects
+* 02336ff4
+    * font size is now a parameter of the object (Petri nets / Process Trees /...) visualization code
+
+### Added
+
+* 5de03f1e
+    * added progress bar to all the alignment algorithms
+* 24778a7c
+    * added footprint comparison to simple the interface
+    * added eventually follows discovery to the simple interface
+    * added some additional statistics to the simple interface
+* b2b1fdc5
+    * add a faster alignment algorithm for process trees
+* b7bc217f
+    * more extensive support for the OR-operator in process trees
+* be04ab2a
+    * added performance visualization for heuristics nets
+* 725f40f2
+    * added boolean check on whether a trace/variant is fitting w.r.t. a given model (```pm4py.check_is_fitting()```)
+* e172977c
+    * added process tree parsing functionality (```pm4py.parse_process_tree()```)
+
+### Other
+* a756f1fa
+  * the process tree operator class is now embedded within the process tree object definition (pm4py.objects.process_tree.process_tree.py)
+
+## PM4PY 2.2.2 (2021.03.03)
+
+### Fixed
+
 * 1a5c080c
     * fix for timestamp conversion of dataframe formatting
 * 19c615e1

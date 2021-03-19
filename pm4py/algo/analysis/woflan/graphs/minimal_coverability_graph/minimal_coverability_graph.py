@@ -21,7 +21,7 @@ from Alain Finkel
 """
 import numpy as np
 import networkx as nx
-from pm4py.evaluation.soundness.woflan.graphs import utility as helper
+from pm4py.algo.analysis.woflan.graphs import utility as helper
 from copy import copy
 
 

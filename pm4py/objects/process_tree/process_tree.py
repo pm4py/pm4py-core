@@ -14,10 +14,58 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.process_tree import pt_operator
+from enum import Enum
+
+
+class Operator(Enum):
+    # sequence operator
+    SEQUENCE = '->'
+    # exclusive choice operator
+    XOR = 'X'
+    # parallel operator
+    PARALLEL = '+'
+    # loop operator
+    LOOP = '*'
+    # or operator
+    OR = 'O'
+
+    '''
+    SEQUENCE = u'\u2192'
+    XOR = u'\u00d7'
+    PARALLEL = u'\u002b'
+    LOOP = u'\u27f2'
+    '''
+
+    def __str__(self):
+        """
+        Provides a string representation of the current operator
+
+        Returns
+        -----------
+        stri
+            String representation of the process tree
+        """
+        return self.value
+
+    def __repr__(self):
+        """
+        Provides a string representation of the current operator
+
+        Returns
+        -----------
+        stri
+            String representation of the process tree
+        """
+        return self.value
 
 
 class ProcessTree(object):
+
+    class OperatorState(Enum):
+        ENABLED = "enabled"
+        OPEN = "open"
+        CLOSED = "closed"
+        FUTURE = "future"
 
     def __init__(self, operator=None, parent=None, children=None, label=None):
         """
@@ -48,15 +96,15 @@ class ProcessTree(object):
             h = 1337
             for i in range(len(self.children)):
                 h += 41 * i * hash(self.children[i])
-            if self.operator == pt_operator.Operator.SEQUENCE:
+            if self.operator == Operator.SEQUENCE:
                 h = h * 13
-            elif self.operator == pt_operator.Operator.XOR:
+            elif self.operator == Operator.XOR:
                 h = h * 17
-            elif self.operator == pt_operator.Operator.OR:
+            elif self.operator == Operator.OR:
                 h = h * 23
-            elif self.operator == pt_operator.Operator.PARALLEL:
+            elif self.operator == Operator.PARALLEL:
                 h = h * 29
-            elif self.operator == pt_operator.Operator.LOOP:
+            elif self.operator == Operator.LOOP:
                 h = h * 37
             return h % 268435456
 
@@ -85,21 +133,23 @@ class ProcessTree(object):
         return self._label
 
     def __eq__(self, other):
-        if self.label is not None:
-            return True if other.label == self.label else False
-        elif len(self.children) == 0:
-            return other.label is None and len(other.children) == 0
-        else:
-            if self.operator == other.operator:
-                if len(self.children) != len(other.children):
-                    return False
-                else:
-                    for i in range(len(self.children)):
-                        if self.children[i] != other.children[i]:
-                            return False
-                    return True
+        if isinstance(other, ProcessTree):
+            if self.label is not None:
+                return True if other.label == self.label else False
+            elif len(self.children) == 0:
+                return id(self) == id(other)
             else:
-                return False
+                if self.operator == other.operator:
+                    if len(self.children) != len(other.children):
+                        return False
+                    else:
+                        for i in range(len(self.children)):
+                            if self.children[i] != other.children[i]:
+                                return False
+                        return True
+                else:
+                    return False
+        return False
 
     def __repr__(self):
         """

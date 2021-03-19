@@ -1,6 +1,6 @@
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.simulation.montecarlo import simulator as montecarlo_simulation
+from pm4py.algo.simulation.montecarlo import simulator as montecarlo_simulation
 import os
 
 

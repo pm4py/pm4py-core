@@ -16,7 +16,7 @@
 '''
 from pm4py.objects.petri import petrinet
 from pm4py.objects.petri import utils as pn_util
-from pm4py.objects.process_tree.pt_operator import Operator as pt_opt
+from pm4py.objects.process_tree.process_tree import Operator as pt_opt
 
 
 def apply(tree, parameters=None):

@@ -28,6 +28,7 @@ from pm4py.util import exec_utils
 from enum import Enum
 import sys
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
+import pkgutil
 
 
 class Variants(Enum):
@@ -52,6 +53,7 @@ class Parameters(Enum):
     CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
     ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
     VARIANTS_IDX = "variants_idx"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
 
 
 DEFAULT_VARIANT = Variants.VERSION_STATE_EQUATION_A_STAR
@@ -149,6 +151,7 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
                                                 sys.maxsize)
     max_align_time_case = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME_TRACE, parameters,
                                                      sys.maxsize)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
 
     parameters_best_worst = copy(parameters)
 
@@ -167,12 +170,19 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     for var in variants_list:
         one_tr_per_var.append(log[variants_idxs[var][0]])
 
+    progress = None
+    if pkgutil.find_loader("tqdm") and show_progress_bar and len(one_tr_per_var) > 1:
+        from tqdm.auto import tqdm
+        progress = tqdm(total=len(one_tr_per_var), desc="aligning log, completed variants :: ")
+
     all_alignments = []
     for trace in one_tr_per_var:
         this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time)) * 0.5)
         parameters[Parameters.PARAM_MAX_ALIGN_TIME_TRACE] = this_max_align_time
         all_alignments.append(apply_trace(trace, petri_net, initial_marking, final_marking, parameters=copy(parameters),
                                           variant=variant))
+        if progress is not None:
+            progress.update()
 
     al_idx = {}
     for index_variant, variant in enumerate(variants_idxs):
@@ -194,6 +204,12 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
                         (align['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
             else:
                 align['fitness'] = 0
+
+    # gracefully close progress bar
+    if progress is not None:
+        progress.close()
+    del progress
+
     return alignments
 
 

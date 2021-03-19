@@ -17,7 +17,7 @@
 from typing import Set
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.objects.process_tree.util import is_leaf, is_tau_leaf
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import Operator
 
 
 def __get_activity_set(pt: ProcessTree, a_set=None) -> Set[str]:

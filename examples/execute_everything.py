@@ -304,6 +304,12 @@ def streaming_xes_reader_trace_stream():
     streaming_xes_reader_trace_stream.execute_script()
 
 
+def example_check_fitness():
+    from examples import example_check_fitness
+    print("\n\nexample_check_fitness")
+    example_check_fitness.execute_script()
+
+
 def dfg_align_log():
     from examples import dfg_align_log
     print("\n\ndfg_align_log")
@@ -407,3 +413,4 @@ if __name__ == "__main__":
     execute_script(streaming_discovery_dfg)
     execute_script(streaming_xes_reader_event_stream)
     execute_script(streaming_xes_reader_trace_stream)
+    execute_script(example_check_fitness)

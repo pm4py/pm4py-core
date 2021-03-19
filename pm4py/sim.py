@@ -43,7 +43,7 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
     if len(args) == 3:
         from pm4py.objects.petri.petrinet import PetriNet
         if type(args[0]) is PetriNet:
-            from pm4py.simulation.playout import simulator
+            from pm4py.algo.simulation.playout import simulator
             return simulator.apply(args[0], args[1], final_marking=args[2], **kwargs)
         elif type(args[0]) is dict or type(args[0]) is Counter:
             from pm4py.objects.dfg.utils import dfg_playout
@@ -51,7 +51,7 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
     elif len(args) == 1:
         from pm4py.objects.process_tree.process_tree import ProcessTree
         if type(args[0]) is ProcessTree:
-            from pm4py.simulation.tree_playout import algorithm
+            from pm4py.algo.simulation.tree_playout import algorithm
             return algorithm.apply(args[0], **kwargs)
     raise Exception("unsupported model for playout")
 
@@ -70,5 +70,5 @@ def generate_process_tree(**kwargs) -> ProcessTree:
     model
         process tree
     """
-    from pm4py.simulation.tree_generator import simulator
+    from pm4py.algo.simulation.tree_generator import simulator
     return simulator.apply(**kwargs)
