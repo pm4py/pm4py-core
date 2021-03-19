@@ -388,8 +388,9 @@ def apply(obj, pt, parameters=None):
         if show_progress_bar and pkgutil.find_loader("tqdm"):
             from pm4py.statistics.variants.log import get as variants_get
             variants = variants_get.get_variants(obj, parameters=parameters)
-            from tqdm.auto import tqdm
-            progress = tqdm(total=len(variants), desc="aligning log, completed variants :: ")
+            if len(variants) > 1:
+                from tqdm.auto import tqdm
+                progress = tqdm(total=len(variants), desc="aligning log, completed variants :: ")
         ret = []
         best_worst_cost = apply_variant([], leaves, pt)["cost"]
         align_dict = {}

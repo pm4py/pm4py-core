@@ -3,10 +3,11 @@ from typing import List, Dict, Any, Union
 
 from deprecation import deprecated
 
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.log import EventLog, Trace, Event
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from collections import Counter
 from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.util import xes_constants
 
 
 @deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
@@ -453,3 +454,131 @@ def precision_footprints(*args) -> float:
     fp2 = __convert_to_fp(args[1:])
     from pm4py.algo.conformance.footprints.util import evaluation
     return evaluation.fp_precision(fp1, fp2)
+
+
+def __check_is_fit_process_tree(trace, tree, activity_key=xes_constants.DEFAULT_NAME_KEY):
+    """
+    Check if a trace object is fit against a process tree model
+
+    Parameters
+    -----------------
+    trace
+        Trace
+    tree
+        Process tree
+    activity_key
+        Activity key (optional)
+
+    Returns
+    -----------------
+    is_fit
+        Boolean value (True if the trace fits; False if the trace does not)
+    """
+    from pm4py.discovery import discover_footprints
+    log = EventLog()
+    log.append(trace)
+    fp_tree = discover_footprints(tree)
+    fp_log = discover_footprints(log)
+    fp_conf_res = conformance_diagnostics_footprints(fp_log, fp_tree)[0]
+    # CHECK 1) if footprints already say is not fit, then return False
+    # (if they say True, it might be a false positive)
+    if not fp_conf_res["is_footprints_fit"]:
+        return False
+    else:
+        from pm4py.convert import convert_to_petri_net
+        net, im, fm = convert_to_petri_net(tree)
+        tbr_conf_res = conformance_diagnostics_token_based_replay(log, net, im, fm)[0]
+        # CHECK 2) if TBR says that is fit, then return True
+        # (if they say False, it might be a false negative)
+        if tbr_conf_res["trace_is_fit"]:
+            return True
+        else:
+            # CHECK 3) alignments definitely say if the trace is fit or not if the previous methods fail
+            align_conf_res = conformance_diagnostics_alignments(log, tree)[0]
+            return align_conf_res["fitness"] == 1.0
+
+
+def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFAULT_NAME_KEY):
+    """
+    Checks if a trace object is fit against Petri net object
+
+    Parameters
+    ----------------
+    trace
+        Trace
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    activity_key
+        Activity key (optional)
+
+    Returns
+    -----------------
+    is_fit
+        Boolean value (True if the trace fits; False if the trace does not)
+    """
+    from pm4py.util import variants_util
+    # avoid checking footprints on Petri net (they are too slow)
+    activities_model = set(trans.label for trans in net.transitions if trans.label is not None)
+    activities_trace = set([x[activity_key] for x in trace])
+    diff = activities_trace.difference(activities_model)
+    if diff:
+        # CHECK 1) there are activities in the trace that are not in the model
+        return False
+    else:
+        log = EventLog()
+        log.append(trace)
+        tbr_conf_res = conformance_diagnostics_token_based_replay(log, net, im, fm)[0]
+        # CHECK 2) if TBR says that is fit, then return True
+        # (if they say False, it might be a false negative)
+        if tbr_conf_res["trace_is_fit"]:
+            return True
+        else:
+            # CHECK 3) alignments definitely say if the trace is fit or not if the previous methods fail
+            align_conf_res = conformance_diagnostics_alignments(log, net, im, fm)[0]
+            return align_conf_res["fitness"] == 1.0
+
+
+def check_is_fitting(*args, activity_key=xes_constants.DEFAULT_NAME_KEY):
+    """
+    Checks if a trace object is fit against a process model
+
+    Parameters
+    -----------------
+    trace
+        Trace object (trace / variant)
+    model
+        Model (process tree, Petri net, BPMN, ...)
+    activity_key
+        Activity key (optional)
+
+    Returns
+    -----------------
+    is_fit
+        Boolean value (True if the trace fits; False if the trace does not)
+    """
+    from pm4py.util import variants_util
+    from pm4py.convert import convert_to_process_tree, convert_to_petri_net
+
+    trace = args[0]
+    model = args[1:]
+
+    try:
+        model = convert_to_process_tree(*model)
+    except:
+        # the model cannot be expressed as a process tree, let's say if at least can be expressed as a Petri net
+        model = convert_to_petri_net(*model)
+
+    if not isinstance(trace, Trace):
+        activities = variants_util.get_activities_from_variant(trace)
+        trace = Trace()
+        for act in activities:
+            trace.append(Event({activity_key: act}))
+
+    if isinstance(model, ProcessTree):
+        return __check_is_fit_process_tree(trace, model, activity_key=activity_key)
+    elif isinstance(model, tuple) and isinstance(model[0], PetriNet):
+        return __check_is_fit_petri_net(trace, model[0], model[1], model[2], activity_key=activity_key)

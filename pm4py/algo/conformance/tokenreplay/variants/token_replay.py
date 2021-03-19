@@ -994,7 +994,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                     variants = get_variants_from_log(log, activity_key, disable_variants=disable_variants)
 
                 progress = None
-                if pkgutil.find_loader("tqdm") and show_progress_bar:
+                if pkgutil.find_loader("tqdm") and show_progress_bar and len(variants) > 1:
                     from tqdm.auto import tqdm
                     progress = tqdm(total=len(variants), desc="replaying log with TBR, completed variants :: ")
 
