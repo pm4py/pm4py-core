@@ -3,7 +3,7 @@ import hashlib
 from typing import Optional, List, Dict
 
 from pm4py.objects.process_tree import process_tree as pt
-from pm4py.objects.process_tree import pt_operator as pt_op
+from pm4py.objects.process_tree import process_tree as pt_op
 from pm4py.objects.process_tree import state as pt_st
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.util import constants

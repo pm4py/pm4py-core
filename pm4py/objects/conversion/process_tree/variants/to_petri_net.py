@@ -5,7 +5,7 @@ from pm4py.objects.petri.petrinet import Marking
 from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.petri.utils import remove_transition, add_arc_from_to, remove_place
 from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import Operator
 from pm4py.objects.petri import reduction
 
 class Counts(object):

@@ -1,4 +1,4 @@
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import Operator
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.objects.log.log import EventLog, Trace, Event
 from enum import Enum
