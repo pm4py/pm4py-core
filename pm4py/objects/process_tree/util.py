@@ -19,6 +19,7 @@ def fold(tree):
     :param tree:
     :return:
     '''
+    tree = copy.deepcopy(tree)
     tree = _fold(tree)
     root = tree
     while root.parent is None and len(tree.children) == 1:
