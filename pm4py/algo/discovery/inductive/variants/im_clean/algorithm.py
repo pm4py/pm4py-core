@@ -18,7 +18,7 @@ from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.objects.log.log import EventLog, EventStream
 from pm4py.objects.log.util import log as log_util
 from pm4py.objects.petri.petrinet import PetriNet, Marking
-from pm4py.objects.process_tree import process_tree as pt, pt_operator as pto
+from pm4py.objects.process_tree import process_tree as pt
 from pm4py.objects.process_tree import util
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.statistics.end_activities.log import get as get_ends
@@ -117,52 +117,52 @@ def inductive_miner(log, dfg, threshold, root, act_key, use_msd):
         pre, post = dfg_utils.get_transitive_relations(dfg, alphabet)
         cut = sequence_cut.detect(alphabet, pre, post)
         if cut is not None:
-            return _add_operator_recursive(pt.ProcessTree(pto.Operator.SEQUENCE, root), threshold, act_key,
+            return _add_operator_recursive(pt.ProcessTree(pt.Operator.SEQUENCE, root), threshold, act_key,
                                            sequence_cut.project(log, cut, act_key), use_msd)
         cut = xor_cut.detect(dfg, alphabet)
         if cut is not None:
-            return _add_operator_recursive(pt.ProcessTree(pto.Operator.XOR, root), threshold, act_key,
+            return _add_operator_recursive(pt.ProcessTree(pt.Operator.XOR, root), threshold, act_key,
                                            xor_cut.project(log, cut, act_key), use_msd)
         cut = concurrent_cut.detect(dfg, alphabet, start_activities, end_activities,
                                     msd=msdw_algo.derive_msd_witnesses(log, msd_algo.apply(log, parameters={
                                         constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key}), parameters={
                                         constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key}) if use_msd else None)
         if cut is not None:
-            return _add_operator_recursive(pt.ProcessTree(pto.Operator.PARALLEL, root), threshold, act_key,
+            return _add_operator_recursive(pt.ProcessTree(pt.Operator.PARALLEL, root), threshold, act_key,
                                            concurrent_cut.project(log, cut, act_key), use_msd)
         cut = loop_cut.detect(dfg, alphabet, start_activities, end_activities)
         if cut is not None:
-            return _add_operator_recursive(pt.ProcessTree(pto.Operator.LOOP, root), threshold, act_key,
+            return _add_operator_recursive(pt.ProcessTree(pt.Operator.LOOP, root), threshold, act_key,
                                            loop_cut.project(log, cut, act_key), use_msd)
     if len(empty_traces) > 0:
         nempty = pm4py.filter_log(lambda t: len(t) > 0, log)
-        return _add_operator_recursive(pt.ProcessTree(pto.Operator.XOR, root), threshold, act_key, [EventLog(), nempty],
+        return _add_operator_recursive(pt.ProcessTree(pt.Operator.XOR, root), threshold, act_key, [EventLog(), nempty],
                                        use_msd)
     aopt = activity_once_per_trace.detect(log, alphabet, act_key)
     if aopt is not None:
-        operator = pt.ProcessTree(operator=pto.Operator.PARALLEL, parent=root)
+        operator = pt.ProcessTree(operator=pt.Operator.PARALLEL, parent=root)
         operator.children.append(pt.ProcessTree(operator=None, parent=operator, label=aopt))
         return _add_operator_recursive(operator, threshold, act_key,
                                        activity_once_per_trace.project(log, aopt, act_key), use_msd)
     act_conc = activity_concurrent.detect(log, alphabet, act_key, use_msd)
     if act_conc is not None:
-        return _add_operator_recursive(pt.ProcessTree(pto.Operator.PARALLEL, root), threshold, act_key,
+        return _add_operator_recursive(pt.ProcessTree(pt.Operator.PARALLEL, root), threshold, act_key,
                                        activity_concurrent.project(log, act_conc, act_key), use_msd)
     stl = strict_tau_loop.detect(log, start_activities, end_activities, act_key)
     if stl is not None:
-        return _add_operator_recursive(pt.ProcessTree(pto.Operator.LOOP, root), threshold, act_key, [stl, EventLog()],
+        return _add_operator_recursive(pt.ProcessTree(pt.Operator.LOOP, root), threshold, act_key, [stl, EventLog()],
                                        use_msd)
     tl = tau_loop.detect(log, start_activities, act_key)
     if tl is not None:
-        return _add_operator_recursive(pt.ProcessTree(pto.Operator.LOOP, root), threshold, act_key, [tl, EventLog()],
+        return _add_operator_recursive(pt.ProcessTree(pt.Operator.LOOP, root), threshold, act_key, [tl, EventLog()],
                                        use_msd)
     return _flower(alphabet, root)
 
 
 def _flower(alphabet, root):
-    operator = pt.ProcessTree(operator=pto.Operator.LOOP, parent=root)
+    operator = pt.ProcessTree(operator=pt.Operator.LOOP, parent=root)
     operator.children.append(pt.ProcessTree(parent=operator))
-    xor = pt.ProcessTree(operator=pto.Operator.XOR)
+    xor = pt.ProcessTree(operator=pt.Operator.XOR)
     operator.children.append(xor)
     for a in alphabet:
         xor.children.append(pt.ProcessTree(label=a, parent=xor))
@@ -190,7 +190,7 @@ def _apply_base_case(log, root, act_key):
 
 
 def _add_operator_recursive(operator, threshold, act_key, logs, use_msd):
-    if operator.operator != pto.Operator.LOOP:
+    if operator.operator != pt.Operator.LOOP:
         for log in logs:
             operator.children.append(inductive_miner(log, discover_dfg.apply(log, parameters={
                 constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key}), threshold, operator, act_key, use_msd))
@@ -204,5 +204,5 @@ def _add_operator_recursive(operator, threshold, act_key, logs, use_msd):
         else:
             operator.children.append(
                 _add_operator_recursive(
-                    pt.ProcessTree(operator=pto.Operator.XOR, parent=operator), threshold, act_key, logs, use_msd))
+                    pt.ProcessTree(operator=pt.Operator.XOR, parent=operator), threshold, act_key, logs, use_msd))
     return operator
