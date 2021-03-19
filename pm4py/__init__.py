@@ -9,7 +9,7 @@ from pm4py.conformance import conformance_diagnostics_token_based_replay, confor
     fitness_alignments, precision_token_based_replay, \
     precision_alignments, conformance_alignments, conformance_tbr, evaluate_precision_alignments, \
     evaluate_precision_tbr, evaluate_fitness_tbr, evaluate_fitness_alignments, conformance_diagnostics_footprints, \
-    fitness_footprints, precision_footprints
+    fitness_footprints, precision_footprints, check_is_fitting
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_heuristics, \
