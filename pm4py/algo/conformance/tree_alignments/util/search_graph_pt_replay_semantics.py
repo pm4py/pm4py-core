@@ -4,7 +4,7 @@ from typing import Dict, Tuple, Optional, List
 
 from pm4py.objects.process_tree import util as ptu
 from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import Operator
 
 ProcessTreeState = Dict[Tuple[int, ProcessTree], ProcessTree.OperatorState]
 
