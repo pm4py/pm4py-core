@@ -27,7 +27,7 @@ from pm4py.sim import play_out, generate_process_tree
 from pm4py.stats import get_start_activities, get_end_activities, get_attributes, get_attribute_values, get_variants, \
     get_trace_attributes, get_variants_as_tuples, get_trace_attribute_values, get_case_arrival_average, \
     get_minimum_self_distances, get_minimum_self_distance_witnesses
-from pm4py.utils import format_dataframe
+from pm4py.utils import format_dataframe, parse_process_tree
 from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg, view_process_tree, \
     save_vis_process_tree, \
     view_heuristics_net, save_vis_heuristics_net, view_bpmn, save_vis_bpmn
