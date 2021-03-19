@@ -2,13 +2,15 @@ import warnings
 from typing import Tuple, Union, List, Dict, Any
 
 import deprecation
+import pandas as pd
+from pandas import DataFrame
 
 from pm4py.objects.heuristics_net.net import HeuristicsNet
 from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.log import EventStream
 from pm4py.objects.petri.petrinet import PetriNet, Marking
 from pm4py.objects.process_tree.process_tree import ProcessTree
 from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
-import pandas as pd
 
 
 def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
@@ -86,7 +88,8 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame]) -> Tuple[P
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS)
 
 
-def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> Tuple[PetriNet, Marking, Marking]:
+def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> Tuple[
+    PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the IMDFc algorithm
 
@@ -111,11 +114,12 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
         return inductive_miner.apply(log, variant=inductive_miner.Variants.IMf, parameters={
             inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD: noise_threshold})
     else:
-        return inductive_miner.apply(log, variant=inductive_miner.Variants.IM, parameters={
+        return inductive_miner.apply(log, variant=inductive_miner.Variants.IM_CLEAN, parameters={
             inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
 
 
-def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5, and_threshold: float = 0.65,
+def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,
+                                  and_threshold: float = 0.65,
                                   loop_two_threshold: float = 0.5) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discover a Petri net using the Heuristics Miner
@@ -168,7 +172,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
         return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IMf, parameters={
             inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD: noise_threshold})
     else:
-        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM, parameters={
+        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters={
             inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
 
 
@@ -200,7 +204,8 @@ def discover_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
             inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
 
 
-def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5, and_threshold: float = 0.65,
+def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,
+                            and_threshold: float = 0.65,
                             loop_two_threshold: float = 0.5) -> HeuristicsNet:
     """
     Discovers an heuristics net
@@ -226,6 +231,26 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     return heuristics_miner.apply_heu(log, variant=heuristics_miner.Variants.CLASSIC, parameters={
         parameters.DEPENDENCY_THRESH: dependency_threshold, parameters.AND_MEASURE_THRESH: and_threshold,
         parameters.LOOP_LENGTH_TWO_THRESH: loop_two_threshold})
+
+
+def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream]) -> Dict[str, int]:
+    '''
+        This algorithm computes the minimum self-distance for each activity observed in an event log.
+        The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.
+        The activity key 'concept:name' is used.
+
+
+        Parameters
+        ----------
+        log
+            event log (either pandas.DataFrame, EventLog or EventStream)
+
+        Returns
+        -------
+            dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
+        '''
+    from pm4py.algo.discovery.minimum_self_distance import algorithm as msd
+    return msd.apply(log)
 
 
 def discover_footprints(*args: Union[EventLog, Tuple[PetriNet, Marking, Marking], ProcessTree]) -> Union[

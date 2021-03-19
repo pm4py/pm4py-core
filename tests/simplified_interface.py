@@ -1,11 +1,12 @@
 import os
 import unittest
 
+import pandas as pd
+
 import pm4py
 from pm4py.objects.bpmn.bpmn_graph import BPMN
 from pm4py.objects.petri.petrinet import PetriNet
 from pm4py.objects.process_tree.process_tree import ProcessTree
-import pandas as pd
 
 
 class SimplifiedInterfaceTest(unittest.TestCase):
