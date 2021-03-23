@@ -54,7 +54,8 @@ def search_path_among_sol(sync_net: PetriNet, ini: Marking, fin: Marking,
                 trans_with_index[t.properties[properties.TRACE_NET_TRANS_INDEX]] = t
             else:
                 trans_wo_index.add(t)
-    trans_with_index = [trans_with_index[i] for i in range(len(trans_with_index))]
+    keys = sorted(list(trans_with_index.keys()))
+    trans_with_index = [trans_with_index[i] for i in keys]
     best_tuple = (0, 0, ini, list())
     open_set = [best_tuple]
     visited = 0
@@ -67,13 +68,13 @@ def search_path_among_sol(sync_net: PetriNet, ini: Marking, fin: Marking,
             continue
         if curr < best_tuple:
             best_tuple = curr
-            if index == len(trans_with_index):
-                reach_fm = True
-                break
+        if index == len(trans_with_index):
+            reach_fm = True
+            break
         closed.add((index, marking))
-        visited += 1
         corr_trans = trans_with_index[index]
         if semantics.is_enabled(corr_trans, sync_net, marking):
+            visited += 1
             new_marking = semantics.weak_execute(corr_trans, marking)
             open_set.append((-index-1, visited, new_marking, list(curr[3])+[corr_trans]))
         else:
@@ -84,6 +85,7 @@ def search_path_among_sol(sync_net: PetriNet, ini: Marking, fin: Marking,
             enabled = set(t for t in possible_enabling_transitions if t.sub_marking <= marking)
             enabled = enabled.intersection(set(trans_wo_index))
             for new_trans in enabled:
+                visited += 1
                 new_marking = semantics.weak_execute(new_trans, marking)
                 open_set.append((-index, visited, new_marking, list(curr[3])+[new_trans]))
     return best_tuple[-1], reach_fm, -best_tuple[0]
