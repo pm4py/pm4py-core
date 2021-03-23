@@ -79,11 +79,11 @@ def search_path_among_sol(sync_net: PetriNet, ini: Marking, fin: Marking,
             new_marking = semantics.weak_execute(corr_trans, marking)
             heapq.heappush(open_set, (-index-1, visited, new_marking, curr[3]+[corr_trans]))
         else:
-            possible_enabling_transitions = copy(trans_empty_preset)
+            enabled = copy(trans_empty_preset)
             for p in marking:
                 for t in p.ass_trans:
-                    possible_enabling_transitions.add(t)
-            enabled = set(t for t in possible_enabling_transitions if t in trans_wo_index and t.sub_marking <= marking)
+                    if t in trans_wo_index and t.sub_marking <= marking:
+                        enabled.add(t)
             for new_trans in enabled:
                 visited += 1
                 new_marking = semantics.weak_execute(new_trans, marking)
