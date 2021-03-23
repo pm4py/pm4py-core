@@ -59,26 +59,24 @@ def search_path_among_sol(sync_net: PetriNet, ini: Marking, fin: Marking,
     open_set = [best_tuple]
     heapq.heapify(open_set)
     visited = 0
-    closed = 0
+    closed = set()
     len_trace_with_index = len(trans_with_index)
     while len(open_set) > 0:
         curr = heapq.heappop(open_set)
         index = -curr[0]
         marking = curr[2]
-        if index < closed:
+        if (index, marking) in closed:
             continue
-        else:
-            closed = index
-            if index == len_trace_with_index:
-                reach_fm = True
-                break
+        if index == len_trace_with_index:
+            reach_fm = True
+            break
         if curr[0] < best_tuple[0]:
             best_tuple = curr
+        closed.add((index, marking))
         corr_trans = trans_with_index[index]
         if corr_trans.sub_marking <= marking:
             visited += 1
             new_marking = semantics.weak_execute(corr_trans, marking)
-            closed = index+1
             heapq.heappush(open_set, (-index-1, visited, new_marking, curr[3]+[corr_trans]))
         else:
             possible_enabling_transitions = copy(trans_empty_preset)
