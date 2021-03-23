@@ -58,37 +58,39 @@ def search_path_among_sol(sync_net: PetriNet, ini: Marking, fin: Marking,
     trans_with_index = [trans_with_index[i] for i in keys]
     best_tuple = (0, 0, ini, list())
     open_set = [best_tuple]
+    heapq.heapify(open_set)
     visited = 0
-    closed = set()
+    closed = 0
     len_trace_with_index = len(trans_with_index)
     while len(open_set) > 0:
         curr = heapq.heappop(open_set)
         index = -curr[0]
         marking = curr[2]
-        if (index, marking) in closed:
+        if index < closed:
             continue
+        else:
+            closed = index
+            if index == len_trace_with_index:
+                reach_fm = True
+                break
         if curr[0] < best_tuple[0]:
             best_tuple = curr
-        if index == len_trace_with_index:
-            reach_fm = True
-            break
-        closed.add((index, marking))
         corr_trans = trans_with_index[index]
-        if semantics.is_enabled(corr_trans, sync_net, marking):
+        if corr_trans.sub_marking <= marking:
             visited += 1
             new_marking = semantics.weak_execute(corr_trans, marking)
-            open_set.append((-index-1, visited, new_marking, list(curr[3])+[corr_trans]))
+            closed = index+1
+            heapq.heappush(open_set, (-index-1, visited, new_marking, curr[3]+[corr_trans]))
         else:
             possible_enabling_transitions = copy(trans_empty_preset)
             for p in marking:
                 for t in p.ass_trans:
                     possible_enabling_transitions.add(t)
-            enabled = set(t for t in possible_enabling_transitions if t.sub_marking <= marking)
-            enabled = enabled.intersection(set(trans_wo_index))
+            enabled = set(t for t in possible_enabling_transitions if t in trans_wo_index and t.sub_marking <= marking)
             for new_trans in enabled:
                 visited += 1
                 new_marking = semantics.weak_execute(new_trans, marking)
-                open_set.append((-index, visited, new_marking, list(curr[3])+[new_trans]))
+                heapq.heappush(open_set, (-index, visited, new_marking, curr[3]+[new_trans]))
     return best_tuple[-1], reach_fm, -best_tuple[0]
 
 
