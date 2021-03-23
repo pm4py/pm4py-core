@@ -48,12 +48,11 @@ def search_path_among_sol(sync_net: PetriNet, ini: Marking, fin: Marking,
     trans_empty_preset = set(t for t in sync_net.transitions if len(t.in_arcs) == 0)
     trans_with_index = {}
     trans_wo_index = set()
-    for t in sync_net.transitions:
-        if t in activated_transitions:
-            if properties.TRACE_NET_TRANS_INDEX in t.properties:
-                trans_with_index[t.properties[properties.TRACE_NET_TRANS_INDEX]] = t
-            else:
-                trans_wo_index.add(t)
+    for t in activated_transitions:
+        if properties.TRACE_NET_TRANS_INDEX in t.properties:
+            trans_with_index[t.properties[properties.TRACE_NET_TRANS_INDEX]] = t
+        else:
+            trans_wo_index.add(t)
     keys = sorted(list(trans_with_index.keys()))
     trans_with_index = [trans_with_index[i] for i in keys]
     best_tuple = (0, 0, ini, list())
