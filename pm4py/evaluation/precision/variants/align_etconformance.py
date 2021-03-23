@@ -10,6 +10,7 @@ from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_e
 from pm4py.evaluation.precision.parameters import Parameters
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
+import pkgutil
 
 
 def apply(log, net, marking, final_marking, parameters=None):
@@ -176,7 +177,16 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
     """
     if parameters is None:
         parameters = {}
+
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+
     align_result = []
+
+    progress = None
+    if pkgutil.find_loader("tqdm") and show_progress_bar and len(fake_log) > 1:
+        from tqdm.auto import tqdm
+        progress = tqdm(total=len(fake_log), desc="computing precision with alignments, completed variants :: ")
+
     for i in range(len(fake_log)):
         trace = fake_log[i]
         sync_net, sync_initial_marking, sync_final_marking = build_sync_net(trace, net, marking, final_marking,
@@ -205,6 +215,13 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
             # if there is no path from the initial marking
             # replaying the given prefix, then add None
             align_result.append(None)
+        if progress is not None:
+            progress.update()
+
+    # gracefully close progress bar
+    if progress is not None:
+        progress.close()
+    del progress
 
     return align_result
 
