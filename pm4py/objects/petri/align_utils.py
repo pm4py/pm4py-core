@@ -60,15 +60,16 @@ def search_path_among_sol(sync_net: PetriNet, ini: Marking, fin: Marking,
     open_set = [best_tuple]
     visited = 0
     closed = set()
+    len_trace_with_index = len(trans_with_index)
     while len(open_set) > 0:
         curr = heapq.heappop(open_set)
         index = -curr[0]
         marking = curr[2]
         if (index, marking) in closed:
             continue
-        if curr < best_tuple:
+        if curr[0] < best_tuple[0]:
             best_tuple = curr
-        if index == len(trans_with_index):
+        if index == len_trace_with_index:
             reach_fm = True
             break
         closed.add((index, marking))
