@@ -65,14 +65,14 @@ def search_path_among_sol(sync_net: PetriNet, ini: Marking, fin: Marking,
         curr = heapq.heappop(open_set)
         index = -curr[0]
         marking = curr[2]
-        if (index, marking) in closed:
+        if marking in closed:
             continue
         if index == len_trace_with_index:
             reach_fm = True
             break
         if curr[0] < best_tuple[0]:
             best_tuple = curr
-        closed.add((index, marking))
+        closed.add(marking)
         corr_trans = trans_with_index[index]
         if corr_trans.sub_marking <= marking:
             visited += 1
