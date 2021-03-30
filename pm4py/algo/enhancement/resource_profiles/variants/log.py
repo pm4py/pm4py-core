@@ -124,3 +124,44 @@ def activity_frequency(log: EventLog, t1: Union[datetime, str], t2: Union[dateti
     activity_a = len(log)
 
     return float(activity_a)/float(total) if total > 0 else 0.0
+
+
+def activity_completions(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                        parameters: Optional[Dict[str, Any]] = None) -> int:
+    """
+    The number of activity instances completed by a given resource during a given time slot.
+
+    Metric RBI 2.1 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM)
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+
+    t1 = get_dt_from_string(t1)
+    t2 = get_dt_from_string(t2)
+    log = [x for x in log if t1 <= x[timestamp_key] < t2 and x[resource_key] == r]
+    total = len(log)
+
+    return total
