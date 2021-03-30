@@ -448,3 +448,51 @@ def multitasking(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, st
             num += duration
         den += duration
     return num/den if den > 0 else 0.0
+
+
+def interaction_two_resources(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r1: str, r2: str,
+                              parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The number of cases completed during a given time slot in which two given resources were involved.
+
+    Metric RBI 5.1 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    t1
+        Left interval
+    t2
+        Right interval
+    r1
+        Resource 1
+    r2
+        Resource 2
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    t1 = get_dt_from_string(t1)
+    t2 = get_dt_from_string(t2)
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+
+    from pm4py.algo.filtering.log.attributes import attributes_filter
+    parameters_filter = {attributes_filter.Parameters.ATTRIBUTE_KEY: resource_key}
+    log = attributes_filter.apply(log, [r1], parameters=parameters_filter)
+    log = attributes_filter.apply(log, [r2], parameters=parameters_filter)
+    red_log = EventLog()
+    for trace in log:
+        if trace:
+            if t1 <= trace[-1][timestamp_key] < t2:
+                red_log.append(trace)
+    return len(red_log)
