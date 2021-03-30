@@ -66,3 +66,33 @@ def activity_frequency(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetim
         return pandas.activity_frequency(log_obj, t1, t2, r, a, parameters=parameters)
     else:
         return log.activity_frequency(log_obj, t1, t2, r, a, parameters=parameters)
+
+
+def activity_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                        parameters: Optional[Dict[str, Any]] = None) -> int:
+    """
+    The number of activity instances completed by a given resource during a given time slot.
+
+    Metric RBI 2.1 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log_obj
+        Log object
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if type(log_obj) is pd.DataFrame:
+        return pandas.activity_completions(log_obj, t1, t2, r, parameters=parameters)
+    else:
+        return log.activity_completions(log_obj, t1, t2, r, parameters=parameters)
