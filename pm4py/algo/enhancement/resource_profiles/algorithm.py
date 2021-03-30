@@ -187,3 +187,34 @@ def average_workload(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime,
         return pandas.average_workload(log_obj, t1, t2, r, parameters=parameters)
     else:
         return log.average_workload(log_obj, t1, t2, r, parameters=parameters)
+
+
+def multitasking(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                 parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The fraction of active time during which a given resource is involved in more than one activity with respect
+    to the resource's active time.
+
+    Metric RBI 3.1 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log_obj
+        Log object
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if type(log_obj) is pd.DataFrame:
+        return pandas.multitasking(log_obj, t1, t2, r, parameters=parameters)
+    else:
+        return log.multitasking(log_obj, t1, t2, r, parameters=parameters)
