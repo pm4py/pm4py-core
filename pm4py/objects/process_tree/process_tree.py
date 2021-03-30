@@ -121,7 +121,7 @@ class ProcessTree(object):
             if self.label is not None:
                 return True if other.label == self.label else False
             elif len(self.children) == 0:
-                return id(self) == id(other)
+                return other.label is None and len(other.children) == 0
             else:
                 if self.operator == other.operator:
                     if len(self.children) != len(other.children):
