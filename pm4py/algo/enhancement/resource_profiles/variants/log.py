@@ -5,7 +5,7 @@ from typing import Union, Optional, Dict, Any
 import pytz
 
 from pm4py.objects.conversion.log import converter
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.log import EventLog, Event
 from pm4py.util import exec_utils, constants, xes_constants
 
 
@@ -14,6 +14,7 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     RESOURCE_KEY = constants.PARAMETER_CONSTANT_RESOURCE_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
 
 def get_dt_from_string(dt: Union[datetime, str]) -> datetime:
@@ -165,3 +166,56 @@ def activity_completions(log: EventLog, t1: Union[datetime, str], t2: Union[date
     total = len(log)
 
     return total
+
+
+def case_completions(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                        parameters: Optional[Dict[str, Any]] = None) -> int:
+    """
+    The number of cases completed during a given time slot in which a given resource was involved.
+
+    Metric RBI 2.2 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes_constants.DEFAULT_TRACEID_KEY)
+
+    t1 = get_dt_from_string(t1)
+    t2 = get_dt_from_string(t2)
+
+    last_eve = []
+    stream = []
+    for case in log:
+        for i in range(len(case)):
+            eve = Event({timestamp_key: case[i][timestamp_key], resource_key: case[i][resource_key], case_id_key: case.attributes[case_id_key]})
+            stream.append(eve)
+            if i == len(case)-1:
+                last_eve.append(eve)
+
+    last_eve = [x for x in last_eve if t1 <= x[timestamp_key] < t2]
+    cases_last = set(x[case_id_key] for x in last_eve)
+
+    stream = [x for x in stream if x[resource_key] == r]
+    cases_res = set(x[case_id_key] for x in stream)
+
+    return len(cases_last.intersection(cases_res))

@@ -96,3 +96,33 @@ def activity_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datet
         return pandas.activity_completions(log_obj, t1, t2, r, parameters=parameters)
     else:
         return log.activity_completions(log_obj, t1, t2, r, parameters=parameters)
+
+
+def case_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                        parameters: Optional[Dict[str, Any]] = None) -> int:
+    """
+    The number of cases completed during a given time slot in which a given resource was involved.
+
+    Metric RBI 2.2 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log_obj
+        Log object
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if type(log_obj) is pd.DataFrame:
+        return pandas.case_completions(log_obj, t1, t2, r, parameters=parameters)
+    else:
+        return log.case_completions(log_obj, t1, t2, r, parameters=parameters)
