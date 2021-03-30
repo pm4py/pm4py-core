@@ -10,8 +10,8 @@ def distinct_activities(log_obj: Union[pd.DataFrame, EventLog], t1: Union[dateti
     """
     Number of distinct activities done by a resource in a given time interval [t1, t2)
 
-    Metric RBI 1.1 in Pika, Anastasiia, et al. "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
-
+    Metric RBI 1.1 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
 
     Parameters
     -----------------
@@ -34,3 +34,35 @@ def distinct_activities(log_obj: Union[pd.DataFrame, EventLog], t1: Union[dateti
     else:
         return log.distinct_activities(log_obj, t1, t2, r, parameters=parameters)
 
+
+def activity_frequency(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str, a: str,
+                        parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    Fraction of completions of a given activity a, by a given resource r, during a given time slot, [t1, t2),
+    with respect to the total number of activity completions by resource r during [t1, t2)
+
+    Metric RBI 1.3 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log_obj
+        Log object
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+    a
+        Activity
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if type(log_obj) is pd.DataFrame:
+        return pandas.activity_frequency(log_obj, t1, t2, r, a, parameters=parameters)
+    else:
+        return log.activity_frequency(log_obj, t1, t2, r, a, parameters=parameters)
