@@ -363,3 +363,44 @@ def __compute_workload(log: EventLog, resource: Optional[str] = None, activity: 
     for ev in events:
         ev_map[ev] = len(tree[ev[0]:ev[1] + k])
     return ev_map
+
+
+def average_workload(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                     parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The average number of activities started by a given resource but not completed at a moment in time.
+
+    Metric RBI 2.4 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    t2 = get_dt_from_string(t2).timestamp()
+
+    ev_dict = __compute_workload(log, resource=r, parameters=parameters)
+    ev_dict = {x: y for x, y in ev_dict.items() if x[0] < t2 and x[1] >= t2}
+    num = 0.0
+    den = 0.0
+    for ev in ev_dict:
+        workload = ev_dict[ev]
+        duration = ev[1] - ev[0]
+        num += workload*duration
+        den += duration
+    return num/den if den > 0 else 0.0
