@@ -465,3 +465,56 @@ def multitasking(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime,
             num += duration
         den += duration
     return num/den if den > 0 else 0.0
+
+
+def interaction_two_resources(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r1: str, r2: str,
+                              parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The number of cases completed during a given time slot in which two given resources were involved.
+
+    Metric RBI 5.1 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    df
+        Dataframe
+    t1
+        Left interval
+    t2
+        Right interval
+    r1
+        Resource 1
+    r2
+        Resource 2
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    t1 = get_dt_from_string(t1)
+    t2 = get_dt_from_string(t2)
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+
+    df = df[[timestamp_key, resource_key, case_id_key, activity_key]]
+
+    from pm4py.algo.filtering.pandas.attributes import attributes_filter
+    parameters_filter = {attributes_filter.Parameters.ATTRIBUTE_KEY: resource_key}
+    df = attributes_filter.apply(df, [r1], parameters=parameters_filter)
+    df = attributes_filter.apply(df, [r2], parameters=parameters_filter)
+    last_df = df.groupby(case_id_key).last().reset_index()
+    last_df = last_df[last_df[timestamp_key] >= t1]
+    last_df = last_df[last_df[timestamp_key] < t2]
+    cases = set(last_df[case_id_key].unique())
+    df = df[df[case_id_key].isin(cases)]
+
+    return df[case_id_key].nunique()

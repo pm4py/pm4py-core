@@ -218,3 +218,35 @@ def multitasking(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str
         return pandas.multitasking(log_obj, t1, t2, r, parameters=parameters)
     else:
         return log.multitasking(log_obj, t1, t2, r, parameters=parameters)
+
+
+def interaction_two_resources(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r1: str, r2: str,
+                              parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The number of cases completed during a given time slot in which two given resources were involved.
+
+    Metric RBI 5.1 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log_obj
+        Log object
+    t1
+        Left interval
+    t2
+        Right interval
+    r1
+        Resource 1
+    r2
+        Resource 2
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if type(log_obj) is pd.DataFrame:
+        return pandas.interaction_two_resources(log_obj, t1, t2, r1, r2, parameters=parameters)
+    else:
+        return log.interaction_two_resources(log_obj, t1, t2, r1, r2, parameters=parameters)
