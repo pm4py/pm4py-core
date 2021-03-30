@@ -14,14 +14,12 @@ from pm4py.objects.process_tree.process_tree import Operator
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.objects.log.log import EventLog
 from pm4py.util import variants_util
-from pm4py.algo.reduction.variants import tree_tr_based
 import pkgutil
 
 
 class Parameters(Enum):
     CORES = 'cores'
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
-    ENABLE_REDUCTION = 'enable_reduction'
     SHOW_PROGRESS_BAR = "show_progress_bar"
 
 
@@ -262,35 +260,6 @@ def apply_from_variants_list(var_list, tree, parameters=None):
     return dictio_alignments
 
 
-def get_reduced_tree(tree, trace, parameters=None):
-    """
-    Reduces the process tree in order to replay the trace
-
-    Parameters
-    ---------------
-    tree
-        Process tree
-    trace
-        Process execution
-
-    Returns
-    ---------------
-    red_tree
-        Reduced process tree (if the reduction is enabled)
-    leaves
-        Leaves of the tree
-    """
-    if parameters is None:
-        parameters = {}
-    enable_reduction = exec_utils.get_param_value(Parameters.ENABLE_REDUCTION, parameters, True)
-
-    if enable_reduction:
-        tree = tree_tr_based.apply(tree, trace, parameters=parameters)
-    leaves = frozenset(pt_util.get_leaves(tree))
-
-    return tree, leaves
-
-
 def apply_multiprocessing(obj, pt, parameters=None):
     """
     Returns alignments for a process tree (using the multiprocessing package to distribute the workload
@@ -319,25 +288,17 @@ def apply_multiprocessing(obj, pt, parameters=None):
 
     if type(obj) is Trace:
         variant = tuple(x[activity_key] for x in obj)
-        tree, lvs = get_reduced_tree(pt, obj, parameters=parameters)
-        return apply_variant(variant, lvs, tree)
+        return apply_variant(variant, leaves, pt)
     else:
         with ProcessPoolExecutor(max_workers=num_cores) as executor:
             ret = []
             best_worst_cost = apply_variant([], leaves, pt)["cost"]
-            tree_red_dict = {}
             futures = {}
             align_dict = {}
             for trace in obj:
                 variant = tuple(x[activity_key] for x in trace)
                 if variant not in futures:
-                    activities = frozenset(variant)
-                    if activities not in tree_red_dict:
-                        tree, lvs = get_reduced_tree(pt, trace, parameters=parameters)
-                        tree_red_dict[activities] = (tree, lvs)
-                    else:
-                        tree, lvs = tree_red_dict[activities]
-                    futures[variant] = executor.submit(apply_variant, variant, lvs, tree)
+                    futures[variant] = executor.submit(apply_variant, variant, leaves, pt)
             for trace in obj:
                 variant = tuple(x[activity_key] for x in trace)
                 if variant not in align_dict:
@@ -382,8 +343,7 @@ def apply(obj, pt, parameters=None):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     if type(obj) is Trace:
         variant = tuple(x[activity_key] for x in obj)
-        tree, lvs = get_reduced_tree(pt, obj, parameters=parameters)
-        return apply_variant(variant, lvs, tree)
+        return apply_variant(variant, leaves, pt)
     else:
         if show_progress_bar and pkgutil.find_loader("tqdm"):
             from pm4py.statistics.variants.log import get as variants_get
@@ -394,17 +354,10 @@ def apply(obj, pt, parameters=None):
         ret = []
         best_worst_cost = apply_variant([], leaves, pt)["cost"]
         align_dict = {}
-        tree_red_dict = {}
         for trace in obj:
             variant = tuple(x[activity_key] for x in trace)
             if variant not in align_dict:
-                activities = frozenset(variant)
-                if activities not in tree_red_dict:
-                    tree, lvs = get_reduced_tree(pt, trace, parameters=parameters)
-                    tree_red_dict[activities] = (tree, lvs)
-                else:
-                    tree, lvs = tree_red_dict[activities]
-                al = apply_variant(variant, lvs, tree)
+                al = apply_variant(variant, leaves, pt)
                 ltrace_bwc = len(trace) + best_worst_cost
                 # calculate fitness as in the Petri net alignments
                 if ltrace_bwc > 0:
