@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import Union, Optional, Dict, Any
+from typing import Union, Optional, Dict, Any, Tuple
 
 import pytz
 
@@ -80,7 +80,7 @@ def distinct_activities(log: EventLog, t1: Union[datetime, str], t2: Union[datet
 
 
 def activity_frequency(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r: str, a: str,
-                        parameters: Optional[Dict[str, Any]] = None) -> float:
+                       parameters: Optional[Dict[str, Any]] = None) -> float:
     """
     Fraction of completions of a given activity a, by a given resource r, during a given time slot, [t1, t2),
     with respect to the total number of activity completions by resource r during [t1, t2)
@@ -124,11 +124,11 @@ def activity_frequency(log: EventLog, t1: Union[datetime, str], t2: Union[dateti
     log = [x for x in log if x[activity_key] == a]
     activity_a = len(log)
 
-    return float(activity_a)/float(total) if total > 0 else 0.0
+    return float(activity_a) / float(total) if total > 0 else 0.0
 
 
 def activity_completions(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                        parameters: Optional[Dict[str, Any]] = None) -> int:
+                         parameters: Optional[Dict[str, Any]] = None) -> int:
     """
     The number of activity instances completed by a given resource during a given time slot.
 
@@ -169,7 +169,7 @@ def activity_completions(log: EventLog, t1: Union[datetime, str], t2: Union[date
 
 
 def case_completions(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                        parameters: Optional[Dict[str, Any]] = None) -> int:
+                     parameters: Optional[Dict[str, Any]] = None) -> int:
     """
     The number of cases completed during a given time slot in which a given resource was involved.
 
@@ -207,9 +207,10 @@ def case_completions(log: EventLog, t1: Union[datetime, str], t2: Union[datetime
     stream = []
     for case in log:
         for i in range(len(case)):
-            eve = Event({timestamp_key: case[i][timestamp_key], resource_key: case[i][resource_key], case_id_key: case.attributes[case_id_key]})
+            eve = Event({timestamp_key: case[i][timestamp_key], resource_key: case[i][resource_key],
+                         case_id_key: case.attributes[case_id_key]})
             stream.append(eve)
-            if i == len(case)-1:
+            if i == len(case) - 1:
                 last_eve.append(eve)
 
     last_eve = [x for x in last_eve if t1 <= x[timestamp_key] < t2]
@@ -222,7 +223,7 @@ def case_completions(log: EventLog, t1: Union[datetime, str], t2: Union[datetime
 
 
 def fraction_case_completions(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                        parameters: Optional[Dict[str, Any]] = None) -> float:
+                              parameters: Optional[Dict[str, Any]] = None) -> float:
     """
     The fraction of cases completed during a given time slot in which a given resource was involved with respect to the
     total number of cases completed during the time slot.
@@ -261,9 +262,10 @@ def fraction_case_completions(log: EventLog, t1: Union[datetime, str], t2: Union
     stream = []
     for case in log:
         for i in range(len(case)):
-            eve = Event({timestamp_key: case[i][timestamp_key], resource_key: case[i][resource_key], case_id_key: case.attributes[case_id_key]})
+            eve = Event({timestamp_key: case[i][timestamp_key], resource_key: case[i][resource_key],
+                         case_id_key: case.attributes[case_id_key]})
             stream.append(eve)
-            if i == len(case)-1:
+            if i == len(case) - 1:
                 last_eve.append(eve)
 
     last_eve = [x for x in last_eve if t1 <= x[timestamp_key] < t2]
@@ -275,4 +277,89 @@ def fraction_case_completions(log: EventLog, t1: Union[datetime, str], t2: Union
     q1 = float(len(cases_last.intersection(cases_res)))
     q2 = float(len(cases_last))
 
-    return q1/q2 if q2 > 0 else 0.0
+    return q1 / q2 if q2 > 0 else 0.0
+
+
+def __insert_start_from_previous_event(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> EventLog:
+    """
+    Inserts the start timestamp of an event set to the completion of the previous event in the case
+
+    Parameters
+    ---------------
+    log
+        interval log
+
+    Returns
+    ---------------
+    log
+        interval Log with the start timestamp for each event
+    """
+    if parameters is None:
+        parameters = {}
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
+                                                     xes_constants.DEFAULT_START_TIMESTAMP_KEY)
+
+    for trace in log:
+        for i in range(1, len(trace)):
+            trace[i][start_timestamp_key] = trace[i-1][timestamp_key]
+        trace[0][start_timestamp_key] = trace[0][timestamp_key]
+
+    return log
+
+
+def __compute_workload(log: EventLog, resource: Optional[str] = None, activity: Optional[str] = None,
+                       parameters: Optional[Dict[str, Any]] = None) -> Dict[Tuple, int]:
+    """
+    Computes the workload of resources/activities, corresponding to each event a number
+    (number of concurring events)
+
+    Parameters
+    ---------------
+    log
+        event log
+    resource
+        (if provided) Resource on which we want to compute the workload
+    activity
+        (if provided) Activity on which we want to compute the workload
+
+    Returns
+    ---------------
+    workload_dict
+        Dictionary associating to each event the number of concurring events
+    """
+    if parameters is None:
+        parameters = {}
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, None)
+
+    from pm4py.objects.log.util import sorting
+    log = sorting.sort_timestamp(log, timestamp_key)
+    from pm4py.objects.log.util import interval_lifecycle
+    log = interval_lifecycle.to_interval(log, parameters=parameters)
+    if start_timestamp_key is None:
+        log = __insert_start_from_previous_event(log, parameters=parameters)
+        start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
+    events = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM)
+    if resource is not None:
+        events = [x for x in events if x[resource_key] == resource]
+    if activity is not None:
+        events = [x for x in events if x[activity_key] == activity]
+    events = [(x[start_timestamp_key].timestamp(), x[timestamp_key].timestamp(), x[resource_key], x[activity_key]) for x
+              in events]
+    events = sorted(events)
+    from intervaltree import IntervalTree, Interval
+    tree = IntervalTree()
+    ev_map = {}
+    k = 0.000001
+    for ev in events:
+        tree.add(Interval(ev[0], ev[1] + k))
+    for ev in events:
+        ev_map[ev] = len(tree[ev[0]:ev[1] + k])
+    return ev_map
