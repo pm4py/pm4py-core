@@ -404,3 +404,47 @@ def average_workload(log: EventLog, t1: Union[datetime, str], t2: Union[datetime
         num += workload*duration
         den += duration
     return num/den if den > 0 else 0.0
+
+
+def multitasking(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                 parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The fraction of active time during which a given resource is involved in more than one activity with respect
+    to the resource's active time.
+
+    Metric RBI 3.1 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    t1 = get_dt_from_string(t1).timestamp()
+    t2 = get_dt_from_string(t2).timestamp()
+
+    ev_dict = __compute_workload(log, resource=r, parameters=parameters)
+    ev_dict = {x: y for x, y in ev_dict.items() if x[0] >= t1 and x[1] <= t2}
+    num = 0.0
+    den = 0.0
+    for ev in ev_dict:
+        workload = ev_dict[ev]
+        duration = ev[1] - ev[0]
+        if workload > 1:
+            num += duration
+        den += duration
+    return num/den if den > 0 else 0.0
