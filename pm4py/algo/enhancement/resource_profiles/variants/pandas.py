@@ -227,3 +227,55 @@ def case_completions(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datet
     cases_last = set(last_df[case_id_key])
 
     return len(cases_last.intersection(cases_res))
+
+
+def fraction_case_completions(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                        parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The fraction of cases completed during a given time slot in which a given resource was involved with respect to the
+    total number of cases completed during the time slot.
+
+    Metric RBI 2.3 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    df
+        Dataframe
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+
+    t1 = get_dt_from_string(t1)
+    t2 = get_dt_from_string(t2)
+
+    df = df[[timestamp_key, resource_key, case_id_key]]
+
+    res_df = df[df[resource_key] == r]
+    cases_res = set(res_df[case_id_key])
+
+    last_df = df.groupby(case_id_key).last().reset_index()
+    last_df = last_df[last_df[timestamp_key] >= t1]
+    last_df = last_df[last_df[timestamp_key] < t2]
+    cases_last = set(last_df[case_id_key])
+
+    q1 = float(len(cases_last.intersection(cases_res)))
+    q2 = float(len(cases_last))
+
+    return q1/q2 if q2 > 0 else 0.0
