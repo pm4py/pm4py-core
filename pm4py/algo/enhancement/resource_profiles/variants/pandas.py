@@ -467,6 +467,57 @@ def multitasking(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime,
     return num/den if den > 0 else 0.0
 
 
+def average_duration_activity(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str, a: str,
+                       parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The average duration of instances of a given activity completed during a given time slot by a given resource.
+
+    Metric RBI 4.3 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    df
+        Dataframe
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+    a
+        Activity
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    t1 = get_dt_from_string(t1)
+    t2 = get_dt_from_string(t2)
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, None)
+    if start_timestamp_key is None:
+        df = __insert_start_from_previous_event(df, parameters=parameters)
+        start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
+
+    df = df[[timestamp_key, resource_key, case_id_key, activity_key, start_timestamp_key]]
+    df = df[df[resource_key] == r]
+    df = df[df[activity_key] == a]
+    df = df[df[timestamp_key] >= t1]
+    df = df[df[timestamp_key] < t2]
+
+    return float((df[timestamp_key] - df[start_timestamp_key]).astype('timedelta64[s]').mean())
+
+
 def interaction_two_resources(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r1: str, r2: str,
                               parameters: Optional[Dict[str, Any]] = None) -> float:
     """
