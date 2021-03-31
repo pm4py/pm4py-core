@@ -503,6 +503,47 @@ def average_duration_activity(log: EventLog, t1: Union[datetime, str], t2: Union
     return float(mean(x[timestamp_key].timestamp() - x[start_timestamp_key].timestamp() for x in log))
 
 
+def average_case_duration(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                          parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The average duration of cases completed during a given time slot in which a given resource was involved.
+
+    Metric RBI 4.4 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+
+    from pm4py.algo.filtering.log.attributes import attributes_filter
+    parameters_filter = {attributes_filter.Parameters.ATTRIBUTE_KEY: resource_key}
+    log = attributes_filter.apply(log, [r], parameters=parameters_filter)
+
+    from pm4py.algo.filtering.log.timestamp import timestamp_filter
+    log = timestamp_filter.filter_traces_intersecting(log, t1, t2, parameters=parameters)
+
+    from pm4py.statistics.traces.log import case_statistics
+    cd = case_statistics.get_cases_description(log, parameters=parameters).values()
+    return mean(x["caseDuration"] for x in cd)
+
+
 def interaction_two_resources(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r1: str, r2: str,
                               parameters: Optional[Dict[str, Any]] = None) -> float:
     """
