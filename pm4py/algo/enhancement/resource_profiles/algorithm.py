@@ -250,3 +250,34 @@ def interaction_two_resources(log_obj: Union[pd.DataFrame, EventLog], t1: Union[
         return pandas.interaction_two_resources(log_obj, t1, t2, r1, r2, parameters=parameters)
     else:
         return log.interaction_two_resources(log_obj, t1, t2, r1, r2, parameters=parameters)
+
+
+def social_position(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                              parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The fraction of resources involved in the same cases with a given resource during a given time slot with
+    respect to the total number of resources active during the time slot.
+
+    Metric RBI 5.2 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log_obj
+        Log object
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if type(log_obj) is pd.DataFrame:
+        return pandas.social_position(log_obj, t1, t2, r, parameters=parameters)
+    else:
+        return log.social_position(log_obj, t1, t2, r, parameters=parameters)

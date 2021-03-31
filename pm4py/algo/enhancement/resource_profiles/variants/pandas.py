@@ -518,3 +518,53 @@ def interaction_two_resources(df: pd.DataFrame, t1: Union[datetime, str], t2: Un
     df = df[df[case_id_key].isin(cases)]
 
     return df[case_id_key].nunique()
+
+
+def social_position(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                              parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The fraction of resources involved in the same cases with a given resource during a given time slot with
+    respect to the total number of resources active during the time slot.
+
+    Metric RBI 5.2 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    df
+        Dataframe
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    t1 = get_dt_from_string(t1)
+    t2 = get_dt_from_string(t2)
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+
+    df = df[[timestamp_key, resource_key, case_id_key]]
+    df = df[df[timestamp_key] >= t1]
+    df = df[df[timestamp_key] < t2]
+
+    from pm4py.algo.filtering.pandas.attributes import attributes_filter
+    parameters_filter = {attributes_filter.Parameters.ATTRIBUTE_KEY: resource_key}
+    filt_df = attributes_filter.apply(df, [r], parameters=parameters_filter)
+
+    q1 = float(filt_df[case_id_key].nunique())
+    q2 = float(df[case_id_key].nunique())
+
+    return q1/q2 if q2 > 0 else 0

@@ -496,3 +496,47 @@ def interaction_two_resources(log: EventLog, t1: Union[datetime, str], t2: Union
             if t1 <= trace[-1][timestamp_key] < t2:
                 red_log.append(trace)
     return len(red_log)
+
+
+def social_position(log: EventLog, t1_0: Union[datetime, str], t2_0: Union[datetime, str], r: str,
+                              parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The fraction of resources involved in the same cases with a given resource during a given time slot with
+    respect to the total number of resources active during the time slot.
+
+    Metric RBI 5.2 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    df
+        Dataframe
+    t1_0
+        Left interval
+    t2_0
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+
+    from pm4py.algo.filtering.log.timestamp import timestamp_filter
+    log = timestamp_filter.apply_events(log, t1_0, t2_0, parameters=parameters)
+
+    from pm4py.algo.filtering.log.attributes import attributes_filter
+    parameters_filter = {attributes_filter.Parameters.ATTRIBUTE_KEY: resource_key}
+
+    filtered_log = attributes_filter.apply(log, [r], parameters=parameters_filter)
+
+    q1 = float(len(filtered_log))
+    q2 = float(len(log))
+
+    return q1/q2 if q2 > 0 else 0.0
