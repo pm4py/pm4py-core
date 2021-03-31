@@ -26,6 +26,8 @@ def execute_script():
     # Metric RBI 4.3: The average duration of instances of a given activity completed during a given time slot by
     # a given resource.
     print(algorithm.average_duration_activity(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sue", "examine thoroughly"))
+    # Metric RBI 4.4: The average duration of cases completed during a given time slot in which a given resource was involved.
+    print(algorithm.average_case_duration(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sue"))
     # Metric RBI 5.1: The number of cases completed during a given time slot in which two given resources were involved.
     print(algorithm.interaction_two_resources(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Mike", "Pete"))
     # Metric RBI 5.2: The fraction of resources involved in the same cases with a given resource during a given time slot

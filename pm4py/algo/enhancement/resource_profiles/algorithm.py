@@ -252,6 +252,36 @@ def average_duration_activity(log_obj: Union[pd.DataFrame, EventLog], t1: Union[
         return log.average_duration_activity(log_obj, t1, t2, r, a, parameters=parameters)
 
 
+def average_case_duration(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                          parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The average duration of cases completed during a given time slot in which a given resource was involved.
+
+    Metric RBI 4.4 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    log_obj
+        Log object
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if type(log_obj) is pd.DataFrame:
+        return pandas.average_case_duration(log_obj, t1, t2, r, parameters=parameters)
+    else:
+        return log.average_case_duration(log_obj, t1, t2, r, parameters=parameters)
+
+
 def interaction_two_resources(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r1: str, r2: str,
                               parameters: Optional[Dict[str, Any]] = None) -> float:
     """

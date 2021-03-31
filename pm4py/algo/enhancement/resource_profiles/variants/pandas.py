@@ -7,6 +7,7 @@ import pytz
 
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.util.vers_checker import check_pandas_ge_024
+from statistics import mean
 
 
 class Parameters(Enum):
@@ -516,6 +517,47 @@ def average_duration_activity(df: pd.DataFrame, t1: Union[datetime, str], t2: Un
     df = df[df[timestamp_key] < t2]
 
     return float((df[timestamp_key] - df[start_timestamp_key]).astype('timedelta64[s]').mean())
+
+
+def average_case_duration(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
+                              parameters: Optional[Dict[str, Any]] = None) -> float:
+    """
+    The average duration of cases completed during a given time slot in which a given resource was involved.
+
+    Metric RBI 4.4 in Pika, Anastasiia, et al.
+    "Mining resource profiles from event logs." ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+
+    Parameters
+    -----------------
+    df
+        Dataframe
+    t1
+        Left interval
+    t2
+        Right interval
+    r
+        Resource
+
+    Returns
+    ----------------
+    metric
+        Value of the metric
+    """
+    if parameters is None:
+        parameters = {}
+
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+
+    from pm4py.algo.filtering.pandas.attributes import attributes_filter
+    parameters_filter = {attributes_filter.Parameters.ATTRIBUTE_KEY: resource_key}
+    df = attributes_filter.apply(df, [r], parameters=parameters_filter)
+
+    from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
+    df = timestamp_filter.filter_traces_intersecting(df, t1, t2, parameters=parameters)
+
+    from pm4py.statistics.traces.pandas import case_statistics
+    cd = case_statistics.get_cases_description(df, parameters=parameters).values()
+    return mean(x["caseDuration"] for x in cd)
 
 
 def interaction_two_resources(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r1: str, r2: str,
