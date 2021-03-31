@@ -27,6 +27,9 @@ def execute_script():
     print(algorithm.multitasking(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Mike"))
     # Metric RBI 5.1: The number of cases completed during a given time slot in which two given resources were involved.
     print(algorithm.interaction_two_resources(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Mike", "Pete"))
+    # Metric RBI 5.2: The fraction of resources involved in the same cases with a given resource during a given time slot
+    # with respect to the total number of resources active during the time slot.
+    print(algorithm.social_position(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sue"))
 
 
 if __name__ == "__main__":
