@@ -25,6 +25,9 @@ def execute_script():
     # Metric RBI 3.1: The fraction of active time during which a given resource is involved in more than one activity
     # with respect to the resource's active time.
     print(algorithm.multitasking(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Mike"))
+    # Metric RBI 4.3: The average duration of instances of a given activity completed during a given time slot by
+    # a given resource.
+    print(algorithm.average_duration_activity(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sue", "examine thoroughly"))
     # Metric RBI 5.1: The number of cases completed during a given time slot in which two given resources were involved.
     print(algorithm.interaction_two_resources(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Mike", "Pete"))
     # Metric RBI 5.2: The fraction of resources involved in the same cases with a given resource during a given time slot
