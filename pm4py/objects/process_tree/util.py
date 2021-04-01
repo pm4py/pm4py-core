@@ -375,7 +375,7 @@ def get_ancestors_until(t: ProcessTree, until: ProcessTree, include_until: bool 
 
 def get_leaves(t: ProcessTree, leaves=None):
     leaves = leaves if leaves is not None else set()
-    if t.label is not None:
+    if len(t.children) == 0:
         leaves.add(t)
     else:
         for c in t.children:
