@@ -1,6 +1,37 @@
 # PM4Py Changelog
 
-## PM4PY 2.2.2 (2021.03.03)
+## PM4PY 2.2.4 (2021.04.01)
+
+### Fixed
+
+### Removed
+
+### Deprecated
+
+### Changed
+
+* 56317d81
+    * process tree based alignments no longer use trace-based process tree reduction (can still be used through utils)
+* c1c1ffc8
+    * minor optimizations to state-equation based alignment computation
+* c95d45c9
+  * large (internal) refactoring of PM4Py object files and algorithms
+
+### Added
+
+* d14d3d27
+    * added resource profiles to PM4Py taken from Pika, Anastasiia, et al. "Mining resource profiles from event logs."
+      ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
+* ab56d899
+    * organizational mining according to https://arxiv.org/abs/2011.12445; contains several organizational group-based
+      metrics
+* 6a77a948
+    * add serialization and deserialization to various pm4py objects; available through ```pm4py.serialize()```
+      and ```pm4py.deserialize()```
+
+### Other
+
+## PM4PY 2.2.3 (2021.03.19)
 
 ### Fixed
 
@@ -14,7 +45,7 @@
 * c3cde455
     * deprecated (moved internally) the evaluation and simulation pacakges.
 * a756f1fa
-  * pm4py.objects.process_tree.pt_operator.py
+    * pm4py.objects.process_tree.pt_operator.py
 
 ### Changed
 
@@ -49,8 +80,10 @@
     * added process tree parsing functionality (```pm4py.parse_process_tree()```)
 
 ### Other
+
 * a756f1fa
-  * the process tree operator class is now embedded within the process tree object definition (pm4py.objects.process_tree.process_tree.py)
+    * the process tree operator class is now embedded within the process tree object definition (
+      pm4py.objects.process_tree.process_tree.py)
 
 ## PM4PY 2.2.2 (2021.03.03)
 
