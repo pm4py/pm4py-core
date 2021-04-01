@@ -55,7 +55,7 @@ def to_interval(log, parameters=None):
             activities_start = {}
             for event in trace:
                 activity = event[activity_key]
-                transition = event[transition_key]
+                transition = event[transition_key] if transition_key in event else "complete"
                 timestamp = event[timestamp_key]
                 if transition.lower() == "start":
                     if activity not in activities_start:
