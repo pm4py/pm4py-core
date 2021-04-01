@@ -31,3 +31,14 @@ DEFAULT_EVENT_INDEX_KEY = "@@event_index"
 DEFAULT_FLOW_TIME = "@@flow_time"
 
 DEFAULT_ENCODING = "utf-8"
+
+from enum import Enum
+
+
+class AvailableSerializations(Enum):
+    EVENT_LOG = "event_log"
+    DATAFRAME = "dataframe"
+    PETRI_NET = "petri_net"
+    PROCESS_TREE = "process_tree"
+    BPMN = "bpmn"
+    DFG = "dfg"
