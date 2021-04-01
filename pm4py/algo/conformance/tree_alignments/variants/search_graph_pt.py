@@ -292,7 +292,7 @@ def apply_multiprocessing(obj, pt, parameters=None):
                 if variant not in futures:
                     futures[variant] = executor.submit(align_variant, variant, leaves, pt)
 
-            progress = _construct_progress_bar(len(futures))
+            progress = _construct_progress_bar(len(futures), parameters)
             alignments_ready = 0
             if progress is not None:
                 while alignments_ready != len(futures):
