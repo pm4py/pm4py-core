@@ -2,7 +2,7 @@ from functools import reduce
 from scipy.cluster.hierarchy import fcluster
 from pm4py.algo.clustering.trace_attribute_driven.util import filter_subsets
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import constants
 
 

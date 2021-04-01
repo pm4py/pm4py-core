@@ -4,7 +4,7 @@ from copy import copy
 from enum import Enum
 from typing import Optional, Dict, Any, Tuple
 
-from pm4py.objects.log.log import Event
+from pm4py.objects.log.obj import Event
 from pm4py.streaming.algo.interface import StreamingAlgorithm
 from pm4py.streaming.util.dictio import generator
 from pm4py.util import exec_utils, constants, xes_constants

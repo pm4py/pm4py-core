@@ -10,7 +10,7 @@ except:
     pass
 
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.log import log as log_instance
+from pm4py.objects.log import obj as log_instance
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.util import constants
 from pm4py.util import exec_utils

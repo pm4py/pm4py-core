@@ -1,4 +1,4 @@
-from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.obj import Marking
 
 
 def discover_final_marking(petri):

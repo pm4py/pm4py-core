@@ -5,7 +5,7 @@ from pm4py.algo.discovery.dfg import algorithm as discover_dfg
 from pm4py.algo.discovery.inductive.variants.im_clean.cuts import sequence as sequence_cut, loop as loop_cut, \
     xor as xor_cut, concurrency as concurrent_cut
 from pm4py.objects.dfg.utils import dfg_utils
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import constants
 from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
 from pm4py.algo.discovery.minimum_self_distance import utils as msdw_algo

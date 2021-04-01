@@ -1,11 +1,11 @@
 import random
 
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import xes_constants as xes
-from pm4py.objects.process_tree import process_tree as pt_opt
+from pm4py.objects.process_tree import obj as pt_opt
 from pm4py.objects.process_tree import state as pt_st
 from pm4py.objects.process_tree import util as pt_util
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.process_tree.obj import ProcessTree
 
 import datetime
 from copy import deepcopy

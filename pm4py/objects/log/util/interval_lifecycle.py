@@ -2,7 +2,7 @@ from pm4py.util.business_hours import BusinessHours
 from pm4py.objects.log.util import sorting
 from pm4py.util import constants
 from pm4py.util import xes_constants as xes
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 
 
 def to_interval(log, parameters=None):

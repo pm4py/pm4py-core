@@ -6,7 +6,7 @@ from pm4py.algo.conformance.alignments.variants.dijkstra_less_memory import __ad
 import time
 import sys
 from pm4py.objects.petri import align_utils
-from pm4py.objects.log import log as log_implementation
+from pm4py.objects.log import obj as log_implementation
 from pm4py import util as pm4pyutil
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
@@ -16,7 +16,7 @@ from pm4py.util import exec_utils
 from pm4py.objects.petri.synchronous_product import construct_cost_aware
 from pm4py.util.lp import solver as lp_solver
 from pm4py.objects.petri.semantics import enabled_transitions
-from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.obj import Marking
 from pm4py.objects.petri.incidence_matrix import construct
 from enum import Enum
 import heapq

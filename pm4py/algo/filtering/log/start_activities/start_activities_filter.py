@@ -2,7 +2,7 @@ from enum import Enum
 
 from pm4py.algo.filtering.common.filtering_constants import DECREASING_FACTOR
 from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.statistics.start_activities.common import get as start_activities_common
 from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.util import constants

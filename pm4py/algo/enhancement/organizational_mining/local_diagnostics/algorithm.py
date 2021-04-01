@@ -4,7 +4,7 @@ from typing import Union, Optional, Dict, Any, List
 import pandas as pd
 
 from pm4py.algo.enhancement.organizational_mining import util
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import constants
 
 

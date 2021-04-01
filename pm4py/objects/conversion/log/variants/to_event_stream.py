@@ -4,8 +4,8 @@ from copy import deepcopy
 from enum import Enum
 
 from pm4py.objects.conversion.log import constants
-from pm4py.objects.log import log as log_instance
-from pm4py.objects.log.log import EventLog, Event, XESExtension
+from pm4py.objects.log import obj as log_instance
+from pm4py.objects.log.obj import EventLog, Event, XESExtension
 from pm4py.util import constants as pmutil
 from pm4py.util import exec_utils, pandas_utils, xes_constants
 

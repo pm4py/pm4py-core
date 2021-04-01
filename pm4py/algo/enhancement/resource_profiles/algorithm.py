@@ -1,6 +1,6 @@
 from pm4py.algo.enhancement.resource_profiles.variants import log, pandas
 import pandas as pd
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from typing import Union, Optional, Dict, Any
 from datetime import datetime
 

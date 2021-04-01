@@ -1,6 +1,6 @@
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.objects.log.log import EventLog, Trace, EventStream
+from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.objects.conversion.log import converter as log_converter
 from enum import Enum
 from pm4py.util import exec_utils

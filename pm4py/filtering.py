@@ -5,7 +5,7 @@ import deprecation
 import pandas as pd
 
 from pm4py.meta import VERSION as PM4PY_CURRENT_VERSION
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import constants
 from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
 
@@ -298,7 +298,7 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
                 cases = cases.intersection(this_traces)
         return log[log[constants.CASE_CONCEPT_NAME].isin(cases)]
     else:
-        from pm4py.objects.log.log import EventLog
+        from pm4py.objects.log.obj import EventLog
         from pm4py.algo.filtering.log.ltl import ltl_checker
         if retain:
             cases = set()
