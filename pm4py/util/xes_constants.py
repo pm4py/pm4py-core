@@ -30,3 +30,4 @@ DEFAULT_START_TIMESTAMP_KEY = 'start_timestamp'
 DEFAULT_TRACEID_KEY = 'concept:name'
 DEFAULT_RESOURCE_KEY = 'org:resource'
 DEFAULT_TRANSITION_KEY = "lifecycle:transition"
+DEFAULT_GROUP_KEY = 'org:group'
