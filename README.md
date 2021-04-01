@@ -23,8 +23,8 @@ pm4py.view_petri_net(process_model, initial_marking, final_marking, format="svg"
 PM4Py can be installed on Python 3.6.x / 3.7.x / 3.8.x by doing:
 `pip install -U pm4py`
 
-## Release Notes
-To track the incremental updates, we offer a [*RELEASE_NOTES*](https://github.com/pm4py/pm4py-core/blob/release/RELEASE_NOTES) file.
+## Change Log
+We track all changes in our [*CHANGELOG*](https://github.com/pm4py/pm4py-core/blob/release/CHANGELOG.md) file.
 
 ## Third Party Dependencies
 As scientific library in the Python ecosystem, we rely on external libraries to offer our features.
