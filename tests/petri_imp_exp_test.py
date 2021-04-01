@@ -48,7 +48,7 @@ class PetriImportExportTest(unittest.TestCase):
         imported_petri1, marking1, fmarking1 = petri_importer.apply(
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        final_marking = petri.petrinet.Marking()
+        final_marking = petri.obj.Marking()
         for p in imported_petri1.places:
             if not p.out_arcs:
                 final_marking[p] = 1

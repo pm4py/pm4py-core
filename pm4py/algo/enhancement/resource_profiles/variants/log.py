@@ -5,7 +5,7 @@ from typing import Union, Optional, Dict, Any, Tuple
 import pytz
 
 from pm4py.objects.conversion.log import converter
-from pm4py.objects.log.log import EventLog, Event
+from pm4py.objects.log.obj import EventLog, Event
 from pm4py.util import exec_utils, constants, xes_constants
 from statistics import mean
 

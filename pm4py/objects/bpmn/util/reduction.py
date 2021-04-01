@@ -1,4 +1,4 @@
-from pm4py.objects.bpmn.bpmn_graph import BPMN
+from pm4py.objects.bpmn.obj import BPMN
 
 
 def reduce_xor_gateways(bpmn_graph, parameters=None):

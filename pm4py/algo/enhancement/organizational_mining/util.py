@@ -4,7 +4,7 @@ from typing import Union, Optional, Dict, Any, Tuple
 import pandas as pd
 
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import xes_constants, constants, exec_utils
 
 

@@ -1,4 +1,4 @@
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import xes_constants as xes
 from pm4py.util import constants as pm4_constants
 

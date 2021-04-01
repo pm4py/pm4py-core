@@ -6,7 +6,7 @@ from typing import List, Tuple
 import numpy as np
 
 from pm4py.objects.petri import semantics, properties
-from pm4py.objects.petri.petrinet import Marking, PetriNet
+from pm4py.objects.petri.obj import Marking, PetriNet
 from pm4py.util.lp import solver as lp_solver
 
 SKIP = '>>'

@@ -2,7 +2,7 @@ from typing import Optional, Tuple, Any
 
 import pandas as pd
 
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import constants, xes_constants, pandas_utils
 
 
@@ -96,10 +96,10 @@ def serialize(*args) -> Tuple[str, bytes]:
         Serialized object (a tuple consisting of a string denoting the type of the object, and a bytes string
         representing the serialization)
     """
-    from pm4py.objects.log.log import EventLog
-    from pm4py.objects.petri.petrinet import PetriNet
-    from pm4py.objects.process_tree.process_tree import ProcessTree
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.log.obj import EventLog
+    from pm4py.objects.petri.obj import PetriNet
+    from pm4py.objects.process_tree.obj import ProcessTree
+    from pm4py.objects.bpmn.obj import BPMN
     from collections import Counter
 
     if type(args[0]) is EventLog:

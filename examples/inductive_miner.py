@@ -8,7 +8,7 @@ from pm4py.objects.conversion.process_tree import converter
 from pm4py.algo.evaluation.replay_fitness import evaluator
 from pm4py.algo.discovery.inductive.parameters import Parameters
 from pm4py.statistics.variants.log import get as variants_module
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 
 
 def keep_one_trace_per_variant(log, parameters=None):

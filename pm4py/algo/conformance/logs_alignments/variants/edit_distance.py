@@ -2,7 +2,7 @@ import difflib
 from enum import Enum
 from typing import Optional, Dict, Any, List, Set
 
-from pm4py.objects.log.log import EventLog, Trace
+from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.objects.log.util import log_regex
 from pm4py.objects.petri import align_utils
 from pm4py.util import exec_utils

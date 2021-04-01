@@ -2,7 +2,7 @@ from enum import Enum
 
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.statistics.end_activities.common import get as end_activities_common
 from pm4py.statistics.end_activities.log.get import get_end_activities
 from pm4py.util import exec_utils

@@ -1,7 +1,7 @@
 from typing import Dict, Optional, List
 
 import pm4py
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 
 
 def detect(log: EventLog, alphabet: Dict[str, int], act_key: str) -> Optional[str]:

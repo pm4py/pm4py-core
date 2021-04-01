@@ -1,4 +1,4 @@
-from pm4py.objects.process_tree import process_tree as pt_operator
+from pm4py.objects.process_tree import obj as pt_operator
 from pm4py.util.regex import SharedObj, get_new_char
 
 

@@ -60,7 +60,7 @@ class InductiveMinerTest(unittest.TestCase):
         petri_exporter.apply(net1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         self.assertEqual(len(net1.places), len(net2.places))
-        final_marking = petri.petrinet.Marking()
+        final_marking = petri.obj.Marking()
         for p in net1.places:
             if not p.out_arcs:
                 final_marking[p] = 1
@@ -86,7 +86,7 @@ class InductiveMinerTest(unittest.TestCase):
         petri_exporter.apply(net1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         self.assertEqual(len(net1.places), len(net2.places))
-        final_marking = petri.petrinet.Marking()
+        final_marking = petri.obj.Marking()
         for p in net1.places:
             if not p.out_arcs:
                 final_marking[p] = 1
@@ -105,7 +105,7 @@ class InductiveMinerTest(unittest.TestCase):
         petri_exporter.apply(net, marking, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         gviz = pn_viz.graphviz_visualization(net)
-        final_marking = petri.petrinet.Marking()
+        final_marking = petri.obj.Marking()
         for p in net.places:
             if not p.out_arcs:
                 final_marking[p] = 1

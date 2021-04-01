@@ -2,7 +2,7 @@ from pm4py.objects import log as log_lib
 from pm4py.evaluation.precision import utils as precision_utils
 from pm4py.objects.petri import align_utils as utils
 from pm4py.objects.petri import check_soundness
-from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.obj import Marking
 from pm4py.objects.petri.utils import construct_trace_net
 from pm4py.objects.petri.synchronous_product import construct
 from pm4py.statistics.start_activities.log.get import get_start_activities

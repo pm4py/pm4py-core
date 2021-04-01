@@ -2,7 +2,7 @@ import unittest
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.util import func
-from pm4py.objects.log.log import Trace
+from pm4py.objects.log.obj import Trace
 import os
 
 

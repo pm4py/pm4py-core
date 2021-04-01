@@ -5,7 +5,7 @@ import sys
 from enum import Enum
 from io import BytesIO
 
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.objects.log.util import sorting
 from pm4py.util import exec_utils, constants
 from pm4py.util import xes_constants

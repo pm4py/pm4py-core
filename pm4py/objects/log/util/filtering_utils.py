@@ -1,5 +1,5 @@
 from pm4py.statistics.variants.log import get as variants_module
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 
 
 def keep_one_trace_per_variant(log, parameters=None):

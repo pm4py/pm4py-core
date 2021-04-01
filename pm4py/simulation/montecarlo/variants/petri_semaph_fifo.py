@@ -3,7 +3,7 @@ from pm4py.simulation.montecarlo.utils import replay
 from pm4py.objects.petri.semantics import enabled_transitions, weak_execute
 from threading import Thread, Semaphore
 from statistics import median
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import constants, xes_constants
 from pm4py.objects.stochastic_petri import utils as stochastic_utils
 import datetime

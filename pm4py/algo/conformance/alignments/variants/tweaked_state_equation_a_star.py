@@ -6,9 +6,9 @@ from enum import Enum
 
 from pm4py import util as pm4pyutil
 from pm4py.algo.analysis.marking_equation.variants import classic as marking_equation
-from pm4py.objects.log import log as log_implementation
+from pm4py.objects.log import obj as log_implementation
 from pm4py.objects.petri import align_utils as utils
-from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.obj import Marking
 from pm4py.objects.petri.incidence_matrix import construct as inc_mat_construct
 from pm4py.objects.petri.synchronous_product import construct_cost_aware, construct
 from pm4py.objects.petri import semantics

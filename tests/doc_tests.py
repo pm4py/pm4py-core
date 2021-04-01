@@ -542,7 +542,7 @@ class DocTests(unittest.TestCase):
 
     def test_52(self):
         # creating an empty Petri net
-        from pm4py.objects.petri.petrinet import PetriNet, Marking
+        from pm4py.objects.petri.obj import PetriNet, Marking
         net = PetriNet("new_petri_net")
 
         # creating source, p_1 and sink place
