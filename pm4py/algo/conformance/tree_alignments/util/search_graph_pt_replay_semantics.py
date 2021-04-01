@@ -22,7 +22,7 @@ def transform_tree(tree: ProcessTree, state_type: ProcessTree.OperatorState, sta
     List[Tuple[ProcessTree, ProcessTree.OperatorState]], ProcessTreeState]:
     state = copy.copy(state)
     path = list()
-    if tree not in state or state[(id(tree), tree)] != state_type:
+    if (id(tree), tree) not in state or state[(id(tree), tree)] != state_type:
         state[(id(tree), tree)] = state_type
         path = [(tree, state_type)]
     for c in tree.children:
