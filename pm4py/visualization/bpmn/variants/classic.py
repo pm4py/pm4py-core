@@ -47,7 +47,7 @@ def apply(bpmn_graph, parameters=None):
     if parameters is None:
         parameters = {}
 
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
     from pm4py.objects.bpmn.util.sorting import get_sorted_nodes_edges
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")

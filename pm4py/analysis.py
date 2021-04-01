@@ -16,8 +16,8 @@
 '''
 from typing import List, Optional, Tuple, Dict
 
-from pm4py.objects.log.log import Trace
-from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.log.obj import Trace
+from pm4py.objects.petri.obj import PetriNet, Marking
 
 
 def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial_marking: Marking,

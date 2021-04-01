@@ -17,7 +17,7 @@
 import re
 
 from pm4py.objects.petri import semantics, align_utils
-from pm4py.objects.transition_system import transition_system as ts
+from pm4py.objects.transition_system import obj as ts
 from pm4py.objects.transition_system import utils
 from pm4py.util import exec_utils
 from enum import Enum

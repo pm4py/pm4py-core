@@ -22,7 +22,7 @@ from copy import deepcopy
 from enum import Enum
 import math
 
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import exec_utils, constants, xes_constants
 
 

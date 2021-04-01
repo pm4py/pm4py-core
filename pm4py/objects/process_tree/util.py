@@ -16,12 +16,12 @@
 '''
 import copy
 import hashlib
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Tuple
 
-from pm4py.objects.process_tree import process_tree as pt
-from pm4py.objects.process_tree import process_tree as pt_op
+from pm4py.objects.process_tree import obj as pt
+from pm4py.objects.process_tree import obj as pt_op
 from pm4py.objects.process_tree import state as pt_st
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import constants
 
 
@@ -391,7 +391,7 @@ def get_ancestors_until(t: ProcessTree, until: ProcessTree, include_until: bool 
 
 def get_leaves(t: ProcessTree, leaves=None):
     leaves = leaves if leaves is not None else set()
-    if t.label is not None:
+    if len(t.children) == 0:
         leaves.add(t)
     else:
         for c in t.children:
@@ -408,7 +408,7 @@ def is_any_operator_of(tree: ProcessTree, operators: List[pt_op.Operator]) -> bo
 
 
 def is_in_state(tree: ProcessTree, target_state: ProcessTree.OperatorState,
-                tree_state: Dict[ProcessTree, ProcessTree.OperatorState]) -> bool:
+                tree_state: Dict[Tuple[int, ProcessTree], ProcessTree.OperatorState]) -> bool:
     return tree is not None and (id(tree), tree) in tree_state and tree_state[(id(tree), tree)] == target_state
 
 

@@ -3,7 +3,7 @@ from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.enhancement.comparison.petrinet import element_usage_comparison
 from pm4py.objects.log.util import sorting
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.visualization.petrinet import visualizer as pn_vis
 
 

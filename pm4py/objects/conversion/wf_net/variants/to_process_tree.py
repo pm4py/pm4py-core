@@ -21,8 +21,8 @@ from copy import deepcopy
 from enum import Enum
 
 from pm4py.objects.petri import utils as pn_util
-from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.objects.process_tree import process_tree as pt_operator
+from pm4py.objects.petri.obj import PetriNet
+from pm4py.objects.process_tree import obj as pt_operator
 from pm4py.objects.process_tree import util as pt_util
 from pm4py.objects.process_tree.util import tree_sort
 from pm4py.util import exec_utils

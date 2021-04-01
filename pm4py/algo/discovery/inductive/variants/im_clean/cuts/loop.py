@@ -22,7 +22,7 @@ from networkx.classes.graph import Graph
 
 from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.algo.discovery.inductive.variants.im_clean.d_types import Cut, DFG
-from pm4py.objects.log.log import EventLog, Trace
+from pm4py.objects.log.obj import EventLog, Trace
 
 
 def detect(dfg: DFG, alphabet: Dict[str, int], start_activities: Dict[str, int],

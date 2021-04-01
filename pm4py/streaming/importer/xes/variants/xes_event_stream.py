@@ -17,7 +17,7 @@
 import logging
 from enum import Enum
 
-from pm4py.objects.log.log import Event
+from pm4py.objects.log.obj import Event
 from pm4py.util import xes_constants, exec_utils
 from pm4py.util.dt_parsing import parser as dt_parser
 

@@ -15,6 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from datetime import datetime
+import pytz
 
 
 def get_dt_from_string(dt):
@@ -32,6 +33,7 @@ def get_dt_from_string(dt):
         Datetime object
     """
     if type(dt) is str:
-        return datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
+        dt = datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
 
+    #dt = dt.replace(tzinfo=pytz.utc)
     return dt

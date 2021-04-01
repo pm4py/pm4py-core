@@ -17,8 +17,8 @@
 import random
 import string
 
-from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.process_tree.process_tree import Operator
+from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.process_tree.obj import Operator
 from enum import Enum
 from pm4py.util import exec_utils
 

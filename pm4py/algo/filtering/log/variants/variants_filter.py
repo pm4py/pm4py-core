@@ -17,7 +17,7 @@
 from enum import Enum
 
 from pm4py.algo.filtering.common import filtering_constants
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.statistics.variants.log.get import get_variants, \
     get_variants_sorted_by_count, get_variants_along_with_case_durations
 from pm4py.util import exec_utils

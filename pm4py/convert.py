@@ -18,11 +18,11 @@ from typing import Union, Tuple
 
 import pandas as pd
 
-from pm4py.objects.bpmn.bpmn_graph import BPMN
-from pm4py.objects.heuristics_net.net import HeuristicsNet
-from pm4py.objects.log.log import EventLog, EventStream
-from pm4py.objects.petri.petrinet import PetriNet, Marking
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.bpmn.obj import BPMN
+from pm4py.objects.heuristics_net.obj import HeuristicsNet
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.process_tree.obj import ProcessTree
 
 
 def convert_to_event_log(obj: Union[pd.DataFrame, EventStream]) -> EventLog:
@@ -96,8 +96,8 @@ def convert_to_bpmn(*args: Union[Tuple[PetriNet, Marking, Marking], ProcessTree]
     bpmn_diagram
         BPMN diagram
     """
-    from pm4py.objects.process_tree.process_tree import ProcessTree
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.process_tree.obj import ProcessTree
+    from pm4py.objects.bpmn.obj import BPMN
 
     if isinstance(args[0], BPMN):
         # the object is already a BPMN
@@ -173,8 +173,8 @@ def convert_to_process_tree(*args: Union[Tuple[PetriNet, Marking, Marking], BPMN
     tree
         Process tree (when the model is block-structured)
     """
-    from pm4py.objects.process_tree.process_tree import ProcessTree
-    from pm4py.objects.petri.petrinet import PetriNet
+    from pm4py.objects.process_tree.obj import ProcessTree
+    from pm4py.objects.petri.obj import PetriNet
     if isinstance(args[0], ProcessTree):
         # the object is already a process tree
         return args[0]

@@ -20,7 +20,7 @@ from typing import Optional, Dict, Any, List
 import pandas as pd
 
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.log.log import EventStream
+from pm4py.objects.log.obj import EventStream
 from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import points_subset

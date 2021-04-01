@@ -18,11 +18,11 @@ import random
 import time
 from copy import copy, deepcopy
 
-from pm4py.objects.log.log import Trace, Event
+from pm4py.objects.log.obj import Trace, Event
 from pm4py.objects.petri import properties
 from pm4py.objects.petri import semantics
 from pm4py.objects.petri.networkx_graph import create_networkx_directed_graph
-from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.petri.obj import PetriNet, Marking
 from pm4py.util import xes_constants as xes_util
 
 
@@ -390,7 +390,7 @@ def decorate_transitions_prepostset(net):
     net
         Petri net
     """
-    from pm4py.objects.petri.petrinet import Marking
+    from pm4py.objects.petri.obj import Marking
     for trans in net.transitions:
         sub_marking = Marking()
         add_marking = Marking()

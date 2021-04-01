@@ -22,7 +22,7 @@ from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TRACEID_KEY
 from pm4py.objects.petri import check_soundness
-from pm4py.objects.log.log import Trace
+from pm4py.objects.log.obj import Trace
 import time
 from pm4py.util import exec_utils
 from enum import Enum

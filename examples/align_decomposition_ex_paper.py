@@ -1,4 +1,4 @@
-from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.petri.obj import PetriNet, Marking
 from pm4py.objects.petri.utils import add_arc_from_to
 from pm4py.visualization.petrinet import visualizer
 from pm4py.objects.petri import decomposition

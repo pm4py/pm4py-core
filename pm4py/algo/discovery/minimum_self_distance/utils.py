@@ -19,7 +19,7 @@ from typing import Any, Dict, Optional, Set
 
 import pm4py
 from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import constants, exec_utils, xes_constants
 
 

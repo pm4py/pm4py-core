@@ -20,7 +20,7 @@ from enum import Enum
 
 from pm4py.objects.conversion.log import constants
 from pm4py.objects.conversion.log.variants import to_event_stream
-from pm4py.objects.log import log as log_instance
+from pm4py.objects.log import obj as log_instance
 from pm4py.util import xes_constants as xes
 from pm4py.util import exec_utils, constants as pmconstants
 import pkgutil

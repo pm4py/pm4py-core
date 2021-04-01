@@ -18,7 +18,7 @@ from pm4py.util.business_hours import BusinessHours
 from pm4py.objects.log.util import sorting
 from pm4py.util import constants
 from pm4py.util import xes_constants as xes
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 
 
 def to_interval(log, parameters=None):
@@ -71,7 +71,7 @@ def to_interval(log, parameters=None):
             activities_start = {}
             for event in trace:
                 activity = event[activity_key]
-                transition = event[transition_key]
+                transition = event[transition_key] if transition_key in event else "complete"
                 timestamp = event[timestamp_key]
                 if transition.lower() == "start":
                     if activity not in activities_start:

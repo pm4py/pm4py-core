@@ -18,7 +18,7 @@ import heapq
 import time
 
 from pm4py import util as pm4pyutil
-from pm4py.objects.log import log as log_implementation
+from pm4py.objects.log import obj as log_implementation
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.petri.synchronous_product import construct_cost_aware, construct
 from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, \
@@ -345,12 +345,11 @@ def __search(sync_net, ini, fin, cost_function, skip, ret_tuple_as_trans_desc=Fa
         closed.add(current_marking)
         visited += 1
 
-        possible_enabling_transitions = copy(trans_empty_preset)
+        enabled_trans = copy(trans_empty_preset)
         for p in current_marking:
             for t in p.ass_trans:
-                possible_enabling_transitions.add(t)
-
-        enabled_trans = [t for t in possible_enabling_transitions if t.sub_marking <= current_marking]
+                if t.sub_marking <= current_marking:
+                    enabled_trans.add(t)
 
         trans_to_visit_with_cost = [(t, cost_function[t]) for t in enabled_trans if not (
                 t is not None and utils.__is_log_move(t, skip) and utils.__is_model_move(t, skip))]

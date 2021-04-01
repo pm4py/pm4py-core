@@ -45,7 +45,7 @@ from pm4py.evaluation.soundness.woflan.place_invariants.utility import \
     compute_uncovered_places as compute_uncovered_place_in_invariants
 from pm4py.evaluation.soundness.woflan.place_invariants.utility import transform_basis
 from pm4py.objects.petri import utils
-from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri.obj import PetriNet
 from pm4py.util import exec_utils
 
 

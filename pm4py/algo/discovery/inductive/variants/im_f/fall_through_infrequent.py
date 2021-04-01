@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.log import log
+from pm4py.objects.log import obj
 import logging
 
 def empty_trace_filtering(l, f):
@@ -24,7 +24,7 @@ def empty_trace_filtering(l, f):
         enough_traces = True
 
     if empty_traces_present:
-        new_log = log.EventLog()
+        new_log = obj.EventLog()
         for trace in l:
             if len(trace) != 0:
                 new_log.append(trace)

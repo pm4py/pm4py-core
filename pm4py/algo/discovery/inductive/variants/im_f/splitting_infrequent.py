@@ -14,11 +14,11 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.log import log
+from pm4py.objects.log import obj
 
 
 def filter_trace_on_cut_partition(trace, partition, activity_key):
-    filtered_trace = log.Trace()
+    filtered_trace = obj.Trace()
     for event in trace:
         if event[activity_key] in partition:
             filtered_trace.append(event)
@@ -49,7 +49,7 @@ def find_split_point(trace, cut_partition, start, ignore, activity_key):
 
 
 def cut_trace_between_two_points(trace, point_a, point_b):
-    cutted_trace = log.Trace()
+    cutted_trace = obj.Trace()
     # we have to use <= although in the paper the intervall is [) because our index starts at 0
     while point_a < point_b:
         cutted_trace.append(trace[point_a])
@@ -62,7 +62,7 @@ def split_xor_infrequent(cut, l, activity_key):
     # TODO think of empty logs
     # creating the empty L_1,...,L_n from the second code-line on page 205
     n = len(cut)
-    new_logs = [log.EventLog() for i in range(0, n)]
+    new_logs = [obj.EventLog() for i in range(0, n)]
     for trace in l:                                                 # for all traces
         number_of_events_in_trace = 0
         index_of_cut_partition = 0
@@ -84,7 +84,7 @@ def split_xor_infrequent(cut, l, activity_key):
 def split_sequence_infrequent(cut, l, activity_key):
     # write L_1,...,L_n like in second line of code on page 206
     n = len(cut)
-    new_logs = [log.EventLog() for j in range(0, n)]
+    new_logs = [obj.EventLog() for j in range(0, n)]
     ignore = []
     split_points_list = [0] * len(l)
     for i in range(0, n):
@@ -105,10 +105,10 @@ def split_sequence_infrequent(cut, l, activity_key):
 
 def split_loop_infrequent(cut, l, activity_key):
     n = len(cut)
-    new_logs = [log.EventLog() for i in range(0, n)]
+    new_logs = [obj.EventLog() for i in range(0, n)]
     for trace in l:
         s = cut[0]
-        st = log.Trace()
+        st = obj.Trace()
         for act in trace:
             if act in s:
                 st.insert(act)
@@ -118,7 +118,7 @@ def split_loop_infrequent(cut, l, activity_key):
                     if cut[j] == s:
                         break
                 new_logs[j].append(st)
-                st = log.Trace()
+                st = obj.Trace()
                 for partition in cut:
                     if act[activity_key] in partition:
                         s.append(partition)
@@ -129,6 +129,6 @@ def split_loop_infrequent(cut, l, activity_key):
                 break
         new_logs[j].append(st)
         if s != cut[0]:
-            new_logs[0].append(log.EventLog())
+            new_logs[0].append(obj.EventLog())
 
     return new_logs

@@ -19,10 +19,10 @@ from typing import List, Dict, Any, Union
 
 from deprecation import deprecated
 
-from pm4py.objects.log.log import EventLog, Trace, Event
-from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.log.obj import EventLog, Trace, Event
+from pm4py.objects.petri.obj import PetriNet, Marking
 from collections import Counter
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import xes_constants
 
 

@@ -39,7 +39,7 @@ def variant_to_trace(variant, parameters=None):
     variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
                                                    constants.DEFAULT_VARIANT_SEP)
 
-    from pm4py.objects.log.log import Trace, Event
+    from pm4py.objects.log.obj import Trace, Event
 
     trace = Trace()
     if type(variant) is tuple or type(variant) is list:

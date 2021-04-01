@@ -18,7 +18,7 @@ from collections import Counter
 from copy import deepcopy
 from enum import Enum
 
-from pm4py.objects.bpmn.bpmn_graph import BPMN
+from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.bpmn.util.sorting import get_sorted_nodes_edges
 from pm4py.util import exec_utils
 

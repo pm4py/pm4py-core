@@ -19,7 +19,7 @@ import warnings
 import deprecation
 
 from pm4py.meta import VERSION
-from pm4py.objects.log import log as log_inst
+from pm4py.objects.log import obj as log_inst
 
 
 @deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.3.0', current_version=VERSION,

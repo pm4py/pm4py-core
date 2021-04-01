@@ -17,7 +17,7 @@
 import warnings
 from typing import Callable, Any, Union
 
-from pm4py.objects.log import log as log_inst
+from pm4py.objects.log import obj as log_inst
 
 
 def filter_log(f: Callable[[Any], bool], log: log_inst.EventLog) -> Union[log_inst.EventLog, log_inst.EventStream]:

@@ -14,13 +14,13 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.log import log
+from pm4py.objects.log import obj
 
 
 def split_xor(cut, l, activity_key):
     new_logs = []
     for c in cut:  # for cut partition
-        lo = log.EventLog()
+        lo = obj.EventLog()
         for i in range(0, len(l)):  # for trace in log
             fits = True
             for j in range(0, len(l[i])):  # for event in trace
@@ -36,9 +36,9 @@ def split_xor(cut, l, activity_key):
 def split_parallel(cut, l, activity_key):
     new_logs = []
     for c in cut:
-        lo = log.EventLog()
+        lo = obj.EventLog()
         for trace in l:
-            new_trace = log.Trace()
+            new_trace = obj.Trace()
             for event in trace:
                 if event[activity_key] in c:
                     new_trace.append(event)
@@ -50,10 +50,10 @@ def split_parallel(cut, l, activity_key):
 def split_sequence(cut, l, activity_key):
     new_logs = []
     for c in cut:  # for all cut-partitions
-        lo = log.EventLog()
+        lo = obj.EventLog()
         for trace in l:  # for all traces in the log
             not_in_c = True
-            trace_new = log.Trace()
+            trace_new = obj.Trace()
             for j in range(0, len(trace)):  # for every event in the current trace
                 if trace[j][activity_key] in c:
                     not_in_c = False
@@ -76,12 +76,12 @@ def split_sequence(cut, l, activity_key):
 def split_loop(cut, l, activity_key):
     new_logs = []
     for c in cut:  # for cut partition
-        lo = log.EventLog()
+        lo = obj.EventLog()
         for trace in l:  # for all traces
             j = 0
             while j in range(0, len(trace)):  # for all events
                 if trace[j][activity_key] in c:
-                    trace_new = log.Trace()
+                    trace_new = obj.Trace()
                     # declared here and not above, so that we can generate multiple traces from one trace and
                     # cut (repetition)
                     # append those events that are contained in c:

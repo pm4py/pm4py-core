@@ -21,11 +21,11 @@ import deprecation
 import pandas as pd
 from pandas import DataFrame
 
-from pm4py.objects.heuristics_net.net import HeuristicsNet
-from pm4py.objects.log.log import EventLog
-from pm4py.objects.log.log import EventStream
-from pm4py.objects.petri.petrinet import PetriNet, Marking
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.heuristics_net.obj import HeuristicsNet
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.log.obj import EventStream
+from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
 
 

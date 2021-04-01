@@ -20,7 +20,7 @@ from typing import Union, Dict, Optional, Any
 from pandas import DataFrame
 
 import pm4py
-from pm4py.objects.log.log import EventLog, EventStream
+from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import constants, exec_utils, xes_constants
 
 
