@@ -23,7 +23,7 @@ from pm4py.util import pandas_utils
 
 class OtherPartsTests(unittest.TestCase):
     def test_emd_1(self):
-        from pm4py.algo.evaluation.earth_mover_distance import evaluator as earth_mover_distance
+        from pm4py.algo.evaluation.earth_mover_distance import algorithm as earth_mover_distance
         M = {("a", "b", "d", "e"): 0.49, ("a", "d", "b", "e"): 0.49, ("a", "c", "d", "e"): 0.01,
              ("a", "d", "c", "e"): 0.01}
         L1 = {("a", "b", "d", "e"): 0.49, ("a", "d", "b", "e"): 0.49, ("a", "c", "d", "e"): 0.01,
@@ -31,7 +31,7 @@ class OtherPartsTests(unittest.TestCase):
         earth_mover_distance.apply(M, L1)
 
     def test_emd_2(self):
-        from pm4py.algo.evaluation.earth_mover_distance import evaluator as earth_mover_distance
+        from pm4py.algo.evaluation.earth_mover_distance import algorithm as earth_mover_distance
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         lang_log = variants_get.get_language(log)
         net1, im1, fm1 = inductive_miner.apply(log)
