@@ -31,12 +31,12 @@ from pm4py.algo.discovery.minimum_self_distance import utils as msdw_algo
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.conversion.process_tree import converter as tree_converter
 from pm4py.objects.dfg.utils import dfg_utils
-from pm4py.objects.log.log import EventLog, EventStream
+from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.log.util import log as log_util
-from pm4py.objects.petri.petrinet import PetriNet, Marking
-from pm4py.objects.process_tree import process_tree as pt
+from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.process_tree import obj as pt
 from pm4py.objects.process_tree import util
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.statistics.end_activities.log import get as get_ends
 from pm4py.statistics.start_activities.log import get as get_starters
 from pm4py.util import constants, exec_utils, xes_constants

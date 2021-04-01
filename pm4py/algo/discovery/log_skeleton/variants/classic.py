@@ -20,7 +20,7 @@ from pm4py.algo.discovery.log_skeleton import trace_skel
 from pm4py.algo.discovery.log_skeleton.parameters import Parameters
 from pm4py.algo.discovery.log_skeleton.outputs import Outputs
 from pm4py.util import exec_utils, constants
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import variants_util
 
 

@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.petri.obj import PetriNet, Marking
 from pm4py.objects.petri.utils import add_arc_from_to
 from pm4py.objects.petri import properties
 
@@ -45,6 +45,11 @@ def construct(pn1, im1, fm1, pn2, im2, fm2, skip):
             if t1.label == t2.label:
                 sync = PetriNet.Transition((t1.name, t2.name), (t1.label, t2.label))
                 sync_net.transitions.add(sync)
+                # copy the properties of the transitions inside the transition of the sync net
+                for p1 in t1.properties:
+                    sync.properties[p1] = t1.properties[p1]
+                for p2 in t2.properties:
+                    sync.properties[p2] = t2.properties[p2]
                 for a in t1.in_arcs:
                     add_arc_from_to(p1_map[a.source], sync, sync_net)
                 for a in t2.in_arcs:
@@ -108,6 +113,11 @@ def construct_cost_aware(pn1, im1, fm1, pn2, im2, fm2, skip, pn1_costs, pn2_cost
                 sync = PetriNet.Transition((t1.name, t2.name), (t1.label, t2.label))
                 sync_net.transitions.add(sync)
                 costs[sync] = sync_costs[(t1, t2)]
+                # copy the properties of the transitions inside the transition of the sync net
+                for p1 in t1.properties:
+                    sync.properties[p1] = t1.properties[p1]
+                for p2 in t2.properties:
+                    sync.properties[p2] = t2.properties[p2]
                 for a in t1.in_arcs:
                     add_arc_from_to(p1_map[a.source], sync, sync_net)
                 for a in t2.in_arcs:

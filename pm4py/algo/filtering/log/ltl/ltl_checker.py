@@ -17,7 +17,7 @@
 from enum import Enum
 
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_RESOURCE_KEY, \
     PARAMETER_CONSTANT_TIMESTAMP_KEY

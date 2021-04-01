@@ -17,27 +17,24 @@
 import copy
 import heapq
 import multiprocessing
+import pkgutil
 from concurrent.futures import ProcessPoolExecutor
 from enum import Enum
 from typing import List, Any, Optional
 
-from pm4py.objects.log.log import Trace
-from pm4py.objects.petri import align_utils
+from pm4py.objects.log.obj import Trace
+from pm4py.objects.process_tree.obj import Operator
+from pm4py.objects.process_tree.obj import ProcessTree
+
 from pm4py.algo.conformance.tree_alignments.util import search_graph_pt_replay_semantics as pt_sem
+from pm4py.objects.petri import align_utils
 from pm4py.objects.process_tree import util as pt_util
-from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.process_tree.process_tree import Operator
 from pm4py.util import exec_utils, constants, xes_constants
-from pm4py.objects.log.log import EventLog
-from pm4py.util import variants_util
-from pm4py.algo.reduction.variants import tree_tr_based
-import pkgutil
 
 
 class Parameters(Enum):
     CORES = 'cores'
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
-    ENABLE_REDUCTION = 'enable_reduction'
     SHOW_PROGRESS_BAR = "show_progress_bar"
 
 
@@ -145,7 +142,7 @@ def _obtain_leaves_from_state_path(path, include_tau=False):
 def _need_log_move(old_state, new_state, path) -> bool:
     if len(_obtain_leaves_from_state_path(path, include_tau=True)) > 0:
         return True
-    choices = list(filter(lambda o: pt_util.is_any_operator_of(o[1], {Operator.XOR, Operator.LOOP}), old_state.keys()))
+    choices = list(filter(lambda o: pt_util.is_any_operator_of(o[1], [Operator.XOR, Operator.LOOP]), old_state.keys()))
     for choice in choices:
         choice = choice[1]
         if pt_util.is_operator(choice, Operator.XOR):
@@ -165,7 +162,7 @@ def _need_log_move(old_state, new_state, path) -> bool:
     return False
 
 
-def apply_variant(variant, tree_leaf_set, pt):
+def align_variant(variant, tree_leaf_set, pt):
     lmcf = [1] * len(variant)
     initial_search_state = SGASearchState(0, 0, pt_sem.get_initial_state(pt))
     sga_closed = set()
@@ -214,34 +211,25 @@ def apply_variant(variant, tree_leaf_set, pt):
                 heapq.heappush(sga_open, sga_state)
 
 
-def apply_from_variants_tree_string(var_list, tree_string, parameters=None):
-    """
-    Apply the alignments from the specification of a list of variants in the log.
-    The tree is specified as a PTML input
+def apply_variant(variant, tree, leaves, bwc, parameters=None):
+    alignment_obj = align_variant(variant, leaves, tree)
+    ltrace_bwc = len(variant) + bwc
+    alignment_obj["fitness"] = 1.0 - alignment_obj["cost"] / ltrace_bwc if ltrace_bwc > 0 else 0.0
+    return alignment_obj
 
-    Parameters
-    ------------
-    var_list
-        List of variants (for each item, the first entry is the variant itself, the second entry may be the number of cases)
-    tree_string
-        PTML string representing the tree
-    parameters
-        Parameters of the algorithm
 
-        Returns
-    --------------
-    dictio_alignments
-        Dictionary that assigns to each variant its alignment
-    """
-    if parameters is None:
-        parameters = {}
+def _construct_progress_bar(progress_length, parameters):
+    if exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True) and pkgutil.find_loader("tqdm"):
+        if progress_length > 1:
+            from tqdm.auto import tqdm
+            return tqdm(total=progress_length, desc="aligning log, completed variants :: ")
+    return None
 
-    from pm4py.objects.process_tree.importer.variants import ptml
 
-    tree = ptml.import_tree_from_string(tree_string, parameters=parameters)
-
-    res = apply_from_variants_list(var_list, tree, parameters=parameters)
-    return res
+def _destroy_progress_bar(progress):
+    if progress is not None:
+        progress.close()
+    del progress
 
 
 def apply_from_variants_list(var_list, tree, parameters=None):
@@ -265,46 +253,19 @@ def apply_from_variants_list(var_list, tree, parameters=None):
     if parameters is None:
         parameters = {}
 
-    dictio_alignments = {}
-    log = EventLog()
-
-    for index, varitem in enumerate(var_list):
-        trace = variants_util.variant_to_trace(varitem[0], parameters=parameters)
-        log.append(trace)
-
-    alignments = apply(log, tree, parameters=parameters)
-    for index, varitem in enumerate(var_list):
-        dictio_alignments[varitem[0]] = alignments[index]
-    return dictio_alignments
-
-
-def get_reduced_tree(tree, trace, parameters=None):
-    """
-    Reduces the process tree in order to replay the trace
-
-    Parameters
-    ---------------
-    tree
-        Process tree
-    trace
-        Process execution
-
-    Returns
-    ---------------
-    red_tree
-        Reduced process tree (if the reduction is enabled)
-    leaves
-        Leaves of the tree
-    """
-    if parameters is None:
-        parameters = {}
-    enable_reduction = exec_utils.get_param_value(Parameters.ENABLE_REDUCTION, parameters, True)
-
-    if enable_reduction:
-        tree = tree_tr_based.apply(tree, trace, parameters=parameters)
+    progress = _construct_progress_bar(len(var_list), parameters)
     leaves = frozenset(pt_util.get_leaves(tree))
-
-    return tree, leaves
+    ret = []
+    bwc = align_variant([], leaves, tree)["cost"]
+    align_dict = {}
+    for variant in var_list:
+        if variant not in align_dict:
+            align_dict[variant] = apply_variant(variant, tree, leaves, bwc, parameters)
+            if progress is not None:
+                progress.update()
+        ret.append(align_dict[variant])
+    _destroy_progress_bar(progress)
+    return ret
 
 
 def apply_multiprocessing(obj, pt, parameters=None):
@@ -335,39 +296,38 @@ def apply_multiprocessing(obj, pt, parameters=None):
 
     if type(obj) is Trace:
         variant = tuple(x[activity_key] for x in obj)
-        tree, lvs = get_reduced_tree(pt, obj, parameters=parameters)
-        return apply_variant(variant, lvs, tree)
+        return align_variant(variant, leaves, pt)
     else:
         with ProcessPoolExecutor(max_workers=num_cores) as executor:
             ret = []
-            best_worst_cost = apply_variant([], leaves, pt)["cost"]
-            tree_red_dict = {}
+            best_worst_cost = align_variant([], leaves, pt)["cost"]
             futures = {}
             align_dict = {}
             for trace in obj:
                 variant = tuple(x[activity_key] for x in trace)
                 if variant not in futures:
-                    activities = frozenset(variant)
-                    if activities not in tree_red_dict:
-                        tree, lvs = get_reduced_tree(pt, trace, parameters=parameters)
-                        tree_red_dict[activities] = (tree, lvs)
-                    else:
-                        tree, lvs = tree_red_dict[activities]
-                    futures[variant] = executor.submit(apply_variant, variant, lvs, tree)
+                    futures[variant] = executor.submit(align_variant, variant, leaves, pt)
+
+            progress = _construct_progress_bar(len(futures), parameters)
+            alignments_ready = 0
+            if progress is not None:
+                while alignments_ready != len(futures):
+                    current = 0
+                    for variant in futures:
+                        current = current + 1 if futures[variant].done() else current
+                    if current > alignments_ready:
+                        for i in range(0, current - alignments_ready):
+                            progress.update()
+                    alignments_ready = current
             for trace in obj:
                 variant = tuple(x[activity_key] for x in trace)
                 if variant not in align_dict:
                     al = futures[variant].result()
                     ltrace_bwc = len(trace) + best_worst_cost
-                    # calculate fitness as in the Petri net alignments
-                    if ltrace_bwc > 0:
-                        al["fitness"] = 1.0 - al["cost"] / ltrace_bwc
-                    else:
-                        al["fitness"] = 0.0
-                    # makes the cost uniform with Petri net alignments
-                    al["cost"] *= 10000
+                    al["fitness"] = 1.0 - al["cost"] / ltrace_bwc if ltrace_bwc > 0 else 0.0
                     align_dict[variant] = al
                 ret.append(align_dict[variant])
+            _destroy_progress_bar(progress)
         return ret
 
 
@@ -392,49 +352,24 @@ def apply(obj, pt, parameters=None):
     if parameters is None:
         parameters = {}
 
-    progress = None
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
     leaves = frozenset(pt_util.get_leaves(pt))
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     if type(obj) is Trace:
         variant = tuple(x[activity_key] for x in obj)
-        tree, lvs = get_reduced_tree(pt, obj, parameters=parameters)
-        return apply_variant(variant, lvs, tree)
+        return align_variant(variant, leaves, pt)
     else:
-        if show_progress_bar and pkgutil.find_loader("tqdm"):
-            from pm4py.statistics.variants.log import get as variants_get
-            variants = variants_get.get_variants(obj, parameters=parameters)
-            if len(variants) > 1:
-                from tqdm.auto import tqdm
-                progress = tqdm(total=len(variants), desc="aligning log, completed variants :: ")
+        from pm4py.statistics.variants.log import get as variants_get
+        variants = variants_get.get_variants(obj, parameters=parameters)
+        progress = _construct_progress_bar(len(variants), parameters)
         ret = []
-        best_worst_cost = apply_variant([], leaves, pt)["cost"]
+        bwc = align_variant([], leaves, pt)["cost"]
         align_dict = {}
-        tree_red_dict = {}
         for trace in obj:
             variant = tuple(x[activity_key] for x in trace)
             if variant not in align_dict:
-                activities = frozenset(variant)
-                if activities not in tree_red_dict:
-                    tree, lvs = get_reduced_tree(pt, trace, parameters=parameters)
-                    tree_red_dict[activities] = (tree, lvs)
-                else:
-                    tree, lvs = tree_red_dict[activities]
-                al = apply_variant(variant, lvs, tree)
-                ltrace_bwc = len(trace) + best_worst_cost
-                # calculate fitness as in the Petri net alignments
-                if ltrace_bwc > 0:
-                    al["fitness"] = 1.0 - al["cost"] / ltrace_bwc
-                else:
-                    al["fitness"] = 0.0
-                # makes the cost uniform with Petri net alignments
-                al["cost"] *= 10000
-                align_dict[variant] = al
+                align_dict[variant] = apply_variant(variant, pt, leaves, bwc, parameters)
                 if progress is not None:
                     progress.update()
             ret.append(align_dict[variant])
-        # gracefully close progress bar
-        if progress is not None:
-            progress.close()
-        del progress
+        _destroy_progress_bar(progress)
         return ret

@@ -20,7 +20,7 @@ from typing import Optional, Dict, Any, Union
 import pandas as pd
 
 from pm4py.algo.discovery.temporal_profile.variants import log
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import typing
 
 

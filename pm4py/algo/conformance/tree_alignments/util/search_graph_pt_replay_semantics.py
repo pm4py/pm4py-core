@@ -19,8 +19,8 @@ import sys
 from typing import Dict, Tuple, Optional, List
 
 from pm4py.objects.process_tree import util as ptu
-from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.process_tree.process_tree import Operator
+from pm4py.objects.process_tree.obj import Operator
+from pm4py.objects.process_tree.obj import ProcessTree
 
 ProcessTreeState = Dict[Tuple[int, ProcessTree], ProcessTree.OperatorState]
 
@@ -38,7 +38,7 @@ def transform_tree(tree: ProcessTree, state_type: ProcessTree.OperatorState, sta
     List[Tuple[ProcessTree, ProcessTree.OperatorState]], ProcessTreeState]:
     state = copy.copy(state)
     path = list()
-    if tree not in state or state[(id(tree), tree)] != state_type:
+    if (id(tree), tree) not in state or state[(id(tree), tree)] != state_type:
         state[(id(tree), tree)] = state_type
         path = [(tree, state_type)]
     for c in tree.children:
@@ -52,7 +52,7 @@ def can_enable(tree: ProcessTree, state: ProcessTreeState) -> bool:
         if ptu.is_root(tree):
             return True
         if ptu.is_in_state(tree.parent, ProcessTree.OperatorState.OPEN, state):
-            if ptu.is_any_operator_of(tree.parent, {Operator.PARALLEL, Operator.OR}):
+            if ptu.is_any_operator_of(tree.parent, [Operator.PARALLEL, Operator.OR]):
                 return True
             elif ptu.is_operator(tree.parent, Operator.XOR):
                 return frozenset(map(lambda child: state[(id(child), child)], tree.parent.children)) == {
@@ -74,10 +74,10 @@ def can_open(tree: ProcessTree, state: ProcessTreeState) -> bool:
 def can_close(tree: ProcessTree, state: ProcessTreeState) -> bool:
     if ptu.is_leaf(tree):
         return ptu.is_in_state(tree, ProcessTree.OperatorState.OPEN, state)
-    elif ptu.is_any_operator_of(tree, {Operator.SEQUENCE, Operator.PARALLEL, Operator.XOR}):
+    elif ptu.is_any_operator_of(tree, [Operator.SEQUENCE, Operator.PARALLEL, Operator.XOR]):
         return frozenset(map(lambda child: state[(id(child), child)], tree.children)) == {
             ProcessTree.OperatorState.CLOSED}
-    elif ptu.is_any_operator_of(tree, {Operator.OR}):
+    elif ptu.is_any_operator_of(tree, [Operator.OR]):
         return frozenset(map(lambda child: state[(id(child), child)], tree.children)) == {
             ProcessTree.OperatorState.CLOSED, ProcessTree.OperatorState.FUTURE}
     elif ptu.is_operator(tree, Operator.LOOP):
@@ -94,8 +94,9 @@ def close_vertex(tree: ProcessTree, state: ProcessTreeState) -> Tuple[Optional[
         path = list()
         state = copy.copy(state)
         for c in tree.children:
-            e_path, state = transform_tree(c, ProcessTree.OperatorState.CLOSED, state)
-            path.extend(e_path)
+            if ptu.is_in_state(c, ProcessTree.OperatorState.CLOSED, state):
+                e_path, state = transform_tree(c, ProcessTree.OperatorState.CLOSED, state)
+                path.extend(e_path)
         state[(id(tree), tree)] = ProcessTree.OperatorState.CLOSED
         path.append((tree, ProcessTree.OperatorState.CLOSED))
         if ptu.is_operator(tree.parent, Operator.LOOP) and tree == tree.parent.children[
@@ -132,7 +133,7 @@ def enable_vertex(tree: ProcessTree, state: ProcessTreeState) -> Tuple[Optional[
                     path.extend(e_path)
         for c in tree.children:
             e_path, state = transform_tree(c, ProcessTree.OperatorState.FUTURE, state)
-            path.extend(path)
+            path.extend(e_path)
         return path, state
     else:
         return None, None
@@ -147,11 +148,11 @@ def open_vertex(tree: ProcessTree, state: ProcessTreeState) -> Tuple[Optional[
         path = list()
         state[(id(tree), tree)] = ProcessTree.OperatorState.OPEN
         path.append((tree, ProcessTree.OperatorState.OPEN))
-        if ptu.is_any_operator_of(tree, frozenset([Operator.XOR, Operator.OR, Operator.PARALLEL])):
+        if ptu.is_any_operator_of(tree, [Operator.XOR, Operator.OR, Operator.PARALLEL]):
             for c in tree.children:
                 state[(id(c), c)] = ProcessTree.OperatorState.FUTURE
                 path.append((c, ProcessTree.OperatorState.FUTURE))
-        elif ptu.is_any_operator_of(tree, frozenset([Operator.SEQUENCE, Operator.LOOP])):
+        elif ptu.is_any_operator_of(tree, [Operator.SEQUENCE, Operator.LOOP]):
             state[(id(tree.children[0]), tree.children[0])] = ProcessTree.OperatorState.ENABLED
             path.append((tree.children[0], ProcessTree.OperatorState.ENABLED))
             for c in tree.children[1:]:
@@ -188,7 +189,7 @@ def shortest_path_to_close(tree: ProcessTree, state: ProcessTreeState) -> Tuple[
         e_path, state = close_vertex(tree, state)
         path.extend(e_path)
         return path, state
-    elif ptu.is_any_operator_of(tree, {Operator.SEQUENCE, Operator.PARALLEL}):
+    elif ptu.is_any_operator_of(tree, [Operator.SEQUENCE, Operator.PARALLEL]):
         for c in tree.children:
             e_path, state = shortest_path_to_close(c, state)
             path.extend(e_path)

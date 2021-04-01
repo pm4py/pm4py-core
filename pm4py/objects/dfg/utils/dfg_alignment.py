@@ -19,7 +19,7 @@ import sys
 import uuid
 from enum import Enum
 
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import constants, xes_constants, exec_utils
 from pm4py.util import variants_util
 

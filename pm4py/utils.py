@@ -14,12 +14,13 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from typing import Optional
+from typing import Optional, Tuple, Any
 
 import pandas as pd
 
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import constants, xes_constants, pandas_utils
+
 
 INDEX_COLUMN = "@@index"
 
@@ -88,3 +89,96 @@ def parse_process_tree(tree_string: str) -> ProcessTree:
     """
     from pm4py.objects.process_tree.util import parse
     return parse(tree_string)
+
+
+def serialize(*args) -> Tuple[str, bytes]:
+    """
+    Serialize a PM4Py object into a bytes string
+
+    Parameters
+    -----------------
+    args
+        A PM4Py object, among:
+        - an EventLog object
+        - a Pandas dataframe object
+        - a (Petrinet, Marking, Marking) tuple
+        - a ProcessTree object
+        - a BPMN object
+        - a DFG, including the dictionary of the directly-follows relations, the start activities and the end activities
+
+    Returns
+    -----------------
+    ser
+        Serialized object (a tuple consisting of a string denoting the type of the object, and a bytes string
+        representing the serialization)
+    """
+    from pm4py.objects.log.obj import EventLog
+    from pm4py.objects.petri.obj import PetriNet
+    from pm4py.objects.process_tree.obj import ProcessTree
+    from pm4py.objects.bpmn.obj import BPMN
+    from collections import Counter
+
+    if type(args[0]) is EventLog:
+        from pm4py.objects.log.exporter.xes import exporter as xes_exporter
+        return (constants.AvailableSerializations.EVENT_LOG.value, xes_exporter.serialize(*args))
+    elif type(args[0]) is pd.DataFrame:
+        from io import BytesIO
+        buffer = BytesIO()
+        args[0].to_parquet(buffer)
+        return (constants.AvailableSerializations.DATAFRAME.value, buffer.getvalue())
+    elif len(args) == 3 and type(args[0]) is PetriNet:
+        from pm4py.objects.petri.exporter import exporter as petri_exporter
+        return (constants.AvailableSerializations.PETRI_NET.value, petri_exporter.serialize(*args))
+    elif type(args[0]) is ProcessTree:
+        from pm4py.objects.process_tree.exporter import exporter as tree_exporter
+        return (constants.AvailableSerializations.PROCESS_TREE.value, tree_exporter.serialize(*args))
+    elif type(args[0]) is BPMN:
+        from pm4py.objects.bpmn.exporter import exporter as bpmn_exporter
+        return (constants.AvailableSerializations.BPMN.value, bpmn_exporter.serialize(*args))
+    elif len(args) == 3 and (isinstance(args[0], dict) or isinstance(args[0], Counter)):
+        from pm4py.objects.dfg.exporter import exporter as dfg_exporter
+        return (constants.AvailableSerializations.DFG.value, dfg_exporter.serialize(args[0], parameters={"start_activities": args[1], "end_activities": args[2]}))
+
+
+def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
+    """
+    Deserialize a bytes string to a PM4Py object
+
+    Parameters
+    ----------------
+    ser
+        Serialized object (a tuple consisting of a string denoting the type of the object, and a bytes string
+        representing the serialization)
+
+    Returns
+    ----------------
+    obj
+         A PM4Py object, among:
+        - an EventLog object
+        - a Pandas dataframe object
+        - a (Petrinet, Marking, Marking) tuple
+        - a ProcessTree object
+        - a BPMN object
+        - a DFG, including the dictionary of the directly-follows relations, the start activities and the end activities
+    """
+    if ser_obj[0] == constants.AvailableSerializations.EVENT_LOG.value:
+        from pm4py.objects.log.importer.xes import importer as xes_importer
+        return xes_importer.deserialize(ser_obj[1])
+    elif ser_obj[0] == constants.AvailableSerializations.DATAFRAME.value:
+        from io import BytesIO
+        buffer = BytesIO()
+        buffer.write(ser_obj[1])
+        buffer.flush()
+        return pd.read_parquet(buffer)
+    elif ser_obj[0] == constants.AvailableSerializations.PETRI_NET.value:
+        from pm4py.objects.petri.importer import importer as petri_importer
+        return petri_importer.deserialize(ser_obj[1])
+    elif ser_obj[0] == constants.AvailableSerializations.PROCESS_TREE.value:
+        from pm4py.objects.process_tree.importer import importer as tree_importer
+        return tree_importer.deserialize(ser_obj[1])
+    elif ser_obj[0] == constants.AvailableSerializations.BPMN.value:
+        from pm4py.objects.bpmn.importer import importer as bpmn_importer
+        return bpmn_importer.deserialize(ser_obj[1])
+    elif ser_obj[0] == constants.AvailableSerializations.DFG.value:
+        from pm4py.objects.dfg.importer import importer as dfg_importer
+        return dfg_importer.deserialize(ser_obj[1])

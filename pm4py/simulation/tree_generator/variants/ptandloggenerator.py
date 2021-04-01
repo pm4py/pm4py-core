@@ -14,8 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.process_tree import process_tree
-from pm4py.objects.process_tree import process_tree as pt_operator
+from pm4py.objects.process_tree import obj
+from pm4py.objects.process_tree import obj as pt_operator
 from scipy.stats import triang as triangular
 import string
 import math
@@ -188,24 +188,24 @@ class GeneratedTree(object):
         # if operator is loop, we use a special structure, otherwise 2
         if operator == "loop":
             root.operator = pt_operator.Operator.SEQUENCE
-            root_loop = process_tree.ProcessTree(operator=pt_operator.Operator.LOOP)
+            root_loop = obj.ProcessTree(operator=pt_operator.Operator.LOOP)
             root_loop.parent = root
             root._children.append(root_loop)
-            new_node = process_tree.ProcessTree(label=activity)
+            new_node = obj.ProcessTree(label=activity)
             new_node.parent = root_loop
             root_loop._children.append(new_node)
             activity = self.get_next_activity(activity)
             if silent_activity:
-                new_node = process_tree.ProcessTree(label=None)
+                new_node = obj.ProcessTree(label=None)
                 new_node.parent = root_loop
                 root_loop._children.append(new_node)
 
             else:
-                new_node = process_tree.ProcessTree(label=activity)
+                new_node = obj.ProcessTree(label=activity)
                 new_node.parent = root_loop
                 root_loop._children.append(new_node)
                 activity = self.get_next_activity(activity)
-            new_node = process_tree.ProcessTree(label=activity)
+            new_node = obj.ProcessTree(label=activity)
             new_node.parent = root
             root._children.append(new_node)
             self.total_activities -= 1
@@ -213,25 +213,25 @@ class GeneratedTree(object):
             if silent_activity and operator == "choice":
                 number = random.choice([0, 1])
                 if number == 0:
-                    new_node = process_tree.ProcessTree(label=None)
+                    new_node = obj.ProcessTree(label=None)
                     new_node.parent = root
                     root._children.append(new_node)
-                    new_node = process_tree.ProcessTree(label=activity)
+                    new_node = obj.ProcessTree(label=activity)
                     new_node.parent = root
                     root._children.append(new_node)
                 else:
-                    new_node = process_tree.ProcessTree(label=activity)
+                    new_node = obj.ProcessTree(label=activity)
                     new_node.parent = root
                     root._children.append(new_node)
-                    new_node = process_tree.ProcessTree(label=None)
+                    new_node = obj.ProcessTree(label=None)
                     new_node.parent = root
                     root._children.append(new_node)
             else:
-                new_node = process_tree.ProcessTree(label=activity)
+                new_node = obj.ProcessTree(label=activity)
                 new_node.parent = root
                 root._children.append(new_node)
                 activity = self.get_next_activity(activity)
-                new_node = process_tree.ProcessTree(label=activity)
+                new_node = obj.ProcessTree(label=activity)
                 new_node.parent = root
                 root._children.append(new_node)
         # always two children are added
@@ -270,23 +270,23 @@ class GeneratedTree(object):
         # add two children
         if operator == "loop":
             leaf._set_operator(pt_operator.Operator.SEQUENCE)
-            root_loop = process_tree.ProcessTree(pt_operator.Operator.LOOP)
+            root_loop = obj.ProcessTree(pt_operator.Operator.LOOP)
             root_loop.parent = leaf
             leaf._children.append(root_loop)
-            new_node = process_tree.ProcessTree(label=activity)
+            new_node = obj.ProcessTree(label=activity)
             new_node.parent = root_loop
             root_loop._children.append(new_node)
             activity = next_activity
             if silent_activity:
-                new_node = process_tree.ProcessTree(label=None)
+                new_node = obj.ProcessTree(label=None)
                 new_node.parent = root_loop
                 root_loop._children.append(new_node)
             else:
-                new_node = process_tree.ProcessTree(label=activity)
+                new_node = obj.ProcessTree(label=activity)
                 new_node.parent = root_loop
                 root_loop._children.append(new_node)
                 activity = self.get_next_activity(activity)
-            new_node = process_tree.ProcessTree(label=activity)
+            new_node = obj.ProcessTree(label=activity)
             new_node.parent = leaf
             leaf._children.append(new_node)
             self.total_activities -= 1
@@ -294,25 +294,25 @@ class GeneratedTree(object):
             if silent_activity and operator == "choice":
                 number = random.choice([0, 1])
                 if number == 0:
-                    new_node = process_tree.ProcessTree(label=None)
+                    new_node = obj.ProcessTree(label=None)
                     new_node.parent = leaf
                     leaf._children.append(new_node)
-                    new_node = process_tree.ProcessTree(label=activity)
+                    new_node = obj.ProcessTree(label=activity)
                     new_node.parent = leaf
                     leaf._children.append(new_node)
                 else:
-                    new_node = process_tree.ProcessTree(label=activity)
+                    new_node = obj.ProcessTree(label=activity)
                     new_node.parent = leaf
                     leaf._children.append(new_node)
-                    new_node = process_tree.ProcessTree(label=None)
+                    new_node = obj.ProcessTree(label=None)
                     new_node.parent = leaf
                     leaf._children.append(new_node)
             else:
-                new_node = process_tree.ProcessTree(label=activity)
+                new_node = obj.ProcessTree(label=activity)
                 new_node.parent = leaf
                 leaf._children.append(new_node)
                 activity = next_activity
-                new_node = process_tree.ProcessTree(label=activity)
+                new_node = obj.ProcessTree(label=activity)
                 new_node.parent = leaf
                 leaf._children.append(new_node)
 
@@ -367,7 +367,7 @@ class GeneratedTree(object):
                         break
 
     def create_process_tree(self):
-        self.tree = process_tree.ProcessTree()
+        self.tree = obj.ProcessTree()
         self.set_activity_labels = []
         p = 1
         # create labels

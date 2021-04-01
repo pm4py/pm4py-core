@@ -19,7 +19,7 @@ from pm4py.util import constants
 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
 from pm4py.algo.discovery.footprints.outputs import Outputs
 from pm4py.objects.conversion.log import converter
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import xes_constants
 from pm4py.util import exec_utils
 

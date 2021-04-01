@@ -21,7 +21,7 @@ from pm4py.algo.discovery.dfg import algorithm as dfg_alg
 from pm4py.algo.discovery.heuristics.parameters import Parameters
 from pm4py.objects.conversion.heuristics_net import converter as hn_conv_alg
 from pm4py.objects.heuristics_net import defaults
-from pm4py.objects.heuristics_net.net import HeuristicsNet
+from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.statistics.attributes.log import get as log_attributes
 from pm4py.statistics.end_activities.log import get as log_ea_filter
 from pm4py.statistics.start_activities.log import get as log_sa_filter

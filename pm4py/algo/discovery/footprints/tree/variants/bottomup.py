@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.process_tree.process_tree import Operator
+from pm4py.objects.process_tree.obj import Operator
 from pm4py.algo.discovery.footprints.outputs import Outputs
 from pm4py.objects.process_tree import bottomup as bottomup_disc
 from copy import copy

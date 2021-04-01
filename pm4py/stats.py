@@ -19,7 +19,7 @@ from typing import Set
 
 import pandas as pd
 
-from pm4py.objects.log.log import EventLog, Trace
+from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
 
 

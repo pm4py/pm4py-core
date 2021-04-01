@@ -21,8 +21,8 @@ from copy import copy
 
 from pm4py.algo.conformance.alignments.variants import state_equation_less_memory
 from pm4py.algo.conformance.decomp_alignments.parameters import Parameters
-from pm4py.objects.log import log as log_implementation
-from pm4py.objects.log.log import Trace
+from pm4py.objects.log import obj as log_implementation
+from pm4py.objects.log.obj import Trace
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.objects.petri import align_utils as utils
 from pm4py.objects.petri import decomposition as decomp_utils

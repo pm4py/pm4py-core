@@ -18,10 +18,10 @@ import datetime
 from copy import copy
 from enum import Enum
 
-from pm4py.objects.log import log as log_instance
+from pm4py.objects.log import obj as log_instance
 from pm4py.objects.petri import semantics
 from pm4py.objects.petri.common import final_marking as final_marking_discovery
-from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri.obj import PetriNet
 from pm4py.objects.stochastic_petri import utils as stochastic_utils
 from pm4py.algo.simulation.montecarlo.utils import replay
 from pm4py.util import constants

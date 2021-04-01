@@ -26,7 +26,7 @@ from typing import Dict
 
 import numpy as np
 
-from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri.obj import PetriNet
 
 
 class ConsumptionMatrix(object):

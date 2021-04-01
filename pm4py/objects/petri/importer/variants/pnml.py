@@ -23,7 +23,7 @@ from lxml import etree, objectify
 
 from pm4py.meta import VERSION
 from pm4py.objects.petri.common import final_marking
-from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.petri.obj import PetriNet, Marking
 from pm4py.objects.petri.utils import add_arc_from_to
 from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.util import constants

@@ -18,8 +18,8 @@ from enum import Enum
 from typing import Optional, Dict, Any
 
 from pm4py.algo.analysis.extended_marking_equation.variants import classic
-from pm4py.objects.log.log import Trace
-from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.log.obj import Trace
+from pm4py.objects.petri.obj import PetriNet, Marking
 from pm4py.util import exec_utils
 
 

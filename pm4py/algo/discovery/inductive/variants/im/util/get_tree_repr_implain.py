@@ -15,8 +15,8 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_activities_self_loop
-from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.process_tree.process_tree import Operator
+from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.process_tree.obj import Operator
 from pm4py.util import exec_utils, xes_constants
 from pm4py.algo.discovery.inductive.parameters import Parameters
 

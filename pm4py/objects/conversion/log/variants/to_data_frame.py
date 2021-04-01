@@ -17,7 +17,7 @@
 from enum import Enum
 
 from pm4py.objects.conversion.log.variants import to_event_stream
-from pm4py.objects.log import log as log_instance
+from pm4py.objects.log import obj as log_instance
 from pm4py.objects.conversion.log import constants
 
 

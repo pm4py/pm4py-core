@@ -16,7 +16,7 @@
 '''
 from pm4py.algo.conformance.tokenreplay.variants import token_replay
 from pm4py.statistics.variants.log import get as variants_module
-from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri.obj import PetriNet
 from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.objects.petri import performance_map
 from pm4py.algo.simulation.montecarlo.parameters import Parameters

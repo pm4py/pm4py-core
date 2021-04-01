@@ -20,7 +20,7 @@ from pm4py.algo.discovery.transition_system.parameters import Parameters
 from pm4py.util import exec_utils
 from pm4py.objects.log import util as log_util
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.objects.transition_system import transition_system as ts, constants as ts_constants
+from pm4py.objects.transition_system import obj as ts, constants as ts_constants
 
 
 def apply(log, parameters=None):

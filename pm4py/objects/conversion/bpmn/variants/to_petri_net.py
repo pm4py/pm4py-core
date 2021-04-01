@@ -18,7 +18,7 @@ import uuid
 from enum import Enum
 
 from pm4py.objects.petri import reduction
-from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.petri.obj import PetriNet, Marking
 from pm4py.objects.petri.utils import add_arc_from_to
 from pm4py.util import exec_utils
 
@@ -79,7 +79,7 @@ def apply(bpmn_graph, parameters=None):
         parameters = {}
 
     import networkx as nx
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
 
     use_id = exec_utils.get_param_value(Parameters.USE_ID, parameters, False)
 

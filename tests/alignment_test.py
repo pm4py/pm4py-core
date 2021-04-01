@@ -16,7 +16,7 @@ class AlignmentTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, marking, fmarking = alpha_alg.apply(log)
-        final_marking = petri.petrinet.Marking()
+        final_marking = petri.obj.Marking()
         for p in net.places:
             if not p.out_arcs:
                 final_marking[p] = 1
@@ -59,6 +59,26 @@ class AlignmentTest(unittest.TestCase):
         log = pm4py.read_xes("compressed_input_data/04_reviewing.xes.gz")
         tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
         al = pm4py.conformance_diagnostics_alignments(log, tree)
+
+    def test_tree_align_reviewing_classifier(self):
+        import pm4py
+        log = pm4py.read_xes("compressed_input_data/04_reviewing.xes.gz")
+        for trace in log:
+            for event in trace:
+                event["concept:name"] = event["concept:name"] + "+" + event["lifecycle:transition"]
+        tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
+        al = pm4py.conformance_diagnostics_alignments(log, tree)
+
+    def test_tree_align_reviewing_classifier_different_key(self):
+        import pm4py
+        log = pm4py.read_xes("compressed_input_data/04_reviewing.xes.gz")
+        for trace in log:
+            for event in trace:
+                event["@@classifier"] = event["concept:name"] + "+" + event["lifecycle:transition"]
+        from pm4py.algo.discovery.inductive.variants.im_f import algorithm as im_f
+        tree = im_f.apply_tree(log, parameters={im_f.Parameters.ACTIVITY_KEY: "@@classifier"})
+        from pm4py.algo.conformance.tree_alignments.variants import search_graph_pt
+        al = search_graph_pt.apply(log, tree, parameters={search_graph_pt.Parameters.ACTIVITY_KEY: "@@classifier"})
 
 
 if __name__ == "__main__":

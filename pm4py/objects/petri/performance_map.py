@@ -18,10 +18,10 @@ from copy import copy
 from statistics import stdev
 
 from pm4py.objects.petri import semantics
-from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri.obj import PetriNet
 from pm4py.util.vis_utils import human_readable_stat, get_arc_penwidth, get_trans_freq_color
 from statistics import median, mean
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util.business_hours import BusinessHours
 
 MAX_NO_THREADS = 1000

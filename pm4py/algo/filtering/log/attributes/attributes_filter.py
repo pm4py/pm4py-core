@@ -21,7 +21,7 @@ from pm4py.statistics.attributes.log.get import *
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.log.log import EventLog, Trace, EventStream
+from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.statistics.attributes.common import get as attributes_common
 from pm4py.statistics.attributes.log.get import get_attribute_values
 from pm4py.util import exec_utils

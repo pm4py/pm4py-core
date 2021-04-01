@@ -11,6 +11,7 @@ from pm4py.statistics.variants.log import get as variants_get
 
 LOGS_FOLDER = "../compressed_input_data"
 CLASSIFIER = "@@classifier"
+ENABLE_ALIGNMENTS = False
 
 for log_name in os.listdir(LOGS_FOLDER):
     if "xes" in log_name or "parquet" in log_name:
@@ -69,6 +70,18 @@ for log_name in os.listdir(LOGS_FOLDER):
             fitness_im = pm4py.algo.conformance.footprints.util.evaluation.fp_fitness(fp_log, fp_tree_im, fp_conf_im)
             fitness_imd = pm4py.algo.conformance.footprints.util.evaluation.fp_fitness(fp_log, fp_tree_imd, fp_conf_imd)
             fitness_imf = pm4py.algo.conformance.footprints.util.evaluation.fp_fitness(fp_log, fp_tree_imf, fp_conf_imf)
+
+            if ENABLE_ALIGNMENTS:
+                from pm4py.algo.conformance.tree_alignments.variants import search_graph_pt
+                alignments_clean = search_graph_pt.apply(log, tree_im_clean, parameters={search_graph_pt.Parameters.ACTIVITY_KEY: CLASSIFIER})
+                from pm4py.evaluation.replay_fitness.variants import alignment_based
+                fitness_al_clean = alignment_based.evaluate(alignments_clean)["average_trace_fitness"]
+                if fitness_al_clean < fitness_im_clean:
+                    print("ALERT")
+                    input()
+                else:
+                    print("OK ALIGNMENTS", fitness_al_clean)
+
             precision_im_clean = pm4py.algo.conformance.footprints.util.evaluation.fp_precision(fp_log, fp_tree_clean)
             precision_im = pm4py.algo.conformance.footprints.util.evaluation.fp_precision(fp_log, fp_tree_im)
             precision_imf = pm4py.algo.conformance.footprints.util.evaluation.fp_precision(fp_log, fp_tree_imf)
@@ -77,8 +90,6 @@ for log_name in os.listdir(LOGS_FOLDER):
             print("IM fp-fitness=%.3f fp-precision=%.3f" % (fitness_im, precision_im))
             print("IMf fp-fitness=%.3f fp-precision=%.3f" % (fitness_imf, precision_imf))
             print("IMd fp-fitness=%.3f fp-precision=%.3f" % (fitness_imd, precision_imd))
-            if fitness_im_clean < 1.0:
-                print("fitness < 1.0 for im clean: ", fitness_im_clean)
         except:
             bottomup_nodes = bottomup_disc.get_bottomup_nodes(tree_im_clean)
             for node in bottomup_nodes:

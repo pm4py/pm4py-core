@@ -14,8 +14,12 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.evaluation.earth_mover_distance.variants import pyemd
+import warnings
 from enum import Enum
+
+import deprecation
+
+from pm4py.algo.evaluation.earth_mover_distance.variants import pyemd
 from pm4py.util import exec_utils
 
 
@@ -26,6 +30,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.PYEMD
 
 
+@deprecation.deprecated('2.2.4', '2.3.0', details='use algorithm.py entrypoint')
 def apply(lang1, lang2, variant=Variants.PYEMD, parameters=None):
     """
     Gets the EMD language between the two languages
@@ -49,4 +54,5 @@ def apply(lang1, lang2, variant=Variants.PYEMD, parameters=None):
     dist
         EMD distance
     """
+    warnings.warn('use algorithm.py entrypoint', DeprecationWarning)
     return exec_utils.get_variant(variant).apply(lang1, lang2, parameters=parameters)

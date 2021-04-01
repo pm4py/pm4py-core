@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.bpmn import bpmn_graph, exporter, layout, util
+from pm4py.objects.bpmn import obj, exporter, layout, util
 import pkgutil
 
 if pkgutil.find_loader("lxml"):
