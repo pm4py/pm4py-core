@@ -1,6 +1,6 @@
 import copy
 import hashlib
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Tuple
 
 from pm4py.objects.process_tree import obj as pt
 from pm4py.objects.process_tree import obj as pt_op
@@ -392,7 +392,7 @@ def is_any_operator_of(tree: ProcessTree, operators: List[pt_op.Operator]) -> bo
 
 
 def is_in_state(tree: ProcessTree, target_state: ProcessTree.OperatorState,
-                tree_state: Dict[ProcessTree, ProcessTree.OperatorState]) -> bool:
+                tree_state: Dict[Tuple[int, ProcessTree], ProcessTree.OperatorState]) -> bool:
     return tree is not None and (id(tree), tree) in tree_state and tree_state[(id(tree), tree)] == target_state
 
 
