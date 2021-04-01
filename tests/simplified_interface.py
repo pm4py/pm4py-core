@@ -174,6 +174,37 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         pm4py.discover_eventually_follows_graph(df)
         pm4py.get_case_arrival_average(df)
 
+    def test_serialization_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        ser = pm4py.serialize(log)
+        log2 = pm4py.deserialize(ser)
+
+    def test_serialization_dataframe(self):
+        df = pd.read_csv("input_data/running-example.csv")
+        df = pm4py.format_dataframe(df)
+        ser = pm4py.serialize(df)
+        df2 = pm4py.deserialize(ser)
+
+    def test_serialization_petri_net(self):
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        ser = pm4py.serialize(net, im, fm)
+        net2, im2, fm2 = pm4py.deserialize(ser)
+
+    def test_serialization_process_tree(self):
+        tree = pm4py.read_ptml("input_data/running-example.ptml")
+        ser = pm4py.serialize(tree)
+        tree2 = pm4py.deserialize(ser)
+
+    def test_serialization_bpmn(self):
+        bpmn = pm4py.read_bpmn("input_data/running-example.bpmn")
+        ser = pm4py.serialize(bpmn)
+        bpmn2 = pm4py.deserialize(ser)
+
+    def test_serialization_dfg(self):
+        dfg, sa, ea = pm4py.read_dfg("input_data/running-example.dfg")
+        ser = pm4py.serialize(dfg, sa, ea)
+        dfg2, sa2, ea2 = pm4py.deserialize(ser)
+
 
 if __name__ == "__main__":
     unittest.main()
