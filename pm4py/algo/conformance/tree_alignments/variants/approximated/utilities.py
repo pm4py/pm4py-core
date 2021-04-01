@@ -7,9 +7,9 @@ from pm4py.algo.conformance.alignments.algorithm import Variants
 from pm4py.algo.conformance.alignments.algorithm import apply as get_alignment
 from pm4py.algo.conformance.alignments.variants.state_equation_a_star import get_best_worst_cost
 from pm4py.objects.conversion.process_tree import converter as pt_converter
-from pm4py.objects.log.log import Trace, Event
+from pm4py.objects.log.obj import Trace, Event
 from pm4py.objects.petri.align_utils import SKIP, STD_MODEL_LOG_MOVE_COST
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import exec_utils
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 

@@ -1,6 +1,6 @@
 import copy
 
-from pm4py.objects.process_tree.process_tree import Operator
+from pm4py.objects.process_tree.obj import Operator
 
 
 class Counts(object):
@@ -43,7 +43,7 @@ def add_task(bpmn, counts, label):
     """
     Create a task with the specified label in the BPMN
     """
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
     task = BPMN.Task(name=label)
     bpmn.add_node(task)
     return bpmn, task, counts
@@ -53,7 +53,7 @@ def add_tau_task(bpmn, counts):
     """
     Create a task with the specified label in the BPMN
     """
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
     counts.inc_tau_trans()
     tau_name = "tau_" + str(counts.num_tau_trans)
     tau_task = BPMN.Task(name=tau_name)
@@ -63,7 +63,7 @@ def add_tau_task(bpmn, counts):
 
 
 def add_xor_gateway(bpmn, counts):
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
     counts.inc_xor_gateways()
     split_name = "xor_" + str(counts.num_xor_gateways) + "_split"
     join_name = "xor_" + str(counts.num_xor_gateways) + "_join"
@@ -77,7 +77,7 @@ def add_xor_gateway(bpmn, counts):
 
 
 def add_parallel_gateway(bpmn, counts):
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
     counts.inc_para_gateways()
     split_name = "parallel_" + str(counts.num_para_gateways) + "_split"
     join_name = "parallel_" + str(counts.num_para_gateways) + "_join"
@@ -90,7 +90,7 @@ def add_parallel_gateway(bpmn, counts):
 
 
 def add_inclusive_gateway(bpmn, counts):
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
     counts.inc_para_gateways()
     split_name = "parallel_" + str(counts.num_para_gateways) + "_split"
     join_name = "parallel_" + str(counts.num_para_gateways) + "_join"
@@ -103,7 +103,7 @@ def add_inclusive_gateway(bpmn, counts):
 
 
 def recursively_add_tree(parent_tree, tree, bpmn, initial_event, final_event, counts, rec_depth):
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
     tree_childs = [child for child in tree.children]
     initial_connector = None
     final_connector = None
@@ -191,7 +191,7 @@ def recursively_add_tree(parent_tree, tree, bpmn, initial_event, final_event, co
 
 
 def delete_tau_transitions(bpmn, counts):
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
     for tau_tran in counts.tau_trans:
         in_arcs = tau_tran.get_in_arcs()
         out_arcs = tau_tran.get_out_arcs()
@@ -231,7 +231,7 @@ def apply(tree, parameters=None):
     bpmn_graph
         BPMN diagram
     """
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
     counts = Counts()
     bpmn = BPMN()
     start_event = BPMN.StartEvent(name="start", isInterrupting=True)

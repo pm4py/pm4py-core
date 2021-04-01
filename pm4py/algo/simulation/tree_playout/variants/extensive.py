@@ -1,9 +1,9 @@
 from enum import Enum
 
 from pm4py.algo.discovery.footprints import algorithm as fp_discovery
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.objects.process_tree import bottomup as bottomup_discovery
-from pm4py.objects.process_tree.process_tree import Operator
+from pm4py.objects.process_tree.obj import Operator
 from pm4py.util import constants, xes_constants
 from pm4py.util import exec_utils
 

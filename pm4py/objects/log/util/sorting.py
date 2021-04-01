@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import xes_constants as xes
 
 

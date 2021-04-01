@@ -17,7 +17,7 @@ def apply(net, im, fm, parameters=None):
     if parameters is None:
         parameters = {}
 
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
     from pm4py.objects.bpmn.util import reduction
 
     bpmn_graph = BPMN()

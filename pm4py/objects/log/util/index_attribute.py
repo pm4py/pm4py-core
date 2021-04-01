@@ -1,4 +1,4 @@
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 
 
 def insert_event_index_as_event_attribute(stream, event_index_attr_name="@@eventindex"):

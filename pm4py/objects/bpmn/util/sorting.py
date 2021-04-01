@@ -1,5 +1,5 @@
 def bfs_bpmn(nodes, edges):
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
 
     start_nodes = [n for n in nodes if isinstance(n, BPMN.StartEvent)]
     level = 0

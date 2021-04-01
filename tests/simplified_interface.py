@@ -4,9 +4,9 @@ import unittest
 import pandas as pd
 
 import pm4py
-from pm4py.objects.bpmn.bpmn_graph import BPMN
-from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.bpmn.obj import BPMN
+from pm4py.objects.petri.obj import PetriNet
+from pm4py.objects.process_tree.obj import ProcessTree
 
 
 class SimplifiedInterfaceTest(unittest.TestCase):

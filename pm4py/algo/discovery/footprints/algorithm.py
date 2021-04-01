@@ -2,9 +2,9 @@ from pm4py.algo.discovery.footprints.log.variants import entire_event_log, trace
 from pm4py.algo.discovery.footprints.petri.variants import reach_graph
 from pm4py.algo.discovery.footprints.dfg.variants import dfg
 from pm4py.algo.discovery.footprints.tree.variants import bottomup
-from pm4py.objects.log.log import EventLog
-from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.petri.obj import PetriNet
+from pm4py.objects.process_tree.obj import ProcessTree
 from enum import Enum
 from pm4py.util import exec_utils
 from collections import Counter

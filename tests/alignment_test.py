@@ -16,7 +16,7 @@ class AlignmentTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, marking, fmarking = alpha_alg.apply(log)
-        final_marking = petri.petrinet.Marking()
+        final_marking = petri.obj.Marking()
         for p in net.places:
             if not p.out_arcs:
                 final_marking[p] = 1

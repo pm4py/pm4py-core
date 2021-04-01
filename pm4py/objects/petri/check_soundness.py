@@ -1,4 +1,4 @@
-from pm4py.objects.petri import petrinet
+from pm4py.objects.petri import obj
 from pm4py.objects.petri.networkx_graph import create_networkx_undirected_graph
 from pm4py.objects.petri import explore_path
 
@@ -181,7 +181,7 @@ def check_easy_soundness_of_wfnet(net):
     source = list(x for x in net.places if len(x.in_arcs) == 0)[0]
     sink = list(x for x in net.places if len(x.out_arcs) == 0)[0]
 
-    ini = petrinet.Marking({source: 1})
-    fin = petrinet.Marking({sink: 1})
+    ini = obj.Marking({source: 1})
+    fin = obj.Marking({sink: 1})
 
     return check_easy_soundness_net_in_fin_marking(net, ini, fin)

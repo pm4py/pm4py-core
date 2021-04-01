@@ -1,9 +1,9 @@
 from collections import Counter
 from typing import Union, Tuple
 
-from pm4py.objects.log.log import EventLog
-from pm4py.objects.petri.petrinet import PetriNet, Marking
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.process_tree.obj import ProcessTree
 
 
 def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, ProcessTree], **kwargs) -> EventLog:
@@ -25,7 +25,7 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
         Simulated event log
     """
     if len(args) == 3:
-        from pm4py.objects.petri.petrinet import PetriNet
+        from pm4py.objects.petri.obj import PetriNet
         if type(args[0]) is PetriNet:
             from pm4py.algo.simulation.playout import simulator
             return simulator.apply(args[0], args[1], final_marking=args[2], **kwargs)
@@ -33,7 +33,7 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
             from pm4py.objects.dfg.utils import dfg_playout
             return dfg_playout.apply(args[0], args[1], args[2], **kwargs)
     elif len(args) == 1:
-        from pm4py.objects.process_tree.process_tree import ProcessTree
+        from pm4py.objects.process_tree.obj import ProcessTree
         if type(args[0]) is ProcessTree:
             from pm4py.algo.simulation.tree_playout import algorithm
             return algorithm.apply(args[0], **kwargs)

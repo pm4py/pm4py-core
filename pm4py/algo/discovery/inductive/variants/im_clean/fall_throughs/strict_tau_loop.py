@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pm4py.objects.log.log import EventLog, Trace
+from pm4py.objects.log.obj import EventLog, Trace
 
 
 def detect(log: EventLog, start_activities, end_activities, act_key: str) -> Optional[EventLog]:

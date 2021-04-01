@@ -2,7 +2,7 @@ from itertools import product
 
 import pm4py
 from pm4py.algo.discovery.inductive.variants.im_clean import utils
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 
 
 def detect(dfg, alphabet, start_activities, end_activities, msd=None):

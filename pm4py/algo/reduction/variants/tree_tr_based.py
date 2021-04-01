@@ -2,9 +2,9 @@ from copy import deepcopy
 from enum import Enum
 from typing import Optional, Dict, Any, List, Set
 
-from pm4py.objects.log.log import Trace
+from pm4py.objects.log.obj import Trace
 from pm4py.objects.process_tree import bottomup
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.util import fold
 from pm4py.util import constants, xes_constants, exec_utils
 

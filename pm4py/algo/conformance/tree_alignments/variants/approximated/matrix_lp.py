@@ -7,11 +7,11 @@ from pm4py.algo.conformance.tree_alignments.variants.approximated.utilities impo
     EfficientTree
 from pm4py.objects.process_tree.util import get_process_tree_height, process_tree_to_binary_process_tree
 from pm4py.objects.petri.align_utils import SKIP
-from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.log.log import Trace, Event
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.log.obj import Trace, Event
+from pm4py.objects.log.obj import EventLog
 from typing import Union, Dict, Set, List, Tuple
-from pm4py.objects.process_tree.process_tree import Operator
+from pm4py.objects.process_tree.obj import Operator
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util import exec_utils, constants
 from pm4py.statistics.variants.log.get import get_variants_from_log_trace_idx
