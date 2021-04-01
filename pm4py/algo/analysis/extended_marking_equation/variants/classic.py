@@ -4,14 +4,14 @@ from typing import Tuple, List, Any
 
 import numpy as np
 
-from pm4py.objects.log.log import Trace
+from pm4py.objects.log.obj import Trace
 from pm4py.objects.petri import align_utils
 from pm4py.objects.petri import properties
 from pm4py.objects.petri import synchronous_product
 from pm4py.objects.petri import utils as petri_utils
 from pm4py.objects.petri.consumption_matrix import ConsumptionMatrix
 from pm4py.objects.petri.incidence_matrix import IncidenceMatrix
-from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.petri.obj import PetriNet, Marking
 from pm4py.util import exec_utils, constants, xes_constants, points_subset
 from pm4py.util.lp import solver
 

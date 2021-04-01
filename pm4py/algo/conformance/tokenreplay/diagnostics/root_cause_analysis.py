@@ -3,7 +3,7 @@ from copy import deepcopy
 import numpy as np
 
 from pm4py.objects.log.util import basic_filter
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.util import constants

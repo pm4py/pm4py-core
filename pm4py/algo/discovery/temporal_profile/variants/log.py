@@ -3,7 +3,7 @@ from statistics import mean, stdev
 from typing import Optional, Dict, Any
 
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.util import typing
 

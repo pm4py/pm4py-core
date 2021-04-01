@@ -1,4 +1,4 @@
-from pm4py.objects.transition_system import transition_system
+from pm4py.objects.transition_system import obj
 
 
 def add_arc_from_to(name, fr, to, ts, data=None):
@@ -18,7 +18,7 @@ def add_arc_from_to(name, fr, to, ts, data=None):
     -------
     None
     """
-    tran = transition_system.TransitionSystem.Transition(name, fr, to, data)
+    tran = obj.TransitionSystem.Transition(name, fr, to, data)
     ts.transitions.add(tran)
     fr.outgoing.add(tran)
     to.incoming.add(tran)

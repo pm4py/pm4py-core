@@ -1,7 +1,7 @@
 import networkx as nx
 from pm4py.util import exec_utils
 from enum import Enum
-from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri.obj import PetriNet
 from pm4py.objects.petri import utils
 import copy
 import numpy as np

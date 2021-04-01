@@ -1,1 +1,1 @@
-from pm4py.objects.heuristics_net import defaults, edge, net, node
+from pm4py.objects.heuristics_net import defaults, edge, obj, node

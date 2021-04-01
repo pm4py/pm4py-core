@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 
 
 def execute_script():

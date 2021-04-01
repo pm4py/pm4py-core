@@ -1,1 +1,1 @@
-from pm4py.objects.log import importer, exporter, util, log
+from pm4py.objects.log import importer, exporter, util, obj

@@ -5,14 +5,14 @@ from concurrent.futures import ProcessPoolExecutor
 from enum import Enum
 from typing import List, Any, Optional
 
-from pm4py.objects.log.log import Trace
+from pm4py.objects.log.obj import Trace
 from pm4py.objects.petri import align_utils
 from pm4py.algo.conformance.tree_alignments.util import search_graph_pt_replay_semantics as pt_sem
 from pm4py.objects.process_tree import util as pt_util
-from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.process_tree.process_tree import Operator
+from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.process_tree.obj import Operator
 from pm4py.util import exec_utils, constants, xes_constants
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import variants_util
 import pkgutil
 

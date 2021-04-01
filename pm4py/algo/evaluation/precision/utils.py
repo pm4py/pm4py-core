@@ -1,5 +1,5 @@
 from collections import Counter
-from pm4py.objects.log.log import EventLog, Event, Trace
+from pm4py.objects.log.obj import EventLog, Event, Trace
 from pm4py.util import xes_constants as xes_util
 import heapq
 from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset

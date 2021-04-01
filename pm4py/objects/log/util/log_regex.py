@@ -1,6 +1,6 @@
 from typing import Optional, Dict, Any
 
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.regex import SharedObj, get_new_char

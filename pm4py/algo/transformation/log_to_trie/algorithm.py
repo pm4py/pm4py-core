@@ -2,8 +2,8 @@ from enum import Enum
 
 import pm4py
 from pm4py import util
-from pm4py.objects.log.log import EventLog
-from pm4py.objects.trie.definition import Trie
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.trie.obj import Trie
 
 
 class Parameters(Enum):

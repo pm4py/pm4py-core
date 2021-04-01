@@ -10,7 +10,7 @@ from pm4py.algo.discovery.inductive.variants.im.util import get_tree_repr_implai
 from pm4py.algo.discovery.inductive.variants.im_f.data_structures import subtree_infrequent as subtree
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.conversion.process_tree import converter as tree_to_petri
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.log.util import filtering_utils
 from pm4py.objects.process_tree import util
 from pm4py.objects.process_tree.util import tree_sort

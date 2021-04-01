@@ -2,8 +2,8 @@ import uuid
 
 from lxml import etree
 
-from pm4py.objects.petri.petrinet import Marking
-from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri.obj import Marking
+from pm4py.objects.petri.obj import PetriNet
 from pm4py.util import constants
 
 

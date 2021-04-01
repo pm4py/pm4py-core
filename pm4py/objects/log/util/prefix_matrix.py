@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.objects.log.log import EventStream
+from pm4py.objects.log.obj import EventStream
 from pm4py.util import xes_constants as xes
 from pm4py.util import constants, variants_util
 

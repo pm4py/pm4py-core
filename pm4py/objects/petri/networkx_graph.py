@@ -1,4 +1,4 @@
-from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri.obj import PetriNet
 
 def create_networkx_undirected_graph(net, unique_source, unique_sink):
     """

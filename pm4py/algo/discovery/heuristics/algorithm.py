@@ -3,7 +3,7 @@ from enum import Enum
 
 from pm4py.algo.discovery.heuristics.variants import classic, plusplus
 from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.objects.heuristics_net.net import HeuristicsNet
+from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.util import exec_utils
 
 

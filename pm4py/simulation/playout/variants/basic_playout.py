@@ -3,9 +3,9 @@ from copy import copy
 from enum import Enum
 from random import choice
 
-from pm4py.objects.log import log as log_instance
+from pm4py.objects.log import obj as log_instance
 from pm4py.objects.petri import semantics
-from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri.obj import PetriNet
 from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants

@@ -1,6 +1,6 @@
 import math
 
-from pm4py.objects.process_tree.process_tree import Operator
+from pm4py.objects.process_tree.obj import Operator
 
 
 def get_max_trace_length(tree, parameters=None):
