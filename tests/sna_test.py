@@ -32,6 +32,27 @@ class SnaTests(unittest.TestCase):
         wt_values = sna_alg.apply(log, variant=sna_alg.Variants.WORKING_TOGETHER_PANDAS)
         sub_values = sna_alg.apply(log, variant=sna_alg.Variants.SUBCONTRACTING_PANDAS)
 
+    def test_log_orgmining_local_attr(self):
+        from pm4py.algo.enhancement.organizational_mining.local_diagnostics import algorithm
+        log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
+        algorithm.apply_from_group_attribute(log)
+
+    def test_log_orgmining_local_clustering(self):
+        from pm4py.algo.enhancement.organizational_mining.local_diagnostics import algorithm
+        from pm4py.algo.enhancement.sna.variants.log import jointactivities
+        from pm4py.algo.enhancement.sna import util
+        log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
+        ja = jointactivities.apply(log)
+        clustering = util.cluster_affinity_propagation(ja)
+        algorithm.apply_from_clustering_or_roles(log, clustering)
+
+    def test_log_orgmining_local_roles(self):
+        from pm4py.algo.enhancement.organizational_mining.local_diagnostics import algorithm
+        from pm4py.algo.enhancement.roles import algorithm as roles_detection
+        log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
+        roles = roles_detection.apply(log)
+        algorithm.apply_from_clustering_or_roles(log, roles)
+
 
 if __name__ == "__main__":
     unittest.main()

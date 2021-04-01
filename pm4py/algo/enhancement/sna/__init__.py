@@ -1,1 +1,1 @@
-from pm4py.algo.enhancement.sna import algorithm, variants
+from pm4py.algo.enhancement.sna import algorithm, variants, util
