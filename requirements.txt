@@ -17,14 +17,14 @@ MarkupSafe
 matplotlib
 mpmath
 networkx
-numpy!=1.19.4
+numpy
 packaging
 pandas
 parso
 pickleshare
 pillow
 prompt-toolkit
-pulp<=2.1
+pulp==2.1
 pydotplus
 pygments
 pyparsing
