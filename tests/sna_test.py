@@ -5,6 +5,7 @@ from pm4py.algo.enhancement.sna import algorithm as sna_alg
 from pm4py.objects.log.importer.xes import importer as xes_importer
 import pandas as pd
 from pm4py.objects.log.util import dataframe_utils
+from pm4py.algo.enhancement.sna import util as sna_util
 
 
 class SnaTests(unittest.TestCase):
@@ -52,6 +53,44 @@ class SnaTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
         roles = roles_detection.apply(log)
         algorithm.apply_from_clustering_or_roles(log, roles)
+
+    def test_sna_clustering(self):
+        log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
+        hw_values = sna_alg.apply(log, variant=sna_alg.Variants.HANDOVER_LOG)
+        clusters = sna_util.cluster_affinity_propagation(hw_values)
+
+    def test_res_profiles_log(self):
+        from pm4py.algo.enhancement.resource_profiles import algorithm
+        log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
+        algorithm.distinct_activities(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara")
+        algorithm.activity_frequency(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara", "decide")
+        algorithm.activity_completions(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara")
+        algorithm.case_completions(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Pete")
+        algorithm.fraction_case_completions(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Pete")
+        algorithm.average_workload(log, "2010-12-30 00:00:00", "2011-01-15 00:00:00", "Mike")
+        algorithm.multitasking(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Mike")
+        algorithm.average_duration_activity(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sue",
+                                            "examine thoroughly")
+        algorithm.average_case_duration(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sue")
+        algorithm.interaction_two_resources(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Mike", "Pete")
+        algorithm.social_position(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sue")
+
+    def test_res_profiles_df(self):
+        from pm4py.algo.enhancement.resource_profiles import algorithm
+        log = pd.read_csv(os.path.join("..", "tests", "input_data", "running-example.csv"))
+        log = dataframe_utils.convert_timestamp_columns_in_df(log)
+        algorithm.distinct_activities(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara")
+        algorithm.activity_frequency(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara", "decide")
+        algorithm.activity_completions(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara")
+        algorithm.case_completions(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Pete")
+        algorithm.fraction_case_completions(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Pete")
+        algorithm.average_workload(log, "2010-12-30 00:00:00", "2011-01-15 00:00:00", "Mike")
+        algorithm.multitasking(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Mike")
+        algorithm.average_duration_activity(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sue",
+                                            "examine thoroughly")
+        algorithm.average_case_duration(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sue")
+        algorithm.interaction_two_resources(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Mike", "Pete")
+        algorithm.social_position(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sue")
 
 
 if __name__ == "__main__":

@@ -205,6 +205,40 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         ser = pm4py.serialize(dfg, sa, ea)
         dfg2, sa2, ea2 = pm4py.deserialize(ser)
 
+    def test_minimum_self_distance(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        msd = pm4py.get_minimum_self_distances(log)
+
+    def test_minimum_self_distance_2(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        msd = pm4py.get_minimum_self_distance_witnesses(log)
+
+    def test_marking_equation_net(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        pm4py.solve_marking_equation(net, im, fm)
+
+    def test_marking_equation_sync_net(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        sync_net, sync_im, sync_fm = pm4py.construct_synchronous_product_net(log[0], net, im, fm)
+        res = pm4py.solve_marking_equation(sync_net, sync_im, sync_fm)
+        self.assertIsNotNone(res)
+        self.assertEqual(res, 11)
+
+    def test_ext_marking_equation_sync_net(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        sync_net, sync_im, sync_fm = pm4py.construct_synchronous_product_net(log[0], net, im, fm)
+        res = pm4py.solve_extended_marking_equation(log[0], sync_net, sync_im, sync_fm)
+        self.assertIsNotNone(res)
+        self.assertGreaterEqual(res, 2)
+
 
 if __name__ == "__main__":
     unittest.main()
