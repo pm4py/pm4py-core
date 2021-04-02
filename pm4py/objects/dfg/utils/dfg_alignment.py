@@ -6,6 +6,7 @@ from enum import Enum
 from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import constants, xes_constants, exec_utils
 from pm4py.util import variants_util
+from pm4py.objects.petri import align_utils
 
 
 class Parameters(Enum):
@@ -303,13 +304,13 @@ def __apply_list_activities(trace, dfg, sa, ea, parameters=None):
     activities_both_in_trace_and_model = activities_trace.intersection(activities_model)
 
     sync_cost_function = exec_utils.get_param_value(Parameters.SYNC_COST_FUNCTION, parameters,
-                                                    {x: 0 for x in activities_both_in_trace_and_model})
+                                                    {x: align_utils.STD_SYNC_COST for x in activities_both_in_trace_and_model})
     model_move_cost_function = exec_utils.get_param_value(Parameters.MODEL_MOVE_COST_FUNCTION, parameters,
-                                                          {x: 10000 for x in activities_model})
+                                                          {x: align_utils.STD_MODEL_LOG_MOVE_COST for x in activities_model})
     # for each activity that is in the trace, provides the cost of a log move
     # that is returned in the alignment to the user (but not used internally for ordering the states)
     log_move_cost_function = exec_utils.get_param_value(Parameters.LOG_MOVE_COST_FUNCTION, parameters,
-                                                        {x: 10000 for x in activities_trace})
+                                                        {x: align_utils.STD_MODEL_LOG_MOVE_COST for x in activities_trace})
     # for each activity that is in the trace, provide the cost of a log move that is used internally for
     # ordering the states in the search algorithm.
     internal_log_move_cost_function = exec_utils.get_param_value(Parameters.INTERNAL_LOG_MOVE_COST_FUNCTION, parameters,
