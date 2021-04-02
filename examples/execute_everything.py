@@ -387,6 +387,10 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(orgmining_local_diagn)
+    execute_script(resource_profiles_log)
+    execute_script(resource_profile_pandas)
+    execute_script(process_tree_reduction)
     execute_script(dataframe_prefix_and_fea_extraction)
     execute_script(logs_alignments)
     execute_script(visualization_serialization)
