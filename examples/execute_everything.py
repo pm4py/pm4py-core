@@ -352,6 +352,30 @@ def visualization_serialization():
     visualization_serialization.execute_script()
 
 
+def orgmining_local_diagn():
+    from examples import orgmining_local_diagn
+    print("\n\norgmining_local_diagn")
+    orgmining_local_diagn.execute_script()
+
+
+def resource_profiles_log():
+    from examples import resource_profiles_log
+    print("\n\nresource_profiles_log")
+    resource_profiles_log.execute_script()
+
+
+def resource_profile_pandas():
+    from examples import resource_profiles_pandas
+    print("\n\nresource_profile_pandas")
+    resource_profiles_pandas.execute_script()
+
+
+def process_tree_reduction():
+    from examples import process_tree_reduction
+    print("\n\nprocess_tree_reduction")
+    process_tree_reduction.execute_script()
+
+
 def execute_script(f):
     try:
         f()
