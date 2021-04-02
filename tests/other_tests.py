@@ -220,6 +220,18 @@ class OtherPartsTests(unittest.TestCase):
         df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
         fea_df = dataframe_utils.automatic_feature_extraction_df(df)
 
+    def test_log_to_trie(self):
+        import pm4py
+        from pm4py.algo.transformation.log_to_trie import algorithm as log_to_trie
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        trie = log_to_trie.apply(log)
+
+    def test_minimum_self_distance(self):
+        import pm4py
+        from pm4py.algo.discovery.minimum_self_distance import algorithm as minimum_self_distance
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        msd = minimum_self_distance.apply(log)
+
 
 if __name__ == "__main__":
     unittest.main()
