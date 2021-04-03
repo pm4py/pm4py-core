@@ -130,9 +130,9 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
         for t in petri_net.transitions:
             if t.label is not None:
                 model_cost_function[t] = utils.STD_MODEL_LOG_MOVE_COST
-                sync_cost_function[t] = 0
+                sync_cost_function[t] = utils.STD_SYNC_COST
             else:
-                model_cost_function[t] = 1
+                model_cost_function[t] = utils.STD_TAU_COST
         parameters[Parameters.PARAM_MODEL_COST_FUNCTION] = model_cost_function
         parameters[Parameters.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
 
