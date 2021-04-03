@@ -237,7 +237,6 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         sync_net, sync_im, sync_fm = pm4py.construct_synchronous_product_net(log[0], net, im, fm)
         res = pm4py.solve_extended_marking_equation(log[0], sync_net, sync_im, sync_fm)
         self.assertIsNotNone(res)
-        self.assertGreaterEqual(res, 2)
 
 
 if __name__ == "__main__":
