@@ -80,6 +80,31 @@ class AlignmentTest(unittest.TestCase):
         from pm4py.algo.conformance.tree_alignments.variants import search_graph_pt
         al = search_graph_pt.apply(log, tree, parameters={search_graph_pt.Parameters.ACTIVITY_KEY: "@@classifier"})
 
+    def test_variant_state_eq_a_star(self):
+        import pm4py
+        log = pm4py.read_xes("input_data/running-example.xes")
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        align_alg.apply(log, net, im, fm, variant=align_alg.Variants.VERSION_STATE_EQUATION_A_STAR)
+
+    def test_variant_state_eq_less_memory(self):
+        import pm4py
+        log = pm4py.read_xes("input_data/running-example.xes")
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        align_alg.apply(log, net, im, fm, variant=align_alg.Variants.VERSION_STATE_EQUATION_LESS_MEMORY)
+
+    def test_variant_dijkstra_less_memory(self):
+        import pm4py
+        log = pm4py.read_xes("input_data/running-example.xes")
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        align_alg.apply(log, net, im, fm, variant=align_alg.Variants.VERSION_DIJKSTRA_LESS_MEMORY)
+
+    def test_variant_tweaked_state_eq_a_star(self):
+        import pm4py
+        log = pm4py.read_xes("input_data/running-example.xes")
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        align_alg.apply(log, net, im, fm, variant=align_alg.Variants.VERSION_TWEAKED_STATE_EQUATION_A_STAR)
+
+
 
 if __name__ == "__main__":
     unittest.main()
