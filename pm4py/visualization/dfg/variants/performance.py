@@ -98,7 +98,7 @@ def get_activities_color(activities_count):
 
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
-                           max_no_of_edges_in_diagram=170, start_activities=None, end_activities=None, soj_time=None,
+                           max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
                            font_size="12"):
     """
     Do GraphViz visualization of a DFG graph
@@ -219,7 +219,7 @@ def apply(dfg, log=None, parameters=None, activities_count=None, soj_time=None):
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    max_no_of_edges_in_diagram = exec_utils.get_param_value(Parameters.MAX_NO_EDGES_IN_DIAGRAM, parameters, 75)
+    max_no_of_edges_in_diagram = exec_utils.get_param_value(Parameters.MAX_NO_EDGES_IN_DIAGRAM, parameters, 100000)
     start_activities = exec_utils.get_param_value(Parameters.START_ACTIVITIES, parameters, [])
     end_activities = exec_utils.get_param_value(Parameters.END_ACTIVITIES, parameters, [])
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 12)
