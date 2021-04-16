@@ -11,6 +11,7 @@ from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.statistics.traces.log import case_statistics
 from pm4py.algo.filtering.log.ltl import ltl_checker
 from tests.constants import INPUT_DATA_DIR
+from pm4py.util import constants
 
 
 class LogFilteringTest(unittest.TestCase):
@@ -171,6 +172,12 @@ class LogFilteringTest(unittest.TestCase):
         attr_value_different_persons_neg = ltl_checker.attr_value_different_persons(log, "check ticket",
                                                                                     parameters={
                                                                                         ltl_checker.Parameters.POSITIVE: False})
+
+
+    def test_attr_value_repetition(self):
+        from pm4py.algo.filtering.log.attr_value_repetition import filter
+        log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
+        filtered_log = filter.apply(log, "Sara", parameters={constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: "org:resource"})
 
 
 if __name__ == "__main__":
