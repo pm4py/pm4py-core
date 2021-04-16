@@ -10,6 +10,8 @@ from pm4py.algo.evaluation.precision.parameters import Parameters
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
 import pkgutil
+from concurrent.futures import ProcessPoolExecutor
+import multiprocessing
 
 
 def apply(log, net, marking, final_marking, parameters=None):
@@ -177,28 +179,23 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
     if parameters is None:
         parameters = {}
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
-
-    align_result = []
+    multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, False)
 
     progress = None
     if pkgutil.find_loader("tqdm") and show_progress_bar and len(fake_log) > 1:
         from tqdm.auto import tqdm
         progress = tqdm(total=len(fake_log), desc="computing precision with alignments, completed variants :: ")
 
-    for i in range(len(fake_log)):
-        trace = fake_log[i]
-        sync_net, sync_initial_marking, sync_final_marking = build_sync_net(trace, net, marking, final_marking,
-                                                                            parameters=parameters)
-        stop_marking = Marking()
-        for pl, count in sync_final_marking.items():
-            if pl.name[1] == utils.SKIP:
-                stop_marking[pl] = count
-        cost_function = utils.construct_standard_cost_function(sync_net, utils.SKIP)
+    if multiprocessing:
+        align_intermediate_result = __align_log_with_multiprocessing_stop_marking(fake_log, net, marking, final_marking,
+                                                                                progress, parameters=parameters)
+    else:
+        align_intermediate_result = __align_log_wo_multiprocessing_stop_marking(fake_log, net, marking, final_marking,
+                                                                                progress, parameters=parameters)
 
-        # perform the alignment of the prefix
-        res = precision_utils.__search(sync_net, sync_initial_marking, sync_final_marking, stop_marking, cost_function,
-                                       utils.SKIP)
-
+    align_result = []
+    for i in range(len(align_intermediate_result)):
+        res = align_intermediate_result[i]
         if res is not None:
             align_result.append([])
             for mark in res:
@@ -213,8 +210,6 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
             # if there is no path from the initial marking
             # replaying the given prefix, then add None
             align_result.append(None)
-        if progress is not None:
-            progress.update()
 
     # gracefully close progress bar
     if progress is not None:
@@ -222,6 +217,59 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
     del progress
 
     return align_result
+
+
+def __align_log_wo_multiprocessing_stop_marking(fake_log, net, marking, final_marking, progress, parameters=None):
+    align_intermediate_result = []
+    for i in range(len(fake_log)):
+        res = __align_trace_stop_marking(fake_log[i], net, marking, final_marking, parameters=parameters)
+        align_intermediate_result.append(res)
+        if progress is not None:
+            progress.update()
+
+    return align_intermediate_result
+
+
+def __align_log_with_multiprocessing_stop_marking(fake_log, net, marking, final_marking, progress, parameters=None):
+    if parameters is not None:
+        parameters = {}
+
+    num_cores = exec_utils.get_param_value(Parameters.CORES, parameters, multiprocessing.cpu_count() - 2)
+    align_intermediate_result = []
+    with ProcessPoolExecutor(max_workers=num_cores) as executor:
+        futures = []
+        for i in range(len(fake_log)):
+            futures.append(executor.submit(__align_trace_stop_marking, fake_log[i], net, marking, final_marking, parameters))
+        if progress is not None:
+            alignments_ready = 0
+            while alignments_ready != len(futures):
+                current = 0
+                for index, variant in enumerate(futures):
+                    current = current + 1 if futures[index].done() else current
+                if current > alignments_ready:
+                    for i in range(0, current - alignments_ready):
+                        progress.update()
+                alignments_ready = current
+        for index, variant in enumerate(futures):
+            align_intermediate_result.append(futures[index].result())
+
+    return align_intermediate_result
+
+
+def __align_trace_stop_marking(trace, net, marking, final_marking, parameters=None):
+    sync_net, sync_initial_marking, sync_final_marking = build_sync_net(trace, net, marking, final_marking,
+                                                                        parameters=parameters)
+    stop_marking = Marking()
+    for pl, count in sync_final_marking.items():
+        if pl.name[1] == utils.SKIP:
+            stop_marking[pl] = count
+    cost_function = utils.construct_standard_cost_function(sync_net, utils.SKIP)
+
+    # perform the alignment of the prefix
+    res = precision_utils.__search(sync_net, sync_initial_marking, sync_final_marking, stop_marking, cost_function,
+                                   utils.SKIP)
+
+    return res
 
 
 def build_sync_net(trace, petri_net, initial_marking, final_marking, parameters=None):
