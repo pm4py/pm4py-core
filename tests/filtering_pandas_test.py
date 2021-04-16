@@ -13,6 +13,7 @@ from pm4py.statistics.traces.pandas import case_statistics
 from pm4py.algo.filtering.pandas.ltl import ltl_checker
 from tests.constants import INPUT_DATA_DIR
 import pandas as pd
+from pm4py.util import constants
 
 
 class DataframePrefilteringTest(unittest.TestCase):
@@ -159,6 +160,13 @@ class DataframePrefilteringTest(unittest.TestCase):
         attr_value_different_persons_neg = ltl_checker.attr_value_different_persons(df, "check ticket",
                                                                                     parameters={
                                                                                         ltl_checker.Parameters.POSITIVE: False})
+
+
+    def test_attr_value_repetition(self):
+        from pm4py.algo.filtering.pandas.attr_value_repetition import filter
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        filtered_df = filter.apply(df, "Sara", parameters={constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: "org:resource"})
 
 
 if __name__ == "__main__":
