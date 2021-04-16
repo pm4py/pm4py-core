@@ -2,8 +2,9 @@ from pm4py.algo.evaluation.replay_fitness.variants import alignment_based, token
 from pm4py.algo.conformance import alignments
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import exec_utils
-from pm4py.objects.petri.check_soundness import check_easy_soundness_net_in_fin_marking
+from pm4py.objects.petri_net.utils.check_soundness import check_easy_soundness_net_in_fin_marking
 from enum import Enum
+import deprecation
 
 
 class Variants(Enum):
@@ -21,6 +22,7 @@ TOKEN_BASED = Variants.TOKEN_BASED
 VERSIONS = {ALIGNMENT_BASED, TOKEN_BASED}
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='please use pm4py.algo.evaluation.replay_fitness.algorithm instead')
 def apply(log, petri_net, initial_marking, final_marking, parameters=None, variant=None):
     """
     Apply fitness evaluation starting from an event log and a marked Petri net,
@@ -77,6 +79,7 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None, varia
                                                      parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='please use pm4py.algo.evaluation.replay_fitness.algorithm instead')
 def evaluate(results, parameters=None, variant=TOKEN_BASED):
     """
     Evaluate replay results when the replay algorithm has already been applied

@@ -4,10 +4,10 @@ import time
 import pm4py
 from pm4py.algo.conformance.alignments import algorithm as petri_alignments
 from pm4py.objects.dfg.filtering import dfg_filtering
-from pm4py.objects.dfg.utils import dfg_alignment
+from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
 from pm4py.statistics.attributes.log import get
 from pm4py.visualization.dfg import visualizer
-from pm4py.objects.petri import align_utils
+from pm4py.objects.petri_net.utils import align_utils
 
 
 def execute_script():

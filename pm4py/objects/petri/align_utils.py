@@ -69,6 +69,8 @@ def search_path_among_sol(sync_net: PetriNet, ini: Marking, fin: Marking,
             continue
         if index == len_trace_with_index:
             reach_fm = True
+            if curr[0] < best_tuple[0]:
+                best_tuple = curr
             break
         if curr[0] < best_tuple[0]:
             best_tuple = curr

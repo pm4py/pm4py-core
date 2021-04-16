@@ -28,20 +28,20 @@ def execute_script():
     petri_alpha, im_alpha, fm_alpha = pm4py.discover_petri_net_alpha(log1)
     petri_inductive, im_inductive, fm_inductive = pm4py.discover_petri_net_inductive(log1)
     petri_heuristics, im_heuristics, fm_heuristics = pm4py.discover_petri_net_heuristics(log1)
-    tree_inductive = pm4py.discover_tree_inductive(log1)
+    tree_inductive = pm4py.discover_process_tree_inductive(log1)
     heu_net = pm4py.discover_heuristics_net(log1)
 
     pm4py.write_dfg(dfg, dfg_sa, dfg_ea, "ru_dfg.dfg")
-    pm4py.write_petri_net(petri_alpha, im_alpha, fm_alpha, "ru_alpha.pnml")
-    pm4py.write_petri_net(petri_inductive, im_inductive, fm_inductive, "ru_inductive.pnml")
-    pm4py.write_petri_net(petri_heuristics, im_heuristics, fm_heuristics, "ru_heuristics.pnml")
-    pm4py.write_process_tree(tree_inductive, "ru_inductive.ptml")
+    pm4py.write_pnml(petri_alpha, im_alpha, fm_alpha, "ru_alpha.pnml")
+    pm4py.write_pnml(petri_inductive, im_inductive, fm_inductive, "ru_inductive.pnml")
+    pm4py.write_pnml(petri_heuristics, im_heuristics, fm_heuristics, "ru_heuristics.pnml")
+    pm4py.write_ptml(tree_inductive, "ru_inductive.ptml")
 
     dfg, dfg_sa, dfg_ea = pm4py.read_dfg("ru_dfg.dfg")
-    petri_alpha, im_alpha, fm_alpha = pm4py.read_petri_net("ru_alpha.pnml")
-    petri_inductive, im_inductive, fm_inductive = pm4py.read_petri_net("ru_inductive.pnml")
-    petri_heuristics, im_heuristics, fm_heuristics = pm4py.read_petri_net("ru_heuristics.pnml")
-    tree_inductive = pm4py.read_process_tree("ru_inductive.ptml")
+    petri_alpha, im_alpha, fm_alpha = pm4py.read_pnml("ru_alpha.pnml")
+    petri_inductive, im_inductive, fm_inductive = pm4py.read_pnml("ru_inductive.pnml")
+    petri_heuristics, im_heuristics, fm_heuristics = pm4py.read_pnml("ru_heuristics.pnml")
+    tree_inductive = pm4py.read_ptml("ru_inductive.ptml")
 
     pm4py.save_vis_petri_net(petri_alpha, im_alpha, fm_alpha, "ru_alpha.png")
     pm4py.save_vis_petri_net(petri_inductive, im_inductive, fm_inductive, "ru_inductive.png")
@@ -58,16 +58,16 @@ def execute_script():
         pm4py.view_heuristics_net(heu_net, format="svg")
         pm4py.view_dfg(dfg, dfg_sa, dfg_ea, format="svg")
 
-    aligned_traces = pm4py.conformance_alignments(log1, petri_inductive, im_inductive, fm_inductive)
-    replayed_traces = pm4py.conformance_tbr(log1, petri_inductive, im_inductive, fm_inductive)
+    aligned_traces = pm4py.conformance_diagnostics_alignments(log1, petri_inductive, im_inductive, fm_inductive)
+    replayed_traces = pm4py.conformance_diagnostics_token_based_replay(log1, petri_inductive, im_inductive, fm_inductive)
 
-    fitness_tbr = pm4py.evaluate_fitness_tbr(log1, petri_inductive, im_inductive, fm_inductive)
+    fitness_tbr = pm4py.fitness_token_based_replay(log1, petri_inductive, im_inductive, fm_inductive)
     print("fitness_tbr", fitness_tbr)
-    fitness_align = pm4py.evaluate_fitness_alignments(log1, petri_inductive, im_inductive, fm_inductive)
+    fitness_align = pm4py.fitness_alignments(log1, petri_inductive, im_inductive, fm_inductive)
     print("fitness_align", fitness_align)
-    precision_tbr = pm4py.evaluate_precision_tbr(log1, petri_inductive, im_inductive, fm_inductive)
+    precision_tbr = pm4py.precision_token_based_replay(log1, petri_inductive, im_inductive, fm_inductive)
     print("precision_tbr", precision_tbr)
-    precision_align = pm4py.evaluate_precision_alignments(log1, petri_inductive, im_inductive, fm_inductive)
+    precision_align = pm4py.precision_alignments(log1, petri_inductive, im_inductive, fm_inductive)
     print("precision_align", precision_align)
 
     print("log start activities = ", pm4py.get_start_activities(log2))
@@ -84,15 +84,15 @@ def execute_script():
     print("end_activities len(filt_log) = ", len(pm4py.filter_end_activities(log2, ["pay compensation"])))
     print("end_activities len(filt_df) = ", len(pm4py.filter_end_activities(df2, ["pay compensation"])))
     print("attributes org:resource len(filt_log) (cases) cases = ",
-          len(pm4py.filter_attribute_values(log2, "org:resource", ["Ellen"], level="case")))
+          len(pm4py.filter_event_attribute_values(log2, "org:resource", ["Ellen"], level="case")))
     print("attributes org:resource len(filt_log) (cases)  events = ",
-          len(pm4py.filter_attribute_values(log2, "org:resource", ["Ellen"], level="event")))
+          len(pm4py.filter_event_attribute_values(log2, "org:resource", ["Ellen"], level="event")))
     print("attributes org:resource len(filt_df) (events) cases = ",
-          len(pm4py.filter_attribute_values(df2, "org:resource", ["Ellen"], level="case")))
+          len(pm4py.filter_event_attribute_values(df2, "org:resource", ["Ellen"], level="case")))
     print("attributes org:resource len(filt_df) (events) events = ",
-          len(pm4py.filter_attribute_values(df2, "org:resource", ["Ellen"], level="event")))
+          len(pm4py.filter_event_attribute_values(df2, "org:resource", ["Ellen"], level="event")))
     print("attributes org:resource len(filt_df) (events) events notpositive = ",
-          len(pm4py.filter_attribute_values(df2, "org:resource", ["Ellen"], level="event", retain=False)))
+          len(pm4py.filter_event_attribute_values(df2, "org:resource", ["Ellen"], level="event", retain=False)))
 
     print("variants log = ", pm4py.get_variants(log2))
     print("variants df = ", pm4py.get_variants(df2))
@@ -102,7 +102,6 @@ def execute_script():
     print("variants filter df = ",
           len(pm4py.filter_variants(df2, [
               ["register request", "examine thoroughly", "check ticket", "decide", "reject request"]])))
-    print("variants filter percentage = ", len(pm4py.filter_variants_percentage(log2, threshold=0.8)))
 
     print("paths filter log len = ",
           len(pm4py.filter_directly_follows_relation(log2, [("register request", "examine casually")])))
@@ -135,6 +134,23 @@ def execute_script():
     os.remove("ru_inductive_tree.png")
     os.remove("ru_heunet.png")
     os.remove("ru_dfg.png")
+
+    wt_log = pm4py.discover_social_working_together(log2)
+    wt_df = pm4py.discover_social_working_together(df2)
+    print("log working together", wt_log)
+    print("df working together", wt_df)
+    print("log subcontracting", pm4py.discover_social_subcontracting(log2))
+    print("df subcontracting", pm4py.discover_social_subcontracting(df2))
+    print("log working together", pm4py.discover_social_working_together(log2))
+    print("df working together", pm4py.discover_social_working_together(df2))
+    print("log similar activities", pm4py.discover_social_similar_activities(log2))
+    print("df similar activities", pm4py.discover_social_similar_activities(df2))
+    print("log org roles", pm4py.discover_organizational_roles(log2))
+    print("df org roles", pm4py.discover_organizational_roles(df2))
+    pm4py.view_sna(wt_log)
+
+    pm4py.save_vis_sna(wt_df, "ru_wt_df.png")
+    os.remove("ru_wt_df.png")
 
 
 if __name__ == "__main__":

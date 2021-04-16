@@ -1,6 +1,6 @@
 import pm4py
 import os
-from pm4py.algo.enhancement.organizational_mining.local_diagnostics import algorithm as local_diagnostics
+from pm4py.algo.organizational_mining.local_diagnostics import algorithm as local_diagnostics
 
 
 def execute_script():

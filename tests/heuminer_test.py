@@ -6,7 +6,7 @@ import pandas as pd
 from pm4py.objects.log.util import dataframe_utils
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.visualization.heuristics_net import visualizer as hn_vis
-from pm4py.visualization.petrinet import visualizer as pn_vis
+from pm4py.visualization.petri_net import visualizer as pn_vis
 from tests.constants import INPUT_DATA_DIR
 
 

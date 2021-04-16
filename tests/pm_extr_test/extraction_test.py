@@ -19,13 +19,13 @@ if __name__ == "__main__":
     from pm4py.algo.discovery.alpha import algorithm as alpha
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     from pm4py.objects.conversion.process_tree import converter as pt_converter
-    from pm4py.algo.evaluation.replay_fitness import evaluator as fitness_evaluator
-    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
-    from pm4py.algo.evaluation.simplicity import evaluator as simplicity_evaluator
-    from pm4py.algo.evaluation.generalization import evaluator as generalization_evaluator
+    from pm4py.algo.evaluation.replay_fitness import algorithm as fitness_evaluator
+    from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
+    from pm4py.algo.evaluation.simplicity import algorithm as simplicity_evaluator
+    from pm4py.algo.evaluation.generalization import algorithm as generalization_evaluator
     from pm4py.objects.log.util import insert_classifier
-    from pm4py.objects.petri.exporter import exporter as pnml_exporter
-    from pm4py.visualization.petrinet import visualizer as petri_vis
+    from pm4py.objects.petri_net.exporter import exporter as pnml_exporter
+    from pm4py.visualization.petri_net import visualizer as petri_vis
     from pm4py.visualization.common.save import save as vis_save
     from pm4py import util as pmutil
     from pm4py.algo.analysis.woflan import algorithm as woflan

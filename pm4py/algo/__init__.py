@@ -1,2 +1,2 @@
-from pm4py.algo import conformance, discovery, enhancement, reduction, analysis, evaluation, simulation
+from pm4py.algo import conformance, discovery, reduction, analysis, evaluation, simulation
 

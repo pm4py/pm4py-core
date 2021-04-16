@@ -5,7 +5,7 @@ import pandas as pd
 
 import pm4py
 from pm4py.objects.bpmn.obj import BPMN
-from pm4py.objects.petri.obj import PetriNet
+from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.process_tree.obj import ProcessTree
 
 
@@ -42,8 +42,8 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_inductive_miner_tree(self):
         log = pm4py.read_xes("input_data/running-example.xes")
-        tree = pm4py.discover_tree_inductive(log)
-        tree = pm4py.discover_tree_inductive(log, noise_threshold=0.2)
+        tree = pm4py.discover_process_tree_inductive(log)
+        tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
 
     def test_heuristics_miner_heu_net(self):
         log = pm4py.read_xes("input_data/running-example.xes")
