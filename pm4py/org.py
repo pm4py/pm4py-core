@@ -6,9 +6,12 @@ from pm4py.objects.log.obj import EventLog
 from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
 
 
-def discover_social_handover(log: Union[EventLog, pd.DataFrame], beta=0):
+def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0):
     """
-    Calculates the handover of work metric
+    Calculates the handover of work network of the event log.
+    The handover of work network is essentially the DFG of the event log, however, using the
+    resource as a node of the graph, instead of the activity.
+    As such, to use this, resource information should be present in the event log.
 
     Parameters
     ---------------
@@ -30,9 +33,10 @@ def discover_social_handover(log: Union[EventLog, pd.DataFrame], beta=0):
         return sna.apply(log, variant=sna.Variants.HANDOVER_LOG, parameters={"beta": beta})
 
 
-def discover_social_working_together(log: Union[EventLog, pd.DataFrame]):
+def discover_working_together_network(log: Union[EventLog, pd.DataFrame]):
     """
-    Calculates the working together metric
+    Calculates the working together network of the process.
+    Two nodes resources are connected in the graph if the resources collaborate on an instance of the process.
 
     Parameters
     ---------------
@@ -52,9 +56,9 @@ def discover_social_working_together(log: Union[EventLog, pd.DataFrame]):
         return sna.apply(log, variant=sna.Variants.WORKING_TOGETHER_LOG)
 
 
-def discover_social_similar_activities(log: Union[EventLog, pd.DataFrame]):
+def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFrame]):
     """
-    Calculates the similar activities metric
+    Calculates similarity between the resources in the event log, based on their activity profiles.
 
     Parameters
     ---------------
@@ -74,9 +78,9 @@ def discover_social_similar_activities(log: Union[EventLog, pd.DataFrame]):
         return sna.apply(log, variant=sna.Variants.JOINTACTIVITIES_LOG)
 
 
-def discover_social_subcontracting(log: Union[EventLog, pd.DataFrame], n=2):
+def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2):
     """
-    Calculates the subcontracting metric
+    Calculates the subcontracting network of the process.
 
     Parameters
     ---------------
