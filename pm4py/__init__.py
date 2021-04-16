@@ -32,7 +32,7 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     save_vis_process_tree, \
     view_heuristics_net, save_vis_heuristics_net, view_bpmn, save_vis_bpmn, view_sna, save_vis_sna
 from pm4py.write import write_xes, write_petri_net, write_process_tree, write_dfg, write_bpmn, write_pnml, write_ptml
-from pm4py.org import discover_social_handover, discover_social_similar_activities, discover_social_subcontracting, discover_social_working_together, discover_organizational_roles
+from pm4py.org import discover_handover_of_work_network, discover_activity_based_resource_similarity, discover_subcontracting_network, discover_working_together_network, discover_organizational_roles
 
 time.clock = time.process_time
 
