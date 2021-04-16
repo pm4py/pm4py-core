@@ -1,6 +1,7 @@
 from pm4py.algo.conformance.alignments import algorithm as alignments
 from pm4py.algo.conformance.alignments.decomposed import algorithm as decomp_alignments
 from pm4py.algo.evaluation.replay_fitness.parameters import Parameters
+from pm4py.util import exec_utils
 
 
 def evaluate(aligned_traces, parameters=None):
@@ -69,12 +70,21 @@ def apply(log, petri_net, initial_marking, final_marking, align_variant=alignmen
     dictionary
         Containing two keys (percFitTraces and averageFitness)
     """
+    if parameters is None:
+        parameters = {}
+
+    multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, False)
+
     if align_variant == decomp_alignments.Variants.RECOMPOS_MAXIMAL.value:
         alignment_result = decomp_alignments.apply(log, petri_net, initial_marking, final_marking,
                                                    variant=align_variant, parameters=parameters)
     else:
-        alignment_result = alignments.apply(log, petri_net, initial_marking, final_marking, variant=align_variant,
-                                            parameters=parameters)
+        if multiprocessing:
+            alignment_result = alignments.apply_multiprocessing(log, petri_net, initial_marking, final_marking, variant=align_variant,
+                                                parameters=parameters)
+        else:
+            alignment_result = alignments.apply(log, petri_net, initial_marking, final_marking, variant=align_variant,
+                                                parameters=parameters)
     return evaluate(alignment_result)
 
 
