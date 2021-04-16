@@ -1,5 +1,5 @@
 from pm4py.algo.conformance.alignments import algorithm as alignments
-from pm4py.algo.conformance.decomp_alignments import algorithm as decomp_alignments
+from pm4py.algo.conformance.alignments.decomposed import algorithm as decomp_alignments
 from pm4py.algo.evaluation.replay_fitness.parameters import Parameters
 
 

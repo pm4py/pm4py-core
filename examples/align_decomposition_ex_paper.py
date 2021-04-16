@@ -1,7 +1,7 @@
-from pm4py.objects.petri.obj import PetriNet, Marking
-from pm4py.objects.petri.utils import add_arc_from_to
-from pm4py.visualization.petrinet import visualizer
-from pm4py.objects.petri import decomposition
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
+from pm4py.visualization.petri_net import visualizer
+from pm4py.objects.petri_net.utils import decomposition
 
 
 def execute_script():

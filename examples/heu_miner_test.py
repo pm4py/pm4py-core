@@ -3,7 +3,7 @@ import os
 from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.visualization.heuristics_net import visualizer as hn_vis
-from pm4py.visualization.petrinet import visualizer as petri_vis
+from pm4py.visualization.petri_net import visualizer as petri_vis
 
 
 def execute_script():

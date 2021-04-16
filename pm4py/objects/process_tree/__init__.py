@@ -1,4 +1,4 @@
-from pm4py.objects.process_tree import obj, semantics, state, util as pt_util, regex, bottomup
+from pm4py.objects.process_tree import obj, semantics, state, utils
 import pkgutil
 
 if pkgutil.find_loader("lxml"):

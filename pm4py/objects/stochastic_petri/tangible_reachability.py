@@ -1,4 +1,4 @@
-from pm4py.objects.petri.reachability_graph import construct_reachability_graph
+from pm4py.objects.petri_net.utils.reachability_graph import construct_reachability_graph
 from pm4py.objects.conversion.log import converter as log_converter
 
 

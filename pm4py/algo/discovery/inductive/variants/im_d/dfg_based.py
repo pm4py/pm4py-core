@@ -14,8 +14,8 @@ from pm4py.algo.discovery.inductive.variants.im_d.util import get_tree_repr_dfg_
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.conversion.process_tree import converter as tree_to_petri
 from pm4py.objects.dfg.utils import dfg_utils
-from pm4py.objects.process_tree import util
-from pm4py.objects.process_tree.util import tree_sort
+from pm4py.objects.process_tree.utils import generic
+from pm4py.objects.process_tree.utils.generic import tree_sort
 from pm4py.statistics.attributes.log import get as log_attributes_stats
 from pm4py.statistics.end_activities.log import get as log_end_act_stats
 from pm4py.statistics.start_activities.log import get as log_start_act_stats
@@ -271,7 +271,7 @@ def apply_tree_dfg(dfg, parameters=None, activities=None, contains_empty_traces=
     # Fixes a 1 child XOR that is added when single-activities flowers are found
     tree_consistency.fix_one_child_xor_flower(tree_repr)
     # folds the process tree (to simplify it in case fallthroughs/filtering is applied)
-    tree_repr = util.fold(tree_repr)
+    tree_repr = generic.fold(tree_repr)
     # sorts the process tree to ensure consistency in different executions of the algorithm
     tree_sort(tree_repr)
 

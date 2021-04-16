@@ -9,9 +9,9 @@ def execute_script():
     log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "running-example.xes"))
     bpmn_graph = bpmn_importer.apply(os.path.join("..", "tests", "input_data", "running-example.bpmn"))
     net, im, fm = bpmn_converter.apply(bpmn_graph, variant=bpmn_converter.Variants.TO_PETRI_NET)
-    precision_tbr = pm4py.evaluate_precision_tbr(log, net, im, fm)
+    precision_tbr = pm4py.precision_token_based_replay(log, net, im, fm)
     print("precision", precision_tbr)
-    fitness_tbr = pm4py.evaluate_fitness_tbr(log, net, im, fm)
+    fitness_tbr = pm4py.precision_token_based_replay(log, net, im, fm)
     print("fitness", fitness_tbr)
     print(pm4py.check_soundness(net, im, fm))
 
