@@ -4,7 +4,9 @@ from copy import deepcopy
 from pm4py.algo.discovery.dfg import algorithm as dfg_alg
 from pm4py.algo.discovery.heuristics.parameters import Parameters
 from pm4py.objects.conversion.heuristics_net import converter as hn_conv_alg
+from pm4py.objects.dfg.filtering.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.objects.heuristics_net import defaults
+from pm4py.objects.heuristics_net.node import Node
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.statistics.attributes.log import get as log_attributes
 from pm4py.statistics.end_activities.log import get as log_ea_filter
@@ -122,8 +124,9 @@ def apply_pandas(df, parameters=None):
         performance_dfg = None
         if heu_net_decoration == "performance":
             performance_dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
-                                              activity_key=activity_key, timestamp_key=timestamp_key,
-                                              start_timestamp_key=start_timestamp_key, measure="performance")
+                                                          activity_key=activity_key, timestamp_key=timestamp_key,
+                                                          start_timestamp_key=start_timestamp_key,
+                                                          measure="performance")
 
         heu_net = apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
                                 start_activities=start_activities, end_activities=end_activities,
@@ -293,9 +296,172 @@ def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activ
                             start_activities=start_activities, end_activities=end_activities,
                             dfg_window_2=dfg_window_2,
                             freq_triples=freq_triples, performance_dfg=performance_dfg)
-    heu_net.calculate(dependency_thresh=dependency_thresh, and_measure_thresh=and_measure_thresh,
-                      min_act_count=min_act_count, min_dfg_occurrences=min_dfg_occurrences,
-                      dfg_pre_cleaning_noise_thresh=dfg_pre_cleaning_noise_thresh,
-                      loops_length_two_thresh=loops_length_two_thresh)
+    heu_net = calculate(heu_net, dependency_thresh=dependency_thresh, and_measure_thresh=and_measure_thresh,
+                        min_act_count=min_act_count, min_dfg_occurrences=min_dfg_occurrences,
+                        dfg_pre_cleaning_noise_thresh=dfg_pre_cleaning_noise_thresh,
+                        loops_length_two_thresh=loops_length_two_thresh)
+
+    return heu_net
+
+
+def calculate(heu_net, dependency_thresh=defaults.DEFAULT_DEPENDENCY_THRESH,
+              and_measure_thresh=defaults.DEFAULT_AND_MEASURE_THRESH, min_act_count=defaults.DEFAULT_MIN_ACT_COUNT,
+              min_dfg_occurrences=defaults.DEFAULT_MIN_DFG_OCCURRENCES,
+              dfg_pre_cleaning_noise_thresh=defaults.DEFAULT_DFG_PRE_CLEANING_NOISE_THRESH,
+              loops_length_two_thresh=defaults.DEFAULT_LOOP_LENGTH_TWO_THRESH, parameters=None):
+    """
+    Calculate the dependency matrix, populate the nodes
+
+    Parameters
+    -------------
+    dependency_thresh
+        (Optional) dependency threshold
+    and_measure_thresh
+        (Optional) AND measure threshold
+    min_act_count
+        (Optional) minimum number of occurrences of an activity
+    min_dfg_occurrences
+        (Optional) minimum dfg occurrences
+    dfg_pre_cleaning_noise_thresh
+        (Optional) DFG pre cleaning noise threshold
+    loops_length_two_thresh
+        (Optional) loops length two threshold
+    parameters
+        Other parameters of the algorithm
+    """
+    if parameters is None:
+        parameters = {}
+    heu_net.dependency_matrix = None
+    heu_net.dependency_matrix = {}
+    heu_net.dfg_matrix = None
+    heu_net.dfg_matrix = {}
+    heu_net.performance_matrix = None
+    heu_net.performance_matrix = {}
+    if dfg_pre_cleaning_noise_thresh > 0.0:
+        heu_net.dfg = clean_dfg_based_on_noise_thresh(heu_net.dfg, heu_net.activities, dfg_pre_cleaning_noise_thresh,
+                                                      parameters=parameters)
+    if heu_net.dfg_window_2 is not None:
+        for el in heu_net.dfg_window_2:
+            act1 = el[0]
+            act2 = el[1]
+            value = heu_net.dfg_window_2[el]
+            if act1 not in heu_net.dfg_window_2_matrix:
+                heu_net.dfg_window_2_matrix[act1] = {}
+            heu_net.dfg_window_2_matrix[act1][act2] = value
+    if heu_net.freq_triples is not None:
+        for el in heu_net.freq_triples:
+            act1 = el[0]
+            act2 = el[1]
+            act3 = el[2]
+            value = heu_net.freq_triples[el]
+            # avoid to consider self-loops
+            if act1 == act3 and not act1 == act2:
+                if act1 not in heu_net.freq_triples_matrix:
+                    heu_net.freq_triples_matrix[act1] = {}
+                heu_net.freq_triples_matrix[act1][act2] = value
+    for el in heu_net.dfg:
+        act1 = el[0]
+        act2 = el[1]
+        value = heu_net.dfg[el]
+        perf_value = heu_net.performance_dfg[el] if heu_net.performance_dfg is not None else heu_net.dfg[el]
+        if act1 not in heu_net.dependency_matrix:
+            heu_net.dependency_matrix[act1] = {}
+            heu_net.dfg_matrix[act1] = {}
+            heu_net.performance_matrix[act1] = {}
+        heu_net.dfg_matrix[act1][act2] = value
+        heu_net.performance_matrix[act1][act2] = perf_value
+        if not act1 == act2:
+            inv_couple = (act2, act1)
+            c1 = value
+            if inv_couple in heu_net.dfg:
+                c2 = heu_net.dfg[inv_couple]
+                dep = (c1 - c2) / (c1 + c2 + 1)
+            else:
+                dep = c1 / (c1 + 1)
+        else:
+            dep = value / (value + 1)
+        heu_net.dependency_matrix[act1][act2] = dep
+    for n1 in heu_net.dependency_matrix:
+        for n2 in heu_net.dependency_matrix[n1]:
+            condition1 = n1 in heu_net.activities_occurrences and heu_net.activities_occurrences[n1] >= min_act_count
+            condition2 = n2 in heu_net.activities_occurrences and heu_net.activities_occurrences[n2] >= min_act_count
+            condition3 = heu_net.dfg_matrix[n1][n2] >= min_dfg_occurrences
+            condition4 = heu_net.dependency_matrix[n1][n2] >= dependency_thresh
+            condition = condition1 and condition2 and condition3 and condition4
+            if condition:
+                if n1 not in heu_net.nodes:
+                    heu_net.nodes[n1] = Node(heu_net, n1, heu_net.activities_occurrences[n1],
+                                             is_start_node=(n1 in heu_net.start_activities),
+                                             is_end_node=(n1 in heu_net.end_activities),
+                                             default_edges_color=heu_net.default_edges_color[0],
+                                             node_type=heu_net.node_type, net_name=heu_net.net_name[0],
+                                             nodes_dictionary=heu_net.nodes)
+                if n2 not in heu_net.nodes:
+                    heu_net.nodes[n2] = Node(heu_net, n2, heu_net.activities_occurrences[n2],
+                                             is_start_node=(n2 in heu_net.start_activities),
+                                             is_end_node=(n2 in heu_net.end_activities),
+                                             default_edges_color=heu_net.default_edges_color[0],
+                                             node_type=heu_net.node_type, net_name=heu_net.net_name[0],
+                                             nodes_dictionary=heu_net.nodes)
+
+                repr_value = heu_net.performance_matrix[n1][n2]
+                heu_net.nodes[n1].add_output_connection(heu_net.nodes[n2], heu_net.dependency_matrix[n1][n2],
+                                                        heu_net.dfg_matrix[n1][n2], repr_value=repr_value)
+                heu_net.nodes[n2].add_input_connection(heu_net.nodes[n1], heu_net.dependency_matrix[n1][n2],
+                                                       heu_net.dfg_matrix[n1][n2], repr_value=repr_value)
+    for node in heu_net.nodes:
+        heu_net.nodes[node].calculate_and_measure_out(and_measure_thresh=and_measure_thresh)
+        heu_net.nodes[node].calculate_and_measure_in(and_measure_thresh=and_measure_thresh)
+        heu_net.nodes[node].calculate_loops_length_two(heu_net.dfg_matrix, heu_net.freq_triples_matrix,
+                                                       loops_length_two_thresh=loops_length_two_thresh)
+    nodes = list(heu_net.nodes.keys())
+    added_loops = set()
+    for n1 in nodes:
+        for n2 in heu_net.nodes[n1].loop_length_two:
+            if n1 in heu_net.dfg_matrix and n2 in heu_net.dfg_matrix[n1] and heu_net.dfg_matrix[n1][
+                n2] >= min_dfg_occurrences and n1 in heu_net.activities_occurrences and heu_net.activities_occurrences[
+                n1] >= min_act_count and n2 in heu_net.activities_occurrences and heu_net.activities_occurrences[
+                n2] >= min_act_count:
+                if not ((n1 in heu_net.dependency_matrix and n2 in heu_net.dependency_matrix[n1] and
+                         heu_net.dependency_matrix[n1][n2] >= dependency_thresh) or (
+                                n2 in heu_net.dependency_matrix and n1 in heu_net.dependency_matrix[n2] and
+                                heu_net.dependency_matrix[n2][n1] >= dependency_thresh)):
+                    if n2 not in heu_net.nodes:
+                        heu_net.nodes[n2] = Node(heu_net, n2, heu_net.activities_occurrences[n2],
+                                                 is_start_node=(n2 in heu_net.start_activities),
+                                                 is_end_node=(n2 in heu_net.end_activities),
+                                                 default_edges_color=heu_net.default_edges_color[0],
+                                                 node_type=heu_net.node_type, net_name=heu_net.net_name[0],
+                                                 nodes_dictionary=heu_net.nodes)
+                    v_n1_n2 = heu_net.dfg_matrix[n1][n2] if n1 in heu_net.dfg_matrix and n2 in heu_net.dfg_matrix[
+                        n1] else 0
+                    v_n2_n1 = heu_net.dfg_matrix[n2][n1] if n2 in heu_net.dfg_matrix and n1 in heu_net.dfg_matrix[
+                        n2] else 0
+
+                    if (n1, n2) not in added_loops:
+                        repr_value = heu_net.performance_matrix[n1][n2] if n1 in heu_net.performance_matrix and n2 in \
+                                                                           heu_net.performance_matrix[n1] else 0
+                        added_loops.add((n1, n2))
+                        heu_net.nodes[n1].add_output_connection(heu_net.nodes[n2], 0,
+                                                                v_n1_n2, repr_value=repr_value)
+                        heu_net.nodes[n2].add_input_connection(heu_net.nodes[n1], 0,
+                                                               v_n2_n1, repr_value=repr_value)
+
+                    if (n2, n1) not in added_loops:
+                        repr_value = heu_net.performance_matrix[n2][n1] if n2 in heu_net.performance_matrix and n1 in \
+                                                                           heu_net.performance_matrix[n2] else 0
+                        added_loops.add((n2, n1))
+                        heu_net.nodes[n2].add_output_connection(heu_net.nodes[n1], 0,
+                                                                v_n2_n1, repr_value=repr_value)
+                        heu_net.nodes[n1].add_input_connection(heu_net.nodes[n2], 0,
+                                                               v_n1_n2, repr_value=repr_value)
+    if len(heu_net.nodes) == 0:
+        for act in heu_net.activities:
+            heu_net.nodes[act] = Node(heu_net, act, heu_net.activities_occurrences[act],
+                                      is_start_node=(act in heu_net.start_activities),
+                                      is_end_node=(act in heu_net.end_activities),
+                                      default_edges_color=heu_net.default_edges_color[0],
+                                      node_type=heu_net.node_type, net_name=heu_net.net_name[0],
+                                      nodes_dictionary=heu_net.nodes)
 
     return heu_net

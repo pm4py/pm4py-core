@@ -3,7 +3,7 @@ from pm4py.algo.discovery.transition_system import algorithm as ts_discovery
 from pm4py.visualization.dfg import visualizer as dfg_visualizer
 from pm4py.visualization.heuristics_net import visualizer as hn_visualizer
 from pm4py.visualization.process_tree import visualizer as tree_visualizer
-from pm4py.visualization.petrinet import visualizer as pn_visualizer
+from pm4py.visualization.petri_net import visualizer as pn_visualizer
 from pm4py.visualization.bpmn import visualizer as bpmn_visualizer
 from pm4py.visualization.transition_system import visualizer as ts_visualizer
 from pm4py.statistics.traces.log import case_statistics
@@ -13,7 +13,7 @@ from pm4py.visualization.graphs import visualizer as graphs_visualizer
 def execute_script():
     log = pm4py.read_xes("../tests/input_data/running-example.xes")
     dfg, sa, ea = pm4py.discover_dfg(log)
-    tree = pm4py.discover_tree_inductive(log)
+    tree = pm4py.discover_process_tree_inductive(log)
     heu_net = pm4py.discover_heuristics_net(log)
     net, im, fm = pm4py.discover_petri_net_alpha(log)
     bpmn = pm4py.convert_to_bpmn(tree)

@@ -6,6 +6,7 @@ import pandas as pd
 from pm4py.algo.enhancement.organizational_mining import util
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import constants
+import deprecation
 
 
 class Parameters(Enum):
@@ -21,6 +22,7 @@ class Outputs(Enum):
     GROUP_MEMBER_CONTRIBUTION = "group_member_contribution"
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.local_diagnostics.algorithm instead')
 def apply_from_clustering_or_roles(log_obj: Union[pd.DataFrame, EventLog], ja_clustering_or_roles: Dict[str, List[str]],
                                    parameters: Optional[Dict[Any, str]] = None):
     """
@@ -69,6 +71,7 @@ def apply_from_clustering_or_roles(log_obj: Union[pd.DataFrame, EventLog], ja_cl
     return __apply(res_act, act_res, groups, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.local_diagnostics.algorithm instead')
 def apply_from_group_attribute(log_obj: Union[pd.DataFrame, EventLog], parameters: Optional[Dict[Any, str]] = None):
     """
     Provides the local diagnostics for the organizational model starting from a log object and considering

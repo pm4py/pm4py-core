@@ -1,6 +1,6 @@
 from pm4py.statistics.traces.log import case_arrival
 from pm4py.algo.simulation.montecarlo.utils import replay
-from pm4py.objects.petri.semantics import enabled_transitions, weak_execute
+from pm4py.objects.petri_net.semantics import enabled_transitions, weak_execute
 from threading import Thread, Semaphore
 from statistics import median
 from pm4py.objects.log.obj import EventLog, Trace, Event

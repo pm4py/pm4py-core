@@ -16,7 +16,7 @@ DEFAULT_VARIANT = Variants.BASIC_PLAYOUT
 VERSIONS = {Variants.BASIC_PLAYOUT, Variants.EXTENSIVE, Variants.STOCHASTIC_PLAYOUT}
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+@deprecation.deprecated(deprecated_in="2.2.5", removed_in="3.0",
                         current_version=VERSION,
                         details="Use the pm4py.algo.simulation.playout package")
 def apply(net, initial_marking, final_marking=None, parameters=None, variant=DEFAULT_VARIANT):

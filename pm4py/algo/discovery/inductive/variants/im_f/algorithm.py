@@ -12,8 +12,8 @@ from pm4py.objects.conversion.log import converter
 from pm4py.objects.conversion.process_tree import converter as tree_to_petri
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.log.util import filtering_utils
-from pm4py.objects.process_tree import util
-from pm4py.objects.process_tree.util import tree_sort
+from pm4py.objects.process_tree.utils import generic
+from pm4py.objects.process_tree.utils.generic import tree_sort
 from pm4py.statistics.attributes.log import get as attributes_get
 from pm4py.statistics.end_activities.log import get as end_activities_get
 from pm4py.statistics.start_activities.log import get as start_activities_get
@@ -151,7 +151,7 @@ def apply_tree(log, parameters):
     # Fixes a 1 child XOR that is added when single-activities flowers are found
     tree_consistency.fix_one_child_xor_flower(process_tree)
     # folds the process tree (to simplify it in case fallthroughs/filtering is applied)
-    process_tree = util.fold(process_tree)
+    process_tree = generic.fold(process_tree)
     # sorts the process tree to ensure consistency in different executions of the algorithm
     tree_sort(process_tree)
 

@@ -5,7 +5,7 @@ from pm4py.objects.log.importer.xes import importer as xes_import
 from pm4py.algo.discovery.inductive import algorithm as ind_miner
 from pm4py.visualization.process_tree import visualizer as pt_vis
 from pm4py.objects.conversion.process_tree import converter
-from pm4py.algo.evaluation.replay_fitness import evaluator
+from pm4py.algo.evaluation.replay_fitness import algorithm
 from pm4py.algo.discovery.inductive.parameters import Parameters
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.log.obj import EventLog
@@ -51,7 +51,7 @@ def execute_script():
     net, im, fm = converter.apply(ptree)
 
     pt_vis.view(gviz)
-    print(evaluator.apply(log, net, im, fm, variant=evaluator.Variants.TOKEN_BASED))
+    print(algorithm.apply(log, net, im, fm, variant=algorithm.Variants.TOKEN_BASED))
 
 
 if __name__ == "__main__":

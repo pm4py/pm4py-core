@@ -1,4 +1,4 @@
-from pm4py.objects.petri.utils import remove_transition
+from pm4py.objects.petri_net.utils.petri_utils import remove_transition
 
 
 def petri_reduction_treplay(net, parameters=None):

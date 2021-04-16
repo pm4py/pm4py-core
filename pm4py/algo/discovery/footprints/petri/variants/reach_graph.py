@@ -1,4 +1,4 @@
-from pm4py.objects.petri import reachability_graph
+from pm4py.objects.petri_net.utils import reachability_graph
 import itertools
 from pm4py.algo.discovery.footprints.outputs import Outputs
 
