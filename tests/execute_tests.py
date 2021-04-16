@@ -34,7 +34,6 @@ if __name__ == "__main__":
     from tests.algorithm_test import AlgorithmTest
     from tests.filtering_log_test import LogFilteringTest
     from tests.filtering_pandas_test import DataframePrefilteringTest
-    from tests.map_filter_functions_test import MapFilterFunctionsTest
     from tests.statistics_log_test import StatisticsLogTest
     from tests.statistics_df_test import StatisticsDfTest
     from tests.trans_syst_tests import TransitionSystemTest
@@ -45,7 +44,6 @@ if __name__ == "__main__":
     test_ts = TransitionSystemTest()
     test_ies = ImpExpFromString()
     test_doc_tests = DocTests()
-    test_map_filter = MapFilterFunctionsTest()
     test_stats_log = StatisticsLogTest
     test_stats_df = StatisticsDfTest
     test_log_filter = LogFilteringTest()

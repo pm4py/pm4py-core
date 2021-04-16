@@ -34,7 +34,7 @@ DEFAULT_VARIANT = Variants.PTANDLOGGENERATOR
 VERSIONS = {Variants.BASIC, Variants.PTANDLOGGENERATOR}
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+@deprecation.deprecated(deprecated_in="2.2.5", removed_in="3.0",
                         current_version=VERSION,
                         details="Use the pm4py.algo.simulation.tree_generator package")
 def apply(variant=DEFAULT_VARIANT, parameters=None):

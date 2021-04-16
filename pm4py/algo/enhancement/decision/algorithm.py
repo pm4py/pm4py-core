@@ -25,6 +25,7 @@ from pm4py.statistics.attributes.log.select import select_attributes_from_log_fo
 from pm4py.objects.conversion.log import converter as log_converter
 from enum import Enum
 from pm4py.util import exec_utils
+import deprecation
 
 
 class Parameters(Enum):
@@ -76,6 +77,7 @@ def get_decision_tree(log, net, initial_marking, final_marking, decision_point=N
     return dt, list(X.columns.values.tolist()), targets
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.decision_mining.algorithm instead')
 def apply(log, net, initial_marking, final_marking, decision_point=None, attributes=None, parameters=None):
     """
     Gets the essential information (features, target class and names of the target class)

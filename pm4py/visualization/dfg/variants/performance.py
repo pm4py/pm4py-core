@@ -81,40 +81,38 @@ def assign_penwidth_edges(dfg):
     return penwidth
 
 
-def get_activities_color(activities_count):
+def get_activities_color_soj_time(soj_time):
     """
-    Get frequency color for attributes
+    Gets the color for the activities based on the sojourn time
 
     Parameters
-    -----------
-    activities_count
-        Count of attributes in the log
+    ----------------
+    soj_time
+        Sojourn time
 
     Returns
-    -----------
-    activities_color
-        Color assigned to attributes in the graph
+    ----------------
+    act_color
+        Dictionary associating each activity to a color based on the sojourn time
     """
     activities_color = {}
 
-    min_value, max_value = get_min_max_value(activities_count)
+    min_soj_time, max_soj_time = get_min_max_value(soj_time)
 
-    for ac in activities_count:
-        v0 = activities_count[ac]
-        """transBaseColor = int(
-            255 - 100 * (v0 - min_value) / (max_value - min_value + 0.00001))
-        transBaseColorHex = str(hex(transBaseColor))[2:].upper()
-        v1 = "#" + transBaseColorHex + transBaseColorHex + "FF"""
+    for ac in soj_time:
+        act_soj_time = soj_time[ac]
 
-        v1 = get_trans_freq_color(v0, min_value, max_value)
+        trans_base_color = int(
+            255 - 100 * (act_soj_time - min_soj_time) / (max_soj_time - min_soj_time + 0.00001))
+        trans_base_color_hex = str(hex(trans_base_color))[2:].upper()
 
-        activities_color[ac] = v1
+        activities_color[ac] = "#" + "FF" + trans_base_color_hex + trans_base_color_hex
 
     return activities_color
 
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
-                           max_no_of_edges_in_diagram=170, start_activities=None, end_activities=None, soj_time=None,
+                           max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
                            font_size="12"):
     """
     Do GraphViz visualization of a DFG graph
@@ -175,7 +173,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         activities_in_dfg.add(edge[1])
 
     # assign attributes color
-    activities_color = get_activities_color(activities_count_int)
+    activities_color = get_activities_color_soj_time(soj_time)
 
     # represent nodes
     viz.attr('node', shape='box')
@@ -194,7 +192,8 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
                      fillcolor=activities_color[act], fontsize=font_size)
             activities_map[act] = str(hash(act))
         else:
-            viz.node(str(hash(act)), act + " (" + human_readable_stat(soj_time[act]) + ")", fontsize=font_size)
+            viz.node(str(hash(act)), act + " (" + human_readable_stat(soj_time[act]) + ")", fontsize=font_size,
+                     style='filled', fillcolor=activities_color[act])
             activities_map[act] = str(hash(act))
 
     # make edges addition always in the same order
@@ -235,7 +234,7 @@ def apply(dfg, log=None, parameters=None, activities_count=None, soj_time=None):
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    max_no_of_edges_in_diagram = exec_utils.get_param_value(Parameters.MAX_NO_EDGES_IN_DIAGRAM, parameters, 75)
+    max_no_of_edges_in_diagram = exec_utils.get_param_value(Parameters.MAX_NO_EDGES_IN_DIAGRAM, parameters, 100000)
     start_activities = exec_utils.get_param_value(Parameters.START_ACTIVITIES, parameters, [])
     end_activities = exec_utils.get_param_value(Parameters.END_ACTIVITIES, parameters, [])
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 12)

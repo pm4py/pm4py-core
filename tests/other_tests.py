@@ -15,7 +15,7 @@ from pm4py.statistics.end_activities.log import get as end_activities
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.statistics.variants.log import get as variants_get
-from pm4py.algo.simulation.playout import simulator
+from pm4py.algo.simulation.playout.petri_net import algorithm
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.util import dataframe_utils
 from pm4py.util import pandas_utils
@@ -36,8 +36,8 @@ class OtherPartsTests(unittest.TestCase):
         lang_log = variants_get.get_language(log)
         net1, im1, fm1 = inductive_miner.apply(log)
         lang_model1 = variants_get.get_language(
-            simulator.apply(net1, im1, fm1, variant=simulator.Variants.STOCHASTIC_PLAYOUT,
-                            parameters={simulator.Variants.STOCHASTIC_PLAYOUT.value.Parameters.LOG: log}))
+            algorithm.apply(net1, im1, fm1, variant=algorithm.Variants.STOCHASTIC_PLAYOUT,
+                            parameters={algorithm.Variants.STOCHASTIC_PLAYOUT.value.Parameters.LOG: log}))
         emd = earth_mover_distance.apply(lang_model1, lang_log)
 
     def test_importing_dfg(self):
@@ -145,14 +145,14 @@ class OtherPartsTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         tree = inductive_miner.apply_tree(log)
-        from pm4py.algo.simulation.tree_playout import algorithm as tree_playout
+        from pm4py.algo.simulation.playout.process_tree import algorithm as tree_playout
         new_log = tree_playout.apply(tree)
 
     def test_playout_tree_extensive(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         tree = inductive_miner.apply_tree(log)
-        from pm4py.algo.simulation.tree_playout import algorithm as tree_playout
+        from pm4py.algo.simulation.playout.process_tree import algorithm as tree_playout
         new_log = tree_playout.apply(tree, variant=tree_playout.Variants.EXTENSIVE)
 
     def test_sojourn_time_xes(self):
@@ -196,7 +196,7 @@ class OtherPartsTests(unittest.TestCase):
 
     def test_dfg_playout(self):
         import pm4py
-        from pm4py.objects.dfg.utils import dfg_playout
+        from pm4py.algo.simulation.playout.dfg import algorithm as dfg_playout
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         dfg, sa, ea = pm4py.discover_dfg(log)
         dfg_playout.apply(dfg, sa, ea)
@@ -204,7 +204,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_dfg_align(self):
         import pm4py
         from pm4py.objects.dfg.filtering import dfg_filtering
-        from pm4py.objects.dfg.utils import dfg_alignment
+        from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         dfg, sa, ea = pm4py.discover_dfg(log)
         act_count = pm4py.get_attribute_values(log, "concept:name")
@@ -219,6 +219,18 @@ class OtherPartsTests(unittest.TestCase):
     def test_automatic_feature_extraction(self):
         df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
         fea_df = dataframe_utils.automatic_feature_extraction_df(df)
+
+    def test_log_to_trie(self):
+        import pm4py
+        from pm4py.algo.transformation.log_to_trie import algorithm as log_to_trie
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        trie = log_to_trie.apply(log)
+
+    def test_minimum_self_distance(self):
+        import pm4py
+        from pm4py.algo.discovery.minimum_self_distance import algorithm as minimum_self_distance
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        msd = minimum_self_distance.apply(log)
 
 
 if __name__ == "__main__":

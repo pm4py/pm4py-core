@@ -39,7 +39,7 @@ class Parameters(Enum):
     PARAM_GENERALIZATION_WEIGHT = 'generalization_weight'
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+@deprecation.deprecated(deprecated_in="2.2.5", removed_in="3.0",
                         current_version=VERSION,
                         details="Use the pm4py.algo.evaluation.evaluator class")
 def apply(log, net, initial_marking, final_marking, parameters=None):

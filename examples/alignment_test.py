@@ -1,13 +1,12 @@
 import os
 
-import pm4py
 from pm4py import util
 from pm4py.algo.conformance import alignments as ali
 from pm4py.algo.conformance.alignments.variants.state_equation_a_star import Parameters
 from pm4py.objects import log as log_lib
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.objects.petri.importer import importer as petri_importer
-from pm4py.objects.petri.align_utils import pretty_print_alignments
+from pm4py.objects.petri_net.importer import importer as petri_importer
+from pm4py.objects.petri_net.utils.align_utils import pretty_print_alignments
 
 
 def align(trace, net, im, fm, model_cost_function, sync_cost_function):

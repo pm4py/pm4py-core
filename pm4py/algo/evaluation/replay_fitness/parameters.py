@@ -24,3 +24,4 @@ class Parameters(Enum):
     ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
     TOKEN_REPLAY_VARIANT = "token_replay_variant"
     CLEANING_TOKEN_FLOOD = "cleaning_token_flood"
+    MULTIPROCESSING = "multiprocessing"

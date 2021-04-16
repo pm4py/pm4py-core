@@ -52,30 +52,6 @@ def footprints_petri_net():
     footprints_petri_net.execute_script()
 
 
-def events_log_filter():
-    from examples import event_log_filter
-    print("\n\nevent_log_filter")
-    event_log_filter.execute_script()
-
-
-def event_log_map():
-    from examples import event_log_map
-    print("\n\nevent_log_map")
-    event_log_map.execute_script()
-
-
-def event_stream_filter():
-    from examples import event_stream_filter
-    print("\n\nevent_stream_filter")
-    event_stream_filter.execute_script()
-
-
-def event_stream_map():
-    from examples import event_stream_map
-    print("\n\nevent_stream_map")
-    event_stream_map.execute_script()
-
-
 def corr_mining():
     from examples import corr_mining
     print("\n\ncorr_mining")
@@ -352,6 +328,30 @@ def visualization_serialization():
     visualization_serialization.execute_script()
 
 
+def orgmining_local_diagn():
+    from examples import orgmining_local_diagn
+    print("\n\norgmining_local_diagn")
+    orgmining_local_diagn.execute_script()
+
+
+def resource_profiles_log():
+    from examples import resource_profiles_log
+    print("\n\nresource_profiles_log")
+    resource_profiles_log.execute_script()
+
+
+def resource_profile_pandas():
+    from examples import resource_profiles_pandas
+    print("\n\nresource_profile_pandas")
+    resource_profiles_pandas.execute_script()
+
+
+def process_tree_reduction():
+    from examples import process_tree_reduction
+    print("\n\nprocess_tree_reduction")
+    process_tree_reduction.execute_script()
+
+
 def execute_script(f):
     try:
         f()
@@ -363,6 +363,10 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(orgmining_local_diagn)
+    execute_script(resource_profiles_log)
+    execute_script(resource_profile_pandas)
+    execute_script(process_tree_reduction)
     execute_script(dataframe_prefix_and_fea_extraction)
     execute_script(logs_alignments)
     execute_script(visualization_serialization)
@@ -373,10 +377,6 @@ if __name__ == "__main__":
     execute_script(emd_evaluation)
     execute_script(footprints_tree_conf)
     execute_script(footprints_petri_net)
-    execute_script(events_log_filter)
-    execute_script(event_log_map)
-    execute_script(event_stream_filter)
-    execute_script(event_stream_map)
     execute_script(corr_mining)
     execute_script(log_skeleton)
     execute_script(roles_detection)

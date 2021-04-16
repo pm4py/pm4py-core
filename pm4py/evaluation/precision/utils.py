@@ -18,9 +18,9 @@ from collections import Counter
 from pm4py.objects.log.obj import EventLog, Event, Trace
 from pm4py.util import xes_constants as xes_util
 import heapq
-from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset
-from pm4py.objects.petri import align_utils as utils
-from pm4py.objects.petri.incidence_matrix import construct
+from pm4py.objects.petri_net.utils.petri_utils import decorate_places_preset_trans, decorate_transitions_prepostset
+from pm4py.objects.petri_net.utils import align_utils as utils
+from pm4py.objects.petri_net.utils.incidence_matrix import construct
 
 def __search(sync_net, ini, fin, stop, cost_function, skip):
     decorate_transitions_prepostset(sync_net)

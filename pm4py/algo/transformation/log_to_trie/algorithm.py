@@ -16,10 +16,10 @@
 '''
 from enum import Enum
 
-import pm4py
 from pm4py import util
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.trie.obj import Trie
+from pm4py.statistics.variants.log import get as get_variants
 
 
 class Parameters(Enum):
@@ -28,10 +28,8 @@ class Parameters(Enum):
 
 def apply(log: EventLog, parameters=None):
     parameters = parameters if parameters is not None else dict()
-    activity_key = util.exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
-                                                   util.xes_constants.DEFAULT_NAME_KEY)
     root = Trie()
-    variants = list(map(lambda v: v.split(','), pm4py.get_variants(log)))
+    variants = list(map(lambda v: v.split(','), get_variants.get_variants(log, parameters=parameters)))
     for variant in variants:
         trie = root
         for i, activity in enumerate(variant):

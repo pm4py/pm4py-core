@@ -16,13 +16,12 @@
 '''
 from pm4py.objects import log as log_lib
 from pm4py.evaluation.precision import utils as precision_utils
-from pm4py.objects.petri import align_utils as utils
-from pm4py.objects.petri import check_soundness
-from pm4py.objects.petri.obj import Marking
-from pm4py.objects.petri.utils import construct_trace_net
-from pm4py.objects.petri.synchronous_product import construct
+from pm4py.objects.petri_net.utils import align_utils as utils, check_soundness
+from pm4py.objects.petri_net.obj import Marking
+from pm4py.objects.petri_net.utils.petri_utils import construct_trace_net
+from pm4py.objects.petri_net.utils.synchronous_product import construct
 from pm4py.statistics.start_activities.log.get import get_start_activities
-from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
+from pm4py.objects.petri_net.utils.align_utils import get_visible_transitions_eventually_enabled_by_marking
 from pm4py.evaluation.precision.parameters import Parameters
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants

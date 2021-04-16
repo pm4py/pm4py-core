@@ -33,9 +33,9 @@ from pm4py.objects.conversion.process_tree import converter as tree_converter
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.log.util import log as log_util
-from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree import obj as pt
-from pm4py.objects.process_tree import util
+from pm4py.objects.process_tree.utils import generic
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.statistics.end_activities.log import get as get_ends
 from pm4py.statistics.start_activities.log import get as get_starters
@@ -115,8 +115,8 @@ def apply_tree(event_log: Union[pd.DataFrame, EventLog, EventStream],
                            act_key, exec_utils.get_param_value(Parameters.USE_MSD_PARALLEL_CUT, parameters, True))
 
     tree_consistency.fix_parent_pointers(tree)
-    tree = util.fold(tree)
-    util.tree_sort(tree)
+    tree = generic.fold(tree)
+    generic.tree_sort(tree)
 
     return tree
 

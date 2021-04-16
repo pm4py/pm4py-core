@@ -14,6 +14,10 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import warnings
+
+warnings.warn('please use the pm4py.objects.petri_net package instead.')
+
 import pkgutil
 
 from pm4py.objects.petri import common, incidence_matrix, obj, \

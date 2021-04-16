@@ -17,7 +17,7 @@
 from typing import List, Optional, Tuple, Dict
 
 from pm4py.objects.log.obj import Trace
-from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 
 def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial_marking: Marking,
@@ -45,9 +45,9 @@ def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial
     sync_fm
         Final marking of the sync net
     """
-    from pm4py.objects.petri.utils import construct_trace_net
-    from pm4py.objects.petri.synchronous_product import construct
-    from pm4py.objects.petri.align_utils import SKIP
+    from pm4py.objects.petri_net.utils.petri_utils import construct_trace_net
+    from pm4py.objects.petri_net.utils.synchronous_product import construct
+    from pm4py.objects.petri_net.utils.align_utils import SKIP
     trace_net, trace_im, trace_fm = construct_trace_net(trace)
     sync_net, sync_im, sync_fm = construct(trace_net, trace_im, trace_fm, petri_net, initial_marking, final_marking,
                                            SKIP)

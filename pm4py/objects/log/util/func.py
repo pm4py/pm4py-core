@@ -22,7 +22,7 @@ from pm4py.meta import VERSION
 from pm4py.objects.log import obj as log_inst
 
 
-@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.3.0', current_version=VERSION,
+@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.4.0', current_version=VERSION,
                         details='filter_() deprecated, use pm4py.filter_log() or pm4py.filter_trace() instead')
 def filter_(func, log):
     '''
@@ -48,7 +48,7 @@ def filter_(func, log):
         return log
 
 
-@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.3.0', current_version=VERSION,
+@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.4.0', current_version=VERSION,
                         details='map_() deprecated, use pm4py.map_log() or pm4py.map_trace() instead')
 def map_(func, log):
     '''
@@ -75,7 +75,7 @@ def map_(func, log):
         return log
 
 
-@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.3.0', current_version=VERSION,
+@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.4.0', current_version=VERSION,
                         details='sort_() deprecated, use pm4py.sort_log() or pm4py.sort_trace() instead')
 def sort_(func, log, reverse=False):
     if isinstance(log, log_inst.EventLog):

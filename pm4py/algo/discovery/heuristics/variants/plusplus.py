@@ -29,7 +29,7 @@ from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.heuristics_net.node import Node
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.log.util import interval_lifecycle
-from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.statistics.attributes.log import get as log_attributes
 from pm4py.statistics.attributes.pandas import get as pd_attributes
 from pm4py.statistics.concurrent_activities.log import get as conc_act_get

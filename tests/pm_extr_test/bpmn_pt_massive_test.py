@@ -1,7 +1,7 @@
 import os
 
 import pm4py
-from pm4py.objects.process_tree import util
+from pm4py.objects.process_tree.utils import generic
 from pm4py.objects.bpmn.layout import layouter
 from pm4py.objects.bpmn.exporter import exporter
 from pm4py.objects.bpmn.importer import importer
@@ -19,8 +19,8 @@ for log_name in os.listdir(LOGS_FOLDER):
         print(log_path)
         log = pm4py.read_xes(log_path)
         fp_log = pm4py.algo.discovery.footprints.log.variants.entire_event_log.apply(log)
-        tree = pm4py.discover_tree_inductive(log)
-        util.tree_sort(tree)
+        tree = pm4py.discover_process_tree_inductive(log)
+        generic.tree_sort(tree)
         fp_tree = pm4py.algo.discovery.footprints.tree.variants.bottomup.apply(tree)
         fp_conf = pm4py.algo.conformance.footprints.variants.log_extensive.apply(fp_log, fp_tree)
         fitness0 = pm4py.algo.conformance.footprints.util.evaluation.fp_fitness(fp_log, fp_tree, fp_conf)
@@ -35,7 +35,7 @@ for log_name in os.listdir(LOGS_FOLDER):
         # gets the tree back
         net, im, fm = pm4py.objects.conversion.bpmn.variants.to_petri_net.apply(bpmn_graph)
         new_tree = pm4py.objects.conversion.wf_net.variants.to_process_tree.apply(net, im, fm)
-        util.tree_sort(new_tree)
+        generic.tree_sort(new_tree)
         print(tree)
         print(new_tree)
         print("are the tree equal?", tree == new_tree)

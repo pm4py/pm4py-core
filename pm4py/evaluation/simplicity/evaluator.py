@@ -31,7 +31,7 @@ SIMPLICITY_ARC_DEGREE = Variants.SIMPLICITY_ARC_DEGREE
 VERSIONS = {SIMPLICITY_ARC_DEGREE}
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+@deprecation.deprecated(deprecated_in="2.2.5", removed_in="3.0",
                         current_version=VERSION,
                         details="Use the pm4py.algo.evaluation.simplicity package")
 def apply(petri_net, parameters=None, variant=SIMPLICITY_ARC_DEGREE):

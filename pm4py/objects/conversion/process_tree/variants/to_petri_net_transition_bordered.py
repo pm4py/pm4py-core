@@ -14,8 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.petri import obj
-from pm4py.objects.petri import utils as pn_util
+from pm4py.objects.petri_net import obj
+from pm4py.objects.petri_net.utils import petri_utils as pn_util
 from pm4py.objects.process_tree.obj import Operator as pt_opt
 
 

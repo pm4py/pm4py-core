@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.algo.conformance.alignments import algorithm as alignments
-from pm4py.algo.conformance.decomp_alignments import algorithm as decomp_alignments
+from pm4py.algo.conformance.alignments.decomposed import algorithm as decomp_alignments
 from pm4py.evaluation.replay_fitness.parameters import Parameters
 
 

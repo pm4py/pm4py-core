@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.algo.discovery.footprints.tree.variants import bottomup as bottomup_discovery
-from pm4py.objects.process_tree import bottomup as bottomup_util
+from pm4py.objects.process_tree.utils import bottomup as bottomup_util
 from pm4py.algo.discovery.footprints.outputs import Outputs
 
 FP_DEV_COLOR = "red"

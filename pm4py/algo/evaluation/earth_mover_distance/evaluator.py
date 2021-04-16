@@ -30,7 +30,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.PYEMD
 
 
-@deprecation.deprecated('2.2.4', '2.3.0', details='use algorithm.py entrypoint')
+@deprecation.deprecated('2.2.5', '2.4.0', details='use algorithm.py entrypoint')
 def apply(lang1, lang2, variant=Variants.PYEMD, parameters=None):
     """
     Gets the EMD language between the two languages

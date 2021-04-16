@@ -14,4 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.conformance.tree_alignments import variants
+import warnings
+
+warnings.warn("please use the pm4py.algo.conformance.alignments.process_tree package.")
+
+from pm4py.algo.conformance.alignments.process_tree import *

@@ -27,7 +27,7 @@ class Variants(Enum):
 
 
 if pkgutil.find_loader("lxml"):
-    DEFAULT_VARIANT = Variants.ITERPARSE_MEM_COMPRESSED
+    DEFAULT_VARIANT = Variants.ITERPARSE
 else:
     DEFAULT_VARIANT = Variants.LINE_BY_LINE
 

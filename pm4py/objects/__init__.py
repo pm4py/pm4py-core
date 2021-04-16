@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects import log, petri, transition_system, conversion, process_tree, heuristics_net, random_variables, \
+from pm4py.objects import log, petri_net, transition_system, conversion, process_tree, heuristics_net, random_variables, \
     stochastic_petri, dfg
 import pkgutil
 

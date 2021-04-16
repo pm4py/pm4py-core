@@ -21,6 +21,7 @@ from copy import copy
 import matplotlib as mpl
 import matplotlib.cm as cm
 import math
+import deprecation
 
 
 def give_color_to_direction_dynamic(dir):
@@ -71,6 +72,7 @@ def give_color_to_direction_static(dir):
             return col[1]
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.comparison.petrinet.element_usage_comparison instead')
 def compare_element_usage_two_logs(net, im, fm, log1, log2, parameters=None):
     """
     Returns some statistics (also visual) about the comparison of the usage

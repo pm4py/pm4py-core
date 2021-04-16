@@ -20,6 +20,7 @@ from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.objects.dfg.filtering.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.objects.heuristics_net import defaults
 from pm4py.objects.heuristics_net.node import Node
+import deprecation
 
 DEFAULT_NET_NAME = ""
 
@@ -98,6 +99,7 @@ class HeuristicsNet:
         self.concurrent_activities = {}
         self.sojourn_times = {}
 
+    @deprecation.deprecated('2.2.5', '3.0.0', details='please use the calculate method in algorithm package.')
     def calculate(self, dependency_thresh=defaults.DEFAULT_DEPENDENCY_THRESH,
                   and_measure_thresh=defaults.DEFAULT_AND_MEASURE_THRESH, min_act_count=defaults.DEFAULT_MIN_ACT_COUNT,
                   min_dfg_occurrences=defaults.DEFAULT_MIN_DFG_OCCURRENCES,

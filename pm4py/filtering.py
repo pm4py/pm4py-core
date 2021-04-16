@@ -88,7 +88,7 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities: List[s
                                            parameters={end_activities_filter.Parameters.POSITIVE: retain})
 
 
-@deprecation.deprecated(deprecated_in='2.1.4', removed_in='2.3.0', current_version=PM4PY_CURRENT_VERSION,
+@deprecation.deprecated(deprecated_in='2.1.4', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
                         details='Filtering method will be removed due to fuzzy naming.\
                         Use: filter_event_attribute_values')
 def filter_attribute_values(log, attribute_key, values, level="case", retain=True):
@@ -142,7 +142,7 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
                 attributes_filter.Parameters.POSITIVE: retain})
 
 
-@deprecation.deprecated(deprecated_in='2.1.4', removed_in='2.3.0', current_version=PM4PY_CURRENT_VERSION,
+@deprecation.deprecated(deprecated_in='2.1.4', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
                         details='Filtering method will be removed due to fuzzy naming.\
                         Use: filter_event_attribute_values')
 def filter_trace_attribute(log, attribute_key, values, retain=True):
@@ -212,7 +212,7 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants: List[List[str]
                                      parameters={variants_filter.Parameters.POSITIVE: retain})
 
 
-@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.3.0', current_version=PM4PY_CURRENT_VERSION,
+@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
                         details='Filtering method will be removed due to fuzzy interpretation of the threshold.\
                         Will be replaced with two new functions filter_variants_top_k and filter_variants_relative_frequency')
 def filter_variants_percentage(log: Union[EventLog, pd.DataFrame], threshold: float = 0.8) -> Union[
@@ -240,7 +240,7 @@ def filter_variants_percentage(log: Union[EventLog, pd.DataFrame], threshold: fl
         return variants_filter.filter_log_variants_percentage(log, percentage=threshold)
 
 
-@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.3.0', current_version=PM4PY_CURRENT_VERSION,
+@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
                         details='Use filter_directly_follows_relation')
 def filter_paths(log, allowed_paths, retain=True):
     return filter_directly_follows_relation(log, allowed_paths, retain)

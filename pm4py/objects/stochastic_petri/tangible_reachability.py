@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.petri.reachability_graph import construct_reachability_graph
+from pm4py.objects.petri_net.utils.reachability_graph import construct_reachability_graph
 from pm4py.objects.conversion.log import converter as log_converter
 
 

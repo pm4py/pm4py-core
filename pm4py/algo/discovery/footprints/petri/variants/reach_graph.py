@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.petri import reachability_graph
+from pm4py.objects.petri_net.utils import reachability_graph
 import itertools
 from pm4py.algo.discovery.footprints.outputs import Outputs
 

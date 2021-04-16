@@ -4,9 +4,10 @@ import time
 import pm4py
 from pm4py.algo.conformance.alignments import algorithm as petri_alignments
 from pm4py.objects.dfg.filtering import dfg_filtering
-from pm4py.objects.dfg.utils import dfg_alignment
+from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
 from pm4py.statistics.attributes.log import get
 from pm4py.visualization.dfg import visualizer
+from pm4py.objects.petri_net.utils import align_utils
 
 
 def execute_script():
@@ -29,7 +30,7 @@ def execute_script():
             pass
     print(bb - aa)
     print(sum(x["visited_states"] for x in aligned_traces))
-    print(sum(x["cost"] // 10000 for x in aligned_traces))
+    print(sum(x["cost"] // align_utils.STD_MODEL_LOG_MOVE_COST for x in aligned_traces))
     gviz = visualizer.apply(dfg, activities_count=ac, parameters={"start_activities": sa, "end_activities": ea,
                                                                   "format": "svg"})
     visualizer.view(gviz)
@@ -39,7 +40,7 @@ def execute_script():
     dd = time.time()
     print(dd - cc)
     print(sum(x["visited_states"] for x in aligned_traces2))
-    print(sum(x["cost"] // 10000 for x in aligned_traces2))
+    print(sum(x["cost"] // align_utils.STD_MODEL_LOG_MOVE_COST for x in aligned_traces2))
 
 
 if __name__ == "__main__":

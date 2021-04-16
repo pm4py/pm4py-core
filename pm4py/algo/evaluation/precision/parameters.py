@@ -24,3 +24,5 @@ class Parameters(Enum):
     TOKEN_REPLAY_VARIANT = "token_replay_variant"
     CLEANING_TOKEN_FLOOD = "cleaning_token_flood"
     SHOW_PROGRESS_BAR = "show_progress_bar"
+    MULTIPROCESSING = "multiprocessing"
+    CORES = "cores"

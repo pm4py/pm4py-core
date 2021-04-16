@@ -5,7 +5,7 @@ import pandas as pd
 
 import pm4py
 from pm4py.objects.bpmn.obj import BPMN
-from pm4py.objects.petri.obj import PetriNet
+from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.process_tree.obj import ProcessTree
 
 
@@ -42,8 +42,8 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_inductive_miner_tree(self):
         log = pm4py.read_xes("input_data/running-example.xes")
-        tree = pm4py.discover_tree_inductive(log)
-        tree = pm4py.discover_tree_inductive(log, noise_threshold=0.2)
+        tree = pm4py.discover_process_tree_inductive(log)
+        tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
 
     def test_heuristics_miner_heu_net(self):
         log = pm4py.read_xes("input_data/running-example.xes")
@@ -204,6 +204,39 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         dfg, sa, ea = pm4py.read_dfg("input_data/running-example.dfg")
         ser = pm4py.serialize(dfg, sa, ea)
         dfg2, sa2, ea2 = pm4py.deserialize(ser)
+
+    def test_minimum_self_distance(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        msd = pm4py.get_minimum_self_distances(log)
+
+    def test_minimum_self_distance_2(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        msd = pm4py.get_minimum_self_distance_witnesses(log)
+
+    def test_marking_equation_net(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        pm4py.solve_marking_equation(net, im, fm)
+
+    def test_marking_equation_sync_net(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        sync_net, sync_im, sync_fm = pm4py.construct_synchronous_product_net(log[0], net, im, fm)
+        res = pm4py.solve_marking_equation(sync_net, sync_im, sync_fm)
+        self.assertIsNotNone(res)
+        self.assertEqual(res, 11)
+
+    def test_ext_marking_equation_sync_net(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        sync_net, sync_im, sync_fm = pm4py.construct_synchronous_product_net(log[0], net, im, fm)
+        res = pm4py.solve_extended_marking_equation(log[0], sync_net, sync_im, sync_fm)
+        self.assertIsNotNone(res)
 
 
 if __name__ == "__main__":
