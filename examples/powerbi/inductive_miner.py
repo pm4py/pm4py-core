@@ -16,7 +16,7 @@ dataset["time:timestamp"] = pd.to_datetime(dataset["time:timestamp"])
 dataset = dataset.sort_values("time:timestamp")
 
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.visualization.petrinet import visualizer
+from pm4py.visualization.petri_net import visualizer
 
 net, im, fm = inductive_miner.apply(dataset)
 gviz = visualizer.apply(net, im, fm)

@@ -24,7 +24,7 @@ from pandas import DataFrame
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.log.obj import EventStream
-from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
 
@@ -201,7 +201,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
             inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
 
 
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
                         details='discover_tree_inductive is deprecated, use discover_process_tree_inductive')
 def discover_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> ProcessTree:
     warnings.warn('discover_tree_inductive is deprecated, use discover_process_tree_inductive', DeprecationWarning)

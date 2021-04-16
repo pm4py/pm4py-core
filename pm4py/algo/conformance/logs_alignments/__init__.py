@@ -14,4 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.conformance.logs_alignments import algorithm, variants
+import warnings
+
+warnings.warn('please use the pm4py.algo.conformance.alignments.edit_distance package.')
+
+from pm4py.algo.conformance.alignments.edit_distance import *

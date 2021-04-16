@@ -37,7 +37,7 @@ class DiagnDfConfChecking(unittest.TestCase):
     def test_footprints_classic(self):
         log = pm4py.read_xes("input_data/running-example.xes")
         fp_log = footprints_discovery.apply(log, variant=footprints_discovery.Variants.TRACE_BY_TRACE)
-        tree = pm4py.discover_tree_inductive(log, noise_threshold=0.2)
+        tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
         fp_model = footprints_discovery.apply(tree)
         conf_result = log_model.apply(fp_log, fp_model)
         diagn_df = log_model.get_diagnostics_dataframe(log, conf_result)
@@ -45,7 +45,7 @@ class DiagnDfConfChecking(unittest.TestCase):
     def test_footprints_extensive(self):
         log = pm4py.read_xes("input_data/running-example.xes")
         fp_log = footprints_discovery.apply(log, variant=footprints_discovery.Variants.TRACE_BY_TRACE)
-        tree = pm4py.discover_tree_inductive(log, noise_threshold=0.2)
+        tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
         fp_model = footprints_discovery.apply(tree)
         conf_result = trace_extensive.apply(fp_log, fp_model)
         diagn_df = trace_extensive.get_diagnostics_dataframe(log, conf_result)

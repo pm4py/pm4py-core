@@ -1,7 +1,7 @@
 import os
 
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.algo.enhancement.sna import algorithm as sna_algorithm
+from pm4py.algo.organizational_mining.sna import algorithm as sna_algorithm
 from pm4py.visualization.sna import visualizer as pn_vis
 
 

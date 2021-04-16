@@ -20,7 +20,7 @@ from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import xes_constants as xes
 from pm4py.objects.process_tree import obj as pt_opt
 from pm4py.objects.process_tree import state as pt_st
-from pm4py.objects.process_tree import util as pt_util
+from pm4py.objects.process_tree.utils import generic as pt_util
 from pm4py.objects.process_tree.obj import ProcessTree
 
 import datetime

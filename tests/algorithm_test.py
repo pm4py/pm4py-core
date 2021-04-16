@@ -34,18 +34,18 @@ class AlgorithmTest(unittest.TestCase):
         from pm4py.algo.conformance.alignments import algorithm as alignments
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_STATE_EQUATION_A_STAR)
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_DIJKSTRA_NO_HEURISTICS)
-        from pm4py.algo.evaluation.replay_fitness import evaluator as rp_fitness_evaluator
+        from pm4py.algo.evaluation.replay_fitness import algorithm as rp_fitness_evaluator
         fitness = rp_fitness_evaluator.apply(log, net, im, fm, variant=rp_fitness_evaluator.Variants.ALIGNMENT_BASED)
         evaluation = rp_fitness_evaluator.evaluate(aligned_traces,
                                                    variant=rp_fitness_evaluator.Variants.ALIGNMENT_BASED)
-        from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
+        from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
         precision = precision_evaluator.apply(log, net, im, fm, variant=rp_fitness_evaluator.Variants.ALIGNMENT_BASED)
 
     def test_decomp_alignment(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.alpha import algorithm as alpha_miner
         net, im, fm = alpha_miner.apply(log)
-        from pm4py.algo.conformance.decomp_alignments import algorithm as decomp_align
+        from pm4py.algo.conformance.alignments.decomposed import algorithm as decomp_align
         aligned_traces = decomp_align.apply(log, net, im, fm, variant=decomp_align.Variants.RECOMPOS_MAXIMAL)
 
     def test_tokenreplay(self):
@@ -55,13 +55,13 @@ class AlgorithmTest(unittest.TestCase):
         from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
         replayed_traces = token_replay.apply(log, net, im, fm, variant=token_replay.Variants.TOKEN_REPLAY)
         replayed_traces = token_replay.apply(log, net, im, fm, variant=token_replay.Variants.BACKWARDS)
-        from pm4py.algo.evaluation.replay_fitness import evaluator as rp_fitness_evaluator
+        from pm4py.algo.evaluation.replay_fitness import algorithm as rp_fitness_evaluator
         fitness = rp_fitness_evaluator.apply(log, net, im, fm, variant=rp_fitness_evaluator.Variants.TOKEN_BASED)
         evaluation = rp_fitness_evaluator.evaluate(replayed_traces, variant=rp_fitness_evaluator.Variants.TOKEN_BASED)
-        from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
+        from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
         precision = precision_evaluator.apply(log, net, im, fm,
                                               variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN)
-        from pm4py.algo.evaluation.generalization import evaluator as generalization_evaluation
+        from pm4py.algo.evaluation.generalization import algorithm as generalization_evaluation
         generalization = generalization_evaluation.apply(log, net, im, fm,
                                                          variant=generalization_evaluation.Variants.GENERALIZATION_TOKEN)
 
@@ -69,7 +69,7 @@ class AlgorithmTest(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.alpha import algorithm as alpha_miner
         net, im, fm = alpha_miner.apply(log)
-        from pm4py.algo.evaluation.simplicity import evaluator as simplicity
+        from pm4py.algo.evaluation.simplicity import algorithm as simplicity
         simp = simplicity.apply(net)
         from pm4py.algo.evaluation import evaluator as evaluation_method
         eval = evaluation_method.apply(log, net, im, fm)
@@ -78,8 +78,8 @@ class AlgorithmTest(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.alpha import algorithm as alpha_miner
         net, im, fm = alpha_miner.apply(log)
-        from pm4py.algo.simulation.playout import simulator
-        log2 = simulator.apply(net, im, fm)
+        from pm4py.algo.simulation.playout.petri_net import algorithm
+        log2 = algorithm.apply(net, im, fm)
 
     def test_tree_generation(self):
         from pm4py.algo.simulation.tree_generator import simulator as tree_simulator

@@ -19,8 +19,10 @@ import pandas as pd
 from pm4py.objects.log.obj import EventLog
 from typing import Union, Optional, Dict, Any
 from datetime import datetime
+import deprecation
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.resource_profiles.algorithm instead')
 def distinct_activities(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
                         parameters: Optional[Dict[str, Any]] = None) -> int:
     """
@@ -51,6 +53,7 @@ def distinct_activities(log_obj: Union[pd.DataFrame, EventLog], t1: Union[dateti
         return log.distinct_activities(log_obj, t1, t2, r, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.resource_profiles.algorithm instead')
 def activity_frequency(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str, a: str,
                         parameters: Optional[Dict[str, Any]] = None) -> float:
     """
@@ -84,6 +87,7 @@ def activity_frequency(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetim
         return log.activity_frequency(log_obj, t1, t2, r, a, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.resource_profiles.algorithm instead')
 def activity_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
                         parameters: Optional[Dict[str, Any]] = None) -> int:
     """
@@ -114,6 +118,7 @@ def activity_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datet
         return log.activity_completions(log_obj, t1, t2, r, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.resource_profiles.algorithm instead')
 def case_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
                         parameters: Optional[Dict[str, Any]] = None) -> int:
     """
@@ -144,6 +149,7 @@ def case_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime,
         return log.case_completions(log_obj, t1, t2, r, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.resource_profiles.algorithm instead')
 def fraction_case_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
                         parameters: Optional[Dict[str, Any]] = None) -> float:
     """
@@ -175,6 +181,7 @@ def fraction_case_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[
         return log.fraction_case_completions(log_obj, t1, t2, r, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.resource_profiles.algorithm instead')
 def average_workload(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
                      parameters: Optional[Dict[str, Any]] = None) -> float:
     """
@@ -205,6 +212,7 @@ def average_workload(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime,
         return log.average_workload(log_obj, t1, t2, r, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.resource_profiles.algorithm instead')
 def multitasking(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
                  parameters: Optional[Dict[str, Any]] = None) -> float:
     """
@@ -236,6 +244,7 @@ def multitasking(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str
         return log.multitasking(log_obj, t1, t2, r, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.resource_profiles.algorithm instead')
 def average_duration_activity(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str, a: str,
                        parameters: Optional[Dict[str, Any]] = None) -> float:
     """
@@ -268,6 +277,7 @@ def average_duration_activity(log_obj: Union[pd.DataFrame, EventLog], t1: Union[
         return log.average_duration_activity(log_obj, t1, t2, r, a, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.resource_profiles.algorithm instead')
 def average_case_duration(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
                           parameters: Optional[Dict[str, Any]] = None) -> float:
     """
@@ -298,6 +308,7 @@ def average_case_duration(log_obj: Union[pd.DataFrame, EventLog], t1: Union[date
         return log.average_case_duration(log_obj, t1, t2, r, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.resource_profiles.algorithm instead')
 def interaction_two_resources(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r1: str, r2: str,
                               parameters: Optional[Dict[str, Any]] = None) -> float:
     """
@@ -330,6 +341,7 @@ def interaction_two_resources(log_obj: Union[pd.DataFrame, EventLog], t1: Union[
         return log.interaction_two_resources(log_obj, t1, t2, r1, r2, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.resource_profiles.algorithm instead')
 def social_position(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
                               parameters: Optional[Dict[str, Any]] = None) -> float:
     """

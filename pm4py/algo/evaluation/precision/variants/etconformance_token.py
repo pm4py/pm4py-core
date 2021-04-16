@@ -20,7 +20,7 @@ from pm4py.algo.conformance.tokenreplay import algorithm as executor
 from pm4py.objects import log as log_lib
 from pm4py.algo.evaluation.precision import utils as precision_utils
 from pm4py.statistics.start_activities.log.get import get_start_activities
-from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
+from pm4py.objects.petri_net.utils.align_utils import get_visible_transitions_eventually_enabled_by_marking
 from pm4py.algo.evaluation.precision.parameters import Parameters
 from pm4py.util import exec_utils
 

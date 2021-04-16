@@ -21,7 +21,7 @@ from enum import Enum
 
 from graphviz import Graph
 
-from pm4py.objects.process_tree import util
+from pm4py.objects.process_tree.utils import generic
 from pm4py.util import exec_utils
 
 
@@ -149,7 +149,7 @@ def apply(tree, parameters=None):
         # since the process tree object needs to be sorted in the visualization, make a deepcopy of it before
         # proceeding
         tree = deepcopy(tree)
-        util.tree_sort(tree)
+        generic.tree_sort(tree)
 
     repr_tree_2(tree, viz, color_map, parameters)
 

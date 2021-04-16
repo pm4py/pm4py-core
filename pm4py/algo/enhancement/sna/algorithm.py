@@ -23,6 +23,7 @@ from pm4py.algo.enhancement.sna.parameters import Parameters
 from pm4py.util import exec_utils
 from enum import Enum
 import numpy as np
+import deprecation
 
 
 class Variants(Enum):
@@ -36,6 +37,7 @@ class Variants(Enum):
     JOINTACTIVITIES_PANDAS = pd_jointactivities
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.sna.algorithm instead')
 def apply(log, parameters=None, variant=Variants.HANDOVER_LOG):
     """
     Calculates a SNA metric

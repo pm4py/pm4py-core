@@ -17,9 +17,9 @@
 from pm4py.util import constants, exec_utils, xes_constants
 from pm4py.streaming.util.dictio import generator
 import logging
-from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.streaming.algo.interface import StreamingAlgorithm
-from pm4py.objects.petri import semantics
+from pm4py.objects.petri_net import semantics
 from copy import copy
 import sys
 

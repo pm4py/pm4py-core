@@ -1,7 +1,7 @@
 import pm4py
 from pm4py.algo.discovery.heuristics.variants import plusplus
 from pm4py.visualization.heuristics_net import visualizer
-from pm4py.visualization.petrinet import visualizer as pn_visualizer
+from pm4py.visualization.petri_net import visualizer as pn_visualizer
 import pandas as pd
 
 

@@ -32,7 +32,7 @@ DEFAULT_VARIANT = Variants.PETRI_SEMAPH_FIFO
 VERSIONS = {Variants.PETRI_SEMAPH_FIFO}
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+@deprecation.deprecated(deprecated_in="2.2.5", removed_in="3.0",
                         current_version=VERSION,
                         details="Use the pm4py.algo.simulation.montecarlo package")
 def apply(log, net, im, fm, variant=DEFAULT_VARIANT, parameters=None):

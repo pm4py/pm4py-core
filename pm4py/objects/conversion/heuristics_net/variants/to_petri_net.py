@@ -14,8 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.petri.obj import PetriNet, Marking
-from pm4py.objects.petri.utils import add_arc_from_to, remove_transition
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to, remove_transition
 
 
 def remove_rendundant_invisible_transitions(net):
@@ -251,6 +251,6 @@ def apply(heu_net, parameters=None):
                 add_arc_from_to(int_place, hid_trans, net)
                 add_arc_from_to(hid_trans, sink_places[el[1]], net)
     net = remove_rendundant_invisible_transitions(net)
-    from pm4py.objects.petri import reduction
+    from pm4py.objects.petri_net.utils import reduction
     reduction.apply_simple_reduction(net)
     return net, im, fm

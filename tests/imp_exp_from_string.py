@@ -3,11 +3,11 @@ import unittest
 
 import pm4py
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.objects.petri.importer import importer as petri_importer
+from pm4py.objects.petri_net.importer import importer as petri_importer
 from pm4py.objects.process_tree.importer import importer as tree_importer
 from pm4py.objects.bpmn.importer import importer as bpmn_importer
 from pm4py.objects.log.exporter.xes import exporter as xes_exporter
-from pm4py.objects.petri.exporter import exporter as petri_exporter
+from pm4py.objects.petri_net.exporter import exporter as petri_exporter
 from pm4py.objects.process_tree.exporter import exporter as tree_exporter
 from pm4py.objects.bpmn.exporter import exporter as bpmn_exporter
 
@@ -76,11 +76,11 @@ class ImpExpFromString(unittest.TestCase):
         xes_exporter.serialize(log)
 
     def test_exp_pnml_to_str(self):
-        net, im, fm = pm4py.read_petri_net(os.path.join("input_data", "running-example.pnml"))
+        net, im, fm = pm4py.read_pnml(os.path.join("input_data", "running-example.pnml"))
         petri_exporter.serialize(net, im, fm)
 
     def test_exp_ptml_to_str(self):
-        tree = pm4py.read_process_tree(os.path.join("input_data", "running-example.ptml"))
+        tree = pm4py.read_ptml(os.path.join("input_data", "running-example.ptml"))
         tree_exporter.serialize(tree)
 
     def test_exp_bpmn_to_str(self):

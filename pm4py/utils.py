@@ -87,7 +87,7 @@ def parse_process_tree(tree_string: str) -> ProcessTree:
     tree
         Process tree
     """
-    from pm4py.objects.process_tree.util import parse
+    from pm4py.objects.process_tree.utils.generic import parse
     return parse(tree_string)
 
 
@@ -113,7 +113,7 @@ def serialize(*args) -> Tuple[str, bytes]:
         representing the serialization)
     """
     from pm4py.objects.log.obj import EventLog
-    from pm4py.objects.petri.obj import PetriNet
+    from pm4py.objects.petri_net.obj import PetriNet
     from pm4py.objects.process_tree.obj import ProcessTree
     from pm4py.objects.bpmn.obj import BPMN
     from collections import Counter
@@ -127,7 +127,7 @@ def serialize(*args) -> Tuple[str, bytes]:
         args[0].to_parquet(buffer)
         return (constants.AvailableSerializations.DATAFRAME.value, buffer.getvalue())
     elif len(args) == 3 and type(args[0]) is PetriNet:
-        from pm4py.objects.petri.exporter import exporter as petri_exporter
+        from pm4py.objects.petri_net.exporter import exporter as petri_exporter
         return (constants.AvailableSerializations.PETRI_NET.value, petri_exporter.serialize(*args))
     elif type(args[0]) is ProcessTree:
         from pm4py.objects.process_tree.exporter import exporter as tree_exporter
@@ -171,7 +171,7 @@ def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
         buffer.flush()
         return pd.read_parquet(buffer)
     elif ser_obj[0] == constants.AvailableSerializations.PETRI_NET.value:
-        from pm4py.objects.petri.importer import importer as petri_importer
+        from pm4py.objects.petri_net.importer import importer as petri_importer
         return petri_importer.deserialize(ser_obj[1])
     elif ser_obj[0] == constants.AvailableSerializations.PROCESS_TREE.value:
         from pm4py.objects.process_tree.importer import importer as tree_importer

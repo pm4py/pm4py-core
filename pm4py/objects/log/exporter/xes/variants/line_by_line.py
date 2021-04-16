@@ -21,6 +21,7 @@ from io import BytesIO
 
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.util import exec_utils, constants
+from xml.sax.saxutils import escape as sax_escape, quoteattr
 
 
 class Parameters(Enum):
@@ -95,6 +96,23 @@ def get_tab_indent(n):
     return "".join(["\t"] * n)
 
 
+def escape(stru):
+    """
+    XML-escape a string
+
+    Parameters
+    ----------------
+    stru
+        String to be escaped
+
+    Returns
+    ----------------
+    escaped_stru
+        Escaped string
+    """
+    return quoteattr(stru)
+
+
 def export_attribute(attr_name, attr_value, indent_level):
     """
     Exports an attribute
@@ -114,30 +132,31 @@ def export_attribute(attr_name, attr_value, indent_level):
         String representing the content of the attribute
     """
     ret = []
-    attr_type = __get_xes_attr_type(type(attr_value).__name__)
-    if not attr_type == xes_util.TAG_LIST:
-        attr_value = __get_xes_attr_value(attr_value, attr_type)
-        ret.append(get_tab_indent(
-            indent_level) + "<%s key=\"%s\" value=\"%s\" />\n" % (attr_type, attr_name, attr_value))
-    else:
-        if attr_value[xes_util.KEY_VALUE] is None:
-            # list
-            ret.append(get_tab_indent(indent_level) + "<list key=\"%s\">\n" % (attr_name))
-            ret.append(get_tab_indent(indent_level + 1) + "<values>\n")
-            for subattr in attr_value[xes_util.KEY_CHILDREN]:
-                ret.append(export_attribute(subattr[0], subattr[1], indent_level + 2))
-            ret.append(get_tab_indent(indent_level + 1) + "</values>\n")
-            ret.append(get_tab_indent(indent_level) + "</list>\n")
-        else:
-            # nested attribute
-            this_value = attr_value[xes_util.KEY_VALUE]
-            this_type = __get_xes_attr_type(type(this_value).__name__)
-            this_value = __get_xes_attr_value(this_value, this_type)
+    if attr_name is not None and attr_value is not None:
+        attr_type = __get_xes_attr_type(type(attr_value).__name__)
+        if not attr_type == xes_util.TAG_LIST:
+            attr_value = __get_xes_attr_value(attr_value, attr_type)
             ret.append(get_tab_indent(
-                indent_level) + "<%s key=\"%s\" value=\"%s\">\n" % (this_type, attr_name, this_value))
-            for subattr_name, subattr_value in attr_value[xes_util.KEY_CHILDREN].items():
-                ret.append(export_attribute(subattr_name, subattr_value, indent_level + 1))
-            ret.append("</%s>\n" % this_type)
+                indent_level) + "<%s key=%s value=%s />\n" % (attr_type, escape(attr_name), escape(attr_value)))
+        else:
+            if attr_value[xes_util.KEY_VALUE] is None:
+                # list
+                ret.append(get_tab_indent(indent_level) + "<list key=%s>\n" % (escape(attr_name)))
+                ret.append(get_tab_indent(indent_level + 1) + "<values>\n")
+                for subattr in attr_value[xes_util.KEY_CHILDREN]:
+                    ret.append(export_attribute(subattr[0], subattr[1], indent_level + 2))
+                ret.append(get_tab_indent(indent_level + 1) + "</values>\n")
+                ret.append(get_tab_indent(indent_level) + "</list>\n")
+            else:
+                # nested attribute
+                this_value = attr_value[xes_util.KEY_VALUE]
+                this_type = __get_xes_attr_type(type(this_value).__name__)
+                this_value = __get_xes_attr_value(this_value, this_type)
+                ret.append(get_tab_indent(
+                    indent_level) + "<%s key=%s value=%s>\n" % (this_type, escape(attr_name), escape(this_value)))
+                for subattr_name, subattr_value in attr_value[xes_util.KEY_CHILDREN].items():
+                    ret.append(export_attribute(subattr_name, subattr_value, indent_level + 1))
+                ret.append("</%s>\n" % this_type)
     return "".join(ret)
 
 

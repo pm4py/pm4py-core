@@ -16,11 +16,11 @@
 '''
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.util import xes_constants as xes_util
-from pm4py.objects.petri import semantics
-from pm4py.objects.petri.obj import Marking
-from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
+from pm4py.objects.petri_net import semantics
+from pm4py.objects.petri_net.obj import Marking
+from pm4py.objects.petri_net.utils.petri_utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
 from pm4py.objects.log import obj as log_implementation
-from pm4py.objects.petri import align_utils
+from pm4py.objects.petri_net.utils import align_utils
 from copy import copy
 from enum import Enum
 from pm4py.util import exec_utils, constants
@@ -1171,7 +1171,7 @@ def apply_variants_list_petri_string(variants_list, petri_string, parameters=Non
     if parameters is None:
         parameters = {}
 
-    from pm4py.objects.petri.importer.variants import pnml as petri_importer
+    from pm4py.objects.petri_net.importer.variants import pnml as petri_importer
 
     net, im, fm = petri_importer.import_petri_from_string(petri_string, parameters=parameters)
 

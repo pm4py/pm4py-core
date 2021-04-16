@@ -17,11 +17,10 @@
 from copy import copy
 
 from pm4py.algo.conformance.alignments import variants
-from pm4py.objects.petri import align_utils
+from pm4py.objects.petri_net.utils import align_utils, check_soundness
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TRACEID_KEY
-from pm4py.objects.petri import check_soundness
 from pm4py.objects.log.obj import Trace
 import time
 from pm4py.util import exec_utils
@@ -29,6 +28,8 @@ from enum import Enum
 import sys
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
 import pkgutil
+from concurrent.futures import ProcessPoolExecutor
+import multiprocessing
 
 
 class Variants(Enum):
@@ -54,6 +55,7 @@ class Parameters(Enum):
     ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
     VARIANTS_IDX = "variants_idx"
     SHOW_PROGRESS_BAR = "show_progress_bar"
+    CORES = 'cores'
 
 
 DEFAULT_VARIANT = Variants.VERSION_STATE_EQUATION_A_STAR
@@ -151,13 +153,93 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
                                                 sys.maxsize)
     max_align_time_case = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME_TRACE, parameters,
                                                      sys.maxsize)
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
 
+    best_worst_cost = __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters)
+    variants_idxs, one_tr_per_var = __get_variants_structure(log, parameters)
+    progress = __get_progress_bar(len(one_tr_per_var), parameters)
+
+    all_alignments = []
+    for trace in one_tr_per_var:
+        this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time)) * 0.5)
+        parameters[Parameters.PARAM_MAX_ALIGN_TIME_TRACE] = this_max_align_time
+        all_alignments.append(apply_trace(trace, petri_net, initial_marking, final_marking, parameters=copy(parameters),
+                                          variant=variant))
+        if progress is not None:
+            progress.update()
+
+    alignments = __form_alignments(log, variants_idxs, all_alignments)
+    __assign_fitness(log, alignments, best_worst_cost)
+    __close_progress_bar(progress)
+
+    return alignments
+
+
+def apply_multiprocessing(log, petri_net, initial_marking, final_marking, parameters=None, variant=DEFAULT_VARIANT):
+    """
+    Applies the alignments using a process pool (multiprocessing)
+
+    Parameters
+    ---------------
+    log
+        Event log
+    petri_net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ----------------
+    aligned_traces
+        Alignments
+    """
+    if parameters is None:
+        parameters = {}
+
+    num_cores = exec_utils.get_param_value(Parameters.CORES, parameters, multiprocessing.cpu_count() - 2)
+
+    best_worst_cost = __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters)
+    variants_idxs, one_tr_per_var = __get_variants_structure(log, parameters)
+
+    all_alignments = []
+    with ProcessPoolExecutor(max_workers=num_cores) as executor:
+        futures = []
+        for trace in one_tr_per_var:
+            futures.append(executor.submit(apply_trace, trace, petri_net, initial_marking, final_marking, parameters))
+        progress = __get_progress_bar(len(one_tr_per_var), parameters)
+        if progress is not None:
+            alignments_ready = 0
+            while alignments_ready != len(futures):
+                current = 0
+                for index, variant in enumerate(futures):
+                    current = current + 1 if futures[index].done() else current
+                if current > alignments_ready:
+                    for i in range(0, current - alignments_ready):
+                        progress.update()
+                alignments_ready = current
+        for index, variant in enumerate(futures):
+            all_alignments.append(futures[index].result())
+        __close_progress_bar(progress)
+
+    alignments = __form_alignments(log, variants_idxs, all_alignments)
+    __assign_fitness(log, alignments, best_worst_cost)
+
+    return alignments
+
+
+def __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters):
     parameters_best_worst = copy(parameters)
 
     best_worst_cost = exec_utils.get_variant(variant).get_best_worst_cost(petri_net, initial_marking, final_marking,
                                                                           parameters=parameters_best_worst)
 
+    return best_worst_cost
+
+
+def __get_variants_structure(log, parameters):
     variants_idxs = exec_utils.get_param_value(Parameters.VARIANTS_IDX, parameters, None)
     if variants_idxs is None:
         variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
@@ -170,20 +252,19 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     for var in variants_list:
         one_tr_per_var.append(log[variants_idxs[var][0]])
 
+    return variants_idxs, one_tr_per_var
+
+
+def __get_progress_bar(num_variants, parameters):
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar and len(one_tr_per_var) > 1:
+    if pkgutil.find_loader("tqdm") and show_progress_bar and num_variants > 1:
         from tqdm.auto import tqdm
-        progress = tqdm(total=len(one_tr_per_var), desc="aligning log, completed variants :: ")
+        progress = tqdm(total=num_variants, desc="aligning log, completed variants :: ")
+    return progress
 
-    all_alignments = []
-    for trace in one_tr_per_var:
-        this_max_align_time = min(max_align_time_case, (max_align_time - (time.time() - start_time)) * 0.5)
-        parameters[Parameters.PARAM_MAX_ALIGN_TIME_TRACE] = this_max_align_time
-        all_alignments.append(apply_trace(trace, petri_net, initial_marking, final_marking, parameters=copy(parameters),
-                                          variant=variant))
-        if progress is not None:
-            progress.update()
 
+def __form_alignments(log, variants_idxs, all_alignments):
     al_idx = {}
     for index_variant, variant in enumerate(variants_idxs):
         for trace_idx in variants_idxs[variant]:
@@ -193,24 +274,22 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     for i in range(len(log)):
         alignments.append(al_idx[i])
 
-    # assign fitness to traces
-    for index, align in enumerate(alignments):
-        if align is not None:
-            unfitness_upper_part = align['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST
-            if unfitness_upper_part == 0:
-                align['fitness'] = 1
-            elif (len(log[index]) + best_worst_cost) > 0:
-                align['fitness'] = 1 - (
-                        (align['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST) / (len(log[index]) + best_worst_cost))
-            else:
-                align['fitness'] = 0
+    return alignments
 
-    # gracefully close progress bar
+
+def __assign_fitness(log, alignments, best_worst_cost):
+    for index, align in enumerate(alignments):
+        ltrace_bwc = len(log[index]) + best_worst_cost
+        if ltrace_bwc > 0:
+            align['fitness'] = 1 - ((align['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST) / ltrace_bwc)
+        else:
+            align['fitness'] = 0
+
+
+def __close_progress_bar(progress):
     if progress is not None:
         progress.close()
     del progress
-
-    return alignments
 
 
 def get_diagnostics_dataframe(log, align_output, parameters=None):

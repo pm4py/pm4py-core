@@ -20,11 +20,11 @@ import uuid
 from copy import deepcopy
 from enum import Enum
 
-from pm4py.objects.petri import utils as pn_util
-from pm4py.objects.petri.obj import PetriNet
+from pm4py.objects.petri_net.utils import petri_utils as pn_util
+from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.process_tree import obj as pt_operator
-from pm4py.objects.process_tree import util as pt_util
-from pm4py.objects.process_tree.util import tree_sort
+from pm4py.objects.process_tree.utils import generic as pt_util
+from pm4py.objects.process_tree.utils.generic import tree_sort
 from pm4py.util import exec_utils
 
 TRANSITION_PREFIX = str(uuid.uuid4())
@@ -307,6 +307,6 @@ def apply(net, im, fm, parameters=None):
         return ret
     else:
         if debug:
-            from pm4py.visualization.petrinet import visualizer as pn_viz
+            from pm4py.visualization.petri_net import visualizer as pn_viz
             pn_viz.view(pn_viz.apply(grouped_net, parameters={"format": "svg"}))
         raise ValueError('Parsing of WF-net Failed')

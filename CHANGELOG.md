@@ -1,5 +1,44 @@
 # PM4Py Changelog
 
+## PM4PY 2.2.5 (2021.04.16)
+
+### Fixed
+
+* 9854f62d
+    * minor bug fix in etree xes exporter avoiding faulty None values
+* bfe8fb32
+    * support non-standard attribute symbols in line-by-line event log exporter
+
+### Removed
+
+### Deprecated
+
+### Changed
+
+* 3631fe58
+    * default xes importer is set back to iterparse
+* a7ff695a
+    * large-scale restructuring of the underlying pm4py architecture
+* 201879ad
+    * changed the default maximum number of edges to be visualized in the DFG visualization to 100000 (was: 75)
+
+### Added
+
+* 66283964
+    * sojourn-time-based coloring for dfgs
+* 6639d3f3
+    * organizational mining, e.g., ```pm4py.discover_handover_of_work_network(log)```
+* 9c9ca14a
+    * allow multiprocessing in alignment computation
+* 279fd31f
+    * add prefix tree vizualiation
+* 748c768d
+    * add 'old' pm4py visualization of the process tree as an alternative visualziation
+* 408b37a9
+    * add filter to check multiple ocurrences of certain attribute values in a case.
+
+### Other
+
 ## PM4PY 2.2.4 (2021.04.01)
 
 ### Fixed
@@ -15,7 +54,7 @@
 * c1c1ffc8
     * minor optimizations to state-equation based alignment computation
 * c95d45c9
-  * large (internal) refactoring of PM4Py object files and algorithms
+    * large (internal) refactoring of PM4Py object files and algorithms
 
 ### Added
 

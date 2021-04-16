@@ -23,6 +23,7 @@ from pm4py.util import exec_utils
 from enum import Enum
 import pkgutil
 from pm4py.visualization.common.gview import serialize, serialize_dot
+import deprecation
 
 
 class Variants(Enum):
@@ -42,6 +43,7 @@ PERFORMANCE_GREEDY = Variants.PERFORMANCE_GREEDY
 ALIGNMENTS = Variants.ALIGNMENTS
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='please use pm4py.visualization.petri_net.algorithm instead')
 def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_statistics=None, parameters=None,
           variant=Variants.WO_DECORATION):
     if parameters is None:

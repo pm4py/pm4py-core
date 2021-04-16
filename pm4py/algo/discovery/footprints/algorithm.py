@@ -19,7 +19,7 @@ from pm4py.algo.discovery.footprints.petri.variants import reach_graph
 from pm4py.algo.discovery.footprints.dfg.variants import dfg
 from pm4py.algo.discovery.footprints.tree.variants import bottomup
 from pm4py.objects.log.obj import EventLog
-from pm4py.objects.petri.obj import PetriNet
+from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.process_tree.obj import ProcessTree
 from enum import Enum
 from pm4py.util import exec_utils

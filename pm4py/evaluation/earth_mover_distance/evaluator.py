@@ -29,7 +29,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.PYEMD
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+@deprecation.deprecated(deprecated_in="2.2.5", removed_in="3.0",
                         current_version=VERSION,
                         details="Use the pm4py.algo.evaluation.earth_mover_distance package")
 def apply(lang1, lang2, variant=Variants.PYEMD, parameters=None):

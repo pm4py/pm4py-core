@@ -20,13 +20,13 @@ from typing import List, Dict, Any, Union
 from deprecation import deprecated
 
 from pm4py.objects.log.obj import EventLog, Trace, Event
-from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 from collections import Counter
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import xes_constants
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
+@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='conformance_tbr is deprecated, use conformance_diagnostics_token_based_replay')
 def conformance_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
                     final_marking: Marking) -> List[Dict[str, Any]]:
@@ -110,7 +110,7 @@ def conformance_diagnostics_alignments(log: EventLog, *args) -> List[Dict[str, A
     elif len(args) == 1:
         if type(args[0]) is ProcessTree:
             # process tree alignments
-            from pm4py.algo.conformance.tree_alignments import algorithm as tree_alignments
+            from pm4py.algo.conformance.alignments.process_tree import algorithm as tree_alignments
             return tree_alignments.apply(log, args[0])
     # try to convert to Petri net
     import pm4py
@@ -119,7 +119,7 @@ def conformance_diagnostics_alignments(log: EventLog, *args) -> List[Dict[str, A
     return alignments.apply(log, net, im, fm)
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
+@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='conformance_alignments is deprecated, use conformance_diagnostics_alignments')
 def conformance_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
                            final_marking: Marking) -> List[Dict[str, Any]]:
@@ -172,12 +172,12 @@ def fitness_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marki
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
-    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.TOKEN_BASED)
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
+@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='evaluate_fitness_tbr is deprecated, use fitness_token_based_replay')
 def evaluate_fitness_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking) -> Dict[
     str, float]:
@@ -202,7 +202,7 @@ def evaluate_fitness_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Ma
     fitness_dictionary
         Fitness dictionary (from TBR)
     """
-    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.TOKEN_BASED)
 
@@ -228,12 +228,12 @@ def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Mark
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
-    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.ALIGNMENT_BASED)
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
+@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='evaluate_fitness_alignments is deprecated, use fitness_alignments')
 def evaluate_fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking) -> \
         Dict[str, float]:
@@ -257,7 +257,7 @@ def evaluate_fitness_alignments(log: EventLog, petri_net: PetriNet, initial_mark
     fitness_dictionary
         Fitness dictionary (from alignments)
     """
-    from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
+    from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.ALIGNMENT_BASED)
 
@@ -283,12 +283,12 @@ def precision_token_based_replay(log: EventLog, petri_net: PetriNet, initial_mar
     precision
         float representing the precision value
     """
-    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN)
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
+@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='evaluate_precision_tbr is deprecated, use precision_token_based_replay')
 def evaluate_precision_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
                            final_marking: Marking) -> float:
@@ -312,7 +312,7 @@ def evaluate_precision_tbr(log: EventLog, petri_net: PetriNet, initial_marking: 
     precision
         float representing the precision value
     """
-    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN)
 
@@ -338,12 +338,12 @@ def precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Ma
     precision
         float representing the precision value
     """
-    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.3.0',
+@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='evaluate_precision_alignments is deprecated, use precision_alignments')
 def evaluate_precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
                                   final_marking: Marking) -> float:
@@ -367,7 +367,7 @@ def evaluate_precision_alignments(log: EventLog, petri_net: PetriNet, initial_ma
     precision
         float representing the precision value
     """
-    from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
+    from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
 
@@ -536,7 +536,6 @@ def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFA
     is_fit
         Boolean value (True if the trace fits; False if the trace does not)
     """
-    from pm4py.util import variants_util
     # avoid checking footprints on Petri net (they are too slow)
     activities_model = set(trans.label for trans in net.transitions if trans.label is not None)
     activities_trace = set([x[activity_key] for x in trace])

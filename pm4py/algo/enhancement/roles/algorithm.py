@@ -18,6 +18,7 @@ from pm4py.algo.enhancement.roles.variants import log, pandas
 from pm4py.util import exec_utils
 from enum import Enum
 import pkgutil
+import deprecation
 
 
 class Variants(Enum):
@@ -25,6 +26,7 @@ class Variants(Enum):
     PANDAS = pandas
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.organizational_mining.roles.algorithm instead')
 def apply(log, variant=None, parameters=None):
     """
     Gets the roles (group of different activities done by similar resources)

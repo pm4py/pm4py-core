@@ -18,7 +18,7 @@ from pm4py.evaluation.replay_fitness.variants import alignment_based, token_repl
 from pm4py.algo.conformance import alignments
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import exec_utils
-from pm4py.objects.petri.check_soundness import check_easy_soundness_net_in_fin_marking
+from pm4py.objects.petri_net.utils.check_soundness import check_easy_soundness_net_in_fin_marking
 from enum import Enum
 import deprecation
 from pm4py.meta import VERSION
@@ -40,7 +40,7 @@ TOKEN_BASED = Variants.TOKEN_BASED
 VERSIONS = {ALIGNMENT_BASED, TOKEN_BASED}
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+@deprecation.deprecated(deprecated_in="2.2.5", removed_in="3.0",
                         current_version=VERSION,
                         details="Use the pm4py.algo.evaluation.replay_fitness package")
 def apply(log, petri_net, initial_marking, final_marking, parameters=None, variant=None):

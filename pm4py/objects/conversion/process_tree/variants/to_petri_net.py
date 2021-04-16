@@ -17,12 +17,13 @@
 import time
 import uuid
 
-from pm4py.objects.petri.obj import Marking
-from pm4py.objects.petri.obj import PetriNet
-from pm4py.objects.petri.utils import remove_transition, add_arc_from_to, remove_place
+from pm4py.objects.petri_net.obj import Marking
+from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.objects.petri_net.utils.petri_utils import remove_transition, add_arc_from_to, remove_place
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.obj import Operator
-from pm4py.objects.petri import reduction
+from pm4py.objects.petri_net.utils import reduction
+
 
 class Counts(object):
     """

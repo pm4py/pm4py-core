@@ -11,7 +11,7 @@ def execute_script():
     # converts the log into a list of events (not anymore grouped in cases)
     event_stream = pm4py.convert_to_event_stream(log)
     # calculates a process tree using the IMf algorithm (50% noise)
-    tree = pm4py.discover_tree_inductive(log, noise_threshold=0.5)
+    tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.5)
     # discovers the footprint matrix from the process tree
     footprints = fp_discovery.apply(tree)
     # creates a live event stream (an object that distributes the messages to the algorithm)
