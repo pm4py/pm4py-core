@@ -171,7 +171,7 @@ def __export_attributes_element(log_element, xml_element):
         items = log_element.items()
 
     for attr, attr_value in items:
-        if attr is not None:
+        if attr is not None and attr_value is not None:
             attr_type = type(attr_value).__name__
             attr_type_xes = __get_xes_attr_type(attr_type)
             if attr_type is not None and attr_type_xes is not None:

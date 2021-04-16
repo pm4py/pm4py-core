@@ -2,7 +2,7 @@ from collections import Counter
 
 import numpy as np
 
-from pm4py.objects.petri.reachability_graph import construct_reachability_graph
+from pm4py.objects.petri_net.utils.reachability_graph import construct_reachability_graph
 from pm4py.objects.stochastic_petri import tangible_reachability
 from pm4py.objects.conversion.dfg import converter as dfg_converter
 from pm4py.objects.random_variables import exponential, random_variable

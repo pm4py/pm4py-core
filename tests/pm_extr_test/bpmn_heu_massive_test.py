@@ -5,7 +5,7 @@ import pm4py
 from pm4py.objects.bpmn.exporter import exporter
 from pm4py.objects.bpmn.importer import importer
 from pm4py.objects.bpmn.layout import layouter
-from pm4py.visualization.petrinet import visualizer as pn_visualizer
+from pm4py.visualization.petri_net import visualizer as pn_visualizer
 
 LOGS_FOLDER = "../compressed_input_data"
 

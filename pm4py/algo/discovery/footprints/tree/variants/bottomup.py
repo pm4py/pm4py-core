@@ -1,6 +1,6 @@
 from pm4py.objects.process_tree.obj import Operator
 from pm4py.algo.discovery.footprints.outputs import Outputs
-from pm4py.objects.process_tree import bottomup as bottomup_disc
+from pm4py.objects.process_tree.utils import bottomup as bottomup_disc
 from copy import copy
 
 START_ACTIVITIES = Outputs.START_ACTIVITIES.value

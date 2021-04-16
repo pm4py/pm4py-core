@@ -1,10 +1,10 @@
 import time
 
 import pm4py
-from pm4py.algo.conformance.logs_alignments import algorithm as logs_alignment
+from pm4py.algo.conformance.alignments.edit_distance import algorithm as logs_alignment
 from pm4py.algo.evaluation.replay_fitness.variants import alignment_based
-from pm4py.objects.process_tree import bottomup as bottomup_discovery
-from pm4py.algo.simulation.tree_playout import algorithm as tree_playout
+from pm4py.objects.process_tree.utils import bottomup as bottomup_discovery
+from pm4py.algo.simulation.playout.process_tree import algorithm as tree_playout
 
 
 def execute_script():
@@ -13,7 +13,7 @@ def execute_script():
     # log = pm4py.read_xes("../tests/input_data/receipt.xes")
     print("number of variants of the original log ->", len(pm4py.get_variants(log)))
     # discover a process model
-    tree = pm4py.discover_tree_inductive(log)
+    tree = pm4py.discover_process_tree_inductive(log)
     # simulate a log out of the model (to have another log that is similar to the original)
     aa = time.time()
     min_trace_length = bottomup_discovery.get_min_trace_length(tree)

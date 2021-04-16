@@ -14,7 +14,7 @@ GENERALIZATION_TOKEN = Variants.GENERALIZATION_TOKEN
 VERSIONS = {GENERALIZATION_TOKEN}
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0",
+@deprecation.deprecated(deprecated_in="2.2.5", removed_in="3.0",
                         current_version=VERSION,
                         details="Use the pm4py.algo.evaluation.generalization package")
 def apply(log, petri_net, initial_marking, final_marking, parameters=None, variant=GENERALIZATION_TOKEN):

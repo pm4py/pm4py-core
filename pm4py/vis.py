@@ -3,7 +3,7 @@ from typing import Optional
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog
-from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 
 
@@ -22,7 +22,7 @@ def view_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking:
     format
         Format of the output picture (default: png)
     """
-    from pm4py.visualization.petrinet import visualizer as pn_visualizer
+    from pm4py.visualization.petri_net import visualizer as pn_visualizer
     gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
                                parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format})
     pn_visualizer.view(gviz)
@@ -44,7 +44,7 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
         Destination path
     """
     format = file_path[file_path.index(".") + 1:].lower()
-    from pm4py.visualization.petrinet import visualizer as pn_visualizer
+    from pm4py.visualization.petri_net import visualizer as pn_visualizer
     gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
                                parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format})
     pn_visualizer.save(gviz, file_path)
@@ -204,3 +204,33 @@ def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str):
     parameters = hn_visualizer.Variants.PYDOTPLUS.value.Parameters
     gviz = hn_visualizer.apply(heu_net, parameters={parameters.FORMAT: format})
     hn_visualizer.save(gviz, file_path)
+
+
+def view_sna(sna_metric):
+    """
+    Represents a SNA metric (.html)
+
+    Parameters
+    ---------------
+    sna_metric
+        Values of the metric
+    """
+    from pm4py.visualization.sna import visualizer as sna_visualizer
+    gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
+    sna_visualizer.view(gviz)
+
+
+def save_vis_sna(sna_metric, file_path: str):
+    """
+    Saves the visualization of a SNA metric in a .html file
+
+    Parameters
+    ----------------
+    sna_metric
+        Values of the metric
+    file_path
+        Destination path
+    """
+    from pm4py.visualization.sna import visualizer as sna_visualizer
+    gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
+    sna_visualizer.save(gviz, file_path)

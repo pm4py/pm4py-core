@@ -3,10 +3,10 @@ import unittest
 
 from pm4py.algo.conformance.alignments import algorithm as align_alg
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
-from pm4py.objects import petri
+from pm4py.objects import petri_net
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.objects.petri.exporter import exporter as petri_exporter
-from pm4py.objects.petri.importer import importer as petri_importer
+from pm4py.objects.petri_net.exporter import exporter as petri_exporter
+from pm4py.objects.petri_net.importer import importer as petri_importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
 
@@ -48,7 +48,7 @@ class PetriImportExportTest(unittest.TestCase):
         imported_petri1, marking1, fmarking1 = petri_importer.apply(
             os.path.join(INPUT_DATA_DIR, "running-example.pnml"))
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        final_marking = petri.obj.Marking()
+        final_marking = petri_net.obj.Marking()
         for p in imported_petri1.places:
             if not p.out_arcs:
                 final_marking[p] = 1
@@ -68,7 +68,7 @@ class PetriImportExportTest(unittest.TestCase):
         self.dummy_variable = "dummy_value"
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
         net, im, fm = inductive_miner.apply(log)
-        s_comps = petri.utils.get_s_components_from_petri(net, im, fm)
+        s_comps = petri_net.utils.petri_utils.get_s_components_from_petri(net, im, fm)
         del s_comps
 
 

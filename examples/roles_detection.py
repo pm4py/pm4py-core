@@ -1,6 +1,6 @@
 import os
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.algo.enhancement.roles import algorithm as roles_algorithm
+from pm4py.algo.organizational_mining.roles import algorithm as roles_algorithm
 
 
 def execute_script():
