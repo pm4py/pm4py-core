@@ -1,1 +1,1 @@
-from pm4py.algo.reduction import reducer, variants
+from pm4py.algo.reduction import process_tree

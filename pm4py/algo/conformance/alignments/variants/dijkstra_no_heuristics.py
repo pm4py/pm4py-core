@@ -1,13 +1,12 @@
 import heapq
 import time
 
-from pm4py import util as pm4pyutil
 from pm4py.objects.log import obj as log_implementation
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.objects.petri.synchronous_product import construct_cost_aware, construct
-from pm4py.objects.petri.utils import construct_trace_net_cost_aware, decorate_places_preset_trans, \
+from pm4py.objects.petri_net.utils.synchronous_product import construct_cost_aware, construct
+from pm4py.objects.petri_net.utils.petri_utils import construct_trace_net_cost_aware, decorate_places_preset_trans, \
     decorate_transitions_prepostset
-from pm4py.objects.petri import align_utils as utils
+from pm4py.objects.petri_net.utils import align_utils as utils
 from pm4py.util import exec_utils
 from copy import copy
 from enum import Enum
@@ -207,7 +206,7 @@ def apply_from_variants_list_petri_string(var_list, petri_net_string, parameters
     if parameters is None:
         parameters = {}
 
-    from pm4py.objects.petri.importer.variants import pnml as petri_importer
+    from pm4py.objects.petri_net.importer.variants import pnml as petri_importer
 
     petri_net, initial_marking, final_marking = petri_importer.import_petri_from_string(petri_net_string)
 

@@ -1,6 +1,6 @@
 from pm4py.objects.dfg.utils import dfg_utils
-from pm4py.objects.petri.obj import PetriNet, Marking
-from pm4py.objects.petri import utils as pn_util
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.petri_net.utils import petri_utils as pn_util
 from enum import Enum
 from pm4py.util import exec_utils
 

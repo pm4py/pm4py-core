@@ -1,3 +1,7 @@
+import warnings
+
+warnings.warn('please use the pm4py.objects.petri_net package instead.')
+
 import pkgutil
 
 from pm4py.objects.petri import common, incidence_matrix, obj, \

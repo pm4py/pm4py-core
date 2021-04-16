@@ -3,8 +3,8 @@ from pm4py.algo.discovery.inductive import algorithm as inductive
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.visualization.process_tree import visualizer as pt_vis
-from pm4py.algo.conformance.tree_alignments import algorithm as align_approx
-from pm4py.objects.petri.align_utils import pretty_print_alignments
+from pm4py.algo.conformance.alignments.process_tree import algorithm as align_approx
+from pm4py.objects.petri_net.utils.align_utils import pretty_print_alignments
 
 
 def execute_script():

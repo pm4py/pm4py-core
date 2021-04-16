@@ -1,1 +1,5 @@
-from pm4py.algo.conformance.decomp_alignments import variants, algorithm
+import warnings
+
+warnings.warn('please use the pm4py.algo.conformance.alignments.decomposed package.')
+
+from pm4py.algo.conformance.alignments.decomposed import *

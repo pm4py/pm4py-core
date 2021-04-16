@@ -52,30 +52,6 @@ def footprints_petri_net():
     footprints_petri_net.execute_script()
 
 
-def events_log_filter():
-    from examples import event_log_filter
-    print("\n\nevent_log_filter")
-    event_log_filter.execute_script()
-
-
-def event_log_map():
-    from examples import event_log_map
-    print("\n\nevent_log_map")
-    event_log_map.execute_script()
-
-
-def event_stream_filter():
-    from examples import event_stream_filter
-    print("\n\nevent_stream_filter")
-    event_stream_filter.execute_script()
-
-
-def event_stream_map():
-    from examples import event_stream_map
-    print("\n\nevent_stream_map")
-    event_stream_map.execute_script()
-
-
 def corr_mining():
     from examples import corr_mining
     print("\n\ncorr_mining")
@@ -401,10 +377,6 @@ if __name__ == "__main__":
     execute_script(emd_evaluation)
     execute_script(footprints_tree_conf)
     execute_script(footprints_petri_net)
-    execute_script(events_log_filter)
-    execute_script(event_log_map)
-    execute_script(event_stream_filter)
-    execute_script(event_stream_map)
     execute_script(corr_mining)
     execute_script(log_skeleton)
     execute_script(roles_detection)
