@@ -1,23 +1,19 @@
 from pm4py.algo.conformance.alignments.variants.dijkstra_less_memory import __add_to_open_set, __add_closed, \
     __check_closed, __decode_marking, __encode_marking, __fire_trans, __dict_leq, \
-    __transform_model_to_mem_efficient_structure, __transform_trace_to_mem_efficient_structure, __reconstruct_alignment, \
-    get_best_worst_cost
+    __transform_model_to_mem_efficient_structure, __transform_trace_to_mem_efficient_structure, __reconstruct_alignment, get_best_worst_cost
 
 import time
 import sys
-from pm4py.objects.petri import align_utils
-from pm4py.objects.log import obj as log_implementation
-from pm4py import util as pm4pyutil
+from pm4py.objects.petri_net.utils import align_utils, align_utils as utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-from pm4py.objects.petri.utils import construct_trace_net_cost_aware
-from pm4py.objects.petri import align_utils as utils
+from pm4py.objects.petri_net.utils.petri_utils import construct_trace_net_cost_aware
 from pm4py.util import exec_utils
-from pm4py.objects.petri.synchronous_product import construct_cost_aware
+from pm4py.objects.petri_net.utils.synchronous_product import construct_cost_aware
 from pm4py.util.lp import solver as lp_solver
-from pm4py.objects.petri.semantics import enabled_transitions
-from pm4py.objects.petri.obj import Marking
-from pm4py.objects.petri.incidence_matrix import construct
+from pm4py.objects.petri_net.semantics import enabled_transitions
+from pm4py.objects.petri_net.obj import Marking
+from pm4py.objects.petri_net.utils.incidence_matrix import construct
 from enum import Enum
 import heapq
 import numpy as np
@@ -76,7 +72,7 @@ def apply_from_variants_list_petri_string(var_list, petri_net_string, parameters
     if parameters is None:
         parameters = {}
 
-    from pm4py.objects.petri.importer.variants import pnml as petri_importer
+    from pm4py.objects.petri_net.importer.variants import pnml as petri_importer
 
     petri_net, initial_marking, final_marking = petri_importer.import_petri_from_string(petri_net_string)
 

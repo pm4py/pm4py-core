@@ -1,7 +1,7 @@
 import pandas as pd
 import pm4py
 import os
-from pm4py.algo.enhancement.resource_profiles import algorithm
+from pm4py.algo.organizational_mining.resource_profiles import algorithm
 
 
 def execute_script():

@@ -1,1 +1,1 @@
-from pm4py.algo.evaluation.generalization import evaluator, variants
+from pm4py.algo.evaluation.generalization import algorithm, variants

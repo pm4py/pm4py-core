@@ -4,7 +4,7 @@ import traceback
 import pm4py
 from pm4py.algo.discovery.inductive import algorithm as inductive
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.visualization.petrinet import visualizer as pn_vis
+from pm4py.visualization.petri_net import visualizer as pn_vis
 
 
 def execute_script():

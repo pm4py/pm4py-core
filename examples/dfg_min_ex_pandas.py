@@ -12,7 +12,7 @@ from pm4py.statistics.eventually_follows.pandas import get as efg_get
 from pm4py.statistics.start_activities.pandas import get as sa_get
 from pm4py.util import constants
 from pm4py.visualization.dfg import visualizer as dfg_vis_fact
-from pm4py.visualization.petrinet import visualizer as pn_vis
+from pm4py.visualization.petri_net import visualizer as pn_vis
 
 
 def execute_script():

@@ -1,7 +1,7 @@
 import copy
 
-from pm4py.objects.petri import utils as pn_utils
-from pm4py.objects.petri.obj import PetriNet
+from pm4py.objects.petri_net.utils import petri_utils as pn_utils
+from pm4py.objects.petri_net.obj import PetriNet
 
 
 def _short_circuit_petri_net(net):

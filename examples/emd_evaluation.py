@@ -3,7 +3,7 @@ from pm4py.algo.discovery.alpha import algorithm as alpha_miner
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.algo.evaluation.earth_mover_distance import algorithm as earth_mover_distance
 from pm4py.statistics.variants.log import get as variants_get
-from pm4py.algo.simulation.playout import simulator
+from pm4py.algo.simulation.playout.petri_net import algorithm
 import os
 
 
@@ -43,11 +43,11 @@ def execute_script():
     net0, im0, fm0 = alpha_miner.apply(log)
     net1, im1, fm1 = inductive_miner.apply(log)
     lang_model0 = variants_get.get_language(
-        simulator.apply(net0, im0, fm0, variant=simulator.Variants.STOCHASTIC_PLAYOUT,
-                        parameters={simulator.Variants.STOCHASTIC_PLAYOUT.value.Parameters.LOG: log}))
+        algorithm.apply(net0, im0, fm0, variant=algorithm.Variants.STOCHASTIC_PLAYOUT,
+                        parameters={algorithm.Variants.STOCHASTIC_PLAYOUT.value.Parameters.LOG: log}))
     lang_model1 = variants_get.get_language(
-        simulator.apply(net1, im1, fm1, variant=simulator.Variants.STOCHASTIC_PLAYOUT,
-                        parameters={simulator.Variants.STOCHASTIC_PLAYOUT.value.Parameters.LOG: log}))
+        algorithm.apply(net1, im1, fm1, variant=algorithm.Variants.STOCHASTIC_PLAYOUT,
+                        parameters={algorithm.Variants.STOCHASTIC_PLAYOUT.value.Parameters.LOG: log}))
     emd = earth_mover_distance.apply(lang_model0, lang_log)
     print("running-example alpha emd distance: ", emd)
     emd = earth_mover_distance.apply(lang_model1, lang_log)

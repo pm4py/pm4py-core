@@ -6,13 +6,13 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.algo.conformance.tokenreplay.variants.token_replay import NoConceptNameException
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.objects import petri
+from pm4py.objects import petri_net
 import pandas as pd
 from pm4py.objects.log.util import dataframe_utils
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import sampling, sorting, index_attribute
-from pm4py.objects.petri.exporter import exporter as petri_exporter
-from pm4py.visualization.petrinet.common import visualize as pn_viz
+from pm4py.objects.petri_net.exporter import exporter as petri_exporter
+from pm4py.visualization.petri_net.common import visualize as pn_viz
 
 # from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 
@@ -60,7 +60,7 @@ class InductiveMinerTest(unittest.TestCase):
         petri_exporter.apply(net1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         self.assertEqual(len(net1.places), len(net2.places))
-        final_marking = petri.obj.Marking()
+        final_marking = petri_net.obj.Marking()
         for p in net1.places:
             if not p.out_arcs:
                 final_marking[p] = 1
@@ -86,7 +86,7 @@ class InductiveMinerTest(unittest.TestCase):
         petri_exporter.apply(net1, marking1, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         self.assertEqual(len(net1.places), len(net2.places))
-        final_marking = petri.obj.Marking()
+        final_marking = petri_net.obj.Marking()
         for p in net1.places:
             if not p.out_arcs:
                 final_marking[p] = 1
@@ -105,7 +105,7 @@ class InductiveMinerTest(unittest.TestCase):
         petri_exporter.apply(net, marking, os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example.pnml"))
         gviz = pn_viz.graphviz_visualization(net)
-        final_marking = petri.obj.Marking()
+        final_marking = petri_net.obj.Marking()
         for p in net.places:
             if not p.out_arcs:
                 final_marking[p] = 1

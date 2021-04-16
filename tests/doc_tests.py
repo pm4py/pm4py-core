@@ -23,7 +23,7 @@ class DocTests(unittest.TestCase):
         return stream
 
     def load_running_example_pnml(self):
-        from pm4py.objects.petri.importer import importer
+        from pm4py.objects.petri_net.importer import importer
         net, im, fm = importer.apply(os.path.join("input_data", "running-example.pnml"))
         return net, im, fm
 
@@ -99,12 +99,6 @@ class DocTests(unittest.TestCase):
         dataframe = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
         dataframe.to_csv("ru.csv")
         os.remove("ru.csv")
-
-    def test_7(self):
-        from pm4py.objects.log.importer.xes import importer as xes_importer
-        from pm4py.objects.log.util import func
-        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
-        log = func.filter_(lambda t: len(t) > 2, log)
 
     def test_8(self):
         from pm4py.algo.filtering.log.timestamp import timestamp_filter
@@ -410,7 +404,7 @@ class DocTests(unittest.TestCase):
         net, im, fm = heuristics_miner.apply(log, parameters={
             heuristics_miner.Variants.CLASSIC.value.Parameters.DEPENDENCY_THRESH: 0.99})
 
-        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        from pm4py.visualization.petri_net import visualizer as pn_visualizer
         gviz = pn_visualizer.apply(net, im, fm)
 
     def test_43(self):
@@ -468,7 +462,7 @@ class DocTests(unittest.TestCase):
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         net, initial_marking, final_marking = inductive_miner.apply(log)
 
-        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        from pm4py.visualization.petri_net import visualizer as pn_visualizer
         parameters = {pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: "png"}
         gviz = pn_visualizer.apply(net, initial_marking, final_marking, parameters=parameters,
                                    variant=pn_visualizer.Variants.FREQUENCY, log=log)
@@ -513,14 +507,14 @@ class DocTests(unittest.TestCase):
 
     def test_51(self):
         import os
-        from pm4py.objects.petri.importer import importer as pnml_importer
+        from pm4py.objects.petri_net.importer import importer as pnml_importer
         net, initial_marking, final_marking = pnml_importer.apply(
             os.path.join("input_data", "running-example.pnml"))
 
-        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        from pm4py.visualization.petri_net import visualizer as pn_visualizer
         gviz = pn_visualizer.apply(net, initial_marking, final_marking)
 
-        from pm4py.objects.petri.exporter import exporter as pnml_exporter
+        from pm4py.objects.petri_net.exporter import exporter as pnml_exporter
         pnml_exporter.apply(net, initial_marking, "petri.pnml")
 
         pnml_exporter.apply(net, initial_marking, "petri_final.pnml", final_marking=final_marking)
@@ -528,7 +522,7 @@ class DocTests(unittest.TestCase):
         os.remove("petri.pnml")
         os.remove("petri_final.pnml")
 
-        from pm4py.objects.petri import semantics
+        from pm4py.objects.petri_net import semantics
         transitions = semantics.enabled_transitions(net, initial_marking)
 
         places = net.places
@@ -542,7 +536,7 @@ class DocTests(unittest.TestCase):
 
     def test_52(self):
         # creating an empty Petri net
-        from pm4py.objects.petri.obj import PetriNet, Marking
+        from pm4py.objects.petri_net.obj import PetriNet, Marking
         net = PetriNet("new_petri_net")
 
         # creating source, p_1 and sink place
@@ -562,11 +556,11 @@ class DocTests(unittest.TestCase):
         net.transitions.add(t_2)
 
         # Add arcs
-        from pm4py.objects.petri import utils
-        utils.add_arc_from_to(source, t_1, net)
-        utils.add_arc_from_to(t_1, p_1, net)
-        utils.add_arc_from_to(p_1, t_2, net)
-        utils.add_arc_from_to(t_2, sink, net)
+        from pm4py.objects.petri_net.utils import petri_utils
+        petri_utils.add_arc_from_to(source, t_1, net)
+        petri_utils.add_arc_from_to(t_1, p_1, net)
+        petri_utils.add_arc_from_to(p_1, t_2, net)
+        petri_utils.add_arc_from_to(t_2, sink, net)
 
         # Adding tokens
         initial_marking = Marking()
@@ -574,17 +568,17 @@ class DocTests(unittest.TestCase):
         final_marking = Marking()
         final_marking[sink] = 1
 
-        from pm4py.objects.petri.exporter import exporter as pnml_exporter
+        from pm4py.objects.petri_net.exporter import exporter as pnml_exporter
         pnml_exporter.apply(net, initial_marking, "createdPetriNet1.pnml", final_marking=final_marking)
 
-        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        from pm4py.visualization.petri_net import visualizer as pn_visualizer
         gviz = pn_visualizer.apply(net, initial_marking, final_marking)
 
-        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        from pm4py.visualization.petri_net import visualizer as pn_visualizer
         parameters = {pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: "svg"}
         gviz = pn_visualizer.apply(net, initial_marking, final_marking, parameters=parameters)
 
-        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        from pm4py.visualization.petri_net import visualizer as pn_visualizer
         parameters = {pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: "svg"}
         gviz = pn_visualizer.apply(net, initial_marking, final_marking, parameters=parameters)
         pn_visualizer.save(gviz, "alpha.svg")
@@ -600,8 +594,8 @@ class DocTests(unittest.TestCase):
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         net, initial_marking, final_marking = inductive_miner.apply(log)
 
-        from pm4py.objects.petri import utils
-        cycles = utils.get_cycles_petri_net_places(net)
+        from pm4py.objects.petri_net.utils import petri_utils
+        cycles = petri_utils.get_cycles_petri_net_places(net)
 
     def test_54(self):
         from pm4py.objects.log.importer.xes import importer as xes_importer
@@ -611,10 +605,10 @@ class DocTests(unittest.TestCase):
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         net, initial_marking, final_marking = inductive_miner.apply(log)
 
-        from pm4py.objects.petri import utils
-        scc = utils.get_strongly_connected_subnets(net)
+        from pm4py.objects.petri_net.utils import petri_utils
+        scc = petri_utils.get_strongly_connected_subnets(net)
 
-        from pm4py.visualization.petrinet import visualizer as pn_visualizer
+        from pm4py.visualization.petri_net import visualizer as pn_visualizer
         gviz = pn_visualizer.apply(scc[0][0], scc[0][1], scc[0][2])
 
     def test_55(self):
@@ -625,8 +619,8 @@ class DocTests(unittest.TestCase):
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         net, initial_marking, final_marking = inductive_miner.apply(log)
 
-        from pm4py.objects.petri import utils
-        cycles = utils.get_cycles_petri_net_places(net)
+        from pm4py.objects.petri_net.utils import petri_utils
+        cycles = petri_utils.get_cycles_petri_net_places(net)
 
     def test_56(self):
         import os
@@ -660,7 +654,7 @@ class DocTests(unittest.TestCase):
         net, initial_marking, final_marking = inductive_miner.apply(log, parameters=parameters)
         alignments = alignments.apply_log(log, net, initial_marking, final_marking, parameters=parameters)
 
-        from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness
+        from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
         log_fitness = replay_fitness.evaluate(alignments, variant=replay_fitness.Variants.ALIGNMENT_BASED)
 
     def test_58(self):
@@ -890,11 +884,11 @@ class DocTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = alpha_miner.apply(log)
 
-        from pm4py.objects.petri.decomposition import decompose
+        from pm4py.objects.petri_net.utils.decomposition import decompose
 
         list_nets = decompose(net, im, fm)
 
-        from pm4py.visualization.petrinet import visualizer
+        from pm4py.visualization.petri_net import visualizer
         gviz = []
         for index, model in enumerate(list_nets):
             subnet, s_im, s_fm = model
@@ -910,7 +904,7 @@ class DocTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = alpha_miner.apply(log)
 
-        from pm4py.objects.petri import reachability_graph
+        from pm4py.objects.petri_net.utils import reachability_graph
 
         ts = reachability_graph.construct_reachability_graph(net, im)
 
@@ -926,12 +920,12 @@ class DocTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = alpha_miner.apply(log)
 
-        from pm4py.algo.conformance.decomp_alignments import algorithm as decomp_alignments
+        from pm4py.algo.conformance.alignments.decomposed import algorithm as decomp_alignments
 
         conf = decomp_alignments.apply(log, net, im, fm, parameters={
             decomp_alignments.Variants.RECOMPOS_MAXIMAL.value.Parameters.PARAM_THRESHOLD_BORDER_AGREEMENT: 2})
 
-        from pm4py.algo.evaluation.replay_fitness import evaluator as rp_fitness_evaluator
+        from pm4py.algo.evaluation.replay_fitness import algorithm as rp_fitness_evaluator
 
         fitness = rp_fitness_evaluator.evaluate(conf, variant=rp_fitness_evaluator.Variants.ALIGNMENT_BASED)
 
@@ -1117,24 +1111,24 @@ class DocTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = alpha_miner.apply(log)
 
-        from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness_evaluator
+        from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness_evaluator
         fitness = replay_fitness_evaluator.apply(log, net, im, fm,
                                                  variant=replay_fitness_evaluator.Variants.TOKEN_BASED)
 
-        from pm4py.algo.evaluation.replay_fitness import evaluator as replay_fitness_evaluator
+        from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness_evaluator
         fitness = replay_fitness_evaluator.apply(log, net, im, fm,
                                                  variant=replay_fitness_evaluator.Variants.ALIGNMENT_BASED)
 
-        from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
+        from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
         prec = precision_evaluator.apply(log, net, im, fm, variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN)
 
-        from pm4py.algo.evaluation.precision import evaluator as precision_evaluator
+        from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
         prec = precision_evaluator.apply(log, net, im, fm, variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
 
-        from pm4py.algo.evaluation.generalization import evaluator as generalization_evaluator
+        from pm4py.algo.evaluation.generalization import algorithm as generalization_evaluator
         gen = generalization_evaluator.apply(log, net, im, fm)
 
-        from pm4py.algo.evaluation.simplicity import evaluator as simplicity_evaluator
+        from pm4py.algo.evaluation.simplicity import algorithm as simplicity_evaluator
         simp = simplicity_evaluator.apply(net)
 
     def test_sna(self):
@@ -1143,31 +1137,31 @@ class DocTests(unittest.TestCase):
 
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
 
-        from pm4py.algo.enhancement.sna import algorithm as sna
+        from pm4py.algo.organizational_mining.sna import algorithm as sna
         hw_values = sna.apply(log, variant=sna.Variants.HANDOVER_LOG)
 
         from pm4py.visualization.sna import visualizer as sna_visualizer
         gviz_hw_py = sna_visualizer.apply(hw_values, variant=sna_visualizer.Variants.PYVIS)
 
-        from pm4py.algo.enhancement.sna import algorithm as sna
+        from pm4py.algo.organizational_mining.sna import algorithm as sna
         sub_values = sna.apply(log, variant=sna.Variants.SUBCONTRACTING_LOG)
 
         from pm4py.visualization.sna import visualizer as sna_visualizer
         gviz_sub_py = sna_visualizer.apply(sub_values, variant=sna_visualizer.Variants.PYVIS)
 
-        from pm4py.algo.enhancement.sna import algorithm as sna
+        from pm4py.algo.organizational_mining.sna import algorithm as sna
         wt_values = sna.apply(log, variant=sna.Variants.WORKING_TOGETHER_LOG)
 
         from pm4py.visualization.sna import visualizer as sna_visualizer
         gviz_wt_py = sna_visualizer.apply(wt_values, variant=sna_visualizer.Variants.PYVIS)
 
-        from pm4py.algo.enhancement.sna import algorithm as sna
+        from pm4py.algo.organizational_mining.sna import algorithm as sna
         ja_values = sna.apply(log, variant=sna.Variants.JOINTACTIVITIES_LOG)
 
         from pm4py.visualization.sna import visualizer as sna_visualizer
         gviz_ja_py = sna_visualizer.apply(ja_values, variant=sna_visualizer.Variants.PYVIS)
 
-        from pm4py.algo.enhancement.roles import algorithm as roles_discovery
+        from pm4py.algo.organizational_mining.roles import algorithm as roles_discovery
         roles = roles_discovery.apply(log)
 
     def test_playout(self):
@@ -1178,15 +1172,15 @@ class DocTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = alpha_miner.apply(log)
 
-        from pm4py.algo.simulation.playout import simulator
+        from pm4py.algo.simulation.playout.petri_net import algorithm
 
-        simulated_log = simulator.apply(net, im, variant=simulator.Variants.BASIC_PLAYOUT,
-                                        parameters={simulator.Variants.BASIC_PLAYOUT.value.Parameters.NO_TRACES: 50})
+        simulated_log = algorithm.apply(net, im, variant=algorithm.Variants.BASIC_PLAYOUT,
+                                        parameters={algorithm.Variants.BASIC_PLAYOUT.value.Parameters.NO_TRACES: 50})
 
-        from pm4py.algo.simulation.playout import simulator
+        from pm4py.algo.simulation.playout.petri_net import algorithm
 
-        simulated_log = simulator.apply(net, im, variant=simulator.Variants.EXTENSIVE,
-                                        parameters={simulator.Variants.EXTENSIVE.value.Parameters.MAX_TRACE_LENGTH: 7})
+        simulated_log = algorithm.apply(net, im, variant=algorithm.Variants.EXTENSIVE,
+                                        parameters={algorithm.Variants.EXTENSIVE.value.Parameters.MAX_TRACE_LENGTH: 7})
 
     def test_ctmc(self):
         import os
