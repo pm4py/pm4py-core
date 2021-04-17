@@ -11,6 +11,10 @@ class Parameters(Enum):
     KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
+def apply(log, parameters=None):
+    return native(log, parameters=parameters)
+
+
 def native(log, parameters=None):
     """
     Counts the number of directly follows occurrences, i.e. of the form <...a,b...>, in an event log.

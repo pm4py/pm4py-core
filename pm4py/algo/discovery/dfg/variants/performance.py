@@ -13,6 +13,10 @@ class Parameters(Enum):
     AGGREGATION_MEASURE = "aggregationMeasure"
 
 
+def apply(log, parameters=None):
+    return performance(log, parameters=parameters)
+
+
 def performance(log, parameters=None):
     """
     Measure performance between couples of attributes in the DFG graph
