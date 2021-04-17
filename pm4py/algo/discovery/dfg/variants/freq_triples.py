@@ -9,6 +9,10 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
+def apply(log, parameters=None):
+    return freq_triples(log, parameters=parameters)
+
+
 def freq_triples(log, parameters=None):
     """
     Counts the number of directly follows occurrences, i.e. of the form <...a,b...>, in an event log.
