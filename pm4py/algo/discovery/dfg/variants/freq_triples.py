@@ -1,7 +1,15 @@
-from pm4py.objects.dfg.retrieval import log as log_calc
+from collections import Counter
+from enum import Enum
+
+from pm4py.util import constants, exec_utils
+from pm4py.util import xes_constants as xes_util
 
 
-def apply(log, parameters=None):
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+
+
+def freq_triples(log, parameters=None):
     """
     Counts the number of directly follows occurrences, i.e. of the form <...a,b...>, in an event log.
 
@@ -11,11 +19,17 @@ def apply(log, parameters=None):
         Trace log
     parameters
         Possible parameters passed to the algorithms:
-            Parameters.ACTIVITY_KEY -> Attribute to use as activity
+            activity_key -> Attribute to use as activity
 
     Returns
     -------
     dfg
         DFG graph
     """
-    return log_calc.freq_triples(log, parameters=parameters)
+    if parameters is None:
+        parameters = {}
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+    dfgs = map(
+        (lambda t: [(t[i - 2][activity_key], t[i - 1][activity_key], t[i][activity_key]) for i in range(2, len(t))]),
+        log)
+    return Counter([dfg for lista in dfgs for dfg in lista])
