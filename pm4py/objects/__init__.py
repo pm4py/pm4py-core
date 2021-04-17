@@ -1,5 +1,5 @@
-from pm4py.objects import log, petri_net, transition_system, conversion, process_tree, heuristics_net, random_variables, \
-    stochastic_petri, dfg
+from pm4py.objects import log, petri_net, transition_system, conversion, process_tree, random_variables, \
+    stochastic_petri
 import pkgutil
 
 if pkgutil.find_loader("networkx"):
