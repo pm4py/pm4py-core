@@ -3,7 +3,7 @@ import sys
 import time
 from copy import copy
 
-from pm4py.algo.conformance.alignments.variants import state_equation_less_memory
+from pm4py.algo.conformance.alignments.variants import state_equation_a_star
 from pm4py.algo.conformance.alignments.decomposed.parameters import Parameters
 from pm4py.objects.log import obj as log_implementation
 from pm4py.objects.log.obj import Trace
@@ -473,14 +473,14 @@ def align(trace, petri_net, initial_marking, final_marking, parameters=None):
         parameters = {}
 
     new_parameters = copy(parameters)
-    new_parameters[state_equation_less_memory.Parameters.RETURN_SYNC_COST_FUNCTION] = True
-    new_parameters[state_equation_less_memory.Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] = True
+    new_parameters[state_equation_a_star.Parameters.RETURN_SYNC_COST_FUNCTION] = True
+    new_parameters[state_equation_a_star.Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] = True
 
-    aligned_trace, cost_function = state_equation_less_memory.apply(trace, petri_net, initial_marking, final_marking,
+    aligned_trace, cost_function = state_equation_a_star.apply(trace, petri_net, initial_marking, final_marking,
                                                                     parameters=new_parameters)
 
     cf = {}
     for x in cost_function:
-        cf[((x.label[0], x.name[1]), (x.label[0], x.label[1]))] = cost_function[x]
+        cf[((x.name[0], x.name[1]), (x.label[0], x.label[1]))] = cost_function[x]
 
     return aligned_trace, cf
