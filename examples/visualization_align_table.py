@@ -1,7 +1,7 @@
 import os
 from pm4py.objects.log.importer.xes import importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.algo.conformance.alignments import algorithm as alignments
+from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 from pm4py.visualization.align_table import visualizer
 
 

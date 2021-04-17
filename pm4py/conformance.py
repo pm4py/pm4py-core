@@ -87,7 +87,7 @@ def conformance_diagnostics_alignments(log: EventLog, *args, multiprocessing: bo
     if len(args) == 3:
         if type(args[0]) is PetriNet:
             # Petri net alignments
-            from pm4py.algo.conformance.alignments import algorithm as alignments
+            from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
             if multiprocessing:
                 return alignments.apply_multiprocessing(log, args[0], args[1], args[2])
             else:
@@ -106,7 +106,7 @@ def conformance_diagnostics_alignments(log: EventLog, *args, multiprocessing: bo
                 return search_graph_pt.apply(log, args[0])
     # try to convert to Petri net
     import pm4py
-    from pm4py.algo.conformance.alignments import algorithm as alignments
+    from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
     net, im, fm = pm4py.convert_to_petri_net(*args)
     if multiprocessing:
         return alignments.apply_multiprocessing(log, net, im, fm)
@@ -139,7 +139,7 @@ def conformance_alignments(log: EventLog, petri_net: PetriNet, initial_marking: 
     aligned_traces
         A list of alignments for each trace of the log
     """
-    from pm4py.algo.conformance.alignments import algorithm as alignments
+    from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
     return alignments.apply(log, petri_net, initial_marking, final_marking)
 
 

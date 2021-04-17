@@ -1,1 +1,1 @@
-from pm4py.algo.conformance.alignments import variants, algorithm
+from pm4py.algo.conformance.alignments import decomposed, dfg, edit_distance, petri_net

@@ -2,7 +2,7 @@ import os
 import time
 
 import pm4py
-from pm4py.algo.conformance.alignments import algorithm as petri_alignments
+from pm4py.algo.conformance.alignments.petri_net import algorithm as petri_alignments
 from pm4py.objects.dfg.filtering import dfg_filtering
 from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
 from pm4py.statistics.attributes.log import get

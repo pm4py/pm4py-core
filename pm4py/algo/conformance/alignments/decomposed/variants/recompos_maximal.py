@@ -3,7 +3,7 @@ import sys
 import time
 from copy import copy
 
-from pm4py.algo.conformance.alignments.variants import state_equation_a_star
+from pm4py.algo.conformance.alignments.petri_net.variants import state_equation_a_star
 from pm4py.algo.conformance.alignments.decomposed.parameters import Parameters
 from pm4py.objects.log import obj as log_implementation
 from pm4py.objects.log.obj import Trace
@@ -477,7 +477,7 @@ def align(trace, petri_net, initial_marking, final_marking, parameters=None):
     new_parameters[state_equation_a_star.Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] = True
 
     aligned_trace, cost_function = state_equation_a_star.apply(trace, petri_net, initial_marking, final_marking,
-                                                                    parameters=new_parameters)
+                                                               parameters=new_parameters)
 
     cf = {}
     for x in cost_function:
