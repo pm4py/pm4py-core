@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pm4py.algo.conformance.alignments import algorithm as align_alg
+from pm4py.algo.conformance.alignments.petri_net import algorithm as align_alg
 from pm4py.algo.discovery.alpha import algorithm as alpha_alg
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects import petri_net

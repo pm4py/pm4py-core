@@ -1,6 +1,6 @@
 from copy import copy
 
-from pm4py.algo.conformance.alignments import variants
+from pm4py.algo.conformance.alignments.petri_net import variants
 from pm4py.objects.petri_net.utils import align_utils, check_soundness
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.conversion.log import converter as log_converter

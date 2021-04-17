@@ -2,7 +2,7 @@ import os
 
 from pm4py import util
 from pm4py.algo.conformance import alignments as ali
-from pm4py.algo.conformance.alignments.variants.state_equation_a_star import Parameters
+from pm4py.algo.conformance.alignments.petri_net.variants import Parameters
 from pm4py.objects import log as log_lib
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.petri_net.importer import importer as petri_importer
