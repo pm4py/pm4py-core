@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     from pm4py.objects.log.importer.xes import importer as xes_importer
     from pm4py.algo.discovery.inductive import algorithm as inductive
-    from pm4py.algo.conformance.alignments.variants import state_equation_less_memory
+    from pm4py.algo.conformance.alignments.variants import state_equation_a_star
     from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
     from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
     from pm4py.algo.discovery.alpha import algorithm as alpha
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     WOFLAN_PRINT_DIAGNOSTICS = True
     WOFLAN_RETURN_DIAGNOSTICS = True
     INDUCTIVE_MINER_VARIANT = inductive.Variants.IM
-    ALIGN_VARIANT = state_equation_less_memory
+    ALIGN_VARIANT = state_equation_a_star
     logFolder = os.path.join("..", "compressed_input_data")
     pnmlFolder = "pnml_folder"
     pngFolder = "png_folder"
