@@ -94,7 +94,7 @@ def conformance_diagnostics_alignments(log: EventLog, *args, multiprocessing: bo
                 return alignments.apply(log, args[0], args[1], args[2])
         elif type(args[0]) is dict or type(args[0]) is Counter:
             # DFG alignments
-            from pm4py.objects.dfg.utils import dfg_alignment
+            from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
             return dfg_alignment.apply(log, args[0], args[1], args[2])
     elif len(args) == 1:
         if type(args[0]) is ProcessTree:

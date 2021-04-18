@@ -2,7 +2,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTA
     PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import CASE_CONCEPT_NAME
-from pm4py.objects.dfg.retrieval import pandas
+from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics as pandas
 from pm4py.statistics.parameters import Parameters
 from pm4py.util import exec_utils
 

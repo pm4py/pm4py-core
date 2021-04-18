@@ -4,7 +4,7 @@ from copy import deepcopy
 from pm4py.algo.discovery.dfg import algorithm as dfg_alg
 from pm4py.algo.discovery.heuristics.parameters import Parameters
 from pm4py.objects.conversion.heuristics_net import converter as hn_conv_alg
-from pm4py.objects.dfg.filtering.dfg_filtering import clean_dfg_based_on_noise_thresh
+from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.objects.heuristics_net import defaults
 from pm4py.objects.heuristics_net.node import Node
 from pm4py.objects.heuristics_net.obj import HeuristicsNet

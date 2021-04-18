@@ -1,4 +1,4 @@
-from pm4py.objects.dfg.retrieval import log as log_retrieval
+from pm4py.algo.discovery.dfg.variants import native, performance
 from pm4py.statistics.attributes.log import get as attr_get
 from pm4py.util import xes_constants as xes
 from pm4py.visualization.petri_net.common import visualize
@@ -42,9 +42,9 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
 
     # we find the DFG
     if variant == "performance":
-        dfg = log_retrieval.performance(log, parameters=parameters)
+        dfg = performance.performance(log, parameters=parameters)
     else:
-        dfg = log_retrieval.native(log, parameters=parameters)
+        dfg = native.native(log, parameters=parameters)
     # we find shortest paths
     spaths = get_shortest_paths(net)
     # we find the number of activities occurrences in the log

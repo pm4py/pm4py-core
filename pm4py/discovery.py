@@ -33,7 +33,7 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
     """
     if check_is_dataframe(log):
         check_dataframe_columns(log)
-        from pm4py.objects.dfg.retrieval.pandas import get_dfg_graph
+        from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_dfg_graph
         dfg = get_dfg_graph(log)
         from pm4py.statistics.start_activities.pandas import get as start_activities_module
         from pm4py.statistics.end_activities.pandas import get as end_activities_module

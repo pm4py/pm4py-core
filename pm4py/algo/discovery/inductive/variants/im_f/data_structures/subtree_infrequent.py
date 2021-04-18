@@ -4,7 +4,7 @@ from pm4py.algo.discovery.dfg.utils.dfg_utils import get_activities_from_dfg, \
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges
 from pm4py.algo.discovery.dfg.utils.dfg_utils import negate, get_activities_self_loop, transform_dfg_to_directed_nx_graph
 from pm4py.algo.discovery.dfg.variants import native as dfg_inst
-from pm4py.objects.dfg.filtering.dfg_filtering import clean_dfg_based_on_noise_thresh
+from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.algo.discovery.inductive.variants.im.util import base_case
 from pm4py import util as pmutil
 from pm4py.algo.discovery.inductive.variants.im.util import splitting as split
