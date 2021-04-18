@@ -1,5 +1,14 @@
 from pm4py.visualization.transition_system.util import visualize_graphviz
-from pm4py.visualization.transition_system.parameters import Parameters
+from enum import Enum
+
+
+class Parameters(Enum):
+    FORMAT = "format"
+    SHOW_LABELS = "show_labels"
+    SHOW_NAMES = "show_names"
+    FORCE_NAMES = "force_names"
+    FILLCOLORS = "fillcolors"
+    FONT_SIZE = "font_size"
 
 
 def apply(tsys, parameters=None):
