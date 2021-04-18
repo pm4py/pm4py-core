@@ -1,6 +1,10 @@
 from pm4py.util import constants
 from enum import Enum
 
+import warnings
+
+warnings.warn("pm4py.statistics.parameters is deprecated. please use the variant-specific parameters.")
+
 
 class Parameters(Enum):
     ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
