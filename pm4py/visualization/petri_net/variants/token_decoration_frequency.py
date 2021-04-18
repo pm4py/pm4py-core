@@ -3,7 +3,18 @@ from pm4py.statistics.variants.log import get as variants_get
 from pm4py.visualization.petri_net.common import visualize
 from pm4py.visualization.petri_net.util import performance_map
 from pm4py.util import exec_utils, xes_constants
-from pm4py.visualization.petri_net.parameters import Parameters
+from enum import Enum
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
+
+
+class Parameters(Enum):
+    FORMAT = "format"
+    DEBUG = "debug"
+    RANKDIR = "set_rankdir"
+    ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
+    AGGREGATION_MEASURE = "aggregationMeasure"
+    FONT_SIZE = "font_size"
 
 
 def get_decorations(log, net, initial_marking, final_marking, parameters=None, measure="frequency",

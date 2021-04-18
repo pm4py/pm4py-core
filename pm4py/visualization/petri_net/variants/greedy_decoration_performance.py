@@ -4,8 +4,19 @@ from pm4py.util import xes_constants as xes
 from pm4py.visualization.petri_net.common import visualize
 from pm4py.visualization.petri_net.util.vis_trans_shortest_paths import get_decorations_from_dfg_spaths_acticount
 from pm4py.visualization.petri_net.util.vis_trans_shortest_paths import get_shortest_paths
-from pm4py.visualization.petri_net.parameters import Parameters
 from pm4py.util import exec_utils
+from enum import Enum
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
+
+
+class Parameters(Enum):
+    FORMAT = "format"
+    DEBUG = "debug"
+    RANKDIR = "set_rankdir"
+    ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
+    AGGREGATION_MEASURE = "aggregationMeasure"
+    FONT_SIZE = "font_size"
 
 
 def get_decorated_net(net, initial_marking, final_marking, log, parameters=None, variant="frequency"):
