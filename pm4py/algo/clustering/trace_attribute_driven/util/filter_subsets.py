@@ -7,8 +7,19 @@ from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
 from pm4py.statistics.traces.log import case_statistics
 from pm4py.statistics.variants.log import get as variants_statistics
 from pm4py.util import exec_utils
-from pm4py.algo.clustering.trace_attribute_driven.parameters import Parameters
 from pm4py.util import variants_util
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    SINGLE = "single"
+    BINARIZE = "binarize"
+    POSITIVE = "positive"
+    LOWER_PERCENT = "lower_percent"
+
 
 
 def apply_trace_attributes(log, list_of_values, parameters=None):
