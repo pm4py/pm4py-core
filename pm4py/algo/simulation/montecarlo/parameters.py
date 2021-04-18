@@ -1,6 +1,10 @@
 from enum import Enum
-from pm4py.algo.conformance.tokenreplay import algorithm
 from pm4py.util import constants
+
+
+import warnings
+
+warnings.warn("pm4py.algo.simulation.montecarlo.parameters is deprecated. Please use the variant-specific parameters.")
 
 
 class Parameters(Enum):

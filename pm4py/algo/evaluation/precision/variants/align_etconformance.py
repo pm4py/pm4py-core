@@ -6,12 +6,22 @@ from pm4py.objects.petri_net.utils.petri_utils import construct_trace_net
 from pm4py.objects.petri_net.utils.synchronous_product import construct
 from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.objects.petri_net.utils.align_utils import get_visible_transitions_eventually_enabled_by_marking
-from pm4py.algo.evaluation.precision.parameters import Parameters
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
 import pkgutil
 from concurrent.futures import ProcessPoolExecutor
 import multiprocessing
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TOKEN_REPLAY_VARIANT = "token_replay_variant"
+    CLEANING_TOKEN_FLOOD = "cleaning_token_flood"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
+    MULTIPROCESSING = "multiprocessing"
+    CORES = "cores"
 
 
 def apply(log, net, marking, final_marking, parameters=None):
