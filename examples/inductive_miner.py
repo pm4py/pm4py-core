@@ -6,7 +6,7 @@ from pm4py.algo.discovery.inductive import algorithm as ind_miner
 from pm4py.visualization.process_tree import visualizer as pt_vis
 from pm4py.objects.conversion.process_tree import converter
 from pm4py.algo.evaluation.replay_fitness import algorithm
-from pm4py.algo.discovery.inductive.parameters import Parameters
+from pm4py.algo.discovery.inductive.variants.im_f.algorithm import Parameters
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.log.obj import EventLog
 
