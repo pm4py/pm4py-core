@@ -203,7 +203,7 @@ class OtherPartsTests(unittest.TestCase):
 
     def test_dfg_align(self):
         import pm4py
-        from pm4py.objects.dfg.filtering import dfg_filtering
+        from pm4py.algo.filtering.dfg import dfg_filtering
         from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         dfg, sa, ea = pm4py.discover_dfg(log)
