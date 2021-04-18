@@ -1,4 +1,4 @@
-from pm4py.objects.dfg.retrieval import log as log_retrieval
+from pm4py.algo.discovery.dfg.variants import native, performance
 
 
 def apply(log, activity, parameters=None):
@@ -23,8 +23,8 @@ def apply(log, activity, parameters=None):
     if parameters is None:
         parameters = {}
 
-    dfg_frequency = log_retrieval.native(log, parameters=parameters)
-    dfg_performance = log_retrieval.performance(log, parameters=parameters)
+    dfg_frequency = native.native(log, parameters=parameters)
+    dfg_performance = performance.performance(log, parameters=parameters)
 
     pre = []
     sum_perf_pre = 0.0
