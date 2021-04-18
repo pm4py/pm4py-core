@@ -1,8 +1,17 @@
 from pm4py.algo.conformance.tokenreplay import algorithm as executor
 from pm4py.algo.conformance.tokenreplay.variants import token_replay
-from pm4py.algo.evaluation.replay_fitness.parameters import Parameters
 from pm4py.util import exec_utils
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    TOKEN_REPLAY_VARIANT = "token_replay_variant"
+    CLEANING_TOKEN_FLOOD = "cleaning_token_flood"
+    MULTIPROCESSING = "multiprocessing"
 
 
 def evaluate(aligned_traces, parameters=None):
