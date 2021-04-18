@@ -3,9 +3,17 @@ from pm4py.algo.discovery.dfg.variants import native, performance, freq_triples
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import xes_constants as xes_util
 from pm4py.util import exec_utils
-from pm4py.algo.discovery.parameters import Parameters
 from enum import Enum
 import pkgutil
+from pm4py.util import constants
+from enum import Enum
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
 
 class Variants(Enum):

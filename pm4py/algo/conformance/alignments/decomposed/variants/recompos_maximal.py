@@ -4,7 +4,6 @@ import time
 from copy import copy
 
 from pm4py.algo.conformance.alignments.petri_net.variants import state_equation_a_star
-from pm4py.algo.conformance.alignments.decomposed.parameters import Parameters
 from pm4py.objects.log import obj as log_implementation
 from pm4py.objects.log.obj import Trace
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
@@ -12,6 +11,25 @@ from pm4py.objects.petri_net.utils import align_utils as utils, decomposition as
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.util import exec_utils
 from pm4py.util import variants_util
+
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    BEST_WORST_COST = 'best_worst_cost'
+    PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
+    ICACHE = "icache"
+    MCACHE = "mcache"
+    PARAM_THRESHOLD_BORDER_AGREEMENT = "thresh_border_agreement"
+    PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+    PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
+    PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
+    PARAM_TRACE_NET_COSTS = "trace_net_costs"
+    PARAM_MAX_ALIGN_TIME = "max_align_time"
+    PARAM_MAX_ALIGN_TIME_TRACE = "max_align_time_trace"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
 
 
 def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
