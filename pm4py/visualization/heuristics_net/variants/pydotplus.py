@@ -5,7 +5,11 @@ import pydotplus
 
 from pm4py.util import exec_utils
 from pm4py.visualization.common.utils import human_readable_stat
-from pm4py.visualization.parameters import Parameters
+from enum import Enum
+
+
+class Parameters(Enum):
+    FORMAT = "format"
 
 
 def get_corr_hex(num):
