@@ -275,11 +275,13 @@ def order_nodes_second_round(to_visit, G0):
             j = i + 1
             must_break = False
             while j < len(to_visit):
-                edg = [e for e in G0.edges if e[0] == to_visit[j] and e[1] == to_visit[i]]
-                if edg:
-                    to_visit[i], to_visit[j] = to_visit[j], to_visit[i]
-                    must_break = True
-                    break
+                if to_visit[j] != to_visit[i]:
+                    edg = [e for e in G0.edges if e[0] == to_visit[j] and e[1] == to_visit[i]]
+                    edg2 = [e for e in G0.edges if e[1] == to_visit[i] and e[0] == to_visit[j]]
+                    if edg and not edg2:
+                        to_visit[i], to_visit[j] = to_visit[j], to_visit[i]
+                        must_break = True
+                        break
                 j = j + 1
             if must_break:
                 cont_loop = True
