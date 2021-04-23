@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-VERSION = '2.2.6'
+VERSION = '2.2.6.1'
 
 __name__ = 'pm4py'
 __version__ = VERSION
