@@ -4,7 +4,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CON
     PARAMETER_CONSTANT_RESOURCE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
 from enum import Enum
 from pm4py.util import exec_utils, pandas_utils, constants
-
+import deprecation
 
 class Parameters(Enum):
     CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
@@ -21,6 +21,7 @@ ENABLE_TIMESTAMP = Parameters.ENABLE_TIMESTAMP
 TIMESTAMP_DIFF_BOUNDARIES = Parameters.TIMESTAMP_DIFF_BOUNDARIES
 
 
+@deprecation.deprecated('2.2.6', '3.0.0', 'please use pm4py.algo.filtering.pandas.ltl.ltl_checker.eventually_follows')
 def A_eventually_B(df0, A, B, parameters=None):
     """
     Applies the A eventually B rule
@@ -85,6 +86,7 @@ def A_eventually_B(df0, A, B, parameters=None):
         return df0[~i1.isin(i2)]
 
 
+@deprecation.deprecated('2.2.6', '3.0.0', 'please use pm4py.algo.filtering.pandas.ltl.ltl_checker.eventually_follows')
 def A_eventually_B_eventually_C(df0, A, B, C, parameters=None):
     """
     Applies the A eventually B eventually C rule
@@ -161,6 +163,7 @@ def A_eventually_B_eventually_C(df0, A, B, C, parameters=None):
         return df0[~i1.isin(i2)]
 
 
+@deprecation.deprecated('2.2.6', '3.0.0', 'please use pm4py.algo.filtering.pandas.ltl.ltl_checker.eventually_follows')
 def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     """
     Applies the A eventually B eventually C rule
@@ -247,6 +250,73 @@ def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     i1 = df.set_index(case_id_glue).index
     i2 = df_join.set_index(case_id_glue).index
 
+    if positive:
+        return df0[i1.isin(i2)]
+    else:
+        return df0[~i1.isin(i2)]
+
+
+def eventually_follows(df0, attribute_values, parameters=None):
+    """
+    Applies the eventually follows rule
+
+    Parameters
+    ------------
+    df0
+        Dataframe
+    attribute_values
+        A list of attribute_values attribute_values[n] follows attribute_values[n-1] follows ... follows attribute_values[0]
+
+    parameters
+        Parameters of the algorithm, including the attribute key and the positive parameter:
+        - If True, returns all the cases containing all attribute_values and in which attribute_values[i] was eventually followed by attribute_values[i + 1]
+        - If False, returns all the cases not containing all attribute_values, or in which an instance of attribute_values[i] was not eventually
+        followed by an instance of attribute_values[i + 1]
+
+    Returns
+    ------------
+    filtered_df
+        Filtered dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+    enable_timestamp = exec_utils.get_param_value(Parameters.ENABLE_TIMESTAMP, parameters, False)
+    timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
+
+    colset = [case_id_glue, attribute_key]
+    if enable_timestamp:
+        colset.append(timestamp_key)
+
+    df = df0.copy()
+    df = df[colset]
+    df = pandas_utils.insert_index(df)
+
+    df_a = [df[df[attribute_key] == attribute_value].copy() for attribute_value in attribute_values]
+
+    df_join = df_a[0].merge(df_a[1], on=case_id_glue, suffixes=('', "_1")).dropna()
+    df_join["@@diffindex0"] = df_join[constants.DEFAULT_INDEX_KEY+"_1"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join = df_join[df_join["@@diffindex0"] > 0]
+
+    for i in range(2, len(df_a)):
+        df_join = df_join.merge(df_a[i], on=case_id_glue, suffixes=('', f"_{i}")).dropna()
+        df_join[f"@@diffindex{i-1}"] = df_join[constants.DEFAULT_INDEX_KEY+f"_{i}"] - df_join[constants.DEFAULT_INDEX_KEY+f"_{i-1}"]
+        df_join = df_join[df_join[f"@@diffindex{i-1}"] > 0]
+
+    if enable_timestamp:
+        for i in range(len(df_a)):
+            df_join[f"@@difftimestamp{i}"] = (df_join[timestamp_key + f"_{i + 1}"] - df_join[timestamp_key + f'_{i}']).astype('timedelta64[s]')
+
+            if timestamp_diff_boundaries:
+                df_join = df_join[df_join[f"@@difftimestamp{i}"] >= timestamp_diff_boundaries[i][0]]
+                df_join = df_join[df_join[f"@@difftimestamp{i}"] <= timestamp_diff_boundaries[i][1]]
+
+    i1 = df.set_index(case_id_glue).index
+    i2 = df_join.set_index(case_id_glue).index
     if positive:
         return df0[i1.isin(i2)]
     else:
