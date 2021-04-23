@@ -12,7 +12,7 @@ A very simple example, to whet your appetite:
 ```python
 import pm4py
 
-log = pm4py.read_xes('../tests/input_data/running-example.xes')
+log = pm4py.read_xes('<path_to_xes_file>')
 process_model = pm4py.discover_bpmn_inductive(log)
 pm4py.view_bpmn(process_model)
 ```
