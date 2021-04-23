@@ -2,10 +2,10 @@ from copy import copy
 from enum import Enum
 from typing import Set, List
 
-from pm4py.algo.conformance.alignments.algorithm import Parameters as AlignParameters
-from pm4py.algo.conformance.alignments.algorithm import Variants
-from pm4py.algo.conformance.alignments.algorithm import apply as get_alignment
-from pm4py.algo.conformance.alignments.variants.state_equation_a_star import get_best_worst_cost
+from pm4py.algo.conformance.alignments.petri_net.algorithm import Parameters as AlignParameters
+from pm4py.algo.conformance.alignments.petri_net.algorithm import Variants
+from pm4py.algo.conformance.alignments.petri_net.algorithm import apply as get_alignment
+from pm4py.algo.conformance.alignments.petri_net.variants.state_equation_a_star import get_best_worst_cost
 from pm4py.objects.conversion.process_tree import converter as pt_converter
 from pm4py.objects.log.obj import Trace, Event
 from pm4py.objects.petri_net.utils.align_utils import SKIP, STD_MODEL_LOG_MOVE_COST

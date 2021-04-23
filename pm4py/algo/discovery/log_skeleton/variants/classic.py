@@ -1,11 +1,41 @@
-from pm4py.objects.log.util import xes
 from collections import Counter
+from enum import Enum
+
 from pm4py.algo.discovery.log_skeleton import trace_skel
-from pm4py.algo.discovery.log_skeleton.parameters import Parameters
-from pm4py.algo.discovery.log_skeleton.outputs import Outputs
-from pm4py.util import exec_utils, constants
-from pm4py.objects.log.obj import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.log.util import xes
+from pm4py.util import exec_utils
 from pm4py.util import variants_util
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
+
+
+class Parameters(Enum):
+    # parameter for the noise threshold
+    NOISE_THRESHOLD = "noise_threshold"
+    # considered constraints in conformance checking among: equivalence, always_after, always_before, never_together, directly_follows, activ_freq
+    CONSIDERED_CONSTRAINTS = "considered_constraints"
+    # default choice for conformance checking
+    DEFAULT_CONSIDERED_CONSTRAINTS = ["equivalence", "always_after", "always_before", "never_together",
+                                      "directly_follows", "activ_freq"]
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
+    ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+
+
+NOISE_THRESHOLD = Parameters.NOISE_THRESHOLD
+CONSIDERED_CONSTRAINTS = Parameters.CONSIDERED_CONSTRAINTS
+DEFAULT_CONSIDERED_CONSTRAINTS = Parameters.DEFAULT_CONSIDERED_CONSTRAINTS
+ACTIVITY_KEY = Parameters.ACTIVITY_KEY
+PARAMETER_VARIANT_DELIMITER = Parameters.PARAMETER_VARIANT_DELIMITER
+
+
+class Outputs(Enum):
+    EQUIVALENCE = "equivalence"
+    ALWAYS_AFTER = "always_after"
+    ALWAYS_BEFORE = "always_before"
+    NEVER_TOGETHER = "never_together"
+    DIRECTLY_FOLLOWS = "directly_follows"
+    ACTIV_FREQ = "activ_freq"
 
 
 def equivalence(logs_traces, all_activs, noise_threshold=0):

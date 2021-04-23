@@ -65,7 +65,7 @@ def conformance_diagnostics_token_based_replay(log: EventLog, petri_net: PetriNe
     return token_replay.apply(log, petri_net, initial_marking, final_marking)
 
 
-def conformance_diagnostics_alignments(log: EventLog, *args) -> List[Dict[str, Any]]:
+def conformance_diagnostics_alignments(log: EventLog, *args, multiprocessing: bool = False) -> List[Dict[str, Any]]:
     """
     Apply the alignments algorithm between a log and a process model.
     The methods return the full alignment diagnostics.
@@ -76,6 +76,8 @@ def conformance_diagnostics_alignments(log: EventLog, *args) -> List[Dict[str, A
         Event log
     args
         Specification of the process model
+    multiprocessing
+        Boolean value that enables the multiprocessing (default: False)
 
     Returns
     -------------
@@ -85,22 +87,31 @@ def conformance_diagnostics_alignments(log: EventLog, *args) -> List[Dict[str, A
     if len(args) == 3:
         if type(args[0]) is PetriNet:
             # Petri net alignments
-            from pm4py.algo.conformance.alignments import algorithm as alignments
-            return alignments.apply(log, args[0], args[1], args[2])
+            from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
+            if multiprocessing:
+                return alignments.apply_multiprocessing(log, args[0], args[1], args[2])
+            else:
+                return alignments.apply(log, args[0], args[1], args[2])
         elif type(args[0]) is dict or type(args[0]) is Counter:
             # DFG alignments
-            from pm4py.objects.dfg.utils import dfg_alignment
+            from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
             return dfg_alignment.apply(log, args[0], args[1], args[2])
     elif len(args) == 1:
         if type(args[0]) is ProcessTree:
             # process tree alignments
-            from pm4py.algo.conformance.alignments.process_tree import algorithm as tree_alignments
-            return tree_alignments.apply(log, args[0])
+            from pm4py.algo.conformance.alignments.process_tree.variants import search_graph_pt
+            if multiprocessing:
+                return search_graph_pt.apply_multiprocessing(log, args[0])
+            else:
+                return search_graph_pt.apply(log, args[0])
     # try to convert to Petri net
     import pm4py
-    from pm4py.algo.conformance.alignments import algorithm as alignments
+    from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
     net, im, fm = pm4py.convert_to_petri_net(*args)
-    return alignments.apply(log, net, im, fm)
+    if multiprocessing:
+        return alignments.apply_multiprocessing(log, net, im, fm)
+    else:
+        return alignments.apply(log, net, im, fm)
 
 
 @deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
@@ -128,7 +139,7 @@ def conformance_alignments(log: EventLog, petri_net: PetriNet, initial_marking: 
     aligned_traces
         A list of alignments for each trace of the log
     """
-    from pm4py.algo.conformance.alignments import algorithm as alignments
+    from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
     return alignments.apply(log, petri_net, initial_marking, final_marking)
 
 
@@ -191,7 +202,7 @@ def evaluate_fitness_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Ma
                                 variant=replay_fitness.Variants.TOKEN_BASED)
 
 
-def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking) -> \
+def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, multiprocessing: bool = False) -> \
         Dict[str, float]:
     """
     Calculates the fitness using alignments
@@ -206,6 +217,8 @@ def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Mark
         Initial marking
     final_marking
         Final marking
+    multiprocessing
+        Boolean value that enables the multiprocessing (default: False)
 
     Returns
     ---------------
@@ -214,7 +227,7 @@ def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Mark
     """
     from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
-                                variant=replay_fitness.Variants.ALIGNMENT_BASED)
+                                variant=replay_fitness.Variants.ALIGNMENT_BASED, parameters={"multiprocessing": multiprocessing})
 
 
 @deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
@@ -302,7 +315,7 @@ def evaluate_precision_tbr(log: EventLog, petri_net: PetriNet, initial_marking: 
 
 
 def precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
-                         final_marking: Marking) -> float:
+                         final_marking: Marking, multiprocessing: bool = False) -> float:
     """
     Calculates the precision of the model w.r.t. the event log using alignments
 
@@ -316,6 +329,8 @@ def precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Ma
         Initial marking
     final_marking
         Final marking
+    multiprocessing
+        Boolean value that enables the multiprocessing (default: False)
 
     Returns
     --------------
@@ -324,7 +339,8 @@ def precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Ma
     """
     from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
-                                     variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE)
+                                     variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE,
+                                     parameters={"multiprocessing": multiprocessing})
 
 
 @deprecated(deprecated_in='2.2.2', removed_in='2.4.0',

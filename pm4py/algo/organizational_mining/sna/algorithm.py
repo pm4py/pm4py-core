@@ -3,10 +3,18 @@ from pm4py.algo.organizational_mining.sna.variants.log import working_together a
 from pm4py.algo.organizational_mining.sna.variants.pandas import jointactivities as pd_jointactivities, \
     handover as pd_handover, subcontracting as pd_subcontracting, working_together as pd_workingtogether
 from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.algo.organizational_mining.sna.parameters import Parameters
 from pm4py.util import exec_utils
 from enum import Enum
 import numpy as np
+
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    RESOURCE_KEY = constants.PARAMETER_CONSTANT_RESOURCE_KEY
+    METRIC_NORMALIZATION = "metric_normalization"
 
 
 class Variants(Enum):

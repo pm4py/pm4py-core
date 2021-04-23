@@ -1,6 +1,9 @@
 from enum import Enum
 from pm4py.util import constants
 
+import warnings
+warnings.warn("pm4py.algo.discovery.transition_system.parameters is deprecated. Please use the variant-specific parameters.")
+
 
 class Parameters(Enum):
     VIEW_MULTI_SET = 'multiset'

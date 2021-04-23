@@ -1,5 +1,9 @@
-from pm4py.util.lp.parameters import Parameters
 import pkgutil
+from enum import Enum
+
+
+class Parameters(Enum):
+    REQUIRE_ILP = "require_ilp"
 
 
 # not available in the latest version of PM4Py
