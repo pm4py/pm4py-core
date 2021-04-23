@@ -111,6 +111,7 @@ class HeuristicsNet:
         """
         if parameters is None:
             parameters = {}
+        self.min_dfg_occurrences = min_dfg_occurrences
         self.dependency_matrix = None
         self.dependency_matrix = {}
         self.dfg_matrix = None

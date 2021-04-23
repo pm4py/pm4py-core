@@ -345,6 +345,7 @@ def calculate(heu_net, dependency_thresh=defaults.DEFAULT_DEPENDENCY_THRESH,
     """
     if parameters is None:
         parameters = {}
+    heu_net.min_dfg_occurrences = min_dfg_occurrences
     heu_net.dependency_matrix = None
     heu_net.dependency_matrix = {}
     heu_net.dfg_matrix = None
