@@ -631,7 +631,7 @@ class DocTests(unittest.TestCase):
 
         net, initial_marking, final_marking = inductive_miner.apply(log)
 
-        from pm4py.algo.conformance.alignments import algorithm as alignments
+        from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
         alignments = alignments.apply_log(log, net, initial_marking, final_marking)
 
     def test_57(self):
@@ -644,7 +644,7 @@ class DocTests(unittest.TestCase):
             for event in trace:
                 event["customClassifier"] = event["concept:name"] + event["concept:name"]
 
-        from pm4py.algo.conformance.alignments import algorithm as alignments
+        from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 
         # define the activity key in the parameters
         parameters = {inductive_miner.Variants.IMd.value.Parameters.ACTIVITY_KEY: "customClassifier",
@@ -666,7 +666,7 @@ class DocTests(unittest.TestCase):
 
         net, initial_marking, final_marking = inductive_miner.apply(log)
 
-        from pm4py.algo.conformance.alignments import algorithm as alignments
+        from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 
         model_cost_function = dict()
         sync_cost_function = dict()

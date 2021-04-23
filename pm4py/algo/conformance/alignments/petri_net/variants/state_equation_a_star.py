@@ -62,6 +62,7 @@ class Parameters(Enum):
     PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
     ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
     VARIANTS_IDX = "variants_idx"
+    RETURN_SYNC_COST_FUNCTION = "return_sync_cost_function"
 
 
 PARAM_TRACE_COST_FUNCTION = Parameters.PARAM_TRACE_COST_FUNCTION.value
@@ -161,6 +162,7 @@ def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
                                                                                      activity_key=activity_key)
 
     alignment = apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_im, trace_fm, parameters)
+
     return alignment
 
 
@@ -370,9 +372,16 @@ def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_
     max_align_time_trace = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME_TRACE, parameters,
                                                       sys.maxsize)
 
-    return apply_sync_prod(sync_prod, sync_initial_marking, sync_final_marking, cost_function,
+    alignment = apply_sync_prod(sync_prod, sync_initial_marking, sync_final_marking, cost_function,
                            utils.SKIP, ret_tuple_as_trans_desc=ret_tuple_as_trans_desc,
                            max_align_time_trace=max_align_time_trace)
+
+    return_sync_cost = exec_utils.get_param_value(Parameters.RETURN_SYNC_COST_FUNCTION, parameters, False)
+    if return_sync_cost:
+        # needed for the decomposed alignments (switching them from state_equation_less_memory)
+        return alignment, cost_function
+
+    return alignment
 
 
 def apply_sync_prod(sync_prod, initial_marking, final_marking, cost_function, skip, ret_tuple_as_trans_desc=False,

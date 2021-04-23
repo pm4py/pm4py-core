@@ -14,13 +14,22 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.util import constants
 from pm4py.objects.log.util import sorting
 from pm4py.objects.log.util import basic_filter
 from pm4py.util import points_subset
 from pm4py.util import xes_constants as xes
-from pm4py.statistics.performance_spectrum.parameters import Parameters
 from pm4py.util import exec_utils
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    PARAMETER_SAMPLE_SIZE = "sample_size"
+
 
 
 def apply(log, list_activities, sample_size, parameters):

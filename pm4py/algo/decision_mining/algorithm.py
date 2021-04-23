@@ -14,8 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.conformance.alignments import algorithm as ali
-from pm4py.algo.conformance.alignments.variants import state_equation_a_star as star
+from pm4py.algo.conformance.alignments.petri_net import algorithm as ali
+from pm4py.algo.conformance.alignments.petri_net.variants import state_equation_a_star as star
 import sys
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay

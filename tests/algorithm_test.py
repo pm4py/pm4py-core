@@ -31,7 +31,7 @@ class AlgorithmTest(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.alpha import algorithm as alpha_miner
         net, im, fm = alpha_miner.apply(log)
-        from pm4py.algo.conformance.alignments import algorithm as alignments
+        from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_STATE_EQUATION_A_STAR)
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_DIJKSTRA_NO_HEURISTICS)
         from pm4py.algo.evaluation.replay_fitness import algorithm as rp_fitness_evaluator

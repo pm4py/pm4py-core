@@ -19,11 +19,24 @@ from pm4py.util import xes_constants
 from pm4py.util import constants
 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
 from pm4py.algo.discovery.causal import algorithm as causal_discovery
-from pm4py.algo.discovery.footprints.outputs import Outputs
 from pm4py.statistics.start_activities.log import get as get_start_activities
 from pm4py.statistics.end_activities.log import get as get_end_activities
 from pm4py.objects.conversion.log import converter
 from pm4py.util import exec_utils
+from enum import Enum
+
+
+class Outputs(Enum):
+    DFG = "dfg"
+    SEQUENCE = "sequence"
+    PARALLEL = "parallel"
+    START_ACTIVITIES = "start_activities"
+    END_ACTIVITIES = "end_activities"
+    ACTIVITIES = "activities"
+    SKIPPABLE = "skippable"
+    ACTIVITIES_ALWAYS_HAPPENING = "activities_always_happening"
+    MIN_TRACE_LENGTH = "min_trace_length"
+    TRACE = "trace"
 
 
 class Parameters(Enum):

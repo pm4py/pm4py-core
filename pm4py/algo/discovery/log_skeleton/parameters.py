@@ -18,6 +18,10 @@ from enum import Enum
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
 
 
+import warnings
+warnings.warn("pm4py.algo.discovery.log_skeleton.parameters is deprecated. Please use the variant-specific parameters.")
+
+
 class Parameters(Enum):
     # parameter for the noise threshold
     NOISE_THRESHOLD = "noise_threshold"

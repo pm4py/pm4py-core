@@ -81,7 +81,7 @@ class OtherPartsTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.alpha import algorithm as alpha_miner
         net, im, fm = alpha_miner.apply(log)
-        from pm4py.algo.conformance.alignments import algorithm as alignments
+        from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_STATE_EQUATION_A_STAR)
         aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_DIJKSTRA_NO_HEURISTICS)
 
@@ -203,7 +203,7 @@ class OtherPartsTests(unittest.TestCase):
 
     def test_dfg_align(self):
         import pm4py
-        from pm4py.objects.dfg.filtering import dfg_filtering
+        from pm4py.algo.filtering.dfg import dfg_filtering
         from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         dfg, sa, ea = pm4py.discover_dfg(log)

@@ -15,6 +15,10 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
+import warnings
+
+
+warnings.warn("pm4py.util.lp.parameters is deprecated. please use the parameters inside the single variants.")
 
 
 class Parameters(Enum):

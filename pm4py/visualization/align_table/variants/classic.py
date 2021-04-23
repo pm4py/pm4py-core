@@ -19,7 +19,11 @@ import tempfile
 
 from pm4py.statistics.variants.log import get as variants_get
 from pm4py.util import exec_utils
-from pm4py.visualization.parameters import Parameters
+from enum import Enum
+
+
+class Parameters(Enum):
+    FORMAT = "format"
 
 
 def apply(log, aligned_traces, parameters=None):

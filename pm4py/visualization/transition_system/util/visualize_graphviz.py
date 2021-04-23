@@ -19,7 +19,16 @@ from copy import copy
 
 from graphviz import Digraph
 from pm4py.util import exec_utils
-from pm4py.visualization.transition_system.parameters import Parameters
+from enum import Enum
+
+
+class Parameters(Enum):
+    FORMAT = "format"
+    SHOW_LABELS = "show_labels"
+    SHOW_NAMES = "show_names"
+    FORCE_NAMES = "force_names"
+    FILLCOLORS = "fillcolors"
+    FONT_SIZE = "font_size"
 
 
 def visualize(ts, parameters=None):

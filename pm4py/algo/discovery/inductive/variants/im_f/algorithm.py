@@ -18,7 +18,6 @@ import pkgutil
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.variants import native as dfg_inst
-from pm4py.algo.discovery.inductive.parameters import Parameters
 from pm4py.algo.discovery.inductive.util import shared_constants
 from pm4py.algo.discovery.inductive.util import tree_consistency
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
@@ -36,6 +35,23 @@ from pm4py.statistics.start_activities.log import get as start_activities_get
 from pm4py.util import exec_utils
 from pm4py.util import variants_util
 from pm4py.util import xes_constants
+
+
+from pm4py.util import constants
+from enum import Enum
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    NOISE_THRESHOLD = "noiseThreshold"
+    EMPTY_TRACE_KEY = "empty_trace"
+    ONCE_PER_TRACE_KEY = "once_per_trace"
+    CONCURRENT_KEY = "concurrent"
+    STRICT_TAU_LOOP_KEY = "strict_tau_loop"
+    TAU_LOOP_KEY = "tau_loop"
 
 
 def apply(log, parameters):

@@ -17,7 +17,7 @@
 from copy import deepcopy
 
 from pm4py.objects.dfg.utils import dfg_utils
-from pm4py.objects.dfg.filtering.dfg_filtering import clean_dfg_based_on_noise_thresh
+from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.objects.heuristics_net import defaults
 from pm4py.objects.heuristics_net.node import Node
 import deprecation
@@ -127,6 +127,7 @@ class HeuristicsNet:
         """
         if parameters is None:
             parameters = {}
+        self.min_dfg_occurrences = min_dfg_occurrences
         self.dependency_matrix = None
         self.dependency_matrix = {}
         self.dfg_matrix = None

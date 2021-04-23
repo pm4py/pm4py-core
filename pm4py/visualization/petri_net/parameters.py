@@ -14,8 +14,13 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import warnings
 from enum import Enum
+
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
+
+warnings.warn(
+    "pm4py.visualization.petri_net.parameters is deprecated. please use the parameters inside the visualization variant.")
 
 
 class Parameters(Enum):

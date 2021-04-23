@@ -19,8 +19,19 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import xes_constants as xes
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
-from pm4py.statistics.parameters import Parameters
 from pm4py.util import exec_utils
+from pm4py.util import constants
+from enum import Enum
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    MAX_NO_POINTS_SAMPLE = "max_no_of_points_to_sample"
+    KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
 def get_all_trace_attributes_from_log(log):

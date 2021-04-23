@@ -19,8 +19,15 @@ import numpy
 from pm4py.statistics.variants.log import get as variants_filter
 from pm4py.util import xes_constants as xes
 from pm4py.util import exec_utils
-from pm4py.algo.organizational_mining.sna.parameters import Parameters
 from pm4py.util import variants_util
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    RESOURCE_KEY = constants.PARAMETER_CONSTANT_RESOURCE_KEY
+    METRIC_NORMALIZATION = "metric_normalization"
 
 
 def apply(log, parameters=None):

@@ -19,7 +19,12 @@ from copy import copy
 
 from pm4py.visualization.graphs.util import common
 from pm4py.util import exec_utils
-from pm4py.visualization.graphs.parameters import Parameters
+from enum import Enum
+
+
+class Parameters(Enum):
+    TITLE = "title"
+    FORMAT = "format"
 
 
 ATTRIBUTE_LABEL = "Attribute value"
