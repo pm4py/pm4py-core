@@ -119,25 +119,25 @@ class LogFilteringTest(unittest.TestCase):
 
     def test_AeventuallyB_pos(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
-        filt_A_ev_B_pos = ltl_checker.A_eventually_B(log, "check ticket", "pay compensation",
+        filt_A_ev_B_pos = ltl_checker.eventually_follows(log, ["check ticket", "pay compensation"],
                                                      parameters={ltl_checker.Parameters.POSITIVE: True})
 
     def test_AeventuallyB_neg(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
-        filt_A_ev_B_neg = ltl_checker.A_eventually_B(log, "check ticket", "pay compensation",
+        filt_A_ev_B_neg = ltl_checker.eventually_follows(log, ["check ticket", "pay compensation"],
                                                      parameters={ltl_checker.Parameters.POSITIVE: False})
 
     def test_AeventuallyBeventuallyC_pos(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
-        filt_A_ev_B_ev_C_pos = ltl_checker.A_eventually_B_eventually_C(log, "check ticket", "decide",
-                                                                       "pay compensation",
+        filt_A_ev_B_ev_C_pos = ltl_checker.eventually_follows(log, ["check ticket", "decide",
+                                                                       "pay compensation"],
                                                                        parameters={
                                                                            ltl_checker.Parameters.POSITIVE: True})
 
     def test_AeventuallyBeventuallyC_neg(self):
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
-        filt_A_ev_B_ev_C_neg = ltl_checker.A_eventually_B_eventually_C(log, "check ticket", "decide",
-                                                                       "pay compensation",
+        filt_A_ev_B_ev_C_neg = ltl_checker.eventually_follows(log, ["check ticket", "decide",
+                                                                       "pay compensation"],
                                                                        parameters={
                                                                            ltl_checker.Parameters.POSITIVE: False})
 
