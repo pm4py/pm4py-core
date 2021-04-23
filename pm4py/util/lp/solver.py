@@ -15,7 +15,12 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import pkgutil
-import os
+from enum import Enum
+
+
+class Parameters(Enum):
+    REQUIRE_ILP = "require_ilp"
+
 
 # not available in the latest version of PM4Py
 CVXOPT = "cvxopt"
@@ -26,7 +31,7 @@ CVXOPT_SOLVER_CUSTOM_ALIGN_ILP = "cvxopt_solver_custom_align_ilp"
 ORTOOLS_SOLVER = "ortools_solver"
 
 # max allowed heuristics value (27/10/2019, due to the numerical instability of some of our solvers)
-MAX_ALLOWED_HEURISTICS = 10 ** 15
+MAX_ALLOWED_HEURISTICS = 10**15
 
 VERSIONS_APPLY = {}
 VERSIONS_GET_PRIM_OBJ = {}
@@ -52,38 +57,6 @@ if pkgutil.find_loader("ortools"):
     VERSIONS_GET_POINTS_FROM_SOL[ORTOOLS_SOLVER] = ortools_solver.get_points_from_sol
 
     DEFAULT_LP_SOLVER_VARIANT = ORTOOLS_SOLVER
-
-if pkgutil.find_loader("cvxopt"):
-    from pm4py.util.lp.variants import cvxopt_solver, cvxopt_solver_custom_align, cvxopt_solver_custom_align_ilp, \
-        cvxopt_solver_custom_align_arm
-
-    custom_solver = cvxopt_solver_custom_align
-    try:
-        # for ARM-based Linux, we need to use a different call to GLPK
-        if "arm" in str(os.uname()[-1]):
-            custom_solver = cvxopt_solver
-    except:
-        pass
-
-    CVXOPT = "cvxopt"
-    CVXOPT_SOLVER_CUSTOM_ALIGN = "cvxopt_solver_custom_align"
-    CVXOPT_SOLVER_CUSTOM_ALIGN_ILP = "cvxopt_solver_custom_align_ilp"
-
-    VERSIONS_APPLY[CVXOPT] = cvxopt_solver.apply
-    VERSIONS_GET_PRIM_OBJ[CVXOPT] = cvxopt_solver.get_prim_obj_from_sol
-    VERSIONS_GET_POINTS_FROM_SOL[CVXOPT] = cvxopt_solver.get_points_from_sol
-
-    VERSIONS_APPLY[CVXOPT_SOLVER_CUSTOM_ALIGN] = custom_solver.apply
-    VERSIONS_GET_PRIM_OBJ[CVXOPT_SOLVER_CUSTOM_ALIGN] = custom_solver.get_prim_obj_from_sol
-    VERSIONS_GET_POINTS_FROM_SOL[CVXOPT_SOLVER_CUSTOM_ALIGN] = custom_solver.get_points_from_sol
-
-    VERSIONS_APPLY[CVXOPT_SOLVER_CUSTOM_ALIGN_ILP] = cvxopt_solver_custom_align_ilp.apply
-    VERSIONS_GET_PRIM_OBJ[
-        CVXOPT_SOLVER_CUSTOM_ALIGN_ILP] = cvxopt_solver_custom_align_ilp.get_prim_obj_from_sol
-    VERSIONS_GET_POINTS_FROM_SOL[
-        CVXOPT_SOLVER_CUSTOM_ALIGN_ILP] = cvxopt_solver_custom_align_ilp.get_points_from_sol
-
-    DEFAULT_LP_SOLVER_VARIANT = CVXOPT_SOLVER_CUSTOM_ALIGN
 
 
 def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT):

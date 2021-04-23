@@ -16,6 +16,9 @@
 '''
 from enum import Enum
 
+import warnings
+warnings.warn("pm4py.algo.discovery.log_skeleton.outputs is deprecated.")
+
 
 class Outputs(Enum):
     EQUIVALENCE = "equivalence"

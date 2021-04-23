@@ -30,7 +30,7 @@ from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert
     convert_to_petri_net, convert_to_process_tree
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_heuristics, \
     discover_petri_net_inductive, discover_tree_inductive, discover_process_tree_inductive, discover_heuristics_net, \
-    discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph
+    discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph, discover_bpmn_inductive
 from pm4py.filtering import filter_start_activities, filter_end_activities, filter_attribute_values, filter_variants, \
     filter_variants_percentage, filter_directly_follows_relation, filter_time_range, filter_trace_attribute, \
     filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values

@@ -22,6 +22,7 @@ from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_RESOURCE_KEY, \
     PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
+import deprecation
 
 
 class Parameters(Enum):
@@ -52,6 +53,7 @@ def timestamp_list_is_le(a, b):
     return True
 
 
+@deprecation.deprecated('2.2.6', '3.0.0', 'please use pm4py.algo.filtering.log.ltl.ltl_checker.eventually_follows')
 def A_eventually_B(log, A, B, parameters=None):
     """
     Applies the A eventually B rule
@@ -118,6 +120,7 @@ def A_eventually_B(log, A, B, parameters=None):
     return new_log
 
 
+@deprecation.deprecated('2.2.6', '3.0.0', 'please use pm4py.algo.filtering.log.ltl.ltl_checker.eventually_follows')
 def A_eventually_B_eventually_C(log, A, B, C, parameters=None):
     """
     Applies the A eventually B eventually C rule
@@ -190,6 +193,7 @@ def A_eventually_B_eventually_C(log, A, B, C, parameters=None):
     return new_log
 
 
+@deprecation.deprecated('2.2.6', '3.0.0', 'please use pm4py.algo.filtering.log.ltl.ltl_checker.eventually_follows')
 def A_eventually_B_eventually_C_eventually_D(log, A, B, C, D, parameters=None):
     """
     Applies the A eventually B eventually C rule
@@ -264,6 +268,95 @@ def A_eventually_B_eventually_C_eventually_D(log, A, B, C, D, parameters=None):
                                                                                                  timestamp_diff_boundaries)]
 
         if diffs:
+            if positive:
+                new_log.append(trace)
+        elif not positive:
+            new_log.append(trace)
+
+    return new_log
+
+
+def eventually_follows(log, attribute_values, parameters=None):
+    """
+    Applies the eventually follows rule
+
+    Parameters
+    ------------
+    log
+        Log
+    attribute_values
+        A list of attribute_values attribute_values[n] follows attribute_values[n-1] follows ... follows attribute_values[0]
+
+    parameters
+        Parameters of the algorithm, including the attribute key and the positive parameter:
+        - If True, returns all the cases containing all attribute_values and in which attribute_values[i] was eventually followed by attribute_values[i + 1]
+        - If False, returns all the cases not containing all attribute_values, or in which an instance of attribute_values[i] was not eventually
+        followed by an instance of attribute_values[i + 1]
+
+    Returns
+    ------------
+    filtered_log
+        Filtered log
+    """
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+    enable_timestamp = exec_utils.get_param_value(Parameters.ENABLE_TIMESTAMP, parameters, False)
+    timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
+
+    new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                       omni_present=log.omni_present)
+
+    for trace in log:
+        if enable_timestamp:
+            occurrences = [[trace[i][timestamp_key].timestamp() for i in range(len(trace)) 
+                            if attribute_key in trace[i] and trace[i][attribute_key] == attribute_value] for attribute_value in attribute_values]
+        else:
+            occurrences = [[i for i in range(len(trace)) 
+                            if attribute_key in trace[i] and trace[i][attribute_key] == attribute_value] for attribute_value in attribute_values]
+
+
+        is_good = True
+        if enable_timestamp and timestamp_diff_boundaries:
+            prev_min = min(occurrences[0], default=-1)
+            for i in range(1, len(attribute_values)):
+                if prev_min == -1:
+                    is_good = False
+                    break
+
+                if len(occurrences[i]) == 0:
+                    is_good = False
+                    break
+
+                if timestamp_diff_boundaries:
+                    min_diff = timestamp_diff_boundaries[i - 1][0]
+                    max_diff = timestamp_diff_boundaries[i - 1][1]
+
+                    min_timestamp = min([o for o in occurrences[i] if (o - prev_min) >= min_diff and (o - prev_min) <= max_diff], default=-1)
+                else:
+                    min_timestamp = min([o for o in occurrences[i] if o >= prev_min], default = -1)
+
+                prev_min = min_timestamp
+                
+        else:        
+            prev_min = min(occurrences[0], default=-1)
+            for i in range(1, len(attribute_values)):
+                if prev_min == -1:
+                    is_good = False
+                    break
+
+                if len(occurrences[i]) == 0:
+                    is_good = False
+                    break
+
+                min_index = min([o for o in occurrences[i] if o >= prev_min], default = -1)
+                prev_min = min_index
+
+        if is_good:
             if positive:
                 new_log.append(trace)
         elif not positive:

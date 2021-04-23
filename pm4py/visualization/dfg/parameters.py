@@ -16,6 +16,11 @@
 '''
 from enum import Enum
 from pm4py.util import constants
+import warnings
+
+
+warnings.warn(
+    "pm4py.visualization.dfg.parameters is deprecated. please use the parameters inside the visualization variant.")
 
 
 class Parameters(Enum):

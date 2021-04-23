@@ -14,7 +14,12 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import warnings
 from enum import Enum
+
+warnings.warn(
+    "pm4py.visualization.transition_system.parameters is deprecated. please use the parameters inside the visualization variant.")
+
 
 class Parameters(Enum):
     FORMAT = "format"

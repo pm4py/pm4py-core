@@ -16,6 +16,9 @@
 '''
 from enum import Enum
 
+import warnings
+warnings.warn("pm4py.algo.conformance.log_skeleton.outputs is deprecated.")
+
 
 class Outputs(Enum):
     DEVIATIONS = "deviations"

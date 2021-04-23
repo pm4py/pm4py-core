@@ -21,6 +21,7 @@ import deprecation
 import pandas as pd
 from pandas import DataFrame
 
+from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.log.obj import EventStream
@@ -49,7 +50,7 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
     """
     if check_is_dataframe(log):
         check_dataframe_columns(log)
-        from pm4py.objects.dfg.retrieval.pandas import get_dfg_graph
+        from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_dfg_graph
         dfg = get_dfg_graph(log)
         from pm4py.statistics.start_activities.pandas import get as start_activities_module
         from pm4py.statistics.end_activities.pandas import get as end_activities_module
@@ -178,7 +179,7 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
 
 def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> ProcessTree:
     """
-    Discovers a process tree using the IMDFc algorithm
+    Discovers a process tree using the IM algorithm
 
     Parameters
     --------------
@@ -313,3 +314,31 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Dic
     else:
         from pm4py.statistics.eventually_follows.log import get
         return get.apply(log)
+
+
+def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> BPMN:
+    """
+        Discovers a BPMN using the Inductive Miner algorithm
+
+        Parameters
+        --------------
+        log
+            Event log
+        noise_threshold
+            Noise threshold (default: 0.0)
+
+        Returns
+        --------------
+        bpmn_diagram
+            BPMN diagram
+        """
+    from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+    pt = None
+    if noise_threshold > 0.0:
+        pt = inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IMf, parameters={
+            inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+    else:
+        pt = inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters={
+            inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+    from pm4py.objects.conversion.process_tree.variants import to_bpmn
+    return to_bpmn.apply(pt)

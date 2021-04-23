@@ -19,8 +19,13 @@ from math import sqrt
 
 from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
-from pm4py.algo.evaluation.generalization.parameters import Parameters
 from pm4py.util import exec_utils
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
 def get_generalization(petri_net, aligned_traces):

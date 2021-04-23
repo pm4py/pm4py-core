@@ -16,6 +16,9 @@
 '''
 from enum import Enum
 
+import warnings
+
+warnings.warn("pm4py.algo.discovery.footprints.outputs is deprecated.")
 
 class Outputs(Enum):
     DFG = "dfg"

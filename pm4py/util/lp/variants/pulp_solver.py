@@ -22,7 +22,13 @@ import pulp
 from pulp import LpProblem, LpMinimize, LpVariable, LpStatus, value
 
 from pm4py.util import exec_utils
-from pm4py.util.lp.parameters import Parameters
+
+from enum import Enum
+
+
+class Parameters(Enum):
+    REQUIRE_ILP = "require_ilp"
+
 
 MIN_THRESHOLD = 10 ** -12
 # max safe number of constraints (log10)

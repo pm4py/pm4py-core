@@ -19,8 +19,7 @@ import sys
 import time
 from copy import copy
 
-from pm4py.algo.conformance.alignments.variants import state_equation_less_memory
-from pm4py.algo.conformance.alignments.decomposed.parameters import Parameters
+from pm4py.algo.conformance.alignments.petri_net.variants import state_equation_a_star
 from pm4py.objects.log import obj as log_implementation
 from pm4py.objects.log.obj import Trace
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
@@ -28,6 +27,25 @@ from pm4py.objects.petri_net.utils import align_utils as utils, decomposition as
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.util import exec_utils
 from pm4py.util import variants_util
+
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    BEST_WORST_COST = 'best_worst_cost'
+    PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
+    ICACHE = "icache"
+    MCACHE = "mcache"
+    PARAM_THRESHOLD_BORDER_AGREEMENT = "thresh_border_agreement"
+    PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+    PARAM_MODEL_COST_FUNCTION = 'model_cost_function'
+    PARAM_SYNC_COST_FUNCTION = 'sync_cost_function'
+    PARAM_TRACE_NET_COSTS = "trace_net_costs"
+    PARAM_MAX_ALIGN_TIME = "max_align_time"
+    PARAM_MAX_ALIGN_TIME_TRACE = "max_align_time_trace"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
 
 
 def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=None):
@@ -273,11 +291,13 @@ def order_nodes_second_round(to_visit, G0):
             j = i + 1
             must_break = False
             while j < len(to_visit):
-                edg = [e for e in G0.edges if e[0] == to_visit[j] and e[1] == to_visit[i]]
-                if edg:
-                    to_visit[i], to_visit[j] = to_visit[j], to_visit[i]
-                    must_break = True
-                    break
+                if to_visit[j] != to_visit[i]:
+                    edg = [e for e in G0.edges if e[0] == to_visit[j] and e[1] == to_visit[i]]
+                    edg2 = [e for e in G0.edges if e[1] == to_visit[i] and e[0] == to_visit[j]]
+                    if edg and not edg2:
+                        to_visit[i], to_visit[j] = to_visit[j], to_visit[i]
+                        must_break = True
+                        break
                 j = j + 1
             if must_break:
                 cont_loop = True
@@ -489,14 +509,14 @@ def align(trace, petri_net, initial_marking, final_marking, parameters=None):
         parameters = {}
 
     new_parameters = copy(parameters)
-    new_parameters[state_equation_less_memory.Parameters.RETURN_SYNC_COST_FUNCTION] = True
-    new_parameters[state_equation_less_memory.Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] = True
+    new_parameters[state_equation_a_star.Parameters.RETURN_SYNC_COST_FUNCTION] = True
+    new_parameters[state_equation_a_star.Parameters.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE] = True
 
-    aligned_trace, cost_function = state_equation_less_memory.apply(trace, petri_net, initial_marking, final_marking,
-                                                                    parameters=new_parameters)
+    aligned_trace, cost_function = state_equation_a_star.apply(trace, petri_net, initial_marking, final_marking,
+                                                               parameters=new_parameters)
 
     cf = {}
     for x in cost_function:
-        cf[((x.label[0], x.name[1]), (x.label[0], x.label[1]))] = cost_function[x]
+        cf[((x.name[0], x.name[1]), (x.label[0], x.label[1]))] = cost_function[x]
 
     return aligned_trace, cf

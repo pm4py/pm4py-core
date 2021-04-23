@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pm4py.algo.conformance.alignments import algorithm as align_alg
+from pm4py.algo.conformance.alignments.petri_net import algorithm as align_alg
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.objects import petri_net
 from pm4py.objects.log.importer.xes import importer as xes_importer

@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.algo.simulation.montecarlo.variants import petri_semaph_fifo
-from pm4py.algo.simulation.montecarlo.outputs import Outputs
 from pm4py.util import exec_utils
 from enum import Enum
 

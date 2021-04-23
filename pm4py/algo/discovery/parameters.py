@@ -17,6 +17,9 @@
 from pm4py.util import constants
 from enum import Enum
 
+import warnings
+warnings.warn("pm4py.algo.discovery.parameters is deprecated. Please use the variant-specific parameters.")
+
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY

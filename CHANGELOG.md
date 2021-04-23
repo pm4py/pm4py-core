@@ -1,5 +1,30 @@
 # PM4Py Changelog
 
+## PM4PY 2.2.6 (2021.04.23)
+
+### Fixed
+
+### Removed
+
+### Deprecated
+
+### Changed
+
+* 766fafa7
+    * minor refactoring and more generic invocation style for eventually follows-based filtering
+
+### Added
+
+* 353c7d6f
+    * Heuristics miner is now able to filter on edges connecting to/from start/end activity
+* d6412339
+    * Parallel alignment computation can be directly invoked
+      using ```pm4py.conformance_diagnostics_alignments(..., multi_processing=True)```
+* de84e5f4
+    * add ```pm4py.discover_bpmn_inductive(log)```
+  
+### Other
+
 ## PM4PY 2.2.5 (2021.04.16)
 
 ### Fixed

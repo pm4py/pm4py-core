@@ -15,11 +15,23 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.statistics.performance_spectrum.variants import dataframe, log
-from enum import Enum
 from pm4py.util import exec_utils
-from pm4py.statistics.performance_spectrum.parameters import Parameters
-from pm4py.statistics.performance_spectrum.outputs import Outputs
 import pkgutil
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    PARAMETER_SAMPLE_SIZE = "sample_size"
+
+
+class Outputs(Enum):
+    LIST_ACTIVITIES = "list_activities"
+    POINTS = "points"
 
 
 class Variants(Enum):

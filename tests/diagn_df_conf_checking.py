@@ -1,8 +1,7 @@
 import unittest
-import os
 import pm4py
 from pm4py.algo.conformance.tokenreplay import algorithm as token_based_replay
-from pm4py.algo.conformance.alignments import algorithm as alignments
+from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 from pm4py.algo.discovery.log_skeleton import algorithm as log_skeleton_discovery
 from pm4py.algo.conformance.log_skeleton import algorithm as log_skeleton_conformance
 from pm4py.algo.discovery.footprints import algorithm as footprints_discovery

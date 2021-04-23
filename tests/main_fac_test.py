@@ -3,7 +3,7 @@ import unittest
 
 import pandas as pd
 
-from pm4py.algo.conformance.alignments import algorithm as align_alg
+from pm4py.algo.conformance.alignments.petri_net import algorithm as align_alg
 from pm4py.algo.conformance.tokenreplay import algorithm as tr_alg
 from pm4py.algo.discovery.alpha import algorithm as alpha_miner
 from pm4py.algo.discovery.dfg import algorithm as dfg_mining

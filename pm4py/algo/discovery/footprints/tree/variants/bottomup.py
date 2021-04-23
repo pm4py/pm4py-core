@@ -15,9 +15,24 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.objects.process_tree.obj import Operator
-from pm4py.algo.discovery.footprints.outputs import Outputs
 from pm4py.objects.process_tree.utils import bottomup as bottomup_disc
 from copy import copy
+
+from enum import Enum
+
+
+class Outputs(Enum):
+    DFG = "dfg"
+    SEQUENCE = "sequence"
+    PARALLEL = "parallel"
+    START_ACTIVITIES = "start_activities"
+    END_ACTIVITIES = "end_activities"
+    ACTIVITIES = "activities"
+    SKIPPABLE = "skippable"
+    ACTIVITIES_ALWAYS_HAPPENING = "activities_always_happening"
+    MIN_TRACE_LENGTH = "min_trace_length"
+    TRACE = "trace"
+
 
 START_ACTIVITIES = Outputs.START_ACTIVITIES.value
 END_ACTIVITIES = Outputs.END_ACTIVITIES.value

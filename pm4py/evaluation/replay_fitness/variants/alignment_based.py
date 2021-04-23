@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.conformance.alignments import algorithm as alignments
+from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 from pm4py.algo.conformance.alignments.decomposed import algorithm as decomp_alignments
 from pm4py.evaluation.replay_fitness.parameters import Parameters
 

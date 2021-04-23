@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.conformance.alignments import variants, algorithm
+from pm4py.algo.conformance.alignments import decomposed, dfg, edit_distance, petri_net

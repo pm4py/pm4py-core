@@ -14,8 +14,13 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import warnings
 from enum import Enum
+
 from pm4py.util import constants
+
+warnings.warn(
+    "pm4py.algo.clustering.trace_attribute_driven.parameters is deprecated. please use the variant-specific parameters")
 
 
 class Parameters(Enum):
@@ -25,4 +30,3 @@ class Parameters(Enum):
     BINARIZE = "binarize"
     POSITIVE = "positive"
     LOWER_PERCENT = "lower_percent"
-
