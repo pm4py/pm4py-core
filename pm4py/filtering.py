@@ -289,7 +289,7 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
         else:
             cases = set(log[constants.CASE_CONCEPT_NAME])
         for path in relations:
-            filt_log = ltl_checker.A_eventually_B(log, path[0], path[1],
+            filt_log = ltl_checker.eventually_follows(log, path,
                                                   parameters={ltl_checker.Parameters.POSITIVE: retain})
             this_traces = set(filt_log[constants.CASE_CONCEPT_NAME])
             if retain:
@@ -305,7 +305,7 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
         else:
             cases = set(id(trace) for trace in log)
         for path in relations:
-            filt_log = ltl_checker.A_eventually_B(log, path[0], path[1],
+            filt_log = ltl_checker.eventually_follows(log, path,
                                                   parameters={ltl_checker.Parameters.POSITIVE: retain})
             this_traces = set(id(trace) for trace in filt_log)
             if retain:

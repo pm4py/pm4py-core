@@ -378,6 +378,7 @@ def discover_heu_net_plus_plus(start_activities, end_activities, activities_occu
         heu_net = HeuristicsNet(dfg, activities=activities, activities_occurrences=activities_occurrences,
                                 start_activities=start_activities, end_activities=end_activities,
                                 performance_dfg=performance_dfg)
+    heu_net.min_dfg_occurrences = min_dfg_occurrences
     heu_net.sojourn_times = sojourn_time
     heu_net.concurrent_activities = concurrent_activities
     return calculate(heu_net, dependency_thresh, and_measure_thresh, heu_net_decoration)

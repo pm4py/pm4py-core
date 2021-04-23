@@ -98,28 +98,28 @@ class DataframePrefilteringTest(unittest.TestCase):
     def test_AeventuallyB_pos(self):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df)
-        filt_A_ev_B_pos = ltl_checker.A_eventually_B(df, "check ticket", "pay compensation",
+        filt_A_ev_B_pos = ltl_checker.eventually_follows(df, ["check ticket", "pay compensation"],
                                                      parameters={ltl_checker.Parameters.POSITIVE: True})
 
     def test_AeventuallyB_neg(self):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df)
-        filt_A_ev_B_neg = ltl_checker.A_eventually_B(df, "check ticket", "pay compensation",
+        filt_A_ev_B_neg = ltl_checker.eventually_follows(df, ["check ticket", "pay compensation"],
                                                      parameters={ltl_checker.Parameters.POSITIVE: False})
 
     def test_AeventuallyBeventuallyC_pos(self):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df)
-        filt_A_ev_B_ev_C_pos = ltl_checker.A_eventually_B_eventually_C(df, "check ticket", "decide",
-                                                                       "pay compensation",
+        filt_A_ev_B_ev_C_pos = ltl_checker.eventually_follows(df, ["check ticket", "decide",
+                                                                       "pay compensation"],
                                                                        parameters={
                                                                            ltl_checker.Parameters.POSITIVE: True})
 
     def test_AeventuallyBeventuallyC_neg(self):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df)
-        filt_A_ev_B_ev_C_neg = ltl_checker.A_eventually_B_eventually_C(df, "check ticket", "decide",
-                                                                       "pay compensation",
+        filt_A_ev_B_ev_C_neg = ltl_checker.eventually_follows(df, ["check ticket", "decide",
+                                                                       "pay compensation"],
                                                                        parameters={
                                                                            ltl_checker.Parameters.POSITIVE: False})
 
