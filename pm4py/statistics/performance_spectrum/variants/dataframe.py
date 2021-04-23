@@ -1,7 +1,18 @@
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import CASE_CONCEPT_NAME
-from pm4py.statistics.performance_spectrum.parameters import Parameters
 from pm4py.util import exec_utils, pandas_utils, constants
+
+
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    PARAMETER_SAMPLE_SIZE = "sample_size"
 
 
 def apply(dataframe, list_activities, sample_size, parameters):

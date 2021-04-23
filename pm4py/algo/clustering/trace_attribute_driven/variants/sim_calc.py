@@ -4,7 +4,18 @@ from pm4py.algo.clustering.trace_attribute_driven.variants import act_dist_calc,
 from pm4py.algo.clustering.trace_attribute_driven.util import filter_subsets
 from scipy.spatial.distance import pdist
 from pm4py.util import exec_utils
-from pm4py.algo.clustering.trace_attribute_driven.parameters import Parameters
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    SINGLE = "single"
+    BINARIZE = "binarize"
+    POSITIVE = "positive"
+    LOWER_PERCENT = "lower_percent"
+
 
 
 def inner_prod_calc(df):

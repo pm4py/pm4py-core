@@ -1,7 +1,16 @@
-from pm4py.algo.conformance.alignments import algorithm as alignments
+from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 from pm4py.algo.conformance.alignments.decomposed import algorithm as decomp_alignments
-from pm4py.algo.evaluation.replay_fitness.parameters import Parameters
 from pm4py.util import exec_utils
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    TOKEN_REPLAY_VARIANT = "token_replay_variant"
+    CLEANING_TOKEN_FLOOD = "cleaning_token_flood"
+    MULTIPROCESSING = "multiprocessing"
 
 
 def evaluate(aligned_traces, parameters=None):

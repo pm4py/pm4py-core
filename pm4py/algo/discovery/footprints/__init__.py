@@ -1,1 +1,1 @@
-from pm4py.algo.discovery.footprints import log, petri, dfg, outputs, algorithm, tree
+from pm4py.algo.discovery.footprints import log, petri, dfg, algorithm, tree

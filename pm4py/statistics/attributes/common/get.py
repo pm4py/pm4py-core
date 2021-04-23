@@ -1,8 +1,13 @@
 import json, pkgutil, logging
 
 from pm4py.util.points_subset import pick_chosen_points_list
-from pm4py.statistics.attributes.parameters import Parameters
 from pm4py.util import exec_utils
+from enum import Enum
+
+
+class Parameters(Enum):
+    GRAPH_POINTS = "graph_points"
+    POINT_TO_SAMPLE = "points_to_sample"
 
 
 def get_sorted_attributes_list(attributes):

@@ -1,10 +1,10 @@
 import pkgutil
 from copy import deepcopy
+from enum import Enum
 
 from pm4py.algo.discovery.dfg import algorithm as dfg_alg
-from pm4py.algo.discovery.heuristics.parameters import Parameters
+from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.objects.conversion.heuristics_net import converter as hn_conv_alg
-from pm4py.objects.dfg.filtering.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.objects.heuristics_net import defaults
 from pm4py.objects.heuristics_net.node import Node
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
@@ -14,6 +14,20 @@ from pm4py.statistics.start_activities.log import get as log_sa_filter
 from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    DEPENDENCY_THRESH = "dependency_thresh"
+    AND_MEASURE_THRESH = "and_measure_thresh"
+    MIN_ACT_COUNT = "min_act_count"
+    MIN_DFG_OCCURRENCES = "min_dfg_occurrences"
+    DFG_PRE_CLEANING_NOISE_THRESH = "dfg_pre_cleaning_noise_thresh"
+    LOOP_LENGTH_TWO_THRESH = "loop_length_two_thresh"
+    HEU_NET_DECORATION = "heu_net_decoration"
 
 
 def apply(log, parameters=None):

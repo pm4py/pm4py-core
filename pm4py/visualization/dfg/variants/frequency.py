@@ -8,8 +8,20 @@ from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import xes_constants as xes
 from pm4py.visualization.common.utils import *
 from pm4py.util import exec_utils
-from pm4py.visualization.dfg.parameters import Parameters
 from pm4py.statistics.sojourn_time.log import get as soj_time_get
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    FORMAT = "format"
+    MAX_NO_EDGES_IN_DIAGRAM = "maxNoOfEdgesInDiagram"
+    START_ACTIVITIES = "start_activities"
+    END_ACTIVITIES = "end_activities"
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    FONT_SIZE = "font_size"
 
 
 def get_min_max_value(dfg):

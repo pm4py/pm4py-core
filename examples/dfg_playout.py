@@ -1,5 +1,5 @@
 import pm4py
-from pm4py.objects.dfg.filtering import dfg_filtering
+from pm4py.algo.filtering.dfg import dfg_filtering
 from pm4py.algo.simulation.playout.dfg.variants import classic as dfg_playout
 import os
 

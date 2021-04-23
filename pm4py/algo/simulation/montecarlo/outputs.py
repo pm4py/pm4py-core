@@ -1,5 +1,9 @@
 from enum import Enum
 
+import warnings
+
+warnings.warn("pm4py.algo.simulation.montecarlo.outputs is deprecated. Please use the variant-specific parameters.")
+
 
 class Outputs(Enum):
     OUTPUT_PLACES_INTERVAL_TREES = "places_interval_trees"

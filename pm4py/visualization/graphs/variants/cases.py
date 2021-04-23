@@ -2,8 +2,14 @@ import matplotlib
 from copy import copy
 
 from pm4py.visualization.graphs.util import common
-from pm4py.visualization.graphs.parameters import Parameters
 from pm4py.util import exec_utils
+from enum import Enum
+
+
+class Parameters(Enum):
+    TITLE = "title"
+    FORMAT = "format"
+
 
 CASE_DURATION_LABEL = "Case duration"
 DENSITY_LABEL = "Density"

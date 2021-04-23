@@ -1,7 +1,12 @@
 from graphviz import Source
 import tempfile
 from pm4py.util import exec_utils
-from pm4py.visualization.parameters import Parameters
+from enum import Enum
+
+
+class Parameters(Enum):
+    FORMAT = "format"
+
 
 XOR_SYMBOL = "&#35;"
 PREV_SYMBOL = "&#60;"

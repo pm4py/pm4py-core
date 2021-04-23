@@ -1,7 +1,11 @@
 import graphviz
 import tempfile
-from pm4py.visualization.parameters import Parameters
 from pm4py.util import exec_utils
+from enum import Enum
+
+
+class Parameters(Enum):
+    FORMAT = "format"
 
 
 def apply(clf, feature_names, classes, parameters=None):

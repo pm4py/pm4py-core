@@ -7,6 +7,20 @@ from pm4py.objects.process_tree.utils import bottomup
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.utils.generic import fold
 from pm4py.util import constants, xes_constants, exec_utils
+from enum import Enum
+
+
+class Outputs(Enum):
+    DFG = "dfg"
+    SEQUENCE = "sequence"
+    PARALLEL = "parallel"
+    START_ACTIVITIES = "start_activities"
+    END_ACTIVITIES = "end_activities"
+    ACTIVITIES = "activities"
+    SKIPPABLE = "skippable"
+    ACTIVITIES_ALWAYS_HAPPENING = "activities_always_happening"
+    MIN_TRACE_LENGTH = "min_trace_length"
+    TRACE = "trace"
 
 
 class Parameters(Enum):
@@ -67,8 +81,6 @@ def reduce(bottomup_nodes: List[ProcessTree], fps: Dict[str, Any], activities: S
     tree
         Reduced process tree
     """
-    from pm4py.algo.discovery.footprints.outputs import Outputs
-
     i = 0
     while i < len(bottomup_nodes) - 1:
         node = bottomup_nodes[i]

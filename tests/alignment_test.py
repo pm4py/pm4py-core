@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pm4py.algo.conformance.alignments import algorithm as align_alg
+from pm4py.algo.conformance.alignments.petri_net import algorithm as align_alg
 from pm4py.algo.discovery.alpha import algorithm as alpha_alg
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects import petri_net
@@ -85,12 +85,6 @@ class AlignmentTest(unittest.TestCase):
         log = pm4py.read_xes("input_data/running-example.xes")
         net, im, fm = pm4py.discover_petri_net_inductive(log)
         align_alg.apply(log, net, im, fm, variant=align_alg.Variants.VERSION_STATE_EQUATION_A_STAR)
-
-    def test_variant_state_eq_less_memory(self):
-        import pm4py
-        log = pm4py.read_xes("input_data/running-example.xes")
-        net, im, fm = pm4py.discover_petri_net_inductive(log)
-        align_alg.apply(log, net, im, fm, variant=align_alg.Variants.VERSION_STATE_EQUATION_LESS_MEMORY)
 
     def test_variant_dijkstra_less_memory(self):
         import pm4py
