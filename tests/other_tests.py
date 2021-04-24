@@ -232,6 +232,11 @@ class OtherPartsTests(unittest.TestCase):
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         msd = minimum_self_distance.apply(log)
 
+    def test_lp_solver(self):
+        import pm4py
+        if "cvxopt" not in pm4py.util.lp.solver.DEFAULT_LP_SOLVER_VARIANT:
+            raise Exception("cvxopt is not the solver")
+
 
 if __name__ == "__main__":
     unittest.main()
