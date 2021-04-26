@@ -28,16 +28,20 @@ __TYPE_CORRESPONDENCE = {
 __DEFAULT_TYPE = xes_util.TAG_STRING
 
 
-def __get_xes_attr_type(attr_type):
+def __get_xes_attr_type(attr_name, attr_type):
     """
     Transform a Python attribute type (e.g. str, datetime) into a XES attribute type (e.g. string, date)
 
     Parameters
     ----------
+    attr_name
+        Name of the attribute
     attr_type:
         Python attribute type
     """
-    if attr_type in __TYPE_CORRESPONDENCE:
+    if attr_name == xes_util.DEFAULT_NAME_KEY:
+        return xes_util.TAG_STRING
+    elif attr_type in __TYPE_CORRESPONDENCE:
         attr_type_xes = __TYPE_CORRESPONDENCE[attr_type]
     else:
         attr_type_xes = __DEFAULT_TYPE
@@ -117,7 +121,7 @@ def export_attribute(attr_name, attr_value, indent_level):
     """
     ret = []
     if attr_name is not None and attr_value is not None:
-        attr_type = __get_xes_attr_type(type(attr_value).__name__)
+        attr_type = __get_xes_attr_type(attr_name, type(attr_value).__name__)
         if not attr_type == xes_util.TAG_LIST:
             attr_value = __get_xes_attr_value(attr_value, attr_type)
             ret.append(get_tab_indent(
@@ -134,7 +138,7 @@ def export_attribute(attr_name, attr_value, indent_level):
             else:
                 # nested attribute
                 this_value = attr_value[xes_util.KEY_VALUE]
-                this_type = __get_xes_attr_type(type(this_value).__name__)
+                this_type = __get_xes_attr_type(attr_name, type(this_value).__name__)
                 this_value = __get_xes_attr_value(this_value, this_type)
                 ret.append(get_tab_indent(
                     indent_level) + "<%s key=%s value=%s>\n" % (this_type, escape(attr_name), escape(this_value)))
