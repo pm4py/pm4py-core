@@ -38,16 +38,20 @@ __TYPE_CORRESPONDENCE = {
 __DEFAULT_TYPE = xes_util.TAG_STRING
 
 
-def __get_xes_attr_type(attr_type):
+def __get_xes_attr_type(attr_name, attr_type):
     """
     Transform a Python attribute type (e.g. str, datetime) into a XES attribute type (e.g. string, date)
 
     Parameters
     ----------
+    attr_name
+        Name of the attribute
     attr_type:
         Python attribute type
     """
-    if attr_type in __TYPE_CORRESPONDENCE:
+    if attr_name == xes_util.DEFAULT_NAME_KEY:
+        return xes_util.TAG_STRING
+    elif attr_type in __TYPE_CORRESPONDENCE:
         attr_type_xes = __TYPE_CORRESPONDENCE[attr_type]
     else:
         attr_type_xes = __DEFAULT_TYPE
@@ -173,7 +177,7 @@ def __export_attributes_element(log_element, xml_element):
     for attr, attr_value in items:
         if attr is not None and attr_value is not None:
             attr_type = type(attr_value).__name__
-            attr_type_xes = __get_xes_attr_type(attr_type)
+            attr_type_xes = __get_xes_attr_type(attr, attr_type)
             if attr_type is not None and attr_type_xes is not None:
                 if attr_type_xes == xes_util.TAG_LIST:
                     if attr_value['value'] is None:
@@ -183,7 +187,7 @@ def __export_attributes_element(log_element, xml_element):
                         __export_attributes_element(attr_value['children'], this_attribute_values)
                     else:
                         attr_type = type(attr_value['value']).__name__
-                        attr_type_xes = __get_xes_attr_type(attr_type)
+                        attr_type_xes = __get_xes_attr_type(attr, attr_type)
                         if attr_type is not None and attr_type_xes is not None:
                             if attr_value is not None:
                                 this_attribute = etree.SubElement(xml_element, attr_type_xes)
