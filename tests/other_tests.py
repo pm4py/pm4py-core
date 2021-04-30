@@ -5,8 +5,7 @@ from pm4py.algo.discovery.log_skeleton import algorithm as lsk_alg
 from pm4py.algo.conformance.log_skeleton import algorithm as lsk_conf_alg
 from pm4py.objects.process_tree.importer import importer as ptree_importer
 from pm4py.objects.process_tree.exporter import exporter as ptree_exporter
-from pm4py.statistics.performance_spectrum.variants import log as log_pspectrum
-from pm4py.statistics.performance_spectrum.variants import dataframe as df_pspectrum
+from pm4py.algo.discovery.performance_spectrum.variants import log as log_pspectrum, dataframe as df_pspectrum
 from pm4py.objects.dfg.importer import importer as dfg_importer
 from pm4py.objects.dfg.exporter import exporter as dfg_exporter
 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery

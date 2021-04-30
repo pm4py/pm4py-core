@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Dict, Any
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
@@ -234,3 +234,38 @@ def save_vis_sna(sna_metric, file_path: str):
     from pm4py.visualization.sna import visualizer as sna_visualizer
     gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
     sna_visualizer.save(gviz, file_path)
+
+
+def view_performance_spectrum(perf_spectrum: Dict[str, Any], format: str = "png"):
+    """
+    Displays the performance spectrum
+
+    Parameters
+    ----------------
+    perf_spectrum
+        Performance spectrum
+    format
+        Format of the visualization (png, svg ...)
+    """
+    from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
+    from pm4py.visualization.performance_spectrum.variants import neato
+    gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format})
+    perf_spectrum_visualizer.view(gviz)
+
+
+def save_vis_performance_spectrum(perf_spectrum: Dict[str, Any], file_path: str):
+    """
+    Saves the visualization of the performance spectrum to a file
+
+    Parameters
+    ---------------
+    perf_spectrum
+        Performance spectrum
+    file_path
+        Destination path (including the extension)
+    """
+    from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
+    from pm4py.visualization.performance_spectrum.variants import neato
+    format = file_path[file_path.index(".") + 1:].lower()
+    gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format})
+    perf_spectrum_visualizer.save(gviz, file_path)
