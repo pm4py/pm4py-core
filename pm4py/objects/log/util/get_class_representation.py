@@ -1,7 +1,9 @@
 import numpy as np
 from pm4py.util.business_hours import BusinessHours
+import deprecation
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_class_representation_by_str_ev_attr_value_presence(log, str_attr_name, str_attr_value):
     """
     Get the representation for the target part of the decision tree learning
