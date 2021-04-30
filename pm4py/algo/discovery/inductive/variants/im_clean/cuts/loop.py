@@ -122,7 +122,9 @@ def project(log: EventLog, cut: Cut, activity_key: str) -> List[EventLog]:
     do = cut[0]
     redo = cut[1:]
     do_log = EventLog()
-    redo_logs = [EventLog()] * len(redo)
+    redo_logs = []
+    for i in range(len(redo)):
+        redo_logs.append(EventLog())
     for t in log:
         do_trace = Trace()
         redo_trace = Trace()
@@ -151,5 +153,5 @@ def _append_trace_to_redo_log(redo_trace: Trace, redo_logs: List[List[Trace]], r
     for i, group in enumerate(redo_groups):
         if sample_act in group:
             redo_logs[i].append(redo_trace)
-        break
+            break
     return redo_logs
