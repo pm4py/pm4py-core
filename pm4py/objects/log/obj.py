@@ -94,6 +94,7 @@ class EventStream(Sequence):
         self._omni = kwargs['omni_present'] if 'omni_present' in kwargs else kwargs[
             'globals'] if 'globals' in kwargs else {}
         self._classifiers = kwargs['classifiers'] if 'classifiers' in kwargs else {}
+        self._properties = kwargs['properties'] if 'properties' in kwargs else {}
         self._list = list(*args)
 
     def __hash__(self):
@@ -162,6 +163,12 @@ class EventStream(Sequence):
     def _get_classifiers(self):
         return self._classifiers
 
+    def _get_properties(self):
+        return self._properties
+
+    def _set_properties(self, properties):
+        self._properties = properties
+
     def __copy__(self):
         event_stream = EventStream()
         event_stream._attributes = copy.copy(self._attributes)
@@ -169,12 +176,14 @@ class EventStream(Sequence):
         event_stream._omni = copy.copy(self._omni)
         event_stream._classifiers = copy.copy(self._classifiers)
         event_stream._list = copy.copy(self._list)
+        event_stream._properties = copy.copy(self._properties)
         return event_stream
 
     attributes = property(_get_attributes)
     extensions = property(_get_extensions)
     omni_present = property(_get_omni)
     classifiers = property(_get_classifiers)
+    properties = property(_get_properties, _set_properties)
 
 
 class Trace(Sequence):
@@ -282,6 +291,7 @@ class EventLog(EventStream):
         log._extensions = copy.copy(self._extensions)
         log._omni = copy.copy(self._omni)
         log._classifiers = copy.copy(self._classifiers)
+        log._properties = copy.copy(self._properties)
         log._list = copy.copy(self._list)
         return log
 

@@ -159,7 +159,7 @@ def apply_heu(log, parameters=None, variant=CLASSIC) -> HeuristicsNet:
     fm
         Final marking
     """
-    return exec_utils.get_variant(variant).apply_heu(log, parameters=parameters)
+    return exec_utils.get_variant(variant).apply_heu(log_conversion.apply(log, parameters=parameters), parameters=parameters)
 
 
 def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,

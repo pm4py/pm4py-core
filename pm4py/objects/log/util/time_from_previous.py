@@ -20,8 +20,10 @@ from pm4py.objects.log.obj import EventLog
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.util import sorting
 from pm4py.util.business_hours import BusinessHours
+import deprecation
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def insert_time_from_previous(log, parameters=None):
     """
     Inserts the time from the previous event, both in normal and business hours

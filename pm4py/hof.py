@@ -39,10 +39,10 @@ def filter_log(f: Callable[[Any], bool], log: log_inst.EventLog) -> Union[log_in
     """
     if isinstance(log, log_inst.EventLog):
         return log_inst.EventLog(list(filter(f, log)), attributes=log.attributes, classifiers=log.classifiers,
-                                 omni_present=log.omni_present, extensions=log.extensions)
+                                 omni_present=log.omni_present, extensions=log.extensions, properties=log.properties)
     elif isinstance(log, log_inst.EventStream):
         return log_inst.EventStream(list(filter(f, log)), attributes=log.attributes, classifiers=log.classifiers,
-                                    omni_present=log.omni_present, extensions=log.extensions)
+                                    omni_present=log.omni_present, extensions=log.extensions, properties=log.properties)
     else:
         warnings.warn('input log object not of appropriate type, filter() not applied')
         return log
@@ -89,11 +89,11 @@ def sort_log(log: log_inst.EventLog, key, reverse: bool = False) -> Union[log_in
     """
     if isinstance(log, log_inst.EventLog):
         return log_inst.EventLog(sorted(log, key=key, reverse=reverse), attributes=log.attributes,
-                                 classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions)
+                                 classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions, properties=log.properties)
     elif isinstance(log, log_inst.EventStream):
         return log_inst.EventStream(sorted(log, key=key, reverse=reverse), attributes=log.attributes,
                                     classifiers=log.classifiers,
-                                    omni_present=log.omni_present, extensions=log.extensions)
+                                    omni_present=log.omni_present, extensions=log.extensions, properties=log.properties)
     else:
         warnings.warn('input log object not of appropriate type, sorted() not applied')
         return log

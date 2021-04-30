@@ -14,13 +14,16 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from typing import Optional
+from typing import Optional, Dict, Any, List
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
+import pandas as pd
+from typing import Union, List
+from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, format: str = "png"):
@@ -222,6 +225,78 @@ def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str):
     hn_visualizer.save(gviz, file_path)
 
 
+def __dotted_attribute_selection(log, attributes):
+    """
+    Default attribute selection for the dotted chart
+
+    Parameters
+    -----------------
+    log
+        Event log
+
+    Returns
+    -----------------
+    attributes
+        List of attributes
+    """
+    if attributes is None:
+        from pm4py.util import xes_constants
+        from pm4py.objects.log.util import sorting
+        from pm4py.convert import convert_to_event_log
+        log = convert_to_event_log(log)
+        log = sorting.sort_timestamp(log, xes_constants.DEFAULT_TIMESTAMP_KEY)
+        for index, trace in enumerate(log):
+            trace.attributes["@@index"] = index
+        attributes = ["time:timestamp", "case:@@index", "concept:name"]
+    return log, attributes
+
+
+def view_dotted_chart(log, format: str = "png", attributes=None):
+    """
+    Displays the dotted chart
+
+    Parameters
+    -----------------
+    log
+        Event log
+    format
+        Image format
+    attributes
+        Attributes that should be used to construct the dotted chart.
+        If None, the default dotted chart will be shown:
+            x-axis: time
+            y-axis: cases (in order of occurrence in the event log)
+            color: activity
+        For custom attributes, use a list of attributes
+        of the form [x-axis attribute, y-axis attribute, color attribute], e.g., ["concept:name", "org:resource", "concept:name"])
+
+    """
+    log, attributes = __dotted_attribute_selection(log, attributes)
+    from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
+    gviz = dotted_chart_visualizer.apply(log, attributes, parameters={"format": format})
+    dotted_chart_visualizer.view(gviz)
+
+
+def save_vis_dotted_chart(log, file_path: str, attributes=None):
+    """
+    Saves the visualization of the dotted chart
+
+    Parameters
+    -----------------
+    log
+        Event log
+    file_path
+        Destination path
+    attributes
+        Attributes that should be used to construct the dotted chart (for example, ["concept:name", "org:resource"])
+    """
+    format = file_path[file_path.index(".") + 1:].lower()
+    log, attributes = __dotted_attribute_selection(log, attributes)
+    from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
+    gviz = dotted_chart_visualizer.apply(log, attributes, parameters={"format": format})
+    dotted_chart_visualizer.save(gviz, file_path)
+
+
 def view_sna(sna_metric):
     """
     Represents a SNA metric (.html)
@@ -250,3 +325,149 @@ def save_vis_sna(sna_metric, file_path: str):
     from pm4py.visualization.sna import visualizer as sna_visualizer
     gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
     sna_visualizer.save(gviz, file_path)
+
+
+def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "png"):
+    """
+    Visualizes the case duration graph
+
+    Parameters
+    -----------------
+    log
+        Log object
+    format
+        Format of the visualization (png, svg, ...)
+    """
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.traces.pandas import case_statistics
+        graph = case_statistics.get_kde_caseduration(log)
+    else:
+        from pm4py.statistics.traces.log import case_statistics
+        graph = case_statistics.get_kde_caseduration(log)
+    from pm4py.visualization.graphs import visualizer as graphs_visualizer
+    graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
+                                          parameters={"format": format})
+    graphs_visualizer.view(graph_vis)
+
+
+def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: str):
+    """
+    Saves the case duration graph in the specified path
+
+    Parameters
+    ----------------
+    log
+        Log object
+    file_path
+        Destination path
+    """
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.traces.pandas import case_statistics
+        graph = case_statistics.get_kde_caseduration(log)
+    else:
+        from pm4py.statistics.traces.log import case_statistics
+        graph = case_statistics.get_kde_caseduration(log)
+    format = file_path[file_path.index(".") + 1:].lower()
+    from pm4py.visualization.graphs import visualizer as graphs_visualizer
+    graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
+                                          parameters={"format": format})
+    graphs_visualizer.save(graph_vis, file_path)
+
+
+def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str = "png"):
+    """
+    Visualizes the events per time graph
+
+    Parameters
+    -----------------
+    log
+        Log object
+    format
+        Format of the visualization (png, svg, ...)
+    """
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.attributes.pandas import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
+    else:
+        from pm4py.statistics.attributes.log import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
+    from pm4py.visualization.graphs import visualizer as graphs_visualizer
+    graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
+                                          parameters={"format": format})
+    graphs_visualizer.view(graph_vis)
+
+
+def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path: str):
+    """
+    Saves the events per time graph in the specified path
+
+    Parameters
+    ----------------
+    log
+        Log object
+    file_path
+        Destination path
+    """
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.attributes.pandas import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
+    else:
+        from pm4py.statistics.attributes.log import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
+    format = file_path[file_path.index(".") + 1:].lower()
+    from pm4py.visualization.graphs import visualizer as graphs_visualizer
+    graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
+                                          parameters={"format": format})
+    graphs_visualizer.save(graph_vis, file_path)
+
+
+def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], format: str = "png"):
+    """
+    Displays the performance spectrum
+
+    Parameters
+    ----------------
+    perf_spectrum
+        Performance spectrum
+    format
+        Format of the visualization (png, svg ...)
+    """
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.attributes.pandas import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
+    else:
+        from pm4py.statistics.attributes.log import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
+    from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
+    perf_spectrum = performance_spectrum.apply(log, activities)
+    from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
+    from pm4py.visualization.performance_spectrum.variants import neato
+    gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format})
+    perf_spectrum_visualizer.view(gviz)
+
+
+def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str):
+    """
+    Saves the visualization of the performance spectrum to a file
+
+    Parameters
+    ---------------
+    log
+        Event log
+    activities
+        List of activities (in order) that is used to build the performance spectrum
+    file_path
+        Destination path (including the extension)
+    """
+    from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
+    perf_spectrum = performance_spectrum.apply(log, activities)
+    from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
+    from pm4py.visualization.performance_spectrum.variants import neato
+    format = file_path[file_path.index(".") + 1:].lower()
+    gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format})
+    perf_spectrum_visualizer.save(gviz, file_path)

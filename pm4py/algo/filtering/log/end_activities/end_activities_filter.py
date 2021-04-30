@@ -61,7 +61,7 @@ def apply(log, admitted_end_activities, parameters=None):
         filtered_log = [trace for trace in log if trace and trace[-1][attribute_key] not in admitted_end_activities]
 
     return EventLog(filtered_log, attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                    omni_present=log.omni_present)
+                    omni_present=log.omni_present, properties=log.properties)
 
 
 def filter_log_by_end_activities(end_activities, variants, vc, threshold, activity_key="concept:name"):

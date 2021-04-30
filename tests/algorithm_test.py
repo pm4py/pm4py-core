@@ -113,7 +113,7 @@ class AlgorithmTest(unittest.TestCase):
 
     def test_performance_spectrum(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
-        from pm4py.statistics.performance_spectrum import algorithm as pspectrum
+        from pm4py.algo.discovery.performance_spectrum import algorithm as pspectrum
         ps = pspectrum.apply(log, ["register request", "decide"])
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df)

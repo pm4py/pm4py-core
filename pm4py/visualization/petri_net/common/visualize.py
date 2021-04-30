@@ -132,7 +132,6 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
                 viz.node(str(id(t)), "", style='filled', fillcolor="black", fontsize=font_size)
 
     # places
-    viz.attr('node', shape='circle', fixedsize='true', width='0.75')
     # add places, in order by their (unique) name, to avoid undeterminism in the visualization
     places_sort_list_im = sorted([x for x in list(net.places) if x in initial_marking], key=lambda x: x.name)
     places_sort_list_fm = sorted([x for x in list(net.places) if x in final_marking and not x in initial_marking],
@@ -148,18 +147,18 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
 
     for p in places_sort_list:
         if p in initial_marking:
-            viz.node(str(id(p)), str(initial_marking[p]), style='filled', fillcolor="green", fontsize=font_size)
+            viz.node(str(id(p)), str(initial_marking[p]), style='filled', fillcolor="green", fontsize=font_size, shape='circle', fixedsize='true', width='0.75')
         elif p in final_marking:
-            viz.node(str(id(p)), "", style='filled', fillcolor="orange", fontsize=font_size)
+            viz.node(str(id(p)), "", style='filled', fillcolor="orange", fontsize=font_size, shape='circle', fixedsize='true', width='0.75')
         else:
             if debug:
-                viz.node(str(id(p)), str(p.name), fontsize=font_size)
+                viz.node(str(id(p)), str(p.name), fontsize=font_size, shape="ellipse")
             else:
                 if p in decorations and "color" in decorations[p] and "label" in decorations[p]:
                     viz.node(str(id(p)), decorations[p]["label"], style='filled', fillcolor=decorations[p]["color"],
-                             fontsize=font_size)
+                             fontsize=font_size, shape="ellipse")
                 else:
-                    viz.node(str(id(p)), "")
+                    viz.node(str(id(p)), "", shape='circle', fixedsize='true', width='0.75')
 
     # add arcs, in order by their source and target objects names, to avoid undeterminism in the visualization
     arcs_sort_list = sorted(list(net.arcs), key=lambda x: (x.source.name, x.target.name))

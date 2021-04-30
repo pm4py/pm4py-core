@@ -90,7 +90,7 @@ def A_eventually_B(log, A, B, parameters=None):
     timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
 
     new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                       omni_present=log.omni_present)
+                       omni_present=log.omni_present, properties=log.properties)
 
     for trace in log:
         if enable_timestamp:
@@ -159,7 +159,7 @@ def A_eventually_B_eventually_C(log, A, B, C, parameters=None):
     timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
 
     new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                       omni_present=log.omni_present)
+                       omni_present=log.omni_present, properties=log.properties)
 
     for trace in log:
         if enable_timestamp:
@@ -234,7 +234,7 @@ def A_eventually_B_eventually_C_eventually_D(log, A, B, C, D, parameters=None):
     timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
 
     new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                       omni_present=log.omni_present)
+                       omni_present=log.omni_present, properties=log.properties)
 
     for trace in log:
         if enable_timestamp:
@@ -309,7 +309,7 @@ def eventually_follows(log, attribute_values, parameters=None):
     timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
 
     new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                       omni_present=log.omni_present)
+                       omni_present=log.omni_present, properties=log.properties)
 
     for trace in log:
         if enable_timestamp:
@@ -400,7 +400,7 @@ def A_next_B_next_C(log, A, B, C, parameters=None):
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                       omni_present=log.omni_present)
+                       omni_present=log.omni_present, properties=log.properties)
 
     for trace in log:
         occ_A = [i for i in range(len(trace)) if attribute_key in trace[i] and trace[i][attribute_key] == A]
@@ -459,7 +459,7 @@ def four_eyes_principle(log, A, B, parameters=None):
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                       omni_present=log.omni_present)
+                       omni_present=log.omni_present, properties=log.properties)
 
     for trace in log:
         occ_A = set([trace[i][resource_key] for i in range(len(trace)) if
@@ -509,7 +509,7 @@ def attr_value_different_persons(log, A, parameters=None):
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     new_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                       omni_present=log.omni_present)
+                       omni_present=log.omni_present, properties=log.properties)
 
     for trace in log:
         occ_A = set([trace[i][resource_key] for i in range(len(trace)) if

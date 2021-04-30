@@ -14,4 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.statistics.performance_spectrum import algorithm, variants
+import warnings
+
+warnings.warn("pm4py.statistics.performance_spectrum is deprecated. Please use pm4py.algo.discovery.performance_spectrum instead.")

@@ -55,7 +55,7 @@ def apply(log, paths, parameters=None):
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes.DEFAULT_NAME_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                            omni_present=log.omni_present)
+                            omni_present=log.omni_present, properties=log.properties)
     for trace in log:
         found = False
         for i in range(len(trace) - 1):
@@ -166,7 +166,7 @@ def filter_log_by_paths(log, paths, variants, vc, threshold, attribute_key="conc
         Filtered log
     """
     filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                            omni_present=log.omni_present)
+                            omni_present=log.omni_present, properties=log.properties)
     fvft = variants[vc[0][0]][0]
     fvp = set()
     for i in range(0, len(fvft) - 1):

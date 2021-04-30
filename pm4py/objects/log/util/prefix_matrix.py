@@ -23,11 +23,13 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.log.obj import EventStream
 from pm4py.util import xes_constants as xes
 from pm4py.util import constants, variants_util
+import deprecation
 
 KEEP_UNIQUE = "keep_unique"
 SKIP_LAST = "skip_last"
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_variants_matrix_from_variants_list(variants_list, activities, parameters=None):
     """
     Gets a numeric matrix where each row is associated to a different set of activities
@@ -66,6 +68,7 @@ def get_variants_matrix_from_variants_list(variants_list, activities, parameters
     return variants_mat, activities
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_repr(prefix, activities):
     """
     Gets the numeric representation (as vector) of a prefix
@@ -89,6 +92,7 @@ def get_prefix_repr(prefix, activities):
     return tuple(this_pref_repr)
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_matrix_from_variants_list(variants_list, activities, parameters=None):
     """
     Gets a numeric matrix where each row is associated to a different prefix of activities
@@ -137,6 +141,7 @@ def get_prefix_matrix_from_variants_list(variants_list, activities, parameters=N
     return prefix_mat, activities
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_matrix_from_trace(trace, activities, parameters=None):
     """
     Gets a numeric matrix where a trace is associated to different rows, each one is
@@ -174,6 +179,7 @@ def get_prefix_matrix_from_trace(trace, activities, parameters=None):
     return prefix_mat
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_matrix_from_var_str(var_str, activities, parameters=None):
     """
     Gets a numeric matrix where a variant is associated to different rows, each one is
@@ -209,6 +215,7 @@ def get_prefix_matrix_from_var_str(var_str, activities, parameters=None):
     return prefix_mat
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_matrix_from_event_log_not_unique(event_log, activities, parameters=None):
     """
     Gets a numeric matrix where each trace is associated to different rows, each one is
@@ -247,6 +254,7 @@ def get_prefix_matrix_from_event_log_not_unique(event_log, activities, parameter
     return prefix_mat, activities
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_variants_list(log, parameters=None):
     """
     Gets the list of variants (along with their count) from the particular log type
@@ -282,6 +290,7 @@ def get_variants_list(log, parameters=None):
     return variants_list
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_activities_list(log, parameters=None):
     """
     Gets the activities list from a log object, sorted by activity name
@@ -312,6 +321,7 @@ def get_activities_list(log, parameters=None):
     return sorted(list(activities.keys()))
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_matrix(log, parameters=None):
     """
     Gets the prefix matrix from a log object
@@ -354,6 +364,7 @@ def get_prefix_matrix(log, parameters=None):
     return prefix_matrix, activities
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_variants_matrix(log, parameters=None):
     """
     Gets the variants matrix from a log object

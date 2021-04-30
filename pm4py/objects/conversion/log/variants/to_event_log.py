@@ -100,4 +100,4 @@ def __transform_event_stream_to_event_log(log, case_glue=Parameters.CASE_ID_KEY.
 
         traces[glue].append(event)
     return log_instance.EventLog(traces.values(), attributes=log.attributes, classifiers=log.classifiers,
-                                 omni_present=log.omni_present, extensions=log.extensions)
+                                 omni_present=log.omni_present, extensions=log.extensions, properties=log.properties)

@@ -14,6 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.statistics import traces, performance_spectrum, attributes, variants, start_activities, end_activities, util, \
+from pm4py.statistics import traces, attributes, variants, start_activities, end_activities, util, \
     sojourn_time, concurrent_activities, eventually_follows
 
