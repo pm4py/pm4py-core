@@ -3,7 +3,7 @@ from pm4py.util import constants
 
 import warnings
 
-warnings.warn("pm4py.statistics.performance_spectrum.parameters is deprecated. please use the variant-specific parameters")
+warnings.warn("pm4py.algo.discovery.performance_spectrum.parameters is deprecated. please use the variant-specific parameters")
 
 
 class Parameters(Enum):

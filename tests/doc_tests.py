@@ -1029,7 +1029,7 @@ class DocTests(unittest.TestCase):
         import os
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
 
-        from pm4py.statistics.performance_spectrum import algorithm as performance_spectrum
+        from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
         ps = performance_spectrum.apply(log, ["register request", "decide"],
                                         parameters={performance_spectrum.Parameters.ACTIVITY_KEY: "concept:name",
                                                     performance_spectrum.Parameters.TIMESTAMP_KEY: "time:timestamp"})
