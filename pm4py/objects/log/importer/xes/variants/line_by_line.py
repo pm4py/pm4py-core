@@ -168,6 +168,15 @@ def import_log_from_file_object(f, encoding, file_size=sys.maxsize, parameters=N
     if timestamp_sort:
         log = sorting.sort_timestamp(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
 
+    # set the activity key as default classifier in the log's properties
+    log.properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_constants.DEFAULT_NAME_KEY
+    # set the default timestamp key
+    log.properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_constants.DEFAULT_TIMESTAMP_KEY
+    # set the default trace id key
+    log.properties[constants.PARAMETER_CONSTANT_CASEID_KEY] = xes_constants.DEFAULT_TRACEID_KEY
+    # set the default resource key
+    log.properties[constants.PARAMETER_CONSTANT_RESOURCE_KEY] = xes_constants.DEFAULT_RESOURCE_KEY
+    
     return log
 
 

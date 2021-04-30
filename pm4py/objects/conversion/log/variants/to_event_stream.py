@@ -186,4 +186,4 @@ def __transform_event_log_to_event_stream(log, include_case_attributes=True,
                 new_event[pmutil.CASE_ATTRIBUTE_GLUE] = str(hash(trace))
             events.append(new_event)
     return log_instance.EventStream(events, attributes=log.attributes, classifiers=log.classifiers,
-                                    omni_present=log.omni_present, extensions=log.extensions)
+                                    omni_present=log.omni_present, extensions=log.extensions, properties=log.properties)
