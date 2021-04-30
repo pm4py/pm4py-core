@@ -25,6 +25,8 @@ from enum import Enum
 class Parameters(Enum):
     TITLE = "title"
     FORMAT = "format"
+    X_AXIS = "x_axis"
+    Y_AXIS = "y_axis"
 
 
 CASE_DURATION_LABEL = "Case duration"
@@ -57,6 +59,8 @@ def apply_plot(x, y, parameters=None):
 
     format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     title = exec_utils.get_param_value(Parameters.TITLE, parameters, GRAPH_DEFAULT_TITLE)
+    x_axis = exec_utils.get_param_value(Parameters.X_AXIS, parameters, CASE_DURATION_LABEL)
+    y_axis = exec_utils.get_param_value(Parameters.Y_AXIS, parameters, DENSITY_LABEL)
 
     filename = common.get_temp_file_name(format)
 
@@ -66,8 +70,8 @@ def apply_plot(x, y, parameters=None):
 
     pyplot.clf()
     pyplot.plot(x, y)
-    pyplot.xlabel(CASE_DURATION_LABEL)
-    pyplot.ylabel(DENSITY_LABEL)
+    pyplot.xlabel(x_axis)
+    pyplot.ylabel(y_axis)
     pyplot.title(title)
     pyplot.savefig(filename, bbox_inches="tight", transparent=True)
     pyplot.clf()

@@ -61,7 +61,7 @@ def apply(log: EventLog, value: Any, parameters: Optional[Dict[str, Any]] = None
     max_rep = exec_utils.get_param_value(Parameters.MAX_REP, parameters, sys.maxsize)
 
     filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                            omni_present=log.omni_present)
+                            omni_present=log.omni_present, properties=log.properties)
 
     for trace in log:
         rep = 0

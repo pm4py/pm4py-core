@@ -100,8 +100,9 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
         seq_flow_id = curr_el.get("id")
         source_ref = curr_el.get("sourceRef")
         target_ref = curr_el.get("targetRef")
-        incoming_dict[seq_flow_id] = nodes_dict[target_ref]
-        outgoing_dict[seq_flow_id] = nodes_dict[source_ref]
+        # fix 28/04/2021: do not assume anymore to read the nodes before the edges
+        incoming_dict[seq_flow_id] = target_ref
+        outgoing_dict[seq_flow_id] = source_ref
     elif tag.endswith("waypoint"):
         if flow is not None:
             x = float(curr_el.get("x"))
@@ -124,6 +125,12 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
                                    bpmn_element=bpmn_element,
                                    flow=flow, rec_depth=rec_depth + 1)
     if rec_depth == 0:
+        for seq_flow_id in incoming_dict:
+            if incoming_dict[seq_flow_id] in nodes_dict:
+                incoming_dict[seq_flow_id] = nodes_dict[incoming_dict[seq_flow_id]]
+        for seq_flow_id in outgoing_dict:
+            if outgoing_dict[seq_flow_id] in nodes_dict:
+                outgoing_dict[seq_flow_id] = nodes_dict[outgoing_dict[seq_flow_id]]
         for flow_id in flow_info:
             if flow_id in outgoing_dict and flow_id in incoming_dict:
                 flow = BPMN.Flow(outgoing_dict[flow_id], incoming_dict[flow_id])

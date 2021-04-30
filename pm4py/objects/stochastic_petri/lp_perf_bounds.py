@@ -22,6 +22,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils.petri_utils import remove_place, remove_transition, add_arc_from_to
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
 from pm4py.util.lp import solver as lp_solver
+import deprecation
 
 DEFAULT_REPLACEMENT_IMMEDIATE = 1000
 
@@ -29,6 +30,7 @@ DEFAULT_LP_SOLVER_VARIANT = lp_solver.ORTOOLS_SOLVER
 
 
 class LpPerfBounds(object):
+    @deprecation.deprecated('2.2.7', '3.0.0')
     def __init__(self, net, initial_marking, final_marking, smap, avg_time_starts):
         """
         Construct the LpPerfBounds object

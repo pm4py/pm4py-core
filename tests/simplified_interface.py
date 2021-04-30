@@ -51,7 +51,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_dfg(self):
         log = pm4py.read_xes("input_data/running-example.xes")
-        dfg, sa, ea = pm4py.discover_dfg(log)
+        dfg, sa, ea = pm4py.discover_directly_follows_graph(log)
 
     def test_read_petri(self):
         net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
@@ -237,6 +237,66 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         sync_net, sync_im, sync_fm = pm4py.construct_synchronous_product_net(log[0], net, im, fm)
         res = pm4py.solve_extended_marking_equation(log[0], sync_net, sync_im, sync_fm)
         self.assertIsNotNone(res)
+
+    def test_alignments_tree(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        tree = pm4py.read_ptml(os.path.join("input_data", "running-example.ptml"))
+        res = pm4py.conformance_diagnostics_alignments(log, tree)
+        self.assertIsNotNone(res)
+
+    def test_alignments_dfg(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        dfg, sa, ea = pm4py.read_dfg(os.path.join("input_data", "running-example.dfg"))
+        res = pm4py.conformance_diagnostics_alignments(log, dfg, sa, ea)
+        self.assertIsNotNone(res)
+
+    def test_alignments_bpmn(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        bpmn_graph = pm4py.read_bpmn(os.path.join("input_data", "running-example.bpmn"))
+        res = pm4py.conformance_diagnostics_alignments(log, bpmn_graph)
+        self.assertIsNotNone(res)
+
+    def test_discovery_inductive_bpmn(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        bpmn_graph = pm4py.discover_bpmn_inductive(log)
+        self.assertIsNotNone(bpmn_graph)
+
+    def test_generation(self):
+        import pm4py
+        tree = pm4py.generate_process_tree()
+        self.assertIsNotNone(tree)
+
+    def test_play_out_tree(self):
+        import pm4py
+        tree = pm4py.read_ptml(os.path.join("input_data", "running-example.ptml"))
+        log = pm4py.play_out(tree)
+
+    def test_play_out_net(self):
+        import pm4py
+        net, im, fm = pm4py.read_pnml(os.path.join("input_data", "running-example.pnml"))
+        log = pm4py.play_out(net, im, fm)
+
+    def test_msd(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        res1 = pm4py.get_minimum_self_distance_witnesses(log)
+        res2 = pm4py.get_minimum_self_distances(log)
+        self.assertIsNotNone(res1)
+        self.assertIsNotNone(res2)
+
+    def test_case_arrival(self):
+        import pm4py
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        avg = pm4py.get_case_arrival_average(log)
+        self.assertIsNotNone(avg)
+
+    def test_efg(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_eventually_follows_graph(log)
 
 
 if __name__ == "__main__":

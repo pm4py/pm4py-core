@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.statistics.performance_spectrum.variants import dataframe, log
+from pm4py.algo.discovery.performance_spectrum.variants import dataframe, log
 from pm4py.util import exec_utils
 import pkgutil
 from enum import Enum
@@ -80,8 +80,9 @@ def apply(log, list_activities, parameters=None):
         if type(log) is pd.DataFrame:
             points = exec_utils.get_variant(Variants.DATAFRAME).apply(log, list_activities, sample_size, parameters)
 
-    points = exec_utils.get_variant(Variants.LOG).apply(log_conversion.apply(log), list_activities, sample_size,
-                                                        parameters)
+    if points is None:
+        points = exec_utils.get_variant(Variants.LOG).apply(log_conversion.apply(log), list_activities, sample_size,
+                                                            parameters)
 
     ps = {Outputs.LIST_ACTIVITIES.value: list_activities, Outputs.POINTS.value: points}
 

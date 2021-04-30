@@ -1,5 +1,46 @@
 # PM4Py Changelog
 
+## PM4PY 2.2.7 (2021.04.30)
+
+### Fixed
+
+* 908e06d7
+    * fix error in loop detection of inductive miner
+* b7b63e0b
+    * add internal log conversion in the flexible heuristics miner
+* e9d61bdb
+    * fix minor bug in bpmn model importing
+* 52cc0c7a  
+    * fix minor bug in xes exporting (type of concept:name was not checked)
+
+### Removed
+
+### Deprecated
+
+* 9c1a9610
+    * various old utility functions are now deprecated
+
+### Changed
+
+*
+    * avoid warnings when visualizing long place names in debug visualization mode
+
+### Added
+
+* c2a9633e, 52e340b1
+    * add simple visualization of performance spectrum.
+* b6ae4b25
+    * add simple dotted chart visualization to the simplified interface.
+* 6e3a0bac
+    * add properties attribute to event logs and event streams for storage of custom meta-data that is not exported to
+      xes.
+* fb142359 
+    * add version of dfg discovery that adds case-level attributes to nodes and edges
+* d902609d
+    * add basic visualization of events per time and cas distribution graphs
+
+### Other
+
 ## PM4PY 2.2.6 (2021.04.23)
 
 ### Fixed
@@ -22,7 +63,7 @@
       using ```pm4py.conformance_diagnostics_alignments(..., multi_processing=True)```
 * de84e5f4
     * add ```pm4py.discover_bpmn_inductive(log)```
-  
+
 ### Other
 
 ## PM4PY 2.2.5 (2021.04.16)

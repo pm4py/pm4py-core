@@ -24,6 +24,7 @@ from pm4py.objects.petri_net import semantics
 from pm4py.objects.petri_net.utils.networkx_graph import create_networkx_directed_graph
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import xes_constants as xes_util
+import deprecation
 
 
 def is_sub_marking(sub_marking, marking):
@@ -310,6 +311,7 @@ def get_transition_by_name(net, transition_name):
     return None
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_cycles_petri_net_places(net):
     """
     Get the cycles of a Petri net (returning only list of places belonging to the cycle)
@@ -337,6 +339,7 @@ def get_cycles_petri_net_places(net):
     return cycles_places
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_cycles_petri_net_transitions(net):
     """
     Get the cycles of a Petri net (returning only list of transitions belonging to the cycle)
@@ -407,6 +410,7 @@ def decorate_transitions_prepostset(net):
         trans.add_marking = add_marking
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_strongly_connected_subnets(net):
     """
     Get the strongly connected components subnets in the Petri net

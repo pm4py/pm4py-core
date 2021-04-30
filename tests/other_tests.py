@@ -5,8 +5,7 @@ from pm4py.algo.discovery.log_skeleton import algorithm as lsk_alg
 from pm4py.algo.conformance.log_skeleton import algorithm as lsk_conf_alg
 from pm4py.objects.process_tree.importer import importer as ptree_importer
 from pm4py.objects.process_tree.exporter import exporter as ptree_exporter
-from pm4py.statistics.performance_spectrum.variants import log as log_pspectrum
-from pm4py.statistics.performance_spectrum.variants import dataframe as df_pspectrum
+from pm4py.algo.discovery.performance_spectrum.variants import log as log_pspectrum, dataframe as df_pspectrum
 from pm4py.objects.dfg.importer import importer as dfg_importer
 from pm4py.objects.dfg.exporter import exporter as dfg_exporter
 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
@@ -231,6 +230,11 @@ class OtherPartsTests(unittest.TestCase):
         from pm4py.algo.discovery.minimum_self_distance import algorithm as minimum_self_distance
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         msd = minimum_self_distance.apply(log)
+
+    def test_lp_solver(self):
+        import pm4py
+        if "cvxopt" not in pm4py.util.lp.solver.DEFAULT_LP_SOLVER_VARIANT:
+            raise Exception("cvxopt is not the solver")
 
 
 if __name__ == "__main__":

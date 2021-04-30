@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.discovery.dfg.variants import native, performance, freq_triples
+from pm4py.algo.discovery.dfg.variants import native, performance, freq_triples, case_attributes
