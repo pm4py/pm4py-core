@@ -1,10 +1,12 @@
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
+import pandas as pd
+from typing import Union, List
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, format: str = "png"):
@@ -308,7 +310,7 @@ def save_vis_sna(sna_metric, file_path: str):
     sna_visualizer.save(gviz, file_path)
 
 
-def view_performance_spectrum(perf_spectrum: Dict[str, Any], format: str = "png"):
+def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], format: str = "png"):
     """
     Displays the performance spectrum
 
@@ -319,23 +321,29 @@ def view_performance_spectrum(perf_spectrum: Dict[str, Any], format: str = "png"
     format
         Format of the visualization (png, svg ...)
     """
+    from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
+    perf_spectrum = performance_spectrum.apply(log, activities)
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
     from pm4py.visualization.performance_spectrum.variants import neato
     gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format})
     perf_spectrum_visualizer.view(gviz)
 
 
-def save_vis_performance_spectrum(perf_spectrum: Dict[str, Any], file_path: str):
+def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str):
     """
     Saves the visualization of the performance spectrum to a file
 
     Parameters
     ---------------
-    perf_spectrum
-        Performance spectrum
+    log
+        Event log
+    activities
+        List of activities (in order) that is used to build the performance spectrum
     file_path
         Destination path (including the extension)
     """
+    from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
+    perf_spectrum = performance_spectrum.apply(log, activities)
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
     from pm4py.visualization.performance_spectrum.variants import neato
     format = file_path[file_path.index(".") + 1:].lower()
