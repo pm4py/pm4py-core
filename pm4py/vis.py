@@ -5,8 +5,6 @@ from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
-import pandas as pd
-from typing import Union
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, format: str = "png"):
@@ -245,7 +243,14 @@ def view_dotted_chart(log, format: str = "png", attributes=None):
     format
         Image format
     attributes
-        Attributes that should be used to construct the dotted chart (for example, ["concept:name", "org:resource"])
+        Attributes that should be used to construct the dotted chart.
+        If None, the default dotted chart will be shown:
+            x-axis: time
+            y-axis: cases (in order of occurrence in the event log)
+            color: activity
+        For custom attributes, use a list of attributes
+        of the form [x-axis attribute, y-axis attribute, color attribute], e.g., ["concept:name", "org:resource", "concept:name"])
+
     """
     log, attributes = __dotted_attribute_selection(log, attributes)
     from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
@@ -271,7 +276,6 @@ def save_vis_dotted_chart(log, file_path: str, attributes=None):
     from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
     gviz = dotted_chart_visualizer.apply(log, attributes, parameters={"format": format})
     dotted_chart_visualizer.save(gviz, file_path)
-
 
 
 def view_sna(sna_metric):
