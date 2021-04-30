@@ -5,6 +5,8 @@ from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
+import pandas as pd
+from typing import Union
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, format: str = "png"):
@@ -204,6 +206,72 @@ def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str):
     parameters = hn_visualizer.Variants.PYDOTPLUS.value.Parameters
     gviz = hn_visualizer.apply(heu_net, parameters={parameters.FORMAT: format})
     hn_visualizer.save(gviz, file_path)
+
+
+def __dotted_attribute_selection(log, attributes):
+    """
+    Default attribute selection for the dotted chart
+
+    Parameters
+    -----------------
+    log
+        Event log
+
+    Returns
+    -----------------
+    attributes
+        List of attributes
+    """
+    if attributes is None:
+        from pm4py.util import xes_constants
+        from pm4py.objects.log.util import sorting
+        from pm4py.convert import convert_to_event_log
+        log = convert_to_event_log(log)
+        log = sorting.sort_timestamp(log, xes_constants.DEFAULT_TIMESTAMP_KEY)
+        for index, trace in enumerate(log):
+            trace.attributes["@@index"] = index
+        attributes = ["time:timestamp", "case:@@index", "concept:name"]
+    return log, attributes
+
+
+def view_dotted_chart(log, format: str = "png", attributes=None):
+    """
+    Displays the dotted chart
+
+    Parameters
+    -----------------
+    log
+        Event log
+    format
+        Image format
+    attributes
+        Attributes that should be used to construct the dotted chart (for example, ["concept:name", "org:resource"])
+    """
+    log, attributes = __dotted_attribute_selection(log, attributes)
+    from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
+    gviz = dotted_chart_visualizer.apply(log, attributes, parameters={"format": format})
+    dotted_chart_visualizer.view(gviz)
+
+
+def save_vis_dotted_chart(log, file_path: str, attributes=None):
+    """
+    Saves the visualization of the dotted chart
+
+    Parameters
+    -----------------
+    log
+        Event log
+    file_path
+        Destination path
+    attributes
+        Attributes that should be used to construct the dotted chart (for example, ["concept:name", "org:resource"])
+    """
+    format = file_path[file_path.index(".") + 1:].lower()
+    log, attributes = __dotted_attribute_selection(log, attributes)
+    from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
+    gviz = dotted_chart_visualizer.apply(log, attributes, parameters={"format": format})
+    dotted_chart_visualizer.save(gviz, file_path)
+
 
 
 def view_sna(sna_metric):
