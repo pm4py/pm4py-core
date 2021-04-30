@@ -1,6 +1,7 @@
 from pm4py.objects.petri_net.utils.networkx_graph import create_networkx_undirected_graph
 from pm4py.objects.petri_net.utils import explore_path
 from pm4py.objects.petri_net import obj
+import deprecation
 
 
 def check_source_and_sink_reachability(net, unique_source, unique_sink):

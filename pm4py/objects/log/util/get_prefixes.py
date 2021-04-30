@@ -38,6 +38,7 @@ def get_log_with_log_prefixes(log, parameters=None):
 
     return all_prefixes_log, change_indexes
 
+
 def get_log_traces_to_activities(log, activities, parameters=None):
     """
     Get sublogs taking to each one of the specified activities
