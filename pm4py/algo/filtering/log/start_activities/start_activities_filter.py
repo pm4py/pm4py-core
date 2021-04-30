@@ -43,12 +43,12 @@ def apply(log, admitted_start_activities, parameters=None):
         filtered_log = EventLog(
             [trace for trace in log if trace and trace[0][attribute_key] in admitted_start_activities],
             attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-            omni_present=log.omni_present)
+            omni_present=log.omni_present, properties=log.properties)
     else:
         filtered_log = EventLog(
             [trace for trace in log if trace and trace[0][attribute_key] not in admitted_start_activities],
             attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-            omni_present=log.omni_present)
+            omni_present=log.omni_present, properties=log.properties)
 
     return filtered_log
 

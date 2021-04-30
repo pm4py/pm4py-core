@@ -43,7 +43,7 @@ def sample_log(log, no_traces=100):
         Filtered log
     """
     new_log = EventLog(attributes=log.attributes, extensions=log.extensions, globals=log._omni,
-                       classifiers=log.classifiers)
+                       classifiers=log.classifiers, properties=log.properties)
     new_log._list = random.sample(log, min(no_traces, len(log)))
     return new_log
 
