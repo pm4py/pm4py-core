@@ -7,6 +7,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 import pandas as pd
 from typing import Union, List
+from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, format: str = "png"):
@@ -310,6 +311,104 @@ def save_vis_sna(sna_metric, file_path: str):
     sna_visualizer.save(gviz, file_path)
 
 
+def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "png"):
+    """
+    Visualizes the case duration graph
+
+    Parameters
+    -----------------
+    log
+        Log object
+    format
+        Format of the visualization (png, svg, ...)
+    """
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.traces.pandas import case_statistics
+        graph = case_statistics.get_kde_caseduration(log)
+    else:
+        from pm4py.statistics.traces.log import case_statistics
+        graph = case_statistics.get_kde_caseduration(log)
+    from pm4py.visualization.graphs import visualizer as graphs_visualizer
+    graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
+                                          parameters={"format": format})
+    graphs_visualizer.view(graph_vis)
+
+
+def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: str):
+    """
+    Saves the case duration graph in the specified path
+
+    Parameters
+    ----------------
+    log
+        Log object
+    file_path
+        Destination path
+    """
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.traces.pandas import case_statistics
+        graph = case_statistics.get_kde_caseduration(log)
+    else:
+        from pm4py.statistics.traces.log import case_statistics
+        graph = case_statistics.get_kde_caseduration(log)
+    format = file_path[file_path.index(".") + 1:].lower()
+    from pm4py.visualization.graphs import visualizer as graphs_visualizer
+    graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
+                                          parameters={"format": format})
+    graphs_visualizer.save(graph_vis, file_path)
+
+
+def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str = "png"):
+    """
+    Visualizes the events per time graph
+
+    Parameters
+    -----------------
+    log
+        Log object
+    format
+        Format of the visualization (png, svg, ...)
+    """
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.attributes.pandas import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
+    else:
+        from pm4py.statistics.attributes.log import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
+    from pm4py.visualization.graphs import visualizer as graphs_visualizer
+    graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
+                                          parameters={"format": format})
+    graphs_visualizer.view(graph_vis)
+
+
+def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path: str):
+    """
+    Saves the events per time graph in the specified path
+
+    Parameters
+    ----------------
+    log
+        Log object
+    file_path
+        Destination path
+    """
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.attributes.pandas import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
+    else:
+        from pm4py.statistics.attributes.log import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
+    format = file_path[file_path.index(".") + 1:].lower()
+    from pm4py.visualization.graphs import visualizer as graphs_visualizer
+    graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
+                                          parameters={"format": format})
+    graphs_visualizer.save(graph_vis, file_path)
+
+
 def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], format: str = "png"):
     """
     Displays the performance spectrum
@@ -321,6 +420,13 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
     format
         Format of the visualization (png, svg ...)
     """
+    if check_is_dataframe(log):
+        check_dataframe_columns(log)
+        from pm4py.statistics.attributes.pandas import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
+    else:
+        from pm4py.statistics.attributes.log import get as attributes_get
+        graph = attributes_get.get_kde_date_attribute(log)
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
     perf_spectrum = performance_spectrum.apply(log, activities)
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
