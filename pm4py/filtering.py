@@ -313,7 +313,7 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
             else:
                 cases = cases.intersection(this_traces)
         filtered_log = EventLog(attributes=log.attributes, extensions=log.extensions, omni_present=log.omni_present,
-                                classifiers=log.classifiers)
+                                classifiers=log.classifiers, properties=log.properties)
         for trace in log:
             if id(trace) in cases:
                 filtered_log.append(trace)

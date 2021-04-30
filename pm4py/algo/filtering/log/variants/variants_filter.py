@@ -36,7 +36,7 @@ def apply(log, admitted_variants, parameters=None):
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     variants = get_variants(log, parameters=parameters)
     log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                   omni_present=log.omni_present)
+                   omni_present=log.omni_present, properties=log.properties)
     for variant in variants:
         if (positive and variant in admitted_variants) or (not positive and variant not in admitted_variants):
             for trace in variants[variant]:
@@ -149,7 +149,7 @@ def filter_variants_variants_percentage(log, variants, variants_percentage=0.0):
         Filtered log
     """
     filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-                            omni_present=log.omni_present)
+                            omni_present=log.omni_present, properties=log.properties)
     no_of_traces = len(log)
     variant_count = get_variants_sorted_by_count(variants)
     already_added_sum = 0

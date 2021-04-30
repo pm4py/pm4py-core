@@ -66,7 +66,7 @@ def filter_traces_contained(log, dt1, dt2, parameters=None):
     dt2 = get_dt_from_string(dt2)
     filtered_log = EventLog([trace for trace in log if is_contained(trace, dt1, dt2, timestamp_key)],
                             attributes=log.attributes, extensions=log.extensions, omni_present=log.omni_present,
-                            classifiers=log.classifiers)
+                            classifiers=log.classifiers, properties=log.properties)
     return filtered_log
 
 
@@ -130,7 +130,7 @@ def filter_traces_intersecting(log, dt1, dt2, parameters=None):
     dt2 = get_dt_from_string(dt2)
     filtered_log = EventLog([trace for trace in log if is_intersecting(trace, dt1, dt2, timestamp_key)],
                             attributes=log.attributes, extensions=log.extensions, omni_present=log.omni_present,
-                            classifiers=log.classifiers)
+                            classifiers=log.classifiers, properties=log.properties)
     return filtered_log
 
 
@@ -164,7 +164,7 @@ def apply_events(log, dt1, dt2, parameters=None):
     stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
     filtered_stream = EventStream([x for x in stream if dt1 <= x[timestamp_key].replace(tzinfo=None) <= dt2],
                                   attributes=log.attributes, extensions=log.extensions, omni_present=log.omni_present,
-                                  classifiers=log.classifiers)
+                                  classifiers=log.classifiers, properties=log.properties)
     filtered_log = log_converter.apply(filtered_stream)
 
     return filtered_log
