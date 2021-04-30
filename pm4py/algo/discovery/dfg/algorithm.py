@@ -1,5 +1,5 @@
 from pm4py import util as pmutil
-from pm4py.algo.discovery.dfg.variants import native, performance, freq_triples
+from pm4py.algo.discovery.dfg.variants import native, performance, freq_triples, case_attributes
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import xes_constants as xes_util
 from pm4py.util import exec_utils
@@ -23,6 +23,7 @@ class Variants(Enum):
     FREQUENCY_GREEDY = native
     PERFORMANCE_GREEDY = performance
     FREQ_TRIPLES = freq_triples
+    CASE_ATTRIBUTES = case_attributes
 
 
 DFG_NATIVE = Variants.NATIVE
