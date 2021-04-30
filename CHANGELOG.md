@@ -10,7 +10,7 @@
     * add internal log conversion in the flexible heuristics miner
 * e9d61bdb
     * fix minor bug in bpmn model importing
-* 52cc0c7a  
+* 52cc0c7a
     * fix minor bug in xes exporting (type of concept:name was not checked)
 
 ### Removed
@@ -34,12 +34,14 @@
 * 6e3a0bac
     * add properties attribute to event logs and event streams for storage of custom meta-data that is not exported to
       xes.
-* fb142359 
+* fb142359
     * add version of dfg discovery that adds case-level attributes to nodes and edges
 * d902609d
     * add basic visualization of events per time and cas distribution graphs
 
 ### Other
+
+---
 
 ## PM4PY 2.2.6 (2021.04.23)
 
@@ -65,6 +67,8 @@
     * add ```pm4py.discover_bpmn_inductive(log)```
 
 ### Other
+
+---
 
 ## PM4PY 2.2.5 (2021.04.16)
 
@@ -105,6 +109,8 @@
 
 ### Other
 
+---
+
 ## PM4PY 2.2.4 (2021.04.01)
 
 ### Fixed
@@ -135,6 +141,8 @@
       and ```pm4py.deserialize()```
 
 ### Other
+
+---
 
 ## PM4PY 2.2.3 (2021.03.19)
 
@@ -189,6 +197,8 @@
 * a756f1fa
     * the process tree operator class is now embedded within the process tree object definition (
       pm4py.objects.process_tree.process_tree.py)
+      
+---
 
 ## PM4PY 2.2.2 (2021.03.03)
 
@@ -225,6 +235,8 @@
     * variants can now be represented as a tuple of activities, rather than a single string
 
 ### Other
+
+---
 
 ## PM4PY 2.2.1 (2021.02.15)
 
