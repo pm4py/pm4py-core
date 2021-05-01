@@ -50,6 +50,11 @@ def execute_script():
     pm4py.save_vis_heuristics_net(heu_net, "ru_heunet.png")
     pm4py.save_vis_dfg(dfg, dfg_sa, dfg_ea, "ru_dfg.png")
 
+    pm4py.save_vis_events_per_time_graph(log1, "ev_time.png")
+    pm4py.save_vis_case_duration_graph(log1, "cd.png")
+    pm4py.save_vis_dotted_chart(log1, "dotted_chart.png")
+    pm4py.save_vis_performance_spectrum(log1, ["register request", "decide"], "ps.png")
+
     if ENABLE_VISUALIZATION:
         pm4py.view_petri_net(petri_alpha, im_alpha, fm_alpha, format="svg")
         pm4py.view_petri_net(petri_inductive, im_inductive, fm_inductive, format="svg")
@@ -134,6 +139,11 @@ def execute_script():
     os.remove("ru_inductive_tree.png")
     os.remove("ru_heunet.png")
     os.remove("ru_dfg.png")
+
+    os.remove("ev_time.png")
+    os.remove("cd.png")
+    os.remove("dotted_chart.png")
+    os.remove("ps.png")
 
     wt_log = pm4py.discover_working_together_network(log2)
     wt_df = pm4py.discover_working_together_network(df2)
