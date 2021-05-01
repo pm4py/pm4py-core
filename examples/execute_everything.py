@@ -4,6 +4,18 @@ import sys
 import traceback
 
 
+def dotted_chart():
+    from examples import dotted_chart
+    print("\n\ndotted_chart")
+    dotted_chart.execute_script()
+
+
+def performance_spectrum():
+    from examples import perf_spectrum_visualization
+    print("\n\nperformance_spectrum")
+    perf_spectrum_visualization.execute_script()
+
+
 def woflan():
     from examples import woflan
     print("\n\nwoflan")
@@ -363,6 +375,8 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(dotted_chart)
+    execute_script(performance_spectrum)
     execute_script(orgmining_local_diagn)
     execute_script(resource_profiles_log)
     execute_script(resource_profile_pandas)
