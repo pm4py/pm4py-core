@@ -309,23 +309,3 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
     pt = discover_process_tree_inductive(log, noise_threshold)
     from pm4py.convert import convert_to_bpmn
     return convert_to_bpmn(pt)
-
-
-def discover_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str]) -> Dict[str, Any]:
-    """
-    Discovers a performance spectrum out of an event log object
-
-    Parameters
-    ---------------
-    log
-        Event log
-    activities
-        List of activities (in order) that is used to build the performance spectrum
-
-    Returns
-    ---------------
-    performance_spectrum
-        Performance spectrum
-    """
-    from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
-    return performance_spectrum.apply(log, activities)

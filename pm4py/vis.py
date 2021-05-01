@@ -420,13 +420,6 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
     format
         Format of the visualization (png, svg ...)
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
-        from pm4py.statistics.attributes.pandas import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log)
-    else:
-        from pm4py.statistics.attributes.log import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log)
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
     perf_spectrum = performance_spectrum.apply(log, activities)
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
