@@ -26,7 +26,7 @@ class Variants(Enum):
 VERSIONS = {Variants.DATAFRAME, Variants.LOG}
 
 
-def apply(log, list_activities, parameters=None):
+def apply(log, list_activities, variant=None, parameters=None):
     """
     Finds the performance spectrum provided a log/dataframe
     and a list of activities
@@ -37,6 +37,8 @@ def apply(log, list_activities, parameters=None):
         Event log/Dataframe
     list_activities
         List of activities interesting for the performance spectrum (at least two)
+    variant
+        Variant to be used (see Variants Enum)
     parameters
         Parameters of the algorithm, including:
             - Parameters.ACTIVITY_KEY
@@ -62,10 +64,14 @@ def apply(log, list_activities, parameters=None):
     if pkgutil.find_loader("pandas"):
         import pandas as pd
         if type(log) is pd.DataFrame:
-            points = exec_utils.get_variant(Variants.DATAFRAME).apply(log, list_activities, sample_size, parameters)
+            if variant is None:
+                variant = Variants.DATAFRAME
+            points = exec_utils.get_variant(variant).apply(log, list_activities, sample_size, parameters)
 
     if points is None:
-        points = exec_utils.get_variant(Variants.LOG).apply(log_conversion.apply(log), list_activities, sample_size,
+        if variant is None:
+            variant = Variants.LOG
+        points = exec_utils.get_variant(variant).apply(log_conversion.apply(log), list_activities, sample_size,
                                                             parameters)
 
     ps = {Outputs.LIST_ACTIVITIES.value: list_activities, Outputs.POINTS.value: points}
