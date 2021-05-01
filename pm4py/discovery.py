@@ -119,13 +119,9 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
     final_marking
         Final marking
     """
-    from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-    if noise_threshold > 0.0:
-        return inductive_miner.apply(log, variant=inductive_miner.Variants.IMf, parameters={
-            inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD: noise_threshold})
-    else:
-        return inductive_miner.apply(log, variant=inductive_miner.Variants.IM_CLEAN, parameters={
-            inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+    pt = discover_process_tree_inductive(log, noise_threshold)
+    from pm4py.convert import convert_to_petri_net
+    return convert_to_petri_net(pt)
 
 
 def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,
@@ -178,12 +174,8 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
         Process tree object
     """
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-    if noise_threshold > 0.0:
-        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IMf, parameters={
-            inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD: noise_threshold})
-    else:
-        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters={
-            inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+    return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters={
+        inductive_miner.Variants.IM_CLEAN.value.Parameters.NOISE_THRESHOLD: noise_threshold})
 
 
 @deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
@@ -205,13 +197,7 @@ def discover_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
     process_tree
         Process tree object
     """
-    from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-    if noise_threshold > 0.0:
-        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IMf, parameters={
-            inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD: noise_threshold})
-    else:
-        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM, parameters={
-            inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+    return discover_process_tree_inductive(log, noise_threshold)
 
 
 def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,
@@ -316,13 +302,26 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
         bpmn_diagram
             BPMN diagram
         """
-    from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-    pt = None
-    if noise_threshold > 0.0:
-        pt = inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IMf, parameters={
-            inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD: noise_threshold})
-    else:
-        pt = inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters={
-            inductive_miner.Variants.IM.value.Parameters.NOISE_THRESHOLD: noise_threshold})
-    from pm4py.objects.conversion.process_tree.variants import to_bpmn
-    return to_bpmn.apply(pt)
+    pt = discover_process_tree_inductive(log, noise_threshold)
+    from pm4py.convert import convert_to_bpmn
+    return convert_to_bpmn(pt)
+
+
+def discover_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str]) -> Dict[str, Any]:
+    """
+    Discovers a performance spectrum out of an event log object
+
+    Parameters
+    ---------------
+    log
+        Event log
+    activities
+        List of activities (in order) that is used to build the performance spectrum
+
+    Returns
+    ---------------
+    performance_spectrum
+        Performance spectrum
+    """
+    from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
+    return performance_spectrum.apply(log, activities)
