@@ -68,13 +68,15 @@ def detect(dfg: DFG, alphabet: Dict[str, int], start_activities: Dict[str, int],
     groups = _check_start_end_completeness(dfg, start_activities, end_activities, groups)
 
     groups = list(filter(lambda g: len(g) > 0, groups))
+
     return groups if len(groups) > 1 else None
 
 
 def _check_start_end_completeness(dfg, start_activities, end_activities, groups):
-    for i, group in enumerate(groups[1:]):
+    i = 1
+    while i < len(groups):
         merge = False
-        for a in group:
+        for a in groups[i]:
             if merge:
                 break
             for (x, b) in dfg:
@@ -88,8 +90,10 @@ def _check_start_end_completeness(dfg, start_activities, end_activities, groups)
                         if not (e, a) in dfg:
                             merge = True
         if merge:
-            groups[0].union(group)
-            groups[i].clear()
+            groups[0] = groups[0].union(groups[i])
+            del groups[i]
+            continue
+        i = i + 1
     return groups
 
 
