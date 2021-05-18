@@ -160,8 +160,8 @@ def align_variant(variant, tree_leaf_set, pt):
         else:
             closed_set.add(sga_state)
             if sga_state.index < len(lmcf):
-                candidates = [l for l in tree_leaf_set if
-                              l.label is not None and l.label == variant[sga_state.index]]
+                candidates = [t for (i,t) in tree_leaf_set if
+                              t.label is not None and t.label == variant[sga_state.index]]
                 need_log_move = len(candidates) == 0
                 for leaf in candidates:
                     path, new_state = pt_sem.shortest_path_to_enable(leaf, copy.copy(sga_state.state))
@@ -202,7 +202,7 @@ def _apply_variant(variant, tree, leaves, bwc, parameters=None):
 
 
 def apply_variant(variant, tree, parameters=None):
-    leaves = frozenset(pt_util.get_leaves(tree))
+    leaves = frozenset(pt_util.get_leaves_as_tuples(tree))
     return _apply_variant(variant, tree, leaves, align_variant([], leaves, tree)["cost"], parameters)
 
 
@@ -242,7 +242,7 @@ def apply_from_variants_list(var_list, tree, parameters=None):
         parameters = {}
 
     progress = _construct_progress_bar(len(var_list), parameters)
-    leaves = frozenset(pt_util.get_leaves(tree))
+    leaves = frozenset(pt_util.get_leaves_as_tuples(tree))
     ret = []
     bwc = align_variant([], leaves, tree)["cost"]
     align_dict = {}
@@ -278,7 +278,7 @@ def apply_multiprocessing(obj, pt, parameters=None):
     if parameters is None:
         parameters = {}
 
-    leaves = frozenset(pt_util.get_leaves(pt))
+    leaves = frozenset(pt_util.get_leaves_as_tuples(pt))
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     num_cores = exec_utils.get_param_value(Parameters.CORES, parameters, multiprocessing.cpu_count() - 2)
 
@@ -340,7 +340,7 @@ def apply(obj, pt, parameters=None):
     if parameters is None:
         parameters = {}
 
-    leaves = frozenset(pt_util.get_leaves(pt))
+    leaves = frozenset(pt_util.get_leaves_as_tuples(pt))
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     if type(obj) is Trace:
         variant = tuple(x[activity_key] for x in obj)

@@ -383,6 +383,16 @@ def get_leaves(t: ProcessTree, leaves=None):
     return leaves
 
 
+def get_leaves_as_tuples(t: ProcessTree, leaves=None):
+    leaves = leaves if leaves is not None else set()
+    if len(t.children) == 0:
+        leaves.add((id(t), t))
+    else:
+        for c in t.children:
+            leaves = get_leaves_as_tuples(c, leaves)
+    return leaves
+
+
 def is_operator(tree: ProcessTree, operator: pt_op.Operator) -> bool:
     return tree is not None and tree.operator is not None and tree.operator == operator
 
