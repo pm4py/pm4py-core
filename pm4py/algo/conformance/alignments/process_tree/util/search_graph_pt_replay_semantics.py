@@ -78,11 +78,12 @@ def close_vertex(tree: ProcessTree, state: ProcessTreeState) -> Tuple[Optional[
         path = list()
         state = copy.copy(state)
         for c in tree.children:
-            if ptu.is_in_state(c, ProcessTree.OperatorState.CLOSED, state):
+            if not ptu.is_in_state(c, ProcessTree.OperatorState.CLOSED, state):
                 e_path, state = transform_tree(c, ProcessTree.OperatorState.CLOSED, state)
                 path.extend(e_path)
         state[(id(tree), tree)] = ProcessTree.OperatorState.CLOSED
         path.append((tree, ProcessTree.OperatorState.CLOSED))
+        # if tree is a redo, then we will always need to execute the do part of the surrounding loop
         if ptu.is_operator(tree.parent, Operator.LOOP) and tree == tree.parent.children[
             1] and current_state == ProcessTree.OperatorState.OPEN:
             e_path, state = enable_vertex(tree.parent.children[0], state)

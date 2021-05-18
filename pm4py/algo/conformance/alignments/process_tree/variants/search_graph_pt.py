@@ -6,12 +6,11 @@ from concurrent.futures import ProcessPoolExecutor
 from enum import Enum
 from typing import List, Any, Optional
 
+from pm4py.algo.conformance.alignments.process_tree.util import search_graph_pt_replay_semantics as pt_sem
 from pm4py.objects.log.obj import Trace
+from pm4py.objects.petri_net.utils import align_utils
 from pm4py.objects.process_tree.obj import Operator
 from pm4py.objects.process_tree.obj import ProcessTree
-
-from pm4py.algo.conformance.alignments.process_tree.util import search_graph_pt_replay_semantics as pt_sem
-from pm4py.objects.petri_net.utils import align_utils
 from pm4py.objects.process_tree.utils import generic as pt_util
 from pm4py.util import exec_utils, constants, xes_constants
 
@@ -149,17 +148,17 @@ def _need_log_move(old_state, new_state, path) -> bool:
 def align_variant(variant, tree_leaf_set, pt):
     lmcf = [1] * len(variant)
     initial_search_state = SGASearchState(0, 0, pt_sem.get_initial_state(pt))
-    sga_closed = set()
-    sga_open = [initial_search_state]
-    heapq.heapify(sga_open)
+    closed_set = set()
+    open_set = [initial_search_state]
+    heapq.heapify(open_set)
     count = 0
-    while not len(sga_open) == 0:
+    while not len(open_set) == 0:
         count += 1
-        sga_state = heapq.heappop(sga_open)
+        sga_state = heapq.heappop(open_set)
         if _is_final_tree_state(sga_state.state, pt) and sga_state.index == len(variant):
             return _construct_result_dictionary(sga_state, variant)
         else:
-            sga_closed.add(sga_state)
+            closed_set.add(sga_state)
             if sga_state.index < len(lmcf):
                 candidates = [l for l in tree_leaf_set if
                               l.label is not None and l.label == variant[sga_state.index]]
@@ -174,17 +173,17 @@ def align_variant(variant, tree_leaf_set, pt):
                         sync_path, new_state = pt_sem.shortest_path_to_close(leaf, new_state)
                         path.extend(sync_path)
                         leaves = _obtain_leaves_from_state_path(path, include_tau=True)
-                        sga_open, sga_closed = _add_new_state(
+                        open_set, closed_set = _add_new_state(
                             SGASearchState(sga_state.costs + len(model_moves),
                                            sga_state.index + 1,
                                            new_state, leaves=leaves, parent=sga_state), sga_state,
-                            sga_open,
-                            sga_closed)
+                            open_set,
+                            closed_set)
                 if need_log_move:
-                    sga_open, sga_closed = _add_new_state(
+                    open_set, closed_set = _add_new_state(
                         SGASearchState(sga_state.costs + lmcf[sga_state.index],
                                        sga_state.index + 1,
-                                       copy.copy(sga_state.state), parent=sga_state), sga_state, sga_open, sga_closed)
+                                       copy.copy(sga_state.state), parent=sga_state), sga_state, open_set, closed_set)
             else:
                 # FINISH
                 path, new_state = pt_sem.shortest_path_to_close(pt, sga_state.state)
@@ -192,14 +191,19 @@ def align_variant(variant, tree_leaf_set, pt):
                 sga_state.state = new_state
                 sga_state.costs = sga_state.costs + len(model_moves)
                 sga_state.leaves.extend(_obtain_leaves_from_state_path(path, include_tau=True))
-                heapq.heappush(sga_open, sga_state)
+                heapq.heappush(open_set, sga_state)
 
 
-def apply_variant(variant, tree, leaves, bwc, parameters=None):
+def _apply_variant(variant, tree, leaves, bwc, parameters=None):
     alignment_obj = align_variant(variant, leaves, tree)
     ltrace_bwc = len(variant) + bwc
     alignment_obj["fitness"] = 1.0 - alignment_obj["cost"] / ltrace_bwc if ltrace_bwc > 0 else 0.0
     return alignment_obj
+
+
+def apply_variant(variant, tree, parameters=None):
+    leaves = frozenset(pt_util.get_leaves(tree))
+    return _apply_variant(variant, tree, leaves, align_variant([], leaves, tree)["cost"], parameters)
 
 
 def _construct_progress_bar(progress_length, parameters):
@@ -244,7 +248,7 @@ def apply_from_variants_list(var_list, tree, parameters=None):
     align_dict = {}
     for variant in var_list:
         if variant not in align_dict:
-            align_dict[variant] = apply_variant(variant, tree, leaves, bwc, parameters)
+            align_dict[variant] = _apply_variant(variant, tree, leaves, bwc, parameters)
             if progress is not None:
                 progress.update()
         ret.append(align_dict[variant])
@@ -351,7 +355,7 @@ def apply(obj, pt, parameters=None):
         for trace in obj:
             variant = tuple(x[activity_key] for x in trace)
             if variant not in align_dict:
-                align_dict[variant] = apply_variant(variant, pt, leaves, bwc, parameters)
+                align_dict[variant] = _apply_variant(variant, pt, leaves, bwc, parameters)
                 if progress is not None:
                     progress.update()
             ret.append(align_dict[variant])
