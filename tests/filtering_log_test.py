@@ -10,6 +10,7 @@ from pm4py.algo.filtering.log.variants import variants_filter as variants_module
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.statistics.traces.log import case_statistics
 from pm4py.algo.filtering.log.ltl import ltl_checker
+from pm4py.algo.filtering.log.timestamp import timestamp_filter
 from tests.constants import INPUT_DATA_DIR
 from pm4py.util import constants
 
@@ -178,6 +179,10 @@ class LogFilteringTest(unittest.TestCase):
         from pm4py.algo.filtering.log.attr_value_repetition import filter
         log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
         filtered_log = filter.apply(log, "Sara", parameters={constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: "org:resource"})
+
+    def test_filter_traces_attribute_in_timeframe(self):
+        log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
+        filtered_log = timestamp_filter.filter_traces_attribute_in_timeframe(log, "concept:name", "reinitiate request", "2011-01-06 00:00:00", "2011-01-07 23:59:59")
 
 
 if __name__ == "__main__":

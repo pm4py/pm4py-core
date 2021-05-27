@@ -169,6 +169,48 @@ def apply_events(log, dt1, dt2, parameters=None):
 
     return filtered_log
 
+def has_attribute_in_timeframe(trace, attribute, attribute_value, dt1, dt2, timestamp_key):
+    for e in trace:
+        if attribute in e and e[attribute] == attribute_value and dt1 <= e[timestamp_key].replace(tzinfo=None) <= dt2:
+            return True
+    return False
+
+def filter_traces_attribute_in_timeframe(log, attribute, attribute_value, dt1, dt2, parameters=None):
+    """
+    Get a new log containing all the traces that have an event in the given interval with the specified attribute value 
+
+    Parameters
+    -----------
+    log
+        Log
+    attribute
+        The attribute to filter on
+    attribute_value
+        The attribute value to filter on
+    dt1
+        Lower bound to the interval
+    dt2
+        Upper bound to the interval
+    parameters
+        Possible parameters of the algorithm, including:
+            Parameters.TIMESTAMP_KEY -> Attribute to use as timestamp
+
+    Returns
+    ------------
+    filtered_log
+        Filtered log
+    """
+    if parameters is None:
+        parameters = {}
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    dt1 = get_dt_from_string(dt1)
+    dt2 = get_dt_from_string(dt2)
+
+    filtered_log = EventLog([trace for trace in log if has_attribute_in_timeframe(trace, attribute, attribute_value, dt1, dt2, timestamp_key)],
+                            attributes=log.attributes, extensions=log.extensions, omni_present=log.omni_present,
+                            classifiers=log.classifiers)
+    return filtered_log
 
 def apply(df, parameters=None):
     del df

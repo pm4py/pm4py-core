@@ -151,6 +151,52 @@ def apply_events(df, dt1, dt2, parameters=None):
 
     return df
 
+def filter_traces_attribute_in_timeframe(df, attribute, attribute_value, dt1, dt2, parameters=None):
+    """
+    Get a new log containing all the traces that have an event in the given interval with the specified attribute value 
+
+    Parameters
+    -----------
+    df
+        Dataframe
+    attribute
+        The attribute to filter on
+    attribute_value
+        The attribute value to filter on
+    dt1
+        Lower bound to the interval
+    dt2
+        Upper bound to the interval
+    parameters
+        Possible parameters of the algorithm, including:
+            Parameters.TIMESTAMP_KEY -> Attribute to use as timestamp
+
+    Returns
+    ------------
+    df
+        Filtered dataframe
+    """
+
+    if parameters is None:
+        parameters = {}
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    
+    dt1 = get_dt_from_string(dt1)
+    dt2 = get_dt_from_string(dt2)
+    needs_conversion = check_pandas_ge_024()
+    if needs_conversion:
+        dt1 = dt1.replace(tzinfo=pytz.utc)
+        dt2 = dt2.replace(tzinfo=pytz.utc)
+        dt1 = pd.to_datetime(dt1, utc=True)
+        dt2 = pd.to_datetime(dt2, utc=True)
+    
+    filtered = df[df[attribute] == attribute_value]
+    filtered = filtered[filtered[timestamp_key] >= dt1]
+    filtered = filtered[filtered[timestamp_key] <= dt2]
+    filtered = df[df[case_id_glue].isin(filtered[case_id_glue])]
+
+    return filtered
 
 def apply(df, parameters=None):
     del df
