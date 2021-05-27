@@ -95,6 +95,12 @@ class DataframePrefilteringTest(unittest.TestCase):
         del df2
         del df3
 
+    def test_filtering_traces_attribute_in_timeframe(self):
+        input_log = os.path.join(INPUT_DATA_DIR, "receipt.csv")
+        df = pd.read_csv(input_log)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df1 = timestamp_filter.filter_traces_attribute_in_timeframe(df, "concept:name", "Confirmation of receipt", "2011-03-09 00:00:00", "2012-01-18 23:59:59")
+
     def test_AeventuallyB_pos(self):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df)

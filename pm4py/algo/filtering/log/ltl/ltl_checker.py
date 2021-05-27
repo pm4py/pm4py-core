@@ -324,23 +324,22 @@ def eventually_follows(log, attribute_values, parameters=None):
         if enable_timestamp and timestamp_diff_boundaries:
             prev_min = min(occurrences[0], default=-1)
             for i in range(1, len(attribute_values)):
-                if prev_min == -1:
-                    is_good = False
-                    break
-
-                if len(occurrences[i]) == 0:
+                if prev_min == -1 or len(occurrences[i]) == 0:
                     is_good = False
                     break
 
                 if timestamp_diff_boundaries:
                     min_diff = timestamp_diff_boundaries[i - 1][0]
                     max_diff = timestamp_diff_boundaries[i - 1][1]
-
                     min_timestamp = min([o for o in occurrences[i] if (o - prev_min) >= min_diff and (o - prev_min) <= max_diff], default=-1)
                 else:
                     min_timestamp = min([o for o in occurrences[i] if o >= prev_min], default = -1)
 
                 prev_min = min_timestamp
+
+                if prev_min == -1:
+                    is_good = False
+                    break
                 
         else:        
             prev_min = min(occurrences[0], default=-1)
