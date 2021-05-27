@@ -1,4 +1,4 @@
-from pm4py.algo.discovery.performance_spectrum.variants import dataframe, log
+from pm4py.algo.discovery.performance_spectrum.variants import dataframe, log, dataframe_disconnected, log_disconnected
 from pm4py.util import exec_utils
 import pkgutil
 from enum import Enum
@@ -21,9 +21,8 @@ class Outputs(Enum):
 class Variants(Enum):
     DATAFRAME = dataframe
     LOG = log
-
-
-VERSIONS = {Variants.DATAFRAME, Variants.LOG}
+    DATAFRAME_DISCONNECTED = dataframe_disconnected
+    LOG_DISCONNECTED = log_disconnected
 
 
 def apply(log, list_activities, variant=None, parameters=None):
@@ -66,11 +65,13 @@ def apply(log, list_activities, variant=None, parameters=None):
         if type(log) is pd.DataFrame:
             if variant is None:
                 variant = Variants.DATAFRAME
+
             points = exec_utils.get_variant(variant).apply(log, list_activities, sample_size, parameters)
 
     if points is None:
         if variant is None:
             variant = Variants.LOG
+
         points = exec_utils.get_variant(variant).apply(log_conversion.apply(log), list_activities, sample_size,
                                                             parameters)
 
