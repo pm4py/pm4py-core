@@ -307,7 +307,7 @@ def eventually_follows(df0, attribute_values, parameters=None):
 
     for i in range(2, len(df_a)):
         df_join = df_join.merge(df_a[i], on=case_id_glue, suffixes=('', "_%d" % i)).dropna()
-        df_join["@@diffindex%d" % (i - 1)] = df_join[constants.DEFAULT_INDEX_KEY + "_i" % i] - df_join[
+        df_join["@@diffindex%d" % (i - 1)] = df_join[constants.DEFAULT_INDEX_KEY + "_%d" % i] - df_join[
             constants.DEFAULT_INDEX_KEY + "_%d" % (i - 1)]
         df_join = df_join[df_join["@@diffindex%d" % (i - 1)] > 0]
 
