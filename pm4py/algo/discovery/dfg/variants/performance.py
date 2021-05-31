@@ -41,7 +41,7 @@ def performance(log, parameters=None):
         parameters = {}
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
-    start_timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
                                                      xes_util.DEFAULT_TIMESTAMP_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
