@@ -682,7 +682,7 @@ def __approximate_alignment_on_loop(pt: ProcessTree, trace: Trace, a_sets: Dict[
     t_variables = t__variables
     x_variables = x__variables
 
-    alignments_to_calculate: List[Tuple[ProcessTree, Trace]] = []
+    alignments_to_calculate = []
     sub_trace = Trace()
     current_subtree_idx = 0
     for i in range(len(trace)):
@@ -966,7 +966,7 @@ def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: D
 
     x_variables = x__variables
 
-    alignments_to_calculate: List[Tuple[ProcessTree, Trace]] = []
+    alignments_to_calculate = []
     for j in range(len(pt.children)):
         sub_trace = Trace()
         for i in range(len(trace)):
@@ -1198,8 +1198,8 @@ def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: D
     x_variables = x__variables
 
     # trace_parts list contains trace parts mapped onto the determined subtree
-    trace_parts: List[Tuple[ProcessTree, Trace]] = []
-    last_subtree: ProcessTree = None
+    trace_parts = []
+    last_subtree = None
     for i in range(len(trace)):
         for j in range(len(pt.children)):
             subtree = pt.children[j]
@@ -1215,9 +1215,9 @@ def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: D
                 continue
 
     # calculate an alignment for each subtree
-    alignments_per_subtree: Dict[ProcessTree] = {}
+    alignments_per_subtree = {}
     for j in range(len(pt.children)):
-        subtree: ProcessTree = pt.children[j]
+        subtree = pt.children[j]
         sub_trace = Trace()
         for trace_part in trace_parts:
             if subtree == trace_part[0]:
