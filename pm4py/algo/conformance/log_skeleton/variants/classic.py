@@ -186,7 +186,7 @@ def apply_actlist(trace, model, parameters=None):
                 for act in this_constraints:
                     if min(this_constraints[act]) > 0 and not act in trace:
                         dev_total += 1
-                        ret[Outputs.DEVIATIONS.value].append((default_considered_constraints[i], (act, this_constraints[act])))
+                        ret[Outputs.DEVIATIONS.value].append((default_considered_constraints[i], (act, 0)))
             elif default_considered_constraints[i] == DiscoveryOutputs.NEVER_TOGETHER.value:
                 this_constraints = {x for x in model[default_considered_constraints[i]] if x[0] in trace}
                 conf_total += len(this_constraints)
