@@ -174,6 +174,7 @@ class Trace(Sequence):
 
     def __init__(self, *args, **kwargs):
         self._set_attributes(kwargs['attributes'] if 'attributes' in kwargs else {})
+        self._properties = kwargs['properties'] if 'properties' in kwargs else {}
         self._list = list(*args)
 
     def __hash__(self):
@@ -230,7 +231,14 @@ class Trace(Sequence):
     def _get_attributes(self):
         return self._attributes
 
+    def _get_properties(self):
+        return self._properties
+
+    def _set_properties(self, properties):
+        self._properties = properties
+
     attributes = property(_get_attributes)
+    properties = property(_get_properties, _set_properties)
 
     def __repr__(self, ret_list=False):
         if len(self._list) == 0:
