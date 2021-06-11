@@ -1,4 +1,4 @@
-from pm4py.statistics.traces.pandas import case_statistics
+from pm4py.statistics.traces.generic.pandas import case_statistics
 
 
 def get_variants_count(df, parameters=None):

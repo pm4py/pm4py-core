@@ -22,7 +22,7 @@ def apply(df, parameters=None):
     log
         Event log
     """
-    from pm4py.statistics.traces.pandas import case_statistics
+    from pm4py.statistics.traces.generic.pandas import case_statistics
 
     if parameters is None:
         parameters = {}

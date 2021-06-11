@@ -4,8 +4,7 @@ from pm4py.algo.discovery.footprints import algorithm as fp_discovery
 from pm4py.algo.conformance.footprints import algorithm as fp_conformance
 from pm4py.algo.conformance.footprints.util import tree_visualization
 from pm4py.visualization.process_tree import visualizer as pt_visualizer
-from pm4py.statistics.traces.log import case_statistics
-from pm4py.algo.filtering.log.variants import variants_filter
+from pm4py.statistics.traces.generic.log import case_statistics
 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
 from pm4py.algo.filtering.log.paths import paths_filter
 from pm4py.util.vis_utils import human_readable_stat
