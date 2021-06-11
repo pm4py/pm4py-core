@@ -1,15 +1,28 @@
-import numpy as np
+from enum import Enum
+from typing import Optional, List, Dict, Any, Set, Union, Tuple
 
-from pm4py.util import xes_constants as xes
+import pandas as pd
+
+from pm4py.objects.conversion.log import converter
+from pm4py.objects.log.obj import EventLog, Trace, Event
+from pm4py.objects.log.util import dataframe_utils
 from pm4py.util import constants
-
-import deprecation
-
-ENABLE_ACTIVITY_DEF_REPRESENTATION = "enable_activity_def_representation"
-ENABLE_SUCC_DEF_REPRESENTATION = "enable_succ_def_representation"
+from pm4py.util import exec_utils
+from pm4py.util import xes_constants as xes
 
 
-def get_string_trace_attribute_rep(trace, trace_attribute):
+class Parameters(Enum):
+    ENABLE_ACTIVITY_DEF_REPRESENTATION = "enable_activity_def_representation"
+    ENABLE_SUCC_DEF_REPRESENTATION = "enable_succ_def_representation"
+    STR_TRACE_ATTRIBUTES = "str_tr_attr"
+    STR_EVENT_ATTRIBUTES = "str_ev_attr"
+    NUM_TRACE_ATTRIBUTES = "num_tr_attr"
+    NUM_EVENT_ATTRIBUTES = "num_ev_attr"
+    STR_EVSUCC_ATTRIBUTES = "str_evsucc_attr"
+    FEATURE_NAMES = "feature_names"
+
+
+def get_string_trace_attribute_rep(trace: Trace, trace_attribute: str) -> str:
     """
     Get a representation of the feature name associated to a string trace attribute value
 
@@ -30,7 +43,7 @@ def get_string_trace_attribute_rep(trace, trace_attribute):
     return "trace:" + str(trace_attribute) + "@UNDEFINED"
 
 
-def get_all_string_trace_attribute_values(log, trace_attribute):
+def get_all_string_trace_attribute_values(log: EventLog, trace_attribute: str) -> List[str]:
     """
     Get all string trace attribute values representations for a log
 
@@ -52,7 +65,7 @@ def get_all_string_trace_attribute_values(log, trace_attribute):
     return list(sorted(values))
 
 
-def get_string_event_attribute_rep(event, event_attribute):
+def get_string_event_attribute_rep(event: Event, event_attribute: str) -> str:
     """
     Get a representation of the feature name associated to a string event attribute value
 
@@ -71,7 +84,7 @@ def get_string_event_attribute_rep(event, event_attribute):
     return "event:" + str(event_attribute) + "@" + str(event[event_attribute])
 
 
-def get_values_event_attribute_for_trace(trace, event_attribute):
+def get_values_event_attribute_for_trace(trace: Trace, event_attribute: str) -> Set[str]:
     """
     Get all the representations for the events of a trace associated to a string event attribute values
 
@@ -96,7 +109,7 @@ def get_values_event_attribute_for_trace(trace, event_attribute):
     return values_trace
 
 
-def get_all_string_event_attribute_values(log, event_attribute):
+def get_all_string_event_attribute_values(log: EventLog, event_attribute: str) -> List[str]:
     """
     Get all the representations for all the traces of the log associated to a string event attribute values
 
@@ -118,7 +131,7 @@ def get_all_string_event_attribute_values(log, event_attribute):
     return list(sorted(values))
 
 
-def get_string_event_attribute_succession_rep(event1, event2, event_attribute):
+def get_string_event_attribute_succession_rep(event1: Event, event2: Event, event_attribute: str) -> str:
     """
     Get a representation of the feature name associated to a string event attribute value
 
@@ -140,7 +153,7 @@ def get_string_event_attribute_succession_rep(event1, event2, event_attribute):
         event2[event_attribute])
 
 
-def get_values_event_attribute_succession_for_trace(trace, event_attribute):
+def get_values_event_attribute_succession_for_trace(trace: Trace, event_attribute: str) -> Set[str]:
     """
     Get all the representations for the events of a trace associated to a string event attribute succession values
 
@@ -167,7 +180,7 @@ def get_values_event_attribute_succession_for_trace(trace, event_attribute):
     return values_trace
 
 
-def get_all_string_event_succession_attribute_values(log, event_attribute):
+def get_all_string_event_succession_attribute_values(log: EventLog, event_attribute: str) -> List[str]:
     """
     Get all the representations for all the traces of the log associated to a string event attribute succession values
 
@@ -189,7 +202,7 @@ def get_all_string_event_succession_attribute_values(log, event_attribute):
     return list(sorted(values))
 
 
-def get_numeric_trace_attribute_rep(trace_attribute):
+def get_numeric_trace_attribute_rep(trace_attribute: str) -> str:
     """
     Get the feature name associated to a numeric trace attribute
 
@@ -206,7 +219,7 @@ def get_numeric_trace_attribute_rep(trace_attribute):
     return "trace:" + trace_attribute
 
 
-def get_numeric_trace_attribute_value(trace, trace_attribute):
+def get_numeric_trace_attribute_value(trace: Trace, trace_attribute: str) -> Union[int, float]:
     """
     Get the value of a numeric trace attribute from a given trace
 
@@ -225,7 +238,7 @@ def get_numeric_trace_attribute_value(trace, trace_attribute):
     raise Exception("at least a trace without trace attribute: " + trace_attribute)
 
 
-def get_numeric_event_attribute_rep(event_attribute):
+def get_numeric_event_attribute_rep(event_attribute: str) -> str:
     """
     Get the feature name associated to a numeric event attribute
 
@@ -242,7 +255,7 @@ def get_numeric_event_attribute_rep(event_attribute):
     return "event:" + event_attribute
 
 
-def get_numeric_event_attribute_value(event, event_attribute):
+def get_numeric_event_attribute_value(event: Event, event_attribute: str) -> Union[int, float]:
     """
     Get the value of a numeric event attribute from a given event
 
@@ -261,7 +274,7 @@ def get_numeric_event_attribute_value(event, event_attribute):
     return None
 
 
-def get_numeric_event_attribute_value_trace(trace, event_attribute):
+def get_numeric_event_attribute_value_trace(trace: Trace, event_attribute: str) -> Union[int, float]:
     """
     Get the value of the last occurrence of a numeric event attribute given a trace
 
@@ -285,8 +298,9 @@ def get_numeric_event_attribute_value_trace(trace, event_attribute):
     raise Exception("at least a trace without any event with event attribute: " + event_attribute)
 
 
-@deprecation.deprecated('2.2.8', '3.0.0', details="please use pm4py.algo.transformation.log_to_features instead")
-def get_default_representation_with_attribute_names(log, parameters=None, feature_names=None):
+def get_default_representation_with_attribute_names(log: EventLog, parameters: Optional[Dict[str, Any]] = None,
+                                                    feature_names: Optional[List[str]] = None) -> Tuple[
+    Any, List[str], List[str], List[str], List[str], List[str]]:
     """
     Gets the default data representation of an event log (for process tree building)
     returning also the attribute names
@@ -312,10 +326,11 @@ def get_default_representation_with_attribute_names(log, parameters=None, featur
     if parameters is None:
         parameters = {}
 
-    enable_activity_def_representation = parameters[
-        ENABLE_ACTIVITY_DEF_REPRESENTATION] if ENABLE_ACTIVITY_DEF_REPRESENTATION in parameters else False
-    enable_succ_def_representation = parameters[
-        ENABLE_SUCC_DEF_REPRESENTATION] if ENABLE_SUCC_DEF_REPRESENTATION in parameters else False
+    enable_activity_def_representation = exec_utils.get_param_value(Parameters.ENABLE_ACTIVITY_DEF_REPRESENTATION,
+                                                                    parameters, False)
+    enable_succ_def_representation = exec_utils.get_param_value(Parameters.ENABLE_SUCC_DEF_REPRESENTATION, parameters,
+                                                                False)
+
     activity_key = parameters[
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     blacklist = parameters["blacklist"] if "blacklist" in parameters else []
@@ -342,8 +357,8 @@ def get_default_representation_with_attribute_names(log, parameters=None, featur
     return data, feature_names, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr
 
 
-@deprecation.deprecated('2.2.8', '3.0.0', details="please use pm4py.algo.transformation.log_to_features instead")
-def get_default_representation(log, parameters=None, feature_names=None):
+def get_default_representation(log: EventLog, parameters: Optional[Dict[str, Any]] = None,
+                               feature_names: Optional[List[str]] = None) -> Tuple[Any, List[str]]:
     """
     Gets the default data representation of an event log (for process tree building)
 
@@ -368,10 +383,11 @@ def get_default_representation(log, parameters=None, feature_names=None):
     if parameters is None:
         parameters = {}
 
-    enable_activity_def_representation = parameters[
-        ENABLE_ACTIVITY_DEF_REPRESENTATION] if ENABLE_ACTIVITY_DEF_REPRESENTATION in parameters else False
-    enable_succ_def_representation = parameters[
-        ENABLE_SUCC_DEF_REPRESENTATION] if ENABLE_SUCC_DEF_REPRESENTATION in parameters else False
+    enable_activity_def_representation = exec_utils.get_param_value(Parameters.ENABLE_ACTIVITY_DEF_REPRESENTATION,
+                                                                    parameters, True)
+    enable_succ_def_representation = exec_utils.get_param_value(Parameters.ENABLE_SUCC_DEF_REPRESENTATION, parameters,
+                                                                True)
+
     activity_key = parameters[
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     blacklist = parameters["blacklist"] if "blacklist" in parameters else []
@@ -395,9 +411,9 @@ def get_default_representation(log, parameters=None, feature_names=None):
                               feature_names=feature_names)
 
 
-@deprecation.deprecated('2.2.8', '3.0.0', details="please use pm4py.algo.transformation.log_to_features instead")
-def get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, str_evsucc_attr=None,
-                       feature_names=None):
+def get_representation(log: EventLog, str_tr_attr: List[str], str_ev_attr: List[str], num_tr_attr: List[str],
+                       num_ev_attr: List[str], str_evsucc_attr: Optional[List[str]] = None,
+                       feature_names: Optional[List[str]] = None) -> Tuple[Any, List[str]]:
     """
     Get a representation of the event log that is suited for the data part of the decision tree learning
 
@@ -491,5 +507,70 @@ def get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, 
                     if value in dictionary:
                         trace_rep[dictionary[value]] = 1
         data.append(trace_rep)
-    data = np.asarray(data)
+    # data = np.asarray(data)
     return data, feature_names
+
+
+def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> Tuple[Any, List[str]]:
+    """
+    Extract the features from an event log (a vector for each trace)
+
+    Parameters
+    -----------------
+    log
+        Log
+    parameters
+        Parameters of the algorithm, including:
+        - STR_TRACE_ATTRIBUTES => string trace attributes to consider in the features extraction
+        - STR_EVENT_ATTRIBUTES => string event attributes to consider in the features extraction
+        - NUM_TRACE_ATTRIBUTES => numeric trace attributes to consider in the features extraction
+        - NUM_EVENT_ATTRIBUTES => numeric event attributes to consider in the features extraction
+        - STR_EVSUCC_ATTRIBUTES => succession of event attributes to consider in the features extraction
+        - FEATURE_NAMES => features to consider (in the given order)
+
+    Returns
+    -------------
+    data
+        Data to provide for decision tree learning
+    feature_names
+        Names of the features, in order
+    """
+    if parameters is None:
+        parameters = {}
+
+    str_tr_attr = exec_utils.get_param_value(Parameters.STR_TRACE_ATTRIBUTES, parameters, None)
+    num_tr_attr = exec_utils.get_param_value(Parameters.NUM_TRACE_ATTRIBUTES, parameters, None)
+    str_ev_attr = exec_utils.get_param_value(Parameters.STR_EVENT_ATTRIBUTES, parameters, None)
+    num_ev_attr = exec_utils.get_param_value(Parameters.NUM_EVENT_ATTRIBUTES, parameters, None)
+    str_evsucc_attr = exec_utils.get_param_value(Parameters.STR_EVSUCC_ATTRIBUTES, parameters, None)
+    feature_names = exec_utils.get_param_value(Parameters.FEATURE_NAMES, parameters, None)
+
+    if str_tr_attr is None:
+        str_tr_attr = []
+
+    if num_tr_attr is None:
+        num_tr_attr = []
+
+    if str_ev_attr is None:
+        str_ev_attr = []
+
+    if num_ev_attr is None:
+        num_ev_attr = []
+
+    if type(log) is pd.DataFrame:
+        if str_tr_attr or num_tr_attr or str_ev_attr or num_ev_attr:
+            columns = list(set(["case:" + x for x in str_tr_attr]).union(set(["case:" + x for x in num_tr_attr])).union(
+                set(str_ev_attr)).union(set(num_ev_attr)))
+            fea_df = dataframe_utils.get_features_df(log, columns, parameters=parameters)
+            feature_names = list(fea_df.columns)
+        else:
+            fea_df = dataframe_utils.automatic_feature_extraction_df(log, parameters=parameters)
+            feature_names = list(fea_df.columns)
+        return fea_df, feature_names
+    else:
+        log = converter.apply(log, parameters=parameters)
+        if str_tr_attr or num_tr_attr or str_ev_attr or num_ev_attr:
+            return get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr,
+                                      str_evsucc_attr=str_evsucc_attr, feature_names=feature_names)
+        else:
+            return get_default_representation(log, parameters=parameters)
