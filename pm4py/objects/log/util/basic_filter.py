@@ -40,7 +40,7 @@ def filter_log_events_attr(log, values, parameters=None):
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
-    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM, parameters={"deepcopy": False})
     if positive:
         stream = EventStream(list(filter(lambda x: x[attribute_key] in values, stream)))
     else:

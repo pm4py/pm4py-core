@@ -39,6 +39,7 @@ def apply(log_obj: Union[pd.DataFrame, EventLog], attributes: List[str], variant
     if isinstance(log_obj, pd.DataFrame):
         log_obj = log_obj[list(set(attributes))]
 
+    parameters["deepcopy"] = False
     stream = log_converter.apply(log_obj, variant=log_converter.Variants.TO_EVENT_STREAM, parameters=parameters)
     stream = [tuple(y[a] for a in attributes) for y in stream]
 
