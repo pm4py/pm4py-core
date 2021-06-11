@@ -159,7 +159,7 @@ def get_kde_numeric_attribute(log, attribute, parameters=None):
     """
 
     if type(log) is EventLog:
-        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)
+        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
     else:
         event_log = log
 
@@ -193,7 +193,7 @@ def get_kde_numeric_attribute_json(log, attribute, parameters=None):
     """
 
     if type(log) is EventLog:
-        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)
+        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
     else:
         event_log = log
 
@@ -226,7 +226,7 @@ def get_kde_date_attribute(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None
     """
 
     if type(log) is EventLog:
-        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)
+        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
     else:
         event_log = log
 
@@ -260,7 +260,7 @@ def get_kde_date_attribute_json(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters
     """
 
     if type(log) is EventLog:
-        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)
+        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
     else:
         event_log = log
 

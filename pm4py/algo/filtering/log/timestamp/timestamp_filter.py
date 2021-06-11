@@ -161,7 +161,7 @@ def apply_events(log, dt1, dt2, parameters=None):
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
 
-    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM, parameters={"deepcopy": False})
     filtered_stream = EventStream([x for x in stream if dt1 <= x[timestamp_key].replace(tzinfo=None) <= dt2],
                                   attributes=log.attributes, extensions=log.extensions, omni_present=log.omni_present,
                                   classifiers=log.classifiers, properties=log.properties)
