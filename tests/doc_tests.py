@@ -201,7 +201,7 @@ class DocTests(unittest.TestCase):
         variants = variants_filter.get_variants(log)
 
     def test_23(self):
-        from pm4py.statistics.traces.pandas import case_statistics
+        from pm4py.statistics.traces.generic.pandas import case_statistics
         df = self.load_running_example_df()
         variants = case_statistics.get_variants_df(df,
                                                    parameters={
@@ -209,13 +209,13 @@ class DocTests(unittest.TestCase):
                                                        case_statistics.Parameters.ACTIVITY_KEY: "concept:name"})
 
     def test_24(self):
-        from pm4py.statistics.traces.log import case_statistics
+        from pm4py.statistics.traces.generic.log import case_statistics
         log = self.load_running_example_xes()
         variants_count = case_statistics.get_variant_statistics(log)
         variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
 
     def test_25(self):
-        from pm4py.statistics.traces.pandas import case_statistics
+        from pm4py.statistics.traces.generic.pandas import case_statistics
         df = self.load_running_example_df()
         variants_count = case_statistics.get_variant_statistics(df,
                                                                 parameters={
@@ -1002,11 +1002,11 @@ class DocTests(unittest.TestCase):
         import os
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
 
-        from pm4py.statistics.traces.log import case_statistics
+        from pm4py.statistics.traces.generic.log import case_statistics
         all_case_durations = case_statistics.get_all_casedurations(log, parameters={
             case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"})
 
-        from pm4py.statistics.traces.log import case_statistics
+        from pm4py.statistics.traces.generic.log import case_statistics
         median_case_duration = case_statistics.get_median_caseduration(log, parameters={
             case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"
         })
@@ -1016,11 +1016,11 @@ class DocTests(unittest.TestCase):
         import os
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
 
-        from pm4py.statistics.traces.log import case_arrival
+        from pm4py.statistics.traces.generic.log import case_arrival
         case_arrival_ratio = case_arrival.get_case_arrival_avg(log, parameters={
             case_arrival.Parameters.TIMESTAMP_KEY: "time:timestamp"})
 
-        from pm4py.statistics.traces.log import case_arrival
+        from pm4py.statistics.traces.generic.log import case_arrival
         case_dispersion_ratio = case_arrival.get_case_dispersion_avg(log, parameters={
             case_arrival.Parameters.TIMESTAMP_KEY: "time:timestamp"})
 
@@ -1061,7 +1061,7 @@ class DocTests(unittest.TestCase):
         log = xes_importer.apply(log_path)
 
         from pm4py.util import constants
-        from pm4py.statistics.traces.log import case_statistics
+        from pm4py.statistics.traces.generic.log import case_statistics
         x, y = case_statistics.get_kde_caseduration(log, parameters={
             constants.PARAMETER_CONSTANT_TIMESTAMP_KEY: "time:timestamp"})
 

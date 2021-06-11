@@ -32,13 +32,13 @@ class StatisticsLogTest(unittest.TestCase):
         get.get_start_activities(log)
 
     def test_case_arrival(self):
-        from pm4py.statistics.traces.log import case_arrival
+        from pm4py.statistics.traces.generic.log import case_arrival
         log = self.get_log()
         case_arrival.get_case_arrival_avg(log)
         case_arrival.get_case_dispersion_avg(log)
 
     def test_case_statistics(self):
-        from pm4py.statistics.traces.log import case_statistics
+        from pm4py.statistics.traces.generic.log import case_statistics
         log = self.get_log()
         case_statistics.get_kde_caseduration(log)
         case_statistics.get_events(log, "N77802")

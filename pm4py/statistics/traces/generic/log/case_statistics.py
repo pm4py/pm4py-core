@@ -1,7 +1,7 @@
 from pm4py.statistics.variants.log import get as variants_get
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.xes_constants import DEFAULT_TRACEID_KEY
-from pm4py.statistics.traces.common import case_duration as case_duration_commons
+from pm4py.statistics.traces.generic.common import case_duration as case_duration_commons
 from pm4py.util.business_hours import BusinessHours
 import numpy as np
 from enum import Enum

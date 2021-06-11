@@ -255,8 +255,8 @@ def get_variants_list(log, parameters=None):
     variants_list
         List of variants of the log (along with their count)
     """
-    from pm4py.statistics.traces.pandas import case_statistics as pd_case_statistics
-    from pm4py.statistics.traces.log import case_statistics as log_case_statistics
+    from pm4py.statistics.traces.generic.pandas import case_statistics as pd_case_statistics
+    from pm4py.statistics.traces.generic.log import case_statistics as log_case_statistics
 
     variants_list = []
     if type(log) is pd.DataFrame:

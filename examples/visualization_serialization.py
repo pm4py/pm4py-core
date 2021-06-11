@@ -6,7 +6,7 @@ from pm4py.visualization.process_tree import visualizer as tree_visualizer
 from pm4py.visualization.petri_net import visualizer as pn_visualizer
 from pm4py.visualization.bpmn import visualizer as bpmn_visualizer
 from pm4py.visualization.transition_system import visualizer as ts_visualizer
-from pm4py.statistics.traces.log import case_statistics
+from pm4py.statistics.traces.generic.log import case_statistics
 from pm4py.visualization.graphs import visualizer as graphs_visualizer
 
 
