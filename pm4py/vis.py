@@ -1,20 +1,4 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-from typing import Optional, Dict, Any, List
+from typing import Optional
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
@@ -340,10 +324,10 @@ def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "
     """
     if check_is_dataframe(log):
         check_dataframe_columns(log)
-        from pm4py.statistics.traces.pandas import case_statistics
+        from pm4py.statistics.traces.generic.pandas import case_statistics
         graph = case_statistics.get_kde_caseduration(log)
     else:
-        from pm4py.statistics.traces.log import case_statistics
+        from pm4py.statistics.traces.generic.log import case_statistics
         graph = case_statistics.get_kde_caseduration(log)
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
@@ -364,10 +348,10 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
     """
     if check_is_dataframe(log):
         check_dataframe_columns(log)
-        from pm4py.statistics.traces.pandas import case_statistics
+        from pm4py.statistics.traces.generic.pandas import case_statistics
         graph = case_statistics.get_kde_caseduration(log)
     else:
-        from pm4py.statistics.traces.log import case_statistics
+        from pm4py.statistics.traces.generic.log import case_statistics
         graph = case_statistics.get_kde_caseduration(log)
     format = file_path[file_path.index(".") + 1:].lower()
     from pm4py.visualization.graphs import visualizer as graphs_visualizer

@@ -29,7 +29,7 @@ from pm4py.util import xes_constants as xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-
+from copy import copy
 
 class Parameters(Enum):
     ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
@@ -77,7 +77,10 @@ def apply_numeric(log, int1, int2, parameters=None):
     stream_filter_key2 = exec_utils.get_param_value(Parameters.STREAM_FILTER_KEY2, parameters, None)
     stream_filter_value2 = exec_utils.get_param_value(Parameters.STREAM_FILTER_VALUE2, parameters, None)
 
-    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
+    conversion_parameters = copy(parameters)
+    conversion_parameters["deepcopy"] = False
+
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM, parameters=conversion_parameters)
     if stream_filter_key1 is not None:
         stream = EventStream(
             list(filter(lambda x: stream_filter_key1 in x and x[stream_filter_key1] == stream_filter_value1, stream)),
@@ -138,7 +141,9 @@ def apply_numeric_events(log, int1, int2, parameters=None):
 
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
 
-    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
+    conversion_parameters = copy(parameters)
+    conversion_parameters["deepcopy"] = False
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM, parameters=conversion_parameters)
     if exec_utils.get_param_value(Parameters.POSITIVE, parameters, True):
         stream = EventStream(list(filter(lambda x: attribute_key in x and int1 <= x[attribute_key] <= int2, stream)),
                              attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
@@ -179,7 +184,10 @@ def apply_events(log, values, parameters=None):
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
-    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
+    conversion_parameters = copy(parameters)
+    conversion_parameters["deepcopy"] = False
+
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM, parameters=conversion_parameters)
     if positive:
         stream = EventStream(list(filter(lambda x: x[attribute_key] in values, stream)), attributes=log.attributes,
                              extensions=log.extensions, classifiers=log.classifiers,

@@ -290,26 +290,26 @@ def __approximate_alignment_on_loop(pt: ProcessTree, trace: Trace, a_sets: Dict[
     ilp = LpProblem(sense=LpMinimize)
 
     # x_i_j = 1 <=> assigns activity i to subtree j
-    x_variables: Dict[int, Dict[int, LpVariable]] = {}
+    x_variables = {}
 
     # t_i_j = 1 <=> inserts a tau at position i and assigns it to subtree j
-    t_variables: Dict[int, Dict[int, LpVariable]] = {}
+    t_variables = {}
 
     # s_i_j = 1 <=> activity i is a start activity in the current sub-trace assigned to subtree j
-    s_variables: Dict[int, Dict[int, LpVariable]] = {}
+    s_variables = {}
 
     # e_i_j = 1 <=> activity i is an end activity in the current sub-trace assigned to subtree j
-    e_variables: Dict[int, Dict[int, LpVariable]] = {}
+    e_variables = {}
 
     # v_i_j = 1 <=> activity i is neither a start nor end-activity in the current sub-trace assigned to subtree j
-    v_variables: Dict[int, Dict[int, LpVariable]] = {}
+    v_variables = {}
 
     # auxiliary variables
     # p_i_j = 1 <=> previous activity i-1 is assigned to the other subtree or t_1_other-subtree is 1
-    p_variables: Dict[int, Dict[int, LpVariable]] = {}
+    p_variables = {}
 
     # n_i_j = 1 <=> next activity i+1 is assigned to the other subtree or t_1_other-subtree is 1
-    n_variables: Dict[int, Dict[int, LpVariable]] = {}
+    n_variables = {}
 
     t_costs = {}
     s_costs = {}
@@ -457,7 +457,7 @@ def __approximate_alignment_on_loop(pt: ProcessTree, trace: Trace, a_sets: Dict[
     status = ilp.solve()
     assert status == 1
 
-    alignments_to_calculate: List[Tuple[ProcessTree, Trace]] = []
+    alignments_to_calculate = []
     sub_trace = Trace()
     current_subtree_idx = 0
     for i in range(len(trace)):
@@ -515,19 +515,19 @@ def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: D
     ilp = LpProblem(sense=LpMinimize)
 
     # x_i_j = 1 <=> assigns activity i to subtree j
-    x_variables: Dict[int, Dict[int, LpVariable]] = {}
+    x_variables = {}
 
     # s_i_j = 1 <=> activity i is a start activity in the current sub-trace assigned to subtree j
-    s_variables: Dict[int, Dict[int, LpVariable]] = {}
+    s_variables = {}
 
     # e_i_j = 1 <=> activity i is an end activity in the current sub-trace assigned to subtree j
-    e_variables: Dict[int, Dict[int, LpVariable]] = {}
+    e_variables = {}
 
     # auxiliary u_j <=> u_j=1 if an activity is assigned to subtree j
-    u_variables: Dict[int, LpVariable] = {}
+    u_variables = {}
 
     # v_i_j = 1 <=> activity i is neither a start nor end-activity in the current sub-trace assigned to subtree j
-    v_variables: Dict[int, Dict[int, LpVariable]] = {}
+    v_variables = {}
 
     s_costs = {}
     e_costs = {}
@@ -632,7 +632,7 @@ def __approximate_alignment_on_sequence(pt: ProcessTree, trace: Trace, a_sets: D
     status = ilp.solve()
     assert status == 1
 
-    alignments_to_calculate: List[Tuple[ProcessTree, Trace]] = []
+    alignments_to_calculate = []
     for j in range(len(pt.children)):
         sub_trace = Trace()
         for i in range(len(trace)):
@@ -669,19 +669,19 @@ def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: D
     ilp = LpProblem(sense=LpMinimize)
 
     # x_i_j = 1 <=> assigns activity i to subtree j
-    x_variables: Dict[int, Dict[int, LpVariable]] = {}
+    x_variables = {}
 
     # s_i_j = 1 <=> activity i is a start activity in the current sub-trace assigned to subtree j
-    s_variables: Dict[int, Dict[int, LpVariable]] = {}
+    s_variables = {}
 
     # e_i_j = 1 <=> activity i is an end activity in the current sub-trace assigned to subtree j
-    e_variables: Dict[int, Dict[int, LpVariable]] = {}
+    e_variables = {}
 
     # auxiliary u_j <=> u_j=1 if an activity is assigned to subtree j
-    u_variables: Dict[int, LpVariable] = {}
+    u_variables = {}
 
     # v_i_j = 1 <=> activity i is neither a start nor end-activity in the current sub-trace assigned to subtree j
-    v_variables: Dict[int, Dict[int, LpVariable]] = {}
+    v_variables = {}
 
     s_costs = {}
     e_costs = {}
@@ -778,8 +778,8 @@ def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: D
     assert status == 1
 
     # trace_parts list contains trace parts mapped onto the determined subtree
-    trace_parts: List[Tuple[ProcessTree, Trace]] = []
-    last_subtree: ProcessTree = None
+    trace_parts = []
+    last_subtree = None
     for i in range(len(trace)):
         for j in range(len(pt.children)):
             subtree = pt.children[j]
@@ -795,9 +795,9 @@ def __approximate_alignment_on_parallel(pt: ProcessTree, trace: Trace, a_sets: D
                 continue
 
     # calculate an alignment for each subtree
-    alignments_per_subtree: Dict[ProcessTree] = {}
+    alignments_per_subtree = {}
     for j in range(len(pt.children)):
-        subtree: ProcessTree = pt.children[j]
+        subtree = pt.children[j]
         sub_trace = Trace()
         for trace_part in trace_parts:
             if subtree == trace_part[0]:

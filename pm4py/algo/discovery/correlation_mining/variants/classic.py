@@ -169,6 +169,8 @@ def preprocess_log(log, activities=None, parameters=None):
         # keep only the two columns before conversion
         log = log[list(set([activity_key, timestamp_key, start_timestamp_key]))]
 
+    parameters["deepcopy"] = False
+    parameters["include_case_attributes"] = False
     log = converter.apply(log, variant=converter.TO_EVENT_STREAM, parameters=parameters)
     transf_stream = EventStream()
     for idx, ev in enumerate(log):

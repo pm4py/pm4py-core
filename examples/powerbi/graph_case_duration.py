@@ -15,7 +15,7 @@ import pandas as pd
 dataset["time:timestamp"] = pd.to_datetime(dataset["time:timestamp"])
 dataset = dataset.sort_values("time:timestamp")
 
-from pm4py.statistics.traces.pandas import case_statistics
+from pm4py.statistics.traces.generic.pandas import case_statistics
 from pm4py.visualization.graphs import visualizer as graphs_visualizer
 
 x_cases, y_cases = case_statistics.get_kde_caseduration(dataset)

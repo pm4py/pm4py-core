@@ -49,7 +49,7 @@ def apply(log, parameters=None):
         parameters = {}
 
     import numpy
-    from pm4py.statistics.traces.pandas import case_statistics
+    from pm4py.statistics.traces.generic.pandas import case_statistics
 
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY)
 

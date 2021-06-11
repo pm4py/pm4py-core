@@ -16,7 +16,7 @@
 '''
 from pm4py.util import xes_constants as xes
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
-from pm4py.statistics.traces.common import case_duration as case_duration_commons
+from pm4py.statistics.traces.generic.common import case_duration as case_duration_commons
 from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.util import exec_utils, constants, pandas_utils
 from enum import Enum
