@@ -1,9 +1,9 @@
 import os
 import unittest
 
-from pm4py.statistics.traces.pandas import case_statistics as pd_case_statistics
+from pm4py.statistics.traces.generic.pandas import case_statistics as pd_case_statistics
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.statistics.traces.log import case_statistics as log_case_statistics
+from pm4py.statistics.traces.generic.log import case_statistics as log_case_statistics
 from pm4py.statistics.attributes.log import get as log_attributes_filter
 from pm4py.statistics.attributes.pandas import get as pd_attributes_filter
 import pandas as pd

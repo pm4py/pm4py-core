@@ -263,8 +263,8 @@ def get_case_arrival_average(log: Union[EventLog, pd.DataFrame]) -> float:
     """
     if check_is_dataframe(log):
         check_dataframe_columns(log)
-        from pm4py.statistics.traces.pandas import case_arrival
+        from pm4py.statistics.traces.generic.pandas import case_arrival
         return case_arrival.get_case_arrival_avg(log)
     else:
-        from pm4py.statistics.traces.log import case_arrival
+        from pm4py.statistics.traces.generic.log import case_arrival
         return case_arrival.get_case_arrival_avg(log)

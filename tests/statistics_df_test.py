@@ -28,12 +28,12 @@ class StatisticsDfTest(unittest.TestCase):
         get.get_start_activities(df)
 
     def test_case_arrival(self):
-        from pm4py.statistics.traces.pandas import case_arrival
+        from pm4py.statistics.traces.generic.pandas import case_arrival
         df = self.get_dataframe()
         case_arrival.get_case_arrival_avg(df)
 
     def test_case_statistics(self):
-        from pm4py.statistics.traces.pandas import case_statistics
+        from pm4py.statistics.traces.generic.pandas import case_statistics
         df = self.get_dataframe()
         case_statistics.get_cases_description(df)
         case_statistics.get_variants_df(df)
