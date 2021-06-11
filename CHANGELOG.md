@@ -1,5 +1,46 @@
 # PM4Py Changelog
 
+## PM4PY 2.2.8 (2021.06.11)
+
+### Fixed
+
+* c11bab8f
+    * bug fix in eventually-follows filter
+* d3fd1bc1
+    * bug fix in activity frequency constraints of the log skeleton conformance checking
+
+### Removed
+
+### Deprecated
+
+### Changed
+
+* d96d9d69
+    * improved performance of the df-based performance spectrum code
+* 499d8a1c
+    * improved performance of log conversions when (for internal use) deep copy is not required
+
+### Added
+
+* 4d679934
+    * allow the possibility to filter on a trace attribute that has a type date (e.g., does the planned start date of
+      the case fall in a given time window?)
+* b7ef36e8
+    * add properties object to trace attributes (used for internal storage of statistics, will not be exported to disk)
+* d7029365
+    * added some basic ML utilities for event logs, e.g., getting all prefixes of traces, get a train/test split
+* 1ec5802e
+    * new subtrace selection mechanism that gets all events inbetween two given activity labels (uses first match on
+      both 1st and 2nd label)
+* 9b65bbd9
+    * allow specification of business hours in sojourn time computation of the DFG
+* 4d529d6e
+    * generic support for feature extraction
+
+### Other
+
+---
+
 ## PM4PY 2.2.7 (2021.04.30)
 
 ### Fixed
@@ -22,7 +63,7 @@
 
 ### Changed
 
-*
+* 424c9ad9
     * avoid warnings when visualizing long place names in debug visualization mode
 
 ### Added
@@ -197,7 +238,7 @@
 * a756f1fa
     * the process tree operator class is now embedded within the process tree object definition (
       pm4py.objects.process_tree.process_tree.py)
-      
+
 ---
 
 ## PM4PY 2.2.2 (2021.03.03)
