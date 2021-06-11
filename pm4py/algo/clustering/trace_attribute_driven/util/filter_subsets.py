@@ -18,9 +18,8 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 from pm4py.objects.log.obj import EventLog, Trace
-from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
-from pm4py.statistics.traces.log import case_statistics
+from pm4py.statistics.traces.generic.log import case_statistics
 from pm4py.statistics.variants.log import get as variants_statistics
 from pm4py.util import exec_utils
 from pm4py.util import variants_util

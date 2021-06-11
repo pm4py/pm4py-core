@@ -43,6 +43,7 @@ def apply(log, list_activities, sample_size, parameters):
         parameters = {}
 
     all_acti_combs = [list_activities[j:j + i] for i in range(2, len(list_activities) + 1) for j in range(0, len(list_activities) - i + 1)]
+    two_acti_combs = [[list_activities[i], list_activities[i + 1]] for i in range(len(list_activities) - 1)]
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
@@ -53,8 +54,7 @@ def apply(log, list_activities, sample_size, parameters):
 
     points = []
     for trace in log:
-        acti_combs = [[list_activities[i], list_activities[i + 1]] for i in range(len(list_activities) - 1)]
-        matches = [(i, i + 1) for i in range(len(trace) - 1) if [trace[i][activity_key], trace[i + 1][activity_key]] in acti_combs]
+        matches = [(i, i + 1) for i in range(len(trace) - 1) if [trace[i][activity_key], trace[i + 1][activity_key]] in two_acti_combs]
 
         i = 0
         while i < len(matches) - 1:

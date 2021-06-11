@@ -19,6 +19,8 @@ import numpy as np
 from pm4py.util import xes_constants as xes
 from pm4py.util import constants
 
+import deprecation
+
 ENABLE_ACTIVITY_DEF_REPRESENTATION = "enable_activity_def_representation"
 ENABLE_SUCC_DEF_REPRESENTATION = "enable_succ_def_representation"
 
@@ -299,6 +301,7 @@ def get_numeric_event_attribute_value_trace(trace, event_attribute):
     raise Exception("at least a trace without any event with event attribute: " + event_attribute)
 
 
+@deprecation.deprecated('2.2.8', '3.0.0', details="please use pm4py.algo.transformation.log_to_features instead")
 def get_default_representation_with_attribute_names(log, parameters=None, feature_names=None):
     """
     Gets the default data representation of an event log (for process tree building)
@@ -355,6 +358,7 @@ def get_default_representation_with_attribute_names(log, parameters=None, featur
     return data, feature_names, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr
 
 
+@deprecation.deprecated('2.2.8', '3.0.0', details="please use pm4py.algo.transformation.log_to_features instead")
 def get_default_representation(log, parameters=None, feature_names=None):
     """
     Gets the default data representation of an event log (for process tree building)
@@ -407,6 +411,7 @@ def get_default_representation(log, parameters=None, feature_names=None):
                               feature_names=feature_names)
 
 
+@deprecation.deprecated('2.2.8', '3.0.0', details="please use pm4py.algo.transformation.log_to_features instead")
 def get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr, str_evsucc_attr=None,
                        feature_names=None):
     """

@@ -189,17 +189,15 @@ def __transform_event_log_to_event_stream(log, include_case_attributes=True,
       log : :class:`pm4py.log.log.EventLog`
           An Event stream
       """
-    events = []
-    for trace in log:
+    event_stream = log_instance.EventStream([], attributes=log.attributes, classifiers=log.classifiers,
+                                    omni_present=log.omni_present, extensions=log.extensions, properties=log.properties)
+    for index, trace in enumerate(log):
         for event in trace:
             new_event = deepcopy(event) if enable_deepcopy else event
             if include_case_attributes:
                 for key, value in trace.attributes.items():
                     new_event[case_attribute_prefix + key] = value
-            # fix 14/02/2019: since the XES standard does not force to specify a case ID, when event log->event stream
-            # conversion is done, the possibility to get back the original event log is lost
-            if pmutil.CASE_ATTRIBUTE_GLUE not in new_event:
-                new_event[pmutil.CASE_ATTRIBUTE_GLUE] = str(hash(trace))
-            events.append(new_event)
-    return log_instance.EventStream(events, attributes=log.attributes, classifiers=log.classifiers,
-                                    omni_present=log.omni_present, extensions=log.extensions, properties=log.properties)
+            else:
+                new_event[pmutil.CASE_ATTRIBUTE_GLUE] = str(index)
+            event_stream.append(new_event)
+    return event_stream

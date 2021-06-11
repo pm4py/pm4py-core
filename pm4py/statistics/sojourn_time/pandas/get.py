@@ -17,12 +17,16 @@
 from enum import Enum
 
 from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util.business_hours import soj_time_business_hours_diff
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    BUSINESS_HOURS = "business_hours"
+    WORKTIMING = "worktiming"
+    WEEKENDS = "weekends"
 
 
 DIFF_KEY = "@@diff"
@@ -41,6 +45,13 @@ def apply(dataframe, parameters=None):
         - Parameters.ACTIVITY_KEY => activity key
         - Parameters.START_TIMESTAMP_KEY => start timestamp key
         - Parameters.TIMESTAMP_KEY => timestamp key
+        - Parameters.BUSINESS_HOURS => calculates the difference of time based on the business hours, not the total time.
+                                        Default: False
+        - Parameters.WORKTIMING => work schedule of the company (provided as a list where the first number is the start
+            of the work time, and the second number is the end of the work time), if business hours are enabled
+                                        Default: [7, 17] (work shift from 07:00 to 17:00)
+        - Parameters.WEEKENDS => indexes of the days of the week that are weekend
+                                        Default: [6, 7] (weekends are Saturday and Sunday)
 
     Returns
     --------------
@@ -50,14 +61,24 @@ def apply(dataframe, parameters=None):
     if parameters is None:
         parameters = {}
 
+    business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
                                                      xes_constants.DEFAULT_TIMESTAMP_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
 
-    dataframe[DIFF_KEY] = (
-            dataframe[timestamp_key] - dataframe[start_timestamp_key]).astype('timedelta64[s]')
+    if business_hours:
+        dataframe[DIFF_KEY] = dataframe.apply(
+            lambda x: soj_time_business_hours_diff(x[start_timestamp_key], x[timestamp_key], worktiming,
+                                                   weekends), axis=1)
+    else:
+        dataframe[DIFF_KEY] = (
+                dataframe[timestamp_key] - dataframe[start_timestamp_key]).astype('timedelta64[s]')
+
     dataframe = dataframe.reset_index()
 
     ret_dict = dataframe.groupby(activity_key)[DIFF_KEY].mean().to_dict()

@@ -169,7 +169,7 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
                             df[col] = pd.to_datetime(df[col], utc=True, format=timest_format)
                         else:
                             df[col] = pd.to_datetime(df[col])
-                except ValueError:
+                except:
                     # print("exception converting column: "+str(col))
                     pass
     return df

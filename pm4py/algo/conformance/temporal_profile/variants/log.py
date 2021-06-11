@@ -22,6 +22,7 @@ from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.util import typing
+from pm4py.util.business_hours import BusinessHours
 
 
 class Parameters(Enum):
@@ -29,6 +30,9 @@ class Parameters(Enum):
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     ZETA = "zeta"
+    BUSINESS_HOURS = "business_hours"
+    WORKTIMING = "worktiming"
+    WEEKENDS = "weekends"
 
 
 def apply(log: EventLog, temporal_profile: typing.TemporalProfile,
@@ -52,6 +56,13 @@ def apply(log: EventLog, temporal_profile: typing.TemporalProfile,
          - Parameters.START_TIMESTAMP_KEY => the attribute to use as start timestamp
          - Parameters.TIMESTAMP_KEY => the attribute to use as timestamp
          - Parameters.ZETA => multiplier for the standard deviation
+         - Parameters.BUSINESS_HOURS => calculates the difference of time based on the business hours, not the total time.
+                                        Default: False
+         - Parameters.WORKTIMING => work schedule of the company (provided as a list where the first number is the start
+            of the work time, and the second number is the end of the work time), if business hours are enabled
+                                        Default: [7, 17] (work shift from 07:00 to 17:00)
+         - Parameters.WEEKENDS => indexes of the days of the week that are weekend
+                                        Default: [6, 7] (weekends are Saturday and Sunday)
 
     Returns
     ---------------
@@ -67,6 +78,10 @@ def apply(log: EventLog, temporal_profile: typing.TemporalProfile,
         parameters = {}
 
     log = log_converter.apply(log, parameters=parameters)
+
+    business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
@@ -87,7 +102,14 @@ def apply(log: EventLog, temporal_profile: typing.TemporalProfile,
                 if time_j >= time_i:
                     act_j = trace[j][activity_key]
                     if (act_i, act_j) in temporal_profile:
-                        this_diff = time_j - time_i
+                        if business_hours:
+                            bh = BusinessHours(trace[i][timestamp_key].replace(tzinfo=None),
+                                               trace[j][start_timestamp_key].replace(tzinfo=None),
+                                               worktiming=worktiming,
+                                               weekends=weekends)
+                            this_diff = bh.getseconds()
+                        else:
+                            this_diff = time_j - time_i
                         mean = temporal_profile[(act_i, act_j)][0]
                         std = temporal_profile[(act_i, act_j)][1]
                         if this_diff < mean - zeta * std or this_diff > mean + zeta * std:

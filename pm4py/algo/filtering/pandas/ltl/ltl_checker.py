@@ -1,26 +1,13 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+from enum import Enum
 
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+import deprecation
 
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
+from pm4py.util import exec_utils, pandas_utils, constants
 from pm4py.util.constants import CASE_CONCEPT_NAME
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_CASEID_KEY, \
     PARAMETER_CONSTANT_RESOURCE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
-from enum import Enum
-from pm4py.util import exec_utils, pandas_utils, constants
-import deprecation
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
+
 
 class Parameters(Enum):
     CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
@@ -84,7 +71,7 @@ def A_eventually_B(df0, A, B, parameters=None):
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna()
-    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY + "_2"] - df_join[constants.DEFAULT_INDEX_KEY]
     df_join = df_join[df_join["@@diffindex"] > 0]
 
     if enable_timestamp:
@@ -154,10 +141,10 @@ def A_eventually_B_eventually_C(df0, A, B, C, parameters=None):
     df_C = df_C.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna()
-    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY + "_2"] - df_join[constants.DEFAULT_INDEX_KEY]
     df_join = df_join[df_join["@@diffindex"] > 0]
     df_join = df_join.join(df_C, on=case_id_glue, rsuffix="_3").dropna()
-    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY+"_3"] - df_join[constants.DEFAULT_INDEX_KEY+"_2"]
+    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY + "_3"] - df_join[constants.DEFAULT_INDEX_KEY + "_2"]
     df_join = df_join[df_join["@@diffindex2"] > 0]
 
     if enable_timestamp:
@@ -239,13 +226,13 @@ def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     df_D = df_D.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna()
-    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY + "_2"] - df_join[constants.DEFAULT_INDEX_KEY]
     df_join = df_join[df_join["@@diffindex"] > 0]
     df_join = df_join.join(df_C, on=case_id_glue, rsuffix="_3").dropna()
-    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY+"_3"] - df_join[constants.DEFAULT_INDEX_KEY+"_2"]
+    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY + "_3"] - df_join[constants.DEFAULT_INDEX_KEY + "_2"]
     df_join = df_join[df_join["@@diffindex2"] > 0]
     df_join = df_join.join(df_D, on=case_id_glue, rsuffix="_4").dropna()
-    df_join["@@diffindex3"] = df_join[constants.DEFAULT_INDEX_KEY+"_4"] - df_join[constants.DEFAULT_INDEX_KEY+"_3"]
+    df_join["@@diffindex3"] = df_join[constants.DEFAULT_INDEX_KEY + "_4"] - df_join[constants.DEFAULT_INDEX_KEY + "_3"]
     df_join = df_join[df_join["@@diffindex3"] > 0]
 
     if enable_timestamp:
@@ -314,22 +301,26 @@ def eventually_follows(df0, attribute_values, parameters=None):
 
     df_a = [df[df[attribute_key] == attribute_value].copy() for attribute_value in attribute_values]
 
-    df_join = df_a[0].merge(df_a[1], on=case_id_glue, suffixes=('', "_1")).dropna()
-    df_join["@@diffindex0"] = df_join[constants.DEFAULT_INDEX_KEY+"_1"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join = df_a[0].merge(df_a[1], on=case_id_glue, suffixes=('_0', "_1")).dropna()
+    df_join[constants.DEFAULT_INDEX_KEY] = df_join[constants.DEFAULT_INDEX_KEY + "_0"]
+    df_join["@@diffindex0"] = df_join[constants.DEFAULT_INDEX_KEY + "_1"] - df_join[constants.DEFAULT_INDEX_KEY + "_0"]
     df_join = df_join[df_join["@@diffindex0"] > 0]
 
     for i in range(2, len(df_a)):
-        df_join = df_join.merge(df_a[i], on=case_id_glue, suffixes=('', f"_{i}")).dropna()
-        df_join[f"@@diffindex{i-1}"] = df_join[constants.DEFAULT_INDEX_KEY+f"_{i}"] - df_join[constants.DEFAULT_INDEX_KEY+f"_{i-1}"]
-        df_join = df_join[df_join[f"@@diffindex{i-1}"] > 0]
+        df_join = df_join.merge(df_a[i], on=case_id_glue, suffixes=('', "_%d" % i)).dropna()
+        df_join["@@diffindex%d" % (i - 1)] = df_join[constants.DEFAULT_INDEX_KEY + "_%d" % i] - df_join[
+            constants.DEFAULT_INDEX_KEY + "_%d" % (i - 1)]
+        df_join = df_join[df_join["@@diffindex%d" % (i - 1)] > 0]
 
     if enable_timestamp:
-        for i in range(len(df_a)):
-            df_join[f"@@difftimestamp{i}"] = (df_join[timestamp_key + f"_{i + 1}"] - df_join[timestamp_key + f'_{i}']).astype('timedelta64[s]')
+        for i in range(2, len(df_a)):
+            df_join["@@difftimestamp%d" % (i - 1)] = (
+                        df_join[timestamp_key + "_%d" % i] - df_join[timestamp_key + '_%d' % (i-1)]).astype(
+                'timedelta64[s]')
 
             if timestamp_diff_boundaries:
-                df_join = df_join[df_join[f"@@difftimestamp{i}"] >= timestamp_diff_boundaries[i][0]]
-                df_join = df_join[df_join[f"@@difftimestamp{i}"] <= timestamp_diff_boundaries[i][1]]
+                df_join = df_join[df_join["@@difftimestamp%d" % (i-1)] >= timestamp_diff_boundaries[i-1][0]]
+                df_join = df_join[df_join["@@difftimestamp%d" % (i-1)] <= timestamp_diff_boundaries[i-1][1]]
 
     i1 = df.set_index(case_id_glue).index
     i2 = df_join.set_index(case_id_glue).index
@@ -383,8 +374,8 @@ def A_next_B_next_C(df0, A, B, C, parameters=None):
     df_C = df_C.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna().join(df_C, on=case_id_glue, rsuffix="_3").dropna()
-    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
-    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY+"_3"] - df_join[constants.DEFAULT_INDEX_KEY+"_2"]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY + "_2"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY + "_3"] - df_join[constants.DEFAULT_INDEX_KEY + "_2"]
     df_join = df_join[df_join["@@diffindex"] == 1]
     df_join = df_join[df_join["@@diffindex2"] == 1]
 

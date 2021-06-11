@@ -571,7 +571,7 @@ def average_case_duration(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[
     from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
     df = timestamp_filter.filter_traces_intersecting(df, t1, t2, parameters=parameters)
 
-    from pm4py.statistics.traces.pandas import case_statistics
+    from pm4py.statistics.traces.generic.pandas import case_statistics
     cd = case_statistics.get_cases_description(df, parameters=parameters).values()
     return mean(x["caseDuration"] for x in cd)
 
