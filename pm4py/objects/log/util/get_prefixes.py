@@ -7,6 +7,37 @@ from pm4py.util import constants
 import logging
 
 
+def get_prefixes_from_log(log: EventLog, length: int) -> EventLog:
+    """
+    Gets the prefixes of a log of a given length
+
+    Parameters
+    ----------------
+    log
+        Event log
+    length
+        Length
+
+    Returns
+    ----------------
+    prefix_log
+        Log contain the prefixes:
+        - if a trace has lower or identical length, it is included as-is
+        - if a trace has greater length, it is cut
+    """
+    prefix_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                            omni_present=log.omni_present, properties=log.properties)
+    for trace in log:
+        if len(trace) <= length:
+            prefix_log.append(trace)
+        else:
+            new_trace = Trace(attributes=trace.attributes)
+            for i in range(length):
+                new_trace.append(trace[i])
+            prefix_log.append(new_trace)
+    return prefix_log
+
+
 def get_log_with_log_prefixes(log, parameters=None):
     """
     Gets an extended log that contains, in order, all the prefixes for a case of the original log
