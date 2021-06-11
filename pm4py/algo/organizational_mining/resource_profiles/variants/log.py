@@ -539,7 +539,7 @@ def average_case_duration(log: EventLog, t1: Union[datetime, str], t2: Union[dat
     from pm4py.algo.filtering.log.timestamp import timestamp_filter
     log = timestamp_filter.filter_traces_intersecting(log, t1, t2, parameters=parameters)
 
-    from pm4py.statistics.traces.log import case_statistics
+    from pm4py.statistics.traces.generic.log import case_statistics
     cd = case_statistics.get_cases_description(log, parameters=parameters).values()
     return mean(x["caseDuration"] for x in cd)
 

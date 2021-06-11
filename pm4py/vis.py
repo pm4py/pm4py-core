@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Any, List
+from typing import Optional
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
@@ -324,10 +324,10 @@ def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "
     """
     if check_is_dataframe(log):
         check_dataframe_columns(log)
-        from pm4py.statistics.traces.pandas import case_statistics
+        from pm4py.statistics.traces.generic.pandas import case_statistics
         graph = case_statistics.get_kde_caseduration(log)
     else:
-        from pm4py.statistics.traces.log import case_statistics
+        from pm4py.statistics.traces.generic.log import case_statistics
         graph = case_statistics.get_kde_caseduration(log)
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
@@ -348,10 +348,10 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
     """
     if check_is_dataframe(log):
         check_dataframe_columns(log)
-        from pm4py.statistics.traces.pandas import case_statistics
+        from pm4py.statistics.traces.generic.pandas import case_statistics
         graph = case_statistics.get_kde_caseduration(log)
     else:
-        from pm4py.statistics.traces.log import case_statistics
+        from pm4py.statistics.traces.generic.log import case_statistics
         graph = case_statistics.get_kde_caseduration(log)
     format = file_path[file_path.index(".") + 1:].lower()
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
