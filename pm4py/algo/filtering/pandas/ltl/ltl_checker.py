@@ -301,8 +301,9 @@ def eventually_follows(df0, attribute_values, parameters=None):
 
     df_a = [df[df[attribute_key] == attribute_value].copy() for attribute_value in attribute_values]
 
-    df_join = df_a[0].merge(df_a[1], on=case_id_glue, suffixes=('', "_1")).dropna()
-    df_join["@@diffindex0"] = df_join[constants.DEFAULT_INDEX_KEY + "_1"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join = df_a[0].merge(df_a[1], on=case_id_glue, suffixes=('_0', "_1")).dropna()
+    df_join[constants.DEFAULT_INDEX_KEY] = df_join[constants.DEFAULT_INDEX_KEY + "_0"]
+    df_join["@@diffindex0"] = df_join[constants.DEFAULT_INDEX_KEY + "_1"] - df_join[constants.DEFAULT_INDEX_KEY + "_0"]
     df_join = df_join[df_join["@@diffindex0"] > 0]
 
     for i in range(2, len(df_a)):
@@ -312,14 +313,14 @@ def eventually_follows(df0, attribute_values, parameters=None):
         df_join = df_join[df_join["@@diffindex%d" % (i - 1)] > 0]
 
     if enable_timestamp:
-        for i in range(len(df_a)):
-            df_join["@@difftimestamp%d" % i] = (
-                        df_join[timestamp_key + "_%d" % (i + 1)] - df_join[timestamp_key + '_%d' % i]).astype(
+        for i in range(2, len(df_a)):
+            df_join["@@difftimestamp%d" % (i - 1)] = (
+                        df_join[timestamp_key + "_%d" % i] - df_join[timestamp_key + '_%d' % (i-1)]).astype(
                 'timedelta64[s]')
 
             if timestamp_diff_boundaries:
-                df_join = df_join[df_join["@@difftimestamp%d" % i] >= timestamp_diff_boundaries[i][0]]
-                df_join = df_join[df_join["@@difftimestamp%d" % i] <= timestamp_diff_boundaries[i][1]]
+                df_join = df_join[df_join["@@difftimestamp%d" % (i-1)] >= timestamp_diff_boundaries[i-1][0]]
+                df_join = df_join[df_join["@@difftimestamp%d" % (i-1)] <= timestamp_diff_boundaries[i-1][1]]
 
     i1 = df.set_index(case_id_glue).index
     i2 = df_join.set_index(case_id_glue).index
