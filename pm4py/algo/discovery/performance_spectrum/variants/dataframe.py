@@ -54,33 +54,27 @@ def apply(dataframe, list_activities, sample_size, parameters):
     dataframe = pandas_utils.insert_index(dataframe, constants.DEFAULT_EVENT_INDEX_KEY)
     dataframe = dataframe.sort_values([case_id_glue, timestamp_key, constants.DEFAULT_EVENT_INDEX_KEY])
     dataframe[timestamp_key] = dataframe[timestamp_key].astype(np.int64) / 10**9
-    list_replicas = []
-    activity_names = []
-    filt_col_names = []
-    for i in range(len(list_activities)):
-        if i > 0:
-            dataframe = dataframe.shift(-1)
-            activity_names.append("+'@@'+")
-        ren = {x: x+"_"+str(i) for x in dataframe.columns}
-        list_replicas.append(dataframe.rename(columns=ren))
-        filt_col_names.append(timestamp_key+"_"+str(i))
+    
+    def key(k, n):
+        return k + str(n)
 
-        activity_names.append("dataframe[activity_key+'_"+str(i)+"']")
+    # create a dataframe with all needed columns to check for the activities pattern 
+    dfs = [dataframe.add_suffix(str(i)).shift(-i) for i in range(len(list_activities))]
+    dataframe = pd.concat(dfs, axis=1)
+    # keep only rows that belong to exactly one case
+    for i in range(len(list_activities) - 1):
+        dataframe = dataframe[dataframe[key(case_id_glue, i)] == dataframe[key(case_id_glue, i + 1)]]
+    
+    column_list = [key(activity_key, i) for i in range(len(list_activities))]
+    pattern = "".join(list_activities)
+    # keep only rows that have the desired activities pattern
+    matches = dataframe[np.equal(dataframe[column_list].sum(axis=1), pattern)]
+    if len(matches) > sample_size:
+        matches = matches.sample(n=sample_size)
 
-    dataframe = pd.concat(list_replicas, axis=1)
-    for i in range(len(list_activities)-1):
-        dataframe = dataframe[dataframe[case_id_glue+"_"+str(i)] == dataframe[case_id_glue+"_"+str(i+1)]]
-    dataframe["@@merged_activity"] = eval("".join(activity_names))
-    desidered_act = "@@".join(list_activities)
-    dataframe = dataframe[dataframe["@@merged_activity"] == desidered_act]
-    dataframe = dataframe[filt_col_names]
-
-    if len(dataframe) > sample_size:
-        dataframe = dataframe.sample(n=sample_size)
-
-    points = pandas_utils.to_dict_records(dataframe)
+    filt_col_names = [timestamp_key + str(i) for i in range(len(list_activities))]
+    points = pandas_utils.to_dict_records(matches)
     points = [[p[tk] for tk in filt_col_names] for p in points]
     points = sorted(points, key=lambda x: x[0])
 
     return points
-
