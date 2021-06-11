@@ -66,7 +66,7 @@ def distinct_activities(log: EventLog, t1: Union[datetime, str], t2: Union[datet
     if parameters is None:
         parameters = {}
 
-    log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM)
+    log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
@@ -110,7 +110,7 @@ def activity_frequency(log: EventLog, t1: Union[datetime, str], t2: Union[dateti
     if parameters is None:
         parameters = {}
 
-    log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM)
+    log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
@@ -155,7 +155,7 @@ def activity_completions(log: EventLog, t1: Union[datetime, str], t2: Union[date
     if parameters is None:
         parameters = {}
 
-    log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM)
+    log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
@@ -347,7 +347,7 @@ def __compute_workload(log: EventLog, resource: Optional[str] = None, activity: 
     if start_timestamp_key is None:
         log = __insert_start_from_previous_event(log, parameters=parameters)
         start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
-    events = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM)
+    events = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
     if resource is not None:
         events = [x for x in events if x[resource_key] == resource]
     if activity is not None:
@@ -497,7 +497,7 @@ def average_duration_activity(log: EventLog, t1: Union[datetime, str], t2: Union
         log = __insert_start_from_previous_event(log, parameters=parameters)
         start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
 
-    log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM)
+    log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
     log = [x for x in log if x[resource_key] == r and x[activity_key] == a and x[timestamp_key] >= t1 and x[timestamp_key] < t2]
 
     return float(mean(x[timestamp_key].timestamp() - x[start_timestamp_key].timestamp() for x in log))

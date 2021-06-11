@@ -53,7 +53,7 @@ def apply(log, parameters=None):
         activities_counter = dict(log[activity_key].value_counts())
         activities = sorted(list(activities_counter.keys()))
     else:
-        log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM)
+        log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
         activities_counter = Counter(x[activity_key] for x in log)
         activities = sorted(list(activities_counter.keys()))
 

@@ -36,7 +36,7 @@ def apply(log, parameters=None):
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
-    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM)
+    stream = log_converter.apply(log, variant=log_converter.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
 
     activity_resource_couples = Counter((event[resource_key], event[activity_key]) for event in stream)
 
