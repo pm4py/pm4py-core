@@ -47,6 +47,8 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     # makes sure that the timestamp column is of timestamp type
     df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format,
                                                          timest_columns=[xes_constants.DEFAULT_TIMESTAMP_KEY])
+    # make sure the activity column is of string type
+    df[xes_constants.DEFAULT_NAME_KEY] = df[xes_constants.DEFAULT_NAME_KEY].astype(str)
     # set an index column
     df = pandas_utils.insert_index(df, INDEX_COLUMN)
     # sorts the dataframe
