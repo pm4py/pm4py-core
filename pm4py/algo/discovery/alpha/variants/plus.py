@@ -440,6 +440,7 @@ def postprocessing(net, initial_marking, final_marking, A, B, pairs, loop_one_li
                 out_part = pair_try[1]
                 if pair[0].issubset(in_part) and pair[1].issubset(out_part):
                     pair_try_place = PetriNet.Place(str(pair_try))
+                    net.places.add(pair_try_place)
                     add_arc_from_to(label_transition_dict[key], pair_try_place, net)
                     add_arc_from_to(pair_try_place, label_transition_dict[key], net)
     return net, initial_marking, final_marking
