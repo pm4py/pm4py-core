@@ -3,7 +3,8 @@ import os
 from sklearn import tree
 
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.objects.log.util import get_log_representation, get_class_representation
+from pm4py.objects.log.util import get_class_representation
+from pm4py.algo.transformation.log_to_features import algorithm as log_to_features
 from pm4py.visualization.decisiontree import visualizer as dt_vis
 
 
@@ -11,11 +12,8 @@ def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "roadtraffic50traces.xes")
     # log_path = os.path.join("..", "tests", "input_data", "receipt.xes")
     log = xes_importer.apply(log_path)
-    # gets a log representation by including the concept:name event attribute (string) and the amount event attribute
-    # (float)
-    # data, feature_names = get_log_representation.get_representation(log, [], ["concept:name"], [], ["amount"])
     # now, it is possible to get a default representation of an event log
-    data, feature_names = get_log_representation.get_default_representation(log)
+    data, feature_names = log_to_features.apply(log, variant=log_to_features.Variants.TRACE_BASED)
     # gets classes representation by final concept:name value (end activity)
     target, classes = get_class_representation.get_class_representation_by_str_ev_attr_value_value(log, "concept:name")
     # mine the decision tree given 'data' and 'target'
