@@ -1,1 +1,1 @@
-from pm4py.visualization.graphs.variants import cases, attributes, dates
+from pm4py.visualization.graphs.variants import cases, attributes, dates, barplot
