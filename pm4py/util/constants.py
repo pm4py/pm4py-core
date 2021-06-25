@@ -29,6 +29,7 @@ DEFAULT_INDEX_KEY = "@@index"
 DEFAULT_INDEX_IN_TRACE_KEY = "@@index_in_trace"
 DEFAULT_EVENT_INDEX_KEY = "@@event_index"
 DEFAULT_FLOW_TIME = "@@flow_time"
+DEFAULT_CLASSIFIER_ATTRIBUTE = "@@classifier"
 
 DEFAULT_ENCODING = "utf-8"
 

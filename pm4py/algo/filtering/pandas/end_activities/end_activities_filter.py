@@ -9,6 +9,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTA
 from pm4py.util.constants import PARAM_MOST_COMMON_VARIANT
 from enum import Enum
 from pm4py.util import exec_utils
+from copy import copy
 
 
 class Parameters(Enum):
@@ -135,8 +136,11 @@ def filter_df_on_end_activities(df, values, case_id_glue=CASE_CONCEPT_NAME,
     i1 = df.set_index(case_id_glue).index
     i2 = last_eve_df.index
     if positive:
-        return df[i1.isin(i2)]
-    return df[~i1.isin(i2)]
+        ret = df[i1.isin(i2)]
+    else:
+        ret = df[~i1.isin(i2)]
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def filter_df_on_end_activities_nocc(df, nocc, ea_count0=None, case_id_glue=CASE_CONCEPT_NAME,
@@ -184,9 +188,11 @@ def filter_df_on_end_activities_nocc(df, nocc, ea_count0=None, case_id_glue=CASE
             first_eve_df = first_eve_df[first_eve_df[activity_key].isin(ea_count)]
             i1 = df.set_index(case_id_glue).index
             i2 = first_eve_df.index
+            ret = df[i1.isin(i2)]
+            ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
             if return_dict:
-                return df[i1.isin(i2)], ea_count_dict
-            return df[i1.isin(i2)]
+                return ret, ea_count_dict
+            return ret
         if return_dict:
             return df, ea_count_dict
     return df

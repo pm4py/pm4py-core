@@ -5,6 +5,7 @@ from typing import Any, Optional, Dict
 import pandas as pd
 
 from pm4py.util import constants, xes_constants, exec_utils
+from copy import copy
 
 
 class Parameters(Enum):
@@ -50,4 +51,6 @@ def apply(df: pd.DataFrame, value: Any, parameters: Optional[Dict[str, Any]] = N
     filtered_df = filtered_df[filtered_df[0] >= min_rep]
     filtered_df = filtered_df[filtered_df[0] <= max_rep]
 
-    return df[df[case_id_key].isin(filtered_df[case_id_key])]
+    ret = df[df[case_id_key].isin(filtered_df[case_id_key])]
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret

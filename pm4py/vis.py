@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Dict, Any, List
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
@@ -7,7 +7,8 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 import pandas as pd
 from typing import Union, List
-from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
+from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+from pm4py.utils import get_properties
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, format: str = "png"):
@@ -70,11 +71,13 @@ def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: st
         Format of the output picture (default: png)
     """
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
-    parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
+    dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
+    parameters = get_properties(log)
+    parameters[dfg_parameters.FORMAT] = format
+    parameters[dfg_parameters.START_ACTIVITIES] = start_activities
+    parameters[dfg_parameters.END_ACTIVITIES] = end_activities
     gviz = dfg_visualizer.apply(dfg, log=log, variant=dfg_visualizer.Variants.FREQUENCY,
-                                parameters={parameters.FORMAT: format,
-                                            parameters.START_ACTIVITIES: start_activities,
-                                            parameters.END_ACTIVITIES: end_activities})
+                                parameters=parameters)
     dfg_visualizer.view(gviz)
 
 
@@ -96,11 +99,13 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
     """
     format = file_path[file_path.index(".") + 1:].lower()
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
-    parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
+    dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
+    parameters = get_properties(log)
+    parameters[dfg_parameters.FORMAT] = format
+    parameters[dfg_parameters.START_ACTIVITIES] = start_activities
+    parameters[dfg_parameters.END_ACTIVITIES] = end_activities
     gviz = dfg_visualizer.apply(dfg, log=log, variant=dfg_visualizer.Variants.FREQUENCY,
-                                parameters={parameters.FORMAT: format,
-                                            parameters.START_ACTIVITIES: start_activities,
-                                            parameters.END_ACTIVITIES: end_activities})
+                                parameters=parameters)
     dfg_visualizer.save(gviz, file_path)
 
 
@@ -322,13 +327,13 @@ def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "
     format
         Format of the visualization (png, svg, ...)
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.traces.generic.pandas import case_statistics
-        graph = case_statistics.get_kde_caseduration(log)
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
     else:
         from pm4py.statistics.traces.generic.log import case_statistics
-        graph = case_statistics.get_kde_caseduration(log)
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
                                           parameters={"format": format})
@@ -346,13 +351,13 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
     file_path
         Destination path
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.traces.generic.pandas import case_statistics
-        graph = case_statistics.get_kde_caseduration(log)
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
     else:
         from pm4py.statistics.traces.generic.log import case_statistics
-        graph = case_statistics.get_kde_caseduration(log)
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
     format = file_path[file_path.index(".") + 1:].lower()
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
@@ -371,13 +376,13 @@ def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str =
     format
         Format of the visualization (png, svg, ...)
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log)
+        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
     else:
         from pm4py.statistics.attributes.log import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log)
+        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
                                           parameters={"format": format})
@@ -395,13 +400,13 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
     file_path
         Destination path
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log)
+        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
     else:
         from pm4py.statistics.attributes.log import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log)
+        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
     format = file_path[file_path.index(".") + 1:].lower()
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
@@ -421,7 +426,7 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
         Format of the visualization (png, svg ...)
     """
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
-    perf_spectrum = performance_spectrum.apply(log, activities)
+    perf_spectrum = performance_spectrum.apply(log, activities, parameters=get_properties(log))
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
     from pm4py.visualization.performance_spectrum.variants import neato
     gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format})
@@ -442,7 +447,7 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
         Destination path (including the extension)
     """
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
-    perf_spectrum = performance_spectrum.apply(log, activities)
+    perf_spectrum = performance_spectrum.apply(log, activities, parameters=get_properties(log))
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
     from pm4py.visualization.performance_spectrum.variants import neato
     format = file_path[file_path.index(".") + 1:].lower()
