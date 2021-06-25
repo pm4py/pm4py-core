@@ -11,7 +11,8 @@ from pm4py.objects.log.obj import EventLog
 from pm4py.objects.log.obj import EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
-from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
+from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+from pm4py.utils import get_properties
 
 
 def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
@@ -32,21 +33,25 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
     end_activities
         End activities
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.util import constants
+        properties = get_properties(log)
         from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_dfg_graph
-        dfg = get_dfg_graph(log)
+        dfg = get_dfg_graph(log, activity_key=properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY],
+                            timestamp_key=properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY],
+                            case_id_glue=properties[constants.PARAMETER_CONSTANT_CASEID_KEY])
         from pm4py.statistics.start_activities.pandas import get as start_activities_module
         from pm4py.statistics.end_activities.pandas import get as end_activities_module
-        start_activities = start_activities_module.get_start_activities(log)
-        end_activities = end_activities_module.get_end_activities(log)
+        start_activities = start_activities_module.get_start_activities(log, parameters=properties)
+        end_activities = end_activities_module.get_end_activities(log, parameters=properties)
     else:
         from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
-        dfg = dfg_discovery.apply(log)
+        dfg = dfg_discovery.apply(log, parameters=get_properties(log))
         from pm4py.statistics.start_activities.log import get as start_activities_module
         from pm4py.statistics.end_activities.log import get as end_activities_module
-        start_activities = start_activities_module.get_start_activities(log)
-        end_activities = end_activities_module.get_end_activities(log)
+        start_activities = start_activities_module.get_start_activities(log, parameters=get_properties(log))
+        end_activities = end_activities_module.get_end_activities(log, parameters=get_properties(log))
     return dfg, start_activities, end_activities
 
 
@@ -73,7 +78,7 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame]) -> Tuple[PetriN
         Final marking
     """
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
-    return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC)
+    return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC, parameters=get_properties(log))
 
 
 def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame]) -> Tuple[PetriNet, Marking, Marking]:
@@ -95,7 +100,7 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame]) -> Tuple[P
         Final marking
     """
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
-    return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS)
+    return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS, parameters=get_properties(log))
 
 
 def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> Tuple[
@@ -151,10 +156,13 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
         Final marking
     """
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
-    parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
-    return heuristics_miner.apply(log, variant=heuristics_miner.Variants.CLASSIC, parameters={
-        parameters.DEPENDENCY_THRESH: dependency_threshold, parameters.AND_MEASURE_THRESH: and_threshold,
-        parameters.LOOP_LENGTH_TWO_THRESH: loop_two_threshold})
+    heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
+    parameters = get_properties(log)
+    parameters[heu_parameters.DEPENDENCY_THRESH] = dependency_threshold
+    parameters[heu_parameters.AND_MEASURE_THRESH] = and_threshold
+    parameters[heu_parameters.LOOP_LENGTH_TWO_THRESH] = loop_two_threshold
+
+    return heuristics_miner.apply(log, variant=heuristics_miner.Variants.CLASSIC, parameters=parameters)
 
 
 def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> ProcessTree:
@@ -174,12 +182,13 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
         Process tree object
     """
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+    parameters = get_properties(log)
     if noise_threshold > 0:
-        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IMf, parameters={
-            inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+        parameters[inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD] = noise_threshold
+        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IMf, parameters=parameters)
     else:
-        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters={
-            inductive_miner.Variants.IM_CLEAN.value.Parameters.NOISE_THRESHOLD: noise_threshold})
+        parameters[inductive_miner.Variants.IM_CLEAN.value.Parameters.NOISE_THRESHOLD] = noise_threshold
+        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters=parameters)
 
 
 @deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
@@ -227,10 +236,12 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
         Heuristics net
     """
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
-    parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
-    return heuristics_miner.apply_heu(log, variant=heuristics_miner.Variants.CLASSIC, parameters={
-        parameters.DEPENDENCY_THRESH: dependency_threshold, parameters.AND_MEASURE_THRESH: and_threshold,
-        parameters.LOOP_LENGTH_TWO_THRESH: loop_two_threshold})
+    heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
+    parameters = get_properties(log)
+    parameters[heu_parameters.DEPENDENCY_THRESH] = dependency_threshold
+    parameters[heu_parameters.AND_MEASURE_THRESH] = and_threshold
+    parameters[heu_parameters.LOOP_LENGTH_TWO_THRESH] = loop_two_threshold
+    return heuristics_miner.apply_heu(log, variant=heuristics_miner.Variants.CLASSIC, parameters=parameters)
 
 
 def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream]) -> Dict[str, int]:
@@ -250,7 +261,7 @@ def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream]) -
             dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
         '''
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd
-    return msd.apply(log)
+    return msd.apply(log, parameters=get_properties(log))
 
 
 def discover_footprints(*args: Union[EventLog, Tuple[PetriNet, Marking, Marking], ProcessTree]) -> Union[
@@ -281,13 +292,13 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Dic
     eventually_follows_graph
         Dictionary of tuples of activities that eventually follows each other; along with the number of occurrences
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.eventually_follows.pandas import get
-        return get.apply(log)
+        return get.apply(log, parameters=get_properties(log))
     else:
         from pm4py.statistics.eventually_follows.log import get
-        return get.apply(log)
+        return get.apply(log, parameters=get_properties(log))
 
 
 def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> BPMN:

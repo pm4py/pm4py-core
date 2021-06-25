@@ -4,7 +4,8 @@ from typing import Set
 import pandas as pd
 
 from pm4py.objects.log.obj import EventLog, Trace
-from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
+from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+from pm4py.utils import get_properties
 
 
 def get_start_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
@@ -21,13 +22,13 @@ def get_start_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
     start_activities
         Dictionary of start activities along with their count
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.start_activities.pandas import get
-        return get.get_start_activities(log)
+        return get.get_start_activities(log, parameters=get_properties(log))
     else:
         from pm4py.statistics.start_activities.log import get
-        return get.get_start_activities(log)
+        return get.get_start_activities(log, parameters=get_properties(log))
 
 
 def get_end_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
@@ -44,13 +45,13 @@ def get_end_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
     end_activities
         Dictionary of end activities along with their count
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.end_activities.pandas import get
-        return get.get_end_activities(log)
+        return get.get_end_activities(log, parameters=get_properties(log))
     else:
         from pm4py.statistics.end_activities.log import get
-        return get.get_end_activities(log)
+        return get.get_end_activities(log, parameters=get_properties(log))
 
 
 def get_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
@@ -67,8 +68,8 @@ def get_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     attributes_list
         List of attributes contained in the log
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         return list(log.columns)
     else:
         from pm4py.statistics.attributes.log import get
@@ -90,8 +91,8 @@ def get_trace_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
         List of attributes at the trace level
     """
     from pm4py.util import constants
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         return [x for x in list(log.columns) if x.startswith(constants.CASE_ATTRIBUTE_PREFIX)]
     else:
         from pm4py.statistics.attributes.log import get
@@ -114,8 +115,8 @@ def get_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str) -> 
     attribute_values
         Dictionary of values along with their count
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get
         return get.get_attribute_values(log, attribute)
     else:
@@ -139,8 +140,8 @@ def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
     attribute_values
         Dictionary of values along with their count
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get
         return get.get_attribute_values(log, attribute)
     else:
@@ -168,13 +169,13 @@ def get_variants(log: Union[EventLog, pd.DataFrame]) -> Dict[str, List[Trace]]:
         warnings.warn('pm4py.get_variants is deprecated. Please use pm4py.get_variants_as_tuples instead.')
     if pm4py.util.variants_util.VARIANT_SPECIFICATION == pm4py.util.variants_util.VariantsSpecifications.LIST:
         raise Exception('Please use pm4py.get_variants_as_tuples')
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.variants.pandas import get
-        return get.get_variants_count(log)
+        return get.get_variants_count(log, parameters=get_properties(log))
     else:
         from pm4py.statistics.variants.log import get
-        return get.get_variants(log)
+        return get.get_variants(log, parameters=get_properties(log))
 
 
 def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame]) -> Dict[Tuple[str], List[Trace]]:
@@ -195,13 +196,13 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame]) -> Dict[Tuple[str
     import pm4py
     # the behavior of PM4Py is changed to allow this to work
     pm4py.util.variants_util.VARIANT_SPECIFICATION = pm4py.util.variants_util.VariantsSpecifications.LIST
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.variants.pandas import get
-        return get.get_variants_count(log)
+        return get.get_variants_count(log, parameters=get_properties(log))
     else:
         from pm4py.statistics.variants.log import get
-        return get.get_variants(log)
+        return get.get_variants(log, parameters=get_properties(log))
 
 
 def get_minimum_self_distances(log: EventLog) -> Dict[str, int]:
@@ -220,7 +221,7 @@ def get_minimum_self_distances(log: EventLog) -> Dict[str, int]:
         dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
     '''
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
-    return msd_algo.apply(log)
+    return msd_algo.apply(log, parameters=get_properties(log))
 
 
 def get_minimum_self_distance_witnesses(log: EventLog) -> Dict[str, Set[str]]:
@@ -244,7 +245,7 @@ def get_minimum_self_distance_witnesses(log: EventLog) -> Dict[str, Set[str]]:
         '''
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
     from pm4py.algo.discovery.minimum_self_distance import utils as msdw_algo
-    return msdw_algo.derive_msd_witnesses(log, msd_algo.apply(log))
+    return msdw_algo.derive_msd_witnesses(log, msd_algo.apply(log, parameters=get_properties(log)), parameters=get_properties(log))
 
 
 def get_case_arrival_average(log: Union[EventLog, pd.DataFrame]) -> float:
@@ -261,10 +262,10 @@ def get_case_arrival_average(log: Union[EventLog, pd.DataFrame]) -> float:
     case_arrival_average
         Average difference between the start times of two consecutive cases
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.statistics.traces.generic.pandas import case_arrival
-        return case_arrival.get_case_arrival_avg(log)
+        return case_arrival.get_case_arrival_avg(log, parameters=get_properties(log))
     else:
         from pm4py.statistics.traces.generic.log import case_arrival
-        return case_arrival.get_case_arrival_avg(log)
+        return case_arrival.get_case_arrival_avg(log, parameters=get_properties(log))
