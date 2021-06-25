@@ -45,8 +45,10 @@ def to_interval(log, parameters=None):
             if start_timestamp_key in first_event:
                 return log
 
-        new_log = EventLog()
+        new_log = EventLog(attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+            omni_present=log.omni_present, properties=log.properties)
         new_log.attributes["PM4PY_TYPE"] = "interval"
+        new_log.properties[constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] = xes.DEFAULT_START_TIMESTAMP_KEY
 
         for trace in log:
             new_trace = Trace()

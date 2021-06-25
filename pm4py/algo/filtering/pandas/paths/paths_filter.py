@@ -8,6 +8,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from enum import Enum
 from pm4py.util import exec_utils
+from copy import copy
 
 
 class Parameters(Enum):
@@ -56,9 +57,12 @@ def apply(df, paths, parameters=None):
     i1 = df.set_index(case_id_glue).index
     i2 = stacked_df.set_index(case_id_glue).index
     if positive:
-        return df[i1.isin(i2)]
+        ret = df[i1.isin(i2)]
     else:
-        return df[~i1.isin(i2)]
+        ret = df[~i1.isin(i2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def apply_auto_filter(df, parameters=None):

@@ -7,6 +7,7 @@ from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_CASEID_KEY, \
     PARAMETER_CONSTANT_RESOURCE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
+from copy import copy
 
 
 class Parameters(Enum):
@@ -84,9 +85,12 @@ def A_eventually_B(df0, A, B, parameters=None):
     i2 = df_join.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
     else:
-        return df0[~i1.isin(i2)]
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
 
 
 @deprecation.deprecated('2.2.6', '3.0.0', 'please use pm4py.algo.filtering.pandas.ltl.ltl_checker.eventually_follows')
@@ -161,9 +165,12 @@ def A_eventually_B_eventually_C(df0, A, B, C, parameters=None):
     i2 = df_join.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
     else:
-        return df0[~i1.isin(i2)]
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
 
 
 @deprecation.deprecated('2.2.6', '3.0.0', 'please use pm4py.algo.filtering.pandas.ltl.ltl_checker.eventually_follows')
@@ -254,9 +261,12 @@ def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     i2 = df_join.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
     else:
-        return df0[~i1.isin(i2)]
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
 
 
 def eventually_follows(df0, attribute_values, parameters=None):
@@ -325,9 +335,12 @@ def eventually_follows(df0, attribute_values, parameters=None):
     i1 = df.set_index(case_id_glue).index
     i2 = df_join.set_index(case_id_glue).index
     if positive:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
     else:
-        return df0[~i1.isin(i2)]
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
 
 
 def A_next_B_next_C(df0, A, B, C, parameters=None):
@@ -383,9 +396,12 @@ def A_next_B_next_C(df0, A, B, C, parameters=None):
     i2 = df_join.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
     else:
-        return df0[~i1.isin(i2)]
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
 
 
 def four_eyes_principle(df0, A, B, parameters=None):
@@ -437,9 +453,12 @@ def four_eyes_principle(df0, A, B, parameters=None):
     i3 = df_join_neg.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i3) & ~i1.isin(i2)]
+        ret = df0[i1.isin(i3) & ~i1.isin(i2)]
     else:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
 
 
 def attr_value_different_persons(df0, A, parameters=None):
@@ -485,6 +504,9 @@ def attr_value_different_persons(df0, A, parameters=None):
     i2 = df_join_neg.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
     else:
-        return df0[~i1.isin(i2)]
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret

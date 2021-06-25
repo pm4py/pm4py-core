@@ -9,6 +9,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import GROUPED_DATAFRAME
 from enum import Enum
 from pm4py.util import exec_utils
+from copy import copy
 
 
 class Parameters(Enum):
@@ -123,8 +124,12 @@ def filter_df_on_start_activities(df, values, case_id_glue=CASE_CONCEPT_NAME,
     i1 = df.set_index(case_id_glue).index
     i2 = first_eve_df.index
     if positive:
-        return df[i1.isin(i2)]
-    return df[~i1.isin(i2)]
+        ret = df[i1.isin(i2)]
+    else:
+        ret = df[~i1.isin(i2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def filter_df_on_start_activities_nocc(df, nocc, sa_count0=None, case_id_glue=CASE_CONCEPT_NAME,
@@ -167,5 +172,9 @@ def filter_df_on_start_activities_nocc(df, nocc, sa_count0=None, case_id_glue=CA
         first_eve_df = first_eve_df[first_eve_df[activity_key].isin(sa_count)]
         i1 = df.set_index(case_id_glue).index
         i2 = first_eve_df.index
-        return df[i1.isin(i2)]
-    return df
+        ret = df[i1.isin(i2)]
+    else:
+        ret = df
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
