@@ -1,7 +1,7 @@
 from itertools import product
 
 import pm4py
-from pm4py.objects.log.obj import EventLog
+from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.algo.discovery.inductive.variants.im_clean import utils
 
 
@@ -64,14 +64,47 @@ def project(log, groups, activity_key):
     -------
         list of corresponding logs according to the sequence cut.
     '''
-    # currently, not 'noise' proof
+    # refactored to support both IM and IMf
     logs = list()
     for group in groups:
-        proj = EventLog()
-        for t in log:
-            proj.append(pm4py.filter_trace(lambda e: e[activity_key] in group, t))
-        logs.append(proj)
+        logs.append(EventLog())
+    for t in log:
+        i = 0
+        split_point = 0
+        act_union = set()
+        while i < len(groups):
+            new_split_point = find_split_point(t, groups[i], split_point, act_union, activity_key)
+            trace_i = Trace()
+            j = split_point
+            while j < new_split_point:
+                if t[j][activity_key] in groups[i]:
+                    trace_i.append(t[j])
+                j = j + 1
+            logs[i].append(trace_i)
+            split_point = new_split_point
+            act_union = act_union.union(set(groups[i]))
+            i = i + 1
     return logs
+
+
+def find_split_point(t, group, start, ignore, activity_key):
+    least_cost = 0
+    position_with_least_cost = start
+    cost = 0
+    i = start
+    while i < len(t):
+        if t[i][activity_key] in group:
+            cost = cost - 1
+        elif t[i][activity_key] not in ignore:
+            cost = cost + 1
+
+        if cost < least_cost:
+            least_cost = cost
+            position_with_least_cost = i + 1
+
+        i = i + 1
+
+    return position_with_least_cost
 
 
 def _is_strict_subset(A, B):
