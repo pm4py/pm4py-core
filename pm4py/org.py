@@ -3,7 +3,8 @@ from typing import Union
 import pandas as pd
 
 from pm4py.objects.log.obj import EventLog
-from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
+from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+from pm4py.utils import get_properties
 
 
 def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0):
@@ -26,11 +27,13 @@ def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0
         Values of the metric
     """
     from pm4py.algo.organizational_mining.sna import algorithm as sna
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
-        return sna.apply(log, variant=sna.Variants.HANDOVER_PANDAS, parameters={"beta": beta})
+    parameters = get_properties(log)
+    parameters["beta"] = beta
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        return sna.apply(log, variant=sna.Variants.HANDOVER_PANDAS, parameters=parameters)
     else:
-        return sna.apply(log, variant=sna.Variants.HANDOVER_LOG, parameters={"beta": beta})
+        return sna.apply(log, variant=sna.Variants.HANDOVER_LOG, parameters=parameters)
 
 
 def discover_working_together_network(log: Union[EventLog, pd.DataFrame]):
@@ -49,11 +52,11 @@ def discover_working_together_network(log: Union[EventLog, pd.DataFrame]):
         Values of the metric
     """
     from pm4py.algo.organizational_mining.sna import algorithm as sna
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
-        return sna.apply(log, variant=sna.Variants.WORKING_TOGETHER_PANDAS)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        return sna.apply(log, variant=sna.Variants.WORKING_TOGETHER_PANDAS, parameters=get_properties(log))
     else:
-        return sna.apply(log, variant=sna.Variants.WORKING_TOGETHER_LOG)
+        return sna.apply(log, variant=sna.Variants.WORKING_TOGETHER_LOG, parameters=get_properties(log))
 
 
 def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFrame]):
@@ -71,11 +74,11 @@ def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFram
         Values of the metric
     """
     from pm4py.algo.organizational_mining.sna import algorithm as sna
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
-        return sna.apply(log, variant=sna.Variants.JOINTACTIVITIES_PANDAS)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        return sna.apply(log, variant=sna.Variants.JOINTACTIVITIES_PANDAS, parameters=get_properties(log))
     else:
-        return sna.apply(log, variant=sna.Variants.JOINTACTIVITIES_LOG)
+        return sna.apply(log, variant=sna.Variants.JOINTACTIVITIES_LOG, parameters=get_properties(log))
 
 
 def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2):
@@ -95,11 +98,13 @@ def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2):
         Values of the metric
     """
     from pm4py.algo.organizational_mining.sna import algorithm as sna
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
-        return sna.apply(log, variant=sna.Variants.SUBCONTRACTING_PANDAS, parameters={"n": n})
+    parameters = get_properties(log)
+    parameters["n"] = n
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        return sna.apply(log, variant=sna.Variants.SUBCONTRACTING_PANDAS, parameters=parameters)
     else:
-        return sna.apply(log, variant=sna.Variants.SUBCONTRACTING_LOG, parameters={"n": n})
+        return sna.apply(log, variant=sna.Variants.SUBCONTRACTING_LOG, parameters=parameters)
 
 
 def discover_organizational_roles(log: Union[EventLog, pd.DataFrame]):
@@ -121,8 +126,8 @@ def discover_organizational_roles(log: Union[EventLog, pd.DataFrame]):
         and the number of times they executed activities belonging to the role.
     """
     from pm4py.algo.organizational_mining.roles import algorithm as roles
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
-        return roles.apply(log, variant=roles.Variants.PANDAS)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        return roles.apply(log, variant=roles.Variants.PANDAS, parameters=get_properties(log))
     else:
-        return roles.apply(log, variant=roles.Variants.LOG)
+        return roles.apply(log, variant=roles.Variants.LOG, parameters=get_properties(log))

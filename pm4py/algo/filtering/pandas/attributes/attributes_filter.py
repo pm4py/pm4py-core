@@ -9,6 +9,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAM_MOST_COMMON_VARIANT
 from enum import Enum
 from pm4py.util import exec_utils
+from copy import copy
 
 
 class Parameters(Enum):
@@ -52,9 +53,12 @@ def apply_numeric_events(df, int1, int2, parameters=None):
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     if positive:
-        return df[(df[attribute_key] >= int1) & (df[attribute_key] <= int2)]
+        ret = df[(df[attribute_key] >= int1) & (df[attribute_key] <= int2)]
     else:
-        return df[(df[attribute_key] < int1) | (df[attribute_key] > int2)]
+        ret = df[(df[attribute_key] < int1) | (df[attribute_key] > int2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def apply_numeric(df, int1, int2, parameters=None):
@@ -102,8 +106,12 @@ def apply_numeric(df, int1, int2, parameters=None):
     i1 = df.set_index(case_id_glue).index
     i2 = filtered_df_by_ev.set_index(case_id_glue).index
     if positive:
-        return df[i1.isin(i2)]
-    return df[~i1.isin(i2)]
+        ret = df[i1.isin(i2)]
+    else:
+        ret = df[~i1.isin(i2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def apply_events(df, values, parameters=None):
@@ -133,9 +141,12 @@ def apply_events(df, values, parameters=None):
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     if positive:
-        return df[df[attribute_key].isin(values)]
+        ret = df[df[attribute_key].isin(values)]
     else:
-        return df[~df[attribute_key].isin(values)]
+        ret = df[~df[attribute_key].isin(values)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def apply(df, values, parameters=None):
@@ -239,8 +250,12 @@ def filter_df_on_attribute_values(df, values, case_id_glue="case:concept:name", 
     i1 = df.set_index(case_id_glue).index
     i2 = filtered_df_by_ev.set_index(case_id_glue).index
     if positive:
-        return df[i1.isin(i2)]
-    return df[~i1.isin(i2)]
+        ret = df[i1.isin(i2)]
+    else:
+        ret = df[~i1.isin(i2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def filter_df_keeping_activ_exc_thresh(df, thresh, act_count0=None, activity_key="concept:name",
@@ -271,8 +286,12 @@ def filter_df_keeping_activ_exc_thresh(df, thresh, act_count0=None, activity_key
         act_count0 = get_attribute_values(df, activity_key)
     act_count = [k for k, v in act_count0.items() if v >= thresh or k in most_common_variant]
     if len(act_count) < len(act_count0):
-        df = df[df[activity_key].isin(act_count)]
-    return df
+        ret = df[df[activity_key].isin(act_count)]
+    else:
+        ret = df
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def filter_df_keeping_spno_activities(df, activity_key="concept:name", max_no_activities=25):
@@ -304,5 +323,9 @@ def filter_df_keeping_spno_activities(df, activity_key="concept:name", max_no_ac
     activity_to_keep = [x[0] for x in activity_values_ordered_list]
 
     if len(activity_to_keep) < len(activity_values_dict):
-        df = df[df[activity_key].isin(activity_to_keep)]
+        ret = df[df[activity_key].isin(activity_to_keep)]
+    else:
+        ret = df
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
     return df
