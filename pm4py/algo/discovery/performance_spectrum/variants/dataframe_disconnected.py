@@ -1,22 +1,24 @@
-from pm4py.util import xes_constants as xes
-from pm4py.util import exec_utils, pandas_utils, constants
-
-
 from enum import Enum
-from pm4py.util import constants, points_subset
 
 import numpy as np
 import pandas as pd
+
+from pm4py.util import constants, points_subset
+from pm4py.util import exec_utils, pandas_utils
+from pm4py.util import xes_constants as xes
+
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     PARAMETER_SAMPLE_SIZE = "sample_size"
+    SORT_LOG_REQUIRED = "sort_log_required"
 
 
 def gen_patterns(pattern, length):
-    return ["".join(pattern[i:i+length]) for i in range(len(pattern) - (length - 1))]
+    return ["".join(pattern[i:i + length]) for i in range(len(pattern) - (length - 1))]
+
 
 def apply(dataframe, list_activities, sample_size, parameters):
     """
@@ -49,13 +51,17 @@ def apply(dataframe, list_activities, sample_size, parameters):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
 
+    sort_log_required = exec_utils.get_param_value(Parameters.SORT_LOG_REQUIRED, parameters, True)
+
     dataframe = dataframe[[case_id_glue, activity_key, timestamp_key]]
     dataframe = dataframe[dataframe[activity_key].isin(list_activities)]
     dataframe = pandas_utils.insert_index(dataframe, constants.DEFAULT_EVENT_INDEX_KEY)
-    dataframe = dataframe.sort_values([case_id_glue, timestamp_key, constants.DEFAULT_EVENT_INDEX_KEY])
-    dataframe[timestamp_key] = dataframe[timestamp_key].astype(np.int64) / 10**9
-    
-    all_patterns = [(len(list_activities) - i, gen_patterns(list_activities, len(list_activities) - i)) for i in range(len(list_activities) - 1)]
+    if sort_log_required:
+        dataframe = dataframe.sort_values([case_id_glue, timestamp_key, constants.DEFAULT_EVENT_INDEX_KEY])
+    dataframe[timestamp_key] = dataframe[timestamp_key].astype(np.int64) / 10 ** 9
+
+    all_patterns = [(len(list_activities) - i, gen_patterns(list_activities, len(list_activities) - i)) for i in
+                    range(len(list_activities) - 1)]
 
     def key(k, n):
         return k + str(n)
@@ -63,7 +69,7 @@ def apply(dataframe, list_activities, sample_size, parameters):
     def to_points(match, l):
         return {'case_id': match[key(case_id_glue, 0)],
                 'points': [(match[key(activity_key, i)], match[key(timestamp_key, i)]) for i in range(l)]}
-    
+
     points = []
     for l, patterns in all_patterns:
         # concat shifted and suffixed dataframes to get a dataframe that allows to check for the patterns
