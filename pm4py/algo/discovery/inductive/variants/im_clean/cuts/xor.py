@@ -5,6 +5,7 @@ import networkx as nx
 import pm4py
 from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.algo.discovery.inductive.variants.im_clean.d_types import DFG, Cut
+from pm4py.objects.log.obj import EventLog, Trace
 
 
 def detect(dfg: DFG, alphabet: Dict[str, int]) -> Optional[Cut]:
@@ -44,9 +45,20 @@ def detect(dfg: DFG, alphabet: Dict[str, int]) -> Optional[Cut]:
 
 
 def project(log, groups, activity_key):
-    # currently not 'noise' proof
-    # assumes that no empty traces are in the log
+    # refactored to support both IM and IMf
     logs = list()
     for group in groups:
-        logs.append(pm4py.filter_log(lambda t: t[0][activity_key] in group, log))
+        logs.append(EventLog())
+    for t in log:
+        count = {i: 0 for i in range(len(groups))}
+        for index, group in enumerate(groups):
+            for e in t:
+                if e[activity_key] in group:
+                    count[index] += 1
+        count = sorted(list((x, y) for x, y in count.items()), key=lambda x: (x[1], x[0]), reverse=True)
+        new_trace = Trace()
+        for e in t:
+            if e[activity_key] in groups[count[0][0]]:
+                new_trace.append(e)
+        logs[count[0][0]].append(new_trace)
     return logs

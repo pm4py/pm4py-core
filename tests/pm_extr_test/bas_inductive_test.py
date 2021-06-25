@@ -12,6 +12,7 @@ from pm4py.statistics.variants.log import get as variants_get
 LOGS_FOLDER = "../compressed_input_data"
 CLASSIFIER = "@@classifier"
 ENABLE_ALIGNMENTS = False
+NOISE_THRESHOLD = 0.0
 
 for log_name in os.listdir(LOGS_FOLDER):
     if "xes" in log_name or "parquet" in log_name:
@@ -21,6 +22,7 @@ for log_name in os.listdir(LOGS_FOLDER):
             print(log_path)
             if "xes" in log_name:
                 from pm4py.statistics.attributes.log import get as attributes_get_log
+
                 log = pm4py.read_xes(log_path)
                 for trace in log:
                     for event in trace:
@@ -35,19 +37,22 @@ for log_name in os.listdir(LOGS_FOLDER):
                     "pm4py:param:activity_key": CLASSIFIER})
             elif "parquet" in log_name:
                 from pm4py.statistics.attributes.pandas import get as attributes_get_pandas
+
                 dataframe = pd.read_parquet(log_path)
                 activities = set(attributes_get_pandas.get_attribute_values(dataframe, CLASSIFIER).keys())
                 variants = pm4py.get_variants(dataframe)
                 fp_log = pm4py.algo.discovery.footprints.log.variants.entire_dataframe.apply(dataframe)
             print("start tree_im_clean")
-            tree_im_clean = im_clean.apply_tree(log, parameters={"pm4py:param:activity_key": CLASSIFIER})
+            tree_im_clean = im_clean.apply_tree(log, parameters={"pm4py:param:activity_key": CLASSIFIER,
+                                                                 "noise_threshold": NOISE_THRESHOLD})
             print("end tree_im_clean")
             tree_im = inductive_miner.apply_tree_variants(variants, variant=inductive_miner.Variants.IM,
                                                           parameters={"pm4py:param:activity_key": CLASSIFIER})
             print(tree_im_clean)
             print(tree_im)
             tree_imf = inductive_miner.apply_tree_variants(variants, variant=inductive_miner.Variants.IMf,
-                                                           parameters={"pm4py:param:activity_key": CLASSIFIER})
+                                                           parameters={"pm4py:param:activity_key": CLASSIFIER,
+                                                                       "noiseThreshold": NOISE_THRESHOLD})
             tree_imd = inductive_miner.apply_tree_variants(variants, variant=inductive_miner.Variants.IMd,
                                                            parameters={"pm4py:param:activity_key": CLASSIFIER})
             fp_tree_clean = pm4py.algo.discovery.footprints.tree.variants.bottomup.apply(tree_im_clean)
@@ -73,8 +78,11 @@ for log_name in os.listdir(LOGS_FOLDER):
 
             if ENABLE_ALIGNMENTS:
                 from pm4py.algo.conformance.tree_alignments.variants import search_graph_pt
-                alignments_clean = search_graph_pt.apply(log, tree_im_clean, parameters={search_graph_pt.Parameters.ACTIVITY_KEY: CLASSIFIER})
+
+                alignments_clean = search_graph_pt.apply(log, tree_im_clean, parameters={
+                    search_graph_pt.Parameters.ACTIVITY_KEY: CLASSIFIER})
                 from pm4py.evaluation.replay_fitness.variants import alignment_based
+
                 fitness_al_clean = alignment_based.evaluate(alignments_clean)["average_trace_fitness"]
                 if fitness_al_clean < fitness_im_clean:
                     print("ALERT")
