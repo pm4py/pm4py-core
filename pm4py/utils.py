@@ -18,6 +18,7 @@ from typing import Optional, Tuple, Any
 
 import pandas as pd
 
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import constants, xes_constants, pandas_utils
 
@@ -69,6 +70,15 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     df = pandas_utils.insert_index(df, INDEX_COLUMN)
     # sorts the dataframe
     df = df.sort_values([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_TIMESTAMP_KEY, INDEX_COLUMN])
+    # sets the properties
+    if not hasattr(df, 'attrs'):
+        # legacy (Python 3.6) support
+        df.attrs = {}
+    df.attrs[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_constants.DEFAULT_NAME_KEY
+    df.attrs[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_constants.DEFAULT_TIMESTAMP_KEY
+    df.attrs[constants.PARAMETER_CONSTANT_GROUP_KEY] = xes_constants.DEFAULT_GROUP_KEY
+    df.attrs[constants.PARAMETER_CONSTANT_TRANSITION_KEY] = xes_constants.DEFAULT_TRANSITION_KEY
+    df.attrs[constants.PARAMETER_CONSTANT_RESOURCE_KEY] = xes_constants.DEFAULT_RESOURCE_KEY
     # logging.warning(
     #    "please convert the dataframe for advanced process mining applications. log = pm4py.convert_to_event_log(df)")
     return df
@@ -184,3 +194,69 @@ def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
     elif ser_obj[0] == constants.AvailableSerializations.DFG.value:
         from pm4py.objects.dfg.importer import importer as dfg_importer
         return dfg_importer.deserialize(ser_obj[1])
+
+
+def get_properties(log):
+    """
+    Gets the properties from a log object
+
+    Parameters
+    -----------------
+    log
+        Log object
+
+    Returns
+    -----------------
+    prop_dict
+        Dictionary containing the properties of the log object
+    """
+    from copy import copy
+    parameters = copy(log.properties) if hasattr(log, 'properties') else copy(log.attrs) if hasattr(log, 'attrs') else {}
+    return parameters
+
+
+def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASSIFIER_ATTRIBUTE):
+    """
+    Methods to set the specified classifier on an existing event log
+
+    Parameters
+    ----------------
+    log
+        Log object
+    classifier
+        Classifier that should be set:
+        - A list of event attributes can be provided
+        - A single event attribute can be provided
+        - A classifier stored between the "classifiers" of the log object can be provided
+    classifier_attribute
+        The attribute of the event that should store the concatenation of the attribute values for the given classifier
+
+    Returns
+    ----------------
+    log
+        The same event log (methods acts inplace)
+    """
+    if type(classifier) is list:
+        pass
+    elif type(classifier) is str:
+        if type(log) is EventLog and classifier in log.classifiers:
+            classifier = log.classifiers[classifier]
+        else:
+            classifier = [classifier]
+
+    if type(log) is EventLog:
+        for trace in log:
+            for event in trace:
+                event[classifier_attribute] = "+".join(list(event[x] for x in classifier))
+        log.properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = classifier_attribute
+        log.properties[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = classifier_attribute
+    elif type(log) is pd.DataFrame:
+        log[classifier_attribute] = log[classifier[0]]
+        for i in range(1, len(classifier)):
+            log[classifier_attribute] = log[classifier_attribute] + "+" + log[classifier[i]]
+        log.attrs[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = classifier_attribute
+        log.attrs[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = classifier_attribute
+    else:
+        raise Exception("setting classifier is not defined for this class of objects")
+
+    return log

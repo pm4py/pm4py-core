@@ -42,6 +42,7 @@ from pm4py.statistics.start_activities.log import get as get_starters
 from pm4py.util import constants, exec_utils, xes_constants
 from pm4py.util import variants_util
 from pm4py.objects.log.util import filtering_utils
+import math
 
 
 class Parameters(Enum):
@@ -121,39 +122,57 @@ def apply_tree(event_log: Union[pd.DataFrame, EventLog, EventStream],
     return tree
 
 
-def inductive_miner(log, dfg, threshold, root, act_key, use_msd):
+def inductive_miner(log, dfg, threshold, root, act_key, use_msd, remove_noise=False):
     alphabet = pm4py.get_attribute_values(log, act_key)
+    if threshold > 0 and remove_noise:
+        outgoing_max_occ = {}
+        for x, y in dfg.items():
+            act = x[0]
+            if act not in outgoing_max_occ:
+                outgoing_max_occ[act] = y
+            else:
+                outgoing_max_occ[act] = max(y, outgoing_max_occ[act])
+        dfg_list = sorted([(x, y) for x, y in dfg.items()], key=lambda x: (x[1], x[0]), reverse=True)
+        dfg_list = [x for x in dfg_list if x[1] > threshold * outgoing_max_occ[x[0][0]]]
+        dfg_list = [x[0] for x in dfg_list]
+        # filter the elements in the DFG
+        dfg = {x: y for x, y in dfg.items() if x in dfg_list}
+
+    original_length = len(log)
+    log = pm4py.filter_log(lambda t: len(t) > 0, log)
+
+    # revised EMPTYSTRACES
+    if original_length - len(log) > original_length * threshold:
+        return _add_operator_recursive(pt.ProcessTree(pt.Operator.XOR, root), threshold, act_key, [EventLog(), log],
+                                       use_msd)
+
     start_activities = get_starters.get_start_activities(log, parameters={
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key})
     end_activities = get_ends.get_end_activities(log, parameters={constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key})
-    empty_traces = pm4py.filter_log(lambda trace: len(trace) == 0, log)
-    if len(empty_traces) == 0:
-        if _is_base_case_act(log, act_key) or _is_base_case_silent(log):
-            return _apply_base_case(log, root, act_key)
-        pre, post = dfg_utils.get_transitive_relations(dfg, alphabet)
-        cut = sequence_cut.detect(alphabet, pre, post)
-        if cut is not None:
-            return _add_operator_recursive(pt.ProcessTree(pt.Operator.SEQUENCE, root), threshold, act_key,
-                                           sequence_cut.project(log, cut, act_key), use_msd)
-        cut = xor_cut.detect(dfg, alphabet)
-        if cut is not None:
-            return _add_operator_recursive(pt.ProcessTree(pt.Operator.XOR, root), threshold, act_key,
-                                           xor_cut.project(log, cut, act_key), use_msd)
-        cut = concurrent_cut.detect(dfg, alphabet, start_activities, end_activities,
-                                    msd=msdw_algo.derive_msd_witnesses(log, msd_algo.apply(log, parameters={
-                                        constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key}), parameters={
-                                        constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key}) if use_msd else None)
-        if cut is not None:
-            return _add_operator_recursive(pt.ProcessTree(pt.Operator.PARALLEL, root), threshold, act_key,
-                                           concurrent_cut.project(log, cut, act_key), use_msd)
-        cut = loop_cut.detect(dfg, alphabet, start_activities, end_activities)
-        if cut is not None:
-            return _add_operator_recursive(pt.ProcessTree(pt.Operator.LOOP, root), threshold, act_key,
-                                           loop_cut.project(log, cut, act_key), use_msd)
-    if len(empty_traces) > 0:
-        nempty = pm4py.filter_log(lambda t: len(t) > 0, log)
-        return _add_operator_recursive(pt.ProcessTree(pt.Operator.XOR, root), threshold, act_key, [EventLog(), nempty],
-                                       use_msd)
+
+    if _is_base_case_act(log, act_key) or _is_base_case_silent(log):
+        return _apply_base_case(log, root, act_key)
+    pre, post = dfg_utils.get_transitive_relations(dfg, alphabet)
+    cut = sequence_cut.detect(alphabet, pre, post)
+    if cut is not None:
+        return _add_operator_recursive(pt.ProcessTree(pt.Operator.SEQUENCE, root), threshold, act_key,
+                                       sequence_cut.project(log, cut, act_key), use_msd)
+    cut = xor_cut.detect(dfg, alphabet)
+    if cut is not None:
+        return _add_operator_recursive(pt.ProcessTree(pt.Operator.XOR, root), threshold, act_key,
+                                       xor_cut.project(log, cut, act_key), use_msd)
+    cut = concurrent_cut.detect(dfg, alphabet, start_activities, end_activities,
+                                msd=msdw_algo.derive_msd_witnesses(log, msd_algo.apply(log, parameters={
+                                    constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key}), parameters={
+                                    constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key}) if use_msd else None)
+    if cut is not None:
+        return _add_operator_recursive(pt.ProcessTree(pt.Operator.PARALLEL, root), threshold, act_key,
+                                       concurrent_cut.project(log, cut, act_key), use_msd)
+    cut = loop_cut.detect(dfg, alphabet, start_activities, end_activities)
+    if cut is not None:
+        return _add_operator_recursive(pt.ProcessTree(pt.Operator.LOOP, root), threshold, act_key,
+                                       loop_cut.project(log, cut, act_key), use_msd)
+
     aopt = activity_once_per_trace.detect(log, alphabet, act_key)
     if aopt is not None:
         operator = pt.ProcessTree(operator=pt.Operator.PARALLEL, parent=root)
@@ -172,6 +191,10 @@ def inductive_miner(log, dfg, threshold, root, act_key, use_msd):
     if tl is not None:
         return _add_operator_recursive(pt.ProcessTree(pt.Operator.LOOP, root), threshold, act_key, [tl, EventLog()],
                                        use_msd)
+
+    if threshold > 0 and not remove_noise:
+        return inductive_miner(log, dfg, threshold, root, act_key, use_msd, remove_noise=True)
+
     return _flower(alphabet, root)
 
 

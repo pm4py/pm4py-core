@@ -1,5 +1,52 @@
 # PM4Py Changelog
 
+## PM4PY 2.2.9 (2021.06.25)
+
+### Fixed
+
+* daf74e83
+    * update imports in feature extraction
+* 74be3e3c
+    * minor bug fix in alpha plus (place that was created was not always added to the resulting Petri net)
+
+### Removed
+
+### Deprecated
+
+### Changed
+
+* d97b1790
+    * drop deepcopy in event log sorting (enhances performance)
+* 1d4e625b
+    * revised IMf implementation (more close to ProM / PhD thesis Sander Leemans)
+* 20aabd95
+    * calculation of minimum self distance now adheres to the standard invocation structure
+
+### Added
+
+* 598c6ecb
+    * simplified interface now stores properties (using attr attribute) to dataframes
+* 1f7a3fa8
+    * add computation of rework statistic (cases containing the same activity more than once)
+* 32c7d330
+    * add computation of cycle time (active time of process divided by the number of instances of the process)
+* 8187f0e9
+    * add distribution plots over different time-frames (matplotlib)
+* 269d826c
+    * add batch detection based on Martin, N., Swennen, M., Depaire, B., Jans, M., Caris, A., & Vanhoof, K. (2015,
+      December). Batch Processing: Definition and Event Log Identification. In SIMPDA (pp. 137-140).
+* d5326d46
+    * compute case overlap of a case with all other cases
+
+### Other
+
+* 92a70586
+    * performance optimization for calculation of performance spectrum
+* b0fc57c4
+    * performance optimization for Pandas datetime conversion non-ISO8601 (regular formats)
+
+---
+
 ## PM4PY 2.2.8 (2021.06.11)
 
 ### Fixed

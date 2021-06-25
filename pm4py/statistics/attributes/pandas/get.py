@@ -19,6 +19,9 @@ from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.util import exec_utils, constants
 from pm4py.util import constants
 from enum import Enum
+from collections import Counter
+import pandas as pd
+from typing import Optional, Dict, Any, List, Tuple
 
 
 class Parameters(Enum):
@@ -29,6 +32,96 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     MAX_NO_POINTS_SAMPLE = "max_no_of_points_to_sample"
     KEEP_ONCE_PER_CASE = "keep_once_per_case"
+
+
+def __add_left_0(stri: str, target_length: int) -> str:
+    """
+    Adds left 0s to the current string until the target length is reached
+
+    Parameters
+    ----------------
+    stri
+        String
+    target_length
+        Target length
+
+    Returns
+    ----------------
+    stri
+        Revised string
+    """
+    while len(stri) < target_length:
+        stri = "0" + stri
+    return stri
+
+
+def get_events_distribution(df: pd.DataFrame, distr_type: str = "days_month", parameters: Optional[Dict[str, Any]] = None) -> Tuple[List[str], List[int]]:
+    """
+    Gets the distribution of the events in the specified dimension
+
+    Parameters
+    ----------------
+    df
+        Dataframe
+    distr_type
+        Type of distribution:
+        - days_month => Gets the distribution of the events among the days of a month (from 1 to 31)
+        - months => Gets the distribution of the events among the months (from 1 to 12)
+        - years => Gets the distribution of the events among the years of the event log
+        - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
+        - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
+    parameters
+        Parameters of the algorithm, including:
+        - Parameters.TIMESTAMP_KEY
+
+    Returns
+    ----------------
+    x
+        Points (of the X-axis)
+    y
+        Points (of the Y-axis)
+    """
+    if parameters is None:
+        parameters = {}
+
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+
+    values = None
+    all_values = None
+    if distr_type == "days_month":
+        serie = df[timestamp_key].dt.day
+        values = Counter(serie.value_counts().to_dict())
+        all_values = Counter({i: 0 for i in range(1, 32)})
+    elif distr_type == "months":
+        serie = df[timestamp_key].dt.month
+        values = Counter(serie.value_counts().to_dict())
+        all_values = Counter({i: 0 for i in range(1, 13)})
+    elif distr_type == "years":
+        serie = df[timestamp_key].dt.year
+        values = Counter(serie.value_counts().to_dict())
+        all_values = Counter({i: 0 for i in range(min(values), max(values)+1)})
+    elif distr_type == "hours":
+        serie = df[timestamp_key].dt.hour
+        values = Counter(serie.value_counts().to_dict())
+        all_values = Counter({i: 0 for i in range(0, 24)})
+    elif distr_type == "days_week":
+        serie = df[timestamp_key].dt.dayofweek
+        values = Counter(serie.value_counts().to_dict())
+        all_values = Counter({i: 0 for i in range(0, 7)})
+
+    # make sure that all the possible values appear
+    for v in all_values:
+        if v not in values:
+            values[v] = all_values[v]
+
+    values = sorted([(__add_left_0(str(x), 2), y) for x, y in values.items()])
+
+    if distr_type == "days_week":
+        mapping = {"00": "Monday", "01": "Tuesday", "02": "Wednesday", "03": "Thursday", "04": "Friday",
+                   "05": "Saturday", "06": "Sunday"}
+        values = [(mapping[x[0]], x[1]) for x in values]
+
+    return [x[0] for x in values], [x[1] for x in values]
 
 
 def get_attribute_values(df, attribute_key, parameters=None):

@@ -23,7 +23,8 @@ import pandas as pd
 from pm4py.meta import VERSION as PM4PY_CURRENT_VERSION
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import constants
-from pm4py.util.pandas_utils import check_is_dataframe, check_dataframe_columns
+from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+from pm4py.utils import get_properties
 
 
 def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: List[str], retain: bool = True) -> Union[
@@ -46,15 +47,18 @@ def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: List
     filtered_log
         Filtered log object
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
+        parameters[start_activities_filter.Parameters.POSITIVE] = retain
         return start_activities_filter.apply(log, activities,
-                                             parameters={start_activities_filter.Parameters.POSITIVE: retain})
+                                             parameters=parameters)
     else:
         from pm4py.algo.filtering.log.start_activities import start_activities_filter
+        parameters[start_activities_filter.Parameters.POSITIVE] = retain
         return start_activities_filter.apply(log, activities,
-                                             parameters={start_activities_filter.Parameters.POSITIVE: retain})
+                                             parameters=parameters)
 
 
 def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities: List[str], retain: bool = True) -> Union[
@@ -77,15 +81,18 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities: List[s
     filtered_log
         Filtered log object
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
+        parameters[end_activities_filter.Parameters.POSITIVE] = retain
         return end_activities_filter.apply(log, activities,
-                                           parameters={end_activities_filter.Parameters.POSITIVE: retain})
+                                           parameters=parameters)
     else:
         from pm4py.algo.filtering.log.end_activities import end_activities_filter
+        parameters[end_activities_filter.Parameters.POSITIVE] = retain
         return end_activities_filter.apply(log, activities,
-                                           parameters={end_activities_filter.Parameters.POSITIVE: retain})
+                                           parameters=parameters)
 
 
 @deprecation.deprecated(deprecated_in='2.1.4', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
@@ -119,27 +126,27 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     filtered_log
         Filtered log object
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    parameters = get_properties(log)
+    parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = attribute_key
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         if level == "event":
+            parameters[attributes_filter.Parameters.POSITIVE] = retain
             return attributes_filter.apply_events(log, values,
-                                                  parameters={constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
-                                                              attributes_filter.Parameters.POSITIVE: retain})
+                                                  parameters=parameters)
         elif level == "case":
-            return attributes_filter.apply(log, values, parameters={
-                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
-                attributes_filter.Parameters.POSITIVE: retain})
+            parameters[attributes_filter.Parameters.POSITIVE] = retain
+            return attributes_filter.apply(log, values, parameters=parameters)
     else:
         from pm4py.algo.filtering.log.attributes import attributes_filter
         if level == "event":
+            parameters[attributes_filter.Parameters.POSITIVE] = retain
             return attributes_filter.apply_events(log, values,
-                                                  parameters={constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
-                                                              attributes_filter.Parameters.POSITIVE: retain})
+                                                  parameters=parameters)
         elif level == "case":
-            return attributes_filter.apply(log, values, parameters={
-                constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
-                attributes_filter.Parameters.POSITIVE: retain})
+            parameters[attributes_filter.Parameters.POSITIVE] = retain
+            return attributes_filter.apply(log, values, parameters=parameters)
 
 
 @deprecation.deprecated(deprecated_in='2.1.4', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
@@ -170,16 +177,18 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     filtered_log
         Filtered event log
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    parameters = get_properties(log)
+    parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = attribute_key
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
+        parameters[attributes_filter.Parameters.POSITIVE] = retain
         return attributes_filter.apply(log, values,
-                                       parameters={attributes_filter.Parameters.ATTRIBUTE_KEY: attribute_key,
-                                                   attributes_filter.Parameters.POSITIVE: retain})
+                                       parameters=parameters)
     else:
         from pm4py.algo.filtering.log.attributes import attributes_filter
-        return attributes_filter.apply_trace_attribute(log, values, parameters={
-            attributes_filter.Parameters.ATTRIBUTE_KEY: attribute_key, attributes_filter.Parameters.POSITIVE: retain})
+        parameters[attributes_filter.Parameters.POSITIVE] = retain
+        return attributes_filter.apply_trace_attribute(log, values, parameters=parameters)
 
 
 def filter_variants(log: Union[EventLog, pd.DataFrame], variants: List[List[str]], retain: bool = True) -> Union[
@@ -201,15 +210,18 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants: List[List[str]
     filtered_log
         Filtered log object
     """
-    if check_is_dataframe(log):
-        check_dataframe_columns(log)
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.variants import variants_filter
+        parameters[variants_filter.Parameters.POSITIVE] = retain
         return variants_filter.apply(log, [",".join(v) for v in variants],
-                                     parameters={variants_filter.Parameters.POSITIVE: retain})
+                                     parameters=parameters)
     else:
         from pm4py.algo.filtering.log.variants import variants_filter
+        parameters[variants_filter.Parameters.POSITIVE] = retain
         return variants_filter.apply(log, [",".join(v) for v in variants],
-                                     parameters={variants_filter.Parameters.POSITIVE: retain})
+                                     parameters=parameters)
 
 
 @deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
@@ -232,12 +244,12 @@ def filter_variants_percentage(log: Union[EventLog, pd.DataFrame], threshold: fl
     filtered_log
         Filtered log object
     """
-    if check_is_dataframe(log):
+    if check_is_pandas_dataframe(log):
         raise Exception(
             "filtering variants percentage on Pandas dataframe is currently not available! please convert the dataframe to event log with the method: log =  pm4py.convert_to_event_log(df)")
     else:
         from pm4py.algo.filtering.log.variants import variants_filter
-        return variants_filter.filter_log_variants_percentage(log, percentage=threshold)
+        return variants_filter.filter_log_variants_percentage(log, percentage=threshold, parameters=get_properties(log))
 
 
 @deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
@@ -268,12 +280,15 @@ def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relatio
     filtered_log
         Filtered log object
     """
-    if check_is_dataframe(log):
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
         from pm4py.algo.filtering.pandas.paths import paths_filter
-        return paths_filter.apply(log, relations, parameters={paths_filter.Parameters.POSITIVE: retain})
+        parameters[paths_filter.Parameters.POSITIVE] = retain
+        return paths_filter.apply(log, relations, parameters=parameters)
     else:
         from pm4py.algo.filtering.log.paths import paths_filter
-        return paths_filter.apply(log, relations, parameters={paths_filter.Parameters.POSITIVE: retain})
+        parameters[paths_filter.Parameters.POSITIVE] = retain
+        return paths_filter.apply(log, relations, parameters=parameters)
 
 
 def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True) -> \
@@ -298,15 +313,17 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
     filtered_log
         Filtered log object
     """
-    if check_is_dataframe(log):
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
         from pm4py.algo.filtering.pandas.ltl import ltl_checker
+        parameters[ltl_checker.Parameters.POSITIVE] = retain
         if retain:
             cases = set()
         else:
             cases = set(log[constants.CASE_CONCEPT_NAME])
         for path in relations:
             filt_log = ltl_checker.eventually_follows(log, path,
-                                                  parameters={ltl_checker.Parameters.POSITIVE: retain})
+                                                  parameters=parameters)
             this_traces = set(filt_log[constants.CASE_CONCEPT_NAME])
             if retain:
                 cases = cases.union(this_traces)
@@ -316,13 +333,14 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
     else:
         from pm4py.objects.log.obj import EventLog
         from pm4py.algo.filtering.log.ltl import ltl_checker
+        parameters[ltl_checker.Parameters.POSITIVE] = retain
         if retain:
             cases = set()
         else:
             cases = set(id(trace) for trace in log)
         for path in relations:
             filt_log = ltl_checker.eventually_follows(log, path,
-                                                  parameters={ltl_checker.Parameters.POSITIVE: retain})
+                                                  parameters=parameters)
             this_traces = set(id(trace) for trace in filt_log)
             if retain:
                 cases = cases.union(this_traces)
@@ -360,25 +378,25 @@ def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mo
     filtered_log
         Filtered log
     """
-    if check_is_dataframe(log):
+    if check_is_pandas_dataframe(log):
         from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
         if mode == "events":
-            return timestamp_filter.apply_events(log, dt1, dt2)
+            return timestamp_filter.apply_events(log, dt1, dt2, parameters=get_properties(log))
         elif mode == "traces_contained":
-            return timestamp_filter.filter_traces_contained(log, dt1, dt2)
+            return timestamp_filter.filter_traces_contained(log, dt1, dt2, parameters=get_properties(log))
         elif mode == "traces_intersecting":
-            return timestamp_filter.filter_traces_intersecting(log, dt1, dt2)
+            return timestamp_filter.filter_traces_intersecting(log, dt1, dt2, parameters=get_properties(log))
         else:
             warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
             return log
     else:
         from pm4py.algo.filtering.log.timestamp import timestamp_filter
         if mode == "events":
-            return timestamp_filter.apply_events(log, dt1, dt2)
+            return timestamp_filter.apply_events(log, dt1, dt2, parameters=get_properties(log))
         elif mode == "traces_contained":
-            return timestamp_filter.filter_traces_contained(log, dt1, dt2)
+            return timestamp_filter.filter_traces_contained(log, dt1, dt2, parameters=get_properties(log))
         elif mode == "traces_intersecting":
-            return timestamp_filter.filter_traces_intersecting(log, dt1, dt2)
+            return timestamp_filter.filter_traces_intersecting(log, dt1, dt2, parameters=get_properties(log))
         else:
             warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
             return log

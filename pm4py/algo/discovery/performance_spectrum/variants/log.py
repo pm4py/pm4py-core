@@ -29,7 +29,7 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
     PARAMETER_SAMPLE_SIZE = "sample_size"
-
+    SORT_LOG_REQUIRED = "sort_log_required"
 
 
 def apply(log, list_activities, sample_size, parameters):
@@ -60,10 +60,12 @@ def apply(log, list_activities, sample_size, parameters):
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
-    
-    log = sorting.sort_timestamp_log(log, timestamp_key=timestamp_key)
+    sort_log_required = exec_utils.get_param_value(Parameters.SORT_LOG_REQUIRED, parameters, True)
+
     parameters[Parameters.ATTRIBUTE_KEY] = activity_key
     log = basic_filter.filter_log_events_attr(log, list_activities, parameters=parameters)
+    if sort_log_required:
+        log = sorting.sort_timestamp_log(log, timestamp_key=timestamp_key)
 
     points = []
 

@@ -24,6 +24,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY, PARAMETER_CON
 from pm4py.util.vers_checker import check_pandas_ge_024
 from enum import Enum
 from pm4py.util import exec_utils
+from copy import copy
 
 
 class Parameters(Enum):
@@ -74,7 +75,10 @@ def filter_traces_contained(df, dt1, dt2, parameters=None):
     stacked = stacked[stacked[timestamp_key + "_2"] <= dt2]
     i1 = df.set_index(case_id_glue).index
     i2 = stacked.set_index(case_id_glue).index
-    return df[i1.isin(i2)]
+    ret = df[i1.isin(i2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def filter_traces_intersecting(df, dt1, dt2, parameters=None):
@@ -125,7 +129,10 @@ def filter_traces_intersecting(df, dt1, dt2, parameters=None):
     stacked = pd.concat([stacked1, stacked2, stacked3], axis=0)
     i1 = df.set_index(case_id_glue).index
     i2 = stacked.set_index(case_id_glue).index
-    return df[i1.isin(i2)]
+    ret = df[i1.isin(i2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def apply_events(df, dt1, dt2, parameters=None):
@@ -162,10 +169,12 @@ def apply_events(df, dt1, dt2, parameters=None):
         dt1 = pd.to_datetime(dt1, utc=True)
         dt2 = pd.to_datetime(dt2, utc=True)
 
-    df = df[df[timestamp_key] >= dt1]
-    df = df[df[timestamp_key] <= dt2]
+    ret = df[df[timestamp_key] >= dt1]
+    ret = ret[ret[timestamp_key] <= dt2]
 
-    return df
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
+
 
 def filter_traces_attribute_in_timeframe(df, attribute, attribute_value, dt1, dt2, parameters=None):
     """
@@ -212,7 +221,9 @@ def filter_traces_attribute_in_timeframe(df, attribute, attribute_value, dt1, dt
     filtered = filtered[filtered[timestamp_key] <= dt2]
     filtered = df[df[case_id_glue].isin(filtered[case_id_glue])]
 
+    filtered.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
     return filtered
+
 
 def apply(df, parameters=None):
     del df

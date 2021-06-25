@@ -57,4 +57,6 @@ def apply(log, parameters=None):
         log = to_event_stream.apply(log, parameters=parameters)
     transf_log = [dict(x) for x in log]
     df = pd.DataFrame.from_dict(transf_log)
+    df.attrs = log.properties
+
     return df
