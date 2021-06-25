@@ -1,1 +1,2 @@
-from pm4py.algo.discovery.minimum_self_distance import algorithm, utils
+from pm4py.algo.discovery.minimum_self_distance import algorithm, utils, variants
+
