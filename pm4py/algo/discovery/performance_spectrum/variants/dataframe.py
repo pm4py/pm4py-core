@@ -14,13 +14,12 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+from enum import Enum
+
+from pm4py.util import constants
+from pm4py.util import exec_utils, pandas_utils
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import CASE_CONCEPT_NAME
-from pm4py.util import exec_utils, pandas_utils, constants
-
-
-from enum import Enum
-from pm4py.util import constants
 
 
 class Parameters(Enum):
@@ -29,6 +28,7 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
     PARAMETER_SAMPLE_SIZE = "sample_size"
+    SORT_LOG_REQUIRED = "sort_log_required"
 
 
 def apply(dataframe, list_activities, sample_size, parameters):
@@ -64,13 +64,15 @@ def apply(dataframe, list_activities, sample_size, parameters):
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
+    sort_log_required = exec_utils.get_param_value(Parameters.SORT_LOG_REQUIRED, parameters, True)
 
     dataframe = dataframe[[case_id_glue, activity_key, timestamp_key]]
     dataframe = dataframe[dataframe[activity_key].isin(list_activities)]
     dataframe = pandas_utils.insert_index(dataframe, constants.DEFAULT_EVENT_INDEX_KEY)
-    dataframe = dataframe.sort_values([case_id_glue, timestamp_key, constants.DEFAULT_EVENT_INDEX_KEY])
-    dataframe[timestamp_key] = dataframe[timestamp_key].astype(np.int64) / 10**9
-    
+    if sort_log_required:
+        dataframe = dataframe.sort_values([case_id_glue, timestamp_key, constants.DEFAULT_EVENT_INDEX_KEY])
+    dataframe[timestamp_key] = dataframe[timestamp_key].astype(np.int64) / 10 ** 9
+
     def key(k, n):
         return k + str(n)
 
@@ -80,7 +82,7 @@ def apply(dataframe, list_activities, sample_size, parameters):
     # keep only rows that belong to exactly one case
     for i in range(len(list_activities) - 1):
         dataframe = dataframe[dataframe[key(case_id_glue, i)] == dataframe[key(case_id_glue, i + 1)]]
-    
+
     column_list = [key(activity_key, i) for i in range(len(list_activities))]
     pattern = "".join(list_activities)
     # keep only rows that have the desired activities pattern

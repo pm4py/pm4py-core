@@ -141,6 +141,7 @@ def _compute_connected_components(dfg: DFG, alphabet: Set[str], start_activities
 def project(log: EventLog, cut: Cut, activity_key: str) -> List[EventLog]:
     do = cut[0]
     redo = cut[1:]
+    redo_activities = [y for x in redo for y in x]
     do_log = EventLog()
     redo_logs = []
     for i in range(len(redo)):
@@ -155,10 +156,11 @@ def project(log: EventLog, cut: Cut, activity_key: str) -> List[EventLog]:
                     redo_logs = _append_trace_to_redo_log(redo_trace, redo_logs, redo, activity_key)
                     redo_trace = Trace()
             else:
-                redo_trace.append(e)
-                if len(do_trace) > 0:
-                    do_log.append(do_trace)
-                    do_trace = Trace()
+                if e[activity_key] in redo_activities:
+                    redo_trace.append(e)
+                    if len(do_trace) > 0:
+                        do_log.append(do_trace)
+                        do_trace = Trace()
         if len(redo_trace) > 0:
             redo_logs = _append_trace_to_redo_log(redo_trace, redo_logs, redo, activity_key)
         do_log.append(do_trace)
@@ -169,9 +171,8 @@ def project(log: EventLog, cut: Cut, activity_key: str) -> List[EventLog]:
 
 def _append_trace_to_redo_log(redo_trace: Trace, redo_logs: List[List[Trace]], redo_groups: List[Set[str]],
                               activity_key: str) -> List[List[Trace]]:
-    sample_act = redo_trace[0][activity_key]
-    for i, group in enumerate(redo_groups):
-        if sample_act in group:
-            redo_logs[i].append(redo_trace)
-            break
+    activities = set(x[activity_key] for x in redo_trace)
+    inte = [(i, len(activities.intersection(redo_groups[i]))) for i in range(len(redo_groups))]
+    inte = sorted(inte, key=lambda x: (x[1], x[0]), reverse=True)
+    redo_logs[inte[0][0]].append(redo_trace)
     return redo_logs

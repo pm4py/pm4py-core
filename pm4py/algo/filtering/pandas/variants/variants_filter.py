@@ -21,6 +21,7 @@ from pm4py.statistics.traces.generic.pandas.case_statistics import get_variants_
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
 from enum import Enum
 from pm4py.util import exec_utils
+from copy import copy
 
 
 class Parameters(Enum):
@@ -110,4 +111,6 @@ def apply(df, admitted_variants, parameters=None):
         ret = df[i1.isin(i2)]
     else:
         ret = df[~i1.isin(i2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
     return ret

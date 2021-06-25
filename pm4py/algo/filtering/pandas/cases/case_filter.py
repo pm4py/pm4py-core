@@ -18,6 +18,7 @@ import pandas as pd
 from pm4py.util import constants, xes_constants
 from enum import Enum
 from pm4py.util import exec_utils
+from copy import copy
 
 
 class Parameters(Enum):
@@ -48,8 +49,9 @@ def filter_on_ncases(df, case_id_glue=constants.CASE_CONCEPT_NAME, max_no_cases=
     for case in cases_values_dict:
         cases_to_keep.append(case)
     cases_to_keep = cases_to_keep[0:min(len(cases_to_keep), max_no_cases)]
-    df = df[df[case_id_glue].isin(cases_to_keep)]
-    return df
+    ret = df[df[case_id_glue].isin(cases_to_keep)]
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, max_case_size=None):
@@ -76,7 +78,10 @@ def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, m
     df = df[element_group_size >= min_case_size]
     if max_case_size:
         element_group_size = df[case_id_glue].groupby(df[case_id_glue]).transform('size')
-        df = df[element_group_size <= max_case_size]
+        ret = df[element_group_size <= max_case_size]
+    else:
+        ret = df
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
     return df
 
 
@@ -115,7 +120,9 @@ def filter_on_case_performance(df, case_id_glue=constants.CASE_CONCEPT_NAME,
     stacked_df = stacked_df[stacked_df['caseDuration'] >= min_case_performance]
     i1 = df.set_index(case_id_glue).index
     i2 = stacked_df.set_index(case_id_glue).index
-    return df[i1.isin(i2)]
+    ret = df[i1.isin(i2)]
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def filter_case_performance(df, min_case_performance=0, max_case_performance=10000000000, parameters=None):

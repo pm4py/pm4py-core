@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.visualization.graphs.variants import cases, attributes, dates
+from pm4py.visualization.graphs.variants import cases, attributes, dates, barplot
 from pm4py.visualization.graphs.util.common import save, view, matplotlib_view, serialize
 from enum import Enum
 from pm4py.util import exec_utils
@@ -24,6 +24,7 @@ class Variants(Enum):
     CASES = cases
     ATTRIBUTES = attributes
     DATES = dates
+    BARPLOT = barplot
 
 
 DEFAULT_VARIANT = Variants.CASES
@@ -48,6 +49,7 @@ def apply(x, y, parameters=None, variant=DEFAULT_VARIANT):
             - Variants.CASES
             - Variants.ATTRIBUTES
             - Variants.DATES
+            - Variants.BARPLOT
 
     Returns
     ------------
@@ -76,6 +78,7 @@ def apply_plot(x, y, parameters=None, variant=DEFAULT_VARIANT):
             - Variants.CASES
             - Variants.ATTRIBUTES
             - Variants.DATES
+            - Variants.BARPLOT
 
     Returns
     ------------
@@ -104,6 +107,7 @@ def apply_semilogx(x, y, parameters=None, variant=DEFAULT_VARIANT):
             - Variants.CASES
             - Variants.ATTRIBUTES
             - Variants.DATES
+            - Variants.BARPLOT
 
     Returns
     ------------

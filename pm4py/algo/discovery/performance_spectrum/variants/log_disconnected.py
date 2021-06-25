@@ -14,22 +14,22 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+from enum import Enum
+
 from pm4py.objects.log.util import sorting
-from pm4py.objects.log.util import basic_filter
+from pm4py.util import constants, exec_utils
 from pm4py.util import points_subset
 from pm4py.util import xes_constants as xes
-from pm4py.util import exec_utils
-from enum import Enum
-from pm4py.util import constants
-from pm4py.util.constants import CASE_CONCEPT_NAME
+from pm4py.objects.log.util import basic_filter
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
     PARAMETER_SAMPLE_SIZE = "sample_size"
-
+    SORT_LOG_REQUIRED = "sort_log_required"
 
 
 def apply(log, list_activities, sample_size, parameters):
@@ -58,19 +58,25 @@ def apply(log, list_activities, sample_size, parameters):
     if parameters is None:
         parameters = {}
 
-    all_acti_combs = [list_activities[j:j + i] for i in range(2, len(list_activities) + 1) for j in range(0, len(list_activities) - i + 1)]
-    two_acti_combs = [[list_activities[i], list_activities[i + 1]] for i in range(len(list_activities) - 1)]
+    sort_log_required = exec_utils.get_param_value(Parameters.SORT_LOG_REQUIRED, parameters, True)
+
+    all_acti_combs = set(tuple(list_activities[j:j + i]) for i in range(2, len(list_activities) + 1) for j in
+                         range(0, len(list_activities) - i + 1))
+    two_acti_combs = set((list_activities[i], list_activities[i + 1]) for i in range(len(list_activities) - 1))
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes.DEFAULT_TRACEID_KEY)
-    
-    log = sorting.sort_timestamp_log(log, timestamp_key=timestamp_key)
+
+    parameters[Parameters.ATTRIBUTE_KEY] = activity_key
     log = basic_filter.filter_log_events_attr(log, list_activities, parameters=parameters)
+    if sort_log_required:
+        log = sorting.sort_timestamp_log(log, timestamp_key=timestamp_key)
 
     points = []
     for trace in log:
-        matches = [(i, i + 1) for i in range(len(trace) - 1) if [trace[i][activity_key], trace[i + 1][activity_key]] in two_acti_combs]
+        matches = [(i, i + 1) for i in range(len(trace) - 1) if
+                   (trace[i][activity_key], trace[i + 1][activity_key]) in two_acti_combs]
 
         i = 0
         while i < len(matches) - 1:
@@ -84,7 +90,8 @@ def apply(log, list_activities, sample_size, parameters):
 
         if matches:
             matches = set(matches)
-            timest_comb = [{ 'points': [(trace[i][activity_key], trace[i][timestamp_key].timestamp()) for i in match]} for match in matches]
+            timest_comb = [{'points': [(trace[i][activity_key], trace[i][timestamp_key].timestamp()) for i in match]}
+                           for match in matches]
             for p in timest_comb:
                 p['case_id'] = trace.attributes[case_id_key]
 
@@ -96,4 +103,3 @@ def apply(log, list_activities, sample_size, parameters):
         points = points_subset.pick_chosen_points_list(sample_size, points)
 
     return points
-
