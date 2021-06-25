@@ -183,12 +183,8 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
     """
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
     parameters = get_properties(log)
-    if noise_threshold > 0:
-        parameters[inductive_miner.Variants.IMf.value.Parameters.NOISE_THRESHOLD] = noise_threshold
-        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IMf, parameters=parameters)
-    else:
-        parameters[inductive_miner.Variants.IM_CLEAN.value.Parameters.NOISE_THRESHOLD] = noise_threshold
-        return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters=parameters)
+    parameters[inductive_miner.Variants.IM_CLEAN.value.Parameters.NOISE_THRESHOLD] = noise_threshold
+    return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters=parameters)
 
 
 @deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
