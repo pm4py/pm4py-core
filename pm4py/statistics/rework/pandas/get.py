@@ -37,7 +37,7 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> Dict
         parameters = {}
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
-    case_id_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
 
     df = df.copy()
     df = df[{activity_key, case_id_key}]
