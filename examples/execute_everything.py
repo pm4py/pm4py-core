@@ -4,6 +4,36 @@ import sys
 import traceback
 
 
+def batch_detection():
+    from examples import batch_detection
+    print("\n\nbatch_detection")
+    batch_detection.execute_script()
+
+
+def case_overlap_stat():
+    from examples import case_overlap_stat
+    print("\n\ncase_overlap_stat")
+    case_overlap_stat.execute_script()
+
+
+def cycle_time():
+    from examples import cycle_time
+    print("\n\ncycle_time")
+    cycle_time.execute_script()
+
+
+def rework():
+    from examples import rework
+    print("\n\nrework")
+    rework.execute_script()
+
+
+def events_distribution():
+    from examples import events_distribution
+    print("\n\nevents_distribution")
+    events_distribution.execute_script()
+
+
 def dotted_chart():
     from examples import dotted_chart
     print("\n\ndotted_chart")
