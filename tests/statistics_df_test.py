@@ -49,5 +49,25 @@ class StatisticsDfTest(unittest.TestCase):
         df = self.get_dataframe()
         get.get_variants_set(df)
 
+    def test_batch_detection(self):
+        from pm4py.algo.discovery.batches.variants import pandas as pandas_batches
+        df = self.get_dataframe()
+        pandas_batches.apply(df)
+    
+    def test_cycle_time(self):
+        from pm4py.statistics.traces.cycle_time.pandas import get as cycle_time_get
+        df = self.get_dataframe()
+        cycle_time_get.apply(df)
+
+    def test_rework(self):
+        from pm4py.statistics.rework.pandas import get as rework_get
+        df = self.get_dataframe()
+        rework_get.apply(df)
+
+    def test_events_distribution(self):
+        from pm4py.statistics.attributes.pandas import get as attributes_get
+        df = self.get_dataframe()
+        attributes_get.get_events_distribution(df)
+
 if __name__ == "__main__":
     unittest.main()
