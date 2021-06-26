@@ -1,25 +1,26 @@
 from enum import Enum
 from typing import Dict, Optional, Any, List
 
-from pm4py.objects.log.obj import EventLog
-from pm4py.statistics.traces.case_overlap.utils import compute
+import pandas as pd
+
+from pm4py.statistics.overlap.cases.utils import compute
 from pm4py.util import exec_utils, constants, xes_constants
-from pm4py.objects.conversion.log import converter
 
 
 class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
 
-def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> List[int]:
+def apply(df: pd.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> List[int]:
     """
-    Computes the case overlap statistic from an interval event log
+    Computes the case overlap statistic from a Pandas dataframe
 
     Parameters
     -----------------
-    log
-        Interval event log
+    df
+        Dataframe
     parameters
         Parameters of the algorithm, including:
         - Parameters.TIMESTAMP_KEY => attribute representing the completion timestamp
@@ -27,24 +28,33 @@ def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> List[in
 
     Returns
     ----------------
-    case overlap
+    case_overlap
         List associating to each case the number of open cases during the life of a case
     """
     if parameters is None:
         parameters = {}
 
-    log = converter.apply(log, parameters=parameters)
-
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
                                                      xes_constants.DEFAULT_TIMESTAMP_KEY)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+
+    columns = list({timestamp_key, start_timestamp_key, case_id_key})
+    stream = df[columns].to_dict('records')
 
     points = []
-    for trace in log:
-        case_points = []
-        for event in trace:
-            case_points.append((event[start_timestamp_key].timestamp(), event[timestamp_key].timestamp()))
+    cases = []
+    cases_points = {}
+    for event in stream:
+        case_id = event[case_id_key]
+        if case_id not in cases:
+            cases.append(case_id)
+            cases_points[case_id] = []
+        cases_points[case_id].append((event[start_timestamp_key].timestamp(), event[timestamp_key].timestamp()))
+
+    for case in cases:
+        case_points = cases_points[case]
         points.append((min(x[0] for x in case_points), max(x[1] for x in case_points)))
 
     return compute.apply(points, parameters=parameters)
