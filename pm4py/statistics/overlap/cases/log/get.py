@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Dict, Optional, Any, List
 
 from pm4py.objects.log.obj import EventLog
-from pm4py.statistics.overlap.cases.utils import compute
+from pm4py.statistics.overlap.utils import compute
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.objects.conversion.log import converter
 
