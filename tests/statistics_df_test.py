@@ -51,9 +51,15 @@ class StatisticsDfTest(unittest.TestCase):
 
     def test_batch_detection(self):
         from pm4py.algo.discovery.batches.variants import pandas as pandas_batches
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe)
+        pandas_batches.apply(dataframe)
+
+    def test_case_overlap(self):
+        from pm4py.statistics.overlap.cases.pandas import get as overlap_get
         df = self.get_dataframe()
-        pandas_batches.apply(df)
-    
+        overlap_get.apply(df)
+
     def test_cycle_time(self):
         from pm4py.statistics.traces.cycle_time.pandas import get as cycle_time_get
         df = self.get_dataframe()
@@ -68,6 +74,12 @@ class StatisticsDfTest(unittest.TestCase):
         from pm4py.statistics.attributes.pandas import get as attributes_get
         df = self.get_dataframe()
         attributes_get.get_events_distribution(df)
+
+    def test_msd(self):
+        from pm4py.algo.discovery.minimum_self_distance.variants import pandas as msd_pandas
+        df = self.get_dataframe()
+        msd_pandas.apply(df)
+
 
 if __name__ == "__main__":
     unittest.main()
