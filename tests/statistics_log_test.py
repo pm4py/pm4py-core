@@ -55,6 +55,36 @@ class StatisticsLogTest(unittest.TestCase):
         get.get_variants_along_with_case_durations(log)
         get.get_variants_from_log_trace_idx(log)
 
+    def test_batch_detection(self):
+        from pm4py.objects.log.importer.xes import importer
+        from pm4py.algo.discovery.batches.variants import log as log_batches
+        log = importer.apply(os.path.join("input_data", "receipt.xes"))
+        log_batches.apply(log)
+
+    def test_case_overlap(self):
+        from pm4py.statistics.overlap.cases.log import get as log_overlap
+        log = self.get_log()
+        log_overlap.apply(log)
+
+    def test_cycle_time(self):
+        from pm4py.statistics.traces.cycle_time.log import get as log_cycle_time
+        log = self.get_log()
+        log_cycle_time.apply(log)
+
+    def test_rework(self):
+        from pm4py.statistics.rework.log import get as log_rework
+        log = self.get_log()
+        log_rework.apply(log)
+
+    def test_events_distribution(self):
+        from pm4py.statistics.attributes.log import get as attributes_get
+        log = self.get_log()
+        attributes_get.get_events_distribution(log)
+
+    def test_msd(self):
+        from pm4py.algo.discovery.minimum_self_distance.variants import log as msd_log
+        log = self.get_log()
+        msd_log.apply(log)
 
 
 if __name__ == "__main__":
