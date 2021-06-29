@@ -86,7 +86,7 @@ def filter_attribute_values(log, attribute_key, values, level="case", retain=Tru
     return filter_event_attribute_values(log, attribute_key, values, level=level, retain=retain)
 
 
-def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values: List[str],
+def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values: Collection[str],
                                   level: str = "case", retain: bool = True) -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log object on the values of some event attribute
@@ -140,7 +140,7 @@ def filter_trace_attribute(log, attribute_key, values, retain=True):
     return filter_trace_attribute_values(log, attribute_key, values, retain=retain)
 
 
-def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values: List[str],
+def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values: Collection[str],
                                   retain: bool = True) -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log on the values of a trace attribute
@@ -175,7 +175,7 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
         return attributes_filter.apply_trace_attribute(log, values, parameters=parameters)
 
 
-def filter_variants(log: Union[EventLog, pd.DataFrame], variants: List[List[str]], retain: bool = True) -> Union[
+def filter_variants(log: Union[EventLog, pd.DataFrame], variants: Collection[List[str]], retain: bool = True) -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter a log on a specified set of variants
