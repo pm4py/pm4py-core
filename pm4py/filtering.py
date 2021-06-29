@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Union
+from typing import List, Union, Collection
 
 import deprecation
 import pandas as pd
@@ -11,8 +11,8 @@ from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_data
 from pm4py.utils import get_properties
 
 
-def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: List[str], retain: bool = True) -> Union[
-    EventLog, pd.DataFrame]:
+def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: Collection[str], retain: bool = True) -> \
+Union[EventLog, pd.DataFrame]:
     """
     Filter cases having a start activity in the provided list
 
@@ -45,7 +45,7 @@ def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: List
                                              parameters=parameters)
 
 
-def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities: List[str], retain: bool = True) -> Union[
+def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities: Collection[str], retain: bool = True) -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter cases having an end activity in the provided list
@@ -307,7 +307,7 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
             cases = set(log[constants.CASE_CONCEPT_NAME])
         for path in relations:
             filt_log = ltl_checker.eventually_follows(log, path,
-                                                  parameters=parameters)
+                                                      parameters=parameters)
             this_traces = set(filt_log[constants.CASE_CONCEPT_NAME])
             if retain:
                 cases = cases.union(this_traces)
@@ -324,7 +324,7 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
             cases = set(id(trace) for trace in log)
         for path in relations:
             filt_log = ltl_checker.eventually_follows(log, path,
-                                                  parameters=parameters)
+                                                      parameters=parameters)
             this_traces = set(id(trace) for trace in filt_log)
             if retain:
                 cases = cases.union(this_traces)
