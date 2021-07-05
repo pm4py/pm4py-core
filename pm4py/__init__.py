@@ -14,7 +14,8 @@ from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert
     convert_to_petri_net, convert_to_process_tree
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_heuristics, \
     discover_petri_net_inductive, discover_tree_inductive, discover_process_tree_inductive, discover_heuristics_net, \
-    discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph, discover_bpmn_inductive
+    discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph, discover_bpmn_inductive, \
+    discover_performance_directly_follows_graph
 from pm4py.filtering import filter_start_activities, filter_end_activities, filter_attribute_values, filter_variants, \
     filter_variants_percentage, filter_directly_follows_relation, filter_time_range, filter_trace_attribute, \
     filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values
@@ -31,7 +32,8 @@ from pm4py.utils import format_dataframe, parse_process_tree, serialize, deseria
 from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg, view_process_tree, \
     save_vis_process_tree, \
     view_heuristics_net, save_vis_heuristics_net, view_bpmn, save_vis_bpmn, view_sna, save_vis_sna,\
-    view_dotted_chart, save_vis_dotted_chart, view_performance_spectrum, save_vis_performance_spectrum, view_case_duration_graph, view_events_per_time_graph, save_vis_case_duration_graph, save_vis_events_per_time_graph
+    view_dotted_chart, save_vis_dotted_chart, view_performance_spectrum, save_vis_performance_spectrum, view_case_duration_graph, view_events_per_time_graph, save_vis_case_duration_graph, save_vis_events_per_time_graph, \
+    view_performance_dfg, save_vis_performance_dfg
 from pm4py.write import write_xes, write_petri_net, write_process_tree, write_dfg, write_bpmn, write_pnml, write_ptml
 from pm4py.org import discover_handover_of_work_network, discover_activity_based_resource_similarity, discover_subcontracting_network, discover_working_together_network, discover_organizational_roles
 from pm4py.ml import split_train_test, get_prefixes_from_log
