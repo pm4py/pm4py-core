@@ -1,1 +1,1 @@
-
+from pm4py.algo.analysis.woflan.graphs.minimal_coverability_graph import minimal_coverability_graph

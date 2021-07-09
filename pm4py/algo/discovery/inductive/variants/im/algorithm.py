@@ -20,7 +20,7 @@ from pm4py.util import variants_util
 from pm4py.util import xes_constants
 from pm4py.util import constants
 from enum import Enum
-
+import deprecation
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -96,6 +96,7 @@ def apply_variants(variants, parameters=None):
     return net, im, fm
 
 
+@deprecation.deprecated('2.2.10', '3.0.0', details='use newer IM implementation (IM_CLEAN)')
 def apply_tree(log, parameters=None):
     """
     Apply the IM algorithm to a log obtaining a process tree

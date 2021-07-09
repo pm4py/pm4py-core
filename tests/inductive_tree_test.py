@@ -10,34 +10,12 @@ from tests.constants import INPUT_DATA_DIR
 
 
 class InductiveMinerTreeTest(unittest.TestCase):
-    def test_tree_running_example_dfg_based(self):
-        # to avoid static method warnings in tests,
-        # that by construction of the unittest package have to be expressed in such way
-        self.dummy_variable = "dummy_value"
-        log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        tree = inductive_miner.apply_tree(log, variant=inductive_miner.IMd)
-        gviz = pt_vis.apply(tree)
-        del gviz
-        # test log generation
-        log = pt_semantics.generate_log(tree)
-        del log
-
-    def test_tree_receipt_dfg_based(self):
-        # to avoid static method warnings in tests,
-        # that by construction of the unittest package have to be expressed in such way
-        self.dummy_variable = "dummy_value"
-        log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "receipt.xes"))
-        tree = inductive_miner.apply_tree(log, variant=inductive_miner.IMd)
-        gviz = pt_vis.apply(tree)
-        del gviz
-        del log
-
     def test_tree_running_example_log_plain_based(self):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        tree = inductive_miner.apply_tree(log, variant=inductive_miner.IM)
+        tree = inductive_miner.apply_tree(log, variant=inductive_miner.IM_CLEAN)
         gviz = pt_vis.apply(tree)
         del gviz
         # test log generation
@@ -49,29 +27,7 @@ class InductiveMinerTreeTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "receipt.xes"))
-        tree = inductive_miner.apply_tree(log, variant=inductive_miner.IM)
-        gviz = pt_vis.apply(tree)
-        del gviz
-        del log
-
-    def test_tree_running_example_log_infrequent_based(self):
-        # to avoid static method warnings in tests,
-        # that by construction of the unittest package have to be expressed in such way
-        self.dummy_variable = "dummy_value"
-        log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        tree = inductive_miner.apply_tree(log, variant=inductive_miner.IMf)
-        gviz = pt_vis.apply(tree)
-        del gviz
-        # test log generation
-        log = pt_semantics.generate_log(tree)
-        del log
-
-    def test_tree_receipt_log_infrequent_based(self):
-        # to avoid static method warnings in tests,
-        # that by construction of the unittest package have to be expressed in such way
-        self.dummy_variable = "dummy_value"
-        log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "receipt.xes"))
-        tree = inductive_miner.apply_tree(log, variant=inductive_miner.IMf)
+        tree = inductive_miner.apply_tree(log, variant=inductive_miner.IM_CLEAN)
         gviz = pt_vis.apply(tree)
         del gviz
         del log

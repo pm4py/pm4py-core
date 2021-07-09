@@ -19,7 +19,7 @@ from pm4py.statistics.start_activities.log import get as start_activities_get
 from pm4py.util import exec_utils
 from pm4py.util import variants_util
 from pm4py.util import xes_constants
-
+import deprecation
 
 from pm4py.util import constants
 from enum import Enum
@@ -100,6 +100,7 @@ def apply_variants(variants, parameters=None):
     return net, im, fm
 
 
+@deprecation.deprecated('2.2.10', '3.0.0', details='use newer IM implementation (IM_CLEAN)')
 def apply_tree(log, parameters):
     """
     Apply the IM_FF algorithm to a log obtaining a process tree
