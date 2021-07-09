@@ -6,6 +6,7 @@ import pandas as pd
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties
+from copy import copy
 import deprecation
 
 
@@ -285,3 +286,139 @@ def get_case_arrival_average(log: Union[EventLog, pd.DataFrame]) -> float:
     else:
         from pm4py.statistics.traces.generic.log import case_arrival
         return case_arrival.get_case_arrival_avg(log, parameters=get_properties(log))
+
+
+def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
+    """
+    Find out for which activities of the log the rework (more than one occurrence in the trace for the activity)
+    occurs.
+    The output is a dictionary associating to each of the aforementioned activities
+    the number of cases for which the rework occurred.
+
+    Parameters
+    ------------------
+    log
+        Log object
+
+    Returns
+    ------------------
+    rework_dictionary
+        Dictionary associating to each of the aforementioned activities the number of cases for which the rework
+        occurred.
+    """
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.statistics.rework.pandas import get as rework_get
+        return rework_get.apply(log, parameters=get_properties(log))
+    else:
+        from pm4py.statistics.rework.log import get as rework_get
+        return rework_get.apply(log, parameters=get_properties(log))
+
+
+def get_case_overlap(log: Union[EventLog, pd.DataFrame]) -> List[int]:
+    """
+    Associates to each case in the log the number of cases concurrently open
+
+    Parameters
+    ------------------
+    log
+        Log object
+
+    Returns
+    ------------------
+    overlap_list
+        List that for each case (identified by its index in the log) tells how many other cases
+        are concurrently open.
+    """
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.statistics.overlap.cases.pandas import get as cases_overlap
+        return cases_overlap.apply(log, parameters=get_properties(log))
+    else:
+        from pm4py.statistics.overlap.cases.log import get as cases_overlap
+        return cases_overlap.apply(log, parameters=get_properties(log))
+
+
+def get_cycle_time(log: Union[EventLog, pd.DataFrame]) -> float:
+    """
+    Calculates the cycle time of the event log.
+
+    The definition that has been followed is the one proposed in:
+    https://www.presentationeze.com/presentations/lean-manufacturing-just-in-time/lean-manufacturing-just-in-time-full-details/process-cycle-time-analysis/calculate-cycle-time/#:~:text=Cycle%20time%20%3D%20Average%20time%20between,is%2024%20minutes%20on%20average.
+
+    So:
+    Cycle time  = Average time between completion of units.
+
+    Example taken from the website:
+    Consider a manufacturing facility, which is producing 100 units of product per 40 hour week.
+    The average throughput rate is 1 unit per 0.4 hours, which is one unit every 24 minutes.
+    Therefore the cycle time is 24 minutes on average.
+
+    Parameters
+    -----------------
+    log
+        Log object
+
+    Returns
+    -----------------
+    cycle_time
+        Cycle time (calculated with the aforementioned formula).
+    """
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.statistics.traces.cycle_time.pandas import get as cycle_time
+        return cycle_time.apply(log, parameters=get_properties(log))
+    else:
+        from pm4py.statistics.traces.cycle_time.log import get as cycle_time
+        return cycle_time.apply(log, parameters=get_properties(log))
+
+
+def get_all_case_durations(log: Union[EventLog, pd.DataFrame]) -> List[float]:
+    """
+    Gets the durations of the cases in the event log
+
+    Parameters
+    ---------------
+    log
+        Event log
+
+    Returns
+    ---------------
+    durations
+        Case durations (as list)
+    """
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.statistics.traces.generic.pandas import case_statistics
+        cd = case_statistics.get_cases_description(log, parameters=get_properties(log))
+        return sorted([x["caseDuration"] for x in cd.values()])
+    else:
+        from pm4py.statistics.traces.generic.log import case_statistics
+        return case_statistics.get_all_casedurations(log, parameters=get_properties(log))
+
+
+def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str) -> float:
+    """
+    Gets the duration of a specific case
+
+    Parameters
+    -------------------
+    log
+        Event log
+    case_id
+        Case identifier
+
+    Returns
+    ------------------
+    duration
+        Duration of the given case
+    """
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.statistics.traces.generic.pandas import case_statistics
+        cd = case_statistics.get_cases_description(log)
+        return cd[case_id]["caseDuration"]
+    else:
+        from pm4py.statistics.traces.generic.log import case_statistics
+        cd = case_statistics.get_cases_description(log)
+        return cd[case_id]["caseDuration"]
