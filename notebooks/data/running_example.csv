@@ -1,4 +1,4 @@
-case:concept:name;concept:name;time:timestamp;costs;org:resource
+case_id;activity;timestamp;costs;org:resource
 3;register request;2010-12-30 14:32:00+01:00;50;Pete
 3;examine casually;2010-12-30 15:06:00+01:00;400;Mike
 3;check ticket;2010-12-30 16:34:00+01:00;100;Ellen
