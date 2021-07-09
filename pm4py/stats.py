@@ -6,6 +6,7 @@ import pandas as pd
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties
+import deprecation
 
 
 def get_start_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
@@ -54,7 +55,12 @@ def get_end_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
         return get.get_end_activities(log, parameters=get_properties(log))
 
 
+@deprecation.deprecated('2.2.10', '3.0.0', details="please use get_event_attributes instead")
 def get_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
+    return get_event_attributes(log)
+
+
+def get_event_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     """
     Returns the attributes at the event level of the log
 
@@ -99,7 +105,12 @@ def get_trace_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
         return list(get.get_all_trace_attributes_from_log(log))
 
 
-def get_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str) -> Dict[str, int]:
+@deprecation.deprecated('2.2.10', '3.0.0', details="please use get_event_attribute_values instead")
+def get_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str, count_once_per_case=False) -> Dict[str, int]:
+    return get_event_attribute_values(log, attribute, count_once_per_case=count_once_per_case)
+
+
+def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str, count_once_per_case=False) -> Dict[str, int]:
     """
     Returns the values for a specified attribute
 
@@ -109,19 +120,24 @@ def get_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str) -> 
         Log object
     attribute
         Attribute
+    count_once_per_case
+        If True, consider only an occurrence of the given attribute value inside a case
+        (if there are multiple events sharing the same attribute value, count only 1 occurrence)
 
     Returns
     ---------------
     attribute_values
         Dictionary of values along with their count
     """
+    parameters = get_properties(log)
+    parameters["keep_once_per_case"] = count_once_per_case
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get
-        return get.get_attribute_values(log, attribute)
+        return get.get_attribute_values(log, attribute, parameters=parameters)
     else:
         from pm4py.statistics.attributes.log import get
-        return get.get_attribute_values(log, attribute)
+        return get.get_attribute_values(log, attribute, parameters=parameters)
 
 
 def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str) -> Dict[str, int]:
