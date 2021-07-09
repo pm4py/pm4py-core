@@ -99,6 +99,15 @@ def execute_script():
     print("attributes org:resource len(filt_df) (events) events notpositive = ",
           len(pm4py.filter_event_attribute_values(df2, "org:resource", ["Ellen"], level="event", retain=False)))
 
+    print("rework df = ", pm4py.get_rework_cases_per_activity(df2))
+    print("rework log = ", pm4py.get_rework_cases_per_activity(log2))
+    print("cases overlap df = ", pm4py.get_case_overlap(df2))
+    print("cases overlap log = ", pm4py.get_case_overlap(log2))
+    print("cycle time df = ", pm4py.get_cycle_time(df2))
+    print("cycle time log = ", pm4py.get_cycle_time(log2))
+    pm4py.view_events_distribution_graph(df2, format="svg")
+    pm4py.view_events_distribution_graph(log2, format="svg")
+
     print("variants log = ", pm4py.get_variants(log2))
     print("variants df = ", pm4py.get_variants(df2))
     print("variants filter log = ",
