@@ -1,1 +1,2 @@
-from pm4py.algo.evaluation.precision import algorithm, variants
+from pm4py.algo.evaluation.precision import algorithm, variants, utils
+
