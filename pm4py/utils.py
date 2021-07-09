@@ -29,6 +29,7 @@ INDEX_COLUMN = "@@index"
 def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
                      activity_key: str = xes_constants.DEFAULT_NAME_KEY,
                      timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
+                     start_timestamp_key: str = xes_constants.DEFAULT_START_TIMESTAMP_KEY,
                      timest_format: Optional[str] = None) -> pd.DataFrame:
     """
     Give the appropriate format on the dataframe, for process mining purposes
@@ -43,6 +44,8 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
         Activity column
     timestamp_key
         Timestamp column
+    start_timestamp_key
+        Start timestamp column
     timest_format
         Timestamp format that is provided to Pandas
 
@@ -61,19 +64,23 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     df = df.rename(columns={case_id: constants.CASE_CONCEPT_NAME, activity_key: xes_constants.DEFAULT_NAME_KEY,
                             timestamp_key: xes_constants.DEFAULT_TIMESTAMP_KEY})
     df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype(str)
-    # makes sure that the timestamp column is of timestamp type
-    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format,
-                                                         timest_columns=[xes_constants.DEFAULT_TIMESTAMP_KEY])
+    # makes sure that the timestamps column are of timestamp type
+    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format)
     # make sure the activity column is of string type
     df[xes_constants.DEFAULT_NAME_KEY] = df[xes_constants.DEFAULT_NAME_KEY].astype(str)
     # set an index column
     df = pandas_utils.insert_index(df, INDEX_COLUMN)
     # sorts the dataframe
     df = df.sort_values([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_TIMESTAMP_KEY, INDEX_COLUMN])
+    # re-set the index column
+    df = pandas_utils.insert_index(df, INDEX_COLUMN)
     # sets the properties
     if not hasattr(df, 'attrs'):
         # legacy (Python 3.6) support
         df.attrs = {}
+    if start_timestamp_key in df.columns:
+        df[xes_constants.DEFAULT_START_TIMESTAMP_KEY] = df[start_timestamp_key]
+        df.attrs[constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] = xes_constants.DEFAULT_START_TIMESTAMP_KEY
     df.attrs[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_constants.DEFAULT_NAME_KEY
     df.attrs[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_constants.DEFAULT_TIMESTAMP_KEY
     df.attrs[constants.PARAMETER_CONSTANT_GROUP_KEY] = xes_constants.DEFAULT_GROUP_KEY

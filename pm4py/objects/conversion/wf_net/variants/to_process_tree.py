@@ -251,7 +251,7 @@ def group_blocks_in_net(net, parameters=None):
     if parameters is None:
         parameters = {}
 
-    from pm4py.algo.analysis.workflow_net import evaluator as wf_eval
+    from pm4py.algo.analysis.workflow_net import algorithm as wf_eval
 
     if not wf_eval.apply(net):
         raise ValueError('The Petri net provided is not a WF-net')

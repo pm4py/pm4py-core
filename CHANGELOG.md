@@ -1,5 +1,33 @@
 # PM4Py Changelog
 
+## PM4PY 2.2.10 (2021.07.09)
+
+### Fixed
+
+### Removed
+
+### Deprecated
+
+### Changed
+
+* 4964d6ea
+    * minor refactoring (rename) in attribute statistics querying; ```get_attributes()``` --> ```get_event_attributes()```
+* 1148f6c0
+   * use revised implementation of IM and IMf everywhere, deprecate old implementations
+
+### Added
+
+* 6750bf3a
+  * add support for start time and end-time in timstamp conversion
+* e24f5b70
+  * computation of event-level overlap  
+* 8cec5f9e
+   * add several case/event level statistic functions at the simplified interface level
+
+### Other
+
+---
+
 ## PM4PY 2.2.9 (2021.06.25)
 
 ### Fixed

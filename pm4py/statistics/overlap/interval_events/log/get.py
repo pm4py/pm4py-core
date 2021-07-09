@@ -15,52 +15,51 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from typing import Dict, Optional, Any, List
+from typing import Optional, Dict, Any, Union, List
 
-from pm4py.objects.log.obj import EventLog
-from pm4py.statistics.traces.case_overlap.utils import compute
-from pm4py.util import exec_utils, constants, xes_constants
-from pm4py.objects.conversion.log import converter
+from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.statistics.overlap.utils import compute
+from pm4py.util import constants, xes_constants, exec_utils
 
 
 class Parameters(Enum):
-    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
-def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> List[int]:
+def apply(log: Union[EventLog, EventStream], parameters: Optional[Dict[str, Any]] = None) -> List[int]:
     """
-    Computes the case overlap statistic from an interval event log
+    Counts the intersections of each interval event with the other interval events of the log
+    (all the events are considered, not looking at the activity)
 
     Parameters
-    -----------------
+    ----------------
     log
-        Interval event log
+        Event log
     parameters
         Parameters of the algorithm, including:
-        - Parameters.TIMESTAMP_KEY => attribute representing the completion timestamp
-        - Parameters.START_TIMESTAMP_KEY => attribute representing the start timestamp
+        - Parameters.START_TIMESTAMP_KEY => the attribute to consider as start timestamp
+        - Parameters.TIMESTAMP_KEY => the attribute to consider as timestamp
 
     Returns
-    ----------------
-    case overlap
-        List associating to each case the number of open cases during the life of a case
+    -----------------
+    overlap
+        For each interval event, ordered by the order of appearance in the log, associates the number
+        of intersecting events.
     """
     if parameters is None:
         parameters = {}
 
-    log = converter.apply(log, parameters=parameters)
-
-    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
-                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    log = log_converter.apply(log, parameters=parameters)
     start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
                                                      xes_constants.DEFAULT_TIMESTAMP_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
 
     points = []
     for trace in log:
-        case_points = []
         for event in trace:
-            case_points.append((event[start_timestamp_key].timestamp(), event[timestamp_key].timestamp()))
-        points.append((min(x[0] for x in case_points), max(x[1] for x in case_points)))
+            points.append((event[start_timestamp_key].timestamp(), event[timestamp_key].timestamp()))
 
     return compute.apply(points, parameters=parameters)

@@ -16,6 +16,7 @@ kiwisolver
 lxml
 MarkupSafe
 matplotlib
+matplotlib-inline
 mpmath
 networkx
 numpy

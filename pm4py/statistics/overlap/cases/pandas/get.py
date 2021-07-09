@@ -19,7 +19,7 @@ from typing import Dict, Optional, Any, List
 
 import pandas as pd
 
-from pm4py.statistics.traces.case_overlap.utils import compute
+from pm4py.statistics.overlap.utils import compute
 from pm4py.util import exec_utils, constants, xes_constants
 
 
