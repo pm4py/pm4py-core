@@ -25,6 +25,7 @@ import pandas as pd
 from typing import Union, List
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties
+from copy import copy
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, format: str = "png"):
@@ -469,3 +470,49 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
     format = file_path[file_path.index(".") + 1:].lower()
     gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format})
     perf_spectrum_visualizer.save(gviz, file_path)
+
+
+def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_type: str = "days_week", format="png"):
+    """
+    Shows the distribution of the events in the specified dimension
+
+    Parameters
+    ----------------
+    log
+        Event log
+    distr_type
+        Type of distribution (default: days_week):
+        - days_month => Gets the distribution of the events among the days of a month (from 1 to 31)
+        - months => Gets the distribution of the events among the months (from 1 to 12)
+        - years => Gets the distribution of the events among the years of the event log
+        - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
+        - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
+    format
+        Format of the visualization (default: png)
+    """
+    if distr_type == "days_month":
+        title = "Distribution of the Events over the Days of a Month"; x_axis = "Day of month"; y_axis = "Number of Events"
+    elif distr_type == "months":
+        title = "Distribution of the Events over the Months"; x_axis = "Month"; y_axis = "Number of Events"
+    elif distr_type == "years":
+        title = "Distribution of the Events over the Years"; x_axis = "Year"; y_axis = "Number of Events"
+    elif distr_type == "hours":
+        title = "Distribution of the Events over the Hours"; x_axis = "Hour (of day)"; y_axis = "Number of Events"
+    elif distr_type == "days_week":
+        title = "Distribution of the Events over the Days of a Week"; x_axis = "Day of the Week"; y_axis = "Number of Events"
+    else:
+        raise Exception("unsupported distribution specified.")
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.statistics.attributes.pandas import get as attributes_get
+        x, y = attributes_get.get_events_distribution(log, distr_type=distr_type, parameters=get_properties(log))
+    else:
+        from pm4py.statistics.attributes.log import get as attributes_get
+        x, y = attributes_get.get_events_distribution(log, distr_type=distr_type, parameters=get_properties(log))
+
+    parameters = copy(get_properties(log))
+    parameters["title"] = title; parameters["x_axis"] = x_axis; parameters["y_axis"] = y_axis; parameters["format"] = format
+    from pm4py.visualization.graphs import visualizer as graphs_visualizer
+    gviz = graphs_visualizer.apply(x, y, variant=graphs_visualizer.Variants.BARPLOT, parameters=parameters)
+    graphs_visualizer.view(gviz)

@@ -14,13 +14,9 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.evaluation import precision
+from pm4py.algo.evaluation import precision, replay_fitness, simplicity, generalization
 import pkgutil
 
 if pkgutil.find_loader("pyemd"):
     # import the EMD only if the pyemd package is installed
-    pass
-
-if pkgutil.find_loader("networkx") and pkgutil.find_loader("sympy"):
-    # import the Woflan package only if NetworkX and sympy are installed
-    pass
+    from pm4py.algo.evaluation import earth_mover_distance

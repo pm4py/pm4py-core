@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.objects import log, petri_net, transition_system, conversion, process_tree, random_variables, \
-    stochastic_petri
+    stochastic_petri, dfg, trie
 import pkgutil
 
 if pkgutil.find_loader("networkx"):

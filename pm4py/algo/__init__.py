@@ -14,5 +14,5 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo import discovery, conformance, reduction, analysis, evaluation, simulation
+from pm4py.algo import discovery, conformance, reduction, analysis, evaluation, simulation, comparison, decision_mining, organizational_mining, transformation
 

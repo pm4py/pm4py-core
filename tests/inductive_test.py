@@ -23,7 +23,7 @@ COMPRESSED_INPUT_DATA = "compressed_input_data"
 
 
 class InductiveMinerTest(unittest.TestCase):
-    def obtain_petri_net_through_im(self, log_name, variant=inductive_miner.DEFAULT_VARIANT_LOG):
+    def obtain_petri_net_through_im(self, log_name, variant=inductive_miner.IM_CLEAN):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
@@ -33,10 +33,6 @@ class InductiveMinerTest(unittest.TestCase):
             df = pd.read_csv(log_name)
             df = dataframe_utils.convert_timestamp_columns_in_df(df)
             log = log_conversion.apply(df)
-        # apply dummily the test to all the available variants
-        net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.IMd)
-        net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.IM)
-        net, marking, final_marking = inductive_miner.apply(log, variant=inductive_miner.IMf)
         net, marking, final_marking = inductive_miner.apply(log, variant=variant)
 
         return log, net, marking, final_marking

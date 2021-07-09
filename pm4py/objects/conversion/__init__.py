@@ -14,3 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+from pm4py.objects.conversion import bpmn, heuristics_net, process_tree, wf_net, log, dfg

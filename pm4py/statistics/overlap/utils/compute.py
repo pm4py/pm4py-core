@@ -28,20 +28,20 @@ class Parameters(Enum):
 
 def apply(points: List[Tuple[float, float]], parameters: Optional[Dict[str, Any]] = None) -> List[int]:
     """
-    Computes the case overlap statistic given a list of cases, expressed as (min_timestamp, max_timestamp)
+    Computes the overlap statistic given a list of points, expressed as (min_timestamp, max_timestamp)
 
     Parameters
     -----------------
     points
-        List of events with the aforementioned features
+        List of points with the aforementioned features
     parameters
         Parameters of the method, including:
         - Parameters.EPSILON
 
     Returns
     -----------------
-    case overlap
-        List associating to each case the number of open cases during the life of a case
+    overlap
+        List associating to each point the number of intersecting points
     """
     if parameters is None:
         parameters = {}
@@ -54,8 +54,8 @@ def apply(points: List[Tuple[float, float]], parameters: Optional[Dict[str, Any]
     for p in sorted_points:
         tree.add(Interval(p[0], p[1]))
 
-    case_overlap = []
+    overlap = []
     for p in points:
-        case_overlap.append(len(tree[p[0]:p[1]]))
+        overlap.append(len(tree[p[0]:p[1]]))
 
-    return case_overlap
+    return overlap

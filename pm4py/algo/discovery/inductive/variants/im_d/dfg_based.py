@@ -40,6 +40,7 @@ sys.setrecursionlimit(shared_constants.REC_LIMIT)
 
 from pm4py.util import constants
 from enum import Enum
+import deprecation
 
 
 class Parameters(Enum):
@@ -252,6 +253,7 @@ def apply_dfg(dfg, parameters=None, activities=None, contains_empty_traces=False
     return net, initial_marking, final_marking
 
 
+@deprecation.deprecated('2.2.10', '3.0.0', details='use newer IM implementation (IM_CLEAN)')
 def apply_tree_dfg(dfg, parameters=None, activities=None, contains_empty_traces=False, start_activities=None,
                    end_activities=None):
     """
