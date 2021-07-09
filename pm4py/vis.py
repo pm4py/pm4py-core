@@ -109,61 +109,6 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
     dfg_visualizer.save(gviz, file_path)
 
 
-def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png",
-             log: Optional[EventLog] = None):
-    """
-    Views a performance DFG
-
-    Parameters
-    -------------
-    dfg
-        Performance DFG object
-    start_activities
-        Start activities
-    end_activities
-        End activities
-    format
-        Format of the output picture (default: png)
-    """
-    from pm4py.visualization.dfg import visualizer as dfg_visualizer
-    dfg_parameters = dfg_visualizer.Variants.PERFORMANCE.value.Parameters
-    parameters = get_properties(log)
-    parameters[dfg_parameters.FORMAT] = format
-    parameters[dfg_parameters.START_ACTIVITIES] = start_activities
-    parameters[dfg_parameters.END_ACTIVITIES] = end_activities
-    gviz = dfg_visualizer.apply(dfg, log=log, variant=dfg_visualizer.Variants.PERFORMANCE,
-                                parameters=parameters)
-    dfg_visualizer.view(gviz)
-
-
-def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str,
-                 log: Optional[EventLog] = None):
-    """
-    Saves a performance DFG visualization to a file
-
-    Parameters
-    --------------
-    dfg
-        Performance DFG object
-    start_activities
-        Start activities
-    end_activities
-        End activities
-    file_path
-        Destination path
-    """
-    format = file_path[file_path.index(".") + 1:].lower()
-    from pm4py.visualization.dfg import visualizer as dfg_visualizer
-    dfg_parameters = dfg_visualizer.Variants.PERFORMANCE.value.Parameters
-    parameters = get_properties(log)
-    parameters[dfg_parameters.FORMAT] = format
-    parameters[dfg_parameters.START_ACTIVITIES] = start_activities
-    parameters[dfg_parameters.END_ACTIVITIES] = end_activities
-    gviz = dfg_visualizer.apply(dfg, log=log, variant=dfg_visualizer.Variants.PERFORMANCE,
-                                parameters=parameters)
-    dfg_visualizer.save(gviz, file_path)
-
-
 def view_process_tree(tree: ProcessTree, format: str = "png"):
     """
     Views a process tree
