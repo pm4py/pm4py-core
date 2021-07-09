@@ -3,7 +3,7 @@ import traceback
 
 import pm4py
 from pm4py.algo.analysis.woflan import algorithm as woflan
-from pm4py.algo.analysis.workflow_net import evaluator as is_wf_net
+from pm4py.algo.analysis.workflow_net import algorithm as is_wf_net
 from pm4py.objects.conversion.process_tree import converter as pt_converter
 from pm4py.objects.conversion.wf_net import converter as wf_net_converter
 

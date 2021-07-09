@@ -56,7 +56,7 @@ if __name__ == "__main__":
     WOFLAN_RETURN_ASAP = True
     WOFLAN_PRINT_DIAGNOSTICS = True
     WOFLAN_RETURN_DIAGNOSTICS = True
-    INDUCTIVE_MINER_VARIANT = inductive.Variants.IM
+    INDUCTIVE_MINER_VARIANT = inductive.Variants.IM_CLEAN
     ALIGN_VARIANT = state_equation_a_star
     logFolder = os.path.join("..", "compressed_input_data")
     pnmlFolder = "pnml_folder"

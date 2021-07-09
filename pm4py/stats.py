@@ -6,6 +6,8 @@ import pandas as pd
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties
+from copy import copy
+import deprecation
 
 
 def get_start_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
@@ -54,7 +56,12 @@ def get_end_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
         return get.get_end_activities(log, parameters=get_properties(log))
 
 
+@deprecation.deprecated('2.2.10', '3.0.0', details="please use get_event_attributes instead")
 def get_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
+    return get_event_attributes(log)
+
+
+def get_event_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     """
     Returns the attributes at the event level of the log
 
@@ -99,7 +106,12 @@ def get_trace_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
         return list(get.get_all_trace_attributes_from_log(log))
 
 
-def get_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str) -> Dict[str, int]:
+@deprecation.deprecated('2.2.10', '3.0.0', details="please use get_event_attribute_values instead")
+def get_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str, count_once_per_case=False) -> Dict[str, int]:
+    return get_event_attribute_values(log, attribute, count_once_per_case=count_once_per_case)
+
+
+def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str, count_once_per_case=False) -> Dict[str, int]:
     """
     Returns the values for a specified attribute
 
@@ -109,19 +121,24 @@ def get_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str) -> 
         Log object
     attribute
         Attribute
+    count_once_per_case
+        If True, consider only an occurrence of the given attribute value inside a case
+        (if there are multiple events sharing the same attribute value, count only 1 occurrence)
 
     Returns
     ---------------
     attribute_values
         Dictionary of values along with their count
     """
+    parameters = get_properties(log)
+    parameters["keep_once_per_case"] = count_once_per_case
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get
-        return get.get_attribute_values(log, attribute)
+        return get.get_attribute_values(log, attribute, parameters=parameters)
     else:
         from pm4py.statistics.attributes.log import get
-        return get.get_attribute_values(log, attribute)
+        return get.get_attribute_values(log, attribute, parameters=parameters)
 
 
 def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str) -> Dict[str, int]:
@@ -269,3 +286,139 @@ def get_case_arrival_average(log: Union[EventLog, pd.DataFrame]) -> float:
     else:
         from pm4py.statistics.traces.generic.log import case_arrival
         return case_arrival.get_case_arrival_avg(log, parameters=get_properties(log))
+
+
+def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
+    """
+    Find out for which activities of the log the rework (more than one occurrence in the trace for the activity)
+    occurs.
+    The output is a dictionary associating to each of the aforementioned activities
+    the number of cases for which the rework occurred.
+
+    Parameters
+    ------------------
+    log
+        Log object
+
+    Returns
+    ------------------
+    rework_dictionary
+        Dictionary associating to each of the aforementioned activities the number of cases for which the rework
+        occurred.
+    """
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.statistics.rework.pandas import get as rework_get
+        return rework_get.apply(log, parameters=get_properties(log))
+    else:
+        from pm4py.statistics.rework.log import get as rework_get
+        return rework_get.apply(log, parameters=get_properties(log))
+
+
+def get_case_overlap(log: Union[EventLog, pd.DataFrame]) -> List[int]:
+    """
+    Associates to each case in the log the number of cases concurrently open
+
+    Parameters
+    ------------------
+    log
+        Log object
+
+    Returns
+    ------------------
+    overlap_list
+        List that for each case (identified by its index in the log) tells how many other cases
+        are concurrently open.
+    """
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.statistics.overlap.cases.pandas import get as cases_overlap
+        return cases_overlap.apply(log, parameters=get_properties(log))
+    else:
+        from pm4py.statistics.overlap.cases.log import get as cases_overlap
+        return cases_overlap.apply(log, parameters=get_properties(log))
+
+
+def get_cycle_time(log: Union[EventLog, pd.DataFrame]) -> float:
+    """
+    Calculates the cycle time of the event log.
+
+    The definition that has been followed is the one proposed in:
+    https://www.presentationeze.com/presentations/lean-manufacturing-just-in-time/lean-manufacturing-just-in-time-full-details/process-cycle-time-analysis/calculate-cycle-time/#:~:text=Cycle%20time%20%3D%20Average%20time%20between,is%2024%20minutes%20on%20average.
+
+    So:
+    Cycle time  = Average time between completion of units.
+
+    Example taken from the website:
+    Consider a manufacturing facility, which is producing 100 units of product per 40 hour week.
+    The average throughput rate is 1 unit per 0.4 hours, which is one unit every 24 minutes.
+    Therefore the cycle time is 24 minutes on average.
+
+    Parameters
+    -----------------
+    log
+        Log object
+
+    Returns
+    -----------------
+    cycle_time
+        Cycle time (calculated with the aforementioned formula).
+    """
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.statistics.traces.cycle_time.pandas import get as cycle_time
+        return cycle_time.apply(log, parameters=get_properties(log))
+    else:
+        from pm4py.statistics.traces.cycle_time.log import get as cycle_time
+        return cycle_time.apply(log, parameters=get_properties(log))
+
+
+def get_all_case_durations(log: Union[EventLog, pd.DataFrame]) -> List[float]:
+    """
+    Gets the durations of the cases in the event log
+
+    Parameters
+    ---------------
+    log
+        Event log
+
+    Returns
+    ---------------
+    durations
+        Case durations (as list)
+    """
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.statistics.traces.generic.pandas import case_statistics
+        cd = case_statistics.get_cases_description(log, parameters=get_properties(log))
+        return sorted([x["caseDuration"] for x in cd.values()])
+    else:
+        from pm4py.statistics.traces.generic.log import case_statistics
+        return case_statistics.get_all_casedurations(log, parameters=get_properties(log))
+
+
+def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str) -> float:
+    """
+    Gets the duration of a specific case
+
+    Parameters
+    -------------------
+    log
+        Event log
+    case_id
+        Case identifier
+
+    Returns
+    ------------------
+    duration
+        Duration of the given case
+    """
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.statistics.traces.generic.pandas import case_statistics
+        cd = case_statistics.get_cases_description(log)
+        return cd[case_id]["caseDuration"]
+    else:
+        from pm4py.statistics.traces.generic.log import case_statistics
+        cd = case_statistics.get_cases_description(log)
+        return cd[case_id]["caseDuration"]
