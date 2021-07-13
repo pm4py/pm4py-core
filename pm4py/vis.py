@@ -15,6 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from typing import Optional, Dict, Any, List
+import os
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
@@ -64,7 +65,7 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
     file_path
         Destination path
     """
-    format = file_path[file_path.index(".") + 1:].lower()
+    format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.petri_net import visualizer as pn_visualizer
     gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
                                parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format})
@@ -114,7 +115,7 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
     file_path
         Destination path
     """
-    format = file_path[file_path.index(".") + 1:].lower()
+    format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
     parameters = get_properties(log)
@@ -154,7 +155,7 @@ def save_vis_process_tree(tree: ProcessTree, file_path: str):
     file_path
         Destination path
     """
-    format = file_path[file_path.index(".") + 1:].lower()
+    format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.process_tree import visualizer as pt_visualizer
     parameters = pt_visualizer.Variants.WO_DECORATION.value.Parameters
     gviz = pt_visualizer.apply(tree, parameters={parameters.FORMAT: format})
@@ -172,7 +173,7 @@ def save_vis_bpmn(bpmn_graph: BPMN, file_path: str):
     file_path
         Destination path
     """
-    format = file_path[file_path.index(".") + 1:].lower()
+    format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.bpmn import visualizer as bpmn_visualizer
     parameters = bpmn_visualizer.Variants.CLASSIC.value.Parameters
     gviz = bpmn_visualizer.apply(bpmn_graph, parameters={parameters.FORMAT: format})
@@ -224,7 +225,7 @@ def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str):
     file_path
         Destination path
     """
-    format = file_path[file_path.index(".") + 1:].lower()
+    format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.heuristics_net import visualizer as hn_visualizer
     parameters = hn_visualizer.Variants.PYDOTPLUS.value.Parameters
     gviz = hn_visualizer.apply(heu_net, parameters={parameters.FORMAT: format})
@@ -296,7 +297,7 @@ def save_vis_dotted_chart(log, file_path: str, attributes=None):
     attributes
         Attributes that should be used to construct the dotted chart (for example, ["concept:name", "org:resource"])
     """
-    format = file_path[file_path.index(".") + 1:].lower()
+    format = os.path.splitext(file_path)[1][1:]
     log, attributes = __dotted_attribute_selection(log, attributes)
     from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
     gviz = dotted_chart_visualizer.apply(log, attributes, parameters={"format": format})
@@ -375,7 +376,7 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
     else:
         from pm4py.statistics.traces.generic.log import case_statistics
         graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
-    format = file_path[file_path.index(".") + 1:].lower()
+    format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
                                           parameters={"format": format})
@@ -424,7 +425,7 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
     else:
         from pm4py.statistics.attributes.log import get as attributes_get
         graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
-    format = file_path[file_path.index(".") + 1:].lower()
+    format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
                                           parameters={"format": format})
@@ -467,7 +468,7 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
     perf_spectrum = performance_spectrum.apply(log, activities, parameters=get_properties(log))
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
     from pm4py.visualization.performance_spectrum.variants import neato
-    format = file_path[file_path.index(".") + 1:].lower()
+    format = os.path.splitext(file_path)[1][1:]
     gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format})
     perf_spectrum_visualizer.save(gviz, file_path)
 
