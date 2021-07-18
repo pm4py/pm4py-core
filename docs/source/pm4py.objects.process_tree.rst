@@ -9,6 +9,7 @@ Subpackages
 
    pm4py.objects.process_tree.exporter
    pm4py.objects.process_tree.importer
+   pm4py.objects.process_tree.utils
 
 Submodules
 ----------
@@ -17,6 +18,14 @@ pm4py.objects.process\_tree.bottomup module
 -------------------------------------------
 
 .. automodule:: pm4py.objects.process_tree.bottomup
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.objects.process\_tree.obj module
+--------------------------------------
+
+.. automodule:: pm4py.objects.process_tree.obj
    :members:
    :undoc-members:
    :show-inheritance:

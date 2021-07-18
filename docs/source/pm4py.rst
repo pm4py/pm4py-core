@@ -67,10 +67,42 @@ pm4py.hof module
    :undoc-members:
    :show-inheritance:
 
+pm4py.meta module
+-----------------
+
+.. automodule:: pm4py.meta
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.ml module
+---------------
+
+.. automodule:: pm4py.ml
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.org module
+----------------
+
+.. automodule:: pm4py.org
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.read module
 -----------------
 
 .. automodule:: pm4py.read
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.sim module
+----------------
+
+.. automodule:: pm4py.sim
    :members:
    :undoc-members:
    :show-inheritance:

@@ -13,10 +13,12 @@ Subpackages
    pm4py.objects.heuristics_net
    pm4py.objects.log
    pm4py.objects.petri
+   pm4py.objects.petri_net
    pm4py.objects.process_tree
    pm4py.objects.random_variables
    pm4py.objects.stochastic_petri
    pm4py.objects.transition_system
+   pm4py.objects.trie
 
 Module contents
 ---------------

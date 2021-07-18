@@ -12,6 +12,14 @@ pm4py.visualization.graphs.variants.attributes module
    :undoc-members:
    :show-inheritance:
 
+pm4py.visualization.graphs.variants.barplot module
+--------------------------------------------------
+
+.. automodule:: pm4py.visualization.graphs.variants.barplot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.visualization.graphs.variants.cases module
 ------------------------------------------------
 

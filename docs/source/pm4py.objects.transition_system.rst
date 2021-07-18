@@ -12,6 +12,14 @@ pm4py.objects.transition\_system.constants module
    :undoc-members:
    :show-inheritance:
 
+pm4py.objects.transition\_system.obj module
+-------------------------------------------
+
+.. automodule:: pm4py.objects.transition_system.obj
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.objects.transition\_system.transition\_system module
 ----------------------------------------------------------
 

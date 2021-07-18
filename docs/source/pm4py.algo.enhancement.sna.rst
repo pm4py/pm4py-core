@@ -28,6 +28,14 @@ pm4py.algo.enhancement.sna.parameters module
    :undoc-members:
    :show-inheritance:
 
+pm4py.algo.enhancement.sna.util module
+--------------------------------------
+
+.. automodule:: pm4py.algo.enhancement.sna.util
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

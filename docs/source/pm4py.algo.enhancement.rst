@@ -9,6 +9,8 @@ Subpackages
 
    pm4py.algo.enhancement.comparison
    pm4py.algo.enhancement.decision
+   pm4py.algo.enhancement.organizational_mining
+   pm4py.algo.enhancement.resource_profiles
    pm4py.algo.enhancement.roles
    pm4py.algo.enhancement.sna
 
