@@ -26,7 +26,7 @@ def detect(log: EventLog, alphabet: Dict[str, int], act_key: str, use_msd: bool)
         if len(list(filter(lambda t: len(t) == 0, proj))) == 0:
             dfg_proj = discover_dfg.apply(proj, parameters={
                 constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key})
-            alphabet_proj = pm4py.get_attribute_values(proj, act_key)
+            alphabet_proj = pm4py.get_event_attribute_values(proj, act_key)
             start_act_proj = get_starters.get_start_activities(proj, parameters={
                 constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key})
             end_act_proj = get_ends.get_end_activities(log, parameters={

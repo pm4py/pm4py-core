@@ -132,9 +132,9 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         log = pm4py.read_xes("input_data/running-example.xes")
         pm4py.get_start_activities(log)
         pm4py.get_end_activities(log)
-        pm4py.get_attributes(log)
+        pm4py.get_event_attributes(log)
         pm4py.get_trace_attributes(log)
-        pm4py.get_attribute_values(log, "org:resource")
+        pm4py.get_event_attribute_values(log, "org:resource")
         pm4py.get_variants(log)
 
     def test_statistics_df(self):
@@ -143,8 +143,8 @@ class SimplifiedInterfaceTest(unittest.TestCase):
                                     timestamp_key="time:timestamp")
         pm4py.get_start_activities(df)
         pm4py.get_end_activities(df)
-        pm4py.get_attributes(df)
-        pm4py.get_attribute_values(df, "org:resource")
+        pm4py.get_event_attributes(df)
+        pm4py.get_event_attribute_values(df, "org:resource")
         pm4py.get_variants(df)
 
     def test_playout(self):

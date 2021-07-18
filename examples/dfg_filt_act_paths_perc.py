@@ -5,7 +5,7 @@ from pm4py.algo.filtering.dfg import dfg_filtering
 def execute_script():
     log = pm4py.read_xes("../tests/input_data/receipt.xes")
     dfg, sa, ea = pm4py.discover_dfg(log)
-    act_count = pm4py.get_attribute_values(log, "concept:name")
+    act_count = pm4py.get_event_attribute_values(log, "concept:name")
     # keep the specified amount of activities
     dfg, sa, ea, act_count = dfg_filtering.filter_dfg_on_activities_percentage(dfg, sa, ea, act_count, 0.3)
     # keep the specified amount of paths
