@@ -6,7 +6,7 @@ import os
 
 def execute_script():
     log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "receipt.xes"))
-    activities = pm4py.get_attribute_values(log, "concept:name")
+    activities = pm4py.get_event_attribute_values(log, "concept:name")
     dfg, sa, ea = pm4py.discover_dfg(log)
     # filters the DFG to make a simpler one
     perc = 0.5

@@ -34,7 +34,7 @@ def apply(log: Union[DataFrame, EventLog, EventStream], parameters: Optional[Dic
     log = pm4py.convert_to_event_log(log)
     act_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
                                          xes_constants.DEFAULT_NAME_KEY)
-    alphabet = pm4py.get_attribute_values(log, act_key)
+    alphabet = pm4py.get_event_attribute_values(log, act_key)
     log = list(map(lambda t: list(map(lambda e: e[act_key], t)), log))
     min_self_distances = dict()
     for a in alphabet:
