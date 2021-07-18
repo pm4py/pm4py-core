@@ -140,6 +140,14 @@ pm4py.objects.log.util.sorting module
    :undoc-members:
    :show-inheritance:
 
+pm4py.objects.log.util.split\_train\_test module
+------------------------------------------------
+
+.. automodule:: pm4py.objects.log.util.split_train_test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.objects.log.util.time\_from\_previous module
 --------------------------------------------------
 

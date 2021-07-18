@@ -7,8 +7,10 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   pm4py.algo.filtering.log.attr_value_repetition
    pm4py.algo.filtering.log.attributes
    pm4py.algo.filtering.log.auto_filter
+   pm4py.algo.filtering.log.between
    pm4py.algo.filtering.log.cases
    pm4py.algo.filtering.log.end_activities
    pm4py.algo.filtering.log.ltl

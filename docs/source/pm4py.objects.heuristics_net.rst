@@ -36,6 +36,14 @@ pm4py.objects.heuristics\_net.node module
    :undoc-members:
    :show-inheritance:
 
+pm4py.objects.heuristics\_net.obj module
+----------------------------------------
+
+.. automodule:: pm4py.objects.heuristics_net.obj
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

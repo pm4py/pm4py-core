@@ -11,8 +11,10 @@ Subpackages
    pm4py.statistics.concurrent_activities
    pm4py.statistics.end_activities
    pm4py.statistics.eventually_follows
+   pm4py.statistics.overlap
    pm4py.statistics.passed_time
    pm4py.statistics.performance_spectrum
+   pm4py.statistics.rework
    pm4py.statistics.sojourn_time
    pm4py.statistics.start_activities
    pm4py.statistics.traces

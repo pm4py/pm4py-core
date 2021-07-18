@@ -7,6 +7,11 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   pm4py.algo.conformance.alignments.decomposed
+   pm4py.algo.conformance.alignments.dfg
+   pm4py.algo.conformance.alignments.edit_distance
+   pm4py.algo.conformance.alignments.petri_net
+   pm4py.algo.conformance.alignments.process_tree
    pm4py.algo.conformance.alignments.variants
 
 Submodules

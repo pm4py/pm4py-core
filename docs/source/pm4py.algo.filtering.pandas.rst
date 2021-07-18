@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   pm4py.algo.filtering.pandas.attr_value_repetition
    pm4py.algo.filtering.pandas.attributes
    pm4py.algo.filtering.pandas.auto_filter
    pm4py.algo.filtering.pandas.cases

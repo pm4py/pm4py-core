@@ -12,6 +12,14 @@ pm4py.algo.discovery.heuristics.variants.classic module
    :undoc-members:
    :show-inheritance:
 
+pm4py.algo.discovery.heuristics.variants.plusplus module
+--------------------------------------------------------
+
+.. automodule:: pm4py.algo.discovery.heuristics.variants.plusplus
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

@@ -23,6 +23,14 @@ pm4py.objects.bpmn.bpmn\_graph module
    :undoc-members:
    :show-inheritance:
 
+pm4py.objects.bpmn.obj module
+-----------------------------
+
+.. automodule:: pm4py.objects.bpmn.obj
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

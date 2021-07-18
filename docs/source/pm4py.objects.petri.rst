@@ -30,6 +30,14 @@ pm4py.objects.petri.check\_soundness module
    :undoc-members:
    :show-inheritance:
 
+pm4py.objects.petri.consumption\_matrix module
+----------------------------------------------
+
+.. automodule:: pm4py.objects.petri.consumption_matrix
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.objects.petri.decomposition module
 ----------------------------------------
 
@@ -70,6 +78,14 @@ pm4py.objects.petri.networkx\_graph module
    :undoc-members:
    :show-inheritance:
 
+pm4py.objects.petri.obj module
+------------------------------
+
+.. automodule:: pm4py.objects.petri.obj
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.objects.petri.performance\_map module
 -------------------------------------------
 
@@ -90,6 +106,14 @@ pm4py.objects.petri.projection module
 -------------------------------------
 
 .. automodule:: pm4py.objects.petri.projection
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.objects.petri.properties module
+-------------------------------------
+
+.. automodule:: pm4py.objects.petri.properties
    :members:
    :undoc-members:
    :show-inheritance:

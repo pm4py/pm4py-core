@@ -93,6 +93,14 @@ pm4py.util.typing module
    :undoc-members:
    :show-inheritance:
 
+pm4py.util.variants\_util module
+--------------------------------
+
+.. automodule:: pm4py.util.variants_util
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.util.vers\_checker module
 -------------------------------
 

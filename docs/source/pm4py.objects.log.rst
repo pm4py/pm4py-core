@@ -22,6 +22,14 @@ pm4py.objects.log.log module
    :undoc-members:
    :show-inheritance:
 
+pm4py.objects.log.obj module
+----------------------------
+
+.. automodule:: pm4py.objects.log.obj
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
