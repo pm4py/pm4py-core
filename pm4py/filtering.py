@@ -194,17 +194,20 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants: Collection[Lis
     filtered_log
         Filtered log object
     """
+    from pm4py.util import variants_util
     parameters = get_properties(log)
+    if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
+        variants = [",".join(v) for v in variants]
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.variants import variants_filter
         parameters[variants_filter.Parameters.POSITIVE] = retain
-        return variants_filter.apply(log, [",".join(v) for v in variants],
+        return variants_filter.apply(log, variants,
                                      parameters=parameters)
     else:
         from pm4py.algo.filtering.log.variants import variants_filter
         parameters[variants_filter.Parameters.POSITIVE] = retain
-        return variants_filter.apply(log, [",".join(v) for v in variants],
+        return variants_filter.apply(log, variants,
                                      parameters=parameters)
 
 
