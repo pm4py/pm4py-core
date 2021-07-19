@@ -1,4 +1,4 @@
-from typing import Tuple, List, Set, Counter
+from typing import Tuple, List, Set, Dict
 
 Cut = List[Set[str]]
-DFG = Counter[Tuple[str, str]]
+DFG = Dict[Tuple[str, str], int]
