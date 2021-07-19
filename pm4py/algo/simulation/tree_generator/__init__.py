@@ -1,1 +1,1 @@
-from pm4py.algo.simulation.tree_generator import simulator, variants
+from pm4py.algo.simulation.tree_generator import algorithm, variants

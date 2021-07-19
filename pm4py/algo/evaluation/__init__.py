@@ -1,4 +1,4 @@
-from pm4py.algo.evaluation import precision, replay_fitness, simplicity, generalization, evaluator
+from pm4py.algo.evaluation import precision, replay_fitness, simplicity, generalization, algorithm
 import pkgutil
 
 if pkgutil.find_loader("pyemd"):

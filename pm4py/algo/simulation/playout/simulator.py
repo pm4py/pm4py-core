@@ -1,5 +1,5 @@
 import warnings
 
-warnings.warn("please use pm4py.algo.simulation.playout.petri_net.algorithm instead.")
+warnings.warn("Please use pm4py.algo.simulation.playout.algorithm instead")
 
-from pm4py.algo.simulation.playout.petri_net.algorithm import *
+from pm4py.algo.simulation.playout.algorithm import *

@@ -654,7 +654,7 @@ class DocTests(unittest.TestCase):
         alignments = alignments.apply_log(log, net, initial_marking, final_marking, parameters=parameters)
 
     def test_59(self):
-        from pm4py.algo.simulation.tree_generator import simulator as tree_gen
+        from pm4py.algo.simulation.tree_generator import algorithm as tree_gen
         parameters = {}
         tree = tree_gen.apply(parameters=parameters)
 
