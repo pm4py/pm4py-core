@@ -2,7 +2,7 @@ import os
 import unittest
 
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.algo.evaluation import evaluator as evaluation_alg
+from pm4py.algo.evaluation import algorithm as evaluation_alg
 from pm4py.algo.evaluation.generalization import algorithm as generalization_alg
 from pm4py.algo.evaluation.precision import algorithm as precision_alg
 from pm4py.algo.evaluation.replay_fitness import algorithm as fitness_alg
