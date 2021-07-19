@@ -2,7 +2,6 @@ import pm4py
 from tests.constants import INPUT_DATA_DIR
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.transition_system import algorithm as ts_alg
-from pm4py.algo.discovery.transition_system import parameters
 import unittest
 import os
 
