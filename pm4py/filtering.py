@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Union, Collection
+from typing import List, Union, Set, List
 
 import deprecation
 import pandas as pd
@@ -11,7 +11,7 @@ from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_data
 from pm4py.utils import get_properties
 
 
-def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: Collection[str], retain: bool = True) -> \
+def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: Union[Set[str], List[str]], retain: bool = True) -> \
 Union[EventLog, pd.DataFrame]:
     """
     Filter cases having a start activity in the provided list
@@ -45,7 +45,7 @@ Union[EventLog, pd.DataFrame]:
                                              parameters=parameters)
 
 
-def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities: Collection[str], retain: bool = True) -> Union[
+def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union[Set[str], List[str]], retain: bool = True) -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter cases having an end activity in the provided list
@@ -86,7 +86,7 @@ def filter_attribute_values(log, attribute_key, values, level="case", retain=Tru
     return filter_event_attribute_values(log, attribute_key, values, level=level, retain=retain)
 
 
-def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values: Collection[str],
+def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values:  Union[Set[str], List[str]],
                                   level: str = "case", retain: bool = True) -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log object on the values of some event attribute
@@ -140,7 +140,7 @@ def filter_trace_attribute(log, attribute_key, values, retain=True):
     return filter_trace_attribute_values(log, attribute_key, values, retain=retain)
 
 
-def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values: Collection[str],
+def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values:  Union[Set[str], List[str]],
                                   retain: bool = True) -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log on the values of a trace attribute
@@ -175,7 +175,7 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
         return attributes_filter.apply_trace_attribute(log, values, parameters=parameters)
 
 
-def filter_variants(log: Union[EventLog, pd.DataFrame], variants: Collection[List[str]], retain: bool = True) -> Union[
+def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str], List[str]], retain: bool = True) -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter a log on a specified set of variants
