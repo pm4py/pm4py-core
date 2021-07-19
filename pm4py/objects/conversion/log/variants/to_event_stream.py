@@ -123,22 +123,12 @@ def apply(log, parameters=None):
     if pkgutil.find_loader("pandas"):
         import pandas
         if isinstance(log, pandas.DataFrame):
-            extensions = __detect_extensions(log)
-            list_events = pandas_utils.to_dict_records(log)
-            if stream_post_processing:
-                list_events = __postprocess_stream(list_events)
-            if compress:
-                list_events = __compress(list_events)
-            for i in range(len(list_events)):
-                list_events[i] = Event(list_events[i])
-            log = log_instance.EventStream(list_events, attributes={'origin': 'csv'})
-            for ex in extensions:
-                log.extensions[ex.name] = {
-                    xes_constants.KEY_PREFIX: ex.prefix,
-                    xes_constants.KEY_URI: ex.uri}
+            return __transform_dataframe_to_event_stream(log, stream_post_processing=stream_post_processing, compress=compress)
+
     if isinstance(log, EventLog):
         return __transform_event_log_to_event_stream(log, include_case_attributes=include_case_attributes,
                                                      case_attribute_prefix=case_pref, enable_deepcopy=enable_deepcopy)
+
     return log
 
 
@@ -150,6 +140,40 @@ def __detect_extensions(df):
                 if single_key == ext.prefix:
                     extensions.add(ext)
     return extensions
+
+
+def __transform_dataframe_to_event_stream(dataframe, stream_post_processing=False, compress=True):
+    """
+    Transforms a dataframe to an event stream
+
+    Parameters
+    ------------------
+    dataframe
+        Pandas dataframe
+    stream_post_processing
+        Boolean value that enables the post processing to remove NaN / NaT values
+    compress
+        Compresses the stream in order to reduce the memory utilization after the conversion
+
+    Returns
+    ------------------
+    stream
+        Event stream
+    """
+    extensions = __detect_extensions(dataframe)
+    list_events = pandas_utils.to_dict_records(dataframe)
+    if stream_post_processing:
+        list_events = __postprocess_stream(list_events)
+    if compress:
+        list_events = __compress(list_events)
+    for i in range(len(list_events)):
+        list_events[i] = Event(list_events[i])
+    stream = log_instance.EventStream(list_events, attributes={'origin': 'csv'})
+    for ex in extensions:
+        stream.extensions[ex.name] = {
+            xes_constants.KEY_PREFIX: ex.prefix,
+            xes_constants.KEY_URI: ex.uri}
+    return stream
 
 
 def __transform_event_log_to_event_stream(log, include_case_attributes=True,
