@@ -28,7 +28,6 @@ if __name__ == "__main__":
     from tests.dec_tree_test import DecisionTreeTest
     from tests.graphs_forming import GraphsForming
     from tests.heuminer_test import HeuMinerTest
-    from tests.matrix_rep_test import MatrixRepTest
     from tests.main_fac_test import MainFactoriesTest
     from tests.algorithm_test import AlgorithmTest
     from tests.filtering_log_test import LogFilteringTest
@@ -66,7 +65,6 @@ if __name__ == "__main__":
     sna_tests = SnaTests()
     graphforming_test = GraphsForming()
     heuminer_test = HeuMinerTest()
-    matrixrep_test = MatrixRepTest()
     main_factories_test = MainFactoriesTest()
     algorithm_test = AlgorithmTest()
     woflan_test = WoflanTest()
