@@ -103,7 +103,7 @@ def get_prefix_matrix_from_variants_list(variants_list, activities, parameters=N
     prefixes = {}
     for var in variants_list:
         variant = variants_util.get_activities_from_variant(var[0])
-        
+
         count = var[1]
         prefix = []
         for index, act in enumerate(variant):
@@ -382,6 +382,7 @@ def get_variants_matrix(log, parameters=None):
     return get_variants_matrix_from_variants_list(variants_list, activities, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.10', '3.0.0')
 def get_prefix_variants_matrix(log, parameters=None):
     """
     Gets the prefix variants matrix from a log object
