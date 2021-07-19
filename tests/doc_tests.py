@@ -586,42 +586,6 @@ class DocTests(unittest.TestCase):
         os.remove("createdPetriNet1.pnml")
         os.remove("alpha.svg")
 
-    def test_53(self):
-        from pm4py.objects.log.importer.xes import importer as xes_importer
-        import os
-        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
-
-        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, initial_marking, final_marking = inductive_miner.apply(log)
-
-        from pm4py.objects.petri_net.utils import petri_utils
-        cycles = petri_utils.get_cycles_petri_net_places(net)
-
-    def test_54(self):
-        from pm4py.objects.log.importer.xes import importer as xes_importer
-        import os
-        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
-
-        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, initial_marking, final_marking = inductive_miner.apply(log)
-
-        from pm4py.objects.petri_net.utils import petri_utils
-        scc = petri_utils.get_strongly_connected_subnets(net)
-
-        from pm4py.visualization.petri_net import visualizer as pn_visualizer
-        gviz = pn_visualizer.apply(scc[0][0], scc[0][1], scc[0][2])
-
-    def test_55(self):
-        from pm4py.objects.log.importer.xes import importer as xes_importer
-        import os
-        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
-
-        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, initial_marking, final_marking = inductive_miner.apply(log)
-
-        from pm4py.objects.petri_net.utils import petri_utils
-        cycles = petri_utils.get_cycles_petri_net_places(net)
-
     def test_56(self):
         import os
         from pm4py.objects.log.importer.xes import importer as xes_importer
@@ -708,16 +672,13 @@ class DocTests(unittest.TestCase):
         from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.apply(os.path.join("input_data", "roadtraffic50traces.xes"))
 
-        from pm4py.objects.log.util import get_log_representation
+        from pm4py.algo.transformation.log_to_features.variants import trace_based
         str_trace_attributes = []
         str_event_attributes = ["concept:name"]
         num_trace_attributes = []
         num_event_attributes = ["amount"]
-        data, feature_names = get_log_representation.get_representation(
-            log, str_trace_attributes, str_event_attributes,
-            num_trace_attributes, num_event_attributes)
-
-        data, feature_names = get_log_representation.get_default_representation(log)
+        data, feature_names = trace_based.apply(log)
+        data, feature_names = trace_based.apply(log, parameters={"str_tr_attr": str_trace_attributes, "str_ev_attr": str_event_attributes, "num_tr_attr": num_trace_attributes, "num_ev_attr": num_event_attributes})
 
         from pm4py.objects.log.util import get_class_representation
         target, classes = get_class_representation.get_class_representation_by_str_ev_attr_value_value(log,
@@ -735,16 +696,13 @@ class DocTests(unittest.TestCase):
         from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.apply(os.path.join("input_data", "roadtraffic50traces.xes"))
 
-        from pm4py.objects.log.util import get_log_representation
+        from pm4py.algo.transformation.log_to_features.variants import trace_based
         str_trace_attributes = []
         str_event_attributes = ["concept:name"]
         num_trace_attributes = []
         num_event_attributes = ["amount"]
-
-        data, feature_names = get_log_representation.get_representation(log, str_trace_attributes, str_event_attributes,
-                                                                        num_trace_attributes, num_event_attributes)
-
-        data, feature_names = get_log_representation.get_default_representation(log)
+        data, feature_names = trace_based.apply(log)
+        data, feature_names = trace_based.apply(log, parameters={"str_tr_attr": str_trace_attributes, "str_ev_attr": str_event_attributes, "num_tr_attr": num_trace_attributes, "num_ev_attr": num_event_attributes})
 
         from pm4py.objects.log.util import get_class_representation
         target, classes = get_class_representation.get_class_representation_by_trace_duration(log, 2 * 8640000)
