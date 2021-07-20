@@ -6,6 +6,7 @@ from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
+import deprecation
 
 
 class Parameters(Enum):
@@ -180,6 +181,7 @@ def filter_log_by_paths(log, paths, variants, vc, threshold, attribute_key="conc
     return filtered_log
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(log, variants=None, parameters=None):
     """
     Apply an attributes filter detecting automatically a percentage
