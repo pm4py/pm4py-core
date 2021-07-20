@@ -15,7 +15,7 @@ class Variants(Enum):
 
 
 def apply(log_obj: Union[pd.DataFrame, EventLog], attributes: List[str], variant=Variants.CLASSIC,
-          parameters: Optional[Dict[str, Any]] = None) -> str:
+          parameters: Optional[Dict[Any, Any]] = None) -> str:
     """
     Creates the dotted chart with the log objects and the provided attributes
 

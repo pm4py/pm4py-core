@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, Optional, Any
+from typing import Dict, Optional, Any, Union
 
 import pandas as pd
 
@@ -13,7 +13,7 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
 
-def apply(df: pd.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> float:
+def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     Computes the cycle time starting from a Pandas dataframe
 
@@ -53,6 +53,6 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> floa
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
 
     events = [(x[start_timestamp_key].timestamp(), x[timestamp_key].timestamp()) for x in
-              df[{start_timestamp_key, timestamp_key}].to_dict("r")]
+              df[{start_timestamp_key, timestamp_key}].to_dict("records")]
 
     return compute.cycle_time(events, df[case_id_key].nunique())

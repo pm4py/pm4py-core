@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, Optional, Any, List
+from typing import Dict, Optional, Any, List, Union
 
 import pandas as pd
 
@@ -13,7 +13,7 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
 
-def apply(df: pd.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> List[int]:
+def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[int]:
     """
     Computes the case overlap statistic from a Pandas dataframe
 

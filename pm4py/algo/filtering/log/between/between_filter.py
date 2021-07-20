@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Union
 
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import exec_utils, constants, xes_constants
@@ -9,7 +9,7 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def apply(log: EventLog, act1: str, act2: str, parameters: Optional[Dict[str, Any]] = None) -> EventLog:
+def apply(log: EventLog, act1: str, act2: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Given an event log, filters all the subtraces going from an event with activity "act1" to an event with
     activity "act2"
