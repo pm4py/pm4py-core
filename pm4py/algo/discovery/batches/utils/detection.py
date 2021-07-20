@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Tuple, List, Any, Set, Optional, Dict
+from typing import Tuple, List, Any, Set, Optional, Dict, Union
 
 from pm4py.util import exec_utils
 
@@ -123,7 +123,7 @@ def __check_batch_type(batch: Tuple[float, float, Set[Any]]) -> str:
         return BatchType.CONC_BATCHING.value
 
 
-def __detect_single(events: List[Tuple[float, float, str]], parameters: Optional[Dict[str, Any]] = None) -> Dict[
+def __detect_single(events: List[Tuple[float, float, str]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[
     str, List[Any]]:
     """
     Detect if there are batches in the execution of events having a given activity-resource combination
@@ -150,7 +150,7 @@ def __detect_single(events: List[Tuple[float, float, str]], parameters: Optional
 
 
 def detect(actres_grouping: Dict[Tuple[str, str], List[Tuple[float, float, str]]],
-           parameters: Optional[Dict[str, Any]] = None) -> List[Tuple[Tuple[str, str], int, Dict[str, Any]]]:
+           parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Tuple[Tuple[str, str], int, Dict[str, Any]]]:
     """
     Provided an activity-resource grouping of the events of the event log, returns
     a list having as elements the activity-resources with the batches that are detected, divided in:

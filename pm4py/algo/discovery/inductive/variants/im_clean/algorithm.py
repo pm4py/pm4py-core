@@ -37,7 +37,7 @@ class Parameters(Enum):
 
 
 def apply(event_log: Union[pd.DataFrame, EventLog, EventStream],
-          parameters: Optional[Dict[str, Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
+          parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     if parameters is None:
         parameters = {}
     tree = apply_tree(event_log, parameters=parameters)
@@ -76,7 +76,7 @@ def apply_tree_variants(variants, parameters=None):
 
 
 def apply_tree(event_log: Union[pd.DataFrame, EventLog, EventStream],
-               parameters: Optional[Dict[str, Any]] = None) -> ProcessTree:
+               parameters: Optional[Dict[Union[Parameters, str], Any]] = None) -> ProcessTree:
     if parameters is None:
         parameters = {}
     event_log = log_converter.apply(event_log, parameters=parameters)

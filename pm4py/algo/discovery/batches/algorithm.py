@@ -13,7 +13,7 @@ class Variants(Enum):
     PANDAS = pandas
 
 
-def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[str, Any]] = None) -> List[
+def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None) -> List[
     Tuple[Tuple[str, str], int, Dict[str, Any]]]:
     """
     Provided an event log / dataframe, returns

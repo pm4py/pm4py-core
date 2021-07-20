@@ -34,7 +34,7 @@ def draw_recursive(trie_node: Trie, parent: Union[str, None], gviz: Graph):
         draw_recursive(child, node_id if trie_node.label is not None else None, gviz)
 
 
-def apply(trie: Trie, parameters: Optional[Dict[str, Any]] = None) -> Graph:
+def apply(trie: Trie, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Graph:
     """
     Represents the trie
 

@@ -12,7 +12,7 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def apply(log: Union[DataFrame, EventLog, EventStream], parameters: Optional[Dict[str, Any]] = None) -> Dict[str, int]:
+def apply(log: Union[DataFrame, EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, int]:
     '''
     This algorithm computes the minimum self-distance for each activity observed in an event log.
     The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.

@@ -44,7 +44,7 @@ def get_dt_from_string(dt: Union[datetime, str]) -> datetime:
 
 
 def distinct_activities(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                        parameters: Optional[Dict[str, Any]] = None) -> int:
+                        parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> int:
     """
     Number of distinct activities done by a resource in a given time interval [t1, t2)
 
@@ -87,7 +87,7 @@ def distinct_activities(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[da
 
 
 def activity_frequency(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str, a: str,
-                       parameters: Optional[Dict[str, Any]] = None) -> float:
+                       parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     Fraction of completions of a given activity a, by a given resource r, during a given time slot, [t1, t2),
     with respect to the total number of activity completions by resource r during [t1, t2)
@@ -139,7 +139,7 @@ def activity_frequency(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[dat
 
 
 def activity_completions(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                         parameters: Optional[Dict[str, Any]] = None) -> int:
+                         parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> int:
     """
     The number of activity instances completed by a given resource during a given time slot.
 
@@ -183,7 +183,7 @@ def activity_completions(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[d
 
 
 def case_completions(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                     parameters: Optional[Dict[str, Any]] = None) -> int:
+                     parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> int:
     """
     The number of cases completed during a given time slot in which a given resource was involved.
 
@@ -231,7 +231,7 @@ def case_completions(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datet
 
 
 def fraction_case_completions(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                              parameters: Optional[Dict[str, Any]] = None) -> float:
+                              parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     The fraction of cases completed during a given time slot in which a given resource was involved with respect to the
     total number of cases completed during the time slot.
@@ -282,7 +282,7 @@ def fraction_case_completions(df: pd.DataFrame, t1: Union[datetime, str], t2: Un
     return q1 / q2 if q2 > 0 else 0.0
 
 
-def __insert_start_from_previous_event(df: pd.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
+def __insert_start_from_previous_event(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Inserts the start timestamp of an event set to the completion of the previous event in the case
 
@@ -322,7 +322,7 @@ def __insert_start_from_previous_event(df: pd.DataFrame, parameters: Optional[Di
         [constants.DEFAULT_INDEX_KEY, timestamp_key + "_2"]]
 
     del shifted_df
-    concat_df = concat_df.to_dict("r")
+    concat_df = concat_df.to_dict("records")
     concat_df = {x[constants.DEFAULT_INDEX_KEY]: x[timestamp_key + "_2"] for x in concat_df}
 
     df[start_timestamp_key] = df[constants.DEFAULT_INDEX_KEY].map(concat_df)
@@ -333,7 +333,7 @@ def __insert_start_from_previous_event(df: pd.DataFrame, parameters: Optional[Di
 
 
 def __compute_workload(df: pd.DataFrame, resource: Optional[str] = None, activity: Optional[str] = None,
-                       parameters: Optional[Dict[str, Any]] = None) -> Dict[Tuple, int]:
+                       parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple, int]:
     """
     Computes the workload of resources/activities, corresponding to each event a number
     (number of concurring events)
@@ -368,7 +368,7 @@ def __compute_workload(df: pd.DataFrame, resource: Optional[str] = None, activit
         df = df[df[resource_key] == resource]
     if activity is not None:
         df = df[df[activity_key] == activity]
-    events = df.to_dict("r")
+    events = df.to_dict("records")
     events = [(x[start_timestamp_key].timestamp(), x[timestamp_key].timestamp(), x[resource_key], x[activity_key]) for x
               in events]
     events = sorted(events)
@@ -384,7 +384,7 @@ def __compute_workload(df: pd.DataFrame, resource: Optional[str] = None, activit
 
 
 def average_workload(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                              parameters: Optional[Dict[str, Any]] = None) -> float:
+                              parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     The average number of activities started by a given resource but not completed at a moment in time.
 
@@ -425,7 +425,7 @@ def average_workload(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datet
 
 
 def multitasking(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                              parameters: Optional[Dict[str, Any]] = None) -> float:
+                              parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     The fraction of active time during which a given resource is involved in more than one activity with respect
     to the resource's active time.
@@ -469,7 +469,7 @@ def multitasking(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime,
 
 
 def average_duration_activity(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str, a: str,
-                       parameters: Optional[Dict[str, Any]] = None) -> float:
+                       parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     The average duration of instances of a given activity completed during a given time slot by a given resource.
 
@@ -520,7 +520,7 @@ def average_duration_activity(df: pd.DataFrame, t1: Union[datetime, str], t2: Un
 
 
 def average_case_duration(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                              parameters: Optional[Dict[str, Any]] = None) -> float:
+                              parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     The average duration of cases completed during a given time slot in which a given resource was involved.
 
@@ -561,7 +561,7 @@ def average_case_duration(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[
 
 
 def interaction_two_resources(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r1: str, r2: str,
-                              parameters: Optional[Dict[str, Any]] = None) -> float:
+                              parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     The number of cases completed during a given time slot in which two given resources were involved.
 
@@ -614,7 +614,7 @@ def interaction_two_resources(df: pd.DataFrame, t1: Union[datetime, str], t2: Un
 
 
 def social_position(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                              parameters: Optional[Dict[str, Any]] = None) -> float:
+                              parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     The fraction of resources involved in the same cases with a given resource during a given time slot with
     respect to the total number of resources active during the time slot.

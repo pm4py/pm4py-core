@@ -12,7 +12,7 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
-def apply(log: Union[EventLog, EventStream], parameters: Optional[Dict[str, Any]] = None) -> List[int]:
+def apply(log: Union[EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[int]:
     """
     Counts the intersections of each interval event with the other interval events of the log
     (all the events are considered, not looking at the activity)
