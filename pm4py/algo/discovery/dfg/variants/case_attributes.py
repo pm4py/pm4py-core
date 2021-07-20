@@ -12,7 +12,7 @@ class Parameters(Enum):
     RETURN_NODES_ATTRIBUTES = "return_nodes_attributes"
 
 
-def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> Union[
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[
     Tuple[Dict[Tuple[str, str], Dict[str, Dict[str, Any]]], Dict[str, Dict[str, Dict[str, Any]]]], Dict[
         Tuple[str, str], Dict[str, Dict[str, Any]]]]:
     """

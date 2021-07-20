@@ -1,6 +1,6 @@
 import difflib
 from enum import Enum
-from typing import Optional, Dict, Any, List, Set
+from typing import Optional, Dict, Any, List, Set, Union
 
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.objects.log.util import log_regex
@@ -14,7 +14,7 @@ class Parameters(Enum):
     PERFORM_ANTI_ALIGNMENT = "perform_anti_alignment"
 
 
-def apply(log1: EventLog, log2: EventLog, parameters: Optional[Dict[str, Any]] = None) -> typing.ListAlignments:
+def apply(log1: EventLog, log2: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> typing.ListAlignments:
     """
     Aligns each trace of the first log against the second log, minimizing the edit distance
 
@@ -80,8 +80,8 @@ def apply(log1: EventLog, log2: EventLog, parameters: Optional[Dict[str, Any]] =
 
 
 def align_trace(trace: Trace, list_encodings: List[str], set_encodings: Set[str], mapping: Dict[str, str],
-                cache_align: Optional[Dict[str, Any]] = None,
-                parameters: Optional[Dict[str, Any]] = None) -> typing.AlignmentResult:
+                cache_align: Optional[Dict[Any, Any]] = None,
+                parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> typing.AlignmentResult:
     """
     Aligns a trace against a list of traces, minimizing the edit distance
 

@@ -1,6 +1,6 @@
 import sys
 from enum import Enum
-from typing import Any, Optional, Dict
+from typing import Any, Optional, Dict, Union
 
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.obj import EventLog
@@ -13,7 +13,7 @@ class Parameters(Enum):
     MAX_REP = "max_rep"
 
 
-def apply(log: EventLog, value: Any, parameters: Optional[Dict[str, Any]] = None) -> EventLog:
+def apply(log: EventLog, value: Any, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Filters the trace of the log where the given attribute value is repeated
     (in a range of repetitions that is specified by the user)

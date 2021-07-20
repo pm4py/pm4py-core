@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Any
+from typing import Dict
 
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import xes_constants as xes
@@ -97,7 +97,7 @@ def form_encoding_dictio_from_log(log, parameters=None):
     return mapping
 
 
-def form_encoding_dictio_from_two_logs(log1: EventLog, log2: EventLog, parameters: Optional[Dict[str, Any]] = None) -> \
+def form_encoding_dictio_from_two_logs(log1: EventLog, log2: EventLog, parameters=None) -> \
 Dict[str, str]:
     """
     Forms the encoding dictionary from a couple of logs

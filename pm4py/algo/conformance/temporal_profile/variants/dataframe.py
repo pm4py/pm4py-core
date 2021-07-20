@@ -73,7 +73,7 @@ def apply(df: pd.DataFrame, temporal_profile: typing.TemporalProfile,
     efg = efg[[case_id_key, activity_key, activity_key + "_2", "@@flow_time"]]
     efg = efg.merge(temporal_profile, on=[activity_key, activity_key + "_2"])
     efg = efg[(efg["@@flow_time"] < efg["@@min"]) | (efg["@@flow_time"] > efg["@@max"])][
-        [case_id_key, activity_key, activity_key + "_2", "@@flow_time", "@@mean", "@@std"]].to_dict("r")
+        [case_id_key, activity_key, activity_key + "_2", "@@flow_time", "@@mean", "@@std"]].to_dict("records")
 
     for el in efg:
         this_zeta = abs(el["@@flow_time"] - el["@@mean"]) / el["@@std"] if el["@@std"] > 0 else sys.maxsize
