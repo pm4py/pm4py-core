@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, Optional, Any, List
+from typing import Dict, Optional, Any, List, Union
 
 from pm4py.objects.log.obj import EventLog
 from pm4py.statistics.overlap.utils import compute
@@ -12,7 +12,7 @@ class Parameters(Enum):
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
 
 
-def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> List[int]:
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[int]:
     """
     Computes the case overlap statistic from an interval event log
 

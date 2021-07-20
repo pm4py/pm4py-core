@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict, Optional, Set
+from typing import Any, Dict, Optional, Set, Union
 
 import pm4py
 from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
@@ -11,8 +11,8 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def derive_msd_witnesses(log: EventLog, msd: Optional[Dict[str, int]] = None,
-                         parameters: Optional[Dict[str, Any]] = None) -> Dict[str, Set[str]]:
+def derive_msd_witnesses(log: EventLog, msd: Optional[Dict[Any, int]] = None,
+                         parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Set[str]]:
     '''
     This function derives the minimum self distance witnesses.
     The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.

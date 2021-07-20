@@ -12,7 +12,7 @@ class Variants(Enum):
 
 
 def apply(log1: EventLog, log2: EventLog, variant=Variants.EDIT_DISTANCE,
-          parameters: Optional[Dict[str, Any]] = None) -> typing.ListAlignments:
+          parameters: Optional[Dict[Any, Any]] = None) -> typing.ListAlignments:
     """
     Aligns each trace of the first log against the second log
 

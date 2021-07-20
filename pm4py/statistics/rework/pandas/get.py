@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Union
 
 import pandas as pd
 
@@ -14,7 +14,7 @@ class Parameters(Enum):
 INT_CASE_ACT_SIZE = "@@int_case_act_size"
 
 
-def apply(df: pd.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> Dict[str, int]:
+def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, int]:
     """
     Associates to each activity (with at least one rework) the number of cases in the log for which
     the rework happened.

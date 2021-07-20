@@ -4,7 +4,7 @@ import tempfile
 import uuid
 from enum import Enum
 from random import randint
-from typing import List, Any, Tuple, Dict, Optional
+from typing import List, Any, Tuple, Dict, Optional, Union
 
 from pm4py.util import exec_utils
 
@@ -98,7 +98,7 @@ def __build_color_dict(third_values: List[Any]) -> Dict[Any, str]:
     return color_dict
 
 
-def apply(points_list: List[Any], attributes: List[str], parameters: Optional[Dict[str, Any]] = None):
+def apply(points_list: List[Any], attributes: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None):
     """
     Creates the dotted chart with the event stream and the provided attributes
 
