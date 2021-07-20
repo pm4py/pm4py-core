@@ -1,5 +1,4 @@
 from pm4py.objects.petri_net.obj import PetriNet
-import deprecation
 
 
 def create_networkx_undirected_graph(net, unique_source, unique_sink):
@@ -50,7 +49,6 @@ def create_networkx_undirected_graph(net, unique_source, unique_sink):
     return graph, unique_source_corr, unique_sink_corr, inv_dictionary
 
 
-@deprecation.deprecated('2.2.7', '3.0.0')
 def create_networkx_directed_graph(net, weight=None):
     """
     Create a NetworkX directed graph from a Petri net

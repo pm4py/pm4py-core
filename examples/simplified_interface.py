@@ -108,8 +108,8 @@ def execute_script():
     pm4py.view_events_distribution_graph(df2, format="svg")
     pm4py.view_events_distribution_graph(log2, format="svg")
 
-    print("variants log = ", pm4py.get_variants(log2))
-    print("variants df = ", pm4py.get_variants(df2))
+    print("variants log = ", pm4py.get_variants_as_tuples(log2))
+    print("variants df = ", pm4py.get_variants_as_tuples(df2))
     print("variants filter log = ",
           len(pm4py.filter_variants(log2, [
               ["register request", "examine thoroughly", "check ticket", "decide", "reject request"]])))

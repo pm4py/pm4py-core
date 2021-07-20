@@ -11,7 +11,7 @@ def execute_script():
     # read an event log
     log = pm4py.read_xes("../tests/compressed_input_data/02_teleclaims.xes.gz")
     # log = pm4py.read_xes("../tests/input_data/receipt.xes")
-    print("number of variants of the original log ->", len(pm4py.get_variants(log)))
+    print("number of variants of the original log ->", len(pm4py.get_variants_as_tuples(log)))
     # discover a process model
     tree = pm4py.discover_process_tree_inductive(log)
     # simulate a log out of the model (to have another log that is similar to the original)
