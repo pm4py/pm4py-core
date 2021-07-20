@@ -10,6 +10,7 @@ from typing import Union, List
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties
 from copy import copy
+import os
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, format: str = "png"):
@@ -456,23 +457,9 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
     perf_spectrum_visualizer.save(gviz, file_path)
 
 
-def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_type: str = "days_week", format="png"):
+def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_type: str = "days_week"):
     """
-    Shows the distribution of the events in the specified dimension
-
-    Parameters
-    ----------------
-    log
-        Event log
-    distr_type
-        Type of distribution (default: days_week):
-        - days_month => Gets the distribution of the events among the days of a month (from 1 to 31)
-        - months => Gets the distribution of the events among the months (from 1 to 12)
-        - years => Gets the distribution of the events among the years of the event log
-        - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
-        - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
-    format
-        Format of the visualization (default: png)
+    Internal method to build the events distribution graph
     """
     if distr_type == "days_month":
         title = "Distribution of the Events over the Days of a Month"; x_axis = "Day of month"; y_axis = "Number of Events"
@@ -495,8 +482,57 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
         from pm4py.statistics.attributes.log import get as attributes_get
         x, y = attributes_get.get_events_distribution(log, distr_type=distr_type, parameters=get_properties(log))
 
+    return title, x_axis, y_axis, x, y
+
+
+def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_type: str = "days_week", format="png"):
+    """
+    Shows the distribution of the events in the specified dimension
+
+    Parameters
+    ----------------
+    log
+        Event log
+    distr_type
+        Type of distribution (default: days_week):
+        - days_month => Gets the distribution of the events among the days of a month (from 1 to 31)
+        - months => Gets the distribution of the events among the months (from 1 to 12)
+        - years => Gets the distribution of the events among the years of the event log
+        - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
+        - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
+    format
+        Format of the visualization (default: png)
+    """
+    title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, distr_type)
     parameters = copy(get_properties(log))
     parameters["title"] = title; parameters["x_axis"] = x_axis; parameters["y_axis"] = y_axis; parameters["format"] = format
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     gviz = graphs_visualizer.apply(x, y, variant=graphs_visualizer.Variants.BARPLOT, parameters=parameters)
     graphs_visualizer.view(gviz)
+
+
+def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_path: str, distr_type: str = "days_week"):
+    """
+    Saves the distribution of the events in a picture file
+
+    Parameters
+    ----------------
+    log
+        Event log
+    file_path
+        Destination path (including the extension)
+    distr_type
+        Type of distribution (default: days_week):
+        - days_month => Gets the distribution of the events among the days of a month (from 1 to 31)
+        - months => Gets the distribution of the events among the months (from 1 to 12)
+        - years => Gets the distribution of the events among the years of the event log
+        - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
+        - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
+    """
+    format = os.path.splitext(file_path)[1][1:]
+    title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, distr_type)
+    parameters = copy(get_properties(log))
+    parameters["title"] = title; parameters["x_axis"] = x_axis; parameters["y_axis"] = y_axis; parameters["format"] = format
+    from pm4py.visualization.graphs import visualizer as graphs_visualizer
+    gviz = graphs_visualizer.apply(x, y, variant=graphs_visualizer.Variants.BARPLOT, parameters=parameters)
+    graphs_visualizer.save(gviz, file_path)
