@@ -1,3 +1,7 @@
+import deprecation
+
+
+@deprecation.deprecated("2.2.11", "3.0.0", details="removed")
 def check_pandas_ge_110():
     """
     Checks if the Pandas version is >= 1.1.0
@@ -12,6 +16,7 @@ def check_pandas_ge_110():
     return False
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="removed")
 def check_pandas_ge_024():
     """
     Checks if the Pandas version is >= 0.24

@@ -6,7 +6,6 @@ import pandas as pd
 import pytz
 
 from pm4py.util import exec_utils, constants, xes_constants
-from pm4py.util.vers_checker import check_pandas_ge_024
 from statistics import mean
 
 
@@ -35,10 +34,8 @@ def get_dt_from_string(dt: Union[datetime, str]) -> datetime:
     if type(dt) is str:
         dt = datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
 
-    needs_conversion = check_pandas_ge_024()
-    if needs_conversion:
-        dt = dt.replace(tzinfo=pytz.utc)
-        dt = pd.to_datetime(dt, utc=True)
+    dt = dt.replace(tzinfo=pytz.utc)
+    dt = pd.to_datetime(dt, utc=True)
 
     return dt
 

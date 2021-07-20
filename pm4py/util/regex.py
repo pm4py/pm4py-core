@@ -1,5 +1,8 @@
 import re
+import deprecation
 
+
+@deprecation.deprecated("2.2.11", "3.0.0", details="removed")
 def check_reg_matching(reg, stringa):
     """
     Check if a regular expression matches a given string
@@ -40,6 +43,7 @@ def check_reg_matching(reg, stringa):
         return False
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="removed")
 def regex_replace_mapping(reg_stri, mapping, special_char="@@", parameters=None):
     """
     Replace strings in a regex given the mapping
@@ -72,6 +76,7 @@ def regex_replace_mapping(reg_stri, mapping, special_char="@@", parameters=None)
     reg = re.compile(reg_stri)
 
     return reg
+
 
 def get_new_char(label, shared_obj):
     """

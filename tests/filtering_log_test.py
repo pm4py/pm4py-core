@@ -16,19 +16,6 @@ from pm4py.util import constants
 
 
 class LogFilteringTest(unittest.TestCase):
-    def test_logfiltering_filtering1(self):
-        # to avoid static method warnings in tests,
-        # that by construction of the unittest package have to be expressed in such way
-        self.dummy_variable = "dummy_value"
-        input_log = os.path.join(INPUT_DATA_DIR, "running-example.xes")
-        log = xes_importer.apply(input_log)
-        log = attributes_filter.apply_auto_filter(log)
-        log = variants_module.apply_auto_filter(log)
-        log = start_activities_filter.apply_auto_filter(log)
-        log = end_activities_filter.apply_auto_filter(log)
-        log = paths_filter.apply_auto_filter(log)
-        del log
-
     def test_filtering_attributes_events(self):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
