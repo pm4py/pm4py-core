@@ -26,7 +26,7 @@ def execute_script():
         print(trace.attributes["probability"], dfg_playout.get_trace_probability(trace, dfg, sa, ea))
         break
     dfg, sa, ea = pm4py.discover_dfg(log)
-    variants = pm4py.get_variants(log)
+    variants = pm4py.get_variants_as_tuples(log)
     sum_prob_log_variants = 0.0
     for var in variants:
         sum_prob_log_variants += dfg_playout.get_trace_probability(variants[var][0], dfg, sa, ea)

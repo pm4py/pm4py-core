@@ -135,7 +135,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         pm4py.get_event_attributes(log)
         pm4py.get_trace_attributes(log)
         pm4py.get_event_attribute_values(log, "org:resource")
-        pm4py.get_variants(log)
+        pm4py.get_variants_as_tuples(log)
 
     def test_statistics_df(self):
         df = pd.read_csv("input_data/running-example.csv")
@@ -145,7 +145,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         pm4py.get_end_activities(df)
         pm4py.get_event_attributes(df)
         pm4py.get_event_attribute_values(df, "org:resource")
-        pm4py.get_variants(df)
+        pm4py.get_variants_as_tuples(df)
 
     def test_playout(self):
         net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")

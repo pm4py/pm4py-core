@@ -14,7 +14,7 @@ def execute_script():
     log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "receipt.xes"))
     print("number of cases", len(log))
     print("number of events", sum(len(x) for x in log))
-    print("number of variants", len(pm4py.get_variants(log)))
+    print("number of variants", len(pm4py.get_variants_as_tuples(log)))
     ac = get.get_attribute_values(log, "concept:name")
     dfg, sa, ea = pm4py.discover_dfg(log)
     perc = 0.5
