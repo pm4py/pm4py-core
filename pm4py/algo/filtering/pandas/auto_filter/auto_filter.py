@@ -5,6 +5,7 @@ from pm4py.algo.filtering.pandas.variants import variants_filter
 from pm4py.util import constants
 from enum import Enum
 from pm4py.util import exec_utils
+import deprecation
 
 
 class Parameters(Enum):
@@ -20,6 +21,7 @@ class Parameters(Enum):
     ENABLE_END_ACTIVITIES_FILTER = "enable_end_activities_filter"
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(df, parameters=None):
     """
     Apply some filters to Pandas dataframe in order to get

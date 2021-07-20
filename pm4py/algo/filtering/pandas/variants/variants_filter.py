@@ -6,6 +6,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTA
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
+import deprecation
 
 
 class Parameters(Enum):
@@ -15,6 +16,7 @@ class Parameters(Enum):
     POSITIVE = "positive"
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(df, parameters=None):
     """
     Apply an automatic filter on variants

@@ -16,6 +16,7 @@ CASE_CONCEPT_NAME = "case:concept:name"
 CASE_ATTRIBUTE_GLUE = 'case:concept:name'
 CASE_ATTRIBUTE_PREFIX = 'case:'
 
+# the following can be removed
 PARAMETER_KEY_CASE_GLUE = 'case_id_glue'
 PARAMETER_KEY_CASE_ATTRIBUTE_PRFIX = 'case:'
 

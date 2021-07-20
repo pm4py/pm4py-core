@@ -9,6 +9,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
+import deprecation
 
 
 class Parameters(Enum):
@@ -65,6 +66,7 @@ def apply(df, paths, parameters=None):
     return ret
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(df, parameters=None):
     del df
     del parameters
