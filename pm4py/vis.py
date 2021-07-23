@@ -526,6 +526,8 @@ def save_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_path
     ----------------
     log
         Event log
+    filepath
+        Destination Path
     distr_type
         Type of distribution (default: days_week):
         - days_month => Gets the distribution of the events among the days of a month (from 1 to 31)
@@ -535,8 +537,6 @@ def save_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_path
         - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
     format
         Format of the visualization (default: png)
-    filepath
-        Destination Path
     """
     if distr_type == "days_month":
         title = "Distribution of the Events over the Days of a Month"; x_axis = "Day of month"; y_axis = "Number of Events"
