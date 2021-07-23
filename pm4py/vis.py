@@ -519,7 +519,7 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
     graphs_visualizer.view(gviz)
     
   
-def save_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_type: str = "days_week", format="png", file_path: str):
+def save_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_path: str, distr_type: str = "days_week", format="png"):
     """
     Saves the visualization of distribution of the events in the specified dimension
     Parameters
