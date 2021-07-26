@@ -1,6 +1,6 @@
 import math
 import pkgutil
-from copy import deepcopy
+from copy import deepcopy, copy
 from enum import Enum
 
 from pm4py.objects.conversion.log import constants
@@ -168,7 +168,10 @@ def __transform_dataframe_to_event_stream(dataframe, stream_post_processing=Fals
         list_events = __compress(list_events)
     for i in range(len(list_events)):
         list_events[i] = Event(list_events[i])
-    stream = log_instance.EventStream(list_events, attributes={'origin': 'csv'})
+    properties = copy(dataframe.attrs)
+    if pmutil.PARAMETER_CONSTANT_CASEID_KEY in properties:
+        del properties[pmutil.PARAMETER_CONSTANT_CASEID_KEY]
+    stream = log_instance.EventStream(list_events, attributes={'origin': 'csv'}, properties=properties)
     for ex in extensions:
         stream.extensions[ex.name] = {
             xes_constants.KEY_PREFIX: ex.prefix,
