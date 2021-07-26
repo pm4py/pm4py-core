@@ -168,18 +168,6 @@ class DocTests(unittest.TestCase):
                                                                 start_activities_filter.Parameters.CASE_ID_KEY: "case:concept:name",
                                                                 start_activities_filter.Parameters.ACTIVITY_KEY: "concept:name"})
 
-    def test_18(self):
-        from pm4py.algo.filtering.log.start_activities import start_activities_filter
-        log = self.load_running_example_xes()
-        log_af_sa = start_activities_filter.apply_auto_filter(log, parameters={
-            start_activities_filter.Parameters.DECREASING_FACTOR: 0.6})
-
-    def test_19(self):
-        from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
-        dataframe = self.load_running_example_df()
-        df_auto_sa = start_activities_filter.apply_auto_filter(dataframe, parameters={
-            start_activities_filter.Parameters.DECREASING_FACTOR: 0.6})
-
     def test_20(self):
         from pm4py.algo.filtering.log.end_activities import end_activities_filter
         log = self.load_running_example_xes()
@@ -253,19 +241,6 @@ class DocTests(unittest.TestCase):
                                                          variants_filter.Parameters.CASE_ID_KEY: "case:concept:name",
                                                          variants_filter.Parameters.ACTIVITY_KEY: "concept:name"})
 
-    def test_30(self):
-        from pm4py.algo.filtering.log.variants import variants_filter
-        log = self.load_running_example_xes()
-        auto_filtered_log = variants_filter.apply_auto_filter(log)
-
-    def test_31(self):
-        from pm4py.algo.filtering.pandas.variants import variants_filter
-        df = self.load_running_example_df()
-        auto_filtered_df = variants_filter.apply_auto_filter(df,
-                                                             parameters={variants_filter.Parameters.POSITIVE: False,
-                                                                         variants_filter.Parameters.CASE_ID_KEY: "case:concept:name",
-                                                                         variants_filter.Parameters.ACTIVITY_KEY: "concept:name"})
-
     def test_32(self):
         from pm4py.algo.filtering.log.attributes import attributes_filter
         log = self.load_running_example_xes()
@@ -303,21 +278,6 @@ class DocTests(unittest.TestCase):
                                                     attributes_filter.Parameters.CASE_ID_KEY: "case:concept:name",
                                                     attributes_filter.Parameters.ATTRIBUTE_KEY: "org:resource",
                                                     attributes_filter.Parameters.POSITIVE: False})
-
-    def test_36(self):
-        from pm4py.algo.filtering.log.attributes import attributes_filter
-        log = self.load_running_example_xes()
-        filtered_log = attributes_filter.apply_auto_filter(log, parameters={
-            attributes_filter.Parameters.ATTRIBUTE_KEY: "concept:name",
-            attributes_filter.Parameters.DECREASING_FACTOR: 0.6})
-
-    def test_37(self):
-        from pm4py.algo.filtering.pandas.attributes import attributes_filter
-        df = self.load_running_example_df()
-        filtered_df = attributes_filter.apply_auto_filter(df, parameters={
-            attributes_filter.Parameters.CASE_ID_KEY: "case:concept:name",
-            attributes_filter.Parameters.ATTRIBUTE_KEY: "concept:name",
-            attributes_filter.Parameters.DECREASING_FACTOR: 0.6})
 
     def test_38(self):
         import os
@@ -586,42 +546,6 @@ class DocTests(unittest.TestCase):
         os.remove("createdPetriNet1.pnml")
         os.remove("alpha.svg")
 
-    def test_53(self):
-        from pm4py.objects.log.importer.xes import importer as xes_importer
-        import os
-        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
-
-        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, initial_marking, final_marking = inductive_miner.apply(log)
-
-        from pm4py.objects.petri_net.utils import petri_utils
-        cycles = petri_utils.get_cycles_petri_net_places(net)
-
-    def test_54(self):
-        from pm4py.objects.log.importer.xes import importer as xes_importer
-        import os
-        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
-
-        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, initial_marking, final_marking = inductive_miner.apply(log)
-
-        from pm4py.objects.petri_net.utils import petri_utils
-        scc = petri_utils.get_strongly_connected_subnets(net)
-
-        from pm4py.visualization.petri_net import visualizer as pn_visualizer
-        gviz = pn_visualizer.apply(scc[0][0], scc[0][1], scc[0][2])
-
-    def test_55(self):
-        from pm4py.objects.log.importer.xes import importer as xes_importer
-        import os
-        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
-
-        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, initial_marking, final_marking = inductive_miner.apply(log)
-
-        from pm4py.objects.petri_net.utils import petri_utils
-        cycles = petri_utils.get_cycles_petri_net_places(net)
-
     def test_56(self):
         import os
         from pm4py.objects.log.importer.xes import importer as xes_importer
@@ -690,7 +614,7 @@ class DocTests(unittest.TestCase):
         alignments = alignments.apply_log(log, net, initial_marking, final_marking, parameters=parameters)
 
     def test_59(self):
-        from pm4py.algo.simulation.tree_generator import simulator as tree_gen
+        from pm4py.algo.simulation.tree_generator import algorithm as tree_gen
         parameters = {}
         tree = tree_gen.apply(parameters=parameters)
 
@@ -708,16 +632,13 @@ class DocTests(unittest.TestCase):
         from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.apply(os.path.join("input_data", "roadtraffic50traces.xes"))
 
-        from pm4py.objects.log.util import get_log_representation
+        from pm4py.algo.transformation.log_to_features.variants import trace_based
         str_trace_attributes = []
         str_event_attributes = ["concept:name"]
         num_trace_attributes = []
         num_event_attributes = ["amount"]
-        data, feature_names = get_log_representation.get_representation(
-            log, str_trace_attributes, str_event_attributes,
-            num_trace_attributes, num_event_attributes)
-
-        data, feature_names = get_log_representation.get_default_representation(log)
+        data, feature_names = trace_based.apply(log)
+        data, feature_names = trace_based.apply(log, parameters={"str_tr_attr": str_trace_attributes, "str_ev_attr": str_event_attributes, "num_tr_attr": num_trace_attributes, "num_ev_attr": num_event_attributes})
 
         from pm4py.objects.log.util import get_class_representation
         target, classes = get_class_representation.get_class_representation_by_str_ev_attr_value_value(log,
@@ -735,16 +656,13 @@ class DocTests(unittest.TestCase):
         from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.apply(os.path.join("input_data", "roadtraffic50traces.xes"))
 
-        from pm4py.objects.log.util import get_log_representation
+        from pm4py.algo.transformation.log_to_features.variants import trace_based
         str_trace_attributes = []
         str_event_attributes = ["concept:name"]
         num_trace_attributes = []
         num_event_attributes = ["amount"]
-
-        data, feature_names = get_log_representation.get_representation(log, str_trace_attributes, str_event_attributes,
-                                                                        num_trace_attributes, num_event_attributes)
-
-        data, feature_names = get_log_representation.get_default_representation(log)
+        data, feature_names = trace_based.apply(log)
+        data, feature_names = trace_based.apply(log, parameters={"str_tr_attr": str_trace_attributes, "str_ev_attr": str_event_attributes, "num_tr_attr": num_trace_attributes, "num_ev_attr": num_event_attributes})
 
         from pm4py.objects.log.util import get_class_representation
         target, classes = get_class_representation.get_class_representation_by_trace_duration(log, 2 * 8640000)
@@ -799,8 +717,8 @@ class DocTests(unittest.TestCase):
         from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
 
-        from pm4py.algo.filtering.log.auto_filter.auto_filter import apply_auto_filter
-        filtered_log = apply_auto_filter(log)
+        from pm4py.algo.filtering.log.variants import variants_filter
+        filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
 
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         net, initial_marking, final_marking = inductive_miner.apply(filtered_log)
@@ -830,8 +748,8 @@ class DocTests(unittest.TestCase):
         from pm4py.objects.log.importer.xes import importer as xes_importer
         log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
 
-        from pm4py.algo.filtering.log.auto_filter.auto_filter import apply_auto_filter
-        filtered_log = apply_auto_filter(log)
+        from pm4py.algo.filtering.log.variants import variants_filter
+        filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
 
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         net, initial_marking, final_marking = inductive_miner.apply(filtered_log)
@@ -962,7 +880,7 @@ class DocTests(unittest.TestCase):
         from pm4py.algo.filtering.log.variants import variants_filter
 
         log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
-        filtered_log = variants_filter.apply_auto_filter(deepcopy(log))
+        filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
 
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         net, im, fm = inductive_miner.apply(filtered_log)
@@ -985,7 +903,7 @@ class DocTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "receipt.xes"))
         from copy import deepcopy
         from pm4py.algo.filtering.log.variants import variants_filter
-        filtered_log = variants_filter.apply_auto_filter(deepcopy(log))
+        filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
 
         from pm4py.algo.conformance.log_skeleton import algorithm as lsk_conformance
         conf_result = lsk_conformance.apply(log, skeleton)
@@ -1194,7 +1112,7 @@ class DocTests(unittest.TestCase):
         ea = end_activities.get_end_activities(log)
 
         from pm4py.algo.filtering.log.variants import variants_filter
-        log = variants_filter.apply_auto_filter(log)
+        log = variants_filter.filter_log_variants_percentage(log, 0.2)
 
         from pm4py.objects.stochastic_petri import ctmc
         reach_graph, tang_reach_graph, stochastic_map, q_matrix = ctmc.get_tangible_reachability_and_q_matrix_from_dfg_performance(

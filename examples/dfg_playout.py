@@ -6,7 +6,7 @@ import os
 
 def execute_script():
     log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "receipt.xes"))
-    activities = pm4py.get_attribute_values(log, "concept:name")
+    activities = pm4py.get_event_attribute_values(log, "concept:name")
     dfg, sa, ea = pm4py.discover_dfg(log)
     # filters the DFG to make a simpler one
     perc = 0.5
@@ -26,7 +26,7 @@ def execute_script():
         print(trace.attributes["probability"], dfg_playout.get_trace_probability(trace, dfg, sa, ea))
         break
     dfg, sa, ea = pm4py.discover_dfg(log)
-    variants = pm4py.get_variants(log)
+    variants = pm4py.get_variants_as_tuples(log)
     sum_prob_log_variants = 0.0
     for var in variants:
         sum_prob_log_variants += dfg_playout.get_trace_probability(variants[var][0], dfg, sa, ea)

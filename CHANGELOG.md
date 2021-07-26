@@ -1,5 +1,24 @@
 # PM4Py Changelog
 
+## PM4Py 2.2.10.2 (2021.07.26)
+
+### Fixed
+* 50ad39fa
+  * Fixed blocking issue with properties of Pandas dataframes when format_dataframe is used (case ID column)
+* 3708b98f
+  * Fixed variants filter, when the output of get_variants_as_tuples is used
+
+
+### Removed
+
+
+### Deprecated
+* Deprecated support to Pandas < 0.25 (due to future dropping)
+* Deprecated auto-filters (due to future dropping)
+
+### Changed
+* Different interventions to fix the internal coherency of the project (usage of deprecated functions + missing imports)
+
 ## PM4PY 2.2.10 (2021.07.09)
 
 ### Fixed

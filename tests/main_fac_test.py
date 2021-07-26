@@ -10,7 +10,7 @@ from pm4py.algo.discovery.dfg import algorithm as dfg_mining
 from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.algo.discovery.transition_system import algorithm as ts_disc
-from pm4py.algo.evaluation import evaluator as eval_alg
+from pm4py.algo.evaluation import algorithm as eval_alg
 from pm4py.algo.evaluation.generalization import algorithm as generalization
 from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
 from pm4py.algo.evaluation.replay_fitness import algorithm as rp_fit

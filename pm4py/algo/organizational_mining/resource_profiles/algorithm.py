@@ -22,7 +22,7 @@ from datetime import datetime
 
 
 def distinct_activities(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                        parameters: Optional[Dict[str, Any]] = None) -> int:
+                        parameters: Optional[Dict[Any, Any]] = None) -> int:
     """
     Number of distinct activities done by a resource in a given time interval [t1, t2)
 
@@ -52,7 +52,7 @@ def distinct_activities(log_obj: Union[pd.DataFrame, EventLog], t1: Union[dateti
 
 
 def activity_frequency(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str, a: str,
-                        parameters: Optional[Dict[str, Any]] = None) -> float:
+                        parameters: Optional[Dict[Any, Any]] = None) -> float:
     """
     Fraction of completions of a given activity a, by a given resource r, during a given time slot, [t1, t2),
     with respect to the total number of activity completions by resource r during [t1, t2)
@@ -85,7 +85,7 @@ def activity_frequency(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetim
 
 
 def activity_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                        parameters: Optional[Dict[str, Any]] = None) -> int:
+                        parameters: Optional[Dict[Any, Any]] = None) -> int:
     """
     The number of activity instances completed by a given resource during a given time slot.
 
@@ -115,7 +115,7 @@ def activity_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datet
 
 
 def case_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                        parameters: Optional[Dict[str, Any]] = None) -> int:
+                        parameters: Optional[Dict[Any, Any]] = None) -> int:
     """
     The number of cases completed during a given time slot in which a given resource was involved.
 
@@ -145,7 +145,7 @@ def case_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime,
 
 
 def fraction_case_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                        parameters: Optional[Dict[str, Any]] = None) -> float:
+                        parameters: Optional[Dict[Any, Any]] = None) -> float:
     """
     The fraction of cases completed during a given time slot in which a given resource was involved with respect to the
     total number of cases completed during the time slot.
@@ -176,7 +176,7 @@ def fraction_case_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[
 
 
 def average_workload(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                     parameters: Optional[Dict[str, Any]] = None) -> float:
+                     parameters: Optional[Dict[Any, Any]] = None) -> float:
     """
     The average number of activities started by a given resource but not completed at a moment in time.
 
@@ -206,7 +206,7 @@ def average_workload(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime,
 
 
 def multitasking(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                 parameters: Optional[Dict[str, Any]] = None) -> float:
+                 parameters: Optional[Dict[Any, Any]] = None) -> float:
     """
     The fraction of active time during which a given resource is involved in more than one activity with respect
     to the resource's active time.
@@ -237,7 +237,7 @@ def multitasking(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str
 
 
 def average_duration_activity(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str, a: str,
-                       parameters: Optional[Dict[str, Any]] = None) -> float:
+                       parameters: Optional[Dict[Any, Any]] = None) -> float:
     """
     The average duration of instances of a given activity completed during a given time slot by a given resource.
 
@@ -269,7 +269,7 @@ def average_duration_activity(log_obj: Union[pd.DataFrame, EventLog], t1: Union[
 
 
 def average_case_duration(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                          parameters: Optional[Dict[str, Any]] = None) -> float:
+                          parameters: Optional[Dict[Any, Any]] = None) -> float:
     """
     The average duration of cases completed during a given time slot in which a given resource was involved.
 
@@ -299,7 +299,7 @@ def average_case_duration(log_obj: Union[pd.DataFrame, EventLog], t1: Union[date
 
 
 def interaction_two_resources(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r1: str, r2: str,
-                              parameters: Optional[Dict[str, Any]] = None) -> float:
+                              parameters: Optional[Dict[Any, Any]] = None) -> float:
     """
     The number of cases completed during a given time slot in which two given resources were involved.
 
@@ -331,7 +331,7 @@ def interaction_two_resources(log_obj: Union[pd.DataFrame, EventLog], t1: Union[
 
 
 def social_position(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str], t2: Union[datetime, str], r: str,
-                              parameters: Optional[Dict[str, Any]] = None) -> float:
+                              parameters: Optional[Dict[Any, Any]] = None) -> float:
     """
     The fraction of resources involved in the same cases with a given resource during a given time slot with
     respect to the total number of resources active during the time slot.

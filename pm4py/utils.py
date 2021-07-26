@@ -86,6 +86,7 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     df.attrs[constants.PARAMETER_CONSTANT_GROUP_KEY] = xes_constants.DEFAULT_GROUP_KEY
     df.attrs[constants.PARAMETER_CONSTANT_TRANSITION_KEY] = xes_constants.DEFAULT_TRANSITION_KEY
     df.attrs[constants.PARAMETER_CONSTANT_RESOURCE_KEY] = xes_constants.DEFAULT_RESOURCE_KEY
+    df.attrs[constants.PARAMETER_CONSTANT_CASEID_KEY] = constants.CASE_CONCEPT_NAME
     # logging.warning(
     #    "please convert the dataframe for advanced process mining applications. log = pm4py.convert_to_event_log(df)")
     return df

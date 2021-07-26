@@ -13,7 +13,7 @@ def execute_script():
     # import a log
     log = importer.apply(os.path.join("..", "tests", "input_data", "receipt.xes"))
     # found a filtered version of the log that is used to discover a process model
-    filtered_log = variants_filter.apply_auto_filter(deepcopy(log))
+    filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
     # discover a process tree using inductive miner
     tree = inductive_miner.apply_tree(filtered_log)
     print(tree)

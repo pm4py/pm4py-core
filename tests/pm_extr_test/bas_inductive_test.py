@@ -40,7 +40,8 @@ for log_name in os.listdir(LOGS_FOLDER):
 
                 dataframe = pd.read_parquet(log_path)
                 activities = set(attributes_get_pandas.get_attribute_values(dataframe, CLASSIFIER).keys())
-                variants = pm4py.get_variants(dataframe)
+                variants = pm4py.get_variants_as_tuples(dataframe)
+                variants = {",".join(x): y for x, y in variants.items()}
                 fp_log = pm4py.algo.discovery.footprints.log.variants.entire_dataframe.apply(dataframe)
             print("start tree_im_clean")
             tree_im_clean = im_clean.apply_tree(log, parameters={"pm4py:param:activity_key": CLASSIFIER,

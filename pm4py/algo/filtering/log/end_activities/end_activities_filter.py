@@ -24,6 +24,7 @@ from pm4py.statistics.end_activities.log.get import get_end_activities
 from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
+import deprecation
 
 
 class Parameters(Enum):
@@ -97,6 +98,7 @@ def filter_log_by_end_activities(end_activities, variants, vc, threshold, activi
     return filtered_log
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(log, variants=None, parameters=None):
     """
     Apply an end attributes filter detecting automatically a percentage

@@ -71,7 +71,7 @@ class AlgorithmTest(unittest.TestCase):
         net, im, fm = alpha_miner.apply(log)
         from pm4py.algo.evaluation.simplicity import algorithm as simplicity
         simp = simplicity.apply(net)
-        from pm4py.algo.evaluation import evaluator as evaluation_method
+        from pm4py.algo.evaluation import algorithm as evaluation_method
         eval = evaluation_method.apply(log, net, im, fm)
 
     def test_playout(self):
@@ -82,7 +82,7 @@ class AlgorithmTest(unittest.TestCase):
         log2 = algorithm.apply(net, im, fm)
 
     def test_tree_generation(self):
-        from pm4py.algo.simulation.tree_generator import simulator as tree_simulator
+        from pm4py.algo.simulation.tree_generator import algorithm as tree_simulator
         tree1 = tree_simulator.apply(variant=tree_simulator.Variants.BASIC)
         tree2 = tree_simulator.apply(variant=tree_simulator.Variants.PTANDLOGGENERATOR)
 

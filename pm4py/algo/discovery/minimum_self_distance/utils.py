@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from typing import Any, Dict, Optional, Set
+from typing import Any, Dict, Optional, Set, Union
 
 import pm4py
 from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
@@ -27,8 +27,8 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def derive_msd_witnesses(log: EventLog, msd: Optional[Dict[str, int]] = None,
-                         parameters: Optional[Dict[str, Any]] = None) -> Dict[str, Set[str]]:
+def derive_msd_witnesses(log: EventLog, msd: Optional[Dict[Any, int]] = None,
+                         parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Set[str]]:
     '''
     This function derives the minimum self distance witnesses.
     The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.
@@ -54,7 +54,7 @@ def derive_msd_witnesses(log: EventLog, msd: Optional[Dict[str, int]] = None,
     log = pm4py.convert_to_event_log(log)
     act_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
                                          xes_constants.DEFAULT_NAME_KEY)
-    alphabet = pm4py.get_attribute_values(log, act_key)
+    alphabet = pm4py.get_event_attribute_values(log, act_key)
     msd = msd if msd is not None else msd_algo.apply(log, parameters)
     log = list(map(lambda t: list(map(lambda e: e[act_key], t)), log))
     witnesses = dict()

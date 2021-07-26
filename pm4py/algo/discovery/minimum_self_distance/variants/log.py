@@ -28,7 +28,7 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def apply(log: Union[DataFrame, EventLog, EventStream], parameters: Optional[Dict[str, Any]] = None) -> Dict[str, int]:
+def apply(log: Union[DataFrame, EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, int]:
     '''
     This algorithm computes the minimum self-distance for each activity observed in an event log.
     The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.
@@ -50,7 +50,7 @@ def apply(log: Union[DataFrame, EventLog, EventStream], parameters: Optional[Dic
     log = pm4py.convert_to_event_log(log)
     act_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
                                          xes_constants.DEFAULT_NAME_KEY)
-    alphabet = pm4py.get_attribute_values(log, act_key)
+    alphabet = pm4py.get_event_attribute_values(log, act_key)
     log = list(map(lambda t: list(map(lambda e: e[act_key], t)), log))
     min_self_distances = dict()
     for a in alphabet:

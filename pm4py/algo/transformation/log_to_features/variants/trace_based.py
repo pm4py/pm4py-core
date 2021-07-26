@@ -314,7 +314,7 @@ def get_numeric_event_attribute_value_trace(trace: Trace, event_attribute: str) 
     raise Exception("at least a trace without any event with event attribute: " + event_attribute)
 
 
-def get_default_representation_with_attribute_names(log: EventLog, parameters: Optional[Dict[str, Any]] = None,
+def get_default_representation_with_attribute_names(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None,
                                                     feature_names: Optional[List[str]] = None) -> Tuple[
     Any, List[str], List[str], List[str], List[str], List[str]]:
     """
@@ -373,7 +373,7 @@ def get_default_representation_with_attribute_names(log: EventLog, parameters: O
     return data, feature_names, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr
 
 
-def get_default_representation(log: EventLog, parameters: Optional[Dict[str, Any]] = None,
+def get_default_representation(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None,
                                feature_names: Optional[List[str]] = None) -> Tuple[Any, List[str]]:
     """
     Gets the default data representation of an event log (for process tree building)
@@ -527,7 +527,7 @@ def get_representation(log: EventLog, str_tr_attr: List[str], str_ev_attr: List[
     return data, feature_names
 
 
-def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> Tuple[Any, List[str]]:
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
     """
     Extract the features from an event log (a vector for each trace)
 

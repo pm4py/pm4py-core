@@ -30,7 +30,7 @@ class Variants(Enum):
     CLASSIC = classic
 
 
-def apply(trie: Trie, variant=Variants.CLASSIC, parameters: Optional[Dict[str, Any]] = None) -> Graph:
+def apply(trie: Trie, variant=Variants.CLASSIC, parameters: Optional[Dict[Any, Any]] = None) -> Graph:
     """
     Represents the trie
 

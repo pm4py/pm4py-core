@@ -21,7 +21,7 @@ from pm4py.util import constants
 from enum import Enum
 from collections import Counter
 import pandas as pd
-from typing import Optional, Dict, Any, List, Tuple
+from typing import Optional, Dict, Any, List, Tuple, Union
 
 
 class Parameters(Enum):
@@ -55,7 +55,7 @@ def __add_left_0(stri: str, target_length: int) -> str:
     return stri
 
 
-def get_events_distribution(df: pd.DataFrame, distr_type: str = "days_month", parameters: Optional[Dict[str, Any]] = None) -> Tuple[List[str], List[int]]:
+def get_events_distribution(df: pd.DataFrame, distr_type: str = "days_month", parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[List[str], List[int]]:
     """
     Gets the distribution of the events in the specified dimension
 

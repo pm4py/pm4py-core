@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Union
 
 import pandas as pd
 
@@ -28,7 +28,7 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
-def apply(df: pd.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> List[int]:
+def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[int]:
     """
     Counts the intersections of each interval event with the other interval events of the log
     (all the events are considered, not looking at the activity)

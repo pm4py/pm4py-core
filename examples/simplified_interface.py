@@ -79,10 +79,10 @@ def execute_script():
     print("df start activities = ", pm4py.get_start_activities(df2))
     print("log end activities = ", pm4py.get_end_activities(log2))
     print("df end activities = ", pm4py.get_end_activities(df2))
-    print("log attributes = ", pm4py.get_attributes(log2))
-    print("df attributes = ", pm4py.get_attributes(df2))
-    print("log org:resource values = ", pm4py.get_attribute_values(log2, "org:resource"))
-    print("df org:resource values = ", pm4py.get_attribute_values(df2, "org:resource"))
+    print("log attributes = ", pm4py.get_event_attributes(log2))
+    print("df attributes = ", pm4py.get_event_attributes(df2))
+    print("log org:resource values = ", pm4py.get_event_attribute_values(log2, "org:resource"))
+    print("df org:resource values = ", pm4py.get_event_attribute_values(df2, "org:resource"))
 
     print("start_activities len(filt_log) = ", len(pm4py.filter_start_activities(log2, ["register request"])))
     print("start_activities len(filt_df) = ", len(pm4py.filter_start_activities(df2, ["register request"])))
@@ -108,8 +108,8 @@ def execute_script():
     pm4py.view_events_distribution_graph(df2, format="svg")
     pm4py.view_events_distribution_graph(log2, format="svg")
 
-    print("variants log = ", pm4py.get_variants(log2))
-    print("variants df = ", pm4py.get_variants(df2))
+    print("variants log = ", pm4py.get_variants_as_tuples(log2))
+    print("variants df = ", pm4py.get_variants_as_tuples(df2))
     print("variants filter log = ",
           len(pm4py.filter_variants(log2, [
               ["register request", "examine thoroughly", "check ticket", "decide", "reject request"]])))

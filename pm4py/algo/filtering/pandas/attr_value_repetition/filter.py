@@ -16,7 +16,7 @@
 '''
 import sys
 from enum import Enum
-from typing import Any, Optional, Dict
+from typing import Any, Optional, Dict, Union
 
 import pandas as pd
 
@@ -31,7 +31,7 @@ class Parameters(Enum):
     MAX_REP = "max_rep"
 
 
-def apply(df: pd.DataFrame, value: Any, parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
+def apply(df: pd.DataFrame, value: Any, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Filters the trace of the dataframe where the given attribute value is repeated
     (in a range of repetitions that is specified by the user)

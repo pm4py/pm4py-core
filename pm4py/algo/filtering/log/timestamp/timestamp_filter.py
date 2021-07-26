@@ -58,7 +58,7 @@ def trace_attr_is_contained(trace: Trace, dt1: Union[str, datetime.datetime], dt
 
 
 def filter_on_trace_attribute(log: EventLog, dt1: Union[str, datetime.datetime], dt2: Union[str, datetime.datetime],
-                              parameters: Optional[Dict[str, Any]] = None):
+                              parameters: Optional[Dict[Union[str, Parameters], Any]] = None):
     """
     Filters the traces of the event log that have a given trace attribute
     falling in the provided range

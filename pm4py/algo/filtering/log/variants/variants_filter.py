@@ -23,6 +23,7 @@ from pm4py.statistics.variants.log.get import get_variants, \
 from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
+import deprecation
 
 
 class Parameters(Enum):
@@ -226,6 +227,7 @@ def find_auto_threshold(log, variants, decreasing_factor):
     return percentage_already_added
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(log, variants=None, parameters=None):
     """
     Apply a variants filter detecting automatically a percentage

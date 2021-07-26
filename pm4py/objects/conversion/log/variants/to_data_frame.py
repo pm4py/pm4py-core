@@ -19,6 +19,8 @@ from enum import Enum
 from pm4py.objects.conversion.log.variants import to_event_stream
 from pm4py.objects.log import obj as log_instance
 from pm4py.objects.conversion.log import constants
+from copy import copy
+from pm4py.util import constants as pm4_constants
 
 
 class Parameters(Enum):
@@ -57,6 +59,8 @@ def apply(log, parameters=None):
         log = to_event_stream.apply(log, parameters=parameters)
     transf_log = [dict(x) for x in log]
     df = pd.DataFrame.from_dict(transf_log)
-    df.attrs = log.properties
+    df.attrs = copy(log.properties)
+    if pm4_constants.PARAMETER_CONSTANT_CASEID_KEY in df.attrs:
+        del df.attrs[pm4_constants.PARAMETER_CONSTANT_CASEID_KEY]
 
     return df

@@ -38,7 +38,7 @@ def apply(tsys, parameters=None, variant=DEFAULT_VARIANT):
     tsys
         Transition system
     parameters
-        Optional parameters of the algorithm
+        Parameters of the algorithm
     variant
         Variant of the algorithm to use, including:
             - Variants.VIEW_BASED

@@ -206,7 +206,7 @@ class OtherPartsTests(unittest.TestCase):
         from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         dfg, sa, ea = pm4py.discover_dfg(log)
-        act_count = pm4py.get_attribute_values(log, "concept:name")
+        act_count = pm4py.get_event_attribute_values(log, "concept:name")
         dfg, sa, ea, act_count = dfg_filtering.filter_dfg_on_activities_percentage(dfg, sa, ea, act_count, 0.5)
         dfg, sa, ea, act_count = dfg_filtering.filter_dfg_on_paths_percentage(dfg, sa, ea, act_count, 0.5)
         aligned_traces = dfg_alignment.apply(log, dfg, sa, ea)

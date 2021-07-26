@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import warnings
-from typing import List, Union
+from typing import List, Union, Set, List
 
 import deprecation
 import pandas as pd
@@ -27,8 +27,8 @@ from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_data
 from pm4py.utils import get_properties
 
 
-def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: List[str], retain: bool = True) -> Union[
-    EventLog, pd.DataFrame]:
+def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: Union[Set[str], List[str]], retain: bool = True) -> \
+Union[EventLog, pd.DataFrame]:
     """
     Filter cases having a start activity in the provided list
 
@@ -61,7 +61,7 @@ def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: List
                                              parameters=parameters)
 
 
-def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities: List[str], retain: bool = True) -> Union[
+def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union[Set[str], List[str]], retain: bool = True) -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter cases having an end activity in the provided list
@@ -102,7 +102,7 @@ def filter_attribute_values(log, attribute_key, values, level="case", retain=Tru
     return filter_event_attribute_values(log, attribute_key, values, level=level, retain=retain)
 
 
-def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values: List[str],
+def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values:  Union[Set[str], List[str]],
                                   level: str = "case", retain: bool = True) -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log object on the values of some event attribute
@@ -156,7 +156,7 @@ def filter_trace_attribute(log, attribute_key, values, retain=True):
     return filter_trace_attribute_values(log, attribute_key, values, retain=retain)
 
 
-def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values: List[str],
+def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values:  Union[Set[str], List[str]],
                                   retain: bool = True) -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log on the values of a trace attribute
@@ -191,7 +191,7 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
         return attributes_filter.apply_trace_attribute(log, values, parameters=parameters)
 
 
-def filter_variants(log: Union[EventLog, pd.DataFrame], variants: List[List[str]], retain: bool = True) -> Union[
+def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str], List[str]], retain: bool = True) -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter a log on a specified set of variants
@@ -210,17 +210,20 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants: List[List[str]
     filtered_log
         Filtered log object
     """
+    from pm4py.util import variants_util
     parameters = get_properties(log)
+    if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
+        variants = [",".join(v) for v in variants]
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.variants import variants_filter
         parameters[variants_filter.Parameters.POSITIVE] = retain
-        return variants_filter.apply(log, [",".join(v) for v in variants],
+        return variants_filter.apply(log, variants,
                                      parameters=parameters)
     else:
         from pm4py.algo.filtering.log.variants import variants_filter
         parameters[variants_filter.Parameters.POSITIVE] = retain
-        return variants_filter.apply(log, [",".join(v) for v in variants],
+        return variants_filter.apply(log, variants,
                                      parameters=parameters)
 
 
@@ -323,7 +326,7 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
             cases = set(log[constants.CASE_CONCEPT_NAME])
         for path in relations:
             filt_log = ltl_checker.eventually_follows(log, path,
-                                                  parameters=parameters)
+                                                      parameters=parameters)
             this_traces = set(filt_log[constants.CASE_CONCEPT_NAME])
             if retain:
                 cases = cases.union(this_traces)
@@ -340,7 +343,7 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
             cases = set(id(trace) for trace in log)
         for path in relations:
             filt_log = ltl_checker.eventually_follows(log, path,
-                                                  parameters=parameters)
+                                                      parameters=parameters)
             this_traces = set(id(trace) for trace in filt_log)
             if retain:
                 cases = cases.union(this_traces)

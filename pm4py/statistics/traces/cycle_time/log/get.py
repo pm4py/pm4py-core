@@ -27,7 +27,7 @@ class Parameters(Enum):
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
 
 
-def apply(log_or_trace: Union[Trace, EventLog], parameters: Optional[Dict[str, Any]] = None) -> float:
+def apply(log_or_trace: Union[Trace, EventLog], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     Computes the cycle time starting from an event log or a trace object
 
