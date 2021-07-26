@@ -168,9 +168,12 @@ def __transform_dataframe_to_event_stream(dataframe, stream_post_processing=Fals
         list_events = __compress(list_events)
     for i in range(len(list_events)):
         list_events[i] = Event(list_events[i])
-    properties = copy(dataframe.attrs)
-    if pmutil.PARAMETER_CONSTANT_CASEID_KEY in properties:
-        del properties[pmutil.PARAMETER_CONSTANT_CASEID_KEY]
+    if hasattr(dataframe, 'attrs'):
+        properties = copy(dataframe.attrs)
+        if pmutil.PARAMETER_CONSTANT_CASEID_KEY in properties:
+            del properties[pmutil.PARAMETER_CONSTANT_CASEID_KEY]
+    else:
+        properties = {}
     stream = log_instance.EventStream(list_events, attributes={'origin': 'csv'}, properties=properties)
     for ex in extensions:
         stream.extensions[ex.name] = {
