@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import copy
-from typing import List, Optional, Set, Counter, Dict
+from typing import List, Optional, Set, Dict
 
 import networkx as nx
 from networkx.classes.graph import Graph
@@ -97,7 +97,7 @@ def _check_start_end_completeness(dfg, start_activities, end_activities, groups)
     return groups
 
 
-def _exclude_sets_non_reachable_from_start(dfg: DFG, start_activities: Counter[str], end_activities: Counter[str],
+def _exclude_sets_non_reachable_from_start(dfg: DFG, start_activities: Dict[str, int], end_activities: Dict[str, int],
                                            groups: Cut) -> Cut:
     for a in set(start_activities).difference(set(end_activities)):
         for (x, b) in dfg:
@@ -112,7 +112,7 @@ def _exclude_sets_non_reachable_from_start(dfg: DFG, start_activities: Counter[s
     return groups
 
 
-def _exclude_sets_no_reachable_from_end(dfg: DFG, start_activities: Counter[str], end_activities: Counter[str],
+def _exclude_sets_no_reachable_from_end(dfg: DFG, start_activities: Dict[str, int], end_activities: Dict[str, int],
                                         groups: Cut) -> Cut:
     for b in set(end_activities).difference(set(start_activities)):
         for (a, x) in dfg:
@@ -126,8 +126,8 @@ def _exclude_sets_no_reachable_from_end(dfg: DFG, start_activities: Counter[str]
     return groups
 
 
-def _compute_connected_components(dfg: DFG, alphabet: Set[str], start_activities: Counter[str],
-                                  end_activities: Counter[str], do_set: Set[str]) -> List[Graph]:
+def _compute_connected_components(dfg: DFG, alphabet: Set[str], start_activities: Dict[str, int],
+                                  end_activities: Dict[str, int], do_set: Set[str]) -> List[Graph]:
     reduced_dfg = copy.copy(dfg)
     for (a, b) in dfg:
         if a in end_activities or a in end_activities or b in start_activities or b in end_activities:

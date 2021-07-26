@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from typing import Optional, Dict, Any, Tuple, List
+from typing import Optional, Dict, Any, Tuple, List, Union
 
 from intervaltree import Interval, IntervalTree
 
@@ -26,7 +26,7 @@ class Parameters(Enum):
     EPSILON = "epsilon"
 
 
-def apply(points: List[Tuple[float, float]], parameters: Optional[Dict[str, Any]] = None) -> List[int]:
+def apply(points: List[Tuple[float, float]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[int]:
     """
     Computes the overlap statistic given a list of points, expressed as (min_timestamp, max_timestamp)
 

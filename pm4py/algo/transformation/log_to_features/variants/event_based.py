@@ -16,7 +16,7 @@
 '''
 from collections import Counter
 from enum import Enum
-from typing import Optional, List, Dict, Any, Tuple
+from typing import Optional, List, Dict, Any, Tuple, Union
 
 import numpy as np
 
@@ -34,7 +34,7 @@ class Parameters(Enum):
 
 
 def extract_all_ev_features_names_from_log(log: EventLog, str_ev_attr: List[str], num_ev_attr: List[str],
-                                           parameters: Optional[Dict[str, Any]] = None) -> List[str]:
+                                           parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[str]:
     """
     Extracts the feature names from an event log.
 
@@ -87,7 +87,7 @@ def extract_all_ev_features_names_from_log(log: EventLog, str_ev_attr: List[str]
     return feature_names
 
 
-def extract_features(log: EventLog, feature_names: List[str], parameters: Optional[Dict[str, Any]] = None) -> Tuple[
+def extract_features(log: EventLog, feature_names: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[
     Any, List[str]]:
     """
     Extracts the matrix of the features from an event log
@@ -130,7 +130,7 @@ def extract_features(log: EventLog, feature_names: List[str], parameters: Option
     return data, feature_names
 
 
-def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> Tuple[Any, List[str]]:
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
     """
     Extracts all the features for the traces of an event log (each trace becomes a vector of vectors, where each
     event has its own vector)

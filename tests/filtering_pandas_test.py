@@ -31,16 +31,6 @@ class DataframePrefilteringTest(unittest.TestCase):
         log = log_conv_fact.apply(event_log)
         del log
 
-    def test_autofiltering_dataframe(self):
-        # to avoid static method warnings in tests,
-        # that by construction of the unittest package have to be expressed in such way
-        self.dummy_variable = "dummy_value"
-        input_log = os.path.join(INPUT_DATA_DIR, "running-example.csv")
-        dataframe = pd.read_csv(input_log)
-        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe)
-        dataframe = auto_filter.apply_auto_filter(dataframe)
-        del dataframe
-
     def test_filtering_variants(self):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way

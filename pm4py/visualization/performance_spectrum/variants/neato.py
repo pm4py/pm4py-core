@@ -20,7 +20,7 @@ import tempfile
 import uuid
 from datetime import datetime
 from enum import Enum
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Union
 
 import matplotlib as mpl
 import matplotlib.cm as cm
@@ -66,7 +66,7 @@ def give_color_to_line(dir: float) -> str:
     return "#" + r + g + b
 
 
-def apply(perf_spectrum: Dict[str, Any], parameters: Optional[Dict[str, Any]] = None) -> str:
+def apply(perf_spectrum: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> str:
     """
     Construct the performance spectrum visualization
 

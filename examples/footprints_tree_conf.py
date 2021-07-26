@@ -18,7 +18,7 @@ def execute_script():
     throughput_time = case_statistics.get_median_caseduration(log)
     variants, variants_times = variants_filter.get_variants_along_with_case_durations(log)
     dfg = dfg_discovery.apply(log)
-    filtered_log = variants_filter.apply_auto_filter(deepcopy(log))
+    filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
     # filtered_log = log
     tree = inductive_miner.apply_tree(filtered_log)
     fp_log = fp_discovery.apply(log, variant=fp_discovery.Variants.ENTIRE_EVENT_LOG)

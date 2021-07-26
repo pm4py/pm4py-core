@@ -70,5 +70,5 @@ def generate_process_tree(**kwargs) -> ProcessTree:
     model
         process tree
     """
-    from pm4py.algo.simulation.tree_generator import simulator
-    return simulator.apply(**kwargs)
+    from pm4py.algo.simulation.tree_generator import algorithm
+    return algorithm.apply(**kwargs)

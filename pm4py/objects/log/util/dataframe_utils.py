@@ -25,7 +25,6 @@ from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import points_subset
 from pm4py.util import xes_constants
-from pm4py.util.vers_checker import check_pandas_ge_024
 
 LEGACY_PARQUET_TP_REPLACER = "AAA"
 LEGACY_PARQUET_CASECONCEPTNAME = "caseAAAconceptAAAname"

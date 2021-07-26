@@ -23,6 +23,7 @@ from pm4py.util import xes_constants as xes
 from pm4py.util import constants
 from enum import Enum
 from pm4py.util import exec_utils
+import deprecation
 
 
 class Parameters(Enum):
@@ -37,6 +38,7 @@ class Parameters(Enum):
     ENABLE_END_ACTIVITIES_FILTER = "enable_end_activities_filter"
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(log, parameters=None):
     """
     Apply some filters in battery to the log in order to get a simplified log

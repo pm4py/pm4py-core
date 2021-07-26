@@ -30,7 +30,7 @@ class Variants(Enum):
 
 
 def apply(log: Union[EventLog, pd.DataFrame, EventStream], variant: Any = Variants.TRACE_BASED,
-          parameters: Optional[Dict[str, Any]] = None):
+          parameters: Optional[Dict[Any, Any]] = None):
     """
     Extracts the features from a log object
 

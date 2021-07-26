@@ -30,6 +30,8 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CON
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from copy import copy
+import deprecation
+
 
 class Parameters(Enum):
     ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
@@ -367,6 +369,7 @@ def filter_log_by_attributes_threshold(log, attributes, variants, vc, threshold,
     return filtered_log
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(log, variants=None, parameters=None):
     """
     Apply an attributes filter detecting automatically a percentage

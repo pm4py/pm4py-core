@@ -26,7 +26,7 @@ class Variants(Enum):
     NEATO = neato
 
 
-def apply(perf_spectrum: Dict[str, Any], variant=Variants.NEATO, parameters: Optional[Dict[str, Any]] = None) -> str:
+def apply(perf_spectrum: Dict[str, Any], variant=Variants.NEATO, parameters: Optional[Dict[Any, Any]] = None) -> str:
     """
     Construct the performance spectrum visualization
 

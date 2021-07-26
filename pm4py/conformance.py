@@ -17,7 +17,7 @@
 import warnings
 from typing import List, Dict, Any, Union
 
-from deprecation import deprecated
+import deprecation
 
 from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.objects.petri_net.obj import PetriNet, Marking
@@ -27,7 +27,7 @@ from pm4py.util import xes_constants
 from pm4py.utils import get_properties
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='conformance_tbr is deprecated, use conformance_diagnostics_token_based_replay')
 def conformance_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
                     final_marking: Marking) -> List[Dict[str, Any]]:
@@ -131,7 +131,7 @@ def conformance_diagnostics_alignments(log: EventLog, *args, multi_processing: b
         return alignments.apply(log, net, im, fm, parameters=get_properties(log))
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='conformance_alignments is deprecated, use conformance_diagnostics_alignments')
 def conformance_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
                            final_marking: Marking) -> List[Dict[str, Any]]:
@@ -189,7 +189,7 @@ def fitness_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marki
                                 variant=replay_fitness.Variants.TOKEN_BASED, parameters=get_properties(log))
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='evaluate_fitness_tbr is deprecated, use fitness_token_based_replay')
 def evaluate_fitness_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking) -> Dict[
     str, float]:
@@ -249,7 +249,7 @@ def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Mark
                                 variant=replay_fitness.Variants.ALIGNMENT_BASED, parameters=parameters)
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='evaluate_fitness_alignments is deprecated, use fitness_alignments')
 def evaluate_fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking) -> \
         Dict[str, float]:
@@ -304,7 +304,7 @@ def precision_token_based_replay(log: EventLog, petri_net: PetriNet, initial_mar
                                      variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN, parameters=get_properties(log))
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='evaluate_precision_tbr is deprecated, use precision_token_based_replay')
 def evaluate_precision_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
                            final_marking: Marking) -> float:
@@ -364,7 +364,7 @@ def precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Ma
                                      parameters=parameters)
 
 
-@deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
             details='evaluate_precision_alignments is deprecated, use precision_alignments')
 def evaluate_precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
                                   final_marking: Marking) -> float:

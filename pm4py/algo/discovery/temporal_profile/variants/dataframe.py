@@ -69,7 +69,7 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> typi
                                       keep_first_following=False)
     efg = efg[[activity_key, activity_key + "_2", "@@flow_time"]]
     temporal_profile = efg.groupby([activity_key, activity_key + "_2"]).agg(["mean", "std"]).reset_index().fillna(
-        0).to_dict("r")
+        0).to_dict("records")
 
     temporal_profile = {
         (x[(activity_key, "")], x[(activity_key + "_2", "")]): (x[("@@flow_time", "mean")], x[("@@flow_time", "std")])

@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from typing import Optional, Dict, Any, List, Tuple
+from typing import Optional, Dict, Any, List, Tuple, Union
 
 import pandas as pd
 
@@ -33,7 +33,7 @@ class Parameters(Enum):
     MIN_BATCH_SIZE = "min_batch_size"
 
 
-def apply(log: pd.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> List[
+def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[
     Tuple[Tuple[str, str], int, Dict[str, Any]]]:
     """
     Provided a Pandas dataframe, returns
