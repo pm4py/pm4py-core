@@ -112,10 +112,10 @@ def execute_script():
     print("variants df = ", pm4py.get_variants_as_tuples(df2))
     print("variants filter log = ",
           len(pm4py.filter_variants(log2, [
-              ["register request", "examine thoroughly", "check ticket", "decide", "reject request"]])))
+              ("register request", "examine thoroughly", "check ticket", "decide", "reject request")])))
     print("variants filter df = ",
           len(pm4py.filter_variants(df2, [
-              ["register request", "examine thoroughly", "check ticket", "decide", "reject request"]])))
+              ("register request", "examine thoroughly", "check ticket", "decide", "reject request")])))
 
     print("paths filter log len = ",
           len(pm4py.filter_directly_follows_relation(log2, [("register request", "examine casually")])))
