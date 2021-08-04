@@ -2,7 +2,6 @@ import os
 import unittest
 
 from pm4py.algo.filtering.pandas.attributes import attributes_filter
-from pm4py.algo.filtering.pandas.auto_filter import auto_filter
 from pm4py.algo.filtering.pandas.cases import case_filter
 from pm4py.algo.filtering.pandas.paths import paths_filter
 from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
