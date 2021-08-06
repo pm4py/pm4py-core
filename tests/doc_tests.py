@@ -921,11 +921,11 @@ class DocTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
 
         from pm4py.statistics.traces.generic.log import case_statistics
-        all_case_durations = case_statistics.get_all_casedurations(log, parameters={
+        all_case_durations = case_statistics.get_all_case_durations(log, parameters={
             case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"})
 
         from pm4py.statistics.traces.generic.log import case_statistics
-        median_case_duration = case_statistics.get_median_caseduration(log, parameters={
+        median_case_duration = case_statistics.get_median_case_duration(log, parameters={
             case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"
         })
 

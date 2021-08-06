@@ -75,8 +75,8 @@ def get_case_dispersion_avg(log: EventLog, parameters: Optional[Dict[Union[str, 
 
     Returns
     --------------
-    case_arrival_avg
-        Average time interlapsed between case starts
+    case_dispersion_avg
+        Average time interlapsed between the completion of cases
     """
     if parameters is None:
         parameters = {}
