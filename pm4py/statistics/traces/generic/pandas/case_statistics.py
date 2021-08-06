@@ -318,3 +318,74 @@ def get_kde_caseduration_json(df, parameters=None):
     duration_values = [x["caseDuration"] for x in cases.values()]
 
     return case_duration_commons.get_kde_caseduration_json(duration_values, parameters=parameters)
+
+
+def get_all_case_durations(df, parameters=None):
+    """
+    Gets all the case durations out of the log
+
+    Parameters
+    ------------
+    df
+        Pandas dataframe
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    ------------
+    duration_values
+        List of all duration values
+    """
+    cd = get_cases_description(df, parameters=parameters)
+    durations = [y["caseDuration"] for y in cd.values()]
+    return sorted(durations)
+
+
+def get_first_quartile_case_duration(df, parameters=None):
+    """
+    Gets the first quartile out of the log
+
+    Parameters
+    -------------
+    df
+        Pandas dataframe
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    -------------
+    value
+        First quartile value
+    """
+    if parameters is None:
+        parameters = {}
+
+    duration_values = get_all_case_durations(df, parameters=parameters)
+    if duration_values:
+        return duration_values[int((len(duration_values) * 3) / 4)]
+    return 0
+
+
+def get_median_case_duration(df, parameters=None):
+    """
+    Gets the median case duration out of the log
+
+    Parameters
+    -------------
+    df
+        Pandas dataframe
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    -------------
+    value
+        Median duration value
+    """
+    if parameters is None:
+        parameters = {}
+
+    duration_values = get_all_case_durations(df, parameters=parameters)
+    if duration_values:
+        return duration_values[int(len(duration_values) / 2)]
+    return 0
