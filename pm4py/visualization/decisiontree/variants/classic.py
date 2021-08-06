@@ -2,13 +2,16 @@ import graphviz
 import tempfile
 from pm4py.util import exec_utils
 from enum import Enum
+from sklearn import tree
+from typing import Optional, Dict, Any, Union, Tuple, List
+import graphviz
 
 
 class Parameters(Enum):
     FORMAT = "format"
 
 
-def apply(clf, feature_names, classes, parameters=None):
+def apply(clf: tree.DecisionTreeClassifier, feature_names: List[str], classes: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> graphviz.Source:
     """
     Apply the visualization of the decision tree
 
@@ -29,8 +32,6 @@ def apply(clf, feature_names, classes, parameters=None):
     gviz
         GraphViz object
     """
-    from sklearn import tree
-
     if parameters is None:
         parameters = {}
 

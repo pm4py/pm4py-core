@@ -15,6 +15,8 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from copy import copy
 import deprecation
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream
 
 
 class Parameters(Enum):
@@ -29,7 +31,7 @@ class Parameters(Enum):
     STREAM_FILTER_VALUE2 = "stream_filter_value2"
 
 
-def apply_numeric(log, int1, int2, parameters=None):
+def apply_numeric(log: EventLog, int1: float, int2: float, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Apply a filter on cases (numerical filter)
 
@@ -100,7 +102,7 @@ def apply_numeric(log, int1, int2, parameters=None):
     return filtered_log
 
 
-def apply_numeric_events(log, int1, int2, parameters=None):
+def apply_numeric_events(log: EventLog, int1: float, int2: float, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Apply a filter on events (numerical filter)
 
@@ -144,7 +146,7 @@ def apply_numeric_events(log, int1, int2, parameters=None):
     return filtered_log
 
 
-def apply_events(log, values, parameters=None):
+def apply_events(log: EventLog, values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Filter log by keeping only events with an attribute value that belongs to the provided values list
 
@@ -188,7 +190,7 @@ def apply_events(log, values, parameters=None):
     return filtered_log
 
 
-def apply(log, values, parameters=None):
+def apply(log: EventLog, values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Filter log by keeping only traces that has/has not events with an attribute value that belongs to the provided
     values list
@@ -238,7 +240,7 @@ def apply(log, values, parameters=None):
     return filtered_log
 
 
-def apply_trace_attribute(log, values, parameters=None):
+def apply_trace_attribute(log: EventLog, values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Filter a log on the trace attribute values
 
@@ -277,7 +279,7 @@ def apply_trace_attribute(log, values, parameters=None):
     return filtered_log
 
 
-def filter_log_on_max_no_activities(log, max_no_activities=25, parameters=None):
+def filter_log_on_max_no_activities(log: EventLog, max_no_activities : int = 25, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Filter a log on a maximum number of activities
 

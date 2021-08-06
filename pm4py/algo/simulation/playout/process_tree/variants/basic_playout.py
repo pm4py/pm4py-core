@@ -1,13 +1,16 @@
 from pm4py.objects.process_tree import semantics
 from enum import Enum
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.process_tree.obj import ProcessTree
 
 
 class Parameters:
     NO_TRACES = "num_traces"
 
 
-def apply(tree, parameters=None):
+def apply(tree: ProcessTree, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Generate a log by a playout operation
 

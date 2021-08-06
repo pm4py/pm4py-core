@@ -1,6 +1,8 @@
 from pm4py.statistics.passed_time.pandas.variants import pre, post, prepost
 from enum import Enum
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+import pandas as pd
 
 
 class Variants(Enum):
@@ -12,7 +14,7 @@ class Variants(Enum):
 VERSIONS = {Variants.PRE, Variants.POST, Variants.PREPOST}
 
 
-def apply(df, activity, variant=Variants.PRE, parameters=None):
+def apply(df: pd.DataFrame, activity: str, variant=Variants.PRE, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Gets statistics on execution times of the paths to/from the activity
 

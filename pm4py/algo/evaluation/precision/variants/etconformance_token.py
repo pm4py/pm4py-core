@@ -8,6 +8,10 @@ from pm4py.objects.petri_net.utils.align_utils import get_visible_transitions_ev
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -37,7 +41,7 @@ although the implementation seems to follow the paper concept
 """
 
 
-def apply(log, net, marking, final_marking, parameters=None):
+def apply(log: EventLog, net: PetriNet, marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None):
     """
     Get ET Conformance precision
 

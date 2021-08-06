@@ -2,6 +2,9 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.algo.discovery.log_skeleton.variants import classic
 from enum import Enum
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Variants(Enum):
@@ -14,7 +17,7 @@ DEFAULT_VARIANT = CLASSIC
 VERSIONS = {CLASSIC}
 
 
-def apply(log, variant=DEFAULT_VARIANT, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Discover a log skeleton from an event log
 
@@ -38,7 +41,7 @@ def apply(log, variant=DEFAULT_VARIANT, parameters=None):
     return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters=parameters), parameters=parameters)
 
 
-def apply_from_variants_list(var_list, variant=DEFAULT_VARIANT, parameters=None):
+def apply_from_variants_list(var_list: List[Tuple[str, int]], variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Discovers the log skeleton from the variants list
 

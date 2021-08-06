@@ -1,6 +1,7 @@
 from enum import Enum
 from pm4py.algo.conformance.footprints.variants import log_model, log_extensive, trace_extensive
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
 
 
 class Variants(Enum):
@@ -9,7 +10,7 @@ class Variants(Enum):
     TRACE_EXTENSIVE = trace_extensive
 
 
-def apply(log_footprints, model_footprints, variant=Variants.LOG_MODEL, parameters=None):
+def apply(log_footprints: Union[Dict[str, Any], List[Dict[str, Any]]], model_footprints: Dict[str, Any], variant=Variants.LOG_MODEL, parameters: Optional[Dict[Any, Any]] = None) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
     """
     Apply footprints conformance between a log footprints object
     and a model footprints object

@@ -15,6 +15,11 @@ from pm4py.util import variants_util
 from enum import Enum
 from pm4py.util import constants
 
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.util import typing
+
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -95,7 +100,7 @@ def apply_from_variants_list(var_list, petri_net, initial_marking, final_marking
     return dictio_alignments
 
 
-def apply(log, net, im, fm, parameters=None):
+def apply(log: EventLog, net: PetriNet, im: Marking, fm: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> typing.ListAlignments:
     """
     Apply the recomposition alignment approach
     to a log and a Petri net performing decomposition

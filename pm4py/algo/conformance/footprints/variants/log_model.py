@@ -1,4 +1,7 @@
 from pm4py.util import exec_utils, xes_constants, constants
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog
+import pandas as pd
 
 from enum import Enum
 
@@ -21,7 +24,7 @@ class Parameters(Enum):
     STRICT = "strict"
 
 
-def apply_single(log_footprints, model_footprints, parameters=None):
+def apply_single(log_footprints: Dict[str, Any], model_footprints: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Any]:
     """
     Apply footprints conformance between a log footprints object
     and a model footprints object
@@ -62,7 +65,7 @@ def apply_single(log_footprints, model_footprints, parameters=None):
     return violations
 
 
-def apply(log_footprints, model_footprints, parameters=None):
+def apply(log_footprints: Union[Dict[str, Any], List[Dict[str, Any]]], model_footprints: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
     """
     Apply footprints conformance between a log footprints object
     and a model footprints object
@@ -91,7 +94,7 @@ def apply(log_footprints, model_footprints, parameters=None):
     return apply_single(log_footprints, model_footprints, parameters=parameters)
 
 
-def get_diagnostics_dataframe(log, conf_result, parameters=None):
+def get_diagnostics_dataframe(log: EventLog, conf_result: Union[List[Dict[str, Any]], Dict[str, Any]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Gets the diagnostics dataframe from the log
     and the results of footprints conformance checking

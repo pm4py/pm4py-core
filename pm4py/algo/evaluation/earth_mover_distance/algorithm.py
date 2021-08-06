@@ -1,6 +1,7 @@
 from pm4py.algo.evaluation.earth_mover_distance.variants import pyemd
 from enum import Enum
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple, List
 
 
 class Variants(Enum):
@@ -10,7 +11,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.PYEMD
 
 
-def apply(lang1, lang2, variant=Variants.PYEMD, parameters=None):
+def apply(lang1: Dict[List[str], float], lang2: Dict[List[str], float], variant=Variants.PYEMD, parameters: Optional[Dict[Any, Any]] = None) -> float:
     """
     Gets the EMD language between the two languages
 

@@ -7,6 +7,10 @@ from pm4py.visualization.petri_net.util.vis_trans_shortest_paths import get_shor
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import graphviz
 
 
 class Parameters(Enum):
@@ -19,7 +23,7 @@ class Parameters(Enum):
     FONT_SIZE = "font_size"
 
 
-def get_decorated_net(net, initial_marking, final_marking, log, parameters=None, variant="frequency"):
+def get_decorated_net(net: PetriNet, initial_marking: Marking, final_marking: Marking, log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None, variant: str = "frequency") -> graphviz.Digraph:
     """
     Get a decorated net according to the specified variant (decorate Petri net based on DFG)
 
@@ -69,7 +73,7 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
                            decorations=aggregated_statistics)
 
 
-def apply(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
+def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking, log: EventLog = None, aggregated_statistics=None, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> graphviz.Digraph:
     """
     Apply frequency decoration through greedy algorithm (decorate Petri net based on DFG)
 

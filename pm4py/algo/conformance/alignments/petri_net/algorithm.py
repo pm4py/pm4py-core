@@ -14,6 +14,11 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONS
 import pkgutil
 from concurrent.futures import ProcessPoolExecutor
 import multiprocessing
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.util import typing
+import pandas as pd
 
 
 class Variants(Enum):
@@ -50,7 +55,7 @@ VERSIONS = {Variants.VERSION_DIJKSTRA_NO_HEURISTICS, Variants.VERSION_DIJKSTRA_N
             Variants.VERSION_DIJKSTRA_LESS_MEMORY}
 
 
-def apply(obj, petri_net, initial_marking, final_marking, parameters=None, variant=DEFAULT_VARIANT):
+def apply(obj: Union[EventLog, EventStream, pd.DataFrame, Trace], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> Union[typing.AlignmentResult, typing.ListAlignments]:
     if parameters is None:
         parameters = {}
     if isinstance(obj, Trace):

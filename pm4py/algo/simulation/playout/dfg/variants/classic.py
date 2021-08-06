@@ -7,6 +7,8 @@ from enum import Enum
 
 from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import exec_utils, constants, xes_constants
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
 
 
 class Parameters(Enum):
@@ -121,7 +123,7 @@ def get_traces(dfg, start_activities, end_activities, parameters=None):
                     heapq.heappush(partial_traces, (prob - prob_new_act, tuple(trace[1] + [new_act])))
 
 
-def apply(dfg, start_activities, end_activities, parameters=None):
+def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end_activities: Dict[str, int], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[EventLog, Dict[Tuple[str, str], int]]:
     """
     Applies the playout algorithm on a DFG, extracting the most likely traces according to the DFG
 

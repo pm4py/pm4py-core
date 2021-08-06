@@ -8,6 +8,7 @@ from enum import Enum
 from itertools import accumulate as _accumulate, repeat as _repeat
 from bisect import bisect as _bisect
 import random
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 def choices(population, weights=None, *, cum_weights=None, k=1):
@@ -51,7 +52,7 @@ class Parameters(Enum):
     MAX_REPEAT = "max_repeat"
 
 
-def apply(parameters=None):
+def apply(parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> obj.ProcessTree:
     """
     Generate a process tree using the PTAndLogGenerator approach
     (see the paper PTandLogGenerator: A Generator for Artificial Event Data)

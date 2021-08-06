@@ -2,6 +2,8 @@ from enum import Enum
 
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.util.business_hours import soj_time_business_hours_diff
+import pandas as pd
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
 
 
 class Parameters(Enum):
@@ -16,7 +18,7 @@ class Parameters(Enum):
 DIFF_KEY = "@@diff"
 
 
-def apply(dataframe, parameters=None):
+def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
     """
     Gets the sojourn time per activity on a Pandas dataframe
 

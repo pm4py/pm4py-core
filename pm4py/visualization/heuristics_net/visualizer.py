@@ -4,6 +4,8 @@ from enum import Enum
 from pm4py.util import exec_utils, vis_utils
 from pm4py.visualization.heuristics_net.variants import pydotplus
 import tempfile
+from pm4py.objects.heuristics_net.obj import HeuristicsNet
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Variants(Enum):
@@ -13,7 +15,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.PYDOTPLUS
 
 
-def apply(heu_net, parameters=None, variant=DEFAULT_VARIANT):
+def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> str:
     """
     Gets a representation of an Heuristics Net
 
