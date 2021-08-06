@@ -7,6 +7,10 @@ from pm4py.objects.process_tree.obj import Operator
 from pm4py.util import constants, xes_constants
 from pm4py.util import exec_utils
 
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.process_tree.obj import ProcessTree
+
 TRACES = "traces"
 SKIPPABLE = "skippable"
 
@@ -264,7 +268,7 @@ def get_playout(node, playout_dictio, min_trace_length, max_trace_length, max_lo
                          max_rem_dict, max_limit_num_traces)
 
 
-def apply(tree, parameters=None):
+def apply(tree: ProcessTree, parameters : Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Performs an extensive playout of the process tree
 

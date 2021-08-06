@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
 
 
 class Outputs(Enum):
@@ -22,7 +23,7 @@ class ConfOutputs(Enum):
     IS_FOOTPRINTS_FIT = "is_footprints_fit"
 
 
-def apply(log_footprints, model_footprints, parameters=None):
+def apply(log_footprints: Dict[str, Any], model_footprints: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Apply footprints conformance between a log footprints object
     and a model footprints object

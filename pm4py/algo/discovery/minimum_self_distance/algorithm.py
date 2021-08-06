@@ -14,7 +14,7 @@ class Variants(Enum):
 
 
 def apply(log_obj: Union[EventLog, pd.DataFrame, EventStream], variant: Union[str, None] = None,
-          parameters: Optional[Dict[Any, Any]] = None):
+          parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, int]:
     if parameters is None:
         parameters = {}
 

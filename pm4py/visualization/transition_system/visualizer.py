@@ -4,6 +4,9 @@ from pm4py.visualization.transition_system.variants import view_based
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.visualization.common.gview import serialize, serialize_dot
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.transition_system.obj import TransitionSystem
+import graphviz
 
 
 class Variants(Enum):
@@ -13,7 +16,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.VIEW_BASED
 
 
-def apply(tsys, parameters=None, variant=DEFAULT_VARIANT):
+def apply(tsys: TransitionSystem, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> graphviz.Digraph:
     """
     Get visualization of a Transition System
 
@@ -35,7 +38,7 @@ def apply(tsys, parameters=None, variant=DEFAULT_VARIANT):
     return exec_utils.get_variant(variant).apply(tsys, parameters=parameters)
 
 
-def save(gviz, output_file_path):
+def save(gviz: graphviz.Digraph, output_file_path: str):
     """
     Save the diagram
 
@@ -49,7 +52,7 @@ def save(gviz, output_file_path):
     gsave.save(gviz, output_file_path)
 
 
-def view(gviz):
+def view(gviz: graphviz.Digraph):
     """
     View the diagram
 
@@ -61,7 +64,7 @@ def view(gviz):
     return gview.view(gviz)
 
 
-def matplotlib_view(gviz):
+def matplotlib_view(gviz: graphviz.Digraph):
     """
     Views the diagram using Matplotlib
 

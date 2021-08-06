@@ -6,6 +6,10 @@ from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -59,7 +63,7 @@ def get_generalization(petri_net, aligned_traces):
     return generalization
 
 
-def apply(log, petri_net, initial_marking, final_marking, parameters=None):
+def apply(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None):
     """
     Calculates generalization on the provided log and Petri net.
 

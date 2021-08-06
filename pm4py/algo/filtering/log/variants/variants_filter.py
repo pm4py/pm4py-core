@@ -9,6 +9,9 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 import deprecation
 
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream, Trace
+
 
 class Parameters(Enum):
     ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -16,7 +19,7 @@ class Parameters(Enum):
     POSITIVE = "positive"
 
 
-def apply(log, admitted_variants, parameters=None):
+def apply(log: EventLog, admitted_variants: List[List[str]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Filter log keeping/removing only provided variants
 

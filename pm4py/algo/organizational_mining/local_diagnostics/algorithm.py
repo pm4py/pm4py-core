@@ -22,7 +22,7 @@ class Outputs(Enum):
 
 
 def apply_from_clustering_or_roles(log_obj: Union[pd.DataFrame, EventLog], ja_clustering_or_roles: Dict[str, List[str]],
-                                   parameters: Optional[Dict[Any, str]] = None):
+                                   parameters: Optional[Dict[Any, str]] = None) -> Dict[str, Any]:
     """
     Provides the local diagnostics for the organizational model starting from a log object and the results
     of the similar activities clustering / the roles detection algorithm.
@@ -69,7 +69,7 @@ def apply_from_clustering_or_roles(log_obj: Union[pd.DataFrame, EventLog], ja_cl
     return __apply(res_act, act_res, groups, parameters=parameters)
 
 
-def apply_from_group_attribute(log_obj: Union[pd.DataFrame, EventLog], parameters: Optional[Dict[Any, str]] = None):
+def apply_from_group_attribute(log_obj: Union[pd.DataFrame, EventLog], parameters: Optional[Dict[Any, str]] = None) -> Dict[str, Any]:
     """
     Provides the local diagnostics for the organizational model starting from a log object and considering
     the group specified by the attribute

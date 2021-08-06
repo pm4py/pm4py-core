@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Optional, Dict, Union
+from typing import Any, Optional, Dict, Union, List, Tuple
 
 import pandas as pd
 
@@ -14,7 +14,7 @@ class Variants(Enum):
 
 
 def apply(log: Union[EventLog, pd.DataFrame, EventStream], variant: Any = Variants.TRACE_BASED,
-          parameters: Optional[Dict[Any, Any]] = None):
+          parameters: Optional[Dict[Any, Any]] = None) -> Tuple[Any, List[str]]:
     """
     Extracts the features from a log object
 

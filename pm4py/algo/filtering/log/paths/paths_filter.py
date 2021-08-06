@@ -8,6 +8,9 @@ from pm4py.util import xes_constants as xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 import deprecation
 
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream, Trace
+
 
 class Parameters(Enum):
     ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
@@ -15,7 +18,7 @@ class Parameters(Enum):
     POSITIVE = "positive"
 
 
-def apply(log, paths, parameters=None):
+def apply(log: EventLog, paths: List[Tuple[str, str]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Apply a filter on traces containing / not containing a path
 

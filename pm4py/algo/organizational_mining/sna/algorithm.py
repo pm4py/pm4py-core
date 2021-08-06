@@ -10,6 +10,10 @@ import numpy as np
 from enum import Enum
 from pm4py.util import constants
 
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -28,7 +32,7 @@ class Variants(Enum):
     JOINTACTIVITIES_PANDAS = pd_jointactivities
 
 
-def apply(log, parameters=None, variant=Variants.HANDOVER_LOG):
+def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None, variant=Variants.HANDOVER_LOG) -> List[Any]:
     """
     Calculates a SNA metric
 

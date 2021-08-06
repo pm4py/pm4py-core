@@ -5,6 +5,8 @@ from statistics import mean, median, stdev
 from pm4py.util import constants, exec_utils
 from pm4py.util import xes_constants as xes_util
 from pm4py.util.business_hours import BusinessHours
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
 
 
 class Parameters(Enum):
@@ -17,11 +19,11 @@ class Parameters(Enum):
     WEEKENDS = "weekends"
 
 
-def apply(log, parameters=None):
+def apply(log: Union[EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple[str, str], float]:
     return performance(log, parameters=parameters)
 
 
-def performance(log, parameters=None):
+def performance(log: Union[EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple[str, str], float]:
     """
     Measure performance between couples of attributes in the DFG graph
 

@@ -11,6 +11,8 @@ from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
 import deprecation
+from typing import Optional, Dict, Any, Union, Tuple, List
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -22,7 +24,7 @@ class Parameters(Enum):
     RETURN_EA_COUNT = RETURN_EA_COUNT_DICT_AUTOFILTER
 
 
-def apply(df, values, parameters=None):
+def apply(df: pd.DataFrame, values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Filter dataframe on end activities
 

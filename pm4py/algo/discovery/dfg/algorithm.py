@@ -7,6 +7,9 @@ from enum import Enum
 import pkgutil
 from pm4py.util import constants
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -38,7 +41,7 @@ DEFAULT_VARIANT = Variants.NATIVE
 VERSIONS = {DFG_NATIVE, DFG_FREQUENCY, DFG_PERFORMANCE, DFG_FREQUENCY_GREEDY, DFG_PERFORMANCE_GREEDY, FREQ_TRIPLES}
 
 
-def apply(log, parameters=None, variant=DEFAULT_VARIANT):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> Dict[Tuple[str, str], float]:
     """
     Calculates DFG graph (frequency or performance) starting from a log
 
