@@ -28,7 +28,7 @@ from pm4py.objects.log.obj import EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties
+from pm4py.utils import get_properties, xes_constants
 
 
 def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
@@ -54,9 +54,12 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
         from pm4py.util import constants
         properties = get_properties(log)
         from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_dfg_graph
-        dfg = get_dfg_graph(log, activity_key=properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY],
-                            timestamp_key=properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY],
-                            case_id_glue=properties[constants.PARAMETER_CONSTANT_CASEID_KEY])
+        activity_key = properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
+        timestamp_key = properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in properties else xes_constants.DEFAULT_TIMESTAMP_KEY
+        case_id_key = properties[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in properties else constants.CASE_CONCEPT_NAME
+        dfg = get_dfg_graph(log, activity_key=activity_key,
+                            timestamp_key=timestamp_key,
+                            case_id_glue=case_id_key)
         from pm4py.statistics.start_activities.pandas import get as start_activities_module
         from pm4py.statistics.end_activities.pandas import get as end_activities_module
         start_activities = start_activities_module.get_start_activities(log, parameters=properties)

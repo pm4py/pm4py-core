@@ -22,6 +22,8 @@ import pydotplus
 from pm4py.util import exec_utils
 from pm4py.visualization.common.utils import human_readable_stat
 from enum import Enum
+from pm4py.objects.heuristics_net.obj import HeuristicsNet
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Parameters(Enum):
@@ -113,7 +115,7 @@ def transform_to_hex_2(color):
     return "#" + left0 + right0 + left1 + right1 + left1 + right1
 
 
-def apply(heu_net, parameters=None):
+def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> str:
     """
     Gets a representation of an Heuristics Net
 

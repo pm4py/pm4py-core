@@ -19,6 +19,8 @@ from enum import Enum
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.util import sorting
 from pm4py.util import exec_utils, constants, xes_constants
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog
 
 
 class Parameters(Enum):
@@ -28,7 +30,7 @@ class Parameters(Enum):
     KEEP_FIRST_FOLLOWING = "keep_first_following"
 
 
-def apply(interval_log, parameters=None):
+def apply(interval_log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple[str, str], int]:
     if parameters is None:
         parameters = {}
 

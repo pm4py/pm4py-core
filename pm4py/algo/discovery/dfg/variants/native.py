@@ -19,6 +19,9 @@ from enum import Enum
 
 from pm4py.util import constants, exec_utils
 from pm4py.util import xes_constants as xes_util
+from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
 
 
 class Parameters(Enum):
@@ -27,11 +30,11 @@ class Parameters(Enum):
     KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
-def apply(log, parameters=None):
+def apply(log: Union[EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple[str, str], int]:
     return native(log, parameters=parameters)
 
 
-def native(log, parameters=None):
+def native(log: Union[EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple[str, str], int]:
     """
     Counts the number of directly follows occurrences, i.e. of the form <...a,b...>, in an event log.
 

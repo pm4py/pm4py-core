@@ -25,6 +25,10 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import constants
 from enum import Enum
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -35,7 +39,7 @@ class Parameters(Enum):
     PARAM_GENERALIZATION_WEIGHT = 'generalization_weight'
 
 
-def apply(log, net, initial_marking, final_marking, parameters=None):
+def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
     """
     Calculates all metrics based on token-based replay and returns a unified dictionary
 

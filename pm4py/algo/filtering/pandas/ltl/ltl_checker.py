@@ -24,6 +24,8 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CON
     PARAMETER_CONSTANT_RESOURCE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
 from copy import copy
+from typing import Optional, Dict, Any, Union, Tuple, List
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -285,7 +287,7 @@ def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     return ret
 
 
-def eventually_follows(df0, attribute_values, parameters=None):
+def eventually_follows(df0: pd.DataFrame, attribute_values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Applies the eventually follows rule
 
@@ -359,7 +361,7 @@ def eventually_follows(df0, attribute_values, parameters=None):
     return ret
 
 
-def A_next_B_next_C(df0, A, B, C, parameters=None):
+def A_next_B_next_C(df0: pd.DataFrame, A: str, B: str, C: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Applies the A net B next C rule
 
@@ -420,7 +422,7 @@ def A_next_B_next_C(df0, A, B, C, parameters=None):
     return ret
 
 
-def four_eyes_principle(df0, A, B, parameters=None):
+def four_eyes_principle(df0: pd.DataFrame, A: str, B: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Verifies the Four Eyes Principle given A and B
 
@@ -477,7 +479,7 @@ def four_eyes_principle(df0, A, B, parameters=None):
     return ret
 
 
-def attr_value_different_persons(df0, A, parameters=None):
+def attr_value_different_persons(df0: pd.DataFrame, A: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Checks whether an attribute value is assumed on events done by different resources
 

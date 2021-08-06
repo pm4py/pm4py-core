@@ -16,6 +16,9 @@
 '''
 from pm4py.visualization.transition_system.util import visualize_graphviz
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.transition_system.obj import TransitionSystem
+import graphviz
 
 
 class Parameters(Enum):
@@ -27,7 +30,7 @@ class Parameters(Enum):
     FONT_SIZE = "font_size"
 
 
-def apply(tsys, parameters=None):
+def apply(tsys: TransitionSystem, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> graphviz.Digraph:
     """
     Get visualization of a Transition System
 

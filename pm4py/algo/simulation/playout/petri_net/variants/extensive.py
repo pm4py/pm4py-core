@@ -26,6 +26,10 @@ from pm4py.util import exec_utils
 from pm4py.util import xes_constants
 import sys
 
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -41,7 +45,7 @@ POSITION_TRACE = 1
 POSITION_ELEMENTS = 2
 
 
-def apply(net, initial_marking, final_marking=None, parameters=None):
+def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Do the playout of a Petrinet generating a log (extensive search; stop at the maximum
     trace length specified

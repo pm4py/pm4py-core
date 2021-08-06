@@ -65,14 +65,15 @@ def detect(dfg: DFG, alphabet: Dict[str, int], start_activities: Dict[str, int],
 
     groups = _exclude_sets_non_reachable_from_start(dfg, start_activities, end_activities, groups)
     groups = _exclude_sets_no_reachable_from_end(dfg, start_activities, end_activities, groups)
-    groups = _check_start_end_completeness(dfg, start_activities, end_activities, groups)
+    groups = _check_start_completeness(dfg, start_activities, end_activities, groups)
+    groups = _check_end_completeness(dfg, start_activities, end_activities, groups)
 
     groups = list(filter(lambda g: len(g) > 0, groups))
 
     return groups if len(groups) > 1 else None
 
 
-def _check_start_end_completeness(dfg, start_activities, end_activities, groups):
+def _check_start_completeness(dfg, start_activities, end_activities, groups):
     i = 1
     while i < len(groups):
         merge = False
@@ -84,6 +85,21 @@ def _check_start_end_completeness(dfg, start_activities, end_activities, groups)
                     for s in start_activities:
                         if not (a, s) in dfg:
                             merge = True
+        if merge:
+            groups[0] = groups[0].union(groups[i])
+            del groups[i]
+            continue
+        i = i + 1
+    return groups
+
+
+def _check_end_completeness(dfg, start_activities, end_activities, groups):
+    i = 1
+    while i < len(groups):
+        merge = False
+        for a in groups[i]:
+            if merge:
+                break
             for (b, x) in dfg:
                 if x == a and b in end_activities:
                     for e in end_activities:

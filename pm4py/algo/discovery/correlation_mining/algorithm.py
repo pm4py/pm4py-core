@@ -17,6 +17,9 @@
 from pm4py.algo.discovery.correlation_mining.variants import classic_split, classic, trace_based
 from pm4py.util import exec_utils
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Variants(Enum):
@@ -28,7 +31,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.CLASSIC
 
 
-def apply(log, variant=DEFAULT_VARIANT, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> Tuple[Dict[Tuple[str, str], int], Dict[Tuple[str, str], float]]:
     """
     Applies the Correlation Miner to the event stream (a log is converted to a stream)
 

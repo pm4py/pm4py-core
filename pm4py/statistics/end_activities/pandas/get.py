@@ -20,6 +20,8 @@ from pm4py.util.constants import GROUPED_DATAFRAME
 from pm4py.util import exec_utils
 from pm4py.util import constants
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -32,7 +34,7 @@ class Parameters(Enum):
     KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
-def get_end_activities(df, parameters=None):
+def get_end_activities(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, int]:
     """
     Get end activities count
 

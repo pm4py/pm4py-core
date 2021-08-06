@@ -26,6 +26,11 @@ from enum import Enum
 from pm4py.util import exec_utils, constants
 from pm4py.util import variants_util
 import pkgutil
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.util import typing
 
 
 class Parameters(Enum):
@@ -1093,7 +1098,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
         return aligned_traces
 
 
-def apply(log, net, initial_marking, final_marking, parameters=None):
+def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> typing.ListAlignments:
     """
     Method to apply token-based replay
 
@@ -1187,7 +1192,7 @@ def apply_variants_list_petri_string_multiprocessing(output, variants_list, petr
     output.put(ret)
 
 
-def get_diagnostics_dataframe(log, tbr_output, parameters=None):
+def get_diagnostics_dataframe(log: EventLog, tbr_output: typing.ListAlignments, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Gets the results of token-based replay in a dataframe
 

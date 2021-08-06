@@ -23,7 +23,7 @@ from pm4py.util import exec_utils
 from pm4py.util import constants
 from enum import Enum
 from collections import Counter
-from typing import Optional, Dict, Any, List, Tuple, Union
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
 
 
 class Parameters(Enum):
@@ -126,7 +126,7 @@ def get_events_distribution(log: EventLog, distr_type: str = "days_month", param
     return [x[0] for x in values], [x[1] for x in values]
 
 
-def get_all_trace_attributes_from_log(log):
+def get_all_trace_attributes_from_log(log: EventLog) -> Set[str]:
     """
     Get all trace attributes from the log
 
@@ -148,7 +148,7 @@ def get_all_trace_attributes_from_log(log):
     return all_attributes
 
 
-def get_all_event_attributes_from_log(log):
+def get_all_event_attributes_from_log(log: EventLog) -> Set[str]:
     """
     Get all events attributes from the log
 
@@ -171,7 +171,7 @@ def get_all_event_attributes_from_log(log):
     return all_attributes
 
 
-def get_attribute_values(log, attribute_key, parameters=None):
+def get_attribute_values(log: EventLog, attribute_key: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Any, int]:
     """
     Get the attribute values of the log for the specified attribute along with their count
 
@@ -209,7 +209,7 @@ def get_attribute_values(log, attribute_key, parameters=None):
     return attribute_values
 
 
-def get_trace_attribute_values(log, attribute_key, parameters=None):
+def get_trace_attribute_values(log: EventLog, attribute_key: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Any, int]:
     """
     Get the attribute values of the log for the specified attribute along with their count
 

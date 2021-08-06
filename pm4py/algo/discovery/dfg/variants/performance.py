@@ -21,6 +21,8 @@ from statistics import mean, median, stdev
 from pm4py.util import constants, exec_utils
 from pm4py.util import xes_constants as xes_util
 from pm4py.util.business_hours import BusinessHours
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
 
 
 class Parameters(Enum):
@@ -33,11 +35,11 @@ class Parameters(Enum):
     WEEKENDS = "weekends"
 
 
-def apply(log, parameters=None):
+def apply(log: Union[EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple[str, str], float]:
     return performance(log, parameters=parameters)
 
 
-def performance(log, parameters=None):
+def performance(log: Union[EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple[str, str], float]:
     """
     Measure performance between couples of attributes in the DFG graph
 
@@ -103,9 +105,12 @@ def performance(log, parameters=None):
         elif aggregation_measure == "max":
             ret[key] = max(ret0[key])
         elif aggregation_measure == "stdev":
-            ret[key] = stdev(ret0[key])
+            ret[key] = stdev(ret0[key]) if len(ret0[key]) > 1 else 0
         elif aggregation_measure == "sum":
             ret[key] = sum(ret0[key])
+        elif aggregation_measure == "all":
+            ret[key] = {"median": median(ret0[key]), "min": min(ret0[key]), "max": max(ret0[key]),
+                        "stdev": stdev(ret0[key]) if len(ret0[key]) > 1 else 0, "sum": sum(ret0[key]), "mean": mean(ret0[key])}
         else:
             ret[key] = mean(ret0[key])
 

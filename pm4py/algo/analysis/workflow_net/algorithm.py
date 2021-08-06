@@ -18,13 +18,15 @@ from enum import Enum
 
 from pm4py.algo.analysis.workflow_net.variants import petri_net
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 
 class Variants(Enum):
     PETRI_NET = petri_net
 
 
-def apply(net, parameters=None, variant=Variants.PETRI_NET):
+def apply(net: PetriNet, parameters: Optional[Dict[Any, Any]] = None, variant=Variants.PETRI_NET) -> bool:
     """
     Checks if a Petri net is a workflow net
 

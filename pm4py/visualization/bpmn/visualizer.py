@@ -20,6 +20,10 @@ from enum import Enum
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
 from pm4py.visualization.common.gview import serialize, serialize_dot
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.bpmn.obj import BPMN
+from pm4py.util import typing
+import graphviz
 
 
 class Variants(Enum):
@@ -29,7 +33,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.CLASSIC
 
 
-def apply(bpmn_graph, variant=DEFAULT_VARIANT, parameters=None):
+def apply(bpmn_graph: BPMN, variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> graphviz.Digraph:
     """
     Visualize a BPMN graph
 
@@ -51,7 +55,7 @@ def apply(bpmn_graph, variant=DEFAULT_VARIANT, parameters=None):
     return exec_utils.get_variant(variant).apply(bpmn_graph, parameters=parameters)
 
 
-def save(gviz, output_file_path):
+def save(gviz: graphviz.Digraph, output_file_path: str):
     """
     Save the diagram
 
@@ -65,7 +69,7 @@ def save(gviz, output_file_path):
     gsave.save(gviz, output_file_path)
 
 
-def view(gviz):
+def view(gviz: graphviz.Digraph):
     """
     View the diagram
 
@@ -77,7 +81,7 @@ def view(gviz):
     return gview.view(gviz)
 
 
-def matplotlib_view(gviz):
+def matplotlib_view(gviz: graphviz.Digraph):
     """
     Views the diagram using Matplotlib
 

@@ -25,13 +25,17 @@ from pm4py.statistics.attributes.log.select import select_attributes_from_log_fo
 from pm4py.objects.conversion.log import converter as log_converter
 from enum import Enum
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def get_decision_tree(log, net, initial_marking, final_marking, decision_point=None, attributes=None, parameters=None):
+def get_decision_tree(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking, decision_point=None, attributes=None, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Any:
     """
     Gets a decision tree classifier on a specific point of the model
 
@@ -76,7 +80,7 @@ def get_decision_tree(log, net, initial_marking, final_marking, decision_point=N
     return dt, list(X.columns.values.tolist()), targets
 
 
-def apply(log, net, initial_marking, final_marking, decision_point=None, attributes=None, parameters=None):
+def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking, decision_point=None, attributes=None, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Any:
     """
     Gets the essential information (features, target class and names of the target class)
     in order to learn a classifier

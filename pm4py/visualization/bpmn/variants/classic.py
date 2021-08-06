@@ -18,6 +18,10 @@ from pm4py.util import exec_utils
 from enum import Enum
 import tempfile
 from graphviz import Digraph
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.bpmn.obj import BPMN
+from pm4py.util import typing
+import graphviz
 
 
 class Parameters(Enum):
@@ -26,7 +30,7 @@ class Parameters(Enum):
     FONT_SIZE = "font_size"
 
 
-def apply(bpmn_graph, parameters=None):
+def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> graphviz.Digraph:
     """
     Visualize a BPMN graph
 

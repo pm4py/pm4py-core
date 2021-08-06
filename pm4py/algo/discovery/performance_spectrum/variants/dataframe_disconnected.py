@@ -22,6 +22,9 @@ import pandas as pd
 from pm4py.util import constants, points_subset
 from pm4py.util import exec_utils, pandas_utils
 from pm4py.util import xes_constants as xes
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -36,7 +39,7 @@ def gen_patterns(pattern, length):
     return ["".join(pattern[i:i + length]) for i in range(len(pattern) - (length - 1))]
 
 
-def apply(dataframe, list_activities, sample_size, parameters):
+def apply(dataframe: pd.DataFrame, list_activities: List[str], sample_size: int, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Any]:
     """
     Finds the disconnected performance spectrum provided a dataframe
     and a list of activities

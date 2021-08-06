@@ -19,6 +19,9 @@ from pm4py.util import exec_utils
 import pkgutil
 from enum import Enum
 from pm4py.util import constants
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -41,7 +44,7 @@ class Variants(Enum):
     LOG_DISCONNECTED = log_disconnected
 
 
-def apply(log, list_activities, variant=None, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], list_activities: List[str], variant=None, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Finds the performance spectrum provided a log/dataframe
     and a list of activities

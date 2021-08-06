@@ -14,7 +14,10 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-def apply(dfg):
+from typing import Optional, Dict, Any, Union, Tuple
+
+
+def apply(dfg: Dict[Tuple[str, str], int]) -> Dict[Tuple[str, str], float]:
     """
     Computes a causal graph based on a directly follows graph according to the heuristics miner
 

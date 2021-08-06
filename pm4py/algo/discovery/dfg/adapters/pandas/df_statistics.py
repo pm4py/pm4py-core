@@ -114,7 +114,18 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         dfg_frequency = directly_follows_grouping.size().to_dict()
 
     if measure == "performance" or measure == "both":
-        dfg_performance = directly_follows_grouping.agg(perf_aggregation_key).to_dict()
+        if perf_aggregation_key == "all":
+            dfg_performance_mean = directly_follows_grouping.agg("mean").to_dict()
+            dfg_performance_median = directly_follows_grouping.agg("median").to_dict()
+            dfg_performance_max = directly_follows_grouping.agg("max").to_dict()
+            dfg_performance_min = directly_follows_grouping.agg("min").to_dict()
+            dfg_performance_sum = directly_follows_grouping.agg("sum").to_dict()
+            dfg_performance_std = directly_follows_grouping.agg("std").to_dict()
+            dfg_performance = {}
+            for key in dfg_performance_mean:
+                dfg_performance[key] = {"mean": dfg_performance_mean[key], "median": dfg_performance_median[key], "max": dfg_performance_max[key], "min": dfg_performance_min[key], "sum": dfg_performance_sum[key], "stdev": dfg_performance_std[key]}
+        else:
+            dfg_performance = directly_follows_grouping.agg(perf_aggregation_key).to_dict()
 
     if measure == "frequency":
         return dfg_frequency

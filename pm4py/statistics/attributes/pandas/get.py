@@ -21,7 +21,7 @@ from pm4py.util import constants
 from enum import Enum
 from collections import Counter
 import pandas as pd
-from typing import Optional, Dict, Any, List, Tuple, Union
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
 
 
 class Parameters(Enum):
@@ -124,7 +124,7 @@ def get_events_distribution(df: pd.DataFrame, distr_type: str = "days_month", pa
     return [x[0] for x in values], [x[1] for x in values]
 
 
-def get_attribute_values(df, attribute_key, parameters=None):
+def get_attribute_values(df: pd.DataFrame, attribute_key: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Any, int]:
     """
     Return list of attribute values contained in the specified column of the CSV
 
@@ -155,7 +155,7 @@ def get_attribute_values(df, attribute_key, parameters=None):
     return attributes_values_dict
 
 
-def get_kde_numeric_attribute(df, attribute, parameters=None):
+def get_kde_numeric_attribute(df: pd.DataFrame, attribute: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Any, int]:
     """
     Gets the KDE estimation for the distribution of a numeric attribute values
 

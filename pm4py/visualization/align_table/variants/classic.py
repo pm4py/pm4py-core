@@ -20,13 +20,17 @@ import tempfile
 from pm4py.statistics.variants.log import get as variants_get
 from pm4py.util import exec_utils
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.util import typing
+import graphviz
 
 
 class Parameters(Enum):
     FORMAT = "format"
 
 
-def apply(log, aligned_traces, parameters=None):
+def apply(log: EventLog, aligned_traces: typing.ListAlignments, parameters: Optional[Dict[Any, Any]] = None) -> graphviz.Source:
     """
     Gets the alignment table visualization from the alignments output
 

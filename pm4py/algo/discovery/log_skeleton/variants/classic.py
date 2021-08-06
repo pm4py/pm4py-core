@@ -23,6 +23,9 @@ from pm4py.objects.log.util import xes
 from pm4py.util import exec_utils
 from pm4py.util import variants_util
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -243,7 +246,7 @@ def activ_freq(logs_traces, all_activs, len_log, noise_threshold=0):
     return ret
 
 
-def apply(log, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Any]:
     """
     Discover a log skeleton from an event log
 

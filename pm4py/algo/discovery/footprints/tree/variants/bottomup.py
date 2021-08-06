@@ -19,6 +19,8 @@ from pm4py.objects.process_tree.utils import bottomup as bottomup_disc
 from copy import copy
 
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.process_tree.obj import ProcessTree
 
 
 class Outputs(Enum):
@@ -393,7 +395,7 @@ def get_all_footprints(tree, parameters=None):
     return footprints_dictio
 
 
-def apply(tree, parameters=None):
+def apply(tree: ProcessTree, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Footprints detection on process tree
 

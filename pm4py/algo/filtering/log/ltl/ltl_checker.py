@@ -24,6 +24,9 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CON
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
 import deprecation
 
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream, Trace
+
 
 class Parameters(Enum):
     ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
@@ -276,7 +279,7 @@ def A_eventually_B_eventually_C_eventually_D(log, A, B, C, D, parameters=None):
     return new_log
 
 
-def eventually_follows(log, attribute_values, parameters=None):
+def eventually_follows(log: EventLog, attribute_values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Applies the eventually follows rule
 
@@ -364,7 +367,7 @@ def eventually_follows(log, attribute_values, parameters=None):
     return new_log
 
 
-def A_next_B_next_C(log, A, B, C, parameters=None):
+def A_next_B_next_C(log: EventLog, A: str, B: str, C: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Applies the A next B next C rule
 
@@ -423,7 +426,7 @@ def A_next_B_next_C(log, A, B, C, parameters=None):
     return new_log
 
 
-def four_eyes_principle(log, A, B, parameters=None):
+def four_eyes_principle(log: EventLog, A: str, B: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Verifies the Four Eyes Principle given A and B
 
@@ -477,7 +480,7 @@ def four_eyes_principle(log, A, B, parameters=None):
     return new_log
 
 
-def attr_value_different_persons(log, A, parameters=None):
+def attr_value_different_persons(log: EventLog, A: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Checks whether an attribute value is assumed on events done by different resources
 

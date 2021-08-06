@@ -22,6 +22,8 @@ from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics as pandas
 from pm4py.util import exec_utils
 from pm4py.util import constants
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -34,7 +36,7 @@ class Parameters(Enum):
     KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
-def apply(df, activity, parameters=None):
+def apply(df: pd.DataFrame, activity: str, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Gets the time passed from each preceding activity and to each succeeding activity
 

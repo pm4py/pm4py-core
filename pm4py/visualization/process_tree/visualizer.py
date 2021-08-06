@@ -20,6 +20,9 @@ from pm4py.visualization.process_tree.variants import wo_decoration, symbolic
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.visualization.common.gview import serialize, serialize_dot
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.process_tree.obj import ProcessTree
+import graphviz
 
 
 class Variants(Enum):
@@ -30,7 +33,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.WO_DECORATION
 
 
-def apply(tree0, parameters=None, variant=DEFAULT_VARIANT):
+def apply(tree0: ProcessTree, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> graphviz.Graph:
     """
     Method for Process Tree representation
 
@@ -53,7 +56,7 @@ def apply(tree0, parameters=None, variant=DEFAULT_VARIANT):
     return exec_utils.get_variant(variant).apply(tree0, parameters=parameters)
 
 
-def save(gviz, output_file_path):
+def save(gviz: graphviz.Graph, output_file_path: str):
     """
     Save the diagram
 
@@ -67,7 +70,7 @@ def save(gviz, output_file_path):
     gsave.save(gviz, output_file_path)
 
 
-def view(gviz):
+def view(gviz: graphviz.Graph):
     """
     View the diagram
 
@@ -79,7 +82,7 @@ def view(gviz):
     return gview.view(gviz)
 
 
-def matplotlib_view(gviz):
+def matplotlib_view(gviz: graphviz.Graph):
     """
     Views the diagram using Matplotlib
 

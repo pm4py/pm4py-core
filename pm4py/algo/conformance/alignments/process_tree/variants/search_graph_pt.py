@@ -29,6 +29,10 @@ from pm4py.objects.process_tree.obj import Operator
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.utils import generic as pt_util
 from pm4py.util import exec_utils, constants, xes_constants
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.log.obj import EventLog, Trace
+from pm4py.util import typing
 
 
 class Parameters(Enum):
@@ -272,7 +276,7 @@ def apply_from_variants_list(var_list, tree, parameters=None):
     return ret
 
 
-def apply_multiprocessing(obj, pt, parameters=None):
+def apply_multiprocessing(obj: Union[EventLog, Trace], pt: ProcessTree, parameters: Optional[Dict[Any, Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
     """
     Returns alignments for a process tree (using the multiprocessing package to distribute the workload
     among different cores)
@@ -335,7 +339,7 @@ def apply_multiprocessing(obj, pt, parameters=None):
         return ret
 
 
-def apply(obj, pt, parameters=None):
+def apply(obj: Union[EventLog, Trace], pt: ProcessTree, parameters: Optional[Dict[Any, Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
     """
     Returns alignments for a process tree
 

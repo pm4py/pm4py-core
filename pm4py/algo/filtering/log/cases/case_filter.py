@@ -20,12 +20,15 @@ from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from enum import Enum
 from pm4py.util import exec_utils
 
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream, Trace
+
 
 class Parameters(Enum):
     TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
-def filter_on_case_performance(log, inf_perf, sup_perf, parameters=None):
+def filter_on_case_performance(log: EventLog, inf_perf: float, sup_perf: float, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Gets a filtered log keeping only traces that satisfy the given performance requirements
 
@@ -52,7 +55,7 @@ def filter_on_case_performance(log, inf_perf, sup_perf, parameters=None):
     return filtered_log
 
 
-def filter_on_ncases(log, max_no_cases=1000):
+def filter_on_ncases(log: EventLog, max_no_cases: int = 1000) -> EventLog:
     """
     Get only a specified number of traces from a log
 
@@ -72,7 +75,7 @@ def filter_on_ncases(log, max_no_cases=1000):
     return filtered_log
 
 
-def filter_on_case_size(log, min_case_size=2, max_case_size=None):
+def filter_on_case_size(log: EventLog, min_case_size: int = 2, max_case_size=None) -> EventLog:
     """
     Get only traces in the log with a given size
 
@@ -97,7 +100,7 @@ def filter_on_case_size(log, min_case_size=2, max_case_size=None):
     return filtered_log
 
 
-def satisfy_perf(trace, inf_perf, sup_perf, timestamp_key):
+def satisfy_perf(trace: Trace, inf_perf: float, sup_perf: float, timestamp_key: str) -> bool:
     """
     Checks if the trace satisfy the performance requirements
 

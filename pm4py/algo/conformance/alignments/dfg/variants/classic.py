@@ -23,6 +23,9 @@ from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import constants, xes_constants, exec_utils
 from pm4py.util import variants_util
 from pm4py.objects.petri_net.utils import align_utils
+from pm4py.objects.log.obj import EventLog, Trace
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.util import typing
 
 
 class Parameters(Enum):
@@ -54,7 +57,7 @@ POSITION_IS_MM = 8
 POSITION_PREV = 9
 
 
-def apply(obj, dfg, sa, ea, parameters=None):
+def apply(obj: Union[EventLog, Trace], dfg: Dict[Tuple[str, str], int], sa: Dict[str, int], ea: Dict[str, int], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
     """
     Applies the alignment algorithm provided a log/trace object, and a *connected* DFG
 

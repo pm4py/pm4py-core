@@ -21,6 +21,10 @@ from pm4py.visualization.petri_net.util import performance_map
 from pm4py.util import exec_utils, xes_constants
 from enum import Enum
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import graphviz
 
 
 class Parameters(Enum):
@@ -93,7 +97,7 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     return aggregated_statistics
 
 
-def apply(net, initial_marking, final_marking, log=None, aggregated_statistics=None, parameters=None):
+def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking, log: EventLog = None, aggregated_statistics=None, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> graphviz.Digraph:
     """
     Apply method for Petri net visualization (it calls the graphviz_visualization
     method) adding frequency representation obtained by token replay
