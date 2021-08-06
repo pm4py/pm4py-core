@@ -87,9 +87,12 @@ def performance(log, parameters=None):
         elif aggregation_measure == "max":
             ret[key] = max(ret0[key])
         elif aggregation_measure == "stdev":
-            ret[key] = stdev(ret0[key])
+            ret[key] = stdev(ret0[key]) if len(ret0[key]) > 1 else 0
         elif aggregation_measure == "sum":
             ret[key] = sum(ret0[key])
+        elif aggregation_measure == "all":
+            ret[key] = {"median": median(ret0[key]), "min": min(ret0[key]), "max": max(ret0[key]),
+                        "stdev": stdev(ret0[key]) if len(ret0[key]) > 1 else 0, "sum": sum(ret0[key]), "mean": mean(ret0[key])}
         else:
             ret[key] = mean(ret0[key])
 
