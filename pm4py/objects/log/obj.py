@@ -66,7 +66,17 @@ class Event(Mapping):
 
     def __copy__(self):
         event = Event()
-        event._dict = copy.copy(self._dict)
+        for k, v in self._dict.items():
+            event[k] = v
+        return event
+
+    def __deepcopy__(self, memodict={}):
+        event = Event()
+        for k, v in self._dict.items():
+            if type(v) is dict:
+                event[k] = copy.deepcopy(v)
+            else:
+                event[k] = v
         return event
 
 
@@ -159,8 +169,20 @@ class EventStream(Sequence):
         event_stream._extensions = copy.copy(self._extensions)
         event_stream._omni = copy.copy(self._omni)
         event_stream._classifiers = copy.copy(self._classifiers)
-        event_stream._list = copy.copy(self._list)
         event_stream._properties = copy.copy(self._properties)
+        for ev in self._list:
+            event_stream._list.append(ev)
+        return event_stream
+
+    def __deepcopy__(self, memodict={}):
+        event_stream = EventStream()
+        event_stream._attributes = copy.deepcopy(self._attributes)
+        event_stream._extensions = copy.deepcopy(self._extensions)
+        event_stream._omni = copy.deepcopy(self._omni)
+        event_stream._classifiers = copy.deepcopy(self._classifiers)
+        event_stream._properties = copy.deepcopy(self._properties)
+        for ev in self._list:
+            event_stream._list.append(copy.deepcopy(ev))
         return event_stream
 
     attributes = property(_get_attributes)
@@ -255,9 +277,24 @@ class Trace(Sequence):
         return str(self.__repr__())
 
     def __copy__(self):
-        trace = Trace()
-        trace._attributes = copy.copy(self._attributes)
-        trace._list = copy.copy(self._list)
+        new_attributes = {}
+        for k, v in self.attributes.items():
+            new_attributes[k] = v
+        trace = Trace(attributes=new_attributes)
+        for ev in self._list:
+            trace.append(ev)
+        return trace
+
+    def __deepcopy__(self, memodict={}):
+        new_attributes = {}
+        for k, v in self.attributes.items():
+            if type(new_attributes) is dict:
+                new_attributes[k] = copy.deepcopy(v)
+            else:
+                new_attributes[k] = v
+        trace = Trace(attributes=new_attributes)
+        for ev in self._list:
+            trace.append(copy.deepcopy(ev))
         return trace
 
 
@@ -284,7 +321,19 @@ class EventLog(EventStream):
         log._omni = copy.copy(self._omni)
         log._classifiers = copy.copy(self._classifiers)
         log._properties = copy.copy(self._properties)
-        log._list = copy.copy(self._list)
+        for trace in self._list:
+            log._list.append(trace)
+        return log
+
+    def __deepcopy__(self, memodict={}):
+        log = EventLog()
+        log._attributes = copy.deepcopy(self._attributes)
+        log._extensions = copy.deepcopy(self._extensions)
+        log._omni = copy.deepcopy(self._omni)
+        log._classifiers = copy.deepcopy(self._classifiers)
+        log._properties = copy.deepcopy(self._properties)
+        for trace in self._list:
+            log._list.append(copy.deepcopy(trace))
         return log
 
     def __hash__(self):
