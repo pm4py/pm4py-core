@@ -25,6 +25,7 @@ from enum import Enum
 from pm4py.util import exec_utils
 from collections import Counter
 import pkgutil
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Variants(Enum):
@@ -36,7 +37,7 @@ class Variants(Enum):
     DFG = dfg
 
 
-def apply(*args, variant=None, parameters=None):
+def apply(*args, variant=None, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Discovers a footprint object from a log/model
 

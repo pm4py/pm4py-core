@@ -19,6 +19,11 @@ from pm4py.algo.conformance.alignments.decomposed import algorithm as decomp_ali
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+import pandas as pd
+from pm4py.util import typing
 
 
 class Parameters(Enum):
@@ -29,7 +34,7 @@ class Parameters(Enum):
     MULTIPROCESSING = "multiprocessing"
 
 
-def evaluate(aligned_traces, parameters=None):
+def evaluate(aligned_traces: typing.ListAlignments, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
     """
     Transforms the alignment result to a simple dictionary
     including the percentage of fit traces and the average fitness
@@ -71,7 +76,7 @@ def evaluate(aligned_traces, parameters=None):
             "average_trace_fitness": average_fitness}
 
 
-def apply(log, petri_net, initial_marking, final_marking, align_variant=alignments.DEFAULT_VARIANT, parameters=None):
+def apply(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, align_variant=alignments.DEFAULT_VARIANT, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
     """
     Evaluate fitness based on alignments
 
@@ -113,7 +118,7 @@ def apply(log, petri_net, initial_marking, final_marking, align_variant=alignmen
     return evaluate(alignment_result)
 
 
-def apply_trace(trace, petri_net, initial_marking, final_marking, best_worst, activity_key):
+def apply_trace(trace: Trace, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, best_worst: Any, activity_key: str) -> typing.AlignmentResult:
     """
     Performs the basic alignment search, given a trace, a net and the costs of the \"best of the worst\".
     The costs of the best of the worst allows us to deduce the fitness of the trace.

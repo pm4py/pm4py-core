@@ -24,6 +24,10 @@ from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to, remove_pl
 from pm4py.util import exec_utils
 from enum import Enum
 from copy import deepcopy
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 
 class Parameters(Enum):
@@ -31,7 +35,7 @@ class Parameters(Enum):
     REMOVE_UNCONNECTED = "remove_unconnected"
 
 
-def preprocessing(log, parameters=None):
+def preprocessing(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Any:
     """
     Preprocessing step for the Aplha+ algorithm. Removing all transitions from the log with a loop of length one.
 
@@ -131,7 +135,7 @@ def preprocessing(log, parameters=None):
     return (filtered_log, loop_one_list, A_filtered, B_filtered, loops_in_first_place, loops_in_last_place)
 
 
-def get_relations(log):
+def get_relations(log: EventLog):
     """
     Applying the classic Alpha Algorithm
 
@@ -278,7 +282,7 @@ def get_relations(log):
     return causal, parallel, follows
 
 
-def processing(log, causal, follows):
+def processing(log: EventLog, causal: Tuple[str, str], follows: Tuple[str, str]):
     """
     Applying the Alpha Miner with the new relations
 
@@ -415,7 +419,7 @@ def get_sharp_relations_for_sets(follows, set_1, set_2):
     return True
 
 
-def postprocessing(net, initial_marking, final_marking, A, B, pairs, loop_one_list):
+def postprocessing(net: PetriNet, initial_marking: Marking, final_marking: Marking, A, B, pairs, loop_one_list) -> Tuple[PetriNet, Marking, Marking]:
     """
     Adding the filtered transitions to the Petri net
 
@@ -462,7 +466,7 @@ def postprocessing(net, initial_marking, final_marking, A, B, pairs, loop_one_li
     return net, initial_marking, final_marking
 
 
-def apply(trace_log, parameters=None):
+def apply(trace_log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     Apply the Alpha Algorithm to a given log
 
@@ -538,7 +542,7 @@ def add_sink(net, end_activities, label_transition_dict):
     return end
 
 
-def remove_initial_hidden_if_possible(net, im):
+def remove_initial_hidden_if_possible(net: PetriNet, im: Marking):
     """
     Remove initial hidden transition if possible
 
@@ -570,7 +574,7 @@ def remove_initial_hidden_if_possible(net, im):
     return net, im
 
 
-def remove_final_hidden_if_possible(net, fm):
+def remove_final_hidden_if_possible(net: PetriNet, fm: Marking):
     """
     Remove final hidden transition if possible
 
@@ -616,7 +620,7 @@ def remove_final_hidden_if_possible(net, fm):
     return net
 
 
-def remove_unconnected_transitions(net):
+def remove_unconnected_transitions(net: PetriNet):
     """
     Remove unconnected transitions if any
 

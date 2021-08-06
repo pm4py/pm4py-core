@@ -23,6 +23,9 @@ from graphviz import Graph
 
 from pm4py.objects.process_tree.utils import generic as util
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.process_tree.obj import ProcessTree
+import graphviz
 
 
 class Parameters(Enum):
@@ -72,7 +75,7 @@ def repr_tree(tree, viz, color_map, parameters):
         viz.edge(str(id(tree.parent)), this_node_id, dirType='none')
 
 
-def apply(tree, parameters=None):
+def apply(tree: ProcessTree, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> graphviz.Graph:
     """
     Obtain a Process Tree representation through GraphViz
 

@@ -18,6 +18,7 @@ from graphviz import Source
 import tempfile
 from pm4py.util import exec_utils
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Parameters(Enum):
@@ -30,7 +31,7 @@ SEQUENCE_SYMBOL = "&#62;"
 PARALLEL_SYMBOL = "||"
 
 
-def apply(fp, parameters=None):
+def apply(fp: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Source:
     """
     Visualize a footprints table
 

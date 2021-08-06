@@ -17,6 +17,10 @@
 from pm4py.algo.conformance.alignments.decomposed.variants import recompos_maximal
 from enum import Enum
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.util import typing
 
 
 class Variants(Enum):
@@ -26,7 +30,7 @@ class Variants(Enum):
 VERSIONS = {Variants.RECOMPOS_MAXIMAL}
 
 
-def apply(log, net, im, fm, variant=Variants.RECOMPOS_MAXIMAL, parameters=None):
+def apply(log: EventLog, net: PetriNet, im: Marking, fm: Marking, variant=Variants.RECOMPOS_MAXIMAL, parameters: Optional[Dict[Any, Any]] = None) -> typing.ListAlignments:
     """
     Apply the recomposition alignment approach
     to a log and a Petri net performing decomposition

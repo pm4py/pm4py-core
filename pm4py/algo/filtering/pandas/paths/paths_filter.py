@@ -26,6 +26,8 @@ from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
 import deprecation
+from typing import Optional, Dict, Any, Union, Tuple, List
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -36,7 +38,7 @@ class Parameters(Enum):
     POSITIVE = "positive"
 
 
-def apply(df, paths, parameters=None):
+def apply(df: pd.DataFrame, paths: List[Tuple[str, str]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Apply a filter on traces containing / not containing a path
 

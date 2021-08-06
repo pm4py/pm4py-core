@@ -21,6 +21,7 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.obj import Operator
 from enum import Enum
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Parameters(Enum):
@@ -67,7 +68,7 @@ def get_random_operator():
         return Operator.PARALLEL
 
 
-def apply(parameters=None):
+def apply(parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> ProcessTree:
     """
     Generate a process tree
 

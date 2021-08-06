@@ -16,6 +16,9 @@
 '''
 from enum import Enum
 from pm4py.util import exec_utils, xes_constants, constants
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog
+import pandas as pd
 
 
 class Outputs(Enum):
@@ -45,7 +48,7 @@ class ConfOutputs(Enum):
     IS_FOOTPRINTS_FIT = "is_footprints_fit"
 
 
-def apply(log_footprints, model_footprints, parameters=None):
+def apply(log_footprints: List[Dict[str, Any]], model_footprints: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Dict[str, Any]]:
     """
     Apply footprints conformance between a log footprints object
     and a model footprints object
@@ -110,7 +113,7 @@ def apply(log_footprints, model_footprints, parameters=None):
     return ret
 
 
-def get_diagnostics_dataframe(log, conf_result, parameters=None):
+def get_diagnostics_dataframe(log: EventLog, conf_result: List[Dict[str, Any]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Gets the diagnostics dataframe from the log
     and the results of footprints conformance checking

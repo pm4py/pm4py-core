@@ -43,6 +43,10 @@ from pm4py.util import exec_utils
 
 from pm4py.util import constants
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 
 class Parameters(Enum):
@@ -52,7 +56,7 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
 
-def apply(log, parameters=None):
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     This method calls the \"classic\" alpha miner [1]_.
 
@@ -91,7 +95,7 @@ def apply(log, parameters=None):
     return apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=parameters)
 
 
-def apply_dfg(dfg, parameters=None):
+def apply_dfg(dfg: Dict[Tuple[str, str], int], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     Applying Alpha Miner starting from the knowledge of the Directly Follows graph,
     and of the start activities and end activities in the log inferred from the DFG
@@ -117,7 +121,7 @@ def apply_dfg(dfg, parameters=None):
     return apply_dfg_sa_ea(dfg, None, None, parameters=parameters)
 
 
-def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
+def apply_dfg_sa_ea(dfg: Dict[str, int], start_activities: Union[None, Dict[str, int]], end_activities: Union[None, Dict[str, int]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     Applying Alpha Miner starting from the knowledge of the Directly Follows graph,
     and of the start activities and end activities in the log (possibly inferred from the DFG)

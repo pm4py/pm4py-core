@@ -19,6 +19,7 @@ from pm4py.objects.log.util import sorting
 from pm4py.util import constants
 from pm4py.util import xes_constants as xes
 from pm4py.objects.log.obj import EventLog, Trace, Event
+from copy import copy
 
 
 def to_interval(log, parameters=None):
@@ -61,8 +62,8 @@ def to_interval(log, parameters=None):
             if start_timestamp_key in first_event:
                 return log
 
-        new_log = EventLog(attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
-            omni_present=log.omni_present, properties=log.properties)
+        new_log = EventLog(attributes=copy(log.attributes), extensions=copy(log.extensions), classifiers=copy(log.classifiers),
+            omni_present=copy(log.omni_present), properties=copy(log.properties))
         new_log.attributes["PM4PY_TYPE"] = "interval"
         new_log.properties[constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] = xes.DEFAULT_START_TIMESTAMP_KEY
 
@@ -146,7 +147,8 @@ def to_lifecycle(log, parameters=None):
             if transition_key in first_event:
                 return log
 
-        new_log = EventLog()
+        new_log = EventLog(attributes=copy(log.attributes), extensions=copy(log.extensions), classifiers=copy(log.classifiers),
+            omni_present=copy(log.omni_present), properties=copy(log.properties))
         new_log.attributes["PM4PY_TYPE"] = "lifecycle"
 
         for trace in log:

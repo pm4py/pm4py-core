@@ -15,9 +15,13 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.statistics.traces.generic.pandas import case_statistics
+from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog, Trace
+import pandas as pd
 
 
-def get_variants_count(df, parameters=None):
+def get_variants_count(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> Union[Dict[str, int], Dict[List[str], int]]:
     """
     Gets the dictionary of variants from the current dataframe
 
@@ -43,7 +47,7 @@ def get_variants_count(df, parameters=None):
     return {}
 
 
-def get_variants_set(df, parameters=None):
+def get_variants_set(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> Union[Set[str], Set[List[str]]]:
     """
     Gets the set of variants from the current dataframe
 

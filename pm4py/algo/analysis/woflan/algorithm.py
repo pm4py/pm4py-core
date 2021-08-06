@@ -49,6 +49,9 @@ from pm4py.algo.analysis.woflan.graphs.restricted_coverability_graph.restricted_
 # reachability Graph Creation
 from pm4py.algo.analysis.woflan.graphs.reachability_graph.reachability_graph import apply as reachability_graph
 
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+
 
 class Parameters(Enum):
     RETURN_ASAP_WHEN_NOT_SOUND = "return_asap_when_not_sound"
@@ -519,7 +522,7 @@ def step_13(woflan_object, return_asap_when_unsound=False):
     return False
 
 
-def apply(net, i_m, f_m, parameters=None):
+def apply(net: PetriNet, i_m: Marking, f_m: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[bool, Any]:
     """
     Apply the Woflan Soundness check. Trough this process, different steps are executed.
     :param net: Petri Net representation of PM4Py

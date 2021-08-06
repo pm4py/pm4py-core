@@ -20,6 +20,7 @@ from lxml import etree
 
 from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.util import constants
 
 
@@ -139,6 +140,19 @@ def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False,
                 log_event_prom5_name.text = event_name
                 log_event_prom5_type = etree.SubElement(log_event_prom5, "type")
                 log_event_prom5_type.text = event_transition
+        # specific for data Petri nets
+        if petri_properties.TRANS_GUARD in transition.properties:
+            trans.set(petri_properties.TRANS_GUARD, transition.properties[petri_properties.TRANS_GUARD])
+        if petri_properties.READ_VARIABLE in transition.properties:
+            read_variables = transition.properties[petri_properties.READ_VARIABLE]
+            for rv in read_variables:
+                rv_el = etree.SubElement(trans, petri_properties.READ_VARIABLE)
+                rv_el.text = rv
+        if petri_properties.WRITE_VARIABLE in transition.properties:
+            write_variables = transition.properties[petri_properties.WRITE_VARIABLE]
+            for wv in write_variables:
+                wv_el = etree.SubElement(trans, petri_properties.WRITE_VARIABLE)
+                wv_el.text = wv
     for arc in petrinet.arcs:
         arc_el = etree.SubElement(page, "arc")
         arc_el.set("id", str(hash(arc)))
@@ -154,6 +168,11 @@ def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False,
             arc_weight = etree.SubElement(inscription, "text")
             arc_weight.text = str(arc.weight)
 
+        for prop_key in arc.properties:
+            element = etree.SubElement(arc_el, prop_key)
+            element_text = etree.SubElement(element, "text")
+            element_text.text = str(arc.properties[prop_key])
+
     if len(final_marking) > 0:
         finalmarkings = etree.SubElement(net, "finalmarkings")
         marking = etree.SubElement(finalmarkings, "marking")
@@ -163,6 +182,16 @@ def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False,
             placem.set("idref", place.name)
             placem_text = etree.SubElement(placem, "text")
             placem_text.text = str(final_marking[place])
+
+    # specific for data Petri nets
+    if petri_properties.VARIABLES in petrinet.properties:
+        variables = etree.SubElement(net, "variables")
+        for prop in petrinet.properties[petri_properties.VARIABLES]:
+            variable = etree.SubElement(variables, "variable")
+            variable.set("type", prop["type"])
+            variable_name = etree.SubElement(variable, "name")
+            variable_name.text = prop["name"]
+
     tree = etree.ElementTree(root)
 
     return tree

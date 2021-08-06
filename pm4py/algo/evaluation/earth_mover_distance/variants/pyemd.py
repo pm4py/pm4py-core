@@ -19,6 +19,7 @@ from pm4py.util import string_distance
 import numpy as np
 from pyemd import emd
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple, List
 
 
 class Parameters:
@@ -128,7 +129,7 @@ def encode_two_languages(lang1, lang2, parameters=None):
     return enc1, enc2
 
 
-def apply(lang1, lang2, parameters=None):
+def apply(lang1: Dict[List[str], float], lang2: Dict[List[str], float], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     Calculates the EMD distance between the two stochastic languages
 

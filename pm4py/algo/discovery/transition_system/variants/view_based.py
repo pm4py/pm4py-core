@@ -22,6 +22,10 @@ from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.transition_system import obj as ts, constants as ts_constants
 from enum import Enum
 from pm4py.util import constants
+from pm4py.objects.transition_system.obj import TransitionSystem
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -44,7 +48,7 @@ class Parameters(Enum):
     INCLUDE_DATA = 'include_data'
 
 
-def apply(log, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> TransitionSystem:
     if parameters is None:
         parameters = {}
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)

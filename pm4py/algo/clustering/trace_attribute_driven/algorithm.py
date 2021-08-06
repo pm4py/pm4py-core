@@ -21,6 +21,9 @@ from pm4py.algo.clustering.trace_attribute_driven.util import evaluation
 from pm4py.objects.conversion.log import converter as log_converter
 from enum import Enum
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Variants(Enum):
@@ -58,7 +61,7 @@ def bfs(tree):
     return output
 
 
-def apply(log, trace_attribute, variant=VARIANT_DMM_LEVEN, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], trace_attribute: str, variant=VARIANT_DMM_LEVEN, parameters: Optional[Dict[Any, Any]] = None) -> Any:
     """
     Apply the hierarchical clustering to a log starting from a trace attribute.
 

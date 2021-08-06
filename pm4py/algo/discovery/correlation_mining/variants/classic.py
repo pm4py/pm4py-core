@@ -22,6 +22,9 @@ from pm4py.objects.log.obj import EventStream, Event
 from pm4py.algo.discovery.correlation_mining import util as cm_util
 import numpy as np
 import pandas as pd
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -35,7 +38,7 @@ class Parameters(Enum):
 DEFAULT_INDEX_KEY = "@@@index"
 
 
-def apply(log, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Dict[Tuple[str, str], int], Dict[Tuple[str, str], float]]:
     """
     Apply the correlation miner to an event stream
     (other types of logs are converted to that)

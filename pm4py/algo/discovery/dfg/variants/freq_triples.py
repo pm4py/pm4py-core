@@ -19,17 +19,19 @@ from enum import Enum
 
 from pm4py.util import constants, exec_utils
 from pm4py.util import xes_constants as xes_util
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def apply(log, parameters=None):
+def apply(log: Union[EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple[str, str, str], int]:
     return freq_triples(log, parameters=parameters)
 
 
-def freq_triples(log, parameters=None):
+def freq_triples(log: Union[EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple[str, str, str], int]:
     """
     Counts the number of directly follows occurrences, i.e. of the form <...a,b...>, in an event log.
 
@@ -52,4 +54,4 @@ def freq_triples(log, parameters=None):
     dfgs = map(
         (lambda t: [(t[i - 2][activity_key], t[i - 1][activity_key], t[i][activity_key]) for i in range(2, len(t))]),
         log)
-    return Counter([dfg for lista in dfgs for dfg in lista])
+    return dict(Counter([dfg for lista in dfgs for dfg in lista]))

@@ -15,9 +15,11 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.algo.discovery.dfg.variants import native, performance
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog
 
 
-def apply(log, activity, parameters=None):
+def apply(log: EventLog, activity: str, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Gets the time passed from each preceding activity
 

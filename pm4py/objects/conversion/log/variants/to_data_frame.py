@@ -56,7 +56,10 @@ def apply(log, parameters=None):
     if isinstance(log, pd.core.frame.DataFrame):
         return log
     if type(log) is log_instance.EventLog:
-        log = to_event_stream.apply(log, parameters=parameters)
+        new_parameters = copy(parameters)
+        new_parameters["deepcopy"] = False
+        log = to_event_stream.apply(log, parameters=new_parameters)
+    
     transf_log = [dict(x) for x in log]
     df = pd.DataFrame.from_dict(transf_log)
     df.attrs = copy(log.properties)

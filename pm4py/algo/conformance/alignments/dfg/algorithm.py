@@ -17,13 +17,16 @@
 from pm4py.algo.conformance.alignments.dfg.variants import classic
 from enum import Enum
 from pm4py.util import exec_utils
+from pm4py.objects.log.obj import EventLog, Trace
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.util import typing
 
 
 class Variants(Enum):
     CLASSIC = classic
 
 
-def apply(obj, dfg, sa, ea, variant=Variants.CLASSIC, parameters=None):
+def apply(obj: Union[EventLog, Trace], dfg: Dict[Tuple[str, str], int], sa: Dict[str, int], ea: Dict[str, int], variant=Variants.CLASSIC, parameters: Optional[Dict[Any, Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
     """
     Applies the alignment algorithm provided a log/trace object, and a *connected* DFG
 

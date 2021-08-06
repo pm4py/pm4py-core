@@ -23,6 +23,9 @@ import numpy as np
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.util import constants
+import deprecation
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog
 
 
 class Parameters(Enum):
@@ -46,7 +49,7 @@ class Parameters(Enum):
     INDEXED_LOG = "indexed_log"
 
 
-def get_variant_statistics(log, parameters=None):
+def get_variant_statistics(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[List[Dict[str, int]], List[Dict[List[str], int]]]:
     """
     Gets a dictionary whose key is the variant and as value there
     is the list of traces that share the variant
@@ -88,7 +91,7 @@ def get_variant_statistics(log, parameters=None):
     return variants_list
 
 
-def get_cases_description(log, parameters=None):
+def get_cases_description(log: EventLog,  parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Dict[str, Any]]:
     """
     Get a description of traces present in the log
 
@@ -191,7 +194,7 @@ def index_log_caseid(log, parameters=None):
     return indexed_log
 
 
-def get_events(log, case_id, parameters=None):
+def get_events(log: EventLog, case_id: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Dict[str, Any]]:
     """
     Get events belonging to the specified case
 
@@ -223,7 +226,22 @@ def get_events(log, case_id, parameters=None):
     return list_eve
 
 
+@deprecation.deprecated('2.2.11', '3.0.0', details="please use get_all_case_durations instead")
 def get_all_casedurations(log, parameters=None):
+    return get_all_case_durations(log, parameters=parameters)
+
+
+@deprecation.deprecated('2.2.11', '3.0.0', details="please use get_first_quartile_case_duration instead")
+def get_first_quartile_caseduration(log, parameters=None):
+    return get_first_quartile_case_duration(log, parameters=parameters)
+
+
+@deprecation.deprecated('2.2.11', '3.0.0', details="please use get_median_case_duration instead")
+def get_median_caseduration(log, parameters=None):
+    return get_median_case_duration(log, parameters=parameters)
+
+
+def get_all_case_durations(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[float]:
     """
     Gets all the case durations out of the log
 
@@ -245,7 +263,7 @@ def get_all_casedurations(log, parameters=None):
     return sorted(duration_values)
 
 
-def get_first_quartile_caseduration(log, parameters=None):
+def get_first_quartile_case_duration(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     Gets the first quartile out of the log
 
@@ -264,13 +282,13 @@ def get_first_quartile_caseduration(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    duration_values = get_all_casedurations(log, parameters=parameters)
+    duration_values = get_all_case_durations(log, parameters=parameters)
     if duration_values:
         return duration_values[int((len(duration_values) * 3) / 4)]
     return 0
 
 
-def get_median_caseduration(log, parameters=None):
+def get_median_case_duration(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None):
     """
     Gets the median case duration out of the log
 
@@ -289,7 +307,7 @@ def get_median_caseduration(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    duration_values = get_all_casedurations(log, parameters=parameters)
+    duration_values = get_all_case_durations(log, parameters=parameters)
     if duration_values:
         return duration_values[int(len(duration_values) / 2)]
     return 0
@@ -314,7 +332,7 @@ def get_kde_caseduration(log, parameters=None):
     y
         Y-axis values to represent
     """
-    return case_duration_commons.get_kde_caseduration(get_all_casedurations(log, parameters=parameters),
+    return case_duration_commons.get_kde_caseduration(get_all_case_durations(log, parameters=parameters),
                                                       parameters=parameters)
 
 

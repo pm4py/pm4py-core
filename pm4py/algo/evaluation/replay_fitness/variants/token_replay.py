@@ -20,6 +20,11 @@ from pm4py.util import exec_utils
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from enum import Enum
 from pm4py.util import constants
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+import pandas as pd
+from pm4py.util import typing
 
 
 class Parameters(Enum):
@@ -30,7 +35,7 @@ class Parameters(Enum):
     MULTIPROCESSING = "multiprocessing"
 
 
-def evaluate(aligned_traces, parameters=None):
+def evaluate(aligned_traces: typing.ListAlignments, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
     """
     Gets a dictionary expressing fitness in a synthetic way from the list of boolean values
     saying if a trace in the log is fit, and the float values of fitness associated to each trace
@@ -67,7 +72,7 @@ def evaluate(aligned_traces, parameters=None):
             "percentage_of_fitting_traces": perc_fit_traces }
 
 
-def apply(log, petri_net, initial_marking, final_marking, parameters=None):
+def apply(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
     """
     Apply token replay fitness evaluation
 

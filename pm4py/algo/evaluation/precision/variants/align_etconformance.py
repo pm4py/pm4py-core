@@ -29,6 +29,10 @@ from concurrent.futures import ProcessPoolExecutor
 import multiprocessing
 from enum import Enum
 from pm4py.util import constants
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -40,7 +44,7 @@ class Parameters(Enum):
     CORES = "cores"
 
 
-def apply(log, net, marking, final_marking, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], net: PetriNet, marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     Get Align-ET Conformance precision
 

@@ -18,6 +18,7 @@ import copy
 
 from pm4py.objects.petri_net.utils import petri_utils as pn_utils
 from pm4py.objects.petri_net.obj import PetriNet
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 def _short_circuit_petri_net(net):
@@ -60,7 +61,7 @@ def _short_circuit_petri_net(net):
         return None
 
 
-def apply(net, parameters=None):
+def apply(net: PetriNet, parameters: Optional[Dict[Any, Any]] = None) -> bool:
     """
     Checks if a Petri net is a workflow net
 

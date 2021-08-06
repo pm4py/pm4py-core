@@ -16,6 +16,7 @@
 '''
 from pm4py.objects.dfg import utils
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Outputs(Enum):
@@ -31,7 +32,7 @@ class Outputs(Enum):
     TRACE = "trace"
 
 
-def apply(dfg, parameters=None):
+def apply(dfg: Dict[Tuple[str, str], int], parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Discovers a footprint object from a DFG
 

@@ -125,6 +125,8 @@ def apply_tree(event_log: Union[pd.DataFrame, EventLog, EventStream],
 def inductive_miner(log, dfg, threshold, root, act_key, use_msd, remove_noise=False):
     alphabet = pm4py.get_event_attribute_values(log, act_key)
     if threshold > 0 and remove_noise:
+        end_activities = get_ends.get_end_activities(log,
+                                                     parameters={constants.PARAMETER_CONSTANT_ACTIVITY_KEY: act_key})
         outgoing_max_occ = {}
         for x, y in dfg.items():
             act = x[0]
@@ -132,6 +134,8 @@ def inductive_miner(log, dfg, threshold, root, act_key, use_msd, remove_noise=Fa
                 outgoing_max_occ[act] = y
             else:
                 outgoing_max_occ[act] = max(y, outgoing_max_occ[act])
+            if act in end_activities:
+                outgoing_max_occ[act] = max(outgoing_max_occ[act], end_activities[act])
         dfg_list = sorted([(x, y) for x, y in dfg.items()], key=lambda x: (x[1], x[0]), reverse=True)
         dfg_list = [x for x in dfg_list if x[1] > threshold * outgoing_max_occ[x[0][0]]]
         dfg_list = [x[0] for x in dfg_list]

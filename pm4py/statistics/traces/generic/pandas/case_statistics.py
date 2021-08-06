@@ -22,6 +22,7 @@ from pm4py.util import exec_utils, constants, pandas_utils
 from enum import Enum
 import pandas as pd
 from pm4py.util import variants_util
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
 
 
 class Parameters(Enum):
@@ -38,7 +39,7 @@ class Parameters(Enum):
     MAX_RET_CASES = "max_ret_cases"
 
 
-def get_variant_statistics(df, parameters=None):
+def get_variant_statistics(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[List[Dict[str, int]], List[Dict[List[str], int]]]:
     """
     Get variants from a Pandas dataframe
 
@@ -74,7 +75,7 @@ def get_variant_statistics(df, parameters=None):
     return variants_list
 
 
-def get_variants_df_and_list(df, parameters=None):
+def get_variants_df_and_list(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[pd.DataFrame, Union[List[Dict[str, int]], List[Dict[List[str], int]]]]:
     """
     (Technical method) Provides variants_df and variants_list out of the box
 
@@ -109,7 +110,7 @@ def get_variants_df_and_list(df, parameters=None):
     return variants_df, variants_list
 
 
-def get_cases_description(df, parameters=None):
+def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Dict[str, Any]]:
     """
     Get a description of traces present in the Pandas dataframe
 
@@ -257,7 +258,7 @@ def get_variants_df_with_case_duration(df, parameters=None):
     return new_df
 
 
-def get_events(df, case_id, parameters=None):
+def get_events(df: pd.DataFrame, case_id: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Dict[str, Any]]:
     """
     Get events belonging to the specified case
 
@@ -333,3 +334,74 @@ def get_kde_caseduration_json(df, parameters=None):
     duration_values = [x["caseDuration"] for x in cases.values()]
 
     return case_duration_commons.get_kde_caseduration_json(duration_values, parameters=parameters)
+
+
+def get_all_case_durations(df, parameters=None):
+    """
+    Gets all the case durations out of the log
+
+    Parameters
+    ------------
+    df
+        Pandas dataframe
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    ------------
+    duration_values
+        List of all duration values
+    """
+    cd = get_cases_description(df, parameters=parameters)
+    durations = [y["caseDuration"] for y in cd.values()]
+    return sorted(durations)
+
+
+def get_first_quartile_case_duration(df, parameters=None):
+    """
+    Gets the first quartile out of the log
+
+    Parameters
+    -------------
+    df
+        Pandas dataframe
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    -------------
+    value
+        First quartile value
+    """
+    if parameters is None:
+        parameters = {}
+
+    duration_values = get_all_case_durations(df, parameters=parameters)
+    if duration_values:
+        return duration_values[int((len(duration_values) * 3) / 4)]
+    return 0
+
+
+def get_median_case_duration(df, parameters=None):
+    """
+    Gets the median case duration out of the log
+
+    Parameters
+    -------------
+    df
+        Pandas dataframe
+    parameters
+        Possible parameters of the algorithm
+
+    Returns
+    -------------
+    value
+        Median duration value
+    """
+    if parameters is None:
+        parameters = {}
+
+    duration_values = get_all_case_durations(df, parameters=parameters)
+    if duration_values:
+        return duration_values[int(len(duration_values) / 2)]
+    return 0

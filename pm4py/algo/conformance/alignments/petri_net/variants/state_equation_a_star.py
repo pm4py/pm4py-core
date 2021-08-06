@@ -47,6 +47,11 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.lp import solver as lp_solver
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util import variants_util
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.util import typing
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -99,7 +104,7 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
     return 0
 
 
-def apply(trace, petri_net, initial_marking, final_marking, parameters=None):
+def apply(trace: Trace, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> typing.AlignmentResult:
     """
     Performs the basic alignment search, given a trace and a net.
 

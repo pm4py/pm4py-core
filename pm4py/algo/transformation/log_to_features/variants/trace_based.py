@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from typing import Optional, List, Dict, Any, Set, Union, Tuple
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
 
 import pandas as pd
 
@@ -25,6 +25,7 @@ from pm4py.objects.log.util import dataframe_utils
 from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
+from pm4py.util import xes_constants
 
 
 class Parameters(Enum):
@@ -36,6 +37,401 @@ class Parameters(Enum):
     NUM_EVENT_ATTRIBUTES = "num_ev_attr"
     STR_EVSUCC_ATTRIBUTES = "str_evsucc_attr"
     FEATURE_NAMES = "feature_names"
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    RESOURCE_KEY = constants.PARAMETER_CONSTANT_RESOURCE_KEY
+    EPSILON = "epsilon"
+    DEFAULT_NOT_PRESENT = "default_not_present"
+    ENABLE_ALL_EXTRA_FEATURES = "enable_all_extra_features"
+    ENABLE_CASE_DURATION = "enable_case_duration"
+    ENABLE_TIMES_FROM_FIRST_OCCURRENCE = "enable_times_from_first_occurrence"
+    ENABLE_TIMES_FROM_LAST_OCCURRENCE = "enable_times_from_last_occurrence"
+    ENABLE_DIRECT_PATHS_TIMES_LAST_OCC = "enable_direct_paths_times_last_occ"
+    ENABLE_INDIRECT_PATHS_TIMES_LAST_OCC = "enable_indirect_paths_times_last_occ"
+    ENABLE_WORK_IN_PROGRESS = "enable_work_in_progress"
+    ENABLE_RESOURCE_WORKLOAD = "enable_resource_workload"
+
+
+def resource_workload(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
+    """
+    Calculates for each case, and for each resource of the log, the workload of the resource during
+    the lead time of a case. Defaults if a resource is not contained in a case.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ----------------
+    data
+        Numeric value of the features
+    feature_names
+        Names of the features
+    """
+    if parameters is None:
+        parameters = {}
+
+    from intervaltree.intervaltree import IntervalTree, Interval
+
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
+    epsilon = exec_utils.get_param_value(Parameters.EPSILON, parameters, 0.000001)
+    default_not_present = exec_utils.get_param_value(Parameters.DEFAULT_NOT_PRESENT, parameters, 0)
+
+    tree_dict = {}
+    for case in log:
+        if case:
+            resources = set(x[resource_key] for x in case)
+            st = case[0][start_timestamp_key].timestamp() - epsilon
+            ct = case[-1][timestamp_key].timestamp() + epsilon
+            for res in resources:
+                if res not in tree_dict:
+                    tree_dict[res] = IntervalTree()
+                tree_dict[res].add(Interval(st, ct))
+
+    resources_list = sorted(list(tree_dict))
+
+    data = []
+    feature_names = ["resource_workload@@"+r for r in resources_list]
+
+    for case in log:
+        data.append([])
+        resources = set(x[resource_key] for x in case)
+        st = case[0][start_timestamp_key].timestamp() - epsilon
+        ct = case[-1][timestamp_key].timestamp() + epsilon
+        for res in resources_list:
+            if res in resources:
+                data[-1].append(len(tree_dict[res][st:ct]))
+            else:
+                data[-1].append(default_not_present)
+
+    return data, feature_names
+
+
+def work_in_progress(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
+    """
+    Calculates for each case, and for each resource of the log, the number of cases which are open during
+    the lead time of the case.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ----------------
+    data
+        Numeric value of the features
+    feature_names
+        Names of the features
+    """
+    if parameters is None:
+        parameters = {}
+
+    from intervaltree.intervaltree import IntervalTree, Interval
+
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    epsilon = exec_utils.get_param_value(Parameters.EPSILON, parameters, 0.000001)
+    default_not_present = exec_utils.get_param_value(Parameters.DEFAULT_NOT_PRESENT, parameters, 0)
+
+    tree = IntervalTree()
+    for case in log:
+        if case:
+            st = case[0][start_timestamp_key].timestamp() - epsilon
+            ct = case[-1][timestamp_key].timestamp() + epsilon
+            tree.add(Interval(st, ct))
+
+    data = []
+    feature_names = ["@@work_in_progress"]
+
+    for case in log:
+        if case:
+            st = case[0][start_timestamp_key].timestamp() - epsilon
+            ct = case[-1][timestamp_key].timestamp() + epsilon
+            data.append([len(tree[st:ct])])
+        else:
+            data.append([default_not_present])
+
+    return data, feature_names
+
+
+def indirect_paths_times_last_occ(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
+    """
+    Calculates for each case, and for each indirect path of the case, the difference between the start timestamp
+    of the later event and the completion timestamp of the first event. Defaults if a path is not present in a case.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ----------------
+    data
+        Numeric value of the features
+    feature_names
+        Names of the features
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    default_not_present = exec_utils.get_param_value(Parameters.DEFAULT_NOT_PRESENT, parameters, 0)
+
+    all_paths = set()
+    for trace in log:
+        for i in range(len(trace)-1):
+            for j in range(i+2, len(trace)):
+                all_paths.add((trace[i][activity_key], trace[j][activity_key]))
+    all_paths = sorted(list(all_paths))
+
+    data = []
+    feature_names = []
+    for p in all_paths:
+        feature_names.append("indirectPathPerformanceLastOcc@@"+p[0]+"##"+p[1])
+
+    for trace in log:
+        data.append([])
+        trace_paths_perf = {}
+        for i in range(len(trace)-1):
+            for j in range(i+2, len(trace)):
+                p = (trace[i][activity_key], trace[j][activity_key])
+                tc = trace[i][timestamp_key].timestamp()
+                ts = trace[j][start_timestamp_key].timestamp()
+                if ts > tc:
+                    trace_paths_perf[p] = ts - tc
+        for p in all_paths:
+            if p in trace_paths_perf:
+                data[-1].append(trace_paths_perf[p])
+            else:
+                data[-1].append(default_not_present)
+
+    return data, feature_names
+
+
+def direct_paths_times_last_occ(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
+    """
+    Calculates for each case, and for each direct path of the case, the difference between the start timestamp
+    of the later event and the completion timestamp of the first event. Defaults if a path is not present in a case.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ----------------
+    data
+        Numeric value of the features
+    feature_names
+        Names of the features
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    default_not_present = exec_utils.get_param_value(Parameters.DEFAULT_NOT_PRESENT, parameters, 0)
+
+    all_paths = set()
+    for trace in log:
+        for i in range(len(trace)-1):
+            all_paths.add((trace[i][activity_key], trace[i+1][activity_key]))
+    all_paths = sorted(list(all_paths))
+
+    data = []
+    feature_names = []
+    for p in all_paths:
+        feature_names.append("directPathPerformanceLastOcc@@"+p[0]+"##"+p[1])
+
+    for trace in log:
+        data.append([])
+        trace_paths_perf = {}
+        for i in range(len(trace)-1):
+            p = (trace[i][activity_key], trace[i+1][activity_key])
+            tc = trace[i][timestamp_key].timestamp()
+            ts = trace[i+1][start_timestamp_key].timestamp()
+            if ts > tc:
+                trace_paths_perf[p] = ts - tc
+        for p in all_paths:
+            if p in trace_paths_perf:
+                data[-1].append(trace_paths_perf[p])
+            else:
+                data[-1].append(default_not_present)
+
+    return data, feature_names
+
+
+def times_from_first_occurrence_activity_case(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
+    """
+    Calculates for each case, and for each activity, the times from the start to the case, and to the end of the case,
+    from the first occurrence of the activity in the case.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ----------------
+    data
+        Numeric value of the features
+    feature_names
+        Names of the features
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    default_not_present = exec_utils.get_param_value(Parameters.DEFAULT_NOT_PRESENT, parameters, 0)
+
+    activities_log = set()
+    for trace in log:
+        for event in trace:
+            activities_log.add(event[activity_key])
+    activities_log = sorted(list(activities_log))
+
+    data = []
+    feature_names = []
+    for act in activities_log:
+        feature_names.append("startToFirstOcc@@"+act)
+        feature_names.append("firstOccToEnd@@"+act)
+
+    for trace in log:
+        data.append([])
+        activities_occ = {}
+        for i in range(len(trace)):
+            if not trace[i][activity_key] in activities_occ:
+                activities_occ[trace[i][activity_key]] = i
+        for act in activities_log:
+            if act in activities_occ:
+                ev = trace[activities_occ[act]]
+                this_ev_st = ev[start_timestamp_key].timestamp()
+                this_ev_ct = ev[timestamp_key].timestamp()
+                start_ev_ct = trace[0][timestamp_key].timestamp()
+                end_ev_st = trace[-1][start_timestamp_key].timestamp()
+                data[-1].append(this_ev_st - start_ev_ct)
+                data[-1].append(end_ev_st - this_ev_ct)
+            else:
+                data[-1].append(default_not_present)
+                data[-1].append(default_not_present)
+
+    return data, feature_names
+
+
+def times_from_last_occurrence_activity_case(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
+    """
+    Calculates for each case, and for each activity, the times from the start to the case, and to the end of the case,
+    from the last occurrence of the activity in the case.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ----------------
+    data
+        Numeric value of the features
+    feature_names
+        Names of the features
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    default_not_present = exec_utils.get_param_value(Parameters.DEFAULT_NOT_PRESENT, parameters, 0)
+
+    activities_log = set()
+    for trace in log:
+        for event in trace:
+            activities_log.add(event[activity_key])
+    activities_log = sorted(list(activities_log))
+
+    data = []
+    feature_names = []
+    for act in activities_log:
+        feature_names.append("startToLastOcc@@"+act)
+        feature_names.append("lastOccToEnd@@"+act)
+
+    for trace in log:
+        data.append([])
+        activities_occ = {}
+        for i in range(len(trace)):
+            activities_occ[trace[i][activity_key]] = i
+        for act in activities_log:
+            if act in activities_occ:
+                ev = trace[activities_occ[act]]
+                this_ev_st = ev[start_timestamp_key].timestamp()
+                this_ev_ct = ev[timestamp_key].timestamp()
+                start_ev_ct = trace[0][timestamp_key].timestamp()
+                end_ev_st = trace[-1][start_timestamp_key].timestamp()
+                data[-1].append(this_ev_st - start_ev_ct)
+                data[-1].append(end_ev_st - this_ev_ct)
+            else:
+                data[-1].append(default_not_present)
+                data[-1].append(default_not_present)
+
+    return data, feature_names
+
+
+def case_duration(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
+    """
+    Calculates for each case, the case duration (and adds it as a feature)
+
+    Parameters
+    -----------------
+    log
+        Event log
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    ----------------
+    data
+        Numeric value of the features
+    feature_names
+        Names of the features
+    """
+    if parameters is None:
+        parameters = {}
+
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+
+    feature_names = ["@@caseDuration"]
+    data = []
+    for trace in log:
+        if trace:
+            data.append([trace[-1][timestamp_key].timestamp() - trace[0][start_timestamp_key].timestamp()])
+        else:
+            data.append([0])
+
+    return data, feature_names
 
 
 def get_string_trace_attribute_rep(trace: Trace, trace_attribute: str) -> str:
@@ -543,6 +939,18 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         - NUM_EVENT_ATTRIBUTES => numeric event attributes to consider in the features extraction
         - STR_EVSUCC_ATTRIBUTES => succession of event attributes to consider in the features extraction
         - FEATURE_NAMES => features to consider (in the given order)
+        - ENABLE_ALL_EXTRA_FEATURES => enables all the extra features
+        - ENABLE_CASE_DURATION => enables the case duration as additional feature
+        - ENABLE_TIMES_FROM_FIRST_OCCURRENCE => enables the addition of the times from start of the case, to the end
+        of the case, from the first occurrence of an activity of a case
+        - ENABLE_TIMES_FROM_LAST_OCCURRENCE => enables the addition of the times from start of the case, to the end
+        of the case, from the last occurrence of an activity of a case
+        - ENABLE_DIRECT_PATHS_TIMES_LAST_OCC => add the duration of the last occurrence of a directed (i, i+1) path
+        in the case as feature
+        - ENABLE_INDIRECT_PATHS_TIMES_LAST_OCC => add the duration of the last occurrence of an indirect (i, j) path
+        in the case as feature
+        - ENABLE_WORK_IN_PROGRESS => enables the work in progress (number of concurrent cases) as a feature
+        - ENABLE_RESOURCE_WORKLOAD => enables the resource workload as a feature
 
     Returns
     -------------
@@ -584,9 +992,67 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
             feature_names = list(fea_df.columns)
         return fea_df, feature_names
     else:
+        enable_all = exec_utils.get_param_value(Parameters.ENABLE_ALL_EXTRA_FEATURES, parameters, False)
+        enable_case_duration = exec_utils.get_param_value(Parameters.ENABLE_CASE_DURATION, parameters, enable_all)
+        enable_times_from_first_occ = exec_utils.get_param_value(Parameters.ENABLE_TIMES_FROM_FIRST_OCCURRENCE,
+                                                                 parameters, enable_all)
+        enable_times_from_last_occ = exec_utils.get_param_value(Parameters.ENABLE_TIMES_FROM_LAST_OCCURRENCE,
+                                                                parameters, enable_all)
+        enable_direct_paths_times_last_occ = exec_utils.get_param_value(Parameters.ENABLE_DIRECT_PATHS_TIMES_LAST_OCC,
+                                                                        parameters, enable_all)
+        enable_indirect_paths_times_last_occ = exec_utils.get_param_value(
+            Parameters.ENABLE_INDIRECT_PATHS_TIMES_LAST_OCC, parameters, enable_all)
+        enable_work_in_progress = exec_utils.get_param_value(Parameters.ENABLE_WORK_IN_PROGRESS, parameters, enable_all)
+        enable_resource_workload = exec_utils.get_param_value(Parameters.ENABLE_RESOURCE_WORKLOAD, parameters, enable_all)
+
         log = converter.apply(log, parameters=parameters)
         if str_tr_attr or num_tr_attr or str_ev_attr or num_ev_attr:
-            return get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr,
+            datas, features_namess = get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr,
                                       str_evsucc_attr=str_evsucc_attr, feature_names=feature_names)
         else:
-            return get_default_representation(log, parameters=parameters)
+            datas, features_namess = get_default_representation(log, parameters=parameters)
+
+        # add additional features
+        if enable_case_duration:
+            data, features_names = case_duration(log, parameters=parameters)
+            for i in range(len(datas)):
+                datas[i] = datas[i] + data[i]
+            features_namess = features_namess + features_names
+
+        if enable_times_from_first_occ:
+            data, features_names = times_from_first_occurrence_activity_case(log, parameters=parameters)
+            for i in range(len(datas)):
+                datas[i] = datas[i] + data[i]
+            features_namess = features_namess + features_names
+
+        if enable_times_from_last_occ:
+            data, features_names = times_from_last_occurrence_activity_case(log, parameters=parameters)
+            for i in range(len(datas)):
+                datas[i] = datas[i] + data[i]
+            features_namess = features_namess + features_names
+
+        if enable_direct_paths_times_last_occ:
+            data, features_names = direct_paths_times_last_occ(log, parameters=parameters)
+            for i in range(len(datas)):
+                datas[i] = datas[i] + data[i]
+            features_namess = features_namess + features_names
+
+        if enable_indirect_paths_times_last_occ:
+            data, features_names = indirect_paths_times_last_occ(log, parameters=parameters)
+            for i in range(len(datas)):
+                datas[i] = datas[i] + data[i]
+            features_namess = features_namess + features_names
+
+        if enable_work_in_progress:
+            data, features_names = work_in_progress(log, parameters=parameters)
+            for i in range(len(datas)):
+                datas[i] = datas[i] + data[i]
+            features_namess = features_namess + features_names
+
+        if enable_resource_workload:
+            data, features_names = resource_workload(log, parameters=parameters)
+            for i in range(len(datas)):
+                datas[i] = datas[i] + data[i]
+            features_namess = features_namess + features_names
+
+        return datas, features_namess

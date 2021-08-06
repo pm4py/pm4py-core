@@ -25,6 +25,9 @@ from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+
 
 class Parameters(Enum):
     TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
@@ -58,7 +61,7 @@ def trace_attr_is_contained(trace: Trace, dt1: Union[str, datetime.datetime], dt
 
 
 def filter_on_trace_attribute(log: EventLog, dt1: Union[str, datetime.datetime], dt2: Union[str, datetime.datetime],
-                              parameters: Optional[Dict[Union[str, Parameters], Any]] = None):
+                              parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Filters the traces of the event log that have a given trace attribute
     falling in the provided range
@@ -118,7 +121,7 @@ def is_contained(trace, dt1, dt2, timestamp_key):
     return False
 
 
-def filter_traces_contained(log, dt1, dt2, parameters=None):
+def filter_traces_contained(log: EventLog, dt1: Union[str, datetime.datetime], dt2: Union[str, datetime.datetime], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Get traces that are contained in the given interval
 
@@ -183,7 +186,7 @@ def is_intersecting(trace, dt1, dt2, timestamp_key):
     return False
 
 
-def filter_traces_intersecting(log, dt1, dt2, parameters=None):
+def filter_traces_intersecting(log: EventLog, dt1: Union[str, datetime.datetime], dt2: Union[str, datetime.datetime], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Filter traces intersecting the given interval
 
@@ -216,7 +219,7 @@ def filter_traces_intersecting(log, dt1, dt2, parameters=None):
     return filtered_log
 
 
-def apply_events(log, dt1, dt2, parameters=None):
+def apply_events(log: EventLog, dt1: Union[str, datetime.datetime], dt2: Union[str, datetime.datetime], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Get a new log containing all the events contained in the given interval
 
@@ -259,7 +262,7 @@ def has_attribute_in_timeframe(trace, attribute, attribute_value, dt1, dt2, time
     return False
 
 
-def filter_traces_attribute_in_timeframe(log, attribute, attribute_value, dt1, dt2, parameters=None):
+def filter_traces_attribute_in_timeframe(log: EventLog, attribute: str, attribute_value: Any, dt1: Union[str, datetime.datetime], dt2: Union[str, datetime.datetime], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Get a new log containing all the traces that have an event in the given interval with the specified attribute value 
 
