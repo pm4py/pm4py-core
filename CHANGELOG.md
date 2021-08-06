@@ -1,23 +1,71 @@
 # PM4Py Changelog
 
-## PM4Py 2.2.10.2 (2021.07.26)
+## PM4Py 2.2.11 (2021.08.06)
 
 ### Fixed
-* 50ad39fa
-  * Fixed blocking issue with properties of Pandas dataframes when format_dataframe is used (case ID column)
-* 3708b98f
-  * Fixed variants filter, when the output of get_variants_as_tuples is used
-
+* 207d69bd
+  * bug fix in application of the filtering threshold in the IMf algorithm
 
 ### Removed
 
+### Deprecated
+
+### Changed
+* d98cbb1c
+  * changed deepcopy and copy functionality of logs for performance improvement
+* f3b78a49
+  * minor performance optimization in log conversion (log to dataframe)
+* 71c0919f
+  * improved performance for pands -> stream conversion
+
+### Added
+* f2101a72
+  * added various additional features in log-based feature extraction 
+* 41873655
+  * possiblity to directly get all performance metrics of the DFG elements
+* 886b44ea
+  * detection method for trace-level attributes stored at event level
+* d5f9f866
+  * add transition names to events, based on a given alignment
+* 4802e7d8
+  * add support for importing reset/inhibitor arcs and transition guards
+* cc6488f7
+  * add general support for reset/inhibitor nets
+* e805cf5f
+  * add support for data petri nets
+* 1d3a2e7b
+  * added case termination statistics for pandas data frames
+
+### Other
+
+---
+
+
+## PM4Py 2.2.10.2 (2021.07.26)
+
+### Fixed
+
+* 50ad39fa
+    * Fixed blocking issue with properties of Pandas dataframes when format_dataframe is used (case ID column)
+* 3708b98f
+    * Fixed variants filter, when the output of get_variants_as_tuples is used
+
+### Removed
 
 ### Deprecated
+
 * Deprecated support to Pandas < 0.25 (due to future dropping)
 * Deprecated auto-filters (due to future dropping)
 
 ### Changed
+
 * Different interventions to fix the internal coherency of the project (usage of deprecated functions + missing imports)
+
+### Added
+
+### Other
+
+---
 
 ## PM4PY 2.2.10 (2021.07.09)
 
@@ -30,18 +78,19 @@
 ### Changed
 
 * 4964d6ea
-    * minor refactoring (rename) in attribute statistics querying; ```get_attributes()``` --> ```get_event_attributes()```
+    * minor refactoring (rename) in attribute statistics querying; ```get_attributes()```
+      --> ```get_event_attributes()```
 * 1148f6c0
-   * use revised implementation of IM and IMf everywhere, deprecate old implementations
+    * use revised implementation of IM and IMf everywhere, deprecate old implementations
 
 ### Added
 
 * 6750bf3a
-  * add support for start time and end-time in timstamp conversion
+    * add support for start time and end-time in timstamp conversion
 * e24f5b70
-  * computation of event-level overlap  
+    * computation of event-level overlap
 * 8cec5f9e
-   * add several case/event level statistic functions at the simplified interface level
+    * add several case/event level statistic functions at the simplified interface level
 
 ### Other
 
