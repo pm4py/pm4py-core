@@ -394,7 +394,7 @@ def get_all_case_durations(log: Union[EventLog, pd.DataFrame]) -> List[float]:
         return sorted([x["caseDuration"] for x in cd.values()])
     else:
         from pm4py.statistics.traces.generic.log import case_statistics
-        return case_statistics.get_all_casedurations(log, parameters=get_properties(log))
+        return case_statistics.get_all_case_durations(log, parameters=get_properties(log))
 
 
 def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str) -> float:

@@ -44,9 +44,9 @@ class StatisticsLogTest(unittest.TestCase):
         case_statistics.get_events(log, "N77802")
         case_statistics.get_variant_statistics(log)
         case_statistics.get_cases_description(log)
-        case_statistics.get_all_casedurations(log)
-        case_statistics.get_first_quartile_caseduration(log)
-        case_statistics.get_median_caseduration(log)
+        case_statistics.get_all_case_durations(log)
+        case_statistics.get_first_quartile_case_duration(log)
+        case_statistics.get_median_case_duration(log)
 
     def test_variants(self):
         from pm4py.statistics.variants.log import get
