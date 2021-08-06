@@ -9,6 +9,7 @@ from pm4py.meta import VERSION
 from pm4py.objects.petri_net.utils import final_marking
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
+from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.util import constants
 
@@ -128,6 +129,7 @@ def import_net_from_xml_object(root, parameters=None):
     nett = None
     page = None
     finalmarkings = None
+    variables = None
 
     stochastic_information = {}
 
@@ -143,6 +145,8 @@ def import_net_from_xml_object(root, parameters=None):
                 page = child
             if "finalmarkings" in child.tag:
                 finalmarkings = child
+            if "variables" in child.tag:
+                variables = child
 
     if page is None:
         page = nett
@@ -194,6 +198,10 @@ def import_net_from_xml_object(root, parameters=None):
                 trans_id = child.get("id")
                 trans_name = trans_id
                 trans_visible = True
+                trans_properties = {}
+                trans_guard = child.get("guard")
+                if trans_guard is not None:
+                    trans_properties[petri_properties.TRANS_GUARD] = trans_guard
 
                 random_variable = None
 
@@ -203,7 +211,7 @@ def import_net_from_xml_object(root, parameters=None):
                             if child3.text:
                                 if trans_name == trans_id:
                                     trans_name = child3.text
-                    if child2.tag.endswith("graphics"):
+                    elif child2.tag.endswith("graphics"):
                         for child3 in child2:
                             if child3.tag.endswith("position"):
                                 position_X = float(child3.get("x"))
@@ -211,7 +219,7 @@ def import_net_from_xml_object(root, parameters=None):
                             elif child3.tag.endswith("dimension"):
                                 dimension_X = float(child3.get("x"))
                                 dimension_Y = float(child3.get("y"))
-                    if child2.tag.endswith("toolspecific"):
+                    elif child2.tag.endswith("toolspecific"):
                         tool = child2.get("tool")
                         if "ProM" in tool:
                             activity = child2.get("activity")
@@ -240,6 +248,16 @@ def import_net_from_xml_object(root, parameters=None):
                             random_variable.read_from_string(distribution_type, distribution_parameters)
                             random_variable.set_priority(priority)
                             random_variable.set_weight(weight)
+                    elif child2.tag.endswith(petri_properties.WRITE_VARIABLE):
+                        # property for data Petri nets
+                        if petri_properties.WRITE_VARIABLE not in trans_properties:
+                            trans_properties[petri_properties.WRITE_VARIABLE] = []
+                        trans_properties[petri_properties.WRITE_VARIABLE].append(child2.text)
+                    elif child2.tag.endswith(petri_properties.READ_VARIABLE):
+                        # property for data Petri nets
+                        if petri_properties.READ_VARIABLE not in trans_properties:
+                            trans_properties[petri_properties.READ_VARIABLE] = []
+                        trans_properties[petri_properties.READ_VARIABLE].append(child2.text)
 
                 # 15/02/2021: the name associated in the PNML to invisible transitions was lost.
                 # at least save that as property.
@@ -250,6 +268,8 @@ def import_net_from_xml_object(root, parameters=None):
 
                 trans_dict[trans_id] = PetriNet.Transition(trans_id, trans_label)
                 trans_dict[trans_id].properties[constants.TRANS_NAME_TAG] = trans_name
+                for prop in trans_properties:
+                    trans_dict[trans_id].properties[prop] = trans_properties[prop]
                 net.transitions.add(trans_dict[trans_id])
 
                 if random_variable is not None:
@@ -264,17 +284,26 @@ def import_net_from_xml_object(root, parameters=None):
                 arc_source = child.get("source")
                 arc_target = child.get("target")
                 arc_weight = 1
+                arc_properties = {}
 
                 for arc_child in child:
                     if arc_child.tag.endswith("inscription"):
-                        for text_arcweight in arc_child:
-                            if text_arcweight.tag.endswith("text"):
-                                arc_weight = int(text_arcweight.text)
+                        for text_element in arc_child:
+                            if text_element.tag.endswith("text"):
+                                arc_weight = int(text_element.text)
+                    elif arc_child.tag.endswith(petri_properties.ARCTYPE):
+                        for text_element in arc_child:
+                            if text_element.tag.endswith("text"):
+                                arc_properties[petri_properties.ARCTYPE] = text_element.text
 
                 if arc_source in places_dict and arc_target in trans_dict:
-                    add_arc_from_to(places_dict[arc_source], trans_dict[arc_target], net, weight=arc_weight)
+                    a = add_arc_from_to(places_dict[arc_source], trans_dict[arc_target], net, weight=arc_weight)
+                    for prop in arc_properties:
+                        a.properties[prop] = arc_properties[prop]
                 elif arc_target in places_dict and arc_source in trans_dict:
-                    add_arc_from_to(trans_dict[arc_source], places_dict[arc_target], net, weight=arc_weight)
+                    a = add_arc_from_to(trans_dict[arc_source], places_dict[arc_target], net, weight=arc_weight)
+                    for prop in arc_properties:
+                        a.properties[prop] = arc_properties[prop]
 
     if finalmarkings is not None:
         for child in finalmarkings:
@@ -285,6 +314,16 @@ def import_net_from_xml_object(root, parameters=None):
                         number = int(child3.text)
                         if number > 0:
                             fmarking[places_dict[place_id]] = number
+
+    if variables is not None:
+        net.properties[petri_properties.VARIABLES] = []
+        for child in variables:
+            variable_type = child.get("type")
+            variable_name = ""
+            for child2 in child:
+                if child2.tag.endswith("name"):
+                    variable_name = child2.text
+            net.properties[petri_properties.VARIABLES].append({"type": variable_type, "name": variable_name})
 
     # generate the final marking in the case has not been found
     if len(fmarking) == 0:
