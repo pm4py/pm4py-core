@@ -4,6 +4,9 @@ from pm4py.util import constants
 from pm4py.util import exec_utils, pandas_utils
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import CASE_CONCEPT_NAME
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -15,7 +18,7 @@ class Parameters(Enum):
     SORT_LOG_REQUIRED = "sort_log_required"
 
 
-def apply(dataframe, list_activities, sample_size, parameters):
+def apply(dataframe: pd.DataFrame, list_activities: List[str], sample_size: int, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Any]:
     """
     Finds the performance spectrum provided a dataframe
     and a list of activities

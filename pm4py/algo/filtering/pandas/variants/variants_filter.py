@@ -7,6 +7,8 @@ from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
 import deprecation
+from typing import Optional, Dict, Any, Union, Tuple, List
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -60,7 +62,7 @@ def apply_auto_filter(df, parameters=None):
     return apply(df, admitted_variants, parameters=parameters)
 
 
-def apply(df, admitted_variants, parameters=None):
+def apply(df: pd.DataFrame, admitted_variants: List[List[str]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Apply a filter on variants
 

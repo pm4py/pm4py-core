@@ -5,6 +5,8 @@ from pm4py.util import constants, exec_utils
 from pm4py.util import points_subset
 from pm4py.util import xes_constants as xes
 from pm4py.objects.log.util import basic_filter
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream
 
 
 class Parameters(Enum):
@@ -16,7 +18,7 @@ class Parameters(Enum):
     SORT_LOG_REQUIRED = "sort_log_required"
 
 
-def apply(log, list_activities, sample_size, parameters):
+def apply(log: EventLog, list_activities: List[str], sample_size: int, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Any]:
     """
     Finds the disconnected performance spectrum provided a log
     and a list of activities

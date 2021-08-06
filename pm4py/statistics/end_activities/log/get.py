@@ -2,6 +2,8 @@ from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util import exec_utils
 from pm4py.util import constants
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog
 
 
 class Parameters(Enum):
@@ -14,7 +16,7 @@ class Parameters(Enum):
     KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
-def get_end_activities(log, parameters=None):
+def get_end_activities(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, int]:
     """
     Get the end attributes of the log along with their count
 

@@ -3,6 +3,8 @@ import statistics
 from pm4py.util.business_hours import BusinessHours
 from pm4py.util import exec_utils, constants
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog
 
 
 class Parameters(Enum):
@@ -16,7 +18,7 @@ class Parameters(Enum):
     WEEKENDS = "weekends"
 
 
-def get_case_arrival_avg(log, parameters=None):
+def get_case_arrival_avg(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     Gets the average time interlapsed between case starts
 
@@ -59,7 +61,7 @@ def get_case_arrival_avg(log, parameters=None):
     return 0.0
 
 
-def get_case_dispersion_avg(log, parameters=None):
+def get_case_dispersion_avg(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     Gets the average time interlapsed between case ends
 

@@ -5,6 +5,7 @@ import matplotlib
 
 from pm4py.util import exec_utils
 from pm4py.visualization.graphs.util import common
+from typing import Optional, Dict, Any, Union, Tuple, List
 
 
 class Parameters(Enum):
@@ -14,7 +15,7 @@ class Parameters(Enum):
     Y_AXIS = "y_axis"
 
 
-def apply_plot(x, y, parameters=None):
+def apply_plot(x: List[float], y: List[float], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> str:
     """
     Visualizes a barchar provided its x-axis and y-axis points
 

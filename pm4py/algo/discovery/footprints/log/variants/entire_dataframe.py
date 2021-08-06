@@ -5,6 +5,9 @@ from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.util import exec_utils, pandas_utils
 from pm4py.algo.discovery.causal import algorithm as causal_discovery
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+import pandas as pd
+
 
 class Outputs(Enum):
     DFG = "dfg"
@@ -32,7 +35,7 @@ DEFAULT_SORT_REQUIRED = True
 DEFAULT_INDEX_KEY = "@@index"
 
 
-def apply(df, parameters=None):
+def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Any]:
     """
     Discovers a footprint object from a dataframe
     (the footprints of the dataframe are returned)

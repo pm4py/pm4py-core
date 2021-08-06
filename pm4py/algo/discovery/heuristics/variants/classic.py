@@ -14,6 +14,11 @@ from pm4py.statistics.start_activities.log import get as log_sa_filter
 from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+import pandas as pd
+from pm4py.objects.heuristics_net.obj import HeuristicsNet
 
 
 class Parameters(Enum):
@@ -30,7 +35,7 @@ class Parameters(Enum):
     HEU_NET_DECORATION = "heu_net_decoration"
 
 
-def apply(log, parameters=None):
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using Heuristics Miner
 
@@ -69,7 +74,7 @@ def apply(log, parameters=None):
     return net, im, fm
 
 
-def apply_pandas(df, parameters=None):
+def apply_pandas(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using Heuristics Miner
 
@@ -151,8 +156,8 @@ def apply_pandas(df, parameters=None):
         return net, im, fm
 
 
-def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
-              parameters=None):
+def apply_dfg(dfg: Dict[Tuple[str, str], int], activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
+              parameters: Optional[Dict[Any, Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using Heuristics Miner
 
@@ -200,7 +205,7 @@ def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activitie
     return net, im, fm
 
 
-def apply_heu(log, parameters=None):
+def apply_heu(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> HeuristicsNet:
     """
     Discovers an Heuristics Net using Heuristics Miner
 
@@ -252,7 +257,7 @@ def apply_heu(log, parameters=None):
 
 
 def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
-                  dfg_window_2=None, freq_triples=None, performance_dfg=None, parameters=None):
+                  dfg_window_2=None, freq_triples=None, performance_dfg=None, parameters=None) -> HeuristicsNet:
     """
     Discovers an Heuristics Net using Heuristics Miner
 

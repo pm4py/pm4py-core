@@ -14,6 +14,10 @@ from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants
 
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -262,7 +266,7 @@ class SimulationThread(Thread):
             diagnostics.diagn_open = False
 
 
-def apply(log, net, im, fm, parameters=None):
+def apply(log: EventLog, net: PetriNet, im: Marking, fm: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[EventLog, Dict[str, Any]]:
     """
     Performs a Monte Carlo simulation of an accepting Petri net without duplicate transitions and where the preset is always
     distinct from the postset (FIFO variant; the semaphores pile up if waiting is needed, and the first in is the first to win

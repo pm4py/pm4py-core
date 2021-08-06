@@ -5,6 +5,7 @@ from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.util import exec_utils
 from pm4py.util import constants
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
 
 
 class Parameters(Enum):
@@ -17,7 +18,7 @@ class Parameters(Enum):
     KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
-def get_case_arrival_avg(df, parameters=None):
+def get_case_arrival_avg(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
     """
     Gets the average time interlapsed between case starts
 

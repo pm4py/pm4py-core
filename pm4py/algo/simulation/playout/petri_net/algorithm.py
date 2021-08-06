@@ -2,6 +2,9 @@ from pm4py.algo.simulation.playout.petri_net.variants import extensive
 from pm4py.algo.simulation.playout.petri_net.variants import stochastic_playout, basic_playout
 from pm4py.util import exec_utils
 from enum import Enum
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
 
 
 class Variants(Enum):
@@ -14,7 +17,7 @@ DEFAULT_VARIANT = Variants.BASIC_PLAYOUT
 VERSIONS = {Variants.BASIC_PLAYOUT, Variants.EXTENSIVE, Variants.STOCHASTIC_PLAYOUT}
 
 
-def apply(net, initial_marking, final_marking=None, parameters=None, variant=DEFAULT_VARIANT):
+def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> EventLog:
     """
     Do the playout of a Petrinet generating a log
 

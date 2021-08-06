@@ -4,6 +4,8 @@ from pm4py.util import exec_utils
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
 from pm4py.visualization.common.gview import serialize, serialize_dot
+import graphviz
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Variants(Enum):
@@ -11,7 +13,7 @@ class Variants(Enum):
     SINGLE = single
 
 
-def apply(*args, variant=None, parameters=None):
+def apply(*args, variant=None, parameters: Optional[Dict[Any, Any]] = None) -> graphviz.Source:
     """
     Visualize a footprints table or a comparison between footprints
     tables

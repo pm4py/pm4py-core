@@ -6,6 +6,7 @@ from pm4py.util import exec_utils, constants, pandas_utils
 from enum import Enum
 import pandas as pd
 from pm4py.util import variants_util
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
 
 
 class Parameters(Enum):
@@ -22,7 +23,7 @@ class Parameters(Enum):
     MAX_RET_CASES = "max_ret_cases"
 
 
-def get_variant_statistics(df, parameters=None):
+def get_variant_statistics(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[List[Dict[str, int]], List[Dict[List[str], int]]]:
     """
     Get variants from a Pandas dataframe
 
@@ -58,7 +59,7 @@ def get_variant_statistics(df, parameters=None):
     return variants_list
 
 
-def get_variants_df_and_list(df, parameters=None):
+def get_variants_df_and_list(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[pd.DataFrame, Union[List[Dict[str, int]], List[Dict[List[str], int]]]]:
     """
     (Technical method) Provides variants_df and variants_list out of the box
 
@@ -93,7 +94,7 @@ def get_variants_df_and_list(df, parameters=None):
     return variants_df, variants_list
 
 
-def get_cases_description(df, parameters=None):
+def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Dict[str, Any]]:
     """
     Get a description of traces present in the Pandas dataframe
 
@@ -241,7 +242,7 @@ def get_variants_df_with_case_duration(df, parameters=None):
     return new_df
 
 
-def get_events(df, case_id, parameters=None):
+def get_events(df: pd.DataFrame, case_id: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Dict[str, Any]]:
     """
     Get events belonging to the specified case
 

@@ -4,6 +4,9 @@ from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.util import variants_util
 from enum import Enum
+from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog, Trace
 
 
 from enum import Enum
@@ -47,7 +50,7 @@ class Outputs(Enum):
     IS_FIT = "is_fit"
 
 
-def apply_log(log, model, parameters=None):
+def apply_log(log: EventLog, model: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Set[Any]]:
     """
     Apply log-skeleton based conformance checking given an event log
     and a log-skeleton model
@@ -99,7 +102,7 @@ def apply_log(log, model, parameters=None):
     return res
 
 
-def apply_trace(trace, model, parameters=None):
+def apply_trace(trace: Trace, model: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Set[Any]]:
     """
     Apply log-skeleton based conformance checking given a trace
     and a log-skeleton model

@@ -11,6 +11,8 @@ from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
 import deprecation
+from typing import Optional, Dict, Any, Union, Tuple, List
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -25,7 +27,7 @@ class Parameters(Enum):
     STREAM_FILTER_VALUE2 = "stream_filter_value2"
 
 
-def apply_numeric_events(df, int1, int2, parameters=None):
+def apply_numeric_events(df: pd.DataFrame, int1: float, int2: float, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Apply a filter on events (numerical filter)
 
@@ -62,7 +64,7 @@ def apply_numeric_events(df, int1, int2, parameters=None):
     return ret
 
 
-def apply_numeric(df, int1, int2, parameters=None):
+def apply_numeric(df: pd.DataFrame, int1: float, int2: float, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Filter dataframe on attribute values (filter cases)
 
@@ -115,7 +117,7 @@ def apply_numeric(df, int1, int2, parameters=None):
     return ret
 
 
-def apply_events(df, values, parameters=None):
+def apply_events(df: pd.DataFrame, values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Filter dataframe on attribute values (filter events)
 
@@ -150,7 +152,7 @@ def apply_events(df, values, parameters=None):
     return ret
 
 
-def apply(df, values, parameters=None):
+def apply(df: pd.DataFrame, values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Filter dataframe on attribute values (filter traces)
 
@@ -296,7 +298,7 @@ def filter_df_keeping_activ_exc_thresh(df, thresh, act_count0=None, activity_key
     return ret
 
 
-def filter_df_keeping_spno_activities(df, activity_key="concept:name", max_no_activities=25):
+def filter_df_keeping_spno_activities(df: pd.DataFrame, activity_key: str = "concept:name", max_no_activities: int = 25):
     """
     Filter a dataframe on the specified number of attributes
 

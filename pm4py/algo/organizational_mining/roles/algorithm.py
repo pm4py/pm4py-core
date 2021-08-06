@@ -3,6 +3,9 @@ from pm4py.algo.organizational_mining.roles.variants import log
 from pm4py.util import exec_utils
 from enum import Enum
 import pkgutil
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Variants(Enum):
@@ -10,7 +13,7 @@ class Variants(Enum):
     PANDAS = pandas
 
 
-def apply(log, variant=None, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], variant=None, parameters: Optional[Dict[Any, Any]] = None) -> List[Any]:
     """
     Gets the roles (group of different activities done by similar resources)
     out of the log.

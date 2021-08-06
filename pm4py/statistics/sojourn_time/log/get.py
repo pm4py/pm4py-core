@@ -4,6 +4,8 @@ from statistics import mean
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.util.business_hours import BusinessHours
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog
 
 
 class Parameters(Enum):
@@ -18,7 +20,7 @@ class Parameters(Enum):
 DIFF_KEY = "@@diff"
 
 
-def apply(log, parameters=None):
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
     """
     Gets the sojourn time per activity on an event log object
 

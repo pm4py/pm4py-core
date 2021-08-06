@@ -5,13 +5,17 @@ from enum import Enum
 import random
 import time
 
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.process_tree.obj import ProcessTree
+
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     NO_TRACES = "num_traces"
 
 
-def apply(tree, parameters=None):
+def apply(tree: ProcessTree, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Gets the top-bottom playout of a process tree
 
