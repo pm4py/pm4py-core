@@ -22,6 +22,7 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     FONT_SIZE = "font_size"
+    AGGREGATION_MEASURE = "aggregation_measure"
 
 
 def get_min_max_value(dfg):
@@ -236,6 +237,7 @@ def apply(dfg, log=None, parameters=None, activities_count=None, soj_time=None):
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 12)
     font_size = str(font_size)
     activities = dfg_utils.get_activities_from_dfg(dfg)
+    aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
 
     if activities_count is None:
         if log is not None:
@@ -248,6 +250,19 @@ def apply(dfg, log=None, parameters=None, activities_count=None, soj_time=None):
             soj_time = soj_time_get.apply(log, parameters=parameters)
         else:
             soj_time = {key: 0 for key in activities}
+
+    # if all the aggregation measures are provided for a given key,
+    # then pick one of the values for the representation
+    dfg0 = dfg
+    dfg = {}
+    for key in dfg0:
+        try:
+            if aggregation_measure in dfg0[key]:
+                dfg[key] = dfg0[key][aggregation_measure]
+            else:
+                dfg[key] = dfg0[key]
+        except:
+            dfg[key] = dfg0[key]
 
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="performance",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
