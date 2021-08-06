@@ -3,6 +3,7 @@ import tempfile
 from graphviz import Digraph
 
 from pm4py.objects.petri_net.obj import Marking
+from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
@@ -115,6 +116,11 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
             else:
                 viz.node(str(id(t)), "", style='filled', fillcolor="black", fontsize=font_size)
 
+        if petri_properties.TRANS_GUARD in t.properties:
+            guard = t.properties[petri_properties.TRANS_GUARD]
+            viz.node(str(id(t))+"guard", style="dotted", label=guard)
+            viz.edge(str(id(t))+"guard", str(id(t)), arrowhead="none", style="dotted")
+
     # places
     # add places, in order by their (unique) name, to avoid undeterminism in the visualization
     places_sort_list_im = sorted([x for x in list(net.places) if x in initial_marking], key=lambda x: x.name)
@@ -147,13 +153,19 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     # add arcs, in order by their source and target objects names, to avoid undeterminism in the visualization
     arcs_sort_list = sorted(list(net.arcs), key=lambda x: (x.source.name, x.target.name))
     for a in arcs_sort_list:
+        arrowhead = "normal"
+        if petri_properties.ARCTYPE in a.properties:
+            if a.properties[petri_properties.ARCTYPE] == petri_properties.RESET_ARC:
+                arrowhead = "vee"
+            elif a.properties[petri_properties.ARCTYPE] == petri_properties.INHIBITOR_ARC:
+                arrowhead = "dot"
         if a in decorations and "label" in decorations[a] and "penwidth" in decorations[a]:
             viz.edge(str(id(a.source)), str(id(a.target)), label=decorations[a]["label"],
-                     penwidth=decorations[a]["penwidth"], fontsize=font_size)
+                     penwidth=decorations[a]["penwidth"], fontsize=font_size, arrowhead=arrowhead)
         elif a in decorations and "color" in decorations[a]:
-            viz.edge(str(id(a.source)), str(id(a.target)), color=decorations[a]["color"], fontsize=font_size)
+            viz.edge(str(id(a.source)), str(id(a.target)), color=decorations[a]["color"], fontsize=font_size, arrowhead=arrowhead)
         else:
-            viz.edge(str(id(a.source)), str(id(a.target)), fontsize=font_size)
+            viz.edge(str(id(a.source)), str(id(a.target)), fontsize=font_size, arrowhead=arrowhead)
     viz.attr(overlap='false')
 
     viz.format = image_format
