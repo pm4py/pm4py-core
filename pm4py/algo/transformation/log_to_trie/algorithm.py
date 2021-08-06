@@ -4,13 +4,14 @@ from pm4py import util
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.trie.obj import Trie
 from pm4py.statistics.variants.log import get as get_variants
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = util.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def apply(log: EventLog, parameters=None):
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Trie:
     parameters = parameters if parameters is not None else dict()
     root = Trie()
     variants = list(map(lambda v: v.split(','), get_variants.get_variants(log, parameters=parameters)))

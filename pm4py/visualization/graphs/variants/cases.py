@@ -4,6 +4,7 @@ from copy import copy
 from pm4py.visualization.graphs.util import common
 from pm4py.util import exec_utils
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List
 
 
 class Parameters(Enum):
@@ -18,7 +19,7 @@ DENSITY_LABEL = "Density"
 GRAPH_DEFAULT_TITLE = "Case Duration"
 
 
-def apply_plot(x, y, parameters=None):
+def apply_plot(x: List[float], y: List[float], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> str:
     """
     Plot (non-logarithmic way) the graph with axis values contained in x and y
 
@@ -65,7 +66,7 @@ def apply_plot(x, y, parameters=None):
     return filename
 
 
-def apply_semilogx(x, y, parameters=None):
+def apply_semilogx(x: List[float], y: List[float], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> str:
     """
     Plot (semi-logarithmic way) the graph with axis values contained in x and y
 

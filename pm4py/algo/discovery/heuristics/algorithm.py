@@ -5,6 +5,10 @@ from pm4py.algo.discovery.heuristics.variants import classic, plusplus
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 
 class Variants(Enum):
@@ -18,7 +22,7 @@ DEFAULT_VARIANT = CLASSIC
 VERSIONS = {CLASSIC}
 
 
-def apply(log, parameters=None, variant=CLASSIC):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None, variant=CLASSIC) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using Heuristics Miner
 
@@ -62,8 +66,8 @@ def apply(log, parameters=None, variant=CLASSIC):
                                                  parameters=parameters)
 
 
-def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
-              parameters=None, variant=CLASSIC):
+def apply_dfg(dfg: Dict[Tuple[str, str], int], activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
+              parameters=None, variant=CLASSIC) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using Heuristics Miner
 
@@ -110,7 +114,7 @@ def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activitie
                                                      parameters=parameters)
 
 
-def apply_heu(log, parameters=None, variant=CLASSIC) -> HeuristicsNet:
+def apply_heu(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None, variant=CLASSIC) -> HeuristicsNet:
     """
     Discovers an Heuristics Net using Heuristics Miner
 
@@ -146,8 +150,8 @@ def apply_heu(log, parameters=None, variant=CLASSIC) -> HeuristicsNet:
     return exec_utils.get_variant(variant).apply_heu(log_conversion.apply(log, parameters=parameters), parameters=parameters)
 
 
-def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
-                  parameters=None, variant=CLASSIC):
+def apply_heu_dfg(dfg: Dict[Tuple[str, str], int], activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
+                  parameters=None, variant=CLASSIC) -> HeuristicsNet:
     """
     Discovers an Heuristics Net using Heuristics Miner
 

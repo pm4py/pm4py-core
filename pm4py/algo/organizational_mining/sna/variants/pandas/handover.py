@@ -3,6 +3,10 @@ from enum import Enum
 from pm4py.util import constants, exec_utils
 from pm4py.util import variants_util
 
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -13,7 +17,7 @@ class Parameters(Enum):
 BETA = Parameters.BETA
 
 
-def apply(log, parameters=None):
+def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Any]:
     """
     Calculates the HW metric
 

@@ -11,6 +11,11 @@ from pm4py.util import variants_util
 from enum import Enum
 from copy import copy
 import heapq
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.util import typing
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -294,7 +299,7 @@ def __transform_trace_to_mem_efficient_structure(trace, model_struct, parameters
             INV_TRACE_LABELS_DICT: inv_trace_labels_dict}
 
 
-def apply(trace, net, im, fm, parameters=None):
+def apply(trace: Trace, net: PetriNet, im: Marking, fm: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> typing.AlignmentResult:
     """
     Performs the basic alignment search, given a trace and a net.
 

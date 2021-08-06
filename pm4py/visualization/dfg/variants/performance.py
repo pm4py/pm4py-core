@@ -12,6 +12,12 @@ from pm4py.statistics.sojourn_time.log import get as soj_time_get
 from enum import Enum
 from pm4py.util import constants
 
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.util import typing
+import graphviz
+from pm4py.objects.log.obj import EventLog
+
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -224,7 +230,28 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     return viz
 
 
-def apply(dfg, log=None, parameters=None, activities_count=None, soj_time=None):
+def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Optional[Dict[Any, Any]] = None, activities_count : Dict[str, int] = None, soj_time: Dict[str, float] = None) -> graphviz.Digraph:
+    """
+    Visualize a performance directly-follows graph
+
+    Parameters
+    -----------------
+    dfg
+        Performance Directly-follows graph
+    log
+        (if provided) Event log for the calculation of statistics
+    activities_count
+        (if provided) Dictionary associating to each activity the number of occurrences in the log.
+    soj_time
+        (if provided) Dictionary associating to each activity the average sojourn time
+    parameters
+        Variant-specific parameters
+
+    Returns
+    -----------------
+    gviz
+        Graphviz digraph
+    """
     if parameters is None:
         parameters = {}
 

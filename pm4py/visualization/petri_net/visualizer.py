@@ -7,6 +7,11 @@ from pm4py.util import exec_utils
 from enum import Enum
 import pkgutil
 from pm4py.visualization.common.gview import serialize, serialize_dot
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+import graphviz
 
 
 class Variants(Enum):
@@ -26,8 +31,8 @@ PERFORMANCE_GREEDY = Variants.PERFORMANCE_GREEDY
 ALIGNMENTS = Variants.ALIGNMENTS
 
 
-def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_statistics=None, parameters=None,
-          variant=Variants.WO_DECORATION):
+def apply(net: PetriNet, initial_marking: Marking = None, final_marking: Marking = None, log: Union[EventLog, EventStream, pd.DataFrame] = None, aggregated_statistics=None, parameters: Optional[Dict[Any, Any]] = None,
+          variant=Variants.WO_DECORATION) -> graphviz.Digraph:
     if parameters is None:
         parameters = {}
     if log is not None:
@@ -43,7 +48,7 @@ def apply(net, initial_marking=None, final_marking=None, log=None, aggregated_st
                                                  parameters=parameters)
 
 
-def save(gviz, output_file_path):
+def save(gviz: graphviz.Digraph, output_file_path: str):
     """
     Save the diagram
 
@@ -57,7 +62,7 @@ def save(gviz, output_file_path):
     gsave.save(gviz, output_file_path)
 
 
-def view(gviz):
+def view(gviz: graphviz.Digraph):
     """
     View the diagram
 
@@ -69,7 +74,7 @@ def view(gviz):
     return gview.view(gviz)
 
 
-def matplotlib_view(gviz):
+def matplotlib_view(gviz: graphviz.Digraph):
     """
     Views the diagram using Matplotlib
 

@@ -8,6 +8,8 @@ from pm4py.statistics.end_activities.log import get as get_end_activities
 from pm4py.objects.conversion.log import converter
 from pm4py.util import exec_utils
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
 
 
 class Outputs(Enum):
@@ -27,7 +29,7 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def apply(log, parameters=None):
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Any]:
     """
     Discovers a footprint object from an event log
     (the footprints of the event log are returned)

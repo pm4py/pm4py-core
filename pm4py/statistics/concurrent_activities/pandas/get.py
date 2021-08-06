@@ -2,6 +2,8 @@ from enum import Enum
 
 from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_concurrent_events_dataframe
 from pm4py.util import exec_utils, constants, xes_constants
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -12,7 +14,7 @@ class Parameters(Enum):
     STRICT = "strict"
 
 
-def apply(dataframe, parameters=None):
+def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple[str, str], int]:
     """
     Gets the number of times for which two activities have been concurrent in the log
 

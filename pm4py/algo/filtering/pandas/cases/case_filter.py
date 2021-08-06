@@ -3,6 +3,9 @@ from pm4py.util import constants, xes_constants
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
+import deprecation
+from typing import Optional, Dict, Any, Union, Tuple, List
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -10,7 +13,7 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
 
-def filter_on_ncases(df, case_id_glue=constants.CASE_CONCEPT_NAME, max_no_cases=1000):
+def filter_on_ncases(df: pd.DataFrame, case_id_glue: str = constants.CASE_CONCEPT_NAME, max_no_cases: int = 1000):
     """
     Filter a dataframe keeping only the specified maximum number of traces
 
@@ -38,7 +41,7 @@ def filter_on_ncases(df, case_id_glue=constants.CASE_CONCEPT_NAME, max_no_cases=
     return ret
 
 
-def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, max_case_size=None):
+def filter_on_case_size(df: pd.DataFrame, case_id_glue: str = "case:concept:name", min_case_size: int = 2, max_case_size=None):
     """
     Filter a dataframe keeping only traces with at least the specified number of events
 
@@ -69,9 +72,9 @@ def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, m
     return df
 
 
-def filter_on_case_performance(df, case_id_glue=constants.CASE_CONCEPT_NAME,
-                               timestamp_key=xes_constants.DEFAULT_TIMESTAMP_KEY,
-                               min_case_performance=0, max_case_performance=10000000000):
+def filter_on_case_performance(df: pd.DataFrame, case_id_glue: str = constants.CASE_CONCEPT_NAME,
+                               timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
+                               min_case_performance: float = 0, max_case_performance: float = 10000000000) -> pd.DataFrame:
     """
     Filter a dataframe on case performance
 
@@ -109,7 +112,7 @@ def filter_on_case_performance(df, case_id_glue=constants.CASE_CONCEPT_NAME,
     return ret
 
 
-def filter_case_performance(df, min_case_performance=0, max_case_performance=10000000000, parameters=None):
+def filter_case_performance(df: pd.DataFrame, min_case_performance: float = 0, max_case_performance: float = 10000000000, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     if parameters is None:
         parameters = {}
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,

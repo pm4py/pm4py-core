@@ -1,4 +1,7 @@
-def apply(dfg):
+from typing import Optional, Dict, Any, Union, Tuple
+
+
+def apply(dfg: Dict[Tuple[str, str], int]) -> Dict[Tuple[str, str], float]:
     """
     Computes a causal graph based on a directly follows graph according to the heuristics miner
 

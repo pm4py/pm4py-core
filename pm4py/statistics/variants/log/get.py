@@ -5,6 +5,8 @@ import numpy as np
 
 from pm4py.util import constants
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, Trace
 
 
 class Parameters(Enum):
@@ -17,7 +19,7 @@ class Parameters(Enum):
     KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
-def get_language(log, parameters=None):
+def get_language(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[Dict[List[str], float], Dict[str, float]]:
     """
     Gets the stochastic language of the log (from the variants)
 
@@ -43,7 +45,7 @@ def get_language(log, parameters=None):
     return vars
 
 
-def get_variants(log, parameters=None):
+def get_variants(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[Dict[List[str], List[Trace]], Dict[str, List[Trace]]]:
     """
     Gets a dictionary whose key is the variant and as value there
     is the list of traces that share the variant
@@ -69,7 +71,7 @@ def get_variants(log, parameters=None):
     return all_var
 
 
-def get_variants_along_with_case_durations(log, parameters=None):
+def get_variants_along_with_case_durations(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Union[Dict[List[str], List[Trace]], Dict[str, List[Trace]]], np.array]:
     """
     Gets a dictionary whose key is the variant and as value there
     is the list of traces that share the variant

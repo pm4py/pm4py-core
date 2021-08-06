@@ -1,6 +1,9 @@
 from pm4py.objects.petri_net.utils import reachability_graph
 import itertools
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+
 
 class Outputs(Enum):
     DFG = "dfg"
@@ -19,7 +22,7 @@ def findsubsets(s, n):
     return list(itertools.combinations(s, n))
 
 
-def apply(net, im, parameters=None):
+def apply(net: PetriNet, im: Marking, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Discovers a footprint object from a Petri net
 
