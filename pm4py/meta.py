@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 '''
     This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
 
