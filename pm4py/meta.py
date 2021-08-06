@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 '''
     This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
 
@@ -15,7 +16,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-VERSION = '2.2.11'
+VERSION = '2.2.11.1'
 
 __name__ = 'pm4py'
 __version__ = VERSION
