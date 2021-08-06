@@ -118,12 +118,12 @@ def apply(log, parameters=None):
     case_pref = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTE_PREFIX, parameters, 'case:')
     enable_deepcopy = exec_utils.get_param_value(Parameters.DEEP_COPY, parameters, True)
     include_case_attributes = exec_utils.get_param_value(Parameters.INCLUDE_CASE_ATTRIBUTES, parameters, True)
-    compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, True)
+    compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, False)
 
     if pkgutil.find_loader("pandas"):
         import pandas
         if isinstance(log, pandas.DataFrame):
-            return __transform_dataframe_to_event_stream(log, stream_post_processing=stream_post_processing, compress=compress)
+            return __transform_dataframe_to_event_stream_new(log, stream_post_processing=stream_post_processing, compress=compress)
 
     if isinstance(log, EventLog):
         return __transform_event_log_to_event_stream(log, include_case_attributes=include_case_attributes,
@@ -162,6 +162,56 @@ def __transform_dataframe_to_event_stream(dataframe, stream_post_processing=Fals
     """
     extensions = __detect_extensions(dataframe)
     list_events = pandas_utils.to_dict_records(dataframe)
+    if stream_post_processing:
+        list_events = __postprocess_stream(list_events)
+    if compress:
+        list_events = __compress(list_events)
+    for i in range(len(list_events)):
+        list_events[i] = Event(list_events[i])
+    if hasattr(dataframe, 'attrs'):
+        properties = copy(dataframe.attrs)
+        if pmutil.PARAMETER_CONSTANT_CASEID_KEY in properties:
+            del properties[pmutil.PARAMETER_CONSTANT_CASEID_KEY]
+    else:
+        properties = {}
+    stream = log_instance.EventStream(list_events, attributes={'origin': 'csv'}, properties=properties)
+    for ex in extensions:
+        stream.extensions[ex.name] = {
+            xes_constants.KEY_PREFIX: ex.prefix,
+            xes_constants.KEY_URI: ex.uri}
+    return stream
+
+
+def __transform_dataframe_to_event_stream_new(dataframe, stream_post_processing=False, compress=False):
+    """
+    Transforms a dataframe to an event stream
+
+    Parameters
+    ------------------
+    dataframe
+        Pandas dataframe
+    stream_post_processing
+        Boolean value that enables the post processing to remove NaN / NaT values
+    compress
+        Compresses the stream in order to reduce the memory utilization after the conversion
+
+    Returns
+    ------------------
+    stream
+        Event stream
+    """
+    extensions = __detect_extensions(dataframe)
+    columns_names = list(dataframe.columns)
+    columns_corr = []
+    for c in columns_names:
+        columns_corr.append(dataframe[c].to_numpy())
+    length = columns_corr[-1].size
+    list_events = []
+    for i in range(length):
+        eve = {}
+        for j in range(len(columns_names)):
+            eve[columns_names[j]] = columns_corr[j][i]
+        list_events.append(eve)
     if stream_post_processing:
         list_events = __postprocess_stream(list_events)
     if compress:
