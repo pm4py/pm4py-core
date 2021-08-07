@@ -417,6 +417,8 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(data_petri_nets)
+    execute_script(inhibitor_reset_arcs)
     execute_script(dotted_chart)
     execute_script(performance_spectrum)
     execute_script(orgmining_local_diagn)
