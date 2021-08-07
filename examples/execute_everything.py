@@ -4,6 +4,18 @@ import sys
 import traceback
 
 
+def data_petri_nets():
+    from examples import data_petri_nets
+    print("\n\ndata_petri_nets")
+    data_petri_nets.execute_script()
+
+
+def inhibitor_reset_arcs():
+    from examples import inhibitor_reset_arcs
+    print("\n\ninhibitor_reset_arcs")
+    inhibitor_reset_arcs.execute_script()
+
+
 def batch_detection():
     from examples import batch_detection
     print("\n\nbatch_detection")
