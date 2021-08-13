@@ -5,7 +5,7 @@ from pm4py.objects.petri_net.inhibitor_reset import semantics
 from copy import deepcopy
 
 
-def execute_everything():
+def execute_script():
     net = PetriNet("")
     source = PetriNet.Place("source")
     sink = PetriNet.Place("sink")
@@ -66,4 +66,4 @@ def execute_everything():
 
 
 if __name__ == "__main__":
-    execute_everything()
+    execute_script()
