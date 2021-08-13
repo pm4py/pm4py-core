@@ -1,0 +1,35 @@
+costs;Resource;case:concept:name;concept:name;org:resource;time:timestamp
+50;Pete;3;register request;Pete;2010-12-30 14:32:00+01:00
+100;Ellen;3;check ticket;Ellen;2010-12-30 16:34:00+01:00
+200;Sara;3;decide;Sara;2011-01-06 09:18:00+01:00
+200;Sara;3;reinitiate request;Sara;2011-01-06 12:18:00+01:00
+200;Ellen;3;pay compensation;Ellen;2011-01-15 10:45:00+01:00
+50;Mike;2;register request;Mike;2010-12-30 11:32:00+01:00
+100;Mike;2;check ticket;Mike;2010-12-30 12:12:00+01:00
+400;Sean;2;examine casually;Sean;2010-12-30 14:16:00+01:00
+200;Ellen;2;pay compensation;Ellen;2011-01-08 12:05:00+01:00
+400;Sue;1;examine thoroughly;Sue;2010-12-31 10:06:00+01:00
+100;Mike;1;check ticket;Mike;2011-01-05 15:12:00+01:00
+200;Sara;1;decide;Sara;2011-01-06 11:18:00+01:00
+200;Pete;1;reject request;Pete;2011-01-07 14:24:00+01:00
+50;Mike;6;register request;Mike;2011-01-06 15:02:00+01:00
+100;Mike;6;check ticket;Mike;2011-01-07 16:22:00+01:00
+200;Sara;6;decide something;Sara;2011-01-07 16:52:00+01:00
+200;Mike;6;pay compensation;Mike;2011-01-16 11:47:00+01:00
+50;Ellen;5;register request;Ellen;2011-01-06 09:02:00+01:00
+400;Mike;5;examine casually;Mike;2011-01-07 10:16:00+01:00
+100;Pete;5;check ticket;Pete;2011-01-08 11:22:00+01:00
+200;Sara;5;decide;Sara;2011-01-10 13:28:00+01:00
+200;Sara;5;reinitiate the request for real;Sara;2011-01-11 16:18:00+01:00
+100;Ellen;5;check ticket;Ellen;2011-01-14 14:33:00+01:00
+400;Mike;5;examine casually;Mike;2011-01-16 15:50:00+01:00
+200;Sara;5;decide;Sara;2011-01-19 11:18:00+01:00
+400;Sue;5;examine casually;Sue;2011-01-21 09:06:00+01:00
+100;Pete;5;check ticket;Pete;2011-01-21 11:34:00+01:00
+200;Sara;5;decide;Sara;2011-01-23 13:12:00+01:00
+200;Mike;5;reject request;Mike;2011-01-24 14:56:00+01:00
+50;Pete;4;register request;Pete;2011-01-06 15:02:00+01:00
+100;Mike;4;check ticket;Mike;2011-01-07 12:06:00+01:00
+400;Sean;4;examine thoroughly;Sean;2011-01-08 14:43:00+01:00
+200;Sara;4;decide;Sara;2011-01-09 12:02:00+01:00
+200;Ellen;4;reject request;Ellen;2011-01-12 15:44:00+01:00
