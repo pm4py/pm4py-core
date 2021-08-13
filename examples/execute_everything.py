@@ -4,6 +4,18 @@ import sys
 import traceback
 
 
+def data_petri_nets():
+    from examples import data_petri_nets
+    print("\n\ndata_petri_nets")
+    data_petri_nets.execute_script()
+
+
+def inhibitor_reset_arcs():
+    from examples import inhibitor_reset_arcs
+    print("\n\ninhibitor_reset_arcs")
+    inhibitor_reset_arcs.execute_script()
+
+
 def batch_detection():
     from examples import batch_detection
     print("\n\nbatch_detection")
@@ -405,6 +417,8 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(data_petri_nets)
+    execute_script(inhibitor_reset_arcs)
     execute_script(dotted_chart)
     execute_script(performance_spectrum)
     execute_script(orgmining_local_diagn)
