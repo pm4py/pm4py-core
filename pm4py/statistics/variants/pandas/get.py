@@ -14,14 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.statistics.traces.generic.pandas import case_statistics
-from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
-from pm4py.objects.log.obj import EventLog, Trace
+from typing import Optional, Dict, Any, Union, List, Set
+
 import pandas as pd
 
+from pm4py.objects.log.util import pandas_numpy_variants
 
-def get_variants_count(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> Union[Dict[str, int], Dict[List[str], int]]:
+
+def get_variants_count(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> Union[
+    Dict[str, int], Dict[List[str], int]]:
     """
     Gets the dictionary of variants from the current dataframe
 
@@ -40,11 +41,8 @@ def get_variants_count(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = 
     """
     if parameters is None:
         parameters = {}
-    var_stats = case_statistics.get_variant_statistics(df, parameters=parameters)
-    if var_stats:
-        count_key = list(x for x in var_stats[0].keys() if not x == "variant")[0]
-        return {x["variant"]: x[count_key] for x in var_stats}
-    return {}
+
+    return pandas_numpy_variants.apply(df, parameters=parameters)
 
 
 def get_variants_set(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> Union[Set[str], Set[List[str]]]:
@@ -66,5 +64,7 @@ def get_variants_set(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = No
     """
     if parameters is None:
         parameters = {}
-    var_stats = case_statistics.get_variant_statistics(df, parameters=parameters)
-    return set(x["variant"] for x in var_stats)
+
+    variants_dict = get_variants_count(df, parameters=parameters)
+
+    return set(variants_dict.keys())

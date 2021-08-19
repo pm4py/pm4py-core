@@ -14,15 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
-from pm4py.util import exec_utils, variants_util, constants
+from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List
 
 import numpy as np
 
-from pm4py.util import constants
-from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, Trace
+from pm4py.util import constants
+from pm4py.util import exec_utils, variants_util
+from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 
 
 class Parameters(Enum):
@@ -35,7 +35,8 @@ class Parameters(Enum):
     KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
-def get_language(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[Dict[List[str], float], Dict[str, float]]:
+def get_language(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[
+    Dict[List[str], float], Dict[str, float]]:
     """
     Gets the stochastic language of the log (from the variants)
 
@@ -61,7 +62,8 @@ def get_language(log: EventLog, parameters: Optional[Dict[Union[str, Parameters]
     return vars
 
 
-def get_variants(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[Dict[List[str], List[Trace]], Dict[str, List[Trace]]]:
+def get_variants(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[
+    Dict[List[str], List[Trace]], Dict[str, List[Trace]]]:
     """
     Gets a dictionary whose key is the variant and as value there
     is the list of traces that share the variant
@@ -87,7 +89,9 @@ def get_variants(log: EventLog, parameters: Optional[Dict[Union[str, Parameters]
     return all_var
 
 
-def get_variants_along_with_case_durations(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Union[Dict[List[str], List[Trace]], Dict[str, List[Trace]]], np.array]:
+def get_variants_along_with_case_durations(log: EventLog,
+                                           parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[
+    Union[Dict[List[str], List[Trace]], Dict[str, List[Trace]]], np.array]:
     """
     Gets a dictionary whose key is the variant and as value there
     is the list of traces that share the variant

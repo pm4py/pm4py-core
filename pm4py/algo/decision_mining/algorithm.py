@@ -14,28 +14,82 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import sys
+from copy import deepcopy, copy
+from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+
 from pm4py.algo.conformance.alignments.petri_net import algorithm as ali
 from pm4py.algo.conformance.alignments.petri_net.variants import state_equation_a_star as star
-import sys
-from pm4py.statistics.variants.log import get as variants_module
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
-from copy import deepcopy, copy
-from pm4py.util import constants, xes_constants
-from pm4py.statistics.attributes.log.select import select_attributes_from_log_for_tree
 from pm4py.objects.conversion.log import converter as log_converter
-from enum import Enum
-from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
-import pandas as pd
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.statistics.attributes.log.select import select_attributes_from_log_for_tree
+from pm4py.statistics.variants.log import get as variants_module
+from pm4py.util import constants, xes_constants
+from pm4py.util import exec_utils
+from pm4py.visualization.decisiontree.util import dt_to_string
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    LABELS = "labels"
 
 
-def get_decision_tree(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking, decision_point=None, attributes=None, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Any:
+def create_data_petri_nets_with_decisions(log: EventLog, net: PetriNet, initial_marking: Marking,
+                                          final_marking: Marking) -> Tuple[PetriNet, Marking, Marking]:
+    """
+    Given a Petri net, create a data Petri net with the decisions given for each place by the decision
+    mining algorithm
+
+    Parameters
+    ----------------
+    log
+        Event log
+    net
+        Petri net
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+
+    Returns
+    ------------------
+    data_petri_net
+        Data petri net
+    initial_marking
+        Initial marking (unchanged)
+    final_marking
+        Final marking (unchanged)
+    """
+    all_conditions = {}
+    all_variables = {}
+    for place in net.places:
+        try:
+            clf, columns, targets = get_decision_tree(log, net, initial_marking, final_marking,
+                                                      decision_point=place.name,
+                                                      parameters={"labels": False})
+            target_classes, variables = dt_to_string.apply(clf, columns)
+            target_classes = {targets[int(k)]: v for k, v in target_classes.items()}
+            variables = {targets[int(k)]: v for k, v in variables.items()}
+            for k in target_classes.keys():
+                all_conditions[k] = target_classes[k]
+                all_variables[k] = variables[k]
+        except:
+            pass
+    for trans in net.transitions:
+        if trans.name in all_conditions:
+            trans.properties[petri_properties.TRANS_GUARD] = all_conditions[trans.name]
+            trans.properties[petri_properties.READ_VARIABLE] = all_variables[trans.name]
+            trans.properties[petri_properties.WRITE_VARIABLE] = []
+    return net, initial_marking, final_marking
+
+
+def get_decision_tree(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking,
+                      decision_point=None, attributes=None,
+                      parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Any:
     """
     Gets a decision tree classifier on a specific point of the model
 
@@ -80,7 +134,8 @@ def get_decision_tree(log: EventLog, net: PetriNet, initial_marking: Marking, fi
     return dt, list(X.columns.values.tolist()), targets
 
 
-def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking, decision_point=None, attributes=None, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Any:
+def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking, decision_point=None,
+          attributes=None, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Any:
     """
     Gets the essential information (features, target class and names of the target class)
     in order to learn a classifier
@@ -119,10 +174,12 @@ def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking:
     if parameters is None:
         parameters = {}
 
+    labels = exec_utils.get_param_value(Parameters.LABELS, parameters, True)
+
     log = log_converter.apply(log, parameters=parameters)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     if decision_point is None:
-        decision_points_names = get_decision_points(net, labels=True, parameters=parameters)
+        decision_points_names = get_decision_points(net, labels=labels, parameters=parameters)
         raise Exception("please provide decision_point as argument of the method. Possible decision points: ",
                         decision_points_names)
     if attributes is None:
@@ -131,13 +188,25 @@ def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking:
     I, dp = get_decisions_table(log, net, initial_marking, final_marking, attributes=attributes,
                                 pre_decision_points=[decision_point], parameters=parameters)
     x_attributes = [a for a in attributes if not a == activity_key]
+    str_attributes = set()
+    non_str_attributes = set()
     x = []
+    x2 = []
     y = []
     for el in I[decision_point]:
-        x.append({a: v for a, v in el[0].items() if a in x_attributes})
+        for a, v in el[0].items():
+            if a in x_attributes:
+                if type(v) is str:
+                    str_attributes.add(a)
+                else:
+                    non_str_attributes.add(a)
+        x.append({a: v for a, v in el[0].items() if a in x_attributes and type(v) is str})
+        x2.append({a: v for a, v in el[0].items() if a in x_attributes and type(v) is not str})
         y.append(el[1])
     X = pd.DataFrame(x)
-    X = pd.get_dummies(data=X, columns=x_attributes)
+    X = pd.get_dummies(data=X, columns=list(str_attributes))
+    X2 = pd.DataFrame(x2)
+    X = pd.concat([X, X2], axis=1)
     Y = pd.DataFrame(y, columns=["Name"])
     Y, targets = encode_target(Y, "Name")
     y = Y['Target']
@@ -185,6 +254,8 @@ def get_decisions_table(log0, net, initial_marking, final_marking, attributes=No
     if parameters is None:
         parameters = {}
 
+    labels = exec_utils.get_param_value(Parameters.LABELS, parameters, True)
+
     log = deepcopy(log0)
     log = log_converter.apply(log, parameters=parameters)
 
@@ -219,7 +290,7 @@ def get_decisions_table(log0, net, initial_marking, final_marking, attributes=No
 
     # alignment = ali.apply(log, net, initial_marking, final_marking, variant=True, parameters={star.PARAM_ALIGNMENT_RESULT_IS_SYNC_PROD_AWARE:True})
     decision_points = get_decision_points(net, pre_decision_points=pre_decision_points, parameters=parameters)
-    decision_points_names = get_decision_points(net, labels=True, pre_decision_points=pre_decision_points,
+    decision_points_names = get_decision_points(net, labels=labels, pre_decision_points=pre_decision_points,
                                                 parameters=parameters)
     if use_trace_attributes:
         # Made to ensure distinguishness between event and trace attributes.
@@ -310,8 +381,8 @@ def get_decision_points(net, labels=False, pre_decision_points=None, parameters=
             # print("All given decision points were identified as decision points in the Petri Net.")
             pass
         elif i == 0:
-            print("None of the given points is a decision point.")
-            sys.exit()
+            raise Exception("None of the given points is a decision point.")
+            # sys.exit()
         else:
             print(
                 "Not all of the given places were identified as decision points. However, we only take the correct decision points from your list into account.")
@@ -349,6 +420,8 @@ def get_attributes(log, decision_points, attributes, use_trace_attributes, trace
     """
     if parameters is None:
         parameters = {}
+    labels = exec_utils.get_param_value(Parameters.LABELS, parameters, True)
+
     I = {}
     for key in decision_points:
         I[key] = []
@@ -378,13 +451,11 @@ def get_attributes(log, decision_points, attributes, use_trace_attributes, trace
                 # j is a pointer which points to the current event inside a trace
                 for transition in variant['activated_transitions']:
                     for key, value in decision_points_names.items():
-                        if transition.label in value:
+                        tr_to_str = transition.label if labels else transition.name
+                        if tr_to_str in value:
                             for element in last_k_list:
                                 if element != None:
-                                    if transition.label != None:
-                                        I[key].append((element.copy(), transition.label))
-                                    else:
-                                        I[key].append((element.copy(), transition.name))
+                                    I[key].append((element.copy(), tr_to_str))
                     for attri in attributes:
                         # print(variant, transition.label, j)
                         if attri in trace[j]:

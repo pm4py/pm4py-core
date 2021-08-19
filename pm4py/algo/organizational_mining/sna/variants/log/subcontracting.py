@@ -70,9 +70,11 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
     metric_matrix = numpy.zeros((len(flat_list), len(flat_list)))
 
     sum_i_to_j = {}
+    dividend = 0
 
     for idx, rv in enumerate(resources):
         rvj = variants_resources[idx]
+        dividend += variants_occ[rvj]
 
         for i in range(len(rv) - n):
             res_i = flat_list.index(rv[i])
@@ -85,11 +87,6 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
                         if res_j not in sum_i_to_j[res_i]:
                             sum_i_to_j[res_i][res_j] = 0
                         sum_i_to_j[res_i][res_j] += variants_occ[rvj]
-
-    dividend = 0
-    for idx, rv in enumerate(resources):
-        rvj = variants_resources[idx]
-        dividend = dividend + variants_occ[rvj] * (len(rv) - 1)
 
     for key1 in sum_i_to_j:
         for key2 in sum_i_to_j[key1]:
