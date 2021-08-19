@@ -55,6 +55,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
     metric_matrix = numpy.zeros((len(flat_list), len(flat_list)))
 
     sum_i_to_j = {}
+    dividend = 0
 
     for idx, rv in enumerate(resources):
         rvj = variants_resources[idx]
@@ -68,17 +69,11 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
                     sum_i_to_j[res_i][res_j] = 0
                 if beta == 0:
                     sum_i_to_j[res_i][res_j] += variants_occ[rvj]
+                    dividend += variants_occ[rvj]
                     break
                 else:
                     sum_i_to_j[res_i][res_j] += variants_occ[rvj] * (beta ** (j - i - 1))
-
-    dividend = 0
-    for idx, rv in enumerate(resources):
-        rvj = variants_resources[idx]
-        if beta == 0:
-            dividend = dividend + variants_occ[rvj] * (len(rv) - 1)
-        else:
-            dividend = dividend + variants_occ[rvj] * (len(rv) - 1)
+                    dividend += variants_occ[rvj] * (beta ** (j - i - 1))
 
     for key1 in sum_i_to_j:
         for key2 in sum_i_to_j[key1]:
