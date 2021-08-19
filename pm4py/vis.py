@@ -56,6 +56,67 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
     pn_visualizer.save(gviz, file_path)
 
 
+def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png",
+                         aggregation_measure="mean"):
+    """
+    Views a performance DFG
+
+    Parameters
+    ----------------
+    dfg
+        DFG object
+    start_activities
+        Start activities
+    end_activities
+        End activities
+    format
+        Format of the output picture (default: png)
+    aggregation_measure
+        Aggregation measure (default: mean): mean, median, min, max, sum, stdev
+    """
+    from pm4py.visualization.dfg import visualizer as dfg_visualizer
+    from pm4py.visualization.dfg.variants import performance as dfg_perf_visualizer
+    dfg_parameters = dfg_perf_visualizer.Parameters
+    parameters = {}
+    parameters[dfg_parameters.FORMAT] = format
+    parameters[dfg_parameters.START_ACTIVITIES] = start_activities
+    parameters[dfg_parameters.END_ACTIVITIES] = end_activities
+    parameters[dfg_parameters.AGGREGATION_MEASURE] = aggregation_measure
+    gviz = dfg_perf_visualizer.apply(dfg, parameters=parameters)
+    dfg_visualizer.view(gviz)
+
+
+def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str,
+                         aggregation_measure="mean"):
+    """
+    Saves the visualization of a performance DFG
+
+    Parameters
+    ----------------
+    dfg
+        DFG object
+    start_activities
+        Start activities
+    end_activities
+        End activities
+    file_path
+        Destination path
+    aggregation_measure
+        Aggregation measure (default: mean): mean, median, min, max, sum, stdev
+    """
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.dfg import visualizer as dfg_visualizer
+    from pm4py.visualization.dfg.variants import performance as dfg_perf_visualizer
+    dfg_parameters = dfg_perf_visualizer.Parameters
+    parameters = {}
+    parameters[dfg_parameters.FORMAT] = format
+    parameters[dfg_parameters.START_ACTIVITIES] = start_activities
+    parameters[dfg_parameters.END_ACTIVITIES] = end_activities
+    parameters[dfg_parameters.AGGREGATION_MEASURE] = aggregation_measure
+    gviz = dfg_perf_visualizer.apply(dfg, parameters=parameters)
+    dfg_visualizer.save(gviz, file_path)
+
+
 def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png",
              log: Optional[EventLog] = None):
     """
