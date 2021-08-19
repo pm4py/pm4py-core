@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.transformation.log_to_features import algorithm, variants, util
+from pm4py.statistics.rework.cases.pandas import get

@@ -19,9 +19,9 @@ matplotlib
 matplotlib-inline
 mpmath
 networkx
-numpy
+numpy>=1.19.5
 packaging
-pandas
+pandas>=1.1.5
 parso
 pickleshare
 pillow
