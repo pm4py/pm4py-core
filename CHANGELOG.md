@@ -1,45 +1,88 @@
 # PM4Py Changelog
 
-## PM4Py 2.2.11 (2021.08.06)
+## PM4Py 2.2.12 (2021.08.19)
 
 ### Fixed
-* 207d69bd
-  * bug fix in application of the filtering threshold in the IMf algorithm
+
+* a374bad3
+    * https://github.com/pm4py/pm4py-core/issues/251
+* e88a6546
+    * https://github.com/pm4py/pm4py-core/issues/249
+* 84511628
+    * fix minor bug in the calculation of the handover and subcontracting metrics. 
 
 ### Removed
 
 ### Deprecated
 
 ### Changed
-* d98cbb1c
-  * changed deepcopy and copy functionality of logs for performance improvement
-* f3b78a49
-  * minor performance optimization in log conversion (log to dataframe)
-* 71c0919f
-  * improved performance for pands -> stream conversion
+
+* 01fd0402
+    * The ```pm4py.view_petri_net()``` method now uses ```None``` as a default initial and final marking.
+* 72ed7d0d
+    * Improved performance of variant discovery of dataframes.   
+
 
 ### Added
-* f2101a72
-  * added various additional features in log-based feature extraction 
-* 41873655
-  * possiblity to directly get all performance metrics of the DFG elements
-* 886b44ea
-  * detection method for trace-level attributes stored at event level
-* d5f9f866
-  * add transition names to events, based on a given alignment
-* 4802e7d8
-  * add support for importing reset/inhibitor arcs and transition guards
-* cc6488f7
-  * add general support for reset/inhibitor nets
-* e805cf5f
-  * add support for data petri nets
-* 1d3a2e7b
-  * added case termination statistics for pandas data frames
+
+* 9a04357e
+    * Add rework measurement at the case level in the ```pm4py.statistics.rework``` package.
+* b725ca0b
+    * add 'between' filter for ```pandas dataframes``` in the ```pm4py.algo.filtering.pandas``` package. The filter
+      returns subsequences between the two given activities. It creates subtraces for every possible match.
+* 211e3c56
+    * added local linear embeddings to ```log_to_features.util```.
+* 4b594228
+    * add support for adding decision points to data petri nets.
+* 9261270e
+  *  add support for performance dfg discovery in ```pm4py.discover_performance_dfg()```.
 
 ### Other
 
 ---
 
+## PM4Py 2.2.11 (2021.08.06)
+
+### Fixed
+
+* 207d69bd
+    * bug fix in application of the filtering threshold in the IMf algorithm
+
+### Removed
+
+### Deprecated
+
+### Changed
+
+* d98cbb1c
+    * changed deepcopy and copy functionality of logs for performance improvement
+* f3b78a49
+    * minor performance optimization in log conversion (log to dataframe)
+* 71c0919f
+    * improved performance for pands -> stream conversion
+
+### Added
+
+* f2101a72
+    * added various additional features in log-based feature extraction
+* 41873655
+    * possiblity to directly get all performance metrics of the DFG elements
+* 886b44ea
+    * detection method for trace-level attributes stored at event level
+* d5f9f866
+    * add transition names to events, based on a given alignment
+* 4802e7d8
+    * add support for importing reset/inhibitor arcs and transition guards
+* cc6488f7
+    * add general support for reset/inhibitor nets
+* e805cf5f
+    * add support for data petri nets
+* 1d3a2e7b
+    * added case termination statistics for pandas data frames
+
+### Other
+
+---
 
 ## PM4Py 2.2.10.2 (2021.07.26)
 

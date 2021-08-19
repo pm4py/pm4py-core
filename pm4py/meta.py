@@ -1,4 +1,4 @@
-VERSION = '2.2.11.1'
+VERSION = '2.2.12'
 
 __name__ = 'pm4py'
 __version__ = VERSION
