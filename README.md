@@ -27,3 +27,4 @@ We track all changes in our [*CHANGELOG*](https://github.com/pm4py/pm4py-core/bl
 ## Third Party Dependencies
 As scientific library in the Python ecosystem, we rely on external libraries to offer our features.
 Please check the [*README.THIRD_PARTY.md*](https://github.com/pm4py/pm4py-core/blob/release/README.THIRD_PARTY.md) file in order to know the dependencies and their license.
+
