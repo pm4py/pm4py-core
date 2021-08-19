@@ -1,19 +1,21 @@
-from typing import Optional, Dict, Any, List
+import os
+from copy import copy
+from typing import Optional
+from typing import Union, List
+
+import pandas as pd
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
-import pandas as pd
-from typing import Union, List
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties
-from copy import copy
-import os
 
 
-def view_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, format: str = "png"):
+def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = None,
+                   final_marking: Optional[Marking] = None, format: str = "png"):
     """
     Views a (composite) Petri net
 
@@ -338,7 +340,7 @@ def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "
         graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
-                                          parameters={"format": format})
+                                        parameters={"format": format})
     graphs_visualizer.view(graph_vis)
 
 
@@ -363,7 +365,7 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
-                                          parameters={"format": format})
+                                        parameters={"format": format})
     graphs_visualizer.save(graph_vis, file_path)
 
 
@@ -387,7 +389,7 @@ def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str =
         graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
-                                          parameters={"format": format})
+                                        parameters={"format": format})
     graphs_visualizer.view(graph_vis)
 
 
@@ -412,7 +414,7 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
-                                          parameters={"format": format})
+                                        parameters={"format": format})
     graphs_visualizer.save(graph_vis, file_path)
 
 
@@ -462,15 +464,25 @@ def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr
     Internal method to build the events distribution graph
     """
     if distr_type == "days_month":
-        title = "Distribution of the Events over the Days of a Month"; x_axis = "Day of month"; y_axis = "Number of Events"
+        title = "Distribution of the Events over the Days of a Month";
+        x_axis = "Day of month";
+        y_axis = "Number of Events"
     elif distr_type == "months":
-        title = "Distribution of the Events over the Months"; x_axis = "Month"; y_axis = "Number of Events"
+        title = "Distribution of the Events over the Months";
+        x_axis = "Month";
+        y_axis = "Number of Events"
     elif distr_type == "years":
-        title = "Distribution of the Events over the Years"; x_axis = "Year"; y_axis = "Number of Events"
+        title = "Distribution of the Events over the Years";
+        x_axis = "Year";
+        y_axis = "Number of Events"
     elif distr_type == "hours":
-        title = "Distribution of the Events over the Hours"; x_axis = "Hour (of day)"; y_axis = "Number of Events"
+        title = "Distribution of the Events over the Hours";
+        x_axis = "Hour (of day)";
+        y_axis = "Number of Events"
     elif distr_type == "days_week":
-        title = "Distribution of the Events over the Days of a Week"; x_axis = "Day of the Week"; y_axis = "Number of Events"
+        title = "Distribution of the Events over the Days of a Week";
+        x_axis = "Day of the Week";
+        y_axis = "Number of Events"
     else:
         raise Exception("unsupported distribution specified.")
 
@@ -505,13 +517,17 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
     """
     title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, distr_type)
     parameters = copy(get_properties(log))
-    parameters["title"] = title; parameters["x_axis"] = x_axis; parameters["y_axis"] = y_axis; parameters["format"] = format
+    parameters["title"] = title;
+    parameters["x_axis"] = x_axis;
+    parameters["y_axis"] = y_axis;
+    parameters["format"] = format
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     gviz = graphs_visualizer.apply(x, y, variant=graphs_visualizer.Variants.BARPLOT, parameters=parameters)
     graphs_visualizer.view(gviz)
 
 
-def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_path: str, distr_type: str = "days_week"):
+def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_path: str,
+                                       distr_type: str = "days_week"):
     """
     Saves the distribution of the events in a picture file
 
@@ -532,7 +548,10 @@ def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_
     format = os.path.splitext(file_path)[1][1:]
     title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, distr_type)
     parameters = copy(get_properties(log))
-    parameters["title"] = title; parameters["x_axis"] = x_axis; parameters["y_axis"] = y_axis; parameters["format"] = format
+    parameters["title"] = title;
+    parameters["x_axis"] = x_axis;
+    parameters["y_axis"] = y_axis;
+    parameters["format"] = format
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     gviz = graphs_visualizer.apply(x, y, variant=graphs_visualizer.Variants.BARPLOT, parameters=parameters)
     graphs_visualizer.save(gviz, file_path)
