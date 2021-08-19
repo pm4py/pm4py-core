@@ -62,6 +62,49 @@ def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Tuple
     return discover_dfg(log)
 
 
+def discover_performance_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
+    """
+    Discovers a performance directly-follows graph from an event log
+
+    Parameters
+    ---------------
+    log
+        Event log
+
+    Returns
+    ---------------
+    performance_dfg
+        Performance DFG
+    start_activities
+        Start activities
+    end_activities
+        End activities
+    """
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.util import constants
+        properties = get_properties(log)
+        from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_dfg_graph
+        activity_key = properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
+        timestamp_key = properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in properties else xes_constants.DEFAULT_TIMESTAMP_KEY
+        case_id_key = properties[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in properties else constants.CASE_CONCEPT_NAME
+        dfg = get_dfg_graph(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_glue=case_id_key, measure="performance")
+        from pm4py.statistics.start_activities.pandas import get as start_activities_module
+        from pm4py.statistics.end_activities.pandas import get as end_activities_module
+        start_activities = start_activities_module.get_start_activities(log, parameters=properties)
+        end_activities = end_activities_module.get_end_activities(log, parameters=properties)
+    else:
+        from pm4py.algo.discovery.dfg.variants import performance as dfg_discovery
+        properties = get_properties(log)
+        properties[dfg_discovery.Parameters.AGGREGATION_MEASURE] = "all"
+        dfg = dfg_discovery.apply(log, parameters=properties)
+        from pm4py.statistics.start_activities.log import get as start_activities_module
+        from pm4py.statistics.end_activities.log import get as end_activities_module
+        start_activities = start_activities_module.get_start_activities(log, parameters=properties)
+        end_activities = end_activities_module.get_end_activities(log, parameters=properties)
+    return dfg, start_activities, end_activities
+
+
 def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame]) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the Alpha Miner
