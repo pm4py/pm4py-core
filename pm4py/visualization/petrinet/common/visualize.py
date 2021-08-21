@@ -48,7 +48,7 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
 
 
 def graphviz_visualization(net, image_format="png", initial_marking=None, final_marking=None, decorations=None,
-                           debug=False, set_rankdir=None, font_size="12"):
+                           debug=False, set_rankdir=None, font_size="12", bgcolor="transparent"):
     """
     Provides visualization for the petrinet
 
@@ -84,7 +84,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     font_size = str(font_size)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Digraph(net.name, filename=filename.name, engine='dot', graph_attr={'bgcolor': 'transparent'})
+    viz = Digraph(net.name, filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     if set_rankdir:
         viz.graph_attr['rankdir'] = set_rankdir
     else:

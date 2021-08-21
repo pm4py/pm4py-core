@@ -17,6 +17,7 @@ class Parameters(Enum):
     TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
     AGGREGATION_MEASURE = "aggregationMeasure"
     FONT_SIZE = "font_size"
+    BGCOLOR = "bgcolor"
 
 
 def apply(net, initial_marking, final_marking, decorations=None, parameters=None):
@@ -49,14 +50,15 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
     debug = exec_utils.get_param_value(Parameters.DEBUG, parameters, False)
     set_rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, None)
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, "12")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
 
     return graphviz_visualization(net, image_format=image_format, initial_marking=initial_marking,
                                   final_marking=final_marking, decorations=decorations, debug=debug,
-                                  set_rankdir=set_rankdir, font_size=font_size)
+                                  set_rankdir=set_rankdir, font_size=font_size, bgcolor=bgcolor)
 
 
 def graphviz_visualization(net, image_format="png", initial_marking=None, final_marking=None, decorations=None,
-                           debug=False, set_rankdir=None, font_size="12"):
+                           debug=False, set_rankdir=None, font_size="12", bgcolor="transparent"):
     """
     Provides visualization for the petrinet
 
@@ -92,7 +94,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     font_size = str(font_size)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Digraph(net.name, filename=filename.name, engine='dot', graph_attr={'bgcolor': 'transparent'})
+    viz = Digraph(net.name, filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     if set_rankdir:
         viz.graph_attr['rankdir'] = set_rankdir
     else:

@@ -12,6 +12,7 @@ class Parameters(Enum):
     FORMAT = "format"
     RANKDIR = "rankdir"
     FONT_SIZE = "font_size"
+    BGCOLOR = "bgcolor"
 
 
 def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> graphviz.Digraph:
@@ -42,9 +43,10 @@ def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> grap
     rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "LR")
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 12)
     font_size = str(font_size)
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': 'transparent'})
+    viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.graph_attr['rankdir'] = rankdir
 
     nodes, edges = get_sorted_nodes_edges(bpmn_graph)
