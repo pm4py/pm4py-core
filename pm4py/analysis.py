@@ -1,33 +1,7 @@
 from typing import List, Optional, Tuple, Dict
 
-from pm4py.objects.log.obj import Trace, EventLog, Event
+from pm4py.objects.log.obj import Trace
 from pm4py.objects.petri_net.obj import PetriNet, Marking
-from pm4py.util import constants, xes_constants
-from pm4py.utils import get_properties
-from copy import deepcopy
-
-
-def insert_artificial_start_end_activities(log: EventLog):
-    """
-    Inserts artificial start (▶) and end (■) activities at beginning and end of each case of the log
-
-    Parameters
-    ------------------
-    log
-        Event log
-
-    Returns
-    -----------------
-    log_with_artificial_sa_and_ea
-        Log with artificial start and end activities
-    """
-    log = deepcopy(log)
-    properties = get_properties(log)
-    activity_key = properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
-    for trace in log:
-        trace.insert(0, Event({activity_key: "▶"}))
-        trace.append(Event({activity_key: "■"}))
-    return log
 
 
 def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial_marking: Marking,
