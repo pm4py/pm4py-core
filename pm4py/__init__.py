@@ -3,7 +3,7 @@ import time
 
 from pm4py import util, objects, statistics, algo, visualization
 from pm4py.analysis import check_soundness, solve_marking_equation, solve_extended_marking_equation, \
-    construct_synchronous_product_net
+    construct_synchronous_product_net, insert_artificial_start_end_activities
 from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \
     fitness_token_based_replay, \
     fitness_alignments, precision_token_based_replay, \
@@ -18,7 +18,8 @@ from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_p
     discover_performance_dfg
 from pm4py.filtering import filter_start_activities, filter_end_activities, filter_attribute_values, filter_variants, \
     filter_variants_percentage, filter_directly_follows_relation, filter_time_range, filter_trace_attribute, \
-    filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values
+    filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values, \
+    filter_between, filter_case_size
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
     __maintainer__, __maintainer_email__
