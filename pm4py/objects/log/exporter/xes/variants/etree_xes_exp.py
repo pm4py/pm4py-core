@@ -274,6 +274,8 @@ def export_log_tree(log, parameters=None):
         log = log_converter.apply(log)
     root = etree.Element(xes_util.TAG_LOG)
     root.set(xes_util.TAG_VERSION, xes_util.VALUE_XES_VERSION)
+    root.set(xes_util.TAG_FEATURES, xes_util.VALUE_XES_FEATURES)
+    root.set(xes_util.TAG_XMLNS, xes_util.VALUE_XMLNS)
 
     # add attributes at the log level
     __export_attributes(log, root)
