@@ -30,6 +30,8 @@ TAG_STRING = 'string'
 TAG_TRACE = 'trace'
 TAG_VALUES = 'values'
 TAG_VERSION = 'xes.version'
+TAG_FEATURES = 'xes.features'
+TAG_XMLNS = 'xmlns'
 
 # XES/INTERNAL KEYS
 KEY_CHILDREN = 'children'
@@ -49,4 +51,5 @@ DEFAULT_RESOURCE_KEY = 'org:resource'
 DEFAULT_TRANSITION_KEY = "lifecycle:transition"
 
 VALUE_XES_VERSION = '1849-2016'
-
+VALUE_XES_FEATURES = "nested-attributes"
+VALUE_XMLNS = 'http://www.xes-standard.org/'

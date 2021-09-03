@@ -45,6 +45,7 @@ class Parameters(Enum):
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     FONT_SIZE = "font_size"
     AGGREGATION_MEASURE = "aggregation_measure"
+    BGCOLOR = "bgcolor"
 
 
 def get_min_max_value(dfg):
@@ -132,7 +133,7 @@ def get_activities_color_soj_time(soj_time):
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
                            max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
-                           font_size="12"):
+                           font_size="12", bgcolor="transparent"):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -166,7 +167,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         end_activities = []
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': 'transparent'})
+    viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
 
     # first, remove edges in diagram that exceeds the maximum number of edges in the diagram
     dfg_key_value_list = []
@@ -281,6 +282,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     font_size = str(font_size)
     activities = dfg_utils.get_activities_from_dfg(dfg)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
 
     if activities_count is None:
         if log is not None:
@@ -310,4 +312,4 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="performance",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
                                   start_activities=start_activities, end_activities=end_activities, soj_time=soj_time,
-                                  font_size=font_size)
+                                  font_size=font_size, bgcolor=bgcolor)

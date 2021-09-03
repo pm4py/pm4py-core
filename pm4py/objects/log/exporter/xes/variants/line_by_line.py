@@ -192,7 +192,7 @@ def export_log_line_by_line(log, fp_obj, encoding, parameters=None):
 
     fp_obj.write(("<?xml version=\"1.0\" encoding=\"" + encoding + "\" ?>\n").encode(
         encoding))
-    fp_obj.write(("<log>\n").encode(encoding))
+    fp_obj.write(("<log "+xes_util.TAG_VERSION+"=\""+xes_util.VALUE_XES_VERSION+"\" "+xes_util.TAG_FEATURES+"=\""+xes_util.VALUE_XES_FEATURES+"\" "+xes_util.TAG_XMLNS+"=\""+xes_util.VALUE_XMLNS+"\">\n").encode(encoding))
     for ext_name, ext_value in log.extensions.items():
         fp_obj.write((get_tab_indent(1) + "<extension name=\"%s\" prefix=\"%s\" uri=\"%s\" />\n" % (
             ext_name, ext_value[xes_util.KEY_PREFIX], ext_value[xes_util.KEY_URI])).encode(encoding))

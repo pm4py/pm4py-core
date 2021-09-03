@@ -29,6 +29,7 @@ class Parameters(Enum):
     FORCE_NAMES = "force_names"
     FILLCOLORS = "fillcolors"
     FONT_SIZE = "font_size"
+    BGCOLOR = "bgcolor"
 
 
 def visualize(ts, parameters=None):
@@ -42,6 +43,7 @@ def visualize(ts, parameters=None):
     fillcolors = exec_utils.get_param_value(Parameters.FILLCOLORS, parameters, {})
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 11)
     font_size = str(font_size)
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
 
     for state in ts.states:
         state.label = state.name
@@ -57,7 +59,7 @@ def visualize(ts, parameters=None):
         ts = nts
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Digraph(ts.name, filename=filename.name, engine='dot', graph_attr={'bgcolor': 'transparent'})
+    viz = Digraph(ts.name, filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
 
     # states
     viz.attr('node')

@@ -26,6 +26,7 @@ from pm4py.util import exec_utils
 
 class Parameters(Enum):
     FORMAT = "format"
+    BGCOLOR = "bgcolor"
 
 
 def draw_recursive(trie_node: Trie, parent: Union[str, None], gviz: Graph):
@@ -71,9 +72,10 @@ def apply(trie: Trie, parameters: Optional[Dict[Union[str, Parameters], Any]] = 
         parameters = {}
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': 'transparent'})
+    viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.attr('node', shape='ellipse', fixedsize='false')
 
     draw_recursive(trie, None, viz)
