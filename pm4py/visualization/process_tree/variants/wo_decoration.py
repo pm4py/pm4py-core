@@ -17,6 +17,7 @@ class Parameters(Enum):
     COLOR_MAP = "color_map"
     ENABLE_DEEPCOPY = "enable_deepcopy"
     FONT_SIZE = "font_size"
+    BGCOLOR = "bgcolor"
 
 
 # maps the operators to the ProM strings
@@ -124,7 +125,10 @@ def apply(tree: ProcessTree, parameters: Optional[Dict[Union[str, Parameters], A
         parameters = {}
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': 'transparent'})
+
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+
+    viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.attr('node', shape='ellipse', fixedsize='false')
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
