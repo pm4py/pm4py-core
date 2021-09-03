@@ -41,7 +41,7 @@ def filter_on_ncases(df: pd.DataFrame, case_id_glue: str = constants.CASE_CONCEP
     return ret
 
 
-def filter_on_case_size(df0: pd.DataFrame, case_id_glue: str = "case:concept:name", min_case_size: int = 2, max_case_size=None):
+def filter_on_case_size(df: pd.DataFrame, case_id_glue: str = "case:concept:name", min_case_size: int = 2, max_case_size=None):
     """
     Filter a dataframe keeping only traces with at least the specified number of events
 
@@ -61,13 +61,14 @@ def filter_on_case_size(df0: pd.DataFrame, case_id_glue: str = "case:concept:nam
     df
         Filtered dataframe
     """
-    df = df0.copy()
     element_group_size = df[case_id_glue].groupby(df[case_id_glue]).transform('size')
     df = df[element_group_size >= min_case_size]
-    if max_case_size is not None:
+    if max_case_size:
         element_group_size = df[case_id_glue].groupby(df[case_id_glue]).transform('size')
-        df = df[element_group_size <= max_case_size]
-    df.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+        ret = df[element_group_size <= max_case_size]
+    else:
+        ret = df
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
     return df
 
 
