@@ -1,5 +1,36 @@
 # PM4Py Changelog
 
+## PM4Py 2.2.13 (2021.09.03)
+
+### Fixed
+
+### Removed
+
+### Deprecated
+
+### Changed
+* 5723df7b
+    * xes exporter now reports on xes features and xmlns
+* 3b632548
+  * graphviz based visualizations now expose background color as a parameter
+
+### Added
+* 0592157b
+    * new dfg playout including performance specification
+* 85739ba0
+    * allow pandas df to be used as an iterable for streaming simulation 
+* 2fa9993f
+    * path filter  that filters the cases of an event log where there is at least one occurrence of the provided path
+    occurring in a given time range.
+* a7ee73a8
+    * added filter based on rework detection
+* c03b6188
+    * add petri net, reset/inhibitor net and data petri net semantics 
+### Other
+
+
+---
+
 ## PM4Py 2.2.12 (2021.08.19)
 
 ### Fixed
